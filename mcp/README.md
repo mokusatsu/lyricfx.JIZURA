@@ -77,6 +77,10 @@ MCPクライアントの設定例（パスは自身の環境の絶対パスへ�
 
 `layer` は `foreground` / `lyrics` / `media`（背景）。indexは**現在の解決済みカット配列**の0始まりです。挿入・削除・再生成後は再取得してください。境界IDは `f:0`, `m:0`, `l:行番号:分割番号`。フレーム番号も0始まりです。
 
+歌詞配列にはタイトル（`line: -1`）、アウトロ（`line: -2`）、間奏（`part: "interlude"`）も含まれます。これらを除外して index を数え直さないでください。通常歌詞を編集する場合は、取得した配列から `line >= 0 && Number.isInteger(part)` の要素を選び、その配列位置（ページ取得時は `offset + ページ内位置`）を渡します。お気に入り・独自演出の対象付きプレビューも同じ index を使います。
+
+特殊カットへの通常歌詞用の演出変更・再抽選・コピー・お気に入り適用／対象付きプレビュー・削除・タイミング変更は未対応で、変更前にエラーを返します。タイトルの既存UI操作は利用できます。テーマ検査はタイトル・間奏・アウトロの専用レイアウトと既定モーションのみを追加で許容し、装飾等のテーマ制約と未登録IDの検出は維持します。
+
 `project_get` のカット一覧は各レイヤー50件ずつです。`offset` / `limit`（最大200）で続きを取得でき、`cutCounts` に総数が返ります。`includeProject:false` で設定全体の再取得を省略できます。
 
 `project_edit` は現行エンジンのJSON設定を直接編集するため、画面の設定を網羅できます。`catalog.defaults` と `project_get.project` で形を確認してください。任意のJavaScript実行機能は提供しません。テーマ外の直接編集／古いプロジェクトの読み込みは検査で報告され、最終出力前に修正が必要です。
@@ -149,3 +153,7 @@ npm test
 `custom_effect_spec` → 標準効果を選択 → 不足する要素だけ `custom_effect_validate` / `custom_effect_import` → `custom_effect_preview` → `favorite_save` / `favorite_preview` → `export_start(kind="favorites")` で独自演出を作成・確認し、`.jizuraichifav` として配布できます。プレビューはMCPの画像応答として返ります。登場・保持・退場・背景・装飾などの標準要素に登録し、標準効果と組み合わせます。取り込んだ効果は一覧に［追加］付きで表示され、テーマの候補、再抽選、詳細パラメータ編集にも対応します。定義はプロジェクト／設定のみ／お気に入りファイルに保存されます。従来のカット全体を置き換える `details.drawing` も読み込めます。
 
 仕様・実例・ブラウザAPIは [エージェント向けお気に入り仕様](../docs/AGENT_FAVORITES.md) を参照してください。読み込みは `asset_import(kind="favorites", mode="append"|"replace")`。`favorite_list` / `favorite_apply` / `favorite_delete` で管理できます。
+
+### 特殊カットの回帰テスト
+
+リポジトリ直下で `python3 build.py` を実行してから、`mcp` ディレクトリで `npm run test:special-cuts` を実行します。英語版は `npm run test:special-cuts -- en`。LinuxでシステムChromiumを使う場合は `JIZURA_BROWSER=/usr/bin/chromium` を指定できます。タイトル・間奏・アウトロの検査、未対応操作の拒否、indexの一致、ページ取得・挿入・削除・Undoを確認します。

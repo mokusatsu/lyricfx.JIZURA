@@ -4,6 +4,23 @@
 (() => {
 'use strict';
 
+// Structural cuts share the resolved timeline with lyrics, but have separate settings.
+J.lyricCutKind = cut => cut.blank ? 'blank' : cut.line === -1 ? 'title'
+  : cut.line === -2 ? 'outro' : cut.line >= 0 && cut.part === 'interlude' ? 'interlude'
+  : cut.line >= 0 && Number.isInteger(cut.part) ? 'lyric' : 'unknown';
+J.requireEditableCut = (cut, layer) => {
+  if (!cut) throw Error('Cut not found');
+  if (layer === 'lyrics' && J.lyricCutKind(cut) !== 'lyric')
+    throw Error(`Unsupported ${J.lyricCutKind(cut)} cut: this operation requires a regular lyric cut`);
+  return cut;
+};
+// Only these structural choices supplement the theme pools; other fields remain themed.
+J.structuralCutEffects = kind => ({
+  title: {layout: J.TITLE_LAYOUT_ORDER?.length ? J.TITLE_LAYOUT_ORDER : ['title'], enter:['blur','type','wipe','assemble','pop','drop'], exit:['blur','drift','wipe'], hold:['still']},
+  outro: {layout:['outro'], enter:['blur','cut','zoom','wipe','pop'], exit:['blur','cut','shrink'], hold:['still','jitter','drift','wave'], cam:['push']},
+  interlude: {layout:['interlude'], enter:['blur'], exit:['blur'], hold:['still'], cam:['push']},
+}[kind] || {});
+
 J.SAMPLE_LYRICS = `夜明けの色を/覚えてる
 ほどけた声が遠くで鳴った
 ねえ、まだ間に合うかな
@@ -313,11 +330,12 @@ J.plan = (project, audio, chain) => {
     const manualTitleCut = (project.timing && project.timing.cutTimes) ? (Array.isArray(project.timing.cutTimes) ? project.timing.cutTimes.find(c => c.line === -1) : null) : null;
     const titleStart = manualTitleCut ? manualTitleCut.start : 0.1;
     const titleEnd = manualTitleCut ? manualTitleCut.end : (firstStart >= 1.2 ? Math.max(0.6, firstStart - 0.04) : 2.2);
-    const candLayouts = (J.TITLE_LAYOUT_ORDER && J.TITLE_LAYOUT_ORDER.length) ? J.TITLE_LAYOUT_ORDER : ['title'];
+    const titleEffects = J.structuralCutEffects('title');
+    const candLayouts = titleEffects.layout;
     const layout = ov.layout && J.LAYOUTS[ov.layout] ? ov.layout : rng.pick(candLayouts);
     const LD = J.LAYOUTS[layout] || J.LAYOUTS.title;
-    const enter = ov.enter && J.ENTER[ov.enter] ? ov.enter : rng.pick(['blur', 'type', 'wipe', 'assemble', 'pop', 'drop']);
-    const exit = ov.exit && J.EXIT[ov.exit] ? ov.exit : rng.pick(['blur', 'drift', 'wipe']);
+    const enter = ov.enter && J.ENTER[ov.enter] ? ov.enter : rng.pick(titleEffects.enter);
+    const exit = ov.exit && J.EXIT[ov.exit] ? ov.exit : rng.pick(titleEffects.exit);
     const hold = ov.hold && J.HOLD[ov.hold] ? ov.hold : 'still';
     const decor = Array.isArray(ov.decor) ? ov.decor.filter(id => J.DECOR[id]).map(id => decorParams(rng, id)) : pickDecor(rng, st, en, fx, layout, history);
     const treat = ov.treat && J.TREAT[ov.treat] ? ov.treat : pickTreat(rng, st, en, fx, LD, false, history);
@@ -600,7 +618,9 @@ J.plan = (project, audio, chain) => {
     }
 
     const VARIANTS = ['hex', 'ripple', 'star', 'arrows', 'bracket', 'cross'];
-    const CAMS = ['push', 'pulse', 'shake', 'drift'];
+    const outroEffects = J.structuralCutEffects('outro');
+    // Older unregistered pulse/shake/drift IDs all fell back to push in the renderer.
+    const CAMS = outroEffects.cam;
     for (let i = 0; i < nOutro; i++) {
       const s = bounds[i], e = bounds[i + 1], dur = e - s;
       if (dur < 0.2) continue;
@@ -614,9 +634,9 @@ J.plan = (project, audio, chain) => {
         start: s,
         end: e,
         layout: 'outro',
-        enter: i === 0 ? 'blur' : rOutro.pick(['cut', 'zoom', 'wipe', 'pop']),
-        exit: i === nOutro - 1 ? 'blur' : rOutro.pick(['cut', 'shrink', 'blur']),
-        hold: rOutro.pick(['still', 'jitter', 'drift', 'wave']),
+        enter: i === 0 ? outroEffects.enter[0] : rOutro.pick(outroEffects.enter.slice(1)),
+        exit: i === nOutro - 1 ? outroEffects.exit[0] : rOutro.pick(['cut', 'shrink', 'blur']),
+        hold: rOutro.pick(outroEffects.hold),
         inDur: Math.min(0.25, dur * 0.35),
         outDur: Math.min(0.25, dur * 0.35),
         cam: CAMS[i % CAMS.length],

@@ -75,6 +75,7 @@ J.clearPastedLyricEffects = (project, line = null) => {
   }
 };
 J.pasteCutEffects=(project,plan,layer,cut,payload)=>{
+  J.requireEditableCut(cut,layer);
   if(payload.kind!==(layer==='lyrics'?'lyrics':'media'))throw Error('incompatible');
   if(payload.components)J.importCustomEffects(project,payload.components);
   if(layer==='lyrics'){

@@ -157,7 +157,7 @@ await J.favoriteAPI.import(J.ui.project, file, 'append');
 J.uiApi.replan();
 ```
 
-プレビューの対象指定：`project: J.ui.project, target: {layer:'lyrics',index:0}`。indexは生成済みカット配列の位置。`time`は対象カットの長さ未満。PNGの長辺は最大1920px。プレビューだけではカットへ適用されない。
+プレビューの対象指定：`project: J.ui.project, target: {layer:'lyrics',index:0}`。indexはタイトル・間奏・アウトロを含む生成済みカット配列の位置（MCPの `project_get.cuts.lyrics` と同じ）。通常歌詞の対象は `line >= 0 && Number.isInteger(part)` から選ぶ。特殊カットへの適用・対象付きプレビューは未対応でエラーになる。`time`は対象カットの長さ未満。PNGの長辺は最大1920px。プレビューだけではカットへ適用されない。
 
 通常の動画書き出しは従来どおり監査・品質承認が必要。お気に入りの保存は品質承認前でも可能。新形式はこの機能を含むJIZURA版で読み込む。
 
