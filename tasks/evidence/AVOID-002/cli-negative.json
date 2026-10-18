@@ -1,0 +1,33 @@
+[
+  {
+    "arguments": [
+      "--base-url"
+    ],
+    "exitCode": 1,
+    "error": "AssertionError [ERR_ASSERTION]: expected --base-url HTTP(S)-URL/"
+  },
+  {
+    "arguments": [
+      "--wat",
+      "http://example/"
+    ],
+    "exitCode": 1,
+    "error": "AssertionError [ERR_ASSERTION]: unknown option"
+  },
+  {
+    "arguments": [
+      "--base-url",
+      "file:///tmp/"
+    ],
+    "exitCode": 1,
+    "error": "AssertionError [ERR_ASSERTION]: base URL must use HTTP(S)"
+  },
+  {
+    "arguments": [
+      "--base-url",
+      "https://example.com"
+    ],
+    "exitCode": 1,
+    "error": "AssertionError [ERR_ASSERTION]: base URL needs trailing slash"
+  }
+]

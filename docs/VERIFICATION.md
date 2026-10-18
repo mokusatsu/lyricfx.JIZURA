@@ -101,3 +101,15 @@ with CONNECT 403 before TLS could start. This does not indicate a certificate
 failure. Those destinations must be permitted in the active environment before
 checking Pages settings or running the public-site command. Saved configuration,
 runtime policy observations and successful requests are distinct evidence.
+
+## Circular avoidance contract and visual evidence (AVOID-002)
+
+The production avoidance behavior is unchanged in 002. The reusable contract,
+independent geometry oracle, 184-ID responsibility reconciliation, portable
+baseline runner, save-test server/font prerequisites and immutable review bundle
+commands are documented in [dev/avoidance/README.md](../dev/avoidance/README.md).
+Set `JIZURA_BROWSER` for the six baseline tests; assertions are unchanged. A
+managed sandbox may require the supported approval context for Chromium sockets.
+Public validation uses `review.cjs validate BUILD --base-url URL`, checks every
+manifest asset and app HTML against local hashes, and never falls back to local
+success when networking fails. Local captures alone do not establish deployment.

@@ -1,0 +1,2527 @@
+{
+  "schema": 1,
+  "task": "AVOID-002",
+  "build": "local-20261018-06",
+  "comparisonVersion": 1,
+  "hids": [
+    "AVOID-002-H01",
+    "AVOID-002-H02",
+    "AVOID-002-H03"
+  ],
+  "before": {
+    "commit": "646ea4fe82582d072f36ed2206cc1c07749f9bdf"
+  },
+  "after": {
+    "baseCommit": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+    "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa"
+  },
+  "browser": "154.0.8037.57",
+  "created": "2026-10-18T13:21:50.195Z",
+  "cases": [
+    {
+      "id": "case-01",
+      "hid": "AVOID-002-H01",
+      "conditions": {
+        "hid": "AVOID-002-H01",
+        "layout": "ring",
+        "aspect": "16:9",
+        "position": "center",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-01-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+        "time": 1,
+        "conditionsSHA256": "fd481be985cc7351e2396c055b9c3a6eb57752cb111c9052756e73aa7eabfede",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:21:52.228Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-01-before-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-01-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "aa161cb1d10dc588becfb5ad033343688400f8bd0e42f3e6a5871001ab2692b7",
+        "time": 1,
+        "conditionsSHA256": "fd481be985cc7351e2396c055b9c3a6eb57752cb111c9052756e73aa7eabfede",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:21:53.416Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-01-after-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-02",
+      "hid": "AVOID-002-H01",
+      "conditions": {
+        "hid": "AVOID-002-H01",
+        "layout": "ring",
+        "aspect": "16:9",
+        "position": "upper",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-02-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+        "time": 1,
+        "conditionsSHA256": "6a56ab3abaa850887811654a4016cb675f08fa340aa7ccd959b110f8083ad45b",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:21:54.400Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-02-before-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-02-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "c4bd64b04e471eb04199725dc4fcaf96e5fbb71e58351124948039695a677d27",
+        "time": 1,
+        "conditionsSHA256": "6a56ab3abaa850887811654a4016cb675f08fa340aa7ccd959b110f8083ad45b",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:21:55.544Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-02-after-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-03",
+      "hid": "AVOID-002-H01",
+      "conditions": {
+        "hid": "AVOID-002-H01",
+        "layout": "ring",
+        "aspect": "16:9",
+        "position": "lower",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-03-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+        "time": 1,
+        "conditionsSHA256": "7cd88c49f5d6b6c882e4221733f57222f53622a4f47a06084f9469055a1dd088",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:21:56.629Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-03-before-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-03-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "419894704d43d3d5ffd6385f1d3bd28a826a69ada5303a062766db156f6d7950",
+        "time": 1,
+        "conditionsSHA256": "7cd88c49f5d6b6c882e4221733f57222f53622a4f47a06084f9469055a1dd088",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:21:58.181Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-03-after-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-04",
+      "hid": "AVOID-002-H01",
+      "conditions": {
+        "hid": "AVOID-002-H01",
+        "layout": "ring",
+        "aspect": "16:9",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-04-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+        "time": 1,
+        "conditionsSHA256": "f57780351dd983df14c31f5fa20271e90ff8466aba3adc7435080696974e81f9",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:21:59.433Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-04-before-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-04-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "900036616fd15ee6f2a11bd265904788c51f24947a711a8fd6d30f6b1e744461",
+        "time": 1,
+        "conditionsSHA256": "f57780351dd983df14c31f5fa20271e90ff8466aba3adc7435080696974e81f9",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:00.646Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-04-after-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-05",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "center",
+        "aspect": "16:9",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-05-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "7e767a1f6ef8b245f57c24e5730d14c18c0e8a1bb71e6477dbb64ee0c204ed03",
+        "time": 1,
+        "conditionsSHA256": "1eba5a55e4dd492e76667b124bcb7018f93914048ed6d7b138db7d239fb4f7aa",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:01.746Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-05-before-original.png",
+          "sha256": "ee6314253bf88cbb13bdbd9856792231878e86d8d291f3aab04b8134e4fc31d3",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-05-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "7a1f9efd793a6a71248e5d38e2b9c48510e9f158462444ab3ef2687534aa5707",
+        "time": 1,
+        "conditionsSHA256": "1eba5a55e4dd492e76667b124bcb7018f93914048ed6d7b138db7d239fb4f7aa",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:02.789Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-05-after-original.png",
+          "sha256": "ee6314253bf88cbb13bdbd9856792231878e86d8d291f3aab04b8134e4fc31d3",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-06",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "center",
+        "aspect": "9:16",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-06-before.png",
+        "width": 960,
+        "height": 4102,
+        "sha256": "fd0a0de18c08c15605adf140b83f051497049de802ae653bbd9652c37a8fabdf",
+        "time": 1,
+        "conditionsSHA256": "10e8cd799cd5e8fd752d5d426627d409147e08a8b6530ead75796c11985d38ff",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:04.190Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1080,
+            1920
+          ],
+          "renderSize": [
+            496.8,
+            470.4
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.1127,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-06-before-original.png",
+          "sha256": "b31b08c28585ca7cb05e2ad5a0c7eeaa134a34107cbf2879fd0257046ab52fa6",
+          "width": 1080,
+          "height": 1920,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-06-after.png",
+        "width": 960,
+        "height": 4102,
+        "sha256": "669e5d050c04ba70f5749da117c8d3492f2d9e10cf5b4eb412b697d5adc9b76d",
+        "time": 1,
+        "conditionsSHA256": "10e8cd799cd5e8fd752d5d426627d409147e08a8b6530ead75796c11985d38ff",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:05.291Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1080,
+            1920
+          ],
+          "renderSize": [
+            496.8,
+            470.4
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.1127,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-06-after-original.png",
+          "sha256": "b31b08c28585ca7cb05e2ad5a0c7eeaa134a34107cbf2879fd0257046ab52fa6",
+          "width": 1080,
+          "height": 1920,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-07",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "center",
+        "aspect": "1:1",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-07-before.png",
+        "width": 960,
+        "height": 2626,
+        "sha256": "1fabbc9afdf6f700596365d4ef5f7b50420e8bcd13d42cbb244debd33d5f502c",
+        "time": 1,
+        "conditionsSHA256": "66e41fd48e40f149b25ca56e6db05125bea7df01aaba83e4704c9a5e6e3a83d0",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:06.434Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1440,
+            1440
+          ],
+          "renderSize": [
+            647.7106257889459,
+            352.8
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325815,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-07-before-original.png",
+          "sha256": "843f69f476327aa7b3cc10eef79553b2fbaa29bb8b471e1f210c8d7a1aaee3c5",
+          "width": 1440,
+          "height": 1440,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-07-after.png",
+        "width": 960,
+        "height": 2626,
+        "sha256": "885045223611e64f4243176e62e681af9cb33aef57653b64995e2d9f42673765",
+        "time": 1,
+        "conditionsSHA256": "66e41fd48e40f149b25ca56e6db05125bea7df01aaba83e4704c9a5e6e3a83d0",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:07.515Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1440,
+            1440
+          ],
+          "renderSize": [
+            647.7106257889459,
+            352.8
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325815,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-07-after-original.png",
+          "sha256": "843f69f476327aa7b3cc10eef79553b2fbaa29bb8b471e1f210c8d7a1aaee3c5",
+          "width": 1440,
+          "height": 1440,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-08",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "center",
+        "aspect": "21:9",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-08-before.png",
+        "width": 960,
+        "height": 1541,
+        "sha256": "18a1b7d7407a0ecf98996996365a0f3c92c72e1c64ab82e1447bf0087132aa56",
+        "time": 1,
+        "conditionsSHA256": "ba0fd844efbe541fdf7ce0d280b75f056ab7e49ab36db7e4a84c8f61d5fee7b0",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:08.556Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            2520,
+            1080
+          ],
+          "renderSize": [
+            1133.4935951306554,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325819,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-08-before-original.png",
+          "sha256": "012534ce81626c914182b90f37e75bad41c6ab184670b499d8f5a0a42caea75c",
+          "width": 2520,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-08-after.png",
+        "width": 960,
+        "height": 1541,
+        "sha256": "a59037c2def826b7c917cc715fa48f11223ff09fec20e5391344222f9cdd6107",
+        "time": 1,
+        "conditionsSHA256": "ba0fd844efbe541fdf7ce0d280b75f056ab7e49ab36db7e4a84c8f61d5fee7b0",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:09.676Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            2520,
+            1080
+          ],
+          "renderSize": [
+            1133.4935951306554,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325819,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-08-after-original.png",
+          "sha256": "012534ce81626c914182b90f37e75bad41c6ab184670b499d8f5a0a42caea75c",
+          "width": 2520,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-09",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "center",
+        "aspect": "4:5",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-09-before.png",
+        "width": 960,
+        "height": 3100,
+        "sha256": "38fd6cb3969461571639c0b3f31927405ab9546a66f9dc36cbe7acc4e066e83a",
+        "time": 1,
+        "conditionsSHA256": "f128711cad29e76ba19e4b4b7d7220a02111d5916b1a16eeef7324ea7d23bcf2",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:10.772Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1440,
+            1800
+          ],
+          "renderSize": [
+            662.4,
+            441
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11269999999999998,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-09-before-original.png",
+          "sha256": "91127d8930fcc65f6e7037910589c0af85d3b67cdbeae730dac40b3152cb82be",
+          "width": 1440,
+          "height": 1800,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-09-after.png",
+        "width": 960,
+        "height": 3100,
+        "sha256": "178c06d229183e2908d3682e983fd07775b2eeefd19157d140705f4debc908ad",
+        "time": 1,
+        "conditionsSHA256": "f128711cad29e76ba19e4b4b7d7220a02111d5916b1a16eeef7324ea7d23bcf2",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:11.958Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1440,
+            1800
+          ],
+          "renderSize": [
+            662.4,
+            441
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11269999999999998,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-09-after-original.png",
+          "sha256": "91127d8930fcc65f6e7037910589c0af85d3b67cdbeae730dac40b3152cb82be",
+          "width": 1440,
+          "height": 1800,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-10",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "ring",
+        "aspect": "16:9",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-10-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+        "time": 1,
+        "conditionsSHA256": "d055c048b017a07c624f0f3782cd4bcfba432ea7185319c266c9baf049ec1c34",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:13.214Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-10-before-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-10-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "900036616fd15ee6f2a11bd265904788c51f24947a711a8fd6d30f6b1e744461",
+        "time": 1,
+        "conditionsSHA256": "d055c048b017a07c624f0f3782cd4bcfba432ea7185319c266c9baf049ec1c34",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:14.199Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-10-after-original.png",
+          "sha256": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-11",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "ring",
+        "aspect": "9:16",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-11-before.png",
+        "width": 960,
+        "height": 4102,
+        "sha256": "e735e78fb000ebb82437ccf0d622740907a14dcc429ef26a9282da3ac6cf5a69",
+        "time": 1,
+        "conditionsSHA256": "ea2de11a2f569b3b47341cd39f4328560d431aed07824b7d5b92f55a113d7bcd",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:15.598Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1080,
+            1920
+          ],
+          "renderSize": [
+            496.8,
+            470.4
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.1127,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-11-before-original.png",
+          "sha256": "a6b2ad37b5afa57024f18b4ed00da1804298201597a2c4486714dfb0357e9dab",
+          "width": 1080,
+          "height": 1920,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-11-after.png",
+        "width": 960,
+        "height": 4102,
+        "sha256": "c05496e69261e5e54ca2b0dc2350abe686a055a0bfd5f7d225deae86bc150108",
+        "time": 1,
+        "conditionsSHA256": "ea2de11a2f569b3b47341cd39f4328560d431aed07824b7d5b92f55a113d7bcd",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:16.800Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1080,
+            1920
+          ],
+          "renderSize": [
+            496.8,
+            470.4
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.1127,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-11-after-original.png",
+          "sha256": "a6b2ad37b5afa57024f18b4ed00da1804298201597a2c4486714dfb0357e9dab",
+          "width": 1080,
+          "height": 1920,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-12",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "ring",
+        "aspect": "1:1",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-12-before.png",
+        "width": 960,
+        "height": 2626,
+        "sha256": "a9d6f19f5c87ae66f02f5948fd58a08df01dd8cc86739c3f21ee516b51b4e96a",
+        "time": 1,
+        "conditionsSHA256": "c84edc08fd065ed835d315137163a8348f1263152a3b9b2541c76b2b2f9e7648",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:17.916Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1440,
+            1440
+          ],
+          "renderSize": [
+            647.7106257889459,
+            352.8
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325815,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-12-before-original.png",
+          "sha256": "c1aa688a506c823084e439b1d9b21fd32f0696be4d34c5ece1ca18562663e71e",
+          "width": 1440,
+          "height": 1440,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-12-after.png",
+        "width": 960,
+        "height": 2626,
+        "sha256": "cde026765875e0c7f33688d91c27799c425222d1307a92c41f21795c8e2de628",
+        "time": 1,
+        "conditionsSHA256": "c84edc08fd065ed835d315137163a8348f1263152a3b9b2541c76b2b2f9e7648",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:19.017Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1440,
+            1440
+          ],
+          "renderSize": [
+            647.7106257889459,
+            352.8
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325815,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-12-after-original.png",
+          "sha256": "c1aa688a506c823084e439b1d9b21fd32f0696be4d34c5ece1ca18562663e71e",
+          "width": 1440,
+          "height": 1440,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-13",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "ring",
+        "aspect": "21:9",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-13-before.png",
+        "width": 960,
+        "height": 1541,
+        "sha256": "88feac7bfb7f136bd61449f3c69c2aafa182b49e0a1b099ab00b3445bc8bef98",
+        "time": 1,
+        "conditionsSHA256": "42ed8043ed27127bac3644bb61d942e014713293111a88d21d7c46df022e8332",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:19.986Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            2520,
+            1080
+          ],
+          "renderSize": [
+            1133.4935951306554,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325819,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-13-before-original.png",
+          "sha256": "113064fb62349e86ca8db40a1a63497845f19c6bdcd9e371f31cc67d1b5cef6d",
+          "width": 2520,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-13-after.png",
+        "width": 960,
+        "height": 1541,
+        "sha256": "84aeab64e8b1cb4e87fe1db73483f21d595bf3478e81cfb978e76e440e2411a0",
+        "time": 1,
+        "conditionsSHA256": "42ed8043ed27127bac3644bb61d942e014713293111a88d21d7c46df022e8332",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:21.188Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            2520,
+            1080
+          ],
+          "renderSize": [
+            1133.4935951306554,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325819,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-13-after-original.png",
+          "sha256": "113064fb62349e86ca8db40a1a63497845f19c6bdcd9e371f31cc67d1b5cef6d",
+          "width": 2520,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-14",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "ring",
+        "aspect": "4:5",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-14-before.png",
+        "width": 960,
+        "height": 3100,
+        "sha256": "6696828711389482bbb32d17090d517f939182ac0e79ed1c2e9a06cf181bddff",
+        "time": 1,
+        "conditionsSHA256": "522229913780260c40f215e1153269b2bb5cd87ca18842d1931b63dfe4877ff6",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:22.426Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1440,
+            1800
+          ],
+          "renderSize": [
+            662.4,
+            441
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11269999999999998,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-14-before-original.png",
+          "sha256": "5f09b9fbc6cdb84bb608e7b9f83c57a5c82063a8dd3e26c71c793e7e67c16d7b",
+          "width": 1440,
+          "height": 1800,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-14-after.png",
+        "width": 960,
+        "height": 3100,
+        "sha256": "8cb715536c0bed91d20ac51061b25969c2e26641a345ebb925271f2d2c71947a",
+        "time": 1,
+        "conditionsSHA256": "522229913780260c40f215e1153269b2bb5cd87ca18842d1931b63dfe4877ff6",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:23.779Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "ring",
+          "stage": [
+            1440,
+            1800
+          ],
+          "renderSize": [
+            662.4,
+            441
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11269999999999998,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-14-after-original.png",
+          "sha256": "5f09b9fbc6cdb84bb608e7b9f83c57a5c82063a8dd3e26c71c793e7e67c16d7b",
+          "width": 1440,
+          "height": 1800,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-15",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "tile",
+        "aspect": "16:9",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-15-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "3976a865e0f9a006d98aa3046b38552ad22e98a4dbcc157d2e8afbb25c324e82",
+        "time": 1,
+        "conditionsSHA256": "05fd11e08ec80a543dcd5adc0db658b5dbdb2025ad3b4f7684b1859bfcbdb385",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:24.753Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-15-before-original.png",
+          "sha256": "405da1f25c385f753270fa3ec2ecd8c5acf6ecf8c0b18c41f9499a89ae4c89af",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-15-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "a45c55b0a5c08d03268cedc2409cc815b85a450cd8703493f6ca68fb0d844dd9",
+        "time": 1,
+        "conditionsSHA256": "05fd11e08ec80a543dcd5adc0db658b5dbdb2025ad3b4f7684b1859bfcbdb385",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:25.930Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-15-after-original.png",
+          "sha256": "405da1f25c385f753270fa3ec2ecd8c5acf6ecf8c0b18c41f9499a89ae4c89af",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-16",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "tile",
+        "aspect": "9:16",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-16-before.png",
+        "width": 960,
+        "height": 4102,
+        "sha256": "c4d59a08948ae32b55ccede1a4cc44e69b6168bf206e7e49d54a0b287c06bb25",
+        "time": 1,
+        "conditionsSHA256": "eac215dd8f917a1e0e5bb2675e6d8f14ce111265b6e557e2e1999ab974d8cdc1",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:27.117Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            1080,
+            1920
+          ],
+          "renderSize": [
+            496.8,
+            470.4
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.1127,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-16-before-original.png",
+          "sha256": "8fbb12311baf04610a76d38edb0be72955e9777821f3aa494a830147eba53fdf",
+          "width": 1080,
+          "height": 1920,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-16-after.png",
+        "width": 960,
+        "height": 4102,
+        "sha256": "90780bd66fcffa5a4c509c8d1dfec429fccf7dc77f46ec38c01d760952bc7aae",
+        "time": 1,
+        "conditionsSHA256": "eac215dd8f917a1e0e5bb2675e6d8f14ce111265b6e557e2e1999ab974d8cdc1",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:28.348Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            1080,
+            1920
+          ],
+          "renderSize": [
+            496.8,
+            470.4
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.1127,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-16-after-original.png",
+          "sha256": "8fbb12311baf04610a76d38edb0be72955e9777821f3aa494a830147eba53fdf",
+          "width": 1080,
+          "height": 1920,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-17",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "tile",
+        "aspect": "1:1",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-17-before.png",
+        "width": 960,
+        "height": 2626,
+        "sha256": "1c4616e6b2d9274e8260e8bba92823519e1fa5eebeeb9484b86b7b51fe58539e",
+        "time": 1,
+        "conditionsSHA256": "00b9e796db3616e9285948bd93be26b64345fcd4e1ab6b338d831cf744efc1f0",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:29.571Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            1440,
+            1440
+          ],
+          "renderSize": [
+            647.7106257889459,
+            352.8
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325815,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-17-before-original.png",
+          "sha256": "6fb72c61e39b37475abc7bb3e2699f11694405debbf8b8fe16bb703da2b3db47",
+          "width": 1440,
+          "height": 1440,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-17-after.png",
+        "width": 960,
+        "height": 2626,
+        "sha256": "863b4f40b91c2b3bbcee0a729a0f716f6a076da383f37d525793440d0ad4da95",
+        "time": 1,
+        "conditionsSHA256": "00b9e796db3616e9285948bd93be26b64345fcd4e1ab6b338d831cf744efc1f0",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:30.749Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            1440,
+            1440
+          ],
+          "renderSize": [
+            647.7106257889459,
+            352.8
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325815,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-17-after-original.png",
+          "sha256": "6fb72c61e39b37475abc7bb3e2699f11694405debbf8b8fe16bb703da2b3db47",
+          "width": 1440,
+          "height": 1440,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-18",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "tile",
+        "aspect": "21:9",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-18-before.png",
+        "width": 960,
+        "height": 1541,
+        "sha256": "ea42235d18c648fec67c711eeab5ae7f2961dbb070e847f1e09f757997ea652c",
+        "time": 1,
+        "conditionsSHA256": "c7ad77682bac809edde6256cfecd3f88646ad8336033fa631c5037563015bd39",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:32.010Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            2520,
+            1080
+          ],
+          "renderSize": [
+            1133.4935951306554,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325819,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-18-before-original.png",
+          "sha256": "cb0ef3be866761ec3ef012138b3e74e8f2c2c14b250959e0f9d4f5d889924ae9",
+          "width": 2520,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-18-after.png",
+        "width": 960,
+        "height": 1541,
+        "sha256": "e61fa2f8d5925d35df58d21b9a799fe1b8d44747e3f745399627850c10ebbfdb",
+        "time": 1,
+        "conditionsSHA256": "c7ad77682bac809edde6256cfecd3f88646ad8336033fa631c5037563015bd39",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:33.177Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            2520,
+            1080
+          ],
+          "renderSize": [
+            1133.4935951306554,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325819,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-18-after-original.png",
+          "sha256": "cb0ef3be866761ec3ef012138b3e74e8f2c2c14b250959e0f9d4f5d889924ae9",
+          "width": 2520,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-19",
+      "hid": "AVOID-002-H02",
+      "conditions": {
+        "hid": "AVOID-002-H02",
+        "layout": "tile",
+        "aspect": "4:5",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-19-before.png",
+        "width": 960,
+        "height": 3100,
+        "sha256": "2abba3e87bfd2dd8e400fc07621653250191252188874c0e3be77a8ca787730c",
+        "time": 1,
+        "conditionsSHA256": "dca7ef789a18f7994244f3ec72cbfcea22ccc477b4bcc660982244c57718c8e9",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:34.410Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            1440,
+            1800
+          ],
+          "renderSize": [
+            662.4,
+            441
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11269999999999998,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-19-before-original.png",
+          "sha256": "c4934f4dab1eb3c4358b30219dec461828bd4a1e92d5bf4569e42607907d8ca9",
+          "width": 1440,
+          "height": 1800,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-19-after.png",
+        "width": 960,
+        "height": 3100,
+        "sha256": "cadcf8cb1cb6e0cb08089c7657a791bd9360401c382dc1b26311bba72b3faf54",
+        "time": 1,
+        "conditionsSHA256": "dca7ef789a18f7994244f3ec72cbfcea22ccc477b4bcc660982244c57718c8e9",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:35.722Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "tile",
+          "stage": [
+            1440,
+            1800
+          ],
+          "renderSize": [
+            662.4,
+            441
+          ],
+          "area": {
+            "x": 0.51,
+            "y": 0.72,
+            "w": 0.46,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11269999999999998,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-19-after-original.png",
+          "sha256": "c4934f4dab1eb3c4358b30219dec461828bd4a1e92d5bf4569e42607907d8ca9",
+          "width": 1440,
+          "height": 1800,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-20",
+      "hid": "AVOID-002-H03",
+      "conditions": {
+        "hid": "AVOID-002-H03",
+        "layout": "center",
+        "aspect": "16:9",
+        "position": "default",
+        "time": 0.001,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-20-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "a6cd0be2a89ff54f49d39f4be7b8e73b1591813f0befff9df93598e9f57ca8aa",
+        "time": 0.001,
+        "conditionsSHA256": "69fe171ee3aa41a3a520e5eb1b220ef2c8a76d9cc7ce6756235a096ca47759a3",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:36.790Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 0.001,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-20-before-original.png",
+          "sha256": "883d8effa28a635a3add6a34af69ac343a26d97bd591fc83595f3dd837e84d2b",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-20-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "a41fabc21743306f48c311d2ca7e362db8afa32e5af3c7d89a8985dd0f334f32",
+        "time": 0.001,
+        "conditionsSHA256": "69fe171ee3aa41a3a520e5eb1b220ef2c8a76d9cc7ce6756235a096ca47759a3",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:37.975Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 0.001,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-20-after-original.png",
+          "sha256": "883d8effa28a635a3add6a34af69ac343a26d97bd591fc83595f3dd837e84d2b",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-21",
+      "hid": "AVOID-002-H03",
+      "conditions": {
+        "hid": "AVOID-002-H03",
+        "layout": "center",
+        "aspect": "16:9",
+        "position": "default",
+        "time": 1,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-21-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "7e767a1f6ef8b245f57c24e5730d14c18c0e8a1bb71e6477dbb64ee0c204ed03",
+        "time": 1,
+        "conditionsSHA256": "d1fe55c27b691520e9872fe617cfa9e6f77c7ed980097e9d22fd56f026296712",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:38.951Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-21-before-original.png",
+          "sha256": "ee6314253bf88cbb13bdbd9856792231878e86d8d291f3aab04b8134e4fc31d3",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-21-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "7a1f9efd793a6a71248e5d38e2b9c48510e9f158462444ab3ef2687534aa5707",
+        "time": 1,
+        "conditionsSHA256": "d1fe55c27b691520e9872fe617cfa9e6f77c7ed980097e9d22fd56f026296712",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:39.898Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 1,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-21-after-original.png",
+          "sha256": "ee6314253bf88cbb13bdbd9856792231878e86d8d291f3aab04b8134e4fc31d3",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    },
+    {
+      "id": "case-22",
+      "hid": "AVOID-002-H03",
+      "conditions": {
+        "hid": "AVOID-002-H03",
+        "layout": "center",
+        "aspect": "16:9",
+        "position": "default",
+        "time": 4.999,
+        "seed": 1,
+        "viewport": [
+          1500,
+          1000
+        ],
+        "dpr": 1,
+        "font": "NotoSansCJK-Regular subset / all J.FONTS families overridden",
+        "media": "none",
+        "color": "sRGB browser default",
+        "alpha": "opaque screenshot",
+        "externalRequests": "blocked"
+      },
+      "notes": "見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。",
+      "before": {
+        "path": "images/case-22-before.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "b60f4a90843d5dab325a82b499b37303804527f768e0e7cd5459cf05fbe8df30",
+        "time": 4.999,
+        "conditionsSHA256": "04636cd0d8ca6d07b346c8c90ec9b36aeb8a129f74f096737c488728d1cb7905",
+        "implementation": "646ea4fe82582d072f36ed2206cc1c07749f9bdf",
+        "captured": "2026-10-18T13:22:40.847Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 4.999,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-22-before-original.png",
+          "sha256": "6c4cc5b6f349a9021820e754653d79bc2d32cc2765f81733ec27e927d26e1b9c",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      },
+      "after": {
+        "path": "images/case-22-after.png",
+        "width": 960,
+        "height": 1795,
+        "sha256": "7c28c588b7e95ff08192f34ceeec237af404ae3798f899c61bba6194e2648556",
+        "time": 4.999,
+        "conditionsSHA256": "04636cd0d8ca6d07b346c8c90ec9b36aeb8a129f74f096737c488728d1cb7905",
+        "implementation": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "captured": "2026-10-18T13:22:41.825Z",
+        "sourceSHA256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+        "fixtureSHA256": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+        "method": "Playwright locator screenshot, local HTTP",
+        "observation": {
+          "layout": "center",
+          "stage": [
+            1920,
+            1080
+          ],
+          "renderSize": [
+            863.6141677185946,
+            264.6
+          ],
+          "area": {
+            "x": 0.520200954313232,
+            "y": 0.72,
+            "w": 0.449799045686768,
+            "h": 0.245,
+            "angle": 0,
+            "lockAspect": true
+          },
+          "ratio": 0.11020076619325817,
+          "time": 4.999,
+          "seed": 1,
+          "fontLoaded": "loaded"
+        },
+        "original": {
+          "path": "images/case-22-after-original.png",
+          "sha256": "6c4cc5b6f349a9021820e754653d79bc2d32cc2765f81733ec27e927d26e1b9c",
+          "width": 1920,
+          "height": 1080,
+          "kind": "original-stage Renderer canvas, no UI or specification guide"
+        }
+      }
+    }
+  ],
+  "assets": {
+    "index.html": "79e81ef2101e0eceafbe14f7be5c75f6fb55a20aaee9a1f0e920b033f434c707",
+    "sample.html": "efefb92300a33577ded5c90131c7e6e07f3427d3e4d94cf91e7ebee0b5606d5f",
+    "fixtures/cases.json": "a2b3b716288f1423355514b223802e9f7e20834967d9fe362ed1a2005c862677",
+    "fixtures/contract.json": "aedae43b4d0f7bc0c2f3adc31ea4bd73d923f921f4224896309c4716d58f057f",
+    "fixtures/current.html": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+    "fixtures/font-license.txt": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b",
+    "fixtures/font.otf": "7f2fc57bea7f850a789a849774cb165ec786b28572ae2914fa7939b6d4c7f803",
+    "fixtures/inventory.json": "36405d825f3cb2bfe7e90bfd5a1e6daea8dc86e07da9ba229b64281ef2d998d9",
+    "images/case-01-after-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-01-after.png": "aa161cb1d10dc588becfb5ad033343688400f8bd0e42f3e6a5871001ab2692b7",
+    "images/case-01-before-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-01-before.png": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+    "images/case-02-after-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-02-after.png": "c4bd64b04e471eb04199725dc4fcaf96e5fbb71e58351124948039695a677d27",
+    "images/case-02-before-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-02-before.png": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+    "images/case-03-after-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-03-after.png": "419894704d43d3d5ffd6385f1d3bd28a826a69ada5303a062766db156f6d7950",
+    "images/case-03-before-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-03-before.png": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+    "images/case-04-after-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-04-after.png": "900036616fd15ee6f2a11bd265904788c51f24947a711a8fd6d30f6b1e744461",
+    "images/case-04-before-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-04-before.png": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+    "images/case-05-after-original.png": "ee6314253bf88cbb13bdbd9856792231878e86d8d291f3aab04b8134e4fc31d3",
+    "images/case-05-after.png": "7a1f9efd793a6a71248e5d38e2b9c48510e9f158462444ab3ef2687534aa5707",
+    "images/case-05-before-original.png": "ee6314253bf88cbb13bdbd9856792231878e86d8d291f3aab04b8134e4fc31d3",
+    "images/case-05-before.png": "7e767a1f6ef8b245f57c24e5730d14c18c0e8a1bb71e6477dbb64ee0c204ed03",
+    "images/case-06-after-original.png": "b31b08c28585ca7cb05e2ad5a0c7eeaa134a34107cbf2879fd0257046ab52fa6",
+    "images/case-06-after.png": "669e5d050c04ba70f5749da117c8d3492f2d9e10cf5b4eb412b697d5adc9b76d",
+    "images/case-06-before-original.png": "b31b08c28585ca7cb05e2ad5a0c7eeaa134a34107cbf2879fd0257046ab52fa6",
+    "images/case-06-before.png": "fd0a0de18c08c15605adf140b83f051497049de802ae653bbd9652c37a8fabdf",
+    "images/case-07-after-original.png": "843f69f476327aa7b3cc10eef79553b2fbaa29bb8b471e1f210c8d7a1aaee3c5",
+    "images/case-07-after.png": "885045223611e64f4243176e62e681af9cb33aef57653b64995e2d9f42673765",
+    "images/case-07-before-original.png": "843f69f476327aa7b3cc10eef79553b2fbaa29bb8b471e1f210c8d7a1aaee3c5",
+    "images/case-07-before.png": "1fabbc9afdf6f700596365d4ef5f7b50420e8bcd13d42cbb244debd33d5f502c",
+    "images/case-08-after-original.png": "012534ce81626c914182b90f37e75bad41c6ab184670b499d8f5a0a42caea75c",
+    "images/case-08-after.png": "a59037c2def826b7c917cc715fa48f11223ff09fec20e5391344222f9cdd6107",
+    "images/case-08-before-original.png": "012534ce81626c914182b90f37e75bad41c6ab184670b499d8f5a0a42caea75c",
+    "images/case-08-before.png": "18a1b7d7407a0ecf98996996365a0f3c92c72e1c64ab82e1447bf0087132aa56",
+    "images/case-09-after-original.png": "91127d8930fcc65f6e7037910589c0af85d3b67cdbeae730dac40b3152cb82be",
+    "images/case-09-after.png": "178c06d229183e2908d3682e983fd07775b2eeefd19157d140705f4debc908ad",
+    "images/case-09-before-original.png": "91127d8930fcc65f6e7037910589c0af85d3b67cdbeae730dac40b3152cb82be",
+    "images/case-09-before.png": "38fd6cb3969461571639c0b3f31927405ab9546a66f9dc36cbe7acc4e066e83a",
+    "images/case-10-after-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-10-after.png": "900036616fd15ee6f2a11bd265904788c51f24947a711a8fd6d30f6b1e744461",
+    "images/case-10-before-original.png": "94d5e222ca2c96f0c888eac2050c8574c73b18b6fd30f46c0aa11a4b0e8d23a4",
+    "images/case-10-before.png": "98e826551b1e4048c036ce66bbe9b7d0c52e028ebbd22d183a547027a1d03a3e",
+    "images/case-11-after-original.png": "a6b2ad37b5afa57024f18b4ed00da1804298201597a2c4486714dfb0357e9dab",
+    "images/case-11-after.png": "c05496e69261e5e54ca2b0dc2350abe686a055a0bfd5f7d225deae86bc150108",
+    "images/case-11-before-original.png": "a6b2ad37b5afa57024f18b4ed00da1804298201597a2c4486714dfb0357e9dab",
+    "images/case-11-before.png": "e735e78fb000ebb82437ccf0d622740907a14dcc429ef26a9282da3ac6cf5a69",
+    "images/case-12-after-original.png": "c1aa688a506c823084e439b1d9b21fd32f0696be4d34c5ece1ca18562663e71e",
+    "images/case-12-after.png": "cde026765875e0c7f33688d91c27799c425222d1307a92c41f21795c8e2de628",
+    "images/case-12-before-original.png": "c1aa688a506c823084e439b1d9b21fd32f0696be4d34c5ece1ca18562663e71e",
+    "images/case-12-before.png": "a9d6f19f5c87ae66f02f5948fd58a08df01dd8cc86739c3f21ee516b51b4e96a",
+    "images/case-13-after-original.png": "113064fb62349e86ca8db40a1a63497845f19c6bdcd9e371f31cc67d1b5cef6d",
+    "images/case-13-after.png": "84aeab64e8b1cb4e87fe1db73483f21d595bf3478e81cfb978e76e440e2411a0",
+    "images/case-13-before-original.png": "113064fb62349e86ca8db40a1a63497845f19c6bdcd9e371f31cc67d1b5cef6d",
+    "images/case-13-before.png": "88feac7bfb7f136bd61449f3c69c2aafa182b49e0a1b099ab00b3445bc8bef98",
+    "images/case-14-after-original.png": "5f09b9fbc6cdb84bb608e7b9f83c57a5c82063a8dd3e26c71c793e7e67c16d7b",
+    "images/case-14-after.png": "8cb715536c0bed91d20ac51061b25969c2e26641a345ebb925271f2d2c71947a",
+    "images/case-14-before-original.png": "5f09b9fbc6cdb84bb608e7b9f83c57a5c82063a8dd3e26c71c793e7e67c16d7b",
+    "images/case-14-before.png": "6696828711389482bbb32d17090d517f939182ac0e79ed1c2e9a06cf181bddff",
+    "images/case-15-after-original.png": "405da1f25c385f753270fa3ec2ecd8c5acf6ecf8c0b18c41f9499a89ae4c89af",
+    "images/case-15-after.png": "a45c55b0a5c08d03268cedc2409cc815b85a450cd8703493f6ca68fb0d844dd9",
+    "images/case-15-before-original.png": "405da1f25c385f753270fa3ec2ecd8c5acf6ecf8c0b18c41f9499a89ae4c89af",
+    "images/case-15-before.png": "3976a865e0f9a006d98aa3046b38552ad22e98a4dbcc157d2e8afbb25c324e82",
+    "images/case-16-after-original.png": "8fbb12311baf04610a76d38edb0be72955e9777821f3aa494a830147eba53fdf",
+    "images/case-16-after.png": "90780bd66fcffa5a4c509c8d1dfec429fccf7dc77f46ec38c01d760952bc7aae",
+    "images/case-16-before-original.png": "8fbb12311baf04610a76d38edb0be72955e9777821f3aa494a830147eba53fdf",
+    "images/case-16-before.png": "c4d59a08948ae32b55ccede1a4cc44e69b6168bf206e7e49d54a0b287c06bb25",
+    "images/case-17-after-original.png": "6fb72c61e39b37475abc7bb3e2699f11694405debbf8b8fe16bb703da2b3db47",
+    "images/case-17-after.png": "863b4f40b91c2b3bbcee0a729a0f716f6a076da383f37d525793440d0ad4da95",
+    "images/case-17-before-original.png": "6fb72c61e39b37475abc7bb3e2699f11694405debbf8b8fe16bb703da2b3db47",
+    "images/case-17-before.png": "1c4616e6b2d9274e8260e8bba92823519e1fa5eebeeb9484b86b7b51fe58539e",
+    "images/case-18-after-original.png": "cb0ef3be866761ec3ef012138b3e74e8f2c2c14b250959e0f9d4f5d889924ae9",
+    "images/case-18-after.png": "e61fa2f8d5925d35df58d21b9a799fe1b8d44747e3f745399627850c10ebbfdb",
+    "images/case-18-before-original.png": "cb0ef3be866761ec3ef012138b3e74e8f2c2c14b250959e0f9d4f5d889924ae9",
+    "images/case-18-before.png": "ea42235d18c648fec67c711eeab5ae7f2961dbb070e847f1e09f757997ea652c",
+    "images/case-19-after-original.png": "c4934f4dab1eb3c4358b30219dec461828bd4a1e92d5bf4569e42607907d8ca9",
+    "images/case-19-after.png": "cadcf8cb1cb6e0cb08089c7657a791bd9360401c382dc1b26311bba72b3faf54",
+    "images/case-19-before-original.png": "c4934f4dab1eb3c4358b30219dec461828bd4a1e92d5bf4569e42607907d8ca9",
+    "images/case-19-before.png": "2abba3e87bfd2dd8e400fc07621653250191252188874c0e3be77a8ca787730c",
+    "images/case-20-after-original.png": "883d8effa28a635a3add6a34af69ac343a26d97bd591fc83595f3dd837e84d2b",
+    "images/case-20-after.png": "a41fabc21743306f48c311d2ca7e362db8afa32e5af3c7d89a8985dd0f334f32",
+    "images/case-20-before-original.png": "883d8effa28a635a3add6a34af69ac343a26d97bd591fc83595f3dd837e84d2b",
+    "images/case-20-before.png": "a6cd0be2a89ff54f49d39f4be7b8e73b1591813f0befff9df93598e9f57ca8aa",
+    "images/case-21-after-original.png": "ee6314253bf88cbb13bdbd9856792231878e86d8d291f3aab04b8134e4fc31d3",
+    "images/case-21-after.png": "7a1f9efd793a6a71248e5d38e2b9c48510e9f158462444ab3ef2687534aa5707",
+    "images/case-21-before-original.png": "ee6314253bf88cbb13bdbd9856792231878e86d8d291f3aab04b8134e4fc31d3",
+    "images/case-21-before.png": "7e767a1f6ef8b245f57c24e5730d14c18c0e8a1bb71e6477dbb64ee0c204ed03",
+    "images/case-22-after-original.png": "6c4cc5b6f349a9021820e754653d79bc2d32cc2765f81733ec27e927d26e1b9c",
+    "images/case-22-after.png": "7c28c588b7e95ff08192f34ceeec237af404ae3798f899c61bba6194e2648556",
+    "images/case-22-before-original.png": "6c4cc5b6f349a9021820e754653d79bc2d32cc2765f81733ec27e927d26e1b9c",
+    "images/case-22-before.png": "b60f4a90843d5dab325a82b499b37303804527f768e0e7cd5459cf05fbe8df30",
+    "../../../index.html": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+    "../../../en/index.html": "c128cb2dee6e0baabe3a036dbfb7bc13d4b6f02a7c3067057c8d715b46d5defb"
+  },
+  "limitations": [
+    "No production avoidance changes",
+    "No region resolver yet",
+    "Specification examples are unimplemented",
+    "Per-layout adapter verification pending",
+    "No public Pages verification yet"
+  ]
+}
