@@ -1,0 +1,100 @@
+{
+  "task": "AVOID-004",
+  "build": "local-20261018-08",
+  "status": "local verified; publication and required human behavior review pending parent",
+  "hashes": {
+    "src/09a_placement.js": "c166f437491cc643523a18212ea1087482776e78520048e7d4c27dcf280877b9",
+    "index.html": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+    "en/index.html": "562172e86591ff5bea9ce58605c50b04f9e47ad566498fc4cc9d8c68b0dbcfe2"
+  },
+  "manifestSHA256": "47f4b4823744adb95be883acdb163226cd3eb34f28e402444ecaf3816e9c5efc",
+  "unitIntegration": {
+    "checks": 118,
+    "passed": true,
+    "log": "stage-test.log"
+  },
+  "compositing": {
+    "checks": 3,
+    "passed": true,
+    "log": "compositing-test-final.log"
+  },
+  "comparison": {
+    "cases": 28,
+    "pngs": 112,
+    "assets": 127,
+    "passed": true,
+    "log": "validate-local-20261018-08.log",
+    "rawNativeRerender": true,
+    "canonicalInputSourceMeasurement": true,
+    "responsiveWidths": [
+      1500,
+      390
+    ],
+    "rapidSeekFontCaseAndPlayback": true
+  },
+  "negative": {
+    "positiveClone": true,
+    "mutations": 9,
+    "passed": true,
+    "log": "negative-local-20261018-08.log"
+  },
+  "smoke": {
+    "ja": true,
+    "en": true,
+    "log": "site-smoke-local-guard-final.log"
+  },
+  "modelRegression": {
+    "checks": 17,
+    "passed": true,
+    "log": "model-regression.log"
+  },
+  "legacyRegression": {
+    "passed": [
+      "cut_mask",
+      "drawing_frames",
+      "effect_copy_fidelity"
+    ],
+    "failedIdenticallyBeforeAndAfter": "lyric_area_effects line35 expected1 actual0; later assertions not reached",
+    "log": "regression-results.json",
+    "handoff": "AVOID-017"
+  },
+  "savedProjectHistoricalFailure": "expected initial cuts0 actual1 before save body; remains AVOID-013",
+  "beforeArchive": "/workspace/work/avoid004-before",
+  "beforeCommit": "9a3d43ef22b9cedf598c0448a4ea0619cd5615f6",
+  "oldAttempts": "/workspace/work/avoid004-attempt-bundles",
+  "publicationPerformedByChild": false,
+  "humanReviewRequiredByParent": true,
+  "nextTaskStarted": false,
+  "performance": {
+    "passed": true,
+    "sourceSHA256": "c166f437491cc643523a18212ea1087482776e78520048e7d4c27dcf280877b9",
+    "allCutsAdmitted": true,
+    "browserJobsStoppedBeforeRun": true,
+    "log": "performance-final.json",
+    "results": [
+      {
+        "n": 100,
+        "cuts": 100,
+        "regions": 100,
+        "baselineP95": 63.60000000055879,
+        "finalP95": 81.20000000018626,
+        "planningFactor": 1.276729559740139,
+        "renderBaselineP95": 0.20000000018626451,
+        "renderStagedP95": 0.2999999998137355,
+        "additionalRenderMs": 0.09999999962747097
+      },
+      {
+        "n": 1000,
+        "cuts": 1000,
+        "regions": 1000,
+        "baselineP95": 507.80000000074506,
+        "finalP95": 661.7000000011176,
+        "planningFactor": 1.303072075620612,
+        "renderBaselineP95": 0.20000000018626451,
+        "renderStagedP95": 0.39999999944120646,
+        "additionalRenderMs": 0.19999999925494194
+      }
+    ]
+  },
+  "gitRemoteTrackingObservation": "origin/work is absent locally; child did not fetch, push or claim remote-ref verification. Parent owns authorized publication."
+}

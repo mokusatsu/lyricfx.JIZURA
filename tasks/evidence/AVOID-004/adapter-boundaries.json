@@ -1,0 +1,43 @@
+{
+  "task": "AVOID-004",
+  "sourceSHA256": "c166f437491cc643523a18212ea1087482776e78520048e7d4c27dcf280877b9",
+  "normalProductEnabled": false,
+  "admittedLayouts": [
+    "center",
+    "tile"
+  ],
+  "roles": {
+    "default": "primary",
+    "tile.repetitions": "tiledAux",
+    "tile.knockPlate": "primary",
+    "tile.main": "primary"
+  },
+  "remaining184RegistrationAdapters": "AVOID-005 through AVOID-012; not declared complete",
+  "maskImplementation": "AVOID-018, not implemented",
+  "boundaryAPIs": [
+    "finalizePlacementPlan",
+    "finalizePlacementPlanAsync",
+    "itemGeometry",
+    "pieceGeometry",
+    "affine",
+    "inverse",
+    "record",
+    "replay",
+    "withDrawRole"
+  ],
+  "originalStageDimensions": true,
+  "newAreaClip": false,
+  "frameCeilings": {
+    "events": 4096,
+    "glyphs": 16384
+  },
+  "additionalBufferCeiling": {
+    "contexts": 1,
+    "pixels": 1,
+    "perGlyphStageBuffers": 0
+  },
+  "clockStepMaxSeconds": 1,
+  "wipeTransitionMaxSeconds": 0.6,
+  "planWideIndividualFXStyle": "unsupported",
+  "glow": "explicit 0 only"
+}

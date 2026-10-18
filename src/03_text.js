@@ -108,6 +108,7 @@ function drawItemLayered(env, it) {
 
 /* draw one text item. env = {ctx, pass, passColor, scale}. Returns design-space bbox + glyph boxes. */
 J.drawItem = (env, it) => {
+  if (env.placementRecorder) return env.placementRecorder.item(it);
   const ctx = env.ctx;
   const ghostPass = env.pass !== 'main';
   if (ghostPass && it.ghost === false) return null;

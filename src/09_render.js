@@ -63,6 +63,8 @@ class Renderer {
 
   /* main entry: draw frame at time t into ctx (canvas px = design * scale) */
   frame(ctx, plan, t, opt = {}) {
+    opt = { ...opt, avoidanceRealTime: opt.avoidanceRealTime ?? t, placementBudget: opt.placementBudget || {events:0,glyphs:0} };
+    if (plan.placementFinalization) J.placement.validateFinal(plan);
     const hidden=plan.layerVisibility || {};
     opt={...opt,noForeground:opt.noForeground || hidden.foreground===false,noMedia:opt.noMedia || hidden.media===false,noLyrics:opt.noLyrics || hidden.lyrics===false,noHud:opt.noHud || hidden.lyrics===false,noPost:opt.noPost || hidden.lyrics===false};
     const W = plan.W, H = plan.H, scale = opt.scale || 1;
@@ -215,11 +217,11 @@ class Renderer {
         const lt = tp - cut.start, motion = cut.motionScale ?? 1;
         const envOptions = {
           pass: P.pass, passColor: P.pass === 'A' ? csc.ghostA : P.pass === 'B' ? csc.ghostB : null,
-          t: tp, lt, ltb: lt + P.lag, step: Math.floor(tp / clock + 1e-6), scale, allowFilter, energy, beat: beatInfo, beatPulse,
+          t: tp, realTime: opt.avoidanceRealTime, placementObservation: opt.placementObservation, placementBudget: opt.placementBudget, lt, ltb: lt + P.lag, step: Math.floor(tp / clock + 1e-6), scale, allowFilter, energy, beat: beatInfo, beatPulse,
         };
         let X = target, env = this.makeEnv(X, plan, cut, csc, envOptions), cam = null;
         const CD = J.CAMERA[cut.cam] || J.CAMERA.push;
-        try { cam = CD.get(env, cut.camP || {}); } catch (e) { cam = null; }
+        try { cam = CD.get(env, cut.camP || {}); } catch (e) { if (cut.fullStagePlacement) throw e; cam = null; }
         cam = cam || {};
         // Reuse one canvas for a cut's focus blur. A later cut's camera must not
         // blur earlier retained lyrics, and each glyph should only draw once.
@@ -234,7 +236,7 @@ class Renderer {
         }
         const blend = P.pass !== 'main' && J.lum(csc.bg) > .55 ? 'multiply' : 'source-over';
         X.save();
-        const area = cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
+        const area = cut.fullStagePlacement ? null : cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
         const contentW = env.W, contentH = env.H;
         if (area) {
           X.translate(areaX + contentW / 2, areaY + contentH / 2);
@@ -250,7 +252,7 @@ class Renderer {
         if (X === target) X.globalCompositeOperation = blend;
         // Content units: the display area, moved by the camera; the source mask follows them.
         const contentMatrix = sourceMask ? X.getTransform() : null;
-        this.drawCut(env);
+        if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
         X.restore();
         if (sourceMask) J.applyMaskToCanvas(X.canvas, mask, contentMatrix, contentW, contentH, { cut, t: tp, plan });
         if (X !== target) {
@@ -326,7 +328,7 @@ class Renderer {
   }
 
   makeEnv(ctx, plan, cut, sc, o) {
-    const area = cut && cut.area && !o.bgOnly && !o.fullFrame ? cut.area : null;
+    const area = cut && !cut.fullStagePlacement && cut.area && !o.bgOnly && !o.fullFrame ? cut.area : null;
     const W = area ? plan.W * area.w : plan.W, H = area ? plan.H * area.h : plan.H;
     const env = Object.assign({ ctx, W, H, sc: cut?.palette || sc, st: {...(cut?.effectStyle || plan.style),...(cut?.fonts ? {fonts:cut.fonts} : {})}, fx: cut?.effectFx || plan.fx, fps: plan.fps, cut, plan }, o);
     if (cut && cut.motionScale < 1) env.fx = Object.assign({}, env.fx, { motion: env.fx.motion * cut.motionScale });
@@ -346,6 +348,7 @@ class Renderer {
     } else { env.pIn = 1; env.pOut = 0; }
     const ghost = env.pass !== 'main';
     const colOf = (c, g) => (ghost ? (g === false ? null : env.passColor) : c);
+    env.withDrawRole = (role, owner, fn) => J.placement ? J.placement.withRole(env, role, owner, fn) : fn();
     env.draw = it => J.drawItem(env, it);
     env.rect = (x, y, w, h, c, a = 1, g = true) => { const col = colOf(c, g); if (!col || a <= 0) return; ctx.globalAlpha = a; ctx.fillStyle = col; ctx.fillRect(x, y, w, h); ctx.globalAlpha = 1; };
     env.line = (pts, c, lw = 1, a = 1, g = true) => {
@@ -409,7 +412,7 @@ class Renderer {
     const decor = cut.decor || [];
     for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { D.draw(env, null, d); } catch (e) { console.warn(e); } }
     let bb = null;
-    try { if (!cut.effectsOnly) bb = L.render(env); } catch (e) { console.warn('layout', cut.layout, e); }
+    try { if (!cut.effectsOnly) bb = L.render(env); } catch (e) { if (env.placementRecording) throw e; console.warn('layout', cut.layout, e); }
     for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { D.draw(env, bb, d); } catch (e) { console.warn(e); } }
     return bb;
   }

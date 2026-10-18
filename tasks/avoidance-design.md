@@ -349,3 +349,19 @@ adapter担当005〜011がunit所有と変換を確定し、018が補助を実装
 - source provenanceは任意の小さい有限JSON objectとする（4096 UTF-8 bytes・深さ16まで）。意味のあるキーは推定せずdeep cloneする。Blob/Date/typed-array/関数/非有限値/循環を入れず、モデルや素材の実体を保存しない。内部固定positionAt境界だけ設け、補間を実装しない。
 - merge/replace、pack/unpack/import、保存UIのJSON clone前で同じvalidatorを通す。不正な保存済み回避データは元localStorageとpending素材を保持し、明示的な有効projectへの置換までautosave/cleanupを止める。新規作成・有効importで再開する。
 - 003の確認図は制御データの実resolver結果であり、歌詞の安全軌道ではない。旧版はresolver不存在を観測として表示。全トラックUI・adapter・本格永続化/Undoは後続担当を維持する。
+
+## AVOID-004 staged foundation contract (2026-10-18)
+
+- [Internal API and adapter boundaries](../dev/avoidance/STAGE-API.md) define detached
+  final plans, serialized stage trajectories, original-stage planning/rendering,
+  ownership/event order, finite affine/ink validation and font revisions.
+- Staged scope is real center/tile + bounded camera motion. Ordinary generation
+  keeps the legacy path. Unsupported adapters/parameters/FX are diagnosed and never
+  presented as successful avoidance; auxiliary masking remains018.
+- Full-stage event replay retains order/blend/opacity/frontmost destination.
+  Tile repetitions alone are classified tiledAux; its main lyric/knock plate remain
+  primary. Unclassified lyric units stay primary. Broad184-unit adapter coverage is
+  still pending005–012 and is not inferred from these representative fixtures.
+- Final plan objects are detached/frozen; font invalidation requires refinalization
+  from a composed source plan. Unknown serialized lineage rejects to avoid losing
+  old locks. Frame recursion shares real avoidance time while preserving motion time.
