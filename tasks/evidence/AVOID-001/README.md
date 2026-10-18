@@ -15,6 +15,7 @@
 | [auxiliary-role-review.md](auxiliary-role-review.md) | 20IDの追加静的レビュー。タイリング除外の誤適用を防ぐ分類根拠。 |
 | [precommit-validation.json](precommit-validation.json) | コミット・プッシュの追加依頼を記録した後、ステージ前に実行した文書整合確認。 |
 | [registration-validation.json](registration-validation.json) | タスク状態・依存・リンク・ソース参照・スキル原本・アプリ無変更の最終機械検証。新機能の実装試験ではない。 |
+| [pages-review-plan-validation.json](pages-review-plan-validation.json) | workをPages公開元とする利用者指定を反映した後の文書整合確認。17段階・51確認項目と依存関係、リンク、アプリ無変更を確認。各段階の公開・人間確認はまだ未実施。 |
 
 ## 実行環境と再現
 
@@ -35,7 +36,7 @@ NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modul
 python tasks/evidence/AVOID-001/validate-registration.py
 ~~~
 
-このvalidatorのHEAD/差分の検査は今回の計画登録時点専用。後続実装が始まった後は、基準変更を説明せず合格させるために条件を弱めない。リポジトリ外の成果物コピーでは `--repo` に実際のリポジトリを指定する。
+このvalidatorのHEAD/差分の検査は最初の計画登録時点専用で、コミット後やPages運用の追記後にはそのまま合格するものではない。古い成功ログは当時の証拠として保持する。基準変更を説明せず合格させるために条件を弱めない。Pages運用追記後の文書確認は上記の専用記録を参照する。リポジトリ外の成果物コピーでは `--repo` に実際のリポジトリを指定する。
 
 ## 未確認事項の扱い
 
