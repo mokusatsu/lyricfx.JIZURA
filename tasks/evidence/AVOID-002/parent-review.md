@@ -67,3 +67,7 @@ R14の修正を親がレビューし承認した。公開modeは既存proxyをCh
 コミット前チェック: コード・文書の差分チェック成功。保存した旧テストstdoutの末尾空白は原記録として維持。本番src/日英HTMLは開始HEADと一致。成果物commit時の作業ツリーはclean、公開検証記録とR14修正を追記commitして引き継ぐ。
 
 利用者が環境設定を編集したとの連絡後、13:38:22 UTCに再確認した。environment_statusはcurrent=true、spec/observed revision=12、restricted/enforced、custom allowed_hosts=[]、mokusatsu.github.ioはeffective allowlistにも不在。通常proxy経由HTTPSも403/exit22のまま。保存された設定の内容を推測せず、接続中環境に未反映と判定した。更新後commit `743d0ff` のPages run [39132326962](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39132326962) はsuccess。
+
+## 2026-10-19 再開後の完了判定
+
+[再開検証](resumed-verification.json)で実Pagesの全HTTP/hash/browser条件と日英smokeが成功した。親の公開画面目視・ライブ操作も成功。既存R01〜R14の承認を維持し、AVOID-002を完了と判定する。本番ソース・比較bundle・旧assertionは変更していない。保存試験は依然初期cut数不一致で保存本体未到達。人間動作確認不要の委任判断は公開検証の成功に基づいて維持し、必須検証の省略には使用していない。

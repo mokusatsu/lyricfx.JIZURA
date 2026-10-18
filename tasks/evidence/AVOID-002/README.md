@@ -52,3 +52,7 @@ Scheduled resume check (2026-10-18 23:12 JST):
 `scheduled-recheck-https.log` record active revision 20 with the Pages host absent
 and a proxy HTTP 403. Public validator/smoke were not rerun after that failed
 prerequisite; no dependent implementation was started.
+
+## 2026-10-19 再開・公開成功
+
+[再開検証の要約](resumed-verification.json)、[実行中環境](resumed-environment.json)、[通常HTTPS](resumed-https.log)、[全画像/manifest/HTMLの公開validator](resumed-public-validation.log)、[日英本体smoke](resumed-public-site-smoke.log)、[親の公開操作](resumed-parent-ui.json)。既存の失敗ログは履歴として保持する。

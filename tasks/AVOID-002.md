@@ -1,9 +1,11 @@
 # AVOID-002 仕様契約・回帰基準・検証オラクルの確定
 
-- 状態: 実環境検証待ち
+- 状態: 完了
 - 段階: 基盤
 - 技術依存: [AVOID-001](AVOID-001.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
+
+現在の最終判定: 2026-10-19 JSTに公開検証を完了。末尾の再開記録を参照。以下の過去の未確認/停止記録は履歴として保持する。
 
 ## 開始前確認
 
@@ -50,8 +52,8 @@
 
 ## 完了条件
 
-- [ ] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
-- [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
+- [x] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
+- [x] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
 - [x] 親のコード・テスト結果レビューを記録し、人間の動作確認が必要と親が判断した場合は実URL・操作・期待結果を提示し必須項目OKと最終動作判定を保存した。不要の場合は親が根拠を記録した。公開未検証や必須試験の未達を省略判定で成功にしない。
 
 - [x] 共通のキャプチャ/比較HTML生成・検証手順を再実行でき、画像欠損・版/条件不一致・H-ID未対応を検出できる。後続タスク用のschema/コマンドを文書化した。
@@ -151,3 +153,16 @@ Pages公開未検証、親レビュー未完、必要と判定された人間動
 開始HEADは `a851941e6a7a946e973349ca7d2c3375d9d9866b`、branch work、作業ツリーclean。GitHubのworkも同じHEADと確認した。environment_statusはcurrent=true、spec/observed revision=20、restricted/enforced。前回12から設定番号は更新されたが、custom allowed_hosts=[]、mokusatsu.github.ioはeffective allowlistに含まれない。[環境記録](evidence/AVOID-002/scheduled-recheck-environment.json)。
 
 継承proxyと通常CA/TLS検証を維持してHTTPSを再確認し、HTTP403・curl exit22。[接続ログ](evidence/AVOID-002/scheduled-recheck-https.log)。公開validatorと公開smokeの前提が成立しないため、本回はそれらを未実施とし、以前のローカル成功で代替しない。AVOID-002は実環境検証待ち、AVOID-003以降は未着手を維持。設定変更の保存内容と実行環境に有効な許可設定を区別し、必要ホストを含む設定の適用待ちとして報告する。本体・比較bundle・旧保存試験の既知失敗は変更していない。
+
+### 再開・公開検証完了（2026-10-19 JST）
+
+開始時のローカルworkは `b7c23bff8a04019b9b90357b433927995834ae62`、clean。GitHubのworkは `1f0fcf15131bc9eb02ce8b84b37b665e3a27c4f2` と確認し、fetch/fast-forward後もclean。祖先とリポジトリにAGENTS.mdなし。指定文書と親レビューを確認し、既存変更・公開済み06 bundleを保持した。
+
+今回の実行環境は前回とは別で、environment_statusはcurrent=true、spec/observed revision=2、unrestricted/unknown、running/connected。保存済み設定ドラフトは未確認で、unknownをenforcedと扱わない。[環境応答](evidence/AVOID-002/resumed-environment.json)と[起動時policy](evidence/AVOID-002/resumed-network-policy.json)を保存した。通常sandboxではproxy接続がexit7/HTTP000、実行ツールのnetwork権限付きでは同じ通常HTTPSがHTTP200/exit0。Chromiumは既存NSS DBの書込アクセスも必要だった。所定proxy・CA・TLS検証を維持し、迂回・CA追加・TLS無効化はしていない。
+
+- [公開validator](evidence/AVOID-002/resumed-public-validation.log): 指定コマンド成功。22ケース、44UI PNG＋44原寸PNG、全asset・manifest・日英HTMLのHTTP200/hash一致、1500/390px・比較操作・全リンク・サンプル実起動を確認。manifest SHAは指定の `cfa2d79603268193dc181442c0026816e42d624e3aa639a0463edeb20cdea30a` と一致。
+- [公開本体smoke](evidence/AVOID-002/resumed-public-site-smoke.log): 日英ともHTTP/hash・初期化・2行生成・実描画成功。Node24、既存lockfileのfrozen install、JIZURA_BROWSER=/usr/bin/chromiumを使用。
+- [親の追加公開操作](evidence/AVOID-002/resumed-parent-ui.json): 9:16実描画、位置選択、tile、font loaded、pageerrorなし。1500/390pxの[公開画面](evidence/AVOID-002/resumed-public-desktop.png)も目視確認。
+- Pages [run 39135011698](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39135011698) は検証対象HEADでsuccess。デプロイ成功と実URL検証を別証拠として記録した。
+
+**親の最終判定: 完了。** 従来の親コード/テストレビューに加え、残っていた公開条件を満たした。人間動作確認不要の既存判断を維持する（本番表示/編集機能は無変更、親の自動試験・実操作・目視で判定可能）。保存試験は初期cut数0/1不一致で保存本体未到達のまま、成功扱いせずAVOID-013へ引継ぎ。184ID対応表は全adapter実装/視覚検証完了を意味しない。詳細は[再開証拠](evidence/AVOID-002/resumed-verification.json)。一覧・版別レビュー・公開記録を同期し、AVOID-003への依存条件を満たした。

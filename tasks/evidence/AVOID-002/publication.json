@@ -12,27 +12,27 @@
   },
   "build": "local-20261018-06",
   "manifestSHA256": "cfa2d79603268193dc181442c0026816e42d624e3aa639a0463edeb20cdea30a",
-  "publicPageVerified": false,
+  "publicPageVerified": true,
   "limitations": [
-    "GitHub workflow success does not establish HTTP/hash/browser checks",
-    "Inherited proxy reports CONNECT 403 for mokusatsu.github.io",
-    "Initial direct-DNS APIRequest failure corrected; actual browser transport still denied by environment policy"
+    "No production circular avoidance implementation yet; all adapters remain future work",
+    "Historical save-test initial-cut assertion failure remains assigned to AVOID-013",
+    "environment_status network state is unknown; successful actual HTTPS/browser checks are separate evidence"
   ],
   "humanBehaviorReview": {
     "required": false,
     "reason": "No production behavior change; parent reviewed code, tests and live local UI"
   },
   "publicValidation": {
-    "exitCode": 1,
-    "result": "ERR_TUNNEL_CONNECTION_FAILED",
-    "log": "public-validation-proxy.log",
-    "transport": "Chromium with inherited proxy and CA; browser fetch raw bytes",
+    "exitCode": 0,
+    "result": "passed; 22 cases / 88 PNGs; all manifest assets and ja/en HTML hashes; browser controls and sample startup",
+    "log": "resumed-public-validation.log",
+    "transport": "Chromium with inherited proxy/CA/TLS; approved network and existing NSS DB access",
     "validatorSHA256": "45373dfe3450bdd2783edfe4edfaeac5be011b70333b48f6c3afb72a48058770"
   },
   "publicSiteSmoke": {
-    "exitCode": 1,
-    "result": "ERR_TUNNEL_CONNECTION_FAILED",
-    "log": "public-site-smoke.log"
+    "exitCode": 0,
+    "result": "ja/en passed HTTP/hash/initialization/lyric generation/canvas rendering",
+    "log": "resumed-public-site-smoke.log"
   },
   "followupCommit": "743d0ffbd9864f5fa03fd3f8fc9b2f6e3e39c7d2",
   "followupDeployment": {
@@ -70,5 +70,36 @@
     "publicValidation": "Not run: prerequisite HTTPS request through inherited proxy was denied. No local substitute.",
     "nextTask": "AVOID-003 remains unstarted",
     "HTTPSLog": "scheduled-recheck-https.log"
+  },
+  "historicalPublicValidation": {
+    "exitCode": 1,
+    "result": "ERR_TUNNEL_CONNECTION_FAILED",
+    "log": "public-validation-proxy.log",
+    "transport": "Chromium with inherited proxy and CA; browser fetch raw bytes",
+    "validatorSHA256": "45373dfe3450bdd2783edfe4edfaeac5be011b70333b48f6c3afb72a48058770"
+  },
+  "historicalPublicSiteSmoke": {
+    "exitCode": 1,
+    "result": "ERR_TUNNEL_CONNECTION_FAILED",
+    "log": "public-site-smoke.log"
+  },
+  "historicalLimitations": [
+    "GitHub workflow success does not establish HTTP/hash/browser checks",
+    "Inherited proxy reports CONNECT 403 for mokusatsu.github.io",
+    "Initial direct-DNS APIRequest failure corrected; actual browser transport still denied by environment policy"
+  ],
+  "resumedVerification": {
+    "checkedUTC": "2026-10-18T20:13:54.338519+00:00",
+    "checkedJST": "2026-10-19T05:13:54.338519+09:00",
+    "verifiedHEAD": "1f0fcf15131bc9eb02ce8b84b37b665e3a27c4f2",
+    "deployment": {
+      "id": 39135011698,
+      "sha": "1f0fcf15131bc9eb02ce8b84b37b665e3a27c4f2",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39135011698"
+    },
+    "evidence": "resumed-verification.json",
+    "parentDecision": "complete; human behavior check unnecessary under delegated policy"
   }
 }
