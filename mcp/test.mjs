@@ -118,6 +118,8 @@ try {
   await call("generate", { session, seed: 42 });
   s = json(await call("project_get", { session }));
   assert.ok(s.cuts.foreground.length);
+  let lyricIndex = s.cuts.lyrics.findIndex(c => c.line >= 0 && Number.isInteger(c.part));
+  assert.ok(lyricIndex >= 0);
   await call("cut_effect", {
     session,
     layer: "foreground",
@@ -146,11 +148,11 @@ try {
     layer: "foreground",
     starts: [{ index: 1, frame: 20 }],
   });
-  await call("cut_randomize", { session, layer: "lyrics", index: 0, seed: 6 });
+  await call("cut_randomize", { session, layer: "lyrics", index: lyricIndex, seed: 6 });
   await call("cut_effect", {
     session,
     layer: "lyrics",
-    index: 0,
+    index: lyricIndex,
     group: "layout",
     seed: 7,
   });
@@ -159,7 +161,7 @@ try {
     arguments: {
       session,
       layer: "lyrics",
-      index: 0,
+      index: lyricIndex,
       group: "layout",
       id: "invented",
     },
@@ -230,10 +232,12 @@ try {
   const disallowed = Object.keys(catalog.registries.layout).find(
     (k) => !catalog.candidates.lyrics.layout.includes(k),
   );
+  s = json(await call("project_get", { session }));
+  lyricIndex = s.cuts.lyrics.findIndex(c => c.line >= 0 && Number.isInteger(c.part));
   await call("cut_update", {
     session,
     layer: "lyrics",
-    index: 0,
+    index: lyricIndex,
     patch: { details: { layout: disallowed } },
   });
   assert.ok(json(await call("project_audit", { session })).errors.length);
@@ -272,7 +276,7 @@ try {
     starts: [{ index: 0, frame: 6 }],
   });
   s = json(await call("project_get", { session: reopened }));
-  assert.equal(s.cuts.foreground[0].start, s.cuts.lyrics[0].start);
+  assert.equal(s.cuts.foreground[0].start, s.cuts.lyrics.find(c => c.line === 0 && c.part === 0).start);
   await call("project_undo", { session: reopened });
   await call("project_undo", { session: reopened });
   await call("cut_insert", {

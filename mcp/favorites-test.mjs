@@ -18,8 +18,9 @@ try{
  assert.equal(a.content[1].type,'image');assert.notEqual(a.content[1].data,b.content[1].data);await writeFile(path.join(output,'preview.png'),Buffer.from(a.content[1].data,'base64'));
  assert.deepEqual(json(await call('project_get',{session})),before);
  await call('project_edit',{session,changes:[{path:['lyrics'],value:'Target|ruby'},{path:['durationOverride'],value:3}]});
- await call('favorite_apply',{session,id:saved.id,layer:'lyrics',index:0});assert.ok(json(await call('project_get',{session})).cuts.lyrics[0].drawing);
- const targetPreview=await call('favorite_preview',{session,id:saved.id,layer:'lyrics',index:0,time:.4});assert.equal(targetPreview.content[1].type,'image');
+ const targetState=json(await call('project_get',{session})), index=targetState.cuts.lyrics.findIndex(c=>c.line>=0&&Number.isInteger(c.part));assert.ok(index>=0);
+ await call('favorite_apply',{session,id:saved.id,layer:'lyrics',index});assert.ok(json(await call('project_get',{session})).cuts.lyrics[index].drawing);
+ const targetPreview=await call('favorite_preview',{session,id:saved.id,layer:'lyrics',index,time:.4});assert.equal(targetPreview.content[1].type,'image');
  const media={format:'jizura-cut-effects',version:1,kind:'media',native:{technique:'none'},details:{drawing:{version:1,mode:'replace',nodes:[{type:'source',x:.5,y:.5,w:.9,h:.9,rotation:{from:-15,to:15}}]}}};
  await call('favorite_save',{session,name:'Media spin',payload:media});const m=await call('favorite_preview',{session,payload:media,time:1});assert.equal(m.content[1].type,'image');
  const {id:job}=json(await call('export_start',{session,kind:'favorites',filename:'agent.jizuraichifav'}));let result;

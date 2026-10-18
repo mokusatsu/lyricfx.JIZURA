@@ -45,7 +45,7 @@ J.favoriteAPI={
       }
       p.layerVisibility={...p.layerVisibility,[layer]:true};
       const build=()=>{const plan=J.plan(p);plan.media=J.planMedia(p,plan,null,'media');plan.foreground=J.planMedia(p,plan,null,'foreground');return plan;};
-      let plan=build();const find=()=>layer==='lyrics'?plan.cuts.filter(c=>c.line>=0)[target?.index||0]:plan[layer].cuts[target?.index||0];
+      let plan=build();const find=()=>layer==='lyrics'?(target ? plan.cuts[target.index] : plan.cuts.find(c=>J.lyricCutKind(c)==='lyric')):plan[layer].cuts[target?.index||0];
       const original=find();if(!original)throw Error('Target cut not found');J.pasteCutEffects(p,plan,layer,original,payload);plan=build();const cut=find();
       const duration=Math.min(cut.end,plan.duration)-cut.start;if(time>=duration)throw Error('time must be less than cut duration '+duration);
       await J.ensureFonts((cut.text||'')+J.drawingText(plan),J.fontsOfPlan(plan));await document.fonts.ready;await J.prepareMediaFrame(plan,cut.start+time);

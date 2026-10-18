@@ -10,6 +10,7 @@
     inspected = new Set();
   const cuts = (layer) =>
     layer === "lyrics" ? S.plan.cuts : S.plan[layer]?.cuts || [];
+  const editableCut = (layer, index) => J.requireEditableCut(cuts(layer)[index], layer);
   function candidates() {
     const result = { styles: [], lyrics: {}, media: [] };
     for (const id of J.themeIds(S.project)) {
@@ -29,10 +30,14 @@
       c = candidates();
     if (!J.themeIds(S.project).length)
       errors.push("Select at least one theme.");
-    const check = (group, key, path, media = false) => {
+    const check = (group, key, path, media = false, structural = []) => {
       if (!key || ["none", "cut", "still", "auto"].includes(key)) return;
       const pool = media ? c.media : c.lyrics[group];
-      if (pool && !pool.includes(key))
+      if (!media && !J.registry(group)?.[key]) {
+        errors.push(`${path}: unknown ${group} effect ${key}`);
+        return;
+      }
+      if (pool && !pool.includes(key) && !structural.includes(key))
         errors.push(`${path}: ${key} is outside selected themes`);
     };
     if (c.styles.length && !c.styles.includes(S.project.style))
@@ -52,7 +57,7 @@
             "cam",
             "trans",
           ])
-            check(g, cut[g], `${layer}/${i}/${g}`);
+            check(g, cut[g], `${layer}/${i}/${g}`, false, J.structuralCutEffects(J.lyricCutKind(cut))[g]);
         } else if (layer !== "lyrics") {
           if (cut.itemId && !J.mediaSourceAvailable(cut))
             errors.push(`${layer}/${i}: missing media ${cut.itemId}`);
@@ -218,18 +223,20 @@
     favoriteList(){return clone(S.project.effectFavorites||[]);},
     favoriteValidate({payload}){return J.favoriteAPI.validate(payload);},
     favoriteSave({name,payload,id,layer,index}){
-      if(!payload){const cut=cuts(layer)[index];if(!cut)throw Error('Cut not found');payload=J.cutEffectsPayload(cut,layer,S.plan);}
+      if(!payload){const cut=editableCut(layer,index);payload=J.cutEffectsPayload(cut,layer,S.plan);}
       let result;mutate(()=>{result=J.favoriteAPI.save(S.project,{name,payload,id});});return {revision,favorite:result};
     },
     favoriteApply({id,layer,index}){
-      const favorite=S.project.effectFavorites?.find(f=>f.id===id),cut=cuts(layer)[index];
-      if(!favorite||!cut)throw Error('Favorite or cut not found');
+      const favorite=S.project.effectFavorites?.find(f=>f.id===id),cut=editableCut(layer,index);
+      if(!favorite)throw Error('Favorite not found');
       return mutate(()=>J.pasteCutEffects(S.project,S.plan,layer,cut,J.favoriteAPI.validate(favorite.payload)));
     },
     favoriteDelete({id}){return mutate(()=>{const i=S.project.effectFavorites?.findIndex(f=>f.id===id);if(i==null||i<0)throw Error('Favorite not found');S.project.effectFavorites.splice(i,1);});},
     async favoritePreview({id,payload,layer,index,time,width}){
       if(!payload)payload=S.project.effectFavorites?.find(f=>f.id===id)?.payload;
-      if(!payload)throw Error('Favorite not found');A.pause();
+      if(!payload)throw Error('Favorite not found');
+      if(layer)editableCut(layer,index);
+      A.pause();
       try{return await J.favoriteAPI.preview({payload,project:S.project,target:layer?{layer,index}:null,time,width});}
       finally{J.syncMediaPreview(S.plan,S.t,false);S.need=true;}
     },
@@ -288,8 +295,7 @@
       });
     },
     remove({ layer, index }) {
-      const c = cuts(layer)[index];
-      if (!c) throw Error("Cut not found");
+      const c = editableCut(layer, index);
       return mutate(() => {
         if (layer === "lyrics") {
           A.removeLyricCut(c.line, c.part);
@@ -297,9 +303,7 @@
       });
     },
     effect({ layer, index, group, id, seed = 1 }) {
-      const c = cuts(layer)[index];
-      if (!c) throw Error("Cut not found");
-      if (c.blank) throw Error("Blank cuts have no effects");
+      const c = editableCut(layer, index);
       const groups =
         layer === "lyrics"
           ? [
@@ -386,8 +390,7 @@
       });
     },
     randomize({ layer, index, seed = 1, disableCurrent = false }) {
-      const c = cuts(layer)[index];
-      if (!c) throw Error("Cut not found");
+      const c = editableCut(layer, index);
       const pools = candidates(),
         rng = J.rng(seed);
       if (!J.themeIds(S.project).length) throw Error("Set themes first");
@@ -444,9 +447,8 @@
       });
     },
     copy({ sourceLayer, sourceIndex, layer, index }) {
-      const source = cuts(sourceLayer)[sourceIndex],
-        target = cuts(layer)[index];
-      if (!source || !target) throw Error("Cut not found");
+      const source = editableCut(sourceLayer, sourceIndex),
+        target = editableCut(layer, index);
       return mutate(() =>
         J.pasteCutEffects(
           S.project,
@@ -590,12 +592,7 @@
     },
     cut({ layer, index, patch: values }) {
       safeJSON(values);
-      const cut = cuts(layer)[index];
-      if (!cut) throw Error("Cut not found");
-      if (cut.blank)
-        throw Error(
-          "Blank cuts support timing/deletion; insert an effects-only lyric to animate without text",
-        );
+      const cut = editableCut(layer, index);
       return mutate(() => {
         const map =
           layer === "lyrics"
@@ -606,17 +603,15 @@
       });
     },
     timing({ layer, starts }) {
+      const original = cuts(layer).slice();
+      for (const entry of starts) J.requireEditableCut(original[entry.index], layer);
       return mutate(() => {
-        const original = cuts(layer).slice();
         for (const entry of starts) {
           const c = original[entry.index];
-          if (!c) throw Error("Cut not found");
           const t = entry.frame / S.project.fps,
             ref =
               layer === "lyrics"
-                ? c.blank
-                  ? `l:blank:${c.blankId}`
-                  : `l:${c.line}:${c.part}`
+                ? `l:${c.line}:${c.part}`
                 : `${layer === "foreground" ? "f" : "m"}:${c.index}`,
             limits = A.boundaryGroupLimits(ref);
           if (!limits || t < limits.min - 0.001 || t > limits.max + 0.001)
