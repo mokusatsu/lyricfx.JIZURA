@@ -59,7 +59,7 @@
 - 開始時: branch `work`、HEAD `3c79480`、`git status --short` は `?? tasks/` のみ。
 - 対象は `tasks/` の詳細設計、一覧、19件のタスク記録（後続実装17件を含む）、解析証拠。アプリ本体・既存テスト・生成HTMLは変更しない。
 - リモート `origin` は `mokusatsu/lyricfx.JIZURA`。開始時の `git ls-remote --heads origin work` は該当なし。通常のpushで `work` を作成し、force pushは行わない。
-- この追記を含む `[AVOID-001] register circular avoidance implementation plan` が計画成果物の登録コミット。IDは `git log -1 --format=%H -- tasks/task-list.md` で取得できる。スキル導入コミット `3c79480` も同じブランチの履歴に含む。
+- この追記を含む `[AVOID-001] register circular avoidance implementation plan` が計画成果物の登録コミット `d45fac3dd9063123cb35e055933024802dc9221f`。スキル導入コミット `3c79480` も同じブランチの履歴に含む。
 - [コミット前の再検証](evidence/AVOID-001/precommit-validation.json)を保存。ステージ済み差分の形式・対象範囲を確認してからコミットし、push後にリモートHEADとローカルHEADの一致、作業ツリーの状態を確認する。
 - 後続実装17件の状態は未着手のまま。コミット依頼を仕様の最終承認や実装開始と解釈しない。
 
@@ -72,3 +72,13 @@
 - Pages設定APIの読み取りはForbiddenで未確認。work公開元は利用者報告を根拠とする。既存verify workflowは検証のみであり、work pushによるPages更新と同一視しない。
 - 今回は文書の計画更新のみ。公開確認ページの実装、アプリ変更、Pages設定変更、各実装段階の人間確認は未実施。文書は既存の依頼に従ってworkへコミット・プッシュする。
 - 文書整合の確認結果は[Pages運用計画の検証記録](evidence/AVOID-001/pages-review-plan-validation.json)に保存する。以前の611項目のprecommit-validationは当時のスナップショットとして保持する。
+
+## 2026-10-18 追加依頼：変更前後のキャプチャと比較HTML
+
+- 利用者は「人間確認用に確認対象のキャプチャ画像を準備し、変更前後の比較を視覚確認するためのHTMLを生成すること」と指定した。
+- この更新の開始: branch work、HEAD `18a5a5b6e51fcc42f088937a6c5c752b59583a78`、作業ツリーclean。
+- [比較画像・HTML契約](visual-review-comparison.md)を追加し、全17段階の変更範囲・完了条件・検証方法と51確認項目へ撮影対象を反映した。共通生成手順は002、個別画像/比較ページは各タスクで作る。既存ID・依存・未着手状態を維持する。
+- 着手時の版と同じ入力・seed・時刻・寸法・フォントを固定し、各H-IDから版付き比較HTMLへ辿れる計画にした。境界/動きの複数コマ、透明画像、UIと実出力、仕様見本と実測を区別する。017は累積比較も含める。
+- 共通Pages手順、依頼雛形、設計と一覧を同期した。画像と比較HTMLの公開一致・表示を担当エージェントが検証してから人間へ依頼する。人間にキャプチャ準備を委ねない。
+- 今回は計画文書のみ更新する。撮影/HTML生成ツール、新機能、今回仕様の実装前後画像、比較HTML、各段階のPages公開・受入は未実施。架空の変更後画像や公開成功記録を作成しない。
+- [比較成果物計画の文書検証](evidence/AVOID-001/visual-review-plan-validation.json)を今回の証拠とし、以前の検証記録・解析画像はそのまま保持する。既存のコミット/プッシュ依頼に従ってworkへ反映する。

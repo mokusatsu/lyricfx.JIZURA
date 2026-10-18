@@ -1,6 +1,6 @@
 # Task List
 
-タスク一覧の正本。詳細・完了条件・証拠は個別記録に置く。[設計と現行解析](avoidance-design.md) ／ [Pagesでの人間確認](pages-human-review.md) ／ [スキル](../.agents/skills/evidence-driven-task-management/SKILL.md)。
+タスク一覧の正本。詳細・完了条件・証拠は個別記録に置く。[設計と現行解析](avoidance-design.md) ／ [Pagesでの人間確認](pages-human-review.md) ／ [前後画像・比較HTML](visual-review-comparison.md) ／ [スキル](../.agents/skills/evidence-driven-task-management/SKILL.md)。
 
 ## 運用
 
@@ -9,6 +9,7 @@
 - 技術依存は着手条件。事業優先度は未指定であり、本順序を事業判断としない。
 - 状態・題名は一覧と個別記録を同じ変更で同期する。
 - 最終完了判定は人間。各実装段階をworkからGitHub Pagesへ公開し、反映確認後に実URL・操作・期待結果のチェックリストをこの会話で提示する。未回答・未確認は完了に含めない。
+- 各段階の担当エージェントが同条件の変更前後キャプチャと比較HTMLを生成・公開検証し、全確認項目から画像を開けるようにする。共通生成手順は002、各段階の画像と比較ページは当該タスクの必須成果物とする。
 - 人間の確認待ち中は依存する次段階へ進めず、別版で確認対象を上書きしない。共通手順・依頼雛形は上のPages運用文書を参照する。
 - このスレッドではスキル導入、解析・計画・登録と、追加依頼された成果物のコミット・プッシュを行う。後続実装を開始しない。
 

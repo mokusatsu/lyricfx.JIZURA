@@ -16,6 +16,7 @@
 | [precommit-validation.json](precommit-validation.json) | コミット・プッシュの追加依頼を記録した後、ステージ前に実行した文書整合確認。 |
 | [registration-validation.json](registration-validation.json) | タスク状態・依存・リンク・ソース参照・スキル原本・アプリ無変更の最終機械検証。新機能の実装試験ではない。 |
 | [pages-review-plan-validation.json](pages-review-plan-validation.json) | workをPages公開元とする利用者指定を反映した後の文書整合確認。17段階・51確認項目と依存関係、リンク、アプリ無変更を確認。各段階の公開・人間確認はまだ未実施。 |
+| [visual-review-plan-validation.json](visual-review-plan-validation.json) | 変更前後のキャプチャ/比較HTMLを全17段階・51項目へ計画した後の文書整合確認。撮影・比較HTML生成・公開の実行結果ではない。 |
 
 ## 実行環境と再現
 

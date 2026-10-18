@@ -19,7 +19,7 @@
 
 ## 変更範囲
 
-- 当該段階のGitHub Pages確認サンプル・確認ページ・公開manifest、確認依頼/回答記録。共通手順は[Pages人間確認運用](pages-human-review.md)。
+- 当該段階のGitHub Pages確認サンプル・変更前後のキャプチャ画像・比較HTML・公開manifest、確認依頼/回答記録。共通手順は[Pages人間確認運用](pages-human-review.md)と[比較画像・HTML契約](visual-review-comparison.md)。
 
 - src/11p_layoutsD.js、src/11w_custom_draw.js、src/11wa_custom_effects.js
 - src/03_text.js等の特殊描画境界、カスタムcomponent契約・fixture
@@ -44,6 +44,7 @@
 
 ## 完了条件
 
+- [ ] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
 - [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
 - [ ] 実URL・対象コミット・操作・期待結果を含む確認ポイントを人間へ提示し、必須項目のOKと人間の最終判定を個別記録に保存した。未回答/未確認なら完了にしない。
 
@@ -55,6 +56,7 @@
 
 ## テスト方法
 
+- 比較成果物: [共通契約](visual-review-comparison.md)に従い、全H-IDの画像対応・撮影条件・HTML表示・公開一致を検証する。画像だけで数値/時間/保存の自動試験を代替しない。
 - Unit: affine/透視面の包絡、特異行列、クリップ、カスタム文字node。
 - Integration: stock34ID、custom/drawing replace/overlay、cam/ghost/treat。
 - Regression: drawing_frames、drawing_fonts、custom_effects、effect_copy_fidelity。
@@ -65,13 +67,15 @@
 
 [共通手順](pages-human-review.md)と[依頼テンプレート](templates/pages-review-request.md)に従う。以下は実装後に用意する確認ケースの予定であり、現在は未公開・未実施。依頼時には実際のUI名・サンプル名・ケースURLへ具体化する。
 
-| 項目ID | 人間に依頼する操作 | 期待結果 |
-|---|---|---|
-| AVOID-009-H01 | 拡張D34IDの一覧でcube/flag/cylinder/dominoes等を再生する。 | 3D/affineの面と主文字が揃い、クリップ欠け・二重変換がない。 |
-| AVOID-009-H02 | wordSearch/contour/maskReveal/mosaicTiles等を見る。 | 直接Canvas描画や主文字を作るタイルも対象になり、補助反復として主文字を消していない。 |
-| AVOID-009-H03 | 確認用custom/drawProgramの対応・未対応ケースを切り替える。 | 対応ケースは主歌詞と配置が揃い、未対応は分かる形で診断される。 |
+各項目に下表の前後キャプチャを準備し、比較HTMLの同じH-IDアンカーへまとめる。操作の前後状態が複数ある場合は、各状態それぞれで実装変更前/変更後を撮る。担当エージェントが画像を生成・公開検証してから人間へ依頼する。
 
-対象コミット / build ID / Pages実URL / 反映確認日時 / 自動検証証拠 / 依頼記録 / 人間の回答: 実装・公開後に記入する。未確認を成功として補わない。
+| 項目ID | 人間に依頼する操作 | 期待結果 | 比較キャプチャ（予定） |
+|---|---|---|---|
+| AVOID-009-H01 | 拡張D34IDの一覧でcube/flag/cylinder/dominoes等を再生する。 | 3D/affineの面と主文字が揃い、クリップ欠け・二重変換がない。 | D34IDの一覧とcube/flag/cylinder/dominoesの面・主文字の連続コマ。 |
+| AVOID-009-H02 | wordSearch/contour/maskReveal/mosaicTiles等を見る。 | 直接Canvas描画や主文字を作るタイルも対象になり、補助反復として主文字を消していない。 | wordSearch/contour/maskReveal/mosaicTilesの全体像と主文字の拡大。 |
+| AVOID-009-H03 | 確認用custom/drawProgramの対応・未対応ケースを切り替える。 | 対応ケースは主歌詞と配置が揃い、未対応は分かる形で診断される。 | 同じcustom入力での描画または診断画面。未対応の画像欠損を正常描画と扱わない。 |
+
+公開コミット / 変更前・変更後の実装識別子 / build ID / 比較HTML実URL / H-IDと画像の対応・撮影条件 / 操作用Pages実URL / 公開画像の一致・表示確認日時 / 自動検証証拠 / 依頼記録 / 人間の回答: 実装・公開後に記入する。未確認を成功として補わない。
 
 ## 停止条件
 
