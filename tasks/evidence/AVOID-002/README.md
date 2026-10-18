@@ -37,3 +37,12 @@ validation evidence.
 See [commands and schema](../../../dev/avoidance/README.md). Pages checks require
 allowed external networking and are pending parent execution. A local pass is not
 a public deployment pass. Parent-review evidence belongs to `parent-review.md`.
+
+Parent final transport review: `parent-proxy-options.json` (13 checks),
+`parent-url-mode-final.log` (22 cases/88 images),
+`negative-validation-final.log` (positive control + 7 expected rejections).
+`publication.json` records the pushed artifact commit and successful Pages run.
+`public-validation.log` is the historical direct-DNS failure; the corrected
+`public-validation-proxy.log` and `public-site-smoke.log` both show proxy tunnel
+failure. Public page identity/rendering remains unverified. Parent's completion
+and human-review decision are in `parent-review.md` and the task review record.
