@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto');
+const root='/workspace/lyricfx.JIZURA',out=root+'/tasks/evidence/AVOID-004',build=process.argv[2];
+assert.match(build||'',/^local-\d{8}-\d+$/);
+const base='https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-004/'+build+'/';
+const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
+(async()=>{const browser=await require(root+'/dev/browser.cjs').launch(require(root+'/dev/avoidance/review.cjs').publicBrowserOptions(base));const observations=[],errors=[];
+try{const page=await browser.newPage({viewport:{width:1500,height:1100}});page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.request().url().startsWith('https://mokusatsu.github.io/')?r.continue():r.abort());
+await page.goto(base);await page.locator('img').last().waitFor();await page.screenshot({path:out+'/public-comparison-desktop.png'});
+await page.goto(base+'sample.html?case=dutch-direct');await page.waitForFunction(()=>window.ready||window.failure);
+async function read(label){const v=await page.evaluate(()=>({observation:window.observation,overflow:document.documentElement.scrollWidth>innerWidth,failure:window.failure,guide:[document.querySelector('#guide')?.style.left,document.querySelector('#guide')?.style.top],canvas:document.querySelector('#stage canvas').toDataURL()}));assert.equal(v.failure,undefined);assert.equal(v.overflow,false);assert.equal(v.observation.inputUnchanged,true);const hash=sha(v.canvas);delete v.canvas;observations.push({label,...v,canvasSHA256:hash});return {...v.observation,hash,guide:v.guide};}
+async function seek(t){await page.locator('#time').evaluate((e,t)=>{e.value=String(t);e.dispatchEvent(new Event('input',{bubbles:true}));},t);await page.waitForFunction(t=>window.ready&&window.observation?.time===t,t);return read('seek '+t);}
+const direct=await read('initial direct 3.1');assert.equal(direct.staged,true);assert.deepEqual(direct.realTimes,[3.1]);
+await seek(.6);const sequential=await seek(3.1);await seek(4.5);const reverse=await seek(3.1);assert.equal(sequential.hash,direct.hash);assert.equal(reverse.hash,direct.hash);
+const left=await seek(3.05);assert.deepEqual(left.guide,['50%','42%']);const right=await seek(3.2);assert.deepEqual(right.guide,['35%','50%']);assert.notDeepEqual(left.lastOffsets[0].offset,right.lastOffsets[0].offset);
+await seek(2.9);await page.click('#play');await page.waitForFunction(()=>window.observation?.time>3.2&&window.observation?.time<4.5);await page.click('#play');const played=await read('live playback across boundary');assert.ok(played.realTimes.every(t=>t===played.time));assert.ok(played.lastOffsets.every(x=>x.safety==='safe'));assert.deepEqual(played.guide,['35%','50%']);
+await page.locator('#capture').screenshot({path:out+'/public-sample-desktop.png'});
+await page.selectOption('#case','loaded-staged');await page.waitForFunction(()=>window.ready&&window.observation?.time===1.5&&window.observation?.fontState==='loaded');const loaded=await read('loaded font');
+await page.selectOption('#font','fallback');await page.waitForFunction(()=>window.ready&&window.observation?.fontState==='fallback');const fallback=await read('fallback font');assert.notEqual(fallback.fontWidth,loaded.fontWidth);
+await page.selectOption('#font','reloaded');await page.waitForFunction(()=>window.ready&&window.observation?.fontState==='reloaded');const reloaded=await read('reloaded font');assert.equal(reloaded.fontWidth,loaded.fontWidth);assert.equal(reloaded.hash,loaded.hash);
+await page.locator('#time').evaluate(e=>{for(const t of [1,4,2,3.1,.6,2.75]){e.value=String(t);e.dispatchEvent(new Event('input',{bubbles:true}));}});await page.waitForFunction(()=>window.ready&&window.observation?.time===2.75);await read('rapid input final result');
+await page.setViewportSize({width:390,height:900});await page.screenshot({path:out+'/public-sample-mobile.png',fullPage:true});await read('mobile sample');
+await page.goto(base+'sample.html?case=tile-owned-box&side=before');await page.waitForFunction(()=>window.ready||window.failure);const before=await read('fixed before actual app');assert.equal(before.newAPI,false);assert.equal(before.staged,false);
+assert.deepEqual(errors,[]);const result={checkedUTC:new Date().toISOString(),reviewer:'parent',passed:true,url:base,isolatedBrowserContext:true,proxy:'inherited through approved publicBrowserOptions',tlsValidation:true,observations,pageErrors:errors,screenshots:['public-comparison-desktop.png','public-sample-desktop.png','public-sample-mobile.png']};fs.writeFileSync(out+'/public-parent-ui.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({passed:true,observations:observations.length,pageErrors:errors}));
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
