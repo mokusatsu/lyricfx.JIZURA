@@ -1,0 +1,56 @@
+name: Verify browser and MCP
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "11.25.0"
+      - name: Install locked MCP dependencies
+        run: pnpm --dir mcp install --frozen-lockfile
+      - name: Install Chromium with system dependencies
+        working-directory: mcp
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Build Japanese and English editions
+        run: |
+          python3 build.py
+          git diff --exit-code -- index.html en/index.html
+      - name: Verify lyric parser
+        run: node dev/lyric_test.js
+      - name: Verify both browser editions
+        run: node mcp/site-smoke-test.mjs --local
+      - name: Verify special cuts in Japanese and English
+        run: |
+          node mcp/special-cuts-test.mjs
+          node mcp/special-cuts-test.mjs en
+      - name: Verify favorites and custom effects
+        run: |
+          node mcp/favorites-test.mjs
+          node mcp/custom-effects-test.mjs
+      - name: Verify MCP integration and audio MP4 export
+        working-directory: mcp
+        run: pnpm test

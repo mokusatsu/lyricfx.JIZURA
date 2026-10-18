@@ -157,3 +157,7 @@ npm test
 ### 特殊カットの回帰テスト
 
 リポジトリ直下で `python3 build.py` を実行してから、`mcp` ディレクトリで `npm run test:special-cuts` を実行します。英語版は `npm run test:special-cuts -- en`。LinuxでシステムChromiumを使う場合は `JIZURA_BROWSER=/usr/bin/chromium` を指定できます。タイトル・間奏・アウトロの検査、未対応操作の拒否、indexの一致、ページ取得・挿入・削除・Undoを確認します。
+
+### ビルド・公開版の検証
+
+[検証手順と証明書エラーの切り分け](../docs/VERIFICATION.md)に、ローカル検証・公開版確認・CIの実行方法をまとめています。`npm run test:site -- --local` は日英版をローカル配信してHTML一致・生成・描画を確認します。`npm run test:site` は公開版を同じ条件で確認し、チェックアウトと異なるHTMLやTLSエラーを成功扱いにしません。
