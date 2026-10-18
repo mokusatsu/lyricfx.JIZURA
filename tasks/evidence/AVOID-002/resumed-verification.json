@@ -1,0 +1,129 @@
+{
+  "checkedUTC": "2026-10-18T20:13:54.338519+00:00",
+  "checkedJST": "2026-10-19T05:13:54.338519+09:00",
+  "branch": "work",
+  "initialLocalHEAD": "b7c23bff8a04019b9b90357b433927995834ae62",
+  "verifiedHEAD": "1f0fcf15131bc9eb02ce8b84b37b665e3a27c4f2",
+  "initialAndUpdatedWorkingTree": "clean",
+  "update": "fetch origin work, merge --ff-only FETCH_HEAD",
+  "AGENTS": "None in local ancestors or repository; remote recursive tree untruncated, no AGENTS.md",
+  "environmentStatus": "observations_current=true; spec_revision=observed_spec_revision=2; unrestricted/unknown; running/connected",
+  "configurationInterpretation": "Running instance differs from previous revision-20 instance. Editable saved draft not inspected. unknown is not evidence of enforced readiness. Actual requests succeeded separately.",
+  "ordinaryHTTPS": {
+    "defaultSandbox": {
+      "exitCode": 7,
+      "httpStatus": 0,
+      "error": "Failed to connect to proxy port 8080"
+    },
+    "networkPermission": {
+      "exitCode": 0,
+      "httpStatus": 200,
+      "sslVerifyResult": 0
+    },
+    "transport": "Inherited proxy, CA and TLS verification unchanged; no bypass"
+  },
+  "browserExecution": {
+    "networkPermissionOnly": "ERR_CERT_AUTHORITY_INVALID",
+    "approvedPermissions": {
+      "network": true,
+      "file_system_write": [
+        "/home/agent/.pki/nssdb"
+      ]
+    },
+    "result": "Original validator succeeds; no CA additions or TLS disabling"
+  },
+  "dependencies": "Node 24.19.0; Chromium 154.0.8037.57 at /usr/bin/chromium; pnpm 11.25.0 frozen mcp lockfile; XDG caches under /workspace/work after default home cache error; lockfiles unchanged",
+  "deployment": {
+    "id": 39135011698,
+    "sha": "1f0fcf15131bc9eb02ce8b84b37b665e3a27c4f2",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39135011698"
+  },
+  "publicValidation": {
+    "publicURL": "https://mokusatsu.github.io/lyricfx.JIZURA/",
+    "validated": true,
+    "cases": 22,
+    "uiImages": 44,
+    "originalImages": 44,
+    "images": 88,
+    "widths": [
+      1500,
+      390
+    ],
+    "manifestSHA256": "cfa2d79603268193dc181442c0026816e42d624e3aa639a0463edeb20cdea30a"
+  },
+  "publicSmoke": [
+    {
+      "status": "passed",
+      "language": "ja",
+      "url": "https://mokusatsu.github.io/lyricfx.JIZURA/",
+      "sha256": "de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa",
+      "lyricLines": [
+        0,
+        1
+      ],
+      "hasColorVariation": true,
+      "cuts": 4,
+      "width": 654,
+      "height": 368,
+      "pngBytes": 572334
+    },
+    {
+      "status": "passed",
+      "language": "en",
+      "url": "https://mokusatsu.github.io/lyricfx.JIZURA/en/",
+      "sha256": "c128cb2dee6e0baabe3a036dbfb7bc13d4b6f02a7c3067057c8d715b46d5defb",
+      "lyricLines": [
+        0,
+        1
+      ],
+      "hasColorVariation": true,
+      "cuts": 4,
+      "width": 654,
+      "height": 368,
+      "pngBytes": 571718
+    }
+  ],
+  "parentUI": {
+    "checkedUTC": "2026-10-18T20:12:47.980Z",
+    "publicURL": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-002/local-20261018-06/",
+    "browser": "154.0.8037.57",
+    "checks": [
+      "desktop/mobile comparison screenshots",
+      "live 9:16 stage",
+      "upper/lower/center rule controls",
+      "live tile layout",
+      "font loaded",
+      "no pageerror"
+    ],
+    "observation": {
+      "layout": "tile",
+      "stage": [
+        1080,
+        1920
+      ],
+      "renderSize": [
+        496.8,
+        470.4
+      ],
+      "area": {
+        "x": 0.51,
+        "y": 0.72,
+        "w": 0.46,
+        "h": 0.245,
+        "angle": 0,
+        "lockAspect": true
+      },
+      "ratio": 0.1127,
+      "time": 1,
+      "seed": 1,
+      "fontLoaded": "loaded"
+    },
+    "passed": true
+  },
+  "savedProjectTest": "Historical initial-cut assertion expected 0 / actual 1 remains failed; save body not tested; AVOID-013 unchanged",
+  "productionChanges": false,
+  "humanBehaviorReviewRequired": false,
+  "completion": "AVOID-002 all mandatory criteria met; parent completion authorized by user"
+}
