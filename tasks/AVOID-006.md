@@ -19,7 +19,7 @@
 
 ## 変更範囲
 
-- 当該段階のGitHub Pages確認サンプル・確認ページ・公開manifest、確認依頼/回答記録。共通手順は[Pages人間確認運用](pages-human-review.md)。
+- 当該段階のGitHub Pages確認サンプル・変更前後のキャプチャ画像・比較HTML・公開manifest、確認依頼/回答記録。共通手順は[Pages人間確認運用](pages-human-review.md)と[比較画像・HTML契約](visual-review-comparison.md)。
 
 - src/11p_layoutsA.jsのarcTop/spiral以外26ID
 - src/11u_note_layouts.js、共通adapterの必要な拡張、対応表・fixture
@@ -43,6 +43,7 @@
 
 ## 完了条件
 
+- [ ] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
 - [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
 - [ ] 実URL・対象コミット・操作・期待結果を含む確認ポイントを人間へ提示し、必須項目のOKと人間の最終判定を個別記録に保存した。未回答/未確認なら完了にしない。
 
@@ -53,6 +54,7 @@
 
 ## テスト方法
 
+- 比較成果物: [共通契約](visual-review-comparison.md)に従い、全H-IDの画像対応・撮影条件・HTML表示・公開一致を検証する。画像だけで数値/時間/保存の自動試験を代替しない。
 - Unit: 複製と反転、枠の結合bounds、注釈の占有範囲。
 - Integration: 26ID×主要aspect×回避位置、style/注釈ありなし。
 - Regression: upstream_parts、imported_effect_details、effect_preview。
@@ -63,13 +65,15 @@
 
 [共通手順](pages-human-review.md)と[依頼テンプレート](templates/pages-review-request.md)に従う。以下は実装後に用意する確認ケースの予定であり、現在は未公開・未実施。依頼時には実際のUI名・サンプル名・ケースURLへ具体化する。
 
-| 項目ID | 人間に依頼する操作 | 期待結果 |
-|---|---|---|
-| AVOID-006-H01 | 拡張A26IDの一覧で、panels/filmstrip/chat等の文字と枠を確認する。 | 主歌詞が枠から剥がれず、円を避ける。 |
-| AVOID-006-H02 | mirror/perspective/splitScreenのケースを再生・シークする。 | 複製や変換後の主歌詞・意味のある注釈も位置が整合する。 |
-| AVOID-006-H03 | ticker/edgeFrame等の補助反復を主歌詞と比較する。 | 補助反復の配置を再設計していない。主歌詞と混同して全レイアウトを除外していない。 |
+各項目に下表の前後キャプチャを準備し、比較HTMLの同じH-IDアンカーへまとめる。操作の前後状態が複数ある場合は、各状態それぞれで実装変更前/変更後を撮る。担当エージェントが画像を生成・公開検証してから人間へ依頼する。
 
-対象コミット / build ID / Pages実URL / 反映確認日時 / 自動検証証拠 / 依頼記録 / 人間の回答: 実装・公開後に記入する。未確認を成功として補わない。
+| 項目ID | 人間に依頼する操作 | 期待結果 | 比較キャプチャ（予定） |
+|---|---|---|---|
+| AVOID-006-H01 | 拡張A26IDの一覧で、panels/filmstrip/chat等の文字と枠を確認する。 | 主歌詞が枠から剥がれず、円を避ける。 | A26IDの描画一覧とpanels/filmstrip/chatの文字・枠の拡大。 |
+| AVOID-006-H02 | mirror/perspective/splitScreenのケースを再生・シークする。 | 複製や変換後の主歌詞・意味のある注釈も位置が整合する。 | mirror/perspective/splitScreenのenter/hold/exitと同時刻seek画像。 |
+| AVOID-006-H03 | ticker/edgeFrame等の補助反復を主歌詞と比較する。 | 補助反復の配置を再設計していない。主歌詞と混同して全レイアウトを除外していない。 | ticker/edgeFrame等の全体画像。主歌詞と補助反復の見る箇所を別記する。 |
+
+公開コミット / 変更前・変更後の実装識別子 / build ID / 比較HTML実URL / H-IDと画像の対応・撮影条件 / 操作用Pages実URL / 公開画像の一致・表示確認日時 / 自動検証証拠 / 依頼記録 / 人間の回答: 実装・公開後に記入する。未確認を成功として補わない。
 
 ## 停止条件
 
