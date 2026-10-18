@@ -62,3 +62,13 @@
 - この追記を含む `[AVOID-001] register circular avoidance implementation plan` が計画成果物の登録コミット。IDは `git log -1 --format=%H -- tasks/task-list.md` で取得できる。スキル導入コミット `3c79480` も同じブランチの履歴に含む。
 - [コミット前の再検証](evidence/AVOID-001/precommit-validation.json)を保存。ステージ済み差分の形式・対象範囲を確認してからコミットし、push後にリモートHEADとローカルHEADの一致、作業ツリーの状態を確認する。
 - 後続実装17件の状態は未着手のまま。コミット依頼を仕様の最終承認や実装開始と解釈しない。
+
+## 2026-10-18 追加依頼：各段階のPages公開後に人間確認
+
+- 利用者は「各段階の人間確認は、github pagesに出力したうえで確認ポイントのリストを作成して人間に指示する」と指定し、公開元をworkに設定済みと報告した。
+- この更新の開始: branch work、HEAD d45fac3dd9063123cb35e055933024802dc9221f、作業ツリーclean。
+- [Pages確認運用](pages-human-review.md)と[依頼雛形](templates/pages-review-request.md)を追加し、全17段階へ公開・公開版検証・人間確認の完了条件と計51項目の確認ポイントを登録した。
+- 公開基盤の新設は不要と判断し、発行済みタスクID・依存順・未着手状態を維持した。002に確認用ページ/fixtureの最小構成、003等の基盤段階に実装した関数を人間が確認できる入口を計画した。
+- Pages設定APIの読み取りはForbiddenで未確認。work公開元は利用者報告を根拠とする。既存verify workflowは検証のみであり、work pushによるPages更新と同一視しない。
+- 今回は文書の計画更新のみ。公開確認ページの実装、アプリ変更、Pages設定変更、各実装段階の人間確認は未実施。文書は既存の依頼に従ってworkへコミット・プッシュする。
+- 文書整合の確認結果は[Pages運用計画の検証記録](evidence/AVOID-001/pages-review-plan-validation.json)に保存する。以前の611項目のprecommit-validationは当時のスナップショットとして保持する。

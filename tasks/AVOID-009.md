@@ -19,6 +19,8 @@
 
 ## 変更範囲
 
+- 当該段階のGitHub Pages確認サンプル・確認ページ・公開manifest、確認依頼/回答記録。共通手順は[Pages人間確認運用](pages-human-review.md)。
+
 - src/11p_layoutsD.js、src/11w_custom_draw.js、src/11wa_custom_effects.js
 - src/03_text.js等の特殊描画境界、カスタムcomponent契約・fixture
 - 文書更新: 本記録・task-list.mdの状態/証拠、設計の該当契約、対応表を同じ変更で同期する。
@@ -38,9 +40,12 @@
 - 無関係なリファクタリング、ロック解除、手動配置の破棄、歌詞のline/partや時間の変更を混ぜない。
 - 主歌詞の回避をマスク抜きで代用しない。補助的な大量反復歌詞は利用者指定により軌道再設計の対象外とし、AVOID-018の円形グラデーションマスクで扱う。演出全体の小矩形への縮小・未対応レイアウトの黙示除外は禁止。
 - テスト期待値を通過のためだけに変更しない。旧ONの意図した変更には要件上の根拠を付ける。
-- Gitコミット/push/PR/公開は依頼または明示許可がある範囲のみ。今回許可されたGit操作は添付スキルの導入、および追加依頼による計画・タスク・証拠のコミットとプッシュ。後続実装の開始許可とは区別する。
+- Gitコミット/push/PR/公開は依頼または明示許可がある範囲のみ。計画・タスク・証拠のコミット/プッシュは依頼済み。後続の実装依頼を受けた各段階では、利用者指定のworkブランチからGitHub Pagesへ公開し、反映確認後に人間へ確認ポイントを提示する。現在の計画更新を実装開始の許可とは解釈しない。
 
 ## 完了条件
+
+- [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
+- [ ] 実URL・対象コミット・操作・期待結果を含む確認ポイントを人間へ提示し、必須項目のOKと人間の最終判定を個別記録に保存した。未回答/未確認なら完了にしない。
 
 - [ ] 34stock IDに対してmainDraw外の文字も検査される。
 - [ ] 3D/affineとcameraの合成が正しく、二重変換やクリップ欠けがない。
@@ -55,6 +60,18 @@
 - Regression: drawing_frames、drawing_fonts、custom_effects、effect_copy_fidelity。
 - 実環境: cube/flag/cylinder/contour/wordSearchとカスタムfixtureの動画。
 - 現時点の実行結果: 未実施（後続実装タスク）。既存の基準ログはAVOID-001へ参照し、修正後の証拠として流用しない。
+
+## GitHub Pagesでの人間確認
+
+[共通手順](pages-human-review.md)と[依頼テンプレート](templates/pages-review-request.md)に従う。以下は実装後に用意する確認ケースの予定であり、現在は未公開・未実施。依頼時には実際のUI名・サンプル名・ケースURLへ具体化する。
+
+| 項目ID | 人間に依頼する操作 | 期待結果 |
+|---|---|---|
+| AVOID-009-H01 | 拡張D34IDの一覧でcube/flag/cylinder/dominoes等を再生する。 | 3D/affineの面と主文字が揃い、クリップ欠け・二重変換がない。 |
+| AVOID-009-H02 | wordSearch/contour/maskReveal/mosaicTiles等を見る。 | 直接Canvas描画や主文字を作るタイルも対象になり、補助反復として主文字を消していない。 |
+| AVOID-009-H03 | 確認用custom/drawProgramの対応・未対応ケースを切り替える。 | 対応ケースは主歌詞と配置が揃い、未対応は分かる形で診断される。 |
+
+対象コミット / build ID / Pages実URL / 反映確認日時 / 自動検証証拠 / 依頼記録 / 人間の回答: 実装・公開後に記入する。未確認を成功として補わない。
 
 ## 停止条件
 
