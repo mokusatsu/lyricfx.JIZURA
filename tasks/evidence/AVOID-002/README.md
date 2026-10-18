@@ -46,3 +46,9 @@ Parent final transport review: `parent-proxy-options.json` (13 checks),
 `public-validation-proxy.log` and `public-site-smoke.log` both show proxy tunnel
 failure. Public page identity/rendering remains unverified. Parent's completion
 and human-review decision are in `parent-review.md` and the task review record.
+
+Scheduled resume check (2026-10-18 23:12 JST):
+`scheduled-recheck-environment.json`, `scheduled-recheck-time.json`, and
+`scheduled-recheck-https.log` record active revision 20 with the Pages host absent
+and a proxy HTTP 403. Public validator/smoke were not rerun after that failed
+prerequisite; no dependent implementation was started.
