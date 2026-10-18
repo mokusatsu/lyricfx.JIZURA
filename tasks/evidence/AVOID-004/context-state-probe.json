@@ -1,0 +1,55 @@
+{
+  "browser": "154.0.8037.57",
+  "method": "wrap actual production record entry without changing its behavior; fallback center finalization and real Renderer frame",
+  "observed": [
+    {
+      "canvas": [
+        1,
+        1
+      ],
+      "state": {
+        "fontKerning": "auto",
+        "letterSpacing": "0px",
+        "wordSpacing": "0px",
+        "textRendering": "auto",
+        "fontStretch": "normal",
+        "fontVariantCaps": "normal",
+        "direction": "ltr",
+        "lang": "inherit"
+      }
+    },
+    {
+      "canvas": [
+        1,
+        1
+      ],
+      "state": {
+        "fontKerning": "auto",
+        "letterSpacing": "0px",
+        "wordSpacing": "0px",
+        "textRendering": "auto",
+        "fontStretch": "normal",
+        "fontVariantCaps": "normal",
+        "direction": "ltr",
+        "lang": "inherit"
+      }
+    },
+    {
+      "canvas": [
+        960,
+        540
+      ],
+      "state": {
+        "fontKerning": "auto",
+        "letterSpacing": "",
+        "wordSpacing": "",
+        "textRendering": "auto",
+        "fontStretch": "normal",
+        "fontVariantCaps": "normal",
+        "direction": "ltr",
+        "lang": "inherit"
+      }
+    }
+  ],
+  "decision": "Chromium source target reports empty spacing while measurement context reports 0px; only empty/default zero CSS lengths are treated equivalent. Nonzero text states explicitly reject."
+}

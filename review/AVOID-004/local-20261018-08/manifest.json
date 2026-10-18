@@ -1,0 +1,4377 @@
+{
+  "schema": 1,
+  "task": "AVOID-004",
+  "build": "local-20261018-08",
+  "hids": [
+    "AVOID-004-H01",
+    "AVOID-004-H02",
+    "AVOID-004-H03"
+  ],
+  "before": {
+    "commit": "9a3d43ef22b9cedf598c0448a4ea0619cd5615f6",
+    "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3"
+  },
+  "after": {
+    "baseCommit": "9a3d43ef22b9cedf598c0448a4ea0619cd5615f6",
+    "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1"
+  },
+  "browser": "154.0.8037.57",
+  "created": "2026-10-18T21:27:39.822Z",
+  "cases": [
+    {
+      "id": "legacy-on-area",
+      "hid": "AVOID-004-H01",
+      "label": "legacy-on-area",
+      "conditions": {
+        "id": "legacy-on-area",
+        "hid": "AVOID-004-H01",
+        "label": "legacy-on-area",
+        "fontState": "loaded",
+        "time": 1.5,
+        "control": "legacy",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/legacy-on-area-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "f2941b20b69f80b920b5f56d40514539cf3e88042bb4461fb4b8c15f06e2f616",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "a51db11581ef2b343a4a99d8edf48fdbd16c00c6623781b011afed84cf686cda",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/legacy-on-area-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "3bc0b7a9c11f04083d251a2ac7ea5aaef6c5ddf684f401c0cd57aaa6249b58ba"
+        }
+      },
+      "after": {
+        "path": "images/legacy-on-area-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "5f75ec8145319a130bbb13541b8d8001e3606762313aa5cbee4272f3062b23ef",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "a51db11581ef2b343a4a99d8edf48fdbd16c00c6623781b011afed84cf686cda",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 0,
+            "maxContexts": 1,
+            "pixels": 0,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/legacy-on-area-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "3bc0b7a9c11f04083d251a2ac7ea5aaef6c5ddf684f401c0cd57aaa6249b58ba"
+        }
+      }
+    },
+    {
+      "id": "existing-fullstage-control",
+      "hid": "AVOID-004-H01",
+      "label": "existing-fullstage-control",
+      "conditions": {
+        "id": "existing-fullstage-control",
+        "hid": "AVOID-004-H01",
+        "label": "existing-fullstage-control",
+        "fontState": "loaded",
+        "time": 1.5,
+        "control": "fullstage",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/existing-fullstage-control-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "3d6e2a9d46183ec702095ef98f5a9f6edf32b1f16eb0f2585178edccc6041beb",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "294c922b2f4a3e21e826c9616db5107df911dfa91450c3c0ea1f8ce3fc88f06e",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/existing-fullstage-control-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8"
+        }
+      },
+      "after": {
+        "path": "images/existing-fullstage-control-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "32ff186db624cb6c47085be1599bff5848a564cedc7d6da0f91e48fa6b1ae014",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "294c922b2f4a3e21e826c9616db5107df911dfa91450c3c0ea1f8ce3fc88f06e",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 0,
+            "maxContexts": 1,
+            "pixels": 0,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/existing-fullstage-control-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8"
+        }
+      }
+    },
+    {
+      "id": "center-static",
+      "hid": "AVOID-004-H01",
+      "label": "center-static",
+      "conditions": {
+        "id": "center-static",
+        "hid": "AVOID-004-H01",
+        "label": "center-static",
+        "fontState": "loaded",
+        "time": 1.5,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/center-static-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "a50e508c8f801928c9afda4c2c362ee88414bfeb594213846533bf33df0d04cb",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "77fa4b98395d78370b56f8bbc5b98241bc846b9a31363c4aa76dbf645769ce0d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/center-static-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8"
+        }
+      },
+      "after": {
+        "path": "images/center-static-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "2c0dcdcb79f9ab9438e41c98e38f04d53b1870983ef412d26b42bcd6966d9662",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "77fa4b98395d78370b56f8bbc5b98241bc846b9a31363c4aa76dbf645769ce0d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [
+            1.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                0,
+                155.49803250000002
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/center-static-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "8bdfd143f3dc862fdab8fbf9d747a4d2e3614c451c1711aa8aa63edc29024a25"
+        }
+      }
+    },
+    {
+      "id": "tile-owned-box",
+      "hid": "AVOID-004-H01",
+      "label": "tile-owned-box",
+      "conditions": {
+        "id": "tile-owned-box",
+        "hid": "AVOID-004-H01",
+        "label": "tile-owned-box",
+        "fontState": "loaded",
+        "time": 1.5,
+        "layout": "tile",
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/tile-owned-box-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "f082723ea5371457d3d8bae60ba500e39b0e813445fc5c722b346c801fe4421f",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "8447b57075f004c7be7da1cba4eb52f84d95aa6247bced8834ecfe1cbdcae31d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/tile-owned-box-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "d5ab6ea0b7568fd9a9f0e3712f460501cb47d3a241d4a4bf8fa6ee10936242da"
+        }
+      },
+      "after": {
+        "path": "images/tile-owned-box-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "b2e8653780ff8a0c01c45c0a6bfdbadb0f3d9c008b55f3565009b06dd0d33e27",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "8447b57075f004c7be7da1cba4eb52f84d95aa6247bced8834ecfe1cbdcae31d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [
+            1.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                -245.82739393816007,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/tile-owned-box-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "108998da6f06d77573876154a85f18f9e4d01154c26b5a0b46f734d86410d133"
+        }
+      }
+    },
+    {
+      "id": "multiply-opacity",
+      "hid": "AVOID-004-H01",
+      "label": "multiply-opacity",
+      "conditions": {
+        "id": "multiply-opacity",
+        "hid": "AVOID-004-H01",
+        "label": "multiply-opacity",
+        "fontState": "loaded",
+        "time": 1.5,
+        "plate": true,
+        "blend": "multiply",
+        "opacity": 65,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/multiply-opacity-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "d83b8b9286f935d7f546bde74d35d099c94d35d24259e23f7e21d8c1d9480eff",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "05c3ee85497d37d4c8d883458453f3c5683abccd7c2752ccf3114f2e430883ec",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/multiply-opacity-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "df05b77b36f06bd0c9ddfd5c3f5e5b905ee0318797e9b300809cb1e2103203d9"
+        }
+      },
+      "after": {
+        "path": "images/multiply-opacity-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "36bb1bb74ab6d8bdd170ffc652f5639641f9292f3e6d661712171a878b447ae3",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "05c3ee85497d37d4c8d883458453f3c5683abccd7c2752ccf3114f2e430883ec",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [
+            1.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                0,
+                155.49803250000002
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/multiply-opacity-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "5bb33bc771a0957a062b168137d957fd937752af947812741a330e26ac25e3cc"
+        }
+      }
+    },
+    {
+      "id": "overlay-frontmost",
+      "hid": "AVOID-004-H01",
+      "label": "overlay-frontmost",
+      "conditions": {
+        "id": "overlay-frontmost",
+        "hid": "AVOID-004-H01",
+        "label": "overlay-frontmost",
+        "fontState": "loaded",
+        "time": 1.5,
+        "plate": true,
+        "blend": "overlay",
+        "frontmost": true,
+        "opacity": 80,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "controlled solid foreground",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/overlay-frontmost-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "f75c916a59c604c8656e982ba3e51f86b8aab6d0ee64b016b17dd94eeb94b856",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "9402ee0cbcfd8dba2eff2f812295b4a8e0f26f04b3c7597e9a6ddb37571afd18",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/overlay-frontmost-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "99403434b07d646c16c54ed9dcbe06f86d8eba1ce285cc548627c38bf0efdf18"
+        }
+      },
+      "after": {
+        "path": "images/overlay-frontmost-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "0d39902c1c074431ac4023f2fe089174fe79829fc9206aee7327395de9f66bae",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "9402ee0cbcfd8dba2eff2f812295b4a8e0f26f04b3c7597e9a6ddb37571afd18",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [
+            1.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                0,
+                155.49803250000002
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/overlay-frontmost-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "9cef8a2e35da471d157b06726074aea9c1beef4658e041f0aa38d5c98a1752b6"
+        }
+      }
+    },
+    {
+      "id": "dutch-direct",
+      "hid": "AVOID-004-H02",
+      "label": "dutch-direct",
+      "conditions": {
+        "id": "dutch-direct",
+        "hid": "AVOID-004-H02",
+        "label": "dutch-direct",
+        "fontState": "loaded",
+        "time": 3.1,
+        "camera": "dutch",
+        "seek": "direct",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/dutch-direct-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "eac08772459661977829dc794243dae4f9498e3ead729fff121b94f391764ce4",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "4a4fe5da192068b18a2219a24143c385d88029774bc0650b610a751079c74e0b",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/dutch-direct-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "87533521f40b512c0049a61f4a8c9c7f958cb43f658e4c3849f425189cb54de7"
+        }
+      },
+      "after": {
+        "path": "images/dutch-direct-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "5add3cb37742410c643d2beff38ea3e45e4c50a16a6e6bb13cd00179d64ee78f",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "4a4fe5da192068b18a2219a24143c385d88029774bc0650b610a751079c74e0b",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [
+            3.1
+          ],
+          "lastOffsets": [
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/dutch-direct-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "38e390a368e8313138dc7fd4bbab68bda9fe2ecc18375ecaa7d48da8d8bac8a7"
+        }
+      }
+    },
+    {
+      "id": "dutch-sequential",
+      "hid": "AVOID-004-H02",
+      "label": "dutch-sequential",
+      "conditions": {
+        "id": "dutch-sequential",
+        "hid": "AVOID-004-H02",
+        "label": "dutch-sequential",
+        "fontState": "loaded",
+        "time": 3.1,
+        "camera": "dutch",
+        "seek": "sequential",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/dutch-sequential-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "56fb72282469e5a9fc3ce9f85d270206481b5cc4b5e4b5dbf2508da9bfb3c0d8",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "c17678d188c1cfe3fb4f34c55e48fb20910bac8292558981585cd7ce69e6e6f2",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/dutch-sequential-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "87533521f40b512c0049a61f4a8c9c7f958cb43f658e4c3849f425189cb54de7"
+        }
+      },
+      "after": {
+        "path": "images/dutch-sequential-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "4b085d7cae29ab590fd0adce4e0e515bb08f16a3eaa871e86292c006eae3136f",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "c17678d188c1cfe3fb4f34c55e48fb20910bac8292558981585cd7ce69e6e6f2",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [
+            0.1,
+            1,
+            2,
+            3.1
+          ],
+          "lastOffsets": [
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/dutch-sequential-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "38e390a368e8313138dc7fd4bbab68bda9fe2ecc18375ecaa7d48da8d8bac8a7"
+        }
+      }
+    },
+    {
+      "id": "dutch-reverse",
+      "hid": "AVOID-004-H02",
+      "label": "dutch-reverse",
+      "conditions": {
+        "id": "dutch-reverse",
+        "hid": "AVOID-004-H02",
+        "label": "dutch-reverse",
+        "fontState": "loaded",
+        "time": 3.1,
+        "camera": "dutch",
+        "seek": "reverse",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/dutch-reverse-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "4d3afa2ff5a6e40519c63cb51a87586d4b9a3192cd5dc19555a92fd0a528d33a",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "9a1e0f62016413998e748b98407d337794fa88f02bf937a7c6fce89c4a80634e",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/dutch-reverse-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "87533521f40b512c0049a61f4a8c9c7f958cb43f658e4c3849f425189cb54de7"
+        }
+      },
+      "after": {
+        "path": "images/dutch-reverse-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "8c9e04b85a057baffdca5a2f5219bf5f4943f3e99cbf0310e6d7bcca1a708274",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "9a1e0f62016413998e748b98407d337794fa88f02bf937a7c6fce89c4a80634e",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [
+            4.5,
+            3.1,
+            2,
+            1
+          ],
+          "lastOffsets": [
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/dutch-reverse-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "38e390a368e8313138dc7fd4bbab68bda9fe2ecc18375ecaa7d48da8d8bac8a7"
+        }
+      }
+    },
+    {
+      "id": "panL-direct",
+      "hid": "AVOID-004-H02",
+      "label": "panL-direct",
+      "conditions": {
+        "id": "panL-direct",
+        "hid": "AVOID-004-H02",
+        "label": "panL-direct",
+        "fontState": "loaded",
+        "time": 3.1,
+        "camera": "panL",
+        "seek": "direct",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/panL-direct-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "a9f6e7383430caf6124d73842e25c0f9fd779a1e125d7aa44184718445ae0393",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "fb2f1f6a6d23cc9b7a63fd9c366b76d31343abe7a4222c1395962669c8557e98",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/panL-direct-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "c325df248495cc0babb526f5889d0e2ce671419f600e892478f9d85f018ff457"
+        }
+      },
+      "after": {
+        "path": "images/panL-direct-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "612dc4abc8fd0d0b1b872c4d66af6ae6ee1d90c6e52c7f329947e3d6d85d15ec",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "fb2f1f6a6d23cc9b7a63fd9c366b76d31343abe7a4222c1395962669c8557e98",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [
+            3.1
+          ],
+          "lastOffsets": [
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/panL-direct-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "f5abdc931016bf0390d6220e4dc6e2641c33dd23b5f20a8228d4f39147014809"
+        }
+      }
+    },
+    {
+      "id": "panL-sequential",
+      "hid": "AVOID-004-H02",
+      "label": "panL-sequential",
+      "conditions": {
+        "id": "panL-sequential",
+        "hid": "AVOID-004-H02",
+        "label": "panL-sequential",
+        "fontState": "loaded",
+        "time": 3.1,
+        "camera": "panL",
+        "seek": "sequential",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/panL-sequential-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "a9df73dc6e106cd8436c6e4e193283b5b9fa943acaab35c7651f6ccb74f5e555",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "053b6434da52f3dae8673f21a384b96da04d7ef690c49aef9f59fe0af1e6a2c1",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/panL-sequential-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "c325df248495cc0babb526f5889d0e2ce671419f600e892478f9d85f018ff457"
+        }
+      },
+      "after": {
+        "path": "images/panL-sequential-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "2beebc18afdf998e1b2b1fdd00deb2f663df8fd3f1ec4fedeb457e0ad3517774",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "053b6434da52f3dae8673f21a384b96da04d7ef690c49aef9f59fe0af1e6a2c1",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [
+            0.1,
+            1,
+            2,
+            3.1
+          ],
+          "lastOffsets": [
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/panL-sequential-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "f5abdc931016bf0390d6220e4dc6e2641c33dd23b5f20a8228d4f39147014809"
+        }
+      }
+    },
+    {
+      "id": "panL-reverse",
+      "hid": "AVOID-004-H02",
+      "label": "panL-reverse",
+      "conditions": {
+        "id": "panL-reverse",
+        "hid": "AVOID-004-H02",
+        "label": "panL-reverse",
+        "fontState": "loaded",
+        "time": 3.1,
+        "camera": "panL",
+        "seek": "reverse",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/panL-reverse-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "1eb864e99fcbe1336be64814659b1069a7e712b0e44520a86d7b462200bce401",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "e4c6516f575bb825124e9f0b504ec87b41d93b0b2894b6c2c963ecc0707af60d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/panL-reverse-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "c325df248495cc0babb526f5889d0e2ce671419f600e892478f9d85f018ff457"
+        }
+      },
+      "after": {
+        "path": "images/panL-reverse-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "17408dd8cf68799f612ae666bde4695d3a9380b2e56a9efa3a3c0a8c0ffee766",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "e4c6516f575bb825124e9f0b504ec87b41d93b0b2894b6c2c963ecc0707af60d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.1,
+          "realTimes": [
+            4.5,
+            3.1,
+            2,
+            1
+          ],
+          "lastOffsets": [
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                138.50858777263062,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                94.6954635630126,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/panL-reverse-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "f5abdc931016bf0390d6220e4dc6e2641c33dd23b5f20a8228d4f39147014809"
+        }
+      }
+    },
+    {
+      "id": "moving-frame-0-1",
+      "hid": "AVOID-004-H02",
+      "label": "moving-frame-0-1",
+      "conditions": {
+        "id": "moving-frame-0-1",
+        "hid": "AVOID-004-H02",
+        "label": "moving-frame-0-1",
+        "fontState": "loaded",
+        "time": 0.1,
+        "camera": "dutch",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/moving-frame-0-1-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "5e1a89c468fd55944565027a2ec3cc9a64745a62d0787ceecadc3677e021f750",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "1ca29a1fcd35b1fb602d810eed49505c5f7fa38100eeb41a7ebf13e115c7077d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 0.1,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-0-1-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "59860ec4b4d7a9a566d7b21377562c18f3d42cdd00dfd58f3215aac356cbcbe8"
+        }
+      },
+      "after": {
+        "path": "images/moving-frame-0-1-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "f33835da4472e7263152a09e381206ef66c7e65dfd24cba33a75fe89592a09f2",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "1ca29a1fcd35b1fb602d810eed49505c5f7fa38100eeb41a7ebf13e115c7077d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 0.1,
+          "realTimes": [
+            0.1
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-0-1-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "61bdfe5de4610ae7b5da803da6a8cc813592c33f3c393a36b271371f2bc3a967"
+        }
+      }
+    },
+    {
+      "id": "moving-frame-0-6",
+      "hid": "AVOID-004-H02",
+      "label": "moving-frame-0-6",
+      "conditions": {
+        "id": "moving-frame-0-6",
+        "hid": "AVOID-004-H02",
+        "label": "moving-frame-0-6",
+        "fontState": "loaded",
+        "time": 0.6,
+        "camera": "dutch",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/moving-frame-0-6-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "869f15574e098905e7c01c845659ea50157ef7da1ccec12e05bbaad449f61ec3",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "cde6be6bcb820c0482128e8f9a8bdd360ee2df2b6556e0bcb4782133fb3fa5ae",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 0.6,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-0-6-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "d4dce6705be50f00e6d63715f9a28adb335955222437e0785ac76b976ade3671"
+        }
+      },
+      "after": {
+        "path": "images/moving-frame-0-6-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "6b4fef071481b071af20af20dd7d746bb1d89e42b8fc1df90edb8c46d4dc8ca4",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "cde6be6bcb820c0482128e8f9a8bdd360ee2df2b6556e0bcb4782133fb3fa5ae",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 0.6,
+          "realTimes": [
+            0.6
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-0-6-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "102f56301a0f092ef988e86c8be686fc1c29a9bf5da9cd7f59e3b252b9212ce2"
+        }
+      }
+    },
+    {
+      "id": "moving-frame-1-5",
+      "hid": "AVOID-004-H02",
+      "label": "moving-frame-1-5",
+      "conditions": {
+        "id": "moving-frame-1-5",
+        "hid": "AVOID-004-H02",
+        "label": "moving-frame-1-5",
+        "fontState": "loaded",
+        "time": 1.5,
+        "camera": "dutch",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/moving-frame-1-5-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "bf01ebc7bab1f4eb4286cf843ff06299734a62e790fa5c4c74bbdfe2113d92c9",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "81707d6e4b981c8277f12e4ed236158dd91a25c69a9b56a6bccaad1a7ef17d95",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-1-5-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "8b5b23e4b8a27bc67dbfe193cec6cd2c88db8eda0aeb42d4fad19bbbb3cdd2c2"
+        }
+      },
+      "after": {
+        "path": "images/moving-frame-1-5-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "022d1123cf7b0953b92f7abeca53507fc7999ed24583458179af7c97e8beb505",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "81707d6e4b981c8277f12e4ed236158dd91a25c69a9b56a6bccaad1a7ef17d95",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [
+            1.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-1-5-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "d2e721fa099676c2da0d62b44cce23891189eb554fe71f64f0338307fec89219"
+        }
+      }
+    },
+    {
+      "id": "moving-frame-2-9",
+      "hid": "AVOID-004-H02",
+      "label": "moving-frame-2-9",
+      "conditions": {
+        "id": "moving-frame-2-9",
+        "hid": "AVOID-004-H02",
+        "label": "moving-frame-2-9",
+        "fontState": "loaded",
+        "time": 2.9,
+        "camera": "dutch",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/moving-frame-2-9-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "f6436bd69bbfae7888b4361aa503f559b3c08a745ddc90aca125ee5fbdad9405",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "ae6ebc7d2549f05202d55172736d3ffc1e62401fc567c7ea17a42b3fe0f6cd04",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 2.9,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-2-9-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "61231ee37a2901eecb12a1654d69d843f8413c64c393e5a077fe83852844ca66"
+        }
+      },
+      "after": {
+        "path": "images/moving-frame-2-9-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "436c326096288d3b377de23a6f58dafd5d27a46b0ba699fd62370229e82a1c61",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "ae6ebc7d2549f05202d55172736d3ffc1e62401fc567c7ea17a42b3fe0f6cd04",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 2.9,
+          "realTimes": [
+            2.9
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-2-9-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "0e36569832b3011366be3702ed5b4868f6e344a12a9caf2afb9d1d47e2077572"
+        }
+      }
+    },
+    {
+      "id": "moving-frame-3-05",
+      "hid": "AVOID-004-H02",
+      "label": "moving-frame-3-05",
+      "conditions": {
+        "id": "moving-frame-3-05",
+        "hid": "AVOID-004-H02",
+        "label": "moving-frame-3-05",
+        "fontState": "loaded",
+        "time": 3.05,
+        "camera": "dutch",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/moving-frame-3-05-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "1629de4f0843d1f2ab0caddc335ade718326eb166485ef15be2e9183e0158a39",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "3fae51f5122e36980f5dcc20ff3a7793b7ef0aee429d1d1683e2abb232be7071",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.05,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-3-05-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "62e3e22c400c18f5ca60cd1525abe19328a61d58952ffd9e551abb76154177db"
+        }
+      },
+      "after": {
+        "path": "images/moving-frame-3-05-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "cb770bdb80df64b97ddcd79d38eb77023c72bcd6a534505dc777fddadd7ca843",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "3fae51f5122e36980f5dcc20ff3a7793b7ef0aee429d1d1683e2abb232be7071",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.05,
+          "realTimes": [
+            3.05
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                274.0291195557992,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                274.0291195557992,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                230.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-3-05-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "61a871d43b84bb9034fdf37bd0cca68efe179f7ae4ef35f28eaa97bb5a79fff8"
+        }
+      }
+    },
+    {
+      "id": "moving-frame-3-2",
+      "hid": "AVOID-004-H02",
+      "label": "moving-frame-3-2",
+      "conditions": {
+        "id": "moving-frame-3-2",
+        "hid": "AVOID-004-H02",
+        "label": "moving-frame-3-2",
+        "fontState": "loaded",
+        "time": 3.2,
+        "camera": "dutch",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/moving-frame-3-2-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "69d032dcae6278acd9fe336d576bd54aa42f7bd71f400506d8bb4be24124e834",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "fe007dd0897c321ddacaeff4889513d64fa04fca8f5046cece4b077d560888f4",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.2,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-3-2-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "44b860032c8951fea6e93d70f57c356bcfb399a4ebd55949a50bc7e408885186"
+        }
+      },
+      "after": {
+        "path": "images/moving-frame-3-2-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "9dd33b7c9d827ec3e354bbafac8cb0f782f2980b2a2b782597f1d928948fa229",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "fe007dd0897c321ddacaeff4889513d64fa04fca8f5046cece4b077d560888f4",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 3.2,
+          "realTimes": [
+            3.2
+          ],
+          "lastOffsets": [
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "B",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "A",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                86.21599534618122,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-3-2-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "f0b9b6e772cb0ef7e3dd64b19369ab07fe81dd6d8c5fce499ac588d0b82f2f96"
+        }
+      }
+    },
+    {
+      "id": "moving-frame-4-5",
+      "hid": "AVOID-004-H02",
+      "label": "moving-frame-4-5",
+      "conditions": {
+        "id": "moving-frame-4-5",
+        "hid": "AVOID-004-H02",
+        "label": "moving-frame-4-5",
+        "fontState": "loaded",
+        "time": 4.5,
+        "camera": "dutch",
+        "ghost": true,
+        "transition": true,
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/moving-frame-4-5-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "761d8186377c6b78b1cc9d04a52c18c81d228d5b5c042f08489b8d828f7245c9",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "e0f47f07f74343c4867889eb928d4045233d9bdb46b4e2907d54e14c5c483e8b",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 4.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-4-5-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "a3c861c3296732577be3c2c5bb0b39e1745279ec862935ebad0d8b5f972c7170"
+        }
+      },
+      "after": {
+        "path": "images/moving-frame-4-5-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "47f92fbb1ba536e545028c0847c82dc440cb26a9e9f0f60159175f55f509a554",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "e0f47f07f74343c4867889eb928d4045233d9bdb46b4e2907d54e14c5c483e8b",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 4.5,
+          "realTimes": [
+            4.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 1,
+              "pass": "B",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "A",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            },
+            {
+              "cut": 1,
+              "pass": "main",
+              "offset": [
+                130.02911955579918,
+                0
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/moving-frame-4-5-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "66e0d06977ede175a4285ebae64e10c4c3c8c8a42f48a32729da307d64e683f5"
+        }
+      }
+    },
+    {
+      "id": "fallback-staged",
+      "hid": "AVOID-004-H03",
+      "label": "fallback-staged",
+      "conditions": {
+        "id": "fallback-staged",
+        "hid": "AVOID-004-H03",
+        "label": "fallback-staged",
+        "fontState": "fallback",
+        "time": 1.5,
+        "control": "staged",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/fallback-staged-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "c7c920c6719845616c3040328f0453548afcd70f203601689a85943498d9606e",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "c5e102c1db1c0f7f0d9ccec50f655b7967144a32b1237d3e1777a26626c740ad",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "fallback",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": "controlled-fallback",
+          "fontWidth": 0.3330078125,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/fallback-staged-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "104afaab191b34aec9883346a1da8f963a852dc634cfc33cfcbd82d7e0df5ebb"
+        }
+      },
+      "after": {
+        "path": "images/fallback-staged-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "39c5eadbe5c85a9ce30ab827054d87fd5365510aea88426b5c79701f2b00ea96",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "c5e102c1db1c0f7f0d9ccec50f655b7967144a32b1237d3e1777a26626c740ad",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "fallback",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [
+            1.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                0,
+                155.49803250000002
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": "controlled-fallback",
+          "fontWidth": 0.3330078125,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/fallback-staged-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "35cd947565737f570d2903abc4296b1062664a28f82c1080822713256f312a44"
+        }
+      }
+    },
+    {
+      "id": "fallback-manual",
+      "hid": "AVOID-004-H03",
+      "label": "fallback-manual",
+      "conditions": {
+        "id": "fallback-manual",
+        "hid": "AVOID-004-H03",
+        "label": "fallback-manual",
+        "fontState": "fallback",
+        "time": 1.5,
+        "control": "manual",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/fallback-manual-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "ebb5dee6f5c20a21c7c3b809c58c91a13ec9b3764c2272e876893ab6afcc5fc0",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "9555d5d8dc1b6059eb4a346e797690a4e37fe16e755112728df86814421ffbef",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "fallback",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": "controlled-fallback",
+          "fontWidth": 0.3330078125,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/fallback-manual-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "5d8a389efc19c6c1f786dcb7505694cc51857a919de5c37e5704a0cea98a021d"
+        }
+      },
+      "after": {
+        "path": "images/fallback-manual-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "fbf279f4c50780c681fc6956ea7ae44ef5c0287f81effc96272def58574c77c7",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "9555d5d8dc1b6059eb4a346e797690a4e37fe16e755112728df86814421ffbef",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": false,
+          "fontState": "fallback",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            },
+            {
+              "cut": 1,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": "controlled-fallback",
+          "fontWidth": 0.3330078125,
+          "buffer": {
+            "contexts": 0,
+            "maxContexts": 1,
+            "pixels": 0,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/fallback-manual-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "5d8a389efc19c6c1f786dcb7505694cc51857a919de5c37e5704a0cea98a021d"
+        }
+      }
+    },
+    {
+      "id": "fallback-off",
+      "hid": "AVOID-004-H03",
+      "label": "fallback-off",
+      "conditions": {
+        "id": "fallback-off",
+        "hid": "AVOID-004-H03",
+        "label": "fallback-off",
+        "fontState": "fallback",
+        "time": 1.5,
+        "control": "off",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/fallback-off-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "4c6b5da76c6e77da7919743036c36234bfa44325ba795674df7add1c2c598116",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "eddffece8b461ade61a516a6e57090679d948e4d0daea7bf62477faea56034a2",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "fallback",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": "controlled-fallback",
+          "fontWidth": 0.3330078125,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/fallback-off-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "104afaab191b34aec9883346a1da8f963a852dc634cfc33cfcbd82d7e0df5ebb"
+        }
+      },
+      "after": {
+        "path": "images/fallback-off-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "e19c83ee2cd2e0628df13ca97d0fcb1505cca24056672d30e20e0d8d1bc43dbb",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "eddffece8b461ade61a516a6e57090679d948e4d0daea7bf62477faea56034a2",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": false,
+          "fontState": "fallback",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            },
+            {
+              "cut": 1,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": "controlled-fallback",
+          "fontWidth": 0.3330078125,
+          "buffer": {
+            "contexts": 0,
+            "maxContexts": 1,
+            "pixels": 0,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/fallback-off-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "08af25dc10b0b9f85d81c7015e19aeb8bcbd74e658839057038bf5e665699bbb"
+        }
+      }
+    },
+    {
+      "id": "loaded-staged",
+      "hid": "AVOID-004-H03",
+      "label": "loaded-staged",
+      "conditions": {
+        "id": "loaded-staged",
+        "hid": "AVOID-004-H03",
+        "label": "loaded-staged",
+        "fontState": "loaded",
+        "time": 1.5,
+        "control": "staged",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/loaded-staged-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "0653a9335e81bd0c49e440bea41a77a0d8df2ff1f661b10e23194abeb70e26f1",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "8aa29a817a67a44c35f9840afd039d50be2ea2e92df7805aa5dcfc189a37e4ca",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/loaded-staged-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8"
+        }
+      },
+      "after": {
+        "path": "images/loaded-staged-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "3c3224a39f5bf3dc47399dc96790051d08f1670d380a789a81acec08ff93a0f3",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "8aa29a817a67a44c35f9840afd039d50be2ea2e92df7805aa5dcfc189a37e4ca",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [
+            1.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                0,
+                155.49803250000002
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/loaded-staged-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "8bdfd143f3dc862fdab8fbf9d747a4d2e3614c451c1711aa8aa63edc29024a25"
+        }
+      }
+    },
+    {
+      "id": "loaded-manual",
+      "hid": "AVOID-004-H03",
+      "label": "loaded-manual",
+      "conditions": {
+        "id": "loaded-manual",
+        "hid": "AVOID-004-H03",
+        "label": "loaded-manual",
+        "fontState": "loaded",
+        "time": 1.5,
+        "control": "manual",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/loaded-manual-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "a0d8c2804fd863d7971c254a3375aecc5ff3b21a4249d00e75d3a32a17d06ba8",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "e9d2e27ad8990d678e8c8cf51d9503c3d8eb6e8977cf62ebed29be2e9e274dd4",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/loaded-manual-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "d6416676052fbeb258c46b9879995ce6161a85e344841a3cde24104410a16d76"
+        }
+      },
+      "after": {
+        "path": "images/loaded-manual-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "8d40bbef9bccd2118f09edb92c6f6cd59f12fc569f45ebe72a363b36e863d68c",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "e9d2e27ad8990d678e8c8cf51d9503c3d8eb6e8977cf62ebed29be2e9e274dd4",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            },
+            {
+              "cut": 1,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 0,
+            "maxContexts": 1,
+            "pixels": 0,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/loaded-manual-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "d6416676052fbeb258c46b9879995ce6161a85e344841a3cde24104410a16d76"
+        }
+      }
+    },
+    {
+      "id": "loaded-off",
+      "hid": "AVOID-004-H03",
+      "label": "loaded-off",
+      "conditions": {
+        "id": "loaded-off",
+        "hid": "AVOID-004-H03",
+        "label": "loaded-off",
+        "fontState": "loaded",
+        "time": 1.5,
+        "control": "off",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/loaded-off-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "c6214d875733ab275f4d4f63470558e9fb3c05ccf83c151154ffb898ca8f2fce",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "4f3b53f04c1faa1103d39a1f343f954c9a7eff9031c4278f71d656cfdf3e39be",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/loaded-off-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8"
+        }
+      },
+      "after": {
+        "path": "images/loaded-off-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "8895710d6e8abfc6508eba9ceaecdca776066db04473b53721f06e89951d9538",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "4f3b53f04c1faa1103d39a1f343f954c9a7eff9031c4278f71d656cfdf3e39be",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": false,
+          "fontState": "loaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            },
+            {
+              "cut": 1,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 0,
+            "maxContexts": 1,
+            "pixels": 0,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/loaded-off-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "3bc0b7a9c11f04083d251a2ac7ea5aaef6c5ddf684f401c0cd57aaa6249b58ba"
+        }
+      }
+    },
+    {
+      "id": "reloaded-staged",
+      "hid": "AVOID-004-H03",
+      "label": "reloaded-staged",
+      "conditions": {
+        "id": "reloaded-staged",
+        "hid": "AVOID-004-H03",
+        "label": "reloaded-staged",
+        "fontState": "reloaded",
+        "time": 1.5,
+        "control": "staged",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/reloaded-staged-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "a02ccb0d9ec1d71cd965a7921aabb37bd23dd59b061b010d803807086d513cfe",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "4fd988372b58c9c71520d9dcb92ccd82282656ad7826917856a573c35c189810",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "reloaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/reloaded-staged-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8"
+        }
+      },
+      "after": {
+        "path": "images/reloaded-staged-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "971a7552936bcbf68a1c4dd5bc54882c851836bad287cb53e73d0637c68323ea",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "4fd988372b58c9c71520d9dcb92ccd82282656ad7826917856a573c35c189810",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": true,
+          "fontState": "reloaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            },
+            {
+              "cut": 1,
+              "code": "STAGED_ADAPTER",
+              "measurement": "supported",
+              "safety": "certified-bounded-adapter"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [
+            1.5
+          ],
+          "lastOffsets": [
+            {
+              "cut": 0,
+              "pass": "main",
+              "offset": [
+                0,
+                155.49803250000002
+              ],
+              "safety": "safe"
+            }
+          ],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 1,
+            "maxContexts": 1,
+            "pixels": 1,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/reloaded-staged-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "8bdfd143f3dc862fdab8fbf9d747a4d2e3614c451c1711aa8aa63edc29024a25"
+        }
+      }
+    },
+    {
+      "id": "reloaded-manual",
+      "hid": "AVOID-004-H03",
+      "label": "reloaded-manual",
+      "conditions": {
+        "id": "reloaded-manual",
+        "hid": "AVOID-004-H03",
+        "label": "reloaded-manual",
+        "fontState": "reloaded",
+        "time": 1.5,
+        "control": "manual",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/reloaded-manual-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "6d86e4ef61208a4a3203f3d7453254f8eab94bb3170d506ec89f7a4e2dd11822",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "9a407b46a564889c4d71aaecc3e92f88c2ca684f81c318f4f96327519d85826a",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "reloaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/reloaded-manual-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "d6416676052fbeb258c46b9879995ce6161a85e344841a3cde24104410a16d76"
+        }
+      },
+      "after": {
+        "path": "images/reloaded-manual-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "64b67a26be3f168b76b0f81f297e51601806882c3ade732cc4ec175d00c1422c",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "9a407b46a564889c4d71aaecc3e92f88c2ca684f81c318f4f96327519d85826a",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": false,
+          "fontState": "reloaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            },
+            {
+              "cut": 1,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 0,
+            "maxContexts": 1,
+            "pixels": 0,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/reloaded-manual-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "d6416676052fbeb258c46b9879995ce6161a85e344841a3cde24104410a16d76"
+        }
+      }
+    },
+    {
+      "id": "reloaded-off",
+      "hid": "AVOID-004-H03",
+      "label": "reloaded-off",
+      "conditions": {
+        "id": "reloaded-off",
+        "hid": "AVOID-004-H03",
+        "label": "reloaded-off",
+        "fontState": "reloaded",
+        "time": 1.5,
+        "control": "off",
+        "plate": true,
+        "seed": 704,
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1100
+        ],
+        "dpr": 1,
+        "font": "controlled serif fallback / bundled Noto CJK subset",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque"
+      },
+      "before": {
+        "path": "images/reloaded-off-before.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "d08e3c8cea0df4dbb38ef170efb39700d70786b47c82b9fe5fb60c74e6bbc8ff",
+        "sourceSHA256": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+        "conditionsSHA256": "2129fff1f7eeb4b8273078272e179a61cf08c99e0e6f2873ff63a3e5c3597d8d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": false,
+          "staged": false,
+          "fontState": "reloaded",
+          "revision": null,
+          "diagnostics": [],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": null
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/reloaded-off-before-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8"
+        }
+      },
+      "after": {
+        "path": "images/reloaded-off-after.png",
+        "width": 1000,
+        "height": 1101,
+        "sha256": "25ec059d831b5aa38f7a0e369a819074bf704b52287bf3631dcece6331238435",
+        "sourceSHA256": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+        "conditionsSHA256": "2129fff1f7eeb4b8273078272e179a61cf08c99e0e6f2873ff63a3e5c3597d8d",
+        "fixtureSHA256": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+        "observation": {
+          "newAPI": true,
+          "staged": false,
+          "fontState": "reloaded",
+          "revision": 5,
+          "diagnostics": [
+            {
+              "cut": 0,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            },
+            {
+              "cut": 1,
+              "code": "PRESERVED_LEGACY",
+              "safety": "not-evaluated"
+            }
+          ],
+          "stage": [
+            960,
+            540
+          ],
+          "time": 1.5,
+          "realTimes": [],
+          "lastOffsets": [],
+          "inputUnchanged": true,
+          "projectUnchanged": true,
+          "fontLoaded": true,
+          "fontWidth": 0.29299972534179686,
+          "buffer": {
+            "contexts": 0,
+            "maxContexts": 1,
+            "pixels": 0,
+            "maxPixels": 1,
+            "perGlyphStageBuffers": 0
+          }
+        },
+        "method": "local HTTP Playwright full panel and raw native Canvas PNG",
+        "original": {
+          "path": "images/reloaded-off-after-original.png",
+          "width": 960,
+          "height": 540,
+          "sha256": "3bc0b7a9c11f04083d251a2ac7ea5aaef6c5ddf684f401c0cd57aaa6249b58ba"
+        }
+      }
+    }
+  ],
+  "assets": {
+    "index.html": "b06f58867cd99f6cd8476d20a519a59ee23fc20fd7b5cc6377b9d572a79321fd",
+    "sample.html": "9112555cb07ee14937eecf5557456174b62d16f521fde7a50f80f8871d559b29",
+    "fixtures/after.html": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+    "fixtures/before.html": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+    "fixtures/cases.json": "88517ac06fd841f9b32c3afea26481047dd63bd9290fa8baf08c59e118202f67",
+    "fixtures/font-license.txt": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b",
+    "fixtures/font-text.txt": "c96bc43230e0df40829a3f1e0d3fbdc8778d69db4fd470bb28094051c71f60c7",
+    "fixtures/font.otf": "23fa9c750f16dd01e620559d076bc09e05ea2f4959d8a711c7982952e4412c3c",
+    "fixtures/playback-moving.webm": "c1da03cf594d9e115313634b636b4f95f100157870874061bca64be3426117cc",
+    "fixtures/playback-static.webm": "14d352ef75e2587c4f5435f3294325f9cd36af3c7ac057b535fb424ed3d69f31",
+    "fixtures/source-manifest.json": "d6b1e646855902bff755364acbc74f38b4ac0aac62a591a1e686d3f1b6d6d009",
+    "fixtures/stage-fixture.js": "55e871d9495b07a360b896d8d47f4e7234f4440aae404d07c8bd37fd932175ce",
+    "fixtures/stage-test.log": "ac3c8a4d48f174641ae915f10254b12bd8757ccb431743409f65668b7eb80887",
+    "images/center-static-after-original.png": "8bdfd143f3dc862fdab8fbf9d747a4d2e3614c451c1711aa8aa63edc29024a25",
+    "images/center-static-after.png": "2c0dcdcb79f9ab9438e41c98e38f04d53b1870983ef412d26b42bcd6966d9662",
+    "images/center-static-before-original.png": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8",
+    "images/center-static-before.png": "a50e508c8f801928c9afda4c2c362ee88414bfeb594213846533bf33df0d04cb",
+    "images/dutch-direct-after-original.png": "38e390a368e8313138dc7fd4bbab68bda9fe2ecc18375ecaa7d48da8d8bac8a7",
+    "images/dutch-direct-after.png": "5add3cb37742410c643d2beff38ea3e45e4c50a16a6e6bb13cd00179d64ee78f",
+    "images/dutch-direct-before-original.png": "87533521f40b512c0049a61f4a8c9c7f958cb43f658e4c3849f425189cb54de7",
+    "images/dutch-direct-before.png": "eac08772459661977829dc794243dae4f9498e3ead729fff121b94f391764ce4",
+    "images/dutch-reverse-after-original.png": "38e390a368e8313138dc7fd4bbab68bda9fe2ecc18375ecaa7d48da8d8bac8a7",
+    "images/dutch-reverse-after.png": "8c9e04b85a057baffdca5a2f5219bf5f4943f3e99cbf0310e6d7bcca1a708274",
+    "images/dutch-reverse-before-original.png": "87533521f40b512c0049a61f4a8c9c7f958cb43f658e4c3849f425189cb54de7",
+    "images/dutch-reverse-before.png": "4d3afa2ff5a6e40519c63cb51a87586d4b9a3192cd5dc19555a92fd0a528d33a",
+    "images/dutch-sequential-after-original.png": "38e390a368e8313138dc7fd4bbab68bda9fe2ecc18375ecaa7d48da8d8bac8a7",
+    "images/dutch-sequential-after.png": "4b085d7cae29ab590fd0adce4e0e515bb08f16a3eaa871e86292c006eae3136f",
+    "images/dutch-sequential-before-original.png": "87533521f40b512c0049a61f4a8c9c7f958cb43f658e4c3849f425189cb54de7",
+    "images/dutch-sequential-before.png": "56fb72282469e5a9fc3ce9f85d270206481b5cc4b5e4b5dbf2508da9bfb3c0d8",
+    "images/existing-fullstage-control-after-original.png": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8",
+    "images/existing-fullstage-control-after.png": "32ff186db624cb6c47085be1599bff5848a564cedc7d6da0f91e48fa6b1ae014",
+    "images/existing-fullstage-control-before-original.png": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8",
+    "images/existing-fullstage-control-before.png": "3d6e2a9d46183ec702095ef98f5a9f6edf32b1f16eb0f2585178edccc6041beb",
+    "images/fallback-manual-after-original.png": "5d8a389efc19c6c1f786dcb7505694cc51857a919de5c37e5704a0cea98a021d",
+    "images/fallback-manual-after.png": "fbf279f4c50780c681fc6956ea7ae44ef5c0287f81effc96272def58574c77c7",
+    "images/fallback-manual-before-original.png": "5d8a389efc19c6c1f786dcb7505694cc51857a919de5c37e5704a0cea98a021d",
+    "images/fallback-manual-before.png": "ebb5dee6f5c20a21c7c3b809c58c91a13ec9b3764c2272e876893ab6afcc5fc0",
+    "images/fallback-off-after-original.png": "08af25dc10b0b9f85d81c7015e19aeb8bcbd74e658839057038bf5e665699bbb",
+    "images/fallback-off-after.png": "e19c83ee2cd2e0628df13ca97d0fcb1505cca24056672d30e20e0d8d1bc43dbb",
+    "images/fallback-off-before-original.png": "104afaab191b34aec9883346a1da8f963a852dc634cfc33cfcbd82d7e0df5ebb",
+    "images/fallback-off-before.png": "4c6b5da76c6e77da7919743036c36234bfa44325ba795674df7add1c2c598116",
+    "images/fallback-staged-after-original.png": "35cd947565737f570d2903abc4296b1062664a28f82c1080822713256f312a44",
+    "images/fallback-staged-after.png": "39c5eadbe5c85a9ce30ab827054d87fd5365510aea88426b5c79701f2b00ea96",
+    "images/fallback-staged-before-original.png": "104afaab191b34aec9883346a1da8f963a852dc634cfc33cfcbd82d7e0df5ebb",
+    "images/fallback-staged-before.png": "c7c920c6719845616c3040328f0453548afcd70f203601689a85943498d9606e",
+    "images/legacy-on-area-after-original.png": "3bc0b7a9c11f04083d251a2ac7ea5aaef6c5ddf684f401c0cd57aaa6249b58ba",
+    "images/legacy-on-area-after.png": "5f75ec8145319a130bbb13541b8d8001e3606762313aa5cbee4272f3062b23ef",
+    "images/legacy-on-area-before-original.png": "3bc0b7a9c11f04083d251a2ac7ea5aaef6c5ddf684f401c0cd57aaa6249b58ba",
+    "images/legacy-on-area-before.png": "f2941b20b69f80b920b5f56d40514539cf3e88042bb4461fb4b8c15f06e2f616",
+    "images/loaded-manual-after-original.png": "d6416676052fbeb258c46b9879995ce6161a85e344841a3cde24104410a16d76",
+    "images/loaded-manual-after.png": "8d40bbef9bccd2118f09edb92c6f6cd59f12fc569f45ebe72a363b36e863d68c",
+    "images/loaded-manual-before-original.png": "d6416676052fbeb258c46b9879995ce6161a85e344841a3cde24104410a16d76",
+    "images/loaded-manual-before.png": "a0d8c2804fd863d7971c254a3375aecc5ff3b21a4249d00e75d3a32a17d06ba8",
+    "images/loaded-off-after-original.png": "3bc0b7a9c11f04083d251a2ac7ea5aaef6c5ddf684f401c0cd57aaa6249b58ba",
+    "images/loaded-off-after.png": "8895710d6e8abfc6508eba9ceaecdca776066db04473b53721f06e89951d9538",
+    "images/loaded-off-before-original.png": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8",
+    "images/loaded-off-before.png": "c6214d875733ab275f4d4f63470558e9fb3c05ccf83c151154ffb898ca8f2fce",
+    "images/loaded-staged-after-original.png": "8bdfd143f3dc862fdab8fbf9d747a4d2e3614c451c1711aa8aa63edc29024a25",
+    "images/loaded-staged-after.png": "3c3224a39f5bf3dc47399dc96790051d08f1670d380a789a81acec08ff93a0f3",
+    "images/loaded-staged-before-original.png": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8",
+    "images/loaded-staged-before.png": "0653a9335e81bd0c49e440bea41a77a0d8df2ff1f661b10e23194abeb70e26f1",
+    "images/moving-frame-0-1-after-original.png": "61bdfe5de4610ae7b5da803da6a8cc813592c33f3c393a36b271371f2bc3a967",
+    "images/moving-frame-0-1-after.png": "f33835da4472e7263152a09e381206ef66c7e65dfd24cba33a75fe89592a09f2",
+    "images/moving-frame-0-1-before-original.png": "59860ec4b4d7a9a566d7b21377562c18f3d42cdd00dfd58f3215aac356cbcbe8",
+    "images/moving-frame-0-1-before.png": "5e1a89c468fd55944565027a2ec3cc9a64745a62d0787ceecadc3677e021f750",
+    "images/moving-frame-0-6-after-original.png": "102f56301a0f092ef988e86c8be686fc1c29a9bf5da9cd7f59e3b252b9212ce2",
+    "images/moving-frame-0-6-after.png": "6b4fef071481b071af20af20dd7d746bb1d89e42b8fc1df90edb8c46d4dc8ca4",
+    "images/moving-frame-0-6-before-original.png": "d4dce6705be50f00e6d63715f9a28adb335955222437e0785ac76b976ade3671",
+    "images/moving-frame-0-6-before.png": "869f15574e098905e7c01c845659ea50157ef7da1ccec12e05bbaad449f61ec3",
+    "images/moving-frame-1-5-after-original.png": "d2e721fa099676c2da0d62b44cce23891189eb554fe71f64f0338307fec89219",
+    "images/moving-frame-1-5-after.png": "022d1123cf7b0953b92f7abeca53507fc7999ed24583458179af7c97e8beb505",
+    "images/moving-frame-1-5-before-original.png": "8b5b23e4b8a27bc67dbfe193cec6cd2c88db8eda0aeb42d4fad19bbbb3cdd2c2",
+    "images/moving-frame-1-5-before.png": "bf01ebc7bab1f4eb4286cf843ff06299734a62e790fa5c4c74bbdfe2113d92c9",
+    "images/moving-frame-2-9-after-original.png": "0e36569832b3011366be3702ed5b4868f6e344a12a9caf2afb9d1d47e2077572",
+    "images/moving-frame-2-9-after.png": "436c326096288d3b377de23a6f58dafd5d27a46b0ba699fd62370229e82a1c61",
+    "images/moving-frame-2-9-before-original.png": "61231ee37a2901eecb12a1654d69d843f8413c64c393e5a077fe83852844ca66",
+    "images/moving-frame-2-9-before.png": "f6436bd69bbfae7888b4361aa503f559b3c08a745ddc90aca125ee5fbdad9405",
+    "images/moving-frame-3-05-after-original.png": "61a871d43b84bb9034fdf37bd0cca68efe179f7ae4ef35f28eaa97bb5a79fff8",
+    "images/moving-frame-3-05-after.png": "cb770bdb80df64b97ddcd79d38eb77023c72bcd6a534505dc777fddadd7ca843",
+    "images/moving-frame-3-05-before-original.png": "62e3e22c400c18f5ca60cd1525abe19328a61d58952ffd9e551abb76154177db",
+    "images/moving-frame-3-05-before.png": "1629de4f0843d1f2ab0caddc335ade718326eb166485ef15be2e9183e0158a39",
+    "images/moving-frame-3-2-after-original.png": "f0b9b6e772cb0ef7e3dd64b19369ab07fe81dd6d8c5fce499ac588d0b82f2f96",
+    "images/moving-frame-3-2-after.png": "9dd33b7c9d827ec3e354bbafac8cb0f782f2980b2a2b782597f1d928948fa229",
+    "images/moving-frame-3-2-before-original.png": "44b860032c8951fea6e93d70f57c356bcfb399a4ebd55949a50bc7e408885186",
+    "images/moving-frame-3-2-before.png": "69d032dcae6278acd9fe336d576bd54aa42f7bd71f400506d8bb4be24124e834",
+    "images/moving-frame-4-5-after-original.png": "66e0d06977ede175a4285ebae64e10c4c3c8c8a42f48a32729da307d64e683f5",
+    "images/moving-frame-4-5-after.png": "47f92fbb1ba536e545028c0847c82dc440cb26a9e9f0f60159175f55f509a554",
+    "images/moving-frame-4-5-before-original.png": "a3c861c3296732577be3c2c5bb0b39e1745279ec862935ebad0d8b5f972c7170",
+    "images/moving-frame-4-5-before.png": "761d8186377c6b78b1cc9d04a52c18c81d228d5b5c042f08489b8d828f7245c9",
+    "images/multiply-opacity-after-original.png": "5bb33bc771a0957a062b168137d957fd937752af947812741a330e26ac25e3cc",
+    "images/multiply-opacity-after.png": "36bb1bb74ab6d8bdd170ffc652f5639641f9292f3e6d661712171a878b447ae3",
+    "images/multiply-opacity-before-original.png": "df05b77b36f06bd0c9ddfd5c3f5e5b905ee0318797e9b300809cb1e2103203d9",
+    "images/multiply-opacity-before.png": "d83b8b9286f935d7f546bde74d35d099c94d35d24259e23f7e21d8c1d9480eff",
+    "images/overlay-frontmost-after-original.png": "9cef8a2e35da471d157b06726074aea9c1beef4658e041f0aa38d5c98a1752b6",
+    "images/overlay-frontmost-after.png": "0d39902c1c074431ac4023f2fe089174fe79829fc9206aee7327395de9f66bae",
+    "images/overlay-frontmost-before-original.png": "99403434b07d646c16c54ed9dcbe06f86d8eba1ce285cc548627c38bf0efdf18",
+    "images/overlay-frontmost-before.png": "f75c916a59c604c8656e982ba3e51f86b8aab6d0ee64b016b17dd94eeb94b856",
+    "images/panL-direct-after-original.png": "f5abdc931016bf0390d6220e4dc6e2641c33dd23b5f20a8228d4f39147014809",
+    "images/panL-direct-after.png": "612dc4abc8fd0d0b1b872c4d66af6ae6ee1d90c6e52c7f329947e3d6d85d15ec",
+    "images/panL-direct-before-original.png": "c325df248495cc0babb526f5889d0e2ce671419f600e892478f9d85f018ff457",
+    "images/panL-direct-before.png": "a9f6e7383430caf6124d73842e25c0f9fd779a1e125d7aa44184718445ae0393",
+    "images/panL-reverse-after-original.png": "f5abdc931016bf0390d6220e4dc6e2641c33dd23b5f20a8228d4f39147014809",
+    "images/panL-reverse-after.png": "17408dd8cf68799f612ae666bde4695d3a9380b2e56a9efa3a3c0a8c0ffee766",
+    "images/panL-reverse-before-original.png": "c325df248495cc0babb526f5889d0e2ce671419f600e892478f9d85f018ff457",
+    "images/panL-reverse-before.png": "1eb864e99fcbe1336be64814659b1069a7e712b0e44520a86d7b462200bce401",
+    "images/panL-sequential-after-original.png": "f5abdc931016bf0390d6220e4dc6e2641c33dd23b5f20a8228d4f39147014809",
+    "images/panL-sequential-after.png": "2beebc18afdf998e1b2b1fdd00deb2f663df8fd3f1ec4fedeb457e0ad3517774",
+    "images/panL-sequential-before-original.png": "c325df248495cc0babb526f5889d0e2ce671419f600e892478f9d85f018ff457",
+    "images/panL-sequential-before.png": "a9df73dc6e106cd8436c6e4e193283b5b9fa943acaab35c7651f6ccb74f5e555",
+    "images/reloaded-manual-after-original.png": "d6416676052fbeb258c46b9879995ce6161a85e344841a3cde24104410a16d76",
+    "images/reloaded-manual-after.png": "64b67a26be3f168b76b0f81f297e51601806882c3ade732cc4ec175d00c1422c",
+    "images/reloaded-manual-before-original.png": "d6416676052fbeb258c46b9879995ce6161a85e344841a3cde24104410a16d76",
+    "images/reloaded-manual-before.png": "6d86e4ef61208a4a3203f3d7453254f8eab94bb3170d506ec89f7a4e2dd11822",
+    "images/reloaded-off-after-original.png": "3bc0b7a9c11f04083d251a2ac7ea5aaef6c5ddf684f401c0cd57aaa6249b58ba",
+    "images/reloaded-off-after.png": "25ec059d831b5aa38f7a0e369a819074bf704b52287bf3631dcece6331238435",
+    "images/reloaded-off-before-original.png": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8",
+    "images/reloaded-off-before.png": "d08e3c8cea0df4dbb38ef170efb39700d70786b47c82b9fe5fb60c74e6bbc8ff",
+    "images/reloaded-staged-after-original.png": "8bdfd143f3dc862fdab8fbf9d747a4d2e3614c451c1711aa8aa63edc29024a25",
+    "images/reloaded-staged-after.png": "971a7552936bcbf68a1c4dd5bc54882c851836bad287cb53e73d0637c68323ea",
+    "images/reloaded-staged-before-original.png": "719e91ce274f29415b4408cc9bcd25dde7954fcbd365cd4e0ef1e637c9c5f9e8",
+    "images/reloaded-staged-before.png": "a02ccb0d9ec1d71cd965a7921aabb37bd23dd59b061b010d803807086d513cfe",
+    "images/tile-owned-box-after-original.png": "108998da6f06d77573876154a85f18f9e4d01154c26b5a0b46f734d86410d133",
+    "images/tile-owned-box-after.png": "b2e8653780ff8a0c01c45c0a6bfdbadb0f3d9c008b55f3565009b06dd0d33e27",
+    "images/tile-owned-box-before-original.png": "d5ab6ea0b7568fd9a9f0e3712f460501cb47d3a241d4a4bf8fa6ee10936242da",
+    "images/tile-owned-box-before.png": "f082723ea5371457d3d8bae60ba500e39b0e813445fc5c722b346c801fe4421f",
+    "../../../index.html": "90eae91fc93900cd542a81373a20335f0ce343e3928dca1417fb1192f591a6b1",
+    "../../../en/index.html": "562172e86591ff5bea9ce58605c50b04f9e47ad566498fc4cc9d8c68b0dbcfe2"
+  },
+  "limitations": [
+    "Internal opt-in only",
+    "Center/tile and bounded cameras only",
+    "Auxiliary repetitions unchanged; no mask until 018",
+    "Before new API absent, actual full-stage legacy baseline",
+    "Public validation pending parent"
+  ],
+  "playback": {
+    "static": {
+      "path": "fixtures/playback-static.webm",
+      "method": "Playwright browser screen recording, system ffmpeg",
+      "viewport": [
+        1500,
+        1500
+      ],
+      "recordedSize": [
+        1000,
+        1000
+      ],
+      "duration": 3.28,
+      "case": "center-static"
+    },
+    "moving": {
+      "path": "fixtures/playback-moving.webm",
+      "method": "Playwright browser screen recording, system ffmpeg",
+      "viewport": [
+        1500,
+        1500
+      ],
+      "recordedSize": [
+        1000,
+        1000
+      ],
+      "duration": 4.28,
+      "case": "dutch-direct"
+    }
+  }
+}

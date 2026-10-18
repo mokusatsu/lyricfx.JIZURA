@@ -201,3 +201,38 @@ The inherited full `project_file_test.cjs` still fails at its initial cut-count
 assertion (expected 0, actual 1), before saving. 003's scoped portable model
 roundtrip and malformed-input save guards pass; they do not turn that historical
 failure into a full save-test pass. AVOID-013 retains the complete persistence work.
+
+## AVOID-004 staged trajectory / drawing foundation
+
+The [internal API](STAGE-API.md) documents supported bounds, ownership, font/final
+plan lifecycle and explicit unsupported cases. Normal product generation remains
+on the legacy path. New APIs are exercised by real center/tile layouts in the
+versioned verification sample; auxiliary masking remains AVOID-018.
+
+```sh
+node dev/avoidance/stage-test.cjs
+node dev/avoidance/stage-perf.cjs
+node dev/avoidance/stage-review.cjs capture NEW-UNUSED-BUILD-ID
+node dev/avoidance/stage-compositing-test.cjs NEW-UNUSED-BUILD-ID
+node dev/avoidance/stage-review.cjs validate NEW-UNUSED-BUILD-ID
+node dev/avoidance/stage-negative.cjs NEW-UNUSED-BUILD-ID
+node dev/avoidance/stage-review.cjs validate NEW-UNUSED-BUILD-ID --base-url https://mokusatsu.github.io/lyricfx.JIZURA/
+```
+
+Use the runtime/browser variables above and the fixed
+`/workspace/work/avoid004-before` archive of `9a3d43e`. The 004 scripts do not alter
+002/003 bundles or validators. Validation checks canonical source/input, actual
+live measured offsets/font width and re-rendered original PNGs in addition to all
+asset hashes. Public raw-byte fetching reuses the approved browser transport;
+manifest, every image/font/fixture and root JA/EN are required to match. Negative
+tests validate an unmodified cloned bundle first, then require specific rejection
+reasons. Failed attempts retain their original build directories and logs.
+
+Managed capture environment note: browser video recording used the already installed
+`/usr/bin/ffmpeg`, with Playwright's expected `ffmpeg-1011/ffmpeg-linux` path pointing
+to it under `/workspace/work/avoid004-playwright`. Capture used
+`PLAYWRIGHT_BROWSERS_PATH=/workspace/work/avoid004-playwright`; Chromium still used
+`JIZURA_BROWSER=/usr/bin/chromium`. No home directory, CA trust, proxy or system
+package was changed. Normal environments can use their installed Playwright ffmpeg.
+The final sample serializes font/replan requests and adopts only the latest token;
+manual seek/case/font changes stop playback. Validation exercises rapid changes.

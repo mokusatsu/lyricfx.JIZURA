@@ -190,7 +190,8 @@ J.ensureFonts = async (text, keys) => {
 const _mc = document.createElement('canvas').getContext('2d');
 J.metrics = {
   m: new Map(),
-  clear() { this.m.clear(); },
+  revision: 0,
+  clear() { this.m.clear(); this.revision++; },
   adv(fontKey, ch) {               // advance in em
     const k = fontKey + '\u0000' + ch;
     let v = this.m.get(k);
@@ -353,3 +354,6 @@ function clipHalf(poly, nx, ny, d0, sgn) {
   return out;
 }
 })();
+
+// Font replacement/load invalidates fallback measurements even if advance width is unchanged.
+if (document.fonts?.addEventListener) document.fonts.addEventListener('loadingdone', () => { J.metrics.clear(); J.glyphs.clear(); });

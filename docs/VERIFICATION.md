@@ -122,3 +122,13 @@ Use `model-review.cjs` and `model-negative.cjs` for the 003 bundle; the 002 vali
 continues to enforce its original unchanged-production contract. Public 003
 validation supports `--base-url` and uses Chromium's existing proxy/CA transport.
 Neither local evidence nor an unpublished comparison establishes a deployed pass.
+
+## AVOID-004 staged drawing verification
+
+Run `stage-test.cjs`, `stage-perf.cjs`, `stage-review.cjs` and `stage-negative.cjs`
+as documented in [the avoidance README](../dev/avoidance/README.md#avoid-004-staged-trajectory--drawing-foundation).
+The [API scope](../dev/avoidance/STAGE-API.md) explicitly separates measured geometry,
+whole-interval certificates and unsupported adapters. Tests include independent
+actual raster ink containment, ordered record/replay pixel equality, full-stage
+camera/ghost/transition seeks, controlled font states and fixed-before legacy
+controls. This does not enable the new path for ordinary application generation.

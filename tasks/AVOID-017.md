@@ -100,3 +100,19 @@
 - 計画根拠: [AVOID-001](AVOID-001.md) と [設計書のE01〜E23](avoidance-design.md)。
 - 実装差分: なし。検証ログ: なし。上のチェックボックスはすべて未達/未確認。
 - 個別の追加判断は着手時に記録し、共通設計と矛盾させない。
+
+## AVOID-004からの既存回帰引継ぎ（017は未着手のまま）
+
+`dev/lyric_area_effects_test.cjs` は固定変更前 `9a3d43e` と004変更後の両方で
+line35 `result.withoutMedia` expected1/actual0に失敗する。t=1の選択cutが
+line0のeffectsOnlyでなくline=-1/layout=title/bg=noneであることをprobeで確認した。
+元assertionは変更していない。このassert以降の背景toggle/UI/保存assertは未到達。
+[変更前結果](evidence/AVOID-004/baseline-before/results.json)、
+[変更前log](evidence/AVOID-004/baseline-before/lyric_area_effects_test.cjs.log)、
+[probe](evidence/AVOID-004/baseline-before/area-probe.log)、
+[変更後結果](evidence/AVOID-004/regression-results.json)、
+[変更後log](evidence/AVOID-004/lyric_area_effects_test.cjs.log)を参照。
+004の独立したfixed-before manual/OFF/legacy/fullstage pixel・lock座標/clip試験は
+[118 checks](evidence/AVOID-004/stage-test.log)で成功しているが、この既存試験の
+後段成功に置換しない。017ではシーン選択の意図とfixtureを調査して扱いを決める。
+保存テスト初期cut数 expected0/actual1 の既知失敗は引き続き013が担当する。
