@@ -1,0 +1,70 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>AVOID-002 現行描画と未実装仕様</title><style>body{font:16px sans-serif;background:#17202b;color:#eee;margin:16px}select,button{font:inherit}canvas{width:100%;max-width:960px;background:#111}#capture{width:960px;max-width:100%}#absent{height:48px}pre{white-space:pre-wrap;overflow-wrap:anywhere}iframe{position:absolute;left:-20000px;width:1500px;height:1000px}table{border-collapse:collapse}td,th{border:1px solid #789;padding:6px} .spec{border:3px dashed #fc6;padding:8px}a{color:#acf}</style>
+<h1>AVOID-002 確認サンプル</h1><p><strong>確認専用のプライベート/シークレットウィンドウで開いてください。</strong>固定版アプリを同一originのiframeで起動します。通常の保存領域から隔離した確認セッションを使用してください。</p><p>現行Rendererの実描画。新しい円回避・トラック・resolverは未実装。仕様見本は期待値だけを図示し、実装結果として扱いません。</p>
+<label>Layout <select id="layout"></select></label> <label>Aspect <select id="aspect"></select></label> <label>仕様円 <select id="position"></select></label> <label>時刻 <input id="time" type="number" step="0.001" min="0" value="1"></label><button id="run">描画</button>
+<div id="capture"><h2 id="label"></h2><canvas id="current" width="960" height="540"></canvas><details><summary>現行描画の計測詳細（開発者向け）</summary><pre id="observed"></pre></details><div id="new"><h3>契約追加（現行アプリには存在しません）</h3><p>採用契約：初期位置は少し上 (.50, .42)、短辺20%の真円。gapは回避なし、境界で次の位置へ切替。強調は除外、手動/ロックは保持。円軌道は中心のみ。補助反復は配置を変えず円周で透過します。これらの新機能は未実装です。</p><table><tr><th>項目</th><th>採用した設計契約（未実装）</th></tr><tr><td>初期円 / 真円</td><td>中心 (.50,.42)、R=短辺×.20、安全余白=max(2px,短辺×.005)</td></tr><tr><td>時間 / gap / null end</td><td>[start,end)、gapはなし。null endは次のstartまたは作品終了。例：a=[0,2)、gap=[2,3)、b=[3,5)、c=[5,10)。2ではなし、3ではb、5ではc。</td></tr><tr><td>強調 / 手動 / lock</td><td>強調は主歌詞・補助・附属板すべて免除。手動area/lockedAreas/lockedEffectsは保持。巨大な明示サイズも縮小せず不足を報告。</td></tr><tr><td>競合 / 限界</td><td>重複は編集全体を拒否。最短.04秒、1000要素、半径.02～.45。未計測境界や役割混合FXは成功にしない。</td></tr><tr><td>補助反復 mask</td><td>F=max(2px,短辺×.04)。d≤Rはalpha=0、R～R+Fはsmoothstep、外は1。主歌詞/映像へ掛けない。multiplyも元の描画順で合成。</td></tr></table><details><summary>契約の数値・出所（開発者向け）</summary><pre id="contract"></pre></details><div class="spec"><b>未実装の仕様見本：円の位置と寸法のみ。完成した新軌道ではありません。</b><canvas id="spec" width="960" height="180"></canvas><p id="rule"></p></div><details><summary>184IDの担当・保守的役割一覧（adapter実装は未完）</summary><pre id="inventory"></pre></details></div><p id="absent" hidden>変更前には契約確認UIが存在しません。同じ撮影用枠で固定旧版アプリを実描画しています。</p></div>
+<iframe id="app" title="固定版アプリ" src="fixtures/current.html"></iframe>
+<script>
+(async()=>{const $=id=>document.getElementById(id),query=new URLSearchParams(location.search),before=query.has('before');
+const [cases,contract,inventory]=await Promise.all(['cases.json','contract.json','inventory.json'].map(p=>fetch('fixtures/'+p).then(r=>r.json())));
+window.fixture=cases;
+ for(const [id,values] of [['layout',cases.layouts],['aspect',cases.aspects],['position',Object.keys(cases.positions)]])for(const v of values)$(id).add(new Option(v,v));
+for(const id of ['layout','aspect','position','time'])if(query.has(id))$(id).value=query.get(id);
+ $('new').style.visibility=before?'hidden':'visible';
+$('absent').hidden=false;
+$('absent').textContent=before?'変更前には契約確認UIが存在しません。同じ撮影用枠で固定旧版アプリを実描画しています。':'変更後は契約確認UIを追加。主歌詞の新しい回避軌道は未実装です。';
+$('contract').textContent=JSON.stringify({default:contract.default,limits:contract.limits,time:contract.time,priority:contract.priority,auxMask:contract.auxMask,sourceKinds:contract.sourceKinds},null,2);
+$('inventory').textContent=inventory.map(r=>`${r.id}: ${r.task}; ${r.role}; ${r.status}`).join('\n');
+ const app=$('app');
+await new Promise(resolve=>{const poll=()=>app.contentWindow.J?.ui?resolve():setTimeout(poll,50);
+poll()});
+const J=app.contentWindow.J;const ids=J.order('layout');if(ids.length!==184||new Set(ids).size!==184||ids.some(id=>!inventory.some(r=>r.id===id)))throw Error('184-ID registry mismatch');
+ const font=new FontFace('AvoidanceFixture','url(fixtures/font.otf)');
+await font.load();
+app.contentDocument.fonts.add(font);
+await app.contentDocument.fonts.ready;
+for(const key of Object.keys(J.FONTS)) J.FONTS[key]={...J.FONTS[key],family:'AvoidanceFixture',weight:400,fb:'AvoidanceFixture',gf:null};
+J.glyphs.clear();
+J.metrics.clear();
+window.fontReady=font.status==='loaded';
+ window.render=()=>{const p=J.defaultProject();
+p.seed=cases.seed;
+p.lyrics=cases.lyrics;
+p.title='';
+p.artist='';
+p.durationOverride=cases.duration;
+p.aspect=$('aspect').value;
+p.font='AvoidanceFixture';
+p.fx={...p.fx,chroma:0,glitch:0,decor:0,texture:0,hud:'off',onTwos:false,koma:0};
+p.lyricEffects={autoPlacement:true,avoidCenter:true};
+p.overrides={0:{single:true,layout:$('layout').value,enter:'cut',exit:'cut',hold:'still',cam:'none',treat:'none',bg:'none',decor:[]}};
+ // Explicit font at style boundary; current defaultProject font fields vary by style.
+ const plan=J.plan(p);
+plan.style.fontFamily='AvoidanceFixture';
+plan.style.font='AvoidanceFixture';
+const c=plan.cuts.find(c=>c.line===0&&c.part===0),cv=$('current');
+cv.width=plan.W;
+cv.height=plan.H;
+new J.Renderer().frame(cv.getContext('2d'),plan,+$('time').value,{noHud:true});
+const env=new J.Renderer().makeEnv(cv.getContext('2d'),plan,c,plan.style.schemes[0],{pass:'main',t:+$('time').value,lt:+$('time').value,ltb:+$('time').value,step:24,scale:1,allowFilter:false});
+window.observation={layout:c.layout,stage:[plan.W,plan.H],renderSize:[env.W,env.H],area:c.area,ratio:env.W*env.H/(plan.W*plan.H),time:+$('time').value,seed:p.seed,fontLoaded:font.status};
+$('label').textContent=(before?'変更前 固定旧版':'変更後 確認ページ＋現行実描画')+' / '+c.layout+' / '+p.aspect;
+$('observed').textContent='現行の実測値（新しい円回避の結果ではありません）\n'+JSON.stringify(window.observation,null,2);
+ const sc=$('spec');
+sc.width=plan.W;
+sc.height=plan.H;
+const g=sc.getContext('2d'),pos=cases.positions[$('position').value];
+g.clearRect(0,0,sc.width,sc.height);
+g.strokeStyle='#fc6';
+g.lineWidth=2;
+g.beginPath();
+g.arc(pos.x*sc.width,pos.y*sc.height,.2*Math.min(sc.width,sc.height),0,Math.PI*2);
+g.stroke();
+$('rule').textContent=pos.y<.45?'期待する優先通路：左右と下':pos.y>.55?'期待する優先通路：左右と上':'期待する優先通路：上下左右';
+window.ready=true;
+};
+$('run').onclick=window.render;
+for(const id of ['layout','aspect','position','time'])$(id).onchange=window.render;
+window.render();
+})().catch(e=>{document.body.append(String(e));
+window.failure=String(e)});
+</script></html>

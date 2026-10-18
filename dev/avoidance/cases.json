@@ -1,0 +1,149 @@
+{
+  "seed": 1,
+  "stage": [
+    1920,
+    1080
+  ],
+  "viewport": [
+    1500,
+    1000
+  ],
+  "deviceScaleFactor": 1,
+  "frameTimes": [
+    0.001,
+    1,
+    4.999
+  ],
+  "lyrics": "[00:00]夜明けの色を覚えてる",
+  "duration": 5,
+  "layouts": [
+    "center",
+    "ring",
+    "tile"
+  ],
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "21:9",
+    "4:5"
+  ],
+  "positions": {
+    "center": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "upper": {
+      "x": 0.5,
+      "y": 0.2
+    },
+    "lower": {
+      "x": 0.5,
+      "y": 0.8
+    },
+    "default": {
+      "x": 0.5,
+      "y": 0.42
+    }
+  },
+  "intervalExamples": {
+    "duration": 10,
+    "regions": [
+      {
+        "id": "a",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "id": "b",
+        "start": 3,
+        "end": null
+      },
+      {
+        "id": "c",
+        "start": 5,
+        "end": null
+      }
+    ],
+    "expected": [
+      [
+        0,
+        "a"
+      ],
+      [
+        1.999999,
+        "a"
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        2.999999,
+        null
+      ],
+      [
+        3,
+        "b"
+      ],
+      [
+        4.999999,
+        "b"
+      ],
+      [
+        5,
+        "c"
+      ],
+      [
+        9.999999,
+        "c"
+      ],
+      [
+        10,
+        null
+      ]
+    ]
+  },
+  "invalidExamples": [
+    {
+      "name": "overlap",
+      "regions": [
+        {
+          "start": 0,
+          "end": 4
+        },
+        {
+          "start": 3,
+          "end": 5
+        }
+      ]
+    },
+    {
+      "name": "zero interval",
+      "regions": [
+        {
+          "start": 2,
+          "end": 2
+        }
+      ]
+    },
+    {
+      "name": "nonfinite",
+      "radius": "NaN"
+    },
+    {
+      "name": "duplicate ID",
+      "ids": [
+        "a",
+        "a"
+      ]
+    }
+  ],
+  "manualLockExamples": [
+    "explicit manual area remains identical",
+    "lockedAreas remains identical",
+    "lockedEffects remains identical",
+    "oversize notation yields conflict instead of shrink"
+  ],
+  "note": "Expectation fixtures only; 003 must connect real resolver and validate malformed inputs transactionally. Current app has no regions."
+}

@@ -4,7 +4,7 @@ const fs=require('node:fs/promises');
 const wav=Buffer.alloc(44+16000*2);wav.write('RIFF');wav.writeUInt32LE(wav.length-8,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);wav.writeUInt16LE(1,20);wav.writeUInt16LE(1,22);wav.writeUInt32LE(16000,24);wav.writeUInt32LE(32000,28);wav.writeUInt16LE(2,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(wav.length-44,40);
 for(let i=0;i<16000;i++)wav.writeInt16LE(Math.round(Math.sin(i/16000*440*2*Math.PI)*3000),44+i*2);
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await require('./browser.cjs').launch();
  try{for(const lang of ['', 'en/']){
   const errors=[],setup=async()=>{const c=await browser.newContext({viewport:{width:1500,height:1000}}),p=await c.newPage();p.on('pageerror',e=>errors.push(e.message));await p.route('https://fonts.googleapis.com/**',r=>r.fulfill({contentType:'text/css',body:''}));await p.goto('http://127.0.0.1:8765/'+lang);await p.locator('#modePro').click();return p};
   const p=await setup();assert.match(await p.title(),/^(【[^】]+】)?字面一 JIZURA ONE STOP EDITION$/);// the preview server prefixes the branchassert.equal(await p.locator('#fileProject').getAttribute('accept'),null);
@@ -22,7 +22,7 @@ for(let i=0;i<16000;i++)wav.writeInt16LE(Math.round(Math.sin(i/16000*440*2*Math.
   await p.waitForFunction(()=>!!J.ui.audioFile);
   await p.locator('#sourceLyrics').click();// BPM is in the 歌詞・曲 tab
   await p.locator('#bpm').fill('144');await p.locator('#bpm').dispatchEvent('change');
-  await p.locator('#fontFile').setInputFiles('C:/Windows/Fonts/arial.ttf');await p.waitForFunction(()=>J.ui.project.userFonts?.some(f=>f.file));
+  await p.locator('#fontFile').setInputFiles(process.env.JIZURA_TEST_FONT || 'C:/Windows/Fonts/arial.ttf');await p.waitForFunction(()=>J.ui.project.userFonts?.some(f=>f.file));
   const before=await p.evaluate(()=>JSON.parse(JSON.stringify(J.ui.project)));
   const wait=p.waitForEvent('download');await p.locator('#projectMenu summary').click();await p.locator('#btnSave').click();await p.locator('#saveFilename').fill('素材 保存 テスト.jizuraichi');await p.locator('#filenameDlg button[value="save"]').click();const download=await wait;
   assert.match(download.suggestedFilename(),/\.jizuraichi$/);const bytes=await fs.readFile(await download.path());assert.equal(bytes.subarray(0,8).toString(),'JIZURA01');

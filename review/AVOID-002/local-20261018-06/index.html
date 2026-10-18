@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>AVOID-002 local-20261018-06</title>
+<style>body{font:16px sans-serif;max-width:1600px;margin:auto;padding:16px;background:#16202a;color:#eee}a{color:#adf}.pair{display:flex;gap:12px}figure{margin:0;min-width:0}figcaption{height:6em;overflow:auto;overflow-wrap:anywhere}.pair figure{width:50%}img{width:100%;height:auto}button,select,input{font:inherit}.overlay{position:relative}.overlay figure{width:100%}.overlay figure+figure{position:absolute;top:0;left:0;opacity:var(--alpha,.5)}.toggle figure{width:100%}.toggle figure:first-child{display:none}.toggle.before figure:first-child{display:block}.toggle.before figure+figure{display:none}.original{overflow:auto;max-height:85vh}.original img{width:auto;max-width:none}@media(max-width:650px){.pair{flex-direction:column}.pair figure{width:100%}.overlay{display:block}}</style>
+<h1>AVOID-002 / local-20261018-06</h1>
+<p>
+<strong>操作サンプルは確認専用のプライベート/シークレットウィンドウで開いてください。</strong>固定アプリの保存領域を通常の編集セッションから隔離してください。</p>
+<p>変更前: 646ea4fe82582d072f36ed2206cc1c07749f9bdf; 変更後: 同じ本番描画ソース＋契約確認ページ追加。実装済みの新軌道はありません。beforeの契約UIは不存在と表示。仕様見本は未実装として別枠。ローカルで撮影、Pages一致は別途検証。</p>
+<p>撮影条件: seed 1 / viewport 1500×1000 / DPR 1 / Chromium 154.0.8037.57 / ローカルNoto Sans CJK subset。時刻と寸法は各caseとmanifest参照。3項目 / 22cases。</p>
+<nav><a href="#AVOID-002-H01">AVOID-002-H01</a> / <a href="#AVOID-002-H02">AVOID-002-H02</a> / <a href="#AVOID-002-H03">AVOID-002-H03</a> / <a href="sample.html">操作サンプル</a> / <a href="manifest.json">manifest</a> / <a href="fixtures/contract.json">採用契約</a> / <a href="fixtures/inventory.json">184ID担当</a>
+</nav>
+<p>
+<label>表示 <select id="mode">
+<option value="pair">並列</option>
+<option value="toggle">前後切替</option>
+<option value="overlay">重ね合わせ</option>
+</select>
+</label> <button id="toggle">変更前/後切替</button> <label>重ね合わせ <input id="alpha" type="range" min="0" max="1" step=".05" value=".5">
+</label> <button id="size">原寸/画面幅（全画像同期）</button>
+</p><section id="AVOID-002-H01">
+<h2>AVOID-002-H01</h2><article>
+<h3>case-01</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=16:9&position=center&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-01-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-01-before.png">
+<img src="images/case-01-before.png" alt="case-01 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-01-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-01-after.png">
+<img src="images/case-01-after.png" alt="case-01 after" width="960" height="1795">
+</a>
+</figure></div>
+</article><article>
+<h3>case-02</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=16:9&position=upper&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-02-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-02-before.png">
+<img src="images/case-02-before.png" alt="case-02 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-02-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-02-after.png">
+<img src="images/case-02-after.png" alt="case-02 after" width="960" height="1795">
+</a>
+</figure></div>
+</article><article>
+<h3>case-03</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=16:9&position=lower&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-03-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-03-before.png">
+<img src="images/case-03-before.png" alt="case-03 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-03-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-03-after.png">
+<img src="images/case-03-after.png" alt="case-03 after" width="960" height="1795">
+</a>
+</figure></div>
+</article><article>
+<h3>case-04</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=16:9&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-04-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-04-before.png">
+<img src="images/case-04-before.png" alt="case-04 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-04-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-04-after.png">
+<img src="images/case-04-after.png" alt="case-04 after" width="960" height="1795">
+</a>
+</figure></div>
+</article></section><section id="AVOID-002-H02">
+<h2>AVOID-002-H02</h2><article>
+<h3>case-05</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=center&aspect=16:9&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-05-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-05-before.png">
+<img src="images/case-05-before.png" alt="case-05 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-05-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-05-after.png">
+<img src="images/case-05-after.png" alt="case-05 after" width="960" height="1795">
+</a>
+</figure></div>
+</article><article>
+<h3>case-06</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=center&aspect=9:16&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-06-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-06-before.png">
+<img src="images/case-06-before.png" alt="case-06 before" width="960" height="4102">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-06-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-06-after.png">
+<img src="images/case-06-after.png" alt="case-06 after" width="960" height="4102">
+</a>
+</figure></div>
+</article><article>
+<h3>case-07</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=center&aspect=1:1&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-07-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-07-before.png">
+<img src="images/case-07-before.png" alt="case-07 before" width="960" height="2626">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-07-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-07-after.png">
+<img src="images/case-07-after.png" alt="case-07 after" width="960" height="2626">
+</a>
+</figure></div>
+</article><article>
+<h3>case-08</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=center&aspect=21:9&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-08-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-08-before.png">
+<img src="images/case-08-before.png" alt="case-08 before" width="960" height="1541">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-08-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-08-after.png">
+<img src="images/case-08-after.png" alt="case-08 after" width="960" height="1541">
+</a>
+</figure></div>
+</article><article>
+<h3>case-09</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=center&aspect=4:5&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-09-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-09-before.png">
+<img src="images/case-09-before.png" alt="case-09 before" width="960" height="3100">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-09-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-09-after.png">
+<img src="images/case-09-after.png" alt="case-09 after" width="960" height="3100">
+</a>
+</figure></div>
+</article><article>
+<h3>case-10</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=16:9&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-10-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-10-before.png">
+<img src="images/case-10-before.png" alt="case-10 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-10-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-10-after.png">
+<img src="images/case-10-after.png" alt="case-10 after" width="960" height="1795">
+</a>
+</figure></div>
+</article><article>
+<h3>case-11</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=9:16&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-11-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-11-before.png">
+<img src="images/case-11-before.png" alt="case-11 before" width="960" height="4102">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-11-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-11-after.png">
+<img src="images/case-11-after.png" alt="case-11 after" width="960" height="4102">
+</a>
+</figure></div>
+</article><article>
+<h3>case-12</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=1:1&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-12-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-12-before.png">
+<img src="images/case-12-before.png" alt="case-12 before" width="960" height="2626">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-12-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-12-after.png">
+<img src="images/case-12-after.png" alt="case-12 after" width="960" height="2626">
+</a>
+</figure></div>
+</article><article>
+<h3>case-13</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=21:9&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-13-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-13-before.png">
+<img src="images/case-13-before.png" alt="case-13 before" width="960" height="1541">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-13-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-13-after.png">
+<img src="images/case-13-after.png" alt="case-13 after" width="960" height="1541">
+</a>
+</figure></div>
+</article><article>
+<h3>case-14</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=ring&aspect=4:5&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-14-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-14-before.png">
+<img src="images/case-14-before.png" alt="case-14 before" width="960" height="3100">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-14-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-14-after.png">
+<img src="images/case-14-after.png" alt="case-14 after" width="960" height="3100">
+</a>
+</figure></div>
+</article><article>
+<h3>case-15</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=tile&aspect=16:9&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-15-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-15-before.png">
+<img src="images/case-15-before.png" alt="case-15 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-15-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-15-after.png">
+<img src="images/case-15-after.png" alt="case-15 after" width="960" height="1795">
+</a>
+</figure></div>
+</article><article>
+<h3>case-16</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=tile&aspect=9:16&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-16-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-16-before.png">
+<img src="images/case-16-before.png" alt="case-16 before" width="960" height="4102">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-16-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-16-after.png">
+<img src="images/case-16-after.png" alt="case-16 after" width="960" height="4102">
+</a>
+</figure></div>
+</article><article>
+<h3>case-17</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=tile&aspect=1:1&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-17-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-17-before.png">
+<img src="images/case-17-before.png" alt="case-17 before" width="960" height="2626">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-17-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-17-after.png">
+<img src="images/case-17-after.png" alt="case-17 after" width="960" height="2626">
+</a>
+</figure></div>
+</article><article>
+<h3>case-18</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=tile&aspect=21:9&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-18-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-18-before.png">
+<img src="images/case-18-before.png" alt="case-18 before" width="960" height="1541">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-18-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-18-after.png">
+<img src="images/case-18-after.png" alt="case-18 after" width="960" height="1541">
+</a>
+</figure></div>
+</article><article>
+<h3>case-19</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=tile&aspect=4:5&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-19-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-19-before.png">
+<img src="images/case-19-before.png" alt="case-19 before" width="960" height="3100">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-19-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-19-after.png">
+<img src="images/case-19-after.png" alt="case-19 after" width="960" height="3100">
+</a>
+</figure></div>
+</article></section><section id="AVOID-002-H03">
+<h2>AVOID-002-H03</h2><article>
+<h3>case-20</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=0.001s seed=1 / <a href="sample.html?layout=center&aspect=16:9&position=default&time=0.001">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-20-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-20-before.png">
+<img src="images/case-20-before.png" alt="case-20 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-20-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-20-after.png">
+<img src="images/case-20-after.png" alt="case-20 after" width="960" height="1795">
+</a>
+</figure></div>
+</article><article>
+<h3>case-21</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=1s seed=1 / <a href="sample.html?layout=center&aspect=16:9&position=default&time=1">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-21-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-21-before.png">
+<img src="images/case-21-before.png" alt="case-21 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-21-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-21-after.png">
+<img src="images/case-21-after.png" alt="case-21 after" width="960" height="1795">
+</a>
+</figure></div>
+</article><article>
+<h3>case-22</h3>
+<p>見る箇所: 現行の小矩形と実測値、追加契約。意図した変化: 確認UI追加。維持: 現行Rendererの描画。仕様円は別枠・未実装。 / time=4.999s seed=1 / <a href="sample.html?layout=center&aspect=16:9&position=default&time=4.999">同じfixtureを操作</a>
+</p>
+<div class="pair"><figure>
+<figcaption>変更前 固定旧版＋UI不存在 (646ea4fe82582d072f36ed2206cc1c07749f9bdf) / <a href="images/case-22-before-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-22-before.png">
+<img src="images/case-22-before.png" alt="case-22 before" width="960" height="1795">
+</a>
+</figure><figure>
+<figcaption>変更後 確認ページ＋現行実描画 (de7a26b4b6b117547e24c3d91b011a1352ecf3743f29a23d43e4cf1fca5255fa) / <a href="images/case-22-after-original.png">原寸ステージPNG</a>
+</figcaption>
+<a href="images/case-22-after.png">
+<img src="images/case-22-after.png" alt="case-22 after" width="960" height="1795">
+</a>
+</figure></div>
+</article></section><script>const pairs=[...document.querySelectorAll('.pair')];mode.onchange=()=>pairs.forEach(p=>p.className=mode.value);toggle.onclick=()=>pairs.forEach(p=>p.classList.toggle('before'));alpha.oninput=()=>document.body.style.setProperty('--alpha',alpha.value);size.onclick=()=>pairs.forEach(p=>p.classList.toggle('original'));</script>
+</html>
