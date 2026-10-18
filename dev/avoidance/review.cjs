@@ -1,6 +1,56 @@
 // Immutable capture bundle. Local requests only; remote fonts/models are blocked.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),http=require('node:http'),cp=require('node:child_process'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../..'),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+// Apply the existing environment proxy only to public validation. Browser fetches
+// and page navigation then share Chromium's proxy and certificate trust settings.
+function publicBrowserOptions(target, env = process.env) {
+  const url = new URL(target);
+  const host = url.hostname.replace(/^\[|\]$/g, '').toLowerCase();
+  if (['localhost', '127.0.0.1', '::1'].includes(host)) return {};
+  const noProxy = env.no_proxy || env.NO_PROXY || '';
+  const port = url.port || (url.protocol === 'https:' ? '443' : '80');
+  const bypassed = noProxy.split(/[\s,]+/).filter(Boolean).some(entry => {
+    if (entry === '*') return true;
+    const match = entry.match(/^(\[[^\]]+\]|[^:]+)(?::(\d+))?$/);
+    if (!match || (match[2] && match[2] !== port)) return false;
+    const domain = match[1].replace(/^\[|\]$/g, '').replace(/^\*?\./, '').toLowerCase();
+    return host === domain || host.endsWith('.' + domain);
+  });
+  if (bypassed) return {};
+  const proxyValue = url.protocol === 'https:'
+    ? env.https_proxy || env.HTTPS_PROXY || env.all_proxy || env.ALL_PROXY
+    : env.http_proxy || env.HTTP_PROXY || env.all_proxy || env.ALL_PROXY;
+  if (!proxyValue) return {};
+  try {
+    const proxy = new URL(proxyValue);
+    assert.ok(['http:', 'https:', 'socks5:'].includes(proxy.protocol));
+    return {proxy: {
+      server: proxy.protocol + '//' + proxy.host,
+      ...(proxy.username ? {username: decodeURIComponent(proxy.username)} : {}),
+      ...(proxy.password ? {password: decodeURIComponent(proxy.password)} : {}),
+      ...(noProxy ? {bypass: noProxy} : {})
+    }};
+  } catch {
+    // Do not include the invalid value or URL parser error: it may contain secrets.
+    throw new Error('Invalid environment proxy configuration');
+  }
+}
+
+async function browserGet(page, url) {
+  const result = await page.evaluate(async url => {
+    const response = await fetch(url, {cache: 'no-store'});
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    // Preserve raw bytes. CDP Response.body() may re-encode text/plain responses
+    // without a declared charset, including the bundled font copyright file.
+    let binary = '';
+    for (let offset = 0; offset < bytes.length; offset += 32768) {
+      binary += String.fromCharCode(...bytes.subarray(offset, offset + 32768));
+    }
+    return {status: response.status, body: btoa(binary)};
+  }, url);
+  return {status: () => result.status, body: async () => Buffer.from(result.body, 'base64')};
+}
+
 async function serve(directory=root){const server=http.createServer((req,res)=>{let p=path.resolve(directory,'.'+decodeURIComponent(req.url.split('?')[0]));
     if(!p.startsWith(directory+path.sep)){res.writeHead(403).end();
       return}try{if(fs.statSync(p).isDirectory())p=path.join(p,'index.html');
@@ -145,13 +195,22 @@ async function validate(dir,relative,baseURL=null){const m=JSON.parse(fs.readFil
     }}
   const local = baseURL ? null : await serve(dir);
   const target = baseURL ? new URL(relative + '/index.html', baseURL).href : local.base + '/index.html';
-  const browser = await require('../browser.cjs').launch();
+  let browser;
+  try {
+    browser = await require('../browser.cjs').launch(baseURL ? publicBrowserOptions(target) : {});
+  } catch {
+    // Playwright launch errors can echo proxy arguments; keep those out of logs.
+    if (local) await new Promise(resolve => local.server.close(resolve));
+    throw new Error('Validation browser launch failed; inspect the approved runtime without printing proxy configuration');
+  }
   try{const page=await browser.newPage();
     await page.route('**/*', route => route.request().url().startsWith(new URL(target).origin+'/') ? route.continue() : route.abort());
     if (baseURL) {
+      // Establish a same-origin document; every byte check then uses browser networking.
+      await page.goto(target);
       for (const [asset, hash] of [...Object.entries(m.assets), ['manifest.json', sha(fs.readFileSync(path.join(dir,'manifest.json')))]]) {
         const url = new URL(asset, target).href;
-        const response = await page.request.get(url);
+        const response = await browserGet(page, url);
         assert.equal(response.status(), 200, 'public HTTP ' + url);
         assert.equal(sha(await response.body()), hash, 'public hash ' + url);
       }
@@ -181,7 +240,7 @@ async function validate(dir,relative,baseURL=null){const m=JSON.parse(fs.readFil
       }
       await page.selectOption('#mode', 'pair');
       for(const href of await page.locator('a[href]').evaluateAll(xs=>xs.map(x=>x.getAttribute('href')))){if(href.startsWith('#'))assert.equal(await page.locator(href).count(),1);
-        else assert.equal((await page.request.get(new URL(href,page.url()).href)).status(),200,'link '+href)}}assert.deepEqual(broken,[]);
+        else assert.equal((await browserGet(page, new URL(href,page.url()).href)).status(),200,'link '+href)}}assert.deepEqual(broken,[]);
     await page.goto(new URL('sample.html', target).href);
     await page.waitForFunction(() => window.ready || window.failure);
     assert.equal(await page.evaluate(() => window.failure), undefined);
@@ -190,6 +249,6 @@ async function validate(dir,relative,baseURL=null){const m=JSON.parse(fs.readFil
     console.log(JSON.stringify({publicURL:baseURL||null,validated:true,cases:m.cases.length,uiImages:m.cases.length*2,originalImages:m.cases.length*2,images:m.cases.length*4,widths:[1500,390],manifestSHA256:sha(fs.readFileSync(path.join(dir,'manifest.json')))}));
   }finally{await browser.close();
     if(local)await new Promise(r=>local.server.close(r))}}
-module.exports={validate};
+module.exports={validate,publicBrowserOptions};
 if(require.main===module)main().catch(e=>{console.error(e);
   process.exitCode=1});

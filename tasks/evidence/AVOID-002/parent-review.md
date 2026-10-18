@@ -46,3 +46,22 @@ GitHub connectorで過去の `work` のPages workflowを読み取ることはで
 - 親が縦画面1080×1920の実描画、回避位置選択による仕様文の切替、tile選択、pageerrorなしを独立確認。[操作証拠](parent-ui-check.json)。
 - **人間動作レビュー不要**。今回は本体の動作・演出・編集操作を変えず、既存動作の記録と後続の判定基盤を加えた段階である。利用者要件を変更せず、数値は採用した実装判断として区別した。親のコード・結果・表示確認で今回の変更を判定できるため、最新の委任に基づき省略する。人間がOKした記録ではない。
 - **タスク完了は未認定**。GitHub Pages上での画像・日英HTML・manifest一致と実起動が必須のまま残る。通信制約を人間確認省略で免除しない。依存する003は未着手を維持する。
+
+### 公開後の追加検証
+
+成果物commit `f14fa2c28683735e6c5eef1d5fbd00e1bb588e61` をworkへpushし、Pages run [39131787480](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39131787480) のsuccessをGitHub connectorで確認した。manifest/画像は同じ06候補。
+
+追加指摘R14: 実URLでのvalidator初回はAPIRequestが所定proxyを使わず、DNSの`EAI_AGAIN`で停止した（[初回ログ](public-validation.log)）。curlの所定proxy経由CONNECT403とは別の検証ツール問題として、同じ実装担当へ修正を依頼した。公開HTTP成功へ見せかけるfallbackを入れず、所定proxy/CAを使う経路を確認する。
+
+実装担当の最終字下げ整形後のoracle hash `6055d94199b894abdc8acd856f2c43b32fd509c34d47327c81221a754a769b78` で、親の10,006件照合を再実行して成功。証拠JSONは成果物commitと最終hashを記録している。
+
+R14の修正を親がレビューし承認した。公開modeは既存proxyをChromiumへ渡し、HTTP/hash/linkをブラウザfetchのraw bytesで照合する。文字コードのないtext/plainをCDPで再エンコードしてhashが変わる経路も除去した。CA/TLSを維持し、local/NO_PROXYは保持、proxy値をログへ出さない。
+
+- 親の設定分岐13件: [成功](parent-proxy-options.json)。
+- 修正後の公開modeをローカルHTTPで再実行: [22cases/88images成功](parent-url-mode-final.log)。
+- 修正後の正常clone＋7破損ケース: [成功](negative-validation-final.log)。
+- 修正後の実Pages: [ERR_TUNNEL_CONNECTION_FAILEDで失敗](public-validation-proxy.log)。既存公開smoke testも[同じ接続失敗](public-site-smoke.log)。smoke testの依存は既存pnpm-lockに従いfrozen installで準備し、lockfileと本体は変更していない。
+
+ここまでのコード/ローカル試験は承認、人間動作確認不要の判断を維持する。公開HTTP/hash/起動は未確認。環境設定の許可ドメインにmokusatsu.github.ioを追加するよう利用者へ依頼済み。設定変更前の失敗を製品不具合や公開成功と誤記しない。
+
+コミット前チェック: コード・文書の差分チェック成功。保存した旧テストstdoutの末尾空白は原記録として維持。本番src/日英HTMLは開始HEADと一致。成果物commit時の作業ツリーはclean、公開検証記録とR14修正を追記commitして引き継ぐ。

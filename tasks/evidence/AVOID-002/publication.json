@@ -1,0 +1,37 @@
+{
+  "artifactCommit": "f14fa2c28683735e6c5eef1d5fbd00e1bb588e61",
+  "branch": "work",
+  "pushSucceeded": true,
+  "deployment": {
+    "id": 39131787480,
+    "sha": "f14fa2c28683735e6c5eef1d5fbd00e1bb588e61",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39131787480",
+    "name": "pages build and deployment"
+  },
+  "build": "local-20261018-06",
+  "manifestSHA256": "cfa2d79603268193dc181442c0026816e42d624e3aa639a0463edeb20cdea30a",
+  "publicPageVerified": false,
+  "limitations": [
+    "GitHub workflow success does not establish HTTP/hash/browser checks",
+    "Inherited proxy reports CONNECT 403 for mokusatsu.github.io",
+    "Initial direct-DNS APIRequest failure corrected; actual browser transport still denied by environment policy"
+  ],
+  "humanBehaviorReview": {
+    "required": false,
+    "reason": "No production behavior change; parent reviewed code, tests and live local UI"
+  },
+  "publicValidation": {
+    "exitCode": 1,
+    "result": "ERR_TUNNEL_CONNECTION_FAILED",
+    "log": "public-validation-proxy.log",
+    "transport": "Chromium with inherited proxy and CA; browser fetch raw bytes",
+    "validatorSHA256": "45373dfe3450bdd2783edfe4edfaeac5be011b70333b48f6c3afb72a48058770"
+  },
+  "publicSiteSmoke": {
+    "exitCode": 1,
+    "result": "ERR_TUNNEL_CONNECTION_FAILED",
+    "log": "public-site-smoke.log"
+  }
+}

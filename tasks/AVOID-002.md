@@ -141,3 +141,7 @@ Pages公開未検証、親レビュー未完、必要と判定された人間動
 親のコード/テスト結果レビューは承認。[指摘と解消・独立試験](evidence/AVOID-002/parent-review.md)を参照。今回の基盤整備に人間の動作確認は不要と判断した（人間OKの代用記録ではない）。[版別レビュー記録](reviews/AVOID-002-local-20261018-06.md)に判断と公開確認状況を残す。
 
 ローカル22ケース/88PNGと比較UIを検証済み。Pagesへの通信が現環境の許可ドメイン制限で403となるため、公開版の画像・manifest・日英HTML一致と起動を未確認として保持する。状態は実環境検証待ち。公開検証が済むまで002を完了にせず003へ進まない。
+
+公開成果物commit: `f14fa2c28683735e6c5eef1d5fbd00e1bb588e61`。workへのpush成功、Pages [run 39131787480](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39131787480) 成功。実URLの検証は別条件で未確認。[公開記録](evidence/AVOID-002/publication.json)。
+
+公開validatorの通信経路を追加レビューして修正し、ローカル全88画像と正常/破損ケースを再検証して成功。実Pagesと既存公開smokeは所定proxyで接続拒否（ERR_TUNNEL_CONNECTION_FAILED）。TLSを無効化せず、許可ドメインへのmokusatsu.github.io追加を利用者へ依頼済み。R14までの修正を親が承認した詳細は親レビュー記録を参照。

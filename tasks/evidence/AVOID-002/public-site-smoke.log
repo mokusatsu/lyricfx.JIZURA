@@ -1,0 +1,22 @@
+file:///workspace/lyricfx.JIZURA/mcp/site-smoke-test.mjs:69
+      throw new Error(
+            ^
+
+Error: Cannot open https://mokusatsu.github.io/lyricfx.JIZURA/: page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://mokusatsu.github.io/lyricfx.JIZURA/
+Call log:
+[2m  - navigating to "https://mokusatsu.github.io/lyricfx.JIZURA/", waiting until "load"[22m
+. Keep TLS verification enabled; distinguish proxy policy failures from Chromium CA trust errors.
+    at file:///workspace/lyricfx.JIZURA/mcp/site-smoke-test.mjs:69:13 {
+  [cause]: page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://mokusatsu.github.io/lyricfx.JIZURA/
+  Call log:
+  [2m  - navigating to "https://mokusatsu.github.io/lyricfx.JIZURA/", waiting until "load"[22m
+  
+      at /workspace/lyricfx.JIZURA/mcp/site-smoke-test.mjs:67:29 {
+    log: [
+      '  - navigating to "https://mokusatsu.github.io/lyricfx.JIZURA/", waiting until "load"'
+    ],
+    name: 'Error'
+  }
+}
+
+Node.js v24.19.0

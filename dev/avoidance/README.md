@@ -93,3 +93,32 @@ It is not evidence that product post-FX are already compatible. Old-planner p95s
 measure warmups and 12 samples for 100/1000 lyric lines; current regions evaluated
 is zero. Run alone, after other browser jobs stop. New-region overhead, bounded
 buffers and continuous trajectory performance remain 004/017/018 work.
+
+## Public validation network transport
+
+The public validator uses browser `fetch` and its raw `arrayBuffer()` bytes for
+asset/hash and link checks, so these checks share Chromium's navigation transport.
+Raw bytes cross the browser boundary as base64, avoiding text re-encoding when
+a server omits a charset. It does not use `page.request`, whose separate APIRequest transport did not inherit
+the managed environment proxy and failed with `EAI_AGAIN` in the initial public
+attempt. That initial failure remains historical evidence; it is not a deployment
+result.
+
+For a public target, the validator passes the existing `HTTPS_PROXY`/`HTTP_PROXY`
+(or lowercase equivalents, then `ALL_PROXY`) to Chromium without logging their
+values or credentials. Loopback and configured `NO_PROXY` destinations retain
+local/bypass behavior; capture and ordinary local validation launch policy is
+unchanged. Chromium keeps its existing CA/NSS trust configuration. No TLS checking
+is disabled, and a proxy rejection remains a failed public validation.
+
+Use the inherited environment in the platform-approved browser execution context:
+
+```sh
+node dev/avoidance/review.cjs validate local-20261018-06 --base-url https://mokusatsu.github.io/lyricfx.JIZURA/
+# The same public-mode byte/browser checks against a repository-root local server:
+node dev/avoidance/review.cjs validate local-20261018-06 --base-url http://127.0.0.1:8892/
+```
+
+Do not unset the proxy or replace CA trust to make a public check pass. The
+validator rejects invalid proxy configuration with a redacted error and does not
+fall back to a local or direct request after a public error.
