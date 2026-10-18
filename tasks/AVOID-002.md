@@ -145,3 +145,9 @@ Pages公開未検証、親レビュー未完、必要と判定された人間動
 公開成果物commit: `f14fa2c28683735e6c5eef1d5fbd00e1bb588e61`。workへのpush成功、Pages [run 39131787480](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39131787480) 成功。実URLの検証は別条件で未確認。[公開記録](evidence/AVOID-002/publication.json)。
 
 公開validatorの通信経路を追加レビューして修正し、ローカル全88画像と正常/破損ケースを再検証して成功。実Pagesと既存公開smokeは所定proxyで接続拒否（ERR_TUNNEL_CONNECTION_FAILED）。TLSを無効化せず、許可ドメインへのmokusatsu.github.io追加を利用者へ依頼済み。R14までの修正を親が承認した詳細は親レビュー記録を参照。
+
+### 予約された再開確認（2026-10-18 23:12 JST）
+
+開始HEADは `a851941e6a7a946e973349ca7d2c3375d9d9866b`、branch work、作業ツリーclean。GitHubのworkも同じHEADと確認した。environment_statusはcurrent=true、spec/observed revision=20、restricted/enforced。前回12から設定番号は更新されたが、custom allowed_hosts=[]、mokusatsu.github.ioはeffective allowlistに含まれない。[環境記録](evidence/AVOID-002/scheduled-recheck-environment.json)。
+
+継承proxyと通常CA/TLS検証を維持してHTTPSを再確認し、HTTP403・curl exit22。[接続ログ](evidence/AVOID-002/scheduled-recheck-https.log)。公開validatorと公開smokeの前提が成立しないため、本回はそれらを未実施とし、以前のローカル成功で代替しない。AVOID-002は実環境検証待ち、AVOID-003以降は未着手を維持。設定変更の保存内容と実行環境に有効な許可設定を区別し、必要ホストを含む設定の適用待ちとして報告する。本体・比較bundle・旧保存試験の既知失敗は変更していない。
