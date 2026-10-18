@@ -1,0 +1,70 @@
+{
+  "task": "AVOID-003",
+  "build": "local-20261018-03",
+  "artifactCommit": "a0902746faf761f2fdde936d4e6d6bc389889bb3",
+  "branch": "work",
+  "pushSucceeded": true,
+  "deployment": {
+    "id": 39164015364,
+    "sha": "a0902746faf761f2fdde936d4e6d6bc389889bb3",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39164015364"
+  },
+  "publicURL": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-003/local-20261018-03/",
+  "manifestSHA256": "ce885af40d40d99dcb1cc11537b6681ec4eb2824df96d31334695424caa34fce",
+  "publicPageVerified": true,
+  "publicValidation": {
+    "exitCode": 0,
+    "cases": 42,
+    "pngs": 168,
+    "assets": 181,
+    "liveCases": 42,
+    "widths": [
+      1500,
+      390
+    ],
+    "rawBrowserFetch": true,
+    "manifestAndAllAssetsAndJaEnHTMLHashesMatch": true,
+    "log": "public-validation.log",
+    "transport": "inherited proxy, unchanged CA/TLS verification, approved network and existing NSS DB write access"
+  },
+  "ordinaryHTTPS": {
+    "HTTP": 200,
+    "tlsVerify": 0,
+    "manifestHashMatches": true,
+    "log": "public-manifest-https.log"
+  },
+  "publicSiteSmoke": {
+    "exitCode": 0,
+    "languages": [
+      "ja",
+      "en"
+    ],
+    "initialization": true,
+    "lyricLines": [
+      0,
+      1
+    ],
+    "rendering": true,
+    "log": "public-site-smoke.log"
+  },
+  "parentLiveUI": {
+    "passed": true,
+    "observations": 28,
+    "pageErrors": [],
+    "log": "public-parent-ui.json",
+    "screenshotsVisuallyReviewed": true
+  },
+  "humanBehaviorReview": {
+    "required": false,
+    "decisionBy": "parent under user delegation",
+    "reason": "Internal control model only; no new lyric rendering or editing UI enabled. Required numerical/time/transaction conditions covered by model tests, independent 35916 comparisons, 42 public live cases and parent public controls/desktop/mobile visual review. No subjective motion or editing workflow judgment is needed for 003.",
+    "notHumanApproval": true
+  },
+  "limitations": [
+    "Production full-stage circular avoidance rendering, adapters and new track editor remain future tasks.",
+    "Historical project_file_test.cjs initial-cut assertion expected0 actual1 remains failed before save body; assigned to AVOID-013.",
+    "The 184-ID ownership mapping does not mean all adapters or visual checks are complete."
+  ]
+}

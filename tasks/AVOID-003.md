@@ -1,6 +1,6 @@
 # AVOID-003 円形回避データ・正規化・時刻resolver
 
-- 状態: 実環境検証待ち（親コード/ローカル結果レビュー済み）
+- 状態: 完了（公開検証・親レビュー済み、人間動作確認不要）
 - 段階: 基盤
 - 技術依存: [AVOID-002](AVOID-002.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -43,9 +43,9 @@
 
 ## 完了条件
 
-- [ ] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
-- [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
-- [ ] 親がコードとテスト結果をレビューし、指摘を解消した。人間の動作確認が必要なら比較URL・操作・期待結果を提示し、必須項目のOKと動作判定を記録した。不要なら利用者の委任に基づく親の判断理由と完了判定を記録した。
+- [x] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
+- [x] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
+- [x] 親がコードとテスト結果をレビューし、指摘を解消した。人間の動作確認が必要なら比較URL・操作・期待結果を提示し、必須項目のOKと動作判定を記録した。不要なら利用者の委任に基づく親の判断理由と完了判定を記録した。
 
 - [x] 同じproject/tで同じ結果を返し、1000回の順不同seekでもproject・結果が変わらない。
 - [x] t−ε/t/t+ε、gap、最終end:null、出力長短縮/再延長が契約どおりである。
@@ -117,3 +117,13 @@
 - [親レビュー](evidence/AVOID-003/parent-review.md)で最終差分と試験結果を承認。独立した35,916件の時刻照合と十進区間8件が成功し、最終モデルhashも一致した。途中指摘は解消済み。
 - [実行中環境](evidence/AVOID-003/publication-environment.json)はrevision3、current=true、unrestricted/enforced、connected。[通常HTTPS](evidence/AVOID-003/publication-https.log)は継承proxy/CA/TLS維持で200/verify0。
 - 次はworkへの公開と実公開検証。上記の実装担当終了時点の「未実施」は履歴であり、公開成功・最終判定はまだ主張しない。
+
+## 公開検証・完了判定（2026-10-18 UTC）
+
+- 対象commit: `a0902746faf761f2fdde936d4e6d6bc389889bb3`（workへpush済み）。[Pages run 39164015364](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39164015364)成功を確認したうえで、公開ファイル自体と実動作を別途検査した。
+- [公開比較](https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-003/local-20261018-03/) / [実操作](https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-003/local-20261018-03/sample.html)。H01/H02/H03の42ケース、168 PNGを含む全181 assetsとmanifest、日英HTMLがHTTP200かつ手元のhashと一致。manifest SHA-256は `ce885af40d40d99dcb1cc11537b6681ec4eb2824df96d31334695424caa34fce`。
+- コマンド: `JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/model-review.cjs validate local-20261018-03 --base-url https://mokusatsu.github.io/lyricfx.JIZURA/`、`JIZURA_BROWSER=/usr/bin/chromium node mcp/site-smoke-test.mjs`。どちらもexit0。[公開validator](evidence/AVOID-003/public-validation.log)は全42 live cases・1500/390px・前後/重ね合わせ/原寸/リンク/操作も成功。[日英smoke](evidence/AVOID-003/public-site-smoke.log)は起動・2行歌詞生成・実描画成功。
+- 親が公開UIの境界/空白、missing/empty/OFF/拒否、6寸法、短縮/再延長、旧版関数不在を28項目で独立操作。[観測](evidence/AVOID-003/public-parent-ui.json)、[desktop比較](evidence/AVOID-003/public-comparison-desktop.png)、[desktop実操作](evidence/AVOID-003/public-sample-desktop.png)、[mobile実操作](evidence/AVOID-003/public-sample-mobile.png)を確認した。真円、実測表、前後ラベル、制限説明が表示され、横溢れ/欠損/JS例外なし。
+- 人間の動作確認: **不要（親の委任判定）**。003は内部データ/時刻解決の基盤で、新歌詞描画・トラック編集を有効化していない。契約の数値/時刻/非破壊条件を自動試験、親の独立照合、公開実操作と画像確認で検証できたため、主観的な演出/編集操作の判断は不要。人間のOK回答としては記録しない。
+- [公開機械記録](evidence/AVOID-003/publication.json)と[親の最終レビュー](evidence/AVOID-003/parent-review.md)に基づき、全完了条件を達成として親が完了判定した。上記の未実施表記は各時点の履歴。
+- 制限: 184IDの対応表は全adapter完了を意味しない。全画面描画/新トラック/マスクは後続。既存保存テストは冒頭cut数不一致の失敗をAVOID-013へ保持。次の依存タスクはAVOID-004。
