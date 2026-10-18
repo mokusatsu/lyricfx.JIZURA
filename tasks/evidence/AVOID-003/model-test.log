@@ -1,0 +1,18 @@
+PASS adopted default, missing versus explicit empty
+PASS normalization is sorted, idempotent and detached
+PASS 1000 regions accepted / 1001 rejected
+PASS 1000 unordered seeks and result mutation leave source/index invariant
+PASS all boundaries with epsilon, gap and final duration
+PASS automatic-duration raw project requires final plan explicitly
+PASS OFF, autoPlacement=false, empty and invalid query times
+PASS duration shrink/extend and mutable composed plan duration, source retained
+PASS six physical stage circles are isotropic
+PASS decimal 0.04 minimum accepts roundoff only; overlap remains exact
+PASS malformed input rejects without mutation
+PASS provenance bounded finite JSON / nested isolation / serialization
+PASS frozen OFF full cuts snapshot / 3 track counts and duration invariant
+PASS actual compose, portable roundtrip, preset exclusion and transaction rejection {"assertions":30}
+PASS invalid provenance rejected before UI save clone and autosave {"writes":0,"rawPreserved":true}
+PASS malformed saved project preserved across boot / replan / autosave / explicit flush / pagehide / pending deletion
+PASS explicit valid replacement resumes autosave
+{"passed":true,"checks":17,"unorderedSeeks":1000,"regionLimit":1000,"aspects":6}

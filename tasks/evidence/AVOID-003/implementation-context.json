@@ -1,0 +1,52 @@
+{
+  "task": "AVOID-003",
+  "branch": "work",
+  "startHEAD": "c930c0977e1247865dcd5e45c4e9eb064b89f0fe",
+  "implementationAssignment": {
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium"
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "chromium": "/usr/bin/chromium (154)",
+    "networkObservation": {
+      "specRevision": "2",
+      "observationsCurrent": true,
+      "mode": "unrestricted",
+      "state": "enforced",
+      "note": "003 runtime status observation; preserves earlier 002 unknown observation as historical"
+    }
+  },
+  "modelSHA256": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d",
+  "htmlSHA256": {
+    "index.html": "de5fbe3b3025846d26579639e63bf4b058dc680dc25e3c8e5e19b8937c766fb3",
+    "en/index.html": "3922d2500f84bc82803dabb5f497d3b9a723aa96bd506e8fbca9284eca5600c7"
+  },
+  "buildCommand": "PYTHONDONTWRITEBYTECODE=1 python build.py",
+  "snapshot": {
+    "before": "git archive c930c0977e1247865dcd5e45c4e9eb064b89f0fe /workspace/work/avoid003-before",
+    "after": "local uncommitted candidate, exact source map in review manifest"
+  },
+  "knownFailure": {
+    "test": "project_file_test.cjs",
+    "phase": "initial assertion before save body",
+    "expectedInitialCutCount": 0,
+    "actualInitialCutCount": 1,
+    "handoff": "AVOID-013"
+  },
+  "attempts": [
+    {
+      "build": "local-20261018-01",
+      "published": false,
+      "retainedAt": "/workspace/work/avoid003-attempt01",
+      "reason": "parent detected clipped panel/footer and result rows"
+    },
+    {
+      "build": "local-20261018-02",
+      "published": false,
+      "retainedAt": "/workspace/work/avoid003-attempt02",
+      "reason": "390px comparison header source hash did not wrap; local validator rejected responsive pair"
+    }
+  ],
+  "publicVerification": "pending parent; no deployment claim"
+}

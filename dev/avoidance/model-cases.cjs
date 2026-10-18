@@ -1,0 +1,7 @@
+const contract=require('./contract.json'),fixtures=require('./cases.json');
+const clone=v=>JSON.parse(JSON.stringify(v)),region=(id,start,end=null,center={x:.5,y:.42})=>({...clone(contract.default),id,start,end,center});
+const base={version:1,regions:fixtures.intervalExamples.regions.map((r,i)=>({...clone(contract.default),...r,center:{x:[.5,.25,.75][i],y:[.42,.25,.75][i]}}))};
+module.exports=()=>{const specs=[];const add=(hid,label,time=1,model=base,extra={})=>{specs.push({id:'case-'+String(specs.length+1).padStart(2,'0'),hid:'AVOID-003-'+hid,label,time,duration:10,aspect:'16:9',model:clone(model),probes:[0,2,2.5,3,5,10],...extra});};
+for(const t of [-1e-6,0,1e-6,1.999999,2,2.000001,2.5,2.999999,3,3.000001,4.999999,5,5.000001,9.999999,10,10.000001])add('H01','境界・gap / t='+t,t);
+add('H02','旧データ missing',1,base,{missing:true});add('H02','明示的 empty',1,{version:1,regions:[]});add('H02','OFF',1,base,{settings:{avoidCenter:false}});add('H02','autoPlacement=false',1,base,{settings:{autoPlacement:false}});add('H02','不正 overlap',1,{version:1,regions:[region('x',0,4),region('y',3,5)]});add('H02','未知 version',1,{version:9,regions:[]});add('H02','非数 radius',1,{version:1,regions:[{...region('x',0),radius:'NaN'}]});add('H02','重複 ID',1,{version:1,regions:[region('x',0,2),region('x',3)]});
+for(const aspect of ['16:9','9:16','1:1','21:9','4:5','videoSize'])for(const [duration,label] of [[10,'短縮前'],[4,'短縮'],[10,'再延長']])add('H03',aspect+' / '+label,7,base,{aspect,duration,probes:[3,3.999999,4,5,7,10],sequence:label});return specs;};

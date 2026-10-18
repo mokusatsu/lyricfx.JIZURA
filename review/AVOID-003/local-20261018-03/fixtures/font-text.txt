@@ -1,0 +1,2186 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>AVOID-003 実resolver確認</title>
+<style>@font-face{font-family:Fixture;src:url(fixtures/font.otf)}body{font:16px Fixture,sans-serif;background:#17202b;color:#eee;margin:16px}a{color:#acf}button,select,input{font:inherit;max-width:100%}#capture{width:960px;max-width:100%;height:1360px;box-sizing:border-box;padding:16px;background:#17202b}#current{width:100%;height:430px;object-fit:contain;background:#101820}h2{font-size:20px;height:54px;margin:6px 0}#status{height:65px;margin:6px 0;overflow-wrap:anywhere}table{table-layout:fixed;width:100%;border-collapse:collapse;font-size:16px}td,th{border:1px solid #789;padding:5px;text-align:left;overflow-wrap:anywhere}#metrics{min-height:64px}pre{white-space:pre-wrap;overflow-wrap:anywhere}iframe{position:absolute;left:-20000px;width:1500px;height:1000px}#editor{display:flex;flex-wrap:wrap;gap:8px}#results{height:400px;overflow:visible}#limits{height:55px}@media(max-width:650px){#capture{height:auto;min-height:1360px}h2,#status,#metrics,#limits{height:auto;min-height:60px}#results{height:auto}#editor{display:block}#editor label{display:block;margin:10px 0}}
+</style>
+<h1>AVOID-003 時刻resolverの実測</h1><p>確認専用のプライベートセッションで開いてください。同一originの固定アプリを起動します。製品の新回避描画・新トラックUI・adapterは未接続です。図は制御データの結果であり、新しい歌詞軌道ではありません。</p>
+<p><a href="index.html">比較</a> / <a href="fixtures/cases.json">同じ入力fixture</a> / <a href="fixtures/model-test.log">自動試験証拠</a></p>
+<div id="editor"><label>サンプル <select id="case"></select></label><label>時刻 <input id="time" type="number" step="0.000001" value="1"></label><label>出力長 <input id="duration" type="number" step="1" min="0" value="10"></label><label>画面 <select id="aspect"><option>16:9</option><option>9:16</option><option>1:1</option><option>21:9</option><option>4:5</option><option>videoSize</option></select></label><button id="run">評価</button></div>
+<div id="capture"><h2 id="label"></h2><p id="status"></p><canvas id="current" width="1920" height="1080"></canvas><p id="metrics"></p><div id="results"><table><thead><tr><th>選択時刻 / 区間</th><th>実装関数の返り値</th></tr></thead><tbody id="rows"></tbody></table></div><p id="limits">保存領域は短縮しても保持。製品3トラックへの追加・新回避描画は未実装。円は元ステージ短辺に対して等方。</p></div>
+<details><summary>実測JSONと保存入力</summary><pre id="json"></pre></details><iframe id="app" title="固定ソースアプリ"></iframe>
+<script>
+(async()=>{const $=id=>document.getElementById(id),q=new URLSearchParams(location.search),before=q.get('side')==='before';const fixtures=await fetch('fixtures/cases.json').then(r=>r.json());
+for(const c of fixtures)$('case').add(new Option(c.id+' / '+c.label,c.id));$('case').value=q.get('case')||fixtures[0].id;
+const app=$('app');app.src='fixtures/'+(before?'before':'after')+'.html';await new Promise(resolve=>{const poll=()=>app.contentWindow.J?.ui?.plan?resolve():setTimeout(poll,30);poll();});
+const J=app.contentWindow.J,font=new FontFace('Fixture','url(fixtures/font.otf)');await font.load();document.fonts.add(font);await document.fonts.ready;await document.fonts.load('16px Fixture');window.fontReady=font.status==='loaded';
+const size=aspect=>({'16:9':[1920,1080],'9:16':[1080,1920],'1:1':[1440,1440],'21:9':[2520,1080],'4:5':[1440,1800],videoSize:[1777,913]})[aspect];
+function input(c){$('time').value=c.time;$('duration').value=c.duration;$('aspect').value=c.aspect;}
+input(fixtures.find(c=>c.id===$('case').value));for(const id of ['time','duration','aspect'])if(q.has(id))$(id).value=q.get(id);
+window.render=()=>{const c=fixtures.find(c=>c.id===$('case').value),t=+$('time').value,duration=+$('duration').value,[W,H]=size($('aspect').value),p=J.defaultProject();p.seed=1;p.lyrics='[00:00]夜明けの色を覚えてる';p.durationOverride=duration;p.aspect=$('aspect').value;p.lyricEffects={autoPlacement:true,avoidCenter:true,...c.settings};if(c.missing)delete p.lyricAvoidance;else p.lyricAvoidance=JSON.parse(JSON.stringify(c.model));
+const beforeJSON=JSON.stringify(p),present=typeof J.resolveAvoidanceAt==='function',cv=$('current');cv.width=W;cv.height=H;const g=cv.getContext('2d');g.fillStyle='#101820';g.fillRect(0,0,W,H);g.strokeStyle='#314454';g.lineWidth=2;g.strokeRect(1,1,W-2,H-2);g.beginPath();g.moveTo(W/2,0);g.lineTo(W/2,H);g.moveTo(0,H/2);g.lineTo(W,H/2);g.stroke();let resolved=null,rejection=null,normalized=null,index=null;
+if(present){try{normalized=J.projectLyricAvoidance(p);index=J.buildLyricAvoidanceIndex(p);resolved=J.resolveAvoidanceAt({duration,lyricAvoidanceIndex:index},t);}catch(e){rejection=e.message;}}
+const unchanged=beforeJSON===JSON.stringify(p);if(resolved){const r=J.avoidanceCirclePixels(resolved,W,H);g.strokeStyle='#67e8bd';g.fillStyle='#67e8bd22';g.lineWidth=Math.max(3,Math.min(W,H)/250);g.beginPath();g.arc(r.cx,r.cy,r.r,0,Math.PI*2);g.fill();g.stroke();g.fillStyle='#67e8bd';g.beginPath();g.arc(r.cx,r.cy,Math.max(5,r.r/30),0,Math.PI*2);g.fill();}
+$('label').textContent=(before?'変更前 固定c930c09':'変更後 実装候補')+' / '+c.id+' / '+$('aspect').value+' / t='+t;
+$('status').textContent=!present?'観測: 旧版にresolverが存在しません。結果を捏造せず、領域図は空のまま表示。':rejection?'拒否: '+rejection+' / 元入力保持='+unchanged:resolved?'実resolver: '+resolved.id+' が有効。区間内は固定位置。':'実resolver: null（回避なし）。';
+$('metrics').textContent='seed=1 / '+W+'×'+H+' / duration='+duration+'s / bundled Noto CJK / input unchanged='+unchanged+(resolved?' / cx='+resolved.cx+', cy='+resolved.cy+', R='+resolved.r+'×min(W,H)='+resolved.r*Math.min(W,H)+'px':'');
+const times=[t,...c.probes].filter((v,i,a)=>a.indexOf(v)===i);$('rows').replaceChildren();const rows=[];for(const time of times){let value='観測: 関数なし';if(present){try{value=JSON.stringify(J.resolveAvoidanceAt({duration,lyricAvoidanceIndex:index??J.buildLyricAvoidanceIndex(p)},time));}catch(e){value='拒否: '+e.message;}}const tr=document.createElement('tr');for(const text of [String(time),value]){const td=document.createElement('td');td.textContent=text;tr.append(td);}$('rows').append(tr);rows.push({time,value});}
+window.observation={present,resolved,rejection,inputUnchanged:unchanged,normalized,stage:[W,H],time:t,duration,seed:1,fontLoaded:font.status,rows};$('json').textContent=JSON.stringify({observation:window.observation,input:p.lyricAvoidance},null,2);window.ready=true;};
+$('case').onchange=()=>{input(fixtures.find(c=>c.id===$('case').value));window.render();};for(const id of ['time','duration','aspect'])$(id).onchange=window.render;$('run').onclick=window.render;window.render();
+})().catch(e=>{window.failure=String(e);document.body.append(String(e));});
+</script></html>
+[
+  {
+    "id": "case-01",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=-0.000001",
+    "time": -0.000001,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-02",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=0",
+    "time": 0,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-03",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=0.000001",
+    "time": 0.000001,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-04",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=1.999999",
+    "time": 1.999999,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-05",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=2",
+    "time": 2,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-06",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=2.000001",
+    "time": 2.000001,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-07",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=2.5",
+    "time": 2.5,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-08",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=2.999999",
+    "time": 2.999999,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-09",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=3",
+    "time": 3,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-10",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=3.000001",
+    "time": 3.000001,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-11",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=4.999999",
+    "time": 4.999999,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-12",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=5",
+    "time": 5,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-13",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=5.000001",
+    "time": 5.000001,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-14",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=9.999999",
+    "time": 9.999999,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-15",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=10",
+    "time": 10,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-16",
+    "hid": "AVOID-003-H01",
+    "label": "境界・gap / t=10.000001",
+    "time": 10.000001,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-17",
+    "hid": "AVOID-003-H02",
+    "label": "旧データ missing",
+    "time": 1,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ],
+    "missing": true
+  },
+  {
+    "id": "case-18",
+    "hid": "AVOID-003-H02",
+    "label": "明示的 empty",
+    "time": 1,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": []
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-19",
+    "hid": "AVOID-003-H02",
+    "label": "OFF",
+    "time": 1,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ],
+    "settings": {
+      "avoidCenter": false
+    }
+  },
+  {
+    "id": "case-20",
+    "hid": "AVOID-003-H02",
+    "label": "autoPlacement=false",
+    "time": 1,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ],
+    "settings": {
+      "autoPlacement": false
+    }
+  },
+  {
+    "id": "case-21",
+    "hid": "AVOID-003-H02",
+    "label": "不正 overlap",
+    "time": 1,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "x",
+          "start": 0,
+          "end": 4,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "y",
+          "start": 3,
+          "end": 5,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-22",
+    "hid": "AVOID-003-H02",
+    "label": "未知 version",
+    "time": 1,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 9,
+      "regions": []
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-23",
+    "hid": "AVOID-003-H02",
+    "label": "非数 radius",
+    "time": 1,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "x",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": "NaN"
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-24",
+    "hid": "AVOID-003-H02",
+    "label": "重複 ID",
+    "time": 1,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "x",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "x",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      0,
+      2,
+      2.5,
+      3,
+      5,
+      10
+    ]
+  },
+  {
+    "id": "case-25",
+    "hid": "AVOID-003-H03",
+    "label": "16:9 / 短縮前",
+    "time": 7,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮前"
+  },
+  {
+    "id": "case-26",
+    "hid": "AVOID-003-H03",
+    "label": "16:9 / 短縮",
+    "time": 7,
+    "duration": 4,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮"
+  },
+  {
+    "id": "case-27",
+    "hid": "AVOID-003-H03",
+    "label": "16:9 / 再延長",
+    "time": 7,
+    "duration": 10,
+    "aspect": "16:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "再延長"
+  },
+  {
+    "id": "case-28",
+    "hid": "AVOID-003-H03",
+    "label": "9:16 / 短縮前",
+    "time": 7,
+    "duration": 10,
+    "aspect": "9:16",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮前"
+  },
+  {
+    "id": "case-29",
+    "hid": "AVOID-003-H03",
+    "label": "9:16 / 短縮",
+    "time": 7,
+    "duration": 4,
+    "aspect": "9:16",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮"
+  },
+  {
+    "id": "case-30",
+    "hid": "AVOID-003-H03",
+    "label": "9:16 / 再延長",
+    "time": 7,
+    "duration": 10,
+    "aspect": "9:16",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "再延長"
+  },
+  {
+    "id": "case-31",
+    "hid": "AVOID-003-H03",
+    "label": "1:1 / 短縮前",
+    "time": 7,
+    "duration": 10,
+    "aspect": "1:1",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮前"
+  },
+  {
+    "id": "case-32",
+    "hid": "AVOID-003-H03",
+    "label": "1:1 / 短縮",
+    "time": 7,
+    "duration": 4,
+    "aspect": "1:1",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮"
+  },
+  {
+    "id": "case-33",
+    "hid": "AVOID-003-H03",
+    "label": "1:1 / 再延長",
+    "time": 7,
+    "duration": 10,
+    "aspect": "1:1",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "再延長"
+  },
+  {
+    "id": "case-34",
+    "hid": "AVOID-003-H03",
+    "label": "21:9 / 短縮前",
+    "time": 7,
+    "duration": 10,
+    "aspect": "21:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮前"
+  },
+  {
+    "id": "case-35",
+    "hid": "AVOID-003-H03",
+    "label": "21:9 / 短縮",
+    "time": 7,
+    "duration": 4,
+    "aspect": "21:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮"
+  },
+  {
+    "id": "case-36",
+    "hid": "AVOID-003-H03",
+    "label": "21:9 / 再延長",
+    "time": 7,
+    "duration": 10,
+    "aspect": "21:9",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "再延長"
+  },
+  {
+    "id": "case-37",
+    "hid": "AVOID-003-H03",
+    "label": "4:5 / 短縮前",
+    "time": 7,
+    "duration": 10,
+    "aspect": "4:5",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮前"
+  },
+  {
+    "id": "case-38",
+    "hid": "AVOID-003-H03",
+    "label": "4:5 / 短縮",
+    "time": 7,
+    "duration": 4,
+    "aspect": "4:5",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮"
+  },
+  {
+    "id": "case-39",
+    "hid": "AVOID-003-H03",
+    "label": "4:5 / 再延長",
+    "time": 7,
+    "duration": 10,
+    "aspect": "4:5",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "再延長"
+  },
+  {
+    "id": "case-40",
+    "hid": "AVOID-003-H03",
+    "label": "videoSize / 短縮前",
+    "time": 7,
+    "duration": 10,
+    "aspect": "videoSize",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮前"
+  },
+  {
+    "id": "case-41",
+    "hid": "AVOID-003-H03",
+    "label": "videoSize / 短縮",
+    "time": 7,
+    "duration": 4,
+    "aspect": "videoSize",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "短縮"
+  },
+  {
+    "id": "case-42",
+    "hid": "AVOID-003-H03",
+    "label": "videoSize / 再延長",
+    "time": 7,
+    "duration": 10,
+    "aspect": "videoSize",
+    "model": {
+      "version": 1,
+      "regions": [
+        {
+          "id": "a",
+          "start": 0,
+          "end": 2,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "b",
+          "start": 3,
+          "end": null,
+          "center": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "radius": 0.2
+        },
+        {
+          "id": "c",
+          "start": 5,
+          "end": null,
+          "center": {
+            "x": 0.75,
+            "y": 0.75
+          },
+          "radius": 0.2
+        }
+      ]
+    },
+    "probes": [
+      3,
+      3.999999,
+      4,
+      5,
+      7,
+      10
+    ],
+    "sequence": "再延長"
+  }
+]
+/* Circular avoidance control data. Rendering remains on the existing path in 003. */
+(() => {
+'use strict';
+const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
+const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+const fail = field => { const error = new Error('Invalid lyricAvoidance: ' + field); error.code = 'INVALID_LYRIC_AVOIDANCE'; throw error; };
+const number = (value, field, min, max = Infinity) => {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < min || value > max) fail(field);
+  return value;
+};
+// One magnitude-scaled machine epsilon absorbs decimal subtraction/addition
+// roundoff only in minimum-length validation. Lookup/overlap comparisons stay exact.
+const tooShort = (start, end) => end - start < 0.04 - Number.EPSILON * Math.max(0.04, Math.abs(start), Math.abs(end));
+const defaultRegion = () => ({id:'avoid-default', start:0, end:null, center:{x:0.5,y:0.42}, radius:0.2});
+// Provenance is opaque metadata, never an executable position provider or media store.
+// Accept only a small JSON object; no Blob, Date, typed arrays, non-finite or cyclic values.
+function provenance(source) {
+  if (!object(source)) fail('source object');
+  const seen = new Set();
+  function copy(value, depth) {
+    if (depth > 16) fail('source depth');
+    if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
+    if (typeof value === 'number' && Number.isFinite(value)) return value;
+    if (typeof value !== 'object' || value === null || seen.has(value)) fail('source JSON');
+    if (!Array.isArray(value) && Object.prototype.toString.call(value) !== '[object Object]') fail('source JSON object');
+    seen.add(value);
+    const result = Array.isArray(value) ? Array.from(value, v => copy(v, depth + 1)) : Object.fromEntries(Object.entries(value).map(([k,v]) => [k,copy(v, depth + 1)]));
+    seen.delete(value);
+    return result;
+  }
+  const result = copy(source, 0);
+  if (new TextEncoder().encode(JSON.stringify(result)).length > 4096) fail('source exceeds 4096 bytes');
+  return result;
+}
+J.defaultLyricAvoidance = () => ({version:1, regions:[defaultRegion()]});
+// This is the single validator/normalizer for import, editing and planning.
+// Only an absent project field requests legacy migration; null is malformed.
+J.normalizeLyricAvoidance = value => {
+  if (!object(value) || value.version !== 1 || !Array.isArray(value.regions)) fail('version/regions');
+  if (value.regions.length > 1000) fail('region limit 1000');
+  const ids = new Set();
+  const regions = value.regions.map(region => {
+    if (!object(region) || typeof region.id !== 'string' || !region.id.trim() || ids.has(region.id)) fail('unique nonempty id');
+    ids.add(region.id);
+    const start = number(region.start, 'start', 0);
+    const end = region.end === null ? null : number(region.end, 'end', 0);
+    if (end !== null && (end <= start || tooShort(start, end))) fail('interval minimum 0.04 seconds');
+    if (!object(region.center)) fail('center');
+    const result = {id:region.id,start,end,center:{x:number(region.center.x,'center.x',0,1),y:number(region.center.y,'center.y',0,1)},radius:number(region.radius,'radius',0.02,0.45)};
+    if (own(region, 'source')) result.source = provenance(region.source);
+    return result;
+  }).sort((a,b) => a.start - b.start);
+  for (let i=1; i<regions.length; i++) {
+    const a = regions[i-1], b = regions[i];
+    if (b.start <= a.start || tooShort(a.start, b.start) || (a.end !== null && a.end > b.start)) fail('overlap/minimum interval');
+  }
+  return {version:1,regions};
+};
+J.projectLyricAvoidance = project => own(project, 'lyricAvoidance') ? J.normalizeLyricAvoidance(project.lyricAvoidance) : J.defaultLyricAvoidance();
+J.buildLyricAvoidanceIndex = project => {
+  const model = J.projectLyricAvoidance(project), settings = J.lyricEffectSettings(project);
+  // Keep null ends and future starts intact: final compose duration is supplied at lookup.
+  return {version:1, enabled:settings.autoPlacement && settings.avoidCenter, regions:model.regions};
+};
+// Internal fixed-position boundary. A future schema can supply a different evaluator
+// here without changing resolver callers. No function is stored in project JSON.
+const positionAt = (region, _stageTime) => ({cx:region.center.x,cy:region.center.y,r:region.radius});
+J.resolveAvoidanceAt = (projectOrPlan, stageTime) => {
+  if (!Number.isFinite(stageTime) || stageTime < 0) return null;
+  const isPlan = own(projectOrPlan,'lyricAvoidanceIndex');
+  const index = isPlan ? projectOrPlan.lyricAvoidanceIndex : J.buildLyricAvoidanceIndex(projectOrPlan);
+  if (!index.enabled) return null;
+  const duration = isPlan ? projectOrPlan.duration : projectOrPlan.durationOverride;
+  // A raw project with automatic duration must be planned first; never guess song length.
+  if (!Number.isFinite(duration) || duration < 0) throw new Error('Avoidance requires a finite composed duration');
+  if (stageTime >= duration) return null;
+  let lo=0, hi=index.regions.length;
+  while (lo < hi) { const mid=(lo+hi)>>>1; if (index.regions[mid].start <= stageTime) lo=mid+1; else hi=mid; }
+  if (!lo) return null;
+  const region=index.regions[lo-1], next=index.regions[lo];
+  const end=region.end === null ? (next ? next.start : duration) : region.end;
+  if (stageTime >= end) return null;
+  const result={id:region.id,...positionAt(region,stageTime)};
+  if (own(region,'source')) result.source=provenance(region.source);
+  return result;
+};
+J.avoidanceCirclePixels = (resolved, W, H) => {
+  number(W,'stage width',Number.MIN_VALUE); number(H,'stage height',Number.MIN_VALUE);
+  return resolved === null ? null : {id:resolved.id,cx:resolved.cx*W,cy:resolved.cy*H,r:resolved.r*Math.min(W,H)};
+};
+})();

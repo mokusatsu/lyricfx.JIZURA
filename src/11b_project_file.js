@@ -49,6 +49,7 @@ J.applyProjectSettings = (current, source) => {
   return result;
 };
 J.packProject = async (project, audioFile) => {
+  J.projectLyricAvoidance(project);
   const entries = [], parts = []; let offset = 0;
   const add = async (kind, id, file, name) => {
     if (!(file instanceof Blob)) throw new Error(J.mediaLabel('素材が見つかりません。再読み込みしてください：', 'Missing asset. Please import it again: ') + name);
@@ -76,6 +77,7 @@ J.unpackProject = async file => {
     if (file.size > 32 * 1024 * 1024 || !/^\s*\{/.test(decode.decode(header))) throw fail();
     const project = JSON.parse(await file.text());
     if (!project || typeof project !== 'object' || typeof project.lyrics !== 'string') throw fail();
+    J.projectLyricAvoidance(project);
     return {project,files:[],portable:false};
   }
   if (header.length !== 12) throw fail();
@@ -83,6 +85,7 @@ J.unpackProject = async file => {
   if (length > 32 * 1024 * 1024 || start > file.size) throw fail();
   const manifest = JSON.parse(await file.slice(12,start).text());
   if (manifest.format !== 'jizura' || manifest.version !== 1 || typeof manifest.project?.lyrics !== 'string' || !Array.isArray(manifest.entries)) throw fail();
+  J.projectLyricAvoidance(manifest.project);
   let end = 0; const seen = new Set(), files = [];
   for (const entry of manifest.entries) {
     if (!['media','audio','font','person'].includes(entry.kind) || typeof entry.id !== 'string' || typeof entry.name !== 'string' || typeof entry.type !== 'string' || !Number.isSafeInteger(entry.offset) || !Number.isSafeInteger(entry.size) || entry.size < 0 || entry.offset !== end || start+end+entry.size > file.size || seen.has(entry.kind+':'+entry.id)) throw fail();

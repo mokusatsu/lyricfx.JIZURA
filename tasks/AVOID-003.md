@@ -1,13 +1,13 @@
 # AVOID-003 円形回避データ・正規化・時刻resolver
 
-- 状態: 未着手
+- 状態: 実環境検証待ち（親コード/ローカル結果レビュー済み）
 - 段階: 基盤
 - 技術依存: [AVOID-002](AVOID-002.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
 
 ## 開始前確認
 
-- ブランチ・HEAD・git status: 着手時に記録する（このスレッドで実装は開始していない）。
+- 開始: 2026-10-18 UTC / work / c930c0977e1247865dcd5e45c4e9eb064b89f0fe / clean。担当: gpt-6.1-sol medium。変更前は `/workspace/work/avoid003-before` へgit archiveで固定。AVOID-002の公開検証と親判定を確認済み。
 - 共通解析基準: b7c23bf。スキル導入済みHEAD: 3c79480。着手時に差分を再確認する。
 - 正本: [設計・根拠](avoidance-design.md)、[一覧](task-list.md)、[スキル](../.agents/skills/evidence-driven-task-management/SKILL.md)。
 - 依存タスクの必須条件と証拠を確認する。完了を推測せず、未完条件を引き継ぐ。
@@ -47,11 +47,11 @@
 - [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
 - [ ] 親がコードとテスト結果をレビューし、指摘を解消した。人間の動作確認が必要なら比較URL・操作・期待結果を提示し、必須項目のOKと動作判定を記録した。不要なら利用者の委任に基づく親の判断理由と完了判定を記録した。
 
-- [ ] 同じproject/tで同じ結果を返し、1000回の順不同seekでもproject・結果が変わらない。
-- [ ] t−ε/t/t+ε、gap、最終end:null、出力長短縮/再延長が契約どおりである。
-- [ ] ID重複・非有限数・逆区間・時間重複・未知versionが保存前に検出され、失敗時の現projectが変わらない。
-- [ ] 16:9/9:16/1:1/21:9/4:5/任意videoSizeで物理半径が等方になる。
-- [ ] 既存3トラックのcut数・durationを回避トラックが増やさない。
+- [x] 同じproject/tで同じ結果を返し、1000回の順不同seekでもproject・結果が変わらない。
+- [x] t−ε/t/t+ε、gap、最終end:null、出力長短縮/再延長が契約どおりである。
+- [x] ID重複・非有限数・逆区間・時間重複・未知versionが保存前に検出され、失敗時の現projectが変わらない。
+- [x] 16:9/9:16/1:1/21:9/4:5/任意videoSizeで物理半径が等方になる。
+- [x] 既存3トラックのcut数・durationを回避トラックが増やさない。
 
 ## テスト方法
 
@@ -60,7 +60,7 @@
 - Integration: defaultProject→normalize→plan、旧JSONと明示的空配列。
 - Regression: 旧OFFの計画snapshot、duration/timeline境界。
 - 実環境: Pages確認ページの領域図・時刻選択・結果表でresolverを人間が確認する。製品UIの完成を待って省略しない。
-- 現時点の実行結果: 未実施（後続実装タスク）。既存の基準ログはAVOID-001へ参照し、修正後の証拠として流用しない。
+- 今回のローカル実行結果: 下記証拠参照。既存のAVOID-001/002ログを今回の成功証拠へ流用していない。
 
 ## GitHub Pagesでの人間確認
 
@@ -92,5 +92,28 @@
 ## 証拠・残事項
 
 - 計画根拠: [AVOID-001](AVOID-001.md) と [設計書のE01〜E23](avoidance-design.md)。
-- 実装差分: なし。検証ログ: なし。上のチェックボックスはすべて未達/未確認。
+- 実装・ローカル試験: 下記の003専用証拠を追加。公開・親の最終判定のチェックボックスは未確認のまま。
 - 個別の追加判断は着手時に記録し、共通設計と矛盾させない。
+
+
+## 2026-10-18 実装・ローカル検証記録
+
+- 担当割当: gpt-6.1-sol / medium。終了時HEADもc930c0977e1247865dcd5e45c4e9eb064b89f0fe、work上の未コミット候補。親へreview用に引継ぎ、担当自身はcommit/push/公開/完了判定をしていない。
+- 追加: `src/08ca_lyric_avoidance.js` のモデル/単一validator/pure binary resolver/元ステージ円変換。`08_planner.js`のdefault/index接続、`11b_project_file.js`の副作用前検証、`12_ui.js`のmerge/replace/import/save境界・不正LS原データ保護。日英HTMLを最終buildから再生成した。
+- 同一project/時刻でdetachedな結果を返し、計画indexはnull終端と未来の要素を保持する。最終composeのduration短縮/再延長へ追従し、cut数/時間を増やさない。render/adapter/新トラックUIへは未接続。
+- adopted contractの数値・境界は維持。最短.04秒だけmachine epsilonを許容して十進丸めを吸収し、lookup/overlapは厳密。sourceは最大4096 UTF-8 bytes・深さ16の有限JSON objectとして採用し、deep cloneする。詳細は[設計](avoidance-design.md#avoid-003-実装契約2026-10-18)と[API](../dev/avoidance/README.md#avoid-003-production-control-model-and-resolver)。
+- [model-test](evidence/AVOID-003/model-test.log): 17 checks成功（1000順不同seek、1000要素cap、境界±epsilon、gap/OFF、6寸法、非破壊/不正/roundtrip/LS保護）。[asset/font入り強化再実行](evidence/AVOID-003/model-test-with-assets.log)も同じ製品ソースで成功。既存asset1/userFont1・30 assertionsを含む。
+- [既存6本](evidence/AVOID-003/baseline-results.json)全成功、[日英local smoke](evidence/AVOID-003/site-smoke-local.log)成功、[fresh build一致](evidence/AVOID-003/build-check.json)成功。既存assertionを変更していない。
+- [既存save test](evidence/AVOID-003/project_file_test.cjs.log)は**失敗**: 初期cut数expected0/actual1、保存本体未到達。AVOID-013へ引継ぎ。今回の限定model roundtrip成功を既存save test成功に置換しない。
+- 比較成果物: [local-20261018-03](../review/AVOID-003/local-20261018-03/index.html)、[manifest](../review/AVOID-003/local-20261018-03/manifest.json)、[実操作サンプル](../review/AVOID-003/local-20261018-03/sample.html)。42ケース/168 PNG、H01 16時刻・H02 8入力・H03 6寸法×3尺。旧c930c09を開始時archiveで固定し、最終build後に前後同条件で取得。旧resolverの不存在を観測として表示し、afterは実関数の結果。元PNGは制御領域図であり新歌詞軌道ではない。
+- [capture](evidence/AVOID-003/capture-local-20261018-03.log)成功。bundled Noto CJKの実パネル全文字cmap検査・全結果行収容を実施。[local validate](evidence/AVOID-003/validate-local-20261018-03.log)は全181 assets/168 PNG・全リンク・42 live fixtures・1500/390px・重ね合わせ/前後切替/原寸・出力長操作で成功。
+- [新003 negative](evidence/AVOID-003/negative-local-20261018-03.log): 無改変cloneをoverlay配信してpositive成功後、条件＋self hash改変、PNG、fixture、H-ID欠損、source hash、実測座標、リンク欠損、overlay座標の8変異を期待理由付きで拒否。
+- manifest SHA-256: `ce885af40d40d99dcb1cc11537b6681ec4eb2824df96d31334695424caa34fce`。製品model SHA-256: `fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d`。[実行環境/版/試行履歴](evidence/AVOID-003/implementation-context.json)。01はパネル切れ、02は390px比較のhash折返し不足を検出した未公開試行としてworkへ退避し、成果物を上書きしていない。
+- [親レビュー用引継ぎ/公開後確認下書き](reviews/AVOID-003-local-20261018-03.md)。親からの途中R01〜R08指摘を修正済み。親の最終コード/テストレビュー・公開日英/fixture/全画像hash・公開ブラウザの検証と、人間動作確認の必要/不要の判断は**未実施**。ローカル成功を公開成功/完了にしない。
+- AVOID-004以降の実装は開始していない。AVOID-002の旧公開bundle・manifest・validator受入条件は変更していない。
+
+## 親の公開前レビュー
+
+- [親レビュー](evidence/AVOID-003/parent-review.md)で最終差分と試験結果を承認。独立した35,916件の時刻照合と十進区間8件が成功し、最終モデルhashも一致した。途中指摘は解消済み。
+- [実行中環境](evidence/AVOID-003/publication-environment.json)はrevision3、current=true、unrestricted/enforced、connected。[通常HTTPS](evidence/AVOID-003/publication-https.log)は継承proxy/CA/TLS維持で200/verify0。
+- 次はworkへの公開と実公開検証。上記の実装担当終了時点の「未実施」は履歴であり、公開成功・最終判定はまだ主張しない。
