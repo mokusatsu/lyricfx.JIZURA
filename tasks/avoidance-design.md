@@ -339,3 +339,13 @@ adapter担当005〜011がunit所有と変換を確定し、018が補助を実装
 003は受入例の期待値を実resolverへ接続し、004/017は同環境で性能を比較する。
 保存試験はHTTP/font前提を整えたところ、新規project初期cut数の既存期待0/実1の不一致で停止。
 002では旧assertionを変更せず、013へ引き継ぐ。
+
+## AVOID-003 実装契約（2026-10-18）
+
+- `08ca_lyric_avoidance.js` の単一validator/normalizerが版・区間・ID・有限数・座標・半径を検査し、入力から分離した時刻順モデルを返す。missingだけ初期要素へ移行し、明示emptyは補完しない。
+- `J.plan`に `lyricAvoidanceIndex` を追加。null終端は固定の計画尺へ展開せず、resolver呼出時の最終 `plan.duration` で解決する。既存cut配列・曲長へ回避要素を足さない。描画の旧経路は維持。
+- `resolveAvoidanceAt(finalPlan,t)` は純粋なbinary lookup。明示的な有限 `durationOverride` を持つprojectも直接可。自動尺projectは最終合成planを渡す。最終media尺の推測はせず、入力不足を明示エラーにする。OFF/autoPlacement=falseはnull。
+- 最短.04秒の検証のみ `Number.EPSILON * max(.04,|start|,|end|)` の丸め許容を採用する。.07/.11等の十進表現の誤拒否を防ぐ。重複検査・時刻の `[start,end)` 比較は厳密で、境界を広げない。
+- source provenanceは任意の小さい有限JSON objectとする（4096 UTF-8 bytes・深さ16まで）。意味のあるキーは推定せずdeep cloneする。Blob/Date/typed-array/関数/非有限値/循環を入れず、モデルや素材の実体を保存しない。内部固定positionAt境界だけ設け、補間を実装しない。
+- merge/replace、pack/unpack/import、保存UIのJSON clone前で同じvalidatorを通す。不正な保存済み回避データは元localStorageとpending素材を保持し、明示的な有効projectへの置換までautosave/cleanupを止める。新規作成・有効importで再開する。
+- 003の確認図は制御データの実resolver結果であり、歌詞の安全軌道ではない。旧版はresolver不存在を観測として表示。全トラックUI・adapter・本格永続化/Undoは後続担当を維持する。

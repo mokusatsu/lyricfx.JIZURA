@@ -30,6 +30,7 @@ J.defaultProject = () => ({
   version: 1,
   title: '夜明けの色', artist: 'JIZURA',
   projectName: '',                // set when the project is saved; the next save's default file name
+  lyricAvoidance: J.defaultLyricAvoidance ? J.defaultLyricAvoidance() : undefined,
   durationOverride: null,         // null = automatic; otherwise total video length in seconds
   lyrics: J.SAMPLE_LYRICS,
   themes: [],
@@ -257,6 +258,7 @@ J.lyricArea = area => {
 };
 
 J.plan = (project, audio, chain) => {
+  const lyricAvoidanceIndex = J.buildLyricAvoidanceIndex ? J.buildLyricAvoidanceIndex(project) : null;
   // Re-rolling one lyric of a 1シーン group changes only that lyric's effects: the plan is first made without those
   // re-rolls, and the lyrics that follow keep the effects (and the block's shared looks) that plan gave them.
   if (!chain) {
@@ -692,6 +694,7 @@ J.plan = (project, audio, chain) => {
       cut.leadTime = 0;
     }
   }
+  if (lyricAvoidanceIndex) plan.lyricAvoidanceIndex = lyricAvoidanceIndex;
   return plan;
 };
 

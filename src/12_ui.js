@@ -113,8 +113,9 @@ function migrateLyricBlankCuts(project) {
   }
 }
 function mergeProject(p) {
+  const lyricAvoidance = J.projectLyricAvoidance(p || {});
   const d = J.defaultProject();
-  const o = Object.assign(d, p || {});
+  const o = Object.assign(d, p || {}, {lyricAvoidance});
   if (o.videoSize) { const [w, h] = J.outputSize(o); o.videoSize = { w, h }; }
   o.shortExport=J.shortExportSettings(o.shortExport);
   o.fx = Object.assign(J.defaultProject().fx, (p && p.fx) || {});
@@ -152,10 +153,16 @@ function mergeProject(p) {
 function setBadges(d) {
   return d && d.custom ? '<span class="set-badge ex" title="'+J.mediaLabel('取り込んだ独自演出','Imported custom effect')+'">'+J.mediaLabel('追加','Added')+'</span>' : '';
 }
-function loadLocal() { try { const s = localStorage.getItem(LS_KEY); if (s) return mergeProject(JSON.parse(s)); } catch (e) {} return mergeProject(null); }
+let rejectedLocalAvoidance = null;
+function loadLocal() {
+  try { const s = localStorage.getItem(LS_KEY); if (s) return mergeProject(JSON.parse(s)); }
+  catch (e) { if (e.code === 'INVALID_LYRIC_AVOIDANCE') rejectedLocalAvoidance = e; }
+  return mergeProject(null);
+}
 function pendingMediaDeletes() { try { const ids = JSON.parse(localStorage.getItem(MEDIA_DELETE_KEY) || '[]'); return Array.isArray(ids) ? ids.filter(id => typeof id === 'string') : []; } catch (e) { return []; } }
 function queueMediaDeletion(id) { try { localStorage.setItem(MEDIA_DELETE_KEY, JSON.stringify([...new Set([...pendingMediaDeletes(), id])])); } catch (e) {} }
 async function cleanupDeletedMedia() {
+  if (rejectedLocalAvoidance) return;
   const active = new Set([...S.project.media.items, ...S.project.foreground.items].map(item => item.id));
   const pending = pendingMediaDeletes(), failed = [];
   for (const id of pending) {
@@ -238,7 +245,7 @@ function undoMove(direction) {
 }
 let saveTimer = 0;
 function autosave() { recordUndoState(); clearTimeout(saveTimer); saveTimer = setTimeout(flushSave, 700); }
-function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
+function flushSave() { recordUndoState(); clearTimeout(saveTimer); if (rejectedLocalAvoidance) return; try { J.projectLyricAvoidance(S.project); localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
 
 /* ---------------- planning ---------------- */
@@ -4715,8 +4722,11 @@ function bind() {
     // The saved name (without an added date) becomes the project name, stored in the file too.
     const previousName = S.project.projectName;
     S.project.projectName = request.name; $('projectName').value = request.name;
-    const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
-    try { await J.saveFile(request.filename, await J.packProject(project, audio)); autosave(); }
+    try {
+      J.projectLyricAvoidance(S.project); // Validate before JSON cloning can erase non-finite provenance.
+      const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
+      await J.saveFile(request.filename, await J.packProject(project, audio)); autosave();
+    }
     catch (err) { S.project.projectName = previousName; $('projectName').value = previousName || ''; toast(J.mediaLabel('保存できませんでした：', 'Could not save: ') + err.message); }
     finally { S.projectBusy = false; $('btnSave').disabled = false; }
   });
@@ -4881,6 +4891,7 @@ function refreshAudioName() {
   $('btnRemoveAudio').hidden = !S.audio;
 }
 function replaceProject(project, audio, audioFile, assets) {
+  J.projectLyricAvoidance(project); // Reject before releasing assets, fonts or editor state.
   S.audioLoad = (S.audioLoad || 0) + 1;
   pause(); clearTimeout(replanTimer); clearTimeout(saveTimer);
   if (S.areaEdit) cancelAreaEditor();
@@ -4889,7 +4900,7 @@ function replaceProject(project, audio, audioFile, assets) {
   releaseProjectAssets(J.mediaAssets);
   for (const [id,asset] of assets) { J.mediaAssets.set(id,asset); asset.element.addEventListener('seeked',()=>{S.need=true}); }
   for (const font of S.project.userFonts || []) delete J.FONTS[font.key];
-  S.project = mergeProject(project); S.audio = audio; S.audioFile = audioFile;
+  S.project = mergeProject(project); rejectedLocalAvoidance = null; S.audio = audio; S.audioFile = audioFile;
   S.t = 0; S.sourceTab = 'lyrics'; S.timelineZoom = 1; S.loop = true;
   $('btnLoop').setAttribute('aria-pressed','true'); $('mediaFiles').value = '';
   J.mediaTransitionFrame = null; J.foregroundTransitionFrame = null;
@@ -4915,6 +4926,7 @@ async function openProjectFile(file,report=()=>{}) {
     finally{clearTimeout(timer);}
   };
   const loaded = await step(L('ファイルを確認しています','Reading project file'),()=>J.unpackProject(file)), project = loaded.project, assets = new Map();
+  J.projectLyricAvoidance(project); // Before restoring/saving media or fonts.
   let audio = null, audioFile = null;
   try {
     const files = new Map(loaded.files.map(entry=>[entry.kind+':'+entry.id,entry.file]));
@@ -4944,7 +4956,7 @@ async function openProjectFile(file,report=()=>{}) {
 /* ---------------- boot ---------------- */
 function boot() {
   S.project = loadLocal();
-  cleanupDeletedMedia();
+  if (!rejectedLocalAvoidance) cleanupDeletedMedia();
   initUndo();
   bind(); syncUI(); replan();
   restoreMediaAssets();
@@ -4952,6 +4964,7 @@ function boot() {
   J.restoreFontFiles(S.project.userFonts).then(() => { fontKey = ''; ensureFonts(); S.need = true; }).catch(() => {});
   let mode = 'easy'; try { mode = localStorage.getItem('jizura.mode') || 'easy'; } catch (e) {}
   setMode(mode); commit();
+  if (rejectedLocalAvoidance) toast(J.mediaLabel('保存済みプロジェクトの回避データを読み込めません。元データを保持し、自動保存を停止しています。新規作成または有効なファイルを開くと自動保存を再開します。','Saved avoidance data could not be loaded. Original data is preserved and autosave is paused. Create a project or open a valid file to resume autosave.'));
   // open on a representative frame (end of the first cut's entrance)
   const c0 = S.plan.cuts.find(c => c.line >= 0);
   if (c0) seek(c0.start + Math.min(c0.dur * 0.6, c0.inDur + 0.25));

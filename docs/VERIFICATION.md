@@ -113,3 +113,12 @@ managed sandbox may require the supported approval context for Chromium sockets.
 Public validation uses `review.cjs validate BUILD --base-url URL`, checks every
 manifest asset and app HTML against local hashes, and never falls back to local
 success when networking fails. Local captures alone do not establish deployment.
+
+## AVOID-003 model validation
+
+See the [003 API and evidence commands](../dev/avoidance/README.md#avoid-003-production-control-model-and-resolver).
+Run `model-test.cjs` with the existing browser runtime and fixed c930c09 baseline.
+Use `model-review.cjs` and `model-negative.cjs` for the 003 bundle; the 002 validator
+continues to enforce its original unchanged-production contract. Public 003
+validation supports `--base-url` and uses Chromium's existing proxy/CA transport.
+Neither local evidence nor an unpublished comparison establishes a deployed pass.

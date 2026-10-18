@@ -4443,6 +4443,7 @@ J.defaultProject = () => ({
   version: 1,
   title: '夜明けの色', artist: 'JIZURA',
   projectName: '',                // set when the project is saved; the next save's default file name
+  lyricAvoidance: J.defaultLyricAvoidance ? J.defaultLyricAvoidance() : undefined,
   durationOverride: null,         // null = automatic; otherwise total video length in seconds
   lyrics: J.SAMPLE_LYRICS,
   themes: [],
@@ -4670,6 +4671,7 @@ J.lyricArea = area => {
 };
 
 J.plan = (project, audio, chain) => {
+  const lyricAvoidanceIndex = J.buildLyricAvoidanceIndex ? J.buildLyricAvoidanceIndex(project) : null;
   // Re-rolling one lyric of a 1シーン group changes only that lyric's effects: the plan is first made without those
   // re-rolls, and the lyrics that follow keep the effects (and the block's shared looks) that plan gave them.
   if (!chain) {
@@ -5105,6 +5107,7 @@ J.plan = (project, audio, chain) => {
       cut.leadTime = 0;
     }
   }
+  if (lyricAvoidanceIndex) plan.lyricAvoidanceIndex = lyricAvoidanceIndex;
   return plan;
 };
 
@@ -5609,6 +5612,98 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
   }
   if (obstacles.length && !best.clear) return null;
   return { ...best.r, angle: 0, lockAspect: true };
+};
+})();
+
+/* Circular avoidance control data. Rendering remains on the existing path in 003. */
+(() => {
+'use strict';
+const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
+const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+const fail = field => { const error = new Error('Invalid lyricAvoidance: ' + field); error.code = 'INVALID_LYRIC_AVOIDANCE'; throw error; };
+const number = (value, field, min, max = Infinity) => {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < min || value > max) fail(field);
+  return value;
+};
+// One magnitude-scaled machine epsilon absorbs decimal subtraction/addition
+// roundoff only in minimum-length validation. Lookup/overlap comparisons stay exact.
+const tooShort = (start, end) => end - start < 0.04 - Number.EPSILON * Math.max(0.04, Math.abs(start), Math.abs(end));
+const defaultRegion = () => ({id:'avoid-default', start:0, end:null, center:{x:0.5,y:0.42}, radius:0.2});
+// Provenance is opaque metadata, never an executable position provider or media store.
+// Accept only a small JSON object; no Blob, Date, typed arrays, non-finite or cyclic values.
+function provenance(source) {
+  if (!object(source)) fail('source object');
+  const seen = new Set();
+  function copy(value, depth) {
+    if (depth > 16) fail('source depth');
+    if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
+    if (typeof value === 'number' && Number.isFinite(value)) return value;
+    if (typeof value !== 'object' || value === null || seen.has(value)) fail('source JSON');
+    if (!Array.isArray(value) && Object.prototype.toString.call(value) !== '[object Object]') fail('source JSON object');
+    seen.add(value);
+    const result = Array.isArray(value) ? Array.from(value, v => copy(v, depth + 1)) : Object.fromEntries(Object.entries(value).map(([k,v]) => [k,copy(v, depth + 1)]));
+    seen.delete(value);
+    return result;
+  }
+  const result = copy(source, 0);
+  if (new TextEncoder().encode(JSON.stringify(result)).length > 4096) fail('source exceeds 4096 bytes');
+  return result;
+}
+J.defaultLyricAvoidance = () => ({version:1, regions:[defaultRegion()]});
+// This is the single validator/normalizer for import, editing and planning.
+// Only an absent project field requests legacy migration; null is malformed.
+J.normalizeLyricAvoidance = value => {
+  if (!object(value) || value.version !== 1 || !Array.isArray(value.regions)) fail('version/regions');
+  if (value.regions.length > 1000) fail('region limit 1000');
+  const ids = new Set();
+  const regions = value.regions.map(region => {
+    if (!object(region) || typeof region.id !== 'string' || !region.id.trim() || ids.has(region.id)) fail('unique nonempty id');
+    ids.add(region.id);
+    const start = number(region.start, 'start', 0);
+    const end = region.end === null ? null : number(region.end, 'end', 0);
+    if (end !== null && (end <= start || tooShort(start, end))) fail('interval minimum 0.04 seconds');
+    if (!object(region.center)) fail('center');
+    const result = {id:region.id,start,end,center:{x:number(region.center.x,'center.x',0,1),y:number(region.center.y,'center.y',0,1)},radius:number(region.radius,'radius',0.02,0.45)};
+    if (own(region, 'source')) result.source = provenance(region.source);
+    return result;
+  }).sort((a,b) => a.start - b.start);
+  for (let i=1; i<regions.length; i++) {
+    const a = regions[i-1], b = regions[i];
+    if (b.start <= a.start || tooShort(a.start, b.start) || (a.end !== null && a.end > b.start)) fail('overlap/minimum interval');
+  }
+  return {version:1,regions};
+};
+J.projectLyricAvoidance = project => own(project, 'lyricAvoidance') ? J.normalizeLyricAvoidance(project.lyricAvoidance) : J.defaultLyricAvoidance();
+J.buildLyricAvoidanceIndex = project => {
+  const model = J.projectLyricAvoidance(project), settings = J.lyricEffectSettings(project);
+  // Keep null ends and future starts intact: final compose duration is supplied at lookup.
+  return {version:1, enabled:settings.autoPlacement && settings.avoidCenter, regions:model.regions};
+};
+// Internal fixed-position boundary. A future schema can supply a different evaluator
+// here without changing resolver callers. No function is stored in project JSON.
+const positionAt = (region, _stageTime) => ({cx:region.center.x,cy:region.center.y,r:region.radius});
+J.resolveAvoidanceAt = (projectOrPlan, stageTime) => {
+  if (!Number.isFinite(stageTime) || stageTime < 0) return null;
+  const isPlan = own(projectOrPlan,'lyricAvoidanceIndex');
+  const index = isPlan ? projectOrPlan.lyricAvoidanceIndex : J.buildLyricAvoidanceIndex(projectOrPlan);
+  if (!index.enabled) return null;
+  const duration = isPlan ? projectOrPlan.duration : projectOrPlan.durationOverride;
+  // A raw project with automatic duration must be planned first; never guess song length.
+  if (!Number.isFinite(duration) || duration < 0) throw new Error('Avoidance requires a finite composed duration');
+  if (stageTime >= duration) return null;
+  let lo=0, hi=index.regions.length;
+  while (lo < hi) { const mid=(lo+hi)>>>1; if (index.regions[mid].start <= stageTime) lo=mid+1; else hi=mid; }
+  if (!lo) return null;
+  const region=index.regions[lo-1], next=index.regions[lo];
+  const end=region.end === null ? (next ? next.start : duration) : region.end;
+  if (stageTime >= end) return null;
+  const result={id:region.id,...positionAt(region,stageTime)};
+  if (own(region,'source')) result.source=provenance(region.source);
+  return result;
+};
+J.avoidanceCirclePixels = (resolved, W, H) => {
+  number(W,'stage width',Number.MIN_VALUE); number(H,'stage height',Number.MIN_VALUE);
+  return resolved === null ? null : {id:resolved.id,cx:resolved.cx*W,cy:resolved.cy*H,r:resolved.r*Math.min(W,H)};
 };
 })();
 
@@ -10935,6 +11030,7 @@ J.applyProjectSettings = (current, source) => {
   return result;
 };
 J.packProject = async (project, audioFile) => {
+  J.projectLyricAvoidance(project);
   const entries = [], parts = []; let offset = 0;
   const add = async (kind, id, file, name) => {
     if (!(file instanceof Blob)) throw new Error(J.mediaLabel('素材が見つかりません。再読み込みしてください：', 'Missing asset. Please import it again: ') + name);
@@ -10962,6 +11058,7 @@ J.unpackProject = async file => {
     if (file.size > 32 * 1024 * 1024 || !/^\s*\{/.test(decode.decode(header))) throw fail();
     const project = JSON.parse(await file.text());
     if (!project || typeof project !== 'object' || typeof project.lyrics !== 'string') throw fail();
+    J.projectLyricAvoidance(project);
     return {project,files:[],portable:false};
   }
   if (header.length !== 12) throw fail();
@@ -10969,6 +11066,7 @@ J.unpackProject = async file => {
   if (length > 32 * 1024 * 1024 || start > file.size) throw fail();
   const manifest = JSON.parse(await file.slice(12,start).text());
   if (manifest.format !== 'jizura' || manifest.version !== 1 || typeof manifest.project?.lyrics !== 'string' || !Array.isArray(manifest.entries)) throw fail();
+  J.projectLyricAvoidance(manifest.project);
   let end = 0; const seen = new Set(), files = [];
   for (const entry of manifest.entries) {
     if (!['media','audio','font','person'].includes(entry.kind) || typeof entry.id !== 'string' || typeof entry.name !== 'string' || typeof entry.type !== 'string' || !Number.isSafeInteger(entry.offset) || !Number.isSafeInteger(entry.size) || entry.size < 0 || entry.offset !== end || start+end+entry.size > file.size || seen.has(entry.kind+':'+entry.id)) throw fail();
@@ -42732,8 +42830,9 @@ function migrateLyricBlankCuts(project) {
   }
 }
 function mergeProject(p) {
+  const lyricAvoidance = J.projectLyricAvoidance(p || {});
   const d = J.defaultProject();
-  const o = Object.assign(d, p || {});
+  const o = Object.assign(d, p || {}, {lyricAvoidance});
   if (o.videoSize) { const [w, h] = J.outputSize(o); o.videoSize = { w, h }; }
   o.shortExport=J.shortExportSettings(o.shortExport);
   o.fx = Object.assign(J.defaultProject().fx, (p && p.fx) || {});
@@ -42771,10 +42870,16 @@ function mergeProject(p) {
 function setBadges(d) {
   return d && d.custom ? '<span class="set-badge ex" title="'+J.mediaLabel('取り込んだ独自Effects','Imported custom effect')+'">'+J.mediaLabel('New','Added')+'</span>' : '';
 }
-function loadLocal() { try { const s = localStorage.getItem(LS_KEY); if (s) return mergeProject(JSON.parse(s)); } catch (e) {} return mergeProject(null); }
+let rejectedLocalAvoidance = null;
+function loadLocal() {
+  try { const s = localStorage.getItem(LS_KEY); if (s) return mergeProject(JSON.parse(s)); }
+  catch (e) { if (e.code === 'INVALID_LYRIC_AVOIDANCE') rejectedLocalAvoidance = e; }
+  return mergeProject(null);
+}
 function pendingMediaDeletes() { try { const ids = JSON.parse(localStorage.getItem(MEDIA_DELETE_KEY) || '[]'); return Array.isArray(ids) ? ids.filter(id => typeof id === 'string') : []; } catch (e) { return []; } }
 function queueMediaDeletion(id) { try { localStorage.setItem(MEDIA_DELETE_KEY, JSON.stringify([...new Set([...pendingMediaDeletes(), id])])); } catch (e) {} }
 async function cleanupDeletedMedia() {
+  if (rejectedLocalAvoidance) return;
   const active = new Set([...S.project.media.items, ...S.project.foreground.items].map(item => item.id));
   const pending = pendingMediaDeletes(), failed = [];
   for (const id of pending) {
@@ -42857,7 +42962,7 @@ function undoMove(direction) {
 }
 let saveTimer = 0;
 function autosave() { recordUndoState(); clearTimeout(saveTimer); saveTimer = setTimeout(flushSave, 700); }
-function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
+function flushSave() { recordUndoState(); clearTimeout(saveTimer); if (rejectedLocalAvoidance) return; try { J.projectLyricAvoidance(S.project); localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
 
 /* ---------------- planning ---------------- */
@@ -47334,8 +47439,11 @@ function bind() {
     // The saved name (without an added date) becomes the project name, stored in the file too.
     const previousName = S.project.projectName;
     S.project.projectName = request.name; $('projectName').value = request.name;
-    const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
-    try { await J.saveFile(request.filename, await J.packProject(project, audio)); autosave(); }
+    try {
+      J.projectLyricAvoidance(S.project); // Validate before JSON cloning can erase non-finite provenance.
+      const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
+      await J.saveFile(request.filename, await J.packProject(project, audio)); autosave();
+    }
     catch (err) { S.project.projectName = previousName; $('projectName').value = previousName || ''; toast(J.mediaLabel('保存できませんでした：', 'Could not save: ') + err.message); }
     finally { S.projectBusy = false; $('btnSave').disabled = false; }
   });
@@ -47500,6 +47608,7 @@ function refreshAudioName() {
   $('btnRemoveAudio').hidden = !S.audio;
 }
 function replaceProject(project, audio, audioFile, assets) {
+  J.projectLyricAvoidance(project); // Reject before releasing assets, fonts or editor state.
   S.audioLoad = (S.audioLoad || 0) + 1;
   pause(); clearTimeout(replanTimer); clearTimeout(saveTimer);
   if (S.areaEdit) cancelAreaEditor();
@@ -47508,7 +47617,7 @@ function replaceProject(project, audio, audioFile, assets) {
   releaseProjectAssets(J.mediaAssets);
   for (const [id,asset] of assets) { J.mediaAssets.set(id,asset); asset.element.addEventListener('seeked',()=>{S.need=true}); }
   for (const font of S.project.userFonts || []) delete J.FONTS[font.key];
-  S.project = mergeProject(project); S.audio = audio; S.audioFile = audioFile;
+  S.project = mergeProject(project); rejectedLocalAvoidance = null; S.audio = audio; S.audioFile = audioFile;
   S.t = 0; S.sourceTab = 'lyrics'; S.timelineZoom = 1; S.loop = true;
   $('btnLoop').setAttribute('aria-pressed','true'); $('mediaFiles').value = '';
   J.mediaTransitionFrame = null; J.foregroundTransitionFrame = null;
@@ -47534,6 +47643,7 @@ async function openProjectFile(file,report=()=>{}) {
     finally{clearTimeout(timer);}
   };
   const loaded = await step(L('ファイルを確認しています','Reading project file'),()=>J.unpackProject(file)), project = loaded.project, assets = new Map();
+  J.projectLyricAvoidance(project); // Before restoring/saving media or fonts.
   let audio = null, audioFile = null;
   try {
     const files = new Map(loaded.files.map(entry=>[entry.kind+':'+entry.id,entry.file]));
@@ -47563,7 +47673,7 @@ async function openProjectFile(file,report=()=>{}) {
 /* ---------------- boot ---------------- */
 function boot() {
   S.project = loadLocal();
-  cleanupDeletedMedia();
+  if (!rejectedLocalAvoidance) cleanupDeletedMedia();
   initUndo();
   bind(); syncUI(); replan();
   restoreMediaAssets();
@@ -47571,6 +47681,7 @@ function boot() {
   J.restoreFontFiles(S.project.userFonts).then(() => { fontKey = ''; ensureFonts(); S.need = true; }).catch(() => {});
   let mode = 'easy'; try { mode = localStorage.getItem('jizura.mode') || 'easy'; } catch (e) {}
   setMode(mode); commit();
+  if (rejectedLocalAvoidance) toast(J.mediaLabel('保存済みプロジェクトの回避データを読み込めません。元データをHoldし、Auto保存を停止しています。新規作成または有効なファイルを開くとAuto保存を再開します。','Saved avoidance data could not be loaded. Original data is preserved and autosave is paused. Create a project or open a valid file to resume autosave.'));
   // open on a representative frame (end of the first cut's entrance)
   const c0 = S.plan.cuts.find(c => c.line >= 0);
   if (c0) seek(c0.start + Math.min(c0.dur * 0.6, c0.inDur + 0.25));

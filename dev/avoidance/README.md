@@ -122,3 +122,82 @@ node dev/avoidance/review.cjs validate local-20261018-06 --base-url http://127.0
 Do not unset the proxy or replace CA trust to make a public check pass. The
 validator rejects invalid proxy configuration with a redacted error and does not
 fall back to a local or direct request after a public error.
+
+## AVOID-003 production control model and resolver
+
+`src/08ca_lyric_avoidance.js` is the shared production validator, normalizer and
+pure resolver. Production lyric rendering and the three product tracks continue
+using their existing implementation; the added index neither creates cuts nor
+extends duration. The 002 bundle and its validator remain immutable and strict.
+
+- `J.defaultLyricAvoidance()` returns detached version-1 default control data.
+- `J.normalizeLyricAvoidance(value)` validates one model, clones it and sorts by
+  start. `J.projectLyricAvoidance(project)` supplies the deterministic default only
+  when the project field is **absent**. Explicit empty arrays remain empty;
+  null/undefined fields and unknown versions reject with
+  `code: INVALID_LYRIC_AVOIDANCE`.
+- `J.buildLyricAvoidanceIndex(project)` creates a detached sorted plan index. It
+  retains original null ends and all future regions. `J.plan` attaches it as
+  `plan.lyricAvoidanceIndex`; final compose may change `plan.duration` afterward.
+- `J.resolveAvoidanceAt(finalPlan, stageTime)` performs binary lookup and returns
+  null or a fresh `{id,cx,cy,r,source?}`. The `source` object is detached too.
+  Supply the **final composed plan for automatic duration**. A raw project can be
+  passed only with finite numeric `durationOverride`; an enabled automatic-duration
+  raw project raises an explicit error, since final media duration cannot be
+  inferred here. OFF / autoPlacement=false and out-of-range query times return null.
+- `J.avoidanceCirclePixels(resolved,W,H)` converts center to original stage pixels
+  and radius to `min(W,H)` pixels. It does not normalize x/y distances separately.
+
+The accepted 002 contract is unchanged: 1000 regions, radius .02–.45, center 0–1,
+non-overlapping `[start,end)` intervals, minimum .04 seconds. Only minimum-length
+validation permits one magnitude-scaled machine epsilon
+`Number.EPSILON * max(.04,abs(start),abs(end))`, to accept representable decimal
+pairs such as `.07,.11`. Lookup boundaries and overlap comparisons remain exact;
+there is no time snapping or temporal epsilon in evaluation. Final output clipping
+may expose less than .04 seconds without rewriting saved data.
+
+003 adopts optional opaque `source` provenance: a JSON object with finite values,
+maximum 4096 UTF-8 bytes and maximum nesting depth 16. Semantic keys are not
+inferred. Blob, Date, typed-array, executable, cyclic, undefined and non-finite
+values reject. This is metadata, never a model binary, media Blob or executable
+`positionAt`. The private fixed-position evaluator is the replacement boundary for
+a future schema; callers and saved version 1 do not gain functions.
+
+Validation happens before merge/replace side effects, portable pack/unpack,
+import asset/font restoration and the save UI's JSON clone. An invalid stored
+avoidance model preserves the original localStorage value, stops autosave and
+pending asset cleanup (including pagehide), and displays the reason. A valid
+explicit replacement/new project resumes autosave. This protective fallback does
+not silently repair or overwrite the rejected project.
+
+```sh
+node dev/avoidance/model-test.cjs
+# Optional fixed-baseline directory (default shown):
+JIZURA_BEFORE=/workspace/work/avoid003-before node dev/avoidance/model-test.cjs
+PYTHONDONTWRITEBYTECODE=1 python build.py
+node dev/avoidance/model-review.cjs capture NEW-UNUSED-BUILD-ID
+node dev/avoidance/model-review.cjs validate NEW-UNUSED-BUILD-ID
+node dev/avoidance/model-negative.cjs NEW-UNUSED-BUILD-ID
+node dev/avoidance/model-review.cjs validate NEW-UNUSED-BUILD-ID --base-url https://mokusatsu.github.io/lyricfx.JIZURA/
+```
+
+The baseline directory must be a fixed archive of commit
+`c930c0977e1247865dcd5e45c4e9eb064b89f0fe`; capture verifies its HTML against Git.
+The before iframe observes resolver absence. The after iframe calls the actual
+production functions; neither side claims a generated safe lyric trajectory.
+All 42 cases cover H01 boundaries/gap, H02 legacy/empty/OFF/malformed inputs and
+H03 six dimensions × original/shortened/extended duration. Captures use a font
+subset generated from the sample, all dynamic cases and model error text; each
+captured panel's actual characters must exist in its cmap. Panels and result tables
+must fit fully. Native PNGs are unscaled **control diagrams**, separate from the
+full confirmation-panel screenshots. The validator checks exact canonical inputs,
+resolved coordinates, source/asset/PNG hashes, local/public raw bytes, all sample
+cases, comparison controls, desktop/mobile geometry and link/image loading.
+Mutation tests serve a temporary cloned bundle through an overlay server, keeping
+root application references intact. They require a passing unmodified clone and
+specific rejection reasons; published bundles are never mutated.
+
+The inherited full `project_file_test.cjs` still fails at its initial cut-count
+assertion (expected 0, actual 1), before saving. 003's scoped portable model
+roundtrip and malformed-input save guards pass; they do not turn that historical
+failure into a full save-test pass. AVOID-013 retains the complete persistence work.
