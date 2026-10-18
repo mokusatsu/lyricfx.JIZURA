@@ -1,6 +1,6 @@
 # AVOID-004 parent review
 
-親のコード・ローカル検証レビュー: 承認。公開検証・人間H01〜H03回答は未確認（公開前記録）。
+親のコード・ローカル検証レビュー: 承認。公開検証: 成功。人間H01〜H03の動作確認: 回答待ち。
 
 ## 担当と対象
 
@@ -71,3 +71,12 @@ R04-19は実装担当の追加自己レビューから親が必要修正と判�
 - 親の独立検証: `parent-geometry.json` / `parent-raster.json` と各再現script。最終source c166 / JA90eaeに束縛済み。最終比較08のcenter-static、moving-frame-3-2を目視し、円・文字/板・説明文・footerの収容を確認。
 - 製品・開発ツール・文書のdiff whitespace check成功。生の試験stdoutログは内容を変更せず保持する。
 - 公開成功・人間OKはこの時点で補わない。これ以降の公開結果はpublication.jsonと下記追記へ記録する。
+
+## 公開検証と最終状態
+
+- 対象commit `31f127e7263fd5eee21cdbd2f69665624fe335fe`、build `local-20261018-08`。Pages run39168467482成功。確認記録時刻 2026-10-19T06:39:34.488910+09:00。
+- 通常HTTPS: 継承proxy/CA/TLSを維持、HTTP200、verify0、manifest hash一致。接続中environmentはcurrent=true、spec/observed=4/4、unrestricted/enforced。保存設定IDと実行時反映の観測を分けて記録。
+- 公開validator: 全127 assets + manifestのHTTP/raw-byte hash一致、112 PNG、28casesのbefore/after実描画再照合、日英HTML一致、1500/390px比較・overlay・全リンク・録画metadata・sample再生/連続seek/font/case操作成功。
+- 公開JA/EN smoke成功。親の公開操作15件成功、pageerror0。公開PC/mobile画面を目視、停止後のpaintを待った追加captureでもcircle guide表示を確認。
+- 証拠正本: [publication.json](publication.json)、[公開validator](public-validation.log)、[smoke](public-site-smoke.log)、[親操作](public-parent-ui.json)、[guide](public-guide-confirmation.json)。
+- 人間のH01〜H03は未回答。公開未完ではなく、必要な見え方・動作の判断を待つ状態。004を完了にせず、005は開始しない。
