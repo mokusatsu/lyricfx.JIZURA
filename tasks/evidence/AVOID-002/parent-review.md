@@ -65,3 +65,5 @@ R14の修正を親がレビューし承認した。公開modeは既存proxyをCh
 ここまでのコード/ローカル試験は承認、人間動作確認不要の判断を維持する。公開HTTP/hash/起動は未確認。環境設定の許可ドメインにmokusatsu.github.ioを追加するよう利用者へ依頼済み。設定変更前の失敗を製品不具合や公開成功と誤記しない。
 
 コミット前チェック: コード・文書の差分チェック成功。保存した旧テストstdoutの末尾空白は原記録として維持。本番src/日英HTMLは開始HEADと一致。成果物commit時の作業ツリーはclean、公開検証記録とR14修正を追記commitして引き継ぐ。
+
+利用者が環境設定を編集したとの連絡後、13:38:22 UTCに再確認した。environment_statusはcurrent=true、spec/observed revision=12、restricted/enforced、custom allowed_hosts=[]、mokusatsu.github.ioはeffective allowlistにも不在。通常proxy経由HTTPSも403/exit22のまま。保存された設定の内容を推測せず、接続中環境に未反映と判定した。更新後commit `743d0ff` のPages run [39132326962](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39132326962) はsuccess。
