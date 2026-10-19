@@ -1,6 +1,6 @@
 # AVOID-006 親レビュー
 
-2026-10-19。候補はまだ受入・公開していない。実装は `gpt-6.1-sol / medium` の担当へ委任し、親が下記を確認する。
+2026-10-19。候補のコード・ローカル/公開検証を承認済み。人間の演出確認を待つ。実装は `gpt-6.1-sol / medium` の担当へ委任し、親が下記を確認する。
 
 ## 固定基準と通信
 
@@ -76,3 +76,11 @@ build `local-20261019-02`。187組・374UI PNG・374原寸PNG・4動画、775ass
 コード・ローカル試験・比較成果物を承認し、公開検証へ進める。人間の演出確認は必要と判断し、公開が通っても回答前に006を完了しない。007へ進まない。
 
 コミット前のwhitespace検査では、原文のまま同梱したDejaVuライセンスの2行だけ末尾空白が報告された。固定bundleのライセンスbytesは変更せず保持し、この1ファイルを除くstaged全差分の検査が成功。実装sourceの警告を除外したものではない。
+
+## 公開版の親確認
+
+commit `672ca9fded4347837c7aa6e91394cd483bbca86f` のPages成功後、通常HTTPSのHTTP200/TLS検証0とmanifest hashを確認。775assets＋manifestの全公開raw bytesと374原寸再描画が一致。日英のHTML hash/起動/実描画も成功。[公開記録](publication.json)。比較validatorとsite-smokeは既存の外部font遮断を保つため、別にrequest interceptionを使わない通常通信で26リンクと6演出の実再生/シーク・スマホ幅を検査し、外部要求/ページ例外0・保存不変・font revision不変を確認した。
+
+人間確認は上記の演出のまとまりの理由で必要。H01〜H03の未回答を承認へ置換せず、006を実環境検証待ちに保持する。必要な数値・コード・公開検証を人間へ委ねていない。
+
+補助的に通常通信のUI PNGを比較すると、比較top＋6演出はbyte一致、mobile full-pageだけ478 pixelの差があった。差はviewport外の変更後DOM円ガイドの範囲に限定された。初回画像は保持した。[追検査](mobile-guide-probe/result.json)で2本のDOMガイドの境界・visibility・opacityを確認し、実際のviewport内へスクロールした前後stage screenshotは公開/ローカルでbyte一致。両方の円を目視確認した。製品描画の欠落は再現せず、全374原寸Canvas一致とは別のfull-page撮影上の差として記録する。8枚全UI PNG一致とは記録しない。

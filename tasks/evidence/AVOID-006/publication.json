@@ -1,0 +1,107 @@
+{
+  "task": "AVOID-006",
+  "build": "local-20261019-02",
+  "artifactCommit": "672ca9fded4347837c7aa6e91394cd483bbca86f",
+  "beforeCommit": "b64ee11e9a762942643babd4f637ded8efdd8b42",
+  "comparisonURL": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261019-02/",
+  "manifestSHA256": "3f0a5358acf187521cfdf6c049f99ab3ce9bc9a806b0376aac1d9e73935467f2",
+  "sourceSHA256": {
+    "ja": "38b8edf31aaecaa667e1e0248ccc5fa3bbf68380333f819683fdfb6494f3ebe4",
+    "en": "9fe491dc1bf791b8567fa8e088ba4e705d78de04556c9439891e1ec51c5e9cb5"
+  },
+  "captureOrigin": "local frozen candidate; public raw bytes/rerenders/startup required separately",
+  "pages": {
+    "id": 39246844027,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "672ca9fded4347837c7aa6e91394cd483bbca86f",
+    "html_url": "https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39246844027",
+    "created_at": "2026-10-19T11:44:42Z",
+    "updated_at": "2026-10-19T11:46:36Z"
+  },
+  "publicVerification": {
+    "passed": true,
+    "ordinaryHTTPS": {
+      "status": 200,
+      "tlsVerifyResult": 0,
+      "log": "public-https.log",
+      "transport": "inherited proxy, CA and TLS validation unchanged"
+    },
+    "assets": 775,
+    "manifestAlsoVerified": true,
+    "uiPNGs": 374,
+    "nativePNGs": 374,
+    "videos": 4,
+    "nativeRerenders": 374,
+    "validator": {
+      "validated": true,
+      "scope": "candidate-evidence",
+      "cases": 187,
+      "counts": {
+        "safe": 86,
+        "insufficient": 95,
+        "unsupported": 0,
+        "not-evaluated": 6,
+        "unchangedControls": 6,
+        "mandatorySafeAnchors": 26,
+        "exploratorySafe": 36,
+        "exploratoryInsufficient": 94,
+        "unmetExpectations": 0
+      },
+      "publicURL": "https://mokusatsu.github.io/lyricfx.JIZURA/",
+      "manifestSHA256": "3f0a5358acf187521cfdf6c049f99ab3ce9bc9a806b0376aac1d9e73935467f2"
+    },
+    "siteSmoke": [
+      {
+        "status": "passed",
+        "language": "ja",
+        "url": "https://mokusatsu.github.io/lyricfx.JIZURA/",
+        "sha256": "38b8edf31aaecaa667e1e0248ccc5fa3bbf68380333f819683fdfb6494f3ebe4",
+        "lyricLines": [
+          0,
+          1
+        ],
+        "hasColorVariation": true,
+        "cuts": 4,
+        "width": 654,
+        "height": 368,
+        "pngBytes": 572182
+      },
+      {
+        "status": "passed",
+        "language": "en",
+        "url": "https://mokusatsu.github.io/lyricfx.JIZURA/en/",
+        "sha256": "9fe491dc1bf791b8567fa8e088ba4e705d78de04556c9439891e1ec51c5e9cb5",
+        "lyricLines": [
+          0,
+          1
+        ],
+        "hasColorVariation": true,
+        "cuts": 4,
+        "width": 654,
+        "height": 368,
+        "pngBytes": 571518
+      }
+    ],
+    "normalBrowser": {
+      "log": "public-parent-ui/results.json",
+      "actions": 32,
+      "requestInterception": false,
+      "pageErrors": 0,
+      "externalRequests": 0,
+      "storageUnchanged": true,
+      "supplementalScreenshotComparison": "normal-ui-image-comparison.json",
+      "mobileVisibleGuides": "mobile-guide-probe/result.json"
+    },
+    "siteSmokeTransport": "original test assertions; public-browser-preload.cjs supplies existing publicBrowserOptions so inherited proxy is used; external-font blocking from existing smoke remains; dedicated fixed-font comparison also tested over normal browser transport"
+  },
+  "localVerification": "local-verification.json",
+  "humanReview": {
+    "required": true,
+    "status": "requested; pending H01-H03",
+    "reviewRecord": "../../reviews/AVOID-006-local-20261019-02.md",
+    "reason": "26 new native structures; geometry alone does not certify composition/readability, as shown by prior Stack feedback"
+  },
+  "checkedUTC": "2026-10-19T11:56:22.519145+00:00",
+  "checkedAsiaTokyo": "2026-10-19T20:56:22.519145+09:00"
+}
