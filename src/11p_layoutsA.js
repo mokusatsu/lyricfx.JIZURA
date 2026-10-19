@@ -3,7 +3,16 @@
 'use strict';
 const E = J.E;
 const P = 'layoutsA';
-const reg = (key, def) => J.register('layout', key, def, P);
+const reg = (key, def) => {
+  const render=def.render;
+  def.render=function(env){
+    if(!env.cut.placementLayoutsA)return render.call(this,env);
+    return env.withDrawRole(key==='edgeFrame'?'independentDecor':'primary',key+'.composition',()=>{if(env.placementEnvelope){env.lt=10000;env.ltb=env.cut.dur/2;if(key==='ticker')env.step=1;}return render.call(this,env);});
+  };
+  J.register('layout',key,def,P);
+};
+// Explicit source ownership; ordinary native drawing does not use these hooks.
+const role=(env,kind,owner,fn)=>env.cut.placementLayoutsA?env.withDrawRole(kind,env.cut.layout+'.'+owner,fn):fn();
 
 /* ---------------------------------------------------------------- helpers */
 const U = env => Math.min(env.W, env.H);
@@ -14,8 +23,8 @@ const lineNo = env => pad2(Math.max(0, env.cut.line | 0) + 1);
 const bodyF = env => (env.st.fonts.body && env.st.fonts.body[0]) || 'gothic_med';
 const monoF = env => (env.st.fonts.mono && env.st.fonts.mono[0]) || 'mono';
 const fontsOf = (st, roles) => J.fontsOf(st, roles);
-const tin = (env, d = 0, len = 0.4, ease = E.outExpo) => ease(J.clamp((env.lt - d) / Math.max(0.01, len)));
-const tout = env => 1 - E.inCubic(env.pOut);
+const tin = (env, d = 0, len = 0.4, ease = E.outExpo) => env.placementEnvelope ? 1 : ease(J.clamp((env.lt - d) / Math.max(0.01, len)));
+const tout = env => env.placementEnvelope ? 1 : 1 - E.inCubic(env.pOut);
 const meas = (text, font, size, o) => J.measure(Object.assign({ text, font, size }, o || {}));
 const box = (x0, y0, x1, y1) => ({ x0, y0, x1, y1, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, boxes: [] });
 const smallSize = env => J.clamp(U(env) * 0.024, 14, 34);
@@ -159,6 +168,7 @@ function dash(env, x0, y0, x1, y1, d, g, col, lw, a = 1) {
 const closeLoop = pts => pts.concat([pts[0], pts[1]]);
 /* one-call text row for dense secondary copy (main pass only); sp = extra px after each glyph */
 function fastRow(env, text, font, size, x, y, sp, color, alpha, align = 'left') {
+  if(env.cut.placementLayoutsA&&['justified','ticker','edgeFrame'].includes(env.cut.layout)&&env.drawOwnership?.role!=='tiledAux')return role(env,'tiledAux','repeated-copy',()=>fastRow(env,text,font,size,x,y,sp,color,alpha,align));
   if (env.pass !== 'main' || alpha <= 0.01 || !text) return;
   const ctx = env.ctx;
   if (!('letterSpacing' in ctx)) { env.draw({ text, font, size, x, y, align, track: sp / size, color, alpha, ghost: false }); return; }
@@ -212,10 +222,12 @@ reg('lowerThird', {
     const reach = mx + m.w + size * 0.45;
     const L = reach * tin(env, 0, 0.55) * (1 - E.inCubic(env.pOut));
     if (L > 1) {
+      if(env.placementEnvelope)env.layoutASweep={dx:th*1.3,dy:th*1.3};
       env.rect(left ? 0 : W - L, barY, L, th, sc.accent, 1, true);
       const sq = th * 2.6, ex = left ? L : W - L;
       env.rect(ex - sq / 2, barY + th / 2 - sq / 2, sq, sq, sc.accent, 1, true);
     }
+    env.layoutASweep=null;
     // label above the lyric
     const ls = smallSize(env);
     const la = tin(env, 0.12, 0.4, E.outCubic) * tout(env);
@@ -846,6 +858,7 @@ reg('bubble', {
     const sh = p.shape === 'thought' ? 'ellipse' : p.shape;
     const B = bubblePoly(sh, cx, cy, w, h, size, p.tail);
     const pivot = p.shape === 'thought' ? [cx, cy] : B.tip;
+    if(env.placementEnvelope)env.layoutASweep={pivot,scale:[0,1.11],angle:Math.abs(p.tilt)*3.33};
     ctx.save();
     ctx.translate(pivot[0], pivot[1]); ctx.rotate(p.tilt * J.DEG * (1 - q) * 3); ctx.scale(Math.max(0.001, q), Math.max(0.001, q)); ctx.translate(-pivot[0], -pivot[1]);
     if (q > 0.001) {
@@ -860,6 +873,7 @@ reg('bubble', {
     }
     const bb = J.mainDraw(env, { text, font: p.font, size, x: cx, y: cy + size * 0.02, track: 0.02, lead: 1.2, color: tcol });
     ctx.restore();
+    env.layoutASweep=null;
     // emphasis strokes at the top corner
     if (p.burst) {
       const a = J.clamp((env.lt - 0.2) / 0.2) * tout(env);
@@ -888,35 +902,39 @@ reg('subtitleBar', {
     const e = tin(env, 0, 0.55, E.outExpo) * (1 - E.inCubic(env.pOut));
     const out = tout(env);
     const hh0 = bh * e;
-    if (pic && hh0 > 0.5) env.rect(-2, hh0, W + 4, H - hh0 * 2, sc.dim, J.clamp(e * 1.4), false);
+    if (pic && hh0 > 0.5) role(env,'independentDecor','picture-field',()=>env.rect(-2, hh0, W + 4, H - hh0 * 2, sc.dim, J.clamp(e * 1.4), false));
     // huge faint copy behind
     const bt = flat(text);
     const bs = Math.min(J.fitSize(bt, p.bigFont, W * 0.94, H * 0.6), H * 0.6);
     const ba = tin(env, 0.05, 0.6, E.outCubic) * out;
     if (ba > 0.01) {
       const bx = W / 2 + (lb / Math.max(1, env.cut.dur) - 0.5) * W * 0.03 * p.drift;
+      if(env.placementEnvelope){const range=env.layoutAEvaluationRange;env.layoutASweep={dx:W*.03*Math.max(...range.map(t=>Math.abs((t-env.cut.start)/Math.max(1,env.cut.dur)-.5)))};}
       if (p.big === 'outline') env.draw({ text: bt, font: p.bigFont, size: bs, x: bx, y: H / 2, fill: false, stroke: Math.max(1.2, bs * 0.006), strokeColor: sc.sub, alpha: 0.4 * ba, ghost: false });
       else env.draw({ text: bt, font: p.bigFont, size: bs, x: bx, y: H / 2, color: pic ? sc.bg : sc.dim, alpha: ba * (pic ? 0.7 : 1), ghost: false });
     }
+    env.layoutASweep=null;
     // letterbox bars
     const hh = bh * e;
     if (hh > 0.5) {
-      env.rect(-2, -2, W + 4, hh + 2, barC, 1, false);
-      env.rect(-2, H - hh, W + 4, hh + 2, barC, 1, false);
-      env.line([[0, hh], [W, hh]], sc.sub, 1.2, 0.35, false);
-      env.line([[0, H - hh], [W, H - hh]], sc.sub, 1.2, 0.35, false);
+      role(env,'independentDecor','letterbox',()=>env.rect(-2, -2, W + 4, hh + 2, barC, 1, false));
+      role(env,'independentDecor','letterbox',()=>env.rect(-2, H - hh, W + 4, hh + 2, barC, 1, false));
+      role(env,'independentDecor','letterbox-rule',()=>env.line([[0, hh], [W, hh]], sc.sub, 1.2, 0.35, false));
+      role(env,'independentDecor','letterbox-rule',()=>env.line([[0, H - hh], [W, H - hh]], sc.sub, 1.2, 0.35, false));
     }
     // timecode in the top bar
+    if(env.placementEnvelope)env.layoutASweep={negativeY:bh*.2};
     const ls = Math.min(smallSize(env) * 0.9, bh * 0.3);
     const ta = J.clamp((e - 0.6) * 2.5) * out;
-    if (ta > 0) {
+    if (ta > 0) role(env,'independentDecor','camera-ui',()=>{
       const y = hh / 2;
       if (p.tc === 'rec') {
         if (env.step % 2 === 0) env.circle(W * 0.05, y, ls * 0.35, sc.accent, null, 0, ta, false);
         env.draw({ text: 'REC', font: monoF(env), size: ls, track: 0.12, align: 'left', x: W * 0.05 + ls * 0.8, y, color: onCol(sc, barC), alpha: ta, ghost: false });
       } else env.draw({ text: 'SCENE ' + lineNo(env) + '  /  CUT ' + pad2((env.cut.index | 0) + 1), font: monoF(env), size: ls, track: 0.12, align: 'left', x: W * 0.05, y, color: onCol(sc, barC), alpha: ta, ghost: false });
-      env.draw({ text: J.fmtTime(env.t, 24), font: monoF(env), size: ls, track: 0.08, align: 'right', x: W * 0.95, y, color: sc.sub, alpha: ta, ghost: false });
-    }
+      env.draw({ placementNativeKind:'dynamic-number', text: J.fmtTime(env.t, 24), font: monoF(env), size: ls, track: 0.08, align: 'right', x: W * 0.95, y, color: sc.sub, alpha: ta, ghost: false });
+    });
+    env.layoutASweep=null;
     // subtitle
     const o = { track: 0.06, lead: 1.25 };
     let t2 = text, ss;
@@ -956,7 +974,7 @@ reg('ticker', {
     // band + scrolling copy
     const bw = (W - x0) * eB;
     if (bw > 1) {
-      env.rect(x0, bandY, bw, bandH, bandC, 1, false);
+      role(env,'tiledAux','repeated-copy-plate',()=>env.rect(x0, bandY, bw, bandH, bandC, 1, false));
       if (env.pass === 'main') {
         const unit = flat(env.cut.lineText || text0) + '　◆　';
         const fs = bandH * 0.46;
@@ -982,7 +1000,7 @@ reg('ticker', {
     if (ca > 0) {
       const tt = J.fmtTime(env.t), tsz = ts * 0.9, tw = meas(tt, monoF(env), tsz, { track: 0.08 }).w + tsz * 1.4;
       env.rect(W - W * 0.04 - tw, bandY - tsz * 1.7, tw, tsz * 1.7, sc.fg, ca, false);
-      env.draw({ text: tt, font: monoF(env), size: tsz, track: 0.08, x: W - W * 0.04 - tw / 2, y: bandY - tsz * 0.85, color: onCol(sc, sc.fg), alpha: ca, ghost: false });
+      env.draw({ placementNativeKind:'dynamic-number', text: tt, font: monoF(env), size: tsz, track: 0.08, x: W - W * 0.04 - tw / 2, y: bandY - tsz * 0.85, color: onCol(sc, sc.fg), alpha: ca, ghost: false });
     }
     if (p.bug) {
       const a = tin(env, 0.2, 0.4, E.outCubic) * out, bs = smallSize(env) * 0.85;
@@ -1034,7 +1052,7 @@ reg('splitScreen', {
       other = sd > 0 ? [[-2 * W, -H], top, bot, [-2 * W, 2 * H]] : [top, [3 * W, -H], [3 * W, 2 * H], bot];
     }
     const clipTo = poly => { ctx.beginPath(); poly.forEach((q, i) => (i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]))); ctx.closePath(); ctx.clip(); };
-    if (e > 0) env.poly(plate, plateC, 1, false);
+    if (e > 0) role(env,'independentDecor','inversion-field',()=>env.poly(plate, plateC, 1, false));
     const text = brk(env.cut.text.trim(), port ? 5 : 10);
     const o = { track: 0.02, lead: 1.08 };
     const size = Math.min(J.fitSize(text, p.font, W * 0.86, H * (p.split === 'h' ? 0.36 : 0.42), o), u * 0.3);
@@ -1078,6 +1096,7 @@ reg('mirror', {
     // horizon
     const e = tin(env, 0, 0.7, E.inOutCubic) * out;
     if (e > 0) {
+      if(env.placementEnvelope)env.layoutASweep={dx:u*.005,dy:u*.005};
       const hw = W * 0.44 * e;
       env.line([[W / 2 - hw, hz], [W / 2 + hw, hz]], sc.sub, Math.max(1.2, u * 0.0016), 0.85, false);
       if (p.ticks) {
@@ -1090,6 +1109,7 @@ reg('mirror', {
       env.circle(W / 2 - hw, hz, u * 0.005, sc.accent, null, 0, 1, false);
       env.circle(W / 2 + hw, hz, u * 0.005, sc.accent, null, 0, 1, false);
     }
+    env.layoutASweep=null;
     const base = { text, font: p.font, size, x: W / 2, y: cy, track: 0.04, lead: 1.15, color: sc.fg };
     // reflection: flipped copies in horizontal strips, fading with depth
     if (env.pass === 'main') {
@@ -1097,7 +1117,7 @@ reg('mirror', {
       for (let k = 0; k < K; k++) {
         const y0 = hz + RH * k / K, y1 = hz + RH * (k + 1) / K;
         const a = p.strength * Math.pow(1 - (k + 0.5) / K, 1.5);
-        const dx = p.ripple ? Math.sin(env.ltb * 2.4 + k * 0.9) * size * 0.035 * (k + 1) / K : 0;
+        const dx = env.placementEnvelope ? 0 : p.ripple ? Math.sin(env.ltb * 2.4 + k * 0.9) * size * 0.035 * (k + 1) / K : 0;
         ctx.save(); ctx.beginPath(); ctx.rect(-W, y0, W * 3, y1 - y0 + 0.6); ctx.clip();
         ctx.translate(dx, hz); ctx.scale(1, -p.squash); ctx.translate(0, -hz);
         J.mainDraw(env, Object.assign({}, base, { alpha: a, ghost: false, mi: 0 }));
@@ -1251,7 +1271,7 @@ reg('perspective', {
       const a = ca * J.clamp((z - 1) / 0.6) * J.clamp((K + 1 - z) / 1.2) * (0.8 - 0.45 * (z / (K + 1)));
       if (a <= 0.01) continue;
       const sk = side ? -p.vx * 14 * (1 - q.k) : 0;
-      env.draw({ text, font: p.font, size: size * q.k, sy: side ? 1 : 0.8, skew: sk, x: q.x, y: q.y, track: 0.03, lead: 1.1, color: sc.sub, alpha: a, ghost: false });
+      env.draw({ placementNativeKind:'perspective-copy', text, font: p.font, size: size * q.k, sy: side ? 1 : 0.8, skew: sk, x: q.x, y: q.y, track: 0.03, lead: 1.1, color: sc.sub, alpha: a, ghost: false });
     }
     const bb = J.mainDraw(env, { text, font: p.font, size, x: x0, y: y0, track: 0.03, lead: 1.1, color: sc.fg });
     return bb || box(x0 - m.w / 2, y0 - m.h / 2, x0 + m.w / 2, y0 + m.h / 2);
@@ -1306,6 +1326,7 @@ reg('hanko', {
       const sc2 = J.lerp(1.55, 1, E.outBack(J.clamp(x), 1.4));
       const a = J.clamp(x * 3) * out;
       const shake = x > 1 && x < 1.8 ? J.rs(env.step, 91) * S * 0.015 * (1.8 - x) : 0;
+      if(env.placementEnvelope)env.layoutASweep={pivot:[sx,sy],scale:[.94,1.55],dx:S*.012};
       ctx.save(); ctx.translate(sx + shake, sy); ctx.rotate(p.rot * J.DEG); ctx.scale(sc2, sc2);
       const pts = [], M = 11, seed = env.cut.seed | 0;
       const jit = (i, k) => J.rs(seed, i, k, 3) * S * 0.014;
@@ -1497,6 +1518,7 @@ reg('filmstrip', {
     ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(p.tilt * J.DEG); ctx.translate(-W / 2, -H / 2);
     // band
     const bandLen = A * 1.6, c0 = A / 2 + off;
+    if(env.placementEnvelope){const sweep=env.layoutAEvaluationRange,drift=Math.max(...sweep.map(t=>Math.abs(t-env.cut.start-env.cut.dur/2)))*u*.03;const along=A*2.4+drift;const theta=p.tilt*J.DEG,axis=v?[-Math.sin(theta),Math.cos(theta)]:[Math.cos(theta),Math.sin(theta)];env.layoutASweep={vector:axis.map(v=>v*along)};}
     if (v) env.rect(W / 2 - band / 2, c0 - bandLen / 2, band, bandLen, stripC, fa, false);
     else env.rect(c0 - bandLen / 2, H / 2 - band / 2, bandLen, band, stripC, fa, false);
     // sprocket holes
@@ -1627,7 +1649,7 @@ reg('ruler', {
       env.line([[cx - hx, dy], [cx + hx, dy]], sc.sub, lw, 1, false);
       arrowHead(env, cx - hx, dy, Math.PI, ah, sc.sub, 1); arrowHead(env, cx + hx, dy, 0, ah, sc.sub, 1);
       const wv = Math.round(m.w * e);
-      env.draw({ text: wv + ' ' + p.unit, font: monoF(env), size: ls, track: 0.08, x: cx, y: dy + ext * ls * 0.95, color: sc.accent, alpha: J.clamp(e * 2 - 0.3), ghost: false });
+      env.draw({ placementNativeKind:'dynamic-number', text: wv + ' ' + p.unit, font: monoF(env), size: ls, track: 0.08, x: cx, y: dy + ext * ls * 0.95, color: sc.accent, alpha: J.clamp(e * 2 - 0.3), ghost: false });
       // vertical dimension
       const dx = top ? x1 + size * 0.5 : x0 - size * 0.5, ex = top ? 1 : -1;
       const vy = m.h / 2 * e;
@@ -1635,7 +1657,7 @@ reg('ruler', {
       env.line([[top ? x1 + size * 0.08 : x0 - size * 0.08, y1], [dx + ex * ls * 0.6, y1]], sc.sub, lw, 0.8, false);
       env.line([[dx, cy - vy], [dx, cy + vy]], sc.sub, lw, 1, false);
       arrowHead(env, dx, cy - vy, -Math.PI / 2, ah, sc.sub, 1); arrowHead(env, dx, cy + vy, Math.PI / 2, ah, sc.sub, 1);
-      env.draw({ text: Math.round(m.h * e) + ' ' + p.unit, font: monoF(env), size: ls, track: 0.08, x: dx + ex * ls * 1.1, y: cy, rot: top ? 90 : -90, color: sc.accent, alpha: J.clamp(e * 2 - 0.3), ghost: false });
+      env.draw({ placementNativeKind:'dynamic-number', text: Math.round(m.h * e) + ' ' + p.unit, font: monoF(env), size: ls, track: 0.08, x: dx + ex * ls * 1.1, y: cy, rot: top ? 90 : -90, color: sc.accent, alpha: J.clamp(e * 2 - 0.3), ghost: false });
       // glyph ticks + count
       if (p.ticks) {
         const ty = top ? y1 + size * 0.28 : y0 - size * 0.28, sg = top ? 1 : -1;
@@ -1760,6 +1782,7 @@ reg('chat', {
       const y1 = bottom - lift[i], y0 = y1 - bh;
       const col = right ? sentC : recvC, tc = onCol(sc, col);
       const px = right ? x0 + bw : x0, py = y1;
+      if(env.placementEnvelope)env.layoutASweep={pivot:[px,py],scale:[0,1.11],positiveY:lift[i]};
       ctx.save(); ctx.translate(px, py); ctx.scale(Math.max(0.001, pop), Math.max(0.001, pop)); ctx.translate(-px, -py);
       env.rrect(x0, y0, bw, bh, Math.min(bh / 2, fs * 0.9), col, 1, false);
       env.poly(right ? [[x0 + bw - fs * 0.5, y1 - fs * 0.3], [x0 + bw + fs * 0.28, y1 + fs * 0.05], [x0 + bw - fs * 0.1, y1 - fs * 0.8]] : [[x0 + fs * 0.5, y1 - fs * 0.3], [x0 - fs * 0.28, y1 + fs * 0.05], [x0 + fs * 0.1, y1 - fs * 0.8]], col, 1, false);
@@ -1769,6 +1792,7 @@ reg('chat', {
         bb = J.unionBB(bb, J.mainDraw(env, { text: lines[i], font: p.font, size: fs, lead: 1.25, x: x0 + bw / 2, y: y0 + bh / 2, color: tc, mi: tAt(i) / stag }));
       }
       ctx.restore();
+      env.layoutASweep=null;
       if (i === nL - 1 && pop > 0.9) {
         const ms = Math.max(11, fs * 0.36);
         env.draw({ text: (right ? 'Read ' : '') + J.fmtTime(env.cut.start).slice(0, 5), font: monoF(env), size: ms, align: right ? 'right' : 'left', x: right ? x0 + bw : x0, y: y1 + ms * 1.4, color: sc.sub, alpha: out, ghost: false });
@@ -1814,6 +1838,7 @@ reg('notification', {
     const eIn = E.outBack(J.clamp(env.lt / 0.45), 1.1), eOut = E.inCubic(env.pOut);
     const y0 = target - (1 - eIn) * (target + ch + 30) - eOut * (target + ch + 30);
     const x0 = W / 2 - cw / 2;
+    if(env.placementEnvelope)env.layoutASweep={dy:2*(target+ch+30)};
     if (p.stack) {
       const sw = cw * 0.92;
       env.rrect(W / 2 - sw / 2, y0 + ch - pd * 0.4, sw, pd * 1.4, pd * 0.7, plate, 0.45, false);
@@ -1859,8 +1884,11 @@ reg('ticket', {
     const rot = p.tilt * (1 - eOut * 0.5) + (1 - eIn) * 10;
     const T = ticketParts(-tw / 2, -th / 2, tw, th, px0, nr, r);
     const a = J.clamp(eIn * 3) * (1 - eOut);
+    if(env.placementEnvelope)env.layoutASweep={pivot:[cx,cy],scale:[1,1],angle:Math.abs(p.tilt)*.5+10,negativeY:H*.04,positiveY:H*.7};
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG);
     // stub tears away on exit
+    const ticketSweep=env.layoutASweep;
+    if(env.placementEnvelope)env.layoutASweep={pivot:[cx,cy],scale:[1,1],angle:Math.abs(p.tilt)*.5+22,negativeY:H*.04+Math.hypot(tw*.12,th*.2),positiveY:H*.7+Math.hypot(tw*.12,th*.2),dx:Math.hypot(tw*.12,th*.2)};
     const tear = eOut;
     ctx.save(); ctx.translate(tear * tw * 0.12, tear * th * 0.2); ctx.rotate(tear * 12 * J.DEG);
     if (outline) env.line(closeLoop(T.stub), sc.fg, Math.max(2, th * 0.012), a, false); else env.poly(T.stub, plate, a, false);
@@ -1870,6 +1898,7 @@ reg('ticket', {
     const bx = sx + stubW * 0.26, bh2 = th * 0.7;
     for (let i = 0, y = -bh2 / 2; i < 40 && y < bh2 / 2; i++) { const hgt = th * (0.006 + 0.014 * J.r(p.serial, i, 3)); env.rect(bx - stubW * 0.08, y, stubW * 0.16, hgt, tc, a * 0.85, false); y += hgt + th * (0.006 + 0.01 * J.r(p.serial, i, 4)); }
     ctx.restore();
+    env.layoutASweep=ticketSweep;
     if (outline) env.line(closeLoop(T.main), sc.fg, Math.max(2, th * 0.012), a, false); else env.poly(T.main, plate, a, false);
     // perforation
     for (let y = -th / 2 + nr * 1.6; y < th / 2 - nr * 1.6; y += th * 0.05) env.rect(px0 - 1, y, 2.5, th * 0.025, lc, a * 0.7, false);

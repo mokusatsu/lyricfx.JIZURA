@@ -9,6 +9,7 @@ const E = J.E;
 
 /* ---------- main-item pipeline: enter / hold / exit + draw ---------- */
 J.mainDraw = (env, it) => {
+  if(env.cut.placementLayoutsA&&env.drawOwnership?.role==='independentDecor')return env.withDrawRole('primary',env.cut.layout+'.composition',()=>J.mainDraw(env,it));
   if(env.cut.fullStagePlacement&&env.cut.placementUnits)it.placementMain=true;
   if(env.cut.fullStagePlacement&&env.cut.placementUnits&&!env.drawOwnership&&it.mi!=null){
     return env.withDrawRole('primary',env.cut.layout+'.unit.'+(it.placementOwner??it.mi),()=>J.mainDraw(env,it));

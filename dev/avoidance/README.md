@@ -311,3 +311,10 @@ native-render and JA/EN startup validation is recorded in [AVOID-005](../../task
 human H01–H03 behavior acceptance remains pending. Do not infer either from a local
 capture or from the presence of a bundle directory. Existing002/003/004 bundles
 and validators remain immutable.
+
+
+## AVOID-006 layoutsA26 opt-in
+
+`J.finalizePlacementPlan(plan,{layoutsA:true})` admits the26 named `J.placement.layoutsA26` native adapters; combine `basicLayouts:true` to include basic16. The main app remains on its original path until017. The trajectory is `layouts-a-joint-translation`: one native composition owner, per-primitive full-interval envelopes, and per-region shared offsets. A safe certificate covers render scale.1–4, native complete motion, attached meaningful text/plates, camera/contentScale and AA. Dense families may explicitly return insufficient-space; malformed/unknown draw states and panel tone are unsupported. No primary masks or font changes implement avoidance.
+
+Source-backed ownership/domain/temporal/visibility details and final functional evidence are in [AVOID-006 adapter contract](../../tasks/evidence/AVOID-006/adapter-contract.md) and [26-ID inventory](layouts-a-inventory.json). The anchors file describes actual native examples, including smaller corner circles where default-radius fixed-size compositions do not fit. Runtime envelope escape throws; unsupported never means safe. Public and human acceptance are separate parent-owned steps.
