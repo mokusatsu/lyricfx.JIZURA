@@ -53,9 +53,10 @@ and frame safety. Measurement support and safety are separate fields.
 
 - `J.placement.itemGeometry(item,parentAffine,env)` uses the renderer's font and
   center/middle baseline with actual TextMetrics. It includes item rotation/shear,
-  parent affine, per-character transforms, negative scales and stroke. One device
-  pixel of edge coverage is pulled back through the inverse glyph matrix; this is
-  measured against independent actual Canvas alpha pixels in tests. Nominal alpha
+  parent affine, per-character transforms, negative scales and stroke. The current
+  measured envelope adds one font-space pixel for metrics/grid rounding and a
+  two-device-pixel grid/AA guard after transformation. Shapes use one device pixel.
+  Independent actual Canvas alpha pixels test these envelopes at small scales. Nominal alpha
   is excluded only at the renderer’s <=0.002 cutoff: nominal 0.003 can round to
   an actual 8-bit alpha value of 1 and therefore must remain measured.
 - `pieceGeometry(polygons,parentAffine)` is the future piece adapter boundary. It
@@ -151,3 +152,69 @@ unquantized. A regression switches region at 3.7 seconds with one-second motion
 steps and real seek 3.95; both current and recursively drawn previous ink are
 checked against the independent circle oracle. Longer/unsupported transitions,
 other-cut FX/style, missing glow and larger motion steps remain diagnosed.
+
+## Historical AVOID-005 prototype checkpoint (superseded below)
+
+The working tree contains an experimental `basicLayouts:true` option and
+`owned-unit-translation` serializer in `09b_basic_placement.js`. Its sixteen basic
+IDs are registered for development probes, but the parent rejected this prototype
+as AVOID-005 completion: independent unit translations can create overlaps or
+invert reading order, and whole-duration envelopes reject common native moving
+layouts. No broader production/default coverage is certified by this registration.
+The accepted004 API above remains the released foundation contract.
+
+The exact prototype source hashes,144-case outcomes,64 zero-offset native replay
+comparisons, unsupported clip tests and open proof obligations are in
+`tasks/evidence/AVOID-005/prototype-01/`. Its88 circle-clear envelope cases are
+geometric partial evidence, not88 accepted005 cases. Shapes/owned rectangle clips
+and gradient reconstruction have zero-offset tests; moved gradient/clip and affine
+shape antialiasing still need verification. No005 comparison bundle/public manifest
+exists yet. Continue005 in a fresh sequential implementation context.
+
+
+## AVOID-005 current implementation candidate
+
+The rejected prototype history above remains evidence of the earlier limitations.
+The current `basicLayouts:true` candidate implements all sixteen named adapters.
+It remains opt-in; parent review/public comparison acceptance is still pending.
+The complete per-ID ownership, proof and admission table is
+[`adapter-contract.md`](../../tasks/evidence/AVOID-005/adapter-contract.md).
+
+Serialized kinds are `owned-unit-translation`, `ordered-wave-route` and
+`ordered-huge-route`. Static ownership uses maximum revealed glyph/shape geometry
+with bounded camera motion. Wave uses separated ordered main-glyph cells and a
+continuous circle-aware boundary operator, with distinct phase keys for trails.
+Huge retains native glyph indices/font/gradient coordinates in row-major cells
+and continuously maps original motion into bounded cell motion. Radial labels
+can retain their full rotating annulus by translating the orbit center together.
+Native clocks remain quantized/lagged t/lt/ltb; realTime alone selects regions.
+
+Exactly four named repeated groups are tiledAux: tile.repetitions, marquee.rows,
+gloss.background and diag.secondBand. Wave trails/scatter extras/column and stack
+repetitions remain primary. labels.centerOrb is a non-lyric independent background
+orb, follows the common orbit translation, and does not exempt center words.
+Native oversized diag plates retain their original canvas cropping; no new tiny
+clip is introduced. Actual `cut.note` (pipe ruby/note) follows its layout's owner.
+
+Refinalization with changed options rebuilds from composed source fields, including
+automatic area/params, and clears all derived flags before rejection. Suppressed
+text whose intrinsic scale was represented by an automatic area restores that
+intrinsic scale when the basic opt-in removes the area. WeakMap provenance tracks
+the actual normalization; explicit contentScale edits clear it. Legacy default
+rendering and JSON remain unchanged.
+
+Bounded LRU caches hold detached frozen preparation values (2048 entries/64MiB
+serialized size) and callback-free pure geometry solutions (8192 entries/8MiB).
+Font revision invalidates both. Preparation keys include the full cut and native
+composition/style/fx/stage/time context. Solver keys include exact polygons, circle,
+stage, seed and fitBounds. Callback-constrained semantic solves bypass caching.
+`preparationCacheStats()` and `solverCacheStats()` expose entries/hits/misses/bytes;
+`clearPreparationCache()` clears both for differential/cold verification. No
+additional glyph/stage canvas is allocated.
+
+`insufficient-space` means this adapter's conservative geometry/candidate family
+cannot certify the requested fixed-size case. In particular candidate exhaustion
+is not a claim that all possible ink interlocking is impossible. Eclipse blur and
+unsupported motion/draw states remain explicit unsupported diagnostics.
+Native matrix and pixel tests deliberately retain unsuccessful conditions as
+reported outcomes; a registered ID alone does not imply every variant fits.

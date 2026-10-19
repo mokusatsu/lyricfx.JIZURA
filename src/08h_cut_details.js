@@ -76,7 +76,7 @@ J.applyCutDetails = (cut, details, plan, layer) => {
     if (Object.prototype.hasOwnProperty.call(details,key)) {
       if (layer === 'lyrics' && key === 'params') cut.params = {...cut.params,...copy(details.params)};
       else if(layer==='lyrics' && ['effectStyle','effectFx'].includes(key))continue;
-      else cut[key] = copy(details[key]);
+      else {cut[key] = copy(details[key]);if(layer==='lyrics'&&key==='contentScale')J.areaIntrinsicScales?.delete(cut);}
     }
   }
   if (layer === 'lyrics' && Array.isArray(details.fontParams)) {

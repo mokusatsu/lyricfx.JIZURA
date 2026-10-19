@@ -123,6 +123,12 @@ J.lyricScene = (cut, bounds, end = cut.end, bgScenes = []) => {
 J.EMPHASIS_TEXT_SCALE = 1.15;
 // Suppressed lyrics (~…~) are smaller but never below a readable area.
 J.SUPPRESSED_TEXT_SCALE = .7;
+// Private provenance: automatic areas carry the intrinsic text strength. A later
+// opt-in full-stage adapter can restore it without changing legacy cut data.
+J.areaIntrinsicScales = new WeakMap();
+J.normalizeAreaTextScale = cut => {
+  if(cut.emphasis&&cut.contentScale===J.EMPHASIS_TEXT_SCALE||cut.suppressed&&cut.contentScale===J.SUPPRESSED_TEXT_SCALE){J.areaIntrinsicScales.set(cut,cut.contentScale);cut.contentScale=1;}
+};
 J.SUPPRESSED_MIN_AREA = { w: .3, h: .17 };
 // Emphasis over a foreground: a large lyric laid over the foreground (drawn in front of it), or a large
 // lyric balancing it from the opposite side. Neither is shrunk into the composition's lyric zone.
@@ -272,7 +278,7 @@ J.finishLyricPlan = (project, plan, audio) => {
       cut.areaMode = 'auto';
     }
     // An automatic area already carries the strength; the text scale is for the full-stage default.
-    if (cut.area && (cut.emphasis && cut.contentScale === J.EMPHASIS_TEXT_SCALE || cut.suppressed && cut.contentScale === J.SUPPRESSED_TEXT_SCALE)) cut.contentScale = 1;
+    if(cut.area)J.normalizeAreaTextScale(cut);
     // Some layouts choose columns or orientation during planning. Give those
     // choices the resolved area dimensions as well as using them at render time.
     if (cut.area && J.LAYOUTS[cut.layout]?.plan) {
@@ -296,7 +302,7 @@ J.finishLyricPlan = (project, plan, audio) => {
       W:plan.W*cut.area.w,H:plan.H*cut.area.h,dur:cut.dur,
     },plan.style);
     if(cut.text.includes('\n'))cut.params.sx=1;
-    if(cut.emphasis&&cut.contentScale===J.EMPHASIS_TEXT_SCALE||cut.suppressed&&cut.contentScale===J.SUPPRESSED_TEXT_SCALE)cut.contentScale=1;
+    J.normalizeAreaTextScale(cut);
   }
 
 };
@@ -346,7 +352,7 @@ J.applyLyricGroupAvoidance = (project, plan) => {
   const assign=(cut,area,mode)=>{
     if(project.overrides?.[cut.line]?.lock)return;// locked lines keep their area
     cut.area=area;cut.areaMode=mode;
-    if(cut.emphasis&&cut.contentScale===J.EMPHASIS_TEXT_SCALE||cut.suppressed&&cut.contentScale===J.SUPPRESSED_TEXT_SCALE)cut.contentScale=1;
+    J.normalizeAreaTextScale(cut);
     const layout=J.LAYOUTS[cut.layout];
     if(layout?.plan)cut.params=layout.plan(J.rng(J.h(cut.seed,318)),{
       text:cut.text,n:[...cut.text.replace(/\s/g,'')].length,W:plan.W*cut.area.w,H:plan.H*cut.area.h,dur:cut.dur,

@@ -1,0 +1,148 @@
+captured center-landscape-0.5-hold
+captured center-landscape-0.25-hold
+captured center-landscape-0.75-hold
+captured center-portrait-0.5-hold
+captured center-square-0.5-hold
+captured mixed-landscape-0.5-hold
+captured mixed-landscape-0.25-hold
+captured mixed-landscape-0.75-hold
+captured mixed-portrait-0.5-hold
+captured mixed-square-0.5-hold
+captured vcols-landscape-0.5-hold
+captured vcols-landscape-0.25-hold
+captured vcols-landscape-0.75-hold
+captured vcols-portrait-0.5-hold
+captured vcols-square-0.5-hold
+captured marquee-landscape-0.5-enter
+captured marquee-landscape-0.5-hold
+captured marquee-landscape-0.5-exit
+captured marquee-landscape-0.25-enter
+captured marquee-landscape-0.25-hold
+captured marquee-landscape-0.25-exit
+captured marquee-landscape-0.75-enter
+captured marquee-landscape-0.75-hold
+captured marquee-landscape-0.75-exit
+captured marquee-portrait-0.5-hold
+captured marquee-square-0.5-hold
+captured tile-landscape-0.5-hold
+captured tile-landscape-0.25-hold
+captured tile-landscape-0.75-hold
+captured tile-portrait-0.5-hold
+captured tile-square-0.5-hold
+captured scatter-landscape-0.5-enter
+captured scatter-landscape-0.5-hold
+captured scatter-landscape-0.5-exit
+captured scatter-landscape-0.25-enter
+captured scatter-landscape-0.25-hold
+captured scatter-landscape-0.25-exit
+captured scatter-landscape-0.75-enter
+captured scatter-landscape-0.75-hold
+captured scatter-landscape-0.75-exit
+captured scatter-portrait-0.5-hold
+captured scatter-square-0.5-hold
+captured wave-landscape-0.5-enter
+captured wave-landscape-0.5-hold
+captured wave-landscape-0.5-exit
+captured wave-landscape-0.25-enter
+captured wave-landscape-0.25-hold
+captured wave-landscape-0.25-exit
+captured wave-landscape-0.75-enter
+captured wave-landscape-0.75-hold
+captured wave-landscape-0.75-exit
+captured wave-portrait-0.5-hold
+captured wave-square-0.5-hold
+captured huge-landscape-0.5-hold
+captured huge-landscape-0.25-hold
+captured huge-landscape-0.75-hold
+captured huge-portrait-0.5-hold
+captured huge-portrait-0.25-hold
+captured huge-portrait-0.75-hold
+captured huge-square-0.5-hold
+captured labels-landscape-0.5-hold
+captured labels-landscape-0.25-hold
+captured labels-landscape-0.75-hold
+captured labels-portrait-0.5-hold
+captured labels-square-0.5-hold
+captured condensed-landscape-0.5-hold
+captured condensed-landscape-0.25-hold
+captured condensed-landscape-0.75-hold
+captured condensed-portrait-0.5-hold
+captured condensed-square-0.5-hold
+captured gloss-landscape-0.5-hold
+captured gloss-landscape-0.25-hold
+captured gloss-landscape-0.75-hold
+captured gloss-portrait-0.5-hold
+captured gloss-square-0.5-hold
+captured type-landscape-0.5-hold
+captured type-landscape-0.25-hold
+captured type-landscape-0.75-hold
+captured type-portrait-0.5-hold
+captured type-square-0.5-hold
+captured diag-landscape-0.5-enter
+captured diag-landscape-0.5-hold
+captured diag-landscape-0.5-exit
+captured diag-landscape-0.25-enter
+captured diag-landscape-0.25-hold
+captured diag-landscape-0.25-exit
+captured diag-landscape-0.75-enter
+captured diag-landscape-0.75-hold
+captured diag-landscape-0.75-exit
+captured diag-portrait-0.5-hold
+captured diag-square-0.5-hold
+captured circle-landscape-0.5-hold
+captured circle-landscape-0.25-hold
+captured circle-landscape-0.75-hold
+captured circle-portrait-0.5-hold
+captured circle-square-0.5-hold
+captured stack-landscape-0.5-hold
+captured stack-landscape-0.25-hold
+captured stack-landscape-0.75-hold
+captured stack-portrait-0.5-hold
+captured stack-square-0.5-hold
+captured pill-landscape-0.5-hold
+captured pill-landscape-0.25-hold
+captured pill-landscape-0.75-hold
+captured pill-portrait-0.5-hold
+captured pill-square-0.5-hold
+captured wave-central-go-native
+captured marquee-owned-enter
+captured marquee-owned-hold
+captured marquee-owned-exit
+captured tile-owned-enter
+captured tile-owned-hold
+captured tile-owned-exit
+captured gloss-owned-enter
+captured gloss-owned-hold
+captured gloss-owned-exit
+captured control-legacy
+captured control-fullstage
+captured control-off
+captured control-manual
+captured control-emphasis
+captured control-lock
+captured long-conflict
+<ref *1> Error: spawnSync python E2BIG
+    at Object.spawnSync (node:internal/child_process:1160:20)
+    at spawnSync (node:child_process:928:24)
+    at Object.execFileSync (node:child_process:971:15)
+    at fontCoverage (/workspace/lyricfx.JIZURA/dev/avoidance/basic-review.cjs:54:37)
+    at capture (/workspace/lyricfx.JIZURA/dev/avoidance/basic-review.cjs:70:136)
+    at async main (/workspace/lyricfx.JIZURA/dev/avoidance/basic-review.cjs:90:599) {
+  errno: -7,
+  code: 'E2BIG',
+  syscall: 'spawnSync python',
+  path: 'python',
+  spawnargs: [
+    '-c',
+    "from fontTools.ttLib import TTFont; import sys,json; f=TTFont(sys.argv[1]); chars=set().union(*(set(t.cmap) for t in f['cmap'].tables)); missing=sorted({ord(c) for c in json.loads(sys.argv[2]) if not c.isspace()}-chars); assert not missing,missing",
+    '/workspace/lyricfx.JIZURA/review/AVOID-005/local-20261019-01/fixtures/font.otf',
+    '"AVOID-005 local-20261019-01@font-face{font-family:Fixture;src:url(fixtures/font.otf)}body{font:16px Fixture,sans-serif;background:#17202b;color:#eee;margin:16px}a{color:#acf}button,select,input{font:inherit;max-width:100%}nav{display:flex;flex-wrap:wrap;gap:10px}article{margin:24px 0;overflow-wrap:anywhere}figure{margin:0;min-width:0}img,video{width:100%;height:auto;display:block}.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}.toggle figure:first-child{display:none}.toggle.before figure:first-child{display:block}.toggle.before figure:last-child{display:none}.overlay{position:relative}.overlay figure:last-child{position:absolute;inset:0;opacity:var(--alpha,.5)}.overlay figcaption{display:none}.original{overflow:auto}.original img{width:auto;max-width:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}details{margin:12px 0}summary{cursor:pointer}video{max-width:900px}@media(max-width:650px){.pair{grid-template-columns:1fr}}AVOID-005 / local-20261019-01基本16レイアウトの通常回避軌道の確認候補です。変更前：受入済み004（3d8f52c）。変更後：005候補。通常アプリへの切替は後の段階です。各組は同じ入力・seed・時刻・寸法・フォントです。円ガイドはUIに重ね、元のCanvas PNGには描きません。背景反復のマスクは018で対応予定です。安全／制約不足／未対応を別々に表示します。必須安全例と探索条件を区別し、探索条件の制約不足を安全例に数えません。AVOID-005-H01 AVOID-005-H02 AVOID-005-H03同時刻で操作する日本語アプリ英語アプリ版・条件まず確認する16例各リンクで、その演出の必須安全例へ直接移動できます。安全例の後にある探索条件は、必要なときだけ開いてください。center mixed vcols marquee tile scatter wave huge labels condensed gloss type diag circle stack pill3項目／123ケース。幾何上安全 82、制約不足 35、未対応 0、判定対象外 6。必須安全例 17、探索条件の安全 55／制約不足 34。受入期待を満たさないケース 0。この集計は可読性の合格判定ではありません。表示 前後を並べる前後を切り替える重ね合わせる前／後切替重ねる濃さ 原寸／画面に合わせる画像 全体UI元のCanvas PNGmarquee：同じ時計で動かした前後の動画前後とも同一のプロジェクト時刻で毎フレーム描画。marquee-landscape-0.5-holdwave：同じ時計で動かした前後の動画前後とも同一のプロジェクト時刻で毎フレーム描画。wave-central-go-nativescatter：同じ時計で動かした前後の動画前後とも同一のプロジェクト時刻で毎フレーム描画。scatter-landscape-0.25-holddiag：同じ時計で動かした前後の動画前後とも同一のプロジェクト時刻で毎フレーム描画。diag-landscape-0.25-holdAVOID-005-H01 16ID・円の中央／上／下・主要アスペクト・enter／hold／exit同じレイアウトの組を開き、円の位置による方向の違い、文字の大きさと読み順を比べてください。center のケース一覧center・landscape・円上・hold・必須安全例見る箇所：主歌詞の大きさ・読み順と、円の上下左右を通る動き。変化する箇所：必須の安全例です。変更後の主歌詞が元の文字サイズと読み順を保ち、円の外を通ることを確認してください。維持する箇所：文字サイズ、文字の順序、色、seed、開始・終了時刻。変更後の観測：幾何上安全。このケースを同時刻で操作する変更前（004固定版）／t=1.5秒／960×540 元PNG変更後（005候補）／t=1.5秒／960×540 元PNG条件・測定・診断{\\n  &quot;conditions&quot;: {\\n    &quot;id&quot;: &quot;center-landscape-0.25-hold&quot;,\\n    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,\\n    &quot;seed&quot;: 704,\\n    &quot;text&quot;: &quot;風の先へ&quot;,\\n    &quot;W&quot;: 960,\\n    &quot;H&quot;: 540,\\n    &quot;cx&quot;: 0.5,\\n    &quot;cy&quot;: 0.25,\\n    &quot;radius&quot;: 0.2,\\n    &quot;time&quot;: 1.5,\\n    &quot;availability&quot;: &quot;implemented&quot;,\\n    &quot;expectation&quot;: &quot;safe&quot;,\\n    &quot;layout&quot;: &quot;center&quot;,\\n    &quot;aspect&quot;: &quot;landscape&quot;,\\n    &quot;position&quot;: &quot;上&quot;,\\n    &quot;phase&quot;: &quot;hold&quot;,\\n    &quot;label&quot;: &quot;center・landscape・円上・hold・必須安全例&quot;,\\n    &quot;look&quot;: &quot;主歌詞の大きさ・読み順と、円の上下左右を通る動き。&quot;,\\n    &quot;change&quot;: &quot;必須の安全例です。変更後の主歌詞が元の文字サイズと読み順を保ち、円の外を通ることを確認してください。&quot;,\\n    &quot;preserve&quot;: &quot;文字サイズ、文字の順序、色、seed、開始・終了時刻。&quot;,\\n    &quot;safeAnchor&quot;: true,\\n    &quot;stage&quot;: [\\n      960,\\n      540\\n    ],\\n    &quot;viewport&quot;: [\\n      1500,\\n      1500\\n    ],\\n    &quot;dpr&quot;: 1,\\n    &quot;language&quot;: &quot;ja&quot;,\\n    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,\\n    &quot;media&quot;: &quot;none&quot;,\\n    &quot;color&quot;: &quot;sRGB default&quot;,\\n    &quot;alpha&quot;: &quot;opaque&quot;,\\n    &quot;seek&quot;: &quot;direct&quot;,\\n    &quot;fps&quot;: 100,\\n    &quot;frame&quot;: 150,\\n    &quot;quantizedTime&quot;: 1.5,\\n    &quot;post&quot;: false,\\n    &quot;hud&quot;: false,\\n    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,\\n    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;\\n  },\\n  &quot;before&quot;: {\\n    &quot;controlApplied&quot;: &quot;fullstage&quot;,\\n    &quot;sourceArea&quot;: {\\n      &quot;x&quot;: 0.030000000000000027,\\n      &quot;y&quot;: 0.06,\\n      &quot;w&quot;: 0.27,\\n      &quot;h&quot;: 0.6669408800532358,\\n      &quot;angle&quot;: 0,\\n      &quot;lockAspect&quot;: true\\n    },\\n    &quot;appliedArea&quot;: null,\\n    &quot;stage&quot;: [\\n      960,\\n      540\\n    ],\\n    &quot;time&quot;: 1.5,\\n    &quot;newAPI&quot;: false,\\n    &quot;staged&quot;: false,\\n    &quot;inputUnchanged&quot;: true,\\n    &quot;sourceUnchanged&quot;: true,\\n    &quot;diagnostics&quot;: [],\\n    &quot;nativeParams&quot;: {\\n      &quot;font&quot;: &quot;zenkaku&quot;,\\n      &quot;sx&quot;: 1.25,\\n      &quot;track&quot;: 0.02182833260856569,\\n      &quot;sub&quot;: false,\\n      &quot;under&quot;: false,\\n      &quot;accent&quot;: false,\\n      &quot;ox&quot;: 0.039122467092238364,\\n      &quot;oy&quot;: -0.04094327995553612\\n    },\\n    &quot;safety&quot;: &quot;not-evaluated&quot;,\\n    &quot;lastOffsets&quot;: [],\\n    &quot;fontLoaded&quot;: true,\\n    &quot;actualTextDraws&quot;: [\\n      &quot;風の先へ&quot;\\n    ],\\n    &quot;fixtureIsolation&quot;: {\\n      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,\\n      &quot;editorBoot&quot;: false,\\n      &quot;fontStatus&quot;: &quot;loaded&quot;,\\n      &quot;loadingFaces&quot;: 0,\\n      &quot;externalFontStylesheets&quot;: 0,\\n      &quot;storageUnchanged&quot;: true\\n    }\\n  },\\n  &quot;after&quot;: {\\n    &quot;controlApplied&quot;: &quot;automatic&quot;,\\n    &quot;sourceArea&quot;: {\\n      &quot;x&quot;: 0.030000000000000027,\\n      &quot;y&quot;: 0.06,\\n      &quot;w&quot;: 0.27,\\n      &quot;h&quot;: 0.6669408800532358,\\n      &quot;angle&quot;: 0,\\n      &quot;lockAspect&quot;: true\\n    },\\n    &quot;appliedArea&quot;: null,\\n    &quot;stage&quot;: [\\n      960,\\n      540\\n    ],\\n    &quot;time&quot;: 1.5,\\n    &quot;newAPI&quot;: true,\\n    &quot;staged&quot;: true,\\n    &quot;inputUnchanged&quot;: true,\\n    &quot;sourceUnchanged&quot;: true,\\n    &quot;diagnostics&quot;: [\\n      {\\n        &quot;cut&quot;: 0,\\n        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,\\n        &quot;measurement&quot;: &quot;supported&quot;,\\n        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,\\n        &quot;units&quot;: 1\\n      }\\n    ],\\n    &quot;nativeParams&quot;: {\\n      &quot;font&quot;: &quot;zenkaku&quot;,\\n      &quot;sx&quot;: 1.25,\\n      &quot;track&quot;: 0.02182833260856569,\\n      &quot;sub&quot;: false,\\n      &quot;under&quot;: false,\\n      &quot;accent&quot;: false,\\n      &quot;ox&quot;: 0.039122467092238364,\\n      &quot;oy&quot;: -0.04094327995553612\\n    },\\n    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,\\n    &quot;lastOffsets&quot;: [\\n      {\\n        &quot;offset&quot;: {\\n          &quot;cut:0&quot;: [\\n            2.1019952027707265,\\n            95.25888574980472\\n          ]\\n        },\\n        &quot;safety&quot;: &quot;safe&quot;\\n      }\\n    ],\\n    &quot;fontLoaded&quot;: true,\\n    &quot;actualTextDraws&quot;: [\\n      &quot;風の先へ&quot;\\n    ],\\n    &quot;fixtureIsolation&quot;: {\\n      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,\\n      &quot;editorBoot&quot;: false,\\n      &quot;fontStatus&quot;: &quot;loaded&quot;,\\n      &quot;loadingFaces&quot;: 0,\\n      &quot;externalFontStylesheets&quot;: 0,\\n      &quot;storageUnchanged&quot;: true\\n    }\\n  }\\n}探索条件：center・landscape・円中央・hold／観測：制約不足center・landscape・円中央・hold見る箇所：主歌詞の大きさ・読み順と、円の上下左右を通る動き。変化する箇所：探索条件です。安全と観測された場合は円外の軌道を、制約不足の場合は文字サイズを維持した診断を確認してください。維持する箇所：文字サイズ、文字の順序、色、seed、開始・終了時刻。変更後の観測：制約不足（この経路候補群では文字サイズと円外収容を満たせません。あらゆる配置の幾何的不可能性を意味しません）。このケースを同時刻で操作する変更前（004固定版）／t=1.5秒／960×540 元PNG変更後（005候補）／t=1.5秒／960×540 元PNG条件・測定・診断{\\n  &quot;conditions&quot;: {\\n    &quot;id&quot;: &quot;center-landscape-0.5-hold&quot;,\\n    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,\\n    &quot;seed&quot;: 704,\\n    &quot;text&quot;: &quot;風の先へ&quot;,\\n    &quot;W&quot;: 960,\\n    &quot;H&quot;: 540,\\n    &quot;cx&quot;: 0.5,\\n    &quot;cy&quot;: 0.5,\\n    &quot;radius&quot;: 0.2,\\n    &quot;time&quot;: 1.5,\\n    &quot;availability&quot;: &quot;implemented&quot;,\\n    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,\\n    &quot;layout&quot;: &quot;center&quot;,\\n    &quot;aspect&quot;: &quot;landscape&quot;,\\n    &quot;position&quot;: &quot;中央&quot;,\\n    &quot;phase&quot;: &quot;hold&quot;,\\n    &quot;label&quot;: &quot;center・landscape・円中央・hold&quot;,\\n    &quot;look&quot;: &quot;主歌詞の大きさ・読み順と、円の上下左右を通る動き。&quot;,\\n    &quot;change&quot;: &quot;探索条件です。安全と観測された場合は円外の軌道を、制約不足の場合は文字サイズを維持した診断を確認してください。&quot;,\\n    &quot;preserve&quot;: &quot;文字サイズ、文字の順序、色、seed、開始・終了時刻。&quot;,\\n    &quot;stage&quot;: [\\n      960,\\n      540\\n    ],\\n    &quot;viewport&quot;: [\\n      1500,\\n      1500\\n    ],\\n    &quot;dpr&quot;: 1,\\n    &quot;language&quot;: &quot;ja&quot;,\\n    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,\\n    &quot;media&quot;: &quot;none&quot;,\\n    &quot;color&quot;: &quot;sRGB default&quot;,\\n    &quot;alpha&quot;: &quot;opaque&quot;,\\n    &quot;seek&quot;: &quot;direct&quot;,\\n    &quot;fps&quot;: 100,\\n    &quot;frame&quot;: 150,\\n    &quot;quantizedTime&quot;: 1.5,\\n    &quot;post&quot;: false,\\n    &quot;hud&quot;: false,\\n    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,\\n    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;\\n  },\\n  &quot;before&quot;: {\\n    &quot;controlApplied&quot;: &quot;fullstage&quot;,\\n    &quot;sourceArea&quot;: {\\n      &quot;x&quot;: 0.030000000000000027,\\n      &quot;y&quot;: 0.06,\\n      &quot;w&quot;: 0.27,\\n      &quot;h&quot;: 0.6669408800532358,\\n      &quot;angle&quot;: 0,\\n      &quot;lockAspect&quot;: true\\n    },\\n    &quot;appliedArea&quot;: null,\\n    &quot;stage&quot;: [\\n      960,\\n      540\\n    ],\\n    &quot;time&quot;: 1.5,\\n    &quot;newAPI&quot;: false,\\n    &quot;staged&quot;: false,\\n    &quot;inputUnchang'... 712665 more characters
+  ],
+  error: [Circular *1],
+  status: null,
+  signal: null,
+  output: null,
+  pid: 0,
+  stdout: undefined,
+  stderr: undefined
+}

@@ -1,13 +1,13 @@
 # AVOID-005 基本16レイアウトの通常回避軌道
 
-- 状態: 未着手
+- 状態: 実環境検証待ち
 - 段階: 通常軌道
 - 技術依存: [AVOID-004](AVOID-004.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
 
 ## 開始前確認
 
-- ブランチ・HEAD・git status: 着手時に記録する（このスレッドで実装は開始していない）。
+- ブランチ・HEAD・git status: 計画登録時は未着手。実際の着手記録と現在の結果は末尾を参照する。
 - 共通解析基準: b7c23bf。スキル導入済みHEAD: 3c79480。着手時に差分を再確認する。
 - 正本: [設計・根拠](avoidance-design.md)、[一覧](task-list.md)、[スキル](../.agents/skills/evidence-driven-task-management/SKILL.md)。
 - 依存タスクの必須条件と証拠を確認する。完了を推測せず、未完条件を引き継ぐ。
@@ -46,11 +46,11 @@
 - [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
 - [ ] 親がコードとテスト結果をレビューし、指摘を解消した。人間の動作確認が必要なら比較URL・操作・期待結果を提示し、必須項目のOKと動作判定を記録した。不要なら利用者の委任に基づく親の判断理由と完了判定を記録した。
 
-- [ ] inventoryの当該16IDすべてにテストとframe証拠があり、未対応を成功扱いしない。
-- [ ] 対象となる主歌詞は中心点だけでなく文字占有範囲と全経路が円を避ける。反復補助の軌道は変更せず、マスクの受入は018に分離する。
-- [ ] 中央では四方向が使用され、上/下の100seed比較が契約された方向偏りを満たす。
-- [ ] 同じfixtureで文字の読み順・開始/終了・色・演出seedが保持され、画面面積比による一括縮小がない。
-- [ ] 強調・manual・lock・OFFの互換fixtureが変わらない。
+- [x] inventoryの当該16IDすべてにテストとframe証拠があり、未対応を成功扱いしない。
+- [x] 対象となる主歌詞は中心点だけでなく文字占有範囲と全経路が円を避ける。反復補助の軌道は変更せず、マスクの受入は018に分離する。
+- [x] 中央では四方向が使用され、上/下の100seed比較が契約された方向偏りを満たす。
+- [x] 同じfixtureで文字の読み順・開始/終了・色・演出seedが保持され、画面面積比による一括縮小がない。
+- [x] 強調・manual・lock・OFFの互換fixtureが変わらない。
 
 ## テスト方法
 
@@ -59,18 +59,18 @@
 - Integration: 16ID×主要aspect×上下中央、長文/改行/ルビ/抑制/size記法。
 - Regression: lyric_emphasis、lyric_features、lyric_placement_stability。
 - 実環境: marquee/wave/scatter/diagを含む動画と静止frameを確認。
-- 現時点の実行結果: 未実施（後続実装タスク）。既存の基準ログはAVOID-001へ参照し、修正後の証拠として流用しない。
+- 計画登録時の実行結果: 未実施。現在の実装・実行結果は末尾と final-candidate 証拠へ記録する。AVOID-001の旧基準ログを修正後の証拠として流用しない。
 
 ## GitHub Pagesでの人間確認
 
-[共通手順](pages-human-review.md)と[依頼テンプレート](templates/pages-review-request.md)に従う。以下は実装後に用意する確認ケースの予定であり、現在は未公開・未実施。依頼時には実際のUI名・サンプル名・ケースURLへ具体化する。
+[共通手順](pages-human-review.md)と[依頼テンプレート](templates/pages-review-request.md)に従う。以下は計画登録時に定めた確認項目。現在の比較生成・公開・確認の状態は末尾を参照する。依頼時には実際のUI名・サンプル名・ケースURLへ具体化する。
 
 各項目に下表の前後キャプチャを準備し、比較HTMLの同じH-IDアンカーへまとめる。操作の前後状態が複数ある場合は、各状態それぞれで実装変更前/変更後を撮る。担当エージェントが画像を生成・公開検証してから人間へ依頼する。
 
 | 項目ID | 人間に依頼する操作 | 期待結果 | 比較キャプチャ（予定） |
 |---|---|---|---|
 | AVOID-005-H01 | 基本16IDの公開一覧を開き、中央・上・下の円を切り替える。 | 主歌詞が小矩形へ縮まず、中央なら四方向、上なら左右/下、下なら左右/上を使う傾向が見える。 | 基本16ID×中央/上/下の全体描画。固定seed群とenter/hold/exitで方向の偏りを確認する。 |
-| AVOID-005-H02 | marquee/tile/glossの主歌詞・ルビ・主歌詞の箱のケースを再生する。 | 主歌詞と附属物が揃って回避する。反復補助は元の全画面配置を保ち、この段階ではマスク未実装と明示される。 | marquee/tile/glossの主歌詞・ルビ・附属板と補助反復を同時に示す全体/拡大画像。 |
+| AVOID-005-H02 | marquee/tileの主歌詞と実際の箱、glossの主歌詞・pipe注釈のケースを再生する。 | tileの主歌詞とknock box、glossの実際のpipe注釈は所有単位で揃って回避する。marqueeの反復行と行箱は元の配置を保つ。反復補助のマスクは未実装と明示する。 | tileの主歌詞とknock box、marqueeの主歌詞と反復行箱、glossの主歌詞と実際のpipe注釈を示す。marquee/tileに供給していないnote描画を見本にしない。 |
 | AVOID-005-H03 | 長文・強調・手動・ロック・OFFの対照ケースを開く。 | 強調の例外と手動指定が保たれ、解がない場合は未対応/競合が分かる。 | 長文/強調/手動/lock/OFFの描画と競合時の診断表示。 |
 
 公開コミット / 変更前・変更後の実装識別子 / build ID / 比較HTML実URL / H-IDと画像の対応・撮影条件 / 操作用Pages実URL / 公開画像の一致・表示確認日時 / 自動検証証拠 / 依頼記録 / 人間の回答: 実装・公開後に記入する。親のコード/テスト結果レビュー、人間の動作確認の要否と理由も記録する。不要判定を人間のOK回答には置換しない。未確認を成功として補わない。
@@ -90,5 +90,47 @@
 ## 証拠・残事項
 
 - 計画根拠: [AVOID-001](AVOID-001.md) と [設計書のE01〜E23](avoidance-design.md)。
-- 実装差分: なし。検証ログ: なし。上のチェックボックスはすべて未達/未確認。
+- 計画登録時の実装差分はなし。現在の実装・検証は末尾の最新候補と final-candidate 証拠を参照する。上のチェックボックスは最終の公開・人間確認を含む総合受入であり、空欄を「ローカル試験をすべて未実施」と解釈しない。
 - 個別の追加判断は着手時に記録し、共通設計と矛盾させない。
+
+## 2026-10-19 着手
+
+- 開始branch `work` / HEAD `3d8f52c7ce3f8efec25f5f0d7ad4c71bdb225173`。開始前作業ツリーclean。直前のremote fetchは `48837df` と一致し、004の人間全項目OK記録を上記commitへ追加。AGENTS.mdは検索範囲に存在しない。
+- 004は利用者の全項目OKと親の必須条件確認で完了。原則1件ずつに従い005のみ開始。実装は指定 `gpt-6.1-sol / medium` の子担当、コード/試験の親レビューと公開検証は親担当。
+- 004での説明上の指摘を反映し、005比較ページでは各caseの日本語の見る箇所・期待する変化/不変を個別表示する。従来動作の対照を新機能と混同させない。004公開bundleは固定して保持する。
+- 実行環境観測はcurrent=true、spec/observed=24/24、unrestricted/enforced。保存設定と実行中反映を区別し、公開検証では継承proxy・CA・TLSを維持する。
+
+## 2026-10-19 実装途中のcheckpoint（未承認）
+
+- 状態は実装中。親が現prototypeを005の受入として不十分と判定し、同じ指定model/mediumの新しい実装contextへ順次引継ぐ。利用者の実装許可は継続し、005の完了・公開・人間確認はまだ行わない。
+- 固定変更前: `3d8f52c7ce3f8efec25f5f0d7ad4c71bdb225173` を変更前に `/workspace/work/avoid005-before` へgit archive。変更後の製品/fixture/test hashとraw logは [checkpoint](evidence/AVOID-005/prototype-01/checkpoint.json)。コミット・pushなし。
+- opt-in `J.finalizePlacementPlan(plan,{basicLayouts:true})` のprototypeに16IDを登録。通常既定と004の狭いopt-inは旧経路を維持。16IDが最終受入を満たしたという意味ではない。
+- `basic-test.cjs`: native seed704・歌詞「風の先へ」・16ID×3aspect×中央/上/下 =144件。各caseの全時間包絡を002独立oracleへ照合し、別に5時刻の描画を確認。幾何上certified88件/insufficient56件/unsupported0件/描画throw0件。**文字同士の重なり・読み順を検証/保証していないため、88件も005成功数には数えない。** ランドスケープ中央で幾何上safeはmixed/marquee/scatter/condensed/stackの5IDのみ。
+- ネイティブ16ID×4時刻の記録/replay offset0は64/64完全画素一致。複数rect/rect+arc/rect+line/clip引数/Path2Dの5件は明示拒否。特殊affine・最小render縮尺・移動後gradient/clipは未検証。円eclipse shadowは明示未対応のまま。
+- 004の既存stage regressionは118 checks成功。ログ内のbefore比較は004自身の固定archiveを使用し、005の比較成果物の代用にはしない。
+- 親の変更前回帰: emphasis/placement_stability日英成功、featuresはdefaulttitleが加わる既存期待1/実2でline24失敗。005変更後の3回帰はこのcheckpointでは未実施。project_file期待0/実1は013、areaeffect期待1/実0は017へ継続。既存assertionの変更なし。
+- 公開bundle/manifest/比較PNG/動画は未作成。004公開bundleは不変。bulk captureはcore acceptanceの成立後に行う。
+- 未解決: 過度に保守的なfull-duration bboxではnative wave/labels等を実用的に回避できない。独立した所有単位の候補選択は新しい重なりや読み順の逆転を起こせるため再設計が必要。glyph/word間の順序・間隔、附属板/注釈・rubyの所有、連続軌道とstage収容の全区間証明、中央四方向・上下100seed、全nativevariant・長文/改行/抑制/sizeの受入を追加する。
+- 次案は円と文字占有範囲のMinkowski境界に沿う連続route operator。まだ未実装/未検証。可視部分のbboxへ追従するとtype/alphaで飛ぶため、全revealed寸法とovershoot上限で安定した所有矩形を作る。円の接線外側まで連続guardを延長し、native位置へ戻る境界でジャンプしないこと、全時刻の歌詞間順序/間隔が保たれることを証明する。単なる4矩形の空き領域選択へ戻さない。
+
+
+## 2026-10-19 通常軌道の実装候補（prototype記録を更新）
+
+- 上の prototype-01 の未解決事項は履歴として保持する。現在の実装は [adapter 契約表](evidence/AVOID-005/adapter-contract.md) と最終候補証拠を参照する。親レビュー・公開・人間確認が完了するまではタスク状態を実装中のままにする。
+- opt-in の16IDに、所有単位と semantic な読み順・新しい潰れの制約、実円 polygon の候補解、wave の連続境界 route、huge の字形を保持する分離セル、labels の全 annulus を共通移動する証明を実装した。正常アプリ既定は従来経路のまま。
+- 文字/shape の AA、miter/square cap/dash、小 scale、gradient/clip replay、refinalization の source復元を修正した。実際の抑制記法は auto area が代わりに持っていた intrinsic scale を opt-in 時に復元し、明示 size override は尊重する。旧 JSON/既定描画は変えない。
+- 固定 native matrix は16×3aspect×3位置144件。101 certified/43 insufficient/0 unsupported/0描画例外。全16IDに genuine native admitted case がある。全配置が成功するという主張ではなく、固定サイズ不適合と定義した候補探索の限界を明示する。
+- 最終候補 `c2449974833a49f14d27de4fc84704e0d8ca7b6baf68960de6dd690a9ebc6652` の acceptance46/46成功。実画素16×3scale×3time=144条件で円衝突・polygon取りこぼし・conflictすべて0。実 parsed note/抑制/強調/size/改行、source/clock/seed保持、cache差分8条件、font/async invalidationを含む。004 unchanged regression118成功。
+- coreの最終性能/親の独立検証後に比較captureへ進む。比較bundle・公開・利用者確認はまだ未実施。004公開assetと002 inventoryは不変。
+
+- 最終再識別: 製品comment1箇所の説明訂正だけを行いJA SHA256 `c7dbd4d94309d840b885c8a916f7d98544888d2b5663db054654d5f0671d4f41` / EN `c55180c81354e6265a785c936590cb54857b5ac86434933d10d09d52528a6897`。直前版との意味差なし。native/acceptance/stageの現版再試験と親の独立検証を実施中。原始結果とsource hashは [final-candidate](evidence/AVOID-005/final-candidate/summary.json)、16ID所有/variant/限界は [adapter契約](evidence/AVOID-005/adapter-contract.md)。
+- 制御された最終性能測定は100/100で計画1.718倍・描画+.8ms、1000/1000で1.831倍・+1.3msで契約内。初回cold320.3ms/1790.3msと失敗測定履歴も記録し、warmup後p95と区別する。commentのみの再build前の実測を改ざんせず保持する。
+
+
+## 2026-10-19 ローカル受入・公開候補の確定
+
+- 状態を実環境検証待ちへ更新。親のコード/テストレビュー完了、H01〜H03の人間確認は必要と判断。依存する006は未着手。
+- build `local-20261019-02`、manifest `e8c81c696acae92f9a5edc88d79b9430f12ee59e95b9238c6530f2823633ab83`。123組（UI246枚＋原寸246枚）・4動画・512assets＋manifest。全123組の同条件描画再照合、前後不変6件、全16安全例、desktop/mobile切替/overlay/links、日英本体起動のlocal validator成功。正常clone/破損11件成功。
+- 画像結果は安全82/制約不足35/unsupported0/対照6。27必須安全例と1必須不足例を含み、期待未達0。449は定義条件数のみ。native自動試験144×5時刻とは別の集合として記録。
+- 親の通常通信による20操作・保存/フォント安定と視覚確認も完了。詳細は[親レビュー](evidence/AVOID-005/parent-review.md)、[公開記録](evidence/AVOID-005/publication.json)、[依頼稿](reviews/AVOID-005-local-20261019-02.md)。public HTTP/hash・全画像/動画・日英起動はこれから実施し、ローカル成功で代用しない。
+- failed build01は末尾のfontCoverage引数長上限で未完。全テキストをstdinへ渡す修正後に新build02を再撮影した。失敗証拠は保持し、未完bundleを公開しない。

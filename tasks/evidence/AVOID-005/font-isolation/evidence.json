@@ -1,0 +1,53 @@
+{
+  "scope": "R05-18 controlled startup-font race and engine-only fixture isolation; not core acceptance",
+  "simulation": "Hold real startup requests to https://fonts.googleapis.com/ in Playwright route handlers, then fulfil them with HTTP200 empty CSS. This simulates delayed stylesheet completion; no remote TLS success is claimed.",
+  "observedBefore": {
+    "pendingCSS": 5,
+    "revisionBefore": 1,
+    "revisionAfter": 4,
+    "failure": "Error: Refinalize after font/compose changes"
+  },
+  "after": {
+    "normalTransport": true,
+    "externalRequests": 0,
+    "editorBoot": false,
+    "fontStatus": "loaded",
+    "loadingFaces": 0,
+    "storageUnchanged": true,
+    "localStorageKeys": 0,
+    "sessionStorageKeys": 0,
+    "indexedDBDatabases": 0,
+    "revisionBefore": [
+      1,
+      1
+    ],
+    "revisionAfter": [
+      1,
+      1
+    ]
+  },
+  "sourceSnapshot": "work/source-snapshot-r2",
+  "snapshotHTMLSHA256": "591977d6320800dde9fb54059155fd726ec14702630709e357940794452847fa",
+  "beforeBundle": "work/basic-tool-smoke/tool-smoke-r3",
+  "afterBundle": "work/basic-tool-smoke/tool-smoke-r4-isolated",
+  "files": {
+    "reproduce-before.cjs": "1ea2150b733efe5babcdae5b55a97b231406d03831675a506e4d1a300e8dc10a",
+    "before.log": "f1fc0b5e9ffbba669c7dba6a2f5905ed840f2c755a4f3ca70a7eb21f05f368fc",
+    "check-after.cjs": "8c365206a0f1aee82043755897dae46a1639d1be67c6edb5494f96425b9d3964",
+    "after-independent.log": "0a2b5ddad261fded5c67f874c7b4d39ec84541543f171625f9656939b5df9f5e",
+    "after-validator.log": "2f47513917b1e3ad5ba6b8837f26a432554b34ff6342e158bc08924755c35edc",
+    "after-negative.log": "e51458527b158b2e8669c8f7df0682a7e636af79f6749301da00ef280af7cf4e",
+    "tested-tools/basic-cases.cjs": "00b5f0ee156d892b933933544788d5798093d4b2a685a8b19a8f62d25d38ce31",
+    "tested-tools/basic-negative.cjs": "77a21f6bcc34bdc759e133f507e6f13831fbb8c462f42a5a9634762d19386546",
+    "tested-tools/basic-review.cjs": "f0df51a4f824fd6c8d28673588b67a1a6a88b3382475d7168aa028c1ec0b92df",
+    "tested-tools/basic-sample.html": "829840618c84d30e83924c01f688ef21c91acbcff977909b9cfbafd7c679f92e",
+    "work/basic-tool-smoke/tool-smoke-r3/sample.html": "e27227b4055eb2146f146c3f896606826bcf849a2464f88019f68a7a61b9acfd",
+    "work/basic-tool-smoke/tool-smoke-r3/fixtures/after.html": "591977d6320800dde9fb54059155fd726ec14702630709e357940794452847fa",
+    "work/basic-tool-smoke/tool-smoke-r4-isolated/sample.html": "829840618c84d30e83924c01f688ef21c91acbcff977909b9cfbafd7c679f92e",
+    "work/basic-tool-smoke/tool-smoke-r4-isolated/fixtures/after.html": "591977d6320800dde9fb54059155fd726ec14702630709e357940794452847fa",
+    "work/basic-tool-smoke/tool-smoke-r4-isolated/fixtures/after-engine.html": "9854f894d664351ca90c9a22eff9266a451e6ee68e9e139694f303c49ddda343",
+    "work/basic-tool-smoke/tool-smoke-r4-isolated/fixtures/before-engine.html": "49172074abd87435b3f17b054d7c76a556f3392b4925aa86c5e3d145a67c01ae",
+    "work/basic-tool-smoke/tool-smoke-r4-isolated/fixtures/normalization.json": "b881c3bff92a33c158fe2a6bdf7596cc701ddc10ba7c40249cdef7422f8ccb96",
+    "work/basic-tool-smoke/tool-smoke-r4-isolated/manifest.json": "bb02d491d7f1c7f9f0d10e6679ce4ea646fc2971053d1eb62110fa6512232caf"
+  }
+}

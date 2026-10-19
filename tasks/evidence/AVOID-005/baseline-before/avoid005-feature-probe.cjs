@@ -1,0 +1,8 @@
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const {chromium}=require('playwright');
+(async()=>{const root=process.argv[2],output=process.argv[3];const browser=await chromium.launch({headless:true,executablePath:process.env.JIZURA_BROWSER});try{
+const rows=[];
+for(const locale of ['','en/']){const page=await browser.newPage();const file=path.join(root,locale,'index.html');await page.route('**/*',r=>r.request().url()==='http://fixture/'+locale?r.fulfill({contentType:'text/html',body:fs.readFileSync(file)}):r.abort());await page.goto('http://fixture/'+locale);await page.waitForFunction(()=>J.ui?.plan);
+const result=await page.evaluate(()=>{const p=J.defaultProject();p.lyrics='{\n[00:00]First/phrase\n[00:02]*Second*\n[00:04]~Third~\n}\n[00:06]Fourth\\nFifth';p.fx.density=1;p.fx.koma=0;p.fx.hud='off';p.videoSize={w:320,h:180};const plan=J.plan(p);const brief=c=>({index:c.index,line:c.line,part:c.part,text:c.text,effectsOnly:c.effectsOnly,start:c.start,end:c.end,displayEnd:c.displayEnd,group:c.group});return {title:p.title,cuts:plan.cuts.map(brief),active:[.1,4.5,6].map(t=>({t,cuts:J.lyricCutsAt(plan,t).map(brief)}))};});rows.push({locale:locale||'ja',htmlSHA256:crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'),...result});await page.close();}
+const result={root,probe:'Exact project and lyricCutsAt times from unchanged lyric_features_test.cjs; no assertion changes',rows};if(output)fs.writeFileSync(output,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

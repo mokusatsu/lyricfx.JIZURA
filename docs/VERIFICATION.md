@@ -132,3 +132,43 @@ whole-interval certificates and unsupported adapters. Tests include independent
 actual raster ink containment, ordered record/replay pixel equality, full-stage
 camera/ghost/transition seeks, controlled font states and fixed-before legacy
 controls. This does not enable the new path for ordinary application generation.
+
+
+## AVOID-005 basic-layout route verification
+
+Use the [005 commands and evidence boundaries](../dev/avoidance/README.md#avoid-005-basic-layout-routes-and-comparison-evidence):
+
+```sh
+node dev/avoidance/basic-test.cjs
+node dev/avoidance/basic-acceptance.cjs
+# Run alone for controlled timing:
+node dev/avoidance/basic-perf.cjs
+node dev/avoidance/basic-review.cjs capture NEW-UNUSED-BUILD-ID
+node dev/avoidance/basic-review.cjs validate NEW-UNUSED-BUILD-ID
+node dev/avoidance/basic-negative.cjs review/AVOID-005/NEW-UNUSED-BUILD-ID
+node dev/avoidance/basic-review.cjs validate NEW-UNUSED-BUILD-ID --base-url https://mokusatsu.github.io/lyricfx.JIZURA/
+```
+
+Set the existing `NODE_PATH`/`JIZURA_BROWSER` runtime variables documented in the
+avoidance README. The fixed before archive is commit
+`3d8f52c7ce3f8efec25f5f0d7ad4c71bdb225173`, not the moving HEAD. The sixteen
+adapters remain limited to explicit `basicLayouts:true`; ordinary generation is
+legacy. [Ownership and limits](../tasks/evidence/AVOID-005/adapter-contract.md)
+separate analytic whole-interval proof from independent sampled/raster checks
+and retain honest insufficient/unsupported outcomes.
+
+The native suite covers144 spatial conditions,64 native replay cases and24
+actual huge glyph-split replay cases. The independent acceptance suite covers
+actual pixels, parsed lyric semantics, controls, time/source/font/cache lifecycle.
+The comparison capture selects123 before/after pairs and four playback videos
+(marquee/wave/scatter/diag) from a449-condition definition. These are distinct
+coverage sets;449 definitions do not mean449 executed comparisons. Validation
+requires the actual manifest rows, exact source/asset hashes, re-rendered native
+PNGs, synchronized playback and desktop/mobile behavior. Negative tests operate
+on a temporary cloned bundle.
+
+The core has local verification and parent code/test review. Publication checks
+and human H01–H03 acceptance are still pending until the parent records their
+results in [AVOID-005](../tasks/AVOID-005.md). Capture success alone establishes
+neither. Public validation keeps inherited proxy/CA/TLS, fetches raw bytes and
+fails on missing/stale assets; it never falls back to local evidence.
