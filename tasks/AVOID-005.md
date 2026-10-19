@@ -28,7 +28,8 @@
 - AVOID-006以降は未着手のまま保持する。
 - 修正版は指定担当の実装・親のコード/結果/実画像レビュー済み。反復indexに対してoffsetを一次式にし、一つの整列した組として回避する。円が上/下の横長例で斜め配置が成立し、横長中央は制約不足。旧版で分散した配置をsafeとした条件を無理に維持しない。
 - ローカル: 担当30条件、他15×4設定=60互換比較、基本native144条件、受入46項目、004回帰118項目、親独立58条件/1100描画polygonと他15の45frame/6対照、性能基準を成功確認。[親レビュー](evidence/AVOID-005/stack-revision/parent-review.md)。保存testの既存不一致は013、既存features/area effects不一致は017への引継ぎを維持し、今回も保存成功とはしない。
-- 新比較 `local-20261019-03`: 26組、52UI＋52原寸PNG、1動画。13 safe /7 insufficient /0 unsupported /6例外対照。121assets＋manifest。manifest SHA256 `3aa2ea6c5a06e4a45f03e3e3d7580642767f02b05ba97c61a2e9814ba32340a1`。ローカルvalidatorと破損12件の拒否成功。公開一致は未実施であり、[修正版の確認依頼](reviews/AVOID-005-local-20261019-03.md)は公開検証後に案内する。
+- 新比較 `local-20261019-03`: 26組、52UI＋52原寸PNG、1動画。13 safe /7 insufficient /0 unsupported /6例外対照。121assets＋manifest。manifest SHA256 `3aa2ea6c5a06e4a45f03e3e3d7580642767f02b05ba97c61a2e9814ba32340a1`。ローカルvalidatorと破損12件の拒否成功。
+- 公開: artifact commit `025e436baca82dba97f5b6ceeca6553e6c93c827`、Pages run39232475343成功。全121assets＋manifestのHTTP/raw hash一致、全52原寸の公開再描画、日英起動・描画、親の通常通信での再生/シーク/スマホ幅を確認済み。[公開記録](evidence/AVOID-005/stack-revision/publication.json)。[修正版の確認依頼](reviews/AVOID-005-local-20261019-03.md)のStackの見え方は未確認であり、タスク完了にはしない。
 
 ## 変更範囲
 
@@ -55,8 +56,8 @@
 
 ## 完了条件
 
-- [ ] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
-- [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
+- [x] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
+- [x] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
 - [ ] 親がコードとテスト結果をレビューし、指摘を解消した。人間の動作確認が必要なら比較URL・操作・期待結果を提示し、必須項目のOKと動作判定を記録した。不要なら利用者の委任に基づく親の判断理由と完了判定を記録した。
 
 - [x] inventoryの当該16IDすべてにテストとframe証拠があり、未対応を成功扱いしない。

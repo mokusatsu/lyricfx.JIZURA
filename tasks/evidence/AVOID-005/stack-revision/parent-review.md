@@ -25,4 +25,12 @@
 
 `local-20261019-03` は26組・52UI＋52原寸PNG・1動画。13 safe /7 insufficient /0 unsupported /6例外対照。121assets＋manifestを生成し、ローカルvalidatorで画像表示・全52原寸再描画・前後切替・重ね合わせ・原寸・スマホ幅・再生/シーク・日英起動を確認。完成版の破損12件拒否も成功。[capture.log](capture.log)、[local-validation.log](local-validation.log)、[final-negative.log](final-negative.log)。manifest SHA256 `3aa2ea6c5a06e4a45f03e3e3d7580642767f02b05ba97c61a2e9814ba32340a1`。
 
-公開一致・人間の動作確認は未完了。読みやすさと積み重なりの印象を変更するため、修正したStackは再度人間の動作確認が必要。親がコードレビューを完了してから公開URLで依頼する。006は未着手。
+## 公開検証と動作確認の判定
+
+artifact commit `025e436baca82dba97f5b6ceeca6553e6c93c827` をworkへpush。Pages run `39232475343` 成功後、121assets＋manifestのHTTP200とraw bytesのSHA256一致、全52原寸PNGの公開fixture再描画、日英起動と描画を確認した。公開前の404も履歴として保持し、デプロイ成功だけでは合格にしていない。[publication.json](publication.json)、[public-validation.log](public-validation.log)、[public-site-smoke.log](public-site-smoke.log)。
+
+親もrequest interceptionなしの通常通信で安全例への移動・再生・シークを実行。外部要求0、pageerror0、保存状態・フォントrevision不変。デスクトップとスマホ幅の公開スクリーンショットを目視し、前後ラベル、円外での斜めの積み重なり、操作可能な表示を確認。[public-parent-ui/results.json](public-parent-ui/results.json)。
+
+修正したStackは再度人間の動作確認が必要。理由は、利用者が指摘した積み重なりの印象と読みやすさを変更したため。他の安全例のOKは保持する。公開・コード・自動試験の未解決事項を人間へ判定させる依頼ではない。005は動作確認待ち、006は未着手。旧H02/H03の個別未回答は承認と推測しない。
+
+予備比較01〜03は公開物に混ぜず `/workspace/work/jizura-handoff/stack-tool-smoke` に移動して保持した。記録コミットは製品と固定比較のbytesを変更しない。
