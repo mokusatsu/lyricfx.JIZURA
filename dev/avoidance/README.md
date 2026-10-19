@@ -1,7 +1,9 @@
 # AVOID-002 contract and reproducible evidence
 
-Production `src/` and generated Japanese/English application HTML are unchanged.
-The fixture page runs a frozen copy of the existing renderer. Its separate dashed
+For the historical AVOID-002 stage, production `src/` and generated
+Japanese/English application HTML were unchanged. Later-stage scope and commands
+are documented in the sections below.
+The 002 fixture page runs a frozen copy of the existing renderer. Its separate dashed
 circle is an **unimplemented specification example**, never a generated safe path.
 Use a private browser session for live fixtures: the frozen application runs in a
 same-origin iframe and can access its usual application storage. The fixture does
@@ -236,3 +238,76 @@ to it under `/workspace/work/avoid004-playwright`. Capture used
 package was changed. Normal environments can use their installed Playwright ffmpeg.
 The final sample serializes font/replan requests and adopts only the latest token;
 manual seek/case/font changes stop playback. Validation exercises rapid changes.
+
+
+## AVOID-005 basic-layout routes and comparison evidence
+
+The sixteen basic adapters are a limited opt-in through
+`J.finalizePlacementPlan(plan,{basicLayouts:true})`; ordinary application generation
+keeps its legacy path. Read the [adapter ownership/proof/limits table](../../tasks/evidence/AVOID-005/adapter-contract.md)
+and [internal API](STAGE-API.md) before interpreting a certificate. Primary text,
+owned plates and actual pipe notes move together. Exactly four named repeated
+auxiliary groups retain native motion; their masking belongs to018. Explicit
+insufficient-space and unsupported results are not successful placements.
+
+Using the existing Node/browser environment above, run from the repository root:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python build.py
+node dev/avoidance/basic-test.cjs
+node dev/avoidance/basic-acceptance.cjs
+# Run performance alone, after other browser jobs have stopped:
+node dev/avoidance/basic-perf.cjs
+node dev/avoidance/basic-review.cjs capture NEW-UNUSED-BUILD-ID
+node dev/avoidance/basic-review.cjs validate NEW-UNUSED-BUILD-ID
+node dev/avoidance/basic-negative.cjs review/AVOID-005/NEW-UNUSED-BUILD-ID
+node dev/avoidance/basic-review.cjs validate NEW-UNUSED-BUILD-ID --base-url https://mokusatsu.github.io/lyricfx.JIZURA/
+```
+
+`basic-test` checks144 native spatial conditions (16IDs ×3aspects ×3circle
+positions), each at five times, plus64 zero-offset native pixel replay cases,
+24 actual huge glyph-split/gradient/stroke replay cases and five rejected clip
+paths. The JSON distinguishes certified/insufficient/unsupported/error and per-ID
+counts. `basic-acceptance` adds continuous-route counterexamples and independent
+geometry, actual primary alpha-pixel bounds, real parsed note/suppression/size
+notation/multiline behavior, compatibility controls, source/refinalization/seek
+and cache/font lifecycle checks. Sampled frames corroborate the serialized
+whole-interval certificates; they do not prove arbitrary continuous motion.
+`basic-perf` uses all16IDs across100/100 and1000/1000 cuts/regions, reports cold
+first samples as well as warmed p95, and enforces the existing2× planning and
++3ms drawing limits. Bounded cache and shared1px-buffer stats remain observable.
+
+Capture uses the fixed `/workspace/work/avoid005-before` archive of
+`3d8f52c7ce3f8efec25f5f0d7ad4c71bdb225173` and checks those bytes against Git.
+It copies the exact final native report from
+`tasks/evidence/AVOID-005/final-candidate/basic-test.log`. Core acceptance and parent
+review must precede capture. Each immutable build contains123 representative
+before/after screenshot pairs, separate native PNGs and four actual playback
+videos (marquee/wave/scatter/diag). `basic-cases.fullMatrix()` defines449
+conditions; this is not a claim that449 pairs were captured or all ran. The
+manifest's actual rows establish screenshot coverage, independently of the144
+native test conditions. Capture refuses an existing build directory. Use a new
+ID after any failed attempt; do not rewrite an older review bundle.
+
+The sample supplies Japanese case-specific見る箇所/変化/不変 guidance and real
+legacy-small-area/fullstage/OFF/manual/lock/emphasis controls. H02 shows tile's
+native main knock box, marquee's repeated-row boxes and gloss's actual pipe note;
+it does not invent supplied note rendering for marquee or tile. The before side
+uses the frozen baseline and the same conditions/palette/font as after.
+
+The fixture runs an engine-only DOM (renaming the sole app root), avoiding editor
+font jobs and saved-storage side effects while preserving raw app source and a
+separately hashed executed fixture. Validation checks both source identities,
+every PNG/font/fixture/video asset, expected safety outcomes, original-render
+replay, desktop/mobile geometry, synchronized playback and current seek state.
+`basic-negative` runs focused guard checks without an argument; with a bundle
+path it first validates an unmodified temporary clone, then requires corrupted
+source/hash/condition/count/image/video/path inputs to fail. It never mutates the
+published bundle. Public validation uses inherited proxy/CA/TLS and raw browser
+response bytes; local success cannot substitute for deployment checks.
+
+The candidate core is locally verified and parent-reviewed; final publication
+and human H01–H03 acceptance remain separate pending steps until recorded by the
+parent in [AVOID-005](../../tasks/AVOID-005.md). Do not infer either from a local
+capture or from the presence of a bundle directory. Existing002/003/004 bundles
+and validators remain immutable.

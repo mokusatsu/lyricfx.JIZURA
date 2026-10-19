@@ -9,6 +9,12 @@ const E = J.E;
 
 /* ---------- main-item pipeline: enter / hold / exit + draw ---------- */
 J.mainDraw = (env, it) => {
+  if(env.cut.fullStagePlacement&&env.cut.placementUnits)it.placementMain=true;
+  if(env.cut.fullStagePlacement&&env.cut.placementUnits&&!env.drawOwnership&&it.mi!=null){
+    return env.withDrawRole('primary',env.cut.layout+'.unit.'+(it.placementOwner??it.mi),()=>J.mainDraw(env,it));
+  }
+  if(env.placementEnvelope){it.seed=it.seed??J.h(env.cut.seed,(it.mi|0)+1,7);if(env.cut.treat&&J.TREAT?.[env.cut.treat]&&!it.plain)J.TREAT[env.cut.treat].apply(env,it,env.cut.treatP||{});return J.drawFx(env,it);}
+
   const cut = env.cut;
   it.seed = it.seed != null ? it.seed : J.h(cut.seed, (it.mi | 0) + 1, 7);
   it.charFns = []; it.pieceFns = [];
@@ -212,7 +218,7 @@ J.LAYOUTS = {
         let bb = null; const mid = (cols - 1) / 2;
         for (let i = 0; i < cols; i++) {
           const side = i !== Math.round(mid);
-          const it = { text, font: P.font, size, x: W / 2 + (i - mid) * size * 1.75, y: H / 2, vertical: true, track: 0.04, color: sc.fg, mi: Math.abs(i - mid) * 2 };
+          const it = { text, font: P.font, size, x: W / 2 + (i - mid) * size * 1.75, y: H / 2, vertical: true, track: 0.04, color: sc.fg, mi: Math.abs(i - mid) * 2, placementOwner: 'column.'+i };
           if (side && P.side === 'outline') { it.fill = false; it.stroke = Math.max(1.2, size * 0.012); }
           if (side && P.side === 'dim') it.alpha = 0.38;
           const r = J.mainDraw(env, it); if (!side) bb = r;
@@ -241,7 +247,7 @@ J.LAYOUTS = {
       const period = J.measure({ text: unit, font: P.font, size: rs, sx: P.sx, track: 0.05 }).w + rs * 0.05;
       const reps = Math.ceil((W * 2.4) / period) + 1;
       const ys = P.rows === 2 ? [-1, 1] : [-2, -1, 1, 2];
-      ys.forEach((k, r) => {
+      ys.forEach((k, r) => env.withDrawRole('tiledAux','marquee.rows',() => {
         const y = H / 2 + Math.sign(k) * (size * 0.5 + rs * 0.95) + (Math.abs(k) - 1) * Math.sign(k) * rs * 1.25;
         const a = J.clamp((lb - Math.abs(k) * 0.05) / 0.12);
         if (a <= 0) return;
@@ -252,7 +258,7 @@ J.LAYOUTS = {
         else if (P.rowStyle === 'dim') Object.assign(row, { color: sc.sub, alpha: a * 0.35 });
         else { env.rect(-10, y - rs * 0.62, W + 20, rs * 1.24, sc.ink, a, false); Object.assign(row, { color: sc.bg }); }
         env.draw(row);
-      });
+      }));
       return J.mainDraw(env, { text, font: P.font, size, x: W / 2, y: H / 2, sx: P.sx, track: 0.05, color: sc.fg });
     },
   },
@@ -298,9 +304,9 @@ J.LAYOUTS = {
       if (P.extras) {
         for (let k = 0; k < 9; k++) {
           const ap = J.r(s, k, 81) * env.cut.dur * 0.5;
-          if (env.ltb < ap) continue;
+          if (!env.placementEnvelope && env.ltb < ap) continue;
           const top = J.r(s, k, 82) < 0.5;
-          env.draw({ text: env.cut.text, font: env.st.fonts.body[0], size: J.rr(H * 0.022, H * 0.045, s, k, 83), x: J.rr(W * 0.08, W * 0.92, s, k, 84), y: top ? J.rr(H * 0.08, H * 0.26, s, k, 85) : J.rr(H * 0.74, H * 0.92, s, k, 85), rot: J.rs(s, k, 86) * 18, color: sc.sub, alpha: 0.75, ghost: false });
+          env.withDrawRole('primary','scatter.extra.'+k,()=>env.draw({ text: env.cut.text, font: env.st.fonts.body[0], size: J.rr(H * 0.022, H * 0.045, s, k, 83), x: J.rr(W * 0.08, W * 0.92, s, k, 84), y: top ? J.rr(H * 0.08, H * 0.26, s, k, 85) : J.rr(H * 0.74, H * 0.92, s, k, 85), rot: J.rs(s, k, 86) * 18, color: sc.sub, alpha: 0.75, ghost: false }));
         }
       }
       const base = Math.min(H * 0.3, W * 0.9 / n * 1.15);
@@ -366,12 +372,12 @@ J.LAYOUTS = {
         chars.forEach((ch, i) => {
           const u = u0 + (i - (n - 1) / 2) * du + k * du * 0.2 * Math.sign(P.travel);
           const [x, y] = path(u);
-          env.draw({ text: ch, font: P.font, size: size * (1 - k * 0.035), x, y, rot: angAt(u), color: sc.sub, alpha: 0.5 * (1 - k / (P.trail + 1)) * E.outCubic(env.pIn), ghost: false });
+          env.withDrawRole('primary','wave.unit.'+(i*.5),()=>env.draw({ placementPhaseIndex:i, placementTrailIndex:k, placementRouteKey: 'wave.unit.'+(i*.5)+'.trail.'+k, text: ch, font: P.font, size: size * (1 - k * 0.035), x, y, rot: angAt(u), color: sc.sub, alpha: 0.5 * (1 - k / (P.trail + 1)) * E.outCubic(env.pIn), ghost: false }));
         });
       }
       chars.forEach((ch, i) => {
         const u = u0 + (i - (n - 1) / 2) * du; const [x, y] = path(u);
-        bb = unionBB(bb, J.mainDraw(env, { text: ch, font: P.font, size, x, y, rot: angAt(u), color: sc.fg, mi: i * 0.5 }));
+        bb = unionBB(bb, J.mainDraw(env, { placementPhaseIndex:i, placementTrailIndex:0, placementRouteKey: 'wave.unit.'+(i*.5), text: ch, font: P.font, size, x, y, rot: angAt(u), color: sc.fg, mi: i * 0.5 }));
       });
       return bb;
     },
@@ -388,14 +394,14 @@ J.LAYOUTS = {
       const lines = text.split('\n').length;
       const size = lines > 1 ? Math.min(H * 0.56, W * 1.2 / (Math.ceil(n / 2) * 0.98)) : Math.min(H * 0.98, W * 1.3 / (n * 0.96));
       const u = env.lt / env.cut.dur;
-      const bb = J.mainDraw(env, { text, font: P.font, size, x: W / 2 + (0.5 - u) * W * 0.16 * P.dir, y: H / 2 + H * 0.02, lead: 0.98, track: -0.02, color: sc.fg, gradient: P.grad && sc.grad ? sc.grad : null });
-      if (P.label) {
+      const bb = J.mainDraw(env, { placementSweep: env.hugeSweep?.(P.dir), text, font: P.font, size, x: W / 2 + (0.5 - u) * W * 0.16 * P.dir, y: H / 2 + H * 0.02, lead: 0.98, track: -0.02, color: sc.fg, gradient: P.grad && sc.grad ? sc.grad : null });
+      if (P.label) env.withDrawRole('primary','huge.caption',()=>{
         const ls = J.clamp(H * 0.028, 16, 30);
         const a = E.outCubic(J.clamp((env.lt - env.cut.inDur * 0.5) / 0.2)) * (1 - env.pOut);
         const lt = J.measure({ text: env.cut.text, font: env.st.fonts.body[0], size: ls, track: 0.12 });
         env.rect(W * 0.05, H * 0.86 - ls, lt.w + ls * 1.4, ls * 2, sc.ink, a, false);
         env.draw({ text: env.cut.text, font: env.st.fonts.body[0], size: ls, track: 0.12, align: 'left', x: W * 0.05 + ls * 0.7, y: H * 0.86, color: sc.bg, alpha: a, ghost: false });
-      }
+      });
       return bb;
     },
   },
@@ -410,19 +416,20 @@ J.LAYOUTS = {
       let units = P.unit === 'char' ? [...text].filter(c => !J.isPunct(c)) : (env.cut.words && env.cut.words.length ? env.cut.words : [text]);
       if (!units.length) units = [text];
       const out = 1 - E.inCubic(env.pOut);
-      const drawLabel = (u, x, y, rot, fs, q, i) => {
+      const drawLabel = (u, x, y, rot, fs, q, i) => env.withDrawRole('primary','labels.label.'+i,() => {
+        if(env.placementEnvelope)q=1.133;
         if (q <= 0) return;
         const m = J.measure({ text: u, font: P.font, size: fs, track: 0.04 });
         const w = m.w + fs * 0.7, h = fs * 1.36;
-        const ctx = env.ctx; ctx.save(); ctx.translate(x, y); ctx.rotate(rot * J.DEG); ctx.scale(q, q);
+        const ctx = env.ctx; const paint=()=>{ctx.save(); ctx.translate(x, y); ctx.rotate(rot * J.DEG); ctx.scale(q, q);
         env.rect(-w / 2, -h / 2, w, h, sc.ink, 1);
         env.draw({ text: u, font: P.font, size: fs, track: 0.04, x: 0, y: 0, color: sc.bg, ghost: false });
-        ctx.restore();
-      };
+        ctx.restore();};if(env.placementEnvelope&&P.variant==='radial'){const radius=Math.hypot(w,h)*1.133/2+Math.min(H*.3,W*.36)+2;env.withPlacementBounds([[W/2-radius,H/2-radius],[W/2+radius,H/2-radius],[W/2+radius,H/2+radius],[W/2-radius,H/2+radius]],paint);}else paint();
+      });
       let bb = null;
       if (P.variant === 'radial') {
         const m = Math.max(units.length, 10), R = Math.min(H * 0.3, W * 0.36), fs = Math.min(H * 0.062, W * 0.052);
-        if (P.center === 'orb') { const e = E.outBack(J.clamp(env.lt / 0.35), 1.4) * out; env.circle(W / 2, H / 2, R * 0.52 * e, sc.accent, null, 0, 1, true); }
+        if (P.center === 'orb') { const e = env.placementEnvelope?1.1:E.outBack(J.clamp(env.lt / 0.35), 1.4) * out; env.withDrawRole('independentDecor','labels.centerOrb',()=>env.circle(W / 2, H / 2, R * 0.52 * e, sc.accent, null, 0, 1, true)); }
         for (let i = 0; i < m; i++) {
           const ang = i / m * 360 + lb * 7 - 90;
           const q = E.outBack(J.clamp((env.lt - i * 0.025) / 0.22), 2) * out;
@@ -474,7 +481,7 @@ J.LAYOUTS = {
       if (P.bgText) {
         for (let r = 0; r < 3; r++) {
           const bs = H * 0.3;
-          env.draw({ text: (text.replace(/\s+/g, '') + '').repeat(6), font: P.font, size: bs, x: W / 2 + ((lb * 20 * (r % 2 ? 1 : -1)) % (bs * 2)), y: H * (0.18 + r * 0.32), color: sc.dim, alpha: 1, ghost: false });
+          env.withDrawRole('tiledAux','gloss.background',()=>env.draw({ text: (text.replace(/\s+/g, '') + '').repeat(6), font: P.font, size: bs, x: W / 2 + ((lb * 20 * (r % 2 ? 1 : -1)) % (bs * 2)), y: H * (0.18 + r * 0.32), color: sc.dim, alpha: 1, ghost: false }));
         }
       }
       const right = P.side === 'right';
@@ -528,16 +535,16 @@ J.LAYOUTS = {
       const txtCol = J.lum(bandCol) > 0.5 ? (J.lum(sc.bg) < 0.5 ? sc.bg : '#111111') : (J.lum(sc.fg) > 0.5 ? sc.fg : '#FFFFFF');
       const size = Math.min(J.fitSize(text, P.font, W * 0.72, H * 0.24, { track: 0.05 }), H * 0.2);
       const bh = size * 1.6;
-      const e = E.outExpo(J.clamp(env.lt / (env.cut.inDur * 0.8))) * (1 - E.inExpo(env.pOut));
+      const e = (env.placementEnvelope?1:E.outExpo(J.clamp(env.lt / (env.cut.inDur * 0.8)))) * (1 - E.inExpo(env.pOut));
       ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(-P.ang * J.DEG);
       env.rect(-W * 1.2, -bh / 2 * e, W * 2.4, bh * e, bandCol, 1);
-      if (P.second) {
+      if (P.second) env.withDrawRole('tiledAux','diag.secondBand',()=>{
         const y2 = bh * 0.95, h2 = bh * 0.32;
         env.rect(-W * 1.2, y2 - h2 / 2, W * 2.4 * e, h2, sc.fg, 0.9, false);
         const unit = env.cut.lineText + '　／　';
         const period = J.measure({ text: unit, font: env.st.fonts.body[0], size: h2 * 0.55, track: 0.1 }).w;
         env.draw({ text: unit.repeat(Math.ceil(W * 3 / period)), font: env.st.fonts.body[0], size: h2 * 0.55, track: 0.1, x: -((lb * 120) % period), y: y2, color: sc.bg, ghost: false, alpha: e });
-      }
+      });
       ctx.restore();
       return J.mainDraw(env, { text, font: P.font, size, x: W / 2, y: H / 2, rot: -P.ang, track: 0.05, color: txtCol });
     },
@@ -564,7 +571,7 @@ J.LAYOUTS = {
         return bb;
       }
       const R = Math.min(H * 0.3, W * 0.4);
-      const e = E.outBack(J.clamp(env.lt / (env.cut.inDur * 0.9)), 1.5) * out;
+      const e = env.placementEnvelope?1.081:E.outBack(J.clamp(env.lt / (env.cut.inDur * 0.9)), 1.5) * out;
       if (P.variant === 'disc') env.circle(cx, cy, R * e, sc.accent, null, 0, 1, true);
       else env.arc(cx, cy, R, -90, -90 + 360 * E.outExpo(J.clamp(env.lt / (env.cut.inDur * 1.3))) * out, sc.fg, 3, 1);
       const size = P.vertical ? Math.min(J.fitSize(text, P.font, R * 1.1, R * 1.35, { vertical: true }), R * 0.9) : Math.min(J.fitSize(text, P.font, R * 1.45, R * 0.9), R * 0.8);
@@ -600,7 +607,7 @@ J.LAYOUTS = {
       const size = Math.min(J.fitSize(text, P.font, W * 0.62, H * 0.2, { track: 0.04 }), H * 0.17);
       const m = J.measure({ text, font: P.font, size, track: 0.04 });
       const w = m.w + size * 1.3, h = size * 1.6;
-      const e = E.outExpo(J.clamp(env.lt / (env.cut.inDur * 0.9))) * (1 - E.inExpo(env.pOut));
+      const e = (env.placementEnvelope?1:E.outExpo(J.clamp(env.lt / (env.cut.inDur * 0.9)))) * (1 - E.inExpo(env.pOut));
       const fillC = P.grad && sc.grad ? sc.grad : [sc.accent, sc.accent];
       const ww = Math.max(h, w * e);
       if (env.pass === 'main') {
@@ -615,7 +622,7 @@ J.LAYOUTS = {
         const labs = [J.romaji(text.replace(/\s+/g, '')) || 'LYRIC', 'No.' + String((env.cut.line | 0) + 1).padStart(2, '0'), J.fmtTime(env.cut.start)];
         const fs = J.clamp(H * 0.022, 13, 24);
         labs.forEach((l, i) => {
-          const q = E.outBack(J.clamp((env.lt - 0.15 - i * 0.06) / 0.25), 2) * (1 - env.pOut);
+          const q = env.placementEnvelope?1.133:E.outBack(J.clamp((env.lt - 0.15 - i * 0.06) / 0.25), 2) * (1 - env.pOut);
           if (q <= 0) return;
           const mm = J.measure({ text: l, font: env.st.fonts.body[0], size: fs, track: 0.1 });
           const px = W / 2 + (i === 0 ? -w * 0.3 : i === 1 ? w * 0.42 : w * 0.1), py = H / 2 + (i === 1 ? -h * 0.95 : h * 0.95);

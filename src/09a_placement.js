@@ -15,10 +15,15 @@ const compose=(...ms)=>ms.reduce(A.multiply,ID);
 const matrix=ctx=>{const m=ctx.getTransform();return [m.a,m.b,m.c,m.d,m.e,m.f];};
 const rect=(x,y,w,h)=>[[x,y],[x+w,y],[x+w,y+h],[x,y+h]];
 A.bounds = polygons => {if(!Array.isArray(polygons)||polygons.some(p=>!Array.isArray(p)||p.length<3||p.some(v=>!Array.isArray(v)||v.length!==2)))fail('UNMEASURED_INK','Invalid polygon');const ps=polygons.flat();if(!ps.length||ps.some(p=>!finite(p)))fail('UNMEASURED_INK','Empty/nonfinite ink');return {x0:Math.min(...ps.map(p=>p[0])),y0:Math.min(...ps.map(p=>p[1])),x1:Math.max(...ps.map(p=>p[0])),y1:Math.max(...ps.map(p=>p[1]))};};
+A.convexHull=points=>{const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=ps=>{const out=[];for(const p of ps){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}out.pop();return out;};return half(sorted).concat(half(sorted.slice().reverse()));};
 let measureCtx;
 const measure=()=>measureCtx||(measureCtx=document.createElement('canvas').getContext('2d'));
 A.bufferStats=()=>({contexts:measureCtx?1:0,maxContexts:1,pixels:measureCtx?measureCtx.canvas.width*measureCtx.canvas.height:0,maxPixels:1,perGlyphStageBuffers:0});
+A.measurementContext=()=>measurementContext();
 function measurementContext(){const c=measure();if(c.canvas.width!==1||c.canvas.height!==1){c.canvas.width=1;c.canvas.height=1;}return c;}
+let inkMetricRevision=-1;const inkMetrics=new Map(),MAX_INK_METRICS=4096;
+function inkMetric(ctx,font,ch){const revision=J.metrics.revision||0;if(inkMetricRevision!==revision){inkMetrics.clear();inkMetricRevision=revision;}const key=font+'\u0000'+ch;let value=inkMetrics.get(key);if(!value){ctx.font=font;const m=ctx.measureText(ch);value={actualBoundingBoxLeft:m.actualBoundingBoxLeft,actualBoundingBoxRight:m.actualBoundingBoxRight,actualBoundingBoxAscent:m.actualBoundingBoxAscent,actualBoundingBoxDescent:m.actualBoundingBoxDescent};if(inkMetrics.size>=MAX_INK_METRICS)inkMetrics.delete(inkMetrics.keys().next().value);inkMetrics.set(key,value);}return value;}
+A.inkMetricCacheStats=()=>({revision:inkMetricRevision,entries:inkMetrics.size,maxEntries:MAX_INK_METRICS});
 /* Public adapter boundary: same font, center/middle baseline and exact Canvas transform order as drawItem.
    Unsupported effects fail explicitly; returned polygons conservatively include glyph ink + stroke. */
 const textDefaults={fontKerning:['auto'],letterSpacing:['0px'],wordSpacing:['0px'],textRendering:['auto'],fontStretch:['normal'],fontVariantCaps:['normal'],direction:['inherit','ltr'],lang:['inherit']};
@@ -26,7 +31,7 @@ const defaultTextValue=(key,value)=>['letterSpacing','wordSpacing'].includes(key
 const validateTextState=ctx=>{for(const [key,allowed]of Object.entries(textDefaults))if(key in ctx&&!defaultTextValue(key,ctx[key]))fail('UNSUPPORTED_TEXT_STATE','Default '+key+' required');if(ctx.canvas?.getAttribute?.('lang')||typeof getComputedStyle==='function'&&getComputedStyle(ctx.canvas).direction==='rtl')fail('UNSUPPORTED_TEXT_STATE','Default canvas language/direction required');};
 A.itemGeometry = (it,parent=ID,env={pass:'main',scale:1}) => {
   A.affine(parent);if(env.ctx)validateTextState(env.ctx);
-  for(const k of ['pieceFn','blur','shadow','extrude','pattern','gradient'])if(it[k])fail('UNSUPPORTED_ITEM',k+' requires a bounded adapter');
+  for(const k of ['pieceFn','blur','shadow','extrude','pattern'])if(it[k])fail('UNSUPPORTED_ITEM',k+' requires a bounded adapter');
   const ctx=measurementContext(), lay=J.layoutText(it), sx=it.sx||1,sy=it.sy||1;
   if(lay.length>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Glyph limit exceeded');
   const im=compose(parent,trans(it.x,it.y),rotate(it.rot||0),shear(it.skew||0));A.affine(im);
@@ -37,41 +42,77 @@ A.itemGeometry = (it,parent=ID,env={pass:'main',scale:1}) => {
     if(c?.blur)fail('UNSUPPORTED_ITEM','Per-character blur');
     const ch=c?.ch||g.ch,cs=c?.s??1,csx=sx*cs*(c?.sx||1),csy=sy*cs*(c?.sy||1);
     const gm=compose(im,trans(g.x*sx+g.vx*sx+(c?.dx||0),g.y*sy+g.vy*sy+(c?.dy||0)),rotate((c?.rot||0)+(g.r90?90:0)),shear(c?.skew||0),scale(csx,csy));A.affine(gm);
-    ctx.font=J.fontCSS(it.font,it.size,ch);ctx.textAlign='center';ctx.textBaseline='middle';
-    const m=ctx.measureText(ch),pad=(it.stroke>0?it.stroke:((c?.outline||it.dash!=null)?Math.max(1,it.size*.02):0))/Math.sqrt(Math.abs(csx*csy))/2;
+    const font=J.fontCSS(it.font,it.size,ch);ctx.textAlign='center';ctx.textBaseline='middle';
+    const m=inkMetric(ctx,font,ch),pad=(it.stroke>0?it.stroke:((c?.outline||it.dash!=null)?Math.max(1,it.size*.02):0))/Math.sqrt(Math.abs(csx*csy))/2+1;
     const vals=[m.actualBoundingBoxLeft,m.actualBoundingBoxRight,m.actualBoundingBoxAscent,m.actualBoundingBoxDescent,pad];
     if(!finite(vals))fail('UNMEASURED_INK','TextMetrics actual ink unavailable');
-    // One device pixel, pulled through the inverse affine, covers Canvas edge antialiasing at the contract alpha threshold.
-    const inv=A.inverse(gm),aaX=Math.abs(inv[0])+Math.abs(inv[2]),aaY=Math.abs(inv[1])+Math.abs(inv[3]);
-    const p=rect(-vals[0]-pad-aaX,-vals[2]-pad-aaY,vals[0]+vals[1]+pad*2+aaX*2,vals[2]+vals[3]+pad*2+aaY*2).map(p=>A.point(gm,p));
-    polygons.push(p);glyphs.push({index:g.i,ch,font:ctx.font,matrix:gm,polygon:p});
+    // One font-space pixel guards font-grid/metrics rounding. Two device pixels
+    // cover raster grid fitting plus edge coverage at the alpha threshold.
+    A.inverse(gm);
+    const inkPolygon=rect(-vals[0]-pad,-vals[2]-pad,vals[0]+vals[1]+pad*2,vals[2]+vals[3]+pad*2).map(p=>A.point(gm,p));
+    const p=A.convexHull(inkPolygon.flatMap(q=>[[q[0]-2,q[1]-2],[q[0]+2,q[1]-2],[q[0]+2,q[1]+2],[q[0]-2,q[1]+2]]));
+    polygons.push(p);glyphs.push({index:g.i,ch,font,matrix:gm,inkPolygon,polygon:p});
   }
-  return {polygons,glyphs,measurement:'actual TextMetrics + stroke + inverse-affine one device pixel AA envelope'};
+  return {polygons,glyphs,inkPolygons:glyphs.map(g=>g.inkPolygon),measurement:'actual TextMetrics + stroke + one font-space pixel + two device-pixel raster guard'};
 };
 /* Future piece adapter must supply final ink polygons, not untransformed glyph centers. */
 A.pieceGeometry = (polygons,parent=ID) => {A.affine(parent);A.bounds(polygons);return polygons.map(p=>p.map(v=>A.point(parent,v)));};
 A.withRole = (env,role,owner,fn) => {if(!['primary','tiledAux','independentDecor'].includes(role))fail('INVALID_ROLE','Unknown draw ownership');const prior=env.drawOwnership;env.drawOwnership={role,owner:String(owner)};try{return fn();}finally{env.drawOwnership=prior;}};
 function snapshotItem(it){const copy={...it};delete copy._lay;delete copy._m;delete copy.charFns;delete copy.pieceFns;delete copy.pre;delete copy.post;return copy;}
+function recordedItemBounds(it){const lay=J.layoutText(it),boxes=[];for(const g of lay){const v=it.charFn?it.charFn(g.i,g,lay.N):null;if(!g.ch.trim()||v?.hide||(it.alpha??1)*(v?.a??1)<=.002)continue;const cs=v?.s??1;boxes.push({x:g.x*(it.sx||1)+g.vx*(it.sx||1)+(v?.dx||0),y:g.y*(it.sy||1)+g.vy*(it.sy||1)+(v?.dy||0),w:g.w*(it.sx||1)*cs,h:g.h*(it.sy||1)*cs});}if(!boxes.length)return null;return {x0:it.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:it.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:it.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:it.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:it.x,cy:it.y,boxes};}
 A.record = (renderer,env) => {
   validateTextState(env.ctx);
   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
-  const events=[],diagnostics=[];let recorder,glyphCount=0;
+  const events=[],diagnostics=[],gradients=new WeakMap();let recorder,glyphCount=0,clips=[],pathRect=null,pathInvalid=false;const clipStack=[];
   const budget=env.placementBudget||{events:0,glyphs:0};
-  const push=(kind,args,polygons)=>{if(++budget.events>MAX_EVENTS)fail('GEOMETRY_LIMIT','Frame draw event ceiling exceeded');if(events.length>=MAX_EVENTS)fail('GEOMETRY_LIMIT','Draw event ceiling exceeded');const ownership=recorder.drawOwnership||{role:'primary',owner:'cut:'+env.cut.index};const m=matrix(c);A.affine(m);if(polygons.length)A.bounds(polygons);events.push({kind,args,matrix:m,polygons,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
-  const proxy=new Proxy(c,{get(target,k){if(k==='fillRect')return (x,y,w,h)=>push('rect',[x,y,w,h,target.fillStyle], (()=>{const b=A.bounds([rect(x,y,w,h).map(p=>A.point(matrix(c),p))]);return [rect(b.x0-1,b.y0-1,b.x1-b.x0+2,b.y1-b.y0+2)];})());if(['fill','stroke','fillText','strokeText','drawImage','putImageData','clip','clearRect'].includes(k))return ()=>fail('UNSUPPORTED_DRAW_PROGRAM','Unadapted Canvas operation '+k);const v=target[k];return typeof v==='function'?v.bind(target):v;},set(target,k,v){if(textDefaults[k]&&!defaultTextValue(k,v))fail('UNSUPPORTED_TEXT_STATE','Default '+k+' required');if((['shadowBlur','shadowOffsetX','shadowOffsetY'].includes(k)&&v!==0)||(k==='shadowColor'&&!['rgba(0, 0, 0, 0)','transparent'].includes(v)))fail('UNSUPPORTED_DRAW_PROGRAM','Unbounded shape shadow');if(k==='filter'&&v!=='none')fail('UNSUPPORTED_DRAW_PROGRAM','Spatial filter');target[k]=v;return true;}});
+  const push=(kind,args,polygons)=>{if(++budget.events>MAX_EVENTS)fail('GEOMETRY_LIMIT','Frame draw event ceiling exceeded');if(events.length>=MAX_EVENTS)fail('GEOMETRY_LIMIT','Draw event ceiling exceeded');const ownership=recorder.drawOwnership||{role:'primary',owner:'cut:'+env.cut.index};if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=matrix(c);A.affine(m);if(polygons.length)A.bounds(polygons);events.push({kind,args:args.map(v=>v&&typeof v==='object'&&gradients.has(v)?gradients.get(v):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
+  const proxy=new Proxy(c,{get(target,k){
+    if(k==='save')return ()=>{clipStack.push(clips.slice());target.save();};
+    if(k==='restore')return ()=>{clips=clipStack.pop()||[];target.restore();};
+    if(k==='beginPath')return ()=>{pathRect=null;pathInvalid=false;target.beginPath();};
+    if(k==='rect')return (...args)=>{if(args.length!==4||!finite(args))fail('INVALID_GEOMETRY','Finite rectangular clip path required');if(pathRect)pathInvalid=true;pathRect={args,matrix:matrix(c)};target.rect(...args);};
+    if(['arc','arcTo','ellipse','moveTo','lineTo','bezierCurveTo','quadraticCurveTo','closePath','roundRect'].includes(k))return (...args)=>{pathInvalid=true;return target[k](...args);};
+    if(k==='clip')return (...args)=>{if(!env.cut.placementUnits||args.length||!pathRect||pathInvalid)fail('UNSUPPORTED_DRAW_PROGRAM','Only argument-free single owned rectangular clips are adapted');clips.push(pathRect);};
+    if(k==='createLinearGradient')return (...args)=>{const paint=target.createLinearGradient(...args),stops=[],entry={placementGradient:true,args,matrix:matrix(c),stops};gradients.set(paint,entry);const add=paint.addColorStop.bind(paint);paint.addColorStop=(...stop)=>{stops.push(stop);add(...stop);};return paint;};
+    if(k==='fillRect')return (x,y,w,h)=>{if(!finite([x,y,w,h]))fail('INVALID_GEOMETRY','Finite rectangle required');if(!w||!h)return;const m=matrix(c),inv=A.inverse(m),aaX=Math.abs(inv[0])+Math.abs(inv[2]),aaY=Math.abs(inv[1])+Math.abs(inv[3]);push('rect',[x,y,w,h,target.fillStyle],[rect(Math.min(x,x+w)-aaX,Math.min(y,y+h)-aaY,Math.abs(w)+2*aaX,Math.abs(h)+2*aaY).map(p=>A.point(m,p))]);};if(['fill','stroke','fillText','strokeText','drawImage','putImageData','clearRect'].includes(k))return ()=>fail('UNSUPPORTED_DRAW_PROGRAM','Unadapted Canvas operation '+k);const v=target[k];return typeof v==='function'?v.bind(target):v;},set(target,k,v){if(textDefaults[k]&&!defaultTextValue(k,v))fail('UNSUPPORTED_TEXT_STATE','Default '+k+' required');if((['shadowBlur','shadowOffsetX','shadowOffsetY'].includes(k)&&v!==0)||(k==='shadowColor'&&!['rgba(0, 0, 0, 0)','transparent'].includes(v)))fail('UNSUPPORTED_DRAW_PROGRAM','Unbounded shape shadow');if(k==='filter'&&v!=='none')fail('UNSUPPORTED_DRAW_PROGRAM','Spatial filter');target[k]=v;return true;}});
   recorder=renderer.makeEnv(proxy,env.plan,env.cut,env.sc,{...env,ctx:proxy,placementRecording:true});
-  recorder.placementRecorder={item(it){const count=[...String(it.text||'')].length;glyphCount+=count;budget.glyphs+=count;if(budget.glyphs>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Frame glyph ceiling exceeded');if(glyphCount>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Program glyph ceiling exceeded');if(env.pass!=='main'&&it.ghost===false)return null;const ink=A.itemGeometry(it,matrix(c),env);push('item',[snapshotItem(it)],ink.polygons);const lay=J.layoutText(it),boxes=[];for(const g of lay){const v=it.charFn?it.charFn(g.i,g,lay.N):null;if(!g.ch.trim()||v?.hide||(it.alpha??1)*(v?.a??1)<=.002)continue;const cs=v?.s??1;boxes.push({x:g.x*(it.sx||1)+g.vx*(it.sx||1)+(v?.dx||0),y:g.y*(it.sy||1)+g.vy*(it.sy||1)+(v?.dy||0),w:g.w*(it.sx||1)*cs,h:g.h*(it.sy||1)*cs});}if(!boxes.length)return null;return {x0:it.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:it.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:it.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:it.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:it.x,cy:it.y,boxes};}};
+  if(env.placementEnvelope){recorder.pIn=1;recorder.pOut=0;}
+  recorder.placementRecorder={item(it){const count=[...String(it.text||'')].length;glyphCount+=count;budget.glyphs+=count;if(budget.glyphs>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Frame glyph ceiling exceeded');if(glyphCount>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Program glyph ceiling exceeded');if(env.pass!=='main'&&it.ghost===false)return null;if(env.cut.placementUnits&&recorder.drawOwnership?.role==='tiledAux'&&!it.charFn){for(const key of ['pieceFn','blur','shadow','extrude','pattern'])if(it[key])fail('UNSUPPORTED_ITEM',key+' requires a bounded adapter');if(!finite([it.x,it.y,it.size,it.sx??1,it.sy??1,it.rot??0,it.skew??0,it.track??0,it.lead??1.3]))fail('UNMEASURED_INK','Finite auxiliary text geometry required');push('item',[snapshotItem(it)],[]);return recordedItemBounds(it);}let ink=A.itemGeometry(it,matrix(c),env);if(env.placementEnvelope&&it.placementSweep){const sweep=it.placementSweep,local=A.itemGeometry({...it,x:0,y:0,rot:0},ID,env).polygons;const b=A.bounds(local);ink={...ink,polygons:[rect(sweep.x0+b.x0,sweep.y0+b.y0,sweep.x1-sweep.x0+b.x1-b.x0,sweep.y1-sweep.y0+b.y1-b.y0)]};}if(env.cut.placementGlyphs&&it.placementMain){for(const glyph of ink.glyphs){const copy=snapshotItem(it);copy.placementGlyphIndex=glyph.index;copy.placementRouteKey='huge.main.glyph.'+glyph.index;push('item',[copy],[glyph.polygon]);const event=events.at(-1);event.owner=copy.placementRouteKey;event.anchor=[glyph.matrix[4],glyph.matrix[5]];event.inkPolygons=[glyph.inkPolygon];}}else{push('item',[snapshotItem(it)],ink.polygons);events.at(-1).inkPolygons=ink.inkPolygons;}return recordedItemBounds(it);}};
   recorder.withDrawRole=(role,owner,fn)=>A.withRole(recorder,role,owner,fn);
+  recorder.withPlacementBounds=(bounds,fn)=>{const previous=recorder.placementBounds;recorder.placementBounds=bounds;try{return fn();}finally{recorder.placementBounds=previous;}};
+  // High-level shape adapters preserve the original operation and painter order.
+  for(const name of ['circle','arc','rrect'])recorder[name]=(...args)=>{
+    let x,y,w,h,pad=0;
+    if(name==='circle'||name==='arc'){const [cx,cy,r]=args;if(r<=0)return;const lw=name==='circle'?(args[4]?args[5]??1:0):args[6]??1;pad+=lw/2;x=cx-r;y=cy-r;w=h=2*r;}
+    else { [x,y,w,h]=args;if(w<=0||h<=0)return;pad+=(args[8]?args[9]??1:0)/2; }
+    const alpha=name==='circle'?args[6]??1:name==='arc'?args[7]??1:args[6]??1,ghost=name==='circle'?args[7]??true:name==='arc'?args[8]??true:args[7]??true;
+    if(alpha<=0||env.pass!=='main'&&!ghost)return;
+    const m=matrix(c);A.affine(m);let local;
+    if(name==='circle'||name==='arc'){
+      const [cx,cy,r]=args,N=64,outer=c.lineCap==='square'&&(name==='arc'||c.getLineDash().length)?Math.hypot(r+pad,pad):r+pad,radius=outer/Math.cos(Math.PI/N);
+      local=Array.from({length:N},(_,i)=>{const a=(i+.5)*J.TAU/N;return [cx+radius*Math.cos(a),cy+radius*Math.sin(a)];});
+    }else{
+      const r=Math.min(args[4],w/2,h/2);if(!Number.isFinite(r)||r<0)fail('INVALID_GEOMETRY','Finite nonnegative rounded rectangle radius required');
+      const N=32,capPad=c.lineCap==='square'&&c.getLineDash().length?Math.SQRT2*pad:pad,radius=(r+capPad)/Math.cos(Math.PI/N),corners=[[x+r,y+r],[x+w-r,y+r],[x+w-r,y+h-r],[x+r,y+h-r]];
+      local=r===0?rect(x-pad,y-pad,w+2*pad,h+2*pad):A.convexHull(corners.flatMap(corner=>Array.from({length:N},(_,i)=>{const a=(i+.5)*J.TAU/N;return [corner[0]+radius*Math.cos(a),corner[1]+radius*Math.sin(a)];})));
+    }
+    // The circumscribed local polygon contains the complete curved shape and
+    // stroke. Device-axis Minkowski padding covers one pixel of raster AA even
+    // under tiny/nonuniform/sheared affine transforms.
+    const polygon=A.convexHull(local.flatMap(p=>{const q=A.point(m,p);return [[q[0]-1,q[1]-1],[q[0]+1,q[1]-1],[q[0]+1,q[1]+1],[q[0]-1,q[1]+1]];}));
+    push(name,args,[polygon]);
+  };
   recorder.line=(pts,color,lw=1,alpha=1,ghost=true)=>{if(env.pass!=='main'){if(!ghost)return;color=env.passColor;}if(!color||alpha<=0||pts.length<2)return;const ps=pts.map(p=>A.point(matrix(c),p)),pad=lw*Math.hypot(c.getTransform().a,c.getTransform().b,c.getTransform().c,c.getTransform().d)/2*(pts.length>2?c.miterLimit:1)+1;const b={x0:Math.min(...ps.map(p=>p[0])),y0:Math.min(...ps.map(p=>p[1])),x1:Math.max(...ps.map(p=>p[0])),y1:Math.max(...ps.map(p=>p[1]))};c.globalAlpha=alpha;c.strokeStyle=color;c.lineWidth=lw;c.lineJoin='miter';c.lineCap='butt';push('line',[pts,color,lw,alpha,{miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset}],[rect(b.x0-pad,b.y0-pad,b.x1-b.x0+pad*2,b.y1-b.y0+pad*2)]);c.globalAlpha=1;};
   try{renderer.drawCut(recorder);}catch(e){diagnostics.push({code:e.code||'DRAW_PROGRAM_ERROR',message:e.message});}
   return {events,diagnostics,measurementSupported:diagnostics.length===0};
 };
-A.replay = (env,program,offset) => {
+A.replay = (env,program,offset,decorOffsets={}) => {
   if(!program.measurementSupported)fail('UNSUPPORTED_DRAW_PROGRAM','Refusing incomplete draw program');
-  for(const e of program.events){const moved=e.role==='primary'?offset:[0,0];const ctx=env.ctx;ctx.save();try{ctx.setTransform(...compose(trans(moved[0]*(env.scale||1),moved[1]*(env.scale||1)),e.matrix));ctx.globalCompositeOperation=e.blend;ctx.globalAlpha=e.alpha;ctx.lineCap=e.state.lineCap;ctx.lineJoin=e.state.lineJoin;ctx.miterLimit=e.state.miterLimit;ctx.setLineDash(e.state.dash);ctx.lineDashOffset=e.state.dashOffset;
-    if(e.kind==='item')J.drawItem({...env,placementRecorder:null},e.args[0]);
-    else if(e.kind==='rect'){ctx.fillStyle=e.args[4];ctx.fillRect(...e.args.slice(0,4));}
+  for(const e of program.events){const moved=e.role==='primary'?(Array.isArray(offset)?offset:offset[e.key??e.owner]||[0,0]):decorOffsets[e.key??e.owner]||[0,0];const ctx=env.ctx;ctx.save();try{const shift=trans(moved[0]*(env.scale||1),moved[1]*(env.scale||1));for(const clip of e.clips||[]){ctx.setTransform(...compose(shift,clip.matrix));ctx.beginPath();ctx.rect(...clip.args);ctx.clip();}ctx.setTransform(...compose(shift,e.matrix));const eventArgs=e.args.map(v=>{if(!v?.placementGradient)return v;ctx.save();ctx.setTransform(...compose(shift,v.matrix));const gradient=ctx.createLinearGradient(...v.args);for(const stop of v.stops)gradient.addColorStop(...stop);ctx.restore();return gradient;});ctx.globalCompositeOperation=e.blend;ctx.globalAlpha=e.alpha;ctx.lineCap=e.state.lineCap;ctx.lineJoin=e.state.lineJoin;ctx.miterLimit=e.state.miterLimit;ctx.setLineDash(e.state.dash);ctx.lineDashOffset=e.state.dashOffset;
+    if(e.kind==='item'){let it=e.args[0];if(it.placementGlyphIndex!=null){it={...it};const full=J.layoutText(it),one=full.filter(g=>g.i===it.placementGlyphIndex);Object.assign(one,{N:full.N,W:full.W,H:full.H});it._lay=one;}J.drawItem({...env,placementRecorder:null},it);}
+    else if(e.kind==='rect'){ctx.fillStyle=eventArgs[4];ctx.fillRect(...eventArgs.slice(0,4));}
+    else if(['circle','arc','rrect'].includes(e.kind))env[e.kind](...eventArgs);
     else if(e.kind==='line'){const [pts,col,lw,a,state]=e.args;ctx.globalAlpha=a;ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.lineJoin='miter';ctx.lineCap='butt';ctx.miterLimit=state.miterLimit;ctx.setLineDash(state.dash);ctx.lineDashOffset=state.dashOffset;ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.stroke();}
   }finally{ctx.restore();}}
 };
@@ -92,11 +133,11 @@ A.solve = (polygons,circle,W,H) => {
   for(const d of candidates)if(fits(d)&&(!circle||A.clear(shift(d),circle,margin)))return {offset:d,status:'safe',margin};
   return {offset:[0,0],status:'insufficient-space',margin};
 };
-const signature=plan=>{const source={...plan};delete source.placementFinalization;source.cuts=plan.cuts.map(c=>{const n={...c};delete n.placementTrajectory;delete n.fullStagePlacement;return n;});return JSON.stringify(source);};
+const signature=plan=>{const source={...plan};delete source.placementFinalization;source.cuts=plan.cuts.map(c=>{const n={...c};delete n.placementTrajectory;delete n.fullStagePlacement;delete n.placementUnits;delete n.placementGlyphs;return n;});return JSON.stringify(source);};
 A.planSignature=signature;
 const finalized=new WeakMap(),requests=new WeakMap(),sources=new WeakMap();
 const oldPlan=J.plan;
-J.plan=function(project,...args){const plan=oldPlan(project,...args);sources.set(plan,{locked:plan.cuts.filter(c=>project.overrides?.[c.line]?.lock).map(c=>c.index)});return plan;};
+J.plan=function(project,...args){const plan=oldPlan(project,...args),intrinsicScales={};for(const c of plan.cuts){const scale=J.areaIntrinsicScales?.get(c);if(c.suppressed&&scale!=null&&c.area&&c.areaMode==='auto'){intrinsicScales[c.index]={observed:c.contentScale,scale};}}sources.set(plan,{locked:plan.cuts.filter(c=>project.overrides?.[c.line]?.lock).map(c=>c.index),intrinsicScales});return plan;};
 const freeze=value=>{if(value&&typeof value==='object'&&!Object.isFrozen(value)){Object.values(value).forEach(freeze);Object.freeze(value);}return value;};
 const jsonClone=v=>JSON.parse(JSON.stringify(v));
 /* Final composition and font loading must precede this detached, idempotent operation.
@@ -106,7 +147,9 @@ J.finalizePlacementPlan = (input,options={}) => {
   if(prior?.signature===sig&&prior.revision===revision&&prior.options===JSON.stringify(options))return input;
   if(!Number.isFinite(input.duration))fail('FINAL_DURATION_REQUIRED','Final composed duration required');
   if(!sources.has(input))fail('SOURCE_PLAN_REQUIRED','Finalize an actual composed J.plan result; serialized clones require replanning from project');
-  const plan=jsonClone(input);delete plan.placementFinalization;
+  const lineage=sources.get(input),plan=jsonClone(input);delete plan.placementFinalization;
+  if(lineage.originalCuts)plan.cuts=jsonClone(lineage.originalCuts);
+  const originalCuts=jsonClone(plan.cuts);
   const diagnostics=[],stepDur=J.stepDur(plan.fx,plan.fps),maxSupportedTransDur=.6,maxStep=1;
   // All frame passes share the effectCut's style/FX/clock. Reject mixed unsupported state once.
   const unsupportedPlanFX=!(Number.isFinite(stepDur)&&stepDur>0&&stepDur<=maxStep)||plan.cuts.some(c=>c.effectStyle||c.effectFx||c.trans&&c.trans!=='none'&&(c.trans!=='wipe'||!Number.isFinite(c.transDur??.35)||(c.transDur??.35)<0||(c.transDur??.35)>maxSupportedTransDur))||(plan.events||[]).some(e=>!['chroma','shake'].includes(e.type))||plan.style?.glow!==0;
@@ -115,27 +158,29 @@ J.finalizePlacementPlan = (input,options={}) => {
   const reachTail=maxSupportedTransDur+2*stepDur+1.6/24+.06+.01;
   for(const cut of plan.cuts){
     const original=jsonClone(cut);
-    delete cut.fullStagePlacement;delete cut.placementTrajectory;
+    delete cut.fullStagePlacement;delete cut.placementTrajectory;delete cut.placementUnits;delete cut.placementGlyphs;
     if(options.cutIndices&&!options.cutIndices.includes(cut.index))continue;
     if(plan.lyricAvoidanceIndex?.enabled!==true||sources.get(input)?.locked.includes(cut.index)||['manual','notation'].includes(cut.areaMode)||cut.placementLocked||cut.emphasis){diagnostics.push({cut:cut.index,code:'PRESERVED_LEGACY',safety:'not-evaluated'});continue;}
-    if(!['center','tile'].includes(cut.layout)||!['cut'].includes(cut.enter)||!['cut'].includes(cut.exit)||(cut.groupExit??cut.exit)!=='cut'||cut.hold!=='still'||(cut.decor||[]).length||!['none','marker'].includes(cut.treat||'none')||!['push','panL','panR','dutch'].includes(cut.cam)||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)){diagnostics.push({cut:cut.index,code:'UNSUPPORTED_ADAPTER',safety:'unsupported'});continue;}
+    if(!A.basicLayouts.includes(cut.layout)||!['cut'].includes(cut.enter)||!['cut'].includes(cut.exit)||(cut.groupExit??cut.exit)!=='cut'||cut.hold!=='still'||(cut.decor||[]).length||!['none','marker'].includes(cut.treat||'none')||!['push','panL','panR','dutch'].includes(cut.cam)||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)){diagnostics.push({cut:cut.index,code:'UNSUPPORTED_ADAPTER',safety:'unsupported'});continue;}
     const fxCheck=cut.effectFx||plan.fx,stCheck=cut.effectStyle||plan.style,numbers=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fxCheck.motion??.7,fxCheck.chroma??.7,stCheck.ghost??1,cut.camP?.a??.022,cut.camP?.dir??1];
     if(!finite(numbers)||plan.W<=0||plan.H<=0||(cut.contentScale??1)<=0||(cut.motionScale??1)<0||(cut.motionScale??1)>1||(fxCheck.motion??.7)<0||(fxCheck.motion??.7)>1||(fxCheck.chroma??.7)<0||(stCheck.ghost??1)<0||(cut.camP?.a??0)<0||Math.abs(cut.camP?.dir??1)>1||(plan.events||[]).some(e=>!finite([e.t,e.amp])||e.amp<0)){diagnostics.push({cut:cut.index,code:'UNSUPPORTED_PARAMETER_RANGE',safety:'unsupported'});continue;}
+    if(options.basicLayouts!==true&&!['center','tile'].includes(cut.layout)){diagnostics.push({cut:cut.index,code:'UNSUPPORTED_ADAPTER',safety:'unsupported'});continue;}
     if(unsupportedPlanFX){diagnostics.push({cut:cut.index,code:'UNSUPPORTED_POST_FX',safety:'unsupported'});continue;}
-    const L=J.LAYOUTS[cut.layout];cut.area=null;cut.fullStagePlacement=true;
+    const L=J.LAYOUTS[cut.layout],intrinsic=lineage.intrinsicScales?.[cut.index];if(options.basicLayouts===true&&cut.area&&cut.areaMode==='auto'&&intrinsic&&cut.contentScale===intrinsic.observed)cut.contentScale=intrinsic.scale;cut.area=null;cut.fullStagePlacement=true;
     const fresh=L.plan(J.rng(J.h(cut.seed,318)),{text:cut.text,n:[...cut.text.replace(/\s/g,'')].length,W:plan.W,H:plan.H,dur:cut.dur},cut.effectStyle||plan.style);
     // These two foundation adapters have no geometry-dependent random fields. Preserve the chosen look.
     cut.params={...fresh,...cut.params};
     Object.assign(cut.params,options.params?.[cut.index]||{});
+    if(options.basicLayouts===true){A.finalizeBasic(plan,cut,original,diagnostics,{revision,stepDur,reachTail});continue;}
     const renderer=Object.create(J.Renderer.prototype),ctx=measurementContext();ctx.reset();
     const env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:cut.start+cut.dur/2,realTime:cut.start+cut.dur/2,lt:cut.dur/2,ltb:cut.dur/2,pIn:1,pOut:0,step:0,scale:1,allowFilter:false});env.pIn=1;env.pOut=0;
     const program=A.record(renderer,env),ps=program.events.filter(e=>e.role==='primary').flatMap(e=>e.polygons);
     if(!program.measurementSupported||!ps.length){plan.cuts[plan.cuts.indexOf(cut)]=original;diagnostics.push({cut:cut.index,code:'UNSUPPORTED_MEASUREMENT',details:program.diagnostics,safety:'unsupported'});continue;}
     // Rest geometry is invariant for these adapters (marker grows inside its full rest plate).
-    // A rectangular interval envelope covers the supported bounded camera rotation/scale/translation and chroma/shake passes. Ten stage pixels cover AA for certified render scales >=0.1.
+    // A rectangular interval envelope covers the supported bounded camera rotation/scale/translation and chroma/shake passes. Twenty stage pixels cover the two-device-pixel glyph raster guard at certified render scales >=0.1.
     const motion=cut.motionScale??1,fx=cut.effectFx||plan.fx,K=J.clamp((fx.motion??.7)*1.25,0,1.25),s=(cut.contentScale??1)*Math.max(1,1+.03*Math.max(K,fx.motion??.7)*motion,1.02);
     const bx=Math.max(...ps.flat().map(p=>Math.abs(p[0]-plan.W/2))),by=Math.max(...ps.flat().map(p=>Math.abs(p[1]-plan.H/2))),sn=cut.cam==='dutch'?Math.sin(5*J.DEG):0;
-    const rx=(bx+by*sn)*s+10,ry=(by+bx*sn)*s+10;
+    const rx=(bx+by*sn)*s+20,ry=(by+bx*sn)*s+20;
     const ev=plan.events||[],chroma=(fx.chroma??.7)*(plan.style.ghost??1)*(1+ev.filter(e=>e.type==='chroma').reduce((a,e)=>a+Math.abs(e.amp),0)+.9),shake=ev.filter(e=>e.type==='shake').reduce((a,e)=>a+Math.abs(e.amp),0);
     const dx=(['panL','panR'].includes(cut.cam)?plan.W*Math.abs(cut.camP?.a||.022)*K:0)*motion+(3.4*chroma+16*shake)*plan.H/1080*motion;
     const dy=(1.9*chroma+11*shake)*plan.H/1080*motion;
@@ -147,12 +192,15 @@ J.finalizePlacementPlan = (input,options={}) => {
     diagnostics.push({cut:cut.index,code:'STAGED_ADAPTER',measurement:'supported',safety:cut.placementTrajectory.safety});
   }
   plan.placementFinalization={version:1,revision,diagnostics,duration:plan.duration};
-  finalized.set(plan,{signature:signature(plan),revision,options:JSON.stringify(options)});sources.set(plan,sources.get(input)||{locked:[]});return freeze(plan);
+  finalized.set(plan,{signature:signature(plan),revision,options:JSON.stringify(options)});sources.set(plan,{...lineage,originalCuts});return freeze(plan);
 };
 J.finalizePlacementPlanAsync = async (plan,wait,options={}) => {const token={},sig=signature(plan);requests.set(plan,token);await wait; if(requests.get(plan)!==token||signature(plan)!==sig)fail('STALE_FINALIZATION','A newer request or composed plan superseded this result');return J.finalizePlacementPlan(plan,options);};
 A.validateFinal = plan => {const rec=finalized.get(plan);if(!rec||rec.revision!==(J.metrics.revision||0)||!Object.isFrozen(plan))fail('STALE_PLACEMENT_PLAN','Refinalize after font/compose changes');};
 A.offsetAt=(trajectory,t)=>{const s=trajectory.segments.find(s=>s.start<=t&&t<s.end);if(!s)return [0,0];const u=(t-s.start)/(s.end-s.start);return [J.lerp(s.from[0],s.to[0],u),J.lerp(s.from[1],s.to[1],u)];};
 A.render = (renderer,env) => {
+  if(env.cut.placementTrajectory?.kind==='ordered-huge-route')return A.renderHuge(renderer,env);
+  if(env.cut.placementTrajectory?.kind==='ordered-wave-route')return A.renderWave(renderer,env);
+  if(env.cut.placementTrajectory?.kind==='owned-unit-translation')return A.renderBasic(renderer,env);
   A.validateFinal(env.plan);if((env.scale||1)<.1||(env.scale||1)>4)fail('UNSUPPORTED_RENDER_SCALE','Staged certified scale range is 0.1 through 4');const program=A.record(renderer,env),offset=A.offsetAt(env.cut.placementTrajectory,env.realTime),scale=env.scale||1;
   const polygons=program.events.filter(e=>e.role==='primary').flatMap(e=>e.polygons).map(p=>p.map(v=>[v[0]/scale+offset[0],v[1]/scale+offset[1]]));
   const resolved=J.resolveAvoidanceAt(env.plan,env.realTime),circle=resolved?J.avoidanceCirclePixels(resolved,env.plan.W,env.plan.H):null;

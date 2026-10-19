@@ -1,0 +1,60 @@
+{
+  "task": "AVOID-005",
+  "status": "Local validation and parent code/test review passed; publication and human H01-H03 validation pending",
+  "recordedUTC": "2026-10-19T09:06:18.043103+00:00",
+  "build": "local-20261019-02",
+  "artifactCommit": null,
+  "publicURL": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-005/local-20261019-02/",
+  "manifestSHA256": "e8c81c696acae92f9a5edc88d79b9430f12ee59e95b9238c6530f2823633ab83",
+  "appSHA256": {
+    "ja": "c7dbd4d94309d840b885c8a916f7d98544888d2b5663db054654d5f0671d4f41",
+    "en": "c55180c81354e6265a785c936590cb54857b5ac86434933d10d09d52528a6897"
+  },
+  "localValidator": {
+    "validated": true,
+    "scope": "candidate-evidence",
+    "cases": 123,
+    "counts": {
+      "safe": 82,
+      "insufficient": 35,
+      "unsupported": 0,
+      "not-evaluated": 6,
+      "unchangedControls": 6,
+      "mandatorySafeAnchors": 17,
+      "exploratorySafe": 55,
+      "exploratoryInsufficient": 34,
+      "unmetExpectations": 0
+    },
+    "publicURL": null,
+    "manifestSHA256": "e8c81c696acae92f9a5edc88d79b9430f12ee59e95b9238c6530f2823633ab83"
+  },
+  "negativeTests": {
+    "passed": true,
+    "canonicalCases": 123,
+    "fullMatrix": 449,
+    "negativeBundleChecks": 11
+  },
+  "assets": 512,
+  "pngs": 492,
+  "videos": 4,
+  "environmentEvidence": "publication-environment.json",
+  "transport": "Inherited proxy and CA/TLS; no bypass. Existing NSS DB access required for Chromium HTTPS.",
+  "humanReview": {
+    "required": true,
+    "reason": "16 layout routes, visible order, rhythm and readability need behavior judgement under implementation-review-policy.md",
+    "items": {
+      "AVOID-005-H01": "pending",
+      "AVOID-005-H02": "pending",
+      "AVOID-005-H03": "pending"
+    },
+    "request": "tasks/reviews/AVOID-005-local-20261019-02.md",
+    "response": null
+  },
+  "knownFailures": [
+    "project_file initial cuts expected0 actual1; save body not reached; AVOID-013",
+    "lyric_features unchanged before/after line24 stack expected1 actual2; subsequent assertions not reached; AVOID-017",
+    "lyric_area_effects unchanged prior baseline expected1 actual0; subsequent assertions not reached; AVOID-017"
+  ],
+  "scope": "Explicit basicLayouts opt-in for16 basic IDs; default generation remains legacy; masks018/default activation017/later adapters not completed",
+  "nextTaskStarted": false
+}

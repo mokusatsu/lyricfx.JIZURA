@@ -1,0 +1,25 @@
+/* Canonical acceptance expectations, never inferred from registry presence. */
+const layouts=['center','mixed','vcols','marquee','tile','scatter','wave','huge','labels','condensed','gloss','type','diag','circle','stack','pill'];
+const aspects=[['landscape',960,540],['portrait',540,960],['square',720,720]];
+/* Explicit native fixed-size safe anchors; tentative until parent core review. */
+const anchors={center:[960,540,.25],mixed:[960,540,.5],vcols:[540,960,.5],marquee:[960,540,.5],tile:[960,540,.25],scatter:[960,540,.25],wave:[960,540,.25],huge:[540,960,.25],labels:[960,540,.5],condensed:[960,540,.5],gloss:[960,540,.25],type:[960,540,.5],diag:[960,540,.25],circle:[960,540,.25],stack:[540,960,.5],pill:[960,540,.25]};
+const phases=[['enter',.1],['hold',1.5],['exit',3.85]];
+function fullMatrix(){
+ const out=[],add=(hid,id,s)=>out.push({id,hid:'AVOID-005-'+hid,seed:704,text:'風の先へ',W:960,H:540,cx:.5,cy:.5,radius:.2,time:1.5,availability:'implemented',expectation:'safe',...s});
+ for(const layout of layouts)for(const [aspect,W,H]of aspects)for(const [position,cy]of [['中央',.5],['上',.25],['下',.75]])for(const [phase,time]of phases)add('H01',`${layout}-${aspect}-${cy}-${phase}`,{layout,W,H,cy,time,aspect,position,phase,label:`${layout}・${aspect}・円${position}・${phase}`,look:'主歌詞の大きさ・読み順と、円の上下左右を通る動き。',expectation:'safe-or-explicit-insufficient',change:'探索条件です。安全と観測された場合は円外の軌道を、制約不足の場合は文字サイズを維持した診断を確認してください。',preserve:'文字サイズ、文字の順序、色、seed、開始・終了時刻。'});
+ add('H01','wave-central-go-native',{layout:'wave',text:'Go',params:{amp:.08,freq:.8},aspect:'landscape',position:'中央',phase:'hold',label:'wave・中央の短語Go・小さな振幅の波',expectation:'safe',centralWaveExample:true,look:'短語Goが、ゼロではない波の動きを保って中央の円を避けること。標準の日本語4文字のケースとは入力が異なります。',change:'通常の設定項目で振幅を小さくした波の安全例です。変更前にも同じ文字と波の設定を使います。',preserve:'元の文字サイズ、Goの読み順、色、開始・終了時刻。標準の日本語4文字の中央条件は別の探索ケースに残します。'});
+ for(const layout of ['marquee','tile','gloss'])for(const [phase,time]of phases){const gloss=layout==='gloss',tile=layout==='tile';add('H02',`${layout}-owned-${phase}`,{layout,time:gloss&&phase==='enter'?.2:time,phase,cy:layout==='marquee'?.5:.25,...(gloss?{note:'意味のある注釈',params:{vertNote:false},requiredDrawnText:'意味のある注釈'}:tile?{params:{knock:'box'}}:{}),label:`${layout}・${gloss?'主歌詞と実際に描く注釈':tile?'主歌詞と所有する板':'主歌詞と背景の反復帯'}・${phase}`,look:gloss?(phase==='enter'?'注釈が現れたenterの0.20秒で、主歌詞・注釈・接続線を見る。元の出現タイミングを保ちます。':'主歌詞・実際に描かれる注釈と接続線、背景の補助文字。'):tile?'主歌詞と所有する板、背景の反復文字。この演出では注釈を表示しません。':'主歌詞と背景の反復帯。帯の箱は背景補助に属し、主歌詞の板ではありません。この演出では注釈を表示しません。',change:gloss?'主歌詞と実際の注釈が一緒に円を避けることを確認してください。':tile?'主歌詞と所有する板が一緒に円を避けることを確認してください。':'主歌詞の回避を確認してください。背景の反復帯とその箱の配置は維持します。',preserve:'背景の反復補助は従来の全画面配置です。円形マスクはAVOID-018で対応予定。'});}
+ for(const [control,label,availability]of [['legacy','従来ON（旧自動領域）','implemented'],['fullstage','従来の全画面描画','implemented'],['off','回避OFF','implemented'],['manual','手動領域','implemented'],['emphasis','強調の例外','implemented'],['lock','ロックした配置','implemented']])add('H03','control-'+control,{control,layout:'center',label,availability,expectation:'unchanged',look:label+'の文字位置・大きさ。',change:'この対照は前後で同じ描画を維持する対象です。',preserve:label+'の既存指定。新しい回避動作の成功例には数えません。'});
+ add('H03','long-conflict',{layout:'huge',text:'文字サイズを維持すると円の外に収まらない長い歌詞です',scale:4,label:'長文・固定大サイズの競合',expectation:'insufficient',look:'歌詞を勝手に縮めず、選択した経路候補では収まらない診断が表示されること。',change:'この候補群で経路が見つからない場合は「制約不足」と明示します。あらゆる配置が幾何的に不可能という証明ではありません。',preserve:'入力した文字と固定サイズ。成功数には数えません。'});
+ for(const c of out){const a=anchors[c.layout];if(c.hid.endsWith('H01')&&c.phase==='hold'&&((c.W===a[0]&&c.H===a[1]&&c.cy===a[2])||(c.layout==='huge'&&c.W===540&&c.H===960&&c.cy===.75))){c.expectation='safe';c.safeAnchor=true;c.change='必須の安全例です。変更後の主歌詞が元の文字サイズと読み順を保ち、円の外を通ることを確認してください。';c.label+='・必須安全例';}}
+ return out;
+}
+/* 123 representative pairs: 48 landscape holds + 32 other-aspect holds +
+ * 24 dynamic enter/exit states + 2 huge portrait upper/lower anchors +
+ * 1 explicitly configured central short-word wave + 9 attachments + 7 compatibility/conflict cases.
+ * fullMatrix defines 449 conditions, not 449 executed tests or captures.
+ * The remaining cross-product is an automated-test concern, not screenshot evidence.
+ * basic-test runs 144 spatial conditions at .01/.2/1.5/3.8/3.99; these do not
+ * establish the canonical .1/3.85 enter/exit screenshots (gloss note enter=.20). */
+function cases(){return fullMatrix().filter(c=>c.centralWaveExample||!c.hid.endsWith('H01')||(c.phase==='hold'&&(c.aspect==='landscape'||c.cy===.5))||(['marquee','wave','scatter','diag'].includes(c.layout)&&c.aspect==='landscape'&&c.phase!=='hold')||(c.layout==='huge'&&c.aspect==='portrait'&&c.phase==='hold'&&c.cy!==.5));}
+module.exports=cases;module.exports.fullMatrix=fullMatrix;module.exports.layouts=layouts;module.exports.anchors=anchors;module.exports.aspects=aspects;module.exports.phases=phases;

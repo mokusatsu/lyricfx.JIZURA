@@ -1,0 +1,51 @@
+{
+  "compiledSHA256": "6a3d18c8e9bbfe3eaeb3a7c5ae4a9d48d9ce76a57e1e89602e6dc1a3616e7b0e",
+  "scope": "In-progress005 prototype; synthetic recorder operations; zero offset native versus replay. No final acceptance claim.",
+  "rows": [
+    {
+      "name": "gradientRect",
+      "admitted": true,
+      "diagnostics": [],
+      "differentPixels": 0
+    },
+    {
+      "name": "twoRectClip",
+      "admitted": false,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "Only argument-free single owned rectangular clips are adapted"
+        }
+      ],
+      "differentPixels": 6000
+    },
+    {
+      "name": "rectArcClip",
+      "admitted": false,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "Only argument-free single owned rectangular clips are adapted"
+        }
+      ],
+      "differentPixels": 4308
+    },
+    {
+      "name": "path2DClip",
+      "admitted": false,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "Only argument-free single owned rectangular clips are adapted"
+        }
+      ],
+      "differentPixels": 3000
+    },
+    {
+      "name": "singleRectClip",
+      "admitted": true,
+      "diagnostics": [],
+      "differentPixels": 0
+    }
+  ]
+}

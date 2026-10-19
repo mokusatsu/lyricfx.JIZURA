@@ -116,3 +116,8 @@ line0のeffectsOnlyでなくline=-1/layout=title/bg=noneであることをprobe�
 [118 checks](evidence/AVOID-004/stage-test.log)で成功しているが、この既存試験の
 後段成功に置換しない。017ではシーン選択の意図とfixtureを調査して扱いを決める。
 保存テスト初期cut数 expected0/actual1 の既知失敗は引き続き013が担当する。
+
+## AVOID-005からの既存回帰引継ぎ（017は未着手のまま）
+
+- 固定変更前 `3d8f52c` の `dev/lyric_features_test.cjs` はline24の「seek backward and forward must reconstruct the stack」で失敗。正規のdefaultProjectに初期titleがあり、t=.1でFirst(line0)とtitle(line-1)の2cut、期待値は1。t=4.5の4cutは一致。日英の独立probeで同じ構成を確認。
+- 005実装前の失敗として[変更前ログ/結果](evidence/AVOID-005/baseline-before/results.json)と[実データprobe](evidence/AVOID-005/baseline-before/features-probe.json)を保持。005変更後の同条件比較は005側で追記する。期待値やtitleを変更して既存試験成功にしない。後続assertionは未到達。
