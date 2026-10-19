@@ -1,6 +1,6 @@
 {
   "task": "AVOID-004",
-  "status": "Public validation passed; required human H01-H03 behavior review pending",
+  "status": "Completed: public validation and required human H01-H03 behavior review passed",
   "recordedUTC": "2026-10-18T21:39:34.488910+00:00",
   "verifiedAsiaTokyo": "2026-10-19T06:39:34.488910+09:00",
   "build": "local-20261018-08",
@@ -87,16 +87,18 @@
     "required": true,
     "reason": "First staged actual lyric/owned-plate placement, camera/ghost/transition appearance requires user behavior judgement",
     "items": {
-      "AVOID-004-H01": "unconfirmed",
-      "AVOID-004-H02": "unconfirmed",
-      "AVOID-004-H03": "unconfirmed"
+      "AVOID-004-H01": "OK",
+      "AVOID-004-H02": "OK",
+      "AVOID-004-H03": "OK"
     },
-    "request": "tasks/reviews/AVOID-004-local-20261018-08.md"
+    "request": "tasks/reviews/AVOID-004-local-20261018-08.md",
+    "responseEvidence": "human-review.json",
+    "completedAsiaTokyo": "2026-10-19T16:27:59.422041+09:00"
   },
   "knownFailures": [
     "project_file initial cuts expected0 actual1; save body not reached; AVOID-013",
     "lyric_area_effects line35 withoutMedia expected1 actual0 identically before/after; later assertions not reached; AVOID-017"
   ],
   "scope": "Internal opt-in center/tile bounded foundation. Normal product generation unchanged. Broad adapters, auxiliary mask, new editing track and default activation remain later tasks.",
-  "nextTaskStarted": false
+  "nextTaskStartedAtPublicationRecord": false
 }
