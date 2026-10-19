@@ -176,7 +176,7 @@ exists yet. Continue005 in a fresh sequential implementation context.
 
 The rejected prototype history above remains evidence of the earlier limitations.
 The current `basicLayouts:true` candidate implements all sixteen named adapters.
-It remains opt-in; parent review/public comparison acceptance is still pending.
+It remains opt-in. AVOID-005 parent/public verification and human behavior acceptance are complete, as recorded in the005 task.
 The complete per-ID ownership, proof and admission table is
 [`adapter-contract.md`](../../tasks/evidence/AVOID-005/adapter-contract.md).
 
@@ -218,3 +218,10 @@ is not a claim that all possible ink interlocking is impossible. Eclipse blur an
 unsupported motion/draw states remain explicit unsupported diagnostics.
 Native matrix and pixel tests deliberately retain unsuccessful conditions as
 reported outcomes; a registered ID alone does not imply every variant fits.
+
+
+## AVOID-006 layoutsA26 opt-in
+
+`J.finalizePlacementPlan(plan,{layoutsA:true})` admits the26 named `J.placement.layoutsA26` native adapters; combine `basicLayouts:true` to include basic16. The main app remains on its original path until017. The trajectory is `layouts-a-joint-translation`: one native composition owner, per-primitive full-interval envelopes, and per-region shared offsets. A safe certificate covers render scale.1–4, native complete motion, attached meaningful text/plates, camera/contentScale and AA. Dense families may explicitly return insufficient-space; malformed/unknown draw states and panel tone are unsupported. No primary masks or font changes implement avoidance.
+
+Source-backed ownership/domain/temporal/visibility details and final functional evidence are in [AVOID-006 adapter contract](../../tasks/evidence/AVOID-006/adapter-contract.md) and [26-ID inventory](layouts-a-inventory.json). The anchors file describes actual native examples, including smaller corner circles where default-radius fixed-size compositions do not fit. Runtime envelope escape throws; unsupported never means safe. Public and human acceptance are separate parent-owned steps.

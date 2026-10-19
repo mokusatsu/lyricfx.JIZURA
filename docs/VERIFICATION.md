@@ -168,7 +168,46 @@ PNGs, synchronized playback and desktop/mobile behavior. Negative tests operate
 on a temporary cloned bundle.
 
 The core has local verification and parent code/test review. Public checks have
-passed and are recorded in [AVOID-005](../tasks/AVOID-005.md). Human H01–H03 behavior
-acceptance remains pending. Capture success alone establishes
-neither. Public validation keeps inherited proxy/CA/TLS, fetches raw bytes and
+passed and are recorded in [AVOID-005](../tasks/AVOID-005.md). The user accepted the
+Stack correction; the parent recorded why no further human checks were needed
+for the remaining conditions, and completed 005. Capture success alone does not
+establish acceptance. Public validation keeps inherited proxy/CA/TLS, fetches raw bytes and
 fails on missing/stale assets; it never falls back to local evidence.
+
+## AVOID-006 native layouts-A verification
+
+AVOID-006 adds an explicit `layoutsA:true` staging option for 26 native layouts.
+It keeps each composition's primary lyrics, owned frames and meaningful captions
+together. Ordinary application generation stays on the existing path until 017;
+the auxiliary circular mask belongs to 018. Source ownership and admitted native
+motion bounds are recorded in `dev/avoidance/layouts-a-inventory.json`.
+
+```sh
+node dev/avoidance/layouts-a-test.cjs
+node dev/avoidance/layouts-a-acceptance.cjs
+node dev/avoidance/layouts-a-scales.cjs
+node dev/avoidance/layouts-a-contrast.cjs
+node dev/avoidance/layouts-a-font-test.cjs --browser
+node dev/avoidance/layouts-a-review.cjs capture NEW-UNUSED-BUILD-ID
+node dev/avoidance/layouts-a-review.cjs validate NEW-UNUSED-BUILD-ID
+node dev/avoidance/layouts-a-negative.cjs review/AVOID-006/NEW-UNUSED-BUILD-ID /workspace/lyricfx.JIZURA --playback
+node dev/avoidance/layouts-a-review.cjs validate NEW-UNUSED-BUILD-ID --base-url https://mokusatsu.github.io/lyricfx.JIZURA/
+node mcp/site-smoke-test.mjs
+```
+
+Use the existing runtime variables above. The immutable before archive is
+`b64ee11e9a762942643babd4f637ded8efdd8b42` at `/workspace/work/avoid006-before`.
+Capture requires the final candidate's `layouts-a-test.log` under
+`tasks/evidence/AVOID-006/final-candidate/`. The comparison has 187 selected pairs;
+this definition is not proof that capture or public validation has run. In its
+26 anchor conditions, eight use a diagnostic corner circle with radius 0.02;
+those do not demonstrate avoidance of a standard central circle. Input and
+native parameter differences are disclosed per case.
+
+Validation checks every raw asset and both deployed application pages, native
+PNG re-rendering, responsive comparisons, actual playback, rapid seeks and app
+startup. `--playback` additionally verifies that a real renderer failure after
+playback starts is detected. Sampled raster checks do not replace the analytic
+whole-interval envelope. Keep proxy, CA and TLS verification enabled; a Pages
+workflow success alone is not a public verification pass. The current state and
+actual completed evidence remain in [AVOID-006](../tasks/AVOID-006.md).

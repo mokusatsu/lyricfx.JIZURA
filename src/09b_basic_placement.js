@@ -275,6 +275,7 @@ function cameraEnvelope(ps,plan,cut,aaReserve=10){
  const points=[];for(const p of ps.flat())for(const s of [base,maxScale])for(const x of [-dx,dx])for(const y of [-dy,dy])points.push([plan.W/2+(p[0]-plan.W/2)*s+x,plan.H/2+(p[1]-plan.H/2)*s+y]);
  return hull(points);
 }
+A.cameraEnvelope=cameraEnvelope;
 let preparationRevision=-1,preparationBytes=0,preparationHits=0,preparationMisses=0;const preparationCache=new Map(),MAX_PREPARATIONS=2048,MAX_PREPARATION_BYTES=64*1024*1024;
 const ownFrozen=value=>{if(Array.isArray(value))return Object.freeze(value.map(ownFrozen));if(value&&typeof value==='object')return Object.freeze(Object.fromEntries(Object.entries(value).map(([k,v])=>[k,ownFrozen(v)])));return value;};
 A.clearPreparationCache=()=>{preparationCache.clear();preparationBytes=0;solverCache.clear();solverBytes=0;};
@@ -290,6 +291,7 @@ function preparedProgram(renderer,env,evaluationRange){
  if(bytes<=MAX_PREPARATION_BYTES){while(preparationCache.size>=MAX_PREPARATIONS||preparationBytes+bytes>MAX_PREPARATION_BYTES){const oldest=preparationCache.keys().next().value;preparationBytes-=preparationCache.get(oldest).bytes;preparationCache.delete(oldest);}preparationCache.set(key,{program,bytes});preparationBytes+=bytes;}
  return program;
 }
+A.preparedProgram=preparedProgram;
 A.preparationCacheStats=()=>({revision:preparationRevision,entries:preparationCache.size,hits:preparationHits,misses:preparationMisses,serializedBytes:preparationBytes,maxEntries:MAX_PREPARATIONS,maxSerializedBytes:MAX_PREPARATION_BYTES});
 A.finalizeBasic=(plan,cut,original,diagnostics,{revision,stepDur,reachTail})=>{
  const evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail];

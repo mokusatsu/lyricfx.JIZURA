@@ -1,0 +1,35 @@
+# AVOID-006 comparison tooling handoff
+
+Implementation scope: four new files only under dev/avoidance: layouts-a-cases.cjs, layouts-a-review.cjs, layouts-a-sample.html, layouts-a-negative.cjs. Existing 002–005 tools and immutable bundles are unchanged. Product/core fixture and parent task/publication documents are outside this worker's edits.
+
+The selected comparison definition has 187 pairs: 26 explicit native safe anchors; 130 spatial exploration hold states (26 × [landscape upper/center/lower, portrait center, square center]); 10 selective enter/exit states for panels/mirror/edgeFrame/ticker/chat; nine mirror/perspective/splitScreen transform states; one lowerThird supplied-note state; four primary/auxiliary ownership comparisons; six preserved controls; one explicit insufficient condition. This is a bounded selected set, not all native parameters/transforms/annotations. Only actual bundle manifest rows establish executed screenshot coverage.
+
+Before is frozen commit b64ee11e9a762942643babd4f637ded8efdd8b42, JA SHA256 1b9410dcb158a0ce315ae500be9e704734bcca6494838538416ad4ebbb8c4ea3, source archive /workspace/work/avoid006-before. It has the accepted basic16 API but no layoutsA26 API. Before executes native full-stage rendering without synthesizing the new interface; preserved controls keep their concrete native inputs. After reads the actual candidate at --source-root.
+
+Tool-only checks passed: Node syntax for review/cases/negative and sample inline script; canonical 187 unique cases/26 anchors/all H-ID coverage; contract.json finite positive stage/normalized center/legal radius/time guards; strict expected outcomes and API presence/absence; fixed-font engine-only isolation; mandatory-note draw guard; normalization target guards; ordering guard; known independent polygon oracle examples. Logs: work/layouts-a-final-definition.log.
+
+Actual smoke04 capture and validation passed against an unchanged real candidate snapshot at work/candidate-smoke-01: eight before/after pairs, sixteen exact native PNG rerenders, four actual native videos (mirror/edgeFrame/ticker/chat), desktop/mobile images and comparison controls, rapid seeks/case changes, storage/fonts, actual JA/EN app start with default staging still disabled. Counts were six safe, one actual insufficient, one preserved manual control; four mandatory moving anchors. Logs: work/native-smoke-04-capture.log and work/native-smoke-04-validate.log. Manifest at capture time: 06340fe3b4cbcc426254c6cd10d37baa8c7951a03ee630092f55f0c7ad8a2c9c.
+
+Negative smoke04 passed twelve temporary cloned-bundle corruptions plus an actual native Renderer.frame failure injected after real playback began; checkPlayback rejected that caught window.failure (thirteen negative checks, playbackFailureInjection:true). Log: work/native-smoke-04-negative.log. Smoke03 independently passed its earlier transport/layout/clone checks.
+
+After these functional code checks, final anchor definitions were replaced with the lead's admitted layouts-a-anchors.json data, and diagnostic labels were clarified. The four smoke anchors/remaining smoke inputs did not change. Final definition guards pass; the old immutable smoke bundle tool hashes intentionally identify the earlier definition. Parent's canonical full capture/validation must exercise the finalized 187 conditions; this handoff does not claim all187 ran.
+
+Capture rejects existing build IDs. --smoke writes only work/layouts-a-tool-smoke/BUILD and labels evidence nonacceptance. Final capture writes review/AVOID-006/BUILD under the tooling checkout and requires source-root tasks/evidence/AVOID-006/final-candidate/layouts-a-test.log. Parent integrates selected source files first and makes final canonical captures only after core acceptance.
+
+Examples:
+
+```sh
+NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules JIZURA_BROWSER=/usr/bin/chromium PLAYWRIGHT_BROWSERS_PATH=/workspace/work/jizura-handoff/playwright node dev/avoidance/layouts-a-review.cjs capture UNUSED-ID --source-root /workspace/lyricfx.JIZURA --smoke
+NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules JIZURA_BROWSER=/usr/bin/chromium PLAYWRIGHT_BROWSERS_PATH=/workspace/work/jizura-handoff/playwright node dev/avoidance/layouts-a-review.cjs validate UNUSED-ID --source-root /workspace/lyricfx.JIZURA --smoke
+node dev/avoidance/layouts-a-negative.cjs work/layouts-a-tool-smoke/UNUSED-ID /workspace/lyricfx.JIZURA
+```
+
+Validation verifies raw asset/JA/EN/tool/fixture hashes and normalization records, exact manifest/canonical rows, native PNG dimensions and recorded measurements, original native PNG rerender on both versions, desktop/mobile loaded images and comparison modes, raw/switch/overlay/original controls, synchronized playback/rapid seeks/storage/font settlement, actual Japanese/English app start. Public validation inherits review.cjs publicBrowserOptions and ordinary CA/TLS; it cannot use a smoke bundle or substitute local success.
+
+Native draw telemetry captures actual text/font/size triples, excluding placement record/envelope passes, and requires identical triples before/after. Safe admission requires actual renderer polygons with an independent sampled circle conflict check, and corrected native primary raster audit with alpha>=1, visible pixels>0, raw and margin conflict pixels=0. The audit must leave the original native PNG unchanged. These sampled checks are separate from the continuous certificate. Anchor labels disclose circle center/radius; H03 explicitly treats subtitleBar's huge faint copy as primary and retains only letterbox/picturefield as independent decor. Only dense ticker rows/edgeFrame perimeter/justified filler use the auxiliary preservation wording. Auxiliary masking remains AVOID-018; main app default switching remains AVOID-017.
+
+The final 26 definitions include eighteen radius.2 examples and eight explicitly diagnostic corner radius.02 examples. Small-corner cases are visibly labeled as not proving standard-radius/central-circle performance. Changed text and explicit native parameter variants are disclosed in labels. All130 native-default exploration conditions remain unaltered and reject unsupported/not-evaluated outcomes. Final Japanese names are copied from source and internal IDs/anchors remain stable.
+
+Public/native validation emits actual completed asset/rerender counters to stderr every25 and atcompletion; final validation stdout is JSON. Actual playback frames are recorded and post-playback failure is checked. Run negative checks with optional fourth argument --playback to exercise the native after-start failure injection.
+
+No final/public capture or deployment has been performed here. Core product acceptance, the finalized187 capture, all26 strict capture-time anchor admission, and publication remain parent/lead responsibilities. Lead reported filmstrip native replay mismatch under diagnosis; final captures must wait for the frozen reviewed candidate. No commit, push, old bundle edit, product/corefixture edit, or publication occurred in this worker.
