@@ -1,4 +1,4 @@
-# AVOID-005 adapter 契約（実装候補・親の最終受入前）
+# AVOID-005 adapter 契約（親レビュー済み・人間動作確認待ち）
 
 2026-10-19。旧 prototype-01 の記録は履歴として保持する。本書と[final-candidate](final-candidate/summary.json) 証拠が最新の実装を説明する。通常アプリの既定経路は変更していない。対象は `finalizePlacementPlan(plan,{basicLayouts:true})` の明示 opt-in のみ。
 
@@ -51,11 +51,11 @@ radial labels は全軌道 annulus の内外のどちらかに円が収まるこ
 
 - native matrix10: seed704「風の先へ」、16×3aspect×上下中央144件。101 certified /43 insufficient /0 unsupported /0 errors。全16IDに admitted case がある。この固定条件の成功数を全variant対応率とは呼ばない。
 - acceptance current10:46/46、actual alpha raster16×3scale×3time=144条件で circle collision / polygon uncovered / conflict がすべて0。中央 wave の usable native parameter case は `Go`, amp .08, freq .8。default4字の中央不適合を隠さない。diag の landscape raster は upper circle。
-- 原始 JSON、最終source hash、親の独立 shape/solver/replay/ghost 検証と公開比較は final-candidate に集約予定。公開・人間受入はまだ未実施。
+- 原始 JSONとsource hashは final-candidate、親の独立検証は parent-final、公開比較と検証は publication.json。公開検証済み・人間動作確認待ち。
 
 
 ## 固定候補の識別
 
-現在の変更後 JA HTML SHA256 は `c7dbd4d94309d840b885c8a916f7d98544888d2b5663db054654d5f0671d4f41`、EN は `c55180c81354e6265a785c936590cb54857b5ac86434933d10d09d52528a6897`。直前の `c2449974…` からの製品差分は09aの guard 説明コメント1箇所だけで、動作変更なし。performance.json は直前版の測定をそのまま保持し、冷状態の初回も併記する。native/acceptance/stage は現在版で再実行する。直前版の原始証拠は final-candidate/pre-comment-c2449974/ に保持する。
+現在の変更後 JA HTML SHA256 は `c7dbd4d94309d840b885c8a916f7d98544888d2b5663db054654d5f0671d4f41`、EN は `c55180c81354e6265a785c936590cb54857b5ac86434933d10d09d52528a6897`。直前の `c2449974…` からの製品差分は09aの guard 説明コメント1箇所だけで、動作変更なし。performance.json は直前版の測定をそのまま保持し、冷状態の初回も併記する。native/acceptance/stage は現在版で再実行し成功した。直前版の原始証拠は final-candidate/pre-comment-c2449974/ に保持する。
 
 性能の実測は100cuts/100regionsで計画 p95 比1.718、追加描画p95 .8ms、1000/1000で1.831、1.3ms（契約上限2倍/3ms）。cold first の計画合計320.3ms/1790.3msも省略しない。失敗した最初の性能測定・修正途中の測定も final-candidate に保存し、成功結果だけへ置き換えない。

@@ -167,8 +167,8 @@ requires the actual manifest rows, exact source/asset hashes, re-rendered native
 PNGs, synchronized playback and desktop/mobile behavior. Negative tests operate
 on a temporary cloned bundle.
 
-The core has local verification and parent code/test review. Publication checks
-and human H01–H03 acceptance are still pending until the parent records their
-results in [AVOID-005](../tasks/AVOID-005.md). Capture success alone establishes
+The core has local verification and parent code/test review. Public checks have
+passed and are recorded in [AVOID-005](../tasks/AVOID-005.md). Human H01–H03 behavior
+acceptance remains pending. Capture success alone establishes
 neither. Public validation keeps inherited proxy/CA/TLS, fetches raw bytes and
 fails on missing/stale assets; it never falls back to local evidence.

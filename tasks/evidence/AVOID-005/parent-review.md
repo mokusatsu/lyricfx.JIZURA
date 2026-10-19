@@ -95,3 +95,7 @@
 
 - final02生成成功: manifest `e8c81c696acae92f9a5edc88d79b9430f12ee59e95b9238c6530f2823633ab83`。123組・492PNG・4動画・512assets＋manifest。安全82/不足35/unsupported0/対照6、必須安全27・期待未達0。全16IDの必須anchor17件（huge上下を含む）を強制確認。先に目視したnative42枚はfinal02と全hash一致（visual-inspection-source-match.json）。
 - 正常bundle cloneと破損11件の否定検査が成功。sandbox内でのgit subprocess EPERMはsupported network-enabled実行コンテキストで同じコマンドを再実行し解消、検査を変更していない。親のlocal操作20件（16anchor link＋4種の再生/逆順seek）は通常通信・request interceptionなしで成功。外部要求0・pageerror0・fontrevision/保存領域不変。desktop/mobile表示を目視確認。親probeのID selectorの小数点escape不備はtest側だけ訂正した。
+
+- ローカル最終validator成功: 全123組246描画のrawPNG hash、512asset完全inventory、3表示mode・原寸/画像切替・H-ID/実リンク、日英本体起動を確認。公開候補artifact commit `8358337901941fccb5023741d48bba2d883ffd42` をworkへpush。生ログ2本の元の末尾空白は証拠を保持するため変更せず、その2ファイルのみgit whitespace検査から除外、他は検査成功。
+
+- 公開最終受入: 512assets＋manifestすべてHTTP/rawSHA一致、123組246native再描画一致、日英smoke成功。親の公開20操作はrequest遮断なし、外部要求/JS例外0、保存/フォント不変、mobile/desktop目視済み。公開時点とrun/headをpublication.jsonへ同期。これにより必須の公開検証は完了。残件は演出の見え方の人間H01〜H03のみであり、005完了や006開始には置換しない。

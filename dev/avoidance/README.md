@@ -306,8 +306,8 @@ source/hash/condition/count/image/video/path inputs to fail. It never mutates th
 published bundle. Public validation uses inherited proxy/CA/TLS and raw browser
 response bytes; local success cannot substitute for deployment checks.
 
-The candidate core is locally verified and parent-reviewed; final publication
-and human H01–H03 acceptance remain separate pending steps until recorded by the
-parent in [AVOID-005](../../tasks/AVOID-005.md). Do not infer either from a local
+The candidate core is locally verified and parent-reviewed. Public raw-asset,
+native-render and JA/EN startup validation is recorded in [AVOID-005](../../tasks/AVOID-005.md);
+human H01–H03 behavior acceptance remains pending. Do not infer either from a local
 capture or from the presence of a bundle directory. Existing002/003/004 bundles
 and validators remain immutable.
