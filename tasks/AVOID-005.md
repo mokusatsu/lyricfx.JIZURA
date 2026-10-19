@@ -42,8 +42,8 @@
 
 ## 完了条件
 
-- [ ] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
-- [ ] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
+- [x] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
+- [x] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
 - [ ] 親がコードとテスト結果をレビューし、指摘を解消した。人間の動作確認が必要なら比較URL・操作・期待結果を提示し、必須項目のOKと動作判定を記録した。不要なら利用者の委任に基づく親の判断理由と完了判定を記録した。
 
 - [x] inventoryの当該16IDすべてにテストとframe証拠があり、未対応を成功扱いしない。
@@ -134,3 +134,12 @@
 - 画像結果は安全82/制約不足35/unsupported0/対照6。27必須安全例と1必須不足例を含み、期待未達0。449は定義条件数のみ。native自動試験144×5時刻とは別の集合として記録。
 - 親の通常通信による20操作・保存/フォント安定と視覚確認も完了。詳細は[親レビュー](evidence/AVOID-005/parent-review.md)、[公開記録](evidence/AVOID-005/publication.json)、[依頼稿](reviews/AVOID-005-local-20261019-02.md)。public HTTP/hash・全画像/動画・日英起動はこれから実施し、ローカル成功で代用しない。
 - failed build01は末尾のfontCoverage引数長上限で未完。全テキストをstdinへ渡す修正後に新build02を再撮影した。失敗証拠は保持し、未完bundleを公開しない。
+
+
+## 公開検証完了・人間動作確認待ち
+
+- artifact `8358337901941fccb5023741d48bba2d883ffd42`、Pages run [39227736588](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39227736588) 成功。実行中環境はobservations_current=true、spec/observed=28/28、unrestricted/enforced。保存設定の参照と実行中反映を別記した。
+- 通常HTTPSでmanifest・日英HTMLすべてHTTP200/TLS verify0、期待SHA256と一致。継承proxy/CA/TLSを維持。公開validatorは512assets＋manifestをraw bytesで全照合し、123組246描画のnativePNGを再生成して一致、desktop/mobile表示・リンク・前後切替・overlay・再生/seek・日英本体起動も成功。
+- 公開site-smokeの日英両方成功。親も通常通信・interceptionなしで20操作、外部要求0/pageerror0/保存・font状態不変を確認し、公開画像を目視した。[公開証拠](evidence/AVOID-005/publication.json)にUTC/Asia-Tokyo日時を記録。
+- [比較URL](https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-005/local-20261019-02/)と[具体的な確認項目](reviews/AVOID-005-local-20261019-02.md)を用意した。人間には文字の読みやすさ、動き、附属物の追従と対照の不変を依頼する。コードレビューは親が完了している。
+- 状態は実環境検証待ち（残件は人間H01〜H03の動作確認）。004へのOKを005へ流用しない。人間の回答待ちのため006は未着手。

@@ -53,3 +53,5 @@
 | AVOID-015 | 円形領域の位置エディタ・ガイド・歌詞選択枠 | 未着手 | AVOID-014 | [詳細](AVOID-015.md) |
 | AVOID-016 | 書き出し・MCP・AE capabilityの統合 | 未着手 | AVOID-015 | [詳細](AVOID-016.md) |
 | AVOID-017 | 全体検証・文書更新・新方式の有効化判定 | 未着手 | AVOID-016 | [詳細](AVOID-017.md) |
+
+2026-10-19: AVOID-005は親レビュー・公開検証を完了し、[H01〜H03の動作確認](reviews/AVOID-005-local-20261019-02.md)待ち。公開比較123組/492PNG/4動画、全512assets＋manifest一致。006は未着手。
