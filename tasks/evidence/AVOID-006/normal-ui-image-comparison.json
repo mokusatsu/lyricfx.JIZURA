@@ -1,0 +1,54 @@
+{
+  "purpose": "Supplemental comparison of actual normal-transport screenshots at the same deterministic seek state; separate from full native validator",
+  "rows": [
+    {
+      "file": "comparison-top.png",
+      "localSHA256": "dacb78d1970cb2e6ad4ef8ddd82d4c7f6e729f5c074b04525d21f16fed56d07e",
+      "publicSHA256": "dacb78d1970cb2e6ad4ef8ddd82d4c7f6e729f5c074b04525d21f16fed56d07e",
+      "equal": true
+    },
+    {
+      "file": "sample-chat.png",
+      "localSHA256": "d9c5ccb9ee0322c5024bd8ed3701a123c1159474fa5525af60b6d3c7df059fdb",
+      "publicSHA256": "d9c5ccb9ee0322c5024bd8ed3701a123c1159474fa5525af60b6d3c7df059fdb",
+      "equal": true
+    },
+    {
+      "file": "sample-edgeFrame.png",
+      "localSHA256": "2c7a4fe2b441c31ea6ef57326fa58f04fbb503bd6ecc1917c564e96fd50d87bb",
+      "publicSHA256": "2c7a4fe2b441c31ea6ef57326fa58f04fbb503bd6ecc1917c564e96fd50d87bb",
+      "equal": true
+    },
+    {
+      "file": "sample-mirror.png",
+      "localSHA256": "21023cf79b3422e877cc72d49471279aa07adb15605e9d785100e18b78e97596",
+      "publicSHA256": "21023cf79b3422e877cc72d49471279aa07adb15605e9d785100e18b78e97596",
+      "equal": true
+    },
+    {
+      "file": "sample-mobile.png",
+      "localSHA256": "1d71867de4ac94c992cb5dd723f6a1673944468887e372b4db2a9af67c45e8bb",
+      "publicSHA256": "7a275f9e84f8e162c2a759a7eb6235beacdce5dd71654dcd835a1011897ab177",
+      "equal": false
+    },
+    {
+      "file": "sample-perspective.png",
+      "localSHA256": "a667db4b0c4e712d944f688b32917bfdab6176c13709619228dc69a4911e3e62",
+      "publicSHA256": "a667db4b0c4e712d944f688b32917bfdab6176c13709619228dc69a4911e3e62",
+      "equal": true
+    },
+    {
+      "file": "sample-splitScreen.png",
+      "localSHA256": "bcaf44efd0d0eff1fe68c916b805f92ce6b6148f442995fa826b593b18d3fbb5",
+      "publicSHA256": "bcaf44efd0d0eff1fe68c916b805f92ce6b6148f442995fa826b593b18d3fbb5",
+      "equal": true
+    },
+    {
+      "file": "sample-ticker.png",
+      "localSHA256": "6321b8931ca5ea16c29648ef569e1a03cd311cdde565b322ad1439db1ef0c9f3",
+      "publicSHA256": "6321b8931ca5ea16c29648ef569e1a03cd311cdde565b322ad1439db1ef0c9f3",
+      "equal": true
+    }
+  ],
+  "assessment": "Desktop top plus six sample screenshots match byte-for-byte. Initial offscreen full-page mobile screenshot differs only in478 guide pixels at x158\u2013230,y1381\u20131453. Both visible DOM guides and stage screenshots match exactly after scrolling them into the actual viewport; see mobile-guide-probe/result.json. Native Canvas comparison passed independently for all374 frames. Initial screenshots retained, not overwritten."
+}
