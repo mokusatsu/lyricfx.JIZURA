@@ -1,0 +1,122 @@
+{
+  "task": "AVOID-005",
+  "revision": "Stack coherent repetitions",
+  "build": "local-20261019-03",
+  "artifactCommit": "025e436baca82dba97f5b6ceeca6553e6c93c827",
+  "beforeCommit": "834fb5bc69867840080e4cf2c2d25db2082e8d71",
+  "comparisonURL": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-005/local-20261019-03/",
+  "manifestSHA256": "3aa2ea6c5a06e4a45f03e3e3d7580642767f02b05ba97c61a2e9814ba32340a1",
+  "sourceSHA256": {
+    "ja": "1b9410dcb158a0ce315ae500be9e704734bcca6494838538416ad4ebbb8c4ea3",
+    "en": "5ba21ffcde7a42f430beb3640ce80837de4e6cd68aaedb4c26c120de09d211f1"
+  },
+  "checkedUTC": "2026-10-19T09:50:03.072114+00:00",
+  "checkedAsiaTokyo": "2026-10-19T18:50:03.072114+09:00",
+  "pages": {
+    "id": 39232475343,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "025e436baca82dba97f5b6ceeca6553e6c93c827",
+    "html_url": "https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39232475343",
+    "created_at": "2026-10-19T09:45:38Z",
+    "updated_at": "2026-10-19T09:47:38Z"
+  },
+  "captureOrigin": "local candidate; full public byte identity and native rerenders verified",
+  "publicVerification": {
+    "passed": true,
+    "ordinaryHTTPS": {
+      "status": 200,
+      "tlsVerifyResult": 0,
+      "log": "public-https.log",
+      "prior404": "public-https-before-deploy.log; request before deployment finished"
+    },
+    "assets": 121,
+    "manifestAlsoVerified": true,
+    "uiPNGs": 52,
+    "nativePNGs": 52,
+    "videos": 1,
+    "nativeRerenders": 52,
+    "validator": {
+      "validated": true,
+      "scope": "candidate-evidence",
+      "cases": 26,
+      "counts": {
+        "safe": 13,
+        "insufficient": 7,
+        "unsupported": 0,
+        "not-evaluated": 6,
+        "unchangedControls": 6,
+        "mandatorySafeAnchors": 1,
+        "exploratorySafe": 4,
+        "exploratoryInsufficient": 6,
+        "unmetExpectations": 0
+      },
+      "publicURL": "https://mokusatsu.github.io/lyricfx.JIZURA/",
+      "manifestSHA256": "3aa2ea6c5a06e4a45f03e3e3d7580642767f02b05ba97c61a2e9814ba32340a1"
+    },
+    "siteSmoke": [
+      {
+        "status": "passed",
+        "language": "ja",
+        "url": "https://mokusatsu.github.io/lyricfx.JIZURA/",
+        "sha256": "1b9410dcb158a0ce315ae500be9e704734bcca6494838538416ad4ebbb8c4ea3",
+        "lyricLines": [
+          0,
+          1
+        ],
+        "hasColorVariation": true,
+        "cuts": 4,
+        "width": 654,
+        "height": 368,
+        "pngBytes": 571902
+      },
+      {
+        "status": "passed",
+        "language": "en",
+        "url": "https://mokusatsu.github.io/lyricfx.JIZURA/en/",
+        "sha256": "5ba21ffcde7a42f430beb3640ce80837de4e6cd68aaedb4c26c120de09d211f1",
+        "lyricLines": [
+          0,
+          1
+        ],
+        "hasColorVariation": true,
+        "cuts": 4,
+        "width": 654,
+        "height": 368,
+        "pngBytes": 572462
+      }
+    ],
+    "normalBrowser": {
+      "log": "public-parent-ui/results.json",
+      "actions": 2,
+      "requestInterception": false,
+      "externalRequests": 0,
+      "pageErrors": 0,
+      "storageUnchanged": true
+    },
+    "proxy": "inherited",
+    "CAandTLS": "normal verification retained; existing NSS DB writable for Chromium"
+  },
+  "counts": {
+    "safe": 13,
+    "insufficient": 7,
+    "unsupported": 0,
+    "not-evaluated": 6,
+    "unchangedControls": 6,
+    "mandatorySafeAnchors": 1,
+    "exploratorySafe": 4,
+    "exploratoryInsufficient": 6,
+    "unmetExpectations": 0
+  },
+  "humanReview": {
+    "needed": true,
+    "reason": "User requested Stack appearance correction; visual stacking impression needs confirmation",
+    "stackRevision": "pending",
+    "otherSafeExamples": "user accepted; original quote in task/review record",
+    "originalH02H03": "individual items not inferred approved from safe-example acceptance"
+  },
+  "taskStatus": "実環境検証待ち",
+  "nextTask": "AVOID-006 remains unstarted",
+  "knownFailures": "Preexisting project_file initial cut mismatch remains assigned AVOID-013; no claim of save test success; existing features/area effects failures remain AVOID-017",
+  "scratchArchive": "/workspace/work/jizura-handoff/stack-tool-smoke; moved out of release checkout after tests"
+}

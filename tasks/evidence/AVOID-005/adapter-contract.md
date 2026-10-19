@@ -1,4 +1,4 @@
-# AVOID-005 adapter 契約（Stack修正を検証中）
+# AVOID-005 adapter 契約（Stack修正の公開検証済み・動作確認待ち）
 
 2026-10-19。旧 prototype-01、[final-candidate](final-candidate/summary.json)と旧公開比較は履歴として保持する。Stackの動作確認を受けた再修正は[stack-revision](stack-revision/parent-review.md)を参照する。通常アプリの既定経路は変更していない。対象は `finalizePlacementPlan(plan,{basicLayouts:true})` の明示 opt-in のみ。
 
