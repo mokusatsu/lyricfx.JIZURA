@@ -1,6 +1,6 @@
-# AVOID-005 adapter 契約（親レビュー済み・人間動作確認待ち）
+# AVOID-005 adapter 契約（Stack修正を検証中）
 
-2026-10-19。旧 prototype-01 の記録は履歴として保持する。本書と[final-candidate](final-candidate/summary.json) 証拠が最新の実装を説明する。通常アプリの既定経路は変更していない。対象は `finalizePlacementPlan(plan,{basicLayouts:true})` の明示 opt-in のみ。
+2026-10-19。旧 prototype-01、[final-candidate](final-candidate/summary.json)と旧公開比較は履歴として保持する。Stackの動作確認を受けた再修正は[stack-revision](stack-revision/parent-review.md)を参照する。通常アプリの既定経路は変更していない。対象は `finalizePlacementPlan(plan,{basicLayouts:true})` の明示 opt-in のみ。
 
 | ID | 主歌詞と所有単位 | 補助・例外 | 通常軌道と読み順 |
 |---|---|---|---|
@@ -18,7 +18,7 @@
 | type | 最大 reveal の全文と underline/caret 装飾 | なし | 見えている部分で寸法を変えず、固定包絡を共通移動 |
 | diag | 主 band とその全文 | `diag.secondBand` だけ tiledAux | 実際の回転 polygon で円外を判定。元から2.4Wある板の canvas crop は保持し、主歌詞の可視範囲を stage に収める |
 | circle | 主歌詞と disc/ring の板 | eclipse の blur は明示 unsupported | circumscribed polygon で丸い板の隅の余地を使い、全文と板を共通移動 |
-| stack | 各反復全文 | 反復も primary | 全文内を保持。元の重なり以上の新しい重なり・潰れを拒否 |
+| stack | 各反復全文を一つの整列した組として解く | 反復も primary | 共通平行移動を優先し、成立しなければ一定の隣接変位を持つ斜め配置を探索。文字サイズ・角度・行順・反復数を維持。全区間包絡の対ごとのbbox重なり面積を元より増やさない。個別に分散するfallbackは禁止 |
 | pill | 主歌詞、smalls/note、pill plate、所有 clip | なし | gradient と clip を含む記録順を保持して同じ変換を適用 |
 
 「ruby」は既存の `歌詞|よみ` → cut.note の経路を指す。glyph 単位に架空のルビ記法を追加していない。各 layout が元から描く note を所有対象にする。名前を挙げた4群以外は tiledAux に分類しない。補助群のマスクは018の受入であり、本段階では未実装。
@@ -48,6 +48,8 @@ radial labels は全軌道 annulus の内外のどちらかに円が収まるこ
 抑制 `~…~` は自動小領域が代わりに持っていた intrinsic .7 を、auto area を外す opt-in だけで復元する。WeakMap に実際の正規化の来歴を持ち、明示 contentScale の編集はそれを消す。従来経路の JSON/描画は変えない。明示1/.85、manual/lockなどを尊重する。
 
 ## 現在の証拠
+
+以下の件数・hash・性能はStack修正前の005公開版を識別する履歴。修正候補の測定は[stack-revision](stack-revision/parent-review.md)へ別記し、旧版の成功を修正版の成功として流用しない。
 
 - native matrix10: seed704「風の先へ」、16×3aspect×上下中央144件。101 certified /43 insufficient /0 unsupported /0 errors。全16IDに admitted case がある。この固定条件の成功数を全variant対応率とは呼ばない。
 - acceptance current10:46/46、actual alpha raster16×3scale×3time=144条件で circle collision / polygon uncovered / conflict がすべて0。中央 wave の usable native parameter case は `Go`, amp .08, freq .8。default4字の中央不適合を隠さない。diag の landscape raster は upper circle。

@@ -1,0 +1,4583 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>AVOID-005 local-20261019-03</title><style>@font-face{font-family:Fixture;src:url(fixtures/font.otf)}body{font:16px Fixture,sans-serif;background:#17202b;color:#eee;margin:16px}a{color:#acf}button,select,input{font:inherit;max-width:100%}nav{display:flex;flex-wrap:wrap;gap:10px}article{margin:24px 0;overflow-wrap:anywhere}figure{margin:0;min-width:0}img,video{width:100%;height:auto;display:block}.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}.toggle figure:first-child{display:none}.toggle.before figure:first-child{display:block}.toggle.before figure:last-child{display:none}.overlay{position:relative}.overlay figure:last-child{position:absolute;inset:0;opacity:var(--alpha,.5)}.overlay figcaption{display:none}.original{overflow:auto}.original img{width:auto;max-width:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}details{margin:12px 0}summary{cursor:pointer}video{max-width:900px}@media(max-width:650px){.pair{grid-template-columns:1fr}}</style><h1>AVOID-005 / local-20261019-03</h1><p>Stackの積み重なりを保つ回避の修正候補です。変更前：005修正前（834fb5b）。変更後：Stack修正候補。通常アプリへの切替は後の段階です。</p><p>このH02はStackの追補です。以前の附属物の証拠は保存版に残します。各組は同じ入力・seed・時刻・寸法・フォントです。円ガイドはUIに重ね、元のCanvas PNGには描きません。背景反復のマスクは018で対応予定です。安全／制約不足／未対応を別々に表示します。必須安全例と探索条件を区別し、探索条件の制約不足を安全例に数えません。</p><nav><a href="#AVOID-005-H01">AVOID-005-H01</a> <a href="#AVOID-005-H02">AVOID-005-H02</a> <a href="#AVOID-005-H03">AVOID-005-H03</a><a href="sample.html">同時刻で操作する</a><a href="../../../review/AVOID-005/local-20261019-02/index.html">前回の16レイアウト・附属物の比較（保存版）</a><a href="../../../index.html">日本語アプリ</a><a href="../../../en/index.html">英語アプリ</a><a href="manifest.json">版・条件</a></nav><section><h2>まず確認するStack安全例</h2><p>各リンクで、その演出の必須安全例へ直接移動できます。安全例の後にある探索条件は、必要なときだけ開いてください。</p><nav><a href="#stack-960-0.25">stack</a></nav></section><p>3項目／26ケース。幾何上安全 13、制約不足 7、未対応 0、判定対象外 6。必須安全例 1、探索条件の安全 4／制約不足 6。受入期待を満たさないケース 0。この集計は可読性の合格判定ではありません。</p><label>表示 <select id="mode"><option value="pair">前後を並べる</option><option value="toggle">前後を切り替える</option><option value="overlay">重ね合わせる</option></select></label><button id="toggle">前／後切替</button><label>重ねる濃さ <input id="alpha" type="range" min="0" max="1" step=".05" value=".5"></label><button id="size">原寸／画面に合わせる</button><label>画像 <select id="kind"><option value="ui">全体UI</option><option value="original">元のCanvas PNG</option></select></label><details><summary>stack：同じ時計で動かした前後の動画</summary><video controls preload="metadata" src="fixtures/playback-stack.webm"></video><p>前後とも同一のプロジェクト時刻で毎フレーム描画。stack-960-0.25</p></details><section id="AVOID-005-H01"><h2>AVOID-005-H01 Stack・円の中央／上／下・主要アスペクト</h2><p>同じレイアウトの組を開き、円の位置による方向の違い、文字の大きさと読み順を比べてください。</p><details><summary>stack のケース一覧</summary><article id="stack-960-0.25"><h3>Stack・横・円上</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-960-0.25">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-960-0.25-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-960-0.25-before.png" data-ui="images/stack-960-0.25-before.png" data-original="images/stack-960-0.25-before-original.png" width="1500" height="1500" alt="Stack・横・円上 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-960-0.25-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-960-0.25-after.png" data-ui="images/stack-960-0.25-after.png" data-original="images/stack-960-0.25-after-original.png" width="1500" height="1500" alt="Stack・横・円上 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-960-0.25&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・横・円上&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;safeAnchor&quot;: true,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            244.08190235416635,
+            148.7822755119143
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            159.00019932718226,
+            159.00019932718223
+          ],
+          &quot;stack.unit.0&quot;: [
+            -128.72371335032548,
+            96.66116733183571
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -219.08085111035112,
+            134.12130767439942
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -19.632320133126118,
+            109.19486752124767
+          ],
+          &quot;stack.unit.0&quot;: [
+            179.8162108440989,
+            84.26842736809591
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><details><summary>探索条件：Stack・横・円中央／観測：制約不足</summary><article id="stack-960-0.5"><h3>Stack・横・円中央</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：制約不足（この経路候補群では文字サイズと円外収容を満たせません。あらゆる配置の幾何的不可能性を意味しません）。<a href="sample.html?case=stack-960-0.5">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-960-0.5-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-960-0.5-before.png" data-ui="images/stack-960-0.5-before.png" data-original="images/stack-960-0.5-before-original.png" width="1500" height="1500" alt="Stack・横・円中央 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-960-0.5-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-960-0.5-after.png" data-ui="images/stack-960-0.5-after.png" data-original="images/stack-960-0.5-after-original.png" width="1500" height="1500" alt="Stack・横・円中央 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-960-0.5&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・横・円中央&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            99.2502978504415,
+            -96.9178244880857
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            198.77529517260598,
+            198.06154973437498
+          ],
+          &quot;stack.unit.0&quot;: [
+            -141.39813472522505,
+            96.66116733183571
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details><details><summary>探索条件：Stack・横・円下／観測：安全</summary><article id="stack-960-0.75"><h3>Stack・横・円下</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-960-0.75">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-960-0.75-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-960-0.75-before.png" data-ui="images/stack-960-0.75-before.png" data-original="images/stack-960-0.75-before-original.png" width="1500" height="1500" alt="Stack・横・円下 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-960-0.75-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-960-0.75-after.png" data-ui="images/stack-960-0.75-after.png" data-original="images/stack-960-0.75-after-original.png" width="1500" height="1500" alt="Stack・横・円下 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-960-0.75&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.75,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・横・円下&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            246.04977656210622,
+            -199.053913015625
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            185.4470118150438,
+            -88.89288498644899
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -14.001519162181218,
+            -113.81932513960075
+          ],
+          &quot;stack.unit.0&quot;: [
+            -213.45005013940622,
+            -138.7457652927525
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details><details><summary>探索条件：Stack・正方形・円上／観測：制約不足</summary><article id="stack-720-0.25"><h3>Stack・正方形・円上</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：制約不足（この経路候補群では文字サイズと円外収容を満たせません。あらゆる配置の幾何的不可能性を意味しません）。<a href="sample.html?case=stack-720-0.25">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／720×720 <a href="images/stack-720-0.25-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-720-0.25-before.png" data-ui="images/stack-720-0.25-before.png" data-original="images/stack-720-0.25-before-original.png" width="1500" height="1658" alt="Stack・正方形・円上 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／720×720 <a href="images/stack-720-0.25-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-720-0.25-after.png" data-ui="images/stack-720-0.25-after.png" data-original="images/stack-720-0.25-after-original.png" width="1500" height="1658" alt="Stack・正方形・円上 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-720-0.25&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 720,
+    &quot;H&quot;: 720,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・正方形・円上&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            1.1717106501307841e-14,
+            191.35487079973993
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -56.99479061053711,
+            188.37816363033275
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details><details><summary>探索条件：Stack・正方形・円中央／観測：制約不足</summary><article id="stack-720-0.5"><h3>Stack・正方形・円中央</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：制約不足（この経路候補群では文字サイズと円外収容を満たせません。あらゆる配置の幾何的不可能性を意味しません）。<a href="sample.html?case=stack-720-0.5">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／720×720 <a href="images/stack-720-0.5-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-720-0.5-before.png" data-ui="images/stack-720-0.5-before.png" data-original="images/stack-720-0.5-before-original.png" width="1500" height="1658" alt="Stack・正方形・円中央 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／720×720 <a href="images/stack-720-0.5-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-720-0.5-after.png" data-ui="images/stack-720-0.5-after.png" data-original="images/stack-720-0.5-after-original.png" width="1500" height="1658" alt="Stack・正方形・円中央 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-720-0.5&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 720,
+    &quot;H&quot;: 720,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・正方形・円中央&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            -100.60887334985733
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            1.440021876745524e-14,
+            235.1734194296875
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details><details><summary>探索条件：Stack・正方形・円下／観測：制約不足</summary><article id="stack-720-0.75"><h3>Stack・正方形・円下</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：制約不足（この経路候補群では文字サイズと円外収容を満たせません。あらゆる配置の幾何的不可能性を意味しません）。<a href="sample.html?case=stack-720-0.75">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／720×720 <a href="images/stack-720-0.75-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-720-0.75-before.png" data-ui="images/stack-720-0.75-before.png" data-original="images/stack-720-0.75-before-original.png" width="1500" height="1658" alt="Stack・正方形・円下 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／720×720 <a href="images/stack-720-0.75-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-720-0.75-after.png" data-ui="images/stack-720-0.75-after.png" data-original="images/stack-720-0.75-after-original.png" width="1500" height="1658" alt="Stack・正方形・円下 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-720-0.75&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 720,
+    &quot;H&quot;: 720,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.75,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・正方形・円下&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            -272.4266805703125
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      720,
+      720
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details><details><summary>探索条件：Stack・縦・円上／観測：安全</summary><article id="stack-540-0.25"><h3>Stack・縦・円上</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-540-0.25">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack-540-0.25-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-540-0.25-before.png" data-ui="images/stack-540-0.25-before.png" data-original="images/stack-540-0.25-before-original.png" width="1500" height="2411" alt="Stack・縦・円上 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack-540-0.25-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-540-0.25-after.png" data-ui="images/stack-540-0.25-after.png" data-original="images/stack-540-0.25-after-original.png" width="1500" height="2411" alt="Stack・縦・円上 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-540-0.25&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・縦・円上&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            2.9821706707096127e-15,
+            48.702543015437854
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            2.9821706707096127e-15,
+            48.702543015437854
+          ],
+          &quot;stack.unit.0&quot;: [
+            2.9821706707096127e-15,
+            48.702543015437854
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            2.9821706707096127e-15,
+            48.702543015437854
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            2.9821706707096127e-15,
+            48.702543015437854
+          ],
+          &quot;stack.unit.0&quot;: [
+            2.9821706707096127e-15,
+            48.702543015437854
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details><details><summary>探索条件：Stack・縦・円中央／観測：安全</summary><article id="stack-540-0.5"><h3>Stack・縦・円中央</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-540-0.5">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack-540-0.5-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-540-0.5-before.png" data-ui="images/stack-540-0.5-before.png" data-original="images/stack-540-0.5-before-original.png" width="1500" height="2411" alt="Stack・縦・円中央 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack-540-0.5-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-540-0.5-after.png" data-ui="images/stack-540-0.5-after.png" data-original="images/stack-540-0.5-after-original.png" width="1500" height="2411" alt="Stack・縦・円中央 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-540-0.5&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・縦・円中央&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            -288.2332614979692
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            -288.2332614979692
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            -288.2332614979692
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            -288.2332614979692
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            -288.2332614979692
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            -288.2332614979692
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details><details><summary>探索条件：Stack・縦・円下／観測：安全</summary><article id="stack-540-0.75"><h3>Stack・縦・円下</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-540-0.75">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack-540-0.75-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-540-0.75-before.png" data-ui="images/stack-540-0.75-before.png" data-original="images/stack-540-0.75-before-original.png" width="1500" height="2411" alt="Stack・縦・円下 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack-540-0.75-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-540-0.75-after.png" data-ui="images/stack-540-0.75-after.png" data-original="images/stack-540-0.75-after-original.png" width="1500" height="2411" alt="Stack・縦・円下 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-540-0.75&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H01&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.75,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・縦・円下&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -8.860306395888796e-15,
+            -48.233261497969245
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -8.860306395888796e-15,
+            -48.233261497969245
+          ],
+          &quot;stack.unit.0&quot;: [
+            -8.860306395888796e-15,
+            -48.233261497969245
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -8.860306395888796e-15,
+            -48.233261497969245
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -8.860306395888796e-15,
+            -48.233261497969245
+          ],
+          &quot;stack.unit.0&quot;: [
+            -8.860306395888796e-15,
+            -48.233261497969245
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details></details></section><section id="AVOID-005-H02"><h2>AVOID-005-H02 Stack追補：反復の順序と斜めの積み重なり</h2><p>斜めでも各行の順序と一定の間隔が保たれ、文字が一つのスタックとして見えることを確認します。</p><details><summary>stack のケース一覧</summary><article id="stack-enter-0.25"><h3>Stack・円上・enter</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-enter-0.25">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=0.1秒／960×540 <a href="images/stack-enter-0.25-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-enter-0.25-before.png" data-ui="images/stack-enter-0.25-before.png" data-original="images/stack-enter-0.25-before-original.png" width="1500" height="1500" alt="Stack・円上・enter 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=0.1秒／960×540 <a href="images/stack-enter-0.25-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-enter-0.25-after.png" data-ui="images/stack-enter-0.25-after.png" data-original="images/stack-enter-0.25-after-original.png" width="1500" height="1500" alt="Stack・円上・enter 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-enter-0.25&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 0.1,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・円上・enter&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 10,
+    &quot;quantizedTime&quot;: 0.1,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 0.1,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            244.08190235416635,
+            148.7822755119143
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            159.00019932718226,
+            159.00019932718223
+          ],
+          &quot;stack.unit.0&quot;: [
+            -128.72371335032548,
+            96.66116733183571
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 0.1,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -219.08085111035112,
+            134.12130767439942
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -19.632320133126118,
+            109.19486752124767
+          ],
+          &quot;stack.unit.0&quot;: [
+            179.8162108440989,
+            84.26842736809591
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-enter-0.75"><h3>Stack・円下・enter</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-enter-0.75">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=0.1秒／960×540 <a href="images/stack-enter-0.75-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-enter-0.75-before.png" data-ui="images/stack-enter-0.75-before.png" data-original="images/stack-enter-0.75-before-original.png" width="1500" height="1500" alt="Stack・円下・enter 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=0.1秒／960×540 <a href="images/stack-enter-0.75-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-enter-0.75-after.png" data-ui="images/stack-enter-0.75-after.png" data-original="images/stack-enter-0.75-after-original.png" width="1500" height="1500" alt="Stack・円下・enter 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-enter-0.75&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.75,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 0.1,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・円下・enter&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 10,
+    &quot;quantizedTime&quot;: 0.1,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 0.1,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            246.04977656210622,
+            -199.053913015625
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 0.1,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            185.4470118150438,
+            -88.89288498644899
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -14.001519162181218,
+            -113.81932513960075
+          ],
+          &quot;stack.unit.0&quot;: [
+            -213.45005013940622,
+            -138.7457652927525
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-exit-0.25"><h3>Stack・円上・exit</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-exit-0.25">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=3.85秒／960×540 <a href="images/stack-exit-0.25-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-exit-0.25-before.png" data-ui="images/stack-exit-0.25-before.png" data-original="images/stack-exit-0.25-before-original.png" width="1500" height="1500" alt="Stack・円上・exit 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=3.85秒／960×540 <a href="images/stack-exit-0.25-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-exit-0.25-after.png" data-ui="images/stack-exit-0.25-after.png" data-original="images/stack-exit-0.25-after-original.png" width="1500" height="1500" alt="Stack・円上・exit 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-exit-0.25&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 3.85,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・円上・exit&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 385,
+    &quot;quantizedTime&quot;: 3.85,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 3.85,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            244.08190235416635,
+            148.7822755119143
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            159.00019932718226,
+            159.00019932718223
+          ],
+          &quot;stack.unit.0&quot;: [
+            -128.72371335032548,
+            96.66116733183571
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 3.85,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -219.08085111035112,
+            134.12130767439942
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -19.632320133126118,
+            109.19486752124767
+          ],
+          &quot;stack.unit.0&quot;: [
+            179.8162108440989,
+            84.26842736809591
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-exit-0.75"><h3>Stack・円下・exit</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-exit-0.75">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=3.85秒／960×540 <a href="images/stack-exit-0.75-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-exit-0.75-before.png" data-ui="images/stack-exit-0.75-before.png" data-original="images/stack-exit-0.75-before-original.png" width="1500" height="1500" alt="Stack・円下・exit 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=3.85秒／960×540 <a href="images/stack-exit-0.75-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-exit-0.75-after.png" data-ui="images/stack-exit-0.75-after.png" data-original="images/stack-exit-0.75-after-original.png" width="1500" height="1500" alt="Stack・円下・exit 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-exit-0.75&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.75,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 3.85,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・円下・exit&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 385,
+    &quot;quantizedTime&quot;: 3.85,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 3.85,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            246.04977656210622,
+            -199.053913015625
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 3.85,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            185.4470118150438,
+            -88.89288498644899
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -14.001519162181218,
+            -113.81932513960075
+          ],
+          &quot;stack.unit.0&quot;: [
+            -213.45005013940622,
+            -138.7457652927525
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack--1-fade"><h3>Stack・3反復・方向-1・fade</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack--1-fade">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack--1-fade-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack--1-fade-before.png" data-ui="images/stack--1-fade-before.png" data-original="images/stack--1-fade-before-original.png" width="1500" height="2411" alt="Stack・3反復・方向-1・fade 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack--1-fade-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack--1-fade-after.png" data-ui="images/stack--1-fade-after.png" data-original="images/stack--1-fade-after-original.png" width="1500" height="2411" alt="Stack・3反復・方向-1・fade 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack--1-fade&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・3反復・方向-1・fade&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;params&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;fade&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: -0.04
+    },
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;fade&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: -0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            13.462054288889703,
+            271.521647794087
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            13.462054288889703,
+            271.521647794087
+          ],
+          &quot;stack.unit.0&quot;: [
+            13.462054288889703,
+            271.521647794087
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;fade&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: -0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            13.462054288889703,
+            271.521647794087
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            13.462054288889703,
+            271.521647794087
+          ],
+          &quot;stack.unit.0&quot;: [
+            13.462054288889703,
+            271.521647794087
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack--1-outline"><h3>Stack・3反復・方向-1・outline</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack--1-outline">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack--1-outline-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack--1-outline-before.png" data-ui="images/stack--1-outline-before.png" data-original="images/stack--1-outline-before-original.png" width="1500" height="2411" alt="Stack・3反復・方向-1・outline 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack--1-outline-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack--1-outline-after.png" data-ui="images/stack--1-outline-after.png" data-original="images/stack--1-outline-after-original.png" width="1500" height="2411" alt="Stack・3反復・方向-1・outline 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack--1-outline&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・3反復・方向-1・outline&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;params&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: -0.04
+    },
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: -0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            14.219441275108238,
+            -271.80975326283686
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            14.219441275108238,
+            -271.80975326283686
+          ],
+          &quot;stack.unit.0&quot;: [
+            14.219441275108238,
+            -271.80975326283686
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: -0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            14.219441275108238,
+            -271.80975326283686
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            14.219441275108238,
+            -271.80975326283686
+          ],
+          &quot;stack.unit.0&quot;: [
+            14.219441275108238,
+            -271.80975326283686
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-1-fade"><h3>Stack・3反復・方向1・fade</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-1-fade">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack-1-fade-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-1-fade-before.png" data-ui="images/stack-1-fade-before.png" data-original="images/stack-1-fade-before-original.png" width="1500" height="2411" alt="Stack・3反復・方向1・fade 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack-1-fade-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-1-fade-after.png" data-ui="images/stack-1-fade-after.png" data-original="images/stack-1-fade-after-original.png" width="1500" height="2411" alt="Stack・3反復・方向1・fade 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-1-fade&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・3反復・方向1・fade&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;params&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;fade&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;fade&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -11.813403881098566,
+            271.521647794087
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -11.813403881098566,
+            271.521647794087
+          ],
+          &quot;stack.unit.0&quot;: [
+            -11.813403881098566,
+            271.521647794087
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;fade&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -11.813403881098566,
+            271.521647794087
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -11.813403881098566,
+            271.521647794087
+          ],
+          &quot;stack.unit.0&quot;: [
+            -11.813403881098566,
+            271.521647794087
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-1-outline"><h3>Stack・3反復・方向1・outline</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：幾何上安全。<a href="sample.html?case=stack-1-outline">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack-1-outline-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-1-outline-before.png" data-ui="images/stack-1-outline-before.png" data-original="images/stack-1-outline-before-original.png" width="1500" height="2411" alt="Stack・3反復・方向1・outline 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack-1-outline-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-1-outline-after.png" data-ui="images/stack-1-outline-after.png" data-original="images/stack-1-outline-after-original.png" width="1500" height="2411" alt="Stack・3反復・方向1・outline 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-1-outline&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe&quot;,
+    &quot;label&quot;: &quot;Stack・3反復・方向1・outline&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;params&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -12.570790867317214,
+            271.521647794087
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -12.570790867317214,
+            271.521647794087
+          ],
+          &quot;stack.unit.0&quot;: [
+            -12.570790867317214,
+            271.521647794087
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.82,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            -12.570790867317214,
+            271.521647794087
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            -12.570790867317214,
+            271.521647794087
+          ],
+          &quot;stack.unit.0&quot;: [
+            -12.570790867317214,
+            271.521647794087
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><details><summary>探索条件：Stack・4反復・輪郭・探索条件／観測：制約不足</summary><article id="stack-copies-4"><h3>Stack・4反復・輪郭・探索条件</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：制約不足（この経路候補群では文字サイズと円外収容を満たせません。あらゆる配置の幾何的不可能性を意味しません）。<a href="sample.html?case=stack-copies-4">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack-copies-4-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-copies-4-before.png" data-ui="images/stack-copies-4-before.png" data-original="images/stack-copies-4-before-original.png" width="1500" height="2411" alt="Stack・4反復・輪郭・探索条件 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack-copies-4-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-copies-4-after.png" data-ui="images/stack-copies-4-after.png" data-original="images/stack-copies-4-after-original.png" width="1500" height="2411" alt="Stack・4反復・輪郭・探索条件 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-copies-4&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・4反復・輪郭・探索条件&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;params&quot;: {
+      &quot;copies&quot;: 4,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;gap&quot;: 1.02,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+        &quot;units&quot;: 4
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 4,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 1.02,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;safety&quot;: &quot;certified-bounded-adapter&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.3.5999999999999996&quot;: [
+            -34.69729086731718,
+            20.694783287507207
+          ],
+          &quot;stack.unit.2.4&quot;: [
+            -12.570790867317214,
+            351.6743834263385
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            -351.96248889508865
+          ],
+          &quot;stack.unit.0&quot;: [
+            32.43959611890136,
+            -20.236668322315122
+          ]
+        },
+        &quot;safety&quot;: &quot;safe&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 4
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 4,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 1.02,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.3.5999999999999996&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details><details><summary>探索条件：Stack・5反復・輪郭・探索条件／観測：制約不足</summary><article id="stack-copies-5"><h3>Stack・5反復・輪郭・探索条件</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：制約不足（この経路候補群では文字サイズと円外収容を満たせません。あらゆる配置の幾何的不可能性を意味しません）。<a href="sample.html?case=stack-copies-5">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack-copies-5-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-copies-5-before.png" data-ui="images/stack-copies-5-before.png" data-original="images/stack-copies-5-before-original.png" width="1500" height="2411" alt="Stack・5反復・輪郭・探索条件 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack-copies-5-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-copies-5-after.png" data-ui="images/stack-copies-5-after.png" data-original="images/stack-copies-5-after-original.png" width="1500" height="2411" alt="Stack・5反復・輪郭・探索条件 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-copies-5&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H02&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.5,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;safe-or-explicit-insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・5反復・輪郭・探索条件&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;行をばらばらに配置する代わりに、一つの積み重なりとして円を避けます。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;params&quot;: {
+      &quot;copies&quot;: 5,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;gap&quot;: 1.02,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 5
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 5,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 1.02,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.4.8&quot;: [
+            -56.82379086731714,
+            0
+          ],
+          &quot;stack.unit.3.5999999999999996&quot;: [
+            -34.69729086731718,
+            296.4933315732708
+          ],
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            -296.7814370420208
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 5
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 5,
+      &quot;dir&quot;: 1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 1.02,
+      &quot;xs&quot;: 0.04
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.4.8&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.3.5999999999999996&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details></details></section><section id="AVOID-005-H03"><h2>AVOID-005-H03 長文と従来動作の対照</h2><p>従来ON・全画面・OFF・手動・強調・ロックは、それぞれ前後一致を確認する対照です。</p><details><summary>stack のケース一覧</summary><article id="stack-off"><h3>Stack・対照 off</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：既存指定が前後で一致する対照です。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：新経路の判定対象外。<a href="sample.html?case=stack-off">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-off-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-off-before.png" data-ui="images/stack-off-before.png" data-original="images/stack-off-before-original.png" width="1500" height="1500" alt="Stack・対照 off 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-off-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-off-after.png" data-ui="images/stack-off-after.png" data-original="images/stack-off-after-original.png" width="1500" height="1500" alt="Stack・対照 off 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-off&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H03&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;unchanged&quot;,
+    &quot;label&quot;: &quot;Stack・対照 off&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;既存指定が前後で一致する対照です。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;control&quot;: &quot;off&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;off&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.04223282099987291,
+      &quot;y&quot;: 0.2599012831808351,
+      &quot;w&quot;: 0.5822010246669208,
+      &quot;h&quot;: 0.4801974336383298,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;PRESERVED_LEGACY&quot;,
+        &quot;safety&quot;: &quot;not-evaluated&quot;
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;off&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.04223282099987291,
+      &quot;y&quot;: 0.2599012831808351,
+      &quot;w&quot;: 0.5822010246669208,
+      &quot;h&quot;: 0.4801974336383298,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;PRESERVED_LEGACY&quot;,
+        &quot;safety&quot;: &quot;not-evaluated&quot;
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-manual"><h3>Stack・対照 manual</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：既存指定が前後で一致する対照です。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：新経路の判定対象外。<a href="sample.html?case=stack-manual">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-manual-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-manual-before.png" data-ui="images/stack-manual-before.png" data-original="images/stack-manual-before-original.png" width="1500" height="1500" alt="Stack・対照 manual 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-manual-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-manual-after.png" data-ui="images/stack-manual-after.png" data-original="images/stack-manual-after-original.png" width="1500" height="1500" alt="Stack・対照 manual 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-manual&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H03&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;unchanged&quot;,
+    &quot;label&quot;: &quot;Stack・対照 manual&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;既存指定が前後で一致する対照です。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;control&quot;: &quot;manual&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;manual&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: {
+      &quot;x&quot;: 0.1,
+      &quot;y&quot;: 0.2,
+      &quot;w&quot;: 0.75,
+      &quot;h&quot;: 0.55,
+      &quot;angle&quot;: 7
+    },
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;PRESERVED_LEGACY&quot;,
+        &quot;safety&quot;: &quot;not-evaluated&quot;
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;manual&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: {
+      &quot;x&quot;: 0.1,
+      &quot;y&quot;: 0.2,
+      &quot;w&quot;: 0.75,
+      &quot;h&quot;: 0.55,
+      &quot;angle&quot;: 7
+    },
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;PRESERVED_LEGACY&quot;,
+        &quot;safety&quot;: &quot;not-evaluated&quot;
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-lock"><h3>Stack・対照 lock</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：既存指定が前後で一致する対照です。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：新経路の判定対象外。<a href="sample.html?case=stack-lock">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-lock-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-lock-before.png" data-ui="images/stack-lock-before.png" data-original="images/stack-lock-before-original.png" width="1500" height="1500" alt="Stack・対照 lock 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-lock-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-lock-after.png" data-ui="images/stack-lock-after.png" data-original="images/stack-lock-after-original.png" width="1500" height="1500" alt="Stack・対照 lock 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-lock&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H03&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;unchanged&quot;,
+    &quot;label&quot;: &quot;Stack・対照 lock&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;既存指定が前後で一致する対照です。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;control&quot;: &quot;lock&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;lock&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;PRESERVED_LEGACY&quot;,
+        &quot;safety&quot;: &quot;not-evaluated&quot;
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;lock&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;PRESERVED_LEGACY&quot;,
+        &quot;safety&quot;: &quot;not-evaluated&quot;
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-legacy"><h3>Stack・対照 legacy</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：既存指定が前後で一致する対照です。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：新経路の判定対象外。<a href="sample.html?case=stack-legacy">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-legacy-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-legacy-before.png" data-ui="images/stack-legacy-before.png" data-original="images/stack-legacy-before-original.png" width="1500" height="1500" alt="Stack・対照 legacy 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-legacy-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-legacy-after.png" data-ui="images/stack-legacy-after.png" data-original="images/stack-legacy-after-original.png" width="1500" height="1500" alt="Stack・対照 legacy 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-legacy&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H03&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;unchanged&quot;,
+    &quot;label&quot;: &quot;Stack・対照 legacy&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;既存指定が前後で一致する対照です。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;control&quot;: &quot;legacy&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;legacy&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;legacy&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-fullstage"><h3>Stack・対照 fullstage</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：既存指定が前後で一致する対照です。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：新経路の判定対象外。<a href="sample.html?case=stack-fullstage">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-fullstage-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-fullstage-before.png" data-ui="images/stack-fullstage-before.png" data-original="images/stack-fullstage-before-original.png" width="1500" height="1500" alt="Stack・対照 fullstage 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-fullstage-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-fullstage-after.png" data-ui="images/stack-fullstage-after.png" data-original="images/stack-fullstage-after-original.png" width="1500" height="1500" alt="Stack・対照 fullstage 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-fullstage&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H03&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;unchanged&quot;,
+    &quot;label&quot;: &quot;Stack・対照 fullstage&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;既存指定が前後で一致する対照です。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;control&quot;: &quot;fullstage&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;fullstage&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;fullstage&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-emphasis"><h3>Stack・対照 emphasis</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：既存指定が前後で一致する対照です。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：新経路の判定対象外。<a href="sample.html?case=stack-emphasis">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／960×540 <a href="images/stack-emphasis-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-emphasis-before.png" data-ui="images/stack-emphasis-before.png" data-original="images/stack-emphasis-before-original.png" width="1500" height="1500" alt="Stack・対照 emphasis 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／960×540 <a href="images/stack-emphasis-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-emphasis-after.png" data-ui="images/stack-emphasis-after.png" data-original="images/stack-emphasis-after-original.png" width="1500" height="1500" alt="Stack・対照 emphasis 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-emphasis&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H03&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;風の先へ&quot;,
+    &quot;W&quot;: 960,
+    &quot;H&quot;: 540,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.2,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;unchanged&quot;,
+    &quot;label&quot;: &quot;Stack・対照 emphasis&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;既存指定が前後で一致する対照です。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;control&quot;: &quot;emphasis&quot;,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;emphasis&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;PRESERVED_LEGACY&quot;,
+        &quot;safety&quot;: &quot;not-evaluated&quot;
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;emphasis&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.6669408800532358,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      960,
+      540
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: false,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;PRESERVED_LEGACY&quot;,
+        &quot;safety&quot;: &quot;not-evaluated&quot;
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;not-evaluated&quot;,
+    &quot;lastOffsets&quot;: [],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;風の先へ&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article><article id="stack-impossible"><h3>Stack・固定大サイズの制約不足</h3><p>見る箇所：反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。</p><p>変化する箇所：この共同配置候補群に収まらない場合は制約不足を明示します。</p><p>維持する箇所：文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。</p><p>変更後の観測：制約不足（この経路候補群では文字サイズと円外収容を満たせません。あらゆる配置の幾何的不可能性を意味しません）。<a href="sample.html?case=stack-impossible">このケースを同時刻で操作する</a></p><div class="pair"><figure><figcaption>変更前（005修正前）／t=1.5秒／540×960 <a href="images/stack-impossible-before-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-impossible-before.png" data-ui="images/stack-impossible-before.png" data-original="images/stack-impossible-before-original.png" width="1500" height="2411" alt="Stack・固定大サイズの制約不足 変更前"></figure><figure><figcaption>変更後（Stack修正候補）／t=1.5秒／540×960 <a href="images/stack-impossible-after-original.png">元PNG</a></figcaption><img loading="lazy" src="images/stack-impossible-after.png" data-ui="images/stack-impossible-after.png" data-original="images/stack-impossible-after-original.png" width="1500" height="2411" alt="Stack・固定大サイズの制約不足 変更後"></figure></div><details><summary>条件・測定・診断</summary><pre>{
+  &quot;conditions&quot;: {
+    &quot;id&quot;: &quot;stack-impossible&quot;,
+    &quot;hid&quot;: &quot;AVOID-005-H03&quot;,
+    &quot;layout&quot;: &quot;stack&quot;,
+    &quot;seed&quot;: 704,
+    &quot;text&quot;: &quot;大きい文字をそのまま維持する&quot;,
+    &quot;W&quot;: 540,
+    &quot;H&quot;: 960,
+    &quot;cx&quot;: 0.5,
+    &quot;cy&quot;: 0.25,
+    &quot;radius&quot;: 0.45,
+    &quot;time&quot;: 1.5,
+    &quot;availability&quot;: &quot;implemented&quot;,
+    &quot;expectation&quot;: &quot;insufficient&quot;,
+    &quot;label&quot;: &quot;Stack・固定大サイズの制約不足&quot;,
+    &quot;look&quot;: &quot;反復行が元の順序と一定の間隔で積み重なること。斜めの整列も許容します。&quot;,
+    &quot;change&quot;: &quot;この共同配置候補群に収まらない場合は制約不足を明示します。&quot;,
+    &quot;preserve&quot;: &quot;文字サイズ・傾き・色・線・反復数・順序・歌詞・開始終了時刻。&quot;,
+    &quot;scale&quot;: 4,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;viewport&quot;: [
+      1500,
+      1500
+    ],
+    &quot;dpr&quot;: 1,
+    &quot;language&quot;: &quot;ja&quot;,
+    &quot;font&quot;: &quot;bundled Noto CJK subset; loaded before rendering&quot;,
+    &quot;media&quot;: &quot;none&quot;,
+    &quot;color&quot;: &quot;sRGB default&quot;,
+    &quot;alpha&quot;: &quot;opaque&quot;,
+    &quot;seek&quot;: &quot;direct&quot;,
+    &quot;fps&quot;: 100,
+    &quot;frame&quot;: 150,
+    &quot;quantizedTime&quot;: 1.5,
+    &quot;post&quot;: false,
+    &quot;hud&quot;: false,
+    &quot;circleGuide&quot;: &quot;DOM only; absent from native Canvas PNG&quot;,
+    &quot;fixtureIsolation&quot;: &quot;engine-only-dom-v1&quot;
+  },
+  &quot;before&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;大きい文字をそのまま維持する&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  },
+  &quot;after&quot;: {
+    &quot;controlApplied&quot;: &quot;automatic&quot;,
+    &quot;sourceArea&quot;: {
+      &quot;x&quot;: 0.030000000000000027,
+      &quot;y&quot;: 0.06,
+      &quot;w&quot;: 0.27,
+      &quot;h&quot;: 0.516872544585746,
+      &quot;angle&quot;: 0,
+      &quot;lockAspect&quot;: true
+    },
+    &quot;appliedArea&quot;: null,
+    &quot;stage&quot;: [
+      540,
+      960
+    ],
+    &quot;time&quot;: 1.5,
+    &quot;newAPI&quot;: true,
+    &quot;staged&quot;: true,
+    &quot;inputUnchanged&quot;: true,
+    &quot;sourceUnchanged&quot;: true,
+    &quot;diagnostics&quot;: [
+      {
+        &quot;cut&quot;: 0,
+        &quot;code&quot;: &quot;STAGED_ADAPTER&quot;,
+        &quot;measurement&quot;: &quot;supported&quot;,
+        &quot;safety&quot;: &quot;insufficient-space&quot;,
+        &quot;units&quot;: 3
+      }
+    ],
+    &quot;nativeParams&quot;: {
+      &quot;copies&quot;: 3,
+      &quot;dir&quot;: -1,
+      &quot;style&quot;: &quot;outline&quot;,
+      &quot;font&quot;: &quot;gothic_black&quot;,
+      &quot;gap&quot;: 0.97179103910923,
+      &quot;xs&quot;: 0.002001092340797185
+    },
+    &quot;safety&quot;: &quot;insufficient-space&quot;,
+    &quot;lastOffsets&quot;: [
+      {
+        &quot;offset&quot;: {
+          &quot;stack.unit.2.4&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.1.2&quot;: [
+            0,
+            0
+          ],
+          &quot;stack.unit.0&quot;: [
+            0,
+            0
+          ]
+        },
+        &quot;safety&quot;: &quot;conflict&quot;
+      }
+    ],
+    &quot;fontLoaded&quot;: true,
+    &quot;actualTextDraws&quot;: [
+      &quot;大きい文字をそのまま維持する&quot;
+    ],
+    &quot;fixtureIsolation&quot;: {
+      &quot;mode&quot;: &quot;engine-only-dom-v1&quot;,
+      &quot;editorBoot&quot;: false,
+      &quot;fontStatus&quot;: &quot;loaded&quot;,
+      &quot;loadingFaces&quot;: 0,
+      &quot;externalFontStylesheets&quot;: 0,
+      &quot;storageUnchanged&quot;: true
+    }
+  }
+}</pre></details></article></details></section><details><summary>技術資料</summary><a href="fixtures/cases.json">固定入力</a> <a href="fixtures/source-manifest.json">ソースのハッシュ</a> <a href="fixtures/basic-test.log">自動試験</a></details><script>const pairs=[...document.querySelectorAll('.pair')];let original=false;mode.onchange=()=>pairs.forEach(p=>{p.className=mode.value;p.classList.toggle('original',original)});toggle.onclick=()=>pairs.forEach(p=>p.classList.toggle('before'));alpha.oninput=()=>document.body.style.setProperty('--alpha',alpha.value);size.onclick=()=>{original=!original;pairs.forEach(p=>p.classList.toggle('original',original))};kind.onchange=()=>document.querySelectorAll('img').forEach(x=>x.src=x.dataset[kind.value]);function reveal(){if(location.hash){const e=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(e){let p=e.parentElement;while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}e.scrollIntoView();}}}addEventListener('hashchange',reveal);reveal();</script></html>

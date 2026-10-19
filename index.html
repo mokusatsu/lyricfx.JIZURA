@@ -10893,11 +10893,43 @@ function prepareWave(plan,cut,program,evaluationRange,revision){
  return {version:1,kind:'ordered-wave-route',revision,evaluationRange,units,segments,radius,halfWidth,halfHeight,stride,width,n,measurementSupported:true,safety:segments.every(s=>s.status==='safe')?'certified-continuous-route':'insufficient-space',proof:'universal-Minkowski-boundary; disjoint main glyph x intervals; strict phase order for native trails'};
 }
 function overlapBounds(a,b){return a.x0<b.x1&&b.x0<a.x1&&a.y0<b.y1&&b.y0<a.y1;}
+// Stack is a single repetition run. A joint affine progression keeps every
+// adjacent native anchor equally spaced; rows themselves are never resized,
+// rotated, reordered, or independently placed. Search only a bounded family:
+// native vertical spacing, then 75–87.5% vertical spacing with horizontal
+// increments bounded by 25% stage width and twice the native copy distance. The complete camera/ghost/AA envelopes, not
+// anchor samples, certify every candidate for the whole evaluation interval.
+function solveStack(units,circle,plan,cut){
+ const anchors=units.map(u=>u.stackAnchor),n=units.length;
+ if(n<2||anchors.some(p=>!p))return units.map(()=>({offset:[0,0],status:'insufficient-space',reason:'stack-anchor-metadata-incomplete'}));
+ const native=anchors[1].map((v,i)=>v-anchors[0][i]),length=Math.hypot(...native),cy=(n-1)/2;
+ const boxes=units.map(u=>bounds([u.envelope])),area=(a,b)=>Math.max(0,Math.min(a.x1,b.x1)-Math.max(a.x0,b.x0))*Math.max(0,Math.min(a.y1,b.y1)-Math.max(a.y0,b.y0));
+ const candidates=[];
+ // Favor a gentle diagonal with original vertical spacing before tilting the
+ // progression; the latter keeps at least half the camera-scaled y step.
+ for(const factor of [.25,-.25,.5,-.5,.75,-.75,1,-1])candidates.push([native[0]+length*factor,native[1]]);
+ for(const y of [.875,.75])for(const factor of [1, -1, 1.5, -1.5, 2, -2])candidates.push([native[0]+Math.sign(factor)*Math.min(plan.W*.25,length*Math.abs(factor)),native[1]*y]);
+ for(const step of candidates){
+  const angle=cut.cam==='dutch'?5*J.DEG:0,minY=(Math.abs(native[1])*Math.cos(angle)-Math.abs(native[0])*Math.sin(angle))*(cut.contentScale??1);
+  if(minY<=0||minY+Math.sign(native[1])*(step[1]-native[1])<minY*.5)continue;
+  const offsets=units.map((_,i)=>step.map((v,j)=>(v-native[j])*(i-cy)));
+  const polygons=units.map((u,i)=>u.envelope.map(p=>p.map((v,j)=>v+offsets[i][j])));
+  // Native layering is intentional, but avoidance may not increase any pair's
+  // overlap. In particular a tilted run may not collapse wide rows together.
+  const moved=polygons.map(p=>bounds([p]));let readable=true;
+  for(let i=0;i<n;i++)for(let j=0;j<i;j++)if(area(moved[i],moved[j])>area(boxes[i],boxes[j])+1e-6)readable=false;
+  if(!readable)continue;
+  const solution=A.solveBasic(polygons,circle,plan.W,plan.H,J.h(cut.seed,581));
+  if(solution.status==='safe')return offsets.map(offset=>({...solution,offset:offset.map((v,j)=>v+solution.offset[j]),proof:{kind:'joint-stack-progression',nativeStep:native,step,copyCount:n,rule:'constant adjacent anchor displacement; native y order; no increased pairwise envelope overlap; full continuous envelope containment and circle clearance'}}));
+ }
+ return units.map(()=>({offset:[0,0],status:'insufficient-space',reason:'joint-stack-candidate-family-exhausted'}));
+}
 function orderedStaticSolutions(units,circle,plan,cut){
  const W=plan.W,H=plan.H,seed=J.h(cut.seed,581),boxes=units.map(u=>bounds([u.envelope]));
  const fitBounds=cut.layout==='diag'?units[0].fitBounds:undefined;
  const whole=A.solveBasic(units.map(u=>u.envelope),circle,W,H,seed,{fitBounds});
  if(whole.status==='safe')return units.map(()=>whole);
+ if(cut.layout==='stack')return solveStack(units,circle,plan,cut);
  // Attachments already share an owner. Only an actual glyph reading run has
  // inter-owner order; whole-phrase repetitions and scatter captions are separate
  // phrases, so a bbox overlap does not turn them into one indivisible object.
@@ -11058,6 +11090,7 @@ A.finalizeBasic=(plan,cut,original,diagnostics,{revision,stepDur,reachTail})=>{
   const grouped={};for(const e of program.events)if(e.role==='primary'&&e.polygons.length)(grouped[e.owner]||= []).push(cameraEnvelope(e.inkPolygons||e.polygons,plan,cut,e.kind==='item'?20:10));
   if(!Object.keys(grouped).length)fail('UNSUPPORTED_MEASUREMENT','Empty primary envelope');
   const units=Object.entries(grouped).map(([owner,polygons])=>({owner,envelope:hull(polygons.flat()),segments:[]}));
+  if(cut.layout==='stack')for(const unit of units){const event=program.events.find(e=>e.owner===unit.owner&&e.kind==='item');if(event)unit.stackAnchor=[event.args[0].x,event.args[0].y];}
   if(cut.layout==='diag'){const ink=program.events.filter(e=>e.role==='primary'&&e.kind==='item').flatMap(e=>e.polygons);if(ink.length)units[0].fitBounds=bounds([cameraEnvelope(ink,plan,cut,20)]);}
   const regions=plan.lyricAvoidanceIndex.regions,solutionsByCircle=new Map();
   for(let i=0;i<regions.length;i++){
