@@ -1,0 +1,13 @@
+/* AVOID-006: native support search is gated by the explicit adaptive opt-in. */
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto'),assert=require('node:assert/strict'),root=path.resolve(__dirname,'../..'),html=fs.readFileSync(root+'/index.html'),fixture=fs.readFileSync(__dirname+'/layouts-a-fixture.js','utf8'),sha=s=>crypto.createHash('sha256').update(s).digest('hex');
+const server=http.createServer((req,res)=>{if(req.url==='/font.otf')res.end(fs.readFileSync('/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'));else res.setHeader('Content-Type','text/html').end(html)});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port,browser=await require('../browser.cjs').launch();try{const page=await browser.newPage();await page.route('**/*',r=>r.request().url().startsWith(url)?r.continue():r.abort());await page.goto(url);await page.waitForFunction(()=>window.J?.placement?.layoutsA26);await page.addScriptTag({content:fixture});const result=await page.evaluate(async()=>{
+ const A=J.placement,original=A.solveBasic,rows=[],failures=[];let calls=[];
+ A.solveBasic=function(polygons,circle,W,H,seed,options={}){calls.push({supportHull:options.supportHull===true,constrained:!!options.accept});return original(...arguments)};
+ for(const layout of A.layoutsA26)for(const adaptive of A.layoutsAAdaptive8.includes(layout)?[false,true]:[true]){
+  calls=[];const spec={layout,W:1920,H:1080,cx:.5,cy:.42,radius:.2,text:'風の先へ',...(layout==='panels'?{params:{fx:'none'}}:{})},r=await runLayoutsAFixture(J,spec,{adaptive,fontURL:location.origin+'/font.otf'}),expected=adaptive&&A.layoutsAAdaptive8.includes(layout),row={layout,adaptive,expected,calls,diagnostics:r.plan.placementDiagnostics};
+  if(!calls.length)failures.push({layout,adaptive,message:'No native solver observed'});if(calls.some(c=>c.supportHull!==expected))failures.push({layout,adaptive,message:'Unexpected solver mode',calls});rows.push(row);
+ }
+ A.solveBasic=original;return {cases:rows.length,rows,failures};
+ });const report={compiledSHA256:sha(html),fixtureSHA256:sha(fixture),scriptSHA256:sha(fs.readFileSync(__filename)),...result,passed:result.failures.length===0};if(process.env.JIZURA_TEST_REPORT)fs.writeFileSync(process.env.JIZURA_TEST_REPORT,JSON.stringify(report,null,2));console.log(JSON.stringify(report));assert.ok(report.passed,'native solver mode wiring');}finally{await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1});

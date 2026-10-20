@@ -1,0 +1,65 @@
+{
+  "decision": "focused-visual-pass",
+  "resolvedIssue": "VIS006-01",
+  "beforeJA": "850e43d64de78aea880e8de7cc3d36e27d14cd2f3bcac96a57bf716952e00a07",
+  "afterJA": "5a2f2f8baf5beab525bfdb71e8ccc61fa32f5c93d29678e856de2796535c4195",
+  "afterEN": "03c3ff9c50734455c1c582261759bf7c3dab9a9324b05257833c1e42095ca741",
+  "reportSHA256": "b8bd578522d4d32504224950fb55c87d3e4e2742b30acaf25be53bdb8191af9e",
+  "receiptSHA256": "1f4675332d83e62bd8b45eeea7f7972d5cf454dcaa40371332fdf6f38903e8c1",
+  "viewedPNGFiles": 36,
+  "uniquePNGHashes": 18,
+  "times": [
+    0.07,
+    1.5,
+    3.93
+  ],
+  "cases": [
+    {
+      "case": "portrait",
+      "beforeSafety": "certified-bounded-adapter",
+      "afterSafety": "certified-bounded-adapter",
+      "samePNGAtAllThreeTimes": false
+    },
+    {
+      "case": "landscape",
+      "beforeSafety": "certified-bounded-adapter",
+      "afterSafety": "certified-bounded-adapter",
+      "samePNGAtAllThreeTimes": true
+    },
+    {
+      "case": "long",
+      "beforeSafety": "insufficient-space",
+      "afterSafety": "insufficient-space",
+      "samePNGAtAllThreeTimes": true
+    },
+    {
+      "case": "square",
+      "beforeSafety": "insufficient-space",
+      "afterSafety": "insufficient-space",
+      "samePNGAtAllThreeTimes": true
+    },
+    {
+      "case": "place-bar",
+      "beforeSafety": "insufficient-space",
+      "afterSafety": "insufficient-space",
+      "samePNGAtAllThreeTimes": true
+    },
+    {
+      "case": "place-band",
+      "beforeSafety": "certified-bounded-adapter",
+      "afterSafety": "certified-bounded-adapter",
+      "samePNGAtAllThreeTimes": false
+    }
+  ],
+  "observations": [
+    "Portrait/place-band: before hold has outlined second-row へ partly concealed by opaque subtitle plate. After hold/late sample has all four outlined characters 風の先へ on one complete line near upper picture field, clearly separated from native subtitle plate below.",
+    "Primary subtitle text, outline style, letterbox/picture field and top scene/time metadata retain their intended presentation; no new clipping or order defect in36 inspected PNGs.",
+    "At.07s huge outlined copy is not yet visibly revealed; this is native reveal behavior seen on both sides, not missing-source acceptance.",
+    "Landscape,long,square,place-bar each retains exact PNG SHA at all3 times. Long/square/place-bar are insufficient-space in report and are diagnostic original rendering, not successful avoidance."
+  ],
+  "limitations": [
+    "Focused images are native canvas PNGs with no UI diagnostic text; excluded status confirmed from report.json, honest UI labels still require final bundle review.",
+    "No final174-case bundle exists yet for this revision; no overall AVOID-006 acceptance, updated4video review, full-suite/performance acceptance, or continuous-frame claim.",
+    "Previous02 hash-matched image observations remain historical; revised bundle must verify reuse/changed-image hashes explicitly."
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "compiledSHA256": {
+    "index.html": "850e43d64de78aea880e8de7cc3d36e27d14cd2f3bcac96a57bf716952e00a07",
+    "en/index.html": "dd025dfb08551097184778b91bbca36d40fd1ecb8fe5543fd2044e9c5654399f"
+  },
+  "functionalSummarySHA256": "904be45523b0f787e3caeecf079beed9fb3338b0d39aba351a1ecbb3cfb653f2",
+  "formalPerformance": [
+    {
+      "n": 100,
+      "inputIdentical": true,
+      "planningFactor": 1.5288018433126693,
+      "additionalRenderMs": 1.4000000022351742,
+      "planningLimit": 2,
+      "renderLimitMs": 3
+    },
+    {
+      "n": 1000,
+      "inputIdentical": true,
+      "planningFactor": 1.9861199658952686,
+      "additionalRenderMs": 0.30000000074505806,
+      "planningLimit": 2,
+      "renderLimitMs": 3
+    }
+  ],
+  "stress": [
+    {
+      "regions": 100,
+      "segments": 100,
+      "budget": {
+        "perRegion": 64,
+        "perCutUnique": 128,
+        "uniqueUsed": 128
+      },
+      "deterministic": true
+    },
+    {
+      "regions": 1000,
+      "segments": 1000,
+      "budget": {
+        "perRegion": 64,
+        "perCutUnique": 128,
+        "uniqueUsed": 128
+      },
+      "deterministic": true
+    }
+  ],
+  "parity": {
+    "conditions": 192,
+    "images": 576,
+    "mismatches": 0,
+    "referenceCompiledSHA256": "53dca59d2952b439d05ceeae9ea1758849a0be45ddfba57fe3b083138a230dbf"
+  },
+  "continuousRender": [
+    {
+      "layout": "justified",
+      "additionalP95Ms": 0.5999999977648258
+    },
+    {
+      "layout": "subtitleBar",
+      "additionalP95Ms": 0.20000000298023224
+    },
+    {
+      "layout": "splitScreen",
+      "additionalP95Ms": 0.6000000014901161
+    },
+    {
+      "layout": "sideways",
+      "additionalP95Ms": 0.3999999947845936
+    },
+    {
+      "layout": "panels",
+      "additionalP95Ms": 0.4000000022351742
+    },
+    {
+      "layout": "filmstrip",
+      "additionalP95Ms": 1.5999999977648258
+    },
+    {
+      "layout": "quote",
+      "additionalP95Ms": 0.3999999985098839
+    },
+    {
+      "layout": "ticket",
+      "additionalP95Ms": 0.8000000007450581
+    }
+  ],
+  "finalValidationNegatives": 11,
+  "generatedBuildReproducible": true,
+  "generalExactEquivalenceClaimed": false,
+  "remainingParentWork": [
+    "code/result review",
+    "independent final checks as needed",
+    "visual review by isolated sol",
+    "review tools and capture/publication workflow"
+  ],
+  "evidenceSHA256": {
+    "basic-acceptance.log": "3180ab5a7cdf4beb5cc62d78bdf961eab1c2d35d40e86c5b0949d52fd2568b87",
+    "basic-test.log": "03933c8b2ac8505e97e89be36b0efe375152b30253e871cd914c1da6963b4b8f",
+    "continuous-render.json": "eb8135faafca934783efa0d6ed5ba40e3dd7886e3a2d3731ef63c4b9eee50f7b",
+    "continuous-render.log": "5488735246a9f15a02d33474595a1aec88ab083662c795b768aa81e16d6c7143",
+    "functional-executed-summary.json": "02d3844a106531127aa71a80e574386d9677996187cbc912b68ffb5bef14b62e",
+    "functional-receipt.py": "5a7a10b7f48bca404ca67043e7e387802fe96ae855f5e3a22872af7110cfcde6",
+    "functional-runner.py": "aa4c489599866855acaf1250b91bd170ac65b53c7ace1fc5bfc8e28ef0c12eb1",
+    "functional-summary.json": "904be45523b0f787e3caeecf079beed9fb3338b0d39aba351a1ecbb3cfb653f2",
+    "layouts-a-acceptance.log": "ad8bd2394225dcd0c0ae0cbdf3a899782b10ed50936a9b11417528316a1e1dc4",
+    "layouts-a-adaptive-test-report.json": "7c962bf1922bb9d0b0fc11c99f9e74f3fbcf2cb870f944829bfb91bab16aee21",
+    "layouts-a-adaptive-test.log": "94fa406e8f738000c4e867644b178cd6d1e8b6bb5fbe19f822529804f8b3b3ae",
+    "layouts-a-contrast.log": "e138e615f48b13ee969afcfcc9a385a6b19418783a3211635f9ce95bdbe6a495",
+    "layouts-a-native-solver-mode-report.json": "f7127a07012177bddd24a4d616f6b690adc8ff9944c23e8525660289fc682fb4",
+    "layouts-a-native-solver-mode.log": "3a411537467865d033d817b04757b422047f5f7681f7b08bf3b111fb4d15c5ea",
+    "layouts-a-preparation-cache.log": "ec745507c699705c6e738a03b6cf5179afacee1e74b487b48eb0112005196d9a",
+    "layouts-a-scales.log": "61042583799ebfbe15e65780059cc68b72a20bb8bbe4b7ce199ba514db51d3bb",
+    "layouts-a-solver-mode.log": "d8ce131c1f5a6e339e3513918abaff9a21614d32756d8525ef698d10f85c2aac",
+    "layouts-a-test.log": "afde4b0a26f376d296a1eae42abf94d91f6d83000c6aeab7d28bd1bc9379c4e6",
+    "optimization-parity.json": "10466e367535d8dad931f099fd11cfb58fa17ad538d1eb7320ef1de3e63b0ba0",
+    "optimization-parity.log": "19d43ae794873f92a41c3e0adeaec0a031241607a9884f6f18e872d19ba5d766",
+    "performance-opt13-receipt.json": "16a4f7513ee877752885f8d431a573fc35763f88ff2e8819e104d42ad3565609",
+    "performance-opt13.json": "f233177ee9f0778784a9b05e495e138e9252170d0a6d9b055333642b9e14101e",
+    "performance-opt13.log": "87459843df9f59c03f59ce1c1008680c796ef26d50e9afb9b72c678bcae00921",
+    "stack-test.log": "c0792ad23083e66d46e83605bce81d47564023f34049258a4e8a46212d7a5a8a",
+    "stage-test.log": "ac3c8a4d48f174641ae915f10254b12bd8757ccb431743409f65668b7eb80887",
+    "validation-negative.cjs": "4e120ff7c63513db3eaab5e3bc6e5a4738c51e32a536dc19377234b3bf487975",
+    "validation-negative.json": "1dfa5baa37a80d8177545a1e51d5b6c0ba9ea7bc2f0627374c7746daef19b8ab",
+    "validation-negative.log": "c0b26edc3d6fef94ab6f077142af304244cdfab8ad1ad545c8b0f163aa2be7c1"
+  }
+}

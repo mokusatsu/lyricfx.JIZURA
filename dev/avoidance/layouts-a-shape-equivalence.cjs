@@ -1,0 +1,12 @@
+/* Exact native curve hull equivalence, including floating-point boundaries. */
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync(path.join(__dirname,'../../src/09a_placement.js'),'utf8'),helper=source.slice(source.indexOf('let shapeTau;'),source.indexOf('let measureCtx;'));
+const hull=points=>{const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=ps=>{const out=[];for(const p of ps){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}out.pop();return out;};return half(sorted).concat(half(sorted.slice().reverse()));};
+const context={A:{convexHull:hull},J:{TAU:Math.PI*2}},api=vm.runInNewContext(helper+';({roundedRectHull,shapeUnitCircle})',context),same=(a,b)=>a.length===b.length&&a.every((p,i)=>p.length===b[i].length&&p.every((v,j)=>Object.is(v,b[i][j])));
+let seed=704,cases=0;const rand=()=>((seed=Math.imul(seed,1664525)+1013904223|0)>>>0)/4294967296;
+function check(x,y,w,h,r,pad,square,dash){const capPad=square&&dash?Math.SQRT2*pad:pad,radius=(r+capPad)/Math.cos(Math.PI/32),corners=[[x+r,y+r],[x+w-r,y+r],[x+w-r,y+h-r],[x+r,y+h-r]],old=hull(corners.flatMap(c=>Array.from({length:32},(_,i)=>{const a=(i+.5)*context.J.TAU/32;return [c[0]+radius*Math.cos(a),c[1]+radius*Math.sin(a)];}))),actual=api.roundedRectHull(corners,radius);assert.ok(same(old,actual),'Object.is curve hull '+JSON.stringify({x,y,w,h,r,pad,square,dash,old,actual}));cases++;}
+for(let i=0;i<100000;i++){const x=(rand()-.5)*2e12,y=(rand()-.5)*2e12,w=10**(rand()*12-6),h=10**(rand()*12-6),r=Math.min(w,h)/2*(i%4===0?1:rand());check(x,y,w,h,r,rand()*5,!!(i%2),!!(i%3));}
+for(const origin of [0,-0,Number.MIN_VALUE,-Number.MIN_VALUE,1e-100,-1e-100,1e100,-1e100])for(const size of [Number.MIN_VALUE,1e-100,1e-6,1,1e100])for(const pad of [0,Number.MIN_VALUE,.5])check(origin,origin,size,size,size/2,pad,true,true);
+for(const N of [32,64]){const actual=api.shapeUnitCircle(N);for(let i=0;i<N;i++){const a=(i+.5)*context.J.TAU/N;assert.ok(Object.is(actual[i][0],Math.cos(a))&&Object.is(actual[i][1],Math.sin(a)));}}context.J.TAU=6;assert.equal(api.shapeUnitCircle(32)[0][0],Math.cos(.5*6/32));
+console.log(JSON.stringify({passed:true,cases,comparison:'Object.is coordinates, order and lengths; exact original 128-point hull',seed:704,trigTables:2,tauInvalidation:true}));

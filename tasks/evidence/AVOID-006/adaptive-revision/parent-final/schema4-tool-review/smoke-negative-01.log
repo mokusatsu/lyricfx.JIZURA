@@ -1,0 +1,35 @@
+node:assert:604
+    throw err;
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /AssertionError/. Input:
+
+'Error: unrecognised content at end of stream'
+
+    at Object.<anonymous> (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-a-negative.cjs:58:336)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: Error: unrecognised content at end of stream
+      at SyncReader.process (/workspace/lyricfx.JIZURA/dev/node_modules/pngjs/lib/sync-reader.js:43:11)
+      at module.exports (/workspace/lyricfx.JIZURA/dev/node_modules/pngjs/lib/parser-sync.js:68:10)
+      at exports.read (/workspace/lyricfx.JIZURA/dev/node_modules/pngjs/lib/png-sync.js:7:10)
+      at decode (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-a-png.cjs:16:280)
+      at Object.validate (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-a-png.cjs:23:639)
+      at Object.validateManifest (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-a-review.cjs:129:1130)
+      at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-a-negative.cjs:58:354
+      at getActual (node:assert:611:5)
+      at strict.throws (node:assert:759:24)
+      at Object.<anonymous> (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-a-negative.cjs:58:336),
+  expected: /AssertionError/,
+  operator: 'throws',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "status": "accepted implementation decisions; product resolver not implemented in 002",
+  "default": {
+    "id": "avoid-default",
+    "start": 0,
+    "end": null,
+    "center": {
+      "x": 0.5,
+      "y": 0.42
+    },
+    "radius": 0.2
+  },
+  "limits": {
+    "center": [
+      0,
+      1
+    ],
+    "radius": [
+      0.02,
+      0.45
+    ],
+    "regions": 1000,
+    "minIntervalSeconds": 0.04
+  },
+  "geometry": {
+    "coordinates": "original stage pixels",
+    "marginMinPx": 2,
+    "marginShortSide": 0.005,
+    "contactIsCollision": true,
+    "inkAlphaThreshold": 0.00392156862745098
+  },
+  "time": {
+    "interval": "start <= t < resolvedEnd",
+    "nullEnd": "next start or final composed duration",
+    "gap": "none",
+    "overlap": "reject transaction",
+    "missing": "deterministic default",
+    "empty": "preserve empty",
+    "durationShortening": "clip evaluation only; keep saved regions"
+  },
+  "priority": [
+    "disabled or autoPlacement=false: no avoidance",
+    "emphasis: exempt primary, tiledAux and all owned plates; no avoidance conflict diagnostic",
+    "manual area or lockedAreas or lockedEffects: preserve non-emphasis values; report actual conflict, never shrink/unlock",
+    "center-anchor layouts: center only, ignore radius and retain center word/disc",
+    "ordinary automatic primary: full-stage trajectory; no circle mask",
+    "tiledAux: unchanged placement, mask only owned repetitions/plates"
+  ],
+  "centerLayouts": [
+    "ring",
+    "orbit",
+    "spiral",
+    "arcTop",
+    "circleWords",
+    "knPathRide",
+    "knGearWords"
+  ],
+  "auxMask": {
+    "R": "region radius * min(W,H)",
+    "F": "max(2px, 0.04 * min(W,H))",
+    "alpha": "0 if d<=R; smoothstep(0,1,(d-R)/F) if R<d<R+F; 1 otherwise",
+    "scope": "tiledAux and owned plates only; primary, independentDecor and media unchanged",
+    "order": "per draw event after spatial FX; retain original painter order and blend against actual destination",
+    "unsupported": "non-separable post-FX mixing roles without provenance: explicit unsupported diagnostic; never silently claim safety"
+  },
+  "size": {
+    "explicit": "preserve notation size; conflict diagnostic if no fit",
+    "suppression": "included in measured ink",
+    "rubyStrokeShadow": "include glyph/ruby/stroke; bounded shadow envelope through alpha threshold; unbounded FX unsupported"
+  },
+  "fx": {
+    "guarantee": "transformed primary ink polygon including camera, enter/hold/exit and bounded copies; alpha >= 1/255",
+    "centerBandY": [
+      0.45,
+      0.55
+    ],
+    "positionPreference": "center: all sides; upper: left/right/below; lower: left/right/above",
+    "fallback": "explicit insufficient-space or unsupported, never mask primary or shrink whole effect"
+  },
+  "performance": {
+    "standard": {
+      "regions": 100,
+      "cuts": 100
+    },
+    "stress": {
+      "regions": 1000,
+      "cuts": 1000
+    },
+    "planningP95MaxBaselineFactor": 2,
+    "additionalRenderP95Ms": 3,
+    "environment": "same browser, local font, viewport and warmup; compare in 004/017",
+    "bufferBudget": "004/018 must measure lifetime and impose max buffers; no per-glyph stage buffer"
+  },
+  "ownership": "default all lyric-bearing draw units to primary; only named reviewed auxiliary units exempt; unresolved unit ownership remains adapter verification pending, not successful",
+  "sourceKinds": {
+    "user": "emphasis exemption, fixed switching, center-only orbit and tiled auxiliary exclusion",
+    "adoptedDesign": "all numeric bounds, defaults, mask smoothstep/width, margin, conflict and FX diagnostics",
+    "pending": "adapter-level unit ownership and full FX implementation in 004-012/018, persistence in 013, UI in 014-015, export/AE diagnostics in 016"
+  },
+  "adaptiveLayoutsA": {
+    "version": 1,
+    "optIn": "layoutsAAdaptive:true with layoutsA:true",
+    "layouts": [
+      "justified",
+      "subtitleBar",
+      "splitScreen",
+      "sideways",
+      "panels",
+      "filmstrip",
+      "quote",
+      "ticket"
+    ],
+    "eligibility": "only native joint-translation insufficient; existing safe unchanged",
+    "selection": "hard constraints, declared per-ID order, first admissible candidate; fixed within region; deterministic",
+    "maxReconstructedCandidatesPerRegion": 64,
+    "primaryMinPx": 18,
+    "primaryMinShortSide": 0.035,
+    "secondaryMinPx": 12,
+    "secondaryMinShortSide": 0.02,
+    "fontScales": [
+      0.95,
+      0.9,
+      0.85,
+      0.8,
+      0.75,
+      0.7
+    ],
+    "hugeCopyMinSubtitleRatio": 1.5,
+    "explicitSize": "preserve lyricSize and explicit contentScale; no reduction",
+    "failure": "explicit excluded-during-avoidance/no-certified-composition; preserve lyrics; no implicit fallback without proven automatic origin",
+    "activation": "staged API only; main app017",
+    "design": "tasks/evidence/AVOID-006/adaptive-revision/strategy-design.md",
+    "maxUniqueReconstructedCandidatesPerCut": 128,
+    "entryExitRelaxation": {
+      "only": "source-tagged geometrically moving events; each pass uses native motionTime, realTime selects region",
+      "hold": "all stationary events always strict; moving events strict throughout hold",
+      "status": "safe-hold / certified-hold-adapter distinct from full-interval safe",
+      "minimumHoldSeconds": 0.04,
+      "entryEndSeconds": {
+        "film-strip": 0.6,
+        "quote-marks": 0.52,
+        "ticket-body": 0.5,
+        "ticket-stub": 0.5,
+        "side-companion": 0.65
+      },
+      "exitStart": "cut.end-cut.outDur; geometric movement only, not fade/reveal",
+      "ghost": "classify each pass separately; persistent drift includes native ltb lag/quantization range"
+    },
+    "ownedQuality": "complete pre-clip ink; owned body/metadata zones; post-solution independent opaque-field and correct-half checks",
+    "failureBudget": "explicit CUT_CANDIDATE_BUDGET; no claim all candidates exhausted",
+    "registryOrder": {
+      "justified": [
+        "editorial-spacing-wrap",
+        "editorial-reduce"
+      ],
+      "subtitleBar": [
+        "copy-caption-reflow",
+        "huge-copy-reduce"
+      ],
+      "splitScreen": [
+        "split-wrap",
+        "split-reduce"
+      ],
+      "sideways": [
+        "side-strip-companion-wrap",
+        "side-reduce"
+      ],
+      "panels": [
+        "panel-aspect-gap",
+        "ordered-panel-rows",
+        "panel-reduce"
+      ],
+      "filmstrip": [
+        "film-lane-path-pitch",
+        "film-angle-spacing",
+        "film-reduce"
+      ],
+      "quote": [
+        "quote-local-wrap-path",
+        "quote-reduce"
+      ],
+      "ticket": [
+        "attached-ticket-wrap-path",
+        "attached-ticket-reduce"
+      ]
+    },
+    "recipeTestingOrder": [
+      "existing full native joint certificate unchanged",
+      "source-moving-event relaxation with stationary events always strict",
+      "each native-size ID recipe: full interval then moving-event-only relaxation",
+      "each discrete reduced-size recipe: full interval then moving-event-only relaxation",
+      "explicit exclusion; preserve original lyric-bearing cut"
+    ],
+    "measureCandidates": "at most eight area-ordered outer-band/circle-chord measures per strategy/scale",
+    "sourceCoverage": "ordered grapheme ranges checked independently per primary copy; native metadata text/font/count checked separately",
+    "budgetBias": "first chronological regions may consume 128 unique recipe budget; later budget failures explicitly identify untested candidates; seek never reruns planning",
+    "proofCache": {
+      "entries": 4096,
+      "contexts": 1024,
+      "encodedBytes": 8388608,
+      "privateGeometry": "lossless Float64 coordinates + Uint32 polygon lengths; decoded owned frozen arrays",
+      "limitMeaning": "encoded retained data, not JavaScript heap",
+      "context": "source/font revision/language/explicit size/stage/style/FX/fps/duration/events/evaluation range",
+      "candidate": "recipe/circle/hold intersection where relevant",
+      "candidatePrograms": "direct recording; rejected programs do not enter common preparation LRU"
+    }
+  }
+}

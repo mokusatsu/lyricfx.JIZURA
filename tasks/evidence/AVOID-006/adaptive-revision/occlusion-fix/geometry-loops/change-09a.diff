@@ -1,0 +1,11 @@
+--- /tmp/avoid006-before-geometry-loops/09a_placement.js	2026-10-20 14:29:58.082694498 +0000
++++ src/09a_placement.js	2026-10-20 14:29:58.109968087 +0000
+@@ -15,7 +15,7 @@
+ const matrix=ctx=>{const m=ctx.getTransform();return [m.a,m.b,m.c,m.d,m.e,m.f];};
+ const rect=(x,y,w,h)=>[[x,y],[x+w,y],[x+w,y+h],[x,y+h]];
+ A.bounds = polygons => {if(!Array.isArray(polygons)||polygons.some(p=>!Array.isArray(p)||p.length<3||p.some(v=>!Array.isArray(v)||v.length!==2)))fail('UNMEASURED_INK','Invalid polygon');let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity,count=0;polygons.forEach(poly=>poly.forEach(p=>{if(!finite(p))fail('UNMEASURED_INK','Empty/nonfinite ink');count++;x0=Math.min(x0,p[0]);y0=Math.min(y0,p[1]);x1=Math.max(x1,p[0]);y1=Math.max(y1,p[1]);}));if(!count)fail('UNMEASURED_INK','Empty/nonfinite ink');return {x0,y0,x1,y1};};
+-A.convexHull=points=>{const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=ps=>{const out=[];for(const p of ps){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}out.pop();return out;};return half(sorted).concat(half(sorted.slice().reverse()));};
++A.convexHull=points=>{const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),out=[];for(let i=0;i<sorted.length;i++){const p=sorted[i];while(out.length>1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();const lowerLength=out.length;for(let i=sorted.length-1;i>=0;i--){const p=sorted[i];while(out.length>lowerLength+1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();return out;};
+ // Exact old angular samples, privately reused. A changed TAU cannot reuse a
+ // stale table. At most the existing 32/64-point shape tables are retained.
+ let shapeTau;const shapeCircles=new Map();

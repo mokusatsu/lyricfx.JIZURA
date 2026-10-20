@@ -1,0 +1,54 @@
+{
+  "diagnosticOnly": true,
+  "productUnmodified": true,
+  "passed": true,
+  "randomSeed": 2785026086,
+  "hullCases": 10168,
+  "actualPolygons": 162,
+  "cameraCases": 14016,
+  "hullReferenceIdentityAndOrdering": true,
+  "cameraGeneratedPointIdentityIndices": true,
+  "cameraBitwiseSignedZero": true,
+  "benchmark": {
+    "environment": "Node v24.19.0; not browser or formal acceptance",
+    "hullOldMs": [
+      2.726586999999199,
+      4.465197999999873,
+      3.5657570000003034,
+      2.704675999999381,
+      5.762313999999606,
+      4.8451420000001235
+    ],
+    "hullProposedMs": [
+      2.9162620000006427,
+      2.9054620000006253,
+      2.732813000000533,
+      2.5711689999989176,
+      2.5326179999992746,
+      2.64216099999976
+    ],
+    "cameraOldMs": [
+      5.968775000001187,
+      6.3163299999996525,
+      6.1954400000013266,
+      6.251116999999795,
+      6.020531999998639,
+      6.003017000000909
+    ],
+    "cameraProposedMs": [
+      4.673069999998916,
+      4.768718000001172,
+      4.765312000001359,
+      4.773064000000886,
+      4.9952030000004015,
+      4.836284999999407
+    ]
+  },
+  "sourceSHA256": "83b47af18a866be87a085f90bf10d7ab629141018618fd3f178e5c3020ffbd00",
+  "scriptSHA256": "19598901f6f4975e0126411e7dc7204d0407d45987ab169a3d78501f5f14dc37",
+  "proposal": {
+    "hull": "points=>{const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),out=[];for(let i=0;i<sorted.length;i++){const p=sorted[i];while(out.length>1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();const lowerLength=out.length;for(let i=sorted.length-1;i>=0;i--){const p=sorted[i];while(out.length>lowerLength+1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();return out;}",
+    "cameraPointLoop": "const points=[],scales=[base,maxScale];for(const p of ps.flat())for(const s of scales){const px=plan.W/2+(p[0]-plan.W/2)*s,py=plan.H/2+(p[1]-plan.H/2)*s,x0=px+(-dx),x1=px+dx,y0=py+(-dy),y1=py+dy;points.push([x0,y0],[x0,y1],[x1,y0],[x1,y1]);}"
+  },
+  "sink": 483840
+}

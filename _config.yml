@@ -1,0 +1,36 @@
+# Keep the existing legacy Pages source work:/; omit development inputs only.
+# Before push, require an actual Jekyll output URL/hash/byte audit.
+exclude:
+  - .agents
+  - .github
+  - .git
+  - .gitignore
+  - .nojekyll
+  - work
+  - scratch
+  - src
+  - dev
+  - app
+  - tasks
+  - tools
+  - build.py
+  - build_ae.py
+  - build_cep.py
+  - preview_server.py
+# All existing review URLs, six application editions, assets/vendor, documentation,
+# AE/CEP sources/downloads and the 33.8 MB project remain included.
+# Avoid optional Pages plugins converting old raw Markdown URLs or adding layouts.
+optional_front_matter:
+  enabled: false
+readme_index:
+  enabled: false
+titles_from_headings:
+  enabled: false
+relative_links:
+  enabled: false
+defaults: []
+# Explicit null is supported by github-pages232; avoid theme-owned extra assets.
+theme: null
+repository: mokusatsu/lyricfx.JIZURA
+url: https://mokusatsu.github.io
+baseurl: /lyricfx.JIZURA

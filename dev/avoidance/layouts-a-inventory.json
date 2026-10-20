@@ -13,7 +13,11 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Label native horizontal slide <=2*smallSize; retracting bar traversal is expanded by marker halfsize th*1.3, not merely bar thickness.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "corners",
@@ -29,7 +33,11 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Progressive connector is contained by complete polyline; labels and lyric anchors are static.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "staircase",
@@ -45,7 +53,11 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Static glyph/number geometry, complete progressive guide; one translation retains all staircase displacements.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "zigzag",
@@ -61,7 +73,11 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Alternating glyph y/rotation and rails are fixed; progressive portions stay on the complete native polyline.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "gridCells",
@@ -77,7 +93,11 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Cell<=.3U; outBack(s=1.6) maximum1+4s^3/[27(s+1)^2]<1.09; halfcell expansion<.014U, reserve.018U.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "dropCap",
@@ -93,13 +113,17 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Fixed composition with monotone rule reveals; all metadata primary.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "justified",
     "source": "src/11p_layoutsA.js",
     "sourceLine": 704,
-    "renderSHA256": "5a3b7474bcbb5864ee705f66e89cff9e9972e7aee045a4f658b738d6cf7800d1",
+    "renderSHA256": "0ee4421aca5500d294ece2d8d9e7229e713181cd2b66b6545c4eda4bb910f2a6",
     "primary": "justified main rows, No and row-count labels",
     "ownedPlate": "mark band/underline/brackets",
     "tiledAux": "dense fastRow filler",
@@ -109,12 +133,28 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Main rows static; mark sweeps inside complete native mark. Filler draw order/coordinates unchanged for018.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "optIn": "layoutsAAdaptive:true",
+      "registryOrder": [
+        "editorial-spacing-wrap",
+        "editorial-reduce"
+      ],
+      "eligibility": "native full joint insufficient only; native safe unchanged",
+      "sourceRecipe": "src/09d_adaptive_placement.js + local hooks in original native render",
+      "proof": "new segment.envelopes full interval; moving-event-only relaxed candidate has strict hold segment.envelopes and separate segment.relaxedEnvelopes",
+      "quality": "source-copy ordered ranges; native meaningful metadata; complete un-clipped owned ink; stage-space readability floors; post-solution fixed opaque/contrast fields",
+      "limits": {
+        "perRegion": 64,
+        "perCutUnique": 128
+      },
+      "failure": "excluded-during-avoidance; no-certified-composition; original lyrics retained"
+    }
   },
   {
     "id": "frameBox",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 773,
+    "sourceLine": 776,
     "renderSHA256": "c7a23d3087289500d583923ae76287b17448188d8490ef24a7cc886bc9a5f673",
     "primary": "main lyric and both frame captions",
     "ownedPlate": "full/double/corner frame",
@@ -125,12 +165,16 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Full native frame bounds contain partial reveals; one translation preserves text/caption/frame relation.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "bubble",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 841,
+    "sourceLine": 844,
     "renderSHA256": "6db46b071ec94a519e1ecf5d261794eb020cdf552e92cda829f7a92b8a719c75",
     "primary": "main lyric",
     "ownedPlate": "body, tail and burst marks",
@@ -141,13 +185,17 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Pop q in[0,1.11], rotation<=3abs(tilt) degrees about native tail/center pivot. Quadratic thought body stays in control-point hull.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "subtitleBar",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 892,
-    "renderSHA256": "797ba7f02d260b69d20c509f800441d24ef59e6bc0cd7bf43ccd0b7bfab11137",
+    "sourceLine": 895,
+    "renderSHA256": "4d1dd82a245933557d1d77916391603222309a00546ec1f9e31b8fde8aed2ebc",
     "primary": "huge copy and subtitle",
     "ownedPlate": "subtitle band if selected",
     "tiledAux": "none",
@@ -157,12 +205,28 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Explicit huge-copy x drift is bounded over evaluationRange independent of font size. Band is owned; bar variant restricts joint dy=0 so subtitle retains its fixed contrast field. Camera UI stays native.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "optIn": "layoutsAAdaptive:true",
+      "registryOrder": [
+        "copy-caption-reflow",
+        "huge-copy-reduce"
+      ],
+      "eligibility": "native full joint insufficient only; native safe unchanged",
+      "sourceRecipe": "src/09d_adaptive_placement.js + local hooks in original native render",
+      "proof": "new segment.envelopes full interval; moving-event-only relaxed candidate has strict hold segment.envelopes and separate segment.relaxedEnvelopes",
+      "quality": "source-copy ordered ranges; native meaningful metadata; complete un-clipped owned ink; stage-space readability floors; post-solution fixed opaque/contrast fields",
+      "limits": {
+        "perRegion": 64,
+        "perCutUnique": 128
+      },
+      "failure": "excluded-during-avoidance; no-certified-composition; original lyrics retained"
+    }
   },
   {
     "id": "ticker",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 961,
+    "sourceLine": 965,
     "renderSHA256": "922e0485e3def676af34bebb9cb2948da248347dac2aeab2611ea3e1085b9a87",
     "primary": "headline, LIVE tag and time/channel labels",
     "ownedPlate": "headline accent, tag and time box",
@@ -173,13 +237,17 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Tag pop overshoot<1.09, native maximum bandH=.075U; .01U reserve; band repeats retain native clip/motion.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "splitScreen",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1028,
-    "renderSHA256": "c06c60d1f4b59d873cab724fa9e3271f52e52b6d4344d6718160ae8b627f50c9",
+    "sourceLine": 1032,
+    "renderSHA256": "85a22b7f623aa3bb527a7238068f0e4ee98ea5f9b9d8eaf3499aeee7ebded8b9",
     "primary": "both complementary clipped main copies and half labels",
     "ownedPlate": "none",
     "tiledAux": "none",
@@ -189,12 +257,28 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Primary copies share one translation, their original complement clips remain world-fixed with inversion field; no new clip is introduced.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "optIn": "layoutsAAdaptive:true",
+      "registryOrder": [
+        "split-wrap",
+        "split-reduce"
+      ],
+      "eligibility": "native full joint insufficient only; native safe unchanged",
+      "sourceRecipe": "src/09d_adaptive_placement.js + local hooks in original native render",
+      "proof": "new segment.envelopes full interval; moving-event-only relaxed candidate has strict hold segment.envelopes and separate segment.relaxedEnvelopes",
+      "quality": "source-copy ordered ranges; native meaningful metadata; complete un-clipped owned ink; stage-space readability floors; post-solution fixed opaque/contrast fields",
+      "limits": {
+        "perRegion": 64,
+        "perCutUnique": 128
+      },
+      "failure": "excluded-during-avoidance; no-certified-composition; original lyrics retained"
+    }
   },
   {
     "id": "mirror",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1083,
+    "sourceLine": 1088,
     "renderSHA256": "9bbf3e78004e7efe498a83cd1c9409b414fcab7563b471ba91ec24ebc145c81a",
     "primary": "main and nine reflected strips",
     "ownedPlate": "horizon, ticks and endpoints",
@@ -205,13 +289,17 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Ripple prepared at neutral dx=0; displacement<=.035size<=.0077U, reserve.008U. Complete horizon includes moving endpoint dot radius .005U. Every native reflected strip clip moves with its joint owner.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "sideways",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1135,
-    "renderSHA256": "a15ae1ee55c2d76317403f131092cc6e1a3252f0c8c1768171cd94bc535b59ba",
+    "sourceLine": 1140,
+    "renderSHA256": "c772d9937d1bfcdaa546ec38e0039476e65825b17f17f26055f4dca930dcd60e",
     "primary": "rotated main, horizontal copy, No/time/romaji",
     "ownedPlate": "divider",
     "tiledAux": "none",
@@ -221,12 +309,28 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Secondary native slide magnitude<=.03U; native90degree transform retained.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "optIn": "layoutsAAdaptive:true",
+      "registryOrder": [
+        "side-strip-companion-wrap",
+        "side-reduce"
+      ],
+      "eligibility": "native full joint insufficient only; native safe unchanged",
+      "sourceRecipe": "src/09d_adaptive_placement.js + local hooks in original native render",
+      "proof": "new segment.envelopes full interval; moving-event-only relaxed candidate has strict hold segment.envelopes and separate segment.relaxedEnvelopes",
+      "quality": "source-copy ordered ranges; native meaningful metadata; complete un-clipped owned ink; stage-space readability floors; post-solution fixed opaque/contrast fields",
+      "limits": {
+        "perRegion": 64,
+        "perCutUnique": 128
+      },
+      "failure": "excluded-during-avoidance; no-certified-composition; original lyrics retained"
+    }
   },
   {
     "id": "edgeFrame",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1191,
+    "sourceLine": 1200,
     "renderSHA256": "a4d89c483c6c3028814b2364fe7da0d07ad749532a06697b13460e58aa520e4d",
     "primary": "central main lyric",
     "ownedPlate": "none",
@@ -237,12 +341,16 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Only central primary moves; perimeter runs, corner marks and full-stage outline retain native positioning for018.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "perspective",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1237,
+    "sourceLine": 1246,
     "renderSHA256": "1df7d2130cde2d8cf3ef6f742d9160e5c3c97a9901a0d4df76190f4af0750346",
     "primary": "front main and all receding transformed copies",
     "ownedPlate": "perspective rails and vanishing point",
@@ -253,12 +361,16 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "r^z in[0,1] bounds centers between native front and vanishing point; shear<=14deg; x reserve=tan14*front ink max abs localY+4px.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "hanko",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1291,
+    "sourceLine": 1300,
     "renderSHA256": "793c585d0002e4bcf088c96fe3e67d376f5e2f88768508fa8c7393be2a4dd540",
     "primary": "main and all seal glyphs",
     "ownedPlate": "seal fill/border/erosion",
@@ -269,12 +381,16 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Seal sc2 in[.94,1.55]; native shake<=.012S. Rotation fixed; seal sweep about native seal pivot.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "genkou",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1362,
+    "sourceLine": 1371,
     "renderSHA256": "d80eba3381df282188f2104221ac429df7b2cba5d7c58e3592e30b7ba9e7baf3",
     "primary": "all main glyphs and grid labels",
     "ownedPlate": "all manuscript cell/grid rules",
@@ -285,13 +401,17 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Glyph anchors static; full grid strokes bound progressive columns/rows; all columns stay joined.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "panels",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1425,
-    "renderSHA256": "874bd13826c1b6bd5a25c087dc25f83346b2713558fe255f64e8b70bbd8f3c95",
+    "sourceLine": 1434,
+    "renderSHA256": "085456cc2285eb5bafda2fcd596eea991a27e4b0153b8ecb6c4b3da6f3d1b744",
     "primary": "all chunk glyphs",
     "ownedPlate": "native panel outlines and accent plate; focus rays within native clip",
     "tiledAux": "none",
@@ -301,13 +421,30 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Each reveal polygon is a convex subset of its full panel. Original clips intersect measured ink; whole composition keeps reading-axis order.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "optIn": "layoutsAAdaptive:true",
+      "registryOrder": [
+        "panel-aspect-gap",
+        "ordered-panel-rows",
+        "panel-reduce"
+      ],
+      "eligibility": "native full joint insufficient only; native safe unchanged",
+      "sourceRecipe": "src/09d_adaptive_placement.js + local hooks in original native render",
+      "proof": "new segment.envelopes full interval; moving-event-only relaxed candidate has strict hold segment.envelopes and separate segment.relaxedEnvelopes",
+      "quality": "source-copy ordered ranges; native meaningful metadata; complete un-clipped owned ink; stage-space readability floors; post-solution fixed opaque/contrast fields",
+      "limits": {
+        "perRegion": 64,
+        "perCutUnique": 128
+      },
+      "failure": "excluded-during-avoidance; no-certified-composition; original lyrics retained"
+    }
   },
   {
     "id": "filmstrip",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1501,
-    "renderSHA256": "9a48cc0bcb136a86f611d86a69c00ee95213e3880c8a8770778a6089a17ca041",
+    "sourceLine": 1512,
+    "renderSHA256": "4a302467dba109d74792421cc977b703435cf5522e3f54cdae5f3c6b31a0b5af",
     "primary": "all lyric slots, edge codes and empty-slot countdowns",
     "ownedPlate": "strip band, holes, slot plates and empty-slot devices",
     "tiledAux": "none",
@@ -317,13 +454,30 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Along displacement bounded by2.4A plus max interval drift .03U*abs(ltb-dur/2). Native tilt rotates the correlated along-vector; its convex endpoint hull bounds both axes. Source strip band/edge codes naturally crop; all held lyric/countdown ink must fit after camera/contentScale.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "optIn": "layoutsAAdaptive:true",
+      "registryOrder": [
+        "film-lane-path-pitch",
+        "film-angle-spacing",
+        "film-reduce"
+      ],
+      "eligibility": "native full joint insufficient only; native safe unchanged",
+      "sourceRecipe": "src/09d_adaptive_placement.js + local hooks in original native render",
+      "proof": "new segment.envelopes full interval; moving-event-only relaxed candidate has strict hold segment.envelopes and separate segment.relaxedEnvelopes",
+      "quality": "source-copy ordered ranges; native meaningful metadata; complete un-clipped owned ink; stage-space readability floors; post-solution fixed opaque/contrast fields",
+      "limits": {
+        "perRegion": 64,
+        "perCutUnique": 128
+      },
+      "failure": "excluded-during-avoidance; no-certified-composition; original lyrics retained"
+    }
   },
   {
     "id": "quote",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1575,
-    "renderSHA256": "38c30f9d37f6ba92ad27278f8c1b0971f3b8ea6690ef4060222d5cd6a5aca58b",
+    "sourceLine": 1589,
+    "renderSHA256": "cd0ffa84e8dbf1fc0896b954f847272eb23e6c78bf224bc047b2dad125730bb0",
     "primary": "main lyric, opening/closing marks and attribution",
     "ownedPlate": "attribution leader",
     "tiledAux": "none",
@@ -333,12 +487,28 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Quote-mark native flight <=.35U x and.21U y; copied marks stay joint. Original entry can naturally crop; all held meaningful primary text and plates must fit after camera/contentScale.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "optIn": "layoutsAAdaptive:true",
+      "registryOrder": [
+        "quote-local-wrap-path",
+        "quote-reduce"
+      ],
+      "eligibility": "native full joint insufficient only; native safe unchanged",
+      "sourceRecipe": "src/09d_adaptive_placement.js + local hooks in original native render",
+      "proof": "new segment.envelopes full interval; moving-event-only relaxed candidate has strict hold segment.envelopes and separate segment.relaxedEnvelopes",
+      "quality": "source-copy ordered ranges; native meaningful metadata; complete un-clipped owned ink; stage-space readability floors; post-solution fixed opaque/contrast fields",
+      "limits": {
+        "perRegion": 64,
+        "perCutUnique": 128
+      },
+      "failure": "excluded-during-avoidance; no-certified-composition; original lyrics retained"
+    }
   },
   {
     "id": "ruler",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1621,
+    "sourceLine": 1639,
     "renderSHA256": "11324c02229ccc1dd06e602ae83e97d1e8cf83d23eb07e9ae48c89b4f274de7c",
     "primary": "main and all live dimension/count labels",
     "ownedPlate": "dimension lines, heads, extension lines and guides",
@@ -349,12 +519,16 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Dimension head motion lies along complete dimension line expanded by.8smallSize; all guides remain joint.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "searchBar",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1687,
+    "sourceLine": 1705,
     "renderSHA256": "f3d4251952d5dffdc76bccb6752d88fd05353bf631858edbb4ca09e66fa8135e",
     "primary": "typed main, all search suggestion prefixes/suffixes",
     "ownedPlate": "search/suggestion boxes, magnifiers, close mark and caret",
@@ -365,12 +539,16 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Control width reveal remains inside complete control box; suggestion reveals inside full suggestion plate. Native type hides glyphs without changing positions.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "chat",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1747,
+    "sourceLine": 1765,
     "renderSHA256": "e036ceaa7fd45a032c36f68849eacedebf2a919fb1de22e6676cb34efc0110a9",
     "primary": "all message main glyphs and read/time footer",
     "ownedPlate": "message plates/tails and typing dots",
@@ -381,12 +559,16 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Pop in[0,1.11]; each message lifts upward by sum of later message heights+spacing. Rest-to-initial positiveY sweep plus .012U typing-dot oscillation reserve.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "notification",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1813,
+    "sourceLine": 1831,
     "renderSHA256": "e94b8835712145b1ecb819572039b094f58840a155d240fba3fffffbd0e3bc2e",
     "primary": "main, app, now, title and optional clock",
     "ownedPlate": "notification card, icon and optional stack",
@@ -397,13 +579,17 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "Native card y displacement magnitude<=2(target+cardH+30); native vertical entry crop allowed, all held meaningful primary text and plates must fit after camera/contentScale.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "enabled": false,
+      "scope": "prior accepted native adapter unchanged; arbitrary radii not newly solved"
+    }
   },
   {
     "id": "ticket",
     "source": "src/11p_layoutsA.js",
-    "sourceLine": 1871,
-    "renderSHA256": "8255b27b30eb51762ed9ecab85d3af41d0bd669e4c9eda7663aa870d8e36e0b6",
+    "sourceLine": 1889,
+    "renderSHA256": "f13598dfacbbe247fbcbf708a54cf8f00c17bb78a8980983bd36525cd3cba9e9",
     "primary": "main, ticket label, serial, header/footer and gate metadata",
     "ownedPlate": "main/stub plates, barcode and perforation",
     "tiledAux": "none",
@@ -413,6 +599,22 @@
     "method": "joint native translation; fixed font sizes and relative geometry",
     "continuousProof": "outBack1.2 overshoot<.053 => main y delta[-.04H,.7H]. Main turn<=10+abs(tilt)/2, stub additional12deg and displacement norm hypot(.12tw,.2th). All held meaningful primary text/plates fit after camera/contentScale; native vertical entry crop retained.",
     "unclassifiedLyricPolicy": "primary; no default auxiliary exemption",
-    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017."
+    "limitations": "Finite admitted source parameter domain; joint family may report insufficient-space; panels tone pattern unsupported. Main-app default path stays legacy until017.",
+    "adaptive": {
+      "optIn": "layoutsAAdaptive:true",
+      "registryOrder": [
+        "attached-ticket-wrap-path",
+        "attached-ticket-reduce"
+      ],
+      "eligibility": "native full joint insufficient only; native safe unchanged",
+      "sourceRecipe": "src/09d_adaptive_placement.js + local hooks in original native render",
+      "proof": "new segment.envelopes full interval; moving-event-only relaxed candidate has strict hold segment.envelopes and separate segment.relaxedEnvelopes",
+      "quality": "source-copy ordered ranges; native meaningful metadata; complete un-clipped owned ink; stage-space readability floors; post-solution fixed opaque/contrast fields",
+      "limits": {
+        "perRegion": 64,
+        "perCutUnique": 128
+      },
+      "failure": "excluded-during-avoidance; no-certified-composition; original lyrics retained"
+    }
   }
 ]

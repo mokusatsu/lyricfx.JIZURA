@@ -1,0 +1,32 @@
+{
+  "policy": {
+    "id": "engine-only-dom-v1",
+    "edits": [
+      {
+        "from": "id=\"app\"",
+        "to": "id=\"avoid006-fixture-app\""
+      },
+      {
+        "from": "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n",
+        "to": ""
+      },
+      {
+        "from": "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n",
+        "to": ""
+      }
+    ],
+    "purpose": "同じ描画エンジンを、編集画面の起動・保存復元・外部フォント読み込みを行わない確認専用文書で実行する。製品HTMLとJSの原本は別に保持する。"
+  },
+  "before": {
+    "originalPath": "fixtures/before.html",
+    "originalSHA256": "38b8edf31aaecaa667e1e0248ccc5fa3bbf68380333f819683fdfb6494f3ebe4",
+    "executedPath": "fixtures/before-engine.html",
+    "executedSHA256": "1774827d3bd2e2dee191579ef80804d67f0cc2fc5d86377a0ff8476d21d39216"
+  },
+  "after": {
+    "originalPath": "fixtures/after.html",
+    "originalSHA256": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+    "executedPath": "fixtures/after-engine.html",
+    "executedSHA256": "d0485185d1daf3fea1762ca3d3177e4ea33b4f0f33af14e9b54608e896f4a5ce"
+  }
+}

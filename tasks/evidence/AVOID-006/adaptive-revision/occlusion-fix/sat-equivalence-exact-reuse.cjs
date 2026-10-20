@@ -1,0 +1,13 @@
+const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
+const path='/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-006/adaptive-revision/occlusion-fix/quality-cost-probe.json',d=JSON.parse(fs.readFileSync(path));
+const old=(a,b)=>[a,b].some(poly=>poly.some((p,i)=>{const q=poly[(i+1)%poly.length],nx=q[1]-p[1],ny=p[0]-q[0],av=a.map(v=>v[0]*nx+v[1]*ny),bv=b.map(v=>v[0]*nx+v[1]*ny);return Math.max(...av)<Math.min(...bv)-1e-6||Math.max(...bv)<Math.min(...av)-1e-6;}));
+const product=fs.readFileSync('/workspace/lyricfx.JIZURA/src/09d_adaptive_placement.js','utf8'),definition=product.split('\n').find(line=>line.includes('const separated=(a,b)=>')).trim();
+const next=Function('return ('+definition.slice('const separated='.length,-1)+')')();
+const actual=d.rows.flatMap(r=>r.stats.pairs),rect=(x,y,w,h)=>[[x,y],[x+w,y],[x+w,y+h],[x,y+h]],cases=actual.slice();
+for(const scale of [1e-8,.1,1,100,1e6])for(const gap of [-1e-5,-1e-6,-Number.EPSILON,-0,0,Number.EPSILON,1e-9,1e-6,1e-5])for(const tilt of [0,.05,.7]){const a=rect(0,0,scale,scale),b=rect(scale+gap,0,scale,scale).map(([x,y])=>[x*Math.cos(tilt)-y*Math.sin(tilt),x*Math.sin(tilt)+y*Math.cos(tilt)]);cases.push({a,b});}
+cases.push(...[{a:[],b:[]},{a:[],b:rect(0,0,1,1)},{a:[[0,0]],b:rect(0,0,1,1)},{a:rect(-0,-0,0,0),b:rect(0,0,0,0)},{a:rect(0,0,1,1),b:[[NaN,0],[1,1],[0,1]]}]);
+let state=0x600c1ea;const random=()=>{state^=state<<13;state^=state>>>17;state^=state<<5;return (state>>>0)/4294967296;};
+for(let i=0;i<10000;i++){const scale=10**(-8+random()*14),x=(random()-.5)*1e6,y=(random()-.5)*1e6,w=scale*(.1+random()),h=scale*(.1+random()),gap=(random()-.5)*[Number.EPSILON*scale,1e-6,1e-3*scale][i%3],a=rect(x,y,w,h),b=rect(x+w+gap,y+(random()-.5)*h,scale,h*(.5+random()));cases.push({a,b});}
+for(const {a,b}of cases){assert.equal(next(a,b),old(a,b));assert.equal(next(b,a),old(b,a));}
+let sink=0;const bench=fn=>{const samples=[];for(let sample=0;sample<12;sample++){const t=performance.now();for(let i=0;i<500;i++)for(const {a,b}of actual)sink+=fn(a,b);if(sample>=3)samples.push(performance.now()-t);}return samples;};
+const result={diagnosticOnly:true,productModifiedWithApproval:true,passed:true,randomSeed:0x600c1ea,randomCases:10000,directionChecks:cases.length*2,productSHA256:crypto.createHash('sha256').update(product).digest('hex'),actualPairs:actual.length,totalPairs:cases.length,projectionOrderAndEpsilonUnchanged:true,oldMilliseconds:bench(old),singleScanMilliseconds:bench(next),sink,scriptSHA256:crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex')};fs.writeFileSync(path.replace('quality-cost-probe','sat-equivalence-exact-reuse'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));

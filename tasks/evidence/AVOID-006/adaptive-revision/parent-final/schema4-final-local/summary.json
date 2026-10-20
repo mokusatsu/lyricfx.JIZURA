@@ -1,0 +1,186 @@
+{
+  "scope": "final candidate local evidence only; not publication or human visual acceptance",
+  "createdUTC": "2026-10-20T15:42:49.593Z",
+  "executionAgent": "/root/pack006_schema4",
+  "requestedImplementationModel": "gpt-6.1-sol",
+  "requestedReasoningEffort": "medium",
+  "runtimeModelMetadata": "not independently exposed to this agent",
+  "build": "local-20261020-04",
+  "schema": 4,
+  "revision": "adaptive-v3-lossless-shared-png",
+  "bundle": "review/AVOID-006/local-20261020-04",
+  "manifestSHA256": "2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01d",
+  "candidate": {
+    "compiledJA": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+    "compiledEN": "e4b4c31114221427eb86218e86deed3474395c52a627669c84c985b503f87de7",
+    "fixture": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "sourceCount": 77,
+    "sourceRoot": "/workspace/lyricfx.JIZURA/work/avoid006-final-source-b2c23026",
+    "functionalSummarySHA256": "55a887a772f67467070013b8791a0e5a527ea4c46c73286094b549ad2346f26d",
+    "functionalSuites": 14,
+    "performanceAccepted": true,
+    "acceptedPerformanceReportSHA256": "22d40e7f9c755ac4a77b5cd71a493b5b511f27bbf31f683549f2cc073e2a0956"
+  },
+  "exitCodes": {
+    "capture": 0,
+    "validateSnapshot": 0,
+    "cloneNegativePlayback": 0,
+    "fontBrowser": 0,
+    "validateManifestRootDefault": 0
+  },
+  "coverage": {
+    "capturedCases": 174,
+    "PNGReferences": 696,
+    "actualVideos": 4,
+    "hydratedCompleteObservations": 348,
+    "reRenderedNativeFrames": 348,
+    "reRenderedUIFrames": 348,
+    "rawPNGHashAndBytesExact": true,
+    "nativeAndUIDecodedRGBAAllBytesEqual": true,
+    "colorMetadataPreserved": true,
+    "geometryAndObservationOraclePassed": true,
+    "rapidSeekPlaybackResponsiveJAENStartupPassed": true
+  },
+  "validation": {
+    "validated": true,
+    "scope": "candidate-evidence",
+    "cases": 174,
+    "counts": {
+      "safe": 101,
+      "hold-safe": 27,
+      "insufficient": 0,
+      "excluded": 38,
+      "unsupported": 0,
+      "not-evaluated": 8,
+      "unchangedControls": 8,
+      "accepted18": 18,
+      "adaptiveSafe": 7,
+      "adaptiveHoldSafe": 1,
+      "adaptiveExcluded": 0,
+      "unmetExpectations": 0
+    },
+    "publicURL": null,
+    "manifestSHA256": "2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01d"
+  },
+  "negative": {
+    "passed": true,
+    "canonicalCases": 174,
+    "fullMatrix": 174,
+    "compressedObservationChecks": 12,
+    "pngStorageChecks": 27,
+    "negativeBundleChecks": 15,
+    "playbackFailureInjection": true
+  },
+  "font": {
+    "passed": true,
+    "selectedMatrix": 174,
+    "diagnosticBranches": 6,
+    "escapedRuntimeSymbol": 9656,
+    "historicalNativeDrawTextChecked": false,
+    "fullCurrentComparisonTextChecked": true,
+    "allStrategyLabelBranchesChecked": true,
+    "actualCurrentComparisonTextChecked": true,
+    "primaryAndSymbolMetricsUnchanged": true,
+    "nativeRasterMetricSamples": 6,
+    "filmstripNativeHoldParity": true,
+    "platformFonts": [
+      {
+        "familyName": "DejaVu Sans",
+        "postScriptName": "DejaVuSans",
+        "isCustomFont": true,
+        "glyphCount": 1
+      }
+    ],
+    "output": "/workspace/lyricfx.JIZURA/work/layouts-a-font-regression-33bNyn"
+  },
+  "defaultRoot": {
+    "passed": true,
+    "command": "review.validateManifest(dir) with default sourceRoot=root",
+    "sourceRoot": "/workspace/lyricfx.JIZURA",
+    "cases": 174,
+    "manifestSHA256": "2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01d",
+    "rootAndSnapshotAllNecessaryHashesMatch": true,
+    "toolAndDependencyHashesMatch": true,
+    "oldRootFinalCandidateSummaryUnchanged": true,
+    "functionalSummarySHA256": "55a887a772f67467070013b8791a0e5a527ea4c46c73286094b549ad2346f26d",
+    "performanceAccepted": true,
+    "publicVerificationRun": false
+  },
+  "size": {
+    "cases": 174,
+    "pngReferences": 696,
+    "sharedPNGReferences": 165,
+    "localUniquePNGs": 491,
+    "videos": 4,
+    "localBundleBytes": 188859452,
+    "manifestBytes": 1971428,
+    "indexBytes": 2358638,
+    "groups": {
+      "native/shared-original": 165,
+      "UI/original": 347,
+      "native/sharp": 183,
+      "UI/sharp": 1
+    }
+  },
+  "rootAndSnapshotAllNecessaryHashesMatch": true,
+  "toolAndDependencyRootHashes": {
+    "dev/avoidance/layouts-a-review.cjs": "c9d732c2cebb640a347256a18f838ec93d9e034972e405f48d7010f1b77cae5d",
+    "dev/avoidance/layouts-a-cases.cjs": "8ac1f70aca1deda4d7be95d59b2b58bdc8b1c9b0fa00f0e43a75ebc9fb51bcd4",
+    "dev/avoidance/layouts-a-negative.cjs": "af784a6b7b03f11bc1401dbabfbcf6102877546257a2a409d7814fd425946a6c",
+    "dev/avoidance/layouts-a-png.cjs": "a132b626824d1352a43d74f96f5fb7bbf60d42a8a5c6f8a5cc0ca9a2e132f91c",
+    "dev/avoidance/layouts-a-sample.html": "c7cad9c9e05bb013a506271bd04ea99047bb88747cc58bd7e8df274f261ec994",
+    "dev/avoidance/contract.json": "aba40d0991c671225dcd264e3e046f44b7c98ffe2869a5371fa4e19b8178b8da",
+    "dev/package.json": "add82c136451f4b9430617d9e637b8d8def0312db464f6e0fbad073e5fcd3e91",
+    "dev/package-lock.json": "49305ffe0e14e58c15de5069c03d17760ffc7c544a4952ac3267451004064a66"
+  },
+  "oldRootFinalCandidateSummarySHA256": "904be45523b0f787e3caeecf079beed9fb3338b0d39aba351a1ecbb3cfb653f2",
+  "oldRootFinalCandidateUnchanged": true,
+  "priorSmoke01FailurePreserved": {
+    "log": "work/avoid006-tool-review/schema4/smoke-negative-01.log",
+    "sha256": "9d8571ec0dd2b88e852fd8072645bee83d79c762ba0af11d63f3d56942fb63f6"
+  },
+  "representativeBrowserColorConfirmation": {
+    "scope": "fixed ca1f smoke02, separate tooling evidence from final b2c bundle",
+    "receipt": "tasks/evidence/AVOID-006/adaptive-revision/parent-final/schema4-tool-review/browser-png-decode-receipt.json",
+    "currentScratchReceipt": "work/avoid006-tool-review/schema4/browser-png-decode-receipt.json",
+    "passed": true,
+    "representatives": 4,
+    "allOpaque": true
+  },
+  "logs": {
+    "final-capture-04.log": {
+      "sha256": "a7502e6ea6f54483889e8b90c5d8d7995bbd1e42ab922dbc7a979b27d08a03ae",
+      "bytes": 5624
+    },
+    "final-validate-04.log": {
+      "sha256": "25c0a02a067e5ef161f803af5c0f0bb8c2e7f88a0e6d5bc4f45ea90c648217e6",
+      "bytes": 841
+    },
+    "final-negative-04.log": {
+      "sha256": "31ecf8aab6e03aa668d4f55cbe99ec5b601ea02256252d907bf543e25b4ca0a1",
+      "bytes": 167
+    },
+    "final-font-04.log": {
+      "sha256": "74a4c0290dbd982fa29300c78623f125965364778bf4a08f53d317ac393f1cd6",
+      "bytes": 539
+    },
+    "final-root-default-manifest-04.log": {
+      "sha256": "84c5a076f2bd9797dff76ee4dae2c88af04607ae76736f8af7f535ee67fea472",
+      "bytes": 500
+    },
+    "final-snapshot-receipt.json": {
+      "sha256": "c6facd21a680c9102ced2f834553f8b30adbdeeb644c899215b133b007954de4",
+      "bytes": 26682
+    },
+    "final-bundle-size-04.json": {
+      "sha256": "2f0dc0293e5a796581b2761dfdfe37d8e03fb746153d4af2ac38ee47d798d791",
+      "bytes": 321
+    }
+  },
+  "notRun": [
+    "public raw asset fetch and deployed startup verification",
+    "visual review acceptance by designated reviewer",
+    "commit/push/publication"
+  ],
+  "CPUReleased": true
+}

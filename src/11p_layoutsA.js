@@ -706,8 +706,9 @@ reg('justified', {
   plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['display', 'serif'])), fillFont: rng.pick(fontsOf(st, ['body', 'serif'])), mark: rng.pick(['band', 'under', 'bracket']), pos: rng.pick([0.28, 0.5, 0.66]), dens: rng.range(0.062, 0.078) }),
   render(env) {
     const { W, H, sc } = env, p = env.cut.params, u = U(env);
+    const ar=env.cut.layoutARecipe;
     const text = env.cut.text.trim(), n = J.glyphCount(text);
-    const bx0 = W * 0.08, bw = W * 0.84, by0 = H * 0.09, bh = H * 0.82;
+    let bx0 = W * 0.08, bw = W * 0.84, by0 = H * 0.09, bh = H * 0.82;
     const rowsN = Math.max(8, Math.round(bh / (u * (p.dens || 0.07))));
     const rowH = bh / rowsN, fs = rowH * 0.6;
     // lyric: each line set to the full measure
@@ -715,10 +716,10 @@ reg('justified', {
     let lines = [text];
     const fitL = (l, hmax) => Math.min(hmax, J.fitSize(l, p.font, bw, hmax, { track: 0.04 }));
     if (fitL(text, capH) < rowH * 1.6 && n >= 4) lines = splitK(text, 2);
-    const two = lines.length > 1;
+    let two = lines.length > 1;
     const s2 = two ? Math.min(...lines.map(l => fitL(l, rowH * 2.4))) : 0;
-    const sizes = two ? lines.map(() => s2) : [fitL(text, capH)];
-    const lyH = sizes.reduce((a, b) => a + b, 0) + (lines.length - 1) * rowH * 0.25;
+    let sizes = two ? lines.map(() => s2) : [fitL(text, capH)];
+    let lyH = sizes.reduce((a, b) => a + b, 0) + (lines.length - 1) * rowH * 0.25;
     const span = Math.ceil(lyH / rowH + 0.8);
     const r0 = Math.round(p.pos * (rowsN - span));
     const out = tout(env);
@@ -737,7 +738,8 @@ reg('justified', {
       const sp = (bw - rowW(row, p.fillFont, fs)) / Math.max(1, cpr - 1);
       fastRow(env, row, p.fillFont, fs, bx0, by0 + (r + 0.5) * rowH, sp, sc.sub, a * 0.34);
     }
-    const yc = by0 + (r0 + span / 2) * rowH;
+    if(ar){bx0=ar.measure.x;bw=ar.measure.w;by0=ar.measure.y;bh=ar.measure.h;lines=ar.text.split('\n');two=lines.length>1;sizes=lines.map(()=>ar.mainSizes[0]);lyH=sizes.reduce((a,b)=>a+b,0)+(lines.length-1)*rowH*.25;}
+    const yc = ar?ar.mainBox.y+ar.mainBox.h/2:by0 + (r0 + span / 2) * rowH;
     const mx = sizes[0];
     const plate = p.mark === 'band';
     const e = tin(env, 0.05, 0.5, E.inOutExpo) * out;
@@ -748,10 +750,10 @@ reg('justified', {
       env.line([[bx0 - g + aL, yt], [bx0 - g, yt], [bx0 - g, yb], [bx0 - g + aL, yb]], sc.accent, lw, 1, false);
       env.line([[bx0 + bw + g - aL, yt], [bx0 + bw + g, yt], [bx0 + bw + g, yb], [bx0 + bw + g - aL, yb]], sc.accent, lw, 1, false);
     }
-    const ms = Math.max(11, rowH * 0.28), fa = tin(env, 0.1, 0.4, E.outCubic) * out;
-    env.draw({ text: 'No.' + lineNo(env), font: monoF(env), size: ms, align: 'left', x: bx0, y: by0 - rowH * 0.45, color: sc.sub, alpha: fa, ghost: false });
-    env.draw({ text: rowsN + ' × ' + cpr, font: monoF(env), size: ms, align: 'right', x: bx0 + bw, y: by0 + bh + rowH * 0.45, color: sc.sub, alpha: fa, ghost: false });
-    let bb = null, y = yc - lyH / 2;
+    const ms = Math.max(ar?ar.secondaryFloor:11, rowH * 0.28), fa = tin(env, 0.1, 0.4, E.outCubic) * out;
+    env.draw({ text: 'No.' + lineNo(env), font: monoF(env), size: ms, align: 'left', x: bx0, y: ar?by0+ar.captionHeight/2:by0 - rowH * 0.45, color: sc.sub, alpha: fa, ghost: false });
+    env.draw({ text: rowsN + ' × ' + cpr, font: monoF(env), size: ms, align: 'right', x: bx0 + bw, y: ar?by0+bh-ar.captionHeight/2:by0 + bh + rowH * 0.45, color: sc.sub, alpha: fa, ghost: false });
+    let bb = null, y = yc - lyH / 2,sourceStart=0;
     const col = plate ? onCol(sc, sc.accent) : sc.fg;
     lines.forEach((ln, i) => {
       const ls = sizes[i], nG = [...ln].length;
@@ -760,6 +762,7 @@ reg('justified', {
       if (two) it = { text: ln, font: p.font, size: ls, track: 0.04, align: i === 0 ? 'left' : 'right', x: i === 0 ? bx0 : bx0 + bw, y, color: col, mi: i * 3 };
       else if (nG > 1) { const w0 = meas(ln, p.font, ls).w; it = { text: ln, font: p.font, size: ls, track: (bw - w0) / (ls * (nG - 1)), align: 'left', x: bx0, y, color: col, mi: 0 }; }
       else it = { text: ln, font: p.font, size: ls, x: bx0 + bw / 2, y, color: col, mi: 0 };
+      if(ar){it.mi=0;it.placementOwnedBox=[ar.mainBox.x,ar.mainBox.y,ar.mainBox.w,ar.mainBox.h];it=J.placement.adaptiveSource(env,it,'main','main',sourceStart);sourceStart+=J.glyphCount(ln);}
       bb = J.unionBB(bb, J.mainDraw(env, it));
       y += ls / 2 + rowH * 0.25;
     });
@@ -894,7 +897,7 @@ reg('subtitleBar', {
   plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['body', 'serif'])), bigFont: rng.pick(fontsOf(st, ['display', 'serif'])), big: rng.pick(['dim', 'outline']), bar: rng.range(0.1, 0.13), tc: rng.pick(['rec', 'scene']), place: rng.pick(['bar', 'band']), drift: rng.pick([1, -1]) }),
   render(env) {
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
-    const text = env.cut.text.trim(), lb = env.ltb;
+    const text = env.cut.text.trim(), lb = env.ltb,ar=env.cut.layoutARecipe;
     const cand = [sc.bg, sc.fg, sc.ink, sc.dim];
     let barC = cand[0]; cand.forEach(c => { if (J.lum(c) < J.lum(barC)) barC = c; });
     const pic = barC === sc.bg && Math.abs(J.lum(sc.dim) - J.lum(sc.bg)) > 0.03;   // dark scheme: lift the picture area instead
@@ -904,14 +907,14 @@ reg('subtitleBar', {
     const hh0 = bh * e;
     if (pic && hh0 > 0.5) role(env,'independentDecor','picture-field',()=>env.rect(-2, hh0, W + 4, H - hh0 * 2, sc.dim, J.clamp(e * 1.4), false));
     // huge faint copy behind
-    const bt = flat(text);
-    const bs = Math.min(J.fitSize(bt, p.bigFont, W * 0.94, H * 0.6), H * 0.6);
+    const bt = ar?ar.bigText:flat(text);
+    const bs = ar?ar.bigSize:Math.min(J.fitSize(bt, p.bigFont, W * 0.94, H * 0.6), H * 0.6);
     const ba = tin(env, 0.05, 0.6, E.outCubic) * out;
     if (ba > 0.01) {
-      const bx = W / 2 + (lb / Math.max(1, env.cut.dur) - 0.5) * W * 0.03 * p.drift;
-      if(env.placementEnvelope){const range=env.layoutAEvaluationRange;env.layoutASweep={dx:W*.03*Math.max(...range.map(t=>Math.abs((t-env.cut.start)/Math.max(1,env.cut.dur)-.5)))};}
-      if (p.big === 'outline') env.draw({ text: bt, font: p.bigFont, size: bs, x: bx, y: H / 2, fill: false, stroke: Math.max(1.2, bs * 0.006), strokeColor: sc.sub, alpha: 0.4 * ba, ghost: false });
-      else env.draw({ text: bt, font: p.bigFont, size: bs, x: bx, y: H / 2, color: pic ? sc.bg : sc.dim, alpha: ba * (pic ? 0.7 : 1), ghost: false });
+      const bx = (ar?ar.bigCenter[0]:W / 2) + (lb / Math.max(1, env.cut.dur) - 0.5) * W * 0.03 * p.drift*(ar?ar.bigDriftScale:1),by=ar?ar.bigCenter[1]:H/2;
+      if(env.placementEnvelope){const range=env.layoutAEvaluationRange;env.layoutASweep={dx:W*.03*(ar?ar.bigDriftScale:1)*Math.max(...range.map(t=>Math.abs((t-env.cut.start)/Math.max(1,env.cut.dur)-.5)))};}
+      if (p.big === 'outline') env.draw(ar?J.placement.adaptiveSource(env,{text:bt,font:p.bigFont,size:bs,x:bx,y:by,fill:false,stroke:Math.max(1.2,bs*.006),strokeColor:sc.sub,alpha:.4*ba,ghost:false,placementOwnedBox:[0,bh,W,H-2*bh],placementFixedField:[[0,bh],[W,bh],[W,H-bh],[0,H-bh]]},'huge','huge'):{ text: bt, font: p.bigFont, size: bs, x: bx, y: H / 2, fill: false, stroke: Math.max(1.2, bs * 0.006), strokeColor: sc.sub, alpha: 0.4 * ba, ghost: false });
+      else env.draw(ar?J.placement.adaptiveSource(env,{text:bt,font:p.bigFont,size:bs,x:bx,y:by,color:pic?sc.bg:sc.dim,alpha:ba*(pic?.7:1),ghost:false,placementOwnedBox:[0,bh,W,H-2*bh],placementFixedField:[[0,bh],[W,bh],[W,H-bh],[0,H-bh]]},'huge','huge'):{ text: bt, font: p.bigFont, size: bs, x: bx, y: H / 2, color: pic ? sc.bg : sc.dim, alpha: ba * (pic ? 0.7 : 1), ghost: false });
     }
     env.layoutASweep=null;
     // letterbox bars
@@ -939,7 +942,7 @@ reg('subtitleBar', {
     const o = { track: 0.06, lead: 1.25 };
     let t2 = text, ss;
     const maxH = p.place === 'bar' ? bh * 0.62 : bh * 0.8;
-    ss = Math.min(J.fitSize(t2, p.font, W * 0.84, maxH, o), u * 0.058);
+    ss = ar?ar.subtitleSize:Math.min(J.fitSize(t2, p.font, W * 0.84, maxH, o), u * 0.058);
     if (ss < u * 0.04 && J.glyphCount(text) > 8) { t2 = brk(text, Math.ceil(J.glyphCount(text) / 2)); ss = Math.min(J.fitSize(t2, p.font, W * 0.84, maxH * 1.5, o), u * 0.05); }
     const m = meas(t2, p.font, ss, o);
     let sy, scol;
@@ -950,7 +953,8 @@ reg('subtitleBar', {
       if (pa > 0) env.rect(W / 2 - m.w / 2 - ss * 0.8, sy - m.h / 2 - ss * 0.35, m.w + ss * 1.6, m.h + ss * 0.7, barC, 0.72 * pa, false);
       scol = onCol(sc, barC);
     }
-    const bb = J.mainDraw(env, { text: t2, font: p.font, size: ss, x: W / 2, y: sy, track: 0.06, lead: 1.25, color: scol });
+    const it={text:t2,font:p.font,size:ss,x:W/2,y:sy,track:.06,lead:1.25,color:scol};
+    const bb=J.mainDraw(env,ar?J.placement.adaptiveSource(env,it,'subtitle','subtitle'):it);
     return bb || box(W / 2 - m.w / 2, sy - m.h / 2, W / 2 + m.w / 2, sy + m.h / 2);
   },
 });
@@ -1053,24 +1057,25 @@ reg('splitScreen', {
     }
     const clipTo = poly => { ctx.beginPath(); poly.forEach((q, i) => (i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]))); ctx.closePath(); ctx.clip(); };
     if (e > 0) role(env,'independentDecor','inversion-field',()=>env.poly(plate, plateC, 1, false));
-    const text = brk(env.cut.text.trim(), port ? 5 : 10);
+    const ar=env.cut.layoutARecipe;
+    const text = ar?ar.text:brk(env.cut.text.trim(), port ? 5 : 10);
     const o = { track: 0.02, lead: 1.08 };
-    const size = Math.min(J.fitSize(text, p.font, W * 0.86, H * (p.split === 'h' ? 0.36 : 0.42), o), u * 0.3);
+    const size = ar?ar.mainSizes[0]:Math.min(J.fitSize(text, p.font, W * 0.86, H * (p.split === 'h' ? 0.36 : 0.42), o), u * 0.3);
     const m = meas(text, p.font, size, o);
-    const cy = p.split === 'h' ? H / 2 + (m.h > size * 1.5 ? 0 : size * 0.04) : H / 2;
-    const it = () => ({ text, font: p.font, size, x: W / 2, y: cy, track: 0.02, lead: 1.08 });
+    const cy = ar?ar.center[1]:p.split === 'h' ? H / 2 + (m.h > size * 1.5 ? 0 : size * 0.04) : H / 2;
+    const it = () => ({ text, font: p.font, size, x: ar?ar.center[0]:W / 2, y: cy, track: 0.02, lead: 1.08 });
     // labels on each half
-    const la = tin(env, 0.25, 0.4, E.outCubic) * tout(env), ls = smallSize(env) * 0.9;
+    const la = tin(env, 0.25, 0.4, E.outCubic) * tout(env), ls = ar?Math.max(ar.secondaryFloor,smallSize(env)*.9):smallSize(env) * 0.9;
     let bb;
     ctx.save(); clipTo(other);
-    bb = J.mainDraw(env, Object.assign(it(), { color: tOff }));
-    if (la > 0) env.draw({ text: 'No.' + lineNo(env), font: monoF(env), size: ls, track: 0.15, align: sd > 0 ? 'left' : 'right', x: sd > 0 ? W * 0.05 : W * 0.95, y: sd > 0 || p.split !== 'h' ? H * 0.07 : H * 0.93, color: sc.sub, alpha: la, ghost: false });
+    bb = J.mainDraw(env, ar?J.placement.adaptiveSource(env,Object.assign(it(),{color:tOff}),'main','off'):Object.assign(it(), { color: tOff }));
+    if (la > 0) env.draw({ text: 'No.' + lineNo(env), font: monoF(env), size: ls, track: 0.15, align: sd > 0 ? 'left' : 'right', x: ar?ar.labels[0].x:sd > 0 ? W * 0.05 : W * 0.95, y: ar?ar.labels[0].y:sd > 0 || p.split !== 'h' ? H * 0.07 : H * 0.93, color: sc.sub, alpha: la, ghost: false });
     ctx.restore();
     if (env.pass === 'main' && e > 0) {
       ctx.save(); clipTo(plate);
-      const b2 = J.mainDraw(env, Object.assign(it(), { color: tOn }));
+      const b2 = J.mainDraw(env, ar?J.placement.adaptiveSource(env,Object.assign(it(),{color:tOn}),'main','on'):Object.assign(it(), { color: tOn }));
       bb = J.unionBB(bb, b2);
-      if (la > 0) env.draw({ text: romajiOf(env) || J.fmtTime(env.cut.start), font: monoF(env), size: ls, track: 0.15, align: sd > 0 ? 'right' : 'left', x: sd > 0 ? W * 0.95 : W * 0.05, y: sd > 0 || p.split !== 'h' ? H * 0.93 : H * 0.07, color: tOn, alpha: la, ghost: false });
+      if (la > 0) env.draw({ text: romajiOf(env) || J.fmtTime(env.cut.start), font: monoF(env), size: ls, track: 0.15, align: sd > 0 ? 'right' : 'left', x: ar?ar.labels[1].x:sd > 0 ? W * 0.95 : W * 0.05, y: ar?ar.labels[1].y:sd > 0 || p.split !== 'h' ? H * 0.93 : H * 0.07, color: tOn, alpha: la, ghost: false });
       ctx.restore();
     }
     return bb || box(W / 2 - m.w / 2, cy - m.h / 2, W / 2 + m.w / 2, cy + m.h / 2);
@@ -1137,15 +1142,16 @@ reg('sideways', {
   plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['display', 'display', 'serif'])), side: rng.pick(['left', 'right']), copy: rng.pick(['stack', 'number']), rule: rng.chance(0.75) }),
   render(env) {
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    const ar=env.cut.layoutARecipe;
     const t0 = env.cut.text.trim(), n = J.glyphCount(t0);
-    const text = (port ? n > 12 : n > 6) ? brk(t0, Math.ceil(n / 2)) : t0;
+    const text = ar?ar.text:(port ? n > 12 : n > 6) ? brk(t0, Math.ceil(n / 2)) : t0;
     const o = { track: 0.02, lead: 1.02 };
     const L = H * 0.88, T = W * (port ? 0.4 : 0.3);
-    const size = Math.min(J.fitSize(text, p.font, L, T, o), u * (port ? 0.34 : 0.3));
+    const size = ar?ar.mainSizes[0]:Math.min(J.fitSize(text, p.font, L, T, o), u * (port ? 0.34 : 0.3));
     const m = meas(text, p.font, size, o);
     const left = p.side === 'left';
     const mx = W * 0.05;
-    const cx = left ? mx + m.h / 2 : W - mx - m.h / 2;
+    const cx = ar?ar.center[0]:left ? mx + m.h / 2 : W - mx - m.h / 2,cy=ar?ar.center[1]:H/2;
     const rot = left ? -90 : 90;
     const out = tout(env);
     // divider rule
@@ -1155,30 +1161,33 @@ reg('sideways', {
       env.line([[rx, H * 0.06], [rx, H * 0.06 + H * 0.88 * e]], sc.accent, Math.max(2, u * 0.003), 1, false);
     }
     // horizontal copy block in the free area
-    const ax0 = left ? rx + W * 0.04 : W * 0.07, ax1 = left ? W * 0.93 : rx - W * 0.04;
+    const cp=ar?.companion,ax0 = cp?cp.x:left ? rx + W * 0.04 : W * 0.07, ax1 = cp?cp.x+cp.w:left ? W * 0.93 : rx - W * 0.04;
     const aw = ax1 - ax0;
     const ca = tin(env, 0.2, 0.45, E.outCubic) * out;
     if (ca > 0.01 && aw > u * 0.2) {
-      const ls = smallSize(env);
+      if(env.cut.placementAdaptiveTrial)env.layoutAMotion='side-companion';
+      const ls = ar?Math.max(ar.secondaryFloor/.85,smallSize(env)):smallSize(env);
       const copy = env.cut.lineText || env.cut.text;
-      const cs = Math.min(u * 0.05, J.fitSize(brk(copy, Math.max(4, Math.floor(aw / (u * 0.05)))), bodyF(env), aw, H * 0.3, { lead: 1.5 }));
-      const ct = brk(copy, Math.max(4, Math.floor(aw / (cs * 1.02))));
+      const cs = ar?ar.companionSize:Math.min(u * 0.05, J.fitSize(brk(copy, Math.max(4, Math.floor(aw / (u * 0.05)))), bodyF(env), aw, H * 0.3, { lead: 1.5 }));
+      const ct = ar?ar.companionText:brk(copy, Math.max(4, Math.floor(aw / (cs * 1.02))));
       const cm = meas(ct, bodyF(env), cs, { lead: 1.5 });
       const sl = (1 - ca) * u * 0.03;
       if (p.copy === 'number') {
-        const ns = Math.min(aw * 0.5, H * 0.3);
-        env.draw({ text: lineNo(env), font: p.font, size: ns, align: 'left', x: ax0 - ns * 0.04, y: H * 0.1 + ns * 0.45 + sl, fill: false, stroke: Math.max(1.5, ns * 0.012), strokeColor: sc.sub, alpha: ca, ghost: false });
+        const ns = ar?ar.numberSize:Math.min(aw * 0.5, H * 0.3);
+        env.draw({ text: lineNo(env), font: p.font, size: ns, align: 'left', x: ax0 - ns * 0.04, y: (cp?cp.y:H * 0.1) + ns * 0.45 + sl, fill: false, stroke: Math.max(1.5, ns * 0.012), strokeColor: sc.sub, alpha: ca, ghost: false });
       } else {
-        env.draw({ text: 'No.' + lineNo(env), font: monoF(env), size: ls, track: 0.15, align: 'left', x: ax0, y: H * 0.1 + sl, color: sc.accent, alpha: ca, ghost: false });
-        env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls, track: 0.15, align: 'left', x: ax0, y: H * 0.1 + ls * 1.6 + sl, color: sc.sub, alpha: ca, ghost: false });
+        env.draw({ text: 'No.' + lineNo(env), font: monoF(env), size: ls, track: 0.15, align: 'left', x: ax0, y: (cp?cp.y:H * 0.1) + sl, color: sc.accent, alpha: ca, ghost: false });
+        env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls, track: 0.15, align: 'left', x: ax0, y: (cp?cp.y:H * 0.1) + ls * 1.6 + sl, color: sc.sub, alpha: ca, ghost: false });
       }
-      const by = H * 0.9 - cm.h / 2;
-      env.draw({ text: ct, font: bodyF(env), size: cs, lead: 1.5, align: 'left', x: ax0, y: by - sl, color: sc.fg, alpha: ca * 0.9, ghost: false });
+      const by = (cp?cp.y+cp.h:H * 0.9) - cm.h / 2;
+      env.draw({ text: ct, font: bodyF(env), size: cs, lead: 1.5, align: 'left', x: ax0, y: by - sl, color: sc.fg, alpha: ca * 0.9, ghost: false,placementOwnedBox:ar?[cp.x-ls*.15,cp.y+cp.h*.5,cp.w+ls*.3,cp.h*.5]:null });
       const rom = romajiOf(env);
       if (rom && rom !== copy) env.draw({ text: rom, font: monoF(env), size: ls * 0.85, track: 0.2, align: 'left', x: ax0, y: by - cm.h / 2 - ls * 1.4 - sl, color: sc.sub, alpha: ca, ghost: false });
     }
-    ctx.save(); ctx.translate(cx, H / 2); ctx.rotate(rot * J.DEG);
-    const bb = J.mainDraw(env, { text, font: p.font, size, x: 0, y: 0, track: 0.02, lead: 1.02, color: sc.fg });
+    env.layoutAMotion=null;
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(rot * J.DEG);
+    const it={text,font:p.font,size,x:0,y:0,track:.02,lead:1.02,color:sc.fg,placementOwnedBox:ar?[-ar.box.h/2,-ar.box.w/2,ar.box.h,ar.box.w]:null};
+    const bb=J.mainDraw(env,ar?J.placement.adaptiveSource(env,it):it);
     ctx.restore();
     const B = box(cx - m.h / 2, H / 2 - m.w / 2, cx + m.h / 2, H / 2 + m.w / 2);
     return bb ? B : null;
@@ -1437,6 +1446,7 @@ reg('panels', {
     const tot = ws.reduce((a, b) => a + b, 0);
     const sl = Math.min(Math.tan(p.slant * J.DEG) * cross / 2, L / k * 0.18);
     const bounds = [0]; let acc = 0; ws.forEach(w => { acc += w; bounds.push(acc / tot * L); });
+    const ar=env.cut.layoutARecipe;
     const polys = [];
     for (let i = 0; i < k; i++) {
       const a = bounds[i], b = bounds[i + 1];
@@ -1444,7 +1454,7 @@ reg('panels', {
       const a0 = a + (i === 0 ? 0 : g / 2), b0 = b - (i === k - 1 ? 0 : g / 2);
       // in reading-axis coordinates: (t, c) with c in [0, cross]
       const q = [[a0 + sa, 0], [b0 + sb, 0], [b0 - sb, cross], [a0 - sa, cross]];
-      const poly = q.map(([t, c]) => (port ? [m + c, m + t] : [W - m - t, m + c]));
+      const poly = ar?ar.polygons[i].map(p=>p.slice()):q.map(([t, c]) => (port ? [m + c, m + t] : [W - m - t, m + c]));
       poly.along = Math.min((b0 + sb) - (a0 + sa), (b0 - sb) - (a0 - sa));
       polys.push(poly);
     }
@@ -1462,13 +1472,13 @@ reg('panels', {
       if (rev.length < 3) return;
       const accent = i === p.acc % k;
       const cx = poly.reduce((a, q) => a + q[0], 0) / 4, cy = poly.reduce((a, q) => a + q[1], 0) / 4;
-      const pw = port ? cross : poly.along, ph = port ? poly.along : cross;
+      const pw = ar?Math.max(...poly.map(p=>p[0]))-Math.min(...poly.map(p=>p[0])):port ? cross : poly.along, ph = ar?Math.max(...poly.map(p=>p[1]))-Math.min(...poly.map(p=>p[1])):port ? poly.along : cross;
       const iw = pw * 0.8, ih = ph * 0.8;
       const vert = ih > iw * 1.25 && !hasLatin(ch[i]);
       const c0 = vert ? strip(ch[i]) : ch[i], cn = J.glyphCount(c0);
       let txt = c0, size = J.fitSize(c0, p.font, Math.max(10, iw), Math.max(10, ih), { vertical: vert, lead: 1.15 });
       if (cn >= 4) { const t2 = brk(c0, Math.ceil(cn / 2)), s2 = J.fitSize(t2, p.font, Math.max(10, iw), Math.max(10, ih), { vertical: vert, lead: 1.15 }); if (s2 > size * 1.15) { txt = t2; size = s2; } }
-      size = Math.min(size, u * 0.24);
+      size = ar?ar.mainSizes[i%ar.mainSizes.length]:Math.min(size, u * 0.24);
       if (accent) env.poly(rev, sc.ink, out, false);
       if (env.pass === 'main' && out > 0) {
         ctx.save(); pathOf(ctx, rev); ctx.clip();
@@ -1488,7 +1498,8 @@ reg('panels', {
       ctx.save(); pathOf(ctx, rev); ctx.clip();
       const it = vert ? { text: txt, font: p.font, size, x: cx, y: cy, vertical: true, color: accent ? onCol(sc, sc.ink) : sc.fg, mi: (d + 0.08) / stag }
         : { text: txt, font: p.font, size, x: cx, y: cy, lead: 1.15, color: accent ? onCol(sc, sc.ink) : sc.fg, mi: (d + 0.08) / stag };
-      bb = J.unionBB(bb, J.mainDraw(env, it));
+      it.placementOwnedPolygon=ar?poly:null;
+      bb = J.unionBB(bb, J.mainDraw(env,ar?J.placement.adaptiveSource(env,it,'main','main',J.placement.adaptiveRangeStart(ch,i)):it));
       ctx.restore();
     });
     return bb || box(m, m, W - m, H - m);
@@ -1502,25 +1513,27 @@ reg('filmstrip', {
   name: 'フィルム', tags: ['emotional', 'calm', 'graphic'], w: 0.8, fits: n => n >= 1 && n <= 18, busy: true, treat: 'safe', portrait: 0.8,
   plan: (rng, cut, st) => ({ chunks: splitK(cut.text, Math.min(3, cut.n), cut.n <= 4 ? 3 : 2), font: rng.pick(fontsOf(st, ['display', 'serif'])), dir: rng.pick([1, -1]), tone: rng.pick(['ink', 'fg']), codes: rng.chance(0.75), tilt: rng.pick([0, 0, -3, 3]) }),
   render(env) {
-    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env),ar=env.cut.layoutARecipe,fr=ar?.film;
     let ch = p.chunks && p.chunks.length ? p.chunks.slice(0, 3) : [env.cut.text];
     const slots = ch.length === 3 ? ch : ch.length === 2 ? [ch[0], ch[1], null] : [null, ch[0], null];
     const v = port;                                          // vertical strip in portrait
     const A = v ? H : W, Bd = v ? W : H;                      // along / across
-    const fw0 = Math.min(A * 0.88 / 3.2, Bd * 0.62 * 1.3);    // frame length along the strip
-    const fh = fw0 / 1.3, band = fh / 0.72, gap = fw0 * 0.08, pitch = fw0 + gap;
+    const fw0 = fr?fr.frameAlong:Math.min(A * 0.88 / 3.2, Bd * 0.62 * 1.3);    // frame length along the strip
+    const fh = fr?fr.band*.72:fw0 / 1.3, band = fr?fr.band:fh / 0.72, gap = fw0 * 0.08, pitch = fw0 + gap;
     const stripC = p.tone === 'fg' ? sc.fg : sc.ink;
     const tcol = onCol(sc, sc.bg) === sc.bg ? sc.fg : onCol(sc, sc.bg);
     const eIn = tin(env, 0, 0.6, E.outExpo), eOut = E.inExpo(env.pOut);
-    const off = (1 - eIn) * A * 0.9 * p.dir - eOut * A * 1.4 * p.dir + (env.ltb - env.cut.dur / 2) * u * 0.03 * p.dir;
+    const off = fr?((1-eIn)*fr.travel-eOut*fr.travel*1.4+(env.ltb-env.cut.dur/2)*Math.min(u*.03,fr.travel/Math.max(1,env.cut.dur)))*p.dir:(1 - eIn) * A * 0.9 * p.dir - eOut * A * 1.4 * p.dir + (env.ltb - env.cut.dur / 2) * u * 0.03 * p.dir;
     const fa = 1 - J.smooth(0.55, 1, env.pOut);
-    const P2 = (a, b) => (v ? [W / 2 + b, a] : [a, H / 2 + b]);   // (along, across) → screen
-    ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(p.tilt * J.DEG); ctx.translate(-W / 2, -H / 2);
+    const center=fr?fr.center:[W/2,H/2];
+    const P2 = (a, b) => (v ? [center[0] + b, a] : [a, center[1] + b]);   // (along, across) → screen
+    ctx.save(); ctx.translate(...center); ctx.rotate((fr?fr.turn:p.tilt) * J.DEG); ctx.translate(-center[0],-center[1]);
+    if(env.cut.placementAdaptiveTrial)env.layoutAMotion='film-strip';
     // band
-    const bandLen = A * 1.6, c0 = A / 2 + off;
-    if(env.placementEnvelope){const sweep=env.layoutAEvaluationRange,drift=Math.max(...sweep.map(t=>Math.abs(t-env.cut.start-env.cut.dur/2)))*u*.03;const along=A*2.4+drift;const theta=p.tilt*J.DEG,axis=v?[-Math.sin(theta),Math.cos(theta)]:[Math.cos(theta),Math.sin(theta)];env.layoutASweep={vector:axis.map(v=>v*along)};}
-    if (v) env.rect(W / 2 - band / 2, c0 - bandLen / 2, band, bandLen, stripC, fa, false);
-    else env.rect(c0 - bandLen / 2, H / 2 - band / 2, bandLen, band, stripC, fa, false);
+    const bandLen = fr?fw0*3.2:A * 1.6, c0 = (v?center[1]:center[0]) + off;
+    if(env.placementEnvelope){const sweep=env.layoutAEvaluationRange,drift=Math.max(...sweep.map(t=>Math.abs(t-env.cut.start-env.cut.dur/2)))*u*.03;const along=fr?fr.travel*2.4+Math.max(...sweep.map(t=>Math.abs(t-env.cut.start-env.cut.dur/2)))*Math.min(u*.03,fr.travel/Math.max(1,env.cut.dur)):A*2.4+drift;const theta=(fr?fr.turn:p.tilt)*J.DEG,axis=v?[-Math.sin(theta),Math.cos(theta)]:[Math.cos(theta),Math.sin(theta)];env.layoutASweep={vector:axis.map(v=>v*along)};}
+    if (v) env.rect(center[0] - band / 2, c0 - bandLen / 2, band, bandLen, stripC, fa, false);
+    else env.rect(c0 - bandLen / 2, center[1] - band / 2, bandLen, band, stripC, fa, false);
     // sprocket holes
     const hp = band * 0.11, hw = hp * 0.55, hh = hp * 0.72, hm = (band - fh) / 4;
     const nH = Math.min(120, Math.ceil(bandLen / hp));
@@ -1535,7 +1548,7 @@ reg('filmstrip', {
     }
     // edge codes
     if (p.codes) {
-      const cs = Math.max(10, hm * 0.9), ca = J.clamp(eIn * 2 - 1) * fa;
+      const cs = Math.max(ar?ar.secondaryFloor:10, hm * 0.9), ca = J.clamp(eIn * 2 - 1) * fa;
       for (let i = -2; i <= 2; i++) {
         const a = c0 + i * pitch - pitch / 2;
         const q = P2(a, (band / 2 - hm * 2.2) * (v ? 1 : -1));
@@ -1545,7 +1558,7 @@ reg('filmstrip', {
     // frames (one type size for the whole strip)
     const stag = Math.max(0.01, env.cut.stagger || 0.04);
     const fwX0 = v ? fh : fw0, fhY0 = v ? fw0 : fh;
-    const fsz = Math.min(u * 0.2, ...slots.filter(Boolean).map(t => J.fitSize(brk(t, v ? 6 : 4), p.font, fwX0 * 0.8, fhY0 * 0.7, { lead: 1.1 })));
+    const fsz = ar?ar.mainSizes[0]:Math.min(u * 0.2, ...slots.filter(Boolean).map(t => J.fitSize(brk(t, v ? 6 : 4), p.font, fwX0 * 0.8, fhY0 * 0.7, { lead: 1.1 })));
     let bb = null;
     slots.forEach((t, i) => {
       const a = c0 + (i - 1) * pitch;
@@ -1553,18 +1566,19 @@ reg('filmstrip', {
       env.rrect(fx0, fy0, fwX, fhY, fh * 0.04, sc.bg, fa, false);
       ctx.save(); ctx.beginPath(); ctx.rect(fx0, fy0, fwX, fhY); ctx.clip();
       if (t) {
-        const tt = brk(t, v ? 6 : 4), size = fsz;
-        bb = J.unionBB(bb, J.mainDraw(env, { text: tt, font: p.font, size, x: q[0], y: q[1], lead: 1.1, color: tcol, mi: 0.15 * i / stag }));
+        const tt = ar?J.placement.adaptiveWrap(t,p.font,fsz,fwX*.8):brk(t, v ? 6 : 4), size = fsz;
+        const it={text:tt,font:p.font,size,x:q[0],y:q[1],lead:1.1,color:tcol,mi:.15*i/stag,placementOwnedBox:ar?[fx0+fwX*.08,fy0+fhY*.1,fwX*.84,fhY*.8]:null};
+        bb=J.unionBB(bb,J.mainDraw(env,ar?J.placement.adaptiveSource(env,it,'main','main',J.placement.adaptiveRangeStart(slots,i)):it));
       } else {
         const r = Math.min(fwX, fhY) * 0.3, la = J.clamp(eIn * 2 - 1) * fa;
         env.circle(q[0], q[1], r, null, sc.sub, 1.5, 0.5 * la, false);
         env.line([[q[0] - r * 1.4, q[1]], [q[0] + r * 1.4, q[1]]], sc.sub, 1.2, 0.4 * la, false);
         env.line([[q[0], q[1] - r * 1.4], [q[0], q[1] + r * 1.4]], sc.sub, 1.2, 0.4 * la, false);
-        env.draw({ text: String(i === 0 ? 3 : 1), font: p.font, size: r * 1.1, x: q[0], y: q[1], color: sc.sub, alpha: 0.6 * la, ghost: false });
+        env.draw({ text: String(i === 0 ? 3 : 1), font: p.font, size: ar?Math.max(ar.secondaryFloor,r*1.1):r*1.1, x: q[0], y: q[1], color: sc.sub, alpha: 0.6 * la, ghost: false });
       }
       ctx.restore();
     });
-    ctx.restore();
+    ctx.restore();env.layoutAMotion=null;
     return bb || box(W / 2 - (v ? fh : fw0 * 1.6) / 2, H / 2 - (v ? fw0 * 1.6 : fh) / 2, W / 2 + (v ? fh : fw0 * 1.6) / 2, H / 2 + (v ? fw0 * 1.6 : fh) / 2);
   },
 });
@@ -1577,12 +1591,13 @@ reg('quote', {
   plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['serif', 'display'])), markFont: rng.pick(fontsOf(st, ['serif'])), marks: /[A-Za-z]/.test(cut.text) ? 'latin' : rng.pick(['kagi', 'double', 'kagi']), markC: rng.pick(['accent', 'sub']), attrib: rng.chance(0.75) }),
   render(env) {
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
-    const text = brk(env.cut.text.trim(), port ? 6 : 11);
+    const ar=env.cut.layoutARecipe;
+    const text = ar?ar.text:brk(env.cut.text.trim(), port ? 6 : 11);
     const o = { track: 0.04, lead: 1.25 };
-    const size = Math.min(J.fitSize(text, p.font, W * (port ? 0.58 : 0.62), H * 0.4, o), u * 0.16);
+    const size = ar?ar.mainSizes[0]:Math.min(J.fitSize(text, p.font, W * (port ? 0.58 : 0.62), H * 0.4, o), u * 0.16);
     const m = meas(text, p.font, size, o);
-    const cy = H / 2 - (p.attrib ? size * 0.25 : 0);
-    const bx0 = W / 2 - m.w / 2, bx1 = W / 2 + m.w / 2, by0 = cy - m.h / 2, by1 = cy + m.h / 2;
+    const cx=ar?ar.center[0]:W/2,cy = (ar?ar.center[1]:H / 2) - (p.attrib ? size * 0.25 : 0);
+    const bx0 = cx - m.w / 2, bx1 = cx + m.w / 2, by0 = cy - m.h / 2, by1 = cy + m.h / 2;
     const out = tout(env);
     const e = E.outExpo(J.clamp((env.lt - 0.02) / 0.5)) * (1 - E.inCubic(env.pOut));
     const mc = p.markC === 'accent' ? sc.accent : sc.sub;
@@ -1590,23 +1605,26 @@ reg('quote', {
     const [o1, c1] = latin ? ['\u201C', '\u201D'] : p.marks === 'double' ? ['\u300E', '\u300F'] : ['\u300C', '\u300D'];
     const ia = inkBox(p.markFont, o1), ib = inkBox(p.markFont, c1);
     const gap = size * 0.2, inkW = Math.max(0.05, ia.r - ia.l, ib.r - ib.l);
-    const ms = Math.min(Math.max(size * (latin ? 3.2 : 4), m.h * 1.8), u * 0.5, (W * 0.94 - m.w - gap * 2) / (2 * inkW));
-    const far = u * 0.35 * (1 - e);
+    const ms = (ar?ar.markScale:1)*Math.min(Math.max(size * (latin ? 3.2 : 4), m.h * 1.8), u * 0.5, (W * 0.94 - m.w - gap * 2) / (2 * inkW));
+    const far = (ar?ar.markTravel:u * 0.35) * (1 - e);
     if (e > 0.001) {
+      if(env.cut.placementAdaptiveTrial)env.layoutAMotion='quote-marks';
+      if(ar&&env.placementEnvelope)env.layoutASweep={dx:ar.markTravel,dy:ar.markTravel*.6};
       const al = J.clamp(e * 1.5);
       const ax = bx0 - gap - ia.r * ms - far, ay = by0 - size * 0.1 - ia.t * ms - far * 0.6;
       const bxx = bx1 + gap - ib.l * ms + far, byy = (latin ? by1 - size * 0.95 - ib.t * ms : by1 + size * 0.1 - ib.b * ms) + far * 0.6;
       env.draw({ text: o1, font: p.markFont, size: ms, x: ax, y: ay, color: mc, alpha: al, ghost: false });
       env.draw({ text: c1, font: p.markFont, size: ms, x: bxx, y: byy, color: mc, alpha: al, ghost: false });
     }
+    env.layoutASweep=null;env.layoutAMotion=null;
     if (p.attrib) {
-      const a = tin(env, 0.35, 0.4, E.outCubic) * out, ls = smallSize(env);
+      const a = tin(env, 0.35, 0.4, E.outCubic) * out, ls = ar?Math.max(ar.secondaryFloor,smallSize(env)):smallSize(env);
       const at = '— ' + (romajiOf(env) || 'No.' + lineNo(env));
       const aw = Math.min(W * 0.4, meas(at, bodyF(env), ls, { track: 0.12 }).w);
-      env.line([[W / 2 - aw / 2 - ls * 2, by1 + size * 0.95], [W / 2 - aw / 2 - ls * 0.8, by1 + size * 0.95]], mc, 1.5, a, false);
-      env.draw({ text: at.slice(2), font: bodyF(env), size: ls, track: 0.12, x: W / 2, y: by1 + size * 0.95, color: sc.sub, alpha: a, ghost: false });
+      env.line([[cx - aw / 2 - ls * 2, by1 + size * 0.95], [cx - aw / 2 - ls * 0.8, by1 + size * 0.95]], mc, 1.5, a, false);
+      env.draw({ text: at.slice(2), font: bodyF(env), size: ls, track: 0.12, x: cx, y: by1 + size * 0.95, color: sc.sub, alpha: a, ghost: false });
     }
-    const bb = J.mainDraw(env, { text, font: p.font, size, x: W / 2, y: cy, track: 0.04, lead: 1.25, color: sc.fg });
+    const bb = J.mainDraw(env, ar?J.placement.adaptiveSource(env,{ text, font:p.font,size,x:cx,y:cy,track:.04,lead:1.25,color:sc.fg }):{ text, font: p.font, size, x: W / 2, y: cy, track: 0.04, lead: 1.25, color: sc.fg });
     return bb || box(bx0, by0, bx1, by1);
   },
 });
@@ -1873,49 +1891,53 @@ reg('ticket', {
   plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['display', 'serif'])), fill: rng.pick(['accent', 'ink', 'outline']), tilt: rng.range(-5, 5), label: rng.pick(['ADMIT ONE', 'LIVE', 'TICKET']), serial: rng.int(1, 999999) }),
   render(env) {
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
-    const tw = Math.min(W * (port ? 0.9 : 0.74), H * 1.9), th = Math.min(tw * (port ? 0.46 : 0.38), H * 0.5);
+    const ar=env.cut.layoutARecipe,tr=ar?.ticket;
+    const tw = tr?tr.w:Math.min(W * (port ? 0.9 : 0.74), H * 1.9), th = tr?tr.h:Math.min(tw * (port ? 0.46 : 0.38), H * 0.5);
     const stubW = tw * 0.22, px0 = -tw / 2 + tw - stubW;
     const nr = th * 0.075, r = th * 0.05;
     const outline = p.fill === 'outline';
     const plate = p.fill === 'accent' ? sc.accent : sc.ink;
     const tc = outline ? sc.fg : onCol(sc, plate), lc = outline ? sc.sub : tc;
     const eIn = E.outBack(J.clamp(env.lt / 0.5), 1.2), eOut = E.inCubic(env.pOut);
-    const cx = W / 2, cy = H / 2 + (1 - eIn) * H * 0.7;
-    const rot = p.tilt * (1 - eOut * 0.5) + (1 - eIn) * 10;
+    const cx = tr?tr.center[0]:W / 2, cy = (tr?tr.center[1]:H / 2) + (1 - eIn) * (tr?tr.travel:H * 0.7);
+    const rot = p.tilt * (1 - eOut * 0.5) + (1 - eIn) * (tr?tr.entryTurn:10);
     const T = ticketParts(-tw / 2, -th / 2, tw, th, px0, nr, r);
     const a = J.clamp(eIn * 3) * (1 - eOut);
-    if(env.placementEnvelope)env.layoutASweep={pivot:[cx,cy],scale:[1,1],angle:Math.abs(p.tilt)*.5+10,negativeY:H*.04,positiveY:H*.7};
+    if(env.placementEnvelope)env.layoutASweep={pivot:[cx,cy],scale:[1,1],angle:Math.abs(p.tilt)*.5+(tr?tr.entryTurn:10),negativeY:tr?tr.travel*.06:H*.04,positiveY:tr?tr.travel:H*.7};
+    if(env.cut.placementAdaptiveTrial)env.layoutAMotion='ticket-body';
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG);
     // stub tears away on exit
     const ticketSweep=env.layoutASweep;
-    if(env.placementEnvelope)env.layoutASweep={pivot:[cx,cy],scale:[1,1],angle:Math.abs(p.tilt)*.5+22,negativeY:H*.04+Math.hypot(tw*.12,th*.2),positiveY:H*.7+Math.hypot(tw*.12,th*.2),dx:Math.hypot(tw*.12,th*.2)};
+    if(env.placementEnvelope)env.layoutASweep={pivot:[cx,cy],scale:[1,1],angle:Math.abs(p.tilt)*.5+(tr?tr.entryTurn+tr.tearTurn:22),negativeY:(tr?tr.travel*.06:H*.04)+(tr?tr.tearDistance:Math.hypot(tw*.12,th*.2)),positiveY:(tr?tr.travel:H*.7)+(tr?tr.tearDistance:Math.hypot(tw*.12,th*.2)),dx:tr?tr.tearDistance:Math.hypot(tw*.12,th*.2)};
     const tear = eOut;
-    ctx.save(); ctx.translate(tear * tw * 0.12, tear * th * 0.2); ctx.rotate(tear * 12 * J.DEG);
+    if(env.cut.placementAdaptiveTrial)env.layoutAMotion='ticket-stub';
+    ctx.save(); ctx.translate(tear*(tr?tr.tearDistance*.5:tw*.12),tear*(tr?tr.tearDistance*.8:th*.2));ctx.rotate(tear*(tr?tr.tearTurn:12)*J.DEG);
     if (outline) env.line(closeLoop(T.stub), sc.fg, Math.max(2, th * 0.012), a, false); else env.poly(T.stub, plate, a, false);
-    const ls = Math.max(11, th * 0.07), sx = px0 + stubW / 2;
-    env.draw({ text: p.label, font: monoF(env), size: ls, track: 0.25, x: sx - stubW * 0.22, y: 0, rot: -90, color: tc, alpha: a, ghost: false });
-    env.draw({ text: 'No.' + String(p.serial).padStart(6, '0'), font: monoF(env), size: ls * 0.8, track: 0.12, x: sx + stubW * 0.02, y: 0, rot: -90, color: lc, alpha: a * 0.8, ghost: false });
+    const ls = Math.max(ar?ar.secondaryFloor/.8:11, th * 0.07), sx = px0 + stubW / 2;
+    env.draw({ text: p.label, font: monoF(env), size: ls, track: 0.25, x: ar?px0+stubW*.25:sx - stubW * 0.22, y: 0, rot: -90, color: tc, alpha: a, ghost: false,placementOwnedBox:ar?[px0,-th/2,stubW*.48,th]:null });
+    env.draw({ text: 'No.' + String(p.serial).padStart(6, '0'), font: monoF(env), size: ls * 0.8, track: 0.12, x: ar?px0+stubW*.61:sx + stubW * 0.02, y: 0, rot: -90, color: lc, alpha: a * 0.8, ghost: false,placementOwnedBox:ar?[px0+stubW*.48,-th/2,stubW*.26,th]:null });
     const bx = sx + stubW * 0.26, bh2 = th * 0.7;
     for (let i = 0, y = -bh2 / 2; i < 40 && y < bh2 / 2; i++) { const hgt = th * (0.006 + 0.014 * J.r(p.serial, i, 3)); env.rect(bx - stubW * 0.08, y, stubW * 0.16, hgt, tc, a * 0.85, false); y += hgt + th * (0.006 + 0.01 * J.r(p.serial, i, 4)); }
     ctx.restore();
-    env.layoutASweep=ticketSweep;
+    env.layoutASweep=ticketSweep;if(env.cut.placementAdaptiveTrial)env.layoutAMotion='ticket-body';
     if (outline) env.line(closeLoop(T.main), sc.fg, Math.max(2, th * 0.012), a, false); else env.poly(T.main, plate, a, false);
     // perforation
     for (let y = -th / 2 + nr * 1.6; y < th / 2 - nr * 1.6; y += th * 0.05) env.rect(px0 - 1, y, 2.5, th * 0.025, lc, a * 0.7, false);
     // header / footer furniture
     const mx0 = -tw / 2 + th * 0.12, mx1 = px0 - th * 0.12;
-    env.draw({ text: p.label + '  ·  No.' + lineNo(env), font: monoF(env), size: ls, track: 0.2, align: 'left', x: mx0, y: -th / 2 + th * 0.14, color: lc, alpha: a, ghost: false });
+    env.draw({ text: p.label + '  ·  No.' + lineNo(env), font: monoF(env), size: ls, track: 0.2, align: 'left', x: mx0, y: -th / 2 + th * 0.14, color: lc, alpha: a, ghost: false,placementOwnedBox:ar?[mx0-ls*.15,-th/2,mx1-mx0+ls*.15,th*.24]:null });
     env.line([[mx0, -th / 2 + th * 0.24], [mx1, -th / 2 + th * 0.24]], lc, 1.2, a * 0.6, false);
     env.line([[mx0, th / 2 - th * 0.24], [mx1, th / 2 - th * 0.24]], lc, 1.2, a * 0.6, false);
-    env.draw({ text: 'GATE ' + String.fromCharCode(65 + (p.serial % 6)) + '   ROW ' + pad2(1 + p.serial % 30) + '   SEAT ' + pad2(1 + (p.serial >> 3) % 40), font: monoF(env), size: ls * 0.9, track: 0.15, align: 'left', x: mx0, y: th / 2 - th * 0.14, color: lc, alpha: a, ghost: false });
-    env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.9, track: 0.1, align: 'right', x: mx1, y: th / 2 - th * 0.14, color: lc, alpha: a, ghost: false });
+    env.draw({ text: 'GATE ' + String.fromCharCode(65 + (p.serial % 6)) + '   ROW ' + pad2(1 + p.serial % 30) + '   SEAT ' + pad2(1 + (p.serial >> 3) % 40), font: monoF(env), size: ls * 0.9, track: 0.15, align: 'left', x: mx0, y: th / 2 - th * 0.14, color: lc, alpha: a, ghost: false,placementOwnedBox:ar?[mx0-ls*.15,th/2-th*.24,(mx1-mx0)*.76+ls*.15,th*.24]:null });
+    env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.9, track: 0.1, align: 'right', x: mx1, y: th / 2 - th * 0.14, color: lc, alpha: a, ghost:false,placementOwnedBox:ar?[mx0+(mx1-mx0)*.76,th/2-th*.24,(mx1-mx0)*.24+ls*.15,th*.24]:null });
     // title = lyric
     const t0 = env.cut.text.trim(), n = J.glyphCount(t0);
-    const text = brk(t0, port ? 6 : 9);
+    const text = ar?ar.text:brk(t0, port ? 6 : 9);
     const aw = mx1 - mx0, ah = th * 0.44;
-    const size = Math.min(J.fitSize(text, p.font, aw, ah, { track: 0.03, lead: 1.1 }), th * 0.3);
-    const bb = J.mainDraw(env, { text, font: p.font, size, x: mx0, y: 0, align: 'left', track: 0.03, lead: 1.1, color: tc });
-    ctx.restore();
+    const size = ar?ar.mainSizes[0]:Math.min(J.fitSize(text, p.font, aw, ah, { track: 0.03, lead: 1.1 }), th * 0.3);
+    const it={text,font:p.font,size,x:mx0,y:0,align:'left',track:.03,lead:1.1,color:tc,placementOwnedBox:ar?[mx0,-ah/2,aw,ah]:null};
+    const bb=J.mainDraw(env,ar?J.placement.adaptiveSource(env,it):it);
+    ctx.restore();env.layoutAMotion=null;
     return bb ? box(cx - tw / 2, cy - th / 2, cx + tw / 2, cy + th / 2) : null;
   },
 });

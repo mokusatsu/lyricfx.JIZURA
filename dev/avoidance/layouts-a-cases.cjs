@@ -1,6 +1,5 @@
-/* AVOID-006 selected native comparison conditions. This is not an exhaustive
- * parameter/transform/annotation Cartesian matrix. Anchors use unscaled native
- * layouts, and must be admitted by the actual continuous certificate. */
+/* AVOID-006 adaptive revision: selected source-backed comparison inputs.
+ * This is not an exhaustive Cartesian matrix or executed screenshot evidence. */
 const layouts=['lowerThird','corners','staircase','zigzag','gridCells','dropCap','justified','frameBox','bubble','subtitleBar','ticker','splitScreen','mirror','sideways','edgeFrame','perspective','hanko','genkou','panels','filmstrip','quote','ruler','searchBar','chat','notification','ticket'];
 const names={"lowerThird":"下部テロップ","corners":"対角配置","staircase":"階段","zigzag":"ジグザグ","gridCells":"升目","dropCap":"大きな頭文字","justified":"版面","frameBox":"額縁","bubble":"吹き出し","subtitleBar":"字幕帯","ticker":"ティッカー","splitScreen":"二分割","mirror":"鏡像","sideways":"縦倒し","edgeFrame":"外周","perspective":"奥行き","hanko":"落款","genkou":"原稿用紙","panels":"コマ割り","filmstrip":"フィルム","quote":"引用","ruler":"寸法線","searchBar":"検索窓","chat":"チャット","notification":"通知","ticket":"チケット"};
 const displayName=layout=>names[layout]+' ('+layout+')';
@@ -18,7 +17,7 @@ const targets={
  justified:'版面の主歌詞行と全体へ繰り返す埋め草の文字。',
  frameBox:'主歌詞を囲む枠と、枠の上下にある小さなキャプション。',
  bubble:'主歌詞と吹き出しの輪郭・尾、出現時の回転と拡大。',
- subtitleBar:'下部の主字幕と大きな淡い複製（どちらもprimary）、レターボックスと背景面、上部タイムコード。',
+ subtitleBar:'下部の主字幕と大きな淡い複製（どちらも回避対象）、レターボックスと背景面、上部タイムコード。',
  ticker:'主見出しと下部の流れる反復帯、LIVE等のタグと時刻。',
  splitScreen:'分割境界の両側へ描かれる主歌詞、反転した色、両側の小さな番号。',
  mirror:'主歌詞と水平線、その下で上下反転し帯ごとに揺れる反射。',
@@ -36,27 +35,32 @@ const targets={
  notification:'主歌詞を含む通知の板、アプリ名・時刻・タイトル。',
  ticket:'主歌詞と傾いた券面、切り離される半券、連番と座席情報。'
 };
-/* Observed native anchors from the product lead's layouts-a-anchors.json.
- * All26 passed lead's interval oracle and seven sampled actual phase checks.
- * Capture independently admits each row again; this definition is not evidence.
- * 18 use radius.2; eight use an explicitly diagnostic corner circle radius.02.
- * Circle/text/parameter changes are visible. All130 default spatial exploration
- * rows remain native defaults, with safe/insufficient strictly enforced. */
+/* The accepted18 native examples retain their exact06b8745 inputs. The revised
+ * eight start at radius.2 with multiple characters; no corner diagnostic is an
+ * acceptance anchor. A revised row may honestly report candidate exclusion. */
+const revised=['justified','subtitleBar','splitScreen','sideways','panels','filmstrip','quote','ticket'];
+const accepted=layouts.filter(id=>!revised.includes(id));
 const anchors={"lowerThird":{"W":960,"H":540,"cx":0.5,"cy":0.5,"radius":0.2},"corners":{"W":1920,"H":1080,"cx":0.5,"cy":0.25,"radius":0.2},"staircase":{"W":960,"H":540,"cx":0.5,"cy":0.25,"radius":0.2},"zigzag":{"W":960,"H":540,"cx":0.5,"cy":0.25,"radius":0.2},"gridCells":{"W":960,"H":540,"cx":0.5,"cy":0.25,"radius":0.2},"dropCap":{"W":960,"H":540,"cx":0.5,"cy":0.25,"radius":0.2},"justified":{"W":1920,"H":1080,"cx":0,"cy":0,"radius":0.02},"frameBox":{"W":960,"H":540,"cx":0.5,"cy":0.25,"radius":0.2},"bubble":{"text":"光","W":960,"H":540,"cx":0.5,"cy":0.5,"radius":0.2,"params":{"shape":"round","burst":false,"tilt":0}},"subtitleBar":{"W":1920,"H":1080,"cx":0,"cy":0,"radius":0.02,"text":"光","params":{"bar":0.13}},"ticker":{"W":960,"H":540,"cx":0.5,"cy":0.75,"radius":0.2},"splitScreen":{"W":1920,"H":1080,"cx":0,"cy":0,"radius":0.02},"mirror":{"W":960,"H":540,"cx":0.5,"cy":0.25,"radius":0.2},"sideways":{"W":1920,"H":1080,"cx":0,"cy":0,"radius":0.02},"edgeFrame":{"W":960,"H":540,"cx":0.5,"cy":0.5,"radius":0.2},"perspective":{"text":"光","W":960,"H":540,"cx":0.5,"cy":0.5,"radius":0.2,"params":{"guides":false,"mode":"floor"}},"hanko":{"W":960,"H":540,"cx":0.5,"cy":0.25,"radius":0.2},"genkou":{"text":"光","W":960,"H":540,"cx":0.25,"cy":0.5,"radius":0.2},"panels":{"W":1920,"H":1080,"cx":0,"cy":0,"radius":0.02,"params":{"fx":"none"}},"filmstrip":{"W":1920,"H":1080,"cx":0,"cy":0,"radius":0.02},"quote":{"W":1920,"H":1080,"cx":0,"cy":0,"radius":0.02},"ruler":{"W":540,"H":960,"cx":0.5,"cy":0.25,"radius":0.2,"params":{"guides":false}},"searchBar":{"W":540,"H":960,"cx":0.5,"cy":0.5,"radius":0.2},"chat":{"W":960,"H":540,"cx":0.5,"cy":0.25,"radius":0.2},"notification":{"text":"光","W":960,"H":540,"cx":0.25,"cy":0.5,"radius":0.2,"params":{"pos":"center","stack":false}},"ticket":{"W":1920,"H":1080,"cx":0,"cy":0,"radius":0.02}};
-function fullMatrix(){
- const out=[],add=(hid,id,s)=>out.push({id,hid:'AVOID-006-'+hid,seed:704,text:'風の先へ',W:960,H:540,cx:.5,cy:.5,radius:.2,time:1.5,availability:'implemented',expectation:'safe-or-explicit-insufficient',...s});
- const preserve='ネイティブの文字サイズ、読み順、枠との相対位置、seed、カット開始・終了時刻。';
- for(const layout of layouts){
-  add('H01',layout+'-native-anchor',{layout,...anchors[layout],safeAnchor:true,expectation:'safe',phase:'hold',label:displayName(layout)+(anchors[layout].radius===.02?'・角の小円の診断用安全例（通常円の証明ではありません）':'・必須安全例')+'（円中心 '+anchors[layout].cx+','+anchors[layout].cy+'／半径 '+anchors[layout].radius+'／文字「'+(anchors[layout].text||'風の先へ')+'」'+(anchors[layout].params?'／設定 '+JSON.stringify(anchors[layout].params):'')+'）',look:targets[layout]+' この安全例の円条件は、中央半径0.2の標準探索条件と異なる場合があります。円中心・半径・文字・明示設定は上記ラベルと条件欄を確認してください。通常設定の探索条件は別の行に保持しています。',change:(anchors[layout].radius===.02?'角の小円に対する診断用の安全例です。標準半径0.2の回避性能を示しません。':'')+'明示した円条件で、主歌詞と所有する要素が構造を保ち円を避けることを確認します。',preserve});
-  for(const [aspect,W,H]of aspects)for(const [position,cy]of aspect==='landscape'?[['上',.25],['中央',.5],['下',.75]]:[['中央',.5]])add('H01',`${layout}-${aspect}-${cy}-hold`,{layout,W,H,cy,aspect,position,phase:'hold',label:`${displayName(layout)}・${aspect}・円${position}・hold`,look:targets[layout],change:'探索条件です。安全なら主歌詞の回避、制約不足なら元サイズのままの診断を確認します。制約不足を安全例には数えません。',preserve});
+for(const id of revised)anchors[id]={W:1920,H:1080,cx:.5,cy:.42,radius:.2,text:'風の先へ',...(id==='panels'?{params:{fx:'none'}}:{})};
+function cases(){
+ const out=[],add=(hid,id,s)=>out.push({id,hid:'AVOID-006-'+hid,seed:704,text:'風の先へ',W:960,H:540,cx:.5,cy:.5,radius:.2,time:1.5,availability:'implemented',expectation:'adaptive-result',...s});
+ const preserve='歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。';
+ for(const layout of layouts){const unchanged=accepted.includes(layout);add('H01',layout+'-native-anchor',{layout,...anchors[layout],safeAnchor:true,revisedAnchor:!unchanged,acceptedControl:unchanged,expectation:unchanged?'unchanged-safe':'adaptive-safe',phase:'hold',label:displayName(layout)+(unchanged?'・受入済みの不変対照':'・1920×1080／円中心(0.5,0.42)・半径0.2／複文字'+(layout==='panels'?'／fx:none':'')),look:targets[layout],change:unchanged?'受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。':'実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。',preserve:unchanged?'元の描画・文字サイズ・配置・時刻をそのまま維持します。':preserve});}
+ for(const layout of revised){
+  add('H01',layout+'-standard-size-limit',{layout,exploratory:true,phase:'hold',label:displayName(layout)+'・960×540／中央円0.2・成立限界',look:targets[layout],change:'主要例より小さい寸法・中央位置での成立限界です。候補除外も正直に表示し、主要成功例の代用にはしません。',preserve});
+  for(const radius of [.02,.1,.3,.45])add('H01',`${layout}-radius-${radius}`,{layout,radius,exploratory:true,phase:'hold',label:displayName(layout)+'・半径 '+radius,look:targets[layout],change:'半径を変えた固定検証条件です。実際の選択戦略または候補除外を確認します。小円を通常半径の安全例の代わりにはしません。',preserve});
+  for(const [aspect,W,H]of aspects.filter(([id])=>id!=='landscape'))add('H01',`${layout}-${aspect}-center`,{layout,W,H,aspect,exploratory:true,phase:'hold',label:displayName(layout)+'・'+aspect+'／中央円',look:targets[layout],change:'同じ複文字を主要アスペクトで比較します。',preserve});
+  for(const [position,cy]of [['上',.25],['下',.75]])add('H01',`${layout}-position-${cy}`,{layout,cy,position,exploratory:true,phase:'hold',label:displayName(layout)+'・円'+position,look:targets[layout],change:'円位置に応じて実際に選ばれた候補と保持した構造を比べます。',preserve});
+  for(const [amount,text]of [['short','未来'],['long','風の先へ歩いて行こう']])add('H01',`${layout}-text-${amount}`,{layout,text,exploratory:true,phase:'hold',label:displayName(layout)+'・文字量 '+text,look:targets[layout],change:'文字量で成立する段階が変わる場合、その実測結果と理由を確認します。',preserve});
+  for(const [phase,time]of phases.filter(([id])=>id!=='hold'))add('H02',`${layout}-phase-${phase}`,{layout,...anchors[layout],time,phase,label:displayName(layout)+'・'+phase,look:targets[layout],change:'選択構成の出現／退出時刻を確認します。時刻で候補を選び直したり、主歌詞・枠・注釈を取り残したりしないことを見ます。',preserve});
+  const regions=[{id:'small',start:0,end:2,center:{x:.5,y:.42},radius:.12},{id:'large',start:2,end:null,center:{x:.5,y:.42},radius:.3}];
+  if(['filmstrip','ticket'].includes(layout))add('H02',layout+'-region-first-hold',{layout,...anchors[layout],regions,time:1.5,phase:'hold',label:displayName(layout)+'・1920×1080／円中心(0.5,0.42)・半径区間0.12の保持中',look:targets[layout],change:'同一入力の半径0.12区間で実際に選ばれた配置と、入退場だけ円を通れる動きの組合せを確認します。保持中は厳守します。',preserve});
+  for(const time of [1.99,2,2.01])add('H02',`${layout}-region-boundary-${time}`,{layout,...anchors[layout],regions,time,phase:'region-boundary',boundary:2,epsilon:.01,label:displayName(layout)+'・半径切替 t='+time,look:targets[layout],change:'半径0.12→0.3の区間境界です。各区間で選択が固定され、同じ時刻へseekした結果が再現することを確認します。',preserve});
  }
- for(const layout of ['panels','mirror','edgeFrame','ticker','chat'])for(const [phase,time]of phases.filter(([p])=>p!=='hold'))add('H01',`${layout}-native-anchor-${phase}`,{layout,...anchors[layout],time:layout==='chat'&&phase==='enter'?.55:time,phase,expectation:'safe',label:displayName(layout)+'・必須安全例の'+phase,look:targets[layout],change:'同じ円と同じネイティブ演出の出現／退出時刻です。主歌詞と枠の結合、反射や反復との関係を確認します。',preserve});
- for(const layout of ['mirror','perspective','splitScreen'])for(const [phase,time]of phases)add('H02',`${layout}-transform-${phase}`,{layout,...anchors[layout],time,phase,expectation:'safe',label:displayName(layout)+'・複製／変換・'+phase,look:targets[layout],change:'変換後の主歌詞・意味を持つ付属文字も含め、同一の移動単位で整合することを確認します。複製の反転・遠近・分割を保ちます。',preserve});
- add('H02','lowerThird-supplied-note',{layout:'lowerThird',...anchors.lowerThird,note:'意味のある注釈',params:{label:'copy'},requiredDrawnText:'意味のある注釈',expectation:'safe',phase:'hold',label:displayName('lowerThird')+'・実際に描く供給注釈',look:targets.lowerThird,change:'入力した注釈が実際に描画され、主歌詞と整合して移動することを確認します。',preserve});
- for(const layout of ['ticker','edgeFrame','justified','subtitleBar'])add('H03',`${layout}-auxiliary-hold`,{layout,...anchors[layout],expectation:'safe',phase:'hold',label:displayName(layout)+(layout==='subtitleBar'?'・大きな複製も主歌詞':'・主歌詞と維持する補助'),look:targets[layout],change:layout==='subtitleBar'?'下部字幕と大きな淡い複製は両方ともprimaryです。同じ移動単位で円外へ移動します。複製を補助扱いして除外しません。':'主歌詞の円外経路と、変更前の配置を維持する密な補助反復を比べてください。',preserve:layout==='subtitleBar'?'文字サイズと主字幕・大きな複製の関係を維持します。レターボックスと背景面は独立装飾です。':'補助反復は元の全ステージ配置を維持します。円形マスクはAVOID-018で扱い、ここでは実装していません。'});
- for(const [control,label]of [['legacy','従来ON（旧自動領域）'],['fullstage','従来の全画面描画'],['off','回避OFF'],['manual','手動領域'],['emphasis','強調の例外'],['lock','ロックした配置']])add('H03','control-'+control,{control,layout:'lowerThird',label,expectation:'unchanged',look:label+'の文字位置・文字サイズ・枠。',change:'前後で同じネイティブ描画を維持する対照です。新しい回避成功例には数えません。',preserve:label+'の指定と描画。'});
- add('H03','long-conflict',{layout:'panels',text:'文字サイズとコマ構造を維持すると選択した円外候補に収まらない歌詞',cx:.5,cy:.5,radius:.45,expectation:'insufficient',label:'大きな中央円・経路候補の制約不足',look:targets.panels,change:'文字を勝手に縮めず「制約不足」を明示します。候補群の限界であり、あらゆる配置が不可能という証明ではありません。',preserve});
+ for(const [layout,cx,cy,phase,time,group]of [['quote',.1,.5,'exit',3.99,'quote-left'],['ticket',.5,.9,'enter',.01,'ticket-bottom']])for(const [capturePhase,captureTime]of [[phase,time],['hold',1.5]])add('H02',`${group}-passage-${capturePhase}`,{layout,W:1920,H:1080,cx,cy,radius:.2,time:captureTime,phase:capturePhase,passageGroup:group,requiredPassage:capturePhase!=='hold',expectation:'hold-safe',label:displayName(layout)+'・位置を変えた入退場通過の確認／1920×1080・円('+cx+','+cy+')半径0.2／'+(capturePhase==='hold'?'保持中':capturePhase==='exit'?'退場':'入場'),look:layout==='quote'?'移動する引用符が退場時に円を通るところと、本文・出典が円に入らないところ。':'券面と半券が入場時に円を通り、保持中は円から離れているところ。',change:'主要8例とは円の位置が異なる、通過を実画素で確かめる専用条件です。同じ入力の保持中と対にして確認します。',preserve:'動く入退場要素以外と、保持中の回避を厳守します。歌詞・読み順・seed・寸法・時刻は前後同じです。'});
+ for(const layout of ['ticker','edgeFrame','justified','subtitleBar']){const unchanged=accepted.includes(layout);add('H03',layout+'-ownership',{layout,...(unchanged||layout==='subtitleBar'?anchors[layout]:{}),acceptedControl:unchanged,expectation:unchanged?'unchanged-safe':'adaptive-safe',phase:'hold',label:displayName(layout)+'・主歌詞／補助／独立装飾',look:targets[layout],change:layout==='subtitleBar'?'下部字幕と大きな淡い複製は両方とも回避対象です。構成変更後も除外されていないことを確認します。':'主歌詞の回避と、配置を保持する補助反復を分けて確認します。',preserve:layout==='subtitleBar'?'主字幕と大きな複製の意味・読み順。レターボックスと背景面は独立装飾です。':'密な補助反復は全ステージの配置を維持します。補助の円形マスクは018で対応予定です。'});}
+ for(const [control,layout,label]of [['manual','panels','手動配置'],['lock','ticket','配置ロック'],['explicit-size','justified','明示文字サイズ'],['off','subtitleBar','回避OFF'],['manual','splitScreen','分割演出の手動配置'],['lock','filmstrip','フィルムのロック'],['explicit-size','quote','引用の明示文字サイズ'],['off','sideways','縦倒しの回避OFF']])add('H03',layout+'-control-'+control,{layout,control,...(control==='explicit-size'?{lyricSize:72}:{}),label:displayName(layout)+'・'+label,expectation:'unchanged',look:targets[layout],change:'例外指定を保つ前後一致の対照です。新構成への書換えや無断の追加縮小を行わないことを確認します。',preserve:label+'と元の歌詞・描画・サイズ・配置。'});
+ for(const layout of ['panels','ticket'])add('H03',layout+'-explicit-scale',{layout,control:'explicit-scale',explicitScale:.72,expectation:'explicit-scale-preserved',label:displayName(layout)+'・明示contentScale0.72',look:targets[layout],change:'実project入力の明示倍率を保持します。同サイズの組版は認め、追加の限定縮小は認めません。',preserve:'明示倍率0.72・歌詞・読み順・時刻。構成の実測とサイズを前後で確認します。'});
  return out;
 }
-function cases(){return fullMatrix();}
-module.exports=cases;Object.assign(module.exports,{fullMatrix,layouts,anchors,aspects,phases,targets,names,displayName});
+module.exports=cases;Object.assign(module.exports,{fullMatrix:cases,layouts,revised,accepted,anchors,aspects,phases,targets,names,displayName});

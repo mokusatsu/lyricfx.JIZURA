@@ -1,0 +1,233 @@
+{
+  "root": "/workspace/lyricfx.JIZURA",
+  "hashes": {
+    "placement": "33c9d56913cbc760c414cc4bbedb0fcc36c1ea0b7338b0ac2359a6db94d0b30e",
+    "adaptive": "833fffa80dda333ddcdbc00cb093c505898bc38df69f1e33fb5ea93b974cc4a6",
+    "extracted": "be05fce29b93ceb35f224a1f3c9fae0c0257a1fb92bea3e3229b2160737dd8fe"
+  },
+  "cases": 11,
+  "rows": [
+    {
+      "name": "ordinary-owned-overflow",
+      "full": [
+        "OWNED_TEXT_OVERFLOW",
+        "Full un-clipped {\"role\":\"metadata\",\"text\":\"X\",\"size\":10,\"box\":[0,0,1,1],\"ink\":{\"x0\":44,\"y0\":44,\"x1\":56,\"y1\":56},\"owned\":{\"x0\":0,\"y0\":0,\"x1\":1,\"y1\":1}} leaves owned body/frame"
+      ],
+      "prepass": [
+        "OWNED_TEXT_OVERFLOW",
+        "Full un-clipped {\"role\":\"metadata\",\"text\":\"X\",\"size\":10,\"box\":[0,0,1,1],\"ink\":{\"x0\":44,\"y0\":44,\"x1\":56,\"y1\":56},\"owned\":{\"x0\":0,\"y0\":0,\"x1\":1,\"y1\":1}} leaves owned body/frame"
+      ],
+      "validationSupported": true,
+      "measurementSupported": false
+    },
+    {
+      "name": "successful-prepass-requires-full-certificate",
+      "full": [
+        "accepted"
+      ],
+      "prepass": [
+        "accepted"
+      ],
+      "validationSupported": true,
+      "measurementSupported": false
+    },
+    {
+      "name": "unsupported-after-owned",
+      "full": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "Unadapted Canvas operation drawImage"
+          }
+        ]
+      ],
+      "prepass": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "Unadapted Canvas operation drawImage"
+          }
+        ]
+      ],
+      "validationSupported": false,
+      "measurementSupported": false
+    },
+    {
+      "name": "invalid-radius-after-owned",
+      "full": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "INVALID_GEOMETRY",
+            "message": "Finite nonnegative rounded rectangle radius required"
+          }
+        ]
+      ],
+      "prepass": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "INVALID_GEOMETRY",
+            "message": "Finite nonnegative rounded rectangle radius required"
+          }
+        ]
+      ],
+      "validationSupported": false,
+      "measurementSupported": false
+    },
+    {
+      "name": "invalid-circle-after-owned",
+      "full": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "Empty/nonfinite ink"
+          }
+        ]
+      ],
+      "prepass": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "Empty/nonfinite ink"
+          }
+        ]
+      ],
+      "validationSupported": false,
+      "measurementSupported": false
+    },
+    {
+      "name": "collapsed-rounded-shape-after-owned",
+      "full": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "Invalid polygon"
+          }
+        ]
+      ],
+      "prepass": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "Invalid polygon"
+          }
+        ]
+      ],
+      "validationSupported": false,
+      "measurementSupported": false
+    },
+    {
+      "name": "overflow-shape-after-owned",
+      "full": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "Empty/nonfinite ink"
+          }
+        ]
+      ],
+      "prepass": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "Empty/nonfinite ink"
+          }
+        ]
+      ],
+      "validationSupported": false,
+      "measurementSupported": false
+    },
+    {
+      "name": "event-ceiling-after-owned",
+      "full": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "GEOMETRY_LIMIT",
+            "message": "Frame draw event ceiling exceeded"
+          }
+        ]
+      ],
+      "prepass": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "GEOMETRY_LIMIT",
+            "message": "Frame draw event ceiling exceeded"
+          }
+        ]
+      ],
+      "validationSupported": false,
+      "measurementSupported": false
+    },
+    {
+      "name": "glyph-ceiling-after-owned",
+      "full": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "GEOMETRY_LIMIT",
+            "message": "Frame glyph ceiling exceeded"
+          }
+        ]
+      ],
+      "prepass": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "GEOMETRY_LIMIT",
+            "message": "Frame glyph ceiling exceeded"
+          }
+        ]
+      ],
+      "validationSupported": false,
+      "measurementSupported": false
+    },
+    {
+      "name": "unsupported-font-before-owned",
+      "full": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "TextMetrics actual ink unavailable"
+          }
+        ]
+      ],
+      "prepass": [
+        "UNSUPPORTED_MEASUREMENT",
+        [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "TextMetrics actual ink unavailable"
+          }
+        ]
+      ],
+      "validationSupported": false,
+      "measurementSupported": false
+    },
+    {
+      "name": "shared-budget-isolated",
+      "full": [
+        "OWNED_TEXT_OVERFLOW",
+        "Full un-clipped {\"role\":\"metadata\",\"text\":\"X\",\"size\":10,\"box\":[0,0,1,1],\"ink\":{\"x0\":44,\"y0\":44,\"x1\":56,\"y1\":56},\"owned\":{\"x0\":0,\"y0\":0,\"x1\":1,\"y1\":1}} leaves owned body/frame"
+      ],
+      "prepass": [
+        "OWNED_TEXT_OVERFLOW",
+        "Full un-clipped {\"role\":\"metadata\",\"text\":\"X\",\"size\":10,\"box\":[0,0,1,1],\"ink\":{\"x0\":44,\"y0\":44,\"x1\":56,\"y1\":56},\"owned\":{\"x0\":0,\"y0\":0,\"x1\":1,\"y1\":1}} leaves owned body/frame"
+      ],
+      "validationSupported": true,
+      "measurementSupported": false
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,161 @@
+{
+  "sourceSHA256": "04c874299416b657f38ed5d3aa551a557137220094daffe96e11c3f6f2d19299",
+  "blockSHA256": "5446eb2bfa846cd38fc78d906f66419e0b519628ba48c924390bf5b25bffa570",
+  "passed": true,
+  "rows": [
+    {
+      "label": "same-key replacement entry and byte accounting",
+      "revision": 1,
+      "contexts": 1,
+      "entries": 1,
+      "hits": 1,
+      "misses": 0,
+      "serializedBytes": 114,
+      "bytes": {
+        "context": 18,
+        "key": 6,
+        "value": 90,
+        "envelopes": 0,
+        "recipe": 8,
+        "failureDetails": 4
+      },
+      "maxContexts": 1024,
+      "maxEntries": 4096,
+      "maxSerializedBytes": 8388608
+    },
+    {
+      "label": "1100 exact contexts",
+      "revision": 1,
+      "contexts": 1024,
+      "entries": 1024,
+      "hits": 1,
+      "misses": 0,
+      "serializedBytes": 102704,
+      "bytes": {
+        "context": 20632,
+        "key": 6144,
+        "value": 75928,
+        "envelopes": 0,
+        "recipe": 8192,
+        "failureDetails": 4096
+      },
+      "maxContexts": 1024,
+      "maxEntries": 4096,
+      "maxSerializedBytes": 8388608
+    },
+    {
+      "label": "5000 exact entries",
+      "revision": 1,
+      "contexts": 1,
+      "entries": 903,
+      "hits": 2,
+      "misses": 1,
+      "serializedBytes": 81276,
+      "bytes": {
+        "context": 6,
+        "key": 12642,
+        "value": 68628,
+        "envelopes": 0,
+        "recipe": 7224,
+        "failureDetails": 3612
+      },
+      "maxContexts": 1024,
+      "maxEntries": 4096,
+      "maxSerializedBytes": 8388608
+    },
+    {
+      "label": "byte eviction",
+      "revision": 1,
+      "contexts": 41,
+      "entries": 41,
+      "hits": 2,
+      "misses": 1,
+      "serializedBytes": 8204262,
+      "bytes": {
+        "context": 572,
+        "key": 246,
+        "value": 8203444,
+        "envelopes": 0,
+        "recipe": 328,
+        "failureDetails": 164
+      },
+      "maxContexts": 1024,
+      "maxEntries": 4096,
+      "maxSerializedBytes": 8388608
+    },
+    {
+      "label": "lossless codec owned freeze and exact byte accounting",
+      "revision": 1,
+      "contexts": 1,
+      "entries": 1,
+      "hits": 3,
+      "misses": 1,
+      "serializedBytes": 400,
+      "bytes": {
+        "context": 12,
+        "key": 6,
+        "value": 382,
+        "envelopes": 172,
+        "recipe": 22,
+        "failureDetails": 12
+      },
+      "maxContexts": 1024,
+      "maxEntries": 4096,
+      "maxSerializedBytes": 8388608
+    },
+    {
+      "label": "font revision clears all",
+      "revision": 2,
+      "contexts": 0,
+      "entries": 0,
+      "hits": 3,
+      "misses": 2,
+      "serializedBytes": 0,
+      "bytes": {
+        "context": 0,
+        "key": 0,
+        "value": 0,
+        "envelopes": 0,
+        "recipe": 0,
+        "failureDetails": 0
+      },
+      "maxContexts": 1024,
+      "maxEntries": 4096,
+      "maxSerializedBytes": 8388608
+    },
+    {
+      "label": "oversized entry bypasses cache",
+      "revision": 2,
+      "contexts": 0,
+      "entries": 0,
+      "hits": 3,
+      "misses": 2,
+      "serializedBytes": 0,
+      "bytes": {
+        "context": 0,
+        "key": 0,
+        "value": 0,
+        "envelopes": 0,
+        "recipe": 0,
+        "failureDetails": 0
+      },
+      "maxContexts": 1024,
+      "maxEntries": 4096,
+      "maxSerializedBytes": 8388608
+    }
+  ],
+  "tests": [
+    "same-key replacement accounting",
+    "context LRU eviction",
+    "entry ceiling",
+    "serialized+buffer byte ceiling",
+    "codec signedzero/subnormal/finite extreme roundtrip",
+    "nonfinite coordinate rejection",
+    "caller input detached",
+    "public values plain deeply frozen owned arrays",
+    "cache hit decodes separately owned arrays",
+    "exact buffer length accounting",
+    "font revision invalidation",
+    "oversized entry bypass"
+  ]
+}
