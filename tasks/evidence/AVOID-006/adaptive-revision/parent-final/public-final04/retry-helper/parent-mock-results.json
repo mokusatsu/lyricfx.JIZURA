@@ -1,0 +1,714 @@
+{
+  "passed": true,
+  "scope": "Node mocks only; no Chrome/HTTP/public validation",
+  "browserRun": false,
+  "networkRun": false,
+  "cases": [
+    {
+      "name": "200 once with real binary bytes",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 2,
+      "delays": [],
+      "events": [
+        {
+          "event": "success",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 200,
+          "retry": false,
+          "bytes": 7264,
+          "sha256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1",
+          "expectedSHA256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1",
+          "hashMatchesExpected": true
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "503 then200 real1000ms backoff",
+      "passed": true,
+      "calls": 2,
+      "elapsedMs": 1002,
+      "delays": [
+        1000
+      ],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 503,
+          "retry": true,
+          "backoffMs": 1000
+        },
+        {
+          "event": "success",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 2,
+          "status": 200,
+          "retry": false,
+          "bytes": 7264,
+          "sha256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1",
+          "expectedSHA256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1",
+          "hashMatchesExpected": true
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "503503200 backoff1000/2000",
+      "passed": true,
+      "calls": 3,
+      "elapsedMs": 0,
+      "delays": [
+        1000,
+        2000
+      ],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 503,
+          "retry": true,
+          "backoffMs": 1000
+        },
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 2,
+          "status": 503,
+          "retry": true,
+          "backoffMs": 2000
+        },
+        {
+          "event": "success",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 3,
+          "status": 200,
+          "retry": false,
+          "bytes": 7264,
+          "sha256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1",
+          "expectedSHA256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1",
+          "hashMatchesExpected": true
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "503 third response stops; fourth never invoked",
+      "passed": true,
+      "calls": 3,
+      "elapsedMs": 2,
+      "delays": [
+        1000,
+        2000
+      ],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 503,
+          "retry": true,
+          "backoffMs": 1000
+        },
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 2,
+          "status": 503,
+          "retry": true,
+          "backoffMs": 2000
+        },
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 3,
+          "status": 503,
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "non503 HTTP403 executes once",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 403,
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "non503 HTTP404 executes once",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 404,
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "non503 HTTP500 executes once",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 500,
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "non503 HTTP502 executes once",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 502,
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "503 then403 stops",
+      "passed": true,
+      "calls": 2,
+      "elapsedMs": 1,
+      "delays": [
+        1000
+      ],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 503,
+          "retry": true,
+          "backoffMs": 1000
+        },
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 2,
+          "status": 403,
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "network fetch rejection no retry",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": null,
+          "error": {
+            "name": "TypeError",
+            "message": "network fetch rejection"
+          },
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": null,
+      "originalErrorReferencePreserved": true,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "TLS authority rejection no retry",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": null,
+          "error": {
+            "name": "TypeError",
+            "message": "TLS authority rejection"
+          },
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": null,
+      "originalErrorReferencePreserved": true,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "network after503 no third attempt",
+      "passed": true,
+      "calls": 2,
+      "elapsedMs": 0,
+      "delays": [
+        1000
+      ],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 503,
+          "retry": true,
+          "backoffMs": 1000
+        },
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 2,
+          "status": null,
+          "error": {
+            "name": "Error",
+            "message": "network error after initial503"
+          },
+          "retry": false
+        }
+      ],
+      "originalResultReferencePreserved": null,
+      "originalErrorReferencePreserved": true,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "200 incorrect hash returned unchanged; validator assertion fails",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [
+        {
+          "event": "success",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+          "method": "GET",
+          "category": "raw-manifest-asset",
+          "attempt": 1,
+          "status": 200,
+          "retry": false,
+          "bytes": 7264,
+          "sha256": "889c70000079d46446a8e4e8a935aa2f0c60fdd7317c470812fe3cd867a36785",
+          "expectedSHA256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1",
+          "hashMatchesExpected": false
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "approved exact fixed-index case link503 then200",
+      "passed": true,
+      "calls": 2,
+      "elapsedMs": 0,
+      "delays": [
+        1000
+      ],
+      "events": [
+        {
+          "event": "failure",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=bubble-native-anchor",
+          "method": "GET",
+          "category": "fixed-index-link",
+          "attempt": 1,
+          "status": 503,
+          "retry": true,
+          "backoffMs": 1000
+        },
+        {
+          "event": "success",
+          "operationID": 1,
+          "url": "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=bubble-native-anchor",
+          "method": "GET",
+          "category": "fixed-index-link",
+          "attempt": 2,
+          "status": 200,
+          "retry": false,
+          "bytes": 7264,
+          "sha256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1"
+        }
+      ],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "unlisted URL passthrough https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/images/unlisted.png",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "unlisted URL passthrough https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=not-listed",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 0,
+      "delays": [],
+      "events": [],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "unlisted URL passthrough https://example.invalid/asset.png",
+      "passed": true,
+      "calls": 1,
+      "elapsedMs": 1,
+      "delays": [],
+      "events": [],
+      "originalResultReferencePreserved": true,
+      "originalErrorReferencePreserved": null,
+      "originalFunctionAndURLPreserved": true
+    },
+    {
+      "name": "different function",
+      "passed": true,
+      "calls": 1,
+      "passthrough": true
+    },
+    {
+      "name": "POST callback",
+      "passed": true,
+      "calls": 1,
+      "passthrough": true
+    },
+    {
+      "name": "string evaluate",
+      "passed": true,
+      "calls": 1,
+      "passthrough": true
+    },
+    {
+      "name": "spoofed own toString",
+      "passed": true,
+      "calls": 1,
+      "passthrough": true
+    }
+  ],
+  "counters": {
+    "mockCases": 21,
+    "rawAssetURLCount": 939,
+    "additionalFixedIndexURLCount": 174,
+    "liveLinkUniqueURLCount": 726,
+    "totalAllowedURLCount": 1113
+  },
+  "sourceProof": {
+    "originalReviewSHA256": "c9d732c2cebb640a347256a18f838ec93d9e034972e405f48d7010f1b77cae5d",
+    "originalBrowserSHA256": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+    "actualFetchBytesCallbackSHA256": "54c9d70f601dafa30e6d9de1e170bd8e3faed61c268a739a591df4690071805c",
+    "actualCallbackFromOriginalSource": true,
+    "originalFilesUnchanged": true
+  },
+  "allowlist": {
+    "indexSHA256": "dc52c82485b49e767d0aa9e9d7dc3c3fd770b314ecc7708abe92558bc2181908",
+    "rawURLListSHA256": "61f68532f576bf4c547def0198d389bc6f86f403367b8a64c912284e4ccbaf73",
+    "additionalURLListSHA256": "9301ede28a7606d5fe83bf08fd6570c7037e1b8eeaf2bf801f47584e45fd78af",
+    "liveLinkURLListSHA256": "ff24b2c957f132b1d6912074e47c41c4f91b27d6e5d841faba8bbbc1ffd5d67b",
+    "actualDOMReaderSource": "xs=>xs.map(x=>x.getAttribute('href'))",
+    "originalValidatorVisitedHrefListMatches": true,
+    "additionalURLs": [
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=bubble-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=chat-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=corners-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=dropCap-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=edgeFrame-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=edgeFrame-ownership",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-control-lock",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-phase-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-phase-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-portrait-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-position-0.25",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-position-0.75",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-radius-0.02",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-radius-0.1",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-radius-0.3",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-radius-0.45",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-region-boundary-1.99",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-region-boundary-2",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-region-boundary-2.01",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-region-first-hold",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-square-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-standard-size-limit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-text-long",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=filmstrip-text-short",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=frameBox-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=genkou-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=gridCells-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=hanko-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-control-explicit-size",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-ownership",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-phase-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-phase-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-portrait-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-position-0.25",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-position-0.75",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-radius-0.02",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-radius-0.1",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-radius-0.3",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-radius-0.45",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-region-boundary-1.99",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-region-boundary-2",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-region-boundary-2.01",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-square-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-standard-size-limit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-text-long",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=justified-text-short",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=lowerThird-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=mirror-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=notification-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-control-manual",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-explicit-scale",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-phase-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-phase-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-portrait-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-position-0.25",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-position-0.75",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-radius-0.02",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-radius-0.1",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-radius-0.3",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-radius-0.45",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-region-boundary-1.99",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-region-boundary-2",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-region-boundary-2.01",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-square-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-standard-size-limit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-text-long",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=panels-text-short",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=perspective-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-control-explicit-size",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-left-passage-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-left-passage-hold",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-phase-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-phase-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-portrait-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-position-0.25",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-position-0.75",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-radius-0.02",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-radius-0.1",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-radius-0.3",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-radius-0.45",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-region-boundary-1.99",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-region-boundary-2",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-region-boundary-2.01",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-square-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-standard-size-limit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-text-long",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=quote-text-short",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ruler-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=searchBar-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-control-off",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-phase-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-phase-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-portrait-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-position-0.25",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-position-0.75",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-radius-0.02",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-radius-0.1",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-radius-0.3",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-radius-0.45",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-region-boundary-1.99",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-region-boundary-2",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-region-boundary-2.01",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-square-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-standard-size-limit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-text-long",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=sideways-text-short",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-control-manual",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-phase-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-phase-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-portrait-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-position-0.25",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-position-0.75",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-radius-0.02",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-radius-0.1",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-radius-0.3",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-radius-0.45",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-region-boundary-1.99",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-region-boundary-2",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-region-boundary-2.01",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-square-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-standard-size-limit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-text-long",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=splitScreen-text-short",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=staircase-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-control-off",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-ownership",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-phase-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-phase-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-portrait-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-position-0.25",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-position-0.75",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-radius-0.02",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-radius-0.1",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-radius-0.3",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-radius-0.45",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-region-boundary-1.99",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-region-boundary-2",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-region-boundary-2.01",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-square-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-standard-size-limit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-text-long",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=subtitleBar-text-short",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticker-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticker-ownership",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-bottom-passage-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-bottom-passage-hold",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-control-lock",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-explicit-scale",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-native-anchor",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-phase-enter",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-phase-exit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-portrait-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-position-0.25",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-position-0.75",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-radius-0.02",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-radius-0.1",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-radius-0.3",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-radius-0.45",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-region-boundary-1.99",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-region-boundary-2",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-region-boundary-2.01",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-region-first-hold",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-square-center",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-standard-size-limit",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-text-long",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=ticket-text-short",
+      "https://mokusatsu.github.io/lyricfx.JIZURA/review/AVOID-006/local-20261020-04/sample.html?case=zigzag-native-anchor"
+    ]
+  },
+  "freshOutputGuards": {
+    "logNoOverwrite": true,
+    "receiptNoOverwrite": true,
+    "missingPathRefused": true
+  },
+  "helperSHA256": {
+    "preload": "8b2ce5ec7992b1ad783e21535edcbbbbcd6a3d0bc9c758bf7cc933caa9e9f5ba",
+    "core": "5319c2056e560698eecb00132a16beebfdb33c4c73a708ce0edd785917b81e92"
+  },
+  "mockPreloadLog": "/workspace/lyricfx.JIZURA/scratch/avoid006-final04-retry-mocks-f8veIa/fresh.jsonl",
+  "CPUReleased": true
+}

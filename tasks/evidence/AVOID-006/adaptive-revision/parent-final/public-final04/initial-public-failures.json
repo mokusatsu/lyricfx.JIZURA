@@ -1,0 +1,32 @@
+{
+  "failures": [
+    {
+      "attempt": "01",
+      "validatorExitCode": 1,
+      "failureHTTP": 503,
+      "asset": "observations/bubble-native-anchor-after.json.gz",
+      "normalHTTPSProbe": {
+        "http": 200,
+        "tlsVerifyResult": 0,
+        "bytes": 1822,
+        "sha256": "2edcc0f5848cf1bb1d3f8b4300cf47c54f17ebf287965e460139a19b23474a17"
+      },
+      "scope": "Failure retained; later single URL recovery is not full public validation"
+    },
+    {
+      "attempt": "02",
+      "validatorExitCode": 1,
+      "failureHTTP": 503,
+      "asset": "images/61c28d9efad66cf215ff09d58a4376c26eee35048417ef760c72df386483ca4a.png",
+      "normalHTTPSProbe": {
+        "http": 200,
+        "tlsVerifyResult": 0,
+        "bytes": 183966,
+        "sha256": "61c28d9efad66cf215ff09d58a4376c26eee35048417ef760c72df386483ca4a"
+      },
+      "scope": "Failure retained; later single URL recovery is not full public validation"
+    }
+  ],
+  "cause": "Not established; both failed URLs later returned HTTP200 with correct content via inherited normal HTTPS",
+  "publicVerificationPassed": false
+}

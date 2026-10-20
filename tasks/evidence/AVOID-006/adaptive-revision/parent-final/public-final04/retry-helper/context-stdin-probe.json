@@ -1,0 +1,32 @@
+{
+  "scope": "execution-context stdin probe only; not Chrome/network or public validator success",
+  "provenance": "Recorded transcription of actual assistant exec tool results; no standalone shell log was redirected at probe time",
+  "cwd": "/workspace/lyricfx.JIZURA",
+  "commandIdenticalInBothContexts": "timeout 5s node -e \"const cp=require('node:child_process');process.stdout.write(cp.execFileSync('python',['-c','import sys; print(len(sys.stdin.buffer.read()))'],{input:Buffer.from('abcd'),timeout:3000}).toString())\"",
+  "environment": "inherited; no environment overrides; proxy/CA/TLS untouched",
+  "normalSandbox": {
+    "sandbox_permissions": "use_default",
+    "toolChunkID": "2b7f8f",
+    "sessionID": 8634,
+    "exitCode": 1,
+    "stdout": "",
+    "error": "spawnSync python ETIMEDOUT",
+    "errno": -110,
+    "syscall": "spawnSync python",
+    "timeoutMs": 3000,
+    "signal": "SIGTERM"
+  },
+  "supportedContext": {
+    "sandbox_permissions": "require_escalated",
+    "toolChunkID": "256aaa",
+    "exitCode": 0,
+    "stdout": "4\n",
+    "stderr": ""
+  },
+  "limits": [
+    "The four-byte probe isolates an execution-context difference without HTML parsing.",
+    "It does not identify the sandbox internal mechanism or establish a Python bug.",
+    "No /proc permission restriction was bypassed.",
+    "The child mock uses the same existing core code; no source change was made to solve this environment difference."
+  ]
+}

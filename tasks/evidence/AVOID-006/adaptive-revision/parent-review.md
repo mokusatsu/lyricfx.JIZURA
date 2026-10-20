@@ -218,3 +218,16 @@ retry02は固定公式imageで実生成し、2806 URL/946,786,660 bytes、既存
 画像は親が開かず、履歴遮断solへ委任した。先任はafterUI174、新規native overview149、旧実見rawhash/独立RGBA継承199、4動画176標本を確認。途中通信/remote compact失敗のため、既実見ledgerを保存し後任isolated gpt-6.1-sol/mediumへ残りだけ移管。後任は残25afterを包含する原寸34枚（before9追加）を実見し、重大所見なし。旧VIS006-01の巨大「へ」の遮蔽解消を原寸で確認。除外5例は成功へ数えず、beforeUI全件の新規実見・全動画frame確認は主張しない。90groupの画像対応も正式記録へ保存。親は7証拠ファイルhashとmanifest、実見範囲・限界をレビューし公開候補として承認した。
 
 新8の演出構成と縮小時の読みやすさは人間の動作確認が必要。旧18承認を流用しない。H03例外対照は自動検証とコード/結果レビューを根拠に人間再確認不要。006一覧/個別を実環境検証待ちへ同期。公開後の通常通信UI検査案も親が実差分をレビューし、schema4全観測hydrate・固定manifest/index hash・旧26anchorと6再生seekを保持したことを確認。public-final04のscript/runbookは未実行の準備記録で、TLS/proxyを保持する。
+
+
+### 最終04の公開検証完了と人間動作確認依頼（2026-10-20）
+
+最終indexの公式Jekyll監査は2806 URL/946,786,660 bytes、余裕53,213,340 bytes、既存1923 URL・旧review1808file・7manifest/2752参照の全bytes/hash一致。e15a330909a34e786abb5d13ee190e216c310413を公開し、Pages run39457255823が成功した。監査原本は公開前snapshotの証拠として保持し、今回の事後記録追加をそのindexに含まれていたとは扱わない。
+
+公開全validatorの先行01/02は別URLでHTTP503となり停止した。両URLの後続通常curlはHTTP200/TLS0/正しいhashだったが原因は未特定。失敗logとprobeを保持したまま、元validator/browser/tool hash・exact callbackをpinした外付け検証transportを親がレビュー。939rawと固定index由来174case URLだけ、503時最大3attempt/1・2秒backoff、元fn/URL/resultと全byte/hash・後段検査を維持する。child/親の同一21mockはsupported contextで成功。通常sandboxのPython stdin待ち/終了143を成功に数えず、context対照と限界も正式保存した。
+
+attempt03は2026-10-20 17:02:10.209 UTCにexit0。全939公開raw HTTP200/hash一致、原寸/UI各348再描画と全観測、再生hold/passage監査・rapid seek・responsive・JA/EN実起動が成功し、manifestは2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01dで一致。transportは失敗0/retry0、成功1817/unique1113/rawhash939。helperは今回一度も再試行せず、元検査の成功を記録した。親は最終JSON、939/939・348/348行、transport exit0、現JA/EN・tool hashとmanifest実hashを独立照合した。
+
+別の通常通信UIは26anchor＋6再生seekで32操作、保存領域/font revision不変、外部通信/page error0。別site-smokeもJA/ENのexactHTMLhash、2歌詞行、実Canvasを成功。site-smokeの既存外部字体遮断は保持し、無遮断の通常UIと区別する。実行環境129/129、current=true、proxy/CA/TLS維持。[公開正本](parent-final/public-final04/publication.json)とattempt03 log/transport/receiptを正式保存した。
+
+親が受入済みのvisualはafterUI174・新規overview149・旧raw/RGBA継承199・動画176標本＋原寸34枚の範囲で、beforeUI全件の新規実見・動画全frameを主張しない。新8の主要8＋動き4は全て未回答のため、人間の動作確認が必要。H03は自動対照検査と親レビューに基づく再確認不要を維持し、未回答をOKへ置き換えない。006は実環境検証待ち、新8の人間確認のみ残し、007以降は未着手。保存初期cut不一致は013へ引継ぎ、今回も保存成功とは扱わない。人間へコードレビューを委ねず、[公開済み確認依頼](../../../reviews/AVOID-006-local-20261020-04.md)の動作だけを依頼する。
