@@ -1,0 +1,16 @@
+{
+  "scope": "parent default-sandbox mock attempt; not a functional pass",
+  "provenance": "Parent reported its own tool execution and termination; raw redirected log is preserved byte-for-byte as parent-default-sandbox.log",
+  "sessionID": 71934,
+  "command": "node scratch/avoid006-final04-retry-mock-test.cjs > scratch/avoid006-final04-retry-parent-mock.log 2>&1",
+  "sandbox_permissions": "use_default",
+  "observation": "Node waited on Python HTML-parser child for more than two minutes, CPU0 and no stdout; /proc details were permission-denied and were not bypassed",
+  "terminationExitCodeReportedByParent": 143,
+  "interpretation": "143 denotes termination of the stalled invocation, not a completed mock-suite assertion result",
+  "supportedRepeat": {
+    "command": "node scratch/avoid006-final04-retry-mock-test.cjs > scratch/avoid006-final04-retry-parent-mock-supported.log 2>&1",
+    "sandbox_permissions": "require_escalated",
+    "result": "parent independently passed21 mock cases with unchanged core/preload/review/browser hashes",
+    "results": "parent-mock-results.json"
+  }
+}

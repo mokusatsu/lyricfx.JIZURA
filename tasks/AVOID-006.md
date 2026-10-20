@@ -173,10 +173,19 @@ schema4公開工具は固定旧ca1fの28条件smokeでcapture、native/UI各56�
 - [x] 同条件174組・696画像参照・4動画を生成し、原寸/UI各348枚の再描画と全観測、再生/seek/日英起動が一致した。
 - [x] 破損検査（PNG27/gzip12/bundle15・再生故障）、字体検査、root既定manifest照合が成功し、親が正式ログ/工具/source hashを確認した。
 - [x] 履歴を渡さないsolによる最終画像・動画・診断UI照合を完了した。範囲と限界は下記に記録。
-- [ ] 最終indexからの公式Jekyll実出力が容量・既存URL維持・全bytes/hashの条件を満たした。
-- [ ] workへcommit/pushした04の全公開画像・共有先・manifest・日英HTMLと実起動を確認した。
+- [x] 最終indexからの公式Jekyll実出力が容量・既存URL維持・全bytes/hashの条件を満たした。
+- [x] workへcommit/pushした04の全公開画像・共有先・manifest・日英HTMLと実起動を確認した。
 - [ ] 新8演出の必要な人間動作確認を取得し、親が最終完了判定を記録した。旧18例への承認は保持し、新8例へ流用しない。
 
-manifest SHA-256 `2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01d`。[ローカル検証](evidence/AVOID-006/adaptive-revision/parent-final/schema4-final-local/summary.json)、[最終04の確認準備](reviews/AVOID-006-local-20261020-04.md)。未公開であり、007以降は未着手。保存試験の既知の初期cut不一致は013へ引継ぎ、保存成功として扱わない。
+manifest SHA-256 `2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01d`。[ローカル検証](evidence/AVOID-006/adaptive-revision/parent-final/schema4-final-local/summary.json)、[最終04の公開済み動作確認依頼](reviews/AVOID-006-local-20261020-04.md)。commit `e15a330909a34e786abb5d13ee190e216c310413` を公開検証済みであり、007以降は未着手。保存試験の既知の初期cut不一致は013へ引継ぎ、保存成功として扱わない。
 
 最終visual: 先任solのafter UI174・native overview149・旧実見hash/RGBA継承199と動画176サンプル（5fps）に、後任isolated solの原寸34枚（新8主要前後、長文/下限、修正portrait前後）を合わせ、重大所見なし。before UI全件の新規実見・動画全frame確認は主張しない。親が7証拠hash/manifestと実見範囲を照合し、公開候補として受入。[所見](evidence/AVOID-006/adaptive-revision/parent-final/final-visual-04/report.md)。状態を一覧と実環境検証待ちへ同期。新8の見え方は人間確認が必要、H03例外対照は自動検証と親レビューを根拠に人間再確認不要。公開検証は省略しない。
+
+
+### 最終04の公開検証完了・人間動作確認待ち（2026-10-20）
+
+Pages run [39457255823](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39457255823)はe15a330で成功。最終indexの公式Jekyll監査は2806 URL/946,786,660 bytes、既存1923 URL・旧review1808file維持、7manifest/2752参照の全bytes/hash一致。公開attempt03は2026-10-20 17:02:10.209 UTCにexit0、全938asset＋manifestの939 raw HTTP200/hash、原寸/UI各348再描画・全観測・再生/seek・日英起動が一致した。通常通信UIは26anchor＋6再生seek（32操作）、外部通信/page error0、別site-smokeもJA/ENの実HTML hash・2歌詞行・Canvas描画が成功。環境129/129、current=true、proxy/CA/TLS維持。親が実ログ・manifest/source/tool hashを独立照合した。[公開正本](evidence/AVOID-006/adaptive-revision/parent-final/public-final04/publication.json)。
+
+先行attempt01/02のHTTP503と、その後の通常curl200/TLS0/hash一致を保持し、原因は未特定のまま。親レビュー済み外付けhelperは固定939＋index由来174 URLのGET/固定callbackに限り503を最大3回・1/2秒待機で再試行するが、最終03では失敗0・追加試行0。元validator・raw bytes/hash・後続全検査は不変で、child/親の21mockも成功した。公開成功を、人間の見え方の承認や全時点の通信安定性の証明へ広げない。
+
+残条件は[新8演出の動作確認](reviews/AVOID-006-local-20261020-04.md)のみ。主要8＋動き4項目は全て未回答、旧18例の承認は新構成へ転用しない。H03は自動検証と親レビューに基づき人間再確認不要の判断を保持する。006は実環境検証待ち、007以降は未着手。保存初期cut不一致は013へ引継ぎ、保存成功にはしない。
