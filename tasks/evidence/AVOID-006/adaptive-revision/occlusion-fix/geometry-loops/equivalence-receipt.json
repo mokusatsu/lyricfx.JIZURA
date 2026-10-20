@@ -1,0 +1,81 @@
+{
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "medium",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedReasoningEffort": "medium",
+  "actualRuntimeMetadata": "unavailable",
+  "compiledJA": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+  "compiledEN": "e4b4c31114221427eb86218e86deed3474395c52a627669c84c985b503f87de7",
+  "reference": "ca1f21fc55230beab4c44d989fad6e8947d52a5a017ecb9e500675bd05a6569f",
+  "nodeEquivalence": {
+    "hullCases": 10168,
+    "cameraCases": 14016,
+    "bothHullsReExtracted": true,
+    "sameSourcePointIdentityAndOrder": true,
+    "cameraSignedZeroAndGeneratedPointOrder": true
+  },
+  "browserParity": {
+    "conditions": 192,
+    "framesPerSide": 576,
+    "totalRenderedFrames": 1152,
+    "allPNGObservationAndFullTrajectoryHashesEqual": true,
+    "mismatches": 0
+  },
+  "subtitleParity": {
+    "passed": true,
+    "referenceCandidate": "ca1f21fc55230beab4c44d989fad6e8947d52a5a017ecb9e500675bd05a6569f",
+    "candidate": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+    "candidateEN": "e4b4c31114221427eb86218e86deed3474395c52a627669c84c985b503f87de7",
+    "fixtureSHA256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "referenceReportSHA256": "0f1aa4c372209bec8083c689c94c703c0895b1e5b481d068116944defe96b5cd",
+    "candidateReportSHA256": "24488573cabe7ac16aeca58e55d8ac3c32c90dd2515e3ddd9f7beb4ea7649597",
+    "conditions": 19,
+    "referenceCandidateFrames": 63,
+    "newCandidateFrames": 63,
+    "comparedFrames": 126,
+    "allAttemptRecipeEnvelopeOffsetQualityAndPNGEqual": true,
+    "note": "Candidate comparison uses after rows of the preserved ca1f report versus after rows of the b2c report. The regression tool also independently reruns its original 850e43d occlusion-positive baseline."
+  },
+  "files": {
+    "geometry-applied-equivalence.cjs": {
+      "bytes": 5723,
+      "sha256": "a6f9d0c52792a4d767e5affa1ae35e75a8e2f29b95574e6e516a3532a62de36b"
+    },
+    "change-09a.diff": {
+      "bytes": 1904,
+      "sha256": "bee52318d962b0b8b531a2e244a985f712254af5682e61ed94c60c2dbc403ac5"
+    },
+    "geometry-applied-equivalence.log": {
+      "bytes": 2193,
+      "sha256": "4ed010420f60ab27c997ef56a9b49f8f0210f0a6281754fc3ac30c736df398dd"
+    },
+    "subtitle-focused.log": {
+      "bytes": 4420,
+      "sha256": "ecee7c0c6f769a42e34975624123a4b1625911c23b58e0c7c99f85f83343f7e6"
+    },
+    "source-inventory.json": {
+      "bytes": 15584,
+      "sha256": "5512d89fc6288b7274a18d053582b5114c490d801818b8b8c7983801c1a418d7"
+    },
+    "parity-192.json": {
+      "bytes": 328662,
+      "sha256": "3533b328520a22e616d0d85d6d7a31e288a9223f359a6dec2c933182961d28d0"
+    },
+    "subtitle-candidate-parity.json": {
+      "bytes": 936,
+      "sha256": "1b322220dd41f9178d68024f526cc4264e3a81cb9f3bfb61240aeee1d7be2aca"
+    },
+    "parity-192.log": {
+      "bytes": 62,
+      "sha256": "19d43ae794873f92a41c3e0adeaec0a031241607a9884f6f18e872d19ba5d766"
+    },
+    "change-09b.diff": {
+      "bytes": 2607,
+      "sha256": "3c84407bac1baaadc3c67b0eaf008dadf64ed3ff51967067016b5f1f76802780"
+    },
+    "geometry-applied-equivalence.json": {
+      "bytes": 2505,
+      "sha256": "04eba3617d40998202db70fad8cb366095599678e5f21299084f5574cb149ca9"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+--- /tmp/avoid006-before-geometry-loops/09b_basic_placement.js	2026-10-20 14:29:58.084782497 +0000
++++ src/09b_basic_placement.js	2026-10-20 14:29:58.111167054 +0000
+@@ -205,9 +205,8 @@
+  for(const offset of candidates){const proof=orbitCertificate(plan,cut,circle,offset);if(proof.safe)return {offset,status:'safe',direction:offset.every(v=>v===0)?'unchanged':direction(offset),proof};}
+  return null;
+ }
+-function hull(points){
+- const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=ps=>{const out=[];for(const p of ps){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}out.pop();return out;};return half(sorted).concat(half(sorted.slice().reverse()));
+-}
++function hull(points){const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),out=[];for(let i=0;i<sorted.length;i++){const p=sorted[i];while(out.length>1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();const lowerLength=out.length;for(let i=sorted.length-1;i>=0;i--){const p=sorted[i];while(out.length>lowerLength+1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();return out;}
++
+ function prepareHuge(plan,cut,program,evaluationRange,revision){
+  const grouped={};for(const e of program.events)if(e.role==='primary'&&e.polygons.length)(grouped[e.owner]||=[]).push(e);
+  const base=cut.contentScale??1,K=J.clamp((plan.fx.motion??.7)*1.25,0,1.25),maxScale=base*Math.max(1.02,1+.03*Math.max(K,plan.fx.motion??.7)*(cut.motionScale??1)),angle=cut.cam==='dutch'?5*J.DEG:0,slack=5;
+@@ -278,7 +277,7 @@
+  // coordinate. Scale extrema and translation corners form its Minkowski hull.
+  const turn=angle?Math.max(...ps.flat().map(p=>Math.hypot(p[0]-plan.W/2,p[1]-plan.H/2)))*maxScale*2*Math.sin(angle/2):0;
+  const dx=aaReserve+turn+(['panL','panR'].includes(cut.cam)?plan.W*Math.abs(cut.camP?.a||.022)*K*motion:0)+(3.4*chroma+16*shake)*plan.H/1080*motion,dy=aaReserve+turn+(1.9*chroma+11*shake)*plan.H/1080*motion;
+- const points=[];for(const p of ps.flat())for(const s of [base,maxScale])for(const x of [-dx,dx])for(const y of [-dy,dy])points.push([plan.W/2+(p[0]-plan.W/2)*s+x,plan.H/2+(p[1]-plan.H/2)*s+y]);
++ const points=[],scales=[base,maxScale];for(const p of ps.flat())for(const s of scales){const px=plan.W/2+(p[0]-plan.W/2)*s,py=plan.H/2+(p[1]-plan.H/2)*s,x0=px+(-dx),x1=px+dx,y0=py+(-dy),y1=py+dy;points.push([x0,y0],[x0,y1],[x1,y0],[x1,y1]);}
+  return hull(points);
+ }
+ A.cameraEnvelope=cameraEnvelope;

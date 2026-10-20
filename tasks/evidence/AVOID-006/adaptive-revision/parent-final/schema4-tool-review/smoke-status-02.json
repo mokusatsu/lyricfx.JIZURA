@@ -1,0 +1,145 @@
+{
+  "scope": "tooling-smoke-only; not acceptance or public deployment evidence",
+  "build": "schema4-smoke-20261020-02",
+  "sourceRoot": "/workspace/lyricfx.JIZURA/work/avoid006-tool-review/schema4/source-ca1f21fc",
+  "compiledJA": "ca1f21fc55230beab4c44d989fad6e8947d52a5a017ecb9e500675bd05a6569f",
+  "compiledEN": "47c58fa37a0760bf2e15a8ab01b26b21ff06726ab7a8b81ba8677fdda46e696b",
+  "manifestSHA256": "e8888bdd6934ad97581b2e2117a542934174d59d60d335e89115dda80a94a0f8",
+  "schema": 4,
+  "revision": "adaptive-v3-lossless-shared-png",
+  "exitCodes": {
+    "capture": 0,
+    "validate": 0,
+    "negative": 0,
+    "font": 0
+  },
+  "cases": 28,
+  "PNGReferences": 112,
+  "localUniquePNGs": 84,
+  "sharedPNGReferences": 18,
+  "videos": 4,
+  "rerenderedNativeFrames": 56,
+  "liveUIFrames": 56,
+  "validate": {
+    "validated": true,
+    "scope": "tooling-smoke-only",
+    "cases": 28,
+    "counts": {
+      "safe": 9,
+      "hold-safe": 8,
+      "insufficient": 0,
+      "excluded": 3,
+      "unsupported": 0,
+      "not-evaluated": 8,
+      "unchangedControls": 8,
+      "accepted18": 1,
+      "adaptiveSafe": 7,
+      "adaptiveHoldSafe": 1,
+      "adaptiveExcluded": 0,
+      "unmetExpectations": 0
+    },
+    "publicURL": null,
+    "manifestSHA256": "e8888bdd6934ad97581b2e2117a542934174d59d60d335e89115dda80a94a0f8"
+  },
+  "negative": {
+    "passed": true,
+    "canonicalCases": 174,
+    "fullMatrix": 174,
+    "compressedObservationChecks": 12,
+    "pngStorageChecks": 27,
+    "negativeBundleChecks": 13,
+    "playbackFailureInjection": true
+  },
+  "font": {
+    "passed": true,
+    "selectedMatrix": 174,
+    "diagnosticBranches": 6,
+    "escapedRuntimeSymbol": 9656,
+    "historicalNativeDrawTextChecked": false,
+    "fullCurrentComparisonTextChecked": true,
+    "allStrategyLabelBranchesChecked": true,
+    "actualCurrentComparisonTextChecked": true,
+    "primaryAndSymbolMetricsUnchanged": true,
+    "nativeRasterMetricSamples": 6,
+    "filmstripNativeHoldParity": true,
+    "platformFonts": [
+      {
+        "familyName": "DejaVu Sans",
+        "postScriptName": "DejaVuSans",
+        "isCustomFont": true,
+        "glyphCount": 1
+      }
+    ],
+    "output": "/workspace/lyricfx.JIZURA/work/layouts-a-font-regression-oOOqYR"
+  },
+  "smokeOnlyReceipts": [
+    {
+      "path": "fixtures/functional-summary.json",
+      "receipt": {
+        "smoke": true,
+        "acceptanceComplete": false,
+        "note": "No accepted core test report supplied"
+      }
+    },
+    {
+      "path": "fixtures/layouts-a-adaptive-test.log",
+      "receipt": {
+        "smoke": true,
+        "acceptanceComplete": false,
+        "note": "No accepted core test report supplied"
+      }
+    }
+  ],
+  "snapshots": [
+    {
+      "path": "fixtures/tool-layouts-a-review.cjs",
+      "sha256": "c9d732c2cebb640a347256a18f838ec93d9e034972e405f48d7010f1b77cae5d",
+      "capturedSHA256": "c9d732c2cebb640a347256a18f838ec93d9e034972e405f48d7010f1b77cae5d"
+    },
+    {
+      "path": "fixtures/tool-layouts-a-cases.cjs",
+      "sha256": "8ac1f70aca1deda4d7be95d59b2b58bdc8b1c9b0fa00f0e43a75ebc9fb51bcd4",
+      "capturedSHA256": "8ac1f70aca1deda4d7be95d59b2b58bdc8b1c9b0fa00f0e43a75ebc9fb51bcd4"
+    },
+    {
+      "path": "fixtures/tool-layouts-a-negative.cjs",
+      "sha256": "af784a6b7b03f11bc1401dbabfbcf6102877546257a2a409d7814fd425946a6c",
+      "capturedSHA256": "af784a6b7b03f11bc1401dbabfbcf6102877546257a2a409d7814fd425946a6c"
+    },
+    {
+      "path": "fixtures/tool-layouts-a-png.cjs",
+      "sha256": "a132b626824d1352a43d74f96f5fb7bbf60d42a8a5c6f8a5cc0ca9a2e132f91c",
+      "capturedSHA256": "a132b626824d1352a43d74f96f5fb7bbf60d42a8a5c6f8a5cc0ca9a2e132f91c"
+    }
+  ],
+  "logs": [
+    {
+      "path": "work/avoid006-tool-review/schema4/smoke-capture-02.log",
+      "sha256": "75353ad022c596d05309bae618774dcaa1661c2462e36e368435c977e6659aa6"
+    },
+    {
+      "path": "work/avoid006-tool-review/schema4/smoke-validate-02.log",
+      "sha256": "a47a1afb4593b65280cc2ed62348c7653a31cfee306faf2ae0a9268b826b0a94"
+    },
+    {
+      "path": "work/avoid006-tool-review/schema4/smoke-negative-02.log",
+      "sha256": "53c13d10fd16559bbd906e989432137542c617079f5b6a98f50057832f4b0535"
+    },
+    {
+      "path": "work/avoid006-tool-review/schema4/smoke-font-02.log",
+      "sha256": "6008ba57140a817ba32c3cde2192e015773c0e07084ff61564b2882d8bfb1afc"
+    }
+  ],
+  "priorFailure": {
+    "build": "schema4-smoke-20261020-01",
+    "log": "work/avoid006-tool-review/schema4/smoke-negative-01.log",
+    "sha256": "9d8571ec0dd2b88e852fd8072645bee83d79c762ba0af11d63f3d56942fb63f6",
+    "retained": true
+  },
+  "notRun": [
+    "final174-case candidate capture and validation",
+    "public fetch/deployment validation",
+    "representative browser decode comparison specifically for saved PNG versus original capture"
+  ],
+  "CPUReleased": true
+}

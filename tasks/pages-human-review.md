@@ -12,7 +12,16 @@
 - アプリURL: `https://mokusatsu.github.io/lyricfx.JIZURA/`、英語版: `https://mokusatsu.github.io/lyricfx.JIZURA/en/`。既存の `mcp/site-smoke-test.mjs` もこの日本語URLを既定値とする。
 - README.mdの冒頭には別フォークのURLが残っている。各段階の確認依頼にそのURLを流用しない。
 - `.github/workflows/verify.yml` は検証用で、Pagesをデプロイする処理はない。Pagesの自動公開と検証CIを別々に確認する。`work`へのpushだけではこのverify workflowの自動実行を意味しない（現行はmain/pull_request/手動起動）。
-- Pages設定APIの読み取りはこの環境では`Forbidden`。APIで公開元を確認できたとは記録しない。利用者の設定報告を採用し、実装段階では実際の公開HTML・確認用ファイルの反映を検証する。今回、新たな公開基盤タスクや公開設定変更は追加しない。
+- 2026-10-18時点の履歴: Pages設定APIの読み取りはこの環境では`Forbidden`だったため、その時点ではAPIによる公開元確認を主張せず、利用者の設定報告を採用した。
+- 2026-10-20の再確認ではPages APIを読み取れ、既存のlegacy公開元 `work:/` とbuiltを確認した。これは既存公開版の状態であり、準備中のAVOID-006候補の公開完了を意味しない。公開元branch/path・API設定は変更しない。
+
+## AVOID-006の公開容量対策（ローカル準備中）
+
+既存の比較版内部URL・encoded bytes、6言語アプリ、AE/CEP配布物、project、docsを保持するため、全trackedファイルの無選別配備からroot `_config.yml` のJekyll除外指定へ移行する。`.nojekyll` の削除と設定追加は現時点ではローカル準備であり、候補の公開済み・容量検証済みとは扱わない。除外は開発用 `src/dev/app/tasks/tools/work/scratch` 等に限定する。Jekyll既定のdotfile除外で配備されない `mcp/.gitignore`（22 bytes）は開発用ignore設定であり、唯一の非機能ファイル例外として記録する。旧必須素材の欠落を許可する例外ではない。
+
+公開前に、正式な最終候補だけを含むsource snapshotとprojectionを作る。未公開の `review/AVOID-006/local-20261020-01/02/03` とscratchを誤ってstage・配備しない。公式 `ghcr.io/actions/jekyll-build-pages@sha256:6791ebfd912185ed59bfb5fb102664fa872496b79f87ff8b9cfba292a7345041`（Ruby 3.3.4、Jekyll 3.10.0、Liquid 4.0.4、github-pages 232）で実際の出力を作り、`python3 dev/avoidance/pages-output-audit.py --source <snapshot> --output <actual-jekyll-output> --projection <projection.json> --repo . --baseline-ref <着手時HEAD> --candidate-bundle <選択した新review版path> --report <audit.json>` を実行する。projectionは全予定URLと各encoded SHA-256・bytesを持つ `inventory` 配列を含める。監査は全URL集合とsource/output bytesの完全一致、旧公開ファイル保持、manifestの全assetsと共有参照先、総出力1,000,000,000 bytes以下・単blob100 MiB未満を検査する。選択候補以外の未公開review版の混入は失敗させる。manifest内の旧 `../../../index.html`・英語rootのhashは歴史的主張として分け、現在の可変アプリが旧hashと一致するとは扱わない。
+
+試作の実Jekyll出力一致は最終候補の容量合格を代替しない。親による差分・監査結果レビューと最終候補の実Jekyll監査成功後に限ってcommit/pushへ進み、以後も上記のPages反映確認・公開版事前試験を行う。
 
 ## 1段階の実行順
 

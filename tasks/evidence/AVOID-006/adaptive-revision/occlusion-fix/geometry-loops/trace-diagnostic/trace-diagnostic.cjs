@@ -1,0 +1,28 @@
+/* Diagnostic only. Preserve full formal workload and measurement order; no page waits/forced GC. */
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),Module=require('node:module');
+const root='/workspace/lyricfx.JIZURA',dir=__dirname,rawDir='/tmp/avoid006-b2c230-trace-raw',sha=x=>crypto.createHash('sha256').update(x).digest('hex');fs.mkdirSync(rawDir,{recursive:true});
+const product=fs.readFileSync(root+'/index.html');if(sha(product)!=='b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696')throw new Error('Candidate changed');
+const tool=root+'/dev/avoidance/layouts-a-adaptive-perf.cjs';let source=fs.readFileSync(tool,'utf8');
+process.env.PERF_SIZES='100,1000';process.env.PERF_WARMUP='3';process.env.PERF_SAMPLES='6';process.env.PERF_STRESS='1';process.env.PERF_PROFILE='1';process.env.PERF_RUNTIME_PROFILE='0';process.env.PERF_REPORT=path.join(dir,'diagnostic-report.json');
+source=source.replace("const root=require('node:path').resolve(__dirname,'../..')",'const root='+JSON.stringify(root));
+source=source.replace("if(profiler){await profiler.send('Profiler.enable');", "if(profiler){await profiler.send('Tracing.start',{categories:'v8,disabled-by-default-v8.gc,blink.user_timing,devtools.timeline',options:'record-as-much-as-possible',transferMode:'ReturnAsStream'});await profiler.send('Profiler.enable');");
+source=source.replace("await runLayoutsAFixture(J,{layout:'quote'", "const traceSpans=[];await runLayoutsAFixture(J,{layout:'quote'");
+const planStart="let t=performance.now();plan=J.plan(project);";
+source=source.replace(planStart,"const tracePlanMark=performance.mark('occ:'+side+':'+n+':plan:'+i+':start');"+planStart);
+const planEnd="if(i>=config.warmup){samples.push(sourceMs+finalizeMs);parts.push({sourceMs,finalizeMs});}}";
+source=source.replace(planEnd,"if(i>=config.warmup){samples.push(sourceMs+finalizeMs);parts.push({sourceMs,finalizeMs});}const tracePlanEnd=performance.mark('occ:'+side+':'+n+':plan:'+i+':end');traceSpans.push({kind:'planning',n,index:i,warmup:i<config.warmup,start:tracePlanMark.startTime,end:tracePlanEnd.startTime,startMark:tracePlanMark.name,endMark:tracePlanEnd.name});}");
+source=source.replace("sampleProfile={layout:c.layout};const t=performance.now();", "sampleProfile={layout:c.layout};const traceRenderMark=performance.mark('occ:'+side+':'+n+':render:'+i+':start');const t=performance.now();");
+const renderEnd="if(i>=16){render.push(performance.now()-t);runtimeProfile.push(sampleProfile);}}";
+source=source.replace(renderEnd,"if(i>=16){render.push(performance.now()-t);runtimeProfile.push(sampleProfile);}const traceRenderEnd=performance.mark('occ:'+side+':'+n+':render:'+i+':end');traceSpans.push({kind:'render',n,index:i,warmup:i<16,layout:c.layout,start:t,end:i>=16?t+render[render.length-1]:traceRenderEnd.startTime,startMarkTime:traceRenderMark.startTime,startMark:traceRenderMark.name,endMark:traceRenderEnd.name});}");
+source=source.replace('return {results,stress};','return {results,stress,traceSpans,timeOrigin:performance.timeOrigin};');
+const stop="const {profile}=await profiler.send('Profiler.stop');";
+const stopWithTrace=stop+"const traceDone=new Promise(resolve=>profiler.once('Tracing.tracingComplete',resolve));await profiler.send('Tracing.end');const traceEvent=await traceDone;if(!traceEvent.stream)throw new Error('Missing trace stream');const traceFD=fs.openSync("+JSON.stringify(path.join(rawDir,'trace-'))+"+side+'.json','w');try{for(;;){const chunk=await profiler.send('IO.read',{handle:traceEvent.stream,size:1048576});fs.writeSync(traceFD,chunk.base64Encoded?Buffer.from(chunk.data,'base64'):chunk.data);if(chunk.eof)break;}}finally{fs.closeSync(traceFD);await profiler.send('IO.close',{handle:traceEvent.stream});}";
+source=source.replace(stop,stopWithTrace).replace("fs.writeFileSync('/workspace/work/avoid006-adaptive-perf-'+side+'.cpuprofile'",'fs.writeFileSync('+JSON.stringify(path.join(rawDir,'cpu-'))+"+side+'.cpuprofile'");
+source=source.replace("fs.writeFileSync(process.env.PERF_REPORT||",'report.diagnosticOnly=true;report.formalAcceptance=false;report.productSHA256='+JSON.stringify(sha(product))+';report.wrapperSHA256='+JSON.stringify(sha(fs.readFileSync(__filename)))+';report.traceCategories="v8,disabled-by-default-v8.gc,blink.user_timing,devtools.timeline";fs.writeFileSync(process.env.PERF_REPORT||');
+source=source.replace("assert.ok(report.passed,'adaptive performance contract');",'/* Diagnostic only: preserve reported criterion result, never formal acceptance. */');
+fs.writeFileSync(path.join(dir,'generated-tool.cjs'),source);if(process.env.DIAG_PREPARE_ONLY==='1')process.exit(0);
+const read=p=>{try{return {available:true,text:fs.readFileSync(p,'utf8').trim()};}catch(e){return {available:false,error:e.code||String(e)};}};
+const full=()=>({wallMS:Date.now(),nodeCPU:process.cpuUsage(),files:Object.fromEntries(['cpu.stat','cpu.max','cpu.pressure','memory.current','memory.peak','memory.max','memory.events','memory.stat','memory.pressure'].map(n=>[n,read('/sys/fs/cgroup/'+n)]))});
+const samples=[],start=full();const timer=setInterval(()=>samples.push({wallMS:Date.now(),cpu:read('/sys/fs/cgroup/cpu.stat'),memoryCurrent:read('/sys/fs/cgroup/memory.current'),memoryEvents:read('/sys/fs/cgroup/memory.events')}),100);timer.unref();let saved=false;
+process.on('beforeExit',()=>{if(saved)return;saved=true;clearInterval(timer);fs.writeFileSync(path.join(dir,'resource-samples.json'),JSON.stringify({diagnosticOnly:true,sampleIntervalMS:100,start,end:full(),samples},null,2));});
+const run=new Module(tool,module);run.filename=tool;run.paths=Module._nodeModulePaths(path.dirname(tool));run._compile(source,tool);

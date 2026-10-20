@@ -1,0 +1,74 @@
+{
+  "schema": "avoid006-final-visual-review-v1",
+  "reviewer": "visual006_final_detail",
+  "bundle": "review/AVOID-006/local-20261020-04",
+  "manifestSHA256": "2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01d",
+  "afterSourceSHA256": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+  "beforeSourceSHA256": "38b8edf31aaecaa667e1e0248ccc5fa3bbf68380333f819683fdfb6494f3ebe4",
+  "ownScope": {
+    "nativePNGsViewed": 34,
+    "caseCount": 25,
+    "ledger": "detail-ledger.json",
+    "allExpected25AfterViewsCompleted": true,
+    "beforeNativeAdditional": 9,
+    "beforeUIViewed": 0,
+    "videoFramesNewlyViewed": 0,
+    "assetEncodedSHA256Checks": "34/34 passed"
+  },
+  "inheritedScope": {
+    "reviewer": "visual006_resume",
+    "ledger": "view-ledger.json",
+    "afterUI": 174,
+    "freshNativeOverview": 149,
+    "reusedNativeReferences": 199,
+    "reuseBasis": "prior actual inspection plus raw hash and independent original/saved RGBA equality, per transfers-verified.json",
+    "videoSamples": {
+      "quote": 44,
+      "ticket": 47,
+      "sideways": 35,
+      "filmstrip": 50
+    },
+    "videoMethod": "nominal 5fps, 0.2s sampling across recordings; not continuous/all-frame review",
+    "beforeUI": "not newly viewed",
+    "mapping": "view-group-asset-map.json",
+    "mappingSHA256": "7ccc27e357fc8e099aec87dbd8601c304ea9321e7c6b4f8f4e1914d60af25131",
+    "discrepancy": "Scratch ledger initially showed filmstrip 0 viewed/50 pending, despite same-agent direct report of 50 viewed. Original reviewer recovered own prior tool-image conversation evidence and saved formal view-ledger.json with filmstrip 50; this reviewer did not personally re-view those samples."
+  },
+  "findings": {
+    "blocking": [],
+    "ownVisualObservations": [
+      "Native anchor before/after pairs retain identifiable glyphs and layout motifs: justified filler/primary text, subtitle plate/outline duplicate, split color planes, rotated sideways typography, panel ownership, film frames, quote brackets, ticket silhouette.",
+      "subtitleBar-portrait-center after: complete large outlined へ remains above and clear of the subtitle plate; primary subtitle is fully visible.",
+      "Certified long and size-limit stills remain readable at native resolution; long layouts reflow, filmstrip becomes a compact low band, and quote/ticket accents remain recognizable.",
+      "Sideways long rotating reading direction and dense justified filler require attention; horizontal duplicate preserves a quick readable lyric in sideways. No confident new glyph loss found in inspected stills."
+    ],
+    "excludedAfterCases": [
+      "panels-text-long",
+      "ticket-text-long",
+      "subtitleBar-standard-size-limit",
+      "filmstrip-standard-size-limit",
+      "ticket-standard-size-limit"
+    ],
+    "exclusionRule": "These five native PNGs show original rendering for excluded candidates and are not counted as successful avoidance. Inherited filmstrip later-region exclusion also remains excluded.",
+    "circleRule": "Only moving entrance/exit elements may cross; hold/stationary/fade-only remain strict. Native PNGs omit DOM circle guide; circle/result overview and status evidence inherited from prior reviewer; numeric safety checks belong to parent."
+  },
+  "humanReviewRecommended": [
+    "After publication inspect all new eight layouts for preferred composition and readable scale, especially justified background density, sideways rotated long text, and compact filmstrip long text.",
+    "Check filmstrip later region visibly reports excluded and is not presented as a successful safe sample.",
+    "Inspect full playback on target display; 5fps sample review does not cover every frame."
+  ],
+  "limitations": [
+    "This reviewer did not personally view inherited overview sheets or videos.",
+    "Before UI 174 cases remain newly unviewed; native before coverage is separate.",
+    "No implementation/asset edits, capture, browser use, staging, commit, push or publication performed."
+  ],
+  "evidenceFiles": {
+    "detail-ledger.json": "d33fed65286f1c4457f4923f47caf10163013e6fab51587da9557e0615729e9d",
+    "view-ledger.json": "d956eba54443a524917a0fdb00fa656b30600826dddec5736aa120eec16c0332",
+    "videos.json": "db7fe46f8abbbd9f82505c2837e4f2ce7c0a7ec0f4c4c0dce06fbb9f78cd8862",
+    "transfers-verified.json": "6a1d042a784f965ffe000b9568decd0e796783c38b8a8ba276922bba8d70493c",
+    "view-group-asset-map.json": "7ccc27e357fc8e099aec87dbd8601c304ea9321e7c6b4f8f4e1914d60af25131",
+    "remaining-original-size-views.json": "76b4d639901be69cfeb67578da19008692f579490045177c71ef9c8747b8fe88",
+    "handoff.md": "66503ab5737e2e548187b7f484418174b9c86f4573aa2182f781faab5c7c11a3"
+  }
+}

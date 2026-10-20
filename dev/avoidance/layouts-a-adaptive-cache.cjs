@@ -1,0 +1,26 @@
+/* AVOID-006 compact proof reuse: exact-input equivalence, invalidation and bounds. */
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../..');
+const codecSource=fs.readFileSync(path.join(root,'src/09d_adaptive_placement.js'),'utf8'),codec=codecSource.slice(codecSource.indexOf('function packPolygons('),codecSource.indexOf('// End private polygon codec.'));
+const {packPolygons,unpackPolygons}=require('node:vm').runInNewContext('(()=>{'+codec+';return {packPolygons,unpackPolygons};})()');
+const cases=[[],[[]],[[[0,-0],[-0,0],[Number.MIN_VALUE,-Number.MIN_VALUE],[Number.MAX_VALUE,-Number.MAX_VALUE]]],[[[1,2],[3,4],[5,6]],[],[[1e-200,-1e200]]]];
+for(const input of cases){const packed=packPolygons(input),out=unpackPolygons(packed);assert.equal(out.length,input.length);for(let i=0;i<input.length;i++){assert.equal(out[i].length,input[i].length);for(let j=0;j<input[i].length;j++)for(let k=0;k<2;k++)assert.ok(Object.is(out[i][j][k],input[i][j][k]),'lossless Float64 including signed zero');}if(out[0]?.[0]){out[0][0][0]=77;assert.ok(Object.is(unpackPolygons(packed)[0][0][0],input[0][0][0]),'decoded arrays own their coordinates');}}
+assert.throws(()=>packPolygons([[[Infinity,0]]]));
+
+(async()=>{const server=http.createServer((req,res)=>{try{const p=req.url==='/font.otf'?'/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc':path.join(root,req.url==='/'?'index.html':req.url);res.end(fs.readFileSync(p));}catch{res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port,browser=await require('../browser.cjs').launch();try{const page=await browser.newPage();await page.route('**/*',r=>r.request().url().startsWith(url)?r.continue():r.abort());await page.goto(url);await page.waitForFunction(()=>J?.placement?.layoutsAAdaptive8);await page.addScriptTag({content:fs.readFileSync(path.join(__dirname,'layouts-a-fixture.js'),'utf8')});const report=await page.evaluate(async()=>{
+ const A=J.placement,opts={basicLayouts:true,layoutsA:true,layoutsAAdaptive:true},base={layout:'ticket',W:1920,H:1080,cx:.5,cy:.42,radius:.2,text:'風の先へ'},checks=[],states=[];
+ const run=async(spec,edit)=>{const r=await runLayoutsAFixture(J,spec,{newPath:false,fontURL:location.origin+'/font.otf'});edit?.(r.plan);const p=J.finalizePlacementPlan(r.plan,opts);return JSON.stringify(p.cuts[0].placementTrajectory);};
+ const bounds=()=>{const s=A.adaptiveCacheStats();if(s.entries>s.maxEntries||s.contexts>s.maxContexts||s.serializedBytes>s.maxSerializedBytes)throw Error('Unbounded proof cache '+JSON.stringify(s));return s;};
+ const equivalent=async(label,spec,edit)=>{const cached=await run(spec,edit);A.clearAdaptiveCache();const fresh=await run(spec,edit);if(cached!==fresh)throw Error('Stale proof '+label);checks.push(label);states.push(bounds());};
+ A.clearAdaptiveCache();const first=await run(base),before=bounds(),again=await run(base),after=bounds();if(first!==again||after.hits<=before.hits)throw Error('Identical-input proof reuse');checks.push('identical-input-hit');
+ for(const [label,spec]of [['text',{...base,text:'遠い光の向こうへ'}],['seed',{...base,seed:719}],['radius',{...base,radius:.3}],['explicit-size',{...base,explicitScale:1}],['camera',{...base,camera:'dutch'}],['motion',{...base,motionScale:.4}],['ghost',{...base,ghost:true}],['no-hold-region',{...base,regions:[{id:'short',start:0,end:.3,center:{x:.5,y:.42},radius:.2}]}]])await equivalent(label,spec);
+ await run(base);await equivalent('shake-events',base,p=>{p.events=[{type:'shake',amp:.7,start:0,end:4}];});
+ await run(base);await equivalent('chroma-events',base,p=>{p.events=[{type:'chroma',amp:.8,start:0,end:4}];p.fx.chroma=.25;p.style.ghost=.6;});
+ await run(base);await equivalent('style',base,p=>{p.style.glow=0;p.style.schemes[0].fg='#eeddaa';});
+ await run(base);J.metrics.clear();await equivalent('font-revision',base);if(bounds().revision!==J.metrics.revision)throw Error('Revision not invalidated');
+ const oldLanguage=J.lang;J.lang=oldLanguage==='en'?'ja':'en';await equivalent('language',base);J.lang=oldLanguage;
+ A.clearAdaptiveCache();let peakEntries=0;for(let i=0;i<75;i++){await run({...base,W:960,H:540,radius:.45,seed:800+i,explicitScale:1});const s=bounds();peakEntries=Math.max(peakEntries,s.entries);}const entryBound=bounds();if(peakEntries<3500||entryBound.contexts>=75)throw Error('Entry eviction was not exercised '+JSON.stringify({peakEntries,entryBound}));checks.push('actual-entry-eviction');
+ A.clearAdaptiveCache();for(let i=0;i<18;i++)await run({...base,seed:1000+i,explicitScale:1},p=>{p.cuts[0].proofMetadataProbe='x'.repeat(300000);});const byteBound=bounds();if(byteBound.contexts>=18)throw Error('Byte eviction was not exercised');checks.push('actual-byte-eviction');
+ await equivalent('post-eviction-recompute',base);return {passed:true,codecCases:4,checks:checks.length,labels:checks,peakEntries,entryBound,byteBound,final:bounds(),states};
+});console.log(JSON.stringify(report));assert.equal(report.passed,true);}finally{await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

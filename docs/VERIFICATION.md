@@ -174,7 +174,13 @@ for the remaining conditions, and completed 005. Capture success alone does not
 establish acceptance. Public validation keeps inherited proxy/CA/TLS, fetches raw bytes and
 fails on missing/stale assets; it never falls back to local evidence.
 
-## AVOID-006 native layouts-A verification
+## AVOID-006 native layouts-A verification (original comparison history)
+
+The original comparison through immutable `local-20261019-02` used the baseline,
+187 inputs and evidence paths described below. Its eight small corner-circle
+examples were diagnostic inputs; they are not the revised primary safety examples.
+Keep those bundles unchanged. Current tools follow the adaptive procedure after
+this historical section.
 
 AVOID-006 adds an explicit `layoutsA:true` staging option for 26 native layouts.
 It keeps each composition's primary lyrics, owned frames and meaningful captions
@@ -211,3 +217,170 @@ playback starts is detected. Sampled raster checks do not replace the analytic
 whole-interval envelope. Keep proxy, CA and TLS verification enabled; a Pages
 workflow success alone is not a public verification pass. The current state and
 actual completed evidence remain in [AVOID-006](../tasks/AVOID-006.md).
+
+
+### Adaptive revision: current comparison procedure
+
+The revised comparison enables the existing staged A26 path **on both sides**.
+Before is commit `06b87459822ac5bc6395e20b8eeb4a47cf12cb57`, archived at
+`/workspace/work/avoid006-adaptive-before`; after alone adds
+`layoutsAAdaptive:true`. Both engines execute the same candidate compatibility
+fixture with identical text, native parameters, seed, font and real timestamp.
+The manifest preserves both original HTML documents, the original before fixture,
+the executed fixture and explicit options. HTML normalization only renames the
+editor mount and removes its two font preconnects; engine scripts are unchanged.
+Use a new build ID after `local-20261019-02`; an existing ID cannot be overwritten.
+
+The current definition has 174 selected pairs, rather than an exhaustive matrix.
+The 18 accepted native examples retain their exact original inputs and require
+certified staged before/after results with identical native PNGs and font sizes.
+The eight revised primary examples use `1920×1080`, circle center `(0.5,0.42)`,
+radius `0.2` and multiple characters (`風の先へ`); `panels` explicitly uses
+`fx:none`. These dimensions, position and parameters appear in the labels. Each
+must actually certify full-interval safety or the qualified hold safety below.
+The smaller `960×540` central-circle cases remain explicit limit cases; candidate
+exclusion there is not counted as a primary safe example. Variable radii, aspect
+ratios, text amounts, entry/exit frames, region boundaries and H01–H03 controls are
+selected observations, not a claim of support for every input combination.
+
+Full-interval safety and `stationary-strict-moving-entry-exit-relaxed` are separate
+outcomes. In the latter, stationary events and every hold frame stay strictly
+clear; only source-tagged moving native events may cross during declared entry or
+exit windows. Native `motionTime` classifies each event/pass, while project real
+time selects the circle region. The quote body and source remain strict; moving
+quotation marks can relax. Dedicated quote-left exit and ticket-bottom entry examples explicitly change the
+circle position and include a same-input hold frame. Videos must contain both actual alpha-1 circle passage
+and a strict hold audit in the same recording. Validation re-renders those audit
+frames at their exact native timestamps, as well as every comparison PNG.
+
+Manual placement, lock, real `72:` notation and avoidance OFF remain unchanged
+controls. Real explicit `contentScale` can use same-size composition changes but
+cannot receive extra shrink. Actual stage text size is checked after that scale.
+Noto CJK and a licensed, disjoint DejaVu symbol subset are pinned before UI and
+Canvas measurement; coverage includes all current comparison branches, decoded
+runtime source escapes and actual native text draws.
+
+Before capture, the parent must inspect the new adaptive suite's actual results
+under `tasks/evidence/AVOID-006/adaptive-revision/final-candidate/`:
+`layouts-a-adaptive-test.log` and `functional-summary.json`. The summary identifies
+the executed script, log, compiled JA/EN, fixture and all `src` files by SHA-256,
+records exit status, actual counts, failures and unrun checks, and identifies the
+implementation model/effort. Capture requires candidate hashes to match and
+counts to match the suite's final raw JSON. Capture requires the nine core suites (adaptive, native A26, acceptance, scales,
+contrast, basic native/acceptance, stage and stack), rejects duplicate suite names,
+and verifies script and raw log hashes for every supplied additional suite as well.
+Logs use canonical safe relative paths `fixtures/SUITE-NAME.log`; missing or altered
+logs block capture and validation. Every suite log is included in the raw asset
+manifest. These receipts are bundled under the same names; the original native-suite log is not presented as an adaptive-suite
+result. A successful receipt does not replace actual geometry and raster checks.
+
+```sh
+JIZURA_TEST_REPORT=work/avoid006-adaptive-report.json node dev/avoidance/layouts-a-adaptive-test.cjs
+node dev/avoidance/layouts-a-negative.cjs
+node dev/avoidance/layouts-a-font-test.cjs --browser
+# Prepare and review the candidate-matched final log/summary receipt above.
+node dev/avoidance/layouts-a-review.cjs capture NEW-UNUSED-ADAPTIVE-BUILD-ID
+node dev/avoidance/layouts-a-review.cjs validate NEW-UNUSED-ADAPTIVE-BUILD-ID
+node dev/avoidance/layouts-a-negative.cjs review/AVOID-006/NEW-UNUSED-ADAPTIVE-BUILD-ID /workspace/lyricfx.JIZURA --playback
+node dev/avoidance/layouts-a-review.cjs validate NEW-UNUSED-ADAPTIVE-BUILD-ID --base-url https://mokusatsu.github.io/lyricfx.JIZURA/
+```
+
+`--source-root CHECKOUT` reads a candidate without editing it. `--smoke` writes
+isolated tooling evidence under `work/`, labels it as incomplete, permits an
+explicit missing-receipt marker and cannot be publicly validated as acceptance
+evidence. A pre-freeze snapshot, a matrix definition or a local pass does not
+establish that the final bundle was captured, published or publicly verified.
+Final completion and public build identity remain in the task/review records.
+
+### Compressed adaptive comparison evidence (schema 3)
+
+Current tooling writes `schema:3`, revision
+`adaptive-v2-compressed-observations`. Every case side retains its complete
+observation as a canonical `observations/CASE-SIDE.json.gz` asset. Its reference
+pins encoded and raw SHA-256 and byte counts. Validation requires the exact
+case-side path, rejects symlinks, limits decompression to 32 MiB per observation,
+and hydrates the original JSON before running the same geometry, raster,
+composition and live observation checks. Every gzip asset remains in the public
+raw-byte fetch inventory. The comparison HTML shows strategy, variant, font
+scale, quality, glyph coverage counts and native event clocks/phases, with full
+attempt reasons and links to the complete gzip observations; polygon vertices
+are not expanded into HTML.
+
+An existing schema-2 capture can be repackaged without repeating photography:
+
+```sh
+node dev/avoidance/layouts-a-review.cjs repack SOURCE-BUILD NEW-UNUSED-BUILD
+node dev/avoidance/layouts-a-review.cjs validate NEW-UNUSED-BUILD
+node dev/avoidance/layouts-a-negative.cjs review/AVOID-006/NEW-UNUSED-BUILD /workspace/lyricfx.JIZURA --playback
+```
+
+Repack first executes the exact captured schema-2 validator, including tool
+identity, generated HTML and every raw asset check. Its three capture-era tool
+snapshots are preserved under `fixtures/capture-tool-*`. The repack receipt pins
+the source build and manifest hash, records that photography was reused, and
+lists every reused asset hash. The original large manifest stays in the immutable
+source bundle; the new bundle carries its hash rather than a second copy.
+Original images, videos, source documents, fixture, cases, fonts and samples are
+copied byte-for-byte. The current tool snapshots describe packaging and validation;
+the captured snapshots describe photography. The existing font subsets must cover
+the entire new index. Both new index and manifest must be below 100 MiB.
+
+The compressed transport negative suite covers missing/corrupt gzip data,
+case-side reference substitution, paths, encoding, byte counts, hashes and size
+limits. It also recomputes all transport hashes after semantic raster/envelope
+changes and requires the original oracle to reject those observations. A local
+repack pass does not establish public deployment; the usual public raw-byte,
+348 native-frame rerender, playback and application startup checks still apply.
+
+### Lossless PNG storage and immutable sharing (schema 4)
+
+New captures use `schema:4`, revision `adaptive-v3-lossless-shared-png`. Install
+its exact image dependencies with `cd dev && npm ci`; the helper resolves that
+local installation directly. The package and lock snapshots, PNG helper and
+capture tools are raw inventory assets. The manifest records Node, pngjs, sharp
+and libvips versions; each PNG receipt records the encoder settings and selection.
+
+All 174 case pairs, 696 PNG references, original pixel dimensions, full compressed
+observations and four actual playback videos remain required. Each UI/native
+receipt preserves the original capture hash/bytes, saved encoded hash/bytes and
+decoded RGBA hash/bytes. Native receipts additionally preserve
+`liveCanvasPNG_SHA256`, the exact hash of the original Canvas `toDataURL()` bytes.
+A lossless sharp candidate uses compression level 9, adaptive filtering, no palette
+and effort 10. Every candidate must decode to the same dimensions and every RGBA
+byte as its original; choose the smaller encoding. If the original bytes already
+exist in a whitelisted immutable published bundle, reuse those bytes with zero
+new storage instead. Identical saved bytes within the new bundle use one hash
+named PNG. This changes storage references, never case counts or image sizes.
+
+Shared PNG references must use the helper's exact canonical relative URL and
+pinned source manifest SHA-256. The original manifest's asset hash and actual raw
+file must agree. Symlinks, traversal, unlisted builds and non-image source
+substitution fail. Both every referenced PNG and its source manifest belong to
+the public raw-fetch inventory. Sharing never writes the old asset. Current JA/EN
+application source hashes and the actual font coverage checks remain mandatory.
+
+Live validation first checks the original Canvas PNG exact hash and byte count, then compares
+all decoded RGBA bytes against its saved encoding. It also compares each live UI
+screenshot's original raw hash/byte count and compares its saved UI by every RGBA byte. Capture and validation use the same
+1500×1500 viewport, DPR1, zero scroll, settled pinned fonts and stopped playback;
+UI screenshots are full-page with the same screenshot options. A UI mismatch
+must be investigated; it cannot be resolved by silently replacing the expectation.
+The independent observation oracle still receives the complete hydrated JSON.
+
+Run `node dev/avoidance/layouts-a-negative.cjs` for small synthetic transport and
+PNG guards. These are tooling tests, not photographed acceptance evidence. The
+bundle negative command additionally checks a cloned bundle and playback failure
+injection. Existing schema-2/3 evidence dispatches to its captured validator when
+its tool differs, with the supplied `--source-root` still enforced. Use its actual
+historical checkout when validating historical source identities. Existing bundles
+are immutable; schema 4 does not rewrite or upgrade them. A new capture still
+requires the candidate-matched functional receipt and parent release for the full
+capture/browser workload. Public validation and actual app startup remain required.
+
+Color interpretation is checked separately from RGBA equality. The receipt pins
+all original/saved ICC, gamma, sRGB, chromaticity, HDR color and EXIF chunks by
+hash/length and requires them to agree. If recompression would drop or change
+those chunks, retain the original encoding. A PNG without these chunks is
+explicitly recorded as using the default sRGB interpretation. Live UI and native
+checks also compare the metadata. Representative browser-decoded pixel checks
+remain part of the parent review before release.

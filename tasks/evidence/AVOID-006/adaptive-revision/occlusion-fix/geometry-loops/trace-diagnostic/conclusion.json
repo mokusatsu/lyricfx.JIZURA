@@ -1,0 +1,610 @@
+{
+  "diagnosticOnly": true,
+  "formalAcceptance": false,
+  "priorFormalFailureStillFailed": true,
+  "priorMultiLayoutSlowBurstReproduced": false,
+  "productChangeRecommendedFromThisTrace": false,
+  "reason": "Observed trace does not reproduce the prior 20-32ms multi-layout burst. Current slow film frames show ordinary JS/native work and sometimes main GC, but cannot establish the cause of the untraced formal burst. Do not alter product or thresholds from this evidence.",
+  "resourceDeltaCPU": {
+    "usage_usec": 504080846,
+    "user_usec": 472874847,
+    "system_usec": 31205999,
+    "nice_usec": 0,
+    "nr_periods": 3953,
+    "nr_throttled": 55,
+    "throttled_usec": 3553633,
+    "nr_bursts": 0,
+    "burst_usec": 0
+  },
+  "resourceDeltaMemoryEvents": {
+    "low": 0,
+    "high": 0,
+    "max": 0,
+    "oom": 0,
+    "oom_kill": 0,
+    "oom_group_kill": 0
+  },
+  "majorPageFaultDelta": 0,
+  "measuredFramesWithThrottleBracketIncrease": 0,
+  "after1000FirstSixMeasuredWallMS": [
+    1.2000000029802322,
+    1.2000000029802322,
+    0.7999999970197678,
+    0.5,
+    0.7999999970197678,
+    7.800000004470348
+  ],
+  "after1000SlowMeasuredFrames": [
+    {
+      "n": 100,
+      "index": 21,
+      "measuredIndex": 5,
+      "warmup": false,
+      "layout": "filmstrip",
+      "wallMS": 11.600000001490116,
+      "epochStartMS": 1792507667259.6,
+      "epochEndMS": 1792507667271.2,
+      "traceStartUS": 33780292541.0,
+      "traceEndUS": 33780304141.000004,
+      "mainGCUnionMS": 0.0,
+      "backgroundGCUnionMS": 0.0,
+      "gcEventNames": {},
+      "cpuSampleWallAttributionMS": {
+        "builtinOrEngine": 0.21500000381469725,
+        "javascript": 10.298999999999998,
+        "nativeCanvas": 1.086
+      },
+      "sampleCount": 14,
+      "sampleGapExcessAbove2ms": 0,
+      "topSampledFunctions": [
+        [
+          "",
+          7.012
+        ],
+        [
+          "cross",
+          1.132
+        ],
+        [
+          "recorder.<computed>",
+          1.096
+        ],
+        [
+          "fillText",
+          1.086
+        ],
+        [
+          "A.convexHull",
+          1.059
+        ],
+        [
+          "mark",
+          0.21500000381469725
+        ]
+      ],
+      "resourceBracketStartMS": 1792507667252,
+      "resourceBracketEndMS": 1792507667352,
+      "resourceBracketCPU": {
+        "usage_usec": 165430,
+        "user_usec": 153595,
+        "system_usec": 11835,
+        "nice_usec": 0,
+        "nr_periods": 1,
+        "nr_throttled": 0,
+        "throttled_usec": 0,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "resourceBracketMemoryEvents": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      },
+      "startMemoryCurrent": {
+        "available": true,
+        "text": "12370153472"
+      },
+      "endMemoryCurrent": {
+        "available": true,
+        "text": "12370518016"
+      }
+    },
+    {
+      "n": 100,
+      "index": 37,
+      "measuredIndex": 21,
+      "warmup": false,
+      "layout": "filmstrip",
+      "wallMS": 11.0,
+      "epochStartMS": 1792507667308.7,
+      "epochEndMS": 1792507667319.7,
+      "traceStartUS": 33780341563.0,
+      "traceEndUS": 33780352563.0,
+      "mainGCUnionMS": 0.0,
+      "backgroundGCUnionMS": 0.0,
+      "gcEventNames": {},
+      "cpuSampleWallAttributionMS": {
+        "builtinOrEngine": 1.169,
+        "javascript": 8.751999999999999,
+        "nativeCanvas": 1.079
+      },
+      "sampleCount": 13,
+      "sampleGapExcessAbove2ms": 0,
+      "topSampledFunctions": [
+        [
+          "A.convexHull",
+          3.1959999999999997
+        ],
+        [
+          "",
+          2.144
+        ],
+        [
+          "recorder.<computed>",
+          1.132
+        ],
+        [
+          "push",
+          1.079
+        ],
+        [
+          "getAttribute",
+          1.079
+        ],
+        [
+          "fillText",
+          1.079
+        ]
+      ],
+      "resourceBracketStartMS": 1792507667252,
+      "resourceBracketEndMS": 1792507667352,
+      "resourceBracketCPU": {
+        "usage_usec": 165430,
+        "user_usec": 153595,
+        "system_usec": 11835,
+        "nice_usec": 0,
+        "nr_periods": 1,
+        "nr_throttled": 0,
+        "throttled_usec": 0,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "resourceBracketMemoryEvents": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      },
+      "startMemoryCurrent": {
+        "available": true,
+        "text": "12370153472"
+      },
+      "endMemoryCurrent": {
+        "available": true,
+        "text": "12370518016"
+      }
+    },
+    {
+      "n": 100,
+      "index": 53,
+      "measuredIndex": 37,
+      "warmup": false,
+      "layout": "filmstrip",
+      "wallMS": 13.0,
+      "epochStartMS": 1792507667345.4001,
+      "epochEndMS": 1792507667358.4001,
+      "traceStartUS": 33780378326.999992,
+      "traceEndUS": 33780391326.999992,
+      "mainGCUnionMS": 3.86,
+      "backgroundGCUnionMS": 2.908,
+      "gcEventNames": {
+        "V8.GC_HEAP_EXTERNAL_PROLOGUE": 1,
+        "MinorGC": 1,
+        "V8.GC_HEAP_PROLOGUE": 1,
+        "V8.GCScavenger": 1,
+        "V8.GC_MC_COMPLETE_SWEEP_ARRAY_BUFFERS": 1,
+        "V8.GC_SCAVENGER": 1,
+        "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 1,
+        "V8.GC_SCAVENGER_SCAVENGE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 1,
+        "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 1,
+        "V8.GC_SCAVENGER_BACKGROUND_SCAVENGE_PARALLEL": 5,
+        "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 2,
+        "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 1,
+        "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 1,
+        "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 1,
+        "V8.GC_SCAVENGER_SWEEP_ARRAY_BUFFERS": 1,
+        "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 1,
+        "V8.GC_MINOR_MS_BACKGROUND_SWEEPING": 1,
+        "V8.GC_BACKGROUND_YOUNG_ARRAY_BUFFER_SWEEP": 1,
+        "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 1,
+        "V8.GC_HEAP_EPILOGUE": 1,
+        "V8.GC_HEAP_EXTERNAL_EPILOGUE": 1
+      },
+      "cpuSampleWallAttributionMS": {
+        "javascript": 8.445000007629396,
+        "gc": 3.108,
+        "nativeCanvas": 1.076,
+        "builtinOrEngine": 0.3709999923706055
+      },
+      "sampleCount": 11,
+      "sampleGapExcessAbove2ms": 1.108,
+      "topSampledFunctions": [
+        [
+          "(garbage collector)",
+          3.108
+        ],
+        [
+          "cross",
+          2.287
+        ],
+        [
+          "",
+          2.132
+        ],
+        [
+          "A.convexHull",
+          2.0010000076293943
+        ],
+        [
+          "fill",
+          1.076
+        ],
+        [
+          "recorder.<computed>",
+          1.061
+        ]
+      ],
+      "resourceBracketStartMS": 1792507667252,
+      "resourceBracketEndMS": 1792507667453,
+      "resourceBracketCPU": {
+        "usage_usec": 301646,
+        "user_usec": 276602,
+        "system_usec": 25044,
+        "nice_usec": 0,
+        "nr_periods": 2,
+        "nr_throttled": 0,
+        "throttled_usec": 0,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "resourceBracketMemoryEvents": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      },
+      "startMemoryCurrent": {
+        "available": true,
+        "text": "12370153472"
+      },
+      "endMemoryCurrent": {
+        "available": true,
+        "text": "12371767296"
+      }
+    },
+    {
+      "n": 1000,
+      "index": 45,
+      "measuredIndex": 29,
+      "warmup": false,
+      "layout": "filmstrip",
+      "wallMS": 12.100000001490116,
+      "epochStartMS": 1792507910764.5,
+      "epochEndMS": 1792507910776.6,
+      "traceStartUS": 34023797420.0,
+      "traceEndUS": 34023809520.0,
+      "mainGCUnionMS": 4.536,
+      "backgroundGCUnionMS": 2.636,
+      "gcEventNames": {
+        "V8.GC_HEAP_EXTERNAL_PROLOGUE": 1,
+        "MinorGC": 1,
+        "V8.GC_HEAP_PROLOGUE": 1,
+        "V8.GCScavenger": 1,
+        "V8.GC_MC_COMPLETE_SWEEP_ARRAY_BUFFERS": 1,
+        "V8.GC_TIME_TO_SAFEPOINT": 1,
+        "V8.GC_SCAVENGER": 1,
+        "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 1,
+        "V8.GC_SCAVENGER_SCAVENGE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 1,
+        "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 1,
+        "V8.GC_SCAVENGER_BACKGROUND_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 2,
+        "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 1,
+        "V8.GC_SCAVENGER_BACKGROUND_SCAVENGE_PARALLEL": 5,
+        "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 1,
+        "V8.GC_SCAVENGER_BACKGROUND_TRACED_HANDLES_RESET_PARALLEL": 2,
+        "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 1,
+        "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 1,
+        "V8.GC_SCAVENGER_SWEEP_ARRAY_BUFFERS": 1,
+        "V8.GC_MINOR_MS_BACKGROUND_SWEEPING": 1,
+        "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 1,
+        "V8.GC_BACKGROUND_YOUNG_ARRAY_BUFFER_SWEEP": 1,
+        "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 1,
+        "V8.GC_HEAP_EPILOGUE": 1,
+        "V8.GC_HEAP_DUMP_STATISTICS": 1,
+        "V8.GC_HEAP_EXTERNAL_EPILOGUE": 1,
+        "V8.GCDeoptMarkedAllocationSites": 1
+      },
+      "cpuSampleWallAttributionMS": {
+        "builtinOrEngine": 0.036000000000000004,
+        "javascript": 5.318,
+        "gc": 4.587,
+        "nativeCanvas": 2.159
+      },
+      "sampleCount": 12,
+      "sampleGapExcessAbove2ms": 1.17,
+      "topSampledFunctions": [
+        [
+          "(garbage collector)",
+          4.587
+        ],
+        [
+          "",
+          3.1470000000000002
+        ],
+        [
+          "A.convexHull",
+          1.087
+        ],
+        [
+          "push",
+          1.084
+        ],
+        [
+          "restore",
+          1.08
+        ],
+        [
+          "translate",
+          1.079
+        ]
+      ],
+      "resourceBracketStartMS": 1792507910716,
+      "resourceBracketEndMS": 1792507910816,
+      "resourceBracketCPU": {
+        "usage_usec": 131495,
+        "user_usec": 117763,
+        "system_usec": 13731,
+        "nice_usec": 0,
+        "nr_periods": 1,
+        "nr_throttled": 0,
+        "throttled_usec": 0,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "resourceBracketMemoryEvents": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      },
+      "startMemoryCurrent": {
+        "available": true,
+        "text": "14348947456"
+      },
+      "endMemoryCurrent": {
+        "available": true,
+        "text": "14349512704"
+      }
+    },
+    {
+      "n": 1000,
+      "index": 53,
+      "measuredIndex": 37,
+      "warmup": false,
+      "layout": "filmstrip",
+      "wallMS": 10.099999994039536,
+      "epochStartMS": 1792507910785.3,
+      "epochEndMS": 1792507910795.4001,
+      "traceStartUS": 34023818259.0,
+      "traceEndUS": 34023828358.999992,
+      "mainGCUnionMS": 0.0,
+      "backgroundGCUnionMS": 0.0,
+      "gcEventNames": {},
+      "cpuSampleWallAttributionMS": {
+        "builtinOrEngine": 0.38899999237060545,
+        "javascript": 8.632,
+        "nativeCanvas": 1.079
+      },
+      "sampleCount": 13,
+      "sampleGapExcessAbove2ms": 0.212,
+      "topSampledFunctions": [
+        [
+          "indices",
+          2.212
+        ],
+        [
+          "",
+          2.1079999999999997
+        ],
+        [
+          "contains",
+          1.084
+        ],
+        [
+          "cross",
+          1.082
+        ],
+        [
+          "A.convexHull",
+          1.081
+        ],
+        [
+          "save",
+          1.079
+        ]
+      ],
+      "resourceBracketStartMS": 1792507910716,
+      "resourceBracketEndMS": 1792507910816,
+      "resourceBracketCPU": {
+        "usage_usec": 131495,
+        "user_usec": 117763,
+        "system_usec": 13731,
+        "nice_usec": 0,
+        "nr_periods": 1,
+        "nr_throttled": 0,
+        "throttled_usec": 0,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "resourceBracketMemoryEvents": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      },
+      "startMemoryCurrent": {
+        "available": true,
+        "text": "14348947456"
+      },
+      "endMemoryCurrent": {
+        "available": true,
+        "text": "14349512704"
+      }
+    },
+    {
+      "n": 1000,
+      "index": 77,
+      "measuredIndex": 61,
+      "warmup": false,
+      "layout": "filmstrip",
+      "wallMS": 12.899999998509884,
+      "epochStartMS": 1792507910840.7,
+      "epochEndMS": 1792507910853.6,
+      "traceStartUS": 34023873623.000004,
+      "traceEndUS": 34023886523.0,
+      "mainGCUnionMS": 5.022,
+      "backgroundGCUnionMS": 3.229,
+      "gcEventNames": {
+        "V8.GC_HEAP_EXTERNAL_PROLOGUE": 1,
+        "MinorGC": 1,
+        "V8.GC_HEAP_PROLOGUE": 1,
+        "V8.GCScavenger": 1,
+        "V8.GC_MC_COMPLETE_SWEEP_ARRAY_BUFFERS": 1,
+        "V8.GC_SCAVENGER": 1,
+        "V8.GC_SCAVENGER_SCAVENGE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 1,
+        "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 1,
+        "V8.GC_SCAVENGER_BACKGROUND_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 2,
+        "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 1,
+        "V8.GC_SCAVENGER_BACKGROUND_SCAVENGE_PARALLEL": 6,
+        "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 2,
+        "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 1,
+        "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 1,
+        "V8.GC_SCAVENGER_BACKGROUND_TRACED_HANDLES_RESET_PARALLEL": 2,
+        "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 1,
+        "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 1,
+        "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 1,
+        "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 1,
+        "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 1,
+        "V8.GC_HEAP_EPILOGUE": 1,
+        "V8.GC_HEAP_DUMP_STATISTICS": 1,
+        "V8.GC_HEAP_EXTERNAL_EPILOGUE": 1,
+        "V8.GCDeoptMarkedAllocationSites": 1
+      },
+      "cpuSampleWallAttributionMS": {
+        "javascript": 5.918999996185303,
+        "gc": 5.7059999999999995,
+        "nativeCanvas": 1.09,
+        "builtinOrEngine": 0.185
+      },
+      "sampleCount": 14,
+      "sampleGapExcessAbove2ms": 0.453,
+      "topSampledFunctions": [
+        [
+          "(garbage collector)",
+          5.7059999999999995
+        ],
+        [
+          "recorder.<computed>",
+          1.5839999961853028
+        ],
+        [
+          "",
+          1.091
+        ],
+        [
+          "save",
+          1.09
+        ],
+        [
+          "finite",
+          1.089
+        ],
+        [
+          "gs",
+          1.083
+        ]
+      ],
+      "resourceBracketStartMS": 1792507910816,
+      "resourceBracketEndMS": 1792507910917,
+      "resourceBracketCPU": {
+        "usage_usec": 143605,
+        "user_usec": 128904,
+        "system_usec": 14701,
+        "nice_usec": 0,
+        "nr_periods": 1,
+        "nr_throttled": 0,
+        "throttled_usec": 0,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "resourceBracketMemoryEvents": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      },
+      "startMemoryCurrent": {
+        "available": true,
+        "text": "14349512704"
+      },
+      "endMemoryCurrent": {
+        "available": true,
+        "text": "14349709312"
+      }
+    }
+  ],
+  "limitations": [
+    "Trace and CPU profiler add overhead. Diagnostic timings are not formal acceptance.",
+    "CPU-profile interval attribution is sampled wall time, not a direct thread CPU clock; long sample gaps are reported separately. Negative CDP deltas require chronological sorting before disjoint interval attribution.",
+    "Program/idle samples cannot distinguish native execution from OS descheduling.",
+    "100ms cgroup intervals may bracket a short frame; overlap alone does not prove causation.",
+    "Main/background GC interval unions overlap one another and must not be added."
+  ],
+  "pressureAvailability": {
+    "cpu.pressure": {
+      "available": false,
+      "error": "ENOENT"
+    },
+    "memory.pressure": {
+      "available": false,
+      "error": "ENOENT"
+    }
+  }
+}

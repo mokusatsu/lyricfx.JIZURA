@@ -1,0 +1,51 @@
+{
+  "status": "failed-public-byte-immutability-check",
+  "preliminaryOnly": true,
+  "candidateBundle": "review/AVOID-006/local-20261020-04",
+  "baselineCommit": "06b87459822ac5bc6395e20b8eeb4a47cf12cb57",
+  "snapshotIndexUnchanged": true,
+  "indexStageSHA256": "3ff324042019ea788542012a00f9733cb1b72cd85d50f8b4ac6543cf2ded6292",
+  "officialImage": "ghcr.io/actions/jekyll-build-pages@sha256:6791ebfd912185ed59bfb5fb102664fa872496b79f87ff8b9cfba292a7345041",
+  "jekyllBuildExitCode": 0,
+  "jekyllGenerationSeconds": 1.331,
+  "outputURLCount": 2806,
+  "outputBytesFromStat": 946786660,
+  "fullOutputAuditPassed": false,
+  "auditFailure": "Old public bytes changed: docs/VERIFICATION.md",
+  "changedLegacyPublicFiles": [
+    {
+      "path": "docs/VERIFICATION.md",
+      "baselineGitOID": "d63b9b8ef47b502e59bd1eedc9754c1eda4ace99",
+      "stagedGitOID": "fbff8299d569303f7f7a37c92eea870d25cfdd04",
+      "classification": "other public file"
+    },
+    {
+      "path": "en/index.html",
+      "baselineGitOID": "641508858ae1755543bc11131dae2066000c5c46",
+      "stagedGitOID": "44a9e101ba91fa193f36ce8711570a94cf3cbe34",
+      "classification": "mutable locale"
+    },
+    {
+      "path": "index.html",
+      "baselineGitOID": "1597d04d78a3f5f6599ba0991a7a418dc4fabd69",
+      "stagedGitOID": "84b4f863c70306bf08998900bf2a31b9a0aa6dc5",
+      "classification": "mutable locale"
+    }
+  ],
+  "docs": {
+    "path": "docs/VERIFICATION.md",
+    "baselineBytes": 11953,
+    "baselineSHA256": "c0bee06240acf62584f705efcc5e9c54ab45ee61d466a20120ae1c1fe0587cbe",
+    "stagedBytes": 23624,
+    "stagedSHA256": "4317946f6ff4e2da12b059e9458b34a297e19f1f2a40331ac27246197bdeeeef"
+  },
+  "scratchRun": "/workspace/lyricfx.JIZURA/scratch/avoid006-final04-pages-audit-retry01",
+  "finalIndexRequiresNewSnapshotBuildAudit": true,
+  "evidenceSHA256": {
+    "docs-VERIFICATION.diff": "b046c09c0a79f801898711db5a1cdbe081d949f21998551a3eba568d63a8fdb1",
+    "baseline-to-staged-public-changes.json": "1d91b67e94bed8ab5ffca6fff43b029a3aea90104049b86c95c3fc0a5e529d70",
+    "pages-output-audit.stderr.log": "d1bda083f9ff7ee0721f07a299862ed3b4afc4842077cddb4fd36452d2496861",
+    "pages-output-audit.json": "573108cd4d092b41d91ba7695da4534eda3665984eba0d4c8a486e717ecba1f5",
+    "jekyll-build.log": "b12e6d4e8e327b9aa733c9a5ec1fb419ea764a238039311dc7f9c3f8199edd96"
+  }
+}

@@ -14,8 +14,20 @@ const shear=d=>[1,0,Math.tan(d*J.DEG),1,0,0];
 const compose=(...ms)=>ms.reduce(A.multiply,ID);
 const matrix=ctx=>{const m=ctx.getTransform();return [m.a,m.b,m.c,m.d,m.e,m.f];};
 const rect=(x,y,w,h)=>[[x,y],[x+w,y],[x+w,y+h],[x,y+h]];
-A.bounds = polygons => {if(!Array.isArray(polygons)||polygons.some(p=>!Array.isArray(p)||p.length<3||p.some(v=>!Array.isArray(v)||v.length!==2)))fail('UNMEASURED_INK','Invalid polygon');const ps=polygons.flat();if(!ps.length||ps.some(p=>!finite(p)))fail('UNMEASURED_INK','Empty/nonfinite ink');return {x0:Math.min(...ps.map(p=>p[0])),y0:Math.min(...ps.map(p=>p[1])),x1:Math.max(...ps.map(p=>p[0])),y1:Math.max(...ps.map(p=>p[1]))};};
-A.convexHull=points=>{const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=ps=>{const out=[];for(const p of ps){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}out.pop();return out;};return half(sorted).concat(half(sorted.slice().reverse()));};
+A.bounds = polygons => {if(!Array.isArray(polygons)||polygons.some(p=>!Array.isArray(p)||p.length<3||p.some(v=>!Array.isArray(v)||v.length!==2)))fail('UNMEASURED_INK','Invalid polygon');let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity,count=0;polygons.forEach(poly=>poly.forEach(p=>{if(!finite(p))fail('UNMEASURED_INK','Empty/nonfinite ink');count++;x0=Math.min(x0,p[0]);y0=Math.min(y0,p[1]);x1=Math.max(x1,p[0]);y1=Math.max(y1,p[1]);}));if(!count)fail('UNMEASURED_INK','Empty/nonfinite ink');return {x0,y0,x1,y1};};
+A.convexHull=points=>{const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),out=[];for(let i=0;i<sorted.length;i++){const p=sorted[i];while(out.length>1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();const lowerLength=out.length;for(let i=sorted.length-1;i>=0;i--){const p=sorted[i];while(out.length>lowerLength+1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();return out;};
+// Exact old angular samples, privately reused. A changed TAU cannot reuse a
+// stale table. At most the existing 32/64-point shape tables are retained.
+let shapeTau;const shapeCircles=new Map();
+function shapeUnitCircle(N){if(shapeTau!==J.TAU){shapeCircles.clear();shapeTau=J.TAU;}let unit=shapeCircles.get(N);if(!unit){unit=Array.from({length:N},(_,i)=>{const a=(i+.5)*J.TAU/N;return [Math.cos(a),Math.sin(a)];});shapeCircles.set(N,unit);}return unit;}
+function roundedRectHull(corners,radius){
+ const x0=Math.min(corners[0][0],corners[1][0]),x1=Math.max(corners[0][0],corners[1][0]),y0=Math.min(corners[0][1],corners[3][1]),y1=Math.max(corners[0][1],corners[3][1]),canonical=[[x0,y0],[x1,y0],[x1,y1],[x0,y1]],unit=shapeUnitCircle(32);
+ // A vertex contributes to this rectangle+32-gon Minkowski hull only if its
+ // normal cone meets that corner's quadrant. Include both boundary vertices;
+ // these are the same old points, not a coarser angular approximation.
+ const indices=[i=>i>=15&&i<=24,i=>i===0||i>=23,i=>i<=8||i===31,i=>i>=7&&i<=16];
+ return A.convexHull(canonical.flatMap((corner,j)=>unit.flatMap((v,i)=>indices[j](i)?[[corner[0]+radius*v[0],corner[1]+radius*v[1]]]:[])));
+}
 let measureCtx;
 const measure=()=>measureCtx||(measureCtx=document.createElement('canvas').getContext('2d'));
 A.bufferStats=()=>({contexts:measureCtx?1:0,maxContexts:1,pixels:measureCtx?measureCtx.canvas.width*measureCtx.canvas.height:0,maxPixels:1,perGlyphStageBuffers:0});
@@ -29,7 +41,7 @@ A.inkMetricCacheStats=()=>({revision:inkMetricRevision,entries:inkMetrics.size,m
 const textDefaults={fontKerning:['auto'],letterSpacing:['0px'],wordSpacing:['0px'],textRendering:['auto'],fontStretch:['normal'],fontVariantCaps:['normal'],direction:['inherit','ltr'],lang:['inherit']};
 const defaultTextValue=(key,value)=>['letterSpacing','wordSpacing'].includes(key)?value===''||/^[-+]?0(?:\.0+)?(?:[a-z]+)?$/i.test(String(value).trim()):textDefaults[key].includes(value);
 const validateTextState=ctx=>{for(const [key,allowed]of Object.entries(textDefaults))if(key in ctx&&!defaultTextValue(key,ctx[key]))fail('UNSUPPORTED_TEXT_STATE','Default '+key+' required');if(ctx.canvas?.getAttribute?.('lang')||typeof getComputedStyle==='function'&&getComputedStyle(ctx.canvas).direction==='rtl')fail('UNSUPPORTED_TEXT_STATE','Default canvas language/direction required');};
-A.itemGeometry = (it,parent=ID,env={pass:'main',scale:1}) => {
+A.itemGeometry = (it,parent=ID,env={pass:'main',scale:1},options={}) => {
   A.affine(parent);if(env.ctx)validateTextState(env.ctx);
   for(const k of ['pieceFn','blur','shadow','extrude','pattern'])if(it[k])fail('UNSUPPORTED_ITEM',k+' requires a bounded adapter');
   const ctx=measurementContext(), lay=J.layoutText(it), sx=it.sx||1,sy=it.sy||1;
@@ -50,24 +62,29 @@ A.itemGeometry = (it,parent=ID,env={pass:'main',scale:1}) => {
     // cover raster grid fitting plus edge coverage at the alpha threshold.
     A.inverse(gm);
     const inkPolygon=rect(-vals[0]-pad,-vals[2]-pad,vals[0]+vals[1]+pad*2,vals[2]+vals[3]+pad*2).map(p=>A.point(gm,p));
-    const p=A.convexHull(inkPolygon.flatMap(q=>[[q[0]-2,q[1]-2],[q[0]+2,q[1]-2],[q[0]+2,q[1]+2],[q[0]-2,q[1]+2]]));
+    // Owned-text validation consumes this exact un-clipped ink, not raster
+    // AA. At ordinary coordinates the omitted +/-2 hull is necessarily finite
+    // and nondegenerate. Uncertain coordinates retain the complete operation.
+    const p=options.validationOnly&&inkPolygon.every(q=>q.every(v=>Number.isFinite(v)&&Math.abs(v)<=1e7))?inkPolygon:A.convexHull(inkPolygon.flatMap(q=>[[q[0]-2,q[1]-2],[q[0]+2,q[1]-2],[q[0]+2,q[1]+2],[q[0]-2,q[1]+2]]));
     polygons.push(p);glyphs.push({index:g.i,ch,font,matrix:gm,inkPolygon,polygon:p});
   }
-  return {polygons,glyphs,inkPolygons:glyphs.map(g=>g.inkPolygon),measurement:'actual TextMetrics + stroke + one font-space pixel + two device-pixel raster guard'};
+  return {polygons,glyphs,inkPolygons:glyphs.map(g=>g.inkPolygon),...(options.validationOnly?{validationOnly:true,measurement:'validation-only un-clipped TextMetrics ink; not a geometry certificate'}:{measurement:'actual TextMetrics + stroke + one font-space pixel + two device-pixel raster guard'})};
 };
 /* Future piece adapter must supply final ink polygons, not untransformed glyph centers. */
 A.pieceGeometry = (polygons,parent=ID) => {A.affine(parent);A.bounds(polygons);return polygons.map(p=>p.map(v=>A.point(parent,v)));};
 A.withRole = (env,role,owner,fn) => {if(!['primary','tiledAux','independentDecor'].includes(role))fail('INVALID_ROLE','Unknown draw ownership');const prior=env.drawOwnership;env.drawOwnership={role,owner:String(owner)};try{return fn();}finally{env.drawOwnership=prior;}};
 function snapshotItem(it){const copy={...it};delete copy._lay;delete copy._m;delete copy.charFns;delete copy.pieceFns;delete copy.pre;delete copy.post;return copy;}
 function recordedItemBounds(it){const lay=J.layoutText(it),boxes=[];for(const g of lay){const v=it.charFn?it.charFn(g.i,g,lay.N):null;if(!g.ch.trim()||v?.hide||(it.alpha??1)*(v?.a??1)<=.002)continue;const cs=v?.s??1;boxes.push({x:g.x*(it.sx||1)+g.vx*(it.sx||1)+(v?.dx||0),y:g.y*(it.sy||1)+g.vy*(it.sy||1)+(v?.dy||0),w:g.w*(it.sx||1)*cs,h:g.h*(it.sy||1)*cs});}if(!boxes.length)return null;return {x0:it.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:it.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:it.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:it.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:it.x,cy:it.y,boxes};}
-A.record = (renderer,env) => {
+A.record = (renderer,env,options={}) => {
+  // Validation prepasses are never geometry certificates or replay programs.
+  const validationOnly=options.validationOnly===true;let shapeValidationUncertain=false;
   validateTextState(env.ctx);
   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
   const nativeA26=env.cut.placementLayoutsA===true;let nativeRoot=nativeA26?matrix(c):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
   const events=[],diagnostics=[],gradients=new WeakMap();let recorder,glyphCount=0,clips=[],pathRect=null,pathInvalid=false,pathPoints=[],pathClosed=false,pathMatrix=null;const clipStack=[];
-  const budget=env.placementBudget||{events:0,glyphs:0};
-  const push=(kind,args,polygons)=>{if(++budget.events>MAX_EVENTS)fail('GEOMETRY_LIMIT','Frame draw event ceiling exceeded');if(events.length>=MAX_EVENTS)fail('GEOMETRY_LIMIT','Draw event ceiling exceeded');const ownership=recorder.drawOwnership||{role:'primary',owner:'cut:'+env.cut.index};if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=matrix(c);A.affine(m);if(polygons.length)A.bounds(polygons);events.push({...(nativeA26?{nativeTransform:nativeState(),nativeSweep:recorder.layoutASweep?jsonClone(recorder.layoutASweep):null}:{}),kind,args:args.map(v=>v&&typeof v==='object'&&gradients.has(v)?gradients.get(v):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
+  const budget=env.placementBudget?(validationOnly?{...env.placementBudget}:env.placementBudget):{events:0,glyphs:0};
+  const push=(kind,args,polygons,knownMatrix)=>{if(++budget.events>MAX_EVENTS)fail('GEOMETRY_LIMIT','Frame draw event ceiling exceeded');if(events.length>=MAX_EVENTS)fail('GEOMETRY_LIMIT','Draw event ceiling exceeded');const ownership=recorder.drawOwnership||{role:'primary',owner:'cut:'+env.cut.index};if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=knownMatrix||matrix(c);A.affine(m);if(polygons.length)A.bounds(polygons);events.push({...(nativeA26?{nativeTransform:nativeState(),nativeSweep:recorder.layoutASweep?jsonClone(recorder.layoutASweep):null}:{}),...(recorder.layoutAMotion?{nativeMotion:recorder.layoutAMotion}:{}),kind,args:args.map(v=>v&&typeof v==='object'&&gradients.has(v)?gradients.get(v):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
   const proxy=new Proxy(c,{get(target,k){
     if(k==='save')return ()=>{clipStack.push(clips.slice());if(nativeA26)nativeStack.push(nativeState());target.save();};
     if(k==='restore')return ()=>{clips=clipStack.pop()||[];const state=nativeA26?nativeStack.pop():null;if(state){nativeRoot=state.root;nativeOps=state.ops;}target.restore();};
@@ -84,7 +101,7 @@ A.record = (renderer,env) => {
     if(k==='fillRect')return (x,y,w,h)=>{if(!finite([x,y,w,h]))fail('INVALID_GEOMETRY','Finite rectangle required');if(!w||!h)return;const m=matrix(c),inv=A.inverse(m),aaX=Math.abs(inv[0])+Math.abs(inv[2]),aaY=Math.abs(inv[1])+Math.abs(inv[3]);push('rect',[x,y,w,h,target.fillStyle],[rect(Math.min(x,x+w)-aaX,Math.min(y,y+h)-aaY,Math.abs(w)+2*aaX,Math.abs(h)+2*aaY).map(p=>A.point(m,p))]);};if(['fill','stroke','fillText','strokeText','drawImage','putImageData','clearRect'].includes(k))return ()=>fail('UNSUPPORTED_DRAW_PROGRAM','Unadapted Canvas operation '+k);const v=target[k];return typeof v==='function'?v.bind(target):v;},set(target,k,v){if(textDefaults[k]&&!defaultTextValue(k,v)&&!(env.cut.placementLayoutsA&&k==='letterSpacing'&&/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)px$/.test(String(v))&&Number.isFinite(parseFloat(v))))fail('UNSUPPORTED_TEXT_STATE','Default '+k+' required');if((['shadowBlur','shadowOffsetX','shadowOffsetY'].includes(k)&&v!==0)||(k==='shadowColor'&&!['rgba(0, 0, 0, 0)','transparent'].includes(v)))fail('UNSUPPORTED_DRAW_PROGRAM','Unbounded shape shadow');if(k==='filter'&&v!=='none')fail('UNSUPPORTED_DRAW_PROGRAM','Spatial filter');target[k]=v;return true;}});
   recorder=renderer.makeEnv(proxy,env.plan,env.cut,env.sc,{...env,ctx:proxy,placementRecording:true});
   if(env.placementEnvelope){recorder.pIn=1;recorder.pOut=0;}
-  recorder.placementRecorder={item(it){const count=[...String(it.text||'')].length;glyphCount+=count;budget.glyphs+=count;if(budget.glyphs>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Frame glyph ceiling exceeded');if(glyphCount>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Program glyph ceiling exceeded');if(env.pass!=='main'&&it.ghost===false)return null;if(env.cut.placementUnits&&recorder.drawOwnership?.role==='tiledAux'&&!it.charFn){for(const key of ['pieceFn','blur','shadow','extrude','pattern'])if(it[key])fail('UNSUPPORTED_ITEM',key+' requires a bounded adapter');if(!finite([it.x,it.y,it.size,it.sx??1,it.sy??1,it.rot??0,it.skew??0,it.track??0,it.lead??1.3]))fail('UNMEASURED_INK','Finite auxiliary text geometry required');push('item',[snapshotItem(it)],[]);return recordedItemBounds(it);}let ink=A.itemGeometry(it,matrix(c),env);if(env.placementEnvelope&&it.placementSweep){const sweep=it.placementSweep,local=A.itemGeometry({...it,x:0,y:0,rot:0},ID,env).polygons;const b=A.bounds(local);ink={...ink,polygons:[rect(sweep.x0+b.x0,sweep.y0+b.y0,sweep.x1-sweep.x0+b.x1-b.x0,sweep.y1-sweep.y0+b.y1-b.y0)]};}if(env.cut.placementGlyphs&&it.placementMain){for(const glyph of ink.glyphs){const copy=snapshotItem(it);copy.placementGlyphIndex=glyph.index;copy.placementRouteKey='huge.main.glyph.'+glyph.index;push('item',[copy],[glyph.polygon]);const event=events.at(-1);event.owner=copy.placementRouteKey;event.anchor=[glyph.matrix[4],glyph.matrix[5]];event.inkPolygons=[glyph.inkPolygon];}}else{push('item',[snapshotItem(it)],ink.polygons);events.at(-1).inkPolygons=ink.inkPolygons;}return recordedItemBounds(it);}};
+  recorder.placementRecorder={item(it){const count=[...String(it.text||'')].length;glyphCount+=count;budget.glyphs+=count;if(budget.glyphs>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Frame glyph ceiling exceeded');if(glyphCount>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Program glyph ceiling exceeded');if(env.pass!=='main'&&it.ghost===false)return null;if(env.cut.placementUnits&&recorder.drawOwnership?.role==='tiledAux'&&!it.charFn){for(const key of ['pieceFn','blur','shadow','extrude','pattern'])if(it[key])fail('UNSUPPORTED_ITEM',key+' requires a bounded adapter');if(!finite([it.x,it.y,it.size,it.sx??1,it.sy??1,it.rot??0,it.skew??0,it.track??0,it.lead??1.3]))fail('UNMEASURED_INK','Finite auxiliary text geometry required');push('item',[snapshotItem(it)],[]);return recordedItemBounds(it);}let ink=A.itemGeometry(it,matrix(c),env,{validationOnly});if(env.placementEnvelope&&it.placementSweep){const sweep=it.placementSweep,local=A.itemGeometry({...it,x:0,y:0,rot:0},ID,env).polygons;const b=A.bounds(local);ink={...ink,polygons:[rect(sweep.x0+b.x0,sweep.y0+b.y0,sweep.x1-sweep.x0+b.x1-b.x0,sweep.y1-sweep.y0+b.y1-b.y0)]};}if(env.cut.placementGlyphs&&it.placementMain){for(const glyph of ink.glyphs){const copy=snapshotItem(it);copy.placementGlyphIndex=glyph.index;copy.placementRouteKey='huge.main.glyph.'+glyph.index;push('item',[copy],[glyph.polygon]);const event=events.at(-1);event.owner=copy.placementRouteKey;event.anchor=[glyph.matrix[4],glyph.matrix[5]];event.inkPolygons=[glyph.inkPolygon];}}else{push('item',[snapshotItem(it)],ink.polygons);events.at(-1).inkPolygons=ink.inkPolygons;}return recordedItemBounds(it);}};
   recorder.withDrawRole=(role,owner,fn)=>A.withRole(recorder,role,owner,fn);
   recorder.withPlacementBounds=(bounds,fn)=>{const previous=recorder.placementBounds;recorder.placementBounds=bounds;try{return fn();}finally{recorder.placementBounds=previous;}};
   // High-level shape adapters preserve the original operation and painter order.
@@ -95,28 +112,43 @@ A.record = (renderer,env) => {
     const alpha=name==='circle'?args[6]??1:name==='arc'?args[7]??1:args[6]??1,ghost=name==='circle'?args[7]??true:name==='arc'?args[8]??true:args[7]??true;
     if(alpha<=0||env.pass!=='main'&&!ghost)return;
     const m=matrix(c);A.affine(m);let local;
+    if(validationOnly){
+      // Finite scalar/affine guards keep malformed shapes on the full recorder
+      // path, which supplies its original diagnostic before any owned failure.
+      // Only ordinary well-conditioned recipe coordinates may omit hull arithmetic.
+      const radius=name==='rrect'?Math.min(args[4],w/2,h/2):args[2];
+      const linearNorm=Math.hypot(...m.slice(0,4)),det=Math.abs(m[0]*m[3]-m[1]*m[2]);
+      // Admit only ordinary native recipe coordinates. This deliberately falls
+      // back for huge-origin/tiny-shape rounding, nearly singular transforms,
+      // unusual angular tables and negative stroke extents rather than trying
+      // to infer whether the omitted floating-point hull would degenerate.
+      if(!finite([x,y,w,h,pad,radius])||radius<0||pad<0||J.TAU!==Math.PI*2||
+         Math.max(Math.abs(x),Math.abs(y),w,h,pad,radius)>1e5||Math.min(w,h)<.01||
+         linearNorm>100||det/linearNorm<.01||Math.max(Math.abs(m[4]),Math.abs(m[5]))>1e6)shapeValidationUncertain=true;
+      push(name,args,[],m);return;
+    }
     if(name==='circle'||name==='arc'){
       const [cx,cy,r]=args,N=64,outer=c.lineCap==='square'&&(name==='arc'||c.getLineDash().length)?Math.hypot(r+pad,pad):r+pad,radius=outer/Math.cos(Math.PI/N);
-      local=Array.from({length:N},(_,i)=>{const a=(i+.5)*J.TAU/N;return [cx+radius*Math.cos(a),cy+radius*Math.sin(a)];});
+      local=shapeUnitCircle(N).map(v=>[cx+radius*v[0],cy+radius*v[1]]);
     }else{
       const r=Math.min(args[4],w/2,h/2);if(!Number.isFinite(r)||r<0)fail('INVALID_GEOMETRY','Finite nonnegative rounded rectangle radius required');
       const N=32,capPad=c.lineCap==='square'&&c.getLineDash().length?Math.SQRT2*pad:pad,radius=(r+capPad)/Math.cos(Math.PI/N),corners=[[x+r,y+r],[x+w-r,y+r],[x+w-r,y+h-r],[x+r,y+h-r]];
-      local=r===0?rect(x-pad,y-pad,w+2*pad,h+2*pad):A.convexHull(corners.flatMap(corner=>Array.from({length:N},(_,i)=>{const a=(i+.5)*J.TAU/N;return [corner[0]+radius*Math.cos(a),corner[1]+radius*Math.sin(a)];})));
+      local=r===0?rect(x-pad,y-pad,w+2*pad,h+2*pad):roundedRectHull(corners,radius);
     }
     // The circumscribed local polygon contains the complete curved shape and
     // stroke. Device-axis Minkowski padding covers one pixel of raster AA even
     // under tiny/nonuniform/sheared affine transforms.
     const polygon=A.convexHull(local.flatMap(p=>{const q=A.point(m,p);return [[q[0]-1,q[1]-1],[q[0]+1,q[1]-1],[q[0]+1,q[1]+1],[q[0]-1,q[1]+1]];}));
-    push(name,args,[polygon]);
+    push(name,args,[polygon],m);
   };
   if(env.cut.placementLayoutsA)recorder.blob=(pts,color,alpha=1,ghost=true)=>{if(alpha<=0||env.pass!=='main'&&!ghost)return;if(pts.length<3)fail('INVALID_GEOMETRY','Native blob requires three control points');const m=matrix(c),polygon=A.convexHull(pts.flatMap(p=>{const q=A.point(m,p);return [[q[0]-1,q[1]-1],[q[0]+1,q[1]-1],[q[0]+1,q[1]+1],[q[0]-1,q[1]+1]];}));push('blob',[pts,color,alpha,ghost],[polygon]);};
   recorder.line=(pts,color,lw=1,alpha=1,ghost=true)=>{if(env.pass!=='main'){if(!ghost)return;color=env.passColor;}if(!color||alpha<=0||pts.length<2)return;const ps=pts.map(p=>A.point(matrix(c),p)),pad=lw*Math.hypot(c.getTransform().a,c.getTransform().b,c.getTransform().c,c.getTransform().d)/2*(env.cut.placementLayoutsA?Math.max(1,...pts.slice(1,-1).map((p,i)=>{const a=pts[i],b=pts[i+2],ax=a[0]-p[0],ay=a[1]-p[1],bx=b[0]-p[0],by=b[1]-p[1],len=Math.hypot(ax,ay)*Math.hypot(bx,by);if(!len)return 1;const ratio=1/Math.sqrt(Math.max(1e-12,(1-(ax*bx+ay*by)/len)/2));return ratio>c.miterLimit?1:ratio;})):(pts.length>2?c.miterLimit:1))+1;const b={x0:Math.min(...ps.map(p=>p[0])),y0:Math.min(...ps.map(p=>p[1])),x1:Math.max(...ps.map(p=>p[0])),y1:Math.max(...ps.map(p=>p[1]))};c.globalAlpha=alpha;c.strokeStyle=color;c.lineWidth=lw;c.lineJoin='miter';c.lineCap='butt';push('line',[pts,color,lw,alpha,{miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset}],[rect(b.x0-pad,b.y0-pad,b.x1-b.x0+pad*2,b.y1-b.y0+pad*2)]);c.globalAlpha=1;};
   try{renderer.drawCut(recorder);}catch(e){diagnostics.push({code:e.code||'DRAW_PROGRAM_ERROR',message:e.message});}
-  return {events,diagnostics,measurementSupported:diagnostics.length===0};
+  return {events,diagnostics,measurementSupported:!validationOnly&&diagnostics.length===0,...(validationOnly?{validationOnly:true,validationSupported:diagnostics.length===0&&!shapeValidationUncertain}:{})};
 };
 const applyNativeTransform=(ctx,shift,state,fallback)=>{ctx.setTransform(...compose(shift,state?.root||fallback));if(state)for(const [key,args]of state.ops)ctx[key](...args);};
 A.replay = (env,program,offset,decorOffsets={}) => {
-  if(!program.measurementSupported)fail('UNSUPPORTED_DRAW_PROGRAM','Refusing incomplete draw program');
+  if(program.validationOnly||!program.measurementSupported)fail('UNSUPPORTED_DRAW_PROGRAM','Refusing incomplete draw program');
   for(const e of program.events){const moved=e.role==='primary'?(Array.isArray(offset)?offset:offset[e.key??e.owner]||[0,0]):decorOffsets[e.key??e.owner]||[0,0];const ctx=env.ctx;ctx.save();try{const shift=trans(moved[0]*(env.scale||1),moved[1]*(env.scale||1));for(const clip of e.clips||[]){applyNativeTransform(ctx,clip.worldFixed?ID:shift,clip.nativeTransform,clip.matrix);ctx.beginPath();if(clip.points){clip.points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();}else ctx.rect(...clip.args);ctx.clip();}applyNativeTransform(ctx,shift,e.nativeTransform,e.matrix);const eventArgs=e.args.map(v=>{if(!v?.placementGradient)return v;ctx.save();ctx.setTransform(...compose(shift,v.matrix));const gradient=ctx.createLinearGradient(...v.args);for(const stop of v.stops)gradient.addColorStop(...stop);ctx.restore();return gradient;});ctx.globalCompositeOperation=e.blend;ctx.globalAlpha=e.alpha;ctx.lineCap=e.state.lineCap;ctx.lineJoin=e.state.lineJoin;ctx.miterLimit=e.state.miterLimit;ctx.setLineDash(e.state.dash);ctx.lineDashOffset=e.state.dashOffset;
     if(e.kind==='nativePolygon'){ctx.fillStyle=eventArgs[1];ctx.beginPath();eventArgs[0].forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fill();}
     else if(e.kind==='nativeText'){Object.assign(ctx,eventArgs[3]);ctx.fillText(...eventArgs.slice(0,3));}
@@ -127,9 +159,18 @@ A.replay = (env,program,offset,decorOffsets={}) => {
     else fail('UNSUPPORTED_DRAW_PROGRAM','Unknown recorded draw kind '+e.kind);
   }finally{ctx.restore();}}
 };
+// A strict axis gap can only reject work when floating-point edge evaluation
+// remains far from the circle. Unusual numeric ranges retain the original loop.
+function circleAxisSeparated(box,circle,R){
+ const magnitude=Math.max(Math.abs(box.x0),Math.abs(box.x1),Math.abs(box.y0),Math.abs(box.y1),Math.abs(circle.cx),Math.abs(circle.cy),Math.abs(R));
+ if(!Number.isFinite(magnitude)||magnitude>1e7)return false;
+ const guard=64*Number.EPSILON*(1+magnitude),limit=R+guard;
+ return box.x0-circle.cx>limit||circle.cx-box.x1>limit||box.y0-circle.cy>limit||circle.cy-box.y1>limit;
+}
 A.clear = (polygons,circle,margin=0) => {
-  A.bounds(polygons);if(!Number.isFinite(margin)||margin<0)fail('INVALID_GEOMETRY','Invalid margin');if(!circle)return true;if(!finite([circle.cx,circle.cy,circle.r])||circle.r<0)fail('INVALID_GEOMETRY','Invalid circle');const c=[circle.cx,circle.cy],R=circle.r+margin;
-  for(const ps of polygons){let inside=false;for(let i=0,j=ps.length-1;i<ps.length;j=i++) {const a=ps[j],b=ps[i],dx=b[0]-a[0],dy=b[1]-a[1],l=dx*dx+dy*dy,u=l?J.clamp(((c[0]-a[0])*dx+(c[1]-a[1])*dy)/l):0;if(Math.hypot(c[0]-a[0]-u*dx,c[1]-a[1]-u*dy)<=R)return false;if((a[1]>c[1])!==(b[1]>c[1])&&c[0]<(b[0]-a[0])*(c[1]-a[1])/(b[1]-a[1])+a[0])inside=!inside;}if(inside)return false;}return true;
+  const allBounds=A.bounds(polygons);if(!Number.isFinite(margin)||margin<0)fail('INVALID_GEOMETRY','Invalid margin');if(!circle)return true;if(!finite([circle.cx,circle.cy,circle.r])||circle.r<0)fail('INVALID_GEOMETRY','Invalid circle');const c=[circle.cx,circle.cy],R=circle.r+margin;
+  if(circleAxisSeparated(allBounds,circle,R))return true;
+  for(const ps of polygons){if(ps.length>8&&circleAxisSeparated(A.bounds([ps]),circle,R))continue;let inside=false;for(let i=0,j=ps.length-1;i<ps.length;j=i++) {const a=ps[j],b=ps[i],dx=b[0]-a[0],dy=b[1]-a[1],l=dx*dx+dy*dy,u=l?J.clamp(((c[0]-a[0])*dx+(c[1]-a[1])*dy)/l):0;if(Math.hypot(c[0]-a[0]-u*dx,c[1]-a[1]-u*dy)<=R)return false;if((a[1]>c[1])!==(b[1]>c[1])&&c[0]<(b[0]-a[0])*(c[1]-a[1])/(b[1]-a[1])+a[0])inside=!inside;}if(inside)return false;}return true;
 };
 /* A linear translation sweeps each convex ink polygon into its endpoint hull.
    This conservative AABB certificate covers the entire interval, including middle collisions. */
@@ -144,11 +185,11 @@ A.solve = (polygons,circle,W,H) => {
   for(const d of candidates)if(fits(d)&&(!circle||A.clear(shift(d),circle,margin)))return {offset:d,status:'safe',margin};
   return {offset:[0,0],status:'insufficient-space',margin};
 };
-const signature=plan=>{const source={...plan};delete source.placementFinalization;source.cuts=plan.cuts.map(c=>{const n={...c};delete n.placementTrajectory;delete n.fullStagePlacement;delete n.placementUnits;delete n.placementGlyphs;delete n.placementLayoutsA;return n;});return JSON.stringify(source);};
+const signature=plan=>{const source={...plan};delete source.placementFinalization;source.cuts=plan.cuts.map(c=>{const n={...c};delete n.placementTrajectory;delete n.fullStagePlacement;delete n.placementUnits;delete n.placementGlyphs;delete n.placementLayoutsA;delete n.placementAdaptiveTrial;delete n.layoutARecipe;delete n.layoutAHoldRange;delete n.placementSelectionOrigin;return n;});return JSON.stringify(source);};
 A.planSignature=signature;
 const finalized=new WeakMap(),requests=new WeakMap(),sources=new WeakMap();
 const oldPlan=J.plan;
-J.plan=function(project,...args){const plan=oldPlan(project,...args),intrinsicScales={};for(const c of plan.cuts){const scale=J.areaIntrinsicScales?.get(c);if(c.suppressed&&scale!=null&&c.area&&c.areaMode==='auto'){intrinsicScales[c.index]={observed:c.contentScale,scale};}}sources.set(plan,{locked:plan.cuts.filter(c=>project.overrides?.[c.line]?.lock).map(c=>c.index),intrinsicScales});return plan;};
+J.plan=function(project,...args){const plan=oldPlan(project,...args),intrinsicScales={};for(const c of plan.cuts){const scale=J.areaIntrinsicScales?.get(c);if(c.suppressed&&scale!=null&&c.area&&c.areaMode==='auto'){intrinsicScales[c.index]={observed:c.contentScale,scale};}}sources.set(plan,{locked:plan.cuts.filter(c=>project.overrides?.[c.line]?.lock).map(c=>c.index),intrinsicScales,layoutOrigins:Object.fromEntries(plan.cuts.map(c=>[c.index,{layout:c.layout,kind:project.overrides?.[c.line]?.layout||Object.hasOwn(project.lyricCutOptions?.[`${c.line}:${c.part}`]?.details||{},'layout')?'explicit':'automatic'}])),explicitSizes:plan.cuts.filter(c=>c.lyricSize!=null||Object.hasOwn(project.lyricCutOptions?.[`${c.line}:${c.part}`]?.details||{},'contentScale')).map(c=>c.index)});return plan;};
 const freeze=value=>{if(value&&typeof value==='object'&&!Object.isFrozen(value)){Object.values(value).forEach(freeze);Object.freeze(value);}return value;};
 const jsonClone=v=>JSON.parse(JSON.stringify(v));
 /* Final composition and font loading must precede this detached, idempotent operation.
@@ -169,7 +210,7 @@ J.finalizePlacementPlan = (input,options={}) => {
   const reachTail=maxSupportedTransDur+2*stepDur+1.6/24+.06+.01;
   for(const cut of plan.cuts){
     const original=jsonClone(cut);
-    delete cut.fullStagePlacement;delete cut.placementTrajectory;delete cut.placementUnits;delete cut.placementGlyphs;delete cut.placementLayoutsA;
+    delete cut.fullStagePlacement;delete cut.placementTrajectory;delete cut.placementUnits;delete cut.placementGlyphs;delete cut.placementLayoutsA;delete cut.placementAdaptiveTrial;delete cut.layoutARecipe;delete cut.layoutAHoldRange;delete cut.placementSelectionOrigin;
     if(options.cutIndices&&!options.cutIndices.includes(cut.index))continue;
     if(plan.lyricAvoidanceIndex?.enabled!==true||sources.get(input)?.locked.includes(cut.index)||['manual','notation'].includes(cut.areaMode)||cut.placementLocked||cut.emphasis){diagnostics.push({cut:cut.index,code:'PRESERVED_LEGACY',safety:'not-evaluated'});continue;}
     if(!(A.basicLayouts.includes(cut.layout)||options.layoutsA===true&&A.layoutsA26?.includes(cut.layout))||!['cut'].includes(cut.enter)||!['cut'].includes(cut.exit)||(cut.groupExit??cut.exit)!=='cut'||cut.hold!=='still'||(cut.decor||[]).length||!['none','marker'].includes(cut.treat||'none')||!['push','panL','panR','dutch'].includes(cut.cam)||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)){diagnostics.push({cut:cut.index,code:'UNSUPPORTED_ADAPTER',safety:'unsupported'});continue;}
@@ -182,7 +223,7 @@ J.finalizePlacementPlan = (input,options={}) => {
     // These two foundation adapters have no geometry-dependent random fields. Preserve the chosen look.
     cut.params={...fresh,...cut.params};
     Object.assign(cut.params,options.params?.[cut.index]||{});
-    if(options.layoutsA===true&&A.layoutsA26?.includes(cut.layout)){A.finalizeLayoutsA(plan,cut,original,diagnostics,{revision,stepDur,reachTail});continue;}
+    if(options.layoutsA===true&&A.layoutsA26?.includes(cut.layout)){A.finalizeLayoutsA(plan,cut,original,diagnostics,{revision,stepDur,reachTail,adaptive:options.layoutsAAdaptive===true,explicitSize:lineage.explicitSizes?.includes(cut.index)||cut.lyricSize!=null,selectionOrigin:lineage.layoutOrigins?.[cut.index]?.layout===cut.layout?lineage.layoutOrigins[cut.index].kind:'unknown'});continue;}
     if(options.basicLayouts===true){A.finalizeBasic(plan,cut,original,diagnostics,{revision,stepDur,reachTail});continue;}
     const renderer=Object.create(J.Renderer.prototype),ctx=measurementContext();ctx.reset();
     const env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:cut.start+cut.dur/2,realTime:cut.start+cut.dur/2,lt:cut.dur/2,ltb:cut.dur/2,pIn:1,pOut:0,step:0,scale:1,allowFilter:false});env.pIn=1;env.pOut=0;

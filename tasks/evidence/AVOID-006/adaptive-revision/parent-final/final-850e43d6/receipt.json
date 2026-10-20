@@ -1,0 +1,123 @@
+{
+  "hashes": {
+    "index.html": "850e43d64de78aea880e8de7cc3d36e27d14cd2f3bcac96a57bf716952e00a07",
+    "en/index.html": "dd025dfb08551097184778b91bbca36d40fd1ecb8fe5543fd2044e9c5654399f",
+    "src/09a_placement.js": "4ad7c0b062703052745881a4e576e160812b2767dacf09a3d7ca4d35e014e6e2",
+    "src/09b_basic_placement.js": "83b47af18a866be87a085f90bf10d7ab629141018618fd3f178e5c3020ffbd00",
+    "src/09c_layoutsA_placement.js": "821a74c7d58be8e5d00c7ea7c7f9658f27c917a373da258e54a27a2f2ab9567a",
+    "src/09d_adaptive_placement.js": "4c642e6a387d14c57dc54ef99b43b2ff8ed04d987309b96dab6d45afd217a793",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+  },
+  "sourceHashesComparedToFunctionalSummary": 77,
+  "changedSourceFiles": [],
+  "counts": {
+    "PNGComparisons": 180,
+    "native26Frames": 78,
+    "basic16Frames": 48,
+    "accepted18Frames": 54,
+    "shapeOld53NewExactCases": 18000,
+    "prepassNegativeCases": 11,
+    "JAENStartupWithAndWithoutSegmenter": 4,
+    "fullPathCases": 8,
+    "adoptedCompositionsFullyRecorded": 6,
+    "existingBaselineSuites": 6
+  },
+  "baselineRows": [
+    {
+      "test": "lyric_test.js",
+      "command": [
+        "node",
+        "dev/lyric_test.js"
+      ],
+      "exitCode": 0,
+      "seconds": 0.041,
+      "scriptSHA256": "c2488b96527cd126864a63c5e63776d872031f0816814bb3b489b01054735f85",
+      "logSHA256": "0fceacbac84209f20654e06a0393fc8bb07897da40866dba3a7e65367926ebe5"
+    },
+    {
+      "test": "lyric_avoid_center_test.cjs",
+      "command": [
+        "node",
+        "dev/lyric_avoid_center_test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 13.226,
+      "scriptSHA256": "a4391f922b76b5cb15578bed6d8649b145d244c3ec116d1dbab069355e133d6c",
+      "logSHA256": "c7f2ab2b66ae826ff925b7bfee63fd6893066dc98893a191fe28c8d6cc6c2d20"
+    },
+    {
+      "test": "lyric_group_avoidance_test.cjs",
+      "command": [
+        "node",
+        "dev/lyric_group_avoidance_test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 5.608,
+      "scriptSHA256": "df9a50ab079b03d8093d5765edd0569665fdcd6ae3ceefac2198f4d6620b324b",
+      "logSHA256": "1011521d3677e9e19ac0093ad87e075d340a362334f12c66fc5cafbbd79e1805"
+    },
+    {
+      "test": "lyric_scene_test.cjs",
+      "command": [
+        "node",
+        "dev/lyric_scene_test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 37.227,
+      "scriptSHA256": "cfd5fe8b6cd1d3b69028d593a0069108726ab0d59a60e0d1048569699a836df2",
+      "logSHA256": "87d90f7747925d5244e7431696d2c4295b04556d393ea322270eb6c9d8973af6"
+    },
+    {
+      "test": "lyric_placement_stability_test.cjs",
+      "command": [
+        "node",
+        "dev/lyric_placement_stability_test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 5.14,
+      "scriptSHA256": "abb3526352c303233a42614455c2a529f44ae2db55a43492af88186231639acf",
+      "logSHA256": "f2398895ad1df620c94114bda08fd5799baa25e3b2708b77af780d23bf40fdb5"
+    },
+    {
+      "test": "timeline_boundary_drag_test.cjs",
+      "command": [
+        "node",
+        "dev/timeline_boundary_drag_test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 5.985,
+      "scriptSHA256": "bc955837dc0407918f77119458fc0e7ec3cb862a7f287837f07e3d82589f5ec8",
+      "logSHA256": "5a1ff754b96d674b48c162d26906d1dcda18d9ff21a73f34e2a5639f9bc29d96"
+    }
+  ],
+  "failures": [],
+  "passed": true,
+  "evidenceSHA256": {
+    "negative.log": "6e8258de1f3f30724f9f8812ba3d1fc0b665b8a49d8848269fb6a169ef1ee729",
+    "lyric_placement_stability_test.cjs.log": "f2398895ad1df620c94114bda08fd5799baa25e3b2708b77af780d23bf40fdb5",
+    "baseline-run.py": "7106e4fca462c8ecf42d1ad90516e16976e55a1b62e78b07057827f798b4fb6f",
+    "parent-parity.log": "67b1f3047c3236f9ae257026b3be793f6094f87a42f96f5a9827dc22d18e66dc",
+    "lyric_scene_test.cjs.log": "87d90f7747925d5244e7431696d2c4295b04556d393ea322270eb6c9d8973af6",
+    "shape-parity.cjs": "469ce95eb24c7090b4044604470eb4fa7f6bd79a3d07838dcd22c463b582b1cb",
+    "receipt.py": "2bc7ea6beb18789df1709750127fc657dee032a5d1989011e362c7deb7db7533",
+    "startup.log": "dd055ec2859014b6323411c4c4d0595ab21c0fdcd93389dc2728be385599b92c",
+    "timeline_boundary_drag_test.cjs.log": "5a1ff754b96d674b48c162d26906d1dcda18d9ff21a73f34e2a5639f9bc29d96",
+    "full-path.json": "7305c01656fa182c7ae172a4c4c610d0a02defa67cae8790841880c4c237ec9c",
+    "full-path.log": "238a8cec7322cbb702f336c3272341790a857a813161f0256bbff17ce9108cab",
+    "parent-parity.cjs": "d90ead254619d0c151ff32b687d5553231a7cf4c0834ea451baa0ee783dc6407",
+    "lyric_group_avoidance_test.cjs.log": "1011521d3677e9e19ac0093ad87e075d340a362334f12c66fc5cafbbd79e1805",
+    "lyric_avoid_center_test.cjs.log": "c7f2ab2b66ae826ff925b7bfee63fd6893066dc98893a191fe28c8d6cc6c2d20",
+    "baseline-results.json": "ad4dd6d483b472c45e6ebf034e06fc6b81e81a552373e1baaa2e1c32a7b04a8e",
+    "shape-parity.json": "06b4940eb9026acca6207450f67b638813969630e2d2c29b0cedb9a7d112f3b7",
+    "baseline-run.log": "ad6ea4852b8ddadffc615f6b328f9790f635ea75c2a3b420e264d52e38e11f8e",
+    "startup.json": "1789a6a2b561b872862b22f2027ce4be0cdd273b5011d2271a6c0ff269e81cf7",
+    "negative.cjs": "4e120ff7c63513db3eaab5e3bc6e5a4738c51e32a536dc19377234b3bf487975",
+    "shape-parity.log": "5e0fba21b4f425078fd7faeac9876a96263f7bb6b3c1466e946a7639b92b5805",
+    "full-path.cjs": "ba15cca3cfa5c489fd17d2b36300151b3cd587f59e0af529c47ca3a50a60a3f0",
+    "parent-parity.json": "2a9f37f9924c12a845b9c75423bd363855be678041f755a2af8ed8f85c566ef9",
+    "lyric_test.js.log": "0fceacbac84209f20654e06a0393fc8bb07897da40866dba3a7e65367926ebe5",
+    "startup.cjs": "139defc352ea238ba77efbd795bbae4a3dad15392330c1faede8de62d0b7fcf1",
+    "negative.json": "1dfa5baa37a80d8177545a1e51d5b6c0ba9ea7bc2f0627374c7746daef19b8ab"
+  },
+  "limits": "PNG comparisons use SHA256 of Canvas PNG data URLs, a one-to-one encoding of PNG bytes. No images opened. Parent parity legacy unused counters a26Cases/actualFrames/polygons=0 do not claim geometric frame audits. Known project_file_test failure not rerun and not counted as successful. Prior performance/192-spec optimization results are parent-owned evidence, not rerun here."
+}

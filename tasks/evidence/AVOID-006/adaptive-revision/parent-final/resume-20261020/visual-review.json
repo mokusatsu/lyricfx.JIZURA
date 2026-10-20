@@ -1,0 +1,38 @@
+{
+  "decision": "changes-required",
+  "bundle": "local-20261020-02",
+  "manifestSHA256": "de6c18a22746516e6c9e3799461409d033bd14729ec352111e99c59a5a4f3e4f",
+  "scope": {
+    "anchorCases": 8,
+    "anchorUIAndOriginalPNGs": 32,
+    "unchangedControlPairs": 20,
+    "representativeAfterOriginalPNGs": 48,
+    "extraBeforeOriginalPNGs": 1,
+    "all174CasesVisuallyInspected": false,
+    "continuousVideoInspected": false,
+    "videoMethod": "All decoded to disk; sampled every 6 frames (0.24s at25fps), plus full-frame checks. Cropped stage sheets viewed temporally; limited to sampled observation."
+  },
+  "issues": [
+    {
+      "id": "VIS006-01",
+      "case": "subtitleBar-portrait-center",
+      "projectTime": 1.5,
+      "path": "/workspace/lyricfx.JIZURA/review/AVOID-006/local-20261020-02/images/subtitleBar-portrait-center-after-original.png",
+      "sha256": "fff02b8a644055ae0a8873e87091a1ef8077558d629119948cb71fda948985b1",
+      "severity": "acceptance-blocker",
+      "observation": "Certified huge-copy-reduce moves outlined primary to bottom in two rows. Second-row へ intersects opaque native subtitle black plate at approximately x239..422,y805..860 in540x960 output; middle ink is hidden and only detached upper/lower parts remain. Native before copy is fully above subtitle. Readable subtitle duplicate does not make huge-copy complete/readable.",
+      "beforePath": "/workspace/lyricfx.JIZURA/review/AVOID-006/local-20261020-02/images/subtitleBar-portrait-center-before-original.png"
+    }
+  ],
+  "goodObservations": [
+    "Eight normal-radius anchors keep primary source text and attached structures visually readable at captured hold. Panels retains native right-to-left chunk ordering; filmstrip ordered slots and ticket attachment remain intact.",
+    "Twenty original unchanged control pairs visually match and have identical SHA256. Includes other18 anchors plus ticker/edgeFrame ownership.",
+    "Radius0.1 and0.45, portrait/square, short/long text representatives were viewed for all8; excluded compositions preserve original lyric-bearing diagnostic rendering and are not counted safe.",
+    "Video quote marks and ticket body/stub pass circle during moving entrance/exit; sampled hold primary remains outside. Sideways native strip stays fixed; companion changes with clock. Filmstrip shows explicit excluded second region; do not count its circle conflict as certified success."
+  ],
+  "limitations": [
+    "03 repack hash comparison pending.",
+    "No claim of continuous flicker proof; video sample and recorder audit must remain distinct.",
+    "Mechanical full interval and all174 geometry acceptance belongs parent/test reviewer, not substituted by these image samples."
+  ]
+}

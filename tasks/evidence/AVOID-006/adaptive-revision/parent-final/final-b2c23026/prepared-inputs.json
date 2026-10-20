@@ -1,0 +1,102 @@
+{
+  "status": "prepared-not-executed",
+  "executionAuthorized": false,
+  "compiledSHA256": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+  "compiledENSHA256": "e4b4c31114221427eb86218e86deed3474395c52a627669c84c985b503f87de7",
+  "scripts": [
+    {
+      "path": "baseline-run.py",
+      "beforeSHA256": "7106e4fca462c8ecf42d1ad90516e16976e55a1b62e78b07057827f798b4fb6f",
+      "preparedSHA256": "7106e4fca462c8ecf42d1ad90516e16976e55a1b62e78b07057827f798b4fb6f",
+      "changed": false
+    },
+    {
+      "path": "startup.cjs",
+      "beforeSHA256": "139defc352ea238ba77efbd795bbae4a3dad15392330c1faede8de62d0b7fcf1",
+      "preparedSHA256": "139defc352ea238ba77efbd795bbae4a3dad15392330c1faede8de62d0b7fcf1",
+      "changed": false
+    },
+    {
+      "path": "parent-parity.cjs",
+      "beforeSHA256": "d90ead254619d0c151ff32b687d5553231a7cf4c0834ea451baa0ee783dc6407",
+      "preparedSHA256": "45d2a255d396d1bc2d785773568dbef2b5b040701b3891525cd6a6fa6501c65d",
+      "changed": true
+    },
+    {
+      "path": "full-path.cjs",
+      "beforeSHA256": "ba15cca3cfa5c489fd17d2b36300151b3cd587f59e0af529c47ca3a50a60a3f0",
+      "preparedSHA256": "ba15cca3cfa5c489fd17d2b36300151b3cd587f59e0af529c47ca3a50a60a3f0",
+      "changed": false
+    },
+    {
+      "path": "negative.cjs",
+      "beforeSHA256": "4e120ff7c63513db3eaab5e3bc6e5a4738c51e32a536dc19377234b3bf487975",
+      "preparedSHA256": "4e120ff7c63513db3eaab5e3bc6e5a4738c51e32a536dc19377234b3bf487975",
+      "changed": false
+    },
+    {
+      "path": "shape-parity.cjs",
+      "beforeSHA256": "469ce95eb24c7090b4044604470eb4fa7f6bd79a3d07838dcd22c463b582b1cb",
+      "preparedSHA256": "469ce95eb24c7090b4044604470eb4fa7f6bd79a3d07838dcd22c463b582b1cb",
+      "changed": false
+    },
+    {
+      "path": "receipt.py",
+      "beforeSHA256": "2bc7ea6beb18789df1709750127fc657dee032a5d1989011e362c7deb7db7533",
+      "preparedSHA256": "f5fc9b4e9b4350f84267ce3d81f8e4f559bb368d8218e99f4c4b7ea30ea2d57a",
+      "changed": true
+    }
+  ],
+  "fixedFixtures": [
+    {
+      "source": "index.html",
+      "snapshot": "after/index.html",
+      "bytes": 4888843,
+      "sha256": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696"
+    },
+    {
+      "source": "dev/avoidance/layouts-a-fixture.js",
+      "snapshot": "after/dev/avoidance/layouts-a-fixture.js",
+      "bytes": 9677,
+      "sha256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+    },
+    {
+      "source": "src/09a_placement.js",
+      "snapshot": "after/src/09a_placement.js",
+      "bytes": 42193,
+      "sha256": "69b9aa039339a5975afefee946332d19b5351da9cca7ae2bf2c03fe99bfdb964"
+    }
+  ],
+  "pending": "No execution yet. Functional summary currently not-run; receipt guard requires passed=true, sourceHashes, and exact candidate JA/EN hashes.",
+  "oldEvidenceUnchanged": true,
+  "functionalSummary": "tasks/evidence/AVOID-006/adaptive-revision/occlusion-fix/functional/functional-summary.json",
+  "externalBaselineInputs": [
+    {
+      "path": "/workspace/work/avoid006-adaptive-before/index.html",
+      "bytes": 4836735,
+      "sha256": "38b8edf31aaecaa667e1e0248ccc5fa3bbf68380333f819683fdfb6494f3ebe4"
+    },
+    {
+      "path": "/workspace/work/avoid006-before-perf-optimization/src/09a_placement.js",
+      "bytes": 38225,
+      "sha256": "0a661c0ad44e5f6f6c7e0fc00cf88e44046b654308526d08104f348916a22b0b"
+    }
+  ],
+  "currentInputSHA256": {
+    "index.html": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+    "en/index.html": "e4b4c31114221427eb86218e86deed3474395c52a627669c84c985b503f87de7",
+    "src/09a_placement.js": "69b9aa039339a5975afefee946332d19b5351da9cca7ae2bf2c03fe99bfdb964",
+    "src/09b_basic_placement.js": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+    "src/09c_layoutsA_placement.js": "821a74c7d58be8e5d00c7ea7c7f9658f27c917a373da258e54a27a2f2ab9567a",
+    "src/09d_adaptive_placement.js": "79c2da3b766cdab8d5d15a2a444c4daed300bdc101ff8bd8ffa1a9b6bf8236e4",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+  },
+  "preparationChecks": {
+    "identicalScripts": 5,
+    "adaptedScripts": 2,
+    "fixedFixtureHashesMatch": true,
+    "pythonSyntaxValid": true,
+    "suitesExecuted": false,
+    "browserLaunched": false
+  }
+}

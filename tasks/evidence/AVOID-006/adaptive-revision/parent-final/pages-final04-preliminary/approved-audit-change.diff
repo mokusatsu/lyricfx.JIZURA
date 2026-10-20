@@ -1,0 +1,96 @@
+diff --git a/dev/avoidance/pages-output-audit-test.py b/dev/avoidance/pages-output-audit-test.py
+index ecce57d..077b04c 100644
+--- a/dev/avoidance/pages-output-audit-test.py
++++ b/dev/avoidance/pages-output-audit-test.py
+@@ -88,6 +88,44 @@ class AuditTest(unittest.TestCase):
+         with self.assertRaisesRegex(ValueError, 'extra.txt'):
+             self.run_audit()
+ 
++    def prepare_approved_doc(self):
++        url = 'docs/VERIFICATION.md'
++        self.put(url, b'old documentation')
++        self.legacy[url] = AUDIT.fingerprint(self.source / url)['gitBlob']
++        self.put(url, b'parent-reviewed documentation')
++        row = AUDIT.fingerprint(self.source / url)
++        return {url: {k: row[k] for k in ('bytes', 'sha256')}}
++
++    def test_exact_approved_doc_update_passes_and_is_reported(self):
++        approved = self.prepare_approved_doc()
++        with patch.dict(AUDIT.APPROVED_PUBLIC_UPDATES, approved):
++            result = self.run_audit()
++        self.assertEqual([r['url'] for r in result['approvedPublicUpdates']], ['docs/VERIFICATION.md'])
++
++    def test_changed_doc_after_approval_fails(self):
++        approved = self.prepare_approved_doc()
++        self.put('docs/VERIFICATION.md', b'different documentation')
++        with patch.dict(AUDIT.APPROVED_PUBLIC_UPDATES, approved):
++            with self.assertRaisesRegex(ValueError, 'Unapproved public bytes changed'):
++                self.run_audit()
++
++    def test_doc_approval_does_not_allow_old_review_changes(self):
++        approved = self.prepare_approved_doc()
++        self.put(self.old, b'changed old review bytes')
++        with patch.dict(AUDIT.APPROVED_PUBLIC_UPDATES, approved):
++            with self.assertRaisesRegex(ValueError, 'Old public bytes changed'):
++                self.run_audit()
++
++    def test_doc_approval_does_not_allow_other_doc_updates(self):
++        approved = self.prepare_approved_doc()
++        url = 'docs/OTHER.md'
++        self.put(url, b'old other doc')
++        self.legacy[url] = AUDIT.fingerprint(self.source / url)['gitBlob']
++        self.put(url, b'new other doc')
++        with patch.dict(AUDIT.APPROVED_PUBLIC_UPDATES, approved):
++            with self.assertRaisesRegex(ValueError, 'Old public bytes changed'):
++                self.run_audit()
++
+     def test_nojekyll_fails(self):
+         (self.source / '.nojekyll').touch()
+         with self.assertRaisesRegex(ValueError, 'disables Jekyll'):
+diff --git a/dev/avoidance/pages-output-audit.py b/dev/avoidance/pages-output-audit.py
+index ae183fe..445628e 100644
+--- a/dev/avoidance/pages-output-audit.py
++++ b/dev/avoidance/pages-output-audit.py
+@@ -23,6 +23,11 @@ DOWNLOADS = {'JIZURA_AE.jsx', 'JIZURA_AE_en.jsx', 'JIZURA_CEP.zip',
+              'JIZURA_CEP_en.zip', 'muscle_lofi_optimized.jizuraichi'}
+ # Jekyll's default dotfile omission; this development ignore file has no runtime role.
+ NONFUNCTIONAL_OMISSIONS = {'mcp/.gitignore'}
++# Parent-reviewed AVOID-006 documentation update; no other public byte exception.
++APPROVED_PUBLIC_UPDATES = {
++    'docs/VERIFICATION.md': {'bytes': 23624,
++        'sha256': '4317946f6ff4e2da12b059e9458b34a297e19f1f2a40331ac27246197bdeeeef'},
++}
+ 
+ 
+ def require(condition, message):
+@@ -91,6 +96,7 @@ def audit(source, output, projection, legacy, candidate_bundle):
+     require(candidate_bundle.startswith('review/'), 'Candidate must be under review/')
+     require(candidate_bundle + 'manifest.json' in expected, 'Candidate manifest missing')
+     actual = {}
++    approved_updates = []
+     for url, row in expected.items():
+         src = fingerprint(source / url)
+         out = fingerprint(output / url)
+@@ -98,7 +104,13 @@ def audit(source, output, projection, legacy, candidate_bundle):
+         require(src == out, 'Jekyll changed encoded source bytes: ' + url)
+         require(out['bytes'] < 100 * 1024 * 1024, 'Blob >=100 MiB: ' + url)
+         if url in legacy and url not in MUTABLE:
+-            require(out['gitBlob'] == legacy[url], 'Old public bytes changed: ' + url)
++            if url in APPROVED_PUBLIC_UPDATES:
++                approved = APPROVED_PUBLIC_UPDATES[url]
++                require({k: out[k] for k in approved} == approved,
++                        'Unapproved public bytes changed: ' + url)
++                approved_updates.append({'url': url, 'baselineGitBlob': legacy[url], **approved})
++            else:
++                require(out['gitBlob'] == legacy[url], 'Old public bytes changed: ' + url)
+         actual[url] = out
+     total = sum(row['bytes'] for row in actual.values())
+     require(total <= 1_000_000_000, 'Pages output exceeds 1 GB: ' + str(total))
+@@ -132,6 +144,7 @@ def audit(source, output, projection, legacy, candidate_bundle):
+             'legacyPublicURLs': len(legacy), 'manifestCount': manifest_count,
+             'manifestAssets': asset_count, 'siteBytes': total,
+             'nonfunctionalOmissions': sorted(NONFUNCTIONAL_OMISSIONS),
++            'approvedPublicUpdates': approved_updates,
+             'historicalMutableRootClaims': historical,
+             'inventory': [{'url': url, **actual[url]} for url in sorted(actual)]}
+ 

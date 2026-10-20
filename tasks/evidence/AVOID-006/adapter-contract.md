@@ -61,3 +61,9 @@ The frozen compiled JA SHA256 is `38b8edf31aaecaa667e1e0248ccc5fa3bbf68380333f81
 The focused low-scale reproducer in `native-scale-reproducer/` preserves before/after outcomes: lowerThird .1 at.07/3.93 and mirror .1 at.31/3.93 previously escaped. Complete marker/dot traversal and neutral ripple origin fix the source-derived missing geometry, rather than enlarging AA arbitrarily. The corrected48-case reproducer passes; final scale test additionally checks832actual frames/15,156 polygons over all26 and scales.1,.5,2,4. Parent independently checks624actual frames and exact126 native/basic PNG comparisons.
 
 `final-candidate/layouts-a-test.log` contains494 conditions (26 anchors plus26×3aspects×6circle positions including contractual.5/.42/.2), actual-time polygon checks,26 native/after primary raster audits (including.1 scale), and104 exact native zero-offset replay PNG comparisons. `layouts-a-acceptance.log` contains targeted lifecycle/cache/suppression/recorder/owned-plate corruption tests and69native variants. `layouts-a-contrast.log` contains light/dark fixed-field checks. The sibling basic/stage/Stack logs retain old assertions. Automated evidence does not replace public raw-asset validation or human H01–H03 acceptance.
+
+The later opt-in adaptive revision is specified separately in
+[adaptive-revision/adapter-contract.md](adaptive-revision/adapter-contract.md).
+This original joint-native proof remains the baseline; the adaptive revision
+preserves existing joint-safe segments and adds explicit native-source recipes
+and event-specific entrance/exit relaxation for eight previously unapproved cases.

@@ -21,12 +21,18 @@ const solveBasicRaw=(polygons,circle,W,H,seed=0,options={})=>{
  const clamp=d=>[Math.max(-b.x0,Math.min(W-b.x1,d[0])),Math.max(-b.y0,Math.min(H-b.y1,d[1]))];
  if(b.x1-b.x0>W||b.y1-b.y0>H)return {offset:[0,0],status:'insufficient-space',reason:'unit-envelope-exceeds-stage'};
  const points=polygons.flat(),candidates=[clamp([0,0])],preferred=J.r(seed,51),band=circle?circle.cy/H:.5;
- if(circle){const normals=Array.from({length:72},(_,i)=>[Math.cos(i*Math.PI/36),Math.sin(i*Math.PI/36)]);
+ if(circle){const supportHull=options.supportHull?A.convexHull(points):null,supportPoints=supportHull?.length>=3?supportHull:points,relativeX=new Float64Array(supportPoints.length),relativeY=new Float64Array(supportPoints.length);for(let i=0;i<supportPoints.length;i++){relativeX[i]=supportPoints[i][0]-circle.cx;relativeY[i]=supportPoints[i][1]-circle.cy;}const normals=Array.from({length:72},(_,i)=>[Math.cos(i*Math.PI/36),Math.sin(i*Math.PI/36)]);
   for(const polygon of polygons)for(let i=0;i<polygon.length;i++){const a=polygon[i],b=polygon[(i+1)%polygon.length],dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy);if(len)normals.push([-dy/len,dx/len],[dy/len,-dx/len]);}
+  const normalOffsets=new Map();
   for(const n of normals){
-   let support=Infinity;for(const p of points)support=Math.min(support,(p[0]-circle.cx)*n[0]+(p[1]-circle.cy)*n[1]);
-   const distance=Math.max(0,circle.r+margin+eps-support);candidates.push(clamp(n.map(v=>v*distance)));
- } }
+   const key=n.map(v=>Object.is(v,-0)?'-0':String(v)).join(',');let offset=normalOffsets.get(key);
+   if(!offset){let support=Infinity;for(let i=0;i<relativeX.length;i++)support=Math.min(support,relativeX[i]*n[0]+relativeY[i]*n[1]);
+    const distance=Math.max(0,circle.r+margin+eps-support);offset=clamp(n.map(v=>v*distance));normalOffsets.set(key,offset);}
+   // Retain every original candidate position/order, including the final
+   // offset-Map winner's signed zeros; only repeated support work is reused.
+   candidates.push(offset);
+  }
+ }
  // Include stage corners and circle-adjacent corner placements even when the
  // support-plane candidate is too conservative for an actual polygon corner.
  const xs=[-b.x0,W-b.x1,0],ys=[-b.y0,H-b.y1,0];
@@ -46,7 +52,7 @@ let solverRevision=-1,solverBytes=0,solverHits=0,solverMisses=0;const solverCach
 A.solveBasic=(polygons,circle,W,H,seed=0,options={})=>{
  if(options.accept)return solveBasicRaw(polygons,circle,W,H,seed,options);
  const revision=J.metrics.revision||0;if(revision!==solverRevision){solverCache.clear();solverBytes=0;solverRevision=revision;}
- const key=JSON.stringify({revision,polygons,circle,W,H,seed,fitBounds:options.fitBounds});let cached=solverCache.get(key);
+ const key=JSON.stringify({revision,polygons,circle,W,H,seed,fitBounds:options.fitBounds,...(options.supportHull?{supportHull:true}:{})});let cached=solverCache.get(key);
  if(cached){solverHits++;solverCache.delete(key);solverCache.set(key,cached);return cached.result;}
  solverMisses++;const result=ownFrozen(solveBasicRaw(polygons,circle,W,H,seed,options)),bytes=key.length*2+JSON.stringify(result).length*2;
  if(bytes<=MAX_SOLVE_BYTES){while(solverCache.size>=MAX_SOLVES||solverBytes+bytes>MAX_SOLVE_BYTES){const oldest=solverCache.keys().next().value;solverBytes-=solverCache.get(oldest).bytes;solverCache.delete(oldest);}solverCache.set(key,{result,bytes});solverBytes+=bytes;}
@@ -199,9 +205,8 @@ function solveOrbit(plan,cut,circle){
  for(const offset of candidates){const proof=orbitCertificate(plan,cut,circle,offset);if(proof.safe)return {offset,status:'safe',direction:offset.every(v=>v===0)?'unchanged':direction(offset),proof};}
  return null;
 }
-function hull(points){
- const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=ps=>{const out=[];for(const p of ps){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}out.pop();return out;};return half(sorted).concat(half(sorted.slice().reverse()));
-}
+function hull(points){const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),out=[];for(let i=0;i<sorted.length;i++){const p=sorted[i];while(out.length>1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();const lowerLength=out.length;for(let i=sorted.length-1;i>=0;i--){const p=sorted[i];while(out.length>lowerLength+1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();return out;}
+
 function prepareHuge(plan,cut,program,evaluationRange,revision){
  const grouped={};for(const e of program.events)if(e.role==='primary'&&e.polygons.length)(grouped[e.owner]||=[]).push(e);
  const base=cut.contentScale??1,K=J.clamp((plan.fx.motion??.7)*1.25,0,1.25),maxScale=base*Math.max(1.02,1+.03*Math.max(K,plan.fx.motion??.7)*(cut.motionScale??1)),angle=cut.cam==='dutch'?5*J.DEG:0,slack=5;
@@ -272,27 +277,72 @@ function cameraEnvelope(ps,plan,cut,aaReserve=10){
  // coordinate. Scale extrema and translation corners form its Minkowski hull.
  const turn=angle?Math.max(...ps.flat().map(p=>Math.hypot(p[0]-plan.W/2,p[1]-plan.H/2)))*maxScale*2*Math.sin(angle/2):0;
  const dx=aaReserve+turn+(['panL','panR'].includes(cut.cam)?plan.W*Math.abs(cut.camP?.a||.022)*K*motion:0)+(3.4*chroma+16*shake)*plan.H/1080*motion,dy=aaReserve+turn+(1.9*chroma+11*shake)*plan.H/1080*motion;
- const points=[];for(const p of ps.flat())for(const s of [base,maxScale])for(const x of [-dx,dx])for(const y of [-dy,dy])points.push([plan.W/2+(p[0]-plan.W/2)*s+x,plan.H/2+(p[1]-plan.H/2)*s+y]);
+ const points=[],scales=[base,maxScale];for(const p of ps.flat())for(const s of scales){const px=plan.W/2+(p[0]-plan.W/2)*s,py=plan.H/2+(p[1]-plan.H/2)*s,x0=px+(-dx),x1=px+dx,y0=py+(-dy),y1=py+dy;points.push([x0,y0],[x0,y1],[x1,y0],[x1,y1]);}
  return hull(points);
 }
 A.cameraEnvelope=cameraEnvelope;
-let preparationRevision=-1,preparationBytes=0,preparationHits=0,preparationMisses=0;const preparationCache=new Map(),MAX_PREPARATIONS=2048,MAX_PREPARATION_BYTES=64*1024*1024;
+let preparationRevision=-1,preparationBytes=0,preparationResidentBytes=0,preparationRequests=0,preparationHits=0,preparationMisses=0;
+const preparationCache=new Map(),MAX_PREPARATIONS=2048,MAX_PREPARATION_BYTES=64*1024*1024,MAX_RESIDENT_BYTES=56*1024*1024,MAX_FREQUENCY=255,FREQUENCY_AGE_REQUESTS=4096;
 const ownFrozen=value=>{if(Array.isArray(value))return Object.freeze(value.map(ownFrozen));if(value&&typeof value==='object')return Object.freeze(Object.fromEntries(Object.entries(value).map(([k,v])=>[k,ownFrozen(v)])));return value;};
-A.clearPreparationCache=()=>{preparationCache.clear();preparationBytes=0;solverCache.clear();solverBytes=0;};
+// This is serialized/cache-buffer accounting, not a measurement of JS heap.
+// Exact keys, null ghost payloads, all per-entry bookkeeping and the request
+// counter share the original 64MiB budget; ghosts share the 2048-entry ceiling.
+const preparationControlBytes=()=>preparationCache.size?64:0;
+function preparationEntryBytes(key,entry){
+ const base=key.length*2+(entry.program?entry.programBytes:8);let bytes=base;
+ for(let i=0;i<4;i++){const next=base+JSON.stringify({frequency:entry.frequency,programBytes:entry.programBytes,bytes}).length*2;if(next===bytes)return bytes;bytes=next;}
+ return bytes;
+}
+function changePreparation(key,entry,change){
+ const old=entry.bytes||0,oldResident=entry.program?old:0;change?.();entry.bytes=preparationEntryBytes(key,entry);preparationBytes+=entry.bytes-old;preparationResidentBytes+=(entry.program?entry.bytes:0)-oldResident;
+}
+function removePreparation(key,entry){preparationCache.delete(key);preparationBytes-=entry.bytes;if(entry.program)preparationResidentBytes-=entry.bytes;}
+function leastPreparation(resident,exclude,ignored){let found=null;for(const [key,entry]of preparationCache){if(key===exclude||ignored?.has(key)||!!entry.program!==resident)continue;if(!found||entry.frequency<found[1].frequency)found=[key,entry];}return found;}
+function ghostPreparation(key,entry){changePreparation(key,entry,()=>{entry.program=null;entry.programBytes=0;});}
+function trimPreparation(){
+ while(preparationResidentBytes>MAX_RESIDENT_BYTES){const victim=leastPreparation(true);if(!victim)break;ghostPreparation(...victim);}
+ while(preparationCache.size>MAX_PREPARATIONS||preparationBytes+preparationControlBytes()>MAX_PREPARATION_BYTES){const ghost=leastPreparation(false);if(ghost){removePreparation(...ghost);continue;}const resident=leastPreparation(true);if(!resident)break;ghostPreparation(...resident);}
+}
+function resetPreparations(){preparationCache.clear();preparationBytes=preparationResidentBytes=preparationRequests=0;}
+function preparationRequest(){
+ if(++preparationRequests>=FREQUENCY_AGE_REQUESTS){preparationRequests=0;for(const [key,entry]of preparationCache)changePreparation(key,entry,()=>{entry.frequency>>=1;});}
+}
+// At an all-resident entry ceiling, plan the key slot and every payload
+// eviction together. A rejected large candidate must not evict a small victim.
+function admitPreparationAtEntryCeiling(key,entry,program,programBytes){
+ const full={...entry,program,programBytes},fullBytes=preparationEntryBytes(key,full);
+ if(fullBytes>MAX_RESIDENT_BYTES)return false;
+ const victims=[],ignored=new Set();let residentRelease=0,totalRelease=0,removedKeys=0;
+ while(preparationResidentBytes-residentRelease+fullBytes>MAX_RESIDENT_BYTES||preparationBytes-totalRelease+fullBytes+preparationControlBytes()>MAX_PREPARATION_BYTES||preparationCache.size+1-removedKeys>MAX_PREPARATIONS){
+  const victim=leastPreparation(true,key,ignored);if(!victim||entry.frequency<=victim[1].frequency)return false;
+  const remove=removedKeys===0;victims.push({victim,remove});ignored.add(victim[0]);residentRelease+=victim[1].bytes;
+  totalRelease+=remove?victim[1].bytes:victim[1].bytes-preparationEntryBytes(victim[0],{...victim[1],program:null,programBytes:0});if(remove)removedKeys++;
+ }
+ for(const {victim,remove}of victims)remove?removePreparation(...victim):ghostPreparation(...victim);
+ const adopted={program,programBytes,frequency:entry.frequency,bytes:0};preparationCache.set(key,adopted);changePreparation(key,adopted);trimPreparation();return true;
+}
+A.clearPreparationCache=()=>{resetPreparations();solverCache.clear();solverBytes=0;};
 function preparedProgram(renderer,env,evaluationRange){
- const revision=J.metrics.revision||0;if(revision!==preparationRevision){preparationCache.clear();preparationBytes=0;preparationRevision=revision;}
- // These sixteen native layout renderers read precisely this composition/font
- // context; no circle/region/result or affine-dependent data crosses cuts.
+ const revision=J.metrics.revision||0;if(revision!==preparationRevision){resetPreparations();preparationRevision=revision;}
+ preparationRequest();
  const key=JSON.stringify({revision,language:J.lang,cut:env.cut,W:env.plan.W,H:env.plan.H,style:env.plan.style,fx:env.plan.fx,fps:env.plan.fps,duration:env.plan.duration,evaluationRange});
- let cached=preparationCache.get(key);if(cached){preparationHits++;preparationCache.delete(key);preparationCache.set(key,cached);return cached.program;}
+ let entry=preparationCache.get(key);if(entry){const program=entry.program;changePreparation(key,entry,()=>{entry.frequency=Math.min(MAX_FREQUENCY,entry.frequency+1);});preparationCache.delete(key);preparationCache.set(key,entry);trimPreparation();if(program){preparationHits++;return program;}}
  preparationMisses++;const recorded=A.record(renderer,env);if(!recorded.measurementSupported)return recorded;
- const program=ownFrozen(recorded);
- const bytes=key.length*2+JSON.stringify(program).length*2;
- if(bytes<=MAX_PREPARATION_BYTES){while(preparationCache.size>=MAX_PREPARATIONS||preparationBytes+bytes>MAX_PREPARATION_BYTES){const oldest=preparationCache.keys().next().value;preparationBytes-=preparationCache.get(oldest).bytes;preparationCache.delete(oldest);}preparationCache.set(key,{program,bytes});preparationBytes+=bytes;}
- return program;
+ const program=ownFrozen(recorded),programBytes=JSON.stringify(program).length*2;
+ entry=preparationCache.get(key)||entry||{program:null,programBytes:0,frequency:1,bytes:0};
+ if(!preparationCache.has(key)){entry={program:null,programBytes:0,frequency:entry.frequency,bytes:0};if(preparationEntryBytes(key,entry)+64>MAX_PREPARATION_BYTES)return program;if(preparationCache.size>=MAX_PREPARATIONS&&!leastPreparation(false)){admitPreparationAtEntryCeiling(key,entry,program,programBytes);return program;}preparationCache.set(key,entry);changePreparation(key,entry);trimPreparation();if(!preparationCache.has(key))return program;}
+ const full={...entry,program,programBytes},fullBytes=preparationEntryBytes(key,full),additional=fullBytes-entry.bytes;
+ if(fullBytes>MAX_RESIDENT_BYTES)return program;
+ const victims=[],ignored=new Set();let residentRelease=0,totalRelease=0;
+ while(preparationResidentBytes-residentRelease+fullBytes>MAX_RESIDENT_BYTES||preparationBytes-totalRelease+additional+preparationControlBytes()>MAX_PREPARATION_BYTES){
+  const victim=leastPreparation(true,key,ignored);if(!victim||entry.frequency<=victim[1].frequency)return program;
+  victims.push(victim);ignored.add(victim[0]);residentRelease+=victim[1].bytes;totalRelease+=victim[1].bytes-preparationEntryBytes(victim[0],{...victim[1],program:null,programBytes:0});
+ }
+ for(const victim of victims)ghostPreparation(...victim);
+ changePreparation(key,entry,()=>{entry.program=program;entry.programBytes=programBytes;});trimPreparation();return program;
 }
 A.preparedProgram=preparedProgram;
-A.preparationCacheStats=()=>({revision:preparationRevision,entries:preparationCache.size,hits:preparationHits,misses:preparationMisses,serializedBytes:preparationBytes,maxEntries:MAX_PREPARATIONS,maxSerializedBytes:MAX_PREPARATION_BYTES});
+A.preparationCacheStats=()=>{let residents=0,ghosts=0,ghostBytes=0,keyBytes=0,payloadBytes=0;for(const [key,entry]of preparationCache){keyBytes+=key.length*2;payloadBytes+=entry.program?entry.programBytes:8;if(entry.program)residents++;else{ghosts++;ghostBytes+=entry.bytes;}}const controlBytes=preparationControlBytes();return {revision:preparationRevision,entries:preparationCache.size,residentEntries:residents,ghostEntries:ghosts,hits:preparationHits,misses:preparationMisses,serializedBytes:preparationBytes+controlBytes,residentSerializedBytes:preparationResidentBytes,ghostSerializedBytes:ghostBytes,keySerializedBytes:keyBytes,payloadSerializedBytes:payloadBytes,bookkeepingSerializedBytes:preparationBytes-keyBytes-payloadBytes+controlBytes,controlSerializedBytes:controlBytes,frequencyRequests:preparationRequests,maxFrequency:MAX_FREQUENCY,ageRequests:FREQUENCY_AGE_REQUESTS,maxEntries:MAX_PREPARATIONS,maxSerializedBytes:MAX_PREPARATION_BYTES,maxResidentSerializedBytes:MAX_RESIDENT_BYTES,reservedMetadataBytes:MAX_PREPARATION_BYTES-MAX_RESIDENT_BYTES};};
 A.finalizeBasic=(plan,cut,original,diagnostics,{revision,stepDur,reachTail})=>{
  const evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail];
  try{

@@ -1,0 +1,13 @@
+--- /tmp/avoid006-occlusion-before-exact/09d_adaptive_placement.js	2026-10-20 14:06:05.394924290 +0000
++++ src/09d_adaptive_placement.js	2026-10-20 14:06:05.410373946 +0000
+@@ -93,8 +93,8 @@
+  if(cut.layout!=='subtitleBar'||cut.params.place!=='band')return {};
+  const copies=program.events.filter(e=>e.kind==='item'&&e.args[0].placementSource?.copy==='huge'),plates=program.events.filter(e=>e.kind==='rect'&&e.role==='primary');
+  if(!copies.length||!plates.length)fail('SUBTITLE_BAND_MEASUREMENT','Huge copy and native subtitle band required');
+- const envelope=e=>e.polygons.map(p=>A.cameraEnvelope([A.layoutsASweep(p,e.nativeSweep)],plan,cut,e.kind==='item'?20:10));
+- const separated=(a,b)=>[a,b].some(poly=>poly.some((p,i)=>{const q=poly[(i+1)%poly.length],nx=q[1]-p[1],ny=p[0]-q[0],av=a.map(v=>v[0]*nx+v[1]*ny),bv=b.map(v=>v[0]*nx+v[1]*ny);return Math.max(...av)<Math.min(...bv)-1e-6||Math.max(...bv)<Math.min(...av)-1e-6;}));
++ const envelopes=new Map(),envelope=e=>{let value=envelopes.get(e);if(!value){value=e.polygons.map(p=>A.cameraEnvelope([A.layoutsASweep(p,e.nativeSweep)],plan,cut,e.kind==='item'?20:10));envelopes.set(e,value);}return value;};
++ const separated=(a,b)=>[a,b].some(poly=>poly.some((p,i)=>{const q=poly[(i+1)%poly.length],nx=q[1]-p[1],ny=p[0]-q[0];let amin=Infinity,amax=-Infinity,bmin=Infinity,bmax=-Infinity;for(const v of a){const z=v[0]*nx+v[1]*ny;amin=Math.min(amin,z);amax=Math.max(amax,z);}for(const v of b){const z=v[0]*nx+v[1]*ny;bmin=Math.min(bmin,z);bmax=Math.max(bmax,z);}return amax<bmin-1e-6||bmax<amin-1e-6;}));
+  let checked=0;
+  for(const copy of copies)for(const plate of plates){if(plate.order<=copy.order)continue;for(const ink of envelope(copy))for(const band of envelope(plate)){if(!separated(ink,band))fail('PRIMARY_COPY_OCCLUDED','Huge primary copy may overlap later native subtitle band during the complete interval');checked++;}}
+  if(!checked)fail('SUBTITLE_BAND_MEASUREMENT','Later native subtitle band required');

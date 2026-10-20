@@ -2,7 +2,7 @@
 
 - 状態: 未着手
 - 段階: 統合
-- 技術依存: [AVOID-006](AVOID-006.md), [AVOID-007](AVOID-007.md), [AVOID-008](AVOID-008.md), [AVOID-009](AVOID-009.md), [AVOID-010](AVOID-010.md), [AVOID-011](AVOID-011.md), [AVOID-018](AVOID-018.md)
+- 技術依存: [AVOID-006](AVOID-006.md), [AVOID-007](AVOID-007.md), [AVOID-008](AVOID-008.md), [AVOID-009](AVOID-009.md), [AVOID-010](AVOID-010.md), [AVOID-011](AVOID-011.md), [AVOID-018](AVOID-018.md), [AVOID-019](AVOID-019.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
 
 ## 開始前確認

@@ -1,0 +1,369 @@
+{
+  "before": {
+    "source": "4d42a905dfb3395d58c95bd4a7c770116fba3848d57af97fa6de75914f871484",
+    "block": "edf7daf5f4538085edd2f6a56d744a4a96899f0f1047d1eb25be7f67330edf1b"
+  },
+  "after": {
+    "source": "d468f64d9c016650cbf0ab0d1f1c3e62ac59c3e77dcd807d3b08a20bfb5ba4ce",
+    "block": "62e259417de120bdf3e3724f3703d1d86430fa4768402837fe211a9621a820a1"
+  },
+  "checks": [
+    "Old53/new direct A-B-A exact values, unsupported results and code/message exceptions",
+    "All-resident2048 exact global entry ceiling",
+    "Private real ghost transition accounts all2048 ghosts and control bytes",
+    "New keys evict old ghosts while preserving total entry ceiling",
+    "Font revision clears residents, ghosts and aging counter together",
+    "Explicit clear leaves no ghost/control accounting residue"
+  ],
+  "old53NewSequence": [
+    {
+      "id": "A",
+      "result": {
+        "value": {
+          "measurementSupported": true,
+          "diagnostics": [],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "A"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "B",
+      "result": {
+        "value": {
+          "measurementSupported": true,
+          "diagnostics": [],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "B"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "A",
+      "result": {
+        "value": {
+          "measurementSupported": true,
+          "diagnostics": [],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "A"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "C",
+      "result": {
+        "value": {
+          "measurementSupported": true,
+          "diagnostics": [],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "C"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "B",
+      "result": {
+        "value": {
+          "measurementSupported": true,
+          "diagnostics": [],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "B"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "A",
+      "result": {
+        "value": {
+          "measurementSupported": true,
+          "diagnostics": [],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "A"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "X",
+      "result": {
+        "code": "SYNTHETIC",
+        "message": "Exact synthetic failure X"
+      }
+    },
+    {
+      "id": "Y",
+      "result": {
+        "code": "SYNTHETIC",
+        "message": "Exact synthetic failure Y"
+      }
+    },
+    {
+      "id": "X",
+      "result": {
+        "code": "SYNTHETIC",
+        "message": "Exact synthetic failure X"
+      }
+    },
+    {
+      "id": "unsupported",
+      "result": {
+        "value": {
+          "measurementSupported": false,
+          "diagnostics": [
+            {
+              "code": "UNSUPPORTED"
+            }
+          ],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "unsupported"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "A",
+      "result": {
+        "value": {
+          "measurementSupported": true,
+          "diagnostics": [],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "A"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "unsupported",
+      "result": {
+        "value": {
+          "measurementSupported": false,
+          "diagnostics": [
+            {
+              "code": "UNSUPPORTED"
+            }
+          ],
+          "events": [
+            {
+              "kind": "item",
+              "args": [
+                "unsupported"
+              ],
+              "polygons": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "finalStats": {
+    "revision": 2,
+    "entries": 0,
+    "residentEntries": 0,
+    "ghostEntries": 0,
+    "hits": 4,
+    "misses": 3009,
+    "serializedBytes": 0,
+    "residentSerializedBytes": 0,
+    "ghostSerializedBytes": 0,
+    "keySerializedBytes": 0,
+    "payloadSerializedBytes": 0,
+    "bookkeepingSerializedBytes": 0,
+    "controlSerializedBytes": 0,
+    "frequencyRequests": 0,
+    "maxFrequency": 255,
+    "ageRequests": 4096,
+    "maxEntries": 2048,
+    "maxSerializedBytes": 67108864,
+    "maxResidentSerializedBytes": 58720256,
+    "reservedMetadataBytes": 8388608
+  },
+  "testOnlyInspection": "ghostAll invokes unchanged private ghostPreparation/trimPreparation helpers in source-extracted VM; no product export or edit."
+}

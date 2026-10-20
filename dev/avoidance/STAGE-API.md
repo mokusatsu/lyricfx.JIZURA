@@ -225,3 +225,31 @@ reported outcomes; a registered ID alone does not imply every variant fits.
 `J.finalizePlacementPlan(plan,{layoutsA:true})` admits the26 named `J.placement.layoutsA26` native adapters; combine `basicLayouts:true` to include basic16. The main app remains on its original path until017. The trajectory is `layouts-a-joint-translation`: one native composition owner, per-primitive full-interval envelopes, and per-region shared offsets. A safe certificate covers render scale.1–4, native complete motion, attached meaningful text/plates, camera/contentScale and AA. Dense families may explicitly return insufficient-space; malformed/unknown draw states and panel tone are unsupported. No primary masks or font changes implement avoidance.
 
 Source-backed ownership/domain/temporal/visibility details and final functional evidence are in [AVOID-006 adapter contract](../../tasks/evidence/AVOID-006/adapter-contract.md) and [26-ID inventory](layouts-a-inventory.json). The anchors file describes actual native examples, including smaller corner circles where default-radius fixed-size compositions do not fit. Runtime envelope escape throws; unsupported never means safe. Public and human acceptance are separate parent-owned steps.
+
+## AVOID-006 adaptive native-source opt-in
+
+`J.finalizePlacementPlan(plan,{layoutsA:true,layoutsAAdaptive:true})` adds the
+bounded reusable composition registry for eight A26 layouts after native joint
+translation fails. Existing native-safe segments and the other18 are unchanged.
+`J.placement.layoutsAAdaptive8` lists the demonstrated IDs;
+`compositionStrategies`/`registerCompositionStrategy` expose declared native
+recipe factories. Main-app activation remains017.
+
+Read [adaptive adapter contract](../../tasks/evidence/AVOID-006/adaptive-revision/adapter-contract.md)
+for actual ID orders, floors, source-copy/metadata/owned-ink checks and budgets.
+`segment.composition`, `attempts`, `decision`, `failure` and the selected
+`segment.envelopes` describe the fixed per-region result. `safe-hold` is distinct
+from full `safe`: stationary events remain strict and only source-tagged moving
+entrance/exit events relax. Reconstructed held candidates carry their own full
+`relaxedEnvelopes`. Each pass's motionTime classifies events; realTime selects the
+region. Fade/reveal alone never permits a circle collision.
+
+`J.placement.compositionEligibility(plan,cutIndex,time)` reports eligibility and
+selection provenance without substituting another layout. Failure preserves the
+original lyric-bearing cut and reports excluded-during-avoidance /
+no-certified-composition. The fixture supports `{adaptive:true}`, actual regions,
+real-project explicitScale and `result.observationAt(time,observations)`.
+
+Run `node dev/avoidance/layouts-a-adaptive-test.cjs`; the immutable review requires
+its final-candidate log and functional-summary.json source/hash receipt. Functional
+success and performance acceptance are separate gates.

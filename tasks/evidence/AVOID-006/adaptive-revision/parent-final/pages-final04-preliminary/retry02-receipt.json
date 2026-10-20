@@ -1,0 +1,98 @@
+{
+  "scope": "preliminary publication-candidate output audit before final visual/metadata staging; not deployed",
+  "passed": true,
+  "finalIndexAccepted": false,
+  "finalIndexChangeRequiresFreshSnapshotBuildAudit": true,
+  "recordedUTC": "2026-10-20T15:58:13.121113+00:00",
+  "candidateBundle": "review/AVOID-006/local-20261020-04",
+  "baselineCommit": "06b87459822ac5bc6395e20b8eeb4a47cf12cb57",
+  "indexUnchangedDuringRun": true,
+  "indexStageSHA256": "6175cd21448c1f566c5aaeb6a854e19b3704f1d94e533c6d2fedecff20d47c12",
+  "officialImage": "ghcr.io/actions/jekyll-build-pages@sha256:6791ebfd912185ed59bfb5fb102664fa872496b79f87ff8b9cfba292a7345041",
+  "imageID": "sha256:ac7c0ad006b3868f2c25dd48296cd135971438675ce72caacd4c9dc6d3f958fa",
+  "runtime": {
+    "ruby": "3.3.4",
+    "jekyll": "3.10.0",
+    "liquid": "4.0.4",
+    "github_pages": "232"
+  },
+  "jekyllBuildExitCode": 0,
+  "jekyllGenerationSeconds": 7.718,
+  "containerRestrictions": {
+    "cpus": 1,
+    "memory": "1g",
+    "pidsLimit": 128,
+    "readOnlyRoot": true,
+    "network": "none",
+    "user": "1000:1000",
+    "capDrop": "ALL",
+    "noNewPrivileges": true,
+    "tmpfs": "/tmp:rw,nosuid,size=128m",
+    "sourceAndCAReadOnly": true,
+    "persistentWrite": "scratch output only",
+    "inheritedProxyAndCombinedCATrustPreserved": true
+  },
+  "allOutputURLs": 2806,
+  "allEncodedSourceOutputSHA256AndBytesEqual": true,
+  "legacyPublicURLsPreserved": 1923,
+  "immutableLegacyReviewFilesUnchanged": 1808,
+  "manifestCount": 7,
+  "manifestAssetsVerifiedIncludingSharedTargets": 2752,
+  "siteBytes": 946786660,
+  "siteByteLimit": 1000000000,
+  "headroomBytes": 53213340,
+  "singleBlobLimitExclusiveBytes": 104857600,
+  "largestOutput": {
+    "url": "muscle_lofi_optimized.jizuraichi",
+    "bytes": 33839609,
+    "sha256": "858b5cce2e1f373a927b7be6a6c71845cb6597245b52418367bcf09695c16e90",
+    "gitBlob": "a63c6625abaefe68b438238e3c6f86e1e61d9e05"
+  },
+  "approvedPublicUpdates": [
+    {
+      "url": "docs/VERIFICATION.md",
+      "baselineGitBlob": "d63b9b8ef47b502e59bd1eedc9754c1eda4ace99",
+      "bytes": 23624,
+      "sha256": "4317946f6ff4e2da12b059e9458b34a297e19f1f2a40331ac27246197bdeeeef"
+    }
+  ],
+  "historicalMutableRootClaims": 12,
+  "nonfunctionalOmissions": [
+    "mcp/.gitignore"
+  ],
+  "compiledSHA256": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+  "compiledENSHA256": "e4b4c31114221427eb86218e86deed3474395c52a627669c84c985b503f87de7",
+  "projectionSHA256": "b982543c3976d943184d92d37bda7272ec5e0624e85adc3ea8eafce2bfbabb56",
+  "configSHA256": "a06ab85fc12f54c1b1b2dc0ece8fdbd5db935f3529ba4272839cef28674d8709",
+  "auditScriptSHA256": "b303a3c607ba6a0f3aa6de2dc20a09a2cdab7ad38f8a6d6ed22298b82ca404a1",
+  "fullOutputHashByteInventory": "retry02-pages-output-audit.json",
+  "scratchRun": "/workspace/lyricfx.JIZURA/scratch/avoid006-final04-pages-audit-retry02",
+  "evidence": {
+    "retry02-pages-output-audit.json": {
+      "bytes": 782819,
+      "sha256": "0548b9d3a158d964d1054068bbdde70f54295903cb68cd4fb60bed80f64dab13"
+    },
+    "retry02-pages-output-audit.log": {
+      "bytes": 901,
+      "sha256": "33485c56f4039f42ba961bdeb4ea062f1242668c8ba39ea96cc469e7ea02782f"
+    },
+    "retry02-jekyll-build.log": {
+      "bytes": 284,
+      "sha256": "68a8a5a7e902a7ae23c50117603054d6606f63fbd24d5cb7c7f387d4262aab13"
+    },
+    "retry02-runtime-versions.json": {
+      "bytes": 73,
+      "sha256": "fbd49c1edba6d9fde4fb95f02379007950b55bf241263bff9925d878618ad7df"
+    },
+    "retry02-index-unchanged.json": {
+      "bytes": 119,
+      "sha256": "a18f7a1d5543db53f63e0d8979510ceb29a8096f44f2994f0c587de08d12d02c"
+    }
+  },
+  "earlierFailuresPreserved": [
+    "scratch/avoid006-final04-pages-preflight-failure",
+    "scratch/avoid006-final04-pages-audit-retry01",
+    "tasks/evidence/AVOID-006/adaptive-revision/parent-final/pages-final04-preliminary/attempt01.json"
+  ],
+  "stageCommitPushPerformed": false
+}
