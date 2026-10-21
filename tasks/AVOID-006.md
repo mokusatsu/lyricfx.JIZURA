@@ -221,3 +221,15 @@ Pages run [39457255823](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs
 - 初期JA/ENはHTML1 requestのみ、動画・追加resource取得0。ローカルHTTPのinitial transferは4,781/4,689 bytes（encoded HTML4,481/4,389 bytes）。公開通信の測定は別途必要。
 - [独立visual正式所見](evidence/AVOID-006/film-review/visual02/review.md)と[ledger](evidence/AVOID-006/film-review/visual02/ledger.json)が完了。75画像相当の実見範囲で重大指摘なし。長文先頭「風の先」＋「へ」の2行wrapは読めるが組版の好みは人間判断に残す。全動画frameの目視・視覚担当自身の連続再生とは扱わない。
 - 状態を一覧と`実環境検証待ち`へ同期。実Jekyll容量監査は進行中、公開全raw bytes・公開動画再生seek/日英起動・人間動作判定は未完。新8のfilm以外は人間未回答、007以降は未着手、通常既定切替は017を維持する。
+
+### focused02 公開全検証完了・人間動作確認待ち（2026-10-21）
+
+- 本体commit `2a842636ad9cc7221ce634dee32467f77fa1e97b`をworkへpushし、[Pages run39543982854](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39543982854)は2026-10-21T04:27:50Z（13:27:50 JST）にsuccess。manifestは`426202261383ea42f62241a29602e7923e209cd7ede3e75af21f4cedc518c754`固定。
+- [実Jekyll最終監査](evidence/AVOID-006/film-review/pages-final02/pages-output-audit.json)は2,856 URL/983,367,613 bytes、8 manifest/2,809 asset参照を検査し成功、既存2,806 URLを保持した。旧04その他公開物のbyte不変条件を緩めていない。
+- [公開validator retry1](evidence/AVOID-006/film-review/public02/validator-retry1.json)はexit0/passed:true。58/58 raw HTTP200/hash、JA/EN root2 HTMLのhash+uiApi、全9 native MP4の全編終了/pause/seek、前後6 native PNG原寸再描画が一致。[別site-smoke](evidence/AVOID-006/film-review/public02/site-smoke.log)も両言語で2歌詞行・Canvas実描画が成功した。
+- 公開初期表示JA/ENはHTML1 requestのみ、動画/追加resource取得0。transfer1,839/1,691 bytes（encoded HTML1,539/1,391 bytes）。今回測定した全9動画の全編区間はdrop/corrupt差分0。この測定を任意端末/通信の性能保証へ広げない。
+- 公開初回は206 partial cacheで失敗した[stderr](evidence/AVOID-006/film-review/public02/validator.stderr.log)と[実失敗receipt](evidence/AVOID-006/film-review/local-20261021-02-public-1792556893480-01f35c96.json)を保持する。validator `44f0e5d602ce8d5a331a3f3a69ff387f837db6b36cc6651c1137158e534d0822`による完全raw取得確認後のretry1が成功。製品source/bundle/manifestは不変で、初回から成功したとは扱わない。
+- [02動作確認依頼](reviews/AVOID-006-local-20261021-02.md)をdraftから公開検証済みの依頼へ確定。film横長3:2/縦長2:3/長文先頭2行wrapと、native MP4再生seekを人間へ依頼する。独立visualは75実見で重大指摘なしだが、長文組版の好みと演出の動作受入は人間判断が必要。未回答をOKにしない。
+- 006は人間の動作確認が残るため`実環境検証待ち`を維持。旧18例の受入、新8film以外の人間未回答、007以降未着手、通常既定切替017を維持する。公開成功から他の新8項目の承認を推定しない。task-listの今回進捗4段落は最新1短段落へ統合し、各時点の詳細は本記録に保持した。
+
+公開検証の親正本は[publication.json](evidence/AVOID-006/film-review/publication.json)。親は58 rawの実hash完全一致を独立照合し、[metadata-public-identity.json](evidence/AVOID-006/film-review/metadata-public-identity.json)で設定を含む2,857公開Git blobが本体commitから不変と確認した。公開retry1の全9本測定全編区間はdrop/corrupt差分0。local旧quoteのdrop1は別実行の履歴として保持する。
