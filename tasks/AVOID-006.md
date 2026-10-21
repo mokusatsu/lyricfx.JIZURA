@@ -269,3 +269,11 @@ Pages run [39457255823](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs
 - [最終local summary](evidence/AVOID-006/all-native-mp4/final03-local-summary.json)、[retry1全結果](evidence/AVOID-006/all-native-mp4/final03-local-validation-retry1.json)、[確定receipt](evidence/AVOID-006/all-native-mp4/final03-local-validation-retry1-receipt.json)を正本とする。52 anchor一致・52本fullplay全編終了・全seek・JA/EN入口/desktop/mobile UIが成功。初期media取得0、ペア開始/再開始/停止・filter切替停止も確認した。先行42本後seek失敗は別履歴として保持する。
 - min decoded92、drop合計89/最大21（当該decoded92）、corrupt0。全52成功を完全滑らか/無dropと読み替えず、公開全52検証でも測定する。file://は管理Chromium policyで未検証、HTTPによる確認とは区別する。
 - 親コード＋visual＋実Jekyll全gate確認済み。今から公開commit/pushと全公開検証へ進む段階で、まだ公開成功ではない。006実環境検証待ち、旧18受入/新8未回答・007以降未着手・既定017/補助018未完を維持する。
+
+### 正式03 公開全検証完了・新8人間動作確認待ち（2026-10-21）
+
+- 公開commit `d16261e770f5187bb5b862d3d8d8a9f0626e14a2`、[Pages39550746543](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39550746543)は05:41:38 UTC/14:41:38 JSTにsuccess。[publication正本](evidence/AVOID-006/all-native-mp4/publication.json)は親が実receipt・完全hash/path/byte数・52動画集合を独立照合して05:49:02 UTC/14:49:02 JSTに確定した。manifestは`ceab32d46c763775c407add084c04b610f0d41fef05b1fe63800f18558e6b474`不変。
+- [公開全検証](evidence/AVOID-006/all-native-mp4/final03-public-validation.json)はpassed:true、55 raw全HTTP200/完全bytes/hash一致、52公開MP4のplay/pause/decoded seek/全編終了、JA/EN初期とdesktop/mobile UI・ペア開始/再開始/停止/filter停止が成功。初期media取得0。[別site-smoke](evidence/AVOID-006/all-native-mp4/public-site-smoke.log)も両言語で実起動・2歌詞行Canvas描画が成功し、[通常HTTPS](evidence/AVOID-006/all-native-mp4/ordinary-https.log)はmanifest/JA/EN HTTP200/TLS0/hash一致。
+- 52 anchor再描画一致はlocal固定engine/font検証であり、publicsource再描画とは呼ばない。公開全52再生と55raw完全一致は別に検証した。public再生測定はmin decoded92、drop計3/最大2、corrupt0。local drop89/max21/92の履歴を保持し、完全滑らか/任意環境無dropへ広げない。file://は管理policyで未確認、HTTP desktop/mobileのみ確認済み。
+- 実Jekyll2,911 URL/990,511,556 bytes・旧2,856 URL保持、26組52本native直接取得/原寸/HTML録画と旧transcodeなし、独立visual全26のサンプル実見と親コード/テスト確認を満たした。[03レビュー依頼](reviews/AVOID-006-local-20261021-03.md)を正式公開済みへ刷新し、全26閲覧可能・各組の「前後を最初から一緒に再生」「前後を停止」を案内する。旧18受入を維持し、新8の見え方・動きだけの回答を依頼する。
+- 残条件は新8の人間動作確認のみ。006実環境検証待ちを維持、007以降未着手、通常既定017/補助018未完（ticker既分類tiledAux）、保存初期cut不一致013は既知未成功のまま保持。公開成功から新8承認を推定せず、人間未回答をOKにしない。
