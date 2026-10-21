@@ -233,3 +233,39 @@ Pages run [39457255823](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs
 - 006は人間の動作確認が残るため`実環境検証待ち`を維持。旧18例の受入、新8film以外の人間未回答、007以降未着手、通常既定切替017を維持する。公開成功から他の新8項目の承認を推定しない。task-listの今回進捗4段落は最新1短段落へ統合し、各時点の詳細は本記録に保持した。
 
 公開検証の親正本は[publication.json](evidence/AVOID-006/film-review/publication.json)。親は58 rawの実hash完全一致を独立照合し、[metadata-public-identity.json](evidence/AVOID-006/film-review/metadata-public-identity.json)で設定を含む2,857公開Git blobが本体commitから不変と確認した。公開retry1の全9本測定全編区間はdrop/corrupt差分0。local旧quoteのdrop1は別実行の履歴として保持する。
+
+## 2026-10-21 全比較パターンのnative MP4追加依頼
+
+- 利用者は全パターンの変更前後アニメをMP4で確認すること、HTML画面録画ではなくアニメだけを直接動画化することを追加依頼。006内の検証改善として状態を`実装中`へ戻す。開始work/HEAD `88f270dc5377725dbb194553badd6c4fe6f6ead3`。既存pyc変更、dev/node_modules、scratch/workと未公開reviewを保持・対象外とし、製品source・docs/VERIFICATION・既存bundleは変更しない。
+- 担当は`all006_native_mp4`、gpt-6.1-sol / medium。親がsmokeのコード/結果を確認してから全captureへ進む。旧04全174比較条件（26演出）＋追加film3条件の177組、変更前後354本を各24fps/4秒/96frameでnative rendererから直接取得する計画。実施済み件数とは記録しない。利用者へのasync確認で代表26のみの希望があれば別途反映するが、未回答時点の既定scopeは全177。
+- 変更前は全177組を`06b87459822ac5bc6395e20b8eeb4a47cf12cb57`のstaged A26へ統一し、変更後は開始HEAD88f270dのadaptive。追加film3もfocused02の変更前3e2ff804とは異なることを明示する。同じ比較入力・字体・寸法・seed・実時刻を固定し、HTML UI録画を含めない。新ページで旧WebM transcodeは一切使わず、旧公開物は不変履歴として保持する。
+- 公開比較と検証証拠を分離して準備する。既存Pagesは983,367,613 bytes、残り16,632,387 bytesのためSitesを予定するが、公開先/URL・build ID・容量実測・公開成功は未確定。新規撮影・全条件の対応/元描画とMP4整合・標準再生pause/seek・初期転送・公開全raw hash・親レビューは未完。[新依頼record draft](reviews/AVOID-006-all-native-mp4-draft.md)。
+- 旧04/focused02の公開成功と失敗履歴、旧18例の人間受入、新8例の未回答を保持する。今回の全177組動画の受入には流用しない。006のみ進行し、007以降は未着手、通常既定の切替は017。
+
+### 利用者回答により26代表条件へscope確定（2026-10-21）
+
+- 利用者のasync回答は「26演出の代表例」。上の177組/354本は回答前の初期想定として保持し、現在scopeを26演出各1代表条件・前後52 MP4へ縮小した。追加film3は別ケースとして追加せず、filmも26演出中1例だけとする。全174/177条件の動画を生成・変更・検証済みとは主張しない。実装担当へ対応指示済み。
+- 同条件のnative直接取得（24fps/4秒/96frame）、変更前06b8745 staged/変更後88f270d adaptive、HTML UI録画・旧WebM transcode不使用、製品/source不変の条件は維持する。filmの変更前がfocused02の3e2ff804と異なる点も維持して表示する。
+- 52 MP4と比較ページがPages残り16,632,387 bytesへ収まるか実測後に判定する。収まればPages、だめなら自己完結ZIPを確実に用意する。Sitesは登録のみで未公開、公式helper欠如の[blocker証拠](evidence/AVOID-006/all-native-mp4/sites-blocker.json)を保持する。公開先・URL・容量合格・公開成功は未確定。
+- [26代表条件の確認準備draft](reviews/AVOID-006-all-native-mp4-draft.md)と一覧を同期。smoke親レビュー後の全撮影・ローカル/公開検証・人間動作受入は未完。006実装中、旧公開成功/旧18受入/新8未回答、007以降未着手・既定切替017を維持する。
+
+### 26代表native MP4正式03撮影完了・実環境検証待ち（2026-10-21）
+
+- 正式`local-20261021-03`の26組/52本、各24fps/4秒/96frame・計4,992 native renderer frameの撮影完了。前後は06b8745 staged/88f270d adaptive、HTML UI録画・円guide動画合成・旧WebM transcodeなし、各W×H原寸。公開予定55 files/7,143,943 bytes（MP4合計6,994,708 bytes）。[capture結果](evidence/AVOID-006/all-native-mp4/final03-capture.json)。
+- [公開用manifest](../review/AVOID-006/local-20261021-03/manifest.json) SHA-256 `ceab32d46c763775c407add084c04b610f0d41fef05b1fe63800f18558e6b474`。[親の18対照照合](evidence/AVOID-006/all-native-mp4/parent-accepted-controls.json)で受入済み18演出×96frameのnative PNG前後hashが全一致した。これはMP4全編検証・人間判断の代替ではない。
+- [実Jekyll監査](evidence/AVOID-006/all-native-mp4/pages/pages-output-audit.json)はpassed:true、2,911 URL/990,511,556 bytes、旧2,856 URL保持。Pages容量内となりPagesを公開候補とするが、公開成功・全公開raw検証はまだ主張しない。Sites登録のみ/公式helper欠如の履歴は保持する。
+- local52本の全編再生pause/seek・元描画整合/初期転送とisolated visualは進行中。状態を一覧と`実環境検証待ち`へ同期し、公開全検証と必要な人間動作確認を残す。[正式03確認準備draft](reviews/AVOID-006-local-20261021-03.md)へ移行、旧generic draftは初期scope履歴と移行先を保持する。
+- 新8未回答・旧18受入、007以降未着手・通常既定017は不変。全174/177条件の取得/検証済みを主張せず、filmは26中1代表のみ。製品/source/docs/既存bundleは変更していない。
+
+### 正式03 isolated visual完了・local seek検証修正（2026-10-21）
+
+- [独立visual A](evidence/AVOID-006/all-native-mp4/visual-a/review.md)・[B](evidence/AVOID-006/all-native-mp4/visual-b/review.md)は各13件で全26件完了。原寸anchor52枚とMP4抽出312枚をmontageで実見、filmは抽出12枚も追加原寸実見し、サンプル内で新規欠陥なし。全4,992frameの実見・連続再生は主張しない。ticker反復帯の`tiledAux`分類と018補助マスク未完は既知のまま保持し、新しい免除や対応完了へ置換しない。
+- [local初回失敗receipt](evidence/AVOID-006/all-native-mp4/final03-local-validation-failure1.json): 52 anchor原寸再描画と42/52本の全編試験後、ruler-beforeのdecoded seek時刻assertが失敗。動画は96 PTS正常、同一動画の実30回調査は再現0だが、元失敗metadata未保存のため原因確定とはしない。
+- [seek-validator修正レビュー](evidence/AVOID-006/all-native-mp4/seek-validator-fix-review.json)と[親正本](evidence/AVOID-006/all-native-mp4/parent-review.md): 旧helper callback競合はmock再現し、修正後親12tests/targeted4seekは成功。新validator `44181a677ca645ab09fdb3e831bf848774f6a71277b22c6f745b401cd25a1dab`だけを更新、0.1秒許容/10秒deadlineを維持し、capture/public/source・旧capture tool hashは不変。
+- 全52local retry1は進行中、公開は未実施。006は実環境検証待ちを維持し、[03依頼draft](reviews/AVOID-006-local-20261021-03.md)へ現在状態を反映。最終案内は各組の「前後を最初から一緒に再生」「前後を停止」を中心にする。旧18受入/新8未回答、007以降未着手、既定017・補助018未完は維持する。
+
+### 正式03 local retry1全52本成功・公開検証待ち（2026-10-21）
+
+- [最終local summary](evidence/AVOID-006/all-native-mp4/final03-local-summary.json)、[retry1全結果](evidence/AVOID-006/all-native-mp4/final03-local-validation-retry1.json)、[確定receipt](evidence/AVOID-006/all-native-mp4/final03-local-validation-retry1-receipt.json)を正本とする。52 anchor一致・52本fullplay全編終了・全seek・JA/EN入口/desktop/mobile UIが成功。初期media取得0、ペア開始/再開始/停止・filter切替停止も確認した。先行42本後seek失敗は別履歴として保持する。
+- min decoded92、drop合計89/最大21（当該decoded92）、corrupt0。全52成功を完全滑らか/無dropと読み替えず、公開全52検証でも測定する。file://は管理Chromium policyで未検証、HTTPによる確認とは区別する。
+- 親コード＋visual＋実Jekyll全gate確認済み。今から公開commit/pushと全公開検証へ進む段階で、まだ公開成功ではない。006実環境検証待ち、旧18受入/新8未回答・007以降未着手・既定017/補助018未完を維持する。

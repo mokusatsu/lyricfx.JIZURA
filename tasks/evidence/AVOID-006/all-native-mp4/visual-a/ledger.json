@@ -1,0 +1,504 @@
+{
+  "task": "AVOID-006",
+  "reviewer": "all006_visual_a (isolated visual review)",
+  "build": "local-20261021-03",
+  "manifestSHA256": "17348b6047e3ebbf08c49eba2302fdf9a9a3e59947253e7591548e75b3312d97",
+  "generatedUTC": "2026-10-21T05:24:45.314838+00:00",
+  "scope": "first 13 representative layouts; before and after; native Canvas MP4, no UI recordings",
+  "inspectedCounts": {
+    "anchorPNG": 26,
+    "videoExtractedFramesInMontage": 156,
+    "montages": 13,
+    "continuousVideosPlayedByThisReviewer": 0,
+    "allFramesViewed": false
+  },
+  "limitations": [
+    "Six sampled frames per video cannot certify motion continuity or absence of an intervening freeze/collision.",
+    "Circle guide is absent from native PNG; hold positioning was assessed against manifest circle coordinates, not a visible overlay.",
+    "Ticker scrolling auxiliary lyrics/band remain an existing AVOID-018 masking task; no global all-ink-avoids-circle claim."
+  ],
+  "circleAssessment": "After main lyrics and meaningful owned labels/frames appear outside the circle at sampled hold images; ticker auxiliary band is the known exception. No apparent new clipping, mojibake, vanished layout, or HTML UI contamination in viewed evidence.",
+  "entries": [
+    {
+      "id": "lowerThird-native-anchor",
+      "layout": "lowerThird",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/lowerThird-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/lowerThird-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/lowerThird-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "主歌詞「風の先へ」、黄色下線、番号と時刻ラベルを保持。端の線が入退場で伸縮する。"
+    },
+    {
+      "id": "corners-native-anchor",
+      "layout": "corners",
+      "nativeDimensions": [
+        1920,
+        1080
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/corners-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/corners-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/corners-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "右上「風の」と左下「先へ」の対角配置、接続線、番号を保持。出現の段階差が見える。"
+    },
+    {
+      "id": "staircase-native-anchor",
+      "layout": "staircase",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/staircase-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/staircase-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/staircase-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "風→の→先→への階段と小番号を保持。0/0.125秒では段階的に文字が増え、保持時は全4字が揃う。"
+    },
+    {
+      "id": "zigzag-native-anchor",
+      "layout": "zigzag",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/zigzag-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/zigzag-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/zigzag-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "文字の高低と黄色折線を保持。0秒の初字から0.625秒の全字へ進み、終端では線が縮む。"
+    },
+    {
+      "id": "gridCells-native-anchor",
+      "layout": "gridCells",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/gridCells-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/gridCells-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/gridCells-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "4字4セルと黄色の「先」セルを保持。0.125秒の先の黒字は背景セル出現前で暗く、保持時は黄色地上で明瞭。終端のセル分解もbefore/after共通。"
+    },
+    {
+      "id": "dropCap-native-anchor",
+      "layout": "dropCap",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/dropCap-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/dropCap-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/dropCap-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "黄色大字「風」と小さい「の先へ」、上下罫線を保持。線の入退場変化がある。"
+    },
+    {
+      "id": "justified-native-anchor",
+      "layout": "justified",
+      "nativeDimensions": [
+        1920,
+        1080
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/justified-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/justified-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/justified-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "afterは左側に「風の／先へ」の2行。4字、上下黄色罫線、番号、反復地文を保持。主字は大きいままで欠けない。地文と主字が重なる箇所はあるが読み取れる。"
+    },
+    {
+      "id": "frameBox-native-anchor",
+      "layout": "frameBox",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/frameBox-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/frameBox-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/frameBox-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "主歌詞、四隅の枠、上番号、下時刻を保持。0秒では主字のみ、保持時は枠が成立、終端で枠が縮む。"
+    },
+    {
+      "id": "bubble-native-anchor",
+      "layout": "bubble",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/bubble-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/bubble-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/bubble-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "単字「光」と吹き出しの輪郭・尾を保持。0秒/最終抽出時刻は空で、0.125〜3.75秒に出現・縮小が見える。期待された入退場と整合。"
+    },
+    {
+      "id": "subtitleBar-native-anchor",
+      "layout": "subtitleBar",
+      "nativeDimensions": [
+        1920,
+        1080
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/subtitleBar-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/subtitleBar-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/subtitleBar-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "afterは淡い大字複製を左の2行へ配置し、下部主字幕、字幕プレート、レターボックス、上部タイムコードを保持。主字幕と淡い複製の両方が見える。"
+    },
+    {
+      "id": "ticker-native-anchor",
+      "layout": "ticker",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/ticker-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/ticker-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/ticker-native-anchor-montage.jpg",
+      "result": "pass-with-known-018-limitation",
+      "note": "主見出し「風の先へ」、LIVE、時刻と下部の流れる反復帯を保持。帯内の反復は時刻間で位置が変わる。主見出し/タグ/時刻は円外。下部反復帯は円領域を通る既知のAVOID-018未完範囲。"
+    },
+    {
+      "id": "splitScreen-native-anchor",
+      "layout": "splitScreen",
+      "nativeDimensions": [
+        1920,
+        1080
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/splitScreen-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/splitScreen-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/splitScreen-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "afterは左側の「風の／先へ」2行で全字を保持。上の白/下の黒の配色、黄色下半面、番号と時刻を保持。入退場で境界面が動く。"
+    },
+    {
+      "id": "mirror-native-anchor",
+      "layout": "mirror",
+      "nativeDimensions": [
+        960,
+        540
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "anchorViews": [
+        "work/all006-native-mp4/local-20261021-03/evidence/images/mirror-native-anchor-before-anchor.png",
+        "work/all006-native-mp4/local-20261021-03/evidence/images/mirror-native-anchor-after-anchor.png"
+      ],
+      "anchorViewMode": "individual source PNG via view_image(detail=original); 1920x1080 or 960x540",
+      "videoFrameIndices": [
+        0,
+        3,
+        15,
+        36,
+        90,
+        95
+      ],
+      "videoTimesSeconds": [
+        0,
+        0.125,
+        0.625,
+        1.5,
+        3.75,
+        3.9583333333333335
+      ],
+      "videoFrameViews": "extracted PNGs reviewed in before/after montage (480x270 thumbnails; tool displayed montage at 2048x366). No claim of native-resolution individual inspection for these video thumbnails.",
+      "montage": "scratch/all006-visual-a/mirror-native-anchor-montage.jpg",
+      "result": "pass-sampled-visual",
+      "note": "主字と黄色端点の水平線、下の上下反転像を保持。反射に帯状のずれがあるがbefore/after共通の演出で文字化けではない。"
+    }
+  ]
+}

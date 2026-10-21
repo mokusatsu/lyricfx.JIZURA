@@ -1,0 +1,20 @@
+✔ old helper deterministically pairs a stale callback with a later seeked event (4.123127ms)
+✔ new helper records stale callback and resolves only after an eventual target frame (1.419533ms)
+✔ target callback before seeked waits for the seeked event (0.996084ms)
+✔ never reaching target rejects at the unchanged ten-second deadline and cleans listeners (1.441972ms)
+✔ media error preserves diagnostics and removes the pending frame callback (2.637905ms)
+✔ queued callbacks after timeout cannot register more frame callbacks (0.983622ms)
+✔ queued callbacks after media error cannot register more frame callbacks (1.166238ms)
+✔ a currentTime setter exception cleans listeners and pending frame callback (1.03762ms)
+✔ retains exactly the 26 old04 safe anchors with their original ids and conditions (25.939631ms)
+✔ full playback covers all 26 representative pairs and every size (12.932124ms)
+✔ two-worker pool bounds concurrency, waits for cancellation cleanup, and preserves first error (17.965072ms)
+✔ independent geometry rejects a crossing even when source clear flags are true (1.642974ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 184.811016

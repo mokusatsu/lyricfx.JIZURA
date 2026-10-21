@@ -1,0 +1,2622 @@
+{
+  "scope": "26-layout-representatives-only",
+  "capture": {
+    "method": "Actual native Canvas renderer.frame(n/24), PNG stream into libx264; no screen recording or source-video transcode",
+    "fps": 24,
+    "duration": 4,
+    "frames": 96,
+    "resolution": "Original per-case conditions.W × conditions.H; no rescaling",
+    "overlays": "No UI, circle guides or other overlays are composited into the MP4 frames",
+    "beforeExecution": {
+      "mode": "staged-a26",
+      "newPath": true,
+      "adaptive": false
+    },
+    "afterExecution": {
+      "newPath": true,
+      "adaptive": true
+    },
+    "inheritedConditions": "Case conditions are retained verbatim from the old04 representative capture, including historical viewport/circleGuide fields. The new MP4 acquisition overrides the historical guide/UI capture method with native Canvas only. Viewport is retained per case; actual video resolution is W × H.",
+    "nativePNGAndSafetyEvidence": "Retained privately; not loaded by the comparison page"
+  },
+  "schema": 1,
+  "revision": "all-native-mp4-v1",
+  "build": "local-20261021-03",
+  "smoke": false,
+  "fps": 24,
+  "frames": 96,
+  "duration": 4,
+  "before": {
+    "commit": "06b87459822ac5bc6395e20b8eeb4a47cf12cb57",
+    "execution": {
+      "mode": "staged-a26",
+      "newPath": true,
+      "adaptive": false
+    },
+    "originalFixtureSHA256": "28456bfa4c4fe5bed863ea1197d1e8fd8c2e2244f9e9752340f474b98f71aafa",
+    "sourceSHA256": "38b8edf31aaecaa667e1e0248ccc5fa3bbf68380333f819683fdfb6494f3ebe4",
+    "executedHTMLPath": "fixtures/before-engine.html",
+    "executedHTMLSHA256": "1774827d3bd2e2dee191579ef80804d67f0cc2fc5d86377a0ff8476d21d39216"
+  },
+  "after": {
+    "commit": "88f270dc5377725dbb194553badd6c4fe6f6ead3",
+    "execution": {
+      "newPath": true,
+      "adaptive": true
+    },
+    "sourceSHA256": "d780ca129dfe87868a8a448a90c02a2e6ba4f2398a4a7f522a91973bad62eda0"
+  },
+  "matrixSHA256": "d88e8e376e061ab9416f39bdd78aad3ab0c24bc71f32cf8bb4af0f7035dde162",
+  "sourceManifestSHA256": "2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01d",
+  "cases": [
+    {
+      "id": "lowerThird-native-anchor",
+      "label": "下部テロップ (lowerThird)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "lowerThird-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.5,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "lowerThird",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "下部テロップ (lowerThird)・受入済みの不変対照",
+        "look": "下部の主歌詞、アクセント線、番号と上側の補足ラベル。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "after": {
+        "path": "videos/lowerThird-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      },
+      "before": {
+        "path": "videos/lowerThird-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "corners-native-anchor",
+      "label": "対角配置 (corners)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "corners-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "corners",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "対角配置 (corners)・受入済みの不変対照",
+        "look": "対角の二つの歌詞塊、結ぶ線と線沿いの小さな番号。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/corners-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/corners-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "staircase-native-anchor",
+      "label": "階段 (staircase)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "staircase-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "staircase",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "階段 (staircase)・受入済みの不変対照",
+        "look": "階段状の文字列、段のガイドと段番号。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "after": {
+        "path": "videos/staircase-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      },
+      "before": {
+        "path": "videos/staircase-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "zigzag-native-anchor",
+      "label": "ジグザグ (zigzag)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "zigzag-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "zigzag",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "ジグザグ (zigzag)・受入済みの不変対照",
+        "look": "折り返す文字の順序、折れ線状の配置。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/zigzag-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/zigzag-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "gridCells-native-anchor",
+      "label": "升目 (gridCells)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "gridCells-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "gridCells",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "升目 (gridCells)・受入済みの不変対照",
+        "look": "各升目の主歌詞とセル枠、セル内の小さな連番。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "after": {
+        "path": "videos/gridCells-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      },
+      "before": {
+        "path": "videos/gridCells-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "dropCap-native-anchor",
+      "label": "大きな頭文字 (dropCap)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "dropCap-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "dropCap",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "大きな頭文字 (dropCap)・受入済みの不変対照",
+        "look": "大きな頭文字と続く本文、下の番号と補足文字。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/dropCap-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/dropCap-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "justified-native-anchor",
+      "label": "版面 (justified)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "justified-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "adaptive-safe",
+        "layout": "justified",
+        "safeAnchor": true,
+        "revisedAnchor": true,
+        "acceptedControl": false,
+        "phase": "hold",
+        "label": "版面 (justified)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+        "look": "版面の主歌詞行と全体へ繰り返す埋め草の文字。",
+        "change": "実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。",
+        "preserve": "歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "after": {
+        "path": "videos/justified-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "editorial-spacing-wrap",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      },
+      "before": {
+        "path": "videos/justified-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "insufficient-space"
+          },
+          "selectedStrategy": null,
+          "decision": "insufficient-space",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "frameBox-native-anchor",
+      "label": "額縁 (frameBox)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "frameBox-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "frameBox",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "額縁 (frameBox)・受入済みの不変対照",
+        "look": "主歌詞を囲む枠と、枠の上下にある小さなキャプション。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/frameBox-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/frameBox-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "bubble-native-anchor",
+      "label": "吹き出し (bubble)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "bubble-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "光",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.5,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "bubble",
+        "params": {
+          "shape": "round",
+          "burst": false,
+          "tilt": 0
+        },
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "吹き出し (bubble)・受入済みの不変対照",
+        "look": "主歌詞と吹き出しの輪郭・尾、出現時の回転と拡大。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/bubble-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/bubble-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "subtitleBar-native-anchor",
+      "label": "字幕帯 (subtitleBar)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "subtitleBar-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "adaptive-safe",
+        "layout": "subtitleBar",
+        "safeAnchor": true,
+        "revisedAnchor": true,
+        "acceptedControl": false,
+        "phase": "hold",
+        "label": "字幕帯 (subtitleBar)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+        "look": "下部の主字幕と大きな淡い複製（どちらも回避対象）、レターボックスと背景面、上部タイムコード。",
+        "change": "実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。",
+        "preserve": "歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/subtitleBar-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "insufficient-space"
+          },
+          "selectedStrategy": null,
+          "decision": "insufficient-space",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/subtitleBar-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "huge-copy-reduce",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "ticker-native-anchor",
+      "label": "ティッカー (ticker)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "ticker-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.75,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "ticker",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "ティッカー (ticker)・受入済みの不変対照",
+        "look": "主見出しと下部の流れる反復帯、LIVE等のタグと時刻。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/ticker-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/ticker-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "splitScreen-native-anchor",
+      "label": "二分割 (splitScreen)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "splitScreen-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "adaptive-safe",
+        "layout": "splitScreen",
+        "safeAnchor": true,
+        "revisedAnchor": true,
+        "acceptedControl": false,
+        "phase": "hold",
+        "label": "二分割 (splitScreen)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+        "look": "分割境界の両側へ描かれる主歌詞、反転した色、両側の小さな番号。",
+        "change": "実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。",
+        "preserve": "歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/splitScreen-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "insufficient-space"
+          },
+          "selectedStrategy": null,
+          "decision": "insufficient-space",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/splitScreen-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "split-reduce",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "mirror-native-anchor",
+      "label": "鏡像 (mirror)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "mirror-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "mirror",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "鏡像 (mirror)・受入済みの不変対照",
+        "look": "主歌詞と水平線、その下で上下反転し帯ごとに揺れる反射。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/mirror-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/mirror-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "sideways-native-anchor",
+      "label": "縦倒し (sideways)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "sideways-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "adaptive-safe",
+        "layout": "sideways",
+        "safeAnchor": true,
+        "revisedAnchor": true,
+        "acceptedControl": false,
+        "phase": "hold",
+        "label": "縦倒し (sideways)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+        "look": "90度回した主歌詞、分割線、空き領域の横書き補足。",
+        "change": "実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。",
+        "preserve": "歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/sideways-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/sideways-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "edgeFrame-native-anchor",
+      "label": "外周 (edgeFrame)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "edgeFrame-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.5,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "edgeFrame",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "外周 (edgeFrame)・受入済みの不変対照",
+        "look": "中央の主歌詞と、外周に沿って回転しながら反復する補助文字。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/edgeFrame-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/edgeFrame-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "perspective-native-anchor",
+      "label": "奥行き (perspective)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "perspective-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "光",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.5,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "perspective",
+        "params": {
+          "guides": false,
+          "mode": "floor"
+        },
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "奥行き (perspective)・受入済みの不変対照",
+        "look": "手前の主歌詞、奥へ縮小・歪曲して重なる複製、消失点への線。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "after": {
+        "path": "videos/perspective-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      },
+      "before": {
+        "path": "videos/perspective-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "hanko-native-anchor",
+      "label": "落款 (hanko)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "hanko-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "hanko",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "落款 (hanko)・受入済みの不変対照",
+        "look": "主歌詞と後から押される印、印内の縦組み文字。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/hanko-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/hanko-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "genkou-native-anchor",
+      "label": "原稿用紙 (genkou)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "genkou-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "光",
+        "W": 960,
+        "H": 540,
+        "cx": 0.25,
+        "cy": 0.5,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "genkou",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "原稿用紙 (genkou)・受入済みの不変対照",
+        "look": "右列から縦に読む主歌詞、原稿用紙の升目、下側の寸法と番号。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "after": {
+        "path": "videos/genkou-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      },
+      "before": {
+        "path": "videos/genkou-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "panels-native-anchor",
+      "label": "コマ割り (panels)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字／fx:none",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "panels-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "adaptive-safe",
+        "layout": "panels",
+        "params": {
+          "fx": "none"
+        },
+        "safeAnchor": true,
+        "revisedAnchor": true,
+        "acceptedControl": false,
+        "phase": "hold",
+        "label": "コマ割り (panels)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字／fx:none",
+        "look": "横長では右から左、縦長では上から下へ読む主歌詞と各コマの境界。",
+        "change": "実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。",
+        "preserve": "歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/panels-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "insufficient-space"
+          },
+          "selectedStrategy": null,
+          "decision": "insufficient-space",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/panels-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "panel-aspect-gap",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "filmstrip-native-anchor",
+      "label": "フィルム (filmstrip)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "filmstrip-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "adaptive-safe",
+        "layout": "filmstrip",
+        "safeAnchor": true,
+        "revisedAnchor": true,
+        "acceptedControl": false,
+        "phase": "hold",
+        "label": "フィルム (filmstrip)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+        "look": "傾いたフィルム内の歌詞、各フレームと送り穴・端のコード。",
+        "change": "実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。",
+        "preserve": "歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/filmstrip-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "insufficient-space"
+          },
+          "selectedStrategy": null,
+          "decision": "insufficient-space",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/filmstrip-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe-hold"
+          },
+          "selectedStrategy": "film-reduce",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "stationary-strict-moving-entry-exit-relaxed",
+          "holdWindow": {
+            "start": 0.6,
+            "end": 3.6,
+            "clock": "native motionTime; each event/pass independently",
+            "entryMotionSeconds": 0.6,
+            "source": "src/11p_layoutsA.js native geometric motion; fades/reveal alone do not relax",
+            "driftClockRange": [
+              0.44999999999999996,
+              3.75
+            ]
+          },
+          "relaxedWindows": [
+            {
+              "phase": "entry",
+              "start": 0,
+              "end": 0.6,
+              "clock": "native motionTime",
+              "events": "source-tagged moving events only"
+            },
+            {
+              "phase": "exit",
+              "start": 3.6,
+              "end": 4,
+              "clock": "native motionTime",
+              "events": "source-tagged moving events only"
+            }
+          ],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "quote-native-anchor",
+      "label": "引用 (quote)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "quote-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "adaptive-safe",
+        "layout": "quote",
+        "safeAnchor": true,
+        "revisedAnchor": true,
+        "acceptedControl": false,
+        "phase": "hold",
+        "label": "引用 (quote)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+        "look": "主歌詞、両側の引用符と下側の出典文字。",
+        "change": "実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。",
+        "preserve": "歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/quote-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "insufficient-space"
+          },
+          "selectedStrategy": null,
+          "decision": "insufficient-space",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/quote-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe-hold"
+          },
+          "selectedStrategy": "native-motion-entry-exit-relaxation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "stationary-strict-moving-entry-exit-relaxed",
+          "holdWindow": {
+            "start": 0.52,
+            "end": 3.6,
+            "clock": "native motionTime; each event/pass independently",
+            "entryMotionSeconds": 0.52,
+            "source": "src/11p_layoutsA.js native geometric motion; fades/reveal alone do not relax",
+            "driftClockRange": [
+              0.37,
+              3.75
+            ]
+          },
+          "relaxedWindows": [
+            {
+              "phase": "entry",
+              "start": 0,
+              "end": 0.52,
+              "clock": "native motionTime",
+              "events": "source-tagged moving events only"
+            },
+            {
+              "phase": "exit",
+              "start": 3.6,
+              "end": 4,
+              "clock": "native motionTime",
+              "events": "source-tagged moving events only"
+            }
+          ],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "ruler-native-anchor",
+      "label": "寸法線 (ruler)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "ruler-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 540,
+        "H": 960,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "ruler",
+        "params": {
+          "guides": false
+        },
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "寸法線 (ruler)・受入済みの不変対照",
+        "look": "主歌詞と幅・高さの寸法線、矢印、数値、文字数。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          540,
+          960
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/ruler-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/ruler-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "searchBar-native-anchor",
+      "label": "検索窓 (searchBar)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "searchBar-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 540,
+        "H": 960,
+        "cx": 0.5,
+        "cy": 0.5,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "searchBar",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "検索窓 (searchBar)・受入済みの不変対照",
+        "look": "検索窓内の主歌詞、虫眼鏡とカーソル、下の検索候補とその板。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          540,
+          960
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/searchBar-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/searchBar-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "chat-native-anchor",
+      "label": "チャット (chat)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "chat-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 960,
+        "H": 540,
+        "cx": 0.5,
+        "cy": 0.25,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "chat",
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "チャット (chat)・受入済みの不変対照",
+        "look": "主歌詞を含む会話の吹き出しと尾、入力中の点、既読時刻。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/chat-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/chat-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "notification-native-anchor",
+      "label": "通知 (notification)・受入済みの不変対照",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "notification-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "光",
+        "W": 960,
+        "H": 540,
+        "cx": 0.25,
+        "cy": 0.5,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "unchanged-safe",
+        "layout": "notification",
+        "params": {
+          "pos": "center",
+          "stack": false
+        },
+        "safeAnchor": true,
+        "revisedAnchor": false,
+        "acceptedControl": true,
+        "phase": "hold",
+        "label": "通知 (notification)・受入済みの不変対照",
+        "look": "主歌詞を含む通知の板、アプリ名・時刻・タイトル。",
+        "change": "受入済みの同じ入力です。変更前のstaged経路が実際に安全で、変更後も同じPNGと文字サイズを保つことを確認します。",
+        "preserve": "元の描画・文字サイズ・配置・時刻をそのまま維持します。",
+        "stage": [
+          960,
+          540
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/notification-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/notification-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "native-joint-translation",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    },
+    {
+      "id": "ticket-native-anchor",
+      "label": "チケット (ticket)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+      "hid": "AVOID-006-H01",
+      "group": "old04",
+      "conditions": {
+        "id": "ticket-native-anchor",
+        "hid": "AVOID-006-H01",
+        "seed": 704,
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "time": 1.5,
+        "availability": "implemented",
+        "expectation": "adaptive-safe",
+        "layout": "ticket",
+        "safeAnchor": true,
+        "revisedAnchor": true,
+        "acceptedControl": false,
+        "phase": "hold",
+        "label": "チケット (ticket)・1920×1080／円中心(0.5,0.42)・半径0.2／複文字",
+        "look": "主歌詞と傾いた券面、切り離される半券、連番と座席情報。",
+        "change": "実際に選ばれた構成・試行順・棄却理由を確認します。成立しない場合は候補除外と表示し、安全例には数えません。",
+        "preserve": "歌詞・line/part・読み順・seed・カット時刻・所有枠との関係。変更後の実サイズと構成は診断欄に記録します。",
+        "stage": [
+          1920,
+          1080
+        ],
+        "viewport": [
+          1500,
+          1500
+        ],
+        "dpr": 1,
+        "language": "ja",
+        "font": "bundled Noto CJK plus pinned DejaVu symbols; loaded before rendering",
+        "media": "none",
+        "color": "sRGB default",
+        "alpha": "opaque",
+        "seek": "direct",
+        "requestedRealTime": 1.5,
+        "motionClock": "actual native motionTime is recorded separately per event/pass",
+        "post": false,
+        "hud": false,
+        "circleGuide": "DOM only; absent from native Canvas PNG",
+        "fixtureIsolation": "engine-only-dom-v1"
+      },
+      "before": {
+        "path": "videos/ticket-native-anchor-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "insufficient-space"
+          },
+          "selectedStrategy": null,
+          "decision": "insufficient-space",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "explicitSize": null
+        }
+      },
+      "after": {
+        "path": "videos/ticket-native-anchor-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "activeRegion": "fixture",
+          "segment": {
+            "start": 0,
+            "end": 4,
+            "status": "safe"
+          },
+          "selectedStrategy": "attached-ticket-reduce",
+          "decision": "certified",
+          "failure": null,
+          "safetyScope": "full-interval",
+          "holdWindow": null,
+          "relaxedWindows": [],
+          "observations": [],
+          "eligibleDuringAvoidance": true,
+          "selectionOrigin": "explicit",
+          "fallbackAllowed": false,
+          "fallbackSelected": false,
+          "explicitSize": null
+        }
+      }
+    }
+  ],
+  "assets": {
+    "videos/lowerThird-native-anchor-after.mp4": "27dc1c210052a7518e1e84a15cdfd2c46c5a1ab7d37c16a95c25ef44c1f98678",
+    "videos/lowerThird-native-anchor-before.mp4": "27dc1c210052a7518e1e84a15cdfd2c46c5a1ab7d37c16a95c25ef44c1f98678",
+    "videos/corners-native-anchor-before.mp4": "be36b708300e7a5ed408ee7012f8b7a8de660462db9e449577d881f324f15692",
+    "videos/corners-native-anchor-after.mp4": "be36b708300e7a5ed408ee7012f8b7a8de660462db9e449577d881f324f15692",
+    "videos/staircase-native-anchor-after.mp4": "c3ddef6bb32f6750de76fe8d3a716fed350d436ea2c85d6f5670e72516f912c0",
+    "videos/staircase-native-anchor-before.mp4": "c3ddef6bb32f6750de76fe8d3a716fed350d436ea2c85d6f5670e72516f912c0",
+    "videos/zigzag-native-anchor-before.mp4": "7f63f9742f9fed8b488ddf9e9741fc907f5cbe5c07f7941a431c968371f88816",
+    "videos/zigzag-native-anchor-after.mp4": "7f63f9742f9fed8b488ddf9e9741fc907f5cbe5c07f7941a431c968371f88816",
+    "videos/gridCells-native-anchor-after.mp4": "528837a0891c9923637c63447a81f25a167f0e0f51cff72a747ae6499a6ced84",
+    "videos/gridCells-native-anchor-before.mp4": "528837a0891c9923637c63447a81f25a167f0e0f51cff72a747ae6499a6ced84",
+    "videos/dropCap-native-anchor-before.mp4": "1c24125ca7d0dec5910c1deeb2a3febb6e57bcb63fcabfdb7525107c2ebaa119",
+    "videos/dropCap-native-anchor-after.mp4": "1c24125ca7d0dec5910c1deeb2a3febb6e57bcb63fcabfdb7525107c2ebaa119",
+    "videos/justified-native-anchor-after.mp4": "365d8f9ac8458c416553da7a73a9d05b84eb18a7653d48c733014e25ee47f79a",
+    "videos/justified-native-anchor-before.mp4": "3b251d98ba5f03e3e406b6b8be25a72f5098a81b29536e9100ea29193639d3fc",
+    "videos/frameBox-native-anchor-before.mp4": "70351bac825ed0ac27831d8e78bb0a0717f5d9cdea80da2649be61a48b687bb1",
+    "videos/frameBox-native-anchor-after.mp4": "70351bac825ed0ac27831d8e78bb0a0717f5d9cdea80da2649be61a48b687bb1",
+    "videos/bubble-native-anchor-before.mp4": "31317c21cd8a8827457bb1f74a6aba0d7a38c31cf3256a174ae00b9c0dc66d3c",
+    "videos/bubble-native-anchor-after.mp4": "31317c21cd8a8827457bb1f74a6aba0d7a38c31cf3256a174ae00b9c0dc66d3c",
+    "videos/subtitleBar-native-anchor-before.mp4": "b5d87f0e2250d615495f7364317e7a25ad9998fa9814adb01f95dae7e30ed721",
+    "videos/subtitleBar-native-anchor-after.mp4": "b7124c20613577d6dba6163250fa5340034436515ce41d57e131547955ae6118",
+    "videos/ticker-native-anchor-before.mp4": "8089c59cfe30525194d48281554c942e90e7178e18a6f287cb428479c263d622",
+    "videos/ticker-native-anchor-after.mp4": "8089c59cfe30525194d48281554c942e90e7178e18a6f287cb428479c263d622",
+    "videos/splitScreen-native-anchor-before.mp4": "a86b9eeab88e609f2cebad24becf3aa9ada807c1f9254c55dd0f66da61ae7e9e",
+    "videos/splitScreen-native-anchor-after.mp4": "c62f0a7cce431d3fe6bbc9b0904f8798a09056d27a0e867df0779e95d96ed324",
+    "videos/mirror-native-anchor-before.mp4": "b4b58249a5b04c851fdcf9bcaf1f0dbce5b65e49080a41391e527b086fa60233",
+    "videos/mirror-native-anchor-after.mp4": "b4b58249a5b04c851fdcf9bcaf1f0dbce5b65e49080a41391e527b086fa60233",
+    "videos/sideways-native-anchor-before.mp4": "b402e3f6f2075de2f92a217f6547e378867b34179de0b415ebc5cf98d76b46ac",
+    "videos/sideways-native-anchor-after.mp4": "b402e3f6f2075de2f92a217f6547e378867b34179de0b415ebc5cf98d76b46ac",
+    "videos/edgeFrame-native-anchor-before.mp4": "f4e40b7c8bb20206b70b7100d9b7a3f44cad634c92313f275d48fd088e2738c1",
+    "videos/edgeFrame-native-anchor-after.mp4": "f4e40b7c8bb20206b70b7100d9b7a3f44cad634c92313f275d48fd088e2738c1",
+    "videos/perspective-native-anchor-after.mp4": "660b92bf42b065b8e7abb5117047911704dcb381317ba23bd0944b5ba6119e03",
+    "videos/perspective-native-anchor-before.mp4": "660b92bf42b065b8e7abb5117047911704dcb381317ba23bd0944b5ba6119e03",
+    "videos/hanko-native-anchor-before.mp4": "f1067cadfa6250b32be876c96086e1d868267768184db6f3f930f6837a06802a",
+    "videos/hanko-native-anchor-after.mp4": "f1067cadfa6250b32be876c96086e1d868267768184db6f3f930f6837a06802a",
+    "videos/genkou-native-anchor-after.mp4": "21705913a08c0a62c2e14147b19da010903a75ab57abd9a8a321ad7ced3399e4",
+    "videos/genkou-native-anchor-before.mp4": "21705913a08c0a62c2e14147b19da010903a75ab57abd9a8a321ad7ced3399e4",
+    "videos/panels-native-anchor-before.mp4": "4f2a971924649765d8bb4a338e91cd7a48d759a5896ee55c893d2c98e6a05c2f",
+    "videos/panels-native-anchor-after.mp4": "a5e850354bf81cfd4f6dfda3f0d38273c4682e7bcfbaa7083705e815f04613fc",
+    "videos/filmstrip-native-anchor-before.mp4": "7e62ba67c1fdbe3b5b5f0ecb276b2ecba283ba3f796f4e85b8214aadd09e9d72",
+    "videos/filmstrip-native-anchor-after.mp4": "5a8fadf86b7b1a4b63a4455387eb196aaa8342af8f9a88e328a9d89f5c51c90c",
+    "videos/quote-native-anchor-before.mp4": "a1d4b9544602085cbdd95cfe91fb0f8aac796ec299853324784b94065a221e6d",
+    "videos/quote-native-anchor-after.mp4": "f67e290c2a7f54c5a99af7174a6d4c6c5ed721d0d76ee567cfca00bfae280b3d",
+    "videos/ruler-native-anchor-before.mp4": "237351672b4399eb969fca01f4d3f61ecda827c569cd51d85fdd9d9e12f3fc94",
+    "videos/ruler-native-anchor-after.mp4": "237351672b4399eb969fca01f4d3f61ecda827c569cd51d85fdd9d9e12f3fc94",
+    "videos/searchBar-native-anchor-before.mp4": "2cb3a9222e9c360e29e7eb8313c6141d235b3159417b7b416c7e5d569d842f79",
+    "videos/searchBar-native-anchor-after.mp4": "2cb3a9222e9c360e29e7eb8313c6141d235b3159417b7b416c7e5d569d842f79",
+    "videos/chat-native-anchor-before.mp4": "11565043846003bac5f75927ad1db5f95b29cd12527a02f78b03b7ca0c291b9f",
+    "videos/chat-native-anchor-after.mp4": "11565043846003bac5f75927ad1db5f95b29cd12527a02f78b03b7ca0c291b9f",
+    "videos/notification-native-anchor-before.mp4": "429c4f98f0905aaa4dc93f47d6c3f877a6893af3a5508b088ba757380befbf7b",
+    "videos/notification-native-anchor-after.mp4": "429c4f98f0905aaa4dc93f47d6c3f877a6893af3a5508b088ba757380befbf7b",
+    "videos/ticket-native-anchor-before.mp4": "0f6add0c6e928de74900be4fd4bced2a764119725aee10bd27b04ac2b52fde9e",
+    "videos/ticket-native-anchor-after.mp4": "714ae5930eafd0d2db60a3c8a60b89baf7bf21ed4efc1b02811e3a84caa5ea45",
+    "index.html": "54b46b4a88f93da2459c35ff7f6bf521217877616c8e6e54c1b6ea5aeb9508c4",
+    "en.html": "fc2f15f4549acd0d0c55ce757db1e249d068feeaea429c522d1c2a9d8d3ea93e"
+  }
+}

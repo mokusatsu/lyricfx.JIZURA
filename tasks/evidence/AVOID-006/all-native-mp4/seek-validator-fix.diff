@@ -1,0 +1,131 @@
+--- work/all006-native-mp4/local-20261021-03/evidence/capture-tool.cjs	2026-10-21 05:17:10.264495384 +0000
++++ dev/avoidance/all-review.cjs	2026-10-21 05:30:53.555698914 +0000
+@@ -1069,6 +1069,90 @@
+   }
+ }
+ 
++// Validation only: a queued pre-seek compositor callback is not proof of the
++// requested decoded frame. Keep the same 0.1s target bound and 10s deadline.
++function seekDecodedFrame(video, target) {
++  return new Promise((resolve, reject) => {
++    let seekedAt = null,
++      decoded = null,
++      callback = null;
++    let settled = false;
++    const ignoredFrames = [];
++    const timer = setTimeout(
++      () => finish("seek frame not decoded at " + target),
++      10000,
++    );
++    function cleanup() {
++      clearTimeout(timer);
++      video.removeEventListener("seeked", onSeeked);
++      video.removeEventListener("error", onError);
++      if (callback !== null) video.cancelVideoFrameCallback(callback);
++    }
++    function finish(message) {
++      if (settled) return;
++      if (message) {
++        settled = true;
++        cleanup();
++        reject(
++          Error(
++            message +
++              " " +
++              JSON.stringify({
++                target,
++                seekedAt,
++                decodedAfterSeek: decoded,
++                ignoredFrames,
++                currentTime: video.currentTime,
++                seeking: video.seeking,
++              }),
++          ),
++        );
++      } else if (seekedAt !== null && decoded) {
++        settled = true;
++        cleanup();
++        resolve({ seekedAt, decodedAfterSeek: decoded, ignoredFrames });
++      }
++    }
++    function onSeeked() {
++      seekedAt = video.currentTime;
++      finish();
++    }
++    function onError() {
++      finish("media seek error " + video.error?.code);
++    }
++    function onFrame(now, meta) {
++      if (settled) return;
++      callback = null;
++      const frame = {
++        mediaTime: meta.mediaTime,
++        presentedFrames: meta.presentedFrames,
++      };
++      if (
++        Number.isFinite(meta.mediaTime) &&
++        Math.abs(meta.mediaTime - target) < 0.1
++      ) {
++        decoded = frame;
++        finish();
++      } else {
++        ignoredFrames.push({
++          ...frame,
++          currentTime: video.currentTime,
++          seeking: video.seeking,
++        });
++        callback = video.requestVideoFrameCallback(onFrame);
++      }
++    }
++    video.addEventListener("seeked", onSeeked, { once: true });
++    video.addEventListener("error", onError, { once: true });
++    try {
++      callback = video.requestVideoFrameCallback(onFrame);
++      video.currentTime = target;
++    } catch (error) {
++      finish("seek setup failed " + error.message);
++    }
++  });
++}
++
+ async function validate(dir, baseURL) {
+   if (baseURL) {
+     const url = new URL(baseURL);
+@@ -1205,13 +1289,19 @@
+     report.fullPlaybackIds = [...fullIds];
+     const page = await activeBrowser.newPage();
+     await page.addInitScript({
+-      content: "window.seekDecodedFrame=" + film.seekDecodedFrame.toString(),
++      content: "window.seekDecodedFrame=" + seekDecodedFrame.toString(),
+     });
+     await page.goto(new URL("index.html", reviewBase).href);
+     for (const c of m.cases)
+       for (const side of ["before", "after"]) {
+         report.active = { id: c.id, side };
+         checkpoint();
++        report.lastAttempt = {
++          ...report.active,
++          src: c[side].path,
++          status: "running",
++        };
++        checkpoint();
+         const result = await page.evaluate(
+           async ({ src, full }) => {
+             const v = [...document.querySelectorAll("video")].find(
+@@ -1280,6 +1370,8 @@
+           },
+           { src: c[side].path, full: fullIds.has(c.id) },
+         );
++        report.lastAttempt = { ...report.active, result, status: "returned" };
++        checkpoint();
+         assert.ok(result.pausedAt > 0);
+         if (result.fullPlayback) assert.equal(result.ended, true);
+         assert.ok(Math.abs(result.seek.seekedAt - 2.6) < 0.05);
+@@ -1314,6 +1406,7 @@
+   matrix,
+   runPool,
+   fullPlaybackIds,
++  seekDecodedFrame,
+   server,
+   publicRawAssets,
+   publicManifest,
