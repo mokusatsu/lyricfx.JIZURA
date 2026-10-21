@@ -384,3 +384,36 @@ those chunks, retain the original encoding. A PNG without these chunks is
 explicitly recorded as using the default sRGB interpretation. Live UI and native
 checks also compare the metadata. Representative browser-decoded pixel checks
 remain part of the parent review before release.
+
+### Focused filmstrip revision (AVOID-006, 2026-10-21)
+
+The Leica exposure requirement intentionally changes native/OFF filmstrip from
+1.3:1 to 3:2; portrait rotates that rectangle. Other A26 OFF layouts and the
+accepted 18 adaptive examples retain exact baseline Canvas/observation hashes.
+The film recipe restores native stage-scale entry/exit and hold motion, so the
+canonical film anchor now certifies strict hold with moving entry/exit relaxation.
+The old final04 full-interval film result remains historical evidence.
+
+```sh
+JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/filmstrip-test.cjs
+JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/filmstrip-parity.cjs
+# Run alone with the existing defaults: 100/1000 cuts, 3 warmups, 6 samples, stress.
+JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-a-adaptive-perf.cjs
+```
+
+`filmstrip-test` checks actual exposure primitives, actual positive-alpha text draw
+presence across native slot thresholds, entry/hold/exit travel, independent scoped
+envelopes and alpha-1 raster conflicts. It covers both directions, ON/OFF,
+landscape/portrait and ±3-degree tilt. `filmstrip-parity` compares the current
+candidate with a fixed starting-HEAD HTML at `work/film006-baseline/index.html`
+(or `JIZURA_PARITY_REFERENCE/index.html`). Its baseline must be archived from
+`3e2ff804fac2e94dce79039ddf7a46ec19221494`, never replaced by the candidate.
+
+Keep the nine core functional suites and candidate-matched source/JA/EN receipts.
+A focused new comparison may reuse immutable final04 history and its original
+motion examples; it must identify the changed film cases separately. Actual MP4
+playback uses native video controls, preload metadata/none and H.264/yuv420p with
+faststart. Runtime PNG frame animation is not the review video. A selected-case
+film comparison does not claim a new full174-pair audit. Public capacity/raw-byte
+checks, native video play/seek, app startup and independent visual/human review
+remain required where applicable; local receipts do not establish publication.

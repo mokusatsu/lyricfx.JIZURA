@@ -1,0 +1,66 @@
+{
+  "reviewedAt": "2026-10-21T04:03:52.484254+00:00",
+  "reviewer": "parent",
+  "compiledJA": "d780ca129dfe87868a8a448a90c02a2e6ba4f2398a4a7f522a91973bad62eda0",
+  "compiledEN": "97941bd9ddabaf197292481dcbf235bd5e73cfed95ad09c6495b5b7d7970fd02",
+  "sourceFilesVerified": 77,
+  "functionalLogsVerified": 11,
+  "independentFilmTest": {
+    "exitCode": 0,
+    "cases": 16,
+    "exposureChecks": 624,
+    "log": "parent-filmstrip-test.log",
+    "sha256": "583545ec16fded84bb7ee4b6e46b9fcf598ce8263690267cb114270d29b9933c"
+  },
+  "performance": {
+    "passed": true,
+    "exitCode": 0,
+    "reportPath": "performance.json",
+    "reportSHA256": "67c5e14afada95233c0eabaab0e623240ecf138465f9706d31e45326edf43dab",
+    "logPath": "performance.log",
+    "logSHA256": "a102855b12f7478d6b0b98017d8aa2ee544ad24439feff4faaf0dacc555559a9",
+    "config": {
+      "sizes": [
+        100,
+        1000
+      ],
+      "warmup": 3,
+      "samples": 6,
+      "stress": true,
+      "runtimeProfile": false
+    },
+    "comparisons": [
+      {
+        "n": 100,
+        "inputIdentical": true,
+        "planningFactor": 1.3702710753971326,
+        "additionalRenderMs": -3,
+        "planningLimit": 2,
+        "renderLimitMs": 3
+      },
+      {
+        "n": 1000,
+        "inputIdentical": true,
+        "planningFactor": 1.9354854587418686,
+        "additionalRenderMs": -2,
+        "planningLimit": 2,
+        "renderLimitMs": 3
+      }
+    ],
+    "actualCountsValid": true
+  },
+  "codeReview": {
+    "approved": true,
+    "scope": [
+      "native and adaptive film 3:2 exposure proportions",
+      "joint frame/band sizing, unchanged clip",
+      "native entry/hold/exit and direction restored",
+      "hold sweep uses same native rate",
+      "only film native OFF intentionally changes",
+      "other25native and accepted18 remain exact in129frames"
+    ]
+  },
+  "visualReview": "not performed by parent; pending independent isolated sol",
+  "publication": "pending",
+  "humanAcceptance": "not received"
+}

@@ -25,8 +25,8 @@ DOWNLOADS = {'JIZURA_AE.jsx', 'JIZURA_AE_en.jsx', 'JIZURA_CEP.zip',
 NONFUNCTIONAL_OMISSIONS = {'mcp/.gitignore'}
 # Parent-reviewed AVOID-006 documentation update; no other public byte exception.
 APPROVED_PUBLIC_UPDATES = {
-    'docs/VERIFICATION.md': {'bytes': 23624,
-        'sha256': '4317946f6ff4e2da12b059e9458b34a297e19f1f2a40331ac27246197bdeeeef'},
+    'docs/VERIFICATION.md': {'bytes': 25671,
+        'sha256': '1373318228937c7939659f3831c4aa2015dfe21c46e815e59d2a5ad01862b020'},
 }
 
 

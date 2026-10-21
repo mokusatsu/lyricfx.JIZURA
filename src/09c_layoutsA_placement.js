@@ -59,7 +59,7 @@ function nativeEnvelopes(program,plan,cut,holdOnly=false){
  for(const e of primary)for(const polygon of clippedPolygons(e)){
   let sweep=e.nativeSweep;
   if(holdOnly&&['quote','ticket'].includes(id))sweep=null;
-  if(holdOnly&&id==='filmstrip'&&sweep?.vector){const norm=Math.hypot(...sweep.vector),axis=sweep.vector.map(v=>norm?v/norm:0),range=cut.layoutAHoldRange,rate=cut.layoutARecipe?.film?Math.min(u*.03,cut.layoutARecipe.film.travel/Math.max(1,cut.dur)):u*.03,amount=Math.max(...range.map(t=>Math.abs(t-cut.start-cut.dur/2)))*rate;sweep={vector:axis.map(v=>v*amount)};}
+  if(holdOnly&&id==='filmstrip'&&sweep?.vector){const norm=Math.hypot(...sweep.vector),axis=sweep.vector.map(v=>norm?v/norm:0),range=cut.layoutAHoldRange,rate=u*.03,amount=Math.max(...range.map(t=>Math.abs(t-cut.start-cut.dur/2)))*rate;sweep={vector:axis.map(v=>v*amount)};}
   let shape=sweepPolygon(polygon,sweep);
   // Source-specific native motion not expressed as Canvas transforms.
   if(id==='lowerThird')shape=expand(shape,Math.max(14,Math.min(u*.024,34))*2,0);

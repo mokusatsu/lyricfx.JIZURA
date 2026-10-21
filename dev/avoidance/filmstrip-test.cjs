@@ -1,0 +1,33 @@
+/* AVOID-006 Leica exposures and native film motion: actual renderer events. */
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path'),crypto=require('node:crypto');
+const root=path.resolve(__dirname,'../..'),oracle=require('./oracle.cjs'),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+(async()=>{
+ const server=http.createServer((req,res)=>{try{res.end(fs.readFileSync(req.url==='/font.otf'?'/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc':path.join(root,req.url==='/'?'index.html':req.url.split('?')[0])));}catch{res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port,browser=await require('../browser.cjs').launch();
+ try{const page=await browser.newPage();await page.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());await page.goto(base);await page.waitForFunction(()=>J?.ui?.plan);await page.addScriptTag({content:fs.readFileSync(path.join(__dirname,'layouts-a-fixture.js'),'utf8')});
+ const specs=[];for(const [W,H,cx,cy,radius]of [[1920,1080,.5,.42,.2],[1080,1920,.5,.5,.05],[1920,1080,.5,.42,.05]])for(const dir of [-1,1])for(const control of [undefined,'off'])specs.push({layout:'filmstrip',W,H,cx,cy,radius,text:'風の先へ',params:{dir,tilt:0},...(control?{control}:{})});
+ for(const tilt of [-3,3])for(const control of [undefined,'off'])specs.push({layout:'filmstrip',W:1920,H:1080,cx:.5,cy:.42,radius:.2,text:'風の先へ',params:{dir:-1,tilt},...(control?{control}:{})});
+ const rows=await page.evaluate(async specs=>{const rows=[];for(const spec of specs){const r=await runLayoutsAFixture(J,spec,{adaptive:true,fontURL:location.origin+'/font.otf'}),source=r.plan.cuts[0],segment=source.placementTrajectory?.units[0].segments[0],recipe=segment?.composition;
+ const cut={...source,placementTrajectory:undefined,layoutARecipe:recipe,placementUnits:true,placementLayoutsA:true,fullStagePlacement:true,placementAdaptiveTrial:true};
+ const sample=time=>{const ctx=J.placement.measurementContext();ctx.reset();const env=r.renderer.makeEnv(ctx,r.plan,cut,r.plan.style.schemes[0],{pass:'main',t:time,realTime:time,lt:time,ltb:time,pIn:Math.min(1,time/cut.inDur),pOut:Math.max(0,(time-cut.dur+cut.outDur)/cut.outDur),scale:1,allowFilter:false});const program=J.placement.record(r.renderer,env);if(!program.measurementSupported)throw Error(JSON.stringify(program.diagnostics));const exposures=program.events.filter(e=>e.kind==='rrect'&&Math.abs(e.args[4]/Math.min(e.args[2],e.args[3])-.04)<1e-8).map(e=>({x:e.args[0],y:e.args[1],w:e.args[2],h:e.args[3]})),main=program.events.filter(e=>e.kind==='item'&&e.args[0].placementMain).map(e=>({text:e.args[0].text,alpha:(e.args[0].alpha??1)*e.alpha,delay:e.args[0].delay,mi:e.args[0].mi,x:e.args[0].x,y:e.args[0].y}));return {time,exposures,main};};
+ const times=[0,.05,.12,.13,.24,.25,.28,.29,.6,1.5,2.5,3.6,3.93],samples=times.map(sample),observations=[];for(const time of times)r.renderer.frame(r.canvas.getContext('2d'),r.plan,time,{noHud:true,noPost:true,placementObservation:o=>observations.push({...o,time})});
+ rows.push({spec,stagger:cut.stagger,params:cut.params,status:segment?.status,composition:recipe,segment,sourceText:cut.text,unitEnvelopes:source.placementTrajectory?.units[0].envelopes,samples,observations,pixels:spec.control?[]:[.07,1.5,3.93].map(t=>auditLayoutsAPrimary(r,t))});}return rows;},specs);
+ const near=(a,b,label)=>assert.ok(Math.abs(a-b)<1e-7,`${label}: ${a} != ${b}`);let exposureChecks=0;
+ for(const row of rows){const {spec,samples}=row,port=spec.H>spec.W*1.08,U=Math.min(spec.W,spec.H),A=port?spec.H:spec.W;
+  if(!spec.control)assert.ok(['safe','safe-hold'].includes(row.status),'genuine certified film '+JSON.stringify(spec));
+  for(const s of samples){assert.equal(s.exposures.length,3);for(const f of s.exposures){near(port?f.h/f.w:f.w/f.h,1.5,'Leica36x24 exposure');exposureChecks++;}}
+  const at=t=>samples.find(s=>s.time===t),pos=s=>port?s.exposures[1].y:s.exposures[1].x;
+  near(pos(at(2.5))-pos(at(1.5)),U*.03*spec.params.dir,'native hold rate and direction');
+  // E.outExpo(0)=0; E.outExpo(1)=1. Entry displacement and drift both retain native stage units.
+  near(pos(at(.6))-pos(at(0)),(-A*.9+.6*U*.03)*spec.params.dir,'native full entry travel');
+  near(pos(at(3.93))-pos(at(3.6)),(-A*1.4*Math.pow(2,-1.75)+.33*U*.03)*spec.params.dir,'native exit travel at pOut .825');
+  const stagger=row.stagger||.04,expected=row.params.chunks.map((text,i)=>({text,delay:(.15*i/Math.max(.01,stagger)|0)*(row.stagger||0)}));
+  for(const sample of samples)assert.deepEqual(sample.main.map(i=>i.text.replace(/\n/g,'')),expected.filter(e=>sample.time>=e.delay).map(e=>e.text),'sequential slot text at '+sample.time);
+  assert.ok(expected[1].delay>expected[0].delay&&expected[2].delay>expected[1].delay,'distinct native reveal thresholds');
+  for(const sample of samples)for(const item of sample.main)assert.ok(item.alpha>0,'actual emitted text alpha');
+  for(const sample of samples)for(const item of sample.main)near(item.delay,expected.find(e=>e.text===item.text.replace(/\n/g,'')).delay,'original slot delay');
+  if(!spec.control){const circle={cx:spec.cx*spec.W,cy:spec.cy*spec.H,r:spec.radius*U},margin=Math.max(2,.005*U);for(const p of row.segment.envelopes||row.unitEnvelopes)assert.equal(oracle.polygonClear(circle,p.map(v=>[v[0]+row.segment.from[0],v[1]+row.segment.from[1]]),margin),true,'independent complete declared envelope');for(const o of row.observations){assert.equal(o.envelopeCovered,true);assert.equal(o.strictCircleClear,true);}for(const p of row.pixels){assert.equal(p.strictConflictPixels,0);assert.equal(p.strictMarginConflictPixels,0);}assert.ok(row.pixels.find(p=>p.time===1.5).strictVisiblePixels>0);}
+ }
+ const report={passed:true,cases:rows.length,exposureChecks,compiledSHA256:hash(path.join(root,'index.html')),compiledENSHA256:hash(path.join(root,'en/index.html')),sourceHashes:Object.fromEntries(fs.readdirSync(path.join(root,'src')).filter(n=>n.endsWith('.js')).sort().map(n=>['src/'+n,hash(path.join(root,'src',n))])),fixtureSHA256:hash(path.join(__dirname,'layouts-a-fixture.js')),rows};if(process.env.JIZURA_TEST_REPORT)fs.writeFileSync(process.env.JIZURA_TEST_REPORT,JSON.stringify(report));console.log(JSON.stringify({...report,rows:rows.map(r=>({spec:r.spec,status:r.status,composition:r.composition,pixels:r.pixels,reveal:r.samples.map(s=>({time:s.time,text:s.main.map(i=>i.text)}))}))}));
+ }finally{await browser.close();await new Promise(r=>server.close(r));}
+})().catch(e=>{console.error(e);process.exitCode=1;});
