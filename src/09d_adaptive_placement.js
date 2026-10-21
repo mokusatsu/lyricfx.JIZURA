@@ -68,7 +68,9 @@ function recipeFor(id,plan,cut,info,b,scale,strategy){
  }
  if(id==='filmstrip'){
   const port=plan.H>plan.W*1.08;if(port!==(b.h>b.w))fail('STRUCTURE_CONSTRAINT','Preserve film reading orientation');const along=port?b.h:b.w,cross=port?b.w:b.h;
-  recipe.film={center:[b.x+b.w/2,b.y+b.h/2],frameAlong:(along-2*pad)/3.2,band:Math.min(cross-pad*2,size*1.05/(.7*.72)+pad*.5),travel:Math.min(pad*.3,cross*.015),turn:cut.params.tilt*(strategy==='film-lane-path-pitch'?1:.5)};recipe.quality.shapeDimensionsChanged=true;recipe.quality.pathChanged=true;
+  // Leica 36x24 exposures: derive both dimensions together, never stretch to the lane.
+  const frameAlong=Math.min((along-2*pad)/3.2,cross*.72*1.5);
+  recipe.film={center:[b.x+b.w/2,b.y+b.h/2],frameAlong,band:frameAlong/(1.5*.72),turn:cut.params.tilt*(strategy==='film-lane-path-pitch'?1:.5)};recipe.quality.shapeDimensionsChanged=true;recipe.quality.pathChanged=true;
  }
  if(id==='quote'){recipe.center=[b.x+b.w/2,b.y+b.h/2];recipe.text=wrap(cut.text,info.font,size,Math.max(1,b.w-size*.9));recipe.markScale=scale;recipe.markTravel=Math.min(pad*.35,b.w*.01);recipe.quality.pathChanged=true;recipe.quality.spacingChanged=true;}
  if(id==='ticket'){const h=b.h-pad*2,w=Math.min(b.w-pad*2,h*2.8);if(w/h<1.8)fail('TICKET_ASPECT','Attached ticket needs native-like aspect');recipe.ticket={w,h,center:[b.x+b.w/2,b.y+b.h/2],travel:pad*.25,entryTurn:Math.min(2,Math.abs(cut.params.tilt)+1),tearDistance:pad*.2,tearTurn:2};recipe.quality.shapeDimensionsChanged=true;recipe.quality.pathChanged=true;}

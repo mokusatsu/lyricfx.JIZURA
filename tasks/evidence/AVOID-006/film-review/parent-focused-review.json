@@ -1,0 +1,29 @@
+{
+  "reviewedAt": "2026-10-21T04:23:52.749744+00:00",
+  "reviewer": "parent",
+  "localReport": "final02-validation-retry2.json",
+  "localReportSHA256": "004577ae26934283abf09590fe524ac16ecad7dd3c3883051cda446ac28bbebe",
+  "validationToolSHA256": "dc26006a8ab891f69716c54ca74f5574b8f5004a62abc47086eb602f6a2b8564",
+  "captureToolSHA256": "9b88732e90e9b5e9e83d2fae9d4af549d1648e423856fc63925c05d82ce2a4df",
+  "manifestSHA256": "426202261383ea42f62241a29602e7923e209cd7ede3e75af21f4cedc518c754",
+  "codeReview": [
+    "seek listeners and decoded callback precede seek assignment; target frame verified",
+    "only exact historical capture tool hash explicitly accepted; asset/source/functional assertions retained",
+    "each video brought into viewport; full-playback quality delta recorded with original thresholds",
+    "failure receipts preserved; incomplete previous attempts not counted as passes"
+  ],
+  "localPlaybackCount": 9,
+  "exactNativeRerenders": 6,
+  "visualReviewer": "isolated gpt-6.1-sol medium",
+  "visualReportSHA256": "033116f6755e510bb7d57c2e9fadb34281bbaf11b7cc61c303ce259970961aca",
+  "visualLedgerSHA256": "5c050b89cafc279aace5cae951e075a59809fb47483ebe732e92b345134e724f",
+  "parentViewedImages": false,
+  "visualConclusion": "no material issue in sampled75 items; long first slot wraps to2lines; human acceptance pending",
+  "publication": "pending",
+  "pagesFirstAudit": "correctly failed because .gitignore *.mp4 omitted9files from index; explicitly force-added only9candidate MP4s; complete audit rerun required",
+  "ordinaryHTTPS": {
+    "initialSandbox": "curl7 proxy socket unavailable; no HTTP response",
+    "supportedExecution": "curl0 HTTP200 TLS verify0 on old04manifest with inherited proxy and CA",
+    "currentPolicy": "spec154 observed154 currenttrue unrestricted/enforced"
+  }
+}

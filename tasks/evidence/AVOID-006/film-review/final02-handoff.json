@@ -1,0 +1,868 @@
+{
+  "build": "local-20261021-02",
+  "bundlePath": "review/AVOID-006/local-20261021-02",
+  "ownFileCount": 50,
+  "ownBytesIncludingManifest": 36579278,
+  "assetBytesExcludingManifest": 36524796,
+  "manifestBytes": 54482,
+  "manifestSHA256": "426202261383ea42f62241a29602e7923e209cd7ede3e75af21f4cedc518c754",
+  "source": {
+    "en": "97941bd9ddabaf197292481dcbf235bd5e73cfed95ad09c6495b5b7d7970fd02",
+    "before": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+    "after": "d780ca129dfe87868a8a448a90c02a2e6ba4f2398a4a7f522a91973bad62eda0",
+    "fixture": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "gitHead": "3e2ff804fac2e94dce79039ddf7a46ec19221494"
+  },
+  "captureToolSHA256": "9b88732e90e9b5e9e83d2fae9d4af549d1648e423856fc63925c05d82ce2a4df",
+  "validationToolSHA256": "dc26006a8ab891f69716c54ca74f5574b8f5004a62abc47086eb602f6a2b8564",
+  "localValidationPassed": true,
+  "initial": [
+    {
+      "page": "index.html",
+      "requests": [
+        "http://127.0.0.1:37571/review/AVOID-006/local-20261021-02/index.html"
+      ],
+      "requestCount": 1,
+      "bytes": {
+        "navigation": [
+          {
+            "transferSize": 4781,
+            "encodedBodySize": 4481,
+            "decodedBodySize": 4481
+          }
+        ],
+        "resources": []
+      }
+    },
+    {
+      "page": "en.html",
+      "requests": [
+        "http://127.0.0.1:37571/review/AVOID-006/local-20261021-02/en.html"
+      ],
+      "requestCount": 1,
+      "bytes": {
+        "navigation": [
+          {
+            "transferSize": 4689,
+            "encodedBodySize": 4389,
+            "decodedBodySize": 4389
+          }
+        ],
+        "resources": []
+      }
+    }
+  ],
+  "videoRows": [
+    {
+      "case": "film-landscape",
+      "side": "before",
+      "path": "videos/film-landscape-before.mp4",
+      "sha256": "530fb89775ba01fd0a4848b53d3e893e9b83aa898934080c2754bb172eb313ab",
+      "bytes": 418599,
+      "fps": "24/1",
+      "frames": 96,
+      "duration": 4,
+      "codec": "h264",
+      "pixFmt": "yuv420p",
+      "classification": {
+        "time": 1.5,
+        "decision": "certified",
+        "status": "safe",
+        "safetyScope": "full-interval",
+        "failure": null,
+        "selectedStrategy": "film-reduce"
+      }
+    },
+    {
+      "case": "film-landscape",
+      "side": "after",
+      "path": "videos/film-landscape-after.mp4",
+      "sha256": "e3e90839fd8742ebaace4cbb66030b3443671e72d40d0519362971c812611c38",
+      "bytes": 367809,
+      "fps": "24/1",
+      "frames": 96,
+      "duration": 4,
+      "codec": "h264",
+      "pixFmt": "yuv420p",
+      "classification": {
+        "time": 1.5,
+        "decision": "certified",
+        "status": "safe-hold",
+        "safetyScope": "stationary-strict-moving-entry-exit-relaxed",
+        "failure": null,
+        "selectedStrategy": "film-reduce"
+      }
+    },
+    {
+      "case": "film-long",
+      "side": "before",
+      "path": "videos/film-long-before.mp4",
+      "sha256": "8d285d0052637755f05f03b34644cc5ca872b5785de2003b1c1def331bd2c5e9",
+      "bytes": 497993,
+      "fps": "24/1",
+      "frames": 96,
+      "duration": 4,
+      "codec": "h264",
+      "pixFmt": "yuv420p",
+      "classification": {
+        "time": 1.5,
+        "decision": "certified",
+        "status": "safe",
+        "safetyScope": "full-interval",
+        "failure": null,
+        "selectedStrategy": "film-lane-path-pitch"
+      }
+    },
+    {
+      "case": "film-long",
+      "side": "after",
+      "path": "videos/film-long-after.mp4",
+      "sha256": "80c8a3672d6388643bb9ceedcb1c42ec644333d67046a65d8959582213258240",
+      "bytes": 385161,
+      "fps": "24/1",
+      "frames": 96,
+      "duration": 4,
+      "codec": "h264",
+      "pixFmt": "yuv420p",
+      "classification": {
+        "time": 1.5,
+        "decision": "certified",
+        "status": "safe-hold",
+        "safetyScope": "stationary-strict-moving-entry-exit-relaxed",
+        "failure": null,
+        "selectedStrategy": "film-reduce"
+      }
+    },
+    {
+      "case": "film-portrait",
+      "side": "before",
+      "path": "videos/film-portrait-before.mp4",
+      "sha256": "424fd1faa4baaabe92d1b1dc35a5116973e3fa6c8ce80aaafd0bdaa26c0ec130",
+      "bytes": 435880,
+      "fps": "24/1",
+      "frames": 96,
+      "duration": 4,
+      "codec": "h264",
+      "pixFmt": "yuv420p",
+      "classification": {
+        "time": 1.5,
+        "decision": "certified",
+        "status": "safe",
+        "safetyScope": "full-interval",
+        "failure": null,
+        "selectedStrategy": "film-lane-path-pitch"
+      }
+    },
+    {
+      "case": "film-portrait",
+      "side": "after",
+      "path": "videos/film-portrait-after.mp4",
+      "sha256": "f12d7e48c0d23fbd23f8f1d3d254ee6ae901f1ac8ea6307ef15c92a0f7ea718a",
+      "bytes": 440715,
+      "fps": "24/1",
+      "frames": 96,
+      "duration": 4,
+      "codec": "h264",
+      "pixFmt": "yuv420p",
+      "classification": {
+        "time": 1.5,
+        "decision": "certified",
+        "status": "safe-hold",
+        "safetyScope": "stationary-strict-moving-entry-exit-relaxed",
+        "failure": null,
+        "selectedStrategy": "film-lane-path-pitch"
+      }
+    },
+    {
+      "case": "quote",
+      "historical": true,
+      "path": "videos/quote-previous.mp4",
+      "sha256": "64cda5dc62ce6941cbf7e9a082c98a29f47eb23fdbcb2806b3b57e0dc6cbd878",
+      "bytes": 157262,
+      "fps": "24/1",
+      "frames": 213,
+      "duration": 8.875,
+      "original": {
+        "path": "../local-20261020-04/fixtures/playback-quote.webm",
+        "sha256": "898ec2463c68386e73c2c5dbd0a94c6d6cdbb94afec4962f4b48ebe3abb6051f",
+        "duration": 8.8,
+        "actualFrames": 39,
+        "method": "Actual native renderer, both sides same requestAnimationFrame clock; browser video"
+      }
+    },
+    {
+      "case": "ticket",
+      "historical": true,
+      "path": "videos/ticket-previous.mp4",
+      "sha256": "c8457e547689538467d2632c91efb1aeb45062960d81e32604e179f713b897c7",
+      "bytes": 193780,
+      "fps": "24/1",
+      "frames": 225,
+      "duration": 9.375,
+      "original": {
+        "path": "../local-20261020-04/fixtures/playback-ticket.webm",
+        "sha256": "31864643a25bf60bd925f84340d39426a42854c14c0f8fc5f646a4425923dc7a",
+        "duration": 9.32,
+        "actualFrames": 34,
+        "method": "Actual native renderer, both sides same requestAnimationFrame clock; browser video"
+      }
+    },
+    {
+      "case": "sideways",
+      "historical": true,
+      "path": "videos/sideways-previous.mp4",
+      "sha256": "fdddd9878c3ed196319c845d44fb44b20badf8ad922a108e52c699c28df52fed",
+      "bytes": 169018,
+      "fps": "24/1",
+      "frames": 172,
+      "duration": 7.166667,
+      "original": {
+        "path": "../local-20261020-04/fixtures/playback-sideways.webm",
+        "sha256": "6a1d7837d91f8dad841430409562c64720e63e2445302fd7fb0cc1e3cbc14c61",
+        "duration": 7.08,
+        "actualFrames": 108,
+        "method": "Actual native renderer, both sides same requestAnimationFrame clock; browser video"
+      }
+    }
+  ],
+  "fullPlayback": [
+    {
+      "path": "videos/film-landscape-before.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 90,
+          "y": 285.40625,
+          "width": 542,
+          "height": 150
+        },
+        "visibleWidth": 542,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 110,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 92,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 4.000899999991059,
+        "frames": 95,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 3.958333,
+        "maxWallGap": 0.06679999999999972,
+        "quality": {
+          "totalVideoFrames": 202,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 2.6,
+      "decodedAfterSeek": {
+        "mediaTime": 2.583333,
+        "presentedFrames": 38
+      }
+    },
+    {
+      "path": "videos/film-landscape-after.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 648,
+          "y": 285.40625,
+          "width": 542,
+          "height": 150
+        },
+        "visibleWidth": 542,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 111,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 92,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 4.00670000000298,
+        "frames": 95,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 3.958333,
+        "maxWallGap": 0.06670000000000073,
+        "quality": {
+          "totalVideoFrames": 203,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 2.6,
+      "decodedAfterSeek": {
+        "mediaTime": 2.583333,
+        "presentedFrames": 38
+      }
+    },
+    {
+      "path": "videos/film-long-before.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 90,
+          "y": 284.65625,
+          "width": 542,
+          "height": 150
+        },
+        "visibleWidth": 542,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 110,
+          "droppedVideoFrames": 1,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 92,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 4.0025,
+        "frames": 95,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 3.958333,
+        "maxWallGap": 0.06670000000000073,
+        "quality": {
+          "totalVideoFrames": 202,
+          "droppedVideoFrames": 1,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 2.6,
+      "decodedAfterSeek": {
+        "mediaTime": 2.583333,
+        "presentedFrames": 37
+      }
+    },
+    {
+      "path": "videos/film-long-after.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 648,
+          "y": 284.65625,
+          "width": 542,
+          "height": 150
+        },
+        "visibleWidth": 542,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 110,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 92,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 4.001400000005961,
+        "frames": 95,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 3.958333,
+        "maxWallGap": 0.06670000000000073,
+        "quality": {
+          "totalVideoFrames": 202,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 2.6,
+      "decodedAfterSeek": {
+        "mediaTime": 2.583333,
+        "presentedFrames": 38
+      }
+    },
+    {
+      "path": "videos/film-portrait-before.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 90,
+          "y": 284.90625,
+          "width": 542,
+          "height": 150
+        },
+        "visibleWidth": 542,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 110,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 92,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 4.001200000002981,
+        "frames": 95,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 3.958333,
+        "maxWallGap": 0.06670000000000073,
+        "quality": {
+          "totalVideoFrames": 202,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 2.6,
+      "decodedAfterSeek": {
+        "mediaTime": 2.583333,
+        "presentedFrames": 38
+      }
+    },
+    {
+      "path": "videos/film-portrait-after.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 648,
+          "y": 284.90625,
+          "width": 542,
+          "height": 150
+        },
+        "visibleWidth": 542,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 110,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 92,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 4.00670000000298,
+        "frames": 95,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 3.958333,
+        "maxWallGap": 0.0666999999999971,
+        "quality": {
+          "totalVideoFrames": 202,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 2.6,
+      "decodedAfterSeek": {
+        "mediaTime": 2.583333,
+        "presentedFrames": 38
+      }
+    },
+    {
+      "path": "videos/quote-previous.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 90,
+          "y": 284.875,
+          "width": 1100,
+          "height": 150
+        },
+        "visibleWidth": 1100,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 187,
+          "droppedVideoFrames": 1,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 209,
+          "droppedVideoFrames": 1,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 8.87770000000298,
+        "frames": 211,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 8.833333,
+        "maxWallGap": 0.11669999999999708,
+        "quality": {
+          "totalVideoFrames": 396,
+          "droppedVideoFrames": 2,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 5.76875,
+      "decodedAfterSeek": {
+        "mediaTime": 5.75,
+        "presentedFrames": 37
+      }
+    },
+    {
+      "path": "videos/ticket-previous.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 90,
+          "y": 285.390625,
+          "width": 1100,
+          "height": 150
+        },
+        "visibleWidth": 1100,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 195,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 221,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 9.380600000008942,
+        "frames": 224,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 9.333333,
+        "maxWallGap": 0.0666999999999971,
+        "quality": {
+          "totalVideoFrames": 416,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 6.09375,
+      "decodedAfterSeek": {
+        "mediaTime": 6.083333,
+        "presentedFrames": 38
+      }
+    },
+    {
+      "path": "videos/sideways-previous.mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "visibilityState": "visible",
+        "videoRect": {
+          "x": 90,
+          "y": 533.90625,
+          "width": 1100,
+          "height": 150
+        },
+        "visibleWidth": 1100,
+        "visibleHeight": 150,
+        "setup": "active video scrollIntoView center; two animation frames before measurement"
+      },
+      "fullPlayback": {
+        "qualityBefore": {
+          "totalVideoFrames": 159,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "qualityDelta": {
+          "totalVideoFrames": 168,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        },
+        "ended": true,
+        "wallSeconds": 7.16770000000298,
+        "frames": 171,
+        "firstMediaTime": 0.041667,
+        "lastMediaTime": 7.125,
+        "maxWallGap": 0.06670000000000437,
+        "quality": {
+          "totalVideoFrames": 327,
+          "droppedVideoFrames": 0,
+          "corruptedVideoFrames": 0
+        }
+      },
+      "seekedAt": 4.658333,
+      "decodedAfterSeek": {
+        "mediaTime": 4.625,
+        "presentedFrames": 38
+      }
+    }
+  ],
+  "exactRerenders": [
+    {
+      "case": "film-landscape",
+      "side": "before",
+      "time": 1.5,
+      "sha256": "bc273394cd750d1efce73f9918eeeb30cd1b1e07c7c6cfd43d74be3e3da24a12",
+      "matched": true
+    },
+    {
+      "case": "film-landscape",
+      "side": "after",
+      "time": 1.5,
+      "sha256": "d9e55581355cbd6da12c02e7959443d1cf9720aaa5865b3d9f3e0fc676886eb9",
+      "matched": true
+    },
+    {
+      "case": "film-long",
+      "side": "before",
+      "time": 1.5,
+      "sha256": "41844898aee61160ed96bb740679bd27152e3422a6e3598cc9195bfc363060df",
+      "matched": true
+    },
+    {
+      "case": "film-long",
+      "side": "after",
+      "time": 1.5,
+      "sha256": "93d311579b69429d910b317138e7a152cc242d9ec50d0091b9fdff87d77a8aaf",
+      "matched": true
+    },
+    {
+      "case": "film-portrait",
+      "side": "before",
+      "time": 1.5,
+      "sha256": "28a6f984991bcf9ca5e39550a2f9d405e6ae100171858e43e22abcf339446c3e",
+      "matched": true
+    },
+    {
+      "case": "film-portrait",
+      "side": "after",
+      "time": 1.5,
+      "sha256": "e38467c02e7a32dc3b54415730474975ad20217275e2252762173c2eb6631383",
+      "matched": true
+    }
+  ],
+  "observationCoverage": {
+    "allFrames": "source/PNG/full native observation hashes; actual per-pass safety, envelope, clock, phase and event counts; certified frames assert strict clearance and envelope coverage",
+    "completeRawFrames": [
+      3,
+      7,
+      15,
+      36,
+      90
+    ],
+    "notRetained": "Full per-frame polygon observations outside these five keyframes are not retained."
+  },
+  "gateLogs": [
+    {
+      "rawPath": "fixtures/layouts-a-adaptive-test.log",
+      "encodedPath": "fixtures/layouts-a-adaptive-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "8568786d9fd43e0cfed6e4bc944949c211ed39739ebc2f3894d47c6e58c80110",
+      "rawBytes": 540772,
+      "encodedSHA256": "815f3e05c914a8b606b80c757403a7afc56c1234c8e5ef354c8b08a75f4facc0",
+      "encodedBytes": 166959
+    },
+    {
+      "rawPath": "fixtures/layouts-a-test.log",
+      "encodedPath": "fixtures/layouts-a-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "2e3113f2f755198b0a66221c764e0851bfe262e0df8820d75376f6b888977b3a",
+      "rawBytes": 5198582,
+      "encodedSHA256": "8de42b69285d7246bf1f6db966efc4f5488ff05104664ec4d7bbc6adab1e639a",
+      "encodedBytes": 1550233
+    },
+    {
+      "rawPath": "fixtures/layouts-a-acceptance.log",
+      "encodedPath": "fixtures/layouts-a-acceptance.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "43cf0c09601d220589fc6c0d7d40e9db33b4f7deb7928c22c3d91121b5b6f547",
+      "rawBytes": 57221,
+      "encodedSHA256": "ce8811e49ad69f1373c4a4388fd431b31bf5b614aff6e554c49ac5ec25d46943",
+      "encodedBytes": 3022
+    },
+    {
+      "rawPath": "fixtures/layouts-a-scales.log",
+      "encodedPath": "fixtures/layouts-a-scales.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "5767bf48717fe1709d95e0b7296efb7eb2ee96655963575043bf6dfa459db395",
+      "rawBytes": 3401,
+      "encodedSHA256": "97ea20c54ecf9530b7aec849161cc91dffcc270c99425f427e99973d66293705",
+      "encodedBytes": 700
+    },
+    {
+      "rawPath": "fixtures/layouts-a-contrast.log",
+      "encodedPath": "fixtures/layouts-a-contrast.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "bf77e4a03f1c02bf190a4345e0f48cc38f32d81c80c8c5ab9ead03fff81f52a3",
+      "rawBytes": 3524,
+      "encodedSHA256": "299b3fdeb4725d4c9b98b6dbaeb2ff6d5c744712b28bf8087636f21d555779f3",
+      "encodedBytes": 551
+    },
+    {
+      "rawPath": "fixtures/basic-test.log",
+      "encodedPath": "fixtures/basic-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "49a0a97a509ea2f6f702b0f751c40edc1dda6da970953224f3f537e629496b9a",
+      "rawBytes": 5480278,
+      "encodedSHA256": "e5b4b8b9978bc9866c072c5e33b46424f0c52f0d4ccf0796db982baecbf26801",
+      "encodedBytes": 900742
+    },
+    {
+      "rawPath": "fixtures/basic-acceptance.log",
+      "encodedPath": "fixtures/basic-acceptance.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "6dc672ad6a1a2eeba4ba5e708cecd4f5c32415783f00fe03d5cf076e7450e3b0",
+      "rawBytes": 40635,
+      "encodedSHA256": "1fbe7e400225451fc3fdec11fb34deb71b87a3fb505b15a5a951f77de88aa2b2",
+      "encodedBytes": 3977
+    },
+    {
+      "rawPath": "fixtures/stage-test.log",
+      "encodedPath": "fixtures/stage-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "ac3c8a4d48f174641ae915f10254b12bd8757ccb431743409f65668b7eb80887",
+      "rawBytes": 1689,
+      "encodedSHA256": "44a9a52a1da6cc15b20663ce87287c96539fbe92deb7404cde51ba23148b6bdb",
+      "encodedBytes": 807
+    },
+    {
+      "rawPath": "fixtures/stack-test.log",
+      "encodedPath": "fixtures/stack-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "c0792ad23083e66d46e83605bce81d47564023f34049258a4e8a46212d7a5a8a",
+      "rawBytes": 2013793,
+      "encodedSHA256": "b0235f54410f667991974a89d121144933791e1f7e714917388cc7f2a41f706a",
+      "encodedBytes": 268866
+    },
+    {
+      "rawPath": "fixtures/filmstrip-test.log",
+      "encodedPath": "fixtures/filmstrip-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "583545ec16fded84bb7ee4b6e46b9fcf598ce8263690267cb114270d29b9933c",
+      "rawBytes": 39274,
+      "encodedSHA256": "a13d3b3af9e62a79c77d458000b036ecd667eeba12f3c9bf7099dab06cf6cb35",
+      "encodedBytes": 5448
+    },
+    {
+      "rawPath": "fixtures/filmstrip-parity.log",
+      "encodedPath": "fixtures/filmstrip-parity.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "0297baba151af22b3181b7ed63242f8ceffb888639f9106e84590b01bf1caadf",
+      "rawBytes": 100,
+      "encodedSHA256": "7abca6e9569fa0393496722c351726ce80e60bd2384532a1e7f424d13834443c",
+      "encodedBytes": 104
+    }
+  ],
+  "performanceLog": {
+    "rawPath": "fixtures/performance.log",
+    "encodedPath": "fixtures/performance.log.gz",
+    "rawSHA256": "a102855b12f7478d6b0b98017d8aa2ee544ad24439feff4faaf0dacc555559a9",
+    "rawBytes": 20013,
+    "encodedSHA256": "b532b2c3c91cf18ba7bdb941f06d15f9e383a82e81dcd4b315ab621a79385bd6",
+    "encodedBytes": 3283
+  },
+  "logs": [
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-capture.json",
+      "sha256": "531aaf8013842f025f5d9b31c56fabeb99a7c7b9356d483e4c3cba335645067b",
+      "bytes": 1127
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-capture.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-validation.json",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-validation.stderr.log",
+      "sha256": "3796fabeae8a8bd7897f25d3afbd990caa402c9ee76ee9c7a7add6cf25f0732a",
+      "bytes": 276
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-validation-retry1.json",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-validation-retry1.stderr.log",
+      "sha256": "19050cfaa15f12e0301de8617519483b7cf6f8aa53465998578fff900bd2753a",
+      "bytes": 331
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-validation-retry2.json",
+      "sha256": "004577ae26934283abf09590fe524ac16ecad7dd3c3883051cda446ac28bbebe",
+      "bytes": 49294
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-validation-retry2.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-font-preflight.json",
+      "sha256": "0881dab9b25aac3c9a7445eff03e7c2a39343b9e85697efb9f88bbe7f173418b",
+      "bytes": 636
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-font-negative.json",
+      "sha256": "2e6b83e799101ab03111ea720e09a22d9b55e06a1df6972ba2a82b20c3de43cc",
+      "bytes": 504
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-seek-regression.json",
+      "sha256": "990c52dc2c003c0f796b9c6fec8f7ecc57df708a2c1295ef4e245c37603692c0",
+      "bytes": 137
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-review/final02-seek-regression-retry2.json",
+      "sha256": "990c52dc2c003c0f796b9c6fec8f7ecc57df708a2c1295ef4e245c37603692c0",
+      "bytes": 137
+    }
+  ],
+  "failedBuildPreserved": "review/AVOID-006/local-20261021-01 must not be staged or published",
+  "visualReviewPerformedByToolImplementer": false,
+  "pending": [
+    "isolated visual review",
+    "official actual final Jekyll all-URL/hash/site-byte audit",
+    "public browser raw hashes and startup/playback/rerender checks"
+  ]
+}

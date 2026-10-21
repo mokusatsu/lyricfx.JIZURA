@@ -1,0 +1,18 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{verifyAsset}=require('./film-review.cjs');
+const dir=fs.mkdtempSync(path.resolve(__dirname,'../../work/film-asset-test-'));
+fs.writeFileSync(path.join(dir,'ok.txt'),'retained bytes');const hash=crypto.createHash('sha256').update('retained bytes').digest('hex');
+assert.equal(verifyAsset(dir,'ok.txt',hash),path.join(dir,'ok.txt'));
+assert.throws(()=>verifyAsset(dir,'ok.txt','0'.repeat(64)),/asset hash/);
+assert.throws(()=>verifyAsset(dir,'../../index.html',hash),/bounded/);
+assert.throws(()=>verifyAsset(dir,'/index.html',hash),/relative/);
+assert.throws(()=>verifyAsset(dir,'bad\\path',hash),/relative/);
+fs.symlinkSync(path.join(dir,'ok.txt'),path.join(dir,'alias'));assert.throws(()=>verifyAsset(dir,'alias',hash),/symlink/);
+console.log(JSON.stringify({passed:true,checks:6,artifacts:dir}));
+const zlib=require('node:zlib'),{checkCurrentSource,readRawObservation}=require('./film-review.cjs');
+const raw=Buffer.from(JSON.stringify({initial:{plan:{},observation:{}},frames:[]})),packed=zlib.gzipSync(raw),observationPath='raw.json.gz';fs.writeFileSync(path.join(dir,observationPath),packed);const ref={observationPath,observationEncodedBytes:packed.length,observationEncodedSHA256:crypto.createHash('sha256').update(packed).digest('hex'),observationRawBytes:raw.length,observationRawSHA256:crypto.createHash('sha256').update(raw).digest('hex')};assert.deepEqual(readRawObservation(dir,ref).frames,[]);
+assert.throws(()=>readRawObservation(dir,{...ref,observationRawSHA256:'0'.repeat(64)}),/observation hash/);
+fs.writeFileSync(path.join(dir,observationPath),packed.subarray(0,10));assert.throws(()=>readRawObservation(dir,ref));
+assert.throws(()=>checkCurrentSource({after:'0'.repeat(64)}),/current JA source drift/);
+console.log(JSON.stringify({passed:true,additionalChecks:4}));
+const {decodeGzipEvidence}=require('./film-review.cjs'),log=Buffer.from('raw full log\n'),encoded=zlib.gzipSync(log),logRef={rawBytes:log.length,rawSHA256:crypto.createHash('sha256').update(log).digest('hex'),encodedBytes:encoded.length,encodedSHA256:crypto.createHash('sha256').update(encoded).digest('hex')};assert.deepEqual(decodeGzipEvidence(encoded,logRef),log);assert.throws(()=>decodeGzipEvidence(encoded.subarray(0,10),logRef),/encoded log bytes/);assert.throws(()=>decodeGzipEvidence(encoded,{...logRef,rawSHA256:'0'.repeat(64)}),/raw log SHA/);console.log(JSON.stringify({passed:true,gzipChecks:3}));

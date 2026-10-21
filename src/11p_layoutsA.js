@@ -1518,12 +1518,13 @@ reg('filmstrip', {
     const slots = ch.length === 3 ? ch : ch.length === 2 ? [ch[0], ch[1], null] : [null, ch[0], null];
     const v = port;                                          // vertical strip in portrait
     const A = v ? H : W, Bd = v ? W : H;                      // along / across
-    const fw0 = fr?fr.frameAlong:Math.min(A * 0.88 / 3.2, Bd * 0.62 * 1.3);    // frame length along the strip
-    const fh = fr?fr.band*.72:fw0 / 1.3, band = fr?fr.band:fh / 0.72, gap = fw0 * 0.08, pitch = fw0 + gap;
+    // Leica 36x24 (3:2), rotated in portrait; native travel and slot reveal stay intact.
+    const fw0 = fr?fr.frameAlong:Math.min(A * 0.88 / 3.2, Bd * 0.62 * 1.5);    // frame length along the strip
+    const fh = fr?fr.band*.72:fw0 / 1.5, band = fr?fr.band:fh / 0.72, gap = fw0 * 0.08, pitch = fw0 + gap;
     const stripC = p.tone === 'fg' ? sc.fg : sc.ink;
     const tcol = onCol(sc, sc.bg) === sc.bg ? sc.fg : onCol(sc, sc.bg);
     const eIn = tin(env, 0, 0.6, E.outExpo), eOut = E.inExpo(env.pOut);
-    const off = fr?((1-eIn)*fr.travel-eOut*fr.travel*1.4+(env.ltb-env.cut.dur/2)*Math.min(u*.03,fr.travel/Math.max(1,env.cut.dur)))*p.dir:(1 - eIn) * A * 0.9 * p.dir - eOut * A * 1.4 * p.dir + (env.ltb - env.cut.dur / 2) * u * 0.03 * p.dir;
+    const off = (1 - eIn) * A * 0.9 * p.dir - eOut * A * 1.4 * p.dir + (env.ltb - env.cut.dur / 2) * u * 0.03 * p.dir;
     const fa = 1 - J.smooth(0.55, 1, env.pOut);
     const center=fr?fr.center:[W/2,H/2];
     const P2 = (a, b) => (v ? [center[0] + b, a] : [a, center[1] + b]);   // (along, across) → screen
@@ -1531,7 +1532,7 @@ reg('filmstrip', {
     if(env.cut.placementAdaptiveTrial)env.layoutAMotion='film-strip';
     // band
     const bandLen = fr?fw0*3.2:A * 1.6, c0 = (v?center[1]:center[0]) + off;
-    if(env.placementEnvelope){const sweep=env.layoutAEvaluationRange,drift=Math.max(...sweep.map(t=>Math.abs(t-env.cut.start-env.cut.dur/2)))*u*.03;const along=fr?fr.travel*2.4+Math.max(...sweep.map(t=>Math.abs(t-env.cut.start-env.cut.dur/2)))*Math.min(u*.03,fr.travel/Math.max(1,env.cut.dur)):A*2.4+drift;const theta=(fr?fr.turn:p.tilt)*J.DEG,axis=v?[-Math.sin(theta),Math.cos(theta)]:[Math.cos(theta),Math.sin(theta)];env.layoutASweep={vector:axis.map(v=>v*along)};}
+    if(env.placementEnvelope){const sweep=env.layoutAEvaluationRange,drift=Math.max(...sweep.map(t=>Math.abs(t-env.cut.start-env.cut.dur/2)))*u*.03;const along=A*2.4+drift;const theta=(fr?fr.turn:p.tilt)*J.DEG,axis=v?[-Math.sin(theta),Math.cos(theta)]:[Math.cos(theta),Math.sin(theta)];env.layoutASweep={vector:axis.map(v=>v*along)};}
     if (v) env.rect(center[0] - band / 2, c0 - bandLen / 2, band, bandLen, stripC, fa, false);
     else env.rect(c0 - bandLen / 2, center[1] - band / 2, bandLen, band, stripC, fa, false);
     // sprocket holes
@@ -1566,8 +1567,8 @@ reg('filmstrip', {
       env.rrect(fx0, fy0, fwX, fhY, fh * 0.04, sc.bg, fa, false);
       ctx.save(); ctx.beginPath(); ctx.rect(fx0, fy0, fwX, fhY); ctx.clip();
       if (t) {
-        const tt = ar?J.placement.adaptiveWrap(t,p.font,fsz,fwX*.8):brk(t, v ? 6 : 4), size = fsz;
-        const it={text:tt,font:p.font,size,x:q[0],y:q[1],lead:1.1,color:tcol,mi:.15*i/stag,placementOwnedBox:ar?[fx0+fwX*.08,fy0+fhY*.1,fwX*.84,fhY*.8]:null};
+        const tt = ar?J.placement.adaptiveWrap(t,p.font,fsz,fwX*.9):brk(t, v ? 6 : 4), size = fsz;
+        const it={text:tt,font:p.font,size,x:q[0],y:q[1],lead:1.1,color:tcol,mi:.15*i/stag,placementOwnedBox:ar?[fx0+fwX*.04,fy0+fhY*.1,fwX*.92,fhY*.8]:null};
         bb=J.unionBB(bb,J.mainDraw(env,ar?J.placement.adaptiveSource(env,it,'main','main',J.placement.adaptiveRangeStart(slots,i)):it));
       } else {
         const r = Math.min(fwX, fhY) * 0.3, la = J.clamp(eIn * 2 - 1) * fa;

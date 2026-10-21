@@ -1,0 +1,1609 @@
+{
+  "schema": 1,
+  "revision": "focused-native-mp4-v1",
+  "fontAudit": {
+    "passed": true,
+    "texts": [
+      "風の先へ",
+      "風の先へ歩いて行こう",
+      "風の先へ"
+    ],
+    "fonts": [
+      {
+        "path": "review/AVOID-006/local-20261020-04/fixtures/font.otf",
+        "sha256": "53e2a7e2fee5d129cd2e05a428350858409ba8b441e81e0ea9f9b4f83d6b8913"
+      },
+      {
+        "path": "review/AVOID-006/local-20261020-04/fixtures/font-symbols.ttf",
+        "sha256": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1"
+      }
+    ],
+    "method": "existing fontCoverage/fontTools cmap union; no fallback allowed"
+  },
+  "task": "AVOID-006",
+  "build": "local-20261021-02",
+  "smoke": false,
+  "created": "2026-10-21T04:11:04.628Z",
+  "baselineCommit": "3e2ff804fac2e94dce79039ddf7a46ec19221494",
+  "fps": 24,
+  "frames": 96,
+  "duration": 4,
+  "assets": {
+    "../local-20261020-04/fixtures/font.otf": "53e2a7e2fee5d129cd2e05a428350858409ba8b441e81e0ea9f9b4f83d6b8913",
+    "../local-20261020-04/fixtures/font-symbols.ttf": "1de6667b07e8e3eb982d518e47d6e50818727792338b9f98fdfd7157ca6f0fb1",
+    "../local-20261020-04/fixtures/font-symbols.json": "2a84e6623f0a77e33bd57351695c2940b413cb095bb747230acb48d314a636f3",
+    "fixtures/fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "fixtures/capture-tool.cjs": "9b88732e90e9b5e9e83d2fae9d4af549d1648e423856fc63925c05d82ce2a4df",
+    "fixtures/source-provenance.json": "e047243a9cf35c52d156e5e0d995a36df6dfa540cbe7f2aa00405e8a7795f01e",
+    "../local-20261020-04/fixtures/after-engine.html": "d0485185d1daf3fea1762ca3d3177e4ea33b4f0f33af14e9b54608e896f4a5ce",
+    "../local-20261020-04/fixtures/after.html": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+    "fixtures/after.html.gz": "6c6350c1fc1aa73315a443f3dbc28146039dc4d5d6ae996ee3c5d25a4e9b86e9",
+    "fixtures/after-engine.html": "cdd5e34795d61bee970807058000c072e5c8190a37b79fe3ceb7af231602390d",
+    "fixtures/after-en.html.gz": "feb694c3a4068bbc4c43038bce8ca59aa1667235b3081ad00d9ab92a09e9bcb7",
+    "fixtures/functional-summary.json": "6f25ee8583993d66910fbd54b7d24e144a6e01227be2f0d309cec1c77d353916",
+    "fixtures/layouts-a-adaptive-test.log.gz": "815f3e05c914a8b606b80c757403a7afc56c1234c8e5ef354c8b08a75f4facc0",
+    "fixtures/layouts-a-test.log.gz": "8de42b69285d7246bf1f6db966efc4f5488ff05104664ec4d7bbc6adab1e639a",
+    "fixtures/layouts-a-acceptance.log.gz": "ce8811e49ad69f1373c4a4388fd431b31bf5b614aff6e554c49ac5ec25d46943",
+    "fixtures/layouts-a-scales.log.gz": "97ea20c54ecf9530b7aec849161cc91dffcc270c99425f427e99973d66293705",
+    "fixtures/layouts-a-contrast.log.gz": "299b3fdeb4725d4c9b98b6dbaeb2ff6d5c744712b28bf8087636f21d555779f3",
+    "fixtures/basic-test.log.gz": "e5b4b8b9978bc9866c072c5e33b46424f0c52f0d4ccf0796db982baecbf26801",
+    "fixtures/basic-acceptance.log.gz": "1fbe7e400225451fc3fdec11fb34deb71b87a3fb505b15a5a951f77de88aa2b2",
+    "fixtures/stage-test.log.gz": "44a9a52a1da6cc15b20663ce87287c96539fbe92deb7404cde51ba23148b6bdb",
+    "fixtures/stack-test.log.gz": "b0235f54410f667991974a89d121144933791e1f7e714917388cc7f2a41f706a",
+    "fixtures/filmstrip-test.log.gz": "a13d3b3af9e62a79c77d458000b036ecd667eeba12f3c9bf7099dab06cf6cb35",
+    "fixtures/filmstrip-parity.log.gz": "7abca6e9569fa0393496722c351726ce80e60bd2384532a1e7f424d13834443c",
+    "fixtures/performance.json": "67c5e14afada95233c0eabaab0e623240ecf138465f9706d31e45326edf43dab",
+    "fixtures/performance.log.gz": "b532b2c3c91cf18ba7bdb941f06d15f9e383a82e81dcd4b315ab621a79385bd6",
+    "images/film-landscape-before-native.png": "bc273394cd750d1efce73f9918eeeb30cd1b1e07c7c6cfd43d74be3e3da24a12",
+    "images/film-landscape-before-mp4-source.png": "8af0d2823f181fea4e736f0b2000cd9104fd683bf7bcfd7f18eabdac9ca54f77",
+    "observations/film-landscape-before.json.gz": "9c695016a6fb3297aed3c80e32cb19b12cc38322a260af9711036e082e57a30a",
+    "videos/film-landscape-before.mp4": "530fb89775ba01fd0a4848b53d3e893e9b83aa898934080c2754bb172eb313ab",
+    "images/film-landscape-after-native.png": "d9e55581355cbd6da12c02e7959443d1cf9720aaa5865b3d9f3e0fc676886eb9",
+    "images/film-landscape-after-mp4-source.png": "20b9182f15e028292c2f147e62fbcdcf5e1db4de31757d32f18bb6f0f6886424",
+    "observations/film-landscape-after.json.gz": "0ee501918d6ecfdd2fa993525c8dd6b095abe8f5b75ad963019343f5803eaea0",
+    "videos/film-landscape-after.mp4": "e3e90839fd8742ebaace4cbb66030b3443671e72d40d0519362971c812611c38",
+    "images/film-long-before-native.png": "41844898aee61160ed96bb740679bd27152e3422a6e3598cc9195bfc363060df",
+    "images/film-long-before-mp4-source.png": "cda93dc3c23da7faca0e8702d8c08b4e50f43c78512ea2122545bce046f7f8d4",
+    "observations/film-long-before.json.gz": "b2af5972ac03845a1fd66c0600879fb7a89a7a3053d919b6b5a7169b3977db0e",
+    "videos/film-long-before.mp4": "8d285d0052637755f05f03b34644cc5ca872b5785de2003b1c1def331bd2c5e9",
+    "images/film-long-after-native.png": "93d311579b69429d910b317138e7a152cc242d9ec50d0091b9fdff87d77a8aaf",
+    "images/film-long-after-mp4-source.png": "5ca4b9a7579474bce4f1286fdf2ddf90d19cc739f9cf17a46c450db08ca6b1da",
+    "observations/film-long-after.json.gz": "b5b7f90ca04b87a52eee5791b2e2af2256af70257e442b8257423293787ef904",
+    "videos/film-long-after.mp4": "80c8a3672d6388643bb9ceedcb1c42ec644333d67046a65d8959582213258240",
+    "images/film-portrait-before-native.png": "28a6f984991bcf9ca5e39550a2f9d405e6ae100171858e43e22abcf339446c3e",
+    "images/film-portrait-before-mp4-source.png": "2a4da70dc1edeff7653f0c343ee029a3ada8db0877e7d164fdc5b71bd5418c82",
+    "observations/film-portrait-before.json.gz": "96f559d9c44bdb5347023e212ca0297db61a4e771508e82f822ab338470fb445",
+    "videos/film-portrait-before.mp4": "424fd1faa4baaabe92d1b1dc35a5116973e3fa6c8ce80aaafd0bdaa26c0ec130",
+    "images/film-portrait-after-native.png": "e38467c02e7a32dc3b54415730474975ad20217275e2252762173c2eb6631383",
+    "images/film-portrait-after-mp4-source.png": "e9f9e78a27b35a9cf640ac1dacd0814a9a8b2125cf1b29a397feb825a1f043e9",
+    "observations/film-portrait-after.json.gz": "904ae04d0eabcd10e81616e3c5d45767413bcbf55cd3b8ef7d9b08dbdd32e1a2",
+    "videos/film-portrait-after.mp4": "f12d7e48c0d23fbd23f8f1d3d254ee6ae901f1ac8ea6307ef15c92a0f7ea718a",
+    "videos/quote-previous.mp4": "64cda5dc62ce6941cbf7e9a082c98a29f47eb23fdbcb2806b3b57e0dc6cbd878",
+    "../local-20261020-04/fixtures/playback-quote.webm": "898ec2463c68386e73c2c5dbd0a94c6d6cdbb94afec4962f4b48ebe3abb6051f",
+    "videos/ticket-previous.mp4": "c8457e547689538467d2632c91efb1aeb45062960d81e32604e179f713b897c7",
+    "../local-20261020-04/fixtures/playback-ticket.webm": "31864643a25bf60bd925f84340d39426a42854c14c0f8fc5f646a4425923dc7a",
+    "videos/sideways-previous.mp4": "fdddd9878c3ed196319c845d44fb44b20badf8ad922a108e52c699c28df52fed",
+    "../local-20261020-04/fixtures/playback-sideways.webm": "6a1d7837d91f8dad841430409562c64720e63e2445302fd7fb0cc1e3cbc14c61",
+    "index.html": "3ee63c4d754a95afcf7653d505caef80a72e0ab9971bb9f8bd2c3fac787edcf6",
+    "en.html": "71d2754d90091dad3cfc8e1035282288cbe4a475b2df49a9b135d66627b4d497"
+  },
+  "cases": [
+    {
+      "id": "film-landscape",
+      "label": "フィルム／Landscape",
+      "layout": "filmstrip",
+      "W": 1920,
+      "H": 1080,
+      "text": "風の先へ",
+      "seed": 704,
+      "cx": 0.5,
+      "cy": 0.42,
+      "radius": 0.2,
+      "time": 0,
+      "before": {
+        "path": "videos/film-landscape-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "decision": "certified",
+          "status": "safe",
+          "safetyScope": "full-interval",
+          "failure": null,
+          "selectedStrategy": "film-reduce"
+        },
+        "snapshot": {
+          "time": 1.5,
+          "frame": 36,
+          "nativePath": "images/film-landscape-before-native.png",
+          "mp4SourcePath": "images/film-landscape-before-mp4-source.png"
+        },
+        "observationPath": "observations/film-landscape-before.json.gz",
+        "observationEncoding": "json+gzip",
+        "observationEncodedSHA256": "9c695016a6fb3297aed3c80e32cb19b12cc38322a260af9711036e082e57a30a",
+        "observationEncodedBytes": 1348208,
+        "observationRawSHA256": "c8b390974f6633bed92d28da4b438d3a3d92fccdf9c7defea9946089ccd4d52e",
+        "observationRawBytes": 3328560,
+        "encodeArgs": [
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-f",
+          "image2pipe",
+          "-framerate",
+          "24",
+          "-i",
+          "pipe:0",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "medium",
+          "-crf",
+          "22",
+          "-pix_fmt",
+          "yuv420p",
+          "-movflags",
+          "+faststart",
+          "-r",
+          "24",
+          "-n",
+          "videos/film-landscape-before.mp4"
+        ],
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 1920,
+              "height": 1080,
+              "coded_width": 1920,
+              "coded_height": 1088,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 40,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 4,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 49152,
+              "duration": "4.000000",
+              "bit_rate": "833176",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "96",
+              "nb_read_frames": "96",
+              "extradata_size": 47,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc61.19.101 libx264"
+              }
+            }
+          ],
+          "format": {
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "4.000000",
+            "size": "418599",
+            "bit_rate": "837198",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf61.7.103"
+            }
+          }
+        },
+        "atoms": [
+          {
+            "type": "ftyp",
+            "offset": 0,
+            "bytes": 32
+          },
+          {
+            "type": "moov",
+            "offset": 32,
+            "bytes": 1963
+          },
+          {
+            "type": "free",
+            "offset": 1995,
+            "bytes": 8
+          },
+          {
+            "type": "mdat",
+            "offset": 2003,
+            "bytes": 416596
+          }
+        ]
+      },
+      "after": {
+        "path": "videos/film-landscape-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "decision": "certified",
+          "status": "safe-hold",
+          "safetyScope": "stationary-strict-moving-entry-exit-relaxed",
+          "failure": null,
+          "selectedStrategy": "film-reduce"
+        },
+        "snapshot": {
+          "time": 1.5,
+          "frame": 36,
+          "nativePath": "images/film-landscape-after-native.png",
+          "mp4SourcePath": "images/film-landscape-after-mp4-source.png"
+        },
+        "observationPath": "observations/film-landscape-after.json.gz",
+        "observationEncoding": "json+gzip",
+        "observationEncodedSHA256": "0ee501918d6ecfdd2fa993525c8dd6b095abe8f5b75ad963019343f5803eaea0",
+        "observationEncodedBytes": 1032852,
+        "observationRawSHA256": "0b60cdfb11dddd3e8304e1dbaff143989ee09e51be1375068a16cd7153bf976b",
+        "observationRawBytes": 2722349,
+        "encodeArgs": [
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-f",
+          "image2pipe",
+          "-framerate",
+          "24",
+          "-i",
+          "pipe:0",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "medium",
+          "-crf",
+          "22",
+          "-pix_fmt",
+          "yuv420p",
+          "-movflags",
+          "+faststart",
+          "-r",
+          "24",
+          "-n",
+          "videos/film-landscape-after.mp4"
+        ],
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 1920,
+              "height": 1080,
+              "coded_width": 1920,
+              "coded_height": 1088,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 40,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 4,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 49152,
+              "duration": "4.000000",
+              "bit_rate": "731724",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "96",
+              "nb_read_frames": "96",
+              "extradata_size": 47,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc61.19.101 libx264"
+              }
+            }
+          ],
+          "format": {
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "4.000000",
+            "size": "367809",
+            "bit_rate": "735618",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf61.7.103"
+            }
+          }
+        },
+        "atoms": [
+          {
+            "type": "ftyp",
+            "offset": 0,
+            "bytes": 32
+          },
+          {
+            "type": "moov",
+            "offset": 32,
+            "bytes": 1899
+          },
+          {
+            "type": "free",
+            "offset": 1931,
+            "bytes": 8
+          },
+          {
+            "type": "mdat",
+            "offset": 1939,
+            "bytes": 365870
+          }
+        ]
+      }
+    },
+    {
+      "id": "film-long",
+      "label": "長い歌詞／Long lyric",
+      "layout": "filmstrip",
+      "W": 1920,
+      "H": 1080,
+      "text": "風の先へ歩いて行こう",
+      "seed": 704,
+      "cx": 0.5,
+      "cy": 0.42,
+      "radius": 0.2,
+      "time": 0,
+      "before": {
+        "path": "videos/film-long-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "decision": "certified",
+          "status": "safe",
+          "safetyScope": "full-interval",
+          "failure": null,
+          "selectedStrategy": "film-lane-path-pitch"
+        },
+        "snapshot": {
+          "time": 1.5,
+          "frame": 36,
+          "nativePath": "images/film-long-before-native.png",
+          "mp4SourcePath": "images/film-long-before-mp4-source.png"
+        },
+        "observationPath": "observations/film-long-before.json.gz",
+        "observationEncoding": "json+gzip",
+        "observationEncodedSHA256": "b2af5972ac03845a1fd66c0600879fb7a89a7a3053d919b6b5a7169b3977db0e",
+        "observationEncodedBytes": 1606844,
+        "observationRawSHA256": "255f3548b07b63f29a3e2789297bee7c66234720c953662b23ec03b3835cc337",
+        "observationRawBytes": 3949596,
+        "encodeArgs": [
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-f",
+          "image2pipe",
+          "-framerate",
+          "24",
+          "-i",
+          "pipe:0",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "medium",
+          "-crf",
+          "22",
+          "-pix_fmt",
+          "yuv420p",
+          "-movflags",
+          "+faststart",
+          "-r",
+          "24",
+          "-n",
+          "videos/film-long-before.mp4"
+        ],
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 1920,
+              "height": 1080,
+              "coded_width": 1920,
+              "coded_height": 1088,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 40,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 4,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 49152,
+              "duration": "4.000000",
+              "bit_rate": "991964",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "96",
+              "nb_read_frames": "96",
+              "extradata_size": 47,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc61.19.101 libx264"
+              }
+            }
+          ],
+          "format": {
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "4.000000",
+            "size": "497993",
+            "bit_rate": "995986",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf61.7.103"
+            }
+          }
+        },
+        "atoms": [
+          {
+            "type": "ftyp",
+            "offset": 0,
+            "bytes": 32
+          },
+          {
+            "type": "moov",
+            "offset": 32,
+            "bytes": 1963
+          },
+          {
+            "type": "free",
+            "offset": 1995,
+            "bytes": 8
+          },
+          {
+            "type": "mdat",
+            "offset": 2003,
+            "bytes": 495990
+          }
+        ]
+      },
+      "after": {
+        "path": "videos/film-long-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "decision": "certified",
+          "status": "safe-hold",
+          "safetyScope": "stationary-strict-moving-entry-exit-relaxed",
+          "failure": null,
+          "selectedStrategy": "film-reduce"
+        },
+        "snapshot": {
+          "time": 1.5,
+          "frame": 36,
+          "nativePath": "images/film-long-after-native.png",
+          "mp4SourcePath": "images/film-long-after-mp4-source.png"
+        },
+        "observationPath": "observations/film-long-after.json.gz",
+        "observationEncoding": "json+gzip",
+        "observationEncodedSHA256": "b5b7f90ca04b87a52eee5791b2e2af2256af70257e442b8257423293787ef904",
+        "observationEncodedBytes": 1047016,
+        "observationRawSHA256": "37e054a632aabd387e0c469b688ca8565c99d490cf8fb6991371fcdb962c214f",
+        "observationRawBytes": 2753786,
+        "encodeArgs": [
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-f",
+          "image2pipe",
+          "-framerate",
+          "24",
+          "-i",
+          "pipe:0",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "medium",
+          "-crf",
+          "22",
+          "-pix_fmt",
+          "yuv420p",
+          "-movflags",
+          "+faststart",
+          "-r",
+          "24",
+          "-n",
+          "videos/film-long-after.mp4"
+        ],
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 1920,
+              "height": 1080,
+              "coded_width": 1920,
+              "coded_height": 1088,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 40,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 4,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 49152,
+              "duration": "4.000000",
+              "bit_rate": "766412",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "96",
+              "nb_read_frames": "96",
+              "extradata_size": 47,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc61.19.101 libx264"
+              }
+            }
+          ],
+          "format": {
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "4.000000",
+            "size": "385161",
+            "bit_rate": "770322",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf61.7.103"
+            }
+          }
+        },
+        "atoms": [
+          {
+            "type": "ftyp",
+            "offset": 0,
+            "bytes": 32
+          },
+          {
+            "type": "moov",
+            "offset": 32,
+            "bytes": 1907
+          },
+          {
+            "type": "free",
+            "offset": 1939,
+            "bytes": 8
+          },
+          {
+            "type": "mdat",
+            "offset": 1947,
+            "bytes": 383214
+          }
+        ]
+      }
+    },
+    {
+      "id": "film-portrait",
+      "label": "縦長／Portrait",
+      "layout": "filmstrip",
+      "W": 1080,
+      "H": 1920,
+      "text": "風の先へ",
+      "seed": 704,
+      "cx": 0.5,
+      "cy": 0.5,
+      "radius": 0.05,
+      "time": 0,
+      "before": {
+        "path": "videos/film-portrait-before.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "decision": "certified",
+          "status": "safe",
+          "safetyScope": "full-interval",
+          "failure": null,
+          "selectedStrategy": "film-lane-path-pitch"
+        },
+        "snapshot": {
+          "time": 1.5,
+          "frame": 36,
+          "nativePath": "images/film-portrait-before-native.png",
+          "mp4SourcePath": "images/film-portrait-before-mp4-source.png"
+        },
+        "observationPath": "observations/film-portrait-before.json.gz",
+        "observationEncoding": "json+gzip",
+        "observationEncodedSHA256": "96f559d9c44bdb5347023e212ca0297db61a4e771508e82f822ab338470fb445",
+        "observationEncodedBytes": 1124287,
+        "observationRawSHA256": "71be081b8ba7bec4f346cf24fc57ead5858ac4683f10759287c9a5654f75d24e",
+        "observationRawBytes": 2721038,
+        "encodeArgs": [
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-f",
+          "image2pipe",
+          "-framerate",
+          "24",
+          "-i",
+          "pipe:0",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "medium",
+          "-crf",
+          "22",
+          "-pix_fmt",
+          "yuv420p",
+          "-movflags",
+          "+faststart",
+          "-r",
+          "24",
+          "-n",
+          "videos/film-portrait-before.mp4"
+        ],
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 1080,
+              "height": 1920,
+              "coded_width": 1088,
+              "coded_height": 1920,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 40,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 4,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 49152,
+              "duration": "4.000000",
+              "bit_rate": "867738",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "96",
+              "nb_read_frames": "96",
+              "extradata_size": 47,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc61.19.101 libx264"
+              }
+            }
+          ],
+          "format": {
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "4.000000",
+            "size": "435880",
+            "bit_rate": "871760",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf61.7.103"
+            }
+          }
+        },
+        "atoms": [
+          {
+            "type": "ftyp",
+            "offset": 0,
+            "bytes": 32
+          },
+          {
+            "type": "moov",
+            "offset": 32,
+            "bytes": 1963
+          },
+          {
+            "type": "free",
+            "offset": 1995,
+            "bytes": 8
+          },
+          {
+            "type": "mdat",
+            "offset": 2003,
+            "bytes": 433877
+          }
+        ]
+      },
+      "after": {
+        "path": "videos/film-portrait-after.mp4",
+        "diagnosis": {
+          "time": 1.5,
+          "decision": "certified",
+          "status": "safe-hold",
+          "safetyScope": "stationary-strict-moving-entry-exit-relaxed",
+          "failure": null,
+          "selectedStrategy": "film-lane-path-pitch"
+        },
+        "snapshot": {
+          "time": 1.5,
+          "frame": 36,
+          "nativePath": "images/film-portrait-after-native.png",
+          "mp4SourcePath": "images/film-portrait-after-mp4-source.png"
+        },
+        "observationPath": "observations/film-portrait-after.json.gz",
+        "observationEncoding": "json+gzip",
+        "observationEncodedSHA256": "904ae04d0eabcd10e81616e3c5d45767413bcbf55cd3b8ef7d9b08dbdd32e1a2",
+        "observationEncodedBytes": 1046312,
+        "observationRawSHA256": "7060277c845393c76dccbaed87ddc51b1438fb0c01a152fe6b3b4b8aa25c5ddd",
+        "observationRawBytes": 2673307,
+        "encodeArgs": [
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-f",
+          "image2pipe",
+          "-framerate",
+          "24",
+          "-i",
+          "pipe:0",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "medium",
+          "-crf",
+          "22",
+          "-pix_fmt",
+          "yuv420p",
+          "-movflags",
+          "+faststart",
+          "-r",
+          "24",
+          "-n",
+          "videos/film-portrait-after.mp4"
+        ],
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 1080,
+              "height": 1920,
+              "coded_width": 1088,
+              "coded_height": 1920,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 40,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 4,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 49152,
+              "duration": "4.000000",
+              "bit_rate": "877496",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "96",
+              "nb_read_frames": "96",
+              "extradata_size": 47,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc61.19.101 libx264"
+              }
+            }
+          ],
+          "format": {
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "4.000000",
+            "size": "440715",
+            "bit_rate": "881430",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf61.7.103"
+            }
+          }
+        },
+        "atoms": [
+          {
+            "type": "ftyp",
+            "offset": 0,
+            "bytes": 32
+          },
+          {
+            "type": "moov",
+            "offset": 32,
+            "bytes": 1919
+          },
+          {
+            "type": "free",
+            "offset": 1951,
+            "bytes": 8
+          },
+          {
+            "type": "mdat",
+            "offset": 1959,
+            "bytes": 438756
+          }
+        ]
+      }
+    }
+  ],
+  "legacy": [
+    {
+      "layout": "quote",
+      "path": "videos/quote-previous.mp4",
+      "original": {
+        "path": "../local-20261020-04/fixtures/playback-quote.webm",
+        "sha256": "898ec2463c68386e73c2c5dbd0a94c6d6cdbb94afec4962f4b48ebe3abb6051f",
+        "duration": 8.8,
+        "actualFrames": 39,
+        "method": "Actual native renderer, both sides same requestAnimationFrame clock; browser video"
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 960,
+            "coded_width": 960,
+            "coded_height": 960,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "1:1",
+            "pix_fmt": "yuv420p",
+            "level": 31,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 109056,
+            "duration": "8.875000",
+            "bit_rate": "138668",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "213",
+            "nb_read_frames": "213",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "eng",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.875000",
+          "size": "157262",
+          "bit_rate": "141757",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "atoms": [
+        {
+          "type": "ftyp",
+          "offset": 0,
+          "bytes": 32
+        },
+        {
+          "type": "moov",
+          "offset": 32,
+          "bytes": 3379
+        },
+        {
+          "type": "free",
+          "offset": 3411,
+          "bytes": 8
+        },
+        {
+          "type": "mdat",
+          "offset": 3419,
+          "bytes": 153843
+        }
+      ]
+    },
+    {
+      "layout": "ticket",
+      "path": "videos/ticket-previous.mp4",
+      "original": {
+        "path": "../local-20261020-04/fixtures/playback-ticket.webm",
+        "sha256": "31864643a25bf60bd925f84340d39426a42854c14c0f8fc5f646a4425923dc7a",
+        "duration": 9.32,
+        "actualFrames": 34,
+        "method": "Actual native renderer, both sides same requestAnimationFrame clock; browser video"
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 960,
+            "coded_width": 960,
+            "coded_height": 960,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "1:1",
+            "pix_fmt": "yuv420p",
+            "level": 31,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 115200,
+            "duration": "9.375000",
+            "bit_rate": "162311",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "225",
+            "nb_read_frames": "225",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "eng",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "9.375000",
+          "size": "193780",
+          "bit_rate": "165358",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "atoms": [
+        {
+          "type": "ftyp",
+          "offset": 0,
+          "bytes": 32
+        },
+        {
+          "type": "moov",
+          "offset": 32,
+          "bytes": 3523
+        },
+        {
+          "type": "free",
+          "offset": 3555,
+          "bytes": 8
+        },
+        {
+          "type": "mdat",
+          "offset": 3563,
+          "bytes": 190217
+        }
+      ]
+    },
+    {
+      "layout": "sideways",
+      "path": "videos/sideways-previous.mp4",
+      "original": {
+        "path": "../local-20261020-04/fixtures/playback-sideways.webm",
+        "sha256": "6a1d7837d91f8dad841430409562c64720e63e2445302fd7fb0cc1e3cbc14c61",
+        "duration": 7.08,
+        "actualFrames": 108,
+        "method": "Actual native renderer, both sides same requestAnimationFrame clock; browser video"
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 960,
+            "coded_width": 960,
+            "coded_height": 960,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "1:1",
+            "pix_fmt": "yuv420p",
+            "level": 31,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 88064,
+            "duration": "7.166667",
+            "bit_rate": "185403",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "172",
+            "nb_read_frames": "172",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "eng",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "7.166667",
+          "size": "169018",
+          "bit_rate": "188671",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "atoms": [
+        {
+          "type": "ftyp",
+          "offset": 0,
+          "bytes": 32
+        },
+        {
+          "type": "moov",
+          "offset": 32,
+          "bytes": 2879
+        },
+        {
+          "type": "free",
+          "offset": 2911,
+          "bytes": 8
+        },
+        {
+          "type": "mdat",
+          "offset": 2919,
+          "bytes": 166099
+        }
+      ]
+    }
+  ],
+  "observationCoverage": {
+    "allFrames": "source/PNG/full native observation hashes; actual per-pass safety, envelope, clock, phase and event counts; certified frames assert strict clearance and envelope coverage",
+    "completeRawFrames": [
+      3,
+      7,
+      15,
+      36,
+      90
+    ],
+    "notRetained": "Full per-frame polygon observations outside these five keyframes are not retained."
+  },
+  "limitations": [
+    "Fresh film capture is deterministic direct seek at n/24, no temporal accumulation; source renderer quantizes its internal motion clock as recorded.",
+    "Guides are drawn after rendering; raw native frame SHA256 and full placement observations retained at five specified keyframes (3,7,15,36,90) only.",
+    "Other layouts reuse old immutable WebM capture with original capture limitations."
+  ],
+  "captureConditions": {
+    "viewport": [
+      1100,
+      1100
+    ],
+    "dpr": 1,
+    "zoom": 1,
+    "language": "ja",
+    "media": "none",
+    "seek": "direct n/24",
+    "nativeDuration": 4,
+    "noHud": true,
+    "noPost": true,
+    "guide": "green dashed circle composited after native rendering",
+    "normalization": "engine-only-dom-v1",
+    "font": "immutable old04 Noto font + DejaVu symbols"
+  },
+  "environment": {
+    "platform": "linux",
+    "release": "6.18.55",
+    "arch": "x64",
+    "node": "v24.19.0",
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "browser": "154.0.8037.57"
+  },
+  "beforeSourceSHA256": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+  "afterSourceSHA256": "d780ca129dfe87868a8a448a90c02a2e6ba4f2398a4a7f522a91973bad62eda0",
+  "gateLogs": [
+    {
+      "rawPath": "fixtures/layouts-a-adaptive-test.log",
+      "encodedPath": "fixtures/layouts-a-adaptive-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "8568786d9fd43e0cfed6e4bc944949c211ed39739ebc2f3894d47c6e58c80110",
+      "rawBytes": 540772,
+      "encodedSHA256": "815f3e05c914a8b606b80c757403a7afc56c1234c8e5ef354c8b08a75f4facc0",
+      "encodedBytes": 166959
+    },
+    {
+      "rawPath": "fixtures/layouts-a-test.log",
+      "encodedPath": "fixtures/layouts-a-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "2e3113f2f755198b0a66221c764e0851bfe262e0df8820d75376f6b888977b3a",
+      "rawBytes": 5198582,
+      "encodedSHA256": "8de42b69285d7246bf1f6db966efc4f5488ff05104664ec4d7bbc6adab1e639a",
+      "encodedBytes": 1550233
+    },
+    {
+      "rawPath": "fixtures/layouts-a-acceptance.log",
+      "encodedPath": "fixtures/layouts-a-acceptance.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "43cf0c09601d220589fc6c0d7d40e9db33b4f7deb7928c22c3d91121b5b6f547",
+      "rawBytes": 57221,
+      "encodedSHA256": "ce8811e49ad69f1373c4a4388fd431b31bf5b614aff6e554c49ac5ec25d46943",
+      "encodedBytes": 3022
+    },
+    {
+      "rawPath": "fixtures/layouts-a-scales.log",
+      "encodedPath": "fixtures/layouts-a-scales.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "5767bf48717fe1709d95e0b7296efb7eb2ee96655963575043bf6dfa459db395",
+      "rawBytes": 3401,
+      "encodedSHA256": "97ea20c54ecf9530b7aec849161cc91dffcc270c99425f427e99973d66293705",
+      "encodedBytes": 700
+    },
+    {
+      "rawPath": "fixtures/layouts-a-contrast.log",
+      "encodedPath": "fixtures/layouts-a-contrast.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "bf77e4a03f1c02bf190a4345e0f48cc38f32d81c80c8c5ab9ead03fff81f52a3",
+      "rawBytes": 3524,
+      "encodedSHA256": "299b3fdeb4725d4c9b98b6dbaeb2ff6d5c744712b28bf8087636f21d555779f3",
+      "encodedBytes": 551
+    },
+    {
+      "rawPath": "fixtures/basic-test.log",
+      "encodedPath": "fixtures/basic-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "49a0a97a509ea2f6f702b0f751c40edc1dda6da970953224f3f537e629496b9a",
+      "rawBytes": 5480278,
+      "encodedSHA256": "e5b4b8b9978bc9866c072c5e33b46424f0c52f0d4ccf0796db982baecbf26801",
+      "encodedBytes": 900742
+    },
+    {
+      "rawPath": "fixtures/basic-acceptance.log",
+      "encodedPath": "fixtures/basic-acceptance.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "6dc672ad6a1a2eeba4ba5e708cecd4f5c32415783f00fe03d5cf076e7450e3b0",
+      "rawBytes": 40635,
+      "encodedSHA256": "1fbe7e400225451fc3fdec11fb34deb71b87a3fb505b15a5a951f77de88aa2b2",
+      "encodedBytes": 3977
+    },
+    {
+      "rawPath": "fixtures/stage-test.log",
+      "encodedPath": "fixtures/stage-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "ac3c8a4d48f174641ae915f10254b12bd8757ccb431743409f65668b7eb80887",
+      "rawBytes": 1689,
+      "encodedSHA256": "44a9a52a1da6cc15b20663ce87287c96539fbe92deb7404cde51ba23148b6bdb",
+      "encodedBytes": 807
+    },
+    {
+      "rawPath": "fixtures/stack-test.log",
+      "encodedPath": "fixtures/stack-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "c0792ad23083e66d46e83605bce81d47564023f34049258a4e8a46212d7a5a8a",
+      "rawBytes": 2013793,
+      "encodedSHA256": "b0235f54410f667991974a89d121144933791e1f7e714917388cc7f2a41f706a",
+      "encodedBytes": 268866
+    },
+    {
+      "rawPath": "fixtures/filmstrip-test.log",
+      "encodedPath": "fixtures/filmstrip-test.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "583545ec16fded84bb7ee4b6e46b9fcf598ce8263690267cb114270d29b9933c",
+      "rawBytes": 39274,
+      "encodedSHA256": "a13d3b3af9e62a79c77d458000b036ecd667eeba12f3c9bf7099dab06cf6cb35",
+      "encodedBytes": 5448
+    },
+    {
+      "rawPath": "fixtures/filmstrip-parity.log",
+      "encodedPath": "fixtures/filmstrip-parity.log.gz",
+      "encoding": "gzip",
+      "rawSHA256": "0297baba151af22b3181b7ed63242f8ceffb888639f9106e84590b01bf1caadf",
+      "rawBytes": 100,
+      "encodedSHA256": "7abca6e9569fa0393496722c351726ce80e60bd2384532a1e7f424d13834443c",
+      "encodedBytes": 104
+    }
+  ],
+  "performanceLog": {
+    "rawPath": "fixtures/performance.log",
+    "encodedPath": "fixtures/performance.log.gz",
+    "rawSHA256": "a102855b12f7478d6b0b98017d8aa2ee544ad24439feff4faaf0dacc555559a9",
+    "rawBytes": 20013,
+    "encodedSHA256": "b532b2c3c91cf18ba7bdb941f06d15f9e383a82e81dcd4b315ab621a79385bd6",
+    "encodedBytes": 3283
+  },
+  "source": {
+    "en": "97941bd9ddabaf197292481dcbf235bd5e73cfed95ad09c6495b5b7d7970fd02",
+    "before": "b2c230268f7731df2201093893397551b3265c8cad9984ef8b517cc1fe8bc696",
+    "after": "d780ca129dfe87868a8a448a90c02a2e6ba4f2398a4a7f522a91973bad62eda0",
+    "fixture": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "gitHead": "3e2ff804fac2e94dce79039ddf7a46ec19221494"
+  },
+  "engines": {
+    "before": "../local-20261020-04/fixtures/after-engine.html",
+    "after": "fixtures/after-engine.html"
+  },
+  "appPublicFiles": [
+    {
+      "path": "../../../index.html",
+      "sha256": "d780ca129dfe87868a8a448a90c02a2e6ba4f2398a4a7f522a91973bad62eda0"
+    },
+    {
+      "path": "../../../en/index.html",
+      "sha256": "97941bd9ddabaf197292481dcbf235bd5e73cfed95ad09c6495b5b7d7970fd02"
+    }
+  ],
+  "bundleBytes": 36524796
+}

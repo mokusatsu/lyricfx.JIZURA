@@ -189,3 +189,35 @@ Pages run [39457255823](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs
 先行attempt01/02のHTTP503と、その後の通常curl200/TLS0/hash一致を保持し、原因は未特定のまま。親レビュー済み外付けhelperは固定939＋index由来174 URLのGET/固定callbackに限り503を最大3回・1/2秒待機で再試行するが、最終03では失敗0・追加試行0。元validator・raw bytes/hash・後続全検査は不変で、child/親の21mockも成功した。公開成功を、人間の見え方の承認や全時点の通信安定性の証明へ広げない。
 
 残条件は[新8演出の動作確認](reviews/AVOID-006-local-20261020-04.md)のみ。主要8＋動き4項目は全て未回答、旧18例の承認は新構成へ転用しない。H03は自動検証と親レビューに基づき人間再確認不要の判断を保持する。006は実環境検証待ち、007以降は未着手。保存初期cut不一致は013へ引継ぎ、保存成功にはしない。
+
+## 2026-10-21 filmstrip 比率・動き・軽量再生の追加修正
+
+- 利用者の露光コマをライカ判36×24（3:2）へ保つ要求、横スクロールと順次出現の確認要求、確認動画を実MP4へする要求によって006を`実装中`へ戻した。007以降は開始しない。開始HEAD `3e2ff804fac2e94dce79039ddf7a46ec19221494`、work。実装担当gpt-6.1-sol / medium、親がコード/結果をレビューする。実装担当は画像・動画を開かず、別のisolated担当の視覚確認を待つ。
+- 開始時の`app/__pycache__/english.cpython-312.pyc`変更、dev/node_modules、work/scratch、未公開local-20261020-01/02/03を保持し対象外とする。公開済みlocal-20261020-04は不変の履歴として保持する。
+- 原因の実測: 旧anchorの露光コマは560.85×201.3984（約2.7848:1）。adaptive recipeがalongとbandを独立に設定し、travelは4.779 stage px、hold速度は1.19475 px/sまで低下していた。元のnativeは1920幅でentry1728/exit2688 px、hold32.4 px/s。元のper-slotの実描画閾値0/.1212163940293249/.2828382527350914秒は残っており、順次出現のコードは変更しない。[変更前の実測](evidence/AVOID-006/film-revision/before-probe.json)。
+- 修正範囲: filmstripのみ、native露光コマ1.3:1も利用者要求に合わせ3:2へ変更する（OFFのfilmだけも意図した変更。OFF完全不変とは主張しない）。縦版は回転した2:3。adaptiveではlaneと3:2の両方から共同寸法を求め、文字の横余白だけ再配分する。既存frame clipは同一、主歌詞マスク・全ステージ縮小は使わない。元のnative入退場距離・hold速度・方向を戻し、hold包絡も同じ速度で証明する。
+- 新anchorは344.088×229.392、fontScale .7、59候補でhold-safe（旧43候補・fontScale .8・全区間safe）。入退場だけsource-tagged moving eventsの既定許容を使う。holdとstationary eventsは引き続きstrict。旧04の全区間safeを新版filmの合格へ流用しない。
+- 新規`dev/avoidance/filmstrip-test.cjs`は実rendererの露光primitive、時刻ごとのmain item実描画の有無、native移動量、独立包絡、alpha1画素を確認する。ON/OFF・両方向・landscape/portrait・tilt±3を扱う。`filmstrip-parity.cjs`はfilm以外25のOFFと受入済み18のadaptive例を開始HEADと同条件で比較する。
+- 今回の比較はfilmの変更に必要な選択例と元の4動き例に絞り、旧04の174組監査を新版filmの受入へ置換しない。新bundleは実H.264/yuv420p MP4・faststart・native controls・preload metadata/noneの軽量ページを準備する。全174組の再撮影はこの差分の必須条件としない。公開容量・全raw bytes・再生/seek・日英起動・親レビュー・独立視覚確認・人間の動作判定は別途必要で、未実施を成功にしない。
+- 最終候補の実行ログ・実測実行時間・exit/hashは[evidence/AVOID-006/film-revision](evidence/AVOID-006/film-revision/)に保存する。最終source一致の再実行と既定100/1000性能gateの結果は下記に記録。新公開版・人間の動作確認は未完。
+- 最終source一致のローカル検証結果: JA `d780ca129dfe87868a8a448a90c02a2e6ba4f2398a4a7f522a91973bad62eda0` / EN `97941bd9ddabaf197292481dcbf235bd5e73cfed95ad09c6495b5b7d7970fd02`。既存9core＋filmstrip16ケース624露光矩形＋parity43条件129frameがすべてexit0。filmの実際の正alpha順次描画も開始HEADと11時刻で一致。親のコード/結果レビューに渡す[全src/script/log/実行時間のreceipt](evidence/AVOID-006/film-revision/functional-summary.json)と[実装引継ぎ](evidence/AVOID-006/film-revision/implementation-results.md)。
+- 既定の独立100/1000性能gateもexit0/passed:true。warmup3/sample6/stress有効を維持し、同一入力、planning factor1.370271/1.935485（上限2）、render差−3/−2ms（上限+3ms）。candidate planningP95は460/27525.7ms、cold総計3008.7/27346.6ms。dense100/1000 regionのsegment数・決定性・候補128上限も成功。[全測定](evidence/AVOID-006/film-revision/performance.json)。gateを緩めていない。今回の実MP4確認は重いcold planningを人間の動画再生へ毎回要求しないためのもの。新公開物・視覚確認・人間の動作判定は引き続き別条件。
+
+### 2026-10-21 親レビュー・focused確認依頼draft
+
+- 親は全77 sourceと11試験ログのhashを独立照合し、film16ケース/624露光矩形の試験を独立実行してexit0を確認した。[親レビュー](evidence/AVOID-006/film-revision/parent-core-review.json)。コード/試験の受入であって、視覚確認・公開・人間の動作判定の完了ではない。
+- 公開予定focused buildは`local-20261021-02`。`local-20261021-01`は任意長文「僕」の固定字体欠字で撮影中断した未公開試行として保持する。02は既存の長文「風の先へ歩いて行こう」を使う。02は未公開・撮影完了未確認で、[動作確認依頼draft](reviews/AVOID-006-local-20261021-02.md)は公開事前検証後に確定する。
+- [旧04依頼](reviews/AVOID-006-local-20261020-04.md)へfilm比率NG・横scroll/順次出現の確認困難・重すぎて再生不能の利用者報告を追記した。他項目のOKは推定しない。006は`実装中`（修正進行中）を継続し、007以降は未着手。長文やportraitの実際の採用/除外は02撮影結果で確定し、診断用元描画を回避成功へ数えない。
+
+### focused02 撮影完了・検証継続（2026-10-21）
+
+- `local-20261021-02`の撮影完了。[manifest](../review/AVOID-006/local-20261021-02/manifest.json) SHA-256 `426202261383ea42f62241a29602e7923e209cd7ede3e75af21f4cedc518c754`。landscape/long/portraitは全3beforeが全区間safe、全3afterがsafe-hold（保持中strict・動く入退場だけ緩和）。長文「風の先へ歩いて行こう」も採用済みであり、診断用の候補除外例ではない。他の条件の除外を成功へ置換しない。
+- 新しい前後6 MP4は各4秒/96 frame/24fps・H.264/yuv420p、367,809〜497,993 bytes。撮影条件・診断はmanifestへ固定した。独立visual solの速報は重大指摘なし、正式report作成中で親の最終受入や人間OKとは扱わない。
+- local validatorはseek競合への対応後、offscreen/drop診断の修正中で未PASS。公開・容量/全bytes・公開再生seek/日英起動は未完。[依頼draft](reviews/AVOID-006-local-20261021-02.md)を撮影事実と長文採用safe-holdへ更新し、未公開表示を保つ。006は実装中継続、007以降は未着手。新8のfilm以外は人間未回答のまま、通常既定への切替は017に残す。
+
+### focused02 ローカル・独立visual完了、実環境検証待ち（2026-10-21）
+
+- [local validate retry2](evidence/AVOID-006/film-review/final02-validation-retry2.json)はpassed:true、親が実JSON確認済み。全9 MP4の標準play/pause/seek・全編終了と、1.5秒の前後6 PNGの原寸再描画hash一致を確認した。新6動画の測定全編区間はdrop/corrupt差分0、旧quote変換はdrop差分1。先行seek/offscreen・drop診断の不成功履歴は保持する。
+- 初期JA/ENはHTML1 requestのみ、動画・追加resource取得0。ローカルHTTPのinitial transferは4,781/4,689 bytes（encoded HTML4,481/4,389 bytes）。公開通信の測定は別途必要。
+- [独立visual正式所見](evidence/AVOID-006/film-review/visual02/review.md)と[ledger](evidence/AVOID-006/film-review/visual02/ledger.json)が完了。75画像相当の実見範囲で重大指摘なし。長文先頭「風の先」＋「へ」の2行wrapは読めるが組版の好みは人間判断に残す。全動画frameの目視・視覚担当自身の連続再生とは扱わない。
+- 状態を一覧と`実環境検証待ち`へ同期。実Jekyll容量監査は進行中、公開全raw bytes・公開動画再生seek/日英起動・人間動作判定は未完。新8のfilm以外は人間未回答、007以降は未着手、通常既定切替は017を維持する。

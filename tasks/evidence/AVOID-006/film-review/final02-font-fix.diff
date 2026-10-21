@@ -1,0 +1,55 @@
+--- review/AVOID-006/local-20261021-01/fixtures/capture-tool.cjs	2026-10-21 04:06:01.568277163 +0000
++++ dev/avoidance/film-review.cjs	2026-10-21 04:08:33.938152134 +0000
+@@ -9,10 +9,16 @@
+ 
+ const cases=()=>[
+ {id:'film-landscape',label:'フィルム／Landscape',layout:'filmstrip',W:1920,H:1080,text:'風の先へ',seed:704,cx:.5,cy:.42,radius:.2,time:0},
+-{id:'film-long',label:'長い歌詞／Long lyric',layout:'filmstrip',W:1920,H:1080,text:'風の先へ歩き続ける僕らの物語',seed:704,cx:.5,cy:.42,radius:.2,time:0},
++{id:'film-long',label:'長い歌詞／Long lyric',layout:'filmstrip',W:1920,H:1080,text:'風の先へ歩いて行こう',seed:704,cx:.5,cy:.42,radius:.2,time:0},
+ {id:'film-portrait',label:'縦長／Portrait',layout:'filmstrip',W:1080,H:1920,text:'風の先へ',seed:704,cx:.5,cy:.5,radius:.05,time:0}
+ ];
+ 
++function fontAudit(){
++  const fonts=['font.otf','font-symbols.ttf'].map(name=>path.join(ROOT,'review/AVOID-006',OLD,'fixtures',name)),texts=cases().map(c=>c.text);
++  require('./layouts-a-review.cjs').fontCoverage(fonts,texts.join(''));
++  return {passed:true,texts,fonts:fonts.map(p=>({path:path.relative(ROOT,p),sha256:sha(read(p))})),method:'existing fontCoverage/fontTools cmap union; no fallback allowed'};
++}
++
+ function probe(file){
+   const p=JSON.parse(cp.execFileSync('ffprobe',['-v','error','-count_frames','-show_streams','-show_format','-of','json',file],{maxBuffer:2e6}));
+   delete p.format.filename;
+@@ -106,14 +112,14 @@
+     assert.equal(gate.compiledENSHA256,sha(read(path.join(ROOT,'en/index.html'))),'preflight gate EN');
+     for(const name of ['filmstrip-test','filmstrip-parity'])assert.ok(gate.tests.some(t=>t.name===name),'film gate '+name);
+   }
+-  const rel=(smoke?'work/film-review-smoke/':'review/AVOID-006/')+build,dir=path.join(ROOT,rel);
++  const fontsChecked=fontAudit();const rel=(smoke?'work/film-review-smoke/':'review/AVOID-006/')+build,dir=path.join(ROOT,rel);
+   assert.ok(!fs.existsSync(dir),'fresh bundle path required');fs.mkdirSync(dir,{recursive:true});
+   assert.equal(fs.readdirSync(dir).length,0,'fresh bundle required');
+   fs.mkdirSync(path.join(dir,'fixtures'));
+   fs.mkdirSync(path.join(dir,'videos'));
+   fs.mkdirSync(path.join(dir,'observations'));
+   fs.mkdirSync(path.join(dir,'images'));
+-  const oldDir=path.join(ROOT,'review/AVOID-006',OLD),old=JSON.parse(read(path.join(oldDir,'manifest.json'))),m={schema:1,revision:'focused-native-mp4-v1',task:'AVOID-006',build,smoke,created:new Date().toISOString(),baselineCommit:BASE,fps:FPS,frames:smoke?40:FRAMES,duration:smoke?40/FPS:4,assets:{},cases:smoke?cases().slice(0,1):cases(),legacy:[],observationCoverage:{allFrames:'source/PNG/full native observation hashes; actual per-pass safety, envelope, clock, phase and event counts; certified frames assert strict clearance and envelope coverage',completeRawFrames:[3,7,15,36,90],notRetained:'Full per-frame polygon observations outside these five keyframes are not retained.'},limitations:['Fresh film capture is deterministic direct seek at n/24, no temporal accumulation; source renderer quantizes its internal motion clock as recorded.','Guides are drawn after rendering; raw native frame SHA256 and full placement observations retained at five specified keyframes (3,7,15,36,90) only.','Other layouts reuse old immutable WebM capture with original capture limitations.'],captureConditions:{viewport:[1100,1100],dpr:1,zoom:1,language:'ja',media:'none',seek:'direct n/24',nativeDuration:4,noHud:true,noPost:true,guide:'green dashed circle composited after native rendering',normalization:'engine-only-dom-v1',font:'immutable old04 Noto font + DejaVu symbols'},environment:{platform:os.platform(),release:os.release(),arch:os.arch(),node:process.version,ffmpeg:cp.execFileSync('ffmpeg',['-version'],{encoding:'utf8'}).split('\n')[0]}};
++  const oldDir=path.join(ROOT,'review/AVOID-006',OLD),old=JSON.parse(read(path.join(oldDir,'manifest.json'))),m={schema:1,revision:'focused-native-mp4-v1',fontAudit:fontsChecked,task:'AVOID-006',build,smoke,created:new Date().toISOString(),baselineCommit:BASE,fps:FPS,frames:smoke?40:FRAMES,duration:smoke?40/FPS:4,assets:{},cases:smoke?cases().slice(0,1):cases(),legacy:[],observationCoverage:{allFrames:'source/PNG/full native observation hashes; actual per-pass safety, envelope, clock, phase and event counts; certified frames assert strict clearance and envelope coverage',completeRawFrames:[3,7,15,36,90],notRetained:'Full per-frame polygon observations outside these five keyframes are not retained.'},limitations:['Fresh film capture is deterministic direct seek at n/24, no temporal accumulation; source renderer quantizes its internal motion clock as recorded.','Guides are drawn after rendering; raw native frame SHA256 and full placement observations retained at five specified keyframes (3,7,15,36,90) only.','Other layouts reuse old immutable WebM capture with original capture limitations.'],captureConditions:{viewport:[1100,1100],dpr:1,zoom:1,language:'ja',media:'none',seek:'direct n/24',nativeDuration:4,noHud:true,noPost:true,guide:'green dashed circle composited after native rendering',normalization:'engine-only-dom-v1',font:'immutable old04 Noto font + DejaVu symbols'},environment:{platform:os.platform(),release:os.release(),arch:os.arch(),node:process.version,ffmpeg:cp.execFileSync('ffmpeg',['-version'],{encoding:'utf8'}).split('\n')[0]}};
+   
+   const add=(p,b)=>{
+     fs.writeFileSync(path.join(dir,p),b);
+@@ -339,7 +345,7 @@
+ 
+ function validateFiles(dir){
+   const m=JSON.parse(read(path.join(dir,'manifest.json')));
+-  assert.equal(m.revision,'focused-native-mp4-v1');
++  assert.equal(m.revision,'focused-native-mp4-v1');assert.deepEqual(m.fontAudit,fontAudit(),'pinned fixture font coverage');
+   assert.equal(m.baselineCommit,BASE);
+   assert.equal(m.fps,FPS);
+   checkCurrentSource(m.source);assert.equal(m.engines.after,'fixtures/after-engine.html');assert.equal(m.engines.before,Object.keys(m.assets).find(p=>p.startsWith('..')&&p.endsWith('/fixtures/after-engine.html')));
+@@ -574,7 +580,7 @@
+   }
+ }
+ 
+-module.exports={rerenderSnapshots,decodeGzipEvidence,checkGate,summarizePass,checkRuntimeFrame,checkCurrentSource,readRawObservation,verifyAsset,cases,probe,atoms,checkMP4,encodeArgs,pageHTML,capture,validateFiles,validate};
++module.exports={fontAudit,rerenderSnapshots,decodeGzipEvidence,checkGate,summarizePass,checkRuntimeFrame,checkCurrentSource,readRawObservation,verifyAsset,cases,probe,atoms,checkMP4,encodeArgs,pageHTML,capture,validateFiles,validate};
+ 
+ if(require.main===module)(async()=>{
+   const [command,arg,...rest]=process.argv.slice(2);
