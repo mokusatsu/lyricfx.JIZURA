@@ -551,20 +551,20 @@ async function validate(dir,baseURL){
     }
     
     if(baseURL)for(const [p,h]of [...Object.entries(m.assets),['manifest.json',sha(read(path.join(dir,'manifest.json')))]]){
-      const r=await page.evaluate(async url=>{
-        const r=await fetch(url);
+      report.active='public raw hash '+p;checkpoint();const r=await page.evaluate(async url=>{
+        const r=await fetch(url,{cache:'no-store'});
         return {status:r.status,bytes:Array.from(new Uint8Array(await r.arrayBuffer()))};
       },new URL(p,base).href);
       assert.equal(r.status,200,'public HTTP '+p);
       assert.equal(sha(Buffer.from(r.bytes)),h,'public raw hash '+p);
-      report.publicHashes.push({path:p,sha256:h,bytes:r.bytes.length});
+      report.publicHashes.push({path:p,sha256:h,bytes:r.bytes.length});checkpoint();
     }
     if(baseURL){
       report.application=[];
       assert.deepEqual(m.appPublicFiles,[{path:'../../../index.html',sha256:m.source.after},{path:'../../../en/index.html',sha256:m.source.en}]);
       for(const app of m.appPublicFiles){
-        const url=new URL(app.path,base).href,r=await page.evaluate(async url=>{
-          const r=await fetch(url);
+        report.active='public application '+app.path;checkpoint();const url=new URL(app.path,base).href,r=await page.evaluate(async url=>{
+          const r=await fetch(url,{cache:'no-store'});
           return {status:r.status,bytes:Array.from(new Uint8Array(await r.arrayBuffer()))};
         },url);
         assert.equal(r.status,200,'public application HTTP');
@@ -572,7 +572,7 @@ async function validate(dir,baseURL){
         const appPage=await browser.newPage();
         await appPage.goto(url);
         await appPage.waitForFunction(()=>window.J?.uiApi&&J.ui.plan,null,{timeout:30000});
-        report.application.push({url,sha256:app.sha256,uiApiInitialized:true,rendererTest:'separate site-smoke owned by parent'});
+        report.application.push({url,sha256:app.sha256,uiApiInitialized:true,rendererTest:'separate site-smoke owned by parent'});checkpoint();
         await appPage.close();
       }
     }
