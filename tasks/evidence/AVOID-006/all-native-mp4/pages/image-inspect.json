@@ -1,0 +1,72 @@
+[
+    {
+        "Id": "sha256:ac7c0ad006b3868f2c25dd48296cd135971438675ce72caacd4c9dc6d3f958fa",
+        "RepoTags": [],
+        "RepoDigests": [
+            "ghcr.io/actions/jekyll-build-pages@sha256:6791ebfd912185ed59bfb5fb102664fa872496b79f87ff8b9cfba292a7345041"
+        ],
+        "Parent": "",
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2024-08-06T23:48:57.080896851Z",
+        "DockerVersion": "",
+        "Author": "",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 728530843,
+        "GraphDriver": {
+            "Data": null,
+            "Name": "vfs"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:e0781bc8667fb5ebf954df4ae52997f6f5568ec9f07e21e5db7c9d324ed41e1f",
+                "sha256:07c83ade9f19c708cae9116457309d1851b0635c00cf291e4cf3b3460f897b3e",
+                "sha256:8a4d63448352c50758f60c1924f38ee9d3a8ad13fbc1734677c7fb258cbdbbe4",
+                "sha256:7afcd6353ab17737f4ceeb40cb0b4290bdc04ba4f11435a888554e7fb8e626a3",
+                "sha256:01d8e517df205a2694267bdbcc4b1d5e98ddf883d6b0079df02981538e215c36",
+                "sha256:47efc143e4b521db2426674171b153be21befd6f390b56a76254848153f26879",
+                "sha256:ff7e1a30d2932ec3c00fdb48182023de11ee5bd7761d63f83f8582623da83e6d",
+                "sha256:6a6ea0e575700b293195cd91d4ef48be9b085e30a10c5e8171d4fb509327f386",
+                "sha256:f7973d9369252cdc0888d385fbba765b7105416af767afa8edd43d69f05a2ec8",
+                "sha256:799058d10d6f15baf3bde553f43ea7c093d4ebcbd56efbebc5c75dae55ea31f7"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        },
+        "Config": {
+            "ArgsEscaped": true,
+            "Cmd": null,
+            "Entrypoint": [
+                "/entrypoint.sh"
+            ],
+            "Env": [
+                "PATH=/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=en_US.UTF-8",
+                "RUBY_VERSION=3.3.4",
+                "RUBY_DOWNLOAD_URL=https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.4.tar.xz",
+                "RUBY_DOWNLOAD_SHA256=1caaee9a5a6befef54bab67da68ace8d985e4fb59cd17ce23c28d9ab04f4ddad",
+                "GEM_HOME=/usr/local/bundle",
+                "BUNDLE_SILENCE_ROOT_WARNING=1",
+                "BUNDLE_APP_CONFIG=/usr/local/bundle",
+                "LANGUAGE=en_US.UTF-8",
+                "LC_ALL=en_US.UTF-8"
+            ],
+            "Labels": {
+                "org.opencontainers.image.created": "2024-08-06T23:48:15.334Z",
+                "org.opencontainers.image.description": "A simple GitHub Action for producing Jekyll build artifacts compatible with GitHub Pages.",
+                "org.opencontainers.image.licenses": "MIT",
+                "org.opencontainers.image.revision": "44a6e6beabd48582f863aeeb6cb2151cc1716697",
+                "org.opencontainers.image.source": "https://github.com/actions/jekyll-build-pages",
+                "org.opencontainers.image.title": "jekyll-build-pages",
+                "org.opencontainers.image.url": "https://github.com/actions/jekyll-build-pages",
+                "org.opencontainers.image.version": "v1.0.13"
+            },
+            "OnBuild": null,
+            "User": "",
+            "Volumes": null,
+            "WorkingDir": ""
+        }
+    }
+]

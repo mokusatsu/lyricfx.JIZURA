@@ -1,0 +1,33 @@
+{
+  "captureToolSHA256": "84c3efa930cdaac70945a18b5e1139389a83dbe34d2cff112a648e47eb8cb7c6",
+  "validationToolSHA256": "44181a677ca645ab09fdb3e831bf848774f6a71277b22c6f745b401cd25a1dab",
+  "originalFailure": {
+    "receipt": "final03-local-validation-failure1.json",
+    "completedPlaybacks": 42,
+    "active": "ruler-before",
+    "failedAssertion": "decodedAfterSeek.mediaTime within 0.1 seconds of2.6",
+    "limitation": "Original failed result was not checkpointed before assertion; its decoded mediaTime is unknown."
+  },
+  "actualInvestigation": {
+    "file": "seek-race-investigation.json",
+    "sameMP4": true,
+    "frames": 96,
+    "runs": 30,
+    "failures": 0,
+    "conclusion": "Original runtime failure not reproduced; cause remains unconfirmed."
+  },
+  "codeMock": {
+    "file": "seek-fix-unit-tests-final.log",
+    "oldHelper": "Deterministically accepts queued pre-seek callback combined with later seeked event.",
+    "newHelper": "Requires target-matching decoded callback; retains 0.1-second bound and10-second timeout; records ignored callbacks; cleans up timeout/error/setter failure; ignores callbacks after settlement.",
+    "tests": 12,
+    "passed": true
+  },
+  "targeted": {
+    "file": "seek-fix-targeted.json",
+    "cases": 4,
+    "passed": true
+  },
+  "assets": "No source, MP4, PNG, public HTML or manifest changes; capture archive remains84c3…",
+  "next": "Parent-approved full52-video local retry1, fresh mode/run receipt"
+}
