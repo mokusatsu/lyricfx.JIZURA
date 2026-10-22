@@ -1,0 +1,130 @@
+{
+  "gate": {
+    "authorizedByParent": true,
+    "authorizedMode": "--diagnose100",
+    "formal1000Authorized": false,
+    "candidateSource": "fd6ae6631654fc2d50cb703707db15df6ee782bd",
+    "candidateSHA256": "ccf7ee7295269b64b24b45f7f58e4123b0e2dc5d8a52f90568aefe4c8579b75b",
+    "baselineCommit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+    "runnerSHA256": "6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756",
+    "fixtureSHA256": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+    "normalizedCorpusSHA256": "4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc",
+    "runtimeIdentityFile": "tasks/evidence/AVOID-008/performance/combined-c34-runtime01.json",
+    "sourceAndCorrectnessReview": "tasks/evidence/AVOID-008/parent-final-c34-correctness03-review.json",
+    "conditions": "ONE unprofiled unchanged100ON/OFF original2bb comparison,3warm+1point/80frames16warm; alone/concurrency/font/input/fullsource/fullpath guards unchanged. Not formalp95 planning. PreserveallFAIL; noCDP,1000 orautomaticoptimizationloop. Requiredconsumedsupport expansion from fixedGitbytes permitted/pinned; productsource remainsfd6.",
+    "publicChecks": false
+  },
+  "runtime": {
+    "observedAtUTC": "2026-10-22 22:47:05 UTC",
+    "environment": {
+      "environment_id": "ccarenv_b64_Y2NhcmVudl9iNTNiMjlkNmNlYzA4MTkxYTdlYmM4MDA2N2YwNDczYw",
+      "source_config_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfg_6ad48aa510ac8193888ec17160277acd",
+      "source_config_version_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfgver_6ad4cb133f2081938362cf953cd01341",
+      "spec_revision": "214",
+      "observed_spec_revision": "214",
+      "observations_current": true,
+      "provider": "cloud",
+      "desired_phase": "running",
+      "observed_phase": "running",
+      "failure": null,
+      "connectivity": "connected",
+      "network_policy": {
+        "mode": "unrestricted",
+        "state": "enforced"
+      },
+      "capabilities": [],
+      "secrets": [],
+      "runtime_variables": [],
+      "outbound_identities": [],
+      "network_diagnostics": null
+    },
+    "qualification": "Observed runtime214 current/enforced/unrestricted. Saved configuration and actual connectivity readiness are distinct. No public URL request performed. This is not a timing authorization; joint correctness still pending.",
+    "candidateSource": "fd6ae6631654fc2d50cb703707db15df6ee782bd"
+  },
+  "consumedExpansion": [
+    {
+      "path": "tasks/evidence/AVOID-008/performance/final-c34-diagnose01-parent-gate.json",
+      "bytes": 1161,
+      "sha256": "cfbde8af863dbb4ed2b0ba9388d6ba31c0e036e97f6571cf3100dc8eb20c77da",
+      "donor": "parent exact file"
+    },
+    {
+      "path": "tasks/evidence/AVOID-008/performance/combined-c34-runtime01.json",
+      "bytes": 1155,
+      "sha256": "aeeecf0598da7641f6e1b19139e4edba8c90011280874eb133183ec464a88f83",
+      "donor": "parent exact file"
+    },
+    {
+      "path": "tasks/evidence/AVOID-008/performance/combined-c34-runtime01-raw.json",
+      "bytes": 1716,
+      "sha256": "2768b6fbe90a070680ef67f398167343164d7389414001760882c775a412795e",
+      "donor": "parent exact file"
+    },
+    {
+      "path": "dev/package.json",
+      "bytes": 255,
+      "sha256": "add82c136451f4b9430617d9e637b8d8def0312db464f6e0fbad073e5fcd3e91",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "dev/package-lock.json",
+      "bytes": 20822,
+      "sha256": "49305ffe0e14e58c15de5069c03d17760ffc7c544a4952ac3267451004064a66",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "dev/avoidance/contract.json",
+      "bytes": 8087,
+      "sha256": "aba40d0991c671225dcd264e3e046f44b7c98ffe2869a5371fa4e19b8178b8da",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-perf.cjs",
+      "bytes": 9051,
+      "sha256": "907e1a81f08be98c019d7db65a818a4218eda22bf1e332ceddccac7dd9dea75e",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-test-harness.cjs",
+      "bytes": 2689,
+      "sha256": "d0d76e2d5f76c5ed5a52aef821943097e401a3d800a21dd53c60b1873569217f",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-runtime-identity.cjs",
+      "bytes": 1943,
+      "sha256": "7dbe48452023a95f9680ce604a8dcdd62b4c68ad2a0854ed1ad8373ae2e8b8f3",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "dev/avoidance/stage-perf.cjs",
+      "bytes": 3631,
+      "sha256": "5e6faaea97663fa25b514d7ec08ea49ddf39d119327598c49fc05b03cb3ea7d4",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "dev/avoidance/fx-perf.cjs",
+      "bytes": 5288,
+      "sha256": "ea4595e0e512a1f45229bb953d78e03b22ab57c50fef2d955a931dbc9840bf82",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "tasks/AVOID-002.md",
+      "bytes": 23059,
+      "sha256": "6193c0d3569804231749eddc74e202a12187b8f336b289779c837918a7fcfb28",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    },
+    {
+      "path": "tasks/AVOID-004.md",
+      "bytes": 18578,
+      "sha256": "2aab7ce18a9cd1ee36c8e0bb87c29ef2f69c26aae07dac484ae623dc5843fc2f",
+      "donor": "30587fec7c745792ed412b40955825750e9bdbc0"
+    }
+  ],
+  "liveBrowserEncoder": [],
+  "zombiesExcluded": 1457,
+  "sourceProductJAENExactFd6": true,
+  "actualPackagePinsRef": "../final-c34-correctness01/preflight-and-dependencies.json",
+  "diskAvailableBytes": 612904960,
+  "reserveBytes": 262144000
+}

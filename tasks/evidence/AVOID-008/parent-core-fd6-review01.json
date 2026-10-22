@@ -1,0 +1,76 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-22T23:15:15.516799+00:00",
+  "source": "fd6ae6631654fc2d50cb703707db15df6ee782bd",
+  "label": "Exact fd6 core review, existing failures retained; not whole AVOID-008 completion",
+  "checks": {
+    "rawManifestEntriesVerified": 133,
+    "candidateActualGitFd6Files": 86,
+    "frozenPreparationFiles": 65,
+    "identicalTestHelpers": 13,
+    "enSelectorOnlyInverseExact": true,
+    "statusCounts": {
+      "baseline": {
+        "PASS": 8,
+        "FAIL": 3
+      },
+      "candidate": {
+        "PASS": 8,
+        "FAIL": 3
+      }
+    },
+    "all22ExitStatusAndRawLogsReviewed": true,
+    "ownedIdentities": 266,
+    "cleanupActions": 0,
+    "remainingOwned": 0
+  },
+  "limitations": [
+    "Each side has3 FAIL; matching failures are not PASS.",
+    "Lyric area stops at line35 before remaining UI/save assertions and original EN. EN selector derivative independently fails same assertion.",
+    "Compositing stops on first JA background transition before later/EN/export checks.",
+    "Save013 not executed or passed.",
+    "Later payload codec has not inherited these results yet.",
+    "Performance remains unqualified; four human composition checks remain.",
+    "Public results checking prohibited by user; not performed."
+  ],
+  "rawFailureLogs": [
+    {
+      "variant": "baseline",
+      "suite": "lyric_area_effects_test.cjs",
+      "exit": 1,
+      "rawText": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at /workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/regression-final01/snapshots/baseline/dev/lyric_area_effects_test.cjs:35:10 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_area_effects_test.cjs",
+      "exit": 1,
+      "rawText": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at /workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/regression-final01/snapshots/candidate/dev/lyric_area_effects_test.cjs:35:10 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+    },
+    {
+      "variant": "baseline",
+      "suite": "lyric_compositing_test.cjs",
+      "exit": 1,
+      "rawText": "page.evaluate: Error: background transition preserves each cut's composite: 30,105,214 vs 60,103,137\n    at check (eval at evaluate (:311:30), <anonymous>:2:49)\n    at close (eval at evaluate (:311:30), <anonymous>:60:46)\n    at eval (eval at evaluate (:311:30), <anonymous>:82:13)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/regression-final01/snapshots/baseline/dev/lyric_compositing_test.cjs:13:33 {\n  log: []\n}\n"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_compositing_test.cjs",
+      "exit": 1,
+      "rawText": "page.evaluate: Error: background transition preserves each cut's composite: 30,105,214 vs 60,103,137\n    at check (eval at evaluate (:311:30), <anonymous>:2:49)\n    at close (eval at evaluate (:311:30), <anonymous>:60:46)\n    at eval (eval at evaluate (:311:30), <anonymous>:82:13)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/regression-final01/snapshots/candidate/dev/lyric_compositing_test.cjs:13:33 {\n  log: []\n}\n"
+    },
+    {
+      "variant": "baseline",
+      "suite": "lyric_area_effects_en_only.cjs",
+      "exit": 1,
+      "rawText": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at /workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/regression-final01/snapshots/baseline/dev/lyric_area_effects_en_only.cjs:35:10 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_area_effects_en_only.cjs",
+      "exit": 1,
+      "rawText": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at /workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/regression-final01/snapshots/candidate/dev/lyric_area_effects_en_only.cjs:35:10\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:502:9) {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+    }
+  ],
+  "rawResultsSHA256": "517eac5df69e46b16f050c4590be04a16521968460e15aa315b30fbe27835725",
+  "candidateManifestSHA256": "37aea10f8be8cd1d1937a7b1d35e751914226818d65aa010e792423e83ed6731"
+}

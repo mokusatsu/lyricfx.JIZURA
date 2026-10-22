@@ -7,6 +7,10 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- 統合fd6の既存回帰22jobを[親が元ログ・133記録hash・86 Git入力・13共通試験入力で独立照合](evidence/AVOID-008/parent-core-fd6-review01.json)。変更前後とも8成功/3失敗で、新規候補だけの失敗はなし。歌詞areaの35行とcompositingの既知RGB不一致は失敗のまま保持し、その先のUI/保存/EN/exportを成功にはしない。続く[分離CPU診断の親レビュー](evidence/AVOID-008/parent-final-c34-profile02-review.json)では113保存pin・173依存file・4実profileを確認。warm finalizationのdecodeが主負荷だったため、元key/dependency/二度目verify/通常freeze/両容量上限を保つpayload専用のJSON tree＋alias修復形式を指定担当へ実装依頼。約30%の縮小はoffline表現の推定であり、速度合格ではない。新codecの正確性/性能・正式1000・必要4構図の人間確認は未完、main製品への結合前に008内で継続する。
+
+- 隔離結合fd6の[親実raw正確性レビュー](evidence/AVOID-008/parent-final-c34-correctness03-review.json)は40cold/warm全値/alias、25負例、173依存file、104開始/保存pin、110ledgerを受入。38行は旧03とkey会計以外完全同一、変更2行のみ障子不足/値札safeへ更新。続く[元100の単独診断](evidence/AVOID-008/parent-final-c34-diagnose01-review.json)は元入力SHA不変で100/100 staged・実record/replay/観測各80・全34ID・font/cmapを確認したが、ON計画54.1+72.4=126.5ms/基準45.4ms（2.786倍）、描画追加4.5msで未達。OFF単一点の基準230.7msも置換せず保存。計画p95/正式1000成功とはせず、新sourceのCPU診断だけを追加して原因を絞る。main製品はhang5fのまま、証拠6dd7241をpush済み。全体回帰22job・必要4構図の人間確認は未完、009以降未着手。
+
 - shadow1214044は[親source/実Canvasレビュー](evidence/AVOID-008/parent-shadow07-review.json)を通過。native camera rootを保つ09a限定修正後、日英120RGBA組・40guard・82役割字体文字/cmap・34font URL byte・294開始終了pin・両filter PNG2組byte一致を実照合。全10条件はtyped不足/safe0であり、blurを変えたり安全と偽認したりしない。原1画素FAIL・fixtureの字体/guardcode/URL失敗を保持。構図変更なしのためこの追加は人間不要、別4構図は必要なまま。cache/hang/shadowの[仮結合の独立逆変換・JAEN全84bundle](evidence/AVOID-008/parent-final-c34-provisional-merge01.json)まで確認したが、旧be15版の証拠なので修正版結合/全経路/性能/22回帰は未受入。source/checkpointを混同せず008のみ継続する。
 
 - shadowのbe15 scope修正は[親source/pureレビュー](evidence/AVOID-008/parent-shadow-source01-review.json)で受入（12入力180不足/22positive49negative、実Canvas未受入）。初回browser01は試験字体の未収録「雨」で停止、元corpusを変えず追加mixed fixtureを収録済み字へ訂正したbrowser02もJA横長t=.6の実RGBA不一致で停止。両FAIL/旧runnerを保持し、原因の1時刻再現を担当へ返却。shadow/cacheはmain未結合、最終sourceは仮組立てのみ、全体回帰22job/正式性能/人間4構図は引き続き未完。main製品は値札受入版5f982bcまでpush操作成功、公開結果確認なし。

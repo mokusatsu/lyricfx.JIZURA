@@ -1,0 +1,178 @@
+{
+  "token": "c62d450258c340488084f9f207370894",
+  "root": {
+    "pid": 351389,
+    "startTicks": "8957513",
+    "ppid": 349667,
+    "pgid": 351389,
+    "session": 351389,
+    "state": "R"
+  },
+  "preexistingIdentityCount": 3074,
+  "owned": [
+    {
+      "identity": {
+        "pid": 351389,
+        "startTicks": "8957513",
+        "ppid": 349667,
+        "pgid": 351389,
+        "session": 351389,
+        "state": "R"
+      },
+      "proof": "Direct Popen child with PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351402,
+        "startTicks": "8957553",
+        "ppid": 351389,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "R"
+      },
+      "proof": "Node spawn registry with root PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351418,
+        "startTicks": "8957559",
+        "ppid": 349667,
+        "pgid": 351417,
+        "session": 351417,
+        "state": "S"
+      },
+      "proof": "Exact unique inherited job token plus start identity"
+    },
+    {
+      "identity": {
+        "pid": 351422,
+        "startTicks": "8957560",
+        "ppid": 351402,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351423,
+        "startTicks": "8957560",
+        "ppid": 351402,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351445,
+        "startTicks": "8957567",
+        "ppid": 351422,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351448,
+        "startTicks": "8957567",
+        "ppid": 351402,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351421,
+        "startTicks": "8957560",
+        "ppid": 349667,
+        "pgid": 351420,
+        "session": 351420,
+        "state": "S"
+      },
+      "proof": "Exact unique inherited job token plus start identity"
+    },
+    {
+      "identity": {
+        "pid": 351469,
+        "startTicks": "8957575",
+        "ppid": 351423,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351486,
+        "startTicks": "8957584",
+        "ppid": 351423,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "R"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351495,
+        "startTicks": "8957587",
+        "ppid": 351423,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 351496,
+        "startTicks": "8957587",
+        "ppid": 351423,
+        "pgid": 351402,
+        "session": 351402,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    }
+  ],
+  "actions": [],
+  "reapedAdoptedChildren": [
+    {
+      "pid": 351418,
+      "startTicks": "8957559",
+      "waitCode": 1,
+      "waitStatus": 0
+    },
+    {
+      "pid": 351422,
+      "startTicks": "8957560",
+      "waitCode": 1,
+      "waitStatus": 0
+    },
+    {
+      "pid": 351423,
+      "startTicks": "8957560",
+      "waitCode": 1,
+      "waitStatus": 0
+    },
+    {
+      "pid": 351421,
+      "startTicks": "8957560",
+      "waitCode": 1,
+      "waitStatus": 0
+    }
+  ],
+  "remainingOwnedIdentities": [],
+  "errors": [],
+  "complete": true,
+  "seconds": 0.32326556199404877,
+  "policy": "No killpg and no PID-only signal. Direct spawn/descendant/unique-token ownership plus start identity; signal uses pinned pidfd. Python process subreaper reaps only owned adopted children."
+}

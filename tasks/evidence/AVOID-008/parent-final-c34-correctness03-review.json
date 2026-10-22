@@ -1,0 +1,69 @@
+{
+  "task": "AVOID-008",
+  "reviewer": "parent",
+  "reviewedUTC": "2026-10-22T22:51:27.826902+00:00",
+  "result": "JOINT_CACHE_CORRECTNESS_ACCEPTED_NOT_PERFORMANCE",
+  "sourceCommit": "fd6ae6631654fc2d50cb703707db15df6ee782bd",
+  "rawSHA256": "9fb6ba7355320941f79b7f8c3e2e79937d618d495075e11c14aa455dc427441b",
+  "rawBytes": 13024745,
+  "sourceArchiveLivePins": 104,
+  "actualPackageFilesChecked": 173,
+  "coldWarmFullValueAndAliasPairs": 40,
+  "wholeResultHits": 40,
+  "coldRecordCalls": 419,
+  "warmRecordCalls": 0,
+  "allOldRowFieldsExactExceptKeyLedger": 38,
+  "onlyAdmittedChangedRows": [
+    {
+      "layout": "shoji",
+      "changedKeys": [
+        "coldCalls",
+        "diagnostics",
+        "safety",
+        "coldSerializedPlan",
+        "warmSerializedPlan",
+        "coldObjectGraph",
+        "warmObjectGraph"
+      ],
+      "from": "unsupported/preserved",
+      "to": "insufficient-space",
+      "coldRecordCalls": 2
+    },
+    {
+      "layout": "priceTag",
+      "changedKeys": [
+        "coldCalls",
+        "diagnostics",
+        "safety",
+        "coldSerializedPlan",
+        "warmSerializedPlan",
+        "coldObjectGraph",
+        "warmObjectGraph"
+      ],
+      "from": "unsupported/preserved",
+      "to": "certified-hold-adapter",
+      "coldRecordCalls": 7
+    }
+  ],
+  "actualLedgersChecked": 110,
+  "negativeCases": 25,
+  "nonCControls": 4,
+  "safetyStates": {
+    "insufficient-space": 21,
+    "certified-hold-adapter": 14,
+    "unsupported/preserved": 5
+  },
+  "nativeFrames": {
+    "selectedGroupsOldExact": 6,
+    "coldFrames": 18,
+    "warmFrames": 18,
+    "coldObservations": 15,
+    "warmObservations": 15,
+    "independentRenderRecordReplayCount": null
+  },
+  "derivedTimingRunnerReview": "Only3fixture references plusexplicit original/derived resourcepins changed; exactreverse equal original44e0. Fixture1virtualdomainposttiming insertion reviewed separately. Originalcorpus/timers/guards/thresholds preserved.",
+  "limits": [
+    "Newhang/shadow jointactualrender still awaitsoriginal mixed100 diagnostic;40valuecache pairs not all34pixel coverage.",
+    "No formal speed/1000/core22 results. Source staysisolatedfrommain. No public checks."
+  ]
+}

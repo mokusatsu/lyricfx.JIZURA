@@ -1,0 +1,65 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-22T23:16:48.232509+00:00",
+  "source": "fd6ae6631654fc2d50cb703707db15df6ee782bd",
+  "acceptance": "Diagnostic CPU attribution accepted; no performance qualification",
+  "archivePinsVerified": 113,
+  "sourceGitExact": 86,
+  "actualPackageFilesVerified": 173,
+  "fixtureFiveReverseTransformsExact": true,
+  "normalizedAndCompleteReferenceSummaryExact": true,
+  "sixWholeHitsAndFreshFrozenGraphAssertionsPerSide": true,
+  "rawProfilesIndependentlySummed": [
+    {
+      "on": true,
+      "phase": "warm-finalization",
+      "samples": 3624,
+      "rootedMS": 562.1450000000006,
+      "GCMS": 104.20100000000016,
+      "unrootedMS": 764.9809999999998,
+      "decodeMS": 302.3599999999983,
+      "boundaryMarginMS": 6.511999991536141
+    },
+    {
+      "on": true,
+      "phase": "render",
+      "samples": 3182,
+      "rootedMS": 478.26600000000053,
+      "GCMS": 46.66699999999999,
+      "unrootedMS": 371.1620000000004,
+      "decodeMS": 0.0,
+      "boundaryMarginMS": 5.390999999642372
+    },
+    {
+      "on": false,
+      "phase": "warm-finalization",
+      "samples": 1237,
+      "rootedMS": 206.48399999999953,
+      "GCMS": 4.527999999999999,
+      "unrootedMS": 287.9440000000001,
+      "decodeMS": 43.330999999999996,
+      "boundaryMarginMS": 4.011000004410744
+    },
+    {
+      "on": false,
+      "phase": "render",
+      "samples": 994,
+      "rootedMS": 162.0250000000003,
+      "GCMS": 0.17,
+      "unrootedMS": 53.90399999999998,
+      "decodeMS": 0.0,
+      "boundaryMarginMS": 2
+    }
+  ],
+  "limitations": [
+    "CPU sampled timings contain profiler overhead; not formal speed.",
+    "Only one extra six-hit profile per side; no formal1000.",
+    "Inclusive function costs overlap and are not additive.",
+    "Per-ID samples use inferred clocks and exclude stated boundary margin; many frames lack interior samples.",
+    "Donor source may be changing; review uses immutable archived fd6/Git.",
+    "Native parse cost attributed to containing source position, not independently timed native call.",
+    "New codec still needs graph/guard/budget oracles and new-source correctness.",
+    "Render additional4.5ms remains unqualified.",
+    "No public checks or visual viewing."
+  ]
+}
