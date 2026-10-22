@@ -1,0 +1,4482 @@
+{
+  "start": "2026-10-22T19:39:13.666Z",
+  "pins": {
+    "index.html": "e5a53d021dacb9815913a73cba95f003eff7f2716c8596a25c707d692407aff7",
+    "en/index.html": "d8330de0ec44ab2af742980741a2bea09594d5fc84421cd83f27ef860fef936a",
+    "src/09h_layoutsC_editorial.js": "a81810bde40efe7b9b7053fd4337c64b0fe9cbf812967896ee1c97e326847a36",
+    "src/11p_layoutsC.js": "7caafc8073dd12627691d64c8ea3179a4bd509026eb5d14451e96a84f4263ef1",
+    "dev/avoidance/layouts-c-editorial-proofread-boundary.cjs": "8a048cd95f04c6fcf8960ac454c07401d41491d2bc3b0c2746b3bf4b7b130dc2"
+  },
+  "rows": [
+    {
+      "layout": "proofread",
+      "variant": "stamp",
+      "mode": "epochs",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42,
+        "regions": [
+          {
+            "id": "epoch-0",
+            "start": 0,
+            "end": 0.5,
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0.02
+          },
+          {
+            "id": "epoch-1",
+            "start": 0.5,
+            "end": 1,
+            "center": {
+              "x": 0.5,
+              "y": 0.42
+            },
+            "radius": 0.05
+          },
+          {
+            "id": "epoch-2",
+            "start": 1,
+            "end": 1.5,
+            "center": {
+              "x": 1,
+              "y": 1
+            },
+            "radius": 0.1
+          },
+          {
+            "id": "epoch-3",
+            "start": 1.5,
+            "end": 2,
+            "center": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 0.15
+          },
+          {
+            "id": "epoch-4",
+            "start": 2,
+            "end": 2.5,
+            "center": {
+              "x": 0.9,
+              "y": 0.1
+            },
+            "radius": 0.2
+          },
+          {
+            "id": "epoch-5",
+            "start": 2.5,
+            "end": 3,
+            "center": {
+              "x": 0.25,
+              "y": 0.75
+            },
+            "radius": 0.25
+          },
+          {
+            "id": "epoch-6",
+            "start": 3,
+            "end": 3.5,
+            "center": {
+              "x": 0.75,
+              "y": 0.25
+            },
+            "radius": 0.35
+          },
+          {
+            "id": "epoch-7",
+            "start": 3.5,
+            "end": 4,
+            "center": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "radius": 0.45
+          }
+        ]
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 16,
+        "reconstructed": 15,
+        "cacheHits": 3,
+        "rejected": 4,
+        "unique": 15,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "epoch-0",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-1",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-2",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-3",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-4",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-5",
+          "status": "safe-hold",
+          "composition": {
+            "proofMargin": 0.7,
+            "strategy": "proofread-native-margin-packing"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-6",
+          "status": "safe-hold",
+          "composition": {
+            "proofMargin": 0.5,
+            "strategy": "proofread-native-margin-packing"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-7",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-bottom-proof-margin",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 26,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 26,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 26,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5001,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "stamp",
+      "mode": "ghost",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "ghost": true,
+        "camera": "dutch",
+        "radius": 0.05,
+        "cx": 0,
+        "cy": 1
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "stamp",
+      "mode": "aspect-before",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 1000,
+        "H": 1079,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 16,
+        "reconstructed": 15,
+        "cacheHits": 0,
+        "rejected": 1,
+        "unique": 15,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-bottom-proof-margin",
+              "status": "rejected",
+              "reason": "PROOF_LEADER_MAIN_COLLISION"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "stamp",
+      "mode": "aspect-after",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 1000,
+        "H": 1081,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 16,
+        "reconstructed": 15,
+        "cacheHits": 0,
+        "rejected": 9,
+        "unique": 15,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-bottom-proof-margin",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "stamp",
+      "mode": "short",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "duration": 0.8,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "unsupported",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INSUFFICIENT_HOLD_WINDOW",
+          "details": "Editorial source has not completed all required reveals before exit",
+          "safety": "unsupported"
+        }
+      ],
+      "observations": [],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "stamp",
+      "mode": "long",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "世界の向こうに響く歌声をいつまでも覚えている夜明けの空へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 16,
+        "reconstructed": 15,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 15,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-bottom-proof-margin",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 29,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 31,
+          "relaxedEvents": 4,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 35,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 35,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 35,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 11,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "stamp",
+      "mode": "explicit-small",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 0.7,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 2,
+        "reconstructed": 1,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 1,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": {
+            "proofMargin": 0.7,
+            "strategy": "proofread-native-margin-packing"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "stamp",
+      "mode": "explicit-large",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 1.4,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 4,
+        "reconstructed": 3,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 3,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 32,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "no-stamp",
+      "mode": "epochs",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": false,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42,
+        "regions": [
+          {
+            "id": "epoch-0",
+            "start": 0,
+            "end": 0.5,
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0.02
+          },
+          {
+            "id": "epoch-1",
+            "start": 0.5,
+            "end": 1,
+            "center": {
+              "x": 0.5,
+              "y": 0.42
+            },
+            "radius": 0.05
+          },
+          {
+            "id": "epoch-2",
+            "start": 1,
+            "end": 1.5,
+            "center": {
+              "x": 1,
+              "y": 1
+            },
+            "radius": 0.1
+          },
+          {
+            "id": "epoch-3",
+            "start": 1.5,
+            "end": 2,
+            "center": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 0.15
+          },
+          {
+            "id": "epoch-4",
+            "start": 2,
+            "end": 2.5,
+            "center": {
+              "x": 0.9,
+              "y": 0.1
+            },
+            "radius": 0.2
+          },
+          {
+            "id": "epoch-5",
+            "start": 2.5,
+            "end": 3,
+            "center": {
+              "x": 0.25,
+              "y": 0.75
+            },
+            "radius": 0.25
+          },
+          {
+            "id": "epoch-6",
+            "start": 3,
+            "end": 3.5,
+            "center": {
+              "x": 0.75,
+              "y": 0.25
+            },
+            "radius": 0.35
+          },
+          {
+            "id": "epoch-7",
+            "start": 3.5,
+            "end": 4,
+            "center": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "radius": 0.45
+          }
+        ]
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 16,
+        "reconstructed": 15,
+        "cacheHits": 3,
+        "rejected": 4,
+        "unique": 15,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "epoch-0",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-1",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-2",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-3",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-4",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-5",
+          "status": "safe-hold",
+          "composition": {
+            "proofMargin": 0.7,
+            "strategy": "proofread-native-margin-packing"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-6",
+          "status": "safe-hold",
+          "composition": {
+            "proofMargin": 0.5,
+            "strategy": "proofread-native-margin-packing"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-7",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-bottom-proof-margin",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 26,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 26,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 26,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5001,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "no-stamp",
+      "mode": "ghost",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": false,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "ghost": true,
+        "camera": "dutch",
+        "radius": 0.05,
+        "cx": 0,
+        "cy": 1
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "no-stamp",
+      "mode": "aspect-before",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": false,
+          "tombo": true
+        },
+        "W": 1000,
+        "H": 1079,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 16,
+        "reconstructed": 15,
+        "cacheHits": 0,
+        "rejected": 1,
+        "unique": 15,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-bottom-proof-margin",
+              "status": "rejected",
+              "reason": "PROOF_LEADER_MAIN_COLLISION"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "no-stamp",
+      "mode": "aspect-after",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": false,
+          "tombo": true
+        },
+        "W": 1000,
+        "H": 1081,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 16,
+        "reconstructed": 15,
+        "cacheHits": 0,
+        "rejected": 9,
+        "unique": 15,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-bottom-proof-margin",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "no-stamp",
+      "mode": "short",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": false,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "duration": 0.8,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "unsupported",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INSUFFICIENT_HOLD_WINDOW",
+          "details": "Editorial source has not completed all required reveals before exit",
+          "safety": "unsupported"
+        }
+      ],
+      "observations": [],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "no-stamp",
+      "mode": "long",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": false,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "世界の向こうに響く歌声をいつまでも覚えている夜明けの空へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 16,
+        "reconstructed": 15,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 15,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-bottom-proof-margin",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "proofread-native-proofMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 29,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 31,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 31,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 31,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 31,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "no-stamp",
+      "mode": "explicit-small",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": false,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 0.7,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 2,
+        "reconstructed": 1,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 1,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": {
+            "proofMargin": 0.7,
+            "strategy": "proofread-native-margin-packing"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "proofread",
+      "variant": "no-stamp",
+      "mode": "explicit-large",
+      "spec": {
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "circle",
+            "wave"
+          ],
+          "stamp": false,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 1.4,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 4,
+        "reconstructed": 3,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 3,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "proofread-native-margin-packing",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 25,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "guards": [
+    {
+      "test": {
+        "layout": "proofread",
+        "time": 0.2,
+        "params": {
+          "marks": [
+            "circle",
+            "box"
+          ],
+          "stamp": true,
+          "tombo": true
+        }
+      },
+      "center": {
+        "x": 0.31499922053019197,
+        "y": 0.5032118055555556
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        1.3300999999999998,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    },
+    {
+      "test": {
+        "layout": "proofread",
+        "time": 0.2,
+        "params": {
+          "marks": [
+            "box",
+            "circle"
+          ],
+          "stamp": true,
+          "tombo": true
+        }
+      },
+      "center": {
+        "x": 0.31499922053019197,
+        "y": 0.5032118055555556
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        1.3300999999999998,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    },
+    {
+      "test": {
+        "layout": "proofread",
+        "time": 0.2,
+        "params": {
+          "marks": [
+            "wave",
+            "circle"
+          ],
+          "stamp": true,
+          "tombo": true
+        }
+      },
+      "center": {
+        "x": 0.31499922053019197,
+        "y": 0.5032118055555556
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        1.3300999999999998,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    },
+    {
+      "test": {
+        "layout": "proofread",
+        "time": 0.2,
+        "params": {
+          "marks": [
+            "dots",
+            "circle"
+          ],
+          "stamp": true,
+          "tombo": true
+        }
+      },
+      "center": {
+        "x": 0.31499922053019197,
+        "y": 0.5032118055555556
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        1.3300999999999998,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    }
+  ],
+  "browser": "154.0.8037.57",
+  "sourceUnchanged": true,
+  "passed": true,
+  "end": "2026-10-22T19:39:18.272Z"
+}

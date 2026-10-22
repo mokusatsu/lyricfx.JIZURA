@@ -1,5 +1,8 @@
 # Browser and MCP verification
 
+> **Current instruction (2026-10-22): do not verify public results.**
+> The user permanently stopped public URL requests, HTTP/hash/image/video/UI/startup/smoke checks and scheduled rechecks, including delegated checks. [AGENTS.md](../AGENTS.md) overrides all older deployment-verification commands below. Those commands are historical documentation, not authorization to execute them. Authorized publication and local checks may continue; record publication-operation returns without a follow-up public-result check. Resume public verification only after an explicit new user instruction.
+
 ## Reproduce the checks
 
 Use Node.js 24, Python 3.12 and pnpm 11.25.0. From the repository root:

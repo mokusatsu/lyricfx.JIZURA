@@ -12430,7 +12430,42 @@ function mapping(program,cut){
  const items=program.events.filter(e=>e.kind==='item'),main=items.filter(e=>e.args[0].placementMain).map(e=>e.args[0]);if(!main.length||norm(main.map(i=>i.text).join(''))!==norm(cut.text))fail('SOURCE_COVERAGE','Every ordered editorial main occurrence must be retained exactly once');
  const nativeFontSize=font=>{const m=String(font).match(/(?:^|\s)([0-9]+(?:\.[0-9]+)?)px(?:\s|\/|$)/),size=m?Number(m[1]):NaN;if(!Number.isFinite(size)||size<=0)fail('EDITORIAL_NATIVE_FONT_SIZE','Finite positive CSS px size required for every fastRow copy');return size;};
  const metadata=program.events.filter(e=>e.kind==='nativeText'||e.kind==='item'&&!e.args[0].placementMain).map(e=>e.kind==='nativeText'?{kind:e.kind,text:e.args[0],font:e.args[3].font.replace(/[\d.]+px/,'SIZEpx'),size:nativeFontSize(e.args[3].font)}:{kind:e.kind,text:e.args[0].text,font:e.args[0].font,size:e.args[0].size});
- return {...(cut.layout==='dictionary'?{dictionary:dictionaryCorrespondence(program,cut)}:{}),...(cut.layout==='swissGrid'?{swissClocks:program.events.map(e=>({kind:e.kind,entryEnd:e.nativeCBody?.entryEnd??0,exitStart:e.nativeCBody?.exitStart??null})),swissAccent:program.events.filter(e=>e.nativeCBody?.entryEnd===.7&&['circle','rect'].includes(e.kind)).map(e=>({kind:e.kind,width:e.kind==='circle'?2*e.args[2]:e.args[2],height:e.kind==='circle'?2*e.args[2]:e.args[3]}))}:{}),...(cut.layout==='numbered'?{numberedClocks:program.events.filter(e=>e.kind==='item'&&e.clips?.length).map(e=>({text:e.args[0].text,kind:e.nativeCBody?.kind,entryEnd:e.nativeCBody?.entryEnd,exitStart:e.nativeCBody?.exitStart}))}:{}),main:main.map(i=>({text:i.text,font:i.font,size:i.size,mi:i.mi??0,lead:i.lead??1.3,track:i.track??0})),metadata,shapes:program.events.filter(e=>!['item','nativeText'].includes(e.kind)).map(e=>e.kind),complete:true};
+ return {...(cut.layout==='proofread'?{proofOwners:program.events.map(e=>({kind:e.kind,owner:e.nativeCBody?.proofOwner?.owner??null,occurrence:e.nativeCBody?.proofOwner?.occurrence??null,mark:e.nativeCBody?.proofOwner?.mark??null,target:e.nativeCBody?.proofOwner?.target??null,sourceSize:e.nativeCBody?.proofOwner?.sourceSize??null,sourceStart:e.nativeCBody?.proofOwner?.sourceStart??null}))}:{}),...(cut.layout==='dictionary'?{dictionary:dictionaryCorrespondence(program,cut)}:{}),...(cut.layout==='swissGrid'?{swissClocks:program.events.map(e=>({kind:e.kind,entryEnd:e.nativeCBody?.entryEnd??0,exitStart:e.nativeCBody?.exitStart??null})),swissAccent:program.events.filter(e=>e.nativeCBody?.entryEnd===.7&&['circle','rect'].includes(e.kind)).map(e=>({kind:e.kind,width:e.kind==='circle'?2*e.args[2]:e.args[2],height:e.kind==='circle'?2*e.args[2]:e.args[3]}))}:{}),...(cut.layout==='numbered'?{numberedClocks:program.events.filter(e=>e.kind==='item'&&e.clips?.length).map(e=>({text:e.args[0].text,kind:e.nativeCBody?.kind,entryEnd:e.nativeCBody?.entryEnd,exitStart:e.nativeCBody?.exitStart}))}:{}),main:main.map(i=>({text:i.text,font:i.font,size:i.size,mi:i.mi??0,lead:i.lead??1.3,track:i.track??0})),metadata,shapes:program.events.filter(e=>!['item','nativeText'].includes(e.kind)).map(e=>e.kind),complete:true};
+}
+function editorialPolygonsIntersect(a,b){
+ for(const p of [a,b])for(let i=0;i<p.length;i++){const v=p[i],w=p[(i+1)%p.length],nx=-(w[1]-v[1]),ny=w[0]-v[0],pa=a.map(q=>q[0]*nx+q[1]*ny),pb=b.map(q=>q[0]*nx+q[1]*ny);if(Math.max(...pa)<Math.min(...pb)-1e-7||Math.max(...pb)<Math.min(...pa)-1e-7)return false;}
+ return true;
+}
+function proofLeaderSupports(points,pad){return points.slice(1).map((p,i)=>A.convexHull([points[i],p].flatMap(q=>[[q[0]-pad,q[1]-pad],[q[0]+pad,q[1]-pad],[q[0]+pad,q[1]+pad],[q[0]-pad,q[1]+pad]])));}
+function proofMarginQuality(program,cut,expected,actual){
+ const own=e=>e.nativeCBody?.proofOwner,near=(a,b)=>Math.abs(a-b)<1e-6;
+ if(JSON.stringify(actual.proofOwners)!==JSON.stringify(expected.proofOwners)||actual.proofOwners.some(o=>!o.owner))fail('PROOF_OWNER_CORRESPONDENCE','Every native trim/mark/leader/note/stamp operation and exact target occurrence must survive');
+ if(actual.metadata.some((m,i)=>m.size!==expected.metadata[i].size))fail('PROOF_NATIVE_NOTE_POINTS','This proof margin preserves actual native annotation and stamp point sizes');
+ const main=program.events.find(e=>e.kind==='item'&&e.args[0].placementMain),it=main.args[0],gl=[];for(const g of J.layoutText(it)){if(g.ch===' '||g.ch==='　')continue;gl.push({ch:g.ch,x:it.x+g.x+g.vx,y:it.y+g.y+g.vy,w:g.w,h:g.h,li:g.li});}
+ const marks=program.events.filter(e=>own(e)?.owner==='pen-mark'),leaders=program.events.filter(e=>own(e)?.owner==='pen-leader'),notes=program.events.filter(e=>own(e)?.owner==='pen-note');if(!marks.length||leaders.length!==1||notes.length!==1||gl.length>4||gl.length<2)fail('PROOF_MARGIN_DOMAIN','Short native single-mark proof with one exact note/leader required');
+ const lead=leaders[0],tag=own(lead),target=tag.target.map(i=>gl[i]);if(!target.length||target.some(g=>!g)||new Set(tag.target).size!==target.length||target.some(g=>g.li!==target[0].li))fail('PROOF_TARGET_RUN','Native contiguous target glyph run required');
+ for(let i=1;i<tag.target.length;i++)if(tag.target[i]!==tag.target[i-1]+1)fail('PROOF_TARGET_RUN','A printed proof run may not skip a source glyph');
+ const rx1=Math.max(...target.map(g=>g.x+g.w/2)),g=target[0],anchor=tag.mark==='circle'?Array.from({length:14},(_,i)=>{const u=i/40,a=-2.2+u*J.TAU*1.12,k=1+J.rs(cut.params.g1,i>>2,7)*.05+u*.06;return [g.x+Math.cos(a)*g.w*.72*k,g.y+Math.sin(a)*g.h*.66*k];}).reduce((best,q)=>q[1]<best[1]?q:best):tag.mark==='box'?[rx1+it.size*.14,g.y-it.size*.6]:[rx1,g.y+it.size*(tag.mark==='wave'?.66:.7)],pts=lead.args[0],note=notes[0],nt=own(note),ni=note.args[0];
+ if(lead.kind!=='line'||!Array.isArray(pts)||pts.length<2||pts.some(p=>!Array.isArray(p)||p.length!==2||!p.every(Number.isFinite)))fail('PROOF_LEADER_ATTACHMENT','Finite full leader path required');
+ const leaderPad=lead.args[2]/2+2,supports=proofLeaderSupports(pts,leaderPad),noteInk=note.polygons;if(!Number.isFinite(leaderPad)||leaderPad<2||!noteInk?.length)fail('PROOF_LEADER_ATTACHMENT','Actual rotated note ink and finite stroke/AA support required');
+ if(supports.some(p=>noteInk.some(q=>editorialPolygonsIntersect(p,q))))fail('PROOF_LEADER_INK_COLLISION','A complete leader segment including pen half-width/AA crossed rotated handwritten note ink');
+ if(supports.some(p=>main.polygons.some(q=>editorialPolygonsIntersect(p,q))))fail('PROOF_LEADER_MAIN_COLLISION','A new proof margin leader may not cross the complete main glyph ink');
+ const stampEvents=program.events.filter(e=>own(e)?.owner==='stamp'),stampSupports=stampEvents.flatMap(e=>e.polygons.map(p=>scaled(p,A.point(e.matrix,[0,0]),0,1.5)));if(supports.some(p=>stampSupports.some(q=>editorialPolygonsIntersect(p,q))))fail('PROOF_LEADER_STAMP_COLLISION','Complete leader stroke/AA support may not cross any late stamp overshoot ink');
+ const nb=A.bounds(noteInk),mm=J.measure(it),trimPad=it.size*.75*cut.layoutCRecipe.proofMargin,tx0=it.x-mm.w/2-trimPad,ty0=it.y-mm.h/2-trimPad,ty1=it.y+mm.h/2+trimPad,left=Math.min(tx0-it.size*.18,nb.x0-leaderPad-ni.size*.25),lane=tag.mark==='circle'||tag.mark==='box'?ty0-it.size*.2:Math.min(ty1+it.size*.1,nb.y0-leaderPad-ni.size*.15),end=nb.x0-leaderPad-2,route=[anchor,[anchor[0],lane],[left,lane],[left,ni.y],[end,ni.y]];
+ if(tag.route!=='bottom-left-ink-elbow-v1'||pts.length!==5||route.some((p,i)=>p.some((v,j)=>!near(v,pts[i][j])))||anchor.some((v,i)=>!near(v,tag.anchor[i]))||tag.destination.some((v,i)=>!near(v,pts[4][i]))||!near(ni.x,nt.anchor[0])||!near(ni.y,nt.anchor[1])||ni.rot!==-4)fail('PROOF_LEADER_ATTACHMENT','Exact finite outside-margin elbow must connect the original target and approach actual note ink from the left');
+ const rx0=Math.min(...target.map(g=>g.x-g.w/2)),pw=Math.max(2,it.size*.035),seed=cut.params.g1;let expectedMark;
+ if(tag.mark==='circle'){expectedMark=Array.from({length:41},(_,i)=>{const u=i/40,a=-2.2+u*J.TAU*1.12,k=1+J.rs(seed,i>>2,7)*.05+u*.06;return [g.x+Math.cos(a)*g.w*.72*k,g.y+Math.sin(a)*g.h*.66*k];});}
+ else if(tag.mark==='box'){const q=it.size*.14;expectedMark=[[rx0-q,g.y-it.size*.62],[rx1+q,g.y-it.size*.6],[rx1+q*.8,g.y+it.size*.6],[rx0-q*1.1,g.y+it.size*.62],[rx0-q,g.y-it.size*.7]];}
+ else if(tag.mark==='wave')expectedMark=Array.from({length:31},(_,i)=>[J.lerp(rx0,rx1,i/30),g.y+it.size*.66+Math.sin(i/30*(rx1-rx0)/(it.size*.18))*it.size*.06]);
+ const pointsMatch=(a,b)=>Array.isArray(a)&&a.length===b.length&&a.every((q,i)=>q.length===2&&q.every((v,j)=>near(v,b[i][j])));
+ if(expectedMark&&(marks.length!==1||marks[0].kind!=='line'||!pointsMatch(marks[0].args[0],expectedMark)||!near(marks[0].args[2],pw))||!expectedMark&&(marks.length!==target.length||marks.some((e,i)=>e.kind!=='circle'||!near(e.args[0],target[i].x)||!near(e.args[1],g.y+it.size*.7)||!near(e.args[2],pw*1.2))))fail('PROOF_MARK_ATTACHMENT','Complete original pen ellipse/box/wave/dots must remain on their exact target glyphs');
+ const trims=program.events.filter(e=>own(e)?.owner==='trim-marks'),m=J.measure(it),pad=it.size*.75*cut.layoutCRecipe.proofMargin,x0=it.x-m.w/2-pad,x1=it.x+m.w/2+pad,y0=it.y-m.h/2-pad,y1=it.y+m.h/2+pad,G=it.size*.18,L=it.size*.55,expectedTrim=[];
+ if(cut.params.tombo){for(const [x,y,dx,dy]of [[x0,y0,-1,-1],[x1,y0,1,-1],[x0,y1,-1,1],[x1,y1,1,1]])expectedTrim.push([[x+dx*G,y],[x+dx*(G+L),y]],[[x+dx*G*1.8,y+dy*G*.8],[x+dx*(G+L),y+dy*G*.8]],[[x,y+dy*G],[x,y+dy*(G+L)]],[[x+dx*G*.8,y+dy*G*1.8],[x+dx*G*.8,y+dy*(G+L)]]);for(const [x,y,v]of [[it.x,y0-G-L/2,0],[it.x,y1+G+L/2,0],[x0-G-L/2,it.y,1],[x1+G+L/2,it.y,1]])expectedTrim.push(v?[[x-L/2,y],[x+L/2,y]]:[[x-L*.9,y],[x+L*.9,y]],v?[[x,y-L*.9],[x,y+L*.9]]:[[x,y-L/2],[x,y+L/2]]);}
+ if(trims.length!==expectedTrim.length||trims.some((e,i)=>e.kind!=='line'||!pointsMatch(e.args[0],expectedTrim[i])))fail('PROOF_TRIM_ATTACHMENT','All native trim corners and registration crosses must surround the actual print box');
+ const f=nt.field;if(!f||![f.x0,f.y0,f.x1,f.y1].every(Number.isFinite)||f.x0>=f.x1||f.y0>=f.y1||!note.inkPolygons?.length||note.inkPolygons.some(p=>p.some(v=>!contains(v,rect(f.x0,f.y0,f.x1,f.y1)))))fail('PROOF_NOTE_FIELD','Complete rotated handwritten ink must stay in its own bottom margin field');
+ const stamps=stampEvents;if(cut.params.stamp&&(stamps.length!==4||stamps.filter(e=>e.kind==='rrect').length!==2||stamps.filter(e=>e.kind==='item').length!==2||stamps.some(e=>e.nativeCBody?.entryEnd!==cut.inDur+.55+.25+.18||e.nativeCBody?.maxScale!==1.5||own(e).sourceStart!==cut.inDur+.55+.25)))fail('PROOF_STAMP_CORRESPONDENCE','Complete native late stamp rings/copy/point/overshoot clock required');
+ if(stamps.length){const S=own(stamps[0]).sourceSize,rings=stamps.filter(e=>e.kind==='rrect'),texts=stamps.filter(e=>e.kind==='item'),W=S*1.25,H=S*.72;const geometry=[[-W/2,-H/2,W,H,S*.08],[-W/2+S*.07,-H/2+S*.07,W-S*.14,H-S*.14,S*.05]];if(rings.some((e,i)=>geometry[i].some((v,j)=>!near(v,e.args[j])))||texts.some(e=>!near(e.args[0].x,0))||!near(texts[0].args[0].y,-S*.06)||!near(texts[1].args[0].y,S*.2)||stamps.some(e=>JSON.stringify(e.matrix)!==JSON.stringify(stamps[0].matrix)))fail('PROOF_STAMP_ATTACHMENT','Both complete stamp rings and native type must share the source stamp transform');const sb=A.bounds(stamps.flatMap(e=>e.polygons.map(p=>scaled(p,A.point(e.matrix,[0,0]),0,1.5)))),nb=A.bounds(note.inkPolygons);if(Math.min(sb.x1,nb.x1)>Math.max(sb.x0,nb.x0)&&Math.min(sb.y1,nb.y1)>Math.max(sb.y0,nb.y0))fail('PROOF_NOTE_STAMP_OVERLAP','Late stamp may not cover the readable margin note');}
+ return {scope:'2..4 source glyphs, original exact native line layout and mark target indices',sourceTargets:tag.target,targetCharacters:target.map(g=>g.ch),mark:tag.mark,note:ni.text,noteField:f,leader:{route:tag.route,points:pts,strokeHalfWidthAndAA:leaderPad,segments:supports.length,noteInkIntersection:false,mainInkIntersection:false,stampOvershootIntersection:false},completeOperations:actual.proofOwners.length,nativeMetadataPoints:true,stampTime:cut.params.stamp?[cut.inDur+.8,cut.inDur+.98]:null};
 }
 function contentsLedgerQuality(program,cut,plan,activeIndex,expected){
  const p=cut.params,k=p.chunks.length,U=short(plan),ls=J.clamp(U*.024,14,34),bw=plan.W*cut.layoutCRecipe.contentsLedger.width,bx=(plan.W-bw)/2,numW=ls*1.3,pgW=ls*2.1,cxH=ls*2.6*.8,items=program.events.filter(e=>e.kind==='item'),main=items.filter(e=>e.args[0].placementMain),size=main[0].args[0].size,rowH=Math.max(size*1.62,ls*2.4),blockH=k*rowH+(p.ctx?cxH*2:0),y0=plan.H/2-blockH/2+ls*1.8,hy=y0-ls*2.8,near=(a,b)=>Math.abs(a-b)<1e-7;
@@ -12475,8 +12510,9 @@ function quality(program,cut,expected,explicitSize,plan,contentsActiveIndex=null
  if(!dictionaryProof)actual.metadata.forEach((it,i)=>{const n=expected.metadata[i];if(!Number.isFinite(it.size)||it.size<n.size*.7-1e-8||it.size*contentScale<Math.min(n.size*contentScale,secondaryFloor)-1e-8||explicitSize&&Math.abs(it.size-n.size)>1e-8)fail('EDITORIAL_COPY_QUALITY','Real editorial copy fell below native ratio/readable floor or explicit size');});
  let fields=0;for(const e of program.events.filter(e=>e.kind==='item'&&e.args[0].placementMain)){const z=e.args[0].placementCOwnedZone;if(!z||![z.x0,z.y0,z.x1,z.y1].every(Number.isFinite)||z.x0>=z.x1||z.y0>=z.y1)fail('OWNED_ZONE_REQUIRED','Source editorial field required');const field=rect(z.x0,z.y0,z.x1,z.y1).map(p=>A.point(e.matrix,p));if(!e.inkPolygons?.length||e.inkPolygons.some(p=>p.some(v=>!contains(v,field))))fail('OWNED_TEXT_OUTSIDE_FIELD','Complete pre-clip main ink escaped its source editorial field');fields++;}
  let numeralFields=0;if(cut.layout==='numbered')for(const e of program.events.filter(e=>e.kind==='item'&&e.clips?.length)){if(e.args[0].placementMain||!e.inkPolygons?.length||e.inkPolygons.length!==J.glyphCount(e.args[0].text))fail('NUMBERED_MASK_HOLD_COPY','Every complete ordinal glyph requires measured preclip ink');for(const c of e.clips){const a=c.args||c.commands?.find(([k])=>k==='rect')?.[1];if(!a)fail('NUMBERED_MASK_HOLD_COPY','Owned ordinal rectangle mask required');const field=rect(a[0],a[1],a[0]+a[2],a[1]+a[3]).map(p=>A.point(c.matrix,p));if(e.inkPolygons.some(p=>p.some(v=>!contains(v,field))))fail('NUMBERED_MASK_HOLD_COPY','A readable settled ordinal would be cropped by its source mask');}numeralFields++;}
+ const proofMarginProof=cut.layout==='proofread'&&cut.layoutCRecipe?.proofBottomMargin?proofMarginQuality(program,cut,expected,actual):null;
  const contentsProof=cut.layout==='contents'&&cut.layoutCRecipe?.contentsLedger?contentsLedgerQuality(program,cut,plan,contentsActiveIndex,expected):null;
- return {source:actual,dictionaryProof,swissProof,contentsProof,completePreClipNumerals:numeralFields,minNativeFontRatio:minRatio,minPrimaryPx:Math.min(...actual.main.map(i=>i.size*contentScale)),floor,secondaryFloor,completePreClipFields:fields,explicitSizePreserved:explicitSize};
+ return {source:actual,dictionaryProof,swissProof,contentsProof,proofMarginProof,completePreClipNumerals:numeralFields,minNativeFontRatio:minRatio,minPrimaryPx:Math.min(...actual.main.map(i=>i.size*contentScale)),floor,secondaryFloor,completePreClipFields:fields,explicitSizePreserved:explicitSize};
 }
 // Every native clip used by these sources is a rectangle (number rise masks
 // and halftone photo windows). Keep it owned and transport it with the source.
@@ -12505,7 +12541,7 @@ function recipes(cut,explicitSize){
  const spacing=cut.layout==='footnote'?[14,28,42].map(noteMargin=>({noteMargin,strategy:'footnote-native-running-margin'})):cut.layout==='dictionary'?[14,28,42].map(dictionaryInset=>({dictionaryInset,strategy:'dictionary-native-page-edge-inset'})):cut.layout==='proofread'?[.7,.5,.35].map(proofMargin=>({proofMargin,strategy:'proofread-native-margin-packing'})):[];
  if(explicitSize)return spacing;
  const field=fields[cut.layout],measures=['headlineDeck','contents','footnote','proofread','numbered','swissGrid'].includes(cut.layout)?[.95,.9,.85,.8,.75,.7,.6,.5,.45,.4,.36]:[.95,.9,.85,.8,.75,.7];
- const construction=cut.layout==='contents'?[.34,.31,.29].map(width=>({contentsLedger:{width,numberScale:.75,pageScale:.7},strategy:'contents-native-compact-ledger-'+width})):cut.layout==='swissGrid'?[{gridPaper:{xMeasure:.32,typeScale:.7},strategy:'swiss-grid-narrow-paper-headword'}]:cut.layout==='numbered'?[...(cut.params.variant==='cols'&&cut.params.chunks?.length===2?[{numberColumnsSpread:{width:.302,left:.06,right:.64},strategy:'numbered-native-two-column-gutter'}]:[]),...(cut.params.variant!=='behind'?[{numberRowsPacking:{measure:.46,numberScale:.7},strategy:'numbered-native-packed-row-ledger'}]:[])]:[];
+ const construction=cut.layout==='proofread'?[{proofBottomMargin:{typeScale:.7},proofMargin:.35,strategy:'proofread-bottom-proof-margin'}]:cut.layout==='contents'?[.34,.31,.29].map(width=>({contentsLedger:{width,numberScale:.75,pageScale:.7},strategy:'contents-native-compact-ledger-'+width})):cut.layout==='swissGrid'?[{gridPaper:{xMeasure:.32,typeScale:.7},strategy:'swiss-grid-narrow-paper-headword'}]:cut.layout==='numbered'?[...(cut.params.variant==='cols'&&cut.params.chunks?.length===2?[{numberColumnsSpread:{width:.302,left:.06,right:.64},strategy:'numbered-native-two-column-gutter'}]:[]),...(cut.params.variant!=='behind'?[{numberRowsPacking:{measure:.46,numberScale:.7},strategy:'numbered-native-packed-row-ledger'}]:[])]:[];
  return [...spacing,...construction,...measures.map(value=>({[field]:value,...(cut.layout==='footnote'?{noteMargin:42}:{}),...(cut.layout==='proofread'&&value<.7?{proofMargin:.35}:{}),strategy:cut.layout+'-native-'+field})),...(cut.layout==='dictionary'?[{dictionaryColumn:{measure:.32,typeScale:.7,spread:true},strategy:'dictionary-logical-column-spread'},{dictionaryColumn:{measure:.32,typeScale:.7},strategy:'dictionary-logical-column-32'},{dictionaryColumn:{measure:.36,typeScale:.7},strategy:'dictionary-logical-column-36'},{dictionaryColumn:{measure:.4,typeScale:.7},strategy:'dictionary-logical-column-40'},{dictionaryTypeScale:.95,strategy:'dictionary-body-point-size'}]:[])];
 }
 function domain(cut){
@@ -33737,12 +33773,17 @@ reg('proofread', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    const bottomProof = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.proofBottomMargin : null;
+    if (bottomProof && (port || bottomProof.typeScale !== .7 || J.glyphCount(env.cut.text)>4 || J.glyphCount(env.cut.text)<2)) throw Object.assign(new Error('Bounded landscape proof margin required'), {code:'PROOF_MARGIN_DOMAIN'});
+    const proofOwned = (owner, fn, target = null) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {...prior, proofOwner:{owner,target}}; try { return fn(); } finally { env.placementCBody = prior; } };
     const out = 1 - E.outCubic(J.clamp(env.pOut * 1.15));   // pen marks leave with the text
     const t0 = env.cut.text.trim();
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.proofMeasure ?? 1 : 1, editorialMargin = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.proofMargin ?? 1 : 1;
     const aw = W * (port ? 0.7 : 0.62) * editorialMeasure, ah = H * (port ? 0.34 : 0.4);
-    const fb = fitBlock(t0, p.font, aw, ah, { lead: 1.45, track: 0.06 }, port ? 5 : 3);
-    const size = Math.min(fb.size, u * 0.14);
+    const nativeProof = bottomProof ? fitBlock(t0,p.font,W*(port?.7:.62),ah,{lead:1.45,track:.06},port?5:3) : null;
+    const fb = nativeProof || fitBlock(t0, p.font, aw, ah, { lead: 1.45, track: 0.06 }, port ? 5 : 3);
+    const nativeProofSize = Math.min(fb.size,u*.14);
+    const size = nativeProofSize * (bottomProof ? bottomProof.typeScale : 1);
     const cx = W / 2 - (port ? 0 : W * 0.06), cy = H / 2 + (port ? H * 0.02 : 0);
     const it = { text: fb.text, font: p.font, size, x: cx, y: cy, lead: 1.45, track: 0.06, color: sc.fg };
     const m = meas(fb.text, p.font, size, { lead: 1.45, track: 0.06 });
@@ -33752,16 +33793,16 @@ reg('proofread', {
     const x0 = cx - m.w / 2 - pad, x1 = cx + m.w / 2 + pad, y0 = cy - m.h / 2 - pad, y1 = cy + m.h / 2 + pad;
     if (p.tombo) {
       const te = tin(env, 0, 0.5, E.outCubic) * out;
-      tombo(env, x0, y0, x1, y1, size * 0.18, size * 0.55 * te, sc.sub, lw, 0.8 * te);
+      proofOwned('trim-marks', () => tombo(env, x0, y0, x1, y1, size * 0.18, size * 0.55 * te, sc.sub, lw, 0.8 * te));
     }
     if (env.cut.placementLayoutsC) it.placementCOwnedZone = {x0,y0,x1,y1};
-    const bb = J.mainDraw(env, it);
+    const bb = proofOwned('main', () => J.mainDraw(env, it));
     // red-pen marks
     const pen = plateCol(sc, [sc.accent, sc.accent2, sc.fg]);
     const gl = glyphPts(it);
     if (!gl.length) return bb;
     const pw = Math.max(2, size * 0.035);
-    const ns = Math.max(ls0(env) * 1.5, size * 0.42);
+    const ns = Math.max(ls0(env) * 1.5, (bottomProof ? nativeProofSize : size) * 0.42);
     const t1 = env.cut.inDur * 0.8 + 0.1;
     const nChunks = env.cut.words && env.cut.words.length ? env.cut.words : [t0];
     const used = new Set();
@@ -33778,19 +33819,23 @@ reg('proofread', {
       if (e <= 0) return;
       const a = out;
       const seed = mi ? p.g2 : p.g1;
-      let anchor;
+      let anchor, target = [];
+      const priorProof = env.placementCBody;
+      if (env.cut.placementLayoutsC) env.placementCBody = {proofOwner:{owner:'pen-mark',occurrence:mi,mark:mk,target}};
+      try {
       if (mk === 'circle') {
         const g = pickGlyph(seed, c => J.isKanji(c) || J.isKata(c));
+        target.push(g.i);
         const pts = penEllipse(g.x, g.y, g.w * 0.72, g.h * 0.66, seed);
         env.polyPartial(pts, E.outCubic(J.clamp(e * 1.6)), pen, pw, a, false);
-        anchor = [g.x + g.w * 0.5, g.y - g.h * 0.55];
+        anchor = bottomProof ? pts.slice(0,14).reduce((best,q)=>q[1]<best[1]?q:best) : [g.x + g.w * 0.5, g.y - g.h * 0.55];
       } else if (mk === 'box' || mk === 'wave' || mk === 'dots') {
         // a run of glyphs on one line (the first word chunk that fits)
         const g0 = pickGlyph(seed, c => !J.isPunct(c));
         const want = Math.max(2, Math.min(4, J.glyphCount(nChunks[0] || '')));
         const run = [g0];
         for (const g of gl) { if (run.length >= want) break; if (g.i > run[run.length - 1].i && g.li === g0.li && !used.has(g.i) && g.i === run[run.length - 1].i + 1) run.push(g); }
-        run.forEach(g => used.add(g.i));
+        run.forEach(g => { used.add(g.i); target.push(g.i); });
         const rx0 = Math.min(...run.map(g => g.x - g.w / 2)), rx1 = Math.max(...run.map(g => g.x + g.w / 2));
         const ry = g0.y;
         if (mk === 'box') {
@@ -33813,25 +33858,35 @@ reg('proofread', {
       const le = E.outCubic(J.clamp(e * 1.4 - 0.4));
       if (le <= 0 || !anchor) return;
       let nx, ny;
-      if (noteSide === 'right') { nx = Math.min(W * 0.93 - ns * 2.2, x1 + size * 0.7 * editorialMargin + mi * ns * 0.4); ny = y0 + (mi ? m.h * 0.7 : m.h * 0.15); }
+      if (bottomProof) { nx = x0 + (mi ? .50 : .04) * (x1-x0); ny = y1 + ns * (.9 + mi*1.6); }
+      else if (noteSide === 'right') { nx = Math.min(W * 0.93 - ns * 2.2, x1 + size * 0.7 * editorialMargin + mi * ns * 0.4); ny = y0 + (mi ? m.h * 0.7 : m.h * 0.15); }
       else { nx = J.clamp(anchor[0] + (mi ? ns * 2 : -ns * 2), W * 0.1, W * 0.85); ny = y0 - size * 0.9 * editorialMargin - mi * ns * 1.6; }
-      const mxp = noteSide === 'right' ? [J.lerp(anchor[0], nx, 0.5), anchor[1] - size * 0.25] : [anchor[0], J.lerp(anchor[1], ny, 0.5)];
-      const pts = [anchor, mxp, [nx - ns * 0.2, ny]];
+      const mxp = !bottomProof && noteSide === 'right' ? [J.lerp(anchor[0], nx, 0.5), anchor[1] - size * 0.25] : [anchor[0], J.lerp(anchor[1], ny, 0.5)];
+      let pts = [anchor, mxp, [nx - ns * 0.2, ny]];
+      if (bottomProof) {
+        // Keep the original leader reveal/opacity clock, but route through
+        // the outside proof margin and approach the rotated note from left.
+        const noteInk=J.placement.itemGeometry({text:note,font:p.pen,size:ns,align:'left',x:nx,y:ny,rot:-4,alpha:1},[1,0,0,1,0,0],{pass:'main',scale:1}),nb=J.placement.bounds(noteInk.polygons),guard=pw*.7/2+2,left=Math.min(x0-size*.18,nb.x0-guard-ns*.25),lane=mk==='circle'||mk==='box'?y0-size*.2:Math.min(y1+size*.1,nb.y0-guard-ns*.15),end=nb.x0-guard-2;
+        pts=[anchor,[anchor[0],lane],[left,lane],[left,ny],[end,ny]];
+      }
+      if (env.cut.placementLayoutsC) env.placementCBody = {proofOwner:{owner:'pen-leader',occurrence:mi,mark:mk,target,anchor:[...anchor],destination:[...pts[pts.length-1]],...(bottomProof?{route:'bottom-left-ink-elbow-v1'}:{})}};
       env.polyPartial(pts, le, pen, pw * 0.7, a, false);
       const na = J.clamp((le - 0.6) / 0.4);
+      if (env.cut.placementLayoutsC) env.placementCBody = {proofOwner:{owner:'pen-note',occurrence:mi,mark:mk,target,anchor:[nx,ny],fontSize:ns,...(bottomProof?{field:{x0:nx-ns*.12,y0:ny-ns*.85,x1:x1+size*.1,y1:ny+ns*.85}}:{})}};
       if (na > 0) env.draw({ text: note, font: p.pen, size: ns, align: 'left', x: nx, y: ny, rot: -4, color: pen, alpha: na * a, ghost: false });
+      } finally { env.placementCBody = priorProof; }
     });
     // 校了 stamp
     if (p.stamp) {
       const ts = env.cut.inDur + 0.55 + marks.length * 0.25;
       const x = (env.lt - ts) / 0.18;
       if (x > 0) {
-        const nativeStampType = editorialMeasure === 1 ? size : Math.min(fitBlock(t0, p.font, W*(port?.7:.62), ah, {lead:1.45,track:.06}, port?5:3).size,u*.14);
+        const nativeStampType = bottomProof ? nativeProofSize : editorialMeasure === 1 ? size : Math.min(fitBlock(t0, p.font, W*(port?.7:.62), ah, {lead:1.45,track:.06}, port?5:3).size,u*.14);
         const S = Math.max(ls0(env) * 4.2, nativeStampType * 1.05);
-        const sx = port ? W * 0.78 : Math.min(W * 0.9 - S * 0.6, x1 + S * 0.5), sy = port ? Math.min(H * 0.88, y1 + S * 0.9) : y1 - S * 0.1;
+        const sx = bottomProof ? cx + m.w*.15 : port ? W * 0.78 : Math.min(W * 0.9 - S * 0.6, x1 + S * 0.5), sy = bottomProof ? y1 + ns*2.9 + S*.5 : port ? Math.min(H * 0.88, y1 + S * 0.9) : y1 - S * 0.1;
         const k2 = J.lerp(1.5, 1, E.outBack(J.clamp(x), 1.4)), a = J.clamp(x * 3) * out;
         const priorEditorialBody = env.placementCBody;
-        if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-proof-stamp",pivot:[sx,sy],maxScale:1.5,entryEnd:ts+.18,exitStart:null};
+        if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-proof-stamp",pivot:[sx,sy],maxScale:1.5,entryEnd:ts+.18,exitStart:null,proofOwner:{owner:"stamp",sourceSize:S,sourceStart:ts}};
         ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.rot * J.DEG); ctx.scale(k2, k2);
         const w2 = S * 1.25, h2 = S * 0.72;
         env.rrect(-w2 / 2, -h2 / 2, w2, h2, S * 0.08, null, a * 0.9, false, pen, Math.max(2, S * 0.05));
