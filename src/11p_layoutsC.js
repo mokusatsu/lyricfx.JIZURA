@@ -1147,12 +1147,15 @@ reg('poster', {
   render(env) {
     const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    const pocket = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.posterHandbill : null;
+    const posterOwned=(role,fn,row=null,field=null)=>{const prior=env.placementCBody;if(env.cut.placementLayoutsC)env.placementCBody={...prior,posterOwner:{role,row,field}};try{return fn();}finally{env.placementCBody=prior;}};
+    if(pocket&&(port||hasLatin(env.cut.text)||!['stack','block'].includes(p.variant)||pocket.measure!==.31||pocket.typeScale!==.7||J.glyphCount(env.cut.text)<2||J.glyphCount(env.cut.text)>4||p.lines?.length!==1||/[\r\n]/.test(p.lines[0])))throw Object.assign(new Error('Short original horizontal poster occurrence required'),{code:'POSTER_HANDBILL_DOMAIN'});
     const out = tout(env), ls = smallSize(env);
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.posterMeasure ?? 1 : 1;
-    const nativeMX = W*.07, aw = editorialMeasure === 1 ? W-nativeMX*2 : (W-nativeMX*2)*editorialMeasure, mx = editorialMeasure === 1 ? nativeMX : (W-aw)/2, my = H * .07;
+    const nativeMX = W*.07,nativeAW=W-nativeMX*2,aw = pocket ? W*pocket.measure : editorialMeasure === 1 ? nativeAW : nativeAW*editorialMeasure, mx = pocket ? (W-aw)/2 : editorialMeasure === 1 ? nativeMX : (W-aw)/2, my = H * .07;
     const lines = (p.lines && p.lines.length ? p.lines : [env.cut.text.trim()]).filter(Boolean);
     const latin = hasLatin(env.cut.text);
-    const credH = ls * 4.2, topH = ls * 2;
+    const credH = ls * (pocket?8.1:4.2), topH = ls * 2;
     const y0 = my + topH + ls * 0.6, y1 = H - my - credH - ls * 0.8;
     const avH = y1 - y0;
     const block = p.variant === 'block';
@@ -1163,14 +1166,14 @@ reg('poster', {
     // colour block (wipes down from the top)
     if (block) {
       const e = tin(env, 0, 0.5, E.inOutExpo) * (1 - E.inCubic(env.pOut));
-      env.rect((W-W*editorialMeasure)/2, 0, W*editorialMeasure, (y1 + ls * 0.4) * e, plate, 1, gIn(env));
+      posterOwned('color-block',()=>env.rect(pocket?mx-ls*.5:(W-W*editorialMeasure)/2,pocket?H*.04:0,pocket?aw+ls:W*editorialMeasure,(y1+ls*.4-(pocket?H*.04:0))*e,plate,1,gIn(env)));
     }
     // header row
     const ha = tin(env, 0.1, 0.4, E.outCubic) * out;
-    env.draw({ text: p.head + '  ' + lineNo(env), font: monoF(env), size: ls, track: 0.3, align: 'left', x: mx, y: my + ls * 0.5, color: tc, alpha: ha, ghost: false });
-    env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls, track: 0.2, align: 'right', x: mx + aw, y: my + ls * 0.5, color: tc, alpha: ha, ghost: false });
+    posterOwned('header-label',()=>env.draw({ text: p.head + '  ' + lineNo(env), font: monoF(env), size: ls, track: 0.3, align: 'left', x: mx, y: my + ls * 0.5, color: tc, alpha: ha, ghost: false }),null,pocket?{x0:mx-4,y0:my-ls,x1:mx+aw*.64,y1:my+ls*1.3}:null);
+    posterOwned('header-time',()=>env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls, track: 0.2, align: 'right', x: mx + aw, y: my + ls * 0.5, color: tc, alpha: ha, ghost: false }),null,pocket?{x0:mx+aw*.64,y0:my-ls,x1:mx+aw+4,y1:my+ls*1.3}:null);
     const re = tin(env, 0.05, 0.6, E.inOutCubic) * out;
-    env.line([[mx, my + ls * 1.5], [mx + aw * re, my + ls * 1.5]], tc, lw, 0.8, false);
+    posterOwned('header-rule',()=>env.line([[mx, my + ls * (pocket?1.65:1.5)], [mx + aw * re, my + ls * (pocket?1.65:1.5)]], tc, lw, 0.8, false));
     // accent dot behind the type (tate posters get one in the free area left of the columns)
     if (tate) {
       if (!block) {
@@ -1182,13 +1185,16 @@ reg('poster', {
         if (r > u * 0.06) editorialMotion(.5, () => env.circle(mx + free * 0.48, y0 + avH / 2, r * q, sc.accent, null, 0, 1, gIn(env)));
       }
     } else if (p.dot && !block) {
-      const r = Math.min(aw, avH) * (port ? 0.34 : 0.3);
+      const r = pocket ? Math.min(nativeAW,H-my-ls*4.2-ls*.8-y0)*.3*pocket.typeScale : Math.min(aw, avH) * (port ? 0.34 : 0.3);
       const q = E.outBack(J.clamp((env.lt - 0.05) / 0.45), 1.3) * (1 - E.inCubic(env.pOut));
-      editorialMotion(.5, () => env.circle(mx + aw - r * 0.9, y0 + r * 0.95, r * q, sc.accent, null, 0, 1, gIn(env)));
+      editorialMotion(.5, () => posterOwned('accent',()=>env.circle(mx + aw - r * 0.9, y0 + r * 0.95, r * q, sc.accent, null, 0, 1, gIn(env))));
     }
-    if (env.cut.placementLayoutsC) env.placementCEditorialZone = block ? {x0:(W-W*editorialMeasure)/2,y0:0,x1:(W+W*editorialMeasure)/2,y1:y1+ls*.4} : {x0:mx*.5,y0:my*.5,x1:W-mx*.5,y1:H-my*.5};
+    if (env.cut.placementLayoutsC) env.placementCEditorialZone = pocket ? {x0:mx-4,y0:y0-4,x1:mx+aw+4,y1:y1+4} : block ? {x0:pocket?mx-ls*.5:(W-W*editorialMeasure)/2,y0:pocket?H*.04:0,x1:pocket?mx+aw+ls*.5:(W+W*editorialMeasure)/2,y1:y1+ls*.4} : {x0:mx*.5,y0:my*.5,x1:W-mx*.5,y1:H-my*.5};
     let bb = null;
-    if (tate) {
+    if (pocket) {
+      const text=lines[0],chars=[...text],split=Math.ceil(chars.length/2),fragments=[chars.slice(0,split).join(''),chars.slice(split).join('')],nativeWidth=meas(text,p.font,100,{track:-.02}).w/100,nativeHeight=H-my-ls*4.2-ls*.8-y0,nativeSize=Math.min(nativeAW/Math.max(.5,nativeWidth),nativeHeight/.98),size=nativeSize*pocket.typeScale,display=fragments.join('\n'),m=meas(display,p.font,size,{lead:.98,track:-.02}),y=block?y1-m.h/2:y0+avH/2;
+      bb=posterOwned('main',()=>J.mainDraw(env,{text:display,font:p.font,size,x:mx,y,align:'left',lead:.98,track:-.02,color:tc,mi:0,placementCOwnedZone:env.placementCEditorialZone}),0);
+    } else if (tate) {
       // tall columns filling the height, right → left, one size
       const t = strip(env.cut.text), n = J.glyphCount(t);
       const per = port ? 6 : 5;
@@ -1211,25 +1217,25 @@ reg('poster', {
       let y = y0 + (avH - th) * (block ? 1 : 0.5);
       lines.forEach((l, i) => {
         y += sz[i] * 0.49;
-        bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: l, font: p.font, size: sz[i], x: mx, y, align: 'left', track: -0.02, color: tc, mi: i * 3 }));
+        bb = J.unionBB(bb, posterOwned('main',()=>J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: l, font: p.font, size: sz[i], x: mx, y, align: 'left', track: -0.02, color: tc, mi: i * 3 }),i));
         y += sz[i] * 0.49;
       });
     }
     // credits block
     const cy = H - my - credH;
     const lw2 = Math.max(4, u * 0.008);
-    env.rect(mx, cy, aw * re, lw2, sc.fg, 1, false);
+    posterOwned('credits-rule',()=>env.rect(mx, cy, aw * re, lw2, sc.fg, 1, false));
     const cols3 = [['DATE', J.fmtTime(env.cut.start)], ['No.', lineNo(env) + ' / ' + pad2(J.glyphCount(env.cut.text))], ['WORDS', deckCopy(env) || romajiOf(env) || flat(env.cut.text)]];
     const cw3 = aw / 3;
     cols3.forEach(([k2, v], i) => {
       const a = tin(env, 0.2 + i * 0.08, 0.4, E.outCubic) * out;
       if (a <= 0.01) return;
-      const x = mx + i * cw3;
-      env.draw({ text: k2, font: monoF(env), size: ls * 0.8, track: 0.3, align: 'left', x, y: cy + lw2 + ls * 0.9, color: sc.sub, alpha: a, ghost: false });
-      const maxC = Math.max(3, Math.floor(cw3 * 0.9 / (ls * (hasLatin(v) ? 0.62 : 1.05))));
+      const x = pocket?mx:mx + i * cw3, rowY=pocket?cy+lw2+ls*(1.1+i*2.4):null;
+      posterOwned('credit-label',()=>env.draw({ text: k2, font: monoF(env), size: ls * 0.8, track: 0.3, align: 'left', x, y: pocket?rowY:cy + lw2 + ls * 0.9, color: sc.sub, alpha: a, ghost: false }),i,pocket?{x0:x-4,y0:rowY-ls*.8,x1:x+ls*4,y1:rowY+ls*.8}:null);
+      const maxC = Math.max(3, Math.floor((pocket?nativeAW/3:cw3) * 0.9 / (ls * (hasLatin(v) ? 0.62 : 1.05))));
       const vv = [...v].length > maxC ? [...v].slice(0, maxC - 1).join('') + '…' : v;
-      env.draw({ text: vv, font: bodyF(env), size: ls * 1.05, align: 'left', x, y: cy + lw2 + ls * 2.4, color: sc.fg, alpha: a, ghost: false });
-      if (i > 0) env.line([[x - ls * 0.5, cy + lw2 + ls * 0.4], [x - ls * 0.5, cy + credH - ls * 0.3]], sc.sub, lw, 0.6 * a, false);
+      posterOwned('credit-value',()=>env.draw({ text: vv, font: bodyF(env), size: ls * 1.05, align: 'left', x:pocket?mx+ls*4.2:x, y:pocket?rowY:cy + lw2 + ls * 2.4, color: sc.fg, alpha: a, ghost: false }),i,pocket?{x0:mx+ls*4.2-4,y0:rowY-ls*.8,x1:mx+aw+4,y1:rowY+ls*.8}:null);
+      if (i > 0) posterOwned('credit-separator',()=>env.line(pocket?[[mx,rowY-ls*1.2],[mx+aw,rowY-ls*1.2]]:[[x - ls * 0.5, cy + lw2 + ls * 0.4], [x - ls * 0.5, cy + credH - ls * 0.3]], sc.sub, lw, 0.6 * a, false),i);
     });
     return bb || box(mx, y0, mx + aw, y1);
   },

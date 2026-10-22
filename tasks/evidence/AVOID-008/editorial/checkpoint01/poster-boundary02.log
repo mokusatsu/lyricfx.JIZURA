@@ -1,0 +1,15 @@
+{"rows":33,"guards":[{"test":{"layout":"poster","time":0.2,"params":{"variant":"stack","dot":true}},"center":{"x":0.18042283286168098,"y":0.4774392361111112},"calls":1,"safety":"certified-hold-adapter","globalWindow":[0.7601,3.6],"error":{"code":"EDITORIAL_STRICT_CIRCLE_VIOLATION","message":"An already-settled source event entered the margin circle while another source event was still entering/exiting"}},{"test":{"layout":"poster","time":0.2,"params":{"variant":"block","dot":true},"motionScale":0},"center":{"x":0.18042283286168098,"y":0.6187795369140758},"calls":1,"safety":"certified-hold-adapter","globalWindow":[0.7601,3.6],"error":{"code":"STAGE_CONTAINMENT_VIOLATION","message":"Certified editorial source introduced stage crop"}},{"test":{"layout":"poster","time":0.2,"params":{"variant":"tate","dot":true}},"center":{"x":0.8833048589213366,"y":0.22698926445578232},"calls":1,"safety":"certified-hold-adapter","globalWindow":[0.7601,3.6],"error":{"code":"EDITORIAL_STRICT_CIRCLE_VIOLATION","message":"An already-settled source event entered the margin circle while another source event was still entering/exiting"}}]}
+AssertionError [ERR_ASSERTION]: {"test":{"layout":"poster","time":0.2,"params":{"variant":"block","dot":true},"motionScale":0},"center":{"x":0.18042283286168098,"y":0.6187795369140758},"calls":1,"safety":"certified-hold-adapter","globalWindow":[0.7601,3.6],"error":{"code":"STAGE_CONTAINMENT_VIOLATION","message":"Certified editorial source introduced stage crop"}}
++ actual - expected
+
++ 'STAGE_CONTAINMENT_VIOLATION'
+- 'EDITORIAL_STRICT_CIRCLE_VIOLATION'
+
+    at /workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-poster-boundary.cjs:11:57 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'STAGE_CONTAINMENT_VIOLATION',
+  expected: 'EDITORIAL_STRICT_CIRCLE_VIOLATION',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

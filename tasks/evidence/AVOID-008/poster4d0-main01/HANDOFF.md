@@ -1,0 +1,9 @@
+# Poster4d0 main checkpoint
+
+Fixed4d0 exact09h andposter1block only integrated after acceptedwriting02. Other33blocks/header/09i64/09j/shared09a09g11z/pyc exact. Fresh50=27safe21insufficient2preexistingunsupported,500OFFframes exact,36candidatefaults,96copy/paint/clock,8actualcmap1894glyph,EN33+3guards pass. All50selectedgeometry/domain/recipe/quality/actualraster/stage/perevent/corpus and96clock exactfixed4d0. No causal need for unrelatedfullmatrices.
+
+141nonemptyallprimary samples and114strictnonempty,303events;126changedplacement stage samples outside0. Separate15nativeidentity samples retainoriginal6948outsidepixels. Do not call allstage samples fullycontained.42handbillproofsegments. Some36faults reject earlierattachmentguards rather than isolatinginkcode.
+
+Carry02:96nativebefore+96nativeafter,192originalnative960x540encoder hashes and6nativekeys exact,actualmotionclocks/plans immutable. Oldcarry01 failed because copieddriver resizedto480x270; originalPosterencoder is960native. Product/source/fonts/expectations notchanged, oldraw/log/exactdrivergzip preserved. Historical168type/rule samples144bothnonempty0crossings are source+freshfullgeometry/96clock/nativecarry qualification, notfresh168captures. JAENlocalstartup01pass.
+
+Onlyfinite2..4JP landscapehorizontal stack/block handbill. Originalowner/source copy/rule/colorplate/accent/nativeclock retained; native movefirst. One stack/dot/mincho limitedvisualPASS connected by192nativecarry. Majorright-handbill/leftwhitespace/whiteの-yellowdot contrast remain curatedhuman composition questions; no newcolors/contrast/search. Mag/newsproduct unchanged.34registrations notcompletion34; finalperformance100/1000/regressions/save/task acceptance remain pending. Noimageview/publicverification/Gitmutation. ParentownsGit/index/publication; awaitgate.

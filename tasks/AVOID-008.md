@@ -7,6 +7,8 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- Poster4d0の限定main結合を[親344入力/19結果・全raw比較](evidence/AVOID-008/parent-poster4d0-main01.json)で受入。50条件27safe/21不足/2既存未対応、500OFF/36fault/96copy-clock/8cmap1894glyph/EN33+3guard/192native・192元encoder・6key/日英起動が固定4d0と一致。他33block/header/物体09i64/和風09j/共有は保持。126変更配置stage外0と15nativeidentity元crop6948は分離。旧carry01の480縮小誤比較FAILを保存し、元960×540入力のcarry02で訂正、168inkは限定継承。34のsource結合が安定したため次は正確な値/別名関係を保つ限定cacheの最終C34実証と16MiBサイズ調査へ進める。formal100/1000はまだ未許可・未実行で、source stableを34成功や008完了に置換しない。
+
 - writingc861の限定修正02を[親335入力/74結果・3群321開始pin・raw照合](evidence/AVOID-008/parent-writingC861-main02.json)で受入。延べ323/405/276条件、safe94/83/51、24fault・新日英起動を確認。親が独立に503区間polygon/77,471実strict polygon/3,752hold頂点を再計算。共通fitBoundsの01候補は本棚の新cropで[独立視覚FAIL](evidence/AVOID-008/translation-visual01-review.md)を保持し、新列挙を2paperだけへ限定して他8の258行を旧859の位置・図形・時計へ完全復元、9組18PNGのbyte一致で限定FAILを解消。新guardは維持。paper530行は01/c861の全selectedが一致し、384native/encoder/12keysと375/574/287/101は依存を示す限定継承であってfresh02再撮影ではない。次はPoster4d0のみの限定結合、性能/全体回帰/最後の少数人間確認は必須未完。
 
 - magazine/newspaperの有限検討02を[親raw・実cmap・容量計算レビュー](evidence/AVOID-008/parent-paper-study02-review.json)で受入。製品source4d0の変更なし、16入力/32案は新safe0。雑誌B側は21高さ不足/3必要条件のみ、新聞は6幅不足/2高さ不足。A/Bの再配分やgreek線分の再配置は未実装・未証明として残し、物理的不可能とは主張しない。012の選択除外検討へ渡す証拠であり、現製品で既に除外したという意味ではない。旧study01の未収録「続/道」4role-face-charとFAILは保持、covered16字fixtureでの再実行だけを02として扱う。

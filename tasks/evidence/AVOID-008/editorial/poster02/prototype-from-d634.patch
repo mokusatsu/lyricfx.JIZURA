@@ -1,0 +1,149 @@
+diff --git a/src/09h_layoutsC_editorial.js b/src/09h_layoutsC_editorial.js
+index f5bc9c8..466816f 100644
+--- a/src/09h_layoutsC_editorial.js
++++ b/src/09h_layoutsC_editorial.js
+@@ -103,7 +103,22 @@ function mapping(program,cut){
+  const items=program.events.filter(e=>e.kind==='item'),main=items.filter(e=>e.args[0].placementMain).map(e=>e.args[0]);if(!main.length||norm(main.map(i=>i.text).join(''))!==norm(cut.text))fail('SOURCE_COVERAGE','Every ordered editorial main occurrence must be retained exactly once');
+  const nativeFontSize=font=>{const m=String(font).match(/(?:^|\s)([0-9]+(?:\.[0-9]+)?)px(?:\s|\/|$)/),size=m?Number(m[1]):NaN;if(!Number.isFinite(size)||size<=0)fail('EDITORIAL_NATIVE_FONT_SIZE','Finite positive CSS px size required for every fastRow copy');return size;};
+  const metadata=program.events.filter(e=>e.kind==='nativeText'||e.kind==='item'&&!e.args[0].placementMain).map(e=>e.kind==='nativeText'?{kind:e.kind,text:e.args[0],font:e.args[3].font.replace(/[\d.]+px/,'SIZEpx'),size:nativeFontSize(e.args[3].font)}:{kind:e.kind,text:e.args[0].text,font:e.args[0].font,size:e.args[0].size});
+- return {...(cut.layout==='proofread'?{proofOwners:program.events.map(e=>({kind:e.kind,owner:e.nativeCBody?.proofOwner?.owner??null,occurrence:e.nativeCBody?.proofOwner?.occurrence??null,mark:e.nativeCBody?.proofOwner?.mark??null,target:e.nativeCBody?.proofOwner?.target??null,sourceSize:e.nativeCBody?.proofOwner?.sourceSize??null,sourceStart:e.nativeCBody?.proofOwner?.sourceStart??null}))}:{}),...(cut.layout==='dictionary'?{dictionary:dictionaryCorrespondence(program,cut)}:{}),...(cut.layout==='swissGrid'?{swissClocks:program.events.map(e=>({kind:e.kind,entryEnd:e.nativeCBody?.entryEnd??0,exitStart:e.nativeCBody?.exitStart??null})),swissAccent:program.events.filter(e=>e.nativeCBody?.entryEnd===.7&&['circle','rect'].includes(e.kind)).map(e=>({kind:e.kind,width:e.kind==='circle'?2*e.args[2]:e.args[2],height:e.kind==='circle'?2*e.args[2]:e.args[3]}))}:{}),...(cut.layout==='numbered'?{numberedClocks:program.events.filter(e=>e.kind==='item'&&e.clips?.length).map(e=>({text:e.args[0].text,kind:e.nativeCBody?.kind,entryEnd:e.nativeCBody?.entryEnd,exitStart:e.nativeCBody?.exitStart}))}:{}),main:main.map(i=>({text:i.text,font:i.font,size:i.size,mi:i.mi??0,lead:i.lead??1.3,track:i.track??0})),metadata,shapes:program.events.filter(e=>!['item','nativeText'].includes(e.kind)).map(e=>e.kind),complete:true};
++ return {...(cut.layout==='poster'?{posterOwners:program.events.map(e=>({kind:e.kind,role:e.nativeCBody?.posterOwner?.role??null,row:e.nativeCBody?.posterOwner?.row??null,entryEnd:e.nativeCBody?.entryEnd??0,exitStart:e.nativeCBody?.exitStart??null})),posterAccent:program.events.filter(e=>e.nativeCBody?.posterOwner?.role==='accent').map(e=>e.args[2])}:{}),...(cut.layout==='proofread'?{proofOwners:program.events.map(e=>({kind:e.kind,owner:e.nativeCBody?.proofOwner?.owner??null,occurrence:e.nativeCBody?.proofOwner?.occurrence??null,mark:e.nativeCBody?.proofOwner?.mark??null,target:e.nativeCBody?.proofOwner?.target??null,sourceSize:e.nativeCBody?.proofOwner?.sourceSize??null,sourceStart:e.nativeCBody?.proofOwner?.sourceStart??null}))}:{}),...(cut.layout==='dictionary'?{dictionary:dictionaryCorrespondence(program,cut)}:{}),...(cut.layout==='swissGrid'?{swissClocks:program.events.map(e=>({kind:e.kind,entryEnd:e.nativeCBody?.entryEnd??0,exitStart:e.nativeCBody?.exitStart??null})),swissAccent:program.events.filter(e=>e.nativeCBody?.entryEnd===.7&&['circle','rect'].includes(e.kind)).map(e=>({kind:e.kind,width:e.kind==='circle'?2*e.args[2]:e.args[2],height:e.kind==='circle'?2*e.args[2]:e.args[3]}))}:{}),...(cut.layout==='numbered'?{numberedClocks:program.events.filter(e=>e.kind==='item'&&e.clips?.length).map(e=>({text:e.args[0].text,kind:e.nativeCBody?.kind,entryEnd:e.nativeCBody?.entryEnd,exitStart:e.nativeCBody?.exitStart}))}:{}),main:main.map(i=>({text:i.text,font:i.font,size:i.size,mi:i.mi??0,lead:i.lead??1.3,track:i.track??0})),metadata,shapes:program.events.filter(e=>!['item','nativeText'].includes(e.kind)).map(e=>e.kind),complete:true};
++}
++function posterHandbillQuality(program,cut,plan,actual,expected){
++ const own=e=>e.nativeCBody?.posterOwner,near=(a,b)=>Math.abs(a-b)<1e-6,get=(role,row=null)=>program.events.filter(e=>own(e)?.role===role&&own(e).row===row),one=(role,row=null)=>{const es=get(role,row);if(es.length!==1)fail('POSTER_OWNER_CORRESPONDENCE','Exactly one original '+role+':'+row+' required');return es[0];};
++ if(JSON.stringify(actual.posterOwners)!==JSON.stringify(expected.posterOwners)||actual.posterOwners.some(o=>!o.role)||actual.metadata.some((m,i)=>m.size!==expected.metadata[i].size))fail('POSTER_OWNER_CORRESPONDENCE','Every original poster copy, rule, separator, accent and plate clock/point must survive');
++ const me=one('main',0),it=me.args[0],source=expected.main[0]?.text,chars=[...String(source)],split=Math.ceil(chars.length/2),lines=it.text.split('\n');if(expected.main.length!==1||source!==cut.text.trim()||lines.length!==2||lines[0]!==chars.slice(0,split).join('')||lines[1]!==chars.slice(split).join('')||it.lead!==.98||it.mi!==0||!near(it.size,expected.main[0].size*.7))fail('POSTER_MAIN_CORRESPONDENCE','Exact original main occurrence needs two ordered source ranges at native poster stack pitch and .7native point');
++ const U=short(plan),ls=J.clamp(U*.024,14,34),aw=plan.W*.31,mx=(plan.W-aw)/2,my=plan.H*.07,credH=ls*6.6,cy=plan.H-my-credH,lw2=Math.max(4,U*.008),y0=my+ls*2.6,y1=plan.H-my-credH-ls*.8,fields=[];
++ const field=(e,f)=>{const t=e.args[0],got=own(e).field;if(e.kind!=='item'||!got||Object.keys(f).some(k=>!near(got[k],f[k]))||!e.inkPolygons?.length||e.inkPolygons.length!==J.glyphCount(t.text)||e.inkPolygons.some(p=>p.some(v=>!contains(v,rect(f.x0,f.y0,f.x1,f.y1)))))fail('POSTER_COPY_FIELD','Every complete native header/credit glyph must fit its allocated actual print field');fields.push({role:own(e).role,row:own(e).row,text:t.text,field:f});};
++ const head=one('header-label'),time=one('header-time');field(head,{x0:mx-4,y0:my-ls,x1:mx+aw*.64,y1:my+ls*1.3});field(time,{x0:mx+aw*.64,y0:my-ls,x1:mx+aw+4,y1:my+ls*1.3});if(!near(head.args[0].x,mx)||!near(time.args[0].x,mx+aw)||!near(head.args[0].y,my+ls*.5)||!near(time.args[0].y,my+ls*.5)||head.args[0].align!=='left'||time.args[0].align!=='right')fail('POSTER_HEADER_ATTACHMENT','Both native header occurrences need their opposite aligned anchors');
++ const hr=one('header-rule'),cr=one('credits-rule'),points=(a,b)=>Array.isArray(a)&&a.length===b.length&&a.every((p,i)=>p.every((v,j)=>near(v,b[i][j])));if(hr.kind!=='line'||!points(hr.args[0],[[mx,my+ls*1.5],[mx+aw,my+ls*1.5]])||cr.kind!=='rect'||[mx,cy,aw,lw2].some((v,i)=>!near(cr.args[i],v)))fail('POSTER_RULE_ATTACHMENT','Full header and credit rules must span their exact source print fields');
++ for(let i=0;i<3;i++){const label=one('credit-label',i),value=one('credit-value',i),rowY=cy+lw2+ls*(.9+i*1.9);field(label,{x0:mx-4,y0:rowY-ls*.8,x1:mx+ls*4,y1:rowY+ls*.8});field(value,{x0:mx+ls*4.2-4,y0:rowY-ls*.8,x1:mx+aw+4,y1:rowY+ls*.8});if(!near(label.args[0].x,mx)||!near(value.args[0].x,mx+ls*4.2)||!near(label.args[0].y,rowY)||!near(value.args[0].y,rowY)||A.bounds(label.inkPolygons).x1>=A.bounds(value.inkPolygons).x0)fail('POSTER_CREDIT_ATTACHMENT','Each complete native label/value pair must share its own ruled ledger row without overlap');if(i){const sep=one('credit-separator',i);if(sep.kind!=='line'||!points(sep.args[0],[[mx,rowY-ls*.95],[mx+aw,rowY-ls*.95]]))fail('POSTER_CREDIT_ATTACHMENT','Native two separators must follow their logical credit rows');}}
++ if(actual.posterAccent.length!==expected.posterAccent.length||actual.posterAccent.some((r,i)=>!near(r,expected.posterAccent[i]*.7)))fail('POSTER_ACCENT_QUALITY','Original source accent physical radius must remain .7native');
++ if(actual.posterAccent.length){const e=one('accent'),r=e.args[2];if(!near(e.args[0],mx+aw-r*.9)||!near(e.args[1],y0+r*.95))fail('POSTER_ACCENT_ATTACHMENT','Owned accent keeps its original behind-type anchor rule');}
++ if(cut.params.variant==='block'){const e=one('color-block');if(e.kind!=='rect'||[mx-ls*.5,plan.H*.04,aw+ls,y1+ls*.4-plan.H*.04].some((v,i)=>!near(e.args[i],v))||me.inkPolygons.some(p=>p.some(v=>!contains(v,rect(mx-ls*.5,plan.H*.04,mx+aw+ls*.5,y1+ls*.4)))))fail('POSTER_PLATE_ATTACHMENT','Full original color plate must retain the complete main occurrence inside its new handbill frame');}
++ const mainBox=A.bounds(me.inkPolygons);if(mainBox.y0<y0-4||mainBox.y1>y1+4)fail('POSTER_MAIN_FIELD','Main type must fit between its native header and credit blocks');
++ return {scope:'Short original horizontal poster; source main owner and actual native credit copy/points fixed',sourceText:source,fragmentRanges:[[0,split],[split,chars.length]],nativeStackPitch:.98,metadataFields:fields,sourceOwners:actual.posterOwners.length,physicalAccentRatios:actual.posterAccent.map((r,i)=>r/expected.posterAccent[i]),nativeCreditTruncationFrozen:true};
+ }
+ function proofMarginQuality(program,cut,expected,actual){
+  const own=e=>e.nativeCBody?.proofOwner,near=(a,b)=>Math.abs(a-b)<1e-6;
+@@ -168,13 +183,14 @@ function quality(program,cut,expected,explicitSize,plan,contentsActiveIndex=null
+  })():null;
+  const dictionaryProof=cut.layout==='dictionary'&&cut.layoutCRecipe?.dictionaryColumn?dictionaryQuality(actual,expected,program,cut,explicitSize,contentScale,secondaryFloor):null;
+  if(actual.main.length!==expected.main.length||!dictionaryProof&&(JSON.stringify(semantic(actual.metadata))!==JSON.stringify(semantic(expected.metadata))||!(cut.layout==='contents'&&cut.layoutCRecipe?.contentsLedger)&&JSON.stringify(actual.shapes)!==JSON.stringify(expected.shapes)))fail('EDITORIAL_SEMANTIC_MAPPING','Recipe changed native copy/metadata/owned operation topology');
+- let minRatio=Infinity;actual.main.forEach((it,i)=>{const n=expected.main[i],ratio=it.size/n.size;minRatio=Math.min(minRatio,ratio);if(norm(it.text)!==norm(n.text)||it.font!==n.font||it.mi!==n.mi||it.lead!==n.lead||it.track!==n.track||ratio<.7-1e-8||it.size*contentScale<floor-1e-8||explicitSize&&Math.abs(ratio-1)>1e-8||['proofread','numbered','contents'].includes(cut.layout)&&it.text!==n.text)fail('EDITORIAL_TYPE_QUALITY','Native font/clock/order, actual floor, annotation run or explicit type size changed');});
++ let minRatio=Infinity;actual.main.forEach((it,i)=>{const n=expected.main[i],ratio=it.size/n.size;minRatio=Math.min(minRatio,ratio);if(norm(it.text)!==norm(n.text)||it.font!==n.font||it.mi!==n.mi||it.lead!==n.lead&&!(cut.layout==='poster'&&cut.layoutCRecipe?.posterHandbill&&it.lead===.98)||it.track!==n.track||ratio<.7-1e-8||it.size*contentScale<floor-1e-8||explicitSize&&Math.abs(ratio-1)>1e-8||['proofread','numbered','contents'].includes(cut.layout)&&it.text!==n.text)fail('EDITORIAL_TYPE_QUALITY','Native font/clock/order, actual floor, annotation run or explicit type size changed');});
+  if(!dictionaryProof)actual.metadata.forEach((it,i)=>{const n=expected.metadata[i];if(!Number.isFinite(it.size)||it.size<n.size*.7-1e-8||it.size*contentScale<Math.min(n.size*contentScale,secondaryFloor)-1e-8||explicitSize&&Math.abs(it.size-n.size)>1e-8)fail('EDITORIAL_COPY_QUALITY','Real editorial copy fell below native ratio/readable floor or explicit size');});
+  let fields=0;for(const e of program.events.filter(e=>e.kind==='item'&&e.args[0].placementMain)){const z=e.args[0].placementCOwnedZone;if(!z||![z.x0,z.y0,z.x1,z.y1].every(Number.isFinite)||z.x0>=z.x1||z.y0>=z.y1)fail('OWNED_ZONE_REQUIRED','Source editorial field required');const field=rect(z.x0,z.y0,z.x1,z.y1).map(p=>A.point(e.matrix,p));if(!e.inkPolygons?.length||e.inkPolygons.some(p=>p.some(v=>!contains(v,field))))fail('OWNED_TEXT_OUTSIDE_FIELD','Complete pre-clip main ink escaped its source editorial field');fields++;}
+  let numeralFields=0;if(cut.layout==='numbered')for(const e of program.events.filter(e=>e.kind==='item'&&e.clips?.length)){if(e.args[0].placementMain||!e.inkPolygons?.length||e.inkPolygons.length!==J.glyphCount(e.args[0].text))fail('NUMBERED_MASK_HOLD_COPY','Every complete ordinal glyph requires measured preclip ink');for(const c of e.clips){const a=c.args||c.commands?.find(([k])=>k==='rect')?.[1];if(!a)fail('NUMBERED_MASK_HOLD_COPY','Owned ordinal rectangle mask required');const field=rect(a[0],a[1],a[0]+a[2],a[1]+a[3]).map(p=>A.point(c.matrix,p));if(e.inkPolygons.some(p=>p.some(v=>!contains(v,field))))fail('NUMBERED_MASK_HOLD_COPY','A readable settled ordinal would be cropped by its source mask');}numeralFields++;}
++ const posterHandbillProof=cut.layout==='poster'&&cut.layoutCRecipe?.posterHandbill?posterHandbillQuality(program,cut,plan,actual,expected):null;
+  const proofMarginProof=cut.layout==='proofread'&&cut.layoutCRecipe?.proofBottomMargin?proofMarginQuality(program,cut,expected,actual):null;
+  const contentsProof=cut.layout==='contents'&&cut.layoutCRecipe?.contentsLedger?contentsLedgerQuality(program,cut,plan,contentsActiveIndex,expected):null;
+- return {source:actual,dictionaryProof,swissProof,contentsProof,proofMarginProof,completePreClipNumerals:numeralFields,minNativeFontRatio:minRatio,minPrimaryPx:Math.min(...actual.main.map(i=>i.size*contentScale)),floor,secondaryFloor,completePreClipFields:fields,explicitSizePreserved:explicitSize};
++ return {source:actual,dictionaryProof,swissProof,contentsProof,proofMarginProof,posterHandbillProof,completePreClipNumerals:numeralFields,minNativeFontRatio:minRatio,minPrimaryPx:Math.min(...actual.main.map(i=>i.size*contentScale)),floor,secondaryFloor,completePreClipFields:fields,explicitSizePreserved:explicitSize};
+ }
+ // Every native clip used by these sources is a rectangle (number rise masks
+ // and halftone photo windows). Keep it owned and transport it with the source.
+@@ -203,7 +219,7 @@ function recipes(cut,explicitSize){
+  const spacing=cut.layout==='footnote'?[14,28,42].map(noteMargin=>({noteMargin,strategy:'footnote-native-running-margin'})):cut.layout==='dictionary'?[14,28,42].map(dictionaryInset=>({dictionaryInset,strategy:'dictionary-native-page-edge-inset'})):cut.layout==='proofread'?[.7,.5,.35].map(proofMargin=>({proofMargin,strategy:'proofread-native-margin-packing'})):[];
+  if(explicitSize)return spacing;
+  const field=fields[cut.layout],measures=['headlineDeck','contents','footnote','proofread','numbered','swissGrid'].includes(cut.layout)?[.95,.9,.85,.8,.75,.7,.6,.5,.45,.4,.36]:[.95,.9,.85,.8,.75,.7];
+- const construction=cut.layout==='proofread'?[{proofBottomMargin:{typeScale:.7},proofMargin:.35,strategy:'proofread-bottom-proof-margin'}]:cut.layout==='contents'?[.34,.31,.29].map(width=>({contentsLedger:{width,numberScale:.75,pageScale:.7},strategy:'contents-native-compact-ledger-'+width})):cut.layout==='swissGrid'?[{gridPaper:{xMeasure:.32,typeScale:.7},strategy:'swiss-grid-narrow-paper-headword'}]:cut.layout==='numbered'?[...(cut.params.variant==='cols'&&cut.params.chunks?.length===2?[{numberColumnsSpread:{width:.302,left:.06,right:.64},strategy:'numbered-native-two-column-gutter'}]:[]),...(cut.params.variant!=='behind'?[{numberRowsPacking:{measure:.46,numberScale:.7},strategy:'numbered-native-packed-row-ledger'}]:[])]:[];
++ const construction=cut.layout==='poster'?[{posterHandbill:{measure:.31,typeScale:.7},strategy:'poster-native-handbill-ledger'}]:cut.layout==='proofread'?[{proofBottomMargin:{typeScale:.7},proofMargin:.35,strategy:'proofread-bottom-proof-margin'}]:cut.layout==='contents'?[.34,.31,.29].map(width=>({contentsLedger:{width,numberScale:.75,pageScale:.7},strategy:'contents-native-compact-ledger-'+width})):cut.layout==='swissGrid'?[{gridPaper:{xMeasure:.32,typeScale:.7},strategy:'swiss-grid-narrow-paper-headword'}]:cut.layout==='numbered'?[...(cut.params.variant==='cols'&&cut.params.chunks?.length===2?[{numberColumnsSpread:{width:.302,left:.06,right:.64},strategy:'numbered-native-two-column-gutter'}]:[]),...(cut.params.variant!=='behind'?[{numberRowsPacking:{measure:.46,numberScale:.7},strategy:'numbered-native-packed-row-ledger'}]:[])]:[];
+  return [...spacing,...construction,...measures.map(value=>({[field]:value,...(cut.layout==='footnote'?{noteMargin:42}:{}),...(cut.layout==='proofread'&&value<.7?{proofMargin:.35}:{}),strategy:cut.layout+'-native-'+field})),...(cut.layout==='dictionary'?[{dictionaryColumn:{measure:.32,typeScale:.7,spread:true},strategy:'dictionary-logical-column-spread'},{dictionaryColumn:{measure:.32,typeScale:.7},strategy:'dictionary-logical-column-32'},{dictionaryColumn:{measure:.36,typeScale:.7},strategy:'dictionary-logical-column-36'},{dictionaryColumn:{measure:.4,typeScale:.7},strategy:'dictionary-logical-column-40'},{dictionaryTypeScale:.95,strategy:'dictionary-body-point-size'}]:[])];
+ }
+ function domain(cut){
+diff --git a/src/11p_layoutsC.js b/src/11p_layoutsC.js
+index 9666afe..b6b63e7 100644
+--- a/src/11p_layoutsC.js
++++ b/src/11p_layoutsC.js
+@@ -1140,12 +1140,15 @@ reg('poster', {
+   render(env) {
+     const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
+     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
++    const pocket = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.posterHandbill : null;
++    const posterOwned=(role,fn,row=null,field=null)=>{const prior=env.placementCBody;if(env.cut.placementLayoutsC)env.placementCBody={...prior,posterOwner:{role,row,field}};try{return fn();}finally{env.placementCBody=prior;}};
++    if(pocket&&(port||hasLatin(env.cut.text)||!['stack','block'].includes(p.variant)||pocket.measure!==.31||pocket.typeScale!==.7||J.glyphCount(env.cut.text)<2||J.glyphCount(env.cut.text)>4||p.lines?.length!==1||/[\r\n]/.test(p.lines[0])))throw Object.assign(new Error('Short original horizontal poster occurrence required'),{code:'POSTER_HANDBILL_DOMAIN'});
+     const out = tout(env), ls = smallSize(env);
+     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.posterMeasure ?? 1 : 1;
+-    const nativeMX = W*.07, aw = editorialMeasure === 1 ? W-nativeMX*2 : (W-nativeMX*2)*editorialMeasure, mx = editorialMeasure === 1 ? nativeMX : (W-aw)/2, my = H * .07;
++    const nativeMX = W*.07,nativeAW=W-nativeMX*2,aw = pocket ? W*pocket.measure : editorialMeasure === 1 ? nativeAW : nativeAW*editorialMeasure, mx = pocket ? (W-aw)/2 : editorialMeasure === 1 ? nativeMX : (W-aw)/2, my = H * .07;
+     const lines = (p.lines && p.lines.length ? p.lines : [env.cut.text.trim()]).filter(Boolean);
+     const latin = hasLatin(env.cut.text);
+-    const credH = ls * 4.2, topH = ls * 2;
++    const credH = ls * (pocket?6.6:4.2), topH = ls * 2;
+     const y0 = my + topH + ls * 0.6, y1 = H - my - credH - ls * 0.8;
+     const avH = y1 - y0;
+     const block = p.variant === 'block';
+@@ -1156,14 +1159,14 @@ reg('poster', {
+     // colour block (wipes down from the top)
+     if (block) {
+       const e = tin(env, 0, 0.5, E.inOutExpo) * (1 - E.inCubic(env.pOut));
+-      env.rect((W-W*editorialMeasure)/2, 0, W*editorialMeasure, (y1 + ls * 0.4) * e, plate, 1, gIn(env));
++      posterOwned('color-block',()=>env.rect(pocket?mx-ls*.5:(W-W*editorialMeasure)/2,pocket?H*.04:0,pocket?aw+ls:W*editorialMeasure,(y1+ls*.4-(pocket?H*.04:0))*e,plate,1,gIn(env)));
+     }
+     // header row
+     const ha = tin(env, 0.1, 0.4, E.outCubic) * out;
+-    env.draw({ text: p.head + '  ' + lineNo(env), font: monoF(env), size: ls, track: 0.3, align: 'left', x: mx, y: my + ls * 0.5, color: tc, alpha: ha, ghost: false });
+-    env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls, track: 0.2, align: 'right', x: mx + aw, y: my + ls * 0.5, color: tc, alpha: ha, ghost: false });
++    posterOwned('header-label',()=>env.draw({ text: p.head + '  ' + lineNo(env), font: monoF(env), size: ls, track: 0.3, align: 'left', x: mx, y: my + ls * 0.5, color: tc, alpha: ha, ghost: false }),null,pocket?{x0:mx-4,y0:my-ls,x1:mx+aw*.64,y1:my+ls*1.3}:null);
++    posterOwned('header-time',()=>env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls, track: 0.2, align: 'right', x: mx + aw, y: my + ls * 0.5, color: tc, alpha: ha, ghost: false }),null,pocket?{x0:mx+aw*.64,y0:my-ls,x1:mx+aw+4,y1:my+ls*1.3}:null);
+     const re = tin(env, 0.05, 0.6, E.inOutCubic) * out;
+-    env.line([[mx, my + ls * 1.5], [mx + aw * re, my + ls * 1.5]], tc, lw, 0.8, false);
++    posterOwned('header-rule',()=>env.line([[mx, my + ls * 1.5], [mx + aw * re, my + ls * 1.5]], tc, lw, 0.8, false));
+     // accent dot behind the type (tate posters get one in the free area left of the columns)
+     if (tate) {
+       if (!block) {
+@@ -1175,13 +1178,16 @@ reg('poster', {
+         if (r > u * 0.06) editorialMotion(.5, () => env.circle(mx + free * 0.48, y0 + avH / 2, r * q, sc.accent, null, 0, 1, gIn(env)));
+       }
+     } else if (p.dot && !block) {
+-      const r = Math.min(aw, avH) * (port ? 0.34 : 0.3);
++      const r = pocket ? Math.min(nativeAW,H-my-ls*4.2-ls*.8-y0)*.3*pocket.typeScale : Math.min(aw, avH) * (port ? 0.34 : 0.3);
+       const q = E.outBack(J.clamp((env.lt - 0.05) / 0.45), 1.3) * (1 - E.inCubic(env.pOut));
+-      editorialMotion(.5, () => env.circle(mx + aw - r * 0.9, y0 + r * 0.95, r * q, sc.accent, null, 0, 1, gIn(env)));
++      editorialMotion(.5, () => posterOwned('accent',()=>env.circle(mx + aw - r * 0.9, y0 + r * 0.95, r * q, sc.accent, null, 0, 1, gIn(env))));
+     }
+-    if (env.cut.placementLayoutsC) env.placementCEditorialZone = block ? {x0:(W-W*editorialMeasure)/2,y0:0,x1:(W+W*editorialMeasure)/2,y1:y1+ls*.4} : {x0:mx*.5,y0:my*.5,x1:W-mx*.5,y1:H-my*.5};
++    if (env.cut.placementLayoutsC) env.placementCEditorialZone = pocket ? {x0:mx-4,y0:y0-4,x1:mx+aw+4,y1:y1+4} : block ? {x0:pocket?mx-ls*.5:(W-W*editorialMeasure)/2,y0:pocket?H*.04:0,x1:pocket?mx+aw+ls*.5:(W+W*editorialMeasure)/2,y1:y1+ls*.4} : {x0:mx*.5,y0:my*.5,x1:W-mx*.5,y1:H-my*.5};
+     let bb = null;
+-    if (tate) {
++    if (pocket) {
++      const text=lines[0],chars=[...text],split=Math.ceil(chars.length/2),fragments=[chars.slice(0,split).join(''),chars.slice(split).join('')],nativeWidth=meas(text,p.font,100,{track:-.02}).w/100,nativeHeight=H-my-ls*4.2-ls*.8-y0,nativeSize=Math.min(nativeAW/Math.max(.5,nativeWidth),nativeHeight/.98),size=nativeSize*pocket.typeScale,display=fragments.join('\n'),m=meas(display,p.font,size,{lead:.98,track:-.02}),y=block?y1-m.h/2:y0+avH/2;
++      bb=posterOwned('main',()=>J.mainDraw(env,{text:display,font:p.font,size,x:mx,y,align:'left',lead:.98,track:-.02,color:tc,mi:0,placementCOwnedZone:env.placementCEditorialZone}),0);
++    } else if (tate) {
+       // tall columns filling the height, right → left, one size
+       const t = strip(env.cut.text), n = J.glyphCount(t);
+       const per = port ? 6 : 5;
+@@ -1204,25 +1210,25 @@ reg('poster', {
+       let y = y0 + (avH - th) * (block ? 1 : 0.5);
+       lines.forEach((l, i) => {
+         y += sz[i] * 0.49;
+-        bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: l, font: p.font, size: sz[i], x: mx, y, align: 'left', track: -0.02, color: tc, mi: i * 3 }));
++        bb = J.unionBB(bb, posterOwned('main',()=>J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: l, font: p.font, size: sz[i], x: mx, y, align: 'left', track: -0.02, color: tc, mi: i * 3 }),i));
+         y += sz[i] * 0.49;
+       });
+     }
+     // credits block
+     const cy = H - my - credH;
+     const lw2 = Math.max(4, u * 0.008);
+-    env.rect(mx, cy, aw * re, lw2, sc.fg, 1, false);
++    posterOwned('credits-rule',()=>env.rect(mx, cy, aw * re, lw2, sc.fg, 1, false));
+     const cols3 = [['DATE', J.fmtTime(env.cut.start)], ['No.', lineNo(env) + ' / ' + pad2(J.glyphCount(env.cut.text))], ['WORDS', deckCopy(env) || romajiOf(env) || flat(env.cut.text)]];
+     const cw3 = aw / 3;
+     cols3.forEach(([k2, v], i) => {
+       const a = tin(env, 0.2 + i * 0.08, 0.4, E.outCubic) * out;
+       if (a <= 0.01) return;
+-      const x = mx + i * cw3;
+-      env.draw({ text: k2, font: monoF(env), size: ls * 0.8, track: 0.3, align: 'left', x, y: cy + lw2 + ls * 0.9, color: sc.sub, alpha: a, ghost: false });
+-      const maxC = Math.max(3, Math.floor(cw3 * 0.9 / (ls * (hasLatin(v) ? 0.62 : 1.05))));
++      const x = pocket?mx:mx + i * cw3, rowY=pocket?cy+lw2+ls*(.9+i*1.9):null;
++      posterOwned('credit-label',()=>env.draw({ text: k2, font: monoF(env), size: ls * 0.8, track: 0.3, align: 'left', x, y: pocket?rowY:cy + lw2 + ls * 0.9, color: sc.sub, alpha: a, ghost: false }),i,pocket?{x0:x-4,y0:rowY-ls*.8,x1:x+ls*4,y1:rowY+ls*.8}:null);
++      const maxC = Math.max(3, Math.floor((pocket?nativeAW/3:cw3) * 0.9 / (ls * (hasLatin(v) ? 0.62 : 1.05))));
+       const vv = [...v].length > maxC ? [...v].slice(0, maxC - 1).join('') + '…' : v;
+-      env.draw({ text: vv, font: bodyF(env), size: ls * 1.05, align: 'left', x, y: cy + lw2 + ls * 2.4, color: sc.fg, alpha: a, ghost: false });
+-      if (i > 0) env.line([[x - ls * 0.5, cy + lw2 + ls * 0.4], [x - ls * 0.5, cy + credH - ls * 0.3]], sc.sub, lw, 0.6 * a, false);
++      posterOwned('credit-value',()=>env.draw({ text: vv, font: bodyF(env), size: ls * 1.05, align: 'left', x:pocket?mx+ls*4.2:x, y:pocket?rowY:cy + lw2 + ls * 2.4, color: sc.fg, alpha: a, ghost: false }),i,pocket?{x0:mx+ls*4.2-4,y0:rowY-ls*.8,x1:mx+aw+4,y1:rowY+ls*.8}:null);
++      if (i > 0) posterOwned('credit-separator',()=>env.line(pocket?[[mx,rowY-ls*.95],[mx+aw,rowY-ls*.95]]:[[x - ls * 0.5, cy + lw2 + ls * 0.4], [x - ls * 0.5, cy + credH - ls * 0.3]], sc.sub, lw, 0.6 * a, false),i);
+     });
+     return bb || box(mx, y0, mx + aw, y1);
+   },

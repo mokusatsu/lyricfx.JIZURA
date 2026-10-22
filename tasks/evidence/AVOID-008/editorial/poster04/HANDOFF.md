@@ -1,0 +1,30 @@
+# Poster finite handbill checkpoint
+
+This checkpoint adds one landscape, short Japanese, horizontal stack/block handbill construction. Native joint translation remains first. The finite candidate uses stage-width .31, main point .7 native, a two-line logical occurrence, unchanged native metadata points/copies, one credit ledger, and the original owned color plate/dot, source clocks and ownership. Stage W/H are unchanged. It is not an all-poster-domain acceptance: Latin, tate, portrait, longer occurrences and insufficient candidates retain their reported unsupported/insufficient or prior/native path. Candidate exhaustion is not mathematical impossibility; a wider logical editorial redesign is unimplemented.
+
+`results.json` contains 50 cases: 27 safe, 21 insufficient, 2 unsupported. The 24 default circle (.5,.42), radius .2 cases (stack/block × dot on/off × six genuine main faces) use the new handbill. There are 42 handbill-bearing segments, not 42 independent layouts. Source operation/copy/font/paint-alpha/owner-clock parity has 96 comparisons; 36 structural negatives reject. The operation topology, every actual metadata string (including native truncation), original main occurrence and ordered character ranges, real CSS points, actual font floors, source attachment geometry and all owned rule/text clearances are checked. Negative crossings can be rejected by an earlier exact attachment check; no claim is made that every negative isolates the final ink-intersection error code.
+
+OFF/native identity is separate: 500 frame comparisons are pixel-identical. It does not certify ON avoidance. Actual cmap audit has 1,894 deduplicated role/face/character observations, no uncovered/fallback observations, eight loaded genuine faces and six main faces. This is corpus coverage, not a load-only assertion. OFF/manual/lock/emphasis stay preserved; explicit size does not use the handbill.
+
+Full-primary actual raster has 141 nonempty hold/epoch observations and 303 nonempty per-event settled observations, no margin-circle collisions. Of the holds, 114 have nonempty global-strict observations; 27 earliest quantized times precede h0 while the full-primary observations are still nonempty and clear. Stage results must be split: 126 new-crop-forbidden observations have zero outside pixels; 15 native-identity observations reproduce 6,948 aggregate original outside pixels. The latter are original native crop, not a claim of full-stage containment. Circle entry relaxation and native intentional stage crop are different scopes.
+
+`../poster-ink01.json` independently records 168 actual native-scale rule/item layer comparisons (24 fixtures × seven times), 144 with both nonempty, zero shared alpha pixels. Audit helpers are rebound with renderer.makeEnv to the audit context. Together with analytic stroke support and prefix geometry, this checks the finite candidate's owned header/credit rules against main and metadata. No images were viewed by this agent.
+
+`../poster-boundary03.json`: 33 EN normal cases, 7 safe/23 insufficient/3 short-hold unsupported, no runtime errors and unchanged source pins. Three forged early-settled circle conflicts are rejected before replay with EDITORIAL_STRICT_CIRCLE_VIOLATION. Boundary01/02 FAIL receipts and runners remain: native full-stage block paper/border/zoom crop triggered STAGE_CONTAINMENT before reaching the isolated circle guard. Boundary03 uses an actual stage-contained handbill for block, selecting it through a forged solver result; stack/tate retain native cases. Product guards and expected error codes were not weakened. The two long-Latin block unsupported cases are also paired with immutable native-before EN inputs/statuses; they are not new failures.
+
+Old poster01/02/03 snapshots, raw results and logs remain. The first finite ledger shape was expanded in04 (8.1 ls credit height, 2.4 ls credit pitch, 1.65 ls header rule) to support explicit all-rule/text separation. All50 final statuses remain unchanged from03. No further recipe exploration was added from visual review.
+
+## Immutable pins and media
+
+`sourceStartEnd.json` verifies all100 pinned source/compiled/runner/fixture/font inputs unchanged across final tests. The gzip files here are the actual tested snapshot; generated JA/EN and shared09g are evidence only, excluded from the source commit.
+
+- 09h: `26564f109a0c9d5819bc921687e88c124007a4f36b70e9f5adb7526c59fe904c`
+- 11p: `b5fb7105e28ab4702d459a8f5f8e2af6186471f550f82d9c32dc17cac30e6c5c`
+- JA: `be8f37463052ae10b17e242a74b26378356dc3b729c62a327a7031d25c577d7f`
+- EN: `977f4d599a056bb80e9a9d4d820c80741fcfb625e26164de19f6e20ba36dcdd0`
+
+Final matrix period: 2026-10-22T19:26:42.097Z–19:27:43.344Z; Node24.19.0, Chromium154.0.8037.57. Dedicated boundary03/ink01 frozen runners are included here. Final build log is `../checkpoint01/poster-build05.log`; all previous build/test logs remain.
+
+Representative comparison: `../poster-preview01/index.html`, manifest SHA256 `696272d2965718df78c7b9b4ef02630e0e1a574b3035ad78a60c6c07191f29d1`. Both MP4s are Canvas-native960×540, 96 frames/24fps; six native PNGs pair f6/f36/f91 at the exact same clocks. Both sides use the same full actual source plan, text 風の先へ, stack/dot/mincho, input note 遠い空の向こうへ, default circle, with before native/OFF and after final04/ON. Actual drawn metadata is recorded separately from input note: LYRIC 01, source time, DATE/time, No./01 / 04, WORDS/遠い空の向こうへ. Full source/render plans, cut inputs, per-frame PNG hashes, font/input pins and all14 asset hashes are in the manifest. Capture period19:31:47.700Z–19:31:58.559Z.
+
+Parent reports independent context-none sol review of all192 decoded frames and six native keys as a limited visual PASS direction. It notes major composition change, wide left whitespace, and low contrast of white の on yellow dot; no anomalous rule crossing/crop. This is scoped independent evidence, not this agent's visual claim or final human composition approval. Public access/result verification was not performed. Magazine/newspaper are not included in this source checkpoint.
