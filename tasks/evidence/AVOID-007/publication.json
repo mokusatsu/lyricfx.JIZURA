@@ -1,6 +1,6 @@
 {
   "schema": "avoid007-publication-v1",
-  "status": "equalizer02 deployed via authorized operation; human motion review pending; public result verification permanently cancelled",
+  "status": "AVOID-007 accepted and complete; public result verification permanently cancelled by explicit user instruction",
   "timestamp": "2026-10-22T15:11:57.900Z",
   "productSourceCommit": "80277e4639c2fffe020a0151e2f87469082c9c14",
   "sitesSourceCommit": "27ad485977c28b4c62e2cc82833952bc6d8ff301",
@@ -80,7 +80,7 @@
     "canonicalInstruction": "../../../AGENTS.md"
   },
   "pages": "bridge not generated; work not pushed at this checkpoint; no further public-result verification permitted",
-  "taskStatus": "実環境検証待ち (equalizer02 human motion review only; public results are outside scope);008未着手",
+  "taskStatus": "完了; equalizer02 user OK received 2026-10-23JST;008 investigation starting",
   "xzCandidate": {
     "timestamp": "2026-10-22T13:49:20.520546+00:00",
     "sourceCommit": "051384b6e2c4e0ee823eb6b9ddc0c9eba0720d96",
@@ -180,9 +180,16 @@
     "reason": "Avoidance added rows and lost graphic equalizer / level meter composition",
     "existingPublishedArtifact": "unchanged; prior version is historical and requires repair",
     "publicResultChecks": "remain prohibited",
-    "status": "code/local numeric/independent visual review complete; human motion review pending",
+    "status": "local code/numeric/isolated visual and user motion acceptance complete",
     "acceptedLocalCandidate": "equalizer-row-20261022-02",
     "rejectedUnpublishedCandidate": "equalizer-row-20261022-01"
   },
-  "frozenMain25ProductSourceCommit": "24999a5f80c40650bc9aba09db87a095e8fe4bdd"
+  "frozenMain25ProductSourceCommit": "24999a5f80c40650bc9aba09db87a095e8fe4bdd",
+  "humanAcceptance": {
+    "date": "2026-10-23",
+    "timezone": "Asia/Tokyo",
+    "quote": "OKです 続きを順次実装していってください",
+    "scope": "equalizer02 remaining motion review; parent final acceptance completes007",
+    "publicResultsVerified": false
+  }
 }
