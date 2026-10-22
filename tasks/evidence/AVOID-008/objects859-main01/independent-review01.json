@@ -1,0 +1,594 @@
+{
+  "runnerSHA256": "b24c362a9588dd55c06cde1a261327e74e94f9190b2b86f38b6299e584714f9f",
+  "matrixSHA256": "af46cb8b32ff12c89db55017f9c0576c1b586412c6b02f54a0032b7aa0e402f5",
+  "fontCmaps": [
+    {
+      "face": "sans-regular",
+      "sha256": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5",
+      "actualCmap": 531
+    },
+    {
+      "face": "sans-bold",
+      "sha256": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359",
+      "actualCmap": 531
+    },
+    {
+      "face": "serif-regular",
+      "sha256": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19",
+      "actualCmap": 531
+    },
+    {
+      "face": "serif-bold",
+      "sha256": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce",
+      "actualCmap": 531
+    },
+    {
+      "face": "mono",
+      "sha256": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585",
+      "actualCmap": 531
+    },
+    {
+      "face": "dot",
+      "sha256": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c",
+      "actualCmap": 527
+    },
+    {
+      "face": "rounded",
+      "sha256": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527",
+      "actualCmap": 532
+    },
+    {
+      "face": "symbols",
+      "sha256": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9",
+      "actualCmap": 19
+    },
+    {
+      "face": "fractions",
+      "sha256": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597",
+      "actualCmap": 1
+    }
+  ],
+  "actualAssignedGlyphs": 7668,
+  "explicitFallbackAssignments": 15,
+  "safeSegmentEnvelopePolygons": 411,
+  "safeSegmentStrictPolygonsIncludingPartialEpochTrajectories": 46077,
+  "localBodyPhaseObservations": 6887,
+  "shiftedEightRadiusEpochCases": 10,
+  "byLayout": {
+    "ema": {
+      "insufficient-space": 22,
+      "certified-hold-adapter": 10
+    },
+    "ransom": {
+      "certified-hold-adapter": 18,
+      "insufficient-space": 12
+    },
+    "vinyl": {
+      "insufficient-space": 32,
+      "certified-hold-adapter": 3,
+      "unsupported": 1
+    },
+    "cassette": {
+      "insufficient-space": 24,
+      "certified-hold-adapter": 12
+    },
+    "bookSpine": {
+      "certified-hold-adapter": 25,
+      "insufficient-space": 6,
+      "unsupported": 1
+    },
+    "polaroid": {
+      "certified-hold-adapter": 9,
+      "insufficient-space": 23,
+      "unsupported": 1
+    },
+    "stampSheet": {
+      "insufficient-space": 29,
+      "certified-hold-adapter": 6
+    },
+    "postcard": {
+      "insufficient-space": 34,
+      "unsupported": 1
+    },
+    "letterPaper": {
+      "certified-hold-adapter": 10,
+      "insufficient-space": 22
+    },
+    "calendar": {
+      "insufficient-space": 32
+    }
+  },
+  "budgetCases": [
+    {
+      "layout": "ema",
+      "nativeCalls": 1,
+      "trialCalls": 6,
+      "safety": "insufficient-space",
+      "budget": {
+        "nativeRecordCalls": 1,
+        "trialRecordCalls": 6,
+        "reconstructed": 6,
+        "unique": 6,
+        "cacheHits": 12,
+        "rejected": 6,
+        "rejectedCacheHits": 12,
+        "perCutLimit": 6
+      },
+      "attempts": [
+        [
+          {
+            "strategy": "native-owned-unit-joint-translation",
+            "status": "insufficient-space",
+            "reason": "bounded-candidate-search-exhausted"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.95,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.95,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.9,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.9,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.85,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.85,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.8,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.8,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.75,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.75,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.7,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.7,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          }
+        ],
+        [
+          {
+            "strategy": "native-owned-unit-joint-translation",
+            "status": "insufficient-space",
+            "reason": "bounded-candidate-search-exhausted"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.95,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.95,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.9,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.9,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.85,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.85,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.8,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.8,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.75,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.75,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.7,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.7,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          }
+        ],
+        [
+          {
+            "strategy": "native-owned-unit-joint-translation",
+            "status": "insufficient-space",
+            "reason": "bounded-candidate-search-exhausted"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.95,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.95,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.9,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.9,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.85,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.85,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.8,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.8,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.75,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.75,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "ema-owned-object-size",
+            "recipe": {
+              "objectScale": 0.7,
+              "strategy": "ema-owned-object-size"
+            },
+            "objectScale": 0.7,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          }
+        ]
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    },
+    {
+      "layout": "cassette",
+      "nativeCalls": 1,
+      "trialCalls": 6,
+      "safety": "insufficient-space",
+      "budget": {
+        "nativeRecordCalls": 1,
+        "trialRecordCalls": 6,
+        "reconstructed": 6,
+        "unique": 6,
+        "cacheHits": 12,
+        "rejected": 6,
+        "rejectedCacheHits": 12,
+        "perCutLimit": 6
+      },
+      "attempts": [
+        [
+          {
+            "strategy": "native-owned-unit-joint-translation",
+            "status": "insufficient-space",
+            "reason": "bounded-candidate-search-exhausted"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.95,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.95,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.9,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.9,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.85,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.85,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.8,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.8,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.75,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.75,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.7,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.7,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          }
+        ],
+        [
+          {
+            "strategy": "native-owned-unit-joint-translation",
+            "status": "insufficient-space",
+            "reason": "bounded-candidate-search-exhausted"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.95,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.95,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.9,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.9,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.85,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.85,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.8,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.8,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.75,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.75,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.7,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.7,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          }
+        ],
+        [
+          {
+            "strategy": "native-owned-unit-joint-translation",
+            "status": "insufficient-space",
+            "reason": "bounded-candidate-search-exhausted"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.95,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.95,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.9,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.9,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.85,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.85,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.8,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.8,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.75,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.75,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          },
+          {
+            "strategy": "cassette-owned-object-size",
+            "recipe": {
+              "objectScale": 0.7,
+              "strategy": "cassette-owned-object-size"
+            },
+            "objectScale": 0.7,
+            "status": "rejected",
+            "reason": "OBJECTS_TEST_TRIAL_REJECT",
+            "message": "intentional trial record rejection"
+          }
+        ]
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

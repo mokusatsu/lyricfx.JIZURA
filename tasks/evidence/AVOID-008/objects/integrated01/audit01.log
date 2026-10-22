@@ -1,0 +1,28 @@
+ema {"samples":9,"newCrop":0,"collisions":0}
+ema {"samples":9,"newCrop":0,"collisions":0}
+ransom {"samples":9,"newCrop":0,"collisions":0}
+ransom {"samples":9,"newCrop":0,"collisions":0}
+vinyl {"samples":9,"newCrop":0,"collisions":0}
+cassette {"samples":9,"newCrop":0,"collisions":0}
+cassette {"samples":9,"newCrop":0,"collisions":0}
+bookSpine {"samples":9,"newCrop":0,"collisions":0}
+bookSpine {"samples":9,"newCrop":0,"collisions":0}
+polaroid {"samples":9,"newCrop":0,"collisions":0}
+polaroid {"samples":9,"newCrop":0,"collisions":0}
+stampSheet {"samples":9,"newCrop":0,"collisions":0}
+stampSheet {"samples":9,"newCrop":0,"collisions":0}
+letterPaper {"samples":9,"newCrop":0,"collisions":0}
+letterPaper {"samples":9,"newCrop":0,"collisions":0}
+{"cases":15,"negatives":[{"layout":"stampSheet","time":0.01,"center":{"x":0.50405,"y":0.5166666666666667},"calls":1,"safety":"certified-hold-adapter"},{"layout":"ransom","time":0.25,"center":{"x":0.24353772362540263,"y":0.5181721313411174},"calls":1,"safety":"certified-hold-adapter","error":{"code":"C_OBJECT_CIRCLE_VIOLATION","message":"Certified object hold collided with circle"}},{"layout":"polaroid","time":0.5,"center":{"x":0.49625951781267497,"y":0.4459754614416977},"calls":1,"safety":"certified-hold-adapter","error":{"code":"C_OBJECT_CIRCLE_VIOLATION","message":"Certified object hold collided with circle"}}]}
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(report.negatives.every(n=>n.calls>0&&n.error?.code==='C_OBJECT_CIRCLE_VIOLATION'))
+
+    at /workspace/avoid008-integrated/tasks/evidence/AVOID-008/objects/integrated01/audit-runner.cjs:8:378 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
