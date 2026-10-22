@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-10-22T14:56:25.794Z",
+  "scope": "parent local baseline and Japanese/English startup verification only; no public URL access",
+  "lyricParsing": {
+    "command": "node dev/lyric_test.js",
+    "exitCode": 0,
+    "output": "Lyric parsing tests passed"
+  },
+  "localSmokeInitial": {
+    "command": "JIZURA_BROWSER=/usr/bin/chromium node mcp/site-smoke-test.mjs --local",
+    "exitCode": 1,
+    "reason": "default execution sandbox denied listen on 127.0.0.1 (EPERM); no application check completed"
+  },
+  "localSmokeRetry": {
+    "command": "JIZURA_BROWSER=/usr/bin/chromium node mcp/site-smoke-test.mjs --local",
+    "execution": "approved sandbox escalation for loopback HTTP and installed Chromium",
+    "chunk_id": "e76790",
+    "wall_time_seconds": 0.000028971,
+    "exit_code": 0,
+    "original_token_count": 121,
+    "output": "{\"status\":\"passed\",\"language\":\"ja\",\"url\":\"http://127.0.0.1:39959/\",\"sha256\":\"5b611a6dfd44f344a4709d2cf0f2e0666a8b74c1db621e64dea1cc2a7131ace1\",\"lyricLines\":[0,1],\"hasColorVariation\":true,\"cuts\":4,\"width\":654,\"height\":368,\"pngBytes\":571146}\n{\"status\":\"passed\",\"language\":\"en\",\"url\":\"http://127.0.0.1:39959/en/\",\"sha256\":\"1876e7d14ca0f0cd6ec61498f5e1484cec78eb43605b54977ab1e0f6ae9ec40a\",\"lyricLines\":[0,1],\"hasColorVariation\":true,\"cuts\":4,\"width\":654,\"height\":368,\"pngBytes\":572858}\n"
+  },
+  "publicVerification": "not run; permanently cancelled by explicit user instruction"
+}

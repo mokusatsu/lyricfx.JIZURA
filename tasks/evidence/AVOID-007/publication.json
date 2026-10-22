@@ -1,0 +1,187 @@
+{
+  "schema": "avoid007-publication-v1",
+  "status": "equalizer02 deployed via authorized operation; human motion review pending; public result verification permanently cancelled",
+  "timestamp": "2026-10-22T15:11:57.900Z",
+  "productSourceCommit": "24999a5f80c40650bc9aba09db87a095e8fe4bdd",
+  "sitesSourceCommit": "27ad485977c28b4c62e2cc82833952bc6d8ff301",
+  "sitesOriginalTreeCommit": "a4c04fee1732afb64ba43e7a06a5e4dc216e78cd",
+  "sitesTree": "ea31b5b61a295d8263b7535ae3fe22c623200b83",
+  "deployment": {
+    "id": "appgdep_6ada27750e608191863d175addb8ff24",
+    "project_id": "appgprj_6ad847c65024819184eb5d0bd700a282",
+    "title": "JIZURA 全パターン・アニメーション比較",
+    "version_id": "appgprj_6ad847c65024819184eb5d0bd700a282~appgver_91c9598811248191a843ca9041cc7183",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://jizura-all-motion-20261021.mokusatsu.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6ad847c65024819184eb5d0bd700a282",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-10-22T15:11:13.369899+00:00"
+  },
+  "manifests": {
+    "main": {
+      "path": "review/AVOID-007/selected-20261022-01/",
+      "sha256": "ef73f664d57805da580dff0f59f098c1dbf23c3a060c197d132b2bf895bbbe2e",
+      "assets": 283,
+      "mp4": 10,
+      "nativeKeys": 40,
+      "scope": "five selected repairs; full25 original local artifacts retained"
+    },
+    "h03": {
+      "path": "review/AVOID-007/local-20261022-h03-control-02/",
+      "sha256": "9d16f11518628b28d64bb238ba6a764a5fc17bb262ca8a7446f572b809564b47",
+      "assets": 209,
+      "mp4Output": 2,
+      "mp4Input": 2,
+      "nativeKeys": 8
+    },
+    "mainAll25Local": {
+      "path": "review/AVOID-007/local-20261022-02/",
+      "sha256": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+      "assets": 554,
+      "mp4": 50,
+      "nativeKeys": 200
+    },
+    "equalizer": {
+      "path": "review/AVOID-007/equalizer-row-20261022-02/",
+      "sha256": "88c6fa4f9f92d49edf404f4b34ee950494237e843706c810093b117608bbf30a",
+      "files": 31,
+      "bytes": 24272574,
+      "mp4": 2,
+      "nativeKeys": 8
+    }
+  },
+  "productSHA256": {
+    "ja": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57",
+    "en": "ea176a1b760ea38243f5ae2ec04d80efd9522f195672875e6588ad958ded69fa"
+  },
+  "audience": "existing owner-private; revision1 preserved",
+  "publicVerification": {
+    "status": "cancelled-by-explicit-user-instruction",
+    "futureChecks": "prohibited unless user explicitly changes the instruction",
+    "priorAttempt": "selected-sites-public01.json",
+    "priorAttemptResult": "failure; preserved unchanged; not PASS",
+    "noPostInstructionPublicRequests": true,
+    "localProcessInspection": "no active selected-main or H03 public verifier node process found",
+    "supersedes": "earlier mandatory public-result verification gates in task, policy, skill and handoff documents",
+    "scope": [
+      "public URL connection",
+      "HTTP and hash comparison",
+      "image matching",
+      "video playback",
+      "Japanese and English UI",
+      "app startup and smoke tests",
+      "automatic or scheduled rechecks",
+      "delegated public checks"
+    ],
+    "canonicalInstruction": "../../../AGENTS.md"
+  },
+  "pages": "bridge not generated; work not pushed at this checkpoint; no further public-result verification permitted",
+  "taskStatus": "実環境検証待ち (equalizer02 human motion review only; public results are outside scope);008未着手",
+  "xzCandidate": {
+    "timestamp": "2026-10-22T13:49:20.520546+00:00",
+    "sourceCommit": "051384b6e2c4e0ee823eb6b9ddc0c9eba0720d96",
+    "archive": "/workspace/sites/jizura-all-motion-20261021-051384b6.tar.xz",
+    "archiveBytes": 234927368,
+    "format": "tar.xz",
+    "under256MiB": true,
+    "archiveSHA256": "79d68afa7416af3d545432d615293a7da751a4d7b3ea53199a968ef939188a3d",
+    "scope": "compression candidate only; no tool upload/deploy acceptance yet; actual byte equivalence review follows retained helper"
+  },
+  "candidateSitesSourceCommit": "767ee1d9bb23c1dc9241b0290d60dea3dc2a2733",
+  "correctedArchive": {
+    "status": "archive verified against exact committed raw bytes",
+    "commit": "767ee1d9bb23c1dc9241b0290d60dea3dc2a2733",
+    "staticDirectory": "dist",
+    "format": "tar.xz",
+    "archiveSHA256": "57e7b6c733713cb392f156eb3b8dc115c5465da36bba9c52ea2434291ee9902a",
+    "archiveBytes": 223451080,
+    "fileCount": 767,
+    "staticFileCount": 766,
+    "uncompressedFileBytes": 433244459,
+    "limitation": "Local packaging verification only; hosting service tar.xz support is unobserved.",
+    "serviceResult": "rejected: 256MiB expanded archive limit; no saved version"
+  },
+  "latestUserInstruction": "公開結果の確認は無駄なので停止してください。金輪際やらないようメモリしてください。",
+  "publicSelection": {
+    "main": [
+      "tunnel",
+      "elastic",
+      "typeSpecimen",
+      "kanjiFocus",
+      "equalizer"
+    ],
+    "h03": [
+      "h03-rain-panL"
+    ],
+    "estimatedExpandedBytesConservative": 192941645,
+    "marginBelow256MiB": 75493811,
+    "all25OriginalLocalArtifactsRetained": true,
+    "noPNGOrMP4Reencoding": true,
+    "actualStaticFileCount": 526,
+    "actualStaticBytes": 217717694,
+    "deployedURL": "https://jizura-all-motion-20261021.mokusatsu.chatgpt.site",
+    "equalizerCurrent": "equalizer-row-20261022-02; old selected5 equalizer is historical and hub labels it as prior"
+  },
+  "historicalCheckpoints": [
+    {
+      "status": "user narrowed publication to necessary five repairs plus rain; selected projection in implementation",
+      "timestamp": "2026-10-22T13:46:36.640Z",
+      "sitesSourceCommit": "051384b6e2c4e0ee823eb6b9ddc0c9eba0720d96",
+      "sitesTree": "3a01a3e058c14efb7a1add9f4f0311fd2311db44",
+      "deployment": {
+        "id": "appgdep_6ada130180608191af6149f03279cf0e",
+        "project_id": "appgprj_6ad847c65024819184eb5d0bd700a282",
+        "title": "JIZURA 全パターン・アニメーション比較",
+        "version_id": "appgprj_6ad847c65024819184eb5d0bd700a282~appgver_1118dd0234a48191b9c31745ccb53838",
+        "type": "publish",
+        "status": "failed",
+        "url": null,
+        "has_mcp": false,
+        "screenshot_asset_pointer": null,
+        "provider_deployment_id": null,
+        "failure_message": "AppGen input archive exceeds the 256 MiB limit",
+        "env_set_revision": 0,
+        "updated_at": "2026-10-22T13:46:23.104434+00:00"
+      },
+      "publicVerification": "not run; deployment alone cannot qualify",
+      "taskStatus": "実環境検証待ち;008未着手",
+      "latestUserInstruction": "一気に全部出力する必要はないので、確認が必要なものに絞って公開して"
+    },
+    {
+      "timestamp": "2026-10-22T14:42:16.407247+00:00",
+      "status": "selected five repairs plus rain deployed; public result verification permanently stopped by explicit user instruction",
+      "sitesSourceCommit": "2014e80e6322a730c5efc535e3b07e0698e60c0f",
+      "sitesTree": "92c0ccaf41d63f143beb90a482b33e5533afcdf3",
+      "deployment": {
+        "id": "appgdep_6ada1e65def0819198ea35eb1d4809db",
+        "project_id": "appgprj_6ad847c65024819184eb5d0bd700a282",
+        "title": "JIZURA 全パターン・アニメーション比較",
+        "version_id": "appgprj_6ad847c65024819184eb5d0bd700a282~appgver_f7239cd22b448191b70ce9c348ffe9fb",
+        "type": "publish",
+        "status": "succeeded",
+        "url": "https://jizura-all-motion-20261021.mokusatsu.chatgpt.site",
+        "has_mcp": false,
+        "screenshot_asset_pointer": null,
+        "provider_deployment_id": "site---6ad847c65024819184eb5d0bd700a282",
+        "failure_message": null,
+        "env_set_revision": 0,
+        "updated_at": "2026-10-22T14:33:06.157532+00:00"
+      },
+      "taskStatus": "実装中; equalizer user feedback rejects added rows; targeted repair in progress;008未着手"
+    }
+  ],
+  "currentProductRepair": {
+    "timestamp": "2026-10-22T14:48:45.357972+00:00",
+    "layout": "equalizer",
+    "reason": "Avoidance added rows and lost graphic equalizer / level meter composition",
+    "existingPublishedArtifact": "unchanged; prior version is historical and requires repair",
+    "publicResultChecks": "remain prohibited",
+    "status": "code/local numeric/independent visual review complete; human motion review pending",
+    "acceptedLocalCandidate": "equalizer-row-20261022-02",
+    "rejectedUnpublishedCandidate": "equalizer-row-20261022-01"
+  }
+}

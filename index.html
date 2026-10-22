@@ -11857,7 +11857,7 @@ function sourceMapping(native,prepared,cut){
  if(cut.layout==='tape'){expected.stripClock=native.nativeGeometry.strips;actual.stripClock=prepared.nativeGeometry.strips;if(JSON.stringify(expected.stripClock)!==JSON.stringify(actual.stripClock))fail('NATIVE_SEMANTIC_MAPPING','Tape strip/cross/piece source order or reveal clock changed');}
  if(cut.layout==='stickerBomb'){const identity=p=>p.nativeGeometry.items.map(({index,word,t0,rot})=>({index,word,t0,rot}));expected.stickerClock=identity(native);actual.stickerClock=identity(prepared);if(JSON.stringify(expected.stickerClock)!==JSON.stringify(actual.stickerClock))fail('NATIVE_SEMANTIC_MAPPING','Sticker source order, labels or slap clock changed');}
  if(cut.layout==='hanging'){const identity=p=>p.nativeGeometry.items.map(q=>({i:q.i,ta:q.ta,w:q.w,dk:q.dk,ampK:q.ampK}));expected.suspensionIdentity=identity(native);actual.suspensionIdentity=identity(prepared);if(JSON.stringify(expected.suspensionIdentity)!==JSON.stringify(actual.suspensionIdentity))fail('NATIVE_SEMANTIC_MAPPING','Suspension native period/angle/entry phase changed');}
- if(cut.layout==='equalizer'){const identity=p=>({bands:p.nativeGeometry.items.map(q=>({i:q.i,ch:q.ch,signalKey:q.signalKey})),thin:p.nativeGeometry.thinItems.map(q=>({i:q.i,q:q.q,signalKey:q.signalKey}))});expected.signalIdentity=identity(native);actual.signalIdentity=identity(prepared);if(JSON.stringify(expected.signalIdentity)!==JSON.stringify(actual.signalIdentity))fail('NATIVE_SEMANTIC_MAPPING','Equalizer native main/thin signal key changed');}
+ if(cut.layout==='equalizer'){const identity=p=>({nativeRows:p.nativeGeometry.nativeRows,rows:p.nativeGeometry.rows,per:p.nativeGeometry.per,baselineY:[...new Set(p.nativeGeometry.items.map(q=>q.yb))],bands:p.nativeGeometry.items.map(q=>({i:q.i,ch:q.ch,signalKey:q.signalKey})),thin:p.nativeGeometry.thinItems.map(q=>({i:q.i,q:q.q,signalKey:q.signalKey}))});expected.signalIdentity=identity(native);actual.signalIdentity=identity(prepared);if(JSON.stringify(expected.signalIdentity)!==JSON.stringify(actual.signalIdentity))fail('NATIVE_SEMANTIC_MAPPING','Equalizer native main/thin signal key changed');}
  if(cut.layout==='tunnel'){
   const collect=p=>p.events.filter(e=>e.role==='tiledAux'&&e.kind==='item'&&e.args[0].placementAuxiliary?.unit==='tunnel-perimeter').map(e=>{const i=e.args[0];return {id:i.placementAuxiliary,text:i.text,font:i.font,x:i.x,y:i.y,rot:i.rot||0,track:i.track,alpha:i.alpha,fill:i.fill!==false,stroke:i.stroke||0,effectiveX:i.size*(i.sx||1),effectiveY:i.size*(i.sy||1)};});
   expected.tunnelAuxiliary=collect(native);actual.tunnelAuxiliary=collect(prepared);
@@ -11924,10 +11924,30 @@ function candidateRecipes(plan,cut,program,explicitSize){
  if(A.layoutsBEditorial?.supports(cut.layout))return A.layoutsBEditorial.candidates(plan,cut,program,explicitSize);
  const main=program.events.filter(e=>e.role==='primary'&&e.kind==='item'&&e.args[0].placementMain).map(e=>e.args[0]);if(!main.length)return [];
  const size=cut.layout==='hanging'?program.nativeGeometry.size:Math.max(...main.map(i=>i.size)),source=flat(cut.text),recipes=[];
+ // A level meter keeps its native frequency rows. Never turn a horizontal
+ // spectrum into an editorial multi-row text layout. Native joint translation
+ // has already been tried before these same-row, bounded-amplitude/signal-clock-preserving recipes.
+ if(cut.layout==='equalizer'){
+  const g=program.nativeGeometry;
+  for(const fontScale of [1,.95,.9,.85,.8,.75,.7]){if(explicitSize&&fontScale!==1)continue;
+   const ink=new Map(g.items.map(q=>[q.i,glyphBox(cut.params.font,g.nativeSize*fontScale,q.ch)])),gap=Math.max(4,g.nativeSize*fontScale*.04);
+   for(const heightScale of [1,.85])for(const widthScale of [1,.7,.55,.45,.4]){
+    if(widthScale===1&&(heightScale!==1||fontScale===1))continue;
+    const pitch=g.nativeSw*fontScale*widthScale;
+    // Different bands move vertically independently. Require disjoint horizontal
+    // ink supports even when their instantaneous levels happen to coincide.
+    let clear=true,minGap=Infinity;
+    for(let i=1;i<g.items.length;i++){const a=g.items[i-1],b=g.items[i];if(Math.floor(a.i/g.nativePer)!==Math.floor(b.i/g.nativePer))continue;const separation=(b.i-a.i)*pitch+ink.get(b.i).x0-ink.get(a.i).x1;minGap=Math.min(minGap,separation);if(separation<gap)clear=false;}
+    if(!clear)continue;
+    recipes.push({strategy:'equalizer-native-row-meter'+(fontScale===1?'':'-discrete-reduce'),mainSize:g.size,fontScale,mainText:cut.text,per:g.nativePer,equalizerPer:g.nativePer,equalizerRows:g.nativeRows,equalizerWidthScale:widthScale,equalizerHeightScale:heightScale,quality:{stageUnchanged:true,wholeEffectScale:false,sourceClocksUnchanged:true,nativeRowsUnchanged:true,frequencyOrderUnchanged:true,minimumGlyphGap:gap,actualGlyphGap:Number.isFinite(minGap)?minGap:null,meterAspect:'main/thin height-to-width ratios never below native; widths track any height reduction'}});
+   }
+  }return recipes;
+ }
+
  for(const fontScale of [1,.95,.9,.85,.8,.75,.7]){if(explicitSize&&fontScale!==1)continue;for(const per of ['elastic','kanjiFocus'].includes(cut.layout)?[source.length]:[...new Set([...(cut.layout==='tunnel'?[source.length]:[]),Math.max(1,Math.ceil(source.length/2)),Math.max(1,Math.ceil(source.length/3)),1])]){
-  const family={elastic:'elastic-native-single-axis',hanging:'suspension-row-path',splitHalves:'split-native-travel-readable-size',equalizer:'equalizer-native-signal-rows',depthStack:'depth-vanishing-path',kanjiFocus:'focus-native-joint-cluster',stickerBomb:'sticker-cluster-reflow',tape:'tape-strip-wrap',dotMatrix:'led-grid-wrap'}[cut.layout]||(cellIDs.includes(cut.layout)?'native-cell-row-wrap':'source-sign-wrap'),strategy=family+(fontScale===1?'':'-discrete-reduce');
+  const family={elastic:'elastic-native-single-axis',hanging:'suspension-row-path',splitHalves:'split-native-travel-readable-size',depthStack:'depth-vanishing-path',kanjiFocus:'focus-native-joint-cluster',stickerBomb:'sticker-cluster-reflow',tape:'tape-strip-wrap',dotMatrix:'led-grid-wrap'}[cut.layout]||(cellIDs.includes(cut.layout)?'native-cell-row-wrap':'source-sign-wrap'),strategy=family+(fontScale===1?'':'-discrete-reduce');
   recipes.push({strategy,mainSize:size,fontScale,mainText:cut.layout==='splitHalves'?program.nativeGeometry.mt:['columnsBig','halfVertical','kanjiFocus'].includes(cut.layout)?cut.text:J.splitLines(cut.text,per),per,
-   ...(cut.layout==='splitHalves'?{splitTravelScale:1}:{}),...(cut.layout==='tunnel'?{tunnelFixedCSS:true}:{}),...(cut.layout==='equalizer'?{equalizerPer:per,equalizerHeightScale:.45}:{}),...(cut.layout==='depthStack'?{depthPathScale:.35}:{}),
+   ...(cut.layout==='splitHalves'?{splitTravelScale:1}:{}),...(cut.layout==='tunnel'?{tunnelFixedCSS:true}:{}),...(cut.layout==='depthStack'?{depthPathScale:.35}:{}),
    ...(cut.layout==='hanging'?{hangingPer:per,hangingAngleScale:.65,suspensionIdentity:Object.fromEntries(program.nativeGeometry.items.map(q=>[q.i,{w:q.w,dk:q.dk,ampK:q.ampK}]))}:{}),
    ...(cut.layout==='dotMatrix'?{dotD:program.nativeGeometry.D,dotPitch:program.nativeGeometry.p}:{}),...(cellIDs.includes(cut.layout)?{cellPer:per,...(cut.layout==='bubbles'?{cellStagger:false,commonLift:true}:{})}:{}),
    quality:{stageUnchanged:true,wholeEffectScale:false,sourceClocksUnchanged:true}});
@@ -11945,6 +11965,10 @@ function prepareCandidate(plan,cut,program,renderer,recipe,explicitSize,budget){
   const candidate={...cut,layoutBRecipe:recipe},prepared=record(renderer,plan,candidate,sourceRestTime(cut)),mapping=sourceMapping(program,prepared,cut),sizeQuality=nativeSizeQuality(program,prepared,explicitSize),items=prepared.events.filter(e=>e.role==='primary'&&e.kind==='item'),min=Math.min(...items.filter(e=>e.args[0].placementSource).map(e=>effectiveSize(e.args[0])*(cut.contentScale??1))),metadata=items.filter(e=>!e.args[0].placementSource);
   if(min<Math.max(18,Math.min(plan.W,plan.H)*.035)||metadata.some(e=>e.args[0].size*(cut.contentScale??1)<Math.max(12,Math.min(plan.W,plan.H)*.02)))fail('READABILITY_FLOOR','Observed B recipe text below declared floor');
   if(cut.layout==='kanjiFocus'&&(prepared.nativeGeometry.giantMainRatio<6||prepared.nativeGeometry.big<Math.min(plan.W,plan.H)*.45))fail('FOCUS_HIERARCHY','Huge focus must remain >=6x main and >=.45 short side');
+  if(cut.layout==='equalizer'){
+   const ng=program.nativeGeometry,pg=prepared.nativeGeometry;
+   for(const key of ['items','thinItems'])for(let i=0;i<ng[key].length;i++){const a=ng[key][i],b=pg[key][i];if(!b||b.hmax/b.bw+1e-9<a.hmax/a.bw)fail('NATIVE_EQUALIZER_ASPECT','Meter band height-to-width ratio became shallower than native');}
+  }
   const quality={...recipe.quality,...sizeQuality,minPrimary:min,...(A.layoutsBEditorial?.supports(cut.layout)?A.layoutsBEditorial.quality(prepared,plan,candidate,{native:program,explicitSize}):{})},envelopes=envelope(prepared,plan,candidate),value={mapping,quality,envelopes,fitBounds:fitBounds(prepared,plan,candidate,envelopes),...(cut.layout==='tunnel'?{tunnelQuiet:tunnelQuiet(prepared,plan,candidate)}:{})};budget.cache.set(key,value);return value;
  }catch(e){budget.cache.set(key,{error:{code:e.code||'DRAW_PROGRAM_ERROR',message:e.message}});throw e;}
 }
@@ -31819,9 +31843,10 @@ J.register('layout', 'equalizer', {
     if (!n) return null;
     const port = W < H;
     const recipe=cut.placementLayoutsB?cut.layoutBRecipe:null,nativeRows=port&&n>6?2:1,nativePer=Math.ceil(n/nativeRows),nativeSw=W*.86/nativePer,nativeSize=Math.min(nativeSw*.78,H*(nativeRows>1?.1:.14));
-    const per=recipe?.equalizerPer||nativePer,rows=Math.ceil(n/per),sw=recipe?nativeSw*recipe.fontScale:nativeSw,size=bSize(env,nativeSize);
-    if(cut.placementLayoutsB)env.placementBGeometry={kind:'equalizer',size,sw,rows,per,nativePer,items:[],thinItems:[]};
-    const bw = Math.min(sw * 0.6, size * 1.15);
+    if(recipe&&(recipe.equalizerPer!==nativePer||recipe.equalizerRows!==nativeRows||!(recipe.equalizerWidthScale>=.4&&recipe.equalizerWidthScale<=1)||!(recipe.equalizerHeightScale>=.85&&recipe.equalizerHeightScale<=1))){const error=new Error('Equalizer recipe must preserve native rows and bounded meter geometry');error.code='NATIVE_EQUALIZER_ROWS';throw error;}
+    const per=nativePer,rows=nativeRows,sw=recipe?nativeSw*recipe.fontScale*recipe.equalizerWidthScale:nativeSw,size=bSize(env,nativeSize);
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'equalizer',size,sw,rows,per,nativePer,nativeRows,nativeSize,nativeSw,items:[],thinItems:[]};
+    const meterHeightScale=recipe?.equalizerHeightScale??1,bw = Math.min(sw * 0.6, size * 1.15)*meterHeightScale;
     const e = inE(env, 0.45), out = outK(env);
     const colA = plateCol(sc, [sc.accent, sc.fg]), colB = plateCol(sc, [sc.accent2, sc.sub, sc.fg]);
     // level of band x (continuous index) at time t
@@ -31839,8 +31864,8 @@ J.register('layout', 'equalizer', {
     let bb = null;
     for (let r = 0; r < rows; r++) {
       const cnt = Math.min(per, n - r * per);
-      const yb=recipe?H*.12+(r+1)*H*.76/rows:(rows>1?(r?H*.84:H*.47):H*.74);
-      const hmax=((nativeRows>1?H*.26:H*.44)-nativeSize*.4)*(recipe?recipe.equalizerHeightScale:1);
+      const yb=rows>1?(r?H*.84:H*.47):H*.74;
+      const hmax=((nativeRows>1?H*.26:H*.44)-nativeSize*.4)*(recipe?recipe.fontScale*recipe.equalizerHeightScale:1);
       const x0 = W / 2 - cnt * sw / 2;
       bGroup(env,'baseline-'+r);
       env.line([[x0 - sw * 0.2, yb], [x0 - sw * 0.2 + (cnt * sw + sw * 0.4) * e, yb]], sc.sub, lw, 0.7 * out, false);
@@ -31860,8 +31885,8 @@ J.register('layout', 'equalizer', {
         const x = x0 + xi * sw;
         const signalKey=(i%nativePer)+q/(Pm.thin+1)+Math.floor(i/nativePer)*7+.5;
         bGroup(env,'thin-band-'+i+'-'+q);
-        if(cut.placementLayoutsB)env.placementBGeometry.thinItems.push({i,q,x,yb,hmax:hmax*.8,bw:sw*.06,signalKey});
-        drawBar(x, sw * 0.06, hmax * 0.8 * level(signalKey, env.ltb) * e * out, sc.sub, 0.55);
+        if(cut.placementLayoutsB)env.placementBGeometry.thinItems.push({i,q,x,yb,hmax:hmax*.8,bw:sw*.06*meterHeightScale,signalKey});
+        drawBar(x, sw * 0.06*meterHeightScale, hmax * 0.8 * level(signalKey, env.ltb) * e * out, sc.sub, 0.55);
       }
       bRole(env);
       for (let j = 0; j < cnt; j++) {

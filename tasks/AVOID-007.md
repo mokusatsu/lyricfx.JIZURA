@@ -5,7 +5,23 @@
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
 
-## 現在の引継ぎ状態（ローカル資格済み・未公開）
+## 最新指示と現在状態（2026-10-22）
+
+- **現在はequalizer修正版02の人間動作確認待ち。公開結果確認待ちではない。** 修正版は親のコード/数値レビューとisolated solの全after96frame視覚確認を完了し、Sites公開操作が成功の戻り値を返した。[今回の確認箇所とMP4](reviews/AVOID-007-equalizer-row-20261022-02.md)。007は未完了、008以降は未着手。
+- equalizerの元の行数・共通baselineを保持。通常例は文字size/棒heightともnativeのまま、pitchを0.4倍にして全体を右へ移動する。全体移動を先に試し、同じ行構成でのpitch調整を優先する。以後の段階的調整でも主/細帯のheight-to-width比をnative未満にしない。実font ink間の最低gap、字体の既存下限、source/clock/beat/peak/所有を守る。native縦長長文の2行は勝手に増やさず、この試験例は不足のまま保持する。
+- 最初の修正01は数値成功でも棒が浅い箱に見えるため独立視覚FAILとして不採用・未公開。新02は最大棒高さ414.72pxと文字151.2pxを維持し、帯幅/間隔を調整。最低glyph gap6.048pxに対し実gap18.12px。旧01の失敗・原本は不変。
+- 数値03は11条件（7safe/1不足/3既存制御）、21負例拒否、9 OFF/e96 exact、48実signal照合。親は115入力/snapshot、1096実測polygonの円余白/画面境界、168glyphペアの非交差を独立確認。日英ローカル起動も成功。独立visual02は新after96frames/4原寸keysを実見し、beforeを自身の既実見とbyte一致接続して範囲限定PASS。
+- 公開先は [equalizer修正版02](https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-007/equalizer-row-20261022-02/)。manifest `88c6fa4f9f92d49edf404f4b34ee950494237e843706c810093b117608bbf30a`。source `27ad485977c28b4c62e2cc82833952bc6d8ff301`、deployment `appgdep_6ada27750e608191863d175addb8ff24` の成功戻り値を [保存](evidence/AVOID-007/equalizer-sites-publication02.json)。公開後のURL/HTTP/hash/画像/再生/起動確認は一切行わない。
+
+以下の当日記述は指摘・修正中の履歴。
+
+- 利用者がequalizerの回避時2行化を不受入と指摘。文字通りのグラフィックイコライザー/レベルメーターとして、元の横一列の帯・共通baseline・帯と文字/peakの一体性を保つことを修正条件に追加した。native行数を回避のために増やさず、全体移動を優先し、同じ行構成での振幅等の調整と可読性を保つ段階的縮小を検討する。旧25IDローカル成功は旧版の証拠として保持し、equalizerの演出意図に関する受入成功とは扱わない。
+- equalizer限定の修正を指定実装担当（gpt-6.1-sol / medium）へ依頼し、007を実装中へ戻した。修正後は親のコード/試験レビューとコンテキストを遮断したsolのローカル視覚照合を行う。確認成果物もequalizerだけに絞り、公開結果確認は実行しない。008以降は未着手。
+- 利用者の「公開結果の確認は無駄なので停止してください。金輪際やらないようメモリしてください。」に従い、公開結果確認を停止。以後の段階・引き継ぎでも実施しない。[AGENTS.md](../AGENTS.md) と [実装レビュー運用](implementation-review-policy.md) が旧公開必須条件より優先する。
+- 修正5演出＋rainのSites公開操作は成功の戻り値を取得済み（version2、source `2014e80e6322a730c5efc535e3b07e0698e60c0f`）。公開結果確認は初回失敗を保持したまま中止し、再実行しない。公開確認成功とは記録しない。詳細は [publication.json](evidence/AVOID-007/publication.json)。
+- 公開確認停止時点ではローカル検証済みだったが、今回のequalizer指摘により実装中へ戻した。公開検証待ちは解除済み。最終親判定と必要な人間動作確認の要否は未判定。008未着手。
+
+## 公開操作前の引継ぎ状態（以下は履歴）
 
 - 製品はfreeze02の79source/JAENを保持。main25比較は `local-20261022-02`、manifest `186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f`、full local browser04成功。以前の記述・失敗は後半の時点別履歴。
 - H03の現公開候補は**rain単独** `local-20261022-h03-control-02`、manifest `9d16f11518628b28d64bb238ba6a764a5fc17bb262ca8a7446f572b809564b47`。tool `874b97823036eeb7da072e51cccab631b0be5d1bef50805be362c68ed2a14873`。files/192frame・8PNG・2MP4完全一致/独立rain観測付きPASSのcarry資格を親承認済み。
@@ -235,3 +251,8 @@ Parent requested a new distinct rain-only publication candidate, build `local-20
 ### Rain-only control02 full local browser02 PASS
 
 `h03-control-native-browser02-summary.md`/raw receipt record a single full strict run:214rawHTTP/4JAENUI/2generatedMP4/2original12smedia/2nativeparity/2live,3owned phases closed;292wrapper pins+210asset inputs+216validator inputs unchanged. Each generated playback92decoded/0drop, each12s input284decoded/0drop; strict seek/play/pause/end and native reverse keys pass. Fresh env201pre/postcurrent/enforced, frozen source/fixture/tool/bundle unchanged, CPU released. Rain observed-scope visual carry was independently approved separately; public verification/final acceptance pending. OldallFAIL diagnoses remain unchanged;007 incomplete/008 unstarted/017 activation unreleased.
+
+
+## 最新利用者指示による公開範囲（数値25ID要件は維持）
+
+2026-10-22利用者『一気に全部出力する必要はないので、確認が必要なものに絞って公開して』を受領。公開候補は修正5演出tunnel/elastic/typeSpecimen/kanjiFocus/equalizerと、別rain残留controlに限定する。全25IDの原寸ローカル成果物/数値・所有・性能資格は保持し、未掲載20件を未実装扱いにしない。比較assetは元収録bytesの選択projectionであり再描画/再符号化しない。全H-IDの確認導線は選択5件とrain補足へ対応付ける。状態は実環境検証待ち、公開原本一致/動作確認・親最終判定は未完。旧FAIL/既存RegressionFAIL/保存013/017activation未解除を保持する。
