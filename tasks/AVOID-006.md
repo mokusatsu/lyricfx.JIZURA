@@ -277,3 +277,91 @@ Pages run [39457255823](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs
 - 52 anchor再描画一致はlocal固定engine/font検証であり、publicsource再描画とは呼ばない。公開全52再生と55raw完全一致は別に検証した。public再生測定はmin decoded92、drop計3/最大2、corrupt0。local drop89/max21/92の履歴を保持し、完全滑らか/任意環境無dropへ広げない。file://は管理policyで未確認、HTTP desktop/mobileのみ確認済み。
 - 実Jekyll2,911 URL/990,511,556 bytes・旧2,856 URL保持、26組52本native直接取得/原寸/HTML録画と旧transcodeなし、独立visual全26のサンプル実見と親コード/テスト確認を満たした。[03レビュー依頼](reviews/AVOID-006-local-20261021-03.md)を正式公開済みへ刷新し、全26閲覧可能・各組の「前後を最初から一緒に再生」「前後を停止」を案内する。旧18受入を維持し、新8の見え方・動きだけの回答を依頼する。
 - 残条件は新8の人間動作確認のみ。006実環境検証待ちを維持、007以降未着手、通常既定017/補助018未完（ticker既分類tiledAux）、保存初期cut不一致013は既知未成功のまま保持。公開成功から新8承認を推定せず、人間未回答をOKにしない。
+
+## 2026-10-21 filmstrip帯の端到達・ticket退場切離量の修正再開
+
+- 利用者は正式03の比較を見て、filmstripは変更前の帯が画面左右端まである一方、変更後は左右端まで届いていないと報告し、上下方向も確認するよう依頼した。ticketは最後の切離量が変更後で小さくなっているとの報告。今回はこのfilmstrip/ticketの修正依頼として006を`実装中`へ戻し、一覧と同期する。新8全体へのOKや他6新例の回答は推定しない。
+- 開始work/HEAD `8193b0580a03f19472637807231685728d0718d7`。既存の`app/__pycache__/english.cpython-312.pyc`変更とuntracked作業物は保持・対象外。正式03の公開動画・manifest・検証証拠は不変の履歴として維持する。03の公開全検証成功は、この利用者報告への修正成功や人間の受入を意味しない。
+- 実装担当は新しいisolated `film_ticket_edges_fix`（gpt-6.1-sol / medium）で原因調査中。親がコード/テスト結果をレビューし、別のisolated solが画像照合を行う。横長/縦長の同条件native MP4で、film帯の左右/上下の到達範囲とticketの退場時切離量・時刻を変更前後で比較する。既存のfilm露光コマ3:2（縦回転2:3）・元のmotion/順次描画・strict holdと入退場緩和の契約は保持する。
+- 証拠予定は`tasks/evidence/AVOID-006/film-ticket-edges/`。原因確定・実装修正・必要回帰・横縦動画取得・親レビュー・独立視覚照合・公開全bytes/再生seek検証はいずれも未完であり、実施成功は主張しない。修正版は旧03を上書きせず、検証後に今回の動作確認を依頼する。
+- 旧18例の受入を維持し、新8のうちfilm/ticketの報告を他6例のOKへ広げない。006のみを進め、007以降は開始しない。通常既定切替017、補助018未完と保存013の既知事項は維持する。
+
+### film/ticket正式04：visual・9core・実Jekyll監査完了、性能/local/公開待ち（2026-10-21）
+
+- [独立visual正式所見](evidence/AVOID-006/film-ticket-edges/visual-review.md)・[ledger](evidence/AVOID-006/film-ticket-edges/visual-review-ledger.json)が完了、親はtextレビュー済みで画像は開いていない。film5成立条件の端/穴の維持・改善、横ticket2の切離改善、縦ticket不変対照、保持中の窓/主文字欠けなしを見た範囲で確認。実見50画像/元167抽出frame・追加原寸10枚の視認経路をledgerへ記録し、全frame目視/実時間再生とは扱わない。縦film r.2の両側insufficient-spaceは成功例/人間OK対象から除外する。
+- [9core summary](evidence/AVOID-006/film-ticket-edges/final-candidate/fixtures/functional-summary.json)の全exit0/候補hash一致を親が実JSON確認。候補JA `c3a03e4466138567b28b01e36ae6a6f6070e20c4ec0e815a8bcf2d43ed3adbdb`、EN `18f3233a887fbb1f363162f316abd188d7c5f5beac35677b58a65e91449e528f`。性能gateは実行中、local validatorは未完。初回numeric丸め差/tolerance根拠/原ログ上書き欠損は[親レビュー](evidence/AVOID-006/film-ticket-edges/parent-review.md)の記録を保持する。
+- 正式04公開候補は9組/18 native MP4参照（15 unique）/公開18 files・5,927,801 bytes、manifest `e86d1f4bbea73abd83ad0f9de89e6f8e8271bb30ce0f460dcd6207589058a2d5`。beforeは8193b058、afterは上記候補。同じ24fps/4秒/96frameを直接native取得し、HTML UI録画/円guide合成/旧transcodeは使わない。PNG付き超過初稿は非公開draft-private/public-04へ保持、旧公開版は不変。
+- [最終実Jekyll監査](evidence/AVOID-006/film-ticket-edges/pages-output-audit.json)はpassed:true/actualJekyllOutput:true、2,929 URL/996,440,939 bytes・旧2,911 URL保持・10 manifest/2,883 asset参照で容量上限以下。初回/[再試行](evidence/AVOID-006/film-ticket-edges/pages-jekyll-retry.log)のENOSPC rawlogsは保持する。Docker内空き0とhost約1.5GBの差を踏まえ、今回生成sourceのみ旧immutable snapshotと同byte hardlink共有980,720,249 bytes/2,910 files、旧snapshot不変の[記録](evidence/AVOID-006/film-ticket-edges/snapshot-storage-sharing.json)を保存し、[3回目exit0](evidence/AVOID-006/film-ticket-edges/pages-jekyll-storage-retry.log)後に全URL/byte監査成功。初回から成功とは扱わない。
+- [04確認依頼draft](reviews/AVOID-006-local-20261021-04.md)を準備。公開URLは予定と明記し、横film左右/縦film上下の帯・穴、3:2/2:3・順次描画、ticket終盤の切離を比較する。公開commit/push・全raw/動画/日英起動検証と人間の今回受入は未完。006は実装中のまま、旧18受入/他6新例未回答・007以降未着手・既定017/補助018未完を維持する。
+
+### 正式性能不合格：c3a候補公開停止・測定処理調査（2026-10-21）
+
+- 親は[正式performance.json](evidence/AVOID-006/film-ticket-edges/final-candidate/performance.json)/[raw log](evidence/AVOID-006/film-ticket-edges/final-candidate/performance.log)を実読しpassed:falseを確認。100cutはplanning factor1.680124/追加render+4.5ms、1000cutは3.029502/+9.5ms。既定上限2/+3msを超えた。warmup3/sample6/stressは不変。入力同一・actualCountsValid・dense100/1000決定性/128 unique budgetは成功だが、性能gate不合格を相殺しない。
+- 旧c3a/EN18f候補は公開しない。local playbackはまだ未実施。現在の04 capture/manifest e86d・独立visual・9core・実Jekyll成功はこの旧候補の証拠として保持し、新候補の成功へ流用しない。
+- 担当へ原因profileと送り穴測定geometryの保守的外接矩形化（primary分類・実描画不変）を修正調査依頼済み。現在調査中/変更未完で、新hash・再試験・再captureの範囲は親レビュー後に決める。測定省略や閾値変更で合格へ置換しない。
+- [親レビュー](evidence/AVOID-006/film-ticket-edges/parent-review.md)と[04 draft](reviews/AVOID-006-local-20261021-04.md)へ不合格/公開停止を反映。006実装中を維持し、技術的不合格を人間レビューへ出さない。旧18受入・他6新例未回答・007以降未着手・既定017/補助018未完は維持する。
+
+### fb876軽量化候補も正式1000 planning不合格（2026-10-21）
+
+- 親は[optimized正式performance.json](evidence/AVOID-006/film-ticket-edges/optimized-candidate/performance.json)/[log](evidence/AVOID-006/film-ticket-edges/optimized-candidate/performance.log)を実読。JA `fb876e83a68fdd2b7d31418b29191d81f413eb19c508a6b273fe2c3f4b44782b`の既定warmup3/sample6/stress有効の正式gateはpassed:false。100cutはplanning1.467417/追加render−2msで合格、1000cutはplanning2.354051（上限2）/render−2.7msでplanning不合格。renderの上限+3msは両方合格。入力同一/counts・stress決定性128budget通過は性能全体の合格に置換しない。
+- 公開未実施、core/capture再確認は停止。担当が追加の最小計算最適化案を調査中で、変更や再検証の成功は未確認。c3a正式失敗・rect-only非正式診断・fb876正式失敗は[親レビュー](evidence/AVOID-006/film-ticket-edges/parent-review.md)に別履歴として保持する。
+- 006実装中を維持し、技術的不合格を人間確認へ回さない。旧04 capture/manifest/Jekyll等は旧c3a候補の証拠で新候補合格へ流用しない。旧18受入・他6新例未回答・007以降未着手・既定017/補助018未完は維持する。
+
+### a3c4正式性能gate合格・新候補の後続検証へ（2026-10-21）
+
+- 親は[final-candidate-v2/performance.json](evidence/AVOID-006/film-ticket-edges/final-candidate-v2/performance.json)/[log](evidence/AVOID-006/film-ticket-edges/final-candidate-v2/performance.log)を実読しpassed:trueを確認。after JA `a3c4d0e3c76994033910d61711180787576a0bec938d397da8425c37b8124ba7`/tool `5b2bcc774fa963b6e764c1f84c08a6f0e258c2a7be20216720fbdac485742bf0`現物hash一致。標準100/1000、warmup3/sample6/stress:true/runtimeProfile:falseは不変。
+- 100cut planning1.44605149/追加render−2.5ms、1000cut1.96455410/−1.4msで上限2/+3msを通過。1000 planningP95 before14,145.5/after27,789.6ms。入力同一/counts・stress100/1000決定性/128budgetも通過。c3a/fb876正式不合格・非正式中間診断は[親レビュー](evidence/AVOID-006/film-ticket-edges/parent-review.md)に保持し、この正式実行の合格を任意環境/全実行の性能保証へ広げない。
+- a3c4新候補のnumeric21/9core/864frame再確認、正式05 pack、local再生/公開全検証は進行または未実施。旧04のcapture/manifest/visual/Jekyll等は旧候補証拠で、新候補へ自動流用しない。05依頼はpack後の結果レビューを待つ。006実装中・公開未完、旧18受入/他6新例未回答・007以降未着手・既定017/補助018未完を維持する。
+
+### 正式05 pack完了・local/Pages/公開確認待ち（2026-10-21）
+
+- 新[05 manifest](../review/AVOID-006/local-20261021-05/manifest.json) SHA-256 `7eaf816ec97d1d9560b59ee8e15871181061ad72aa3333947553aea78690daa2`、公開18 files/5,928,462 bytes・native MP4 18参照/15 unique・private121 assets。after a3c4 fresh864frameを取得し旧c3a PNG hashと全一致、before8193は元撮影再利用。候補識別と再利用/新規取得はmanifestへ固定した。
+- [新9core summary](evidence/AVOID-006/film-ticket-edges/final-candidate-v2/fixtures/functional-summary.json)全exit0、[親98files hash確認](evidence/AVOID-006/film-ticket-edges/final-candidate-v2/parent-functional-hash-review.json)、[親numeric21独立review](evidence/AVOID-006/film-ticket-edges/parent-numeric-review.json)の認証20/診断1・band hold68 samplesの端交差/比率/strict geometry・pixel確認、既述の正式性能gate合格を満たした。
+- 旧04は未公開perf失敗候補として[historical manifest](evidence/AVOID-006/film-ticket-edges/historical-public04-manifest.json)/[status](evidence/AVOID-006/film-ticket-edges/historical-public04-status.json)へ保存し、[新05確認準備draft](reviews/AVOID-006-local-20261021-05.md)へ案内を更新。旧未公開URLを現在の依頼先に使わない。visual addendumは別担当進行中で、旧c3a画像実見と新a3c4のfresh864 PNG一致のつながりを別途記録する。
+- local/native54再生、新05のPages容量/全bytes監査・公開全raw/再生seek/日英起動と人間受入は未完、006実装中を維持する。旧18のみ受入、他6新例未回答・007以降未着手・既定017/補助018未完・保存013既知failure未成功を維持する。
+
+### 公開前05：visual接続・実Jekyll完了、local HTTP導線再検証待ち（2026-10-21）
+
+- [visual final addendum](evidence/AVOID-006/film-ticket-edges/visual-review-final-addendum.md)/[ledger](evidence/AVOID-006/film-ticket-edges/visual-review-final-ledger.json)が完了。新864 native PNG hash/計141 assets・旧実見after75 samplesの対応を照合し、旧視認を新a3c4へ機械的に接続した。追加閲覧/再生はしておらず、全frame実見やユーザーOKへ拡張しない。
+- 新05公式Jekyllは[初回ENOSPC log](evidence/AVOID-006/film-ticket-edges/final-pages-jekyll.log)を保持。今回raw report2本をgzip展開完全同値確認してrawのみ解放した[記録](evidence/AVOID-006/film-ticket-edges/final-candidate-v2/raw-report-storage-release.json)後、[retry01](evidence/AVOID-006/film-ticket-edges/final-pages-jekyll-retry01.log)が成功。[最終actual audit](evidence/AVOID-006/film-ticket-edges/final-pages-output-audit.json)はpassed:true、2,929 URL/996,446,620 bytes・旧2,911 URL/VERIFICATION/config保持・10manifest/2,883asset参照。完全audit後、今回生成の再現可能outputだけを削除しimmutable source/projection/log/auditを保持した[記録](evidence/AVOID-006/film-ticket-edges/final-pages-output-storage-release.json)を残す。
+- [local05-validation-01](evidence/AVOID-006/film-ticket-edges/local05-validation-01.json)を実読すると54 native frame確認/after864 PNG一致後、local page.gotoのHTTP導線エラーで失敗しplayback0件。動画再生/標準UI成功はまだ主張せず、再検証を待つ。
+- [環境178](evidence/AVOID-006/film-ticket-edges/environment-network-178.json)はcurrent:true、通常HTTPSで旧03manifest200/TLS0/hash一致。旧版到達確認と新05公開成功を区別し、006実装中・公開/人間受入未完を維持する。
+
+### local05 HTTP導線失敗・製品固定のまま06 repackへ（2026-10-21）
+
+- local05初回01はpassed:false。native54 frame/after864 parity一致は成功したが、static serverのdirectory/index.html routing欠落でpage.gotoが失敗し、動画へ未到達/playback0。製品の描画失敗や動画再生の不合格と混同しない。
+- 親は指定担当へtool修正/新06 repackを依頼し、05 publicをunstage、05の未公開失敗履歴を保持する。製品a3c4・engine/captureは固定でcore/perf/capture再実行不要と親判断。新06のPages監査/local/公開全検証は別途必要、06確認依頼はpack後に用意する。05の未公開URLを現在の依頼先には使わない。
+- 006実装中を維持、旧18受入/他6未回答・007以降未着手・既定017/補助018・保存013既知事項は不変。
+
+### 06 pack完了・local handler承認後の全検証開始（2026-10-21）
+
+- 新[06 manifest](../review/AVOID-006/local-20261021-06/manifest.json) SHA-256 `4a8485524c9d8112a148434630e457c3dfef13c7b8e08d3788a8f7deb69fca9c`、validator `56ce799440ac44da501b936455b97d70455ef6d26fc5702b5b25cae161bc4954`でfreeze。9組/18 native MP4参照・15 unique、公開18 files/5,928,462 bytes/private121 assets。製品a3c4/EN3d1eと同before/optimized-afterは不変、親判断でcore/perf/capture再実行不要。
+- 親はlocal限定handlerのdecode URL/root境界→directory/index解決→境界再確認をレビューし、[HTTP9case](evidence/AVOID-006/film-ticket-edges/local-static-routing-test.json)を実読承認。製品/MP4/公開fetch/判定閾値不変。05のnative54/after864一致後goto失敗・動画0件は未公開履歴として保持する。
+- [06確認準備draft](reviews/AVOID-006-local-20261021-06.md)を作成、05履歴から案内を移行。local全検証54 native frame/18参照playback/UIを開始済みだが成功未確定、独立visualへ06hash接続を依頼済み。新Pages/公開全検証・人間受入は未完、006実装中を維持。旧18のみ受入/他6未回答・007以降未着手・既定017/補助018・保存013既知事項を維持する。
+
+### local06 seek timeout・07 pack前診断へ（2026-10-21）
+
+- [local06-validation-01](evidence/AVOID-006/film-ticket-edges/local06-validation-01.json)/[log](evidence/AVOID-006/film-ticket-edges/local06-validation-01.log)はnative54 frame/after864 PNG parity mismatch0/raw20 asset確認まで成功。最初のvideo seek2.6秒に対しseekedAt/currentTime0・decodedAfterSeek:nullでtimeoutし、passed:false/playback0件。06を成功扱いせず未公開失敗として保持する。
+- [修正前probe](evidence/AVOID-006/film-ticket-edges/local-media-probe-before.json)はRange要求に200全427,940 bytes、MIME/Accept-Ranges未明示、seekable[0,0]を実測。Content-LengthはNode自動付与427940があり、欠落とは断定しない。local serverのMIME/Range対応を修正対象とする。担当が修正前単体診断→修正→18参照/UIだけの診断を実施中でnative再描画なし。07 pack前に親レビューする予定、修正成功・07 pack/公開はまだ判定しない。製品a3c4/MP4/native証拠固定、05/06失敗履歴と旧18のみ受入/他6未回答・007以降未着手・既定017/補助018/保存013既知事項を保持し、006実装中を維持する。
+
+### transport修正承認・07 pack凍結と正式local検証開始（2026-10-21）
+
+親はlocal限定MIME/Range対応をレビュー承認。[修正前probe](evidence/AVOID-006/film-ticket-edges/local-media-probe-before.json)のRange要求HTTP200全427,940 bytes/seekable[0,0]から、[修正後probe](evidence/AVOID-006/film-ticket-edges/local-media-probe-after.json)はHTTP206/Content-Range/明示video/mp4/seekable[0,4]となり、2.6秒seek後のdecodedを確認した。修正前もNode自動Content-Length427940はあり、Length欠落とは扱わない。製品/MP4/公開fetch/判定閾値は不変。
+
+[local06-media-diagnostic-01](evidence/AVOID-006/film-ticket-edges/local06-media-diagnostic-01.json)は18参照のplay/pause/decoded seek/endedと日英desktop/mobile UIに成功、minDecoded92/drop計21/corrupt0。ただしnativeFrames:0、diagnosticOnly:true/diagnosticPassed:true/passed:false/acceptanceComplete:falseであり、正式合格や完全な滑らかさを意味しない。05/06の正式local失敗は保持する。
+
+07 [manifest](../review/AVOID-006/local-20261021-07/manifest.json) SHA-256 `6934ae9a57215ce8583f1a291fb59f325ba9411b0bcddb33141b74aba6305c20`、validator `bfee0b0ce8a4df0e8dac200bebb648ef5046761cbdcd4b443b33934144049f71`でfreeze。公開18 files/5,928,462 bytes、9組18 native MP4参照/15 unique。製品a3c4/EN3d1e・同before/optimized-afterは不変、親判断でcore/perf/capture再実行不要。[07確認準備稿](reviews/AVOID-006-local-20261021-07.md)を作成し、旧05/06 URLを現在の確認依頼に使わない。
+
+07の正式local54 native/18参照playback/UI、独立visual hash接続は進行中。[環境180](evidence/AVOID-006/film-ticket-edges/environment-network-180.json)はactual/desired180・observations_current:true・connected・unrestricted/enforced。新Pages/公開全検証・人間受入は未完、006実装中を維持。旧18のみ受入/他6未回答、007以降未着手・既定017/補助018/保存013既知事項は不変。
+
+### 07正式local・独立visual接続完了（2026-10-22 JST記録、公開前）
+
+- [07正式local結果](evidence/AVOID-006/film-ticket-edges/local07-validation-01.json)/[log](evidence/AVOID-006/film-ticket-edges/local07-validation-01.log)は2026-10-21 22:37 JST作成、passed:true/diagnosticOnly:false/acceptanceComplete:true。凍結manifest `6934ae9a57215ce8583f1a291fb59f325ba9411b0bcddb33141b74aba6305c20`・validator `bfee0b0ce8a4df0e8dac200bebb648ef5046761cbdcd4b443b33934144049f71`を実結果と照合。raw20 assets/native54再描画/after864 PNG parity mismatch0、18参照のplay/pause・2.6秒decoded seek・endedが成功した。minDecoded92/drop計5/corrupt0で既定gate合格、完全な滑らかさの保証にはしない。日英desktop1280×900/mobile390×844の同時再生・停止/幅確認を通過してからpassed:trueとなるvalidator経路も確認した。
+- [07 visual addendum](evidence/AVOID-006/film-ticket-edges/visual-review-07-addendum.md)/[ledger](evidence/AVOID-006/film-ticket-edges/visual-review-07-ledger.json)は独立solによる公開20/private121 assetsの実hash照合済み。06とMP4 15/PNG54 assets相違0、9条件/来歴一致で、旧実見after75 samplesとnative864frame一致の接続を継承した。追加画像閲覧/decode/再生なし、親も画像を開いていない。全frame目視や人間承認を意味しない。
+- 新07のPages監査・公開全raw/再生/日英実描画と人間の見え方確認は未完。[07準備稿](reviews/AVOID-006-local-20261021-07.md)へ現物結果を同期。05/06正式local失敗・06診断は別履歴として保持し、006実装中、旧18のみ受入/他6未回答、007以降未着手・既定017/補助018未完を維持する。保存013のexpected0/actual1既知failureを成功へ置換しない。
+
+### 07公式Pages監査完了・実環境検証待ち（2026-10-22 JST）
+
+[07実Jekyll log](evidence/AVOID-006/film-ticket-edges/pages07-jekyll.log)は公式imageのoffline/read-onlyビルド成功（3.053秒）。[07出力監査](evidence/AVOID-006/film-ticket-edges/pages07-output-audit.json)はpassed:true/actualJekyllOutput:true、2,929 URL（旧2,911保持）、10 manifest/2,883 assets、996,446,620 bytes。projection SHA-256 `390363475ba5326cf2d4a2036c69d0a479ddc5934f016e8e70c0f32235aa018b`、config `a06ab85fc12f54c1b1b2dc0ece8fdbd5db935f3529ba4272839cef28674d8709`。旧05監査の流用ではなく07現物の監査である。
+
+07正式local/独立visual接続/公式Pages監査が揃い、状態を実環境検証待ちへ更新。commit/push・新07公開raw全hash/18参照再生/アプリJA・EN起動と実描画、人間の見え方確認は未完。公開前の成功を公開済みへ置換せず、旧18のみ受入/他6未回答・保存013既知failure・後続未着手を維持する。

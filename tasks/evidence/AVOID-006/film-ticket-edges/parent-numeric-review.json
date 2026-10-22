@@ -1,0 +1,18 @@
+{
+  "sourceSHA256": "a3c4d0e3c76994033910d61711180787576a0bec938d397da8425c37b8124ba7",
+  "input": "final-candidate-v2/numeric21-report.json.gz",
+  "inputSHA256": "2ecaf47d4bd8862db8457ec2c5fc657e328c07a166cbe325aad8fd5724d50efb",
+  "reviewer": "parent; independent Python arithmetic on recorded numerical geometry; no image viewing",
+  "passed": true,
+  "conditions": 21,
+  "certifiedConditions": 20,
+  "knownInsufficientDiagnosticExcludedFromSuccess": 1,
+  "bandHoldSamples": 68,
+  "bandCheck": "Intersect each recorded band polygon with x=0 and x=W for landscape, or y=0 and y=H for portrait; require a nonzero intersection within each stage edge.",
+  "exposureRatioCheck": "Euclidean adjacent-edge lengths of each recorded exposure rectangle; target landscape 3/2 and portrait 2/3; tolerance 1e-5.",
+  "maximumExposureRatioError": 1.7763568394002505e-15,
+  "strictFrameObservations": 60,
+  "allCertifiedSampleObservationsCoveredAndStrictClear": true,
+  "allCertifiedRasterAuditsStrictConflictAndMarginConflictPixels": 0,
+  "limitations": "Independent checks of recorded numerical samples, not exhaustive frame or image inspection. Full capture, visual provenance, local and public playback remain separate gates."
+}
