@@ -3,7 +3,9 @@
 'use strict';
 const E = J.E;
 const P = 'layoutsC';
-const reg = (key, def) => J.register('layout', key, def, P);
+const nativeSources = new Map();
+const reg = (key, def) => { nativeSources.set(key,def.render); return J.register('layout', key, def, P); };
+J.placement.layoutsCSourceKnown = key => nativeSources.has(key) && nativeSources.get(key) === J.LAYOUTS[key]?.render;
 
 /* ---------------------------------------------------------------- helpers */
 const U = env => Math.min(env.W, env.H);
@@ -3184,7 +3186,7 @@ reg('nameTag', {
   enterBias: { cut: 1.4, type: 1.3, pop: 1.2, slice: 0.5 },
   plan: (rng, cut, st) => ({ font: rng.chance(0.6) ? 'klee' : rng.pick(fontsOf(st, ['display', 'body'])), variant: rng.pick(['hello', 'hello', 'school']), tilt: rng.range(-6, 6), grade: rng.int(1, 6), cls: rng.int(1, 4) }),
   render(env) {
-    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    const { W, H, sc, ctx } = env, p = env.cut.params, objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1, u = U(env) * objectScale, port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const C = card(sc);
     const t0 = env.cut.text.trim();
@@ -3192,7 +3194,7 @@ reg('nameTag', {
     const a = J.clamp(e * 3) * (1 - J.clamp((env.pOut - 0.5) / 0.5));
     if (a <= 0.01) return null;
     const bandC = plateCol(sc, [sc.accent, sc.accent2, sc.ink], C.fill, 1.6);
-    const bw = port ? W * 0.86 : Math.min(W * 0.62, H * 1.2), bh = bw * (p.variant === 'hello' ? 0.66 : 0.56);
+    const nativeBW = port ? W * 0.86 : Math.min(W * 0.62, H * 1.2), measure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.badgeMeasure ?? 1 : 1, bw = nativeBW * objectScale * measure, bh = nativeBW * objectScale * (p.variant === 'hello' ? 0.66 : 0.56);
     const q = E.outBack(e, 1.6);
     const rot = p.tilt * q + (1 - q) * -25 + eo * 18;
     const cx = W / 2 + eo * W * 0.1, cy = H / 2 + (1 - q) * -H * 0.35 + eo * H * 0.5;
@@ -3209,7 +3211,7 @@ reg('nameTag', {
       env.draw({ text: 'my name is', font: bodyF(env), size: hh * 0.2, track: 0.15, x: 0, y: y0 + hh * 0.82, color: hc, alpha: a, ghost: false });
       const fb = fitBlock(t0, p.font, bw * 0.84, bh * 0.46, { lead: 1.05 }, 2);
       const size = Math.min(fb.size, bh * 0.36);
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: 0, y: y0 + hh + bh * 0.29, lead: 1.05, rot: -2, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.045,x1:x0+bw*.955,y0:y0+bh*.3,y1:y0+bh*.88}} : {}), text: fb.text, font: p.font, size, x: 0, y: y0 + hh + bh * 0.29, lead: 1.05, rot: -2, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     } else {
       // school name badge: safety pin, class fields, なまえ
       env.rrect(x0, y0, bw, bh, r, C.fill, a, false, bandC, Math.max(4, bw * 0.014));
@@ -3223,7 +3225,7 @@ reg('nameTag', {
       env.circle(x0 + bw * 0.88, y0 + bh * 0.2, bh * 0.08, bandC, null, 0, a, false);
       const fb = fitBlock(t0, p.font, bw * 0.84, bh * 0.44, { lead: 1.05 }, 2);
       const size = Math.min(fb.size, bh * 0.34);
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: 0, y: y0 + bh * 0.66, lead: 1.05, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:y0+bh*.4,y1:y0+bh*.96}} : {}), text: fb.text, font: p.font, size, x: 0, y: y0 + bh * 0.66, lead: 1.05, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     }
     ctx.restore();
     return bb ? box(cx - bw / 2, cy - bh / 2, cx + bw / 2, cy + bh / 2) : null;
@@ -3260,6 +3262,14 @@ reg('stickyNotes', {
       ns = Math.min(W * 0.84 / (k * 1.02), H * 0.62);
       pos = chunks.map((c, i) => [W / 2 + (i - (k - 1) / 2) * ns * 1.02, H / 2 + p.offs[i % 4] * H * 0.06]);
     }
+    // C008: resize each source note and change its ordered native slot pitch.
+    // Stage dimensions, note count, source chunks, entry squash and peel clocks
+    // remain native. This never renders the composition into a smaller viewport.
+    if (env.cut.placementLayoutsC && env.cut.layoutCRecipe) {
+      const {noteScale, pitch} = env.cut.layoutCRecipe;
+      ns *= noteScale;
+      pos = pos.map(([x,y]) => [W/2+(x-W/2)*noteScale*pitch,H/2+(y-H/2)*noteScale*pitch]);
+    }
     let bb = null;
     chunks.forEach((c, i) => {
       const [x, y] = pos[i];
@@ -3274,6 +3284,8 @@ reg('stickyNotes', {
       const col = pal[p.cols[i % 4] % pal.length];
       const tc = onCol(sc, col);
       const rot = p.rots[i % 4] + peel * 25 * (i % 2 ? 1 : -1);
+      const priorCBody=env.placementCBody;
+      if(env.cut.placementLayoutsC)env.placementCBody={kind:'sticky-note',pivot:[x,y-ns/2],angle:p.rots[i%4],turn:25*(i%2?1:-1),dx:0,dy:H*.3,minYScale:.7,maxEntryScale:1.18};
       ctx.save(); ctx.translate(x, y - ns / 2 + peel * H * 0.3); ctx.rotate(rot * J.DEG); ctx.scale(sq, sq * (1 - peel * 0.3)); ctx.translate(0, ns / 2);
       const hs = ns / 2;
       // curled-corner shadow + note
@@ -3284,8 +3296,9 @@ reg('stickyNotes', {
       if (p.pin === 'glue') env.rect(-hs, -hs, ns, ns * 0.1, J.mix(col, darkest(sc), 0.08), a, false);
       else env.rect(-ns * 0.18, -hs - ns * 0.05, ns * 0.36, ns * 0.11, J.rgba(lightest(sc), 0.55), a, false);
       const fb = fitBlock(c, p.font, ns * 0.8, ns * 0.64, { lead: 1.12 }, 3);
-      const r = J.mainDraw(env, { text: fb.text, font: p.font, size: Math.min(fb.size, ns * 0.36), x: 0, y: ns * 0.04, lead: 1.12, rot: -1.5, color: tc, noHold: plateHold(env), mi: miAt(env, t1 + 0.08) });
+      const r = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:-ns*.46,x1:ns*.46,y0:-ns*.4,y1:ns*.46}} : {}), text: fb.text, font: p.font, size: Math.min(fb.size, ns * 0.36), x: 0, y: ns * 0.04, lead: 1.12, rot: -1.5, color: tc, noHold: plateHold(env), mi: miAt(env, t1 + 0.08) });
       ctx.restore();
+      if(env.cut.placementLayoutsC)env.placementCBody=priorCBody;
       if (r) bb = J.unionBB(bb, box(x - hs, y - hs, x + hs, y + hs));
     });
     return bb;

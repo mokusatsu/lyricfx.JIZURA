@@ -1,0 +1,62 @@
+{
+  "userDate": "2026-10-23",
+  "userTimezone": "Asia/Tokyo",
+  "timestamp": "2026-10-22T15:34:43.228184+00:00",
+  "status": "ACCEPTED_SHARED_TRANSPORT_ONLY",
+  "scope": "parent source and local evidence review; no C avoidance adapter or visual acceptance",
+  "transport05SHA256": "95413cba5f838af8a3f2de203161a1f9818fc43045390e6568831522d542b9d1",
+  "variantCases": 40,
+  "individualRasterAudits": 145,
+  "summedVisiblePixels": 3117352,
+  "rawKinds": {
+    "nativeText": 24,
+    "nativePath": 113,
+    "nativeStrokeRect": 8
+  },
+  "rawCommands": {
+    "moveTo": 105,
+    "arc": 19,
+    "lineTo": 86,
+    "closePath": 50,
+    "bezierCurveTo": 4,
+    "quadraticCurveTo": 7
+  },
+  "nativeTextVisiblePixels": 10861,
+  "negativeRejected": 4,
+  "bNativeFillVariants": [
+    {
+      "main": "circle",
+      "nativePaths": 10,
+      "supported": true
+    },
+    {
+      "main": "burst",
+      "nativePaths": 10,
+      "supported": true
+    },
+    {
+      "main": "rrect",
+      "nativePaths": 10,
+      "supported": true
+    },
+    {
+      "main": "pill",
+      "nativePaths": 10,
+      "supported": true
+    }
+  ],
+  "fixedGzipSnapshotPinsVerified": 13,
+  "acceptedBaselineHTMLExactlyMatchesGit": true,
+  "reviewFixes": [
+    "B fill AA bounds unchanged",
+    "A nativePolygon diff restored",
+    "C source guard moved from optional itemGeometry into record",
+    "C guard allows final stock custom_draw wrapper but rejects replaced source or renderer instance"
+  ],
+  "limitations": [
+    "native 34 IDs are replayable, not yet avoidance adapters",
+    "single-face transport font, not final multiface visual qualification",
+    "whole-interval/camera/readability and ID-specific reflow pending",
+    "no public result checks permitted"
+  ]
+}
