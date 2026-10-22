@@ -1,0 +1,10 @@
+{
+  "status": "FAIL_LOCAL_ARCHIVE_PERMISSION_CHECK",
+  "archive": "/workspace/sites/jizura-equalizer-27ad485.tar.gz",
+  "firstFile": ".openai/hosting.json",
+  "observedMode": "0o664",
+  "expectedMode": "0o644",
+  "reason": "git archive default tar umask produced group-writable archive mode; byte comparison was not completed",
+  "resolution": "retain this archive; generate fresh archive with explicit tar.umask=0022 and rerun exact-source audit",
+  "publicRequests": false
+}

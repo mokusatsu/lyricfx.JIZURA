@@ -1921,9 +1921,10 @@ J.register('layout', 'equalizer', {
     if (!n) return null;
     const port = W < H;
     const recipe=cut.placementLayoutsB?cut.layoutBRecipe:null,nativeRows=port&&n>6?2:1,nativePer=Math.ceil(n/nativeRows),nativeSw=W*.86/nativePer,nativeSize=Math.min(nativeSw*.78,H*(nativeRows>1?.1:.14));
-    const per=recipe?.equalizerPer||nativePer,rows=Math.ceil(n/per),sw=recipe?nativeSw*recipe.fontScale:nativeSw,size=bSize(env,nativeSize);
-    if(cut.placementLayoutsB)env.placementBGeometry={kind:'equalizer',size,sw,rows,per,nativePer,items:[],thinItems:[]};
-    const bw = Math.min(sw * 0.6, size * 1.15);
+    if(recipe&&(recipe.equalizerPer!==nativePer||recipe.equalizerRows!==nativeRows||!(recipe.equalizerWidthScale>=.4&&recipe.equalizerWidthScale<=1)||!(recipe.equalizerHeightScale>=.85&&recipe.equalizerHeightScale<=1))){const error=new Error('Equalizer recipe must preserve native rows and bounded meter geometry');error.code='NATIVE_EQUALIZER_ROWS';throw error;}
+    const per=nativePer,rows=nativeRows,sw=recipe?nativeSw*recipe.fontScale*recipe.equalizerWidthScale:nativeSw,size=bSize(env,nativeSize);
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'equalizer',size,sw,rows,per,nativePer,nativeRows,nativeSize,nativeSw,items:[],thinItems:[]};
+    const meterHeightScale=recipe?.equalizerHeightScale??1,bw = Math.min(sw * 0.6, size * 1.15)*meterHeightScale;
     const e = inE(env, 0.45), out = outK(env);
     const colA = plateCol(sc, [sc.accent, sc.fg]), colB = plateCol(sc, [sc.accent2, sc.sub, sc.fg]);
     // level of band x (continuous index) at time t
@@ -1941,8 +1942,8 @@ J.register('layout', 'equalizer', {
     let bb = null;
     for (let r = 0; r < rows; r++) {
       const cnt = Math.min(per, n - r * per);
-      const yb=recipe?H*.12+(r+1)*H*.76/rows:(rows>1?(r?H*.84:H*.47):H*.74);
-      const hmax=((nativeRows>1?H*.26:H*.44)-nativeSize*.4)*(recipe?recipe.equalizerHeightScale:1);
+      const yb=rows>1?(r?H*.84:H*.47):H*.74;
+      const hmax=((nativeRows>1?H*.26:H*.44)-nativeSize*.4)*(recipe?recipe.fontScale*recipe.equalizerHeightScale:1);
       const x0 = W / 2 - cnt * sw / 2;
       bGroup(env,'baseline-'+r);
       env.line([[x0 - sw * 0.2, yb], [x0 - sw * 0.2 + (cnt * sw + sw * 0.4) * e, yb]], sc.sub, lw, 0.7 * out, false);
@@ -1962,8 +1963,8 @@ J.register('layout', 'equalizer', {
         const x = x0 + xi * sw;
         const signalKey=(i%nativePer)+q/(Pm.thin+1)+Math.floor(i/nativePer)*7+.5;
         bGroup(env,'thin-band-'+i+'-'+q);
-        if(cut.placementLayoutsB)env.placementBGeometry.thinItems.push({i,q,x,yb,hmax:hmax*.8,bw:sw*.06,signalKey});
-        drawBar(x, sw * 0.06, hmax * 0.8 * level(signalKey, env.ltb) * e * out, sc.sub, 0.55);
+        if(cut.placementLayoutsB)env.placementBGeometry.thinItems.push({i,q,x,yb,hmax:hmax*.8,bw:sw*.06*meterHeightScale,signalKey});
+        drawBar(x, sw * 0.06*meterHeightScale, hmax * 0.8 * level(signalKey, env.ltb) * e * out, sc.sub, 0.55);
       }
       bRole(env);
       for (let j = 0; j < cnt; j++) {

@@ -297,3 +297,45 @@ The parent independently verified browser02 receipt SHA90fd70a5ee9a4ceec66a61d45
 Current control02 manifest9d16f11518628b28d64bb238ba6a764a5fc17bb262ca8a7446f572b809564b47 keeps only independently visually accepted rain. Source/font/fixture/input/clocks and192native-frame hashes/8keyPNG/2MP4 bytes are exact to prior actually viewed rain; isolated sol carry-forward4e5891e07f8d39efa2c1eaf413d92ac991c4ccb0449616a70eb300744de5706f retains the white-border contact observation. Parent has not opened imagery. UI-only current tool874b97823036eeb7da072e51cccab631b0be5d1bef50805be362c68ed2a14873 explicitly distinguishes measured feasibility from visual acceptance and marks unselected cases accordingly. Only pageHTML changed,35other exports/constants and8media/playback guards were independently checked unchanged.
 
 Main25 manifest186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f plus rain control02 are locally qualified. Raw8cut02all3FAIL and control01bubble local contrastFAIL stay real failures, not qualified examples.012joint group/FG and017BG-content quality residuals remain unimplemented; default activation/018mask remain unreleased. No current public verification or completion yet. Next action: deploy existing owner-private Sites source a4c04fee1732afb64ba43e7a06a5e4dc216e78cd, verify both bundles remotely in full, then immutable Pages bridge and actual JAEN app startup.
+
+
+## 2026-10-22 — real Sites packaging limits and lossless correction
+
+Actual ordinary Git push of the433MB required static tree failed receive-pack size limit; both failed attempts left remote main empty. Sixteen ordinary authenticated Git pushes (no force, inherited proxy/default verified TLS) then succeeded and every remote HEAD was verified. Final051384b6e2c4e0ee823eb6b9ddc0c9eba0720d96 tree equals originala4c04fee exactly. Local344250425B gzip input was rejected256MiB before a saved version. Documented remote build fallback saved version1 but deploymentappgdep_6ada130180608191af6149f03279cf0e actually FAILED the same256MiB input constraint; it has no URL and remains failed, not a public success.
+
+The retained corrective source adds only a reviewed local packaging tool outside dist: tools/package-static.py, implemented by gpt-6.1-sol/medium, SHA94ba548ae7fed2d55a99218f192aedd7bf0f3f1e9a6e67683a92402ba13db9da,10small synthetic guard cases pass. Newsource767ee1d9bb23c1dc9241b0290d60dea3dc2a2733 was normally pushed and remote HEAD verified. Config and entire static tree975ff26a72ad8ed5369d8493906b65641c08c4b5 are unchanged. The helper actually produced223451080B tar.xz SHA57e7b6c733713cb392f156eb3b8dc115c5465da36bba9c52ea2434291ee9902a, then streamed all767member bytes against committed Git blobs. Parent reviewed helper code and all767metadata entries plus independently compared the prior same-static candidate archive bytes against Git blobs. All766static files/433244353B remain unchanged; PNG/MP4/native clock/manifest/source/font pixels and bytes were not edited. Parent has not opened images.
+
+This is a distinct corrected packaging source/version, not resaving or retrying the failed existing version1. New save/deploy is pending; tar.xz service acceptance and actual public verification are still unobserved. See sites-package03.json, parent-sites-package03-review.json, sites-push03.json and both actual failure records.007 remains実環境検証待ち;008 is unstarted.
+
+
+## 2026-10-22 — latest user narrows publication, no image recoding
+
+The actual tar.xz input was rejected at the256MiB **expanded** archive guard; it was not saved/deployed. Archive-only compression cannot fix this limit. The source/helper changes and both failed archives remain retained.
+
+The user then explicitly instructed:『一気に全部出力する必要はないので、確認が必要なものに絞って公開して』. This supersedes the previous requirement to publish all25representatives in one bundle. Parent selected five repaired B effects (tunnel,elastic,typeSpecimen,kanjiFocus,equalizer) plus the already qualified rain-only H03 control. Full25native02/50MP4/200keyPNG and all numerical/negative/performance/regression evidence remain unchanged locally. Public qualification will cover only the actually published selection and all3H-ID anchors, without claiming the other20were published.
+
+Parent independently verified all274selected/common source asset hashes, exact5case/70case-file union,204commonfiles and actual byte budget. Conservative selected main plus unchanged210-file rain bundle plus hub/config/provenance duplication is192941645B, leaving75493811B below256MiB before modest new tool/HTML/manifest deltas. No PNG/MP4/dataJSON recoding or recapture is needed. See parent-selected-publication-budget01.json.
+
+The abandoned read-only PNG feasibility process was explicitly terminated by its owner (PID178645, exit143); only100/200progress was observed, not a complete208-image estimate. No PNG writes, product changes or success claim. Selected-profile tools are delegated to the specified gpt-6.1-sol/medium implementation owner, in isolation; shared T6e/B35/P2f/C874b and source/product stay frozen. Public gate and actual Pages JAENstartup remain mandatory.007 stays実環境検証待ち,008unstarted.
+
+Sites and cloud-environment skills became available during this continuation and were read with troubleshooting/local-preview/network/Docker references. SITES_MANAGED_LINUX_CONTAINER is unset (portable). The existing user-required browser validators remain the QA path; no managed-preview fallback is claimed. No site-workflow.mjs file was found in the available local skill/tool roots, so supported native Sites API plus ordinary authenticated Git operations are recorded as actually used, not as execution of that helper. Session proxy/CA/default TLS remain intact; no route or proxy bypass. Latest environment_status observed204/204/current/enforced/unrestricted; this is distinct from earlier201capture observations.
+
+## 2026-10-22 最新利用者指示：公開結果確認の恒久停止
+
+公開結果の確認は無駄なので停止してください。金輪際やらないようメモリしてください。
+
+公開結果確認を停止。ローカルのプロセス一覧で選択main/H03の公開validator実行がないことを確認し、公開確認担当にも停止指示を伝達した。公開先への追加アクセスは行わない。AGENTS.md・実装レビュー運用・一覧・007・現行handoffへ継続指示を保存した。以前の公開検証必須条件は取り消され、失敗を成功には置換しない。Sites version2公開操作の成功戻り値は既存ローカル記録から転記し、selected-sites-public01の初回失敗は原本を保持する。007はローカル検証済みへ同期し、この停止指示を動作承認や最終完了とは扱わない。008未着手。
+
+## 2026-10-22 equalizerの演出意図に関する利用者指摘
+
+利用者はequalizerをグラフィックイコライザー/レベルメーターと定義し、変更後2行になる構成を不受入とした。親がsrc/09e_layoutsB_placement.jsの汎用per候補とsrc/11p_layoutsB.jsのrecipe行構成変更を確認。幾何/所有/信号キーの成功は演出意図の受入と同義でなく、以前の視覚PASSもこの利用者判断で修正対象となる。行数を回避のため増加させず共通baseline・周波数順・peak/thin/主歌詞の一体性を維持する修正を、既存gpt-6.1-sol / medium担当へ依頼した。親はコード/テストレビュー、視覚照合はisolated solが担当する。公開結果確認は行わない。開始HEAD24999a5f80c40650bc9aba09db87a095e8fe4bdd、branch work、既存pyc/selectedhelpers/docs/原本を保持。状態007実装中/008未着手。
+
+## 2026-10-22 equalizer02の親受入と動作確認依頼
+
+実装担当gpt-6.1-sol / mediumの2srcとJAENをレビュー。汎用折返しをequalizerから除外し、native行数/per/baseline/source/clock/beat/peakを保持。初案01は数値成功でもisolated solが浅い横長barを実見しFAIL、担当へ差戻した。新02はglyph実inkの最低間隔を確認してpitch圧縮を優先し、main/thinのheight/width比をnative未満にしない。通常例はfullfont151.2px/fullheight414.72px、pitch.4、実gap18.12px>=6.048px、jointoffset[575.6054,0]。他layoutの描画とsignal関数はbyte不変。
+
+親が115pin/gzip snapshot、1096実測polygonの円余白/画面内・168glyphペア非交差を独立照合。21負例/9 OFF RGBA一致/48signal、日英local起動を確認。new02の31files/24,272,574B/81source+HTML pins/96after安全auditを独立照合。isolated solは新after全96frame/4原寸keysを実見し、beforeを自身の既実見からbyte接続し、meter意図・可読性・画面内保持に限定してPASS。円guide不在のため視覚で円境界を証明したとは扱わない。
+
+Sitesローカルsourceは旧494file不変＋新31file＋hub。527archivefiles/217,717,800expandedBをpushed commit27ad485の実Git blobsとbyte比較。公開APIがdeployment appgdep_6ada27750e608191863d175addb8ff24 succeededとURLを返した。公開結果確認は最新指示通り一切実行しない。wrapper01cleanup失敗→別file資格、初案01visualFAIL、archive01mode失敗→明示umask fresh02の履歴を保持し成功へ置換しない。
+
+今回利用者が指摘したmeterの意図について必要な動作確認だけを依頼する。人間コードレビューは不要。007は未完/人間確認待ち、008以降未着手。旧H03/背景contrast/保存013既知failuresも成功にしない。

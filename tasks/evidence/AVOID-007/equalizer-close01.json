@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "scope": "Two actual loopback T.serve instances close via server.close in normal and intentional-error branches; no HTTP/browser/public URL",
+  "startup": [
+    {
+      "file": "dev/avoidance/layouts-b-equalizer-close-test.cjs",
+      "sha256": "6378062a5e985bf7714df7c56f6254e583346bb7050b072af5bda0c5063e40b8",
+      "bytes": 2383
+    },
+    {
+      "file": "dev/avoidance/layouts-b-equalizer-review.cjs",
+      "sha256": "84ad7f4b434861f8038476a4f4b445e4436deb670e0d1323fca393bcfce7aeba",
+      "bytes": 7990
+    },
+    {
+      "file": "dev/avoidance/layouts-b-review.cjs",
+      "sha256": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+      "bytes": 68268
+    }
+  ],
+  "rows": [
+    {
+      "shouldFail": false,
+      "closed": true,
+      "address": null
+    },
+    {
+      "shouldFail": true,
+      "closed": true,
+      "address": null
+    }
+  ],
+  "executedCaptureWrapper": {
+    "sha256": "921fea11d160b83ed4e83b65aaa28951c1831d8e1cbafa53bdcda193e2aae93b",
+    "snapshot": "tasks/evidence/AVOID-007/equalizer-native01-snapshot/dev__avoidance__layouts-b-equalizer-review.cjs.gz"
+  },
+  "correctedWrapper": {
+    "file": "dev/avoidance/layouts-b-equalizer-review.cjs",
+    "sha256": "84ad7f4b434861f8038476a4f4b445e4436deb670e0d1323fca393bcfce7aeba",
+    "bytes": 7990
+  },
+  "correction": "Only await local.close() replaced by awaiting local.server.close callback; existing capture was not rerun",
+  "endInputsUnchanged": true
+}
