@@ -2204,7 +2204,9 @@ reg('postcard', {
   }),
   render(env) {
     const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
-    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
+    const writingScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.postcardWritingScale ?? null : null;
+    const writingBoost = writingScale == null ? 1 : writingScale / objectScale;
+    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,writingScale==null?0:it.size*.7,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const C = card(sc);
@@ -2216,7 +2218,7 @@ reg('postcard', {
     if (a <= 0.01) return null;
     const cx = W / 2 - (1 - ein) * W * 0.4 + eo * W * 0.3, cy = H / 2 + (1 - ein) * H * 0.05;
     const rot = p.tilt + (1 - ein) * -18 + eo * 10;
-    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'postcard', frame:[cx,cy,rot,objectScale,objectScale], anchor:[W/2,H/2], tilt:p.tilt, W,H, support:[-cw/2,-ch/2,cw/2,ch/2] });
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'postcard', frame:[cx,cy,rot,objectScale,objectScale], anchor:[W/2,H/2], tilt:p.tilt, W,H, postmark:[-cw/2+Math.min(cw,ch)*(.07+.2*.95),-ch/2+Math.min(cw,ch)*(.07+.2*1.2*.62),Math.min(cw,ch)*.2*.62*1.4], support:[-cw/2,-ch/2,cw/2,ch/2] });
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG); if(objectScale!==1)ctx.scale(objectScale,objectScale);
     const x0 = -cw / 2, y0 = -ch / 2;
     shadowR(env, x0, y0, cw, ch, cw * 0.012, a, u * 0.016);
@@ -2233,9 +2235,9 @@ reg('postcard', {
     if (p.stamp === 'circle') env.circle(stx + stw / 2, sty + sth * 0.56, stw * 0.26, stt, null, 0, a * 0.8, false);
     else if (p.stamp === 'mount') env.poly([[stx + stw * 0.12, sty + sth * 0.78], [stx + stw * 0.5, sty + sth * 0.3], [stx + stw * 0.88, sty + sth * 0.78]], stt, a * 0.8, false);
     else { const pts = []; for (let i = 0; i <= 12; i++) pts.push([stx + stw * (0.12 + 0.76 * i / 12), sty + sth * 0.6 + Math.sin(i / 12 * J.TAU) * sth * 0.08]); env.line(pts, stt, Math.max(2, stw * 0.05), a, false); }
-    objectDraw({ text: String(p.val), font: monoF(env), size: stw * 0.2, align: 'left', x: stx + stw * 0.1, y: sty + sth * 0.14, color: stt, alpha: a, ghost: false });
+    objectDraw({ placementCField: [stx,sty,stx+stw,sty+sth], text: String(p.val), font: monoF(env), size: stw * 0.2, align: 'left', x: stx + stw * 0.1, y: sty + sth * 0.14, color: stt, alpha: a, ghost: false });
     // postal code boxes (top-right)
-    const bs = Math.min(cw, ch) * 0.062, gap = bs * 0.22;
+    const nativeBS = Math.min(cw, ch) * 0.062, zipScale=writingScale==null?1:Math.max(1,.42/objectScale), bs=nativeBS*zipScale, gap=bs*.22;
     const zx1 = x0 + cw - m;
     const zy = y0 + m * 0.9;
     const za = tin(env, 0.25, 0.4, E.outCubic) * out;
@@ -2243,32 +2245,39 @@ reg('postcard', {
       const bx = zx1 - (7 - i) * (bs + gap) - (i < 3 ? gap * 1.5 : 0);
       env.rrect(bx, zy, bs, bs * 1.25, bs * 0.08, null, za, false, red, Math.max(1.2, bs * 0.06));
       if (i === 3) env.line([[bx - gap * 2.2, zy + bs * 0.62], [bx - gap * 0.6, zy + bs * 0.62]], red, Math.max(1.2, bs * 0.06), za, false);
-      objectDraw({ text: p.zip[i], font: p.font, size: bs * 0.8, x: bx + bs / 2, y: zy + bs * 0.66, color: C.text, alpha: za * 0.9, ghost: false });
+      objectDraw({ placementCField: [bx,zy,bx+bs,zy+bs*1.25], text: p.zip[i], font: p.font, size: nativeBS * 0.8, x: bx + bs / 2, y: zy + bs * 0.66, color: C.text, alpha: za * 0.9, ghost: false });
     }
-    objectDraw({ text: vertCard ? '郵便はがき' : 'POST CARD', font: vertCard ? serifF(env) : monoF(env), size: ls * (vertCard ? 1.2 : 0.9), track: 0.5, x: vertCard ? 0 : x0 + cw * 0.46, y: vertCard ? y0 + m + sth + ls * 0.9 : y0 + m * 0.75, color: C.text, alpha: a * 0.75, ghost: false });
+    const headerSize=ls*(vertCard?1.2:.9),headerActual=writingScale==null?headerSize:Math.max(headerSize*objectScale,headerSize*.7,Math.min(headerSize,Math.max(12,.02*u)/(env.cut.contentScale??1)))/objectScale;
+    const printR=stw*.62,printAngle=p.mark*J.DEG,printSin=Math.sin(printAngle),printCos=Math.cos(printAngle),printYs=[printR+Math.max(1.5,printR*.05)/2];
+    for(let k2=0;k2<3;k2++)for(let i=0;i<=20;i++)printYs.push((printR*1.15+i*printR*.1)*printSin+((k2-1)*printR*.32+Math.sin(i*.9)*printR*.08)*printCos+Math.max(1.5,printR*.04)*5);
+    const printedBottom=sty+sth*.62+1.4*Math.max(...printYs),headerY=writingScale==null?(vertCard?y0+m+sth+ls*.9:y0+m*.75):Math.max(vertCard?y0+m+sth+ls*.9:zy+bs*1.25+ls*1.4,printedBottom+headerActual*.7+4/objectScale),headerBottom=headerY+headerActual*.7;
+
+    objectDraw({ placementCField: writingScale!=null?[x0+m,headerY-headerActual,x0+cw-m,headerY+headerActual]:vertCard ? [x0+m,y0+m+sth,x0+cw-m,y0+m+sth+ls*2] : [stx+stw+ls*.4,y0+m*.1,zx1,y0+m+sth+ls*.9], text: vertCard ? '郵便はがき' : 'POST CARD', font: vertCard ? serifF(env) : monoF(env), size: ls * (vertCard ? 1.2 : 0.9), track: 0.5, x: vertCard ? 0 : x0 + cw * 0.46, y: headerY, color: C.text, alpha: a * 0.75, ghost: false });
     // address lines + lyric
     const t0 = env.cut.text.trim();
     let bb;
     const la = tin(env, 0.2, 0.5, E.outCubic) * out;
     if (vertCard && !hasLatin(t0)) {
-      const top = y0 + m + sth + ls * 2.4, bot = y0 + ch - m * 1.4;
-      const fb = fitBlock(strip(t0), p.font, cw * 0.5, (bot - top) * 0.84, { vertical: true, lead: 1.3, track: 0.06 }, 2);
-      const size = Math.min(fb.size, cw * 0.2);
+      const nativeTop=y0+m+sth+ls*2.4,top=writingScale==null?nativeTop:Math.max(nativeTop,headerBottom+4/objectScale),bot=y0+ch-m*1.4;
+      const nativeFB = fitBlock(strip(t0), p.font, cw * 0.5, (bot - nativeTop) * 0.84, { vertical: true, lead: 1.3, track: 0.06 }, 2);
+      const nativeSize = Math.min(nativeFB.size,cw*.2),size=nativeSize*writingBoost;
+      const fb = writingScale==null ? nativeFB : fitBlock(strip(t0),p.font,(cw-m*2)/writingBoost,(bot-top)*.84/writingBoost,{vertical:true,lead:1.3,track:.06},3);
       const mm = meas(fb.text, p.font, size, { vertical: true, lead: 1.3, track: 0.06 });
-      const lx = x0 + cw * 0.62;
+      const lx = writingScale==null ? x0+cw*.62 : 0;
       for (let i = 0; i < 4; i++) { const xx = x0 + cw * (0.84 - i * 0.2); leaderV(env, xx, top, bot, C.text, la * 0.3, ls * 0.45, Math.max(1, ls * 0.05)); }
       const ty = top + Math.max(0, (bot - top) - mm.h - size * 1.3) * 0.3;
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: lx, y: ty, vertical: true, align: 'left', lead: 1.3, track: 0.06, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
+      bb = J.mainDraw(env, { placementCField: [x0+m,top,x0+cw-m,bot], text: fb.text, font: p.font, size, x: lx, y: ty, vertical: true, align: 'left', lead: 1.3, track: 0.06, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
       const lastLen = J.glyphCount(fb.text.split('\n').pop());
-      objectDraw({ text: '様', font: p.font, size: size * 0.7, x: lx - (fb.lines - 1) * size * 0.65, y: ty + lastLen * size * 1.06 + size * 0.75, color: C.text, alpha: la, ghost: false });
+      objectDraw({ placementCField: [x0+m,top,x0+cw-m,y0+ch-m*.3], text: '様', font: p.font, size: size * 0.7, x: lx - (fb.lines - 1) * size * 0.65, y: ty + lastLen * size * 1.06 + size * (writingScale==null?.75:.2), color: C.text, alpha: la, ghost: false });
     } else {
-      const top = y0 + m + sth + ls * 1.8, bot = y0 + ch - m;
-      const lines = 4, lh = (bot - top) / lines;
-      for (let i = 1; i <= lines; i++) leader(env, x0 + m, x0 + cw - m, top + lh * i, C.text, la * 0.3, ls * 0.45, Math.max(1, ls * 0.05));
-      const fb = fitBlock(t0, p.font, cw - m * 2.4, lh * 2.4, { lead: 1.2, track: 0.02 }, 2);
-      const size = Math.min(fb.size, lh * 1.05);
+      const nativeTop=y0+m+sth+ls*1.8,top=writingScale==null?nativeTop:Math.max(nativeTop,headerBottom+4/objectScale),bot=y0+ch-m;
+      const lines = 4, lh = (bot - nativeTop) / lines;
+      for (let i = 1; i <= lines; i++) leader(env, x0 + m, x0 + cw - m, nativeTop + lh * i, C.text, la * 0.3, ls * 0.45, Math.max(1, ls * 0.05));
+      const nativeFB = fitBlock(t0, p.font, cw - m * 2.4, lh * 2.4, { lead: 1.2, track: 0.02 }, 2);
+      const nativeSize=Math.min(nativeFB.size,lh*1.05),size=nativeSize*writingBoost;
+      const fb = writingScale==null ? nativeFB : fitBlock(t0,p.font,(cw-m*2.4)/writingBoost,(bot-top)/writingBoost,{lead:1.25,track:.02},3);
       const nL = fb.text.split('\n').length;
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: x0 + m * 1.2, y: top + lh * (nL > 1 ? 2.5 : 2.0) - size * 0.3, align: 'left', lead: lh / size, track: 0.02, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
+      bb = J.mainDraw(env, { placementCField: [x0+m,top,x0+cw-m,bot], text: fb.text, font: p.font, size, x: x0 + m * 1.2, y: writingScale==null?top+lh*(nL>1?2.5:2.0)-size*.3:(top+bot)/2, align: 'left', lead: writingScale==null?lh/size:1.25, track: 0.02, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     }
     // postmark thumps onto the stamp
     const pt = (env.lt - env.cut.inDur - 0.2) / 0.18;
@@ -2277,10 +2286,15 @@ reg('postcard', {
       const R = stw * 0.62;
       ctx.save(); ctx.translate(stx + stw * 0.95, sty + sth * 0.62); ctx.rotate(p.mark * J.DEG); ctx.scale(q, q);
       env.circle(0, 0, R, null, C.text, Math.max(1.5, R * 0.05), pa, false);
-      env.circle(0, 0, R * 0.8, null, C.text, Math.max(1, R * 0.025), pa, false);
-      objectDraw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: R * 0.26, x: 0, y: 0, color: C.text, alpha: pa, ghost: false });
-      env.line([[-R * 0.8, -R * 0.36], [R * 0.8, -R * 0.36]], C.text, Math.max(1, R * 0.025), pa, false);
-      env.line([[-R * 0.8, R * 0.36], [R * 0.8, R * 0.36]], C.text, Math.max(1, R * 0.025), pa, false);
+      env.circle(0, 0, R * (writingScale==null?.8:.25), null, C.text, Math.max(1, R * 0.025), pa, false);
+      if(writingScale==null)objectDraw({ placementCField: [-R*.78,-R*.3,R*.78,R*.3], text: J.fmtTime(env.cut.start), font: monoF(env), size: R * 0.26, x: 0, y: 0, color: C.text, alpha: pa, ghost: false });
+      else {
+        const markMin=1-.4*(4*1.3**3/(27*2.3**2)),markSize=Math.max(R*.26*objectScale,R*.26*.7,Math.min(R*.26,Math.max(12,.02*u)/(env.cut.contentScale??1)))/objectScale/markMin;
+        arcText({...env,draw:it=>env.draw({...it,placementCField:[-R,-R,R,R],placementCFieldCircle:R})},J.fmtTime(env.cut.start),monoF(env),markSize,0,0,R*.63,-90,C.text,pa,.05);
+      }
+      const ruleX=R*(writingScale==null?.8:.18),ruleY=R*(writingScale==null?.36:.08);
+      env.line([[-ruleX,-ruleY],[ruleX,-ruleY]], C.text, Math.max(1, R * 0.025), pa, false);
+      env.line([[-ruleX,ruleY],[ruleX,ruleY]], C.text, Math.max(1, R * 0.025), pa, false);
       for (let k2 = 0; k2 < 3; k2++) { const pts = []; for (let i = 0; i <= 20; i++) pts.push([R * 1.15 + i * R * 0.1, (k2 - 1) * R * 0.32 + Math.sin(i * 0.9) * R * 0.08]); env.line(pts, C.text, Math.max(1.5, R * 0.04), pa, false); }
       ctx.restore();
     }
@@ -2301,7 +2315,28 @@ reg('letterPaper', {
   }),
   render(env) {
     const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
-    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
+    const writingScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.letterWritingScale ?? null : null;
+    const writingBoost = writingScale==null ? 1 : writingScale/objectScale;
+    const metadataSize = size => objectScale===1?size:Math.max(size*objectScale,writingScale==null?0:size*.7,Math.min(size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale;
+    const objectDraw = it => env.draw({...it,size:metadataSize(it.size)});
+    let rulingGrid=null;
+    const headerRule = (member,pts,col,lw,alpha) => {const previous=env.placementCBody;if(env.cut.placementLayoutsC)env.placementCBody={...previous,inscriptionHeader:{kind:'letterPaper-header-rule',member,points:pts.map(p=>p.slice()),width:lw}};try{return env.line(pts,col,lw,alpha,false);}finally{env.placementCBody=previous;}};
+    const centerWritingInk = it => {const field=it.placementCField,A=J.placement,b=A.bounds(A.itemGeometry(it,[1,0,0,1,0,0],{...env,scale:1},{validationOnly:true}).inkPolygons),axis=it.vertical?'x':'y';it[axis]+=(field[axis==='x'?0:1]+field[axis==='x'?2:3]-b[axis+'0']-b[axis+'1'])/2;};
+    const bodyRule = (pts,col,lw,alpha,ghost) => {const previous=env.placementCBody;if(env.cut.placementLayoutsC)env.placementCBody={...previous,inscriptionRule:{kind:'letterPaper-body-ruling',axis:env.cut.params.variant==='tate'?'x':'y'}};try{return env.line(pts,col,lw,alpha,ghost);}finally{env.placementCBody=previous;}};
+    const fontRuling = (it,lo,hi,from,to,lw,col,alpha) => {
+      const A=J.placement,lay=J.layoutText(it),byIndex=new Map(lay.map(g=>[g.i,g])),ink=A.itemGeometry(it,[1,0,0,1,0,0],{...env,scale:1},{validationOnly:true}),axis=it.vertical?'x':'y',axis0=axis+'0',axis1=axis+'1',step=it.size*it.lead,pad=lw/2+2/objectScale;
+      let above=Infinity,below=-Infinity,first=Infinity;
+      for(const glyph of ink.glyphs){const g=byIndex.get(glyph.index),center=(it[axis]||0)+g[axis],box=A.bounds([glyph.inkPolygon]);above=Math.min(above,box[axis0]-center);below=Math.max(below,box[axis1]-center);first=Math.min(first,center);}
+      const lower=below+pad,upper=step+above-pad;if(!Number.isFinite(first)||lower>upper)throw Object.assign(new Error('No clear inter-row/column ruling gap at actual main font'),{code:'C_OBJECT_RULE_FIELD'});
+      const origin=first+(lower+upper)/2,i0=Math.ceil((lo-origin)/step-1e-7),i1=Math.floor((hi-origin)/step+1e-7),count=i1-i0+1;if(count<2||count>64)throw Object.assign(new Error('Finite ruled-paper pattern requires two to sixty-four body rules'),{code:'C_OBJECT_RULE_FIELD'});
+      rulingGrid={axis,origin,step,pad};for(let i=i0;i<=i1;i++){const v=origin+i*step;bodyRule(axis==='x'?[[v,from],[v,to]]:[[from,v],[to,v]],col,lw,alpha,false);}
+    };
+    const fieldDraw = (it,field,bottom=false) => {
+      const A=J.placement,size=metadataSize(it.size),vertical=!!it.vertical,ink=A.itemGeometry({...it,size,x:0,y:0},[1,0,0,1,0,0],{...env,scale:1},{validationOnly:true}),box=A.bounds(ink.inkPolygons),margin=2/objectScale;
+      let x=vertical?(field[0]+field[2])/2:it.align==='right'?field[2]-box.x1-margin:field[0]-box.x0+margin,y=vertical?(bottom?field[3]-box.y1-margin:field[1]-box.y0+margin):(field[1]+field[3])/2;
+      if(rulingGrid){const {axis,origin,step,pad}=rulingGrid,fl=axis==='x'?field[0]:field[1],fh=axis==='x'?field[2]:field[3],bl=box[axis+'0'],bh=box[axis+'1'],desired=axis==='x'?x:y,j0=Math.floor((fl-origin)/step)-1,j1=Math.ceil((fh-origin)/step)+1;let best=null;if(j1-j0>128)throw Object.assign(new Error('Finite metadata ruling cells required'),{code:'C_OBJECT_RULE_FIELD'});for(let j=j0;j<=j1;j++){const lower=Math.max(fl+margin-bl,origin+j*step+pad-bl),upper=Math.min(fh-margin-bh,origin+(j+1)*step-pad-bh);if(lower<=upper){const value=J.clamp(desired,lower,upper),cost=Math.abs(value-desired);if(best==null||cost<best.cost)best={value,cost};}}if(!best)throw Object.assign(new Error('Native real annotation cannot fit an original-direction rule cell'),{code:'C_OBJECT_RULE_FIELD'});if(axis==='x')x=best.value;else y=best.value;}
+      return objectDraw({...it,placementCField:field,x,y});
+    };
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const C = card(sc), out = tout(env), ls = smallSize(env);
     const tate = p.variant === 'tate';
@@ -2342,15 +2377,23 @@ reg('letterPaper', {
       const nl = fb.text.split('\n').length;
       const base = W / 2 - nl / 2 * pitch;                // left edge of the lyric block sits on a rule
       const iMin = Math.ceil((x0 + mS - base) / pitch), iMax = Math.floor((x0 + pw - mS - base) / pitch);
-      for (let i = iMin; i <= iMax; i++) env.line([[base + i * pitch, top], [base + i * pitch, bot]], ruleC, lw, a0 * 0.75, false);
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: W / 2, y: top + size * 0.35, vertical: true, align: 'left', lead: 1.55, track: 0.08, color: C.text, noHold: plateHold(env) });
+      if(writingScale==null)for(let i=iMin;i<=iMax;i++)bodyRule([[base+i*pitch,top],[base+i*pitch,bot]],ruleC,lw,a0*.75,false);
+      const field = [Math.max(x0+mS,x0+third+4/objectScale),top,Math.min(x0+pw-mS,x0+2*third-4/objectScale),bot];
+      const writingFB = writingScale==null?fb:fitBlock(strip(t0),p.font,(field[2]-field[0])/writingBoost,(field[3]-field[1])*.92/writingBoost,{vertical:true,lead:1.05,track:.08},3);
+      const inscription={ placementCField:writingScale==null?undefined:field,text: writingFB.text, font: p.font, size:size*writingBoost, x: writingScale==null?W/2:(field[0]+field[2])/2, y: writingScale==null?top+size*.35:top+size*writingBoost*.05, vertical: true, align: 'left', lead: writingScale==null?1.55:1.05, track: 0.08, color: C.text, noHold: plateHold(env) };
+      if(writingScale!=null){centerWritingInk(inscription);fontRuling(inscription,x0+mS,x0+pw-mS,top,bot,lw,ruleC,a0*.75);}
+      bb=J.mainDraw(env,inscription);
       const a2 = J.clamp((k - 0.6) / 0.4) * out;
       const ctxT = deckCopy(env);
       const cs = size * 0.62;
       if (ctxT && a2 > 0.01 && base + (nl + 1.5) * pitch < x0 + pw - mS) {
-        objectDraw({ text: [...strip(ctxT)].slice(0, Math.floor((bot - top) / (cs * 1.1))).join(''), font: p.font, size: cs, vertical: true, align: 'left', track: 0.08, x: base + (nl + 1.5) * pitch, y: top + cs * 0.4, color: C.text, alpha: a2 * 0.5, ghost: false });
+        const it={ text: [...strip(ctxT)].slice(0, Math.floor((bot - top) / (cs * 1.1))).join(''), font: p.font, size: cs, vertical: true, align: 'left', track: 0.08, x: base + (nl + 1.5) * pitch, y: top + cs * 0.4, color: C.text, alpha: a2 * 0.5, ghost: false };
+        if(writingScale==null)objectDraw(it);else fieldDraw(it,[x0+2*third+4/objectScale,top,x0+2.6*third-4/objectScale,bot]);
       }
-      if (p.sign && a2 > 0.01 && base - 1.5 * pitch > x0 + mS) objectDraw({ text: 'No.' + lineNo(env), font: p.font, size: ls, vertical: true, align: 'left', x: base - 1.5 * pitch, y: bot - ls * 5, color: C.text, alpha: a2 * 0.7, ghost: false });
+      if (p.sign && a2 > 0.01 && base - 1.5 * pitch > x0 + mS) {
+        const it={ text: 'No.' + lineNo(env), font: p.font, size: ls, vertical: true, align: 'left', x: base - 1.5 * pitch, y: bot - ls * 5, color: C.text, alpha: a2 * 0.7, ghost: false };
+        if(writingScale==null)objectDraw(it);else fieldDraw(it,[x0+.4*third+4/objectScale,top,x0+third-4/objectScale,bot],true);
+      }
     } else {
       const left = x0 + pw * 0.1, right = x0 + pw * 0.9;
       const top = y0 + ph * 0.1, bot = y0 + ph * 0.92;
@@ -2358,15 +2401,28 @@ reg('letterPaper', {
       const size = Math.min(fb.size, u * 0.15);
       const pitch = size * 1.7;
       const nRow = Math.max(3, Math.floor((bot - top) / pitch));
-      for (let i = 0; i <= nRow; i++) env.line([[left - pw * 0.03, top + i * pitch], [right + pw * 0.03, top + i * pitch]], ruleC, lw, a0 * 0.75, false);
-      env.line([[left - pw * 0.03, top - lw * 5], [right + pw * 0.03, top - lw * 5]], ruleC, lw * 2.5, a0, false);
+      // The native i=0 ruling is the thin member of the close header pair.
+      // Keep it at native top independently of the regenerated body pattern.
+      headerRule('thin',[[left-pw*.03,top],[right+pw*.03,top]],ruleC,lw,a0*.75);
+      if(writingScale==null)for(let i=1;i<=nRow;i++)bodyRule([[left-pw*.03,top+i*pitch],[right+pw*.03,top+i*pitch]],ruleC,lw,a0*.75,false);
+      headerRule('thick',[[left-pw*.03,top-lw*5],[right+pw*.03,top-lw*5]],ruleC,lw*2.5,a0);
       const nl = fb.text.split('\n').length;
       const r0 = Math.max(0, Math.floor(nRow / 2 - nl / 2));
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: left, y: top + (r0 + nl / 2) * pitch - size * 0.12, align: 'left', lead: 1.7, track: 0.04, color: C.text, noHold: plateHold(env) });
+      const field=port?[left,top+ph*.14,right,bot-ph*.14]:[left,y0+third+4/objectScale,right,y0+2*third-4/objectScale];
+      const writingFB=writingScale==null?fb:fitBlock(t0,p.font,(right-left)/writingBoost,(field[3]-field[1])*.9/writingBoost,{lead:1.25,track:.04},port?3:2);
+      const inscription={ placementCField:writingScale==null?undefined:field,text: writingFB.text, font: p.font, size:size*writingBoost, x: left, y: writingScale==null?top+(r0+nl/2)*pitch-size*.12:(field[1]+field[3])/2, align: 'left', lead: writingScale==null?1.7:1.25, track: 0.04, color: C.text, noHold: plateHold(env) };
+      if(writingScale!=null){centerWritingInk(inscription);fontRuling(inscription,top+lw*2,bot,left-pw*.03,right+pw*.03,lw,ruleC,a0*.75);}
+      bb=J.mainDraw(env,inscription);
       const a2 = J.clamp((k - 0.6) / 0.4) * out;
       const ctxT = deckCopy(env);
-      if (ctxT && a2 > 0.01 && r0 > 0) objectDraw({ text: ctxT, font: p.font, size: size * 0.6, align: 'left', x: left, y: top + (r0 - 0.5) * pitch - size * 0.1, color: C.text, alpha: a2 * 0.45, ghost: false });
-      if (p.sign && a2 > 0.01) objectDraw({ text: '— No.' + lineNo(env), font: p.font, size: ls, align: 'right', x: right, y: top + (nRow - 0.5) * pitch - ls * 0.2, color: C.text, alpha: a2 * 0.7, ghost: false });
+      if (ctxT && a2 > 0.01 && r0 > 0) {
+        const it={ text: ctxT, font: p.font, size: size * 0.6, align: 'left', x: left, y: top + (r0 - 0.5) * pitch - size * 0.1, color: C.text, alpha: a2 * 0.45, ghost: false };
+        if(writingScale==null)objectDraw(it);else fieldDraw(it,[left,port?top:Math.max(top,y0+.4*third),right,field[1]-4/objectScale]);
+      }
+      if (p.sign && a2 > 0.01) {
+        const it={ text: '— No.' + lineNo(env), font: p.font, size: ls, align: 'right', x: right, y: top + (nRow - 0.5) * pitch - ls * 0.2, color: C.text, alpha: a2 * 0.7, ghost: false };
+        if(writingScale==null)objectDraw(it);else fieldDraw(it,[left,field[3]+4/objectScale,right,port?bot:Math.min(bot,y0+2.6*third)]);
+      }
     }
     ctx.restore();
     // creases + shading on the swinging thirds

@@ -1,0 +1,59 @@
+{
+  "scope": "Malicious safe solver/domain offsets must reject; malicious runtime offset must throw all-owned global-hold stage error before safe observation. Local fault injection, not visual acceptance.",
+  "pins": [
+    {
+      "file": "src/09i_layoutsC_objects.js",
+      "sha256": "64d18debd737f610bcbd3d1d1748b5791b38efdfc783a473de4bbb4f0f6ef5cc"
+    },
+    {
+      "file": "src/11p_layoutsC.js",
+      "sha256": "48d2c7758751b77d603e7d40bd3f956aa8ad95f00e5314cb768afd75f2ef55e7"
+    },
+    {
+      "file": "index.html",
+      "sha256": "013923daa7e2610697eebd5aa5a676a16c031cc1e8335a62bcd20d323e6191eb"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-objects-stage-negative.cjs",
+      "sha256": "08d63e767656ae54849293e51d93f221b6dc789a8e6845d651c315893f87e863"
+    }
+  ],
+  "rows": [
+    {
+      "fault": "offstage-safe",
+      "calls": 1,
+      "staged": false,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "C_OBJECT_SOLVER_RESULT",
+          "details": "Safe solver offset escaped the certified native stage domain",
+          "safety": "unsupported"
+        }
+      ]
+    },
+    {
+      "fault": "nonfinite-safe",
+      "calls": 1,
+      "staged": false,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "C_OBJECT_SOLVER_RESULT",
+          "details": "Safe solver offset escaped the certified native stage domain",
+          "safety": "unsupported"
+        }
+      ]
+    },
+    {
+      "fault": "runtime-false-offset",
+      "sourceSafety": "certified-hold-adapter",
+      "error": {
+        "code": "C_OBJECT_STAGE_COLLISION",
+        "message": "Certified global hold has owned paper/rules/ink outside the stage"
+      },
+      "observations": []
+    }
+  ],
+  "failures": []
+}

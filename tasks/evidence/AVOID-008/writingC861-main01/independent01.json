@@ -1,0 +1,87 @@
+{
+  "scope": "Fresh independent ray-crossing/point-edge circle checks, complete hold-stage vertices and finite offset domains for each safe segment. Full source stage sweep models/domain remain separate analytic proof; sampled observations must retain coverage. No epsilon equivalence for historical comparisons.",
+  "datasets": [
+    {
+      "dataset": "matrix01",
+      "rawSHA256": "29b3f76f9aea01e0ce4160db6f999c066445f0b0c274579f5049875cfd9fb9b2",
+      "rawBytes": 227248774,
+      "gzipSHA256": "944904bdd6f15d982b63853cd68334fa8e2ffcd3ed9a8aaee5793aad770287ea",
+      "summary": {
+        "cases": 323,
+        "safe": 94,
+        "insufficient": 225,
+        "unsupported": 4,
+        "controls": 50,
+        "negatives": 6,
+        "warnings": [
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "failures": []
+      },
+      "safeSegments": 94,
+      "independentIntervalCirclePolygons": 307,
+      "holdStageVertices": 2454,
+      "independentStrictActualCirclePolygons": 43319,
+      "phaseObservations": 6498
+    },
+    {
+      "dataset": "writing01",
+      "rawSHA256": "e3b5d1f631ba834afb4c04c3ddbfa140cd96406a13ba8f859f4918e56b908a6d",
+      "rawBytes": 248230777,
+      "gzipSHA256": "628b4ebf161c81f1d699d2ab298fb5dce43e14bb8704af2d22839e40a1ad648b",
+      "summary": {
+        "cases": 405,
+        "safe": 83,
+        "insufficient": 321,
+        "unsupported": 1,
+        "controls": 10,
+        "negatives": 6,
+        "warnings": [
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "failures": []
+      },
+      "safeSegments": 83,
+      "independentIntervalCirclePolygons": 83,
+      "holdStageVertices": 336,
+      "independentStrictActualCirclePolygons": 34152,
+      "phaseObservations": 8228
+    },
+    {
+      "dataset": "default01",
+      "rawSHA256": "c29aaa7dce9d0b1c5bc6d158a081e744a79187aac00b4f894ef90a9f7a9ae8c4",
+      "rawBytes": 1915795,
+      "gzipSHA256": "1c7e03247784058573757bc4a357ce283b600a641cdfbfbdf31e5ad6c1cba4cd",
+      "summary": {
+        "cases": 276,
+        "safe": 51,
+        "insufficient": 221,
+        "unsupported": 4,
+        "controls": 0,
+        "negatives": 6,
+        "warnings": [
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "failures": []
+      },
+      "safeSegments": 51,
+      "independentIntervalCirclePolygons": 113,
+      "holdStageVertices": 962,
+      "independentStrictActualCirclePolygons": 0,
+      "phaseObservations": 0
+    }
+  ],
+  "passed": true
+}

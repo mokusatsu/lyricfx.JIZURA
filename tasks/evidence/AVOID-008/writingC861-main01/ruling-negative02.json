@@ -1,0 +1,636 @@
+{
+  "scope": "Actual primary rule args moved through main ink; genuine thick header removed; extra untagged line added. All dedicated trials reject; only explicitly tagged body-rule cardinality may change. Not visual acceptance.",
+  "pins": [
+    {
+      "file": "src/09i_layoutsC_objects.js",
+      "sha256": "64d18debd737f610bcbd3d1d1748b5791b38efdfc783a473de4bbb4f0f6ef5cc"
+    },
+    {
+      "file": "src/11p_layoutsC.js",
+      "sha256": "48d2c7758751b77d603e7d40bd3f956aa8ad95f00e5314cb768afd75f2ef55e7"
+    },
+    {
+      "file": "index.html",
+      "sha256": "013923daa7e2610697eebd5aa5a676a16c031cc1e8335a62bcd20d323e6191eb"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-objects-ruling-negative.cjs",
+      "sha256": "4a7aa6a71831b1da5706fda361c9b676da9d3dc4702c73060df2a6edc588407d"
+    }
+  ],
+  "rows": [
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "風の先へ",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "rule-through-main",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_RULE_RELATION",
+          "message": "Actual native main/annotation ink crosses regenerated ruled-paper box: 風の\n先へ"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_RULE_RELATION",
+          "message": "Actual native main/annotation ink crosses regenerated ruled-paper box: 風の\n先へ"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_RULE_RELATION",
+          "message": "Actual native main/annotation ink crosses regenerated ruled-paper box: 風の\n先へ"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    },
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "風の先へ",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "missing-thin",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Both native close header members required"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Both native close header members required"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Both native close header members required"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    },
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "風の先へ",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "missing-thick",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Both native close header members required"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Both native close header members required"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Both native close header members required"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    },
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "風の先へ",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "move-thin",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Native header member geometry/ownership must remain exact"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Native header member geometry/ownership must remain exact"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Native header member geometry/ownership must remain exact"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    },
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "風の先へ",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "move-thick",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Native header member geometry/ownership must remain exact"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Native header member geometry/ownership must remain exact"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_HEADER_MAPPING",
+          "message": "Native header member geometry/ownership must remain exact"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    },
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "風の先へ",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "extra-untagged-rule",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_SOURCE_MAPPING",
+          "message": "Recipe changed native source copy/font/clock/shape ownership"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_SOURCE_MAPPING",
+          "message": "Recipe changed native source copy/font/clock/shape ownership"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_SOURCE_MAPPING",
+          "message": "Recipe changed native source copy/font/clock/shape ownership"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    }
+  ],
+  "failures": []
+}
