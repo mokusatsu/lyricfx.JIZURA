@@ -1,0 +1,330 @@
+{
+  "scope": "Actual Latin words, mixed source space and source hard LF are outside dedicated reflow scope. Every recorded dedicated recipe rejects with explicit scope code; ordinary native candidates may still work. Not physical impossibility or visual acceptance.",
+  "pins": [
+    {
+      "file": "src/09i_layoutsC_objects.js",
+      "sha256": "174ea2509eccf32dfa305533242bb12d2e5dc9c006deb787d553e3f2b7cf5733"
+    },
+    {
+      "file": "src/11p_layoutsC.js",
+      "sha256": "7c00507bd0426fe7df4edf04c43a6fa3f38c3264735137b0df93faa9d5b248fc"
+    },
+    {
+      "file": "index.html",
+      "sha256": "356bf5142bcaaf46374da2f7b7d501624daf54fa3fbc8998ac990e387e6d3a11"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-objects-writing-scope-negative.cjs",
+      "sha256": "125ec52d29c47b0d8253513c72cf334e4a209767873d253d401660dad89a97f5"
+    }
+  ],
+  "rows": [
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "Latin words",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "Latin words",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    },
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "風 と光",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "風 と光",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    },
+    {
+      "spec": {
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "radius": 0.2,
+        "text": "風の\n先へ",
+        "params": {
+          "font": "gothic_med"
+        }
+      },
+      "fault": "風の\n先へ",
+      "changed": 3,
+      "safety": "insufficient-space",
+      "attempts": [
+        {
+          "strategy": "native-owned-unit-joint-translation",
+          "status": "insufficient-space",
+          "reason": "unit-envelope-exceeds-stage"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.95,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.9,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.85,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.8,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.75,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-owned-object-size",
+          "objectScale": 0.7,
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.55,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.55,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.45,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.45,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        },
+        {
+          "strategy": "letterPaper-fold-panel-inscription",
+          "recipe": {
+            "objectScale": 0.35,
+            "letterWritingScale": 0.7,
+            "strategy": "letterPaper-fold-panel-inscription"
+          },
+          "objectScale": 0.35,
+          "status": "rejected",
+          "reason": "C_OBJECT_WRITING_TEXT_SCOPE",
+          "message": "Dedicated inscription reflow requires whitespace-free source; native word spacing and hard breaks stay unchanged"
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-objects",
+          "safety": "insufficient-space"
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

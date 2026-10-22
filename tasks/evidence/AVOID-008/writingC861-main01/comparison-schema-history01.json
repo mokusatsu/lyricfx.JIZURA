@@ -1,0 +1,13 @@
+{
+  "scope": "Exploratory offlinecomparison driver schema corrections only; no product or browser/source changes. No failed dataset expectation reclassified as success.",
+  "history": [
+    {
+      "driver": "initialmatrixcomparison",
+      "error": "KeyError corpus: c861 nine-face rows do not contain integrated-driver corpus field; removed absent field claim, compared actual recorded fields only."
+    },
+    {
+      "driver": "initialcorrespondence03",
+      "error": "KeyError bodyPhases on unsupported row where absent on both sides. Fixed .get equality for nullable field; actual recorded positive bodyPhases and observedgeometry/clock comparisons remain exact. No source data or numerical tolerance changed."
+    }
+  ]
+}
