@@ -1,0 +1,20 @@
+{"study":12,"segments":180,"positives":19,"negatives":49}
+src/09a_placement.js:5
+const fail = (code, message) => { const e = new Error(message); e.code = code; throw e; };
+                                                                               ^
+
+Error: Refinalize after font/compose changes
+    at fail (src/09a_placement.js:5:45)
+    at A.validateFinal (src/09a_placement.js:308:130)
+    at A.render (src/09a_placement.js:317:5)
+    at Renderer.frame (src/09_render.js:257:49)
+    at Object.<anonymous> (/workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-output-node.cjs:87:647)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19) {
+  code: 'STALE_PLACEMENT_PLAN'
+}
+
+Node.js v24.19.0

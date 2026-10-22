@@ -1,0 +1,120 @@
+{
+  "status": "bounded PASS; parent review pending",
+  "sourceCheckpoint": "1214044",
+  "driverCheckpoint": "b5a1dcc",
+  "sourcePins": {
+    "src/09a_placement.js": "10c8711dcc3f6069e14d862b56e65d44323c192fbcb13cc1db82389dd952cb18",
+    "src/09g_layoutsC_placement.js": "e477462f776a052dd735d234706b11d47207b5c7e4ff5da06e8f3d3560cda40c",
+    "src/09j_layoutsC_japanese.js": "daf83b6f14f69c82b926f6e4a1bda2e6b0ea7a3f81e39aed920224e0f055cf89",
+    "src/09_render.js": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623",
+    "src/11p_layoutsC.js": "7eb5a88f97ee4e0c724e89fbcada4345a0741777d84d041d2f365b46cbda02e3"
+  },
+  "non09aProductFilesEqualBe15": {
+    "src/09g_layoutsC_placement.js": true,
+    "src/09j_layoutsC_japanese.js": true,
+    "src/09_render.js": true,
+    "src/11p_layoutsC.js": true
+  },
+  "browserReceiptSHA256": "eb971e024794af916f2c964e21c82092286c3d87f3667f30f8dc675a9b25217a",
+  "driverSHA256": "578ba896b418c149fc613f0076bb6cb55ce3167c94a6ce93af6b219a77bcf00f",
+  "sourceStartEndEqual": true,
+  "inputPins": 294,
+  "locales": [
+    "ja",
+    "en"
+  ],
+  "cases": 10,
+  "actualRGBAPairs": 120,
+  "allExactRGBA": true,
+  "guardRejections": 40,
+  "safetyCounts": {
+    "insufficient-space": 10
+  },
+  "emittedFontCharRecords": 82,
+  "allCoverageQualified": true,
+  "assignedCoverageRecords": 82,
+  "explicitFallbackRecords": 0,
+  "routeAuditEntries": 34,
+  "media": [
+    {
+      "locale": "ja",
+      "fontDomain": "objects-fonts-v2-performance",
+      "spec": {
+        "layout": "shoji",
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "params": {
+          "font": "mincho_light",
+          "variant": "shadow",
+          "rows": 5,
+          "cols": 2
+        },
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "time": 1.5,
+      "fast": false,
+      "rgba": "de7b41b1ee221517c224a2bc90ae6201214837730efbd710ffaaeb1db51a148c",
+      "files": [
+        {
+          "side": "native",
+          "file": "blur-default-native.png",
+          "sha256": "0848b28f29048190fd15970efd02275f7d83f3bb56dd39bb59a985902545df63",
+          "bytes": 523292
+        },
+        {
+          "side": "staged",
+          "file": "blur-default-staged.png",
+          "sha256": "0848b28f29048190fd15970efd02275f7d83f3bb56dd39bb59a985902545df63",
+          "bytes": 523292
+        }
+      ]
+    },
+    {
+      "locale": "ja",
+      "fontDomain": "objects-fonts-v2-performance",
+      "spec": {
+        "layout": "shoji",
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "params": {
+          "font": "mincho_light",
+          "variant": "shadow",
+          "rows": 5,
+          "cols": 2
+        },
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "time": 1.5,
+      "fast": true,
+      "rgba": "2e5a97cd8d3387576407d3794bfd309614e858a581091b55c46e20311bba5e23",
+      "files": [
+        {
+          "side": "native",
+          "file": "unfiltered-default-native.png",
+          "sha256": "1e39cf71cc030ca2df48fe0240dd32e8069f5ac6284326591df010a28dc21390",
+          "bytes": 492316
+        },
+        {
+          "side": "staged",
+          "file": "unfiltered-default-staged.png",
+          "sha256": "1e39cf71cc030ca2df48fe0240dd32e8069f5ac6284326591df010a28dc21390",
+          "bytes": 492316
+        }
+      ]
+    }
+  ],
+  "html": "tasks/evidence/AVOID-008/shadow-output01/browser07.json.assets/index.html",
+  "cleanup": {
+    "owned": 7,
+    "remaining": 0,
+    "signals": [],
+    "serverClosed": true
+  },
+  "comparisonScope": "Cfalse native vs Ctrue staged with same new source, not full actual f828 baseline pixels. Private conflict-only transport, zerooffset and insufficient; no safe avoidance, fullC/performance, visual or human approval."
+}

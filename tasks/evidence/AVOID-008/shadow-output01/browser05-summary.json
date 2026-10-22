@@ -1,0 +1,24 @@
+{
+  "status": "FAIL guard-fixture expected-code mismatch retained",
+  "sourceCheckpoint": "1214044",
+  "sourceStartEndEqual": true,
+  "sourcePins": 294,
+  "driverSHA256": "5fcbb60b26d04c3147af842f1d4b730af59dd8308dd5c93341f3d0096f207ecf",
+  "reportSHA256": "6f33d4284b41f15ca9f26c7d914f666087f9a7fda3a74d8e697a0b2aa7c677ef",
+  "completedExactRGBAPairs": 12,
+  "allCompletedPairsExact": true,
+  "error": {
+    "message": "page.evaluate: Error: false-C: SHADOW_OUTPUT_DOMAIN Original output-domain token/context/transform required\n    at check (eval at evaluate (:311:30), <anonymous>:1:228)\n    at neg (eval at evaluate (:311:30), <anonymous>:1:305)\n    at eval (eval at evaluate (:311:30), <anonymous>:4:522)\n    at async <anonymous>:337:30",
+    "stack": "page.evaluate: Error: false-C: SHADOW_OUTPUT_DOMAIN Original output-domain token/context/transform required\n    at check (eval at evaluate (:311:30), <anonymous>:1:228)\n    at neg (eval at evaluate (:311:30), <anonymous>:1:305)\n    at eval (eval at evaluate (:311:30), <anonymous>:4:522)\n    at async <anonymous>:337:30\n    at /workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-browser.cjs:23:457"
+  },
+  "realGuard": "SHADOW_OUTPUT_DOMAIN rejects cloned env.cut identity before source flag check",
+  "fixtureExpected": "SHADOW_OUTPUT_SOURCE",
+  "productFixNeededForThisFailure": false,
+  "requiredDriverCorrection": "Only expected error code for cloned-cut false-C fixture should be SHADOW_OUTPUT_DOMAIN; preserve actual rejection and all assertions. Pending parent authorization.",
+  "remainingSameOwnedPIDs": 0,
+  "signals": [],
+  "serverClosed": true,
+  "full120Completed": false,
+  "fontOriginalPerformanceCasesReached": false,
+  "mediaExtracted": false
+}

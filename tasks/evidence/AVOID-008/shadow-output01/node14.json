@@ -1,0 +1,3256 @@
+{
+  "start": "2026-10-22T22:18:17.191Z",
+  "node": "v24.19.0",
+  "scope": "Pure Node actual source/control-flow + fake TextMetrics/Canvas call recorder. No actual Canvas/font/blur pixel/build/browser/timing acceptance.",
+  "pins": {
+    "src/01_util.js": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+    "src/03_text.js": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+    "src/05_anim.js": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+    "src/06_layouts.js": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+    "src/09a_placement.js": "d705f1ec03a39831edcd1174253d5e82e1f9286ca94d6510325cb3ac03c179ad",
+    "src/09b_basic_placement.js": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+    "src/09g_layoutsC_placement.js": "e477462f776a052dd735d234706b11d47207b5c7e4ff5da06e8f3d3560cda40c",
+    "src/09j_layoutsC_japanese.js": "daf83b6f14f69c82b926f6e4a1bda2e6b0ea7a3f81e39aed920224e0f055cf89",
+    "src/09_render.js": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623",
+    "src/11p_layoutsC.js": "7eb5a88f97ee4e0c724e89fbcada4345a0741777d84d041d2f365b46cbda02e3",
+    "src/11z_layoutsC_transport.js": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+    "dev/avoidance/layouts-c-shadow-native-shoji.txt": "0e1411a8158dc63939361ab0d36e99cd7bb4a5798e5a8ffa76e7032cc53b394c",
+    "dev/avoidance/layouts-c-shadow-native-placement.txt": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a",
+    "dev/avoidance/layouts-c-shadow-output-node.cjs": "84a001710a90c39a4bece3a27cb0e7bfc3be12022037e40b4b4c952cb5c68323"
+  },
+  "positives": [
+    {
+      "fast": false,
+      "t": 0.04,
+      "events": 0,
+      "allowFilter": true
+    },
+    {
+      "fast": false,
+      "t": 0.3,
+      "events": 35,
+      "allowFilter": true
+    },
+    {
+      "fast": false,
+      "t": 0.6,
+      "events": 35,
+      "allowFilter": true
+    },
+    {
+      "fast": false,
+      "t": 0.95,
+      "events": 35,
+      "allowFilter": true
+    },
+    {
+      "fast": false,
+      "t": 1.5,
+      "events": 35,
+      "allowFilter": true
+    },
+    {
+      "fast": false,
+      "t": 3.8,
+      "events": 35,
+      "allowFilter": true
+    },
+    {
+      "fast": true,
+      "t": 0.04,
+      "events": 0,
+      "allowFilter": false
+    },
+    {
+      "fast": true,
+      "t": 0.3,
+      "events": 35,
+      "allowFilter": false
+    },
+    {
+      "fast": true,
+      "t": 0.6,
+      "events": 35,
+      "allowFilter": false
+    },
+    {
+      "fast": true,
+      "t": 0.95,
+      "events": 35,
+      "allowFilter": false
+    },
+    {
+      "fast": true,
+      "t": 1.5,
+      "events": 35,
+      "allowFilter": false
+    },
+    {
+      "fast": true,
+      "t": 3.8,
+      "events": 35,
+      "allowFilter": false
+    },
+    {
+      "repeatReplay": true,
+      "originalArgsNotCacheMutated": true
+    },
+    {
+      "stockFrameWrapperDelegates": true,
+      "reason": "Actual 11wa custom-effects wrapper delegates to the original frame; private descriptor issuance must keep working"
+    },
+    {
+      "scale": 0.1,
+      "deviceSupport": [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            96,
+            0
+          ],
+          [
+            96,
+            54
+          ],
+          [
+            0,
+            54
+          ]
+        ]
+      ]
+    },
+    {
+      "scale": 0.5,
+      "deviceSupport": [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            480,
+            0
+          ],
+          [
+            480,
+            270
+          ],
+          [
+            0,
+            270
+          ]
+        ]
+      ]
+    },
+    {
+      "scale": 1.25,
+      "deviceSupport": [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            1200,
+            0
+          ],
+          [
+            1200,
+            675
+          ],
+          [
+            0,
+            675
+          ]
+        ]
+      ]
+    },
+    {
+      "scale": 4,
+      "deviceSupport": [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            3840,
+            0
+          ],
+          [
+            3840,
+            2160
+          ],
+          [
+            0,
+            2160
+          ]
+        ]
+      ]
+    },
+    {
+      "canonicalCloneIsolatesExternalPlainData": true,
+      "ctxPlanSharedDataNotFrozen": true
+    },
+    {
+      "legacyGenericShadowRecordReplayAndFrameExact": true,
+      "ordinaryMutabilityBeforeAfter": true,
+      "trueBlurRejectedBeforeAfter": true
+    },
+    {
+      "openRecordingUnchanged": true,
+      "ordinaryProgramStillMutable": true
+    },
+    {
+      "ghostPassObservations": 12,
+      "emptyNativeGhostPasses": 6,
+      "allConflictScoped": true
+    }
+  ],
+  "negatives": [
+    {
+      "id": "nonzero-offset",
+      "code": "SHADOW_OUTPUT_REPLAY"
+    },
+    {
+      "id": "decor-offset",
+      "code": "SHADOW_OUTPUT_REPLAY"
+    },
+    {
+      "id": "null-decor-offset",
+      "code": "SHADOW_OUTPUT_REPLAY"
+    },
+    {
+      "id": "private-program-false-C-flag",
+      "code": "SHADOW_OUTPUT_SOURCE"
+    },
+    {
+      "id": "serialized-program-false-C-flag",
+      "code": "SHADOW_OUTPUT_PROGRAM"
+    },
+    {
+      "id": "private-program-transferred-source",
+      "code": "SHADOW_OUTPUT_SOURCE"
+    },
+    {
+      "id": "serialized-program-transferred-source",
+      "code": "SHADOW_OUTPUT_PROGRAM"
+    },
+    {
+      "id": "serialized-program",
+      "code": "SHADOW_OUTPUT_PROGRAM"
+    },
+    {
+      "id": "mutated-copy",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "mutated-blur",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "mutated-position",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "replaced-event-list",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "spliced-event-list",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "mutated-polygon-corner",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "events-toJSON-signature-spoof",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "args-toJSON-signature-spoof",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "item-accessor-spoof",
+      "code": "TypeError/read-only-shadow-snapshot"
+    },
+    {
+      "id": "forged-domain-token",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "larger-destination-record",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "larger-destination-replay",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "changed-camera-root",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "changed-filter-domain",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "padded-stock-frame",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "out-of-range-scale",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "changed-native-clock",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "readonly-private-frame-descriptor-getter",
+      "code": "TypeError"
+    },
+    {
+      "id": "direct-context-no-stock-frame",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "forged-safe-root",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-safe-segment",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-nonzero",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-composition",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-scope",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-domain",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-null-unit",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-null-segment",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "generic-item-blur-still-rejected",
+      "code": "UNSUPPORTED_ITEM"
+    },
+    {
+      "id": "actual-A-record-does-not-admit-blur",
+      "code": "UNSUPPORTED_ITEM"
+    },
+    {
+      "id": "actual-B-record-does-not-admit-blur",
+      "code": "UNSUPPORTED_ITEM"
+    },
+    {
+      "id": "other-C-no-output-capability",
+      "code": "SHADOW_OUTPUT_SOURCE"
+    },
+    {
+      "id": "forged-safe-record",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-safe-replay",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "forged-safe-dispatch",
+      "code": "SHADOW_OUTPUT_NEVER_SAFE"
+    },
+    {
+      "id": "virtual-program-replay",
+      "code": "SHADOW_OUTPUT_REPLAY"
+    },
+    {
+      "id": "validation-only-not-output-proof",
+      "code": "SHADOW_OUTPUT_SCOPE"
+    },
+    {
+      "id": "virtual-stage-mutated",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "domain-token-used-on-open",
+      "code": "SHADOW_OUTPUT_DOMAIN"
+    },
+    {
+      "id": "source-snapshot-toJSON",
+      "code": "SHADOW_OUTPUT_PROGRAM",
+      "hookReads": 0
+    },
+    {
+      "id": "source-snapshot-accessor",
+      "code": "SHADOW_OUTPUT_PROGRAM",
+      "hookReads": 0
+    },
+    {
+      "id": "source-snapshot-external-context",
+      "code": "SHADOW_OUTPUT_PROGRAM",
+      "hookReads": 0
+    }
+  ],
+  "study": [
+    {
+      "W": 960,
+      "H": 540,
+      "text": "風の先へ",
+      "rows": 4,
+      "cols": 2,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "風の先へ",
+            "font": "mincho",
+            "size": 140.4,
+            "mi": 0,
+            "blur": 1.684800000000001
+          },
+          "panelCount": 4,
+          "latticeOperations": 32,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "wash": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "風の先へ",
+            "font": "mincho",
+            "size": 140.4,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 4,
+          "latticeOperations": 32,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "wash": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            960,
+            540
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 960,
+      "H": 540,
+      "text": "Hello bright world",
+      "rows": 6,
+      "cols": 3,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "Hello\nbright world",
+            "font": "mincho",
+            "size": 100.52356020942408,
+            "mi": 0,
+            "blur": 1.2062827225130892
+          },
+          "panelCount": 4,
+          "latticeOperations": 44,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "wash": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "Hello\nbright world",
+            "font": "mincho",
+            "size": 100.52356020942408,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 4,
+          "latticeOperations": 44,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "wash": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            960,
+            540
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 960,
+      "H": 540,
+      "text": "雨上がり Hello 123",
+      "rows": 5,
+      "cols": 2,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "雨上がり\nHello 123",
+            "font": "mincho",
+            "size": 125.5813953488372,
+            "mi": 0,
+            "blur": 1.506976744186046
+          },
+          "panelCount": 4,
+          "latticeOperations": 36,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "wash": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "雨上がり\nHello 123",
+            "font": "mincho",
+            "size": 125.5813953488372,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 4,
+          "latticeOperations": 36,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "wash": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            960,
+            540
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 960,
+      "H": 540,
+      "text": "遠い空の向こうへ風の先へ雨上がり",
+      "rows": 6,
+      "cols": 3,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "遠い空の向こうへ\n風の先へ雨上がり",
+            "font": "mincho",
+            "size": 125.5813953488372,
+            "mi": 0,
+            "blur": 1.506976744186046
+          },
+          "panelCount": 4,
+          "latticeOperations": 44,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "wash": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "遠い空の向こうへ\n風の先へ雨上がり",
+            "font": "mincho",
+            "size": 125.5813953488372,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 4,
+          "latticeOperations": 44,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "wash": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 960,
+            "cy": 540,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 480,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 270,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            960,
+            540
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 540,
+      "H": 960,
+      "text": "風の先へ",
+      "rows": 4,
+      "cols": 2,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "風の\n先へ",
+            "font": "mincho",
+            "size": 140.4,
+            "mi": 0,
+            "blur": 1.684800000000001
+          },
+          "panelCount": 2,
+          "latticeOperations": 16,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "wash": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "風の\n先へ",
+            "font": "mincho",
+            "size": 140.4,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 2,
+          "latticeOperations": 16,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "wash": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            540,
+            960
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 540,
+      "H": 960,
+      "text": "Hello bright world",
+      "rows": 6,
+      "cols": 3,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "Hello\nbright\nworld",
+            "font": "mincho",
+            "size": 113.68421052631578,
+            "mi": 0,
+            "blur": 1.364210526315789
+          },
+          "panelCount": 2,
+          "latticeOperations": 22,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "wash": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "Hello\nbright\nworld",
+            "font": "mincho",
+            "size": 113.68421052631578,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 2,
+          "latticeOperations": 22,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "wash": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            540,
+            960
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 540,
+      "H": 960,
+      "text": "雨上がり Hello 123",
+      "rows": 5,
+      "cols": 2,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "雨上がり\nHello\n123",
+            "font": "mincho",
+            "size": 136.70886075949366,
+            "mi": 0,
+            "blur": 1.640506329113924
+          },
+          "panelCount": 2,
+          "latticeOperations": 18,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "wash": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "雨上がり\nHello\n123",
+            "font": "mincho",
+            "size": 136.70886075949366,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 2,
+          "latticeOperations": 18,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "wash": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            540,
+            960
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 540,
+      "H": 960,
+      "text": "遠い空の向こうへ風の先へ雨上がり",
+      "rows": 6,
+      "cols": 3,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "遠い空の\n向こうへ\n風の先へ\n雨上がり",
+            "font": "mincho",
+            "size": 107.86516853932586,
+            "mi": 0,
+            "blur": 1.2943820224719103
+          },
+          "panelCount": 2,
+          "latticeOperations": 22,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "wash": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "遠い空の\n向こうへ\n風の先へ\n雨上がり",
+            "font": "mincho",
+            "size": 107.86516853932586,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 2,
+          "latticeOperations": 22,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "wash": [
+            0,
+            0,
+            540,
+            960
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 403.2,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 540,
+            "cy": 960,
+            "r": 10.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 270,
+            "cy": 0,
+            "r": 108
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 480,
+            "r": 243
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            540,
+            960
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 640,
+      "H": 640,
+      "text": "風の先へ",
+      "rows": 4,
+      "cols": 2,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "風の先へ",
+            "font": "mincho",
+            "size": 166.4,
+            "mi": 0,
+            "blur": 1.9968000000000004
+          },
+          "panelCount": 4,
+          "latticeOperations": 32,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "wash": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "風の先へ",
+            "font": "mincho",
+            "size": 166.4,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 4,
+          "latticeOperations": 32,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "wash": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            640,
+            640
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 640,
+      "H": 640,
+      "text": "Hello bright world",
+      "rows": 6,
+      "cols": 3,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "Hello\nbright world",
+            "font": "mincho",
+            "size": 67.01570680628272,
+            "mi": 0,
+            "blur": 0.8041884816753928
+          },
+          "panelCount": 4,
+          "latticeOperations": 44,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "wash": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "Hello\nbright world",
+            "font": "mincho",
+            "size": 67.01570680628272,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 4,
+          "latticeOperations": 44,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "wash": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            640,
+            640
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 640,
+      "H": 640,
+      "text": "雨上がり Hello 123",
+      "rows": 5,
+      "cols": 2,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "雨上がり\nHello 123",
+            "font": "mincho",
+            "size": 89.5104895104895,
+            "mi": 0,
+            "blur": 1.0741258741258743
+          },
+          "panelCount": 4,
+          "latticeOperations": 36,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "wash": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "雨上がり\nHello 123",
+            "font": "mincho",
+            "size": 89.5104895104895,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 4,
+          "latticeOperations": 36,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "wash": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            640,
+            640
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    },
+    {
+      "W": 640,
+      "H": 640,
+      "text": "遠い空の向こうへ風の先へ雨上がり",
+      "rows": 6,
+      "cols": 3,
+      "graphs": [
+        {
+          "allowFilter": true,
+          "main": {
+            "text": "遠い空の向こうへ\n風の先へ雨上がり",
+            "font": "mincho",
+            "size": 100.78740157480314,
+            "mi": 0,
+            "blur": 1.2094488188976378
+          },
+          "panelCount": 4,
+          "latticeOperations": 44,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "wash": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        },
+        {
+          "allowFilter": false,
+          "main": {
+            "text": "遠い空の向こうへ\n風の先へ雨上がり",
+            "font": "mincho",
+            "size": 100.78740157480314,
+            "mi": 0,
+            "blur": 0
+          },
+          "panelCount": 4,
+          "latticeOperations": 44,
+          "allPrimary": true,
+          "paper": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "wash": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "scope": "visible output only; original raw glyph ink retained separately"
+        }
+      ],
+      "segments": [
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 268.8,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 0,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 640,
+            "cy": 640,
+            "r": 12.8
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 320,
+            "cy": 0,
+            "r": 128
+          },
+          "status": "insufficient-space"
+        },
+        {
+          "circle": {
+            "cx": 0,
+            "cy": 320,
+            "r": 288
+          },
+          "status": "insufficient-space"
+        }
+      ],
+      "finiteStudy": [
+        {
+          "strategy": "native-owned-joint-translation",
+          "status": "insufficient-space",
+          "reason": "bounded-candidate-search-exhausted",
+          "admittedOffset": [
+            0,
+            0
+          ],
+          "sourcePaper": [
+            0,
+            0,
+            640,
+            640
+          ]
+        },
+        {
+          "strategy": "lyric-local-reflow-fixed-paper",
+          "status": "rejected",
+          "reason": "unchanged-primary-full-paper-still-conflicts",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "split-reorder-slide-panels",
+          "status": "rejected",
+          "reason": "changes-native-fixed-shadow-architecture",
+          "reconstructionPerformed": false
+        },
+        {
+          "strategy": "whole-window-shrink",
+          "status": "rejected",
+          "reason": "prohibited-viewport-substitution",
+          "reconstructionPerformed": false
+        }
+      ]
+    }
+  ],
+  "nativeBaseline": {
+    "path": "dev/avoidance/layouts-c-shadow-native-shoji.txt",
+    "blockSHA256": "0e1411a8158dc63939361ab0d36e99cd7bb4a5798e5a8ffa76e7032cc53b394c",
+    "reconstructedModuleSHA256": "376627003f1a2414097da2ba995884486f48f91999374c7d00cb9461559126d6",
+    "scope": "Pinned f828 native shoji block and pinned unchanged shared/shojiPanel helpers; actual before/after source/mainDraw/drawItem calls on fake context, including layered glyph calls. Other IDs are outside this comparison. Not Canvas pixels.",
+    "pairs": [
+      {
+        "W": 960,
+        "H": 540,
+        "allowFilter": false,
+        "t": 0.04,
+        "equal": true,
+        "paintCallsSHA256": "7fe3d3165b89fe2d6fd5fd72633d1d540aded68f5a56ded3bbeff297b58f96c9"
+      },
+      {
+        "W": 960,
+        "H": 540,
+        "allowFilter": false,
+        "t": 0.4,
+        "equal": true,
+        "paintCallsSHA256": "cc81b9271fcb479128942412f98ae3a4d1d649cb3212b7eba8eb632d36cbcf23"
+      },
+      {
+        "W": 960,
+        "H": 540,
+        "allowFilter": false,
+        "t": 1.5,
+        "equal": true,
+        "paintCallsSHA256": "5111c638955ee2be45b77a9d414379791264e4a0553eef7728d705418a6fb547"
+      },
+      {
+        "W": 960,
+        "H": 540,
+        "allowFilter": false,
+        "t": 3.8,
+        "equal": true,
+        "paintCallsSHA256": "1068aa1e85d37d3347b68f185699b1ea42097cfc376b77f67691cb6987b687e7"
+      },
+      {
+        "W": 960,
+        "H": 540,
+        "allowFilter": true,
+        "t": 0.04,
+        "equal": true,
+        "paintCallsSHA256": "586190f2ce07f8499d6c144ab249e67f08904e7af67d07b159d8b7ec96f308bb"
+      },
+      {
+        "W": 960,
+        "H": 540,
+        "allowFilter": true,
+        "t": 0.4,
+        "equal": true,
+        "paintCallsSHA256": "a40d615d6f2e8ed520228fc4c1d6e1c0438910a68b133302500baf1bdf8baff5"
+      },
+      {
+        "W": 960,
+        "H": 540,
+        "allowFilter": true,
+        "t": 1.5,
+        "equal": true,
+        "paintCallsSHA256": "7a2ec138c7082fda5d9446277c5dc3dd1d85a108d3cdb14af8b22fee6407301f"
+      },
+      {
+        "W": 960,
+        "H": 540,
+        "allowFilter": true,
+        "t": 3.8,
+        "equal": true,
+        "paintCallsSHA256": "756f2a6832837a21e26ca6a546abd89b81011675c6306fbd3e12097879c569bb"
+      },
+      {
+        "W": 540,
+        "H": 960,
+        "allowFilter": false,
+        "t": 0.04,
+        "equal": true,
+        "paintCallsSHA256": "06f60dde80cce589e39ffa568a7356c03ef3be0e8d3db6d8a483f068cdd486d8"
+      },
+      {
+        "W": 540,
+        "H": 960,
+        "allowFilter": false,
+        "t": 0.4,
+        "equal": true,
+        "paintCallsSHA256": "3b2d76b2db8708986cb7a8f5e2e9426a06a9df7af5c6396502b23948e283d182"
+      },
+      {
+        "W": 540,
+        "H": 960,
+        "allowFilter": false,
+        "t": 1.5,
+        "equal": true,
+        "paintCallsSHA256": "e30cfe7e0736a3641a422f0a182d35bb04386cee15a9cdeeb184b2c02c02bb5f"
+      },
+      {
+        "W": 540,
+        "H": 960,
+        "allowFilter": false,
+        "t": 3.8,
+        "equal": true,
+        "paintCallsSHA256": "c03b9a82cb8a242c8e78d3ba9a688a506c3d488f0964afb1f7a2f8b29cf7a30e"
+      },
+      {
+        "W": 540,
+        "H": 960,
+        "allowFilter": true,
+        "t": 0.04,
+        "equal": true,
+        "paintCallsSHA256": "b72f109499794c94e623a80aa7dcbbab4fba85de6d1e90a7713cb73ccad31e60"
+      },
+      {
+        "W": 540,
+        "H": 960,
+        "allowFilter": true,
+        "t": 0.4,
+        "equal": true,
+        "paintCallsSHA256": "87592278f6afbdebed7c640648ed00ad68d113bbad8aa1ac1288706a867775c8"
+      },
+      {
+        "W": 540,
+        "H": 960,
+        "allowFilter": true,
+        "t": 1.5,
+        "equal": true,
+        "paintCallsSHA256": "d73a7d4ef5d7acb6d52f185b2e489fee6d472be28d7acff78f87e2f642a060fd"
+      },
+      {
+        "W": 540,
+        "H": 960,
+        "allowFilter": true,
+        "t": 3.8,
+        "equal": true,
+        "paintCallsSHA256": "8a6b2a20bb6dd9c17cc84fda586b571ea7d670a2892863400c9437185c9217b0"
+      },
+      {
+        "W": 640,
+        "H": 640,
+        "allowFilter": false,
+        "t": 0.04,
+        "equal": true,
+        "paintCallsSHA256": "0db0b74ae5be6005f3ea1a0c72be89ebbc15ae53b0ac59675248ddc89d952b26"
+      },
+      {
+        "W": 640,
+        "H": 640,
+        "allowFilter": false,
+        "t": 0.4,
+        "equal": true,
+        "paintCallsSHA256": "0c2c64d1226d05407dde70740caf8c9cf987a6189ec7541e233703768725103d"
+      },
+      {
+        "W": 640,
+        "H": 640,
+        "allowFilter": false,
+        "t": 1.5,
+        "equal": true,
+        "paintCallsSHA256": "abda84e8e8fbac7a60940b8b75869c565a1aeb5ea15aae7a42db2d113de32754"
+      },
+      {
+        "W": 640,
+        "H": 640,
+        "allowFilter": false,
+        "t": 3.8,
+        "equal": true,
+        "paintCallsSHA256": "f4ccb5aa3d4cd19298683309dbfaf72b26028fc1f53c45e10576a296b49b863b"
+      },
+      {
+        "W": 640,
+        "H": 640,
+        "allowFilter": true,
+        "t": 0.04,
+        "equal": true,
+        "paintCallsSHA256": "afc0f1c9d3e1291126c690bc8ac1610fe2cdf68da9981b627e46d3ae912e9c57"
+      },
+      {
+        "W": 640,
+        "H": 640,
+        "allowFilter": true,
+        "t": 0.4,
+        "equal": true,
+        "paintCallsSHA256": "e4c177930c2582233c89e0fa8780e5f9f96ab8b2f98c0cf890c4b2213864a273"
+      },
+      {
+        "W": 640,
+        "H": 640,
+        "allowFilter": true,
+        "t": 1.5,
+        "equal": true,
+        "paintCallsSHA256": "01b7f7f65688ed625e15e1fb0739c77592dd0b40b80f49ba48db535dec96f16a"
+      },
+      {
+        "W": 640,
+        "H": 640,
+        "allowFilter": true,
+        "t": 3.8,
+        "equal": true,
+        "paintCallsSHA256": "8de27c80d42e355cf6d4ed1300711899127b5a628b54cbc167fbcd2d2bacbb66"
+      }
+    ]
+  },
+  "genericBaseline": {
+    "placementSHA256": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a",
+    "pairs": [
+      {
+        "version": "f828",
+        "events": 35,
+        "mutable": true,
+        "replayLogSHA256": "4d98cdb4a6a7518c5aed37299d1216057e903f56bfaebfec322fc8bbd9285d24",
+        "frameLogSHA256": "946a67dd7a0e709ad5b603992ad0a376bb15cf4da83737492b6a3d9caafb8ccd"
+      },
+      {
+        "version": "after",
+        "events": 35,
+        "mutable": true,
+        "replayLogSHA256": "4d98cdb4a6a7518c5aed37299d1216057e903f56bfaebfec322fc8bbd9285d24",
+        "frameLogSHA256": "946a67dd7a0e709ad5b603992ad0a376bb15cf4da83737492b6a3d9caafb8ccd"
+      }
+    ],
+    "trueBlurRejectedBoth": true,
+    "scope": "Exact f828 versus after A.record/A.replay and stock frame; fake Canvas calls only, C flag false, allowFilter false; ordinary returned graph remains mutable."
+  },
+  "changed": [],
+  "passed": true,
+  "end": "2026-10-22T22:18:17.668Z"
+}

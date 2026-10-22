@@ -1,0 +1,72 @@
+{
+  "task": "AVOID-008",
+  "reviewer": "parent",
+  "reviewedUTC": "2026-10-22T22:35:18.464429+00:00",
+  "result": "REAL_CANVAS_FAIL_RETAINED_FOCUSED_CAUSAL_DIAGNOSTIC_ACCEPTED_NOT_PRODUCT_ACCEPTANCE",
+  "rawReviewed": [
+    {
+      "path": "shadow-output01/browser01.json",
+      "sha256": "55c5c95f604a705100de537ba828ae941d2e6e7b4265479d49e1213183942075",
+      "pins": 294,
+      "sourceGitPinMatches": 84,
+      "startEndEqual": true,
+      "completedCases": 0,
+      "error": [
+        "page.evaluate: Error: unresolved emitted glyph mincho U+96e8"
+      ],
+      "allOwnedProcessesGone": 9,
+      "signals": 0
+    },
+    {
+      "path": "shadow-output01/browser02.json",
+      "sha256": "b8b282cafb09044dd8caba16ec9c693505db1ebc844b685f0c458751eaf505b3",
+      "pins": 294,
+      "sourceGitPinMatches": 84,
+      "startEndEqual": true,
+      "completedCases": 0,
+      "error": [
+        "page.evaluate: Error: native/staged actual RGBA mismatch"
+      ],
+      "allOwnedProcessesGone": 9,
+      "signals": 0
+    },
+    {
+      "path": "shadow-output01/diagnostic03.json",
+      "sha256": "ac1fc42418da80fddda620c3c88ba574adc1211cb1f4197ef138d907f7ad6b84",
+      "pins": 294,
+      "sourceGitPinMatches": 84,
+      "startEndEqual": true,
+      "completedCases": 1,
+      "error": [
+        "Diagnostic only: exact RGBA mismatch reproduced; no acceptance PASS"
+      ],
+      "allOwnedProcessesGone": 7,
+      "signals": 0
+    },
+    {
+      "path": "shadow-output01/diagnostic04.json",
+      "sha256": "a7f2719f810f1497a96dcce26dab3225cc2d5e90b58255372e770220d80aee25",
+      "pins": 294,
+      "sourceGitPinMatches": 84,
+      "startEndEqual": true,
+      "completedCases": 1,
+      "error": [
+        "Diagnostic counterfactual only; no acceptance PASS"
+      ],
+      "allOwnedProcessesGone": 7,
+      "signals": 0
+    }
+  ],
+  "evidenceInterpretation": [
+    "browser01 stops on Japanese8 missing雨 cmap, no complete cases. Additional three mixed/aspect fixtures revised to covered text; original performance two specifications/domains unchanged.",
+    "browser02 stops at JA960x540 t=.6 exactRGBA mismatch; no full cases or120pair success claimed.",
+    "diagnostic03 native/native and staged/staged repeat/reverse stable, actual item offscreen layer identical; reported47 paint operations match used args/state, unused inherited drawImage fillStyle differs.",
+    "diagnostic04 exactly48 redundant exact-root setTransform calls suppressed only within real A.replay removes the1pixel blue delta2, gradient args/stops/reportedmatrix unchanged. Causal trigger established for tested condition; no broad Gaussian or platform equivalence."
+  ],
+  "nextGate": "Minimal private09a live-original-root event/gradient replay fix with strict zerooffset/noops/noclips/exactroot guards, parent source review then full bounded acceptance rerun. No native drawCut substitution or tolerance widening.",
+  "limits": [
+    "Parent inspected numeric raw/source; no parent visual image viewing.",
+    "All84source hashes per run equal fixedbe15 Git blobs. Full actual f828 baseline pixels not measured.",
+    "Final cache/coverage/performance/core still pending. No public checks."
+  ]
+}

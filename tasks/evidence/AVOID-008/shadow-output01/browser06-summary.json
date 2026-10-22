@@ -1,0 +1,112 @@
+{
+  "status": "FAIL retained; local perf font URL routes missing",
+  "sourceCheckpoint": "1214044",
+  "driverCheckpoint": "f011257",
+  "sourceStartEndEqual": true,
+  "completedPairs": 48,
+  "allPairsExactRGBA": true,
+  "pairScopes": [
+    [
+      540,
+      960,
+      "mincho",
+      "風の先へ Hello 123"
+    ],
+    [
+      960,
+      540,
+      "mincho_light",
+      "風の先へ"
+    ],
+    [
+      640,
+      640,
+      "mincho",
+      "風の先へ Hello 123"
+    ],
+    [
+      960,
+      540,
+      "mincho",
+      "風の先へ Hello 123"
+    ]
+  ],
+  "error": {
+    "message": "page.evaluate: Error: B font hash mismatch sans-regular\n    at window.runLayoutsBFixture (http://127.0.0.1:43089/fixture.js:7:315)\n    at async eval (eval at evaluate (:311:30), <anonymous>:2:406)\n    at async <anonymous>:337:30",
+    "stack": "page.evaluate: Error: B font hash mismatch sans-regular\n    at window.runLayoutsBFixture (http://127.0.0.1:43089/fixture.js:7:315)\n    at async eval (eval at evaluate (:311:30), <anonymous>:2:406)\n    at async <anonymous>:337:30\n    at /workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-browser.cjs:23:457"
+  },
+  "perfActualByteAudit": [
+    {
+      "id": "sans-regular",
+      "url": "fonts/sans-regular.otf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/sans-regular.otf",
+      "manifest": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5",
+      "actual": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5"
+    },
+    {
+      "id": "sans-bold",
+      "url": "fonts/sans-bold.otf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/sans-bold.otf",
+      "manifest": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359",
+      "actual": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359"
+    },
+    {
+      "id": "serif-regular",
+      "url": "fonts/serif-regular.otf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/serif-regular.otf",
+      "manifest": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19",
+      "actual": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19"
+    },
+    {
+      "id": "serif-bold",
+      "url": "fonts/serif-bold.otf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/serif-bold.otf",
+      "manifest": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce",
+      "actual": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce"
+    },
+    {
+      "id": "mono",
+      "url": "fonts/mono.otf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/mono.otf",
+      "manifest": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585",
+      "actual": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585"
+    },
+    {
+      "id": "dot",
+      "url": "fonts/dot.ttf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/dot.ttf",
+      "manifest": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c",
+      "actual": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c"
+    },
+    {
+      "id": "rounded",
+      "url": "fonts/rounded.ttf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/rounded.ttf",
+      "manifest": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527",
+      "actual": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527"
+    },
+    {
+      "id": "symbols",
+      "url": "fonts/symbols.ttf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/symbols.ttf",
+      "manifest": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9",
+      "actual": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9"
+    },
+    {
+      "id": "fractions",
+      "url": "/fonts/fractions.ttf",
+      "file": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-objects-fonts-v2/fractions.ttf",
+      "manifest": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597",
+      "actual": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597"
+    }
+  ],
+  "proposal": "Add only local server aliases for each unchanged manifest f.url resolved at JA/EN document base to exact pinned perf bytes. No font/assignment/domain/content changes. Pending parent gate.",
+  "cleanup": {
+    "owned": 9,
+    "remaining": 0,
+    "signals": [],
+    "serverClosed": true
+  },
+  "full120Completed": false,
+  "perfOriginalCaseReached": false
+}
