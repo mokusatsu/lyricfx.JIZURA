@@ -1,0 +1,11 @@
+# numbered54 main integration checkpoint
+
+Fixed source: `54b10d8fd4e0963cf52a0a202c419b89a15fa4fc`, applied to parent-accepted combined033 main. Only numbered source branches and its single 11p block changed. Header, other 33 layout blocks, shared 09g/09a/11z and preserved pyc remain exact. Swiss and mutable object changes are excluded. Generated JA/EN were rebuilt locally.
+
+Freeze: `freeze01/manifest.json` SHA256 `e54039a1b7370b5c79337e0a0298a5cd75edb0925dcc8fb5d3d3def723735e91` contains 146 current input pins and 14 result pins, each with exact raw/gzip snapshots. Final recheck found all current bytes and snapshots equal. Source remains fixed for parent review.
+
+Results: 60 numeric cases (36 safe, 24 insufficient), 600 exact OFF frames, 72 copy/clock pairs, 159 nonempty all-primary raster samples, 159 stage and 375 per-event samples with no margin collision; 16 injected candidate failures rejected. EN has 24 rows plus 3 strict guards. Eight actual font faces cover 925 actual glyph assignments. Two previously reviewed numbered fixtures carry by 192 native 960x540 frame and clock equality. Their historical MP4s are 480x270. Both local JA/EN startup checks passed. Fixed54/current outcomes and recipe/stage values agree. See `summary01.json`, `correspondence01.json` and operation receipts. The initial generic cmap runner stopped on a list/dict schema mismatch; its log is retained and the numbered-specific cmap02 passes without changing source or font assertions.
+
+HELLO material: `work/avoid008-c-preview/badge-hello-landscape-preview01/index.html`, manifest SHA256 `09ae90b63ffe26e1725682a4bffb817b65cff6e1dfe9aa1191d40b24b5ed4e2b`. One native 1920x1080 comparison, 24fps/96 frames, before/after MP4 plus keys 6/36/91/93. Single Noto substitution. Body .7, measure .8, header .8; aspect 1.515 -> 1.212 and header fraction .30 -> .24 are disclosed. Native entry/exit clock, displacement and rotation remain. Independent visual assessment is pending; no images were viewed by this implementation agent.
+
+This is a numbered-only integration checkpoint, not C34 completion. Existing insufficient outcomes, old failures, font/visual scope limits and 21 unregistered IDs remain. No Git/index operation, public-result check, or publication was performed. Await parent review/commit and further integration instruction.
