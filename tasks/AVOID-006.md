@@ -365,3 +365,10 @@ Pages run [39457255823](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs
 [07実Jekyll log](evidence/AVOID-006/film-ticket-edges/pages07-jekyll.log)は公式imageのoffline/read-onlyビルド成功（3.053秒）。[07出力監査](evidence/AVOID-006/film-ticket-edges/pages07-output-audit.json)はpassed:true/actualJekyllOutput:true、2,929 URL（旧2,911保持）、10 manifest/2,883 assets、996,446,620 bytes。projection SHA-256 `390363475ba5326cf2d4a2036c69d0a479ddc5934f016e8e70c0f32235aa018b`、config `a06ab85fc12f54c1b1b2dc0ece8fdbd5db935f3529ba4272839cef28674d8709`。旧05監査の流用ではなく07現物の監査である。
 
 07正式local/独立visual接続/公式Pages監査が揃い、状態を実環境検証待ちへ更新。commit/push・新07公開raw全hash/18参照再生/アプリJA・EN起動と実描画、人間の見え方確認は未完。公開前の成功を公開済みへ置換せず、旧18のみ受入/他6未回答・保存013既知failure・後続未着手を維持する。
+
+### 公開07の全検証成功・film/ticket人間動作確認待ち（2026-10-22 11:47 JST）
+
+- release `abf02cee40e2fb17a664a4fd5a9df1c006ca3ba9`をworkへcommit/pushし、[Pages run39712842995](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/39712842995)はcompleted/success。[公開記録](evidence/AVOID-006/film-ticket-edges/publication.json)はpassed:true。公開Git blob mapは07公式監査snapshotの2,930件（config込み）と同一と親が確認した。
+- [公開07 validator結果](evidence/AVOID-006/film-ticket-edges/public07-validation-01.json)はpassed:true/acceptanceComplete:true。raw20 assets＋manifest計21件HTTP200/hash一致、18動画のplay/pause・2.6秒decoded seek・ended、日英1280×900/390×844の同時再生・停止/幅確認を通過。minDecoded92/drop0/corrupt0。公開nativeFrames:0で、native54再描画は既存local結果、after864 PNG parity mismatch0は公開結果にも記録される。再撮影や公開環境でのnative再描画を主張しない。
+- [公開日英アプリ起動/描画log](evidence/AVOID-006/film-ticket-edges/public07-site-smoke.log)は両言語passed・current JA a3c4/EN3d1e hash一致・歌詞描画を確認。[通常HTTPS結果](evidence/AVOID-006/film-ticket-edges/public07-normal-https.json)は2026-10-22 11:47 JST、継承proxy/既定CA・TLS検証を維持しJA/EN/07manifestの3対象HTTP200/TLSverify0・完全byte一致。
+- [現行公開確認依頼](reviews/AVOID-006-local-20261021-07.md)をfilm帯の左右/上下端と穴列・ticket終盤切離しの見え方確認へ更新。技術上の未解決失敗はないが、人間の今回回答は未受領なので006は実環境検証待ちを維持。縦film r.2のinsufficient-space診断をOK対象/認証成功へ含めない。旧18のみ承認/他6新例未回答・007以降未着手・既定017/補助018未完、保存013のexpected0/actual1既知failureは維持する。過去05/06失敗や公開前の未完記述は履歴であり、現在の公開結果は本節を正本とする。

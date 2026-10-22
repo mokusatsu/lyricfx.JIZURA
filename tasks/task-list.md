@@ -63,4 +63,4 @@
 
 2026-10-20公開検証追記: 006最終04はe15a330のPages・公式Jekyll最終index監査・全939公開raw hash/原寸UI各348再描画・通常通信32操作・日英起動を完了。上の同日記載は公開前の履歴。残る新8演出（主要8＋動き4）の人間動作確認のみ未回答のため実環境検証待ちを維持し、007以降は未着手。詳細・証拠は[006](AVOID-006.md)と[公開済み確認依頼](reviews/AVOID-006-local-20261020-04.md)。
 
-2026-10-22 JST: 006は製品a3c4固定・05/06のlocal失敗を保持し実環境検証待ち。07正式local（native54/parity864 mismatch0/18参照playback/日英desktop・mobile UI）と独立visual hash接続が完了。新07公式Pages監査も成功（2,929 URL/996,446,620 bytes）。公開/人間受入は未完。旧18のみ受入/他6未回答・007以降未着手・既定017/補助018/保存013既知failureを維持。[詳細・履歴](AVOID-006.md)／[07準備稿](reviews/AVOID-006-local-20261021-07.md)。
+2026-10-22 JST: 006は製品a3c4固定・05/06のlocal失敗を保持し実環境検証待ち。07正式local（native54/parity864 mismatch0/18参照playback/日英desktop・mobile UI）と独立visual hash接続が完了。新07公式Pages監査とabf02ceeの公開全HTTP/hash・18動画再生・日英UI/アプリ起動描画も成功。今回film/ticketの人間動作確認が残る。旧18のみ受入/他6未回答・007以降未着手・既定017/補助018/保存013既知failureを維持。[詳細・履歴](AVOID-006.md)／[公開07確認依頼](reviews/AVOID-006-local-20261021-07.md)。
