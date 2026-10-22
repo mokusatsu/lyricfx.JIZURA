@@ -1,0 +1,15 @@
+{"rows":80,"guards":[{"test":{"layout":"magazine","time":0.01,"params":{"variant":"headline"}},"calls":1,"safety":"certified-hold-adapter","globalWindow":[0.7501,3.6],"error":null},{"test":{"layout":"headlineDeck","time":0.01,"params":{"variant":"split"}},"calls":1,"safety":"certified-hold-adapter","globalWindow":[0.9001,3.6],"error":null},{"test":{"layout":"footnote","time":0.01},"calls":1,"safety":"certified-hold-adapter","globalWindow":[0.9651,3.6],"error":{"code":"EDITORIAL_STRICT_CIRCLE_VIOLATION","message":"An already-settled source event entered the margin circle while another source event was still entering/exiting"}},{"test":{"layout":"proofread","time":0.9,"params":{"stamp":true,"marks":["circle","wave"]}},"calls":1,"safety":"certified-hold-adapter","globalWindow":[1.3300999999999998,3.6],"error":{"code":"EDITORIAL_STRICT_CIRCLE_VIOLATION","message":"An already-settled source event entered the margin circle while another source event was still entering/exiting"}},{"test":{"layout":"newspaper","time":0.61,"params":{"spin":true,"variant":"yoko"}},"calls":1,"safety":"certified-hold-adapter","globalWindow":[1.1001,3.6],"error":null}]}
+AssertionError [ERR_ASSERTION]: {"test":{"layout":"magazine","time":0.01,"params":{"variant":"headline"}},"calls":1,"safety":"certified-hold-adapter","globalWindow":[0.7501,3.6],"error":null}
++ actual - expected
+
++ undefined
+- 'EDITORIAL_STRICT_CIRCLE_VIOLATION'
+
+    at /workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-boundary.cjs:10:57 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: 'EDITORIAL_STRICT_CIRCLE_VIOLATION',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

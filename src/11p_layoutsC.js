@@ -433,6 +433,8 @@ reg('magazine', {
     let pw, ph;
     if (!port) { ph = Math.min(H * 0.84, W * 0.44 / 0.72); pw = ph * 0.72; }
     else { pw = W * 0.88; ph = Math.min(H * 0.445, pw * 1.02); }
+    const editorialScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.pageScale ?? 1 : 1;
+    pw *= editorialScale; ph *= editorialScale;
     const cx = W / 2, cy = H / 2;
     const vert = p.variant === 'vertical' && !hasLatin(env.cut.text);
     // page A carries the lyric: left page (right page for vertical setting), top page in portrait
@@ -443,7 +445,7 @@ reg('magazine', {
     const uf = E.inOutCubic(J.clamp((env.lt - 0.06) / 0.5));
     const fold = E.inOutCubic(env.pOut);
     const q = uf * (1 - 2 * fold);                          // page B width factor (negative = folded over page A)
-    const ls = J.clamp(pw * 0.03, 11, 26), mx = pw * 0.1, my = ph * 0.075;
+    const ls = J.clamp(pw / editorialScale * 0.03, 11, 26) * editorialScale, mx = pw * 0.1, my = ph * 0.075;
     const lw = Math.max(1, u * 0.0014);
     // --- pages
     if (aA > 0.01) {
@@ -457,6 +459,8 @@ reg('magazine', {
     // --- page B (unfolds from the gutter)
     const gx = port ? cx : cx, gy = cy;
     if (q > 0.002 && aA > 0.01) {
+      const priorEditorialBody = env.placementCBody;
+      if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd:.56,exitStart:env.cut.dur-env.cut.outDur};
       ctx.save();
       if (port) { ctx.translate(A.x, gy); ctx.scale(1, q); }
       else { ctx.translate(gx, A.y); ctx.scale(q * sideB, 1); }
@@ -475,7 +479,7 @@ reg('magazine', {
         if (p.img === 'sun') env.circle(bx + iw * 0.62, iy + imgH * 0.52, Math.min(iw, imgH) * 0.3, oc, null, 0, ca, false);
         else if (p.img === 'bars') for (let i = 0; i < 5; i++) env.rect(bx + iw * (0.12 + i * 0.16), iy + imgH * (0.25 + 0.5 * J.r(p.seed, i, 9)), iw * 0.08, imgH * 0.75 * (1 - 0.5 * J.r(p.seed, i, 9)), oc, ca, false);
         else env.arc(bx + iw * 0.5, iy + imgH * 1.02, imgH * 0.7, 180, 360, oc, Math.max(3, imgH * 0.09), ca, false);
-        const fs = J.clamp(pw * 0.022, 9, 20), lh = fs * 1.75;
+        const fs = J.clamp(pw / editorialScale * 0.022, 9, 20) * editorialScale, lh = fs * 1.75;
         const src = flat(env.cut.lineText || env.cut.text) + (hasLatin(env.cut.text) ? '. ' : '。');
         const colW = (iw - fs * 1.5) / 2;
         const ty = p.variant === 'plate' ? by + ls * 2 : iy + imgH + fs * 2;
@@ -500,6 +504,7 @@ reg('magazine', {
       // shading while the page turns
       if (q < 0.98) env.rect(0, 0, bw, bh, darkest(sc), aA * (1 - q) * 0.35, false);
       ctx.restore();
+      env.placementCBody = priorEditorialBody;
     }
     // gutter shade
     if (env.pass === 'main' && aA > 0.01) {
@@ -517,6 +522,7 @@ reg('magazine', {
     const ax = A.x + mx, ay = A.y + my, aw = pw - mx * 2, ah = ph - my * 2;
     let bb = null;
     const t0 = env.cut.text.trim();
+    if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:A.x+pw*.02,y0:A.y+ph*.02,x1:A.x+pw*.98,y1:A.y+ph*.98};
     if (p.variant === 'plate') {
       const plate = plateCol(sc, [darkest(sc), sc.accent, sc.ink], C.fill, 2.2);
       const pe = E.inOutCubic(J.clamp(env.lt / 0.45)) * out;
@@ -528,7 +534,7 @@ reg('magazine', {
       const fb = fitBlock(t0, p.font, aw, ah * 0.5, { lead: 1.12, track: 0.02 }, 4);
       const size = Math.min(fb.size, u * 0.15);
       const m = meas(fb.text, p.font, size, { lead: 1.12, track: 0.02 });
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: ax, y: A.y + ph - my - ls * 2 - m.h / 2, align: 'left', lead: 1.12, track: 0.02, color: tc, noHold: plateHold(env) });
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: fb.text, font: p.font, size, x: ax, y: A.y + ph - my - ls * 2 - m.h / 2, align: 'left', lead: 1.12, track: 0.02, color: tc, noHold: plateHold(env) });
       env.draw({ text: pad3(p.folio), font: monoF(env), size: ls * 0.85, align: 'left', x: A.x + mx * 0.5, y: A.y + ph - my * 0.45, color: tc, alpha: fa * 0.8, ghost: false });
       return bb || box(ax, A.y + ph * 0.5, ax + aw, A.y + ph - my);
     }
@@ -537,10 +543,10 @@ reg('magazine', {
       const size = Math.min(fb.size, u * 0.15);
       const m = meas(fb.text, p.font, size, { vertical: true, lead: 1.25, track: 0.04 });
       const x = ax + aw - m.w / 2, top = ay + ls * 2.2;
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x, y: top, vertical: true, align: 'left', lead: 1.25, track: 0.04, color: C.text, noHold: plateHold(env) });
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: fb.text, font: p.font, size, x, y: top, vertical: true, align: 'left', lead: 1.25, track: 0.04, color: C.text, noHold: plateHold(env) });
       env.draw({ text: p.kicker, font: monoF(env), size: ls, track: 0.2, align: 'right', x: ax + aw, y: ay + ls * 0.5, color: C.acc, alpha: fa, ghost: false });
       const gw2 = aw - m.w - size * 0.8, gh = ah * 0.55;
-      const vfs = J.clamp(pw * 0.024, 9, 20);
+      const vfs = J.clamp(pw / editorialScale * 0.024, 9, 20) * editorialScale;
       if (gw2 > ls * 3) vbody(env, env.cut.lineText || t0, bodyF(env), vfs, ax + gw2, ay + ah - gh, gh, Math.floor(gw2 / (vfs * 1.7)), vfs * 1.7, C.text, fa * 0.55, p.seed, fa);
       env.line([[ax, ay + ah - gh - ls], [ax + (gw2) * fa, ay + ah - gh - ls]], C.acc, Math.max(2, lw * 2), fa, false);
       env.draw({ text: pad3(p.folio), font: monoF(env), size: ls * 0.85, align: 'right', x: A.x + pw - mx * 0.5, y: A.y + ph - my * 0.45, color: C.text, alpha: fa * 0.8, ghost: false });
@@ -553,12 +559,12 @@ reg('magazine', {
     const size = Math.min(fb.size, u * 0.15);
     const m = meas(fb.text, p.font, size, { lead: 1.1, track: 0.01 });
     const hy = ay + ls * 2.4 + m.h / 2;
-    bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: ax, y: hy, align: 'left', lead: 1.1, track: 0.01, color: C.text, noHold: plateHold(env) });
+    bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: fb.text, font: p.font, size, x: ax, y: hy, align: 'left', lead: 1.1, track: 0.01, color: C.text, noHold: plateHold(env) });
     const ry = hy + m.h / 2 + size * 0.35;
     const re = tin(env, 0.15, 0.6, E.inOutCubic) * out;
     env.line([[ax, ry], [ax + aw * re, ry]], C.text, Math.max(2, lw * 2), 0.9 * aA, false);
     const deck = deckCopy(env) || metaLine(env);
-    const ds = J.clamp(pw * 0.034, 11, 30);
+    const ds = J.clamp(pw / editorialScale * 0.034, 11, 30) * editorialScale;
     const dper = Math.max(4, Math.floor(aw / (ds * 1.05)));
     const dt = J.splitLines(deck, dper).split('\n').slice(0, 3).join('\n');
     env.draw({ text: dt, font: serifF(env), size: ds, lead: 1.55, align: 'left', x: ax, y: ry + ds * 1.2 + (dt.split('\n').length - 1) * ds * 0.78, color: C.text, alpha: fa * 0.75, ghost: false });
@@ -592,9 +598,11 @@ reg('headlineDeck', {
     kicker: rng.pick(['特集', 'FEATURE', 'COVER STORY', 'ESSAY', '連載', 'REPORT']), mark: rng.pick(['none', 'bar', 'none', 'dot']), dbl: rng.chance(0.5),
   }),
   render(env) {
+    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env);
-    const mx = W * (port ? 0.08 : 0.075), aw = W - mx * 2;
+    const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.headlineMeasure ?? 1 : 1;
+    const nativeMX = W * (port ? 0.08 : 0.075), aw = editorialMeasure === 1 ? W-nativeMX*2 : (W-nativeMX*2)*editorialMeasure, mx = editorialMeasure === 1 ? nativeMX : (W-aw)/2;
     const split = p.variant === 'split' && !port;
     const hw = split ? aw * 0.6 : aw;
     const t0 = env.cut.text.trim();
@@ -632,14 +640,15 @@ reg('headlineDeck', {
       env.draw({ text: kt, font: monoF(env), size: ls, track: 0.2, align: 'left', x: mx + ls * 0.6, y: ky, color: onCol(sc, sc.accent), alpha: J.clamp(ka * 2 - 1), ghost: false });
     }
     // headline
+    if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:mx*.5,y0:0,x1:mx+hw+(split?aw*.02:mx*.5),y1:H};
     const hx = mx;
-    const bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: hx, y: hy, align: 'left', lead: 1.02, track: -0.01, color: sc.fg });
+    const bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: fb.text, font: p.font, size, x: hx, y: hy, align: 'left', lead: 1.02, track: -0.01, color: sc.fg });
     if (p.mark !== 'none' && bb) {
       const nL = fb.text.split('\n').length, lastW = rowW(fb.text.split('\n')[nL - 1], p.font, size);
       const e = tin(env, env.cut.inDur * 0.8, 0.45, E.inOutCubic) * out;
       const ly = hy + (nL - 1) / 2 * size * 1.02;
       if (p.mark === 'bar' && e > 0) env.rect(hx, ly + size * 0.5, lastW * e, Math.max(4, size * 0.07), sc.accent, 1, false);
-      if (p.mark === 'dot' && e > 0) env.circle(hx + lastW + size * 0.25, ly + size * 0.3, size * 0.09 * E.outBack(e, 2), sc.accent, null, 0, 1, false);
+      if (p.mark === 'dot' && e > 0) editorialMotion(env.cut.inDur*.8+.45, () => env.circle(hx + lastW + size * 0.25, ly + size * 0.3, size * 0.09 * E.outBack(e, 2), sc.accent, null, 0, 1, false));
     }
     // rules
     const re = tin(env, 0.1, 0.7, E.inOutCubic) * out;
@@ -656,7 +665,7 @@ reg('headlineDeck', {
     dlines.forEach((l, i) => {
       const a = tin(env, env.cut.inDur * 0.6 + 0.08 * i, 0.4, E.outCubic) * out;
       if (a <= 0.01) return;
-      env.draw({ text: l, font: dfont, size: dsz, track: dc ? 0 : 0.12, align: 'left', x: dx, y: dy + ds * 0.8 + i * ds * 1.6 + (1 - a) * ds * 0.5, color: i === 0 && dc ? sc.fg : sc.sub, alpha: a, ghost: false });
+      editorialMotion(env.cut.inDur*.6+.08*i+.4, () => env.draw({ text: l, font: dfont, size: dsz, track: dc ? 0 : 0.12, align: 'left', x: dx, y: dy + ds * 0.8 + i * ds * 1.6 + (1 - a) * ds * 0.5, color: i === 0 && dc ? sc.fg : sc.sub, alpha: a, ghost: false }));
     });
     const by = split ? dy + deckH + ls * 1.5 : (p.variant === 'bottom' ? top - ls * 1.4 : dy + deckH + ls * 0.8);
     const ba = tin(env, env.cut.inDur + 0.15, 0.4, E.outCubic) * out;
@@ -683,16 +692,16 @@ reg('contents', {
   render(env) {
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
     let chunks = (p.chunks && p.chunks.length ? p.chunks : [env.cut.text.trim()]).filter(Boolean);
-    const k = chunks.length, out = tout(env);
+    const k = chunks.length, out = tout(env), editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.contentsMeasure ?? 1 : 1;
     const ls = smallSize(env), lw = Math.max(1.2, u * 0.0016);
-    const cur = Math.min(k - 1, Math.floor(J.clamp(env.lt / Math.max(0.3, env.cut.dur * 0.92)) * k));
+    const cur = env.placementCEditorialActive ?? Math.min(k - 1, Math.floor(J.clamp(env.lt / Math.max(0.3, env.cut.dur * 0.92)) * k));
     const pages = chunks.map((c, i) => pad3(p.page0 + i * p.step));
     const ctxRows = p.ctx ? [['序', '000'], ['終', pad3(p.page0 + k * p.step + 14)]] : null;
     let bb = null;
     if (p.variant === 'tate') {
       // vertical table of contents: columns right → left, leaders run down to the page numbers
       const cols = k + (ctxRows ? 2 : 0);
-      const colW = Math.min(W * 0.86 / (cols + 1.0), u * 0.22);
+      const colW = Math.min(W * 0.86 / (cols + 1.0), u * 0.22) * editorialMeasure;
       const hTop = H * 0.14, hBot = H * 0.86;
       const x0 = W / 2 + (cols + 1.2) * colW / 2;
       const size = Math.min(colW * 0.7, ...chunks.map(c => (hBot - hTop) * 0.62 / Math.max(1, J.glyphCount(c)) / 1.03));
@@ -715,6 +724,7 @@ reg('contents', {
         const txt = strip(c);
         const isCur = i === cur;
         const it = { text: txt, font: p.font, size, x, y: hTop, vertical: true, align: 'left', track: 0.03, color: sc.fg, mi: i * 3 };
+        if (env.cut.placementLayoutsC) it.placementCOwnedZone = {x0:x-colW*.5,y0:hTop-ls*.25,x1:x+colW*.5,y1:hBot-ls*3.5};
         const r = J.mainDraw(env, it);
         bb = J.unionBB(bb, r);
         const endY = hTop + J.glyphCount(txt) * size * 1.03;
@@ -732,7 +742,7 @@ reg('contents', {
     }
     // horizontal rows
     const nRows = k + (ctxRows ? 2 : 0);
-    const bw = W * (port ? 0.84 : 0.66), bx = (W - bw) / 2;
+    const bw = W * (port ? 0.84 : 0.66) * editorialMeasure, bx = (W - bw) / 2;
     const numW = ls * 3.4, pgW = ls * 5;
     const tw = bw - numW - pgW - ls * 2;
     const cxH = ls * 2.6;
@@ -763,7 +773,8 @@ reg('contents', {
       const isCur = i === cur;
       const a = tin(env, 0.1 + i * 0.1, 0.5, E.outCubic) * out;
       env.draw({ text: pad2(i + 1), font: monoF(env), size: ls * 1.2, align: 'left', x: bx, y, color: isCur ? sc.accent : sc.sub, alpha: a, ghost: false });
-      const r = J.mainDraw(env, { text: c, font: p.font, size, x: bx + numW, y, align: 'left', track: 0.03, color: sc.fg, mi: i * 3 });
+      if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:bx+numW-ls*.25,y0:y-rowH/2,x1:bx+bw-pgW+ls*.25,y1:y+rowH/2};
+      const r = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size, x: bx + numW, y, align: 'left', track: 0.03, color: sc.fg, mi: i * 3 });
       bb = J.unionBB(bb, r);
       const tx1 = bx + numW + meas(c, p.font, size, { track: 0.03 }).w + ls * 0.8;
       const lx1 = bx + bw - pgW;
@@ -793,20 +804,23 @@ reg('footnote', {
     return { font: rng.pick(fontsOf(st, ['serif', 'display', 'serif'])), chunks: splitK(cut.text, k), marks: rng.pick(['num', 'kome', 'star']), align: rng.pick(['left', 'center', 'left']), top: rng.chance(0.5) };
   },
   render(env) {
+    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env);
     const chunks = (p.chunks && p.chunks.length ? p.chunks : [env.cut.text.trim()]).filter(Boolean);
     const k = chunks.length;
     const latin = hasLatin(env.cut.text);
     const t0 = chunks.join(latin ? ' ' : '');
-    const mx = W * 0.09, aw = W - mx * 2;
-    const ls = smallSize(env);
+    const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.footnoteMeasure ?? 1 : 1;
+    const nativeMX = W*.09, aw = editorialMeasure === 1 ? W-nativeMX*2 : (W-nativeMX*2)*editorialMeasure, mx = editorialMeasure === 1 ? nativeMX : (W-aw)/2;
+    const ls = smallSize(env), editorialMargin = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.noteMargin ?? 0 : 0;
     const notesH = k * ls * 1.95 + ls * 2.2;
     const areaTop = H * 0.12, areaBot = H - notesH - H * 0.1;
     const fb = fitBlock(t0, p.font, aw * (port ? 0.95 : 0.88), (areaBot - areaTop) * 0.8, { lead: 1.25, track: 0.03 }, port ? 5 : 3);
     const size = Math.min(fb.size, u * 0.17);
     const left = p.align === 'left';
     const it = { text: fb.text, font: p.font, size, x: left ? mx : W / 2, y: (areaTop + areaBot) / 2, align: left ? 'left' : 'center', lead: 1.25, track: 0.03, color: sc.fg };
+    if (env.cut.placementLayoutsC) it.placementCOwnedZone = {x0:mx,y0:areaTop,x1:mx+aw,y1:areaBot};
     const bb = J.mainDraw(env, it);
     // glyph positions at rest → superscript marks after each chunk
     const gl = glyphPts(it);
@@ -820,7 +834,10 @@ reg('footnote', {
       const t = env.cut.inDur * 0.7 + 0.12 + i * 0.14;
       const e = E.outBack(J.clamp((env.lt - t) / 0.25), 2.2) * out;
       if (e <= 0.01) return;
+      const priorEditorialBody = env.placementCBody;
+      if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-superscript",pivot:[g.x+g.w*.5,g.y-size*.42],maxScale:1.2,entryEnd:t+.25,exitStart:env.cut.dur-env.cut.outDur};
       env.draw({ text: markOf(i), font: monoF(env), size: ms * e, align: 'left', x: g.x + g.w * 0.5, y: g.y - size * 0.42, color: sc.accent, ghost: false });
+      env.placementCBody = priorEditorialBody;
     });
     // footnote rule + notes
     const ny = H - notesH - H * 0.04 + ls;
@@ -834,15 +851,17 @@ reg('footnote', {
       const y = ny + ls * 1.5 + i * ls * 1.95;
       const rom = romaOfText(c);
       const note = flat(c) + '　' + (rom ? rom : J.fmtTime(env.cut.start + env.cut.dur * i / k)) + (i === k - 1 && env.cut.lineText && strip(env.cut.lineText) !== strip(env.cut.text) ? '　／　' + flat(env.cut.lineText).slice(0, 24) : '');
+      editorialMotion(env.cut.inDur*.7+.2+i*.12+.4, () => {
       env.draw({ text: markOf(i), font: monoF(env), size: nfs, align: 'left', x: mx + (1 - a) * ls, y, color: sc.accent, alpha: a, ghost: false });
       env.draw({ text: note, font: bodyF(env), size: nfs, track: 0.05, align: 'left', x: mx + ls * 2.4 + (1 - a) * ls, y, color: sc.sub, alpha: a, ghost: false });
+      });
     });
     // folio
     const fa = tin(env, 0.2, 0.4, E.outCubic) * out;
-    env.draw({ text: '— ' + pad3(lineN(env) * 7 + 3) + ' —', font: monoF(env), size: ls * 0.8, track: 0.2, x: W / 2, y: H - H * 0.045, color: sc.sub, alpha: fa * 0.7, ghost: false });
+    env.draw({ text: '— ' + pad3(lineN(env) * 7 + 3) + ' —', font: monoF(env), size: ls * 0.8, track: 0.2, x: W / 2, y: H - H * 0.045 - editorialMargin, color: sc.sub, alpha: fa * 0.7, ghost: false });
     if (p.top) {
-      env.draw({ text: 'NOTES  ' + lineNo(env), font: monoF(env), size: ls * 0.8, track: 0.3, align: 'right', x: W - mx, y: H * 0.06, color: sc.sub, alpha: fa * 0.7, ghost: false });
-      env.line([[W - mx, H * 0.06 + ls], [W - mx - rw * re, H * 0.06 + ls]], sc.sub, 1, 0.6, false);
+      env.draw({ text: 'NOTES  ' + lineNo(env), font: monoF(env), size: ls * 0.8, track: 0.3, align: 'right', x: W - mx, y: H * 0.06 + editorialMargin, color: sc.sub, alpha: fa * 0.7, ghost: false });
+      env.line([[W - mx, H * 0.06 + editorialMargin + ls], [W - mx - rw * re, H * 0.06 + editorialMargin + ls]], sc.sub, 1, 0.6, false);
     }
     return bb;
   },
@@ -866,7 +885,8 @@ reg('proofread', {
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = 1 - E.outCubic(J.clamp(env.pOut * 1.15));   // pen marks leave with the text
     const t0 = env.cut.text.trim();
-    const aw = W * (port ? 0.7 : 0.62), ah = H * (port ? 0.34 : 0.4);
+    const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.proofMeasure ?? 1 : 1, editorialMargin = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.proofMargin ?? 1 : 1;
+    const aw = W * (port ? 0.7 : 0.62) * editorialMeasure, ah = H * (port ? 0.34 : 0.4);
     const fb = fitBlock(t0, p.font, aw, ah, { lead: 1.45, track: 0.06 }, port ? 5 : 3);
     const size = Math.min(fb.size, u * 0.14);
     const cx = W / 2 - (port ? 0 : W * 0.06), cy = H / 2 + (port ? H * 0.02 : 0);
@@ -874,12 +894,13 @@ reg('proofread', {
     const m = meas(fb.text, p.font, size, { lead: 1.45, track: 0.06 });
     const lw = Math.max(1, u * 0.0014);
     // crop marks around the trim box
-    const pad = size * 0.75;
+    const pad = size * 0.75 * editorialMargin;
     const x0 = cx - m.w / 2 - pad, x1 = cx + m.w / 2 + pad, y0 = cy - m.h / 2 - pad, y1 = cy + m.h / 2 + pad;
     if (p.tombo) {
       const te = tin(env, 0, 0.5, E.outCubic) * out;
       tombo(env, x0, y0, x1, y1, size * 0.18, size * 0.55 * te, sc.sub, lw, 0.8 * te);
     }
+    if (env.cut.placementLayoutsC) it.placementCOwnedZone = {x0,y0,x1,y1};
     const bb = J.mainDraw(env, it);
     // red-pen marks
     const pen = plateCol(sc, [sc.accent, sc.accent2, sc.fg]);
@@ -938,8 +959,8 @@ reg('proofread', {
       const le = E.outCubic(J.clamp(e * 1.4 - 0.4));
       if (le <= 0 || !anchor) return;
       let nx, ny;
-      if (noteSide === 'right') { nx = Math.min(W * 0.93 - ns * 2.2, x1 + size * 0.7 + mi * ns * 0.4); ny = y0 + (mi ? m.h * 0.7 : m.h * 0.15); }
-      else { nx = J.clamp(anchor[0] + (mi ? ns * 2 : -ns * 2), W * 0.1, W * 0.85); ny = y0 - size * 0.9 - mi * ns * 1.6; }
+      if (noteSide === 'right') { nx = Math.min(W * 0.93 - ns * 2.2, x1 + size * 0.7 * editorialMargin + mi * ns * 0.4); ny = y0 + (mi ? m.h * 0.7 : m.h * 0.15); }
+      else { nx = J.clamp(anchor[0] + (mi ? ns * 2 : -ns * 2), W * 0.1, W * 0.85); ny = y0 - size * 0.9 * editorialMargin - mi * ns * 1.6; }
       const mxp = noteSide === 'right' ? [J.lerp(anchor[0], nx, 0.5), anchor[1] - size * 0.25] : [anchor[0], J.lerp(anchor[1], ny, 0.5)];
       const pts = [anchor, mxp, [nx - ns * 0.2, ny]];
       env.polyPartial(pts, le, pen, pw * 0.7, a, false);
@@ -951,9 +972,12 @@ reg('proofread', {
       const ts = env.cut.inDur + 0.55 + marks.length * 0.25;
       const x = (env.lt - ts) / 0.18;
       if (x > 0) {
-        const S = Math.max(ls0(env) * 4.2, size * 1.05);
+        const nativeStampType = editorialMeasure === 1 ? size : Math.min(fitBlock(t0, p.font, W*(port?.7:.62), ah, {lead:1.45,track:.06}, port?5:3).size,u*.14);
+        const S = Math.max(ls0(env) * 4.2, nativeStampType * 1.05);
         const sx = port ? W * 0.78 : Math.min(W * 0.9 - S * 0.6, x1 + S * 0.5), sy = port ? Math.min(H * 0.88, y1 + S * 0.9) : y1 - S * 0.1;
         const k2 = J.lerp(1.5, 1, E.outBack(J.clamp(x), 1.4)), a = J.clamp(x * 3) * out;
+        const priorEditorialBody = env.placementCBody;
+        if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-proof-stamp",pivot:[sx,sy],maxScale:1.5,entryEnd:ts+.18,exitStart:null};
         ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.rot * J.DEG); ctx.scale(k2, k2);
         const w2 = S * 1.25, h2 = S * 0.72;
         env.rrect(-w2 / 2, -h2 / 2, w2, h2, S * 0.08, null, a * 0.9, false, pen, Math.max(2, S * 0.05));
@@ -961,6 +985,7 @@ reg('proofread', {
         env.draw({ text: '校了', font: serifF(env), size: S * 0.36, track: 0.2, x: 0, y: -S * 0.06, color: pen, alpha: a * 0.9, ghost: false });
         env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: S * 0.12, x: 0, y: S * 0.2, color: pen, alpha: a * 0.9, ghost: false });
         ctx.restore();
+        env.placementCBody = priorEditorialBody;
       }
     }
     return bb;
@@ -985,9 +1010,11 @@ reg('numbered', {
     };
   },
   render(env) {
+    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const chunks = (p.chunks && p.chunks.length ? p.chunks : [env.cut.text.trim()]).filter(Boolean);
     const k = chunks.length, out = tout(env), ls = smallSize(env);
+    const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberMeasure ?? 1 : 1;
     const lw = Math.max(1.2, u * 0.0018);
     const numItem = (i, size, x, y, align, big) => {
       const it = { text: pad2(i + 1), font: p.numFont, size, x, y, align, track: -0.02, ghost: false };
@@ -1002,13 +1029,13 @@ reg('numbered', {
       const o = E.inCubic(env.pOut);
       if (e <= 0 || o >= 1) return;
       ctx.save(); ctx.beginPath(); ctx.rect(clipBox[0], clipBox[1], clipBox[2], clipBox[3]); ctx.clip();
-      env.draw(Object.assign({}, it, { y: it.y + (1 - e) * it.size * 1.1 + o * it.size * 1.1 }));
+      editorialMotion(.04+i*.1+.55, () => env.draw(Object.assign({}, it, { y: it.y + (1 - e) * it.size * 1.1 + o * it.size * 1.1 })));
       ctx.restore();
     };
     const lab = (i, x, y, align, a) => env.draw({ text: p.label === 'No.' ? 'No.' : p.label, font: monoF(env), size: ls * 0.85, track: 0.3, align, x, y, color: i === 0 ? sc.accent : sc.sub, alpha: a, ghost: false });
     let bb = null;
     if (p.variant === 'cols' && !port && k <= 3) {
-      const cw = W * 0.86 / k, x0 = W * 0.07;
+      const cw = W * 0.86 / k * editorialMeasure, x0 = editorialMeasure === 1 ? W*.07 : (W-cw*k)/2;
       const csize = Math.min(...chunks.map(c => J.fitSize(c, p.font, cw * 0.86, H * 0.3, { track: 0.02 })), u * 0.2);
       const nsz = Math.min(cw * 0.42, Math.max(csize * 1.5, u * 0.14), H * 0.3);
       const top = H / 2 - (nsz * 1.05 + csize * 1.4) / 2 + ls;
@@ -1020,13 +1047,14 @@ reg('numbered', {
         lab(i, xl, top - ls * 0.9, 'left', tin(env, 0.1 + i * 0.1, 0.4, E.outCubic) * out);
         drawNum(numItem(i, nsz, xl, top + nsz * 0.5, 'left'), i, [x, top, cw, nsz * 1.02]);
         env.line([[xl, top + nsz * 1.05], [xl + cw * 0.82 * re, top + nsz * 1.05]], sc.fg, lw * 1.4, 1, false);
-        bb = J.unionBB(bb, J.mainDraw(env, { text: c, font: p.font, size: csize, x: xl, y: top + nsz * 1.05 + csize * 0.85, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
+        if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:x,y0:top+nsz*1.05,x1:x+cw,y1:top+nsz*1.05+csize*1.7};
+        bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size: csize, x: xl, y: top + nsz * 1.05 + csize * 0.85, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
       });
       return bb;
     }
     if (p.variant === 'behind') {
       // giant hairline numerals sit behind each chunk; chunks step diagonally
-      const bw = W * (port ? 0.8 : 0.66);
+      const bw = W * (port ? 0.8 : 0.66) * editorialMeasure;
       const rowH = H * (port ? 0.66 : 0.72) / k;
       const csize = Math.min(...chunks.map(c => J.fitSize(c, p.font, bw * 0.8, rowH * 0.62, { track: 0.02 })), u * 0.2);
       chunks.forEach((c, i) => {
@@ -1038,12 +1066,13 @@ reg('numbered', {
         const nw = meas('00', p.numFont, nsz).w;
         const nx = J.clamp(x + Math.min(cm.w, nw) * 0.3, W * 0.04 + nw / 2, W * 0.96 - nw / 2);
         drawNum(numItem(i, nsz, nx, y, 'center', true), i, [0, y - rowH * 0.75, W, rowH * 1.5]);
-        bb = J.unionBB(bb, J.mainDraw(env, { text: c, font: p.font, size: csize, x, y, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
+        if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:x-ls*.25,y0:y-rowH*.5,x1:x+bw*.8+ls*.25,y1:y+rowH*.5};
+        bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size: csize, x, y, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
       });
       return bb;
     }
     // rows: numeral left, chunk right, hairlines between
-    const bw = W * (port ? 0.86 : 0.7), bx = (W - bw) / 2;
+    const bw = W * (port ? 0.86 : 0.7) * editorialMeasure, bx = (W - bw) / 2;
     const rowH = Math.min(H * (port ? 0.62 : 0.72) / k, u * (port ? 0.3 : 0.34));
     const nsz = rowH * (port ? 0.56 : 0.72);
     const nW = meas('00', p.numFont, nsz).w + nsz * 0.3;
@@ -1056,7 +1085,8 @@ reg('numbered', {
       if (i === 0) env.line([[bx + bw, y0], [bx + bw - bw * re, y0]], sc.fg, lw * 1.6, 1, false);
       if (i === 0) lab(0, bx + bw, y0 - ls * 0.9, 'right', tin(env, 0.1, 0.4, E.outCubic) * out);
       drawNum(numItem(i, nsz, bx, y + nsz * 0.02, 'left'), i, [bx - 2, y - rowH / 2 + 2, nW, rowH - 4]);
-      bb = J.unionBB(bb, J.mainDraw(env, { text: c, font: p.font, size: csize, x: bx + nW, y, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
+      if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:bx+nW-ls*.25,y0:y-rowH*.5,x1:bx+bw,y1:y+rowH*.5};
+        bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size: csize, x: bx + nW, y, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
     });
     return bb;
   },
@@ -1077,9 +1107,11 @@ reg('poster', {
     };
   },
   render(env) {
+    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
-    const mx = W * 0.07, my = H * 0.07, aw = W - mx * 2;
+    const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.posterMeasure ?? 1 : 1;
+    const nativeMX = W*.07, aw = editorialMeasure === 1 ? W-nativeMX*2 : (W-nativeMX*2)*editorialMeasure, mx = editorialMeasure === 1 ? nativeMX : (W-aw)/2, my = H * .07;
     const lines = (p.lines && p.lines.length ? p.lines : [env.cut.text.trim()]).filter(Boolean);
     const latin = hasLatin(env.cut.text);
     const credH = ls * 4.2, topH = ls * 2;
@@ -1093,7 +1125,7 @@ reg('poster', {
     // colour block (wipes down from the top)
     if (block) {
       const e = tin(env, 0, 0.5, E.inOutExpo) * (1 - E.inCubic(env.pOut));
-      env.rect(0, 0, W, (y1 + ls * 0.4) * e, plate, 1, gIn(env));
+      env.rect((W-W*editorialMeasure)/2, 0, W*editorialMeasure, (y1 + ls * 0.4) * e, plate, 1, gIn(env));
     }
     // header row
     const ha = tin(env, 0.1, 0.4, E.outCubic) * out;
@@ -1109,13 +1141,14 @@ reg('poster', {
         const free = aw - kc * sz * 1.14;
         const r = Math.min(avH * 0.36, free * 0.42);
         const q = E.outBack(J.clamp((env.lt - 0.05) / 0.45), 1.3) * (1 - E.inCubic(env.pOut));
-        if (r > u * 0.06) env.circle(mx + free * 0.48, y0 + avH / 2, r * q, sc.accent, null, 0, 1, gIn(env));
+        if (r > u * 0.06) editorialMotion(.5, () => env.circle(mx + free * 0.48, y0 + avH / 2, r * q, sc.accent, null, 0, 1, gIn(env)));
       }
     } else if (p.dot && !block) {
       const r = Math.min(aw, avH) * (port ? 0.34 : 0.3);
       const q = E.outBack(J.clamp((env.lt - 0.05) / 0.45), 1.3) * (1 - E.inCubic(env.pOut));
-      env.circle(mx + aw - r * 0.9, y0 + r * 0.95, r * q, sc.accent, null, 0, 1, gIn(env));
+      editorialMotion(.5, () => env.circle(mx + aw - r * 0.9, y0 + r * 0.95, r * q, sc.accent, null, 0, 1, gIn(env)));
     }
+    if (env.cut.placementLayoutsC) env.placementCEditorialZone = block ? {x0:(W-W*editorialMeasure)/2,y0:0,x1:(W+W*editorialMeasure)/2,y1:y1+ls*.4} : {x0:mx*.5,y0:my*.5,x1:W-mx*.5,y1:H-my*.5};
     let bb = null;
     if (tate) {
       // tall columns filling the height, right → left, one size
@@ -1127,7 +1160,7 @@ reg('poster', {
       const sz = Math.min(avH / (mxG * 0.98), aw * 0.8 / (cols.length * (1 + gap)));
       let x = mx + aw - sz / 2;
       cols.forEach((c, i) => {
-        bb = J.unionBB(bb, J.mainDraw(env, { text: c, font: p.font, size: sz, x, y: y0 + (avH - mxG * sz * 0.98) / 2, vertical: true, align: 'left', track: -0.02, color: tc, mi: i * 3 }));
+        bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size: sz, x, y: y0 + (avH - mxG * sz * 0.98) / 2, vertical: true, align: 'left', track: -0.02, color: tc, mi: i * 3 }));
         x -= sz * (1 + gap);
       });
     } else {
@@ -1140,7 +1173,7 @@ reg('poster', {
       let y = y0 + (avH - th) * (block ? 1 : 0.5);
       lines.forEach((l, i) => {
         y += sz[i] * 0.49;
-        bb = J.unionBB(bb, J.mainDraw(env, { text: l, font: p.font, size: sz[i], x: mx, y, align: 'left', track: -0.02, color: tc, mi: i * 3 }));
+        bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: l, font: p.font, size: sz[i], x: mx, y, align: 'left', track: -0.02, color: tc, mi: i * 3 }));
         y += sz[i] * 0.49;
       });
     }
@@ -1176,11 +1209,13 @@ reg('swissGrid', {
     return { font: rng.pick(fontsOf(st, ['display'])), chunks: splitK(cut.text, k, k), variant: rng.pick(['a', 'b']), shape: rng.pick(['circle', 'square', 'circle', 'bar']), label: rng.chance(0.7) };
   },
   render(env) {
+    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const cols = port ? 4 : 6, rows = port ? 8 : 6;
     const m = u * 0.07;
-    const gx0 = m * 1.35, gx1 = W - m, gy0 = m, gy1 = H - m;
+    const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.gridMeasure ?? 1 : 1;
+    const gx0 = editorialMeasure === 1 ? m*1.35 : W/2+(m*1.35-W/2)*editorialMeasure, gx1 = editorialMeasure === 1 ? W-m : W/2+(W-m-W/2)*editorialMeasure, gy0 = editorialMeasure === 1 ? m : H/2+(m-H/2)*editorialMeasure, gy1 = editorialMeasure === 1 ? H-m : H/2+(H-m-H/2)*editorialMeasure;
     const cw = (gx1 - gx0) / cols, rh = (gy1 - gy0) / rows;
     const X = c => gx0 + c * cw, Y = r => gy0 + r * rh;
     // grid
@@ -1209,7 +1244,8 @@ reg('swissGrid', {
       // rule on top of the chunk (hangs from the row line)
       const e = tin(env, 0.12 + i * 0.1, 0.5, E.inOutCubic) * out;
       env.rect(X(q.c), Y(q.r) - Math.max(3, u * 0.005), Math.min(q.span * cw, w + cw * 0.12) * e, Math.max(3, u * 0.005), sc.fg, 1, false);
-      bb = J.unionBB(bb, J.mainDraw(env, { text: ch, font: p.font, size: sz, x, y, align: 'left', track: -0.01, color: sc.fg, mi: i * 3 }));
+      if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:X(q.c),y0:Y(q.r),x1:X(q.c+q.span),y1:Y(q.r+q.hr)};
+      bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: ch, font: p.font, size: sz, x, y, align: 'left', track: -0.01, color: sc.fg, mi: i * 3 }));
     });
     // accent shape in the first free module block
     const cands = [[cols - 2, rows - 2, 2], [0, rows - 2, 2], [cols - 2, 0, 2], [cols - 1, rows - 1, 1], [0, rows - 1, 1], [cols - 1, 0, 1]];
@@ -1219,14 +1255,16 @@ reg('swissGrid', {
       const q = E.outBack(J.clamp((env.lt - 0.25) / 0.45), 1.2) * (1 - E.inCubic(env.pOut));
       const bw2 = s2 * cw, bh2 = s2 * rh, cxs = X(c) + bw2 / 2, cys = Y(r) + bh2 / 2, R = Math.min(bw2, bh2) * 0.46;
       if (q > 0) {
+        editorialMotion(.7, () => {
         if (p.shape === 'circle') env.circle(cxs, cys, R * q, sc.accent, null, 0, 1, gIn(env));
         else if (p.shape === 'square') env.rect(cxs - R * q, cys - R * q, R * 2 * q, R * 2 * q, sc.accent, 1, gIn(env));
         else env.rect(X(c) + cw * 0.06, cys - rh * 0.12, (bw2 - cw * 0.12) * q, rh * 0.24, sc.accent, 1, gIn(env));
+        });
       }
     }
     if (p.label) {
       const a = tin(env, 0.3, 0.4, E.outCubic) * out;
-      env.draw({ text: 'JIZURA  ／  No.' + lineNo(env) + '  ／  ' + J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.8, track: 0.25, x: m * 0.62, y: (gy0 + gy1) / 2, rot: -90, color: sc.sub, alpha: a, ghost: false });
+      env.draw({ text: 'JIZURA  ／  No.' + lineNo(env) + '  ／  ' + J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.8, track: 0.25, x: editorialMeasure === 1 ? m * 0.62 : gx0-m*.73, y: (gy0 + gy1) / 2, rot: -90, color: sc.sub, alpha: a, ghost: false });
     }
     return bb;
   },
@@ -1243,11 +1281,31 @@ reg('dictionary', {
     page: rng.int(120, 1480), tabY: rng.range(0.2, 0.75), mark: rng.pick(['◆', '▼', '■']), seed: rng.int(1, 9999),
   }),
   render(env) {
+    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {...prior,kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
+    const dictionaryOwned = (owner, occurrence, text, fn, fragment = null) => {
+      const prior = env.placementCBody;
+      if (env.cut.placementLayoutsC) env.placementCBody = {...prior, dictionaryCopy:{owner,occurrence,...(owner==='headword'?{sourceText:String(env.cut.text).trim()}:{}),clock:J.placement.dictionaryOwnerClock(owner,occurrence,env.cut,prior?.dictionaryRows),...(text == null ? {} : {range:fragment || [0,[...text].length],total:[...text].length})}};
+      try { return fn(); } finally { env.placementCBody = prior; }
+    };
+    const dictionaryDraw = (owner, occurrence, it) => dictionaryOwned(owner,occurrence,it.text,()=>env.draw(it));
+    const dictionaryRows = (src,font,fs,w,rows,seed) => {
+      const chars=[...src], list=[];if(!chars.length || w<fs*2)return list;
+      const adv=J.metrics.adv(font,'あ')||1,cpr=Math.max(2,Math.floor(w/(fs*adv*1.04)));let off=(seed|0)%chars.length;
+      for(let r=0;r<rows&&r<80;r++){const last=r===rows-1||J.r(seed,r,5)<.14,m=last?Math.max(2,Math.floor(cpr*J.rr(.3,.8,seed,r,6))):cpr;let text='';for(let j=0;j<m;j++)text+=chars[(off+j)%chars.length];off+=m;list.push({text,sp:last?fs*.04:(w-rowW(text,font,fs))/Math.max(1,m-1),r,rows});}return list;
+    };
+    const dictionaryBody = (owner,src,font,fs,x,y,w,rows,lh,color,alpha,seed,reveal) => {
+      if(!env.cut.placementLayoutsC)return bodyRows(env,src,font,fs,x,y,w,rows,lh,color,alpha,seed,reveal);
+      if(env.pass!=='main'||alpha<=.01)return;
+      const prior=env.placementCBody;env.placementCBody={...prior,dictionaryRows:rows};try{for(const row of dictionaryRows(src,font,fs,w,rows,seed)){const vis=J.clamp(reveal*rows*1.2-row.r);if(vis<=0)break;dictionaryOwned(owner,row.r,row.text,()=>fastRow(env,row.text,font,fs,x,y+row.r*lh,row.sp,color,alpha*vis));}}finally{env.placementCBody=prior;}
+    };
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const t0 = env.cut.text.trim();
     const page = p.variant === 'page';
-    const mx = W * (port ? 0.08 : 0.1), aw = W - mx * 2 - (port ? W * 0.04 : W * 0.03);
+    const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.dictionaryMeasure ?? 1 : 1;
+    const nativeMX = W*(port?.08:.1), nativeAW = W-nativeMX*2-(port?W*.04:W*.03);
+    const editorialInset = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.dictionaryInset ?? 0 : 0;
+    const pageRight = (editorialMeasure === 1 ? W : W/2+W/2*editorialMeasure) - editorialInset, mx = editorialMeasure === 1 ? nativeMX : W/2+(nativeMX-W/2)*editorialMeasure, aw = nativeAW*editorialMeasure;
     const lw = Math.max(1, u * 0.0014);
     // headword
     const fb = fitBlock(t0, p.font, aw * (port ? 0.84 : 0.72), H * (port ? 0.26 : 0.3), { track: 0.02, lead: 1.1 }, port ? 3 : 2);
@@ -1256,7 +1314,8 @@ reg('dictionary', {
     const hx = mx + size * 0.62;
     const hy = H * (page ? 0.44 : 0.4);
     // context entries above/below (page variant) — faint body rows
-    const fs = J.clamp(u * 0.02, 11, 24), lh = fs * 1.8;
+    const editorialTypeScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.dictionaryTypeScale ?? 1 : 1;
+    const fs = J.clamp(u * 0.02, 11, 24) * editorialTypeScale, lh = fs * 1.8;
     const src = flat(env.cut.lineText || t0) + (hasLatin(t0) ? ' — ' : '。');
     const ca = tin(env, 0, 0.5, E.outCubic) * out;
     const top = hy - m.h / 2 - size * 0.55 - ls * 1.6;
@@ -1264,11 +1323,16 @@ reg('dictionary', {
     const dfs = J.clamp(u * 0.028, 14, 36);
     const defTop = hy + m.h / 2 + size * 0.45;
     const defBot = defTop + defs.length * dfs * 1.7 + dfs;
+    if(env.cut.placementLayoutsC && env.cut.layoutCRecipe?.dictionaryColumn) {
+      const nativeDefs=defs.map(d=>{const maxC=Math.max(4,Math.floor((nativeAW-dfs*2)/(dfs*(hasLatin(d)?.55:1.02))));return [...d].length>maxC?[...d].slice(0,maxC-1).join('')+'…':d;});
+      const rowsA=page?Math.max(0,Math.floor((top-H*.1)/lh)):0,rowsB=page?Math.max(0,Math.floor((H*.9-defBot)/lh)):0;
+      return J.placement.renderDictionaryColumn(env,{main:{text:fb.text,font:p.font,size,mi:0,track:.02,lead:1.1},tabColor:plateCol(sc,[sc.ink,sc.fg]),tabText:onCol(sc,plateCol(sc,[sc.ink,sc.fg])),ls,fs,dfs,lw,bodyFont:bodyF(env),serifFont:serifF(env),monoFont:monoF(env),page,mark:p.mark,pos:p.pos,pageNumber:pad3(p.page%1000),guide:(strip(t0)[0]||'')+'  ─  '+(romajiOf(env)||flat(t0)).slice(0,14),romaji:romajiOf(env)?.toLowerCase()||'',tab:strip(t0)[0]||'',defs:nativeDefs,contextA:dictionaryRows(src,bodyF(env),fs,nativeAW,rowsA,p.seed),contextB:dictionaryRows(src,bodyF(env),fs,nativeAW,rowsB,p.seed+31),ca,ga:tin(env,.1,.4,E.outCubic)*out,fa:tin(env,.05,.35,E.outCubic)*out,pa:tin(env,env.cut.inDur*.7,.35,E.outBack)*out,tq:tin(env,.15,.5,E.outExpo)*out,highlight:tin(env,env.cut.inDur*.6,.5,E.inOutCubic)*(1-E.outCubic(J.clamp(env.pOut*1.15))),out});
+    }
     if (page) {
       const rowsA = Math.max(0, Math.floor((top - H * 0.1) / lh));
-      bodyRows(env, src, bodyF(env), fs, mx, top - rowsA * lh, aw, rowsA, lh, sc.sub, ca * 0.4, p.seed, ca);
+      dictionaryBody('context-top', src, bodyF(env), fs, mx, top - rowsA * lh, aw, rowsA, lh, sc.sub, ca * 0.4, p.seed, ca);
       const rowsB = Math.max(0, Math.floor((H * 0.9 - defBot) / lh));
-      bodyRows(env, src, bodyF(env), fs, mx, defBot + lh * 0.5, aw, rowsB, lh, sc.sub, ca * 0.4, p.seed + 31, ca);
+      dictionaryBody('context-bottom', src, bodyF(env), fs, mx, defBot + lh * 0.5, aw, rowsB, lh, sc.sub, ca * 0.4, p.seed + 31, ca);
       // highlighter sweep behind the headword
       const he = tin(env, env.cut.inDur * 0.6, 0.5, E.inOutCubic) * (1 - E.outCubic(J.clamp(env.pOut * 1.15)));
       if (he > 0) {
@@ -1276,21 +1340,22 @@ reg('dictionary', {
         nL.forEach((l, i) => {
           const w = meas(l, p.font, size, { track: 0.02 }).w;
           const ly = hy + (i - (nL.length - 1) / 2) * size * 1.1;
-          env.rect(hx - size * 0.1, ly - size * 0.05, (w + size * 0.2) * J.clamp(he * nL.length - i), size * 0.5, sc.accent, 0.45, false);
+          dictionaryOwned('highlight',i,null,()=>env.rect(hx - size * 0.1, ly - size * 0.05, (w + size * 0.2) * J.clamp(he * nL.length - i), size * 0.5, sc.accent, 0.45, false));
         });
       }
     }
     // guide header
     const ga = tin(env, 0.1, 0.4, E.outCubic) * out;
-    env.draw({ text: pad3(p.page % 1000), font: monoF(env), size: ls, align: 'left', x: mx, y: H * 0.055, color: sc.sub, alpha: ga, ghost: false });
-    env.draw({ text: (strip(t0)[0] || '') + '  ─  ' + (romajiOf(env) || flat(t0)).slice(0, 14), font: serifF(env), size: ls, align: 'right', x: mx + aw, y: H * 0.055, color: sc.sub, alpha: ga, ghost: false });
-    env.line([[mx, H * 0.055 + ls * 0.9], [mx + aw * ga, H * 0.055 + ls * 0.9]], sc.sub, lw, 0.6, false);
+    dictionaryDraw('header-page',0, { text: pad3(p.page % 1000), font: monoF(env), size: ls, align: 'left', x: mx, y: (H * 0.055 + editorialInset*.5), color: sc.sub, alpha: ga, ghost: false });
+    dictionaryDraw('header-guide',0, { text: (strip(t0)[0] || '') + '  ─  ' + (romajiOf(env) || flat(t0)).slice(0, 14), font: serifF(env), size: ls, align: 'right', x: mx + aw, y: (H * 0.055 + editorialInset*.5), color: sc.sub, alpha: ga, ghost: false });
+    dictionaryOwned('header-rule',0,null,()=>env.line([[mx, (H * 0.055 + editorialInset*.5) + ls * 0.9], [mx + aw * ga, (H * 0.055 + editorialInset*.5) + ls * 0.9]], sc.sub, lw, 0.6, false));
     // entry furniture: mark, brackets, part of speech
     const fa = tin(env, 0.05, 0.35, E.outCubic) * out;
-    env.draw({ text: p.mark, font: bodyF(env), size: size * 0.32, x: mx, y: hy - m.h / 2 + size * 0.5, color: sc.accent, alpha: fa, ghost: false });
+    dictionaryDraw('entry-mark',0, { text: p.mark, font: bodyF(env), size: size * 0.32, x: mx, y: hy - m.h / 2 + size * 0.5, color: sc.accent, alpha: fa, ghost: false });
     const rom = romajiOf(env);
-    if (rom) env.draw({ text: rom.toLowerCase(), font: serifF(env), size: ls * 1.2, track: 0.15, align: 'left', x: hx, y: hy - m.h / 2 - ls * 1.2, color: sc.sub, alpha: fa, ghost: false });
-    const bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: hx, y: hy, align: 'left', track: 0.02, lead: 1.1, color: sc.fg });
+    if (rom) dictionaryDraw('romaji',0, { text: rom.toLowerCase(), font: serifF(env), size: ls * 1.2, track: 0.15, align: 'left', x: hx, y: hy - m.h / 2 - ls * 1.2, color: sc.sub, alpha: fa, ghost: false });
+    if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:mx,y0:hy-m.h/2-size*.3,x1:mx+aw,y1:hy+m.h/2+size*.3};
+    const bb = dictionaryOwned('headword',0,fb.text,()=>J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: fb.text, font: p.font, size, x: hx, y: hy, align: 'left', track: 0.02, lead: 1.1, color: sc.fg }));
     const lastL = fb.text.split('\n').pop();
     const lastW = meas(lastL, p.font, size, { track: 0.02 }).w;
     const ly = hy + (fb.text.split('\n').length - 1) / 2 * size * 1.1;
@@ -1298,28 +1363,28 @@ reg('dictionary', {
     if (pa > 0.01) {
       const pw = ls * (p.pos.length * 1.25 + 0.9), px = Math.min(hx + lastW + size * 0.3, W - mx - pw);
       const pyy = ly + (hx + lastW + size * 0.3 > W - mx - pw ? size * 0.75 : 0);
-      env.rrect(px, pyy - ls * 0.85, pw, ls * 1.7, ls * 0.3, null, J.clamp(pa), false, sc.fg, lw * 1.4);
-      env.draw({ text: p.pos, font: serifF(env), size: ls * 1.1, x: px + pw / 2, y: pyy, color: sc.fg, alpha: J.clamp(pa), ghost: false });
+      dictionaryOwned('pos-bracket',0,null,()=>env.rrect(px, pyy - ls * 0.85, pw, ls * 1.7, ls * 0.3, null, J.clamp(pa), false, sc.fg, lw * 1.4));
+      dictionaryDraw('part-of-speech',0, { text: p.pos, font: serifF(env), size: ls * 1.1, x: px + pw / 2, y: pyy, color: sc.fg, alpha: J.clamp(pa), ghost: false });
     }
     // definitions
     defs.forEach((d, i) => {
       const a = tin(env, env.cut.inDur * 0.8 + 0.1 + i * 0.12, 0.4, E.outCubic) * out;
       if (a <= 0.01) return;
       const y = defTop + dfs * 0.8 + i * dfs * 1.7;
-      env.circle(hx + dfs * 0.45, y, dfs * 0.48, sc.fg, null, 0, a, false);
-      env.draw({ text: String(i + 1), font: monoF(env), size: dfs * 0.62, x: hx + dfs * 0.45, y, color: sc.bg, alpha: a, ghost: false });
+      dictionaryOwned('definition-bullet',i,null,()=>env.circle(hx + dfs * 0.45, y, dfs * 0.48, sc.fg, null, 0, a, false));
+      dictionaryDraw('definition-number',i, { text: String(i + 1), font: monoF(env), size: dfs * 0.62, x: hx + dfs * 0.45, y, color: sc.bg, alpha: a, ghost: false });
       const maxC = Math.max(4, Math.floor((aw - dfs * 2) / (dfs * (hasLatin(d) ? 0.55 : 1.02))));
       const dd = [...d].length > maxC ? [...d].slice(0, maxC - 1).join('') + '…' : d;
-      env.draw({ text: dd, font: serifF(env), size: dfs, align: 'left', x: hx + dfs * 1.4 + (1 - a) * dfs, y, color: sc.fg, alpha: a, ghost: false });
+      editorialMotion(env.cut.inDur*.8+.1+i*.12+.4, () => dictionaryDraw('definition',i, { text: dd, font: serifF(env), size: dfs, align: 'left', x: hx + dfs * 1.4 + (1 - a) * dfs, y, color: sc.fg, alpha: a, ghost: false }));
     });
     // thumb index tab on the page edge
     const tq = tin(env, 0.15, 0.5, E.outExpo) * out;
     if (tq > 0.01) {
       const tw = u * 0.075, th = u * 0.16, ty = H * 0.1 + (H * 0.8 - th) * p.tabY;
       const tabC = plateCol(sc, [sc.ink, sc.fg]);
-      env.line([[W - tw * 1.05, H * 0.04], [W - tw * 1.05, H * 0.96]], sc.sub, lw, 0.35 * tq, false);
-      env.rect(W - tw * tq, ty, tw + 2, th, tabC, 1, false);
-      env.draw({ text: strip(t0)[0] || '', font: p.font, size: tw * 0.62, x: W - tw * tq + tw * 0.5, y: ty + th / 2, color: onCol(sc, tabC), ghost: false });
+      dictionaryOwned('thumb-rule',0,null,()=>env.line([[pageRight - tw * 1.05, (H * 0.04 + editorialInset*.5)], [pageRight - tw * 1.05, (H * 0.96 - editorialInset*.5)]], sc.sub, lw, 0.35 * tq, false));
+      editorialMotion(.65, () => dictionaryOwned('thumb-plate',0,null,()=>env.rect(pageRight - tw * tq, ty, tw + 2, th, tabC, 1, false)));
+      editorialMotion(.65, () => dictionaryDraw('thumb-glyph',0, { text: strip(t0)[0] || '', font: p.font, size: tw * 0.62, x: pageRight - tw * tq + tw * 0.5, y: ty + th / 2, color: onCol(sc, tabC), ghost: false }));
     }
     return bb;
   },
@@ -1526,9 +1591,10 @@ reg('newspaper', {
   render(env) {
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const C = card(sc);
-    const ls = smallSize(env);
+    const editorialScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.sheetScale ?? 1 : 1;
+    const ls = smallSize(env) * editorialScale;
     // page geometry (newsprint sheet with margins)
-    const pw = W * (port ? 0.92 : 0.9), ph = H * (port ? 0.9 : 0.9);
+    const pw = W * (port ? 0.92 : 0.9) * editorialScale, ph = H * 0.9 * editorialScale;
     const cx = W / 2, cy = H / 2;
     // entrance: classic spinning newspaper, or a slide up
     let rot = 0, k = 1, dy = 0;
@@ -1538,6 +1604,8 @@ reg('newspaper', {
     const o = E.inCubic(env.pOut);
     dy += o * H * 0.08; const a = 1 - o;
     if (a <= 0.01) return null;
+    const priorEditorialBody = env.placementCBody;
+    if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd:p.spin?.6:.45,exitStart:env.cut.dur-env.cut.outDur};
     ctx.save(); ctx.translate(cx, cy + dy); if (rot) ctx.rotate(rot * J.DEG); ctx.scale(k, k); ctx.translate(-pw / 2, -ph / 2);
     shadowR(env, 0, 0, pw, ph, 0, a, u * 0.02);
     env.rect(0, 0, pw, ph, C.fill, a, false);
@@ -1554,7 +1622,7 @@ reg('newspaper', {
     env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.7, x: mX + mw / 2, y: mY + mh + ls * 1.8, color: tx, alpha: a * 0.8, ghost: false });
     // tiers (段) of greeked vertical copy
     const bodyX0 = m, bodyX1 = mX - m * 0.6;
-    const fs = J.clamp(u * 0.012, 7, 15), lh = fs * 1.45;
+    const fs = J.clamp(u * 0.012, 7, 15) * editorialScale, lh = fs * 1.45;
     const t0 = env.cut.text.trim();
     let bb = null;
     const reveal = tin(env, 0.2, 0.9, E.linear || E.lin);
@@ -1570,7 +1638,8 @@ reg('newspaper', {
       const mm = meas(fb.text, p.font, size, { vertical: true, lead: 1.1, track: -0.02 });
       const rev = p.rev;
       if (rev) env.rect(hX1 - mm.w - size * 0.3, m, mm.w + size * 0.3, mm.h + size * 0.4, tx, a, false);
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: hX1 - size * 0.15 - mm.w / 2, y: m + size * 0.2, vertical: true, align: 'left', lead: 1.1, track: -0.02, color: rev ? C.fill : tx, noHold: plateHold(env), mi: miAt(env, p.spin ? 0.45 : 0.3) });
+      if (env.cut.placementLayoutsC) env.placementCEditorialZone = p.variant === "tate" ? {x0:hX1-mm.w-size*.3,y0:m,x1:hX1,y1:ph-m} : null;
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: fb.text, font: p.font, size, x: hX1 - size * 0.15 - mm.w / 2, y: m + size * 0.2, vertical: true, align: 'left', lead: 1.1, track: -0.02, color: rev ? C.fill : tx, noHold: plateHold(env), mi: miAt(env, p.spin ? 0.45 : 0.3) });
       const bx1 = hX1 - mm.w - size * 0.5;
       // sub headline (lineText) in a smaller vertical column
       const sub = deckCopy(env);
@@ -1593,7 +1662,8 @@ reg('newspaper', {
       const size = fb.size;
       const rev = p.rev;
       if (rev) env.rect(m, m, hbw, hbh, tx, a, false);
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: m + hbw / 2, y: m + hbh / 2, lead: 1.05, track: -0.02, color: rev ? C.fill : tx, noHold: plateHold(env), mi: miAt(env, p.spin ? 0.45 : 0.3) });
+      if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:m,y0:m,x1:m+hbw,y1:m+hbh};
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: fb.text, font: p.font, size, x: m + hbw / 2, y: m + hbh / 2, lead: 1.05, track: -0.02, color: rev ? C.fill : tx, noHold: plateHold(env), mi: miAt(env, p.spin ? 0.45 : 0.3) });
       const yb = m + hbh + fs;
       rule(m, yb, bodyX1);
       const tiers = port ? 5 : 3, th2 = (ph - m - yb) / tiers;
@@ -1607,6 +1677,7 @@ reg('newspaper', {
       tier(mX, m + mh + ls * 2.8, pw - m, yb, p.seed + 9);
     }
     ctx.restore();
+    env.placementCBody = priorEditorialBody;
     const pb = box(cx - pw / 2, cy - ph / 2 + dy, cx + pw / 2, cy + ph / 2 + dy);
     return bb ? pb : null;
   },
@@ -3202,12 +3273,21 @@ reg('nameTag', {
     if (a <= 0.01) return null;
     const bandC = plateCol(sc, [sc.accent, sc.accent2, sc.ink], C.fill, 1.6);
     const nativeBW = port ? W * 0.86 : Math.min(W * 0.62, H * 1.2), measure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.badgeMeasure ?? 1 : 1, bw = nativeBW * objectScale * measure, bh = nativeBW * objectScale * (p.variant === 'hello' ? 0.66 : 0.56);
+    const typeRecipe=env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.preserveNativeType,nativeBH=nativeBW*(p.variant==='hello'?.66:.56),typeBH=typeRecipe?nativeBH*Math.max(.7,objectScale):bh;
+    // A smaller physical badge may keep its native typography above the .7
+    // floor. Preserve the native line breaks, then let complete owned-field
+    // geometry reject any text/label that cannot actually fit the paper.
+    const nativeType=typeRecipe?fitBlock(t0,p.font,nativeBW*.84,nativeBH*(p.variant==='hello'?.46:.44),{lead:1.05},2):null,nativeMainSize=nativeType?Math.min(nativeType.size,nativeBH*(p.variant==='hello'?.36:.34)):0;
     const q = E.outBack(e, 1.6);
     const rot = p.tilt * q + (1 - q) * -25 + eo * 18;
-    const across=env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.exitAxis==='across', exitDX=across?H*.5:W*.1,exitDY=across?W*.1:H*.5;
-    const cx = W / 2 + eo * exitDX, cy = H / 2 + (1 - q) * -H * 0.35 + eo * exitDY;
+    const exitDX=W*.1,exitDY=H*.5;
+    // Name-badge-only anchor connection: the external fixed hold offset is
+    // introduced by q and removed by eo. Native clock/rotation and screen
+    // entry/exit centre anchors remain, while the intervening travel changes.
+    const anchor=env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.anchorConnect?env.cut.layoutCRecipe.anchorOffset||[0,0]:[0,0],entryDX=anchor[0],entryDY=H*.35+anchor[1],fallDX=exitDX-anchor[0],fallDY=exitDY-anchor[1];
+    const anchored=env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.anchorConnect,cx = anchored?W/2+(q-1)*entryDX+eo*fallDX:W/2+eo*exitDX,cy = anchored?H/2+(q-1)*entryDY+eo*fallDY:H/2+(1-q)*-H*.35+eo*exitDY;
     const previousBody=env.placementCBody;
-    if(env.cut.placementLayoutsC)env.placementCBody={kind:'name-badge',pivot:[W/2,H/2],angle:p.tilt,turn:env.cut.outDur>0?18:0,dx:env.cut.outDur>0?exitDX:0,dy:env.cut.outDur>0?exitDY:0,minYScale:1,maxEntryScale:1,entryEnd:env.cut.start+.5,exitStart:env.cut.outDur>0?env.cut.end-env.cut.outDur:Number.MAX_VALUE};
+    if(env.cut.placementLayoutsC)env.placementCBody={kind:'name-badge',pivot:[W/2,H/2],angle:p.tilt,turn:env.cut.outDur>0?18:0,dx:env.cut.outDur>0?fallDX:0,dy:env.cut.outDur>0?fallDY:0,entryDX,entryDY,minYScale:1,maxEntryScale:1,entryEnd:env.cut.start+.5,exitStart:env.cut.outDur>0?env.cut.end-env.cut.outDur:Number.MAX_VALUE};
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG);
     const x0 = -bw / 2, y0 = -bh / 2, r = bh * 0.08;
     shadowR(env, x0, y0, bw, bh, r, a, u * 0.014);
@@ -3217,11 +3297,11 @@ reg('nameTag', {
       const headerMeasure=env.cut.placementLayoutsC?env.cut.layoutCRecipe?.headerMeasure??1:1,hh=bh*.3*headerMeasure,whiteBottom=headerMeasure<1?.94:.88,whiteHeight=headerMeasure<1?whiteBottom-hh/bh:.58;
       env.rect(x0 + bw * 0.035, y0 + hh, bw * 0.93, bh * whiteHeight, C.fill, a, false);
       const hc = onCol(sc, bandC);
-      env.draw({ placementCOwnedZone:{x0:x0+bw*.035,x1:x0+bw*.965,y0,y1:y0+hh*.7}, text: 'HELLO', font: 'gothic_black', size: bh*.3*.52, track: 0.08, x: 0, y: y0 + hh * 0.4, color: hc, alpha: a, ghost: false });
-      env.draw({ placementCOwnedZone:{x0:x0+bw*.035,x1:x0+bw*.965,y0:y0+hh*.65,y1:y0+hh}, text: 'my name is', font: bodyF(env), size: bh*.3*.2, track: 0.15, x: 0, y: y0 + hh * 0.82, color: hc, alpha: a, ghost: false });
+      env.draw({ placementCOwnedZone:{x0:x0+bw*.035,x1:x0+bw*.965,y0,y1:y0+hh*.7}, text: 'HELLO', font: 'gothic_black', size: typeBH*.3*.52, track: 0.08, x: 0, y: y0 + hh * 0.4, color: hc, alpha: a, ghost: false });
+      env.draw({ placementCOwnedZone:{x0:x0+bw*.035,x1:x0+bw*.965,y0:y0+hh*.65,y1:y0+hh}, text: 'my name is', font: bodyF(env), size: typeBH*.3*.2, track: 0.15, x: 0, y: y0 + hh * 0.82, color: hc, alpha: a, ghost: false });
       const fb = fitBlock(t0, p.font, bw * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .91 : .84), bh * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.headerMeasure<1 ? whiteHeight-.02 : env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .56 : .46), { lead: 1.05 }, 2);
-      const size = Math.min(fb.size, bh * 0.36);
-      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.045,x1:x0+bw*.955,y0:y0+hh,y1:y0+bh*whiteBottom}} : {}), text: fb.text, font: p.font, size, x: 0, y: headerMeasure<1?y0+hh+bh*whiteHeight/2:y0+hh+bh*.29, lead: 1.05, rot: -2, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
+      const size = typeRecipe?nativeMainSize*(env.cut.layoutCRecipe.nativeTypeRatio??.7):Math.min(fb.size, bh * 0.36);
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.045,x1:x0+bw*.955,y0:y0+hh,y1:y0+bh*whiteBottom}} : {}), text: nativeType?nativeType.text:fb.text, font: p.font, size, x: 0, y: headerMeasure<1?y0+hh+bh*whiteHeight/2:y0+hh+bh*.29, lead: 1.05, rot: -2, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     } else {
       // school name badge: safety pin, class fields, なまえ
       env.rrect(x0, y0, bw, bh, r, C.fill, a, false, bandC, Math.max(4, bw * 0.014));
@@ -3229,13 +3309,13 @@ reg('nameTag', {
       env.line([[x0 + bw * 0.2, pinY], [x0 + bw * 0.8, pinY]], sc.sub, Math.max(3, u * 0.004), a, false);
       env.circle(x0 + bw * 0.8, pinY, u * 0.008, sc.sub, null, 0, a, false);
       const compactClass=env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.classMeasure===.5,fy=y0+bh*(compactClass?.1:.2);
-      env.draw({ placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.78,y0:y0+bh*(compactClass?.015:.06),y1:fy+bh*.09}, text: p.grade + ' ねん　' + p.cls + ' くみ', font: p.font, size: bh * 0.1, align: 'left', x: x0 + bw * 0.08, y: fy, color: C.text, alpha: a, ghost: false });
+      env.draw({ placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.78,y0:y0+bh*(compactClass?.015:.06),y1:fy+bh*.09}, text: p.grade + ' ねん　' + p.cls + ' くみ', font: p.font, size: typeBH * 0.1, align: 'left', x: x0 + bw * 0.08, y: fy, color: C.text, alpha: a, ghost: false });
       env.line([[x0 + bw * 0.06, fy + bh * 0.09], [x0 + bw * 0.94, fy + bh * 0.09]], bandC, Math.max(2, u * 0.003), a, false);
-      env.draw({ placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:fy+bh*.09,y1:y0+bh*(compactClass?.28:.45)}, text: 'なまえ', font: bodyF(env), size: bh * 0.07, align: 'left', x: x0 + bw * 0.08, y: fy+bh*(compactClass?.13:.19), color: bandC, alpha: a, ghost: false });
+      env.draw({ placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:fy+bh*.09,y1:y0+bh*(compactClass?.28:.45)}, text: 'なまえ', font: bodyF(env), size: typeBH * 0.07, align: 'left', x: x0 + bw * 0.08, y: fy+bh*(compactClass?.13:.19), color: bandC, alpha: a, ghost: false });
       env.circle(x0 + bw * 0.88, fy, bh * 0.08, bandC, null, 0, a, false);
       const fb = fitBlock(t0, p.font, bw * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .91 : .84), bh * (compactClass?.68:env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .56 : .44), { lead: 1.05 }, 2);
-      const size = Math.min(fb.size, bh * 0.34);
-      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:y0+bh*(compactClass?.28:.4),y1:y0+bh*.96}} : {}), text: fb.text, font: p.font, size, x: 0, y: y0+bh*(compactClass?.62:.66), lead: 1.05, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
+      const size = typeRecipe?nativeMainSize*(env.cut.layoutCRecipe.nativeTypeRatio??.7):Math.min(fb.size, bh * 0.34);
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:y0+bh*(compactClass?.28:.4),y1:y0+bh*.96}} : {}), text: nativeType?nativeType.text:fb.text, font: p.font, size, x: 0, y: y0+bh*(compactClass?.62:.66), lead: 1.05, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     }
     ctx.restore();
     env.placementCBody=previousBody;

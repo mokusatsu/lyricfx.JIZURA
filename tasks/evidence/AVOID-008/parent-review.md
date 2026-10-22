@@ -98,3 +98,38 @@ freeze02のregistry/font/各note phase/画像同一性の実結果と視覚観�
 名札は未受入。crop02は採点launcherがexit0でもportrait schoolの新規主字cropが存在し、失敗/残件として保持する。紙面preview01は動画と原寸画像copy不一致のmaterial FAILを保持し、[bundle02独立照合](editorial-visual02-review.md)で条件一致を修正確認した。物体系bookの棚線右端cropは独立背景線の端で主物体/文字/接地関係が保たれる限定所見として記録し、カチンコ上棒という重要部品cropと同じ不具合には扱わない。stampSheetのfull carrierはphysical sheetでヘッダーの印刷面でもあるため、blank余白をindependentDecorとして除外する案は親が却下しprimary修正を返した。
 
 公開結果確認は利用者指示で中止・対象外。保存013既知FAILを保存成功へ置換しない。main sourceは3IDのopt-in段階、他31は別worktreeで未統合。全008完了前に009へ進めない。
+
+
+### Current-source clapper13 / editorial / carrier follow-up
+
+[probe13親照合](parent-clapper13-checkpoint.json)で127抽出原本の現bytesと8result pinsが一致、18cases/8safeの216hold・216entry top/side・216exit-stage polygonを独立再計算し違反0。旧probe12を現sourceとして使わず再取得して解消した。portrait cy=.42/r=.2は数値成立、visualはcy=.5 fixture限定を維持する。
+
+[editorial04/raster05親receipt](parent-editorial04-raster05.json)は8frozen input pins/JAEN actual09h・11p埋込み/Git4c3source対応、native170/controls40＋explicit10/negative30/boundary80/guard5を照合。corrected297hold all-primary非空・circle margin0、198global strict非空・初回99はmotion clock量子化でglobal strict前、891per-event sampleと297stageを別に確認。実8faceのactual cmapを読み4632case-role glyphを照合。新dictionary294は独立視覚1例PASSがあっても、親が実字間なし幅測定・Latin softbreak語間消失の2点を指摘し担当が実再現したため未受入、修正後を改めて審査する。
+
+[objects05親receipt](parent-objects05-carrier-font03.json)はsource105raw・Git257/JAEN対応・切手全carrierの72polygonの独立距離/画面内を照合（最小円周clearance2.7001）。font03は実9cmap/3348occurrences/12明示fraction fallbackを独立確認。全323最新runtimeを親が別実行したという意味ではない。旧matrixのB字体fixture不足444occurrencesをnew font証明で遡及成功にはしない。全10IDやC34最終承認には使わない。
+
+## 2026-10-23 JST dictionary45 / editorial033 / school physical01
+
+辞書294の旧視覚PASSは単fixtureの観察に限定し、親が発見した実字間なしcontext計測とLatin softbreak語間消失の2欠陥を実装担当が再現した。[dictionary45親receipt](parent-dictionary10-review.json)は100raw/Git45/JAEN、138印刷欄、15完全語間/範囲、177全metadata occurrence、actual8cmap/813glyphを独立照合した。[独立sol visual02](dictionary-visual02-review.md)は前後384frameと原寸12PNGでJPの定義/括弧/品詞/guide/tabとLatin5単語・語間・9論理注記を確認。全文sourceと実印刷欄の数値・異常系・独立画像が同じ修正版へ対応し、再現欠陥を解消したため、内部2fixtureの追加人間確認は不要と親判定。ユーザーOKとは記録しない。
+
+[統合033親receipt](parent-editorial-integration033.json)は119原本のrawgzip/Git/current一致と11結果hashを独立確認した。main00a header・他24block・共有09a09g11zrenderer保持、9blockはe1、dictionary/09hは45と完全一致。170条件は102成立/66不足/2未対応、OFF170・対照40/explicit10・negative30、306全primary hold非空・918per-event・306stage・80境界/5false-safe guard・開始7.25の90時計観測・実8cmap4632glyphを実結果から照合した。864 native PNGとclock観測が固定旧媒体へ同一なので、その限定視覚結果はcarry可能。成立以外のnative描画に残るcircle conflictは成功に数えず、native-identityの元cropも新crop禁止と区別する。latest main名札/headerを保持して10block/09hを適用する修正を指定実装担当へ承認し、結合sourceで必要検証中。新numbered未commit/後続追加改善はこの033には含まない。
+
+[school physical01親receipt](parent-badgephysical01-review.json)は103rawgzip/34pins、native Git2bbとpreview100assets、66ずつのhold circle/stage/entry suffix/exit prefix包絡の独立計算、96runtime/6rebound sample/2偽safe拒否、main/meta/paper3group crop非悪化、warmcold12/OFF34一致を確認した。親はactual09g/11pと試験本文を読み、native各eventのentry clear suffix/exit clear prefix、outBack1.6厳密最大、回転＋直線変位の解析極値、全4corner、所有印刷欄/nativefont下限、固定replay offsetとsource固有anchorをレビューした。紙は.6・主字は.7nativeで、同じnative screen center端点/時計/回転を保ち、大きな落下を失わない条件だけを使う。
+
+[独立sol school03](badge-visual03-review.md)は全192frame・原寸8key＋末尾原寸を実見し、学年/クラス/名前/ピンと縦横比、落下・overshoot戻り・右下回転退場、新crop/早い消失なしを限定確認。紙に対して文字大・退場迫力控えめという実差を明記した上でschool1fixtureの演出系統は受入可能。親も追加人間確認不要と判定した。一方、旧hello02等のほぼ静止回転になる短dropは未受入で、汎用anchor9を探索から削除する修正を担当へ返した。probe19の9safeを全て芸術的受入へ流用しない。除外後のschool96frame carryとcombinedsourceの再確認が必要。元字体全般、hello/landscape/allvariants、C34完了には拡張しない。
+
+親は画像を見ず、全照合をcontext-isolated solへ委任した。公開結果確認は恒久停止・対象外、保存013は既知FAILのまま。008実装中/009以降未着手。
+
+## Japanese08 / numbered06 bounded follow-up
+
+[Japanese08親receipt](parent-japanese08-review.json)は4最終resultの44開始終了pinsをraw/Git/reconstructed JAENへ照合した。ae3d5a5のGitには検証copy09g/生成JAENが含まれず、別原本477faab/6d8f0e0と同source再buildで4receipt全compiled hash一致を確認した。94円/94stage polygon、308safe strict-raster/stage sample、36対照、5個別unit/2alpha-exit/karuta偽safe拒否、actual8cmap/110emitted entries/50glyph/6実main face（fallback0）を独立確認。routeの1px欄guardは元marker間隔から割り当て、最小読字gap5.771517pxを維持するsource根拠をコードで審査。Tanzaku branch/leavesは固定したsource上の独立背景で、dx0と共通dyで吊下接続を保持する条件に限り分類を認める。blank短冊/cloth/paperと全文字はprimaryのまま。shoji固定建築とlocal-y、chochin照明分類の限定判断もreceiptに明記した。
+
+新noren cp09は数値・印刷欄・前景布clearanceが通っても、[独立sol visual01](noren-visual01-review.md)がafter初出f4のみ『風』下端を新たにnative reveal裾で切る事実を検出した。f5復帰やhold成功で受入に置換しない。material hash/source/時計一致と画像FAILを分け、main時計を遅らせて回避せず、元の可視期間とownclip revealの包含を保持するcp10修正を指定担当へ返した。この知見を便箋のfold clipを持つ物体担当にも渡し、stage外alpha0だけではownclipによる字の消失を証明できないことを明示した。
+
+[numbered06親receipt](parent-numbered06-review.json)は100raw/Git54/JAEN、60cases36成立24不足、600OFFフレーム、72実item text/font/mi/opacity/style/clock同一、16注入candidate拒否、実8cmap925glyph、159全primary/159stage/375個別unit、24EN境界/3偽safeを照合した。16negativeは注入したrecipeの拒否で、別の正常recipeで成立するfixture全体の不成功とは記録しない。差分を実読し、2列のgutterと列/番号/歌詞関係、元rowの高さと番号・mask同率縮小、behind番号の単一相関y移動をsweepして元maskと交差する包絡を審査した。意味あるspaceを含むexact chunk/番号/clock/所有形状/可読floorを守る。独立solの全384frame・原寸12PNGは2fixture限定視覚PASS。統合mainのexact cache下で同じ表示をcarry確認できれば、この内部2例の追加人間確認は不要と親判定。未試行3column等を物理的不可能とは扱わない。
+
+## Main combined033 commit gate
+
+[親の結合版receipt](parent-combined033-main01.json)は139現input/30resultのrawgzip169件と252result source pinsを確認。actual JAEN embeds、033紙面10block/09hとphysical01の他24block/headerの正確な合成、汎用anchor9除外、紙面170rows/native/control/negative全件が以前親受入033と完全一致することを独立照合した。school96PNG・他9例864PNG/時計、cache12/OFF34、実現clipped-stage crop非悪化/偽safe拒否、80boundary/5strict、辞書22、日英local起動を現sourceに接続した。既存pyc739…不変。限定13経路の中間source/evidenceをworkへcommit/pushし次のnumberedへ進める。追加人間確認・公開は不要、公開結果確認は実行しない。21未登録・未審査のhello1920見え方・全C最終回帰/性能等は残る。source登録数だけで完了としない。
+
+物体系writing02は独立solが便箋の新規上端/二重罫線cropとはがきのPOST CARD/消印・波線overlapを検出したため未受入。指定担当が新fit domain lower側max/min誤りを実再現し、全owned紙/罫線監査とhold-stage guard、相互印刷欄関係の修正を進める。文字だけのstage外alpha0を紙全体/所有図形成功へ拡張しない。旧257固定統合はこの新domain版を含まず、別checkpointとして親レビュー中。

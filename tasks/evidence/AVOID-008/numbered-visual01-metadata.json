@@ -1,0 +1,379 @@
+{
+  "task": "AVOID-008",
+  "review": "numbered-visual01",
+  "reviewer": "independent child; parent images unseen",
+  "materialCorrespondence": "PASS_TWO_FIXTURES",
+  "visualOutcome": "LIMITED_PASS_TWO_FIXTURES",
+  "definiteMediaFailures": [],
+  "definiteRenderFailures": [],
+  "sourceCheckpoint": "54b10d8",
+  "sourceCommitExactClaim": false,
+  "shared09gDifferenceRetained": true,
+  "allIDAcceptance": false,
+  "snapshotPinsVerified": 100,
+  "JACompiled": "93b46f84a7fcd392cdb45cbeb14b054960ce44bfa42f11e8ba7ba3a3e2b229a8",
+  "ENCompiled": "1893e733c35563c484b56cc0ae686aad8e025d722700c8cc61f04a1fde7b4eb4",
+  "ENRuntimeVisualAcceptance": false,
+  "beforeCompiled": "484617d1ce4566c8230e355d9f33eb196b6eee98f9669f15b859a7956290da9f",
+  "baseline2bb": {
+    "commit": "2bb3f86",
+    "readOnlyNumberedSourceCompared": true,
+    "beforeCompiledEquals2bbClaim": false,
+    "beforeHasRecipeOrPlacementLayoutsC": false,
+    "nativeFormulaLineageRetained": true,
+    "direct2bbPixelRuntimeCheck": false
+  },
+  "actualFixture": {
+    "stage": [
+      960,
+      540
+    ],
+    "text": "風の先へ",
+    "inputNote": "遠い空の向こうへ",
+    "inputNoteRendered": false,
+    "mainChunks": [
+      "風の",
+      "先へ"
+    ],
+    "mainFont": "mincho",
+    "numberFont": "mincho",
+    "ordinalStyle": "outline",
+    "label": "SCENE",
+    "center": [
+      0.5,
+      0.42
+    ],
+    "radiusShortEdge": 0.2
+  },
+  "method": {
+    "videosDecoded": 4,
+    "framesPerVideo": 96,
+    "allFramesViewed": true,
+    "contactSheetsViewed": 16,
+    "nativePNGViewed": 12,
+    "nativeFrames": [
+      6,
+      36,
+      91
+    ],
+    "nativeResolution": [
+      960,
+      540
+    ],
+    "realtimePlayback": false,
+    "previousVisualCarry": false,
+    "browserOrServerStarted": false,
+    "persistentMediaProcesses": 0
+  },
+  "observations": [
+    "cols retains two columns and left01/風の to right02/先へ reading order with enlarged gutter",
+    "cols ordinals visibly smaller; lyric size and attachment retained",
+    "f6 partial numeral02 is native rising-mask stage on both sides; settled keys complete",
+    "behind moves numeral/lyric composition about246 stage px left while retaining giant-outline/background and foreground hierarchy",
+    "both variants preserve staggered appearance and late mask exit; no detected new glyph crop or early removal"
+  ],
+  "unassessed": [
+    "meaningful word spaces outside JP fixture",
+    "numerical circle safety",
+    "realtime motion feel",
+    "rows and three-column cases",
+    "all fonts/variants/IDs",
+    "outside4seconds"
+  ],
+  "numericalSuccessUsedAsVisualProof": false,
+  "publicVerification": "none; permanently excluded under AGENTS.md",
+  "productOrGitMutation": false,
+  "verification": {
+    "bundles": {
+      "numbered-cols-preview02": {
+        "manifestSHA256": "1e55785d01d8e4f2c7b91a5f8d78a34bfe94a3e1267277b48453b34bb5efd2ab",
+        "assets": 14,
+        "pins": [
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-numbered-preview.cjs",
+            "match": "current",
+            "sha256": "f44f4579180184e17a8012294c8258425501c79c189f017494504e76de12b9a9"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-a-fixture.js",
+            "match": "current",
+            "sha256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-b-fixture.js",
+            "match": "current",
+            "sha256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-fixture.js",
+            "match": "current",
+            "sha256": "ee147ffa07823f708dc0f061005b0616813f4a1cdc02864afcfbe49692eb137f"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf",
+            "match": "current",
+            "sha256": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf",
+            "match": "current",
+            "sha256": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf",
+            "match": "current",
+            "sha256": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf",
+            "match": "current",
+            "sha256": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/mono.otf",
+            "match": "current",
+            "sha256": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/dot.ttf",
+            "match": "current",
+            "sha256": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/rounded.ttf",
+            "match": "current",
+            "sha256": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/symbols.ttf",
+            "match": "current",
+            "sha256": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+          }
+        ],
+        "probes": {
+          "before": {
+            "codec_name": "h264",
+            "pix_fmt": "yuv420p",
+            "width": 480,
+            "height": 270,
+            "nb_read_frames": "96",
+            "avg_frame_rate": "24/1"
+          },
+          "after": {
+            "codec_name": "h264",
+            "pix_fmt": "yuv420p",
+            "width": 480,
+            "height": 270,
+            "nb_read_frames": "96",
+            "avg_frame_rate": "24/1"
+          }
+        },
+        "nativeDecodedMAE": [
+          {
+            "side": "before",
+            "frame": 6,
+            "rgb": [
+              3.057662037037037,
+              2.1649614197530864,
+              2.223456790123457
+            ]
+          },
+          {
+            "side": "before",
+            "frame": 36,
+            "rgb": [
+              3.1301774691358024,
+              2.2715972222222223,
+              2.347932098765432
+            ]
+          },
+          {
+            "side": "before",
+            "frame": 91,
+            "rgb": [
+              3.1164274691358025,
+              2.2503626543209876,
+              2.3291126543209875
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 6,
+            "rgb": [
+              2.8741512345679014,
+              1.9654012345679013,
+              2.0021141975308643
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 36,
+            "rgb": [
+              3.0563348765432097,
+              2.180162037037037,
+              2.208811728395062
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 91,
+            "rgb": [
+              3.0919984567901233,
+              2.2179706790123457,
+              2.2641975308641977
+            ]
+          }
+        ],
+        "beforeCarry": false
+      },
+      "numbered-behind-preview01": {
+        "manifestSHA256": "46e995bbed2bef9c73f5fb7052f4d190f7cb8185db46a7cd8c223bf1940713a3",
+        "assets": 14,
+        "pins": [
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-numbered-preview.cjs",
+            "match": "current",
+            "sha256": "f44f4579180184e17a8012294c8258425501c79c189f017494504e76de12b9a9"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-a-fixture.js",
+            "match": "current",
+            "sha256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-b-fixture.js",
+            "match": "current",
+            "sha256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-fixture.js",
+            "match": "current",
+            "sha256": "ee147ffa07823f708dc0f061005b0616813f4a1cdc02864afcfbe49692eb137f"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf",
+            "match": "current",
+            "sha256": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf",
+            "match": "current",
+            "sha256": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf",
+            "match": "current",
+            "sha256": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf",
+            "match": "current",
+            "sha256": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/mono.otf",
+            "match": "current",
+            "sha256": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/dot.ttf",
+            "match": "current",
+            "sha256": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/rounded.ttf",
+            "match": "current",
+            "sha256": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/symbols.ttf",
+            "match": "current",
+            "sha256": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+          }
+        ],
+        "probes": {
+          "before": {
+            "codec_name": "h264",
+            "pix_fmt": "yuv420p",
+            "width": 480,
+            "height": 270,
+            "nb_read_frames": "96",
+            "avg_frame_rate": "24/1"
+          },
+          "after": {
+            "codec_name": "h264",
+            "pix_fmt": "yuv420p",
+            "width": 480,
+            "height": 270,
+            "nb_read_frames": "96",
+            "avg_frame_rate": "24/1"
+          }
+        },
+        "nativeDecodedMAE": [
+          {
+            "side": "before",
+            "frame": 6,
+            "rgb": [
+              2.904938271604938,
+              1.9850231481481482,
+              1.9957716049382717
+            ]
+          },
+          {
+            "side": "before",
+            "frame": 36,
+            "rgb": [
+              2.8757484567901233,
+              1.9725,
+              1.9872608024691358
+            ]
+          },
+          {
+            "side": "before",
+            "frame": 91,
+            "rgb": [
+              2.8872145061728394,
+              1.9762345679012345,
+              2.002546296296296
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 6,
+            "rgb": [
+              2.8910802469135803,
+              1.9843055555555555,
+              2.0104243827160495
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 36,
+            "rgb": [
+              2.8562731481481483,
+              1.9565432098765432,
+              1.9830324074074075
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 91,
+            "rgb": [
+              2.861381172839506,
+              1.9483101851851852,
+              1.989050925925926
+            ]
+          }
+        ],
+        "beforeCarry": false
+      }
+    },
+    "sourceCommitMismatches": [
+      {
+        "path": "src/09g_layoutsC_placement.js",
+        "commit": "f84a8052c413e184c202f17a143f2ee18c2bab4cb17ee5523eaf00798ebc3429",
+        "pin": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9"
+      }
+    ]
+  }
+}

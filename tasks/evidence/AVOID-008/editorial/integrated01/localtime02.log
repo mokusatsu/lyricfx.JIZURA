@@ -1,0 +1,13 @@
+{"rows":90}
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(report.rows.every(r=>r.sourceUnchanged&&r.clocksCorrect&&r.classifications.length&&r.classifications.every(c=>c.strict===c.expected)&&r.early.marginCollision===0))
+
+    at /workspace/avoid008-integrated/tasks/evidence/AVOID-008/editorial/integrated01/localtime-runner.cjs:4:2131 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

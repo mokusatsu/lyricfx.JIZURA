@@ -1,0 +1,878 @@
+{
+  "reviewer": "independent visual reviewer agent avoid008_japanese_visual",
+  "createdUTC": "2026-10-22T17:24:36.964592+00:00",
+  "handoffPath": "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/visual-handoff07.json",
+  "handoffSHA256": "4a8dd7b8d5f88afe62a46ee852f78565fa8d33cc845894be9a373a5b9f7bbfb1",
+  "scope": "local-only exact five fixtures, oneNoto400 transport alias",
+  "overall": "PASS_LIMITED",
+  "materialMismatch": false,
+  "productDefectObserved": false,
+  "frameCoverage": {
+    "eachSide": 96,
+    "fps": 24,
+    "first": 0,
+    "last": 95,
+    "step": 1,
+    "totalViewedVideoFrames": 960,
+    "nativePNGCount": 10,
+    "originalSizeVideoFramePairCount": 11
+  },
+  "realtimePlayback": false,
+  "browserStarted": false,
+  "serverStarted": false,
+  "publicVerification": "not performed; permanently excluded by user instruction",
+  "sourceOrTestsChanged": false,
+  "tanzakuSupplementalCrop": "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-native-attachments-and-bottom.png",
+  "limitations": [
+    "No original multiface approval",
+    "No all-variant/input approval",
+    "No numerical circle safety approval",
+    "No real-time playback",
+    "No re-capture or full runtime-plan regeneration",
+    "No public results check"
+  ],
+  "cases": {
+    "tanzaku-preview02": {
+      "checks": {
+        "receiptSHA256": true,
+        "assetBytesAndHashes": true,
+        "sourceStartEndPins": true,
+        "rebuiltJAEN": true,
+        "sourceBytes": true,
+        "captureAndFixtureBytes": true,
+        "baselinePins": true,
+        "sameInputs": true,
+        "inputPin": true,
+        "actualSpec": true,
+        "clock": true,
+        "nativeNoAdapter": true,
+        "fontPin": true,
+        "renderIdentityContained": true,
+        "beforeVideoClock": true,
+        "beforeDecode": true,
+        "beforePNGsize": true,
+        "afterVideoClock": true,
+        "afterDecode": true,
+        "afterPNGsize": true,
+        "inputJSONBytesIndependentNodeSHA256": true
+      },
+      "probes": {
+        "before": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        },
+        "after": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        }
+      },
+      "sheets": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-00-23.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-24-47.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-48-71.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-72-95.jpg"
+      ],
+      "receiptSHA256": "a6411bbfb350baef14df1500cabf862202321d7e150801604019ddfcfce20693",
+      "sourceCheckpoint": "d87053c",
+      "failedChecks": [],
+      "verdict": "PASS_LIMITED",
+      "materialMismatch": false,
+      "productDefectObserved": false,
+      "actualSpec": {
+        "layout": "tanzaku",
+        "params": {},
+        "text": "風の先へ",
+        "W": 540,
+        "H": 960,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2
+      },
+      "assets": {
+        "before.png": {
+          "sha256": "61d447284494d43c722672dcbea1bcad3261715c164a4fc2d7a6170fc9b4fa37",
+          "bytes": 340132
+        },
+        "after.png": {
+          "sha256": "6188b302941630dcab522603c5fd42cc92111b7acb9d1e4ca6fd9d19d4155f17",
+          "bytes": 366903
+        },
+        "before.mp4": {
+          "sha256": "9fd7995c8b0b415ddd3090300f83030e1630f78476292440287e4b5a0c2fc917",
+          "bytes": 120801
+        },
+        "after.mp4": {
+          "sha256": "f4768c5fd5a5869651d4a123bf554b88b2170c68649efed190fd05633737543a",
+          "bytes": 95194
+        },
+        "index.html": {
+          "sha256": "9a903675b3489faab322e51e7d6c77fcf5543f27c2f0408bcb1ddc5a5ce10fbe",
+          "bytes": 1024
+        }
+      },
+      "inputSHA256": "e85d66f9487d34dad662e37a50cdb319ab7f5f957779e61c03a1b0c736cb9cc4",
+      "sourceHashes": {
+        "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+        "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+        "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+        "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+        "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+        "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+        "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+      },
+      "baseline": {
+        "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+        "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+        "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+      },
+      "nativeParams": {
+        "font": "brush",
+        "chunks": [
+          "風の先へ"
+        ],
+        "extra": 3,
+        "cols": [
+          3,
+          0,
+          3,
+          2,
+          3,
+          4
+        ],
+        "ph": 0.9528360022231936,
+        "dir": -1
+      },
+      "recipe": {
+        "objectScale": 0.7,
+        "strategy": "source-strip-proportional-size"
+      },
+      "offset": [
+        2.8521685107351134e-14,
+        465.7944662446192
+      ],
+      "viewedNativePNGs": [
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/tanzaku-preview02/before.png",
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/tanzaku-preview02/after.png"
+      ],
+      "viewedVideoFramePairs": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f93.png"
+      ],
+      "allFramesViewed": {
+        "sides": [
+          "before",
+          "after"
+        ],
+        "first": 0,
+        "last": 95,
+        "step": 1,
+        "time": "i/24",
+        "pairOrder": "before left / after right",
+        "contactSheetTileSize": [
+          135,
+          240
+        ]
+      },
+      "rebuiltJAInlineBytePins": {
+        "styles": [
+          "f61125f32a1b03d6bb45fb83f05a7eb298943d4375c78f4e26b541b221ff1d55"
+        ],
+        "scripts": [
+          "679643d58c62b1c6802e0ab86263e05ffdfd63b606cbd67a682c7a720324844e",
+          "c7c3f670219e10a74fe021f81518e238b1511771768ba14274aef87553ebd13c"
+        ]
+      },
+      "afterCompiledJAENVerified": true,
+      "detailsGeneratedButNotViewed": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f00.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f09.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f12.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f18.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f24.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f36.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f84.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f87.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f90.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/tanzaku-preview02-f95.png"
+      ]
+    },
+    "warning-preview02": {
+      "checks": {
+        "receiptSHA256": true,
+        "assetBytesAndHashes": true,
+        "sourceStartEndPins": true,
+        "rebuiltJAEN": true,
+        "sourceBytes": true,
+        "captureAndFixtureBytes": true,
+        "baselinePins": true,
+        "sameInputs": true,
+        "inputPin": true,
+        "actualSpec": true,
+        "clock": true,
+        "nativeNoAdapter": true,
+        "fontPin": true,
+        "renderIdentityContained": true,
+        "beforeVideoClock": true,
+        "beforeDecode": true,
+        "beforePNGsize": true,
+        "afterVideoClock": true,
+        "afterDecode": true,
+        "afterPNGsize": true,
+        "inputJSONBytesIndependentNodeSHA256": true
+      },
+      "probes": {
+        "before": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        },
+        "after": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        }
+      },
+      "sheets": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-00-23.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-24-47.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-48-71.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-72-95.jpg"
+      ],
+      "receiptSHA256": "7265b2887c7ff165eff0a430d6fa9181590d51b057f076129abe14e82a708a35",
+      "sourceCheckpoint": "d87053c",
+      "failedChecks": [],
+      "verdict": "PASS_LIMITED",
+      "materialMismatch": false,
+      "productDefectObserved": false,
+      "actualSpec": {
+        "layout": "warningLabel",
+        "params": {
+          "variant": "header"
+        },
+        "text": "風の先へ",
+        "W": 540,
+        "H": 960,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2
+      },
+      "assets": {
+        "before.png": {
+          "sha256": "3ae6c09d79af7d9ea999767cdb1b35d7e2f578398f765765a20c3e03b68cbb33",
+          "bytes": 251785
+        },
+        "after.png": {
+          "sha256": "d9d03fb8d6489d4d1d1c6952a0051543b5489a4a0ae31c270e57e9cb638dbaba",
+          "bytes": 314896
+        },
+        "before.mp4": {
+          "sha256": "263d58a99632b91b17c9d10cf8447c97ef0e94e2efe33ff18ef3d8cc6db87797",
+          "bytes": 103346
+        },
+        "after.mp4": {
+          "sha256": "f9d3ab86f5cdb02ae568260ec919232498f189cd893cad55749f0b62e144c342",
+          "bytes": 90918
+        },
+        "index.html": {
+          "sha256": "9a903675b3489faab322e51e7d6c77fcf5543f27c2f0408bcb1ddc5a5ce10fbe",
+          "bytes": 1024
+        }
+      },
+      "inputSHA256": "3e61eb68d5d2358b6dec74dc144ab4519b4bb69080064f7fa6de34f3afff8141",
+      "sourceHashes": {
+        "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+        "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+        "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+        "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+        "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+        "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+        "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+      },
+      "baseline": {
+        "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+        "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+        "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+      },
+      "nativeParams": {
+        "font": "gothic_black",
+        "variant": "header",
+        "word": 2,
+        "tilt": -2.9085833695717156
+      },
+      "recipe": {
+        "objectScale": 0.9,
+        "strategy": "source-warning-label-proportional-size"
+      },
+      "offset": [
+        1.480071778984391e-14,
+        241.7140648250376
+      ],
+      "viewedNativePNGs": [
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/warning-preview02/before.png",
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/warning-preview02/after.png"
+      ],
+      "viewedVideoFramePairs": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f95.png"
+      ],
+      "allFramesViewed": {
+        "sides": [
+          "before",
+          "after"
+        ],
+        "first": 0,
+        "last": 95,
+        "step": 1,
+        "time": "i/24",
+        "pairOrder": "before left / after right",
+        "contactSheetTileSize": [
+          135,
+          240
+        ]
+      },
+      "rebuiltJAInlineBytePins": {
+        "styles": [
+          "f61125f32a1b03d6bb45fb83f05a7eb298943d4375c78f4e26b541b221ff1d55"
+        ],
+        "scripts": [
+          "679643d58c62b1c6802e0ab86263e05ffdfd63b606cbd67a682c7a720324844e",
+          "c7c3f670219e10a74fe021f81518e238b1511771768ba14274aef87553ebd13c"
+        ]
+      },
+      "afterCompiledJAENVerified": true,
+      "detailsGeneratedButNotViewed": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f00.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f09.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f12.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f18.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f24.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f36.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f84.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f87.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f90.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/warning-preview02-f93.png"
+      ]
+    },
+    "price-shelf-preview01": {
+      "checks": {
+        "receiptSHA256": true,
+        "assetBytesAndHashes": true,
+        "sourceStartEndPins": true,
+        "rebuiltJAEN": true,
+        "sourceBytes": true,
+        "captureAndFixtureBytes": true,
+        "baselinePins": true,
+        "sameInputs": true,
+        "inputPin": true,
+        "actualSpec": true,
+        "clock": true,
+        "nativeNoAdapter": true,
+        "fontPin": true,
+        "renderIdentityContained": true,
+        "beforeVideoClock": true,
+        "beforeDecode": true,
+        "beforePNGsize": true,
+        "afterVideoClock": true,
+        "afterDecode": true,
+        "afterPNGsize": true,
+        "inputJSONBytesIndependentNodeSHA256": true
+      },
+      "probes": {
+        "before": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        },
+        "after": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        }
+      },
+      "sheets": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-00-23.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-24-47.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-48-71.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-72-95.jpg"
+      ],
+      "receiptSHA256": "3df3a0f21a7661ae14bc78dc2e3934c2c401fd325ab2fb520b31de34e61a2551",
+      "sourceCheckpoint": "d87053c",
+      "failedChecks": [],
+      "verdict": "PASS_LIMITED",
+      "materialMismatch": false,
+      "productDefectObserved": false,
+      "actualSpec": {
+        "layout": "priceTag",
+        "params": {
+          "variant": "shelf"
+        },
+        "text": "風の先へ",
+        "W": 540,
+        "H": 960,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2
+      },
+      "assets": {
+        "before.png": {
+          "sha256": "9c9bb433456e35d7fedb84e55debd312aad841127a58003a1fa84f364a402911",
+          "bytes": 278015
+        },
+        "after.png": {
+          "sha256": "2be3a314fa3874448c3d1e3a84751d33b1ad168ff81d9ab42d335c0f4b0b3d0e",
+          "bytes": 342279
+        },
+        "before.mp4": {
+          "sha256": "5bf70eac30a9a9289e320034d14849f7a0236f54cb9c1566722a50fe3b6d10ac",
+          "bytes": 81396
+        },
+        "after.mp4": {
+          "sha256": "f5036b7b5249802c6d165cb25ae177e7cdc0fedc1e120885031b87a76def8fbe",
+          "bytes": 54883
+        },
+        "index.html": {
+          "sha256": "9a903675b3489faab322e51e7d6c77fcf5543f27c2f0408bcb1ddc5a5ce10fbe",
+          "bytes": 1024
+        }
+      },
+      "inputSHA256": "c9307984604db32d46227b9881b06ed435938e1c08209428cb60dbabf056bb16",
+      "sourceHashes": {
+        "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+        "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+        "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+        "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+        "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+        "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+        "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+      },
+      "baseline": {
+        "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+        "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+        "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+      },
+      "nativeParams": {
+        "font": "gothic_med",
+        "variant": "shelf",
+        "price": 980,
+        "was": 1230,
+        "col": "accent",
+        "swing": -14.200109234079719
+      },
+      "recipe": {
+        "objectScale": 0.7,
+        "strategy": "source-shelf-label-proportional-size"
+      },
+      "offset": [
+        -5.55289489448677e-14,
+        -302.28551875
+      ],
+      "viewedNativePNGs": [
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/price-shelf-preview01/before.png",
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/price-shelf-preview01/after.png"
+      ],
+      "viewedVideoFramePairs": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f09.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f95.png"
+      ],
+      "allFramesViewed": {
+        "sides": [
+          "before",
+          "after"
+        ],
+        "first": 0,
+        "last": 95,
+        "step": 1,
+        "time": "i/24",
+        "pairOrder": "before left / after right",
+        "contactSheetTileSize": [
+          135,
+          240
+        ]
+      },
+      "rebuiltJAInlineBytePins": {
+        "styles": [
+          "f61125f32a1b03d6bb45fb83f05a7eb298943d4375c78f4e26b541b221ff1d55"
+        ],
+        "scripts": [
+          "679643d58c62b1c6802e0ab86263e05ffdfd63b606cbd67a682c7a720324844e",
+          "c7c3f670219e10a74fe021f81518e238b1511771768ba14274aef87553ebd13c"
+        ]
+      },
+      "afterCompiledJAENVerified": true,
+      "detailsGeneratedButNotViewed": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f00.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f12.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f18.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f24.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f36.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f84.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f87.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f90.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/price-shelf-preview01-f93.png"
+      ]
+    },
+    "shoji-open-preview01": {
+      "checks": {
+        "receiptSHA256": true,
+        "assetBytesAndHashes": true,
+        "sourceStartEndPins": true,
+        "rebuiltJAEN": true,
+        "sourceBytes": true,
+        "captureAndFixtureBytes": true,
+        "baselinePins": true,
+        "sameInputs": true,
+        "inputPin": true,
+        "actualSpec": true,
+        "clock": true,
+        "nativeNoAdapter": true,
+        "fontPin": true,
+        "renderIdentityContained": true,
+        "beforeVideoClock": true,
+        "beforeDecode": true,
+        "beforePNGsize": true,
+        "afterVideoClock": true,
+        "afterDecode": true,
+        "afterPNGsize": true,
+        "inputJSONBytesIndependentNodeSHA256": true
+      },
+      "probes": {
+        "before": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        },
+        "after": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        }
+      },
+      "sheets": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-00-23.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-24-47.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-48-71.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-72-95.jpg"
+      ],
+      "receiptSHA256": "ed31a54efc75a261ffb923fd7eae1870cacc87f39395d17a5e3c49987de93325",
+      "sourceCheckpoint": "233586c",
+      "failedChecks": [],
+      "verdict": "PASS_LIMITED",
+      "materialMismatch": false,
+      "productDefectObserved": false,
+      "actualSpec": {
+        "layout": "shoji",
+        "params": {
+          "variant": "open"
+        },
+        "text": "風の先へ",
+        "W": 540,
+        "H": 960,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2
+      },
+      "assets": {
+        "before.png": {
+          "sha256": "61d321befb1128fed89ca064808486103672615b05378650dad11eb705a91896",
+          "bytes": 281719
+        },
+        "after.png": {
+          "sha256": "8d777e0a744771efc82eaee270beeeb4fc03fec4e5aa12f8e50a13c230aec407",
+          "bytes": 288292
+        },
+        "before.mp4": {
+          "sha256": "20717cd55158955330af26cd0488a3bf4075339ccc14d0fda5ebf80d4d7f419d",
+          "bytes": 76450
+        },
+        "after.mp4": {
+          "sha256": "0f100125ed83c98aca02552678de052f48841d246d554f98af29341e3940f58f",
+          "bytes": 76081
+        },
+        "index.html": {
+          "sha256": "04f1b5ea5d6aa70ce2c91b63c16a8d05614a1c7f81866bc6320c2bfdcbc852be",
+          "bytes": 1016
+        }
+      },
+      "inputSHA256": "39c343d40f4c4fca38ee916f7843156adaa5a6aee31af416c4cf0d812cf79fa8",
+      "sourceHashes": {
+        "src/09j_layoutsC_japanese.js": "3200b54cfb5cd7ac35346f9ae88359bde4ca34e54a5321952e1c8ba64670b8fe",
+        "src/11p_layoutsC.js": "8a54309976a1da76be103c2283fd55f8d8dd01c8a2d18ac236146539b86d7859",
+        "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+        "index.html": "339f7593f49fb488368290c9dad237998ff4027bb082d7dfaf066f66977f1650",
+        "en/index.html": "cad32e69391fc8e0e4fea09211e56c3be4c94f22c2cbd45f1730b93c3b174729",
+        "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+        "dev/avoidance/layouts-c-japanese-capture.cjs": "50a2db53df3cd93817561f0f47f1d1aaaabd1febafc73cfa66b7c505d504c1ee"
+      },
+      "baseline": {
+        "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+        "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+        "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+      },
+      "nativeParams": {
+        "font": "mincho_light",
+        "variant": "open",
+        "rows": 5,
+        "cols": 2
+      },
+      "recipe": {
+        "lyricY": 0.75,
+        "strategy": "source-local-lyric-y-fixed-architecture"
+      },
+      "offset": [
+        0,
+        0
+      ],
+      "viewedNativePNGs": [
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/shoji-open-preview01/before.png",
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/shoji-open-preview01/after.png"
+      ],
+      "viewedVideoFramePairs": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f09.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f93.png"
+      ],
+      "allFramesViewed": {
+        "sides": [
+          "before",
+          "after"
+        ],
+        "first": 0,
+        "last": 95,
+        "step": 1,
+        "time": "i/24",
+        "pairOrder": "before left / after right",
+        "contactSheetTileSize": [
+          135,
+          240
+        ]
+      },
+      "rebuiltJAInlineBytePins": {
+        "styles": [
+          "f61125f32a1b03d6bb45fb83f05a7eb298943d4375c78f4e26b541b221ff1d55"
+        ],
+        "scripts": [
+          "679643d58c62b1c6802e0ab86263e05ffdfd63b606cbd67a682c7a720324844e",
+          "6c073d43b923ed314519eba5d9556ebcc5283ea6b37f414831f4ed79a320696b"
+        ]
+      },
+      "afterCompiledJAENVerified": true,
+      "detailsGeneratedButNotViewed": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f00.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f12.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f18.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f24.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f36.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f84.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f87.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f90.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/shoji-open-preview01-f95.png"
+      ]
+    },
+    "station-nopost-preview01": {
+      "checks": {
+        "receiptSHA256": true,
+        "assetBytesAndHashes": true,
+        "sourceStartEndPins": true,
+        "rebuiltJAEN": true,
+        "sourceBytes": true,
+        "captureAndFixtureBytes": true,
+        "baselinePins": true,
+        "sameInputs": true,
+        "inputPin": true,
+        "actualSpec": true,
+        "clock": true,
+        "nativeNoAdapter": true,
+        "fontPin": true,
+        "renderIdentityContained": true,
+        "beforeVideoClock": true,
+        "beforeDecode": true,
+        "beforePNGsize": true,
+        "afterVideoClock": true,
+        "afterDecode": true,
+        "afterPNGsize": true,
+        "inputJSONBytesIndependentNodeSHA256": true
+      },
+      "probes": {
+        "before": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        },
+        "after": {
+          "codec_name": "h264",
+          "pix_fmt": "yuv420p",
+          "width": 540,
+          "height": 960,
+          "r_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_read_frames": "96"
+        }
+      },
+      "sheets": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-00-23.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-24-47.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-48-71.jpg",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-72-95.jpg"
+      ],
+      "receiptSHA256": "cd250d59a76d3dcd163ef41f45df894cf7edbc1ce54548779195a7b65f01bebe",
+      "sourceCheckpoint": "233586c",
+      "failedChecks": [],
+      "verdict": "PASS_LIMITED",
+      "materialMismatch": false,
+      "productDefectObserved": false,
+      "actualSpec": {
+        "layout": "stationSign",
+        "params": {
+          "posts": false
+        },
+        "text": "風の先へ",
+        "W": 540,
+        "H": 960,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2
+      },
+      "assets": {
+        "before.png": {
+          "sha256": "4bb250eb5d4f731c4df3c11162d435bf59f9b781ab63b06002ae542ef605b82d",
+          "bytes": 240808
+        },
+        "after.png": {
+          "sha256": "3b86b1d6d753319b2732b19ddfb4179e61202a9103b7a59767bda4be2f073cdb",
+          "bytes": 285178
+        },
+        "before.mp4": {
+          "sha256": "66b4c0268f48770d893fabc71e3d4ba2bd1cb1ce2567367570ddbacee3e1de10",
+          "bytes": 57218
+        },
+        "after.mp4": {
+          "sha256": "321759c63451a6a7fc84734638031795fcf074c877368cb265883318cea8b20a",
+          "bytes": 55349
+        },
+        "index.html": {
+          "sha256": "04f1b5ea5d6aa70ce2c91b63c16a8d05614a1c7f81866bc6320c2bfdcbc852be",
+          "bytes": 1016
+        }
+      },
+      "inputSHA256": "d76df89f332c969fac5f50cfcc93ed85b9d5cf65f51a39bc939691e8ac6dbdb3",
+      "sourceHashes": {
+        "src/09j_layoutsC_japanese.js": "3200b54cfb5cd7ac35346f9ae88359bde4ca34e54a5321952e1c8ba64670b8fe",
+        "src/11p_layoutsC.js": "8a54309976a1da76be103c2283fd55f8d8dd01c8a2d18ac236146539b86d7859",
+        "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+        "index.html": "339f7593f49fb488368290c9dad237998ff4027bb082d7dfaf066f66977f1650",
+        "en/index.html": "cad32e69391fc8e0e4fea09211e56c3be4c94f22c2cbd45f1730b93c3b174729",
+        "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+        "dev/avoidance/layouts-c-japanese-capture.cjs": "50a2db53df3cd93817561f0f47f1d1aaaabd1febafc73cfa66b7c505d504c1ee"
+      },
+      "baseline": {
+        "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+        "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+        "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+      },
+      "nativeParams": {
+        "font": "gothic_black",
+        "letter": "SN",
+        "num": 22,
+        "band": "accent",
+        "posts": false
+      },
+      "recipe": {
+        "objectScale": 0.95,
+        "strategy": "source-station-board-proportional-size"
+      },
+      "offset": [
+        1.4948915845889716e-14,
+        244.13432274999997
+      ],
+      "viewedNativePNGs": [
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/station-nopost-preview01/before.png",
+        "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/station-nopost-preview01/after.png"
+      ],
+      "viewedVideoFramePairs": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f09.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f95.png"
+      ],
+      "allFramesViewed": {
+        "sides": [
+          "before",
+          "after"
+        ],
+        "first": 0,
+        "last": 95,
+        "step": 1,
+        "time": "i/24",
+        "pairOrder": "before left / after right",
+        "contactSheetTileSize": [
+          135,
+          240
+        ]
+      },
+      "rebuiltJAInlineBytePins": {
+        "styles": [
+          "f61125f32a1b03d6bb45fb83f05a7eb298943d4375c78f4e26b541b221ff1d55"
+        ],
+        "scripts": [
+          "679643d58c62b1c6802e0ab86263e05ffdfd63b606cbd67a682c7a720324844e",
+          "6c073d43b923ed314519eba5d9556ebcc5283ea6b37f414831f4ed79a320696b"
+        ]
+      },
+      "afterCompiledJAENVerified": true,
+      "detailsGeneratedButNotViewed": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f00.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f12.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f18.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f24.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f36.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f84.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f87.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f90.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid008-japanese-visual07/station-nopost-preview01-f93.png"
+      ]
+    }
+  }
+}

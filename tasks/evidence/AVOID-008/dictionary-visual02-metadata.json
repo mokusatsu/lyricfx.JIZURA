@@ -1,0 +1,383 @@
+{
+  "task": "AVOID-008",
+  "review": "dictionary-visual02",
+  "reviewer": "independent child; parent images unseen",
+  "materialCorrespondence": "PASS_TWO_BUNDLES",
+  "visualOutcome": "LIMITED_PASS_TWO_FIXTURES",
+  "fixtures": [
+    "JP mincho page central r.2",
+    "Latin mincho entry central r.2 with meaningful word gaps"
+  ],
+  "sourceCheckpoint": "45ad887",
+  "checkpointOverallAcceptance": false,
+  "sourceCommitExactClaim": false,
+  "compiledAfterSHA256": "484617d1ce4566c8230e355d9f33eb196b6eee98f9669f15b859a7956290da9f",
+  "method": {
+    "videosDecoded": 4,
+    "framesPerVideo": 96,
+    "allFramePairsViewed": true,
+    "contactSheetsViewed": 16,
+    "nativePNGViewed": 12,
+    "nativeFrames": [
+      6,
+      36,
+      91
+    ],
+    "realtimePlayback": false,
+    "browserOrServerStarted": false,
+    "persistentMediaProcesses": 0,
+    "afterVisualCarry": false
+  },
+  "retainedHistory": [
+    "dictionary visual01 JP limited visual PASS",
+    "294 defects and superseded guarantees",
+    "wordgap preview01 fixture assertion FAIL"
+  ],
+  "semanticIndependentChecks": {
+    "sourcePlansWithinEachFixtureDeepEqual": true,
+    "actualCutRenderAndSpecMatch": true,
+    "metadataOrderedRangeReconstruction": true,
+    "JPLogicalMetadataOccurrences": 16,
+    "JPDrawFragments": 32,
+    "LatinLogicalMetadataOccurrences": 9,
+    "LatinDrawFragments": 10,
+    "mainSpacesRetainedExactRawCut": true,
+    "LatinMain": "Hold on to the light",
+    "LatinVisibleLines": [
+      "Hold",
+      "on to",
+      "the",
+      "light"
+    ],
+    "LatinMainSourceRanges": [
+      [
+        0,
+        5
+      ],
+      [
+        5,
+        11
+      ],
+      [
+        11,
+        15
+      ],
+      [
+        15,
+        20
+      ]
+    ]
+  },
+  "visualObservations": [
+    "JP context reflow keeps left/right fields visually separate; no detected new overlap/crop/missing glyph at inspected keys and coarse all-frame comparison",
+    "JP headword remains 風の先/へ at .7 size with POS/numbered definitions/tab/highlight ownership maintained",
+    "Latin words stay intact with visible on-to gap; no tothe joining",
+    "Latin definition chars wraps to continuation line and is retained",
+    "Latin entry has no rectangular highlight on either side"
+  ],
+  "definiteVisualFailures": [],
+  "numericalResultsUsedAsVisualProof": false,
+  "unassessed": [
+    "circle numeric safety",
+    "realtime motion perception",
+    "all fonts and variants",
+    "double-space fixture visual behavior",
+    "4s exterior",
+    "every tiny glyph at non-key native frames"
+  ],
+  "publicVerification": "permanently excluded; none performed",
+  "verification": {
+    "bundles": {
+      "dictionary-preview02": {
+        "manifestSHA256": "726441ee41074fd998c183eaaeb3f2606896f4331ad99796ff8fbb169953c870",
+        "assets": 13,
+        "pins": [
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-dictionary-preview.cjs",
+            "match": "post-run runner archive",
+            "sha256": "4cde68aa4dfb36c1b40062be951098c7b69b3eabf4b8e6eed083dc256c8b3752"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-a-fixture.js",
+            "match": "current",
+            "sha256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-b-fixture.js",
+            "match": "current",
+            "sha256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-fixture.js",
+            "match": "current",
+            "sha256": "ee147ffa07823f708dc0f061005b0616813f4a1cdc02864afcfbe49692eb137f"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf",
+            "match": "current",
+            "sha256": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf",
+            "match": "current",
+            "sha256": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf",
+            "match": "current",
+            "sha256": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf",
+            "match": "current",
+            "sha256": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/mono.otf",
+            "match": "current",
+            "sha256": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/dot.ttf",
+            "match": "current",
+            "sha256": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/rounded.ttf",
+            "match": "current",
+            "sha256": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/symbols.ttf",
+            "match": "current",
+            "sha256": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+          }
+        ],
+        "probes": {
+          "before": {
+            "codec_name": "h264",
+            "pix_fmt": "yuv420p",
+            "width": 480,
+            "height": 270,
+            "nb_read_frames": "96",
+            "avg_frame_rate": "24/1"
+          },
+          "after": {
+            "codec_name": "h264",
+            "pix_fmt": "yuv420p",
+            "width": 480,
+            "height": 270,
+            "nb_read_frames": "96",
+            "avg_frame_rate": "24/1"
+          }
+        },
+        "nativeDecodedMAE": [
+          {
+            "side": "before",
+            "frame": 6,
+            "rgb": [
+              2.799189814814815,
+              1.8957175925925926,
+              1.9144907407407408
+            ]
+          },
+          {
+            "side": "before",
+            "frame": 36,
+            "rgb": [
+              3.0072376543209876,
+              2.1131944444444444,
+              2.1959953703703703
+            ]
+          },
+          {
+            "side": "before",
+            "frame": 91,
+            "rgb": [
+              2.948719135802469,
+              2.0920756172839505,
+              2.1527546296296296
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 6,
+            "rgb": [
+              2.804753086419753,
+              1.894158950617284,
+              1.8938271604938273
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 36,
+            "rgb": [
+              2.9736496913580246,
+              2.059266975308642,
+              2.1286033950617282
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 91,
+            "rgb": [
+              2.9802932098765433,
+              2.084506172839506,
+              2.101983024691358
+            ]
+          }
+        ],
+        "beforeCarry": true,
+        "beforeExactHash": "9eb520d4d06982cd2300611adc8d11744ccf24ed79b9b81dcfe6070321f6fd1b"
+      },
+      "dictionary-wordgap-preview02": {
+        "manifestSHA256": "ac22c6dd20481803fdf8d5f44869b484f21327064299c300ebe8f333daa0a00b",
+        "assets": 14,
+        "pins": [
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-dictionary-preview.cjs",
+            "match": "current",
+            "sha256": "f595670e5183303db3352677e70be3a946b07aebc12571e3bc9c4af17dede565"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-a-fixture.js",
+            "match": "current",
+            "sha256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-b-fixture.js",
+            "match": "current",
+            "sha256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-fixture.js",
+            "match": "current",
+            "sha256": "ee147ffa07823f708dc0f061005b0616813f4a1cdc02864afcfbe49692eb137f"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf",
+            "match": "current",
+            "sha256": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf",
+            "match": "current",
+            "sha256": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf",
+            "match": "current",
+            "sha256": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf",
+            "match": "current",
+            "sha256": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/mono.otf",
+            "match": "current",
+            "sha256": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/dot.ttf",
+            "match": "current",
+            "sha256": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/rounded.ttf",
+            "match": "current",
+            "sha256": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6"
+          },
+          {
+            "path": "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/symbols.ttf",
+            "match": "current",
+            "sha256": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+          }
+        ],
+        "probes": {
+          "before": {
+            "codec_name": "h264",
+            "pix_fmt": "yuv420p",
+            "width": 480,
+            "height": 270,
+            "nb_read_frames": "96",
+            "avg_frame_rate": "24/1"
+          },
+          "after": {
+            "codec_name": "h264",
+            "pix_fmt": "yuv420p",
+            "width": 480,
+            "height": 270,
+            "nb_read_frames": "96",
+            "avg_frame_rate": "24/1"
+          }
+        },
+        "nativeDecodedMAE": [
+          {
+            "side": "before",
+            "frame": 6,
+            "rgb": [
+              2.783966049382716,
+              1.8591435185185186,
+              1.9095679012345679
+            ]
+          },
+          {
+            "side": "before",
+            "frame": 36,
+            "rgb": [
+              3.064328703703704,
+              2.168973765432099,
+              2.1961265432098767
+            ]
+          },
+          {
+            "side": "before",
+            "frame": 91,
+            "rgb": [
+              2.9929475308641975,
+              2.105300925925926,
+              2.176195987654321
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 6,
+            "rgb": [
+              2.7609876543209877,
+              1.812908950617284,
+              1.8398456790123456
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 36,
+            "rgb": [
+              2.9078472222222222,
+              1.982854938271605,
+              2.0114274691358025
+            ]
+          },
+          {
+            "side": "after",
+            "frame": 91,
+            "rgb": [
+              2.927631172839506,
+              2.002878086419753,
+              2.0304706790123457
+            ]
+          }
+        ],
+        "beforeCarry": false
+      }
+    },
+    "sourceCommitMismatches": [
+      {
+        "path": "src/09g_layoutsC_placement.js",
+        "commit": "f84a8052c413e184c202f17a143f2ee18c2bab4cb17ee5523eaf00798ebc3429",
+        "pin": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9"
+      }
+    ]
+  }
+}
