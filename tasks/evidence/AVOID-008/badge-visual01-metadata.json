@@ -1,0 +1,139 @@
+{
+  "review": "badge-visual01",
+  "reviewer": "independent visual sub-agent",
+  "timestampUTC": "2026-10-22T16:37:25.478109+00:00",
+  "bundle": "work/avoid008-c-preview/badge-preview01",
+  "manifestSHA256": "1c8c932b1c947afb952bfd697631d95f58dab855564d2bc821bdd13e18982ff2",
+  "assetCount": 112,
+  "allAssetBytesAndHashesMatch": true,
+  "receipt": "scratch/avoid008-badge-visual01/receipt.json",
+  "receiptSHA256": "74bac48580f792f6e3fc8131fcc004280c80f3c58fd9fdcb123de95d57a7b67d",
+  "sourcePins": {
+    "source/before-index.html.gz": {
+      "sha256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57",
+      "matchesManifest": true
+    },
+    "source/index.html.gz": {
+      "sha256": "fa9f75ba959ef3981b275529f7d6d1b41b399b0cb6958fe3aec09eb6050d1a2b",
+      "matchesManifest": true
+    }
+  },
+  "immutableNative01BeforeMatch": true,
+  "frameMapping": {
+    "badge-landscape-after-frames.json.gz": {
+      "count": 96,
+      "mappingOK": true,
+      "keyPngHashMatch": true
+    },
+    "badge-landscape-before-frames.json.gz": {
+      "count": 96,
+      "mappingOK": true,
+      "keyPngHashMatch": true
+    },
+    "badge-portrait-before-frames.json.gz": {
+      "count": 96,
+      "mappingOK": true,
+      "keyPngHashMatch": true
+    },
+    "badge-portrait-after-frames.json.gz": {
+      "count": 96,
+      "mappingOK": true,
+      "keyPngHashMatch": true
+    }
+  },
+  "conditions": [
+    {
+      "id": "badge-landscape",
+      "layout": "nameTag",
+      "W": 960,
+      "H": 540,
+      "radius": 0.2,
+      "cy": 0.42,
+      "params": {
+        "variant": "hello"
+      },
+      "seed": 704,
+      "text": "風の先へ",
+      "center": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "font": "Avoid006Fixture NotoSansCJK regular",
+      "sameFontBothSides": true,
+      "stage": [
+        960,
+        540
+      ]
+    },
+    {
+      "id": "badge-portrait",
+      "layout": "nameTag",
+      "W": 1080,
+      "H": 1920,
+      "radius": 0.2,
+      "cy": 0.42,
+      "params": {
+        "variant": "school"
+      },
+      "seed": 704,
+      "text": "風の先へ",
+      "center": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "font": "Avoid006Fixture NotoSansCJK regular",
+      "sameFontBothSides": true,
+      "stage": [
+        1080,
+        1920
+      ]
+    }
+  ],
+  "visualCoverage": {
+    "decodedMp4Frames": 384,
+    "contactSheets": [
+      "scratch/avoid008-badge-visual01/landscape-pair-0.png",
+      "scratch/avoid008-badge-visual01/landscape-pair-1.png",
+      "scratch/avoid008-badge-visual01/landscape-pair-2.png",
+      "scratch/avoid008-badge-visual01/landscape-pair-3.png",
+      "scratch/avoid008-badge-visual01/portrait-pair-0.png",
+      "scratch/avoid008-badge-visual01/portrait-pair-1.png",
+      "scratch/avoid008-badge-visual01/portrait-pair-2.png",
+      "scratch/avoid008-badge-visual01/portrait-pair-3.png"
+    ],
+    "contactFrameRange": [
+      0,
+      95
+    ],
+    "nativeKeyPngFrames": [
+      6,
+      36,
+      91,
+      93
+    ],
+    "nativeKeyPngCount": 16,
+    "extraNativeDecodedFrameIndices": [
+      1,
+      95
+    ],
+    "extraNativeCount": 8,
+    "realtimePlayback": false,
+    "localHtmlRead": true,
+    "browserUiOpened": false
+  },
+  "findings": {
+    "spatialIntegrity": "PASS within viewed frames and substitute font",
+    "readability": "PASS native keys; landscape after two-line text has tight bottom margin",
+    "sampledEntryExitAppearance": "PASS frame sequence; native source entry crop retained/shifted; after exit remains in stage with rotation and fade",
+    "realtimeMotionFeel": "UNSEEN",
+    "exactNativeClockAnd18DegreeLengthProof": "parent numerical/code review; not independently certified visually",
+    "circleSafety": "UNJUDGED no circle guide in images",
+    "originalFontAppearance": "UNJUDGED single Noto transport",
+    "publicVerification": "excluded by user instruction"
+  },
+  "failures": [],
+  "processes": "ffmpeg/ffprobe complete; no browser/server launched",
+  "beforeCommitNote": "Initial 2bb abbreviation failed to resolve; full commit subsequently verified byte-identical with bundle before compiled",
+  "beforeCommit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+  "beforeFullCommitByteMatch": true
+}

@@ -1,0 +1,26 @@
+{
+  "timeUTC": "2026-10-22T16:35:36.552899+00:00",
+  "reviewer": "parent",
+  "decision": "ACCEPTED_FOUR_CORNER_INTERVAL_REPAIR_FOR_STICKY_CHECKPOINT",
+  "manifestSHA256": "9a58a2258721e4f0afc10d20baa503b96027053ca5a6758013b0b2c1d57e0228",
+  "rawAndGzipFilesVerified": 17,
+  "resultPinsMatchedToSnapshotOverlay": 34,
+  "baseSnapshot": "shared-sticky-freeze02/manifest.json",
+  "mathReview": "Independent x/y interval Cartesian corners now all included before convexHull; signed multiplication and sin/cos extrema give a conservative rectangle on each continuous z subinterval. Root camera envelope follows it. This repairs the missing corner construction; frame tests do not replace the interval reasoning.",
+  "verification": {
+    "acceptedPreview02NativeFramesCarriedExactly": 192,
+    "perNotePhaseRowsExactlySameAsPhase02": true,
+    "stageFixtures": 2,
+    "sameRecipesOffsetsAndGlobalStageBounds": true,
+    "independentStagePolygonsAllVerticesInside": 10,
+    "paddedActualAlphaFramesOutsideZero": 22,
+    "changedSourceExactlyEmbeddedJAEN": true
+  },
+  "scope": "Sticky repair and same two accepted single-Noto fixture images only. nameTag/clapper recipes/source clip changes are saved drafts and not accepted by this receipt. Later strict-circle runtime guard changes need their separate source/results.",
+  "notClaimed": [
+    "C34 completion",
+    "all variants/multiface/performance or refreshed broad regression",
+    "nameTag/clapper visual or complete geometry acceptance",
+    "public result checking"
+  ]
+}

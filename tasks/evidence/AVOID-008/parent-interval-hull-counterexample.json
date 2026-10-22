@@ -1,0 +1,51 @@
+{
+  "timeUTC": "2026-10-22T16:28:41.102152+00:00",
+  "reviewer": "parent",
+  "independentCounterexample": {
+    "sourcePoint": [
+      0,
+      1
+    ],
+    "rotationRadians": [
+      0,
+      0.39269908169872414
+    ],
+    "intervalX": [
+      -0.3826834323650898,
+      0
+    ],
+    "intervalY": [
+      0.9238795325112867,
+      1
+    ],
+    "onlyDiagonalHull": [
+      [
+        -0.3826834323650898,
+        0.9238795325112867
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "actualMidpoint": [
+      -0.19509032201612825,
+      0.9807852804032304
+    ],
+    "crossProduct": 0.0074972116671667595,
+    "distanceOutsideDiagonalHull": 0.019214719596769538,
+    "fourCartesianCornersContainActualPoint": true
+  },
+  "finding": "Two opposite corners cannot in general enclose an independent x/y interval under convexHull. All four Cartesian corners or an axis-aligned rectangle are needed. A later fixed reserve may hide an observed miss but is not this interval proof.",
+  "affected": [
+    "main09g sourceStageEnvelopes",
+    "editorial09h newsStage",
+    "objects09i sweep"
+  ],
+  "notSameIssue": "Japanese09j two opposite extreme points are immediately converted through A.bounds to rect, preserving the full Cartesian rectangle.",
+  "actions": [
+    "Implementation fixes and relevant rechecks returned to their gpt-6.1-sol medium owners",
+    "Freeze02 registry/font/per-note phase/image-carry results retained, continuous sweep proof review reopened",
+    "Previous FAIL and source snapshots retained; no public result checking"
+  ]
+}

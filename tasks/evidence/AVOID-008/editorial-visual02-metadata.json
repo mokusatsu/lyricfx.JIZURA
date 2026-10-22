@@ -1,0 +1,341 @@
+{
+  "task": "AVOID-008",
+  "review": "editorial-visual02",
+  "reviewer": "same independent visual reviewer as visual01; parent images unseen",
+  "materialCorrespondence": "PASS",
+  "visualOutcome": "LIMITED_PASS_THREE_EXAMPLES",
+  "manifestSHA256": "9e2e9e981041a6c7466acaf0c5d5b1cd90101fdd817e021f768cd40788a6cd1c",
+  "retainedFailures": [
+    "preview01/native-stills01 copy correspondence FAIL",
+    "visual01 review unchanged",
+    "FAILURE-NOTICE unchanged"
+  ],
+  "newVisualInspection": {
+    "nativePNGs": 18,
+    "frames": [
+      6,
+      36,
+      91
+    ],
+    "allAtNativeResolution": true,
+    "captionReadAsFile": true,
+    "browserStarted": false,
+    "realtimePlayback": false
+  },
+  "carry": {
+    "sameReviewerPreviouslyViewedAll96FramePairs": true,
+    "reason": "6 MP4 bytes directly equal preview01 videos and all576 encoder-input frame hashes equal original logs",
+    "previousReview": "editorial-visual01-review.md",
+    "ffprobeReusedOnlyBecauseIdenticalBytes": true
+  },
+  "resolved": [
+    {
+      "id": "F1",
+      "scope": "magazine corresponding native supplement",
+      "actualCopy": "雨上がり Hello 123",
+      "outcome": "resolved in bundle02; original01 FAIL retained"
+    },
+    {
+      "id": "F2",
+      "scope": "caption/input-note versus rendered source annotations",
+      "outcome": "caption distinguishes input note from emitted source-specific notes; requested copy rendering not claimed"
+    }
+  ],
+  "caseVisualLimitedPass": [
+    "magazine paper, heading, image/bars, body and folio maintain relationships; no detected new crop or missing glyph at native keys",
+    "contents visible column/title/number/read order maintained; active fixed at 026",
+    "footnote main 2-line copy, source-generated annotations, marks and rule maintained"
+  ],
+  "unassessed": [
+    "realtime motion feel",
+    "numerical circle safety/no circle guide",
+    "contents active transition",
+    "input.note rendering",
+    "full production font families",
+    "outside 4-second capture",
+    "raster high-level plate audit path"
+  ],
+  "identityCaveat": {
+    "beforeCompiled": "17e35475df196fc87a931802a21683a1d4c7b0cafcbba88feb2e50c9ba708456",
+    "afterCompiled": "db371e02b0365e6368b1e4cfe7973f4f438ee7cdc35f929d0a244530a86f0bc5",
+    "source4c3d36dCompleteIdentityClaim": false,
+    "source09gUncommittedVerificationCopyCaveatRetained": true,
+    "checkedInIndexEqualityClaim": false
+  },
+  "publicVerification": "permanently excluded by AGENTS.md; no public connection or result checks",
+  "persistentProcessesStarted": 0,
+  "verification": {
+    "assets": 37,
+    "inputPins": 14,
+    "cases": [
+      {
+        "id": "magazine-headline-4",
+        "spec": {
+          "id": "magazine-headline-4",
+          "layout": "magazine",
+          "W": 640,
+          "H": 640,
+          "text": "雨上がり Hello 123",
+          "radius": 0.1,
+          "cx": 0.9,
+          "cy": 0.1,
+          "params": {
+            "variant": "headline"
+          }
+        },
+        "sides": [
+          {
+            "side": "before",
+            "sourcePlansEqual": true,
+            "videoBytesIdentical": true,
+            "all96FrameHashesEqual": true,
+            "native": [
+              {
+                "frame": 6,
+                "time": 0.25,
+                "rgbMAE_vs_oldPNG": [
+                  1.232958984375,
+                  1.2209375,
+                  1.197119140625
+                ]
+              },
+              {
+                "frame": 36,
+                "time": 1.5,
+                "rgbMAE_vs_oldPNG": [
+                  1.3201953125,
+                  1.2923046875,
+                  1.213095703125
+                ]
+              },
+              {
+                "frame": 91,
+                "time": 3.7916666666666665,
+                "rgbMAE_vs_oldPNG": [
+                  1.13279296875,
+                  1.127548828125,
+                  1.094345703125
+                ]
+              }
+            ]
+          },
+          {
+            "side": "after",
+            "sourcePlansEqual": true,
+            "videoBytesIdentical": true,
+            "all96FrameHashesEqual": true,
+            "native": [
+              {
+                "frame": 6,
+                "time": 0.25,
+                "rgbMAE_vs_oldPNG": [
+                  1.180166015625,
+                  1.16701171875,
+                  1.141650390625
+                ]
+              },
+              {
+                "frame": 36,
+                "time": 1.5,
+                "rgbMAE_vs_oldPNG": [
+                  1.55744140625,
+                  1.525654296875,
+                  1.429501953125
+                ]
+              },
+              {
+                "frame": 91,
+                "time": 3.7916666666666665,
+                "rgbMAE_vs_oldPNG": [
+                  1.157724609375,
+                  1.1507421875,
+                  1.110029296875
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "contents-tate-1",
+        "spec": {
+          "id": "contents-tate-1",
+          "layout": "contents",
+          "W": 960,
+          "H": 540,
+          "text": "風の先へ",
+          "radius": 0.2,
+          "cx": 0.5,
+          "cy": 0.42,
+          "note": "遠い空の向こうへ",
+          "params": {
+            "variant": "tate"
+          }
+        },
+        "sides": [
+          {
+            "side": "before",
+            "sourcePlansEqual": true,
+            "videoBytesIdentical": true,
+            "all96FrameHashesEqual": true,
+            "native": [
+              {
+                "frame": 6,
+                "time": 0.25,
+                "rgbMAE_vs_oldPNG": [
+                  0.923395061728395,
+                  0.918858024691358,
+                  0.9046296296296297
+                ]
+              },
+              {
+                "frame": 36,
+                "time": 1.5,
+                "rgbMAE_vs_oldPNG": [
+                  1.0331018518518518,
+                  1.021682098765432,
+                  0.9873533950617284
+                ]
+              },
+              {
+                "frame": 91,
+                "time": 3.7916666666666665,
+                "rgbMAE_vs_oldPNG": [
+                  1.0508564814814816,
+                  1.0402932098765432,
+                  1.005679012345679
+                ]
+              }
+            ]
+          },
+          {
+            "side": "after",
+            "sourcePlansEqual": true,
+            "videoBytesIdentical": true,
+            "all96FrameHashesEqual": true,
+            "native": [
+              {
+                "frame": 6,
+                "time": 0.25,
+                "rgbMAE_vs_oldPNG": [
+                  0.902337962962963,
+                  0.8981867283950618,
+                  0.882608024691358
+                ]
+              },
+              {
+                "frame": 36,
+                "time": 1.5,
+                "rgbMAE_vs_oldPNG": [
+                  1.0036496913580246,
+                  0.9950617283950617,
+                  0.9652932098765432
+                ]
+              },
+              {
+                "frame": 91,
+                "time": 3.7916666666666665,
+                "rgbMAE_vs_oldPNG": [
+                  1.0478472222222222,
+                  1.0386033950617284,
+                  1.0070216049382716
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "footnote-native-1",
+        "spec": {
+          "id": "footnote-native-1",
+          "layout": "footnote",
+          "W": 960,
+          "H": 540,
+          "text": "風の先へ",
+          "radius": 0.2,
+          "cx": 0.5,
+          "cy": 0.42,
+          "note": "遠い空の向こうへ",
+          "params": {
+            "marks": "kome",
+            "top": false,
+            "align": "center"
+          }
+        },
+        "sides": [
+          {
+            "side": "before",
+            "sourcePlansEqual": true,
+            "videoBytesIdentical": true,
+            "all96FrameHashesEqual": true,
+            "native": [
+              {
+                "frame": 6,
+                "time": 0.25,
+                "rgbMAE_vs_oldPNG": [
+                  0.9254629629629629,
+                  0.9239429012345679,
+                  0.9161188271604939
+                ]
+              },
+              {
+                "frame": 36,
+                "time": 1.5,
+                "rgbMAE_vs_oldPNG": [
+                  1.0847916666666666,
+                  1.0703626543209876,
+                  1.0222067901234568
+                ]
+              },
+              {
+                "frame": 91,
+                "time": 3.7916666666666665,
+                "rgbMAE_vs_oldPNG": [
+                  1.0647067901234568,
+                  1.0532484567901235,
+                  1.0125231481481483
+                ]
+              }
+            ]
+          },
+          {
+            "side": "after",
+            "sourcePlansEqual": true,
+            "videoBytesIdentical": true,
+            "all96FrameHashesEqual": true,
+            "native": [
+              {
+                "frame": 6,
+                "time": 0.25,
+                "rgbMAE_vs_oldPNG": [
+                  0.9134876543209877,
+                  0.9124768518518519,
+                  0.9038811728395062
+                ]
+              },
+              {
+                "frame": 36,
+                "time": 1.5,
+                "rgbMAE_vs_oldPNG": [
+                  1.0516975308641976,
+                  1.0361188271604937,
+                  0.9826697530864198
+                ]
+              },
+              {
+                "frame": 91,
+                "time": 3.7916666666666665,
+                "rgbMAE_vs_oldPNG": [
+                  1.0656635802469137,
+                  1.0532716049382715,
+                  1.0084259259259258
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
