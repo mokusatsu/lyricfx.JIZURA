@@ -151,8 +151,8 @@
     },
     {
       "path": "tasks/AVOID-006.md",
-      "bytes": 69163,
-      "sha256": "1fd987e802fb1d320f6d8bc2766baf6cfadb8d2e0cd41a33a411bf731d553d3e"
+      "bytes": 71221,
+      "sha256": "08ed90c4b89430c22c16313772f8b04f3ea1a1da86b7a801c79cb93541440f1b"
     },
     {
       "path": "tasks/evidence/AVOID-006/film-ticket-edges/adaptive.log",
@@ -1650,6 +1650,11 @@
       "sha256": "7864644a30b6a899f44f3e4451bc242594aa2afb859107b0cf8eac96dae7de70"
     },
     {
+      "path": "tasks/evidence/AVOID-006/film-ticket-edges/pages07-deployment.log",
+      "bytes": 6294,
+      "sha256": "056beb4c434fad1e7d5bbaa94e96448db74413130c5b8ded21658bd7798c597c"
+    },
+    {
       "path": "tasks/evidence/AVOID-006/film-ticket-edges/pages07-jekyll.log",
       "bytes": 284,
       "sha256": "cf07bd133f9f72f56739b423c4cfaa9df45d78ee5878835bad1cf7d1e8b4376d"
@@ -1668,6 +1673,11 @@
       "path": "tasks/evidence/AVOID-006/film-ticket-edges/pages07-projection.json",
       "bytes": 632336,
       "sha256": "390363475ba5326cf2d4a2036c69d0a479ddc5934f016e8e70c0f32235aa018b"
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-ticket-edges/pages07-run.json",
+      "bytes": 12502,
+      "sha256": "6c96812b3b2f7f2aa25b4358d1ee01d7f7b32a193e8c57570cbb57ed4cebb05f"
     },
     {
       "path": "tasks/evidence/AVOID-006/film-ticket-edges/pages07-snapshot.log",
@@ -1691,8 +1701,8 @@
     },
     {
       "path": "tasks/evidence/AVOID-006/film-ticket-edges/parent-review.md",
-      "bytes": 36272,
-      "sha256": "0cec071cb715b5681b69998e616b274656ac5d497a90318b16a2e92839095155"
+      "bytes": 38190,
+      "sha256": "3b4f5a0e1fbca304e0bc8aca77fa1d2ea417125277f6f10b2753318522554ae4"
     },
     {
       "path": "tasks/evidence/AVOID-006/film-ticket-edges/parity-ledger-validator-test.cjs",
@@ -1925,6 +1935,36 @@
       "sha256": "8334000debef23a8f40579a89dbad56c87eb1817ab1cd0c48ef2b30ed9ad6ca0"
     },
     {
+      "path": "tasks/evidence/AVOID-006/film-ticket-edges/public07-normal-https.json",
+      "bytes": 787,
+      "sha256": "b9c0e3159c211e60e9cd6263a4f06aa09603520ebfadb0e2a34d81fe3df7a60f"
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-ticket-edges/public07-site-smoke.log",
+      "bytes": 523,
+      "sha256": "e57ebda233cb23859e0b676f9de62393370709bbb671f9379c46aa9f9d978e1d"
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-ticket-edges/public07-validation-01.json",
+      "bytes": 161380,
+      "sha256": "2d5e04eddd23390394538d8084689f39b87f702451eecf506b076beaa64b9413"
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-ticket-edges/public07-validation-01.log",
+      "bytes": 83660,
+      "sha256": "24240c987900d9b6d1743bb453b5203fefac58a31aa3226773e2038c21f44c2a"
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-ticket-edges/publication.json",
+      "bytes": 1252,
+      "sha256": "7acddf319f03b991abb3150858518d1981df0d0161cc305e5222b59f67130f7d"
+    },
+    {
+      "path": "tasks/evidence/AVOID-006/film-ticket-edges/release-public-map-proof.json",
+      "bytes": 404,
+      "sha256": "62cceb52e323c5b74fde0f0d49db1d74c7ff2de09fb89dac7f54a8468fd0f81a"
+    },
+    {
       "path": "tasks/evidence/AVOID-006/film-ticket-edges/resume-environment187.json",
       "bytes": 531,
       "sha256": "8ac9037ceb833ccdd5e111d69b53c2874092523bf26a95e147fad9c9ec32a567"
@@ -2021,16 +2061,16 @@
     },
     {
       "path": "tasks/reviews/AVOID-006-local-20261021-07.md",
-      "bytes": 7723,
-      "sha256": "4b6316dcb9f4bf07ca86001599203cb002a4398bbac99ac8aecc8f2f724e03a5"
+      "bytes": 8752,
+      "sha256": "50ebfee4dc4ba847c83955c192b6865608740e5f0216d311d809c6c18986e4cc"
     },
     {
       "path": "tasks/task-list.md",
-      "bytes": 7253,
-      "sha256": "28c32a842d24678c4127d904ef19ba24e137d252ef09d7a9f7a11844c2ec153e"
+      "bytes": 7330,
+      "sha256": "193aca3dffc92b3d2abb8f24d0d21a91561bf0f3bca088fad8f0932957a78dc9"
     }
   ],
-  "selectedBytes": 241790417,
+  "selectedBytes": 242062301,
   "excludedLocalOnly": [
     {
       "path": "tasks/evidence/AVOID-006/film-ticket-edges/adaptive-report.json",
@@ -4780,6 +4820,7 @@
     "Raw giant reports/profiles are local-only; two current-run raw reports were released by the parent after exact gzip verification. Canonical gzip copies and release receipts preserve their bytes.",
     "Existing dirty pyc and unrelated untracked files are outside this inventory and must remain untouched.",
     "Future parent Pages/local/public/visual receipts may be staged separately; this inventory does not claim those checks ran.",
-    "Parent added final07 local/visual/Jekyll audit and resumed network receipts before release; publication checks are separate. Raw historical log/tool whitespace is preserved byte-for-byte."
+    "Parent added final07 local/visual/Jekyll audit and resumed network receipts before release; publication checks are separate. Raw historical log/tool whitespace is preserved byte-for-byte.",
+    "Publication07 raw21 hashes/18 playback/JAEN app and normal HTTPS receipts passed. Metadata-only follow-up changes excluded tasks paths; tested release remains abf02cee. Human film/ticket behavior acceptance pending."
   ]
 }
