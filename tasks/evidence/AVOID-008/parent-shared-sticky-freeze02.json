@@ -1,0 +1,80 @@
+{
+  "timeUTC": "2026-10-22T16:23:07.016522+00:00",
+  "reviewer": "parent",
+  "decision": "ACCEPTED_SHARED_REGISTRY_FONT_AND_STICKY_CHECKPOINT_ONLY",
+  "manifestSHA256": "23c1cd2fc5fe54b58f1dd8c657550cbcf37123249e24f73a1488da9dc7ca95a1",
+  "rawAndGzipVerified": 113,
+  "sourceFiles": 103,
+  "reportAndLogFiles": 10,
+  "resultPinsMatchedToSnapshots": 120,
+  "sourceEmbedding": [
+    {
+      "source": "src/09g_layoutsC_placement.js",
+      "compiled": "index.html",
+      "exactSourceEmbedded": true
+    },
+    {
+      "source": "src/09g_layoutsC_placement.js",
+      "compiled": "en/index.html",
+      "exactSourceEmbedded": true
+    },
+    {
+      "source": "src/11p_layoutsC.js",
+      "compiled": "index.html",
+      "exactSourceEmbedded": true
+    },
+    {
+      "source": "src/11p_layoutsC.js",
+      "compiled": "en/index.html",
+      "exactSourceEmbedded": true
+    }
+  ],
+  "registry": {
+    "registrationRejects": 4,
+    "invalidReturns": 11,
+    "callbackThrowRestored": true,
+    "controlsWithoutCallbackAndPixelIdentical": 5,
+    "scope": "Schema/routing only; synthetic insufficient trajectory is not a geometry certificate"
+  },
+  "font": {
+    "realWeights": [
+      500,
+      700
+    ],
+    "actualNativeTextDraws": 48,
+    "actualPx": 9,
+    "parserExamples": 3,
+    "invalidRejects": 3,
+    "normalizedIdentityChecks": {
+      "sameAtDifferentSize": true,
+      "differentWeight": true,
+      "differentFamily": true
+    },
+    "scope": "Actual nativeText Canvas CSS parsing; not magazine avoidance acceptance"
+  },
+  "sticky": {
+    "boundarySourceCases": 5,
+    "clockCases": 6,
+    "cameraRenderScaleCases": 12,
+    "explicitSizeCases": 3,
+    "perNativeNotePhaseCases": 2,
+    "strictPhaseSamples": 12,
+    "acceptedPreview02NativeFramesCarriedExactly": 192,
+    "carriedManifestSHA256": "eeef356179ca535454c663a9203a9dc00302270cee6a669535a98a7a0caa470d",
+    "independentVisualReview": "sticky-visual02-review.md; only carried exact images, parent did not view media"
+  },
+  "codeReviewed": [
+    "src/09g_layoutsC_placement.js registry callback capture, exact region/time/circle schema, restoration and no-region preservation",
+    "Canvas px-token parser preserving weight/style/family identity",
+    "sticky native per-note entryEnd/exitStart guards and no-exit handling",
+    "all five test bodies, report values and logs"
+  ],
+  "limitations": [
+    "nameTag stage/direction/writing-field recipes are unaccepted draft in this source; six probe04 successes do not establish visual acceptance",
+    "clapper pending; external31 source modules not integrated",
+    "C34 full acceptance/multiface/performance/updated broad regression remain unfinished",
+    "Historical failures and prior pin-only mutable results retained; this immutable checkpoint supersedes none of their failures",
+    "Public result checking prohibited by user; no public access performed",
+    "Known lyric_area_effects failure retained for017; save013 not passed"
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "timeUTC": "2026-10-22T16:23:34.916527+00:00",
+  "reviewer": "parent",
+  "decision": "LIMITED_GEOMETRY_AND_SOURCE_REVIEW_CHECKPOINT",
+  "sourceCommit": "f4c512d",
+  "probeSHA256": "f5be82220842c625368f591ab44d7c8bee351b77860328b0957b60786c98cf84",
+  "method": "Independent ray crossings and point-to-edge projection distance; does not import product placement/oracle code",
+  "certifiedHoldRowsChecked": 6,
+  "checks": [
+    {
+      "layout": "kakejiku",
+      "stage": [
+        960,
+        540
+      ],
+      "radius": 0.02,
+      "circle": {
+        "cx": 480,
+        "cy": 226.79999999999998,
+        "r": 10.8
+      },
+      "offset": [
+        164.16363849999996,
+        0
+      ],
+      "composition": {
+        "objectScale": 0.9,
+        "paperMeasure": 1,
+        "strategy": "source-paper-size-and-column-measure"
+      },
+      "holdWindow": [
+        1,
+        3.6
+      ],
+      "minEnvelopeDistance": 13.500099999999975,
+      "requiredDistance": 13.5,
+      "allStageEnvelopeVerticesContained": true
+    },
+    {
+      "layout": "kakejiku",
+      "stage": [
+        960,
+        540
+      ],
+      "radius": 0.2,
+      "circle": {
+        "cx": 480,
+        "cy": 226.79999999999998,
+        "r": 108
+      },
+      "offset": [
+        261.3636385,
+        0
+      ],
+      "composition": {
+        "objectScale": 0.9,
+        "paperMeasure": 1,
+        "strategy": "source-paper-size-and-column-measure"
+      },
+      "holdWindow": [
+        1,
+        3.6
+      ],
+      "minEnvelopeDistance": 110.70010000000002,
+      "requiredDistance": 110.7,
+      "allStageEnvelopeVerticesContained": true
+    },
+    {
+      "layout": "chochin",
+      "stage": [
+        960,
+        540
+      ],
+      "radius": 0.02,
+      "circle": {
+        "cx": 480,
+        "cy": 226.79999999999998,
+        "r": 10.8
+      },
+      "offset": [
+        162.16996169578354,
+        65.08071972905282
+      ],
+      "composition": {
+        "objectScale": 0.7,
+        "strategy": "source-lantern-proportional-size"
+      },
+      "holdWindow": [
+        0.5,
+        3.6
+      ],
+      "minEnvelopeDistance": 13.500099999999975,
+      "requiredDistance": 13.5,
+      "allStageEnvelopeVerticesContained": true
+    },
+    {
+      "layout": "chochin",
+      "stage": [
+        960,
+        540
+      ],
+      "radius": 0.2,
+      "circle": {
+        "cx": 480,
+        "cy": 226.79999999999998,
+        "r": 108
+      },
+      "offset": [
+        259.36996169578356,
+        65.08071972905282
+      ],
+      "composition": {
+        "objectScale": 0.7,
+        "strategy": "source-lantern-proportional-size"
+      },
+      "holdWindow": [
+        0.5,
+        3.6
+      ],
+      "minEnvelopeDistance": 110.70010000000002,
+      "requiredDistance": 110.7,
+      "allStageEnvelopeVerticesContained": true
+    },
+    {
+      "layout": "chochin",
+      "stage": [
+        540,
+        960
+      ],
+      "radius": 0.02,
+      "circle": {
+        "cx": 270,
+        "cy": 403.2,
+        "r": 10.8
+      },
+      "offset": [
+        9.587607394572527e-15,
+        156.57751118522978
+      ],
+      "composition": null,
+      "holdWindow": [
+        0.5,
+        3.6
+      ],
+      "minEnvelopeDistance": 13.500100000000032,
+      "requiredDistance": 13.5,
+      "allStageEnvelopeVerticesContained": true
+    },
+    {
+      "layout": "chochin",
+      "stage": [
+        540,
+        960
+      ],
+      "radius": 0.2,
+      "circle": {
+        "cx": 270,
+        "cy": 403.2,
+        "r": 108
+      },
+      "offset": [
+        1.3442576372450506e-14,
+        219.53393226209795
+      ],
+      "composition": {
+        "objectScale": 0.85,
+        "strategy": "source-lantern-proportional-size"
+      },
+      "holdWindow": [
+        0.5,
+        3.6
+      ],
+      "minEnvelopeDistance": 110.70010000000008,
+      "requiredDistance": 110.7,
+      "allStageEnvelopeVerticesContained": true
+    }
+  ],
+  "sourceReview": {
+    "readFiles": [
+      "src/09j_layoutsC_japanese.js",
+      "src/11p_layoutsC.js relevant kake/omikuji/noren/chochin blocks"
+    ],
+    "acceptedRoleDecision": "Chochin radial body-colour light with no glyph silhouette is independent background illumination, fixed by source at every radius; body/ribs/caps/short cord/all verse remain primary. Long stage cord/wire background classification requires attachment/reveal preservation.",
+    "kakePrototypeVisual": "kake-visual01-review.md PASS limited to one single-Noto 960x540 kake fixture; objectScale .9, not same-size-only translation.",
+    "returnedIssues": [
+      "Per-unit settled support must not borrow later unit entrance relaxation",
+      "Row wire added full continuations at we>0 can introduce instant appearance after joint offset; original path clock alone does not prove reveal preservation",
+      "Keep source hash snapshots before tests/capture and report immutable code, including external shared registry copy",
+      "Kake HTML label must disclose object/font size adjustment; old04 retained immutable"
+    ]
+  },
+  "notAccepted": [
+    "C34 completion or all eleven Japanese IDs",
+    "Actual brush/multiface/other variants and broad radius/aspect/long text acceptance",
+    "Full-interval geometry is a source proof plus runtime guard; dense frame samples alone are not that proof",
+    "Row wire continuations/reveal and per-unit early-phase relaxation still require correction",
+    "Probe09 module sourceProof text was revised after capture; its source hashes are not all Git f4c512d or the current working files. This receipt verifies the immutable result geometry and reads named committed code; it is not an exact-source execution certificate."
+  ],
+  "publicResultChecks": "Prohibited by user; none performed",
+  "reviewedCommittedRawSnapshot": "japanese-checkpoint03-parent/manifest.json"
+}

@@ -1,0 +1,311 @@
+{
+  "registration": [
+    {
+      "name": "unknown",
+      "rejected": true
+    },
+    {
+      "name": "reserved",
+      "rejected": true
+    },
+    {
+      "name": "bad-id",
+      "rejected": true
+    },
+    {
+      "name": "duplicate",
+      "rejected": true
+    }
+  ],
+  "returns": [
+    {
+      "name": "valid",
+      "staged": true,
+      "sourceAdapter": "C008_registry_test",
+      "restored": false,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "C008_registry_test",
+          "safety": "insufficient-space"
+        }
+      ],
+      "equal": true
+    },
+    {
+      "name": "units-empty",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "Complete typed C source-native trajectory required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "segments-empty",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "Unique C unit owner and complete nonempty region segments required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "nan-time",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "C segment must exactly cover its source region with finite fixed offsets and typed status",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "moving",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "C segment must exactly cover its source region with finite fixed offsets and typed status",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "circle",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "C segment circle differs from the resolved stage-pixel region",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "coverage",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "Unique C unit owner and complete nonempty region segments required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "owner",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "Unique C unit owner and complete nonempty region segments required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "root-safe",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "C root safety contradicts its actual segment outcomes",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "decision",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "C segment decision/status mismatch",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "hold-empty",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "C safe-hold requires at least .04s inside the actual source cut interval",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "hold-outside",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_C_ADAPTER_RESULT",
+          "details": "C safe-hold requires at least .04s inside the actual source cut interval",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "throw",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "EXPECTED_CALLBACK_FAILURE",
+          "details": "Expected callback failure",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    }
+  ],
+  "controls": [
+    {
+      "control": "off",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_LEGACY",
+          "safety": "not-evaluated"
+        }
+      ]
+    },
+    {
+      "control": "manual",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_LEGACY",
+          "safety": "not-evaluated"
+        }
+      ]
+    },
+    {
+      "control": "lock",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_LEGACY",
+          "safety": "not-evaluated"
+        }
+      ]
+    },
+    {
+      "control": "emphasis",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_LEGACY",
+          "safety": "not-evaluated"
+        }
+      ]
+    },
+    {
+      "control": "no-regions",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_NO_ACTIVE_REGION",
+          "safety": "not-evaluated"
+        }
+      ]
+    }
+  ],
+  "calls": 13,
+  "renders": 1,
+  "scope": "Registry schema and routing only; no actual avoidance certification",
+  "start": "2026-10-22T16:20:30.498Z",
+  "end": "2026-10-22T16:20:33.321Z",
+  "pins": [
+    {
+      "path": "index.html",
+      "sha256": "cdf774c16898550a1741b51a42c4e7712faf1ff8840aab26052b1f2cedb839f7"
+    },
+    {
+      "path": "en/index.html",
+      "sha256": "7cdf8ef32a7b0cc478d3dd6c77e315f9a5521609ced9b8e8e0ea0594be356f60"
+    },
+    {
+      "path": "src/09g_layoutsC_placement.js",
+      "sha256": "4a84fb81720cd1aa7f89c1d33d6a71264ad42dcf913ca26921a225e07c0c58d2"
+    },
+    {
+      "path": "src/09a_placement.js",
+      "sha256": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a"
+    },
+    {
+      "path": "src/11p_layoutsC.js",
+      "sha256": "2cd698abfe516f263273a0b027487c9880ef865a065413a924800eb82efd84ed"
+    },
+    {
+      "path": "src/11z_layoutsC_transport.js",
+      "sha256": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091"
+    },
+    {
+      "path": "dev/avoidance/layouts-a-fixture.js",
+      "sha256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-registry-test.cjs",
+      "sha256": "ad67aafa8ac7cd82371c039f7a61380bf40d31d27b64dbc86e5b9c6a590e5b64"
+    }
+  ]
+}
