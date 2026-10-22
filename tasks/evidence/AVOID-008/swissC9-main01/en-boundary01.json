@@ -1,0 +1,4348 @@
+{
+  "start": "2026-10-22T18:39:38.554Z",
+  "pins": {
+    "index.html": "d225df866d7f3629ee7aa71bbbaa9e7e561d96b99aaaf633a65b262a59373d4f",
+    "en/index.html": "95c390bb422206cb62f30f4194c1735ecf20d6d8ddf02f47c057f6955d4d001e",
+    "src/09h_layoutsC_editorial.js": "27988468bcfdebc26f0b5e72abfee1d1c5fbf84303937e2877e9c5ad0dd0c96e",
+    "src/11p_layoutsC.js": "2c6990ea01afad48a83e671ce042f37f5d02546a96858b582d7a65bd73888b48",
+    "dev/avoidance/layouts-c-editorial-swiss-boundary.cjs": "7a6cf589b66bbf023f60442241a082fcad8d793eef454559c1cad1d52d58e3f7"
+  },
+  "rows": [
+    {
+      "layout": "swissGrid",
+      "variant": "a",
+      "mode": "epochs",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42,
+        "regions": [
+          {
+            "id": "epoch-0",
+            "start": 0,
+            "end": 0.5,
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0.02
+          },
+          {
+            "id": "epoch-1",
+            "start": 0.5,
+            "end": 1,
+            "center": {
+              "x": 0.5,
+              "y": 0.42
+            },
+            "radius": 0.05
+          },
+          {
+            "id": "epoch-2",
+            "start": 1,
+            "end": 1.5,
+            "center": {
+              "x": 1,
+              "y": 1
+            },
+            "radius": 0.1
+          },
+          {
+            "id": "epoch-3",
+            "start": 1.5,
+            "end": 2,
+            "center": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 0.15
+          },
+          {
+            "id": "epoch-4",
+            "start": 2,
+            "end": 2.5,
+            "center": {
+              "x": 0.9,
+              "y": 0.1
+            },
+            "radius": 0.2
+          },
+          {
+            "id": "epoch-5",
+            "start": 2.5,
+            "end": 3,
+            "center": {
+              "x": 0.25,
+              "y": 0.75
+            },
+            "radius": 0.25
+          },
+          {
+            "id": "epoch-6",
+            "start": 3,
+            "end": 3.5,
+            "center": {
+              "x": 0.75,
+              "y": 0.25
+            },
+            "radius": 0.35
+          },
+          {
+            "id": "epoch-7",
+            "start": 3.5,
+            "end": 4,
+            "center": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "radius": 0.45
+          }
+        ]
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 6,
+        "rejected": 5,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "epoch-0",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-1",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-2",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-3",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-4",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-5",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-6",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-7",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5001,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "a",
+      "mode": "ghost",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "ghost": true,
+        "camera": "dutch",
+        "radius": 0.05,
+        "cx": 0,
+        "cy": 1
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 5,
+        "reconstructed": 4,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 4,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": {
+            "gridMeasure": 0.85,
+            "strategy": "swissGrid-native-gridMeasure"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "a",
+      "mode": "aspect-before",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        },
+        "W": 1000,
+        "H": 1079,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "a",
+      "mode": "aspect-after",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        },
+        "W": 1000,
+        "H": 1081,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 21,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 21,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 21,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "a",
+      "mode": "short",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "duration": 0.8,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "unsupported",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INSUFFICIENT_HOLD_WINDOW",
+          "details": "Editorial source has not completed all required reveals before exit",
+          "safety": "unsupported"
+        }
+      ],
+      "observations": [],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "a",
+      "mode": "long",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "世界の向こうに響く歌声をいつまでも覚えている夜明けの空へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 17,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "a",
+      "mode": "explicit-small",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 0.7,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "a",
+      "mode": "explicit-large",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 1.4,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "b",
+      "mode": "epochs",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "b",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42,
+        "regions": [
+          {
+            "id": "epoch-0",
+            "start": 0,
+            "end": 0.5,
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0.02
+          },
+          {
+            "id": "epoch-1",
+            "start": 0.5,
+            "end": 1,
+            "center": {
+              "x": 0.5,
+              "y": 0.42
+            },
+            "radius": 0.05
+          },
+          {
+            "id": "epoch-2",
+            "start": 1,
+            "end": 1.5,
+            "center": {
+              "x": 1,
+              "y": 1
+            },
+            "radius": 0.1
+          },
+          {
+            "id": "epoch-3",
+            "start": 1.5,
+            "end": 2,
+            "center": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 0.15
+          },
+          {
+            "id": "epoch-4",
+            "start": 2,
+            "end": 2.5,
+            "center": {
+              "x": 0.9,
+              "y": 0.1
+            },
+            "radius": 0.2
+          },
+          {
+            "id": "epoch-5",
+            "start": 2.5,
+            "end": 3,
+            "center": {
+              "x": 0.25,
+              "y": 0.75
+            },
+            "radius": 0.25
+          },
+          {
+            "id": "epoch-6",
+            "start": 3,
+            "end": 3.5,
+            "center": {
+              "x": 0.75,
+              "y": 0.25
+            },
+            "radius": 0.35
+          },
+          {
+            "id": "epoch-7",
+            "start": 3.5,
+            "end": 4,
+            "center": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "radius": 0.45
+          }
+        ]
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 6,
+        "rejected": 5,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "epoch-0",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-1",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-2",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-3",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-4",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-5",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-6",
+          "status": "safe-hold",
+          "composition": {
+            "gridPaper": {
+              "xMeasure": 0.32,
+              "typeScale": 0.7
+            },
+            "strategy": "swiss-grid-narrow-paper-headword"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-7",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5001,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "b",
+      "mode": "ghost",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "b",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "ghost": true,
+        "camera": "dutch",
+        "radius": 0.05,
+        "cx": 0,
+        "cy": 1
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 5,
+        "reconstructed": 4,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 4,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": {
+            "gridMeasure": 0.85,
+            "strategy": "swissGrid-native-gridMeasure"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "b",
+      "mode": "aspect-before",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "b",
+          "shape": "circle"
+        },
+        "W": 1000,
+        "H": 1079,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "b",
+      "mode": "aspect-after",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "b",
+          "shape": "circle"
+        },
+        "W": 1000,
+        "H": 1081,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 21,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 21,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 22,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 21,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "b",
+      "mode": "short",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "b",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "duration": 0.8,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "unsupported",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INSUFFICIENT_HOLD_WINDOW",
+          "details": "Editorial source has not completed all required reveals before exit",
+          "safety": "unsupported"
+        }
+      ],
+      "observations": [],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "b",
+      "mode": "long",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "b",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "世界の向こうに響く歌声をいつまでも覚えている夜明けの空へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            },
+            {
+              "strategy": "swiss-grid-narrow-paper-headword",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            },
+            {
+              "strategy": "swissGrid-native-gridMeasure",
+              "status": "rejected",
+              "reason": "SWISS_ACCENT_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 17,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 28,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 27,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "b",
+      "mode": "explicit-small",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "b",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 0.7,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "swissGrid",
+      "variant": "b",
+      "mode": "explicit-large",
+      "spec": {
+        "layout": "swissGrid",
+        "params": {
+          "variant": "b",
+          "shape": "circle"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 1.4,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 16,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 24,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 23,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "guards": [
+    {
+      "test": {
+        "layout": "swissGrid",
+        "time": 0.2,
+        "params": {
+          "variant": "a",
+          "shape": "circle"
+        }
+      },
+      "center": {
+        "x": 0.415649240830485,
+        "y": 0.24470138888888893
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        0.8101,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    },
+    {
+      "test": {
+        "layout": "swissGrid",
+        "time": 0.2,
+        "params": {
+          "variant": "a",
+          "shape": "square"
+        }
+      },
+      "center": {
+        "x": 0.415649240830485,
+        "y": 0.24470138888888893
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        0.8101,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    },
+    {
+      "test": {
+        "layout": "swissGrid",
+        "time": 0.2,
+        "params": {
+          "variant": "a",
+          "shape": "bar"
+        }
+      },
+      "center": {
+        "x": 0.415649240830485,
+        "y": 0.24470138888888893
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        0.8101,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    }
+  ],
+  "browser": "154.0.8037.57",
+  "sourceUnchanged": true,
+  "passed": true,
+  "end": "2026-10-22T18:39:44.132Z"
+}

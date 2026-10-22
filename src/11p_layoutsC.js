@@ -1218,9 +1218,12 @@ reg('swissGrid', {
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const cols = port ? 4 : 6, rows = port ? 8 : 6;
+    const gridPaper = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.gridPaper : null;
+    if (gridPaper && (port || p.chunks?.length !== 1 || /\s/.test(p.chunks[0]) || [...p.chunks[0]].length < 2 || [...p.chunks[0]].length > 4 || gridPaper.xMeasure !== .32 || gridPaper.typeScale !== .7)) { const e = new Error('Swiss narrow paper requires one short unbroken landscape headword'); e.code = 'SWISS_PAPER_DOMAIN'; throw e; }
     const m = u * 0.07;
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.gridMeasure ?? 1 : 1;
-    const gx0 = editorialMeasure === 1 ? m*1.35 : W/2+(m*1.35-W/2)*editorialMeasure, gx1 = editorialMeasure === 1 ? W-m : W/2+(W-m-W/2)*editorialMeasure, gy0 = editorialMeasure === 1 ? m : H/2+(m-H/2)*editorialMeasure, gy1 = editorialMeasure === 1 ? H-m : H/2+(H-m-H/2)*editorialMeasure;
+    const gridXMeasure = gridPaper ? gridPaper.xMeasure : editorialMeasure;
+    const gx0 = gridXMeasure === 1 ? m*1.35 : W/2+(m*1.35-W/2)*gridXMeasure, gx1 = gridXMeasure === 1 ? W-m : W/2+(W-m-W/2)*gridXMeasure, gy0 = editorialMeasure === 1 ? m : H/2+(m-H/2)*editorialMeasure, gy1 = editorialMeasure === 1 ? H-m : H/2+(H-m-H/2)*editorialMeasure;
     const cw = (gx1 - gx0) / cols, rh = (gy1 - gy0) / rows;
     const X = c => gx0 + c * cw, Y = r => gy0 + r * rh;
     // grid
@@ -1237,30 +1240,36 @@ reg('swissGrid', {
     if (k === 1) pl = [{ c: 0, r: port ? 2 : 1, span: cols, hr: port ? 2.4 : 2.6 }];
     else if (p.variant === 'a') pl = [{ c: 0, r: 1, span: cols, hr: port ? 2 : 2.2 }, { c: port ? 1 : half, r: rows - (k > 2 ? 3 : 2), span: cols - (port ? 1 : half), hr: 1 }, { c: port ? 1 : half, r: rows - 2 + (port ? 0.2 : 0.1), span: cols - (port ? 1 : half), hr: 1 }];
     else pl = [0, 1, 2].map(i => { const c = Math.round(i * cols / (k + (port ? 1.5 : 0.8))); return { c, r: (port ? 1 : 0.6) + i * (rows - 1.6) / k, span: cols - c, hr: port ? 1.6 : 1.4 }; });
+    const nativeCW = ((W-m)-m*1.35)/cols;
+    const nativeSizes = gridPaper ? chunks.map((ch,i)=>{const q=pl[i];return Math.min(J.fitSize(ch,p.font,q.span*nativeCW-nativeCW*.12,q.hr*rh*.9,{track:-.01}),u*.28);}) : null;
     const sizes = chunks.map((ch, i) => { const q = pl[i]; return Math.min(J.fitSize(ch, p.font, q.span * cw - cw * 0.12, q.hr * rh * 0.9, { track: -0.01 }), u * 0.28); });
+    if (gridPaper) { sizes[0]=nativeSizes[0]*gridPaper.typeScale; pl[0]={c:0,r:.5,span:cols,hr:3.5}; }
     if (k > 1 && p.variant === 'a') for (let i = 1; i < k; i++) sizes[i] = Math.min(sizes[i], sizes[0] * 0.6, Math.min(...sizes.slice(1)));
     const boxes = [];
     let bb = null;
-    chunks.forEach((ch, i) => {
-      const q = pl[i], sz = sizes[i];
-      const x = X(q.c) + cw * 0.06, y = Y(q.r) + sz * 0.56;
+    chunks.forEach((sourceText, i) => {
+      const chars=[...sourceText],ch=gridPaper?chars.slice(0,Math.ceil(chars.length/2)).join('')+'\n'+chars.slice(Math.ceil(chars.length/2)).join(''):sourceText;
+      const q = pl[i], sz = sizes[i], mainH=gridPaper?meas(ch,p.font,sz,{track:-.01}).h:sz*1.12;
+      const x = X(q.c) + cw * 0.06, y = Y(q.r) + (gridPaper?mainH/2:sz*.56);
       const w = meas(ch, p.font, sz, { track: -0.01 }).w;
-      boxes.push([x, Y(q.r), x + w, Y(q.r) + sz * 1.12]);
+      boxes.push([x, Y(q.r), x + w, Y(q.r) + mainH]);
       // rule on top of the chunk (hangs from the row line)
       const e = tin(env, 0.12 + i * 0.1, 0.5, E.inOutCubic) * out;
-      env.rect(X(q.c), Y(q.r) - Math.max(3, u * 0.005), Math.min(q.span * cw, w + cw * 0.12) * e, Math.max(3, u * 0.005), sc.fg, 1, false);
+      const priorRule=env.placementCBody; if(env.cut.placementLayoutsC)env.placementCBody={...priorRule,swissRule:{owner:i}};
+      try { env.rect(X(q.c), Y(q.r) - Math.max(3, u * 0.005), Math.min(q.span * cw, w + cw * 0.12) * e, Math.max(3, u * 0.005), sc.fg, 1, false); } finally { env.placementCBody=priorRule; }
       if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:X(q.c),y0:Y(q.r),x1:X(q.c+q.span),y1:Y(q.r+q.hr)};
       bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: ch, font: p.font, size: sz, x, y, align: 'left', track: -0.01, color: sc.fg, mi: i * 3 }));
     });
     // accent shape in the first free module block
-    const cands = [[cols - 2, rows - 2, 2], [0, rows - 2, 2], [cols - 2, 0, 2], [cols - 1, rows - 1, 1], [0, rows - 1, 1], [cols - 1, 0, 1]];
-    const free = cands.find(([c, r, s2]) => !boxes.some(b => b[0] < X(c + s2) && b[2] > X(c) && b[1] < Y(r + s2) && b[3] > Y(r)));
+    const cands = gridPaper ? (p.shape==='bar'?[[0,5,5,1]]:[[cols-3,4,3,2],[0,4,3,2]]) : [[cols - 2, rows - 2, 2], [0, rows - 2, 2], [cols - 2, 0, 2], [cols - 1, rows - 1, 1], [0, rows - 1, 1], [cols - 1, 0, 1]];
+    const free = cands.find(([c, r, s2, h2=s2]) => !boxes.some(b => b[0] < X(c + s2) && b[2] > X(c) && b[1] < Y(r + h2) && b[3] > Y(r)));
     if (free) {
-      const [c, r, s2] = free;
+      const [c, r, s2, h2=s2] = free;
       const q = E.outBack(J.clamp((env.lt - 0.25) / 0.45), 1.2) * (1 - E.inCubic(env.pOut));
-      const bw2 = s2 * cw, bh2 = s2 * rh, cxs = X(c) + bw2 / 2, cys = Y(r) + bh2 / 2, R = Math.min(bw2, bh2) * 0.46;
+      const bw2 = s2 * cw, bh2 = h2 * rh, cxs = X(c) + bw2 / 2, cys = Y(r) + bh2 / 2, R = Math.min(bw2, bh2) * 0.46;
       if (q > 0) {
         editorialMotion(.7, () => {
+        if(env.cut.placementLayoutsC)env.placementCBody.swissFreeBlock={x0:X(c),y0:Y(r),x1:X(c+s2),y1:Y(r+h2)};
         if (p.shape === 'circle') env.circle(cxs, cys, R * q, sc.accent, null, 0, 1, gIn(env));
         else if (p.shape === 'square') env.rect(cxs - R * q, cys - R * q, R * 2 * q, R * 2 * q, sc.accent, 1, gIn(env));
         else env.rect(X(c) + cw * 0.06, cys - rh * 0.12, (bw2 - cw * 0.12) * q, rh * 0.24, sc.accent, 1, gIn(env));
@@ -1269,7 +1278,7 @@ reg('swissGrid', {
     }
     if (p.label) {
       const a = tin(env, 0.3, 0.4, E.outCubic) * out;
-      env.draw({ text: 'JIZURA  ／  No.' + lineNo(env) + '  ／  ' + J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.8, track: 0.25, x: editorialMeasure === 1 ? m * 0.62 : gx0-m*.73, y: (gy0 + gy1) / 2, rot: -90, color: sc.sub, alpha: a, ghost: false });
+      env.draw({ text: 'JIZURA  ／  No.' + lineNo(env) + '  ／  ' + J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.8, track: 0.25, x: !gridPaper && editorialMeasure === 1 ? m * 0.62 : gx0-m*.73, y: (gy0 + gy1) / 2, rot: -90, color: sc.sub, alpha: a, ghost: false });
     }
     return bb;
   },

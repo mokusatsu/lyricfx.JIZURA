@@ -1,0 +1,13 @@
+# SwissGrid fixed c9 main integration
+
+Source `c9e22a8c2f6fe9f5af77210eaaf4f909c439df7a` only. 09h matches fixed c9 exactly; 11p transplants only swissGrid. Other33 source blocks/header/shared09g09a11z/preserved pyc remain exact. The module adds Swiss-only mapping/clock/accent/field/attachment validation and its paper recipe; other IDs only expose swissProof:null. Dictionary code and numbered implementation remain unchanged. Four Swiss drivers and250 immutable evidence files were imported, plus two manifest-pinned Git-excluded historical media files. Fixed generated HTML was not imported: JA/EN rebuilt locally.
+
+`freeze01/manifest.json` SHA256 **ecf3a2e907907dece41684743d22815c3581baba14af06ac5be34d11783ba0da** pins153 current inputs and12 results, with exact raw/gzip snapshots. All current bytes/gzip hashes/raw contents were rechecked after completion. See operation01-source.json, summary01.json and correspondence01.json. Source is fixed for parent review.
+
+Fresh results:45 cases,36safe/9insufficient;450OFF frames exact;72 actual source clock/copy comparisons.153nonempty all-primary raster records/153stage/369per-event records have collision/outside0.42injections rejected. EN16 modes plus3real strict guards pass. Eight actual font byte/cmap identities cover1146actual assigned glyphs. Existing Swiss representative carries by96native960x540 PNG frames and observation clocks with mismatch0; historical MP4 remains480x270. JA/EN localhost startup passes. All45selected outcomes/parameters/offsets/recipes/stage scopes and72clock records exactly match fixed c9. Causal unchanged170/864 suites were not repeated.
+
+Limits: new paper applies only to a single2..4codepoint unbroken landscape headword, retaining intentional narrower paper and two-line main changes. Remaining candidate insufficiency is not physical impossibility. Earliest36global strict masks are empty at quantization; all153all-primary masks are nonempty and per-event strict is separately tested. No new media, image viewing, public-result verification, Git/index operation or publication. Contents/object mutable changes excluded; C34/final regressions/performance remain incomplete.
+
+HELLO caption correction is recorded in hello-caption-correction-pending.md. Its original immutable preview/freeze is unchanged. The generic anchor caption is inapplicable to the actual landscape fixture; correct only a later explicitly authorized publication copy. This does not imply visual acceptance.
+
+All browser jobs are closed. No new browser will start until the parent releases the temporary performance isolation window. Await parent review/commit before further integration.
