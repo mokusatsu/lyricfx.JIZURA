@@ -1,0 +1,1479 @@
+{
+  "review": "AVOID-008 hang visual01",
+  "verdict": "LIMITED_PASS",
+  "verdictJa": "限定PASS",
+  "generatedAtUTC": "2026-10-22T22:10:35.241161+00:00",
+  "evidenceDirectory": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01",
+  "independentOfParentAutomatedResults": true,
+  "continuousVideoPlayback": false,
+  "viewImageDetail": "original",
+  "inspectedImages": [
+    {
+      "name": "before-t0p0833.png",
+      "path": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01/before-t0p0833.png",
+      "observationJa": "入場直後。暗い紙・孔・紐・罫線。文字と価格はまだ見えず、紐上部が画面上端で切れている。"
+    },
+    {
+      "name": "after-t0p0833.png",
+      "path": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01/after-t0p0833.png",
+      "observationJa": "同じ入場段階を右へ配置。紙の形・孔・罫線と上端cropはbefore相当。右端で新たに切れていない。"
+    },
+    {
+      "name": "before-t0p7.png",
+      "path": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01/before-t0p7.png",
+      "observationJa": "紙と紐が明瞭。歌詞は上段「風風の」、下段「先へ」。旧価格¥1,230に打消線、新価格¥980。"
+    },
+    {
+      "name": "after-t0p7.png",
+      "path": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01/after-t0p7.png",
+      "observationJa": "右寄せで同じ2行の歌詞・旧価格・打消線・新価格を判読できる。孔、紐、ピン、紙に見た目の縮小や欠落なし。"
+    },
+    {
+      "name": "before-t1p5.png",
+      "path": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01/before-t1p5.png",
+      "observationJa": "保持中。紙が逆方向へ少し傾き、歌詞・価格・罫線・余白を保持。"
+    },
+    {
+      "name": "after-t1p5.png",
+      "path": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01/after-t1p5.png",
+      "observationJa": "同じ傾きの右配置。紙の上下・右端、歌詞・価格とも完全に画内。読みやすさの低下は見えない。"
+    },
+    {
+      "name": "before-t3p9167.png",
+      "path": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01/before-t3p9167.png",
+      "observationJa": "終了付近。紙は傾いて暗化。新価格は保持時より小さく、旧価格の線は短く見える。"
+    },
+    {
+      "name": "after-t3p9167.png",
+      "path": "/workspace/avoid008-hang/tasks/evidence/AVOID-008/hang01/preview01/after-t3p9167.png",
+      "observationJa": "同様の暗化・傾き・価格の縮小と短い打消線。紙全体、紐、ピンは画内で新たな横cropなし。"
+    },
+    {
+      "name": "before-t0p25.png",
+      "path": "/tmp/avoid008-hang-visual01-decode/before-t0p25.png",
+      "observationJa": "MP4抽出。歌詞は既に表示、旧/新価格は未表示。紙は下がり、ピンと紐頂点には小さい隙間が見える。"
+    },
+    {
+      "name": "after-t0p25.png",
+      "path": "/tmp/avoid008-hang-visual01-decode/after-t0p25.png",
+      "observationJa": "MP4抽出。同じ文字先行・価格未表示の段階。ピンと紐の小さい隙間もbefore相当で、新規の分離とは見えない。"
+    },
+    {
+      "name": "before-t2p5.png",
+      "path": "/tmp/avoid008-hang-visual01-decode/before-t2p5.png",
+      "observationJa": "MP4抽出。保持中でほぼ直立。両価格と打消線、2行歌詞、ピンから紙への紐が見える。"
+    },
+    {
+      "name": "after-t2p5.png",
+      "path": "/tmp/avoid008-hang-visual01-decode/after-t2p5.png",
+      "observationJa": "MP4抽出。右でほぼ直立し同じ内容を保つ。紙・紐・ピンが同じ対象物として認識できる。"
+    }
+  ],
+  "assetVerification": {
+    "before-t0p0833.png": {
+      "sha256": "89fa8c5805d26ecd70091df8ecca02ca5a9dd23f0fe64be64c56abc22ec6f7ef",
+      "bytes": 402462,
+      "matches_manifest": true,
+      "dimensions": [
+        960,
+        540
+      ]
+    },
+    "before-t0p7.png": {
+      "sha256": "7c5011ec00c2e09caea0cf1742c0801a649934b3a7e9f03027d2daaa9d181576",
+      "bytes": 392073,
+      "matches_manifest": true,
+      "dimensions": [
+        960,
+        540
+      ]
+    },
+    "before-t1p5.png": {
+      "sha256": "848fed29688d5a42106195c69ba41040a5bf7f1c97a78200e9585978699a88ad",
+      "bytes": 393205,
+      "matches_manifest": true,
+      "dimensions": [
+        960,
+        540
+      ]
+    },
+    "before-t3p9167.png": {
+      "sha256": "99ad785c79315d981be283136ed7993029ac3121c12d4a600ce9e2b3593ce9cf",
+      "bytes": 422341,
+      "matches_manifest": true,
+      "dimensions": [
+        960,
+        540
+      ]
+    },
+    "before.mp4": {
+      "sha256": "6e26e9c82c33d8a1fabb4bf0282c6479e613bbe9275258f78d98914293644927",
+      "bytes": 233829,
+      "matches_manifest": true
+    },
+    "after-t0p0833.png": {
+      "sha256": "806555e139b99d446f21f77cb49da3c10af0a5d27b494f85ca4da442bcca58c6",
+      "bytes": 389606,
+      "matches_manifest": true,
+      "dimensions": [
+        960,
+        540
+      ]
+    },
+    "after-t0p7.png": {
+      "sha256": "efe51ada7f983514152f38b0e5fc5bfd896a20bcb213097f2050325ed553b2c6",
+      "bytes": 387340,
+      "matches_manifest": true,
+      "dimensions": [
+        960,
+        540
+      ]
+    },
+    "after-t1p5.png": {
+      "sha256": "b8b2d509088ca546483b779d640ddcc3367de0861452769f5f8f6cb046fa7c72",
+      "bytes": 387632,
+      "matches_manifest": true,
+      "dimensions": [
+        960,
+        540
+      ]
+    },
+    "after-t3p9167.png": {
+      "sha256": "1ac68aabfed2d9bd6646ee1b5dc7745166b1f107d603fb316bf260b63d309fd2",
+      "bytes": 410967,
+      "matches_manifest": true,
+      "dimensions": [
+        960,
+        540
+      ]
+    },
+    "after.mp4": {
+      "sha256": "0aedc879cbd62c9641bf1ed2db980dbdfef07868a43a42c2efbc3943016bc9cf",
+      "bytes": 230349,
+      "matches_manifest": true
+    },
+    "index.html": {
+      "sha256": "9e236c6a413211336a0080d467b7cb5e6b41c9491fb92518ddd027d932596b5c",
+      "bytes": 4627,
+      "matches_manifest": true
+    }
+  },
+  "initialHashes": {
+    "before-t1p5.png": "848fed29688d5a42106195c69ba41040a5bf7f1c97a78200e9585978699a88ad",
+    "before-t0p0833.png": "89fa8c5805d26ecd70091df8ecca02ca5a9dd23f0fe64be64c56abc22ec6f7ef",
+    "manifest.json": "2bddc366f3fc2268778ea8c81873e42e5cb3d1a13bd9a55e27db748ee0ce1fa0",
+    "before-t0p7.png": "7c5011ec00c2e09caea0cf1742c0801a649934b3a7e9f03027d2daaa9d181576",
+    "cleanup.json": "f6a345ff109678763b303f8c76290ae2e3d3a182b4636dd867fba46b47f655bb",
+    "index.html": "9e236c6a413211336a0080d467b7cb5e6b41c9491fb92518ddd027d932596b5c",
+    "after-t0p0833.png": "806555e139b99d446f21f77cb49da3c10af0a5d27b494f85ca4da442bcca58c6",
+    "after-t3p9167.png": "1ac68aabfed2d9bd6646ee1b5dc7745166b1f107d603fb316bf260b63d309fd2",
+    "REVIEW.md": "53b7052c88dbc6c3cfa2def1a5c75e6348c0fa3473f209d7f8e96a199623519d",
+    "before-t3p9167.png": "99ad785c79315d981be283136ed7993029ac3121c12d4a600ce9e2b3593ce9cf",
+    "after.mp4": "0aedc879cbd62c9641bf1ed2db980dbdfef07868a43a42c2efbc3943016bc9cf",
+    "after-t1p5.png": "b8b2d509088ca546483b779d640ddcc3367de0861452769f5f8f6cb046fa7c72",
+    "before.mp4": "6e26e9c82c33d8a1fabb4bf0282c6479e613bbe9275258f78d98914293644927",
+    "after-t0p7.png": "efe51ada7f983514152f38b0e5fc5bfd896a20bcb213097f2050325ed553b2c6"
+  },
+  "endHashes": {
+    "before-t1p5.png": "848fed29688d5a42106195c69ba41040a5bf7f1c97a78200e9585978699a88ad",
+    "before-t0p0833.png": "89fa8c5805d26ecd70091df8ecca02ca5a9dd23f0fe64be64c56abc22ec6f7ef",
+    "manifest.json": "2bddc366f3fc2268778ea8c81873e42e5cb3d1a13bd9a55e27db748ee0ce1fa0",
+    "before-t0p7.png": "7c5011ec00c2e09caea0cf1742c0801a649934b3a7e9f03027d2daaa9d181576",
+    "cleanup.json": "f6a345ff109678763b303f8c76290ae2e3d3a182b4636dd867fba46b47f655bb",
+    "index.html": "9e236c6a413211336a0080d467b7cb5e6b41c9491fb92518ddd027d932596b5c",
+    "after-t0p0833.png": "806555e139b99d446f21f77cb49da3c10af0a5d27b494f85ca4da442bcca58c6",
+    "after-t3p9167.png": "1ac68aabfed2d9bd6646ee1b5dc7745166b1f107d603fb316bf260b63d309fd2",
+    "REVIEW.md": "53b7052c88dbc6c3cfa2def1a5c75e6348c0fa3473f209d7f8e96a199623519d",
+    "before-t3p9167.png": "99ad785c79315d981be283136ed7993029ac3121c12d4a600ce9e2b3593ce9cf",
+    "after.mp4": "0aedc879cbd62c9641bf1ed2db980dbdfef07868a43a42c2efbc3943016bc9cf",
+    "after-t1p5.png": "b8b2d509088ca546483b779d640ddcc3367de0861452769f5f8f6cb046fa7c72",
+    "before.mp4": "6e26e9c82c33d8a1fabb4bf0282c6479e613bbe9275258f78d98914293644927",
+    "after-t0p7.png": "efe51ada7f983514152f38b0e5fc5bfd896a20bcb213097f2050325ed553b2c6"
+  },
+  "mediaAndManifestUnchangedAtEnd": true,
+  "sourceFilesVerification": {
+    "src/01_util.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+        "bytes": 10316
+      },
+      "actualSHA256": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+      "bytes": 10316,
+      "matches": true
+    },
+    "src/02_fonts.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "3e687cfd1045349f36eb65f4fa802973ad4303f48b21069cf6dcc68a546c0415",
+        "bytes": 20187
+      },
+      "actualSHA256": "3e687cfd1045349f36eb65f4fa802973ad4303f48b21069cf6dcc68a546c0415",
+      "bytes": 20187,
+      "matches": true
+    },
+    "src/02b_lang.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "a0464cc32ec396e2198801387f3640ec217ec1d0ea790ee2e88dbafebd7fc770",
+        "bytes": 13712
+      },
+      "actualSHA256": "a0464cc32ec396e2198801387f3640ec217ec1d0ea790ee2e88dbafebd7fc770",
+      "bytes": 13712,
+      "matches": true
+    },
+    "src/03_text.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+        "bytes": 16297
+      },
+      "actualSHA256": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+      "bytes": 16297,
+      "matches": true
+    },
+    "src/04_styles.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "29ecef9319dabebbadea198f3915c50bd76f2c48f1cf34d034c833106aa19ca7",
+        "bytes": 16597
+      },
+      "actualSHA256": "29ecef9319dabebbadea198f3915c50bd76f2c48f1cf34d034c833106aa19ca7",
+      "bytes": 16597,
+      "matches": true
+    },
+    "src/05_anim.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+        "bytes": 15003
+      },
+      "actualSHA256": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+      "bytes": 15003,
+      "matches": true
+    },
+    "src/05b_registry.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "ecaefd208377658bb23adca79c36e093a7b3fce796f5facdb7d10806f6619cea",
+        "bytes": 3834
+      },
+      "actualSHA256": "ecaefd208377658bb23adca79c36e093a7b3fce796f5facdb7d10806f6619cea",
+      "bytes": 3834,
+      "matches": true
+    },
+    "src/06_layouts.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+        "bytes": 60904
+      },
+      "actualSHA256": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+      "bytes": 60904,
+      "matches": true
+    },
+    "src/07_decor.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "9e0c6edc62ea6e0d220a5f5619e1ba10b35f776a45305fe1cde3288513fe4d24",
+        "bytes": 15456
+      },
+      "actualSHA256": "9e0c6edc62ea6e0d220a5f5619e1ba10b35f776a45305fe1cde3288513fe4d24",
+      "bytes": 15456,
+      "matches": true
+    },
+    "src/08_planner.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "608bf692d183fd5db2b4eecaa469d6278092be57796b5a3353175941bfddba37",
+        "bytes": 54754
+      },
+      "actualSHA256": "608bf692d183fd5db2b4eecaa469d6278092be57796b5a3353175941bfddba37",
+      "bytes": 54754,
+      "matches": true
+    },
+    "src/08b_omakase.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "0bcc4a74b12ea70a293cb6e3307c4fe62c8ddf391183bcbaceeb5747847bb870",
+        "bytes": 9977
+      },
+      "actualSHA256": "0bcc4a74b12ea70a293cb6e3307c4fe62c8ddf391183bcbaceeb5747847bb870",
+      "bytes": 9977,
+      "matches": true
+    },
+    "src/08c_composition.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "26ee97660d62e61eaf5817e7c0ad8afd465e976fb2213cadf6adb1c8b247572c",
+        "bytes": 18739
+      },
+      "actualSHA256": "26ee97660d62e61eaf5817e7c0ad8afd465e976fb2213cadf6adb1c8b247572c",
+      "bytes": 18739,
+      "matches": true
+    },
+    "src/08ca_lyric_avoidance.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d",
+        "bytes": 5795
+      },
+      "actualSHA256": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d",
+      "bytes": 5795,
+      "matches": true
+    },
+    "src/08cb_background_layouts.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "9122c219b4013391a5cc14dbdb289a7e205daf6088b8e4ed744f00b64aef560e",
+        "bytes": 18847
+      },
+      "actualSHA256": "9122c219b4013391a5cc14dbdb289a7e205daf6088b8e4ed744f00b64aef560e",
+      "bytes": 18847,
+      "matches": true
+    },
+    "src/08d_media.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "bf175deb61f4a197eb28dc538f8daaae9da55efe6711dbec61adba0c38407ffd",
+        "bytes": 47518
+      },
+      "actualSHA256": "bf175deb61f4a197eb28dc538f8daaae9da55efe6711dbec61adba0c38407ffd",
+      "bytes": 47518,
+      "matches": true
+    },
+    "src/08e_lyric_features.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "54f4b361f23bf8f78e293cf11a570a3088bc209dd80e6acf52ea7cffdc1f5373",
+        "bytes": 28080
+      },
+      "actualSHA256": "54f4b361f23bf8f78e293cf11a570a3088bc209dd80e6acf52ea7cffdc1f5373",
+      "bytes": 28080,
+      "matches": true
+    },
+    "src/08e_media_effects.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "eeb89f3b2424ad912ecc16d6f2affb186eb8c608a8b1a290d2b9c3d791b77f40",
+        "bytes": 15954
+      },
+      "actualSHA256": "eeb89f3b2424ad912ecc16d6f2affb186eb8c608a8b1a290d2b9c3d791b77f40",
+      "bytes": 15954,
+      "matches": true
+    },
+    "src/08eb_lyric_scene.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "c88e6f489446ffb77eac5856217a5b0c3ff04684c1c11750e29fe3c7fece681a",
+        "bytes": 33055
+      },
+      "actualSHA256": "c88e6f489446ffb77eac5856217a5b0c3ff04684c1c11750e29fe3c7fece681a",
+      "bytes": 33055,
+      "matches": true
+    },
+    "src/08f_media_variations.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "fa6c9db6aabf77de42dcd7dc87ff1f20cd401deaab541eddd5361548e247a38b",
+        "bytes": 15147
+      },
+      "actualSHA256": "fa6c9db6aabf77de42dcd7dc87ff1f20cd401deaab541eddd5361548e247a38b",
+      "bytes": 15147,
+      "matches": true
+    },
+    "src/08g_media_decor.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "68c7506146e71de5d89a691fb7738f23e86c847126a2f05fd887cfdcc6b395b6",
+        "bytes": 5168
+      },
+      "actualSHA256": "68c7506146e71de5d89a691fb7738f23e86c847126a2f05fd887cfdcc6b395b6",
+      "bytes": 5168,
+      "matches": true
+    },
+    "src/08g_media_masks.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "168fee9b91f7b24502daa16b101a5d65cd19a4c44377eb8f25c317812dbcaad8",
+        "bytes": 10648
+      },
+      "actualSHA256": "168fee9b91f7b24502daa16b101a5d65cd19a4c44377eb8f25c317812dbcaad8",
+      "bytes": 10648,
+      "matches": true
+    },
+    "src/08g_media_phases.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "ac91c6ea9e355a11f5734304de7d75dd6427923b431f6162eb29ec0a2322ad6f",
+        "bytes": 5455
+      },
+      "actualSHA256": "ac91c6ea9e355a11f5734304de7d75dd6427923b431f6162eb29ec0a2322ad6f",
+      "bytes": 5455,
+      "matches": true
+    },
+    "src/08g_media_rhythm.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "1b7821f7b8e3a760a081ecfcc869b840dcff451a00b3cabac113ecb73201193c",
+        "bytes": 4300
+      },
+      "actualSHA256": "1b7821f7b8e3a760a081ecfcc869b840dcff451a00b3cabac113ecb73201193c",
+      "bytes": 4300,
+      "matches": true
+    },
+    "src/08g_media_scenes.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "e71facca3a86a25c9404ad35a44494e0bf0781cfcfcf64957f01a3c615fd3414",
+        "bytes": 21271
+      },
+      "actualSHA256": "e71facca3a86a25c9404ad35a44494e0bf0781cfcfcf64957f01a3c615fd3414",
+      "bytes": 21271,
+      "matches": true
+    },
+    "src/08h_cut_details.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "bd8a814c97bb281a596d978478368061f5d596cb2dedcb6a57adb3eee1f07864",
+        "bytes": 10570
+      },
+      "actualSHA256": "bd8a814c97bb281a596d978478368061f5d596cb2dedcb6a57adb3eee1f07864",
+      "bytes": 10570,
+      "matches": true
+    },
+    "src/08i_effect_clipboard.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "9f0e7b10c1688312298ce262a78174530cfeec940f66531efa11de8cb6cb405e",
+        "bytes": 8242
+      },
+      "actualSHA256": "9f0e7b10c1688312298ce262a78174530cfeec940f66531efa11de8cb6cb405e",
+      "bytes": 8242,
+      "matches": true
+    },
+    "src/08j_cut_mask.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "556e924f69fe9435d3d3bfe452aa6e9b130f20d316e0f852e2e6b309050eeb6c",
+        "bytes": 9557
+      },
+      "actualSHA256": "556e924f69fe9435d3d3bfe452aa6e9b130f20d316e0f852e2e6b309050eeb6c",
+      "bytes": 9557,
+      "matches": true
+    },
+    "src/08k_detail_search.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "6472c8ad6013e5d14a0e3abf65fc32e39ee030e213bb8fa05530858df45f2db9",
+        "bytes": 6941
+      },
+      "actualSHA256": "6472c8ad6013e5d14a0e3abf65fc32e39ee030e213bb8fa05530858df45f2db9",
+      "bytes": 6941,
+      "matches": true
+    },
+    "src/08l_detail_labels.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "895d35845cd1304502a9c3427ad0d697a024b10cf783d75169f5caa4333b67d8",
+        "bytes": 14437
+      },
+      "actualSHA256": "895d35845cd1304502a9c3427ad0d697a024b10cf783d75169f5caa4333b67d8",
+      "bytes": 14437,
+      "matches": true
+    },
+    "src/08m_person_cutout.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "5559074b5a08786097f273d84b0f652abb21455a0d0023df68692f5269016185",
+        "bytes": 22982
+      },
+      "actualSHA256": "5559074b5a08786097f273d84b0f652abb21455a0d0023df68692f5269016185",
+      "bytes": 22982,
+      "matches": true
+    },
+    "src/09_render.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "d51a1ccca3a5b42d2204a401c57c859abf71a228aefd45e3a1dee14ecc7ea067",
+        "bytes": 35210
+      },
+      "actualSHA256": "d51a1ccca3a5b42d2204a401c57c859abf71a228aefd45e3a1dee14ecc7ea067",
+      "bytes": 35210,
+      "matches": true
+    },
+    "src/09a_placement.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a",
+        "bytes": 52377
+      },
+      "actualSHA256": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a",
+      "bytes": 52377,
+      "matches": true
+    },
+    "src/09b_basic_placement.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+        "bytes": 47411
+      },
+      "actualSHA256": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+      "bytes": 47411,
+      "matches": true
+    },
+    "src/09c_layoutsA_placement.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "ff603fe43f54296865ae59ab1268c581cbfbbf7a489d02aafbfda83221b03c36",
+        "bytes": 18259
+      },
+      "actualSHA256": "ff603fe43f54296865ae59ab1268c581cbfbbf7a489d02aafbfda83221b03c36",
+      "bytes": 18259,
+      "matches": true
+    },
+    "src/09d_adaptive_placement.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "ab3e8c727284eacbf642e4fdb2e71197aa6cfde7a68e1473450710289c05a595",
+        "bytes": 32557
+      },
+      "actualSHA256": "ab3e8c727284eacbf642e4fdb2e71197aa6cfde7a68e1473450710289c05a595",
+      "bytes": 32557,
+      "matches": true
+    },
+    "src/09e_layoutsB_placement.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "268e8f8132f70a9e9627a703656f56d00e50a7145b8b84b1eef31c2371d249d1",
+        "bytes": 66580
+      },
+      "actualSHA256": "268e8f8132f70a9e9627a703656f56d00e50a7145b8b84b1eef31c2371d249d1",
+      "bytes": 66580,
+      "matches": true
+    },
+    "src/09f_layoutsB_editorial.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+        "bytes": 10564
+      },
+      "actualSHA256": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+      "bytes": 10564,
+      "matches": true
+    },
+    "src/09g_layoutsC_placement.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "f604351f1f3098777c5b330b34ef427e1ee6a0d9b4227a337af3778e15455107",
+        "bytes": 40426
+      },
+      "actualSHA256": "f604351f1f3098777c5b330b34ef427e1ee6a0d9b4227a337af3778e15455107",
+      "bytes": 40426,
+      "matches": true
+    },
+    "src/09h_layoutsC_editorial.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "26564f109a0c9d5819bc921687e88c124007a4f36b70e9f5adb7526c59fe904c",
+        "bytes": 71380
+      },
+      "actualSHA256": "26564f109a0c9d5819bc921687e88c124007a4f36b70e9f5adb7526c59fe904c",
+      "bytes": 71380,
+      "matches": true
+    },
+    "src/09i_layoutsC_objects.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "64d18debd737f610bcbd3d1d1748b5791b38efdfc783a473de4bbb4f0f6ef5cc",
+        "bytes": 45385
+      },
+      "actualSHA256": "64d18debd737f610bcbd3d1d1748b5791b38efdfc783a473de4bbb4f0f6ef5cc",
+      "bytes": 45385,
+      "matches": true
+    },
+    "src/09j_layoutsC_japanese.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "ab106bd0d12a42478580dae40192d26c497cd948c6bf797ff47d7bb98a8624de",
+        "bytes": 52631
+      },
+      "actualSHA256": "ab106bd0d12a42478580dae40192d26c497cd948c6bf797ff47d7bb98a8624de",
+      "bytes": 52631,
+      "matches": true
+    },
+    "src/10_audio.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57",
+        "bytes": 9259
+      },
+      "actualSHA256": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57",
+      "bytes": 9259,
+      "matches": true
+    },
+    "src/11_export.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "d05692567f7893a3258500838091fc0e8cf7536b4ae763f20d0b6aa91a59037f",
+        "bytes": 20637
+      },
+      "actualSHA256": "d05692567f7893a3258500838091fc0e8cf7536b4ae763f20d0b6aa91a59037f",
+      "bytes": 20637,
+      "matches": true
+    },
+    "src/11b_project_file.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "9659b8d0bce2919830704c25ab230fc5a7faaad4c3d3783205dd9b5bd2630286",
+        "bytes": 7471
+      },
+      "actualSHA256": "9659b8d0bce2919830704c25ab230fc5a7faaad4c3d3783205dd9b5bd2630286",
+      "bytes": 7471,
+      "matches": true
+    },
+    "src/11p_bgcamB.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "baad1dab7a4743b4eab351c9e9dfa76d9af5f4e00b29538ce41837a5628dd644",
+        "bytes": 88114
+      },
+      "actualSHA256": "baad1dab7a4743b4eab351c9e9dfa76d9af5f4e00b29538ce41837a5628dd644",
+      "bytes": 88114,
+      "matches": true
+    },
+    "src/11p_decor.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "b533343d8ad5ad114300fed174d4eb0dff092201c778a6697345157595b933a5",
+        "bytes": 103896
+      },
+      "actualSHA256": "b533343d8ad5ad114300fed174d4eb0dff092201c778a6697345157595b933a5",
+      "bytes": 103896,
+      "matches": true
+    },
+    "src/11p_decorB.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "f49747910c456cb829bdfeffa5c0342898305a8e01eebfa8ac18b2cc279bcd62",
+        "bytes": 162521
+      },
+      "actualSHA256": "f49747910c456cb829bdfeffa5c0342898305a8e01eebfa8ac18b2cc279bcd62",
+      "bytes": 162521,
+      "matches": true
+    },
+    "src/11p_enter.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "949b506310fd7f6f23a11f30691e0edc722ff1b953c157517093aec562644638",
+        "bytes": 38863
+      },
+      "actualSHA256": "949b506310fd7f6f23a11f30691e0edc722ff1b953c157517093aec562644638",
+      "bytes": 38863,
+      "matches": true
+    },
+    "src/11p_enterB.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "7896363367fb5e5d19c4ccd59cd76ac707328bf018a91b24a137562a421819ce",
+        "bytes": 84949
+      },
+      "actualSHA256": "7896363367fb5e5d19c4ccd59cd76ac707328bf018a91b24a137562a421819ce",
+      "bytes": 84949,
+      "matches": true
+    },
+    "src/11p_exit.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "a013c8d40ba71fa69ea1bfa0782d2a55b7a152aa91bc7c0f7d85a9e89dca0b2b",
+        "bytes": 52451
+      },
+      "actualSHA256": "a013c8d40ba71fa69ea1bfa0782d2a55b7a152aa91bc7c0f7d85a9e89dca0b2b",
+      "bytes": 52451,
+      "matches": true
+    },
+    "src/11p_exitB.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "565ee042f3f3382b05bb1cfdde8cb140231dba21f7ab58001af45e37d1faaf2e",
+        "bytes": 110485
+      },
+      "actualSHA256": "565ee042f3f3382b05bb1cfdde8cb140231dba21f7ab58001af45e37d1faaf2e",
+      "bytes": 110485,
+      "matches": true
+    },
+    "src/11p_fxB.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "168dc3c65c197ddbe4252b9fbe013d6c35a5e7758cf95585ee34263b831d3101",
+        "bytes": 53309
+      },
+      "actualSHA256": "168dc3c65c197ddbe4252b9fbe013d6c35a5e7758cf95585ee34263b831d3101",
+      "bytes": 53309,
+      "matches": true
+    },
+    "src/11p_horror1.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "792d6dace596a0503e1055d3bbf9e56d63dc00c7151a1fb350067f2faac9f033",
+        "bytes": 51128
+      },
+      "actualSHA256": "792d6dace596a0503e1055d3bbf9e56d63dc00c7151a1fb350067f2faac9f033",
+      "bytes": 51128,
+      "matches": true
+    },
+    "src/11p_horror2.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "828ff4c48181e9755c5e2a82be4e30cab491ca0614cc25d711131108af50b7e4",
+        "bytes": 27064
+      },
+      "actualSHA256": "828ff4c48181e9755c5e2a82be4e30cab491ca0614cc25d711131108af50b7e4",
+      "bytes": 27064,
+      "matches": true
+    },
+    "src/11p_horror3.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "c99a0d0cef6cf2b246e84586d5a33ebc750d1ef659a1490f211e8316d2727853",
+        "bytes": 36873
+      },
+      "actualSHA256": "c99a0d0cef6cf2b246e84586d5a33ebc750d1ef659a1490f211e8316d2727853",
+      "bytes": 36873,
+      "matches": true
+    },
+    "src/11p_kinetic1.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "012282d5f3d44ef99c1b5fa26dd85210b138c4ecc73f54084f929bc74bd0045e",
+        "bytes": 58279
+      },
+      "actualSHA256": "012282d5f3d44ef99c1b5fa26dd85210b138c4ecc73f54084f929bc74bd0045e",
+      "bytes": 58279,
+      "matches": true
+    },
+    "src/11p_kinetic2.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "8c0401cfc265b6fe79d83e6a056e1bed93f42ae60a17890db165058f842ffd45",
+        "bytes": 28688
+      },
+      "actualSHA256": "8c0401cfc265b6fe79d83e6a056e1bed93f42ae60a17890db165058f842ffd45",
+      "bytes": 28688,
+      "matches": true
+    },
+    "src/11p_kinetic3.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "c1905cb3a5fb7fb7a14e9984b7ee4ce6b435eddeaab89fb71742c0075b7b3393",
+        "bytes": 21274
+      },
+      "actualSHA256": "c1905cb3a5fb7fb7a14e9984b7ee4ce6b435eddeaab89fb71742c0075b7b3393",
+      "bytes": 21274,
+      "matches": true
+    },
+    "src/11p_layoutsA.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "9d2b6cda27b049e6b2594603c6dee25d930e09ba536274a21a5ace5ddc7bfcd5",
+        "bytes": 126883
+      },
+      "actualSHA256": "9d2b6cda27b049e6b2594603c6dee25d930e09ba536274a21a5ace5ddc7bfcd5",
+      "bytes": 126883,
+      "matches": true
+    },
+    "src/11p_layoutsB.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "6e9730f7647fe5ff0d0f28a9f795efa54475a77659b8975a22711b910cd82064",
+        "bytes": 136418
+      },
+      "actualSHA256": "6e9730f7647fe5ff0d0f28a9f795efa54475a77659b8975a22711b910cd82064",
+      "bytes": 136418,
+      "matches": true
+    },
+    "src/11p_layoutsC.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "e4a3ac0327590b62ae6a76176d99e1ea9a1d6c6a554a974dcca4f9458edcf84a",
+        "bytes": 281048
+      },
+      "actualSHA256": "e4a3ac0327590b62ae6a76176d99e1ea9a1d6c6a554a974dcca4f9458edcf84a",
+      "bytes": 281048,
+      "matches": true
+    },
+    "src/11p_layoutsD.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "563f2e90ca86a4196606c48b0ccd0b4e555e672de64781c1a3125d3fd2922978",
+        "bytes": 191609
+      },
+      "actualSHA256": "563f2e90ca86a4196606c48b0ccd0b4e555e672de64781c1a3125d3fd2922978",
+      "bytes": 191609,
+      "matches": true
+    },
+    "src/11p_looks.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "724f124e9b0dfac715bcffb56bbc0342ccc78fdc5f3151481b2c52583470afba",
+        "bytes": 81793
+      },
+      "actualSHA256": "724f124e9b0dfac715bcffb56bbc0342ccc78fdc5f3151481b2c52583470afba",
+      "bytes": 81793,
+      "matches": true
+    },
+    "src/11p_styles.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "a306862fa099e7fd39b2efe1b63a6d30b8abf0462e141a075cd7b9ec24106922",
+        "bytes": 26543
+      },
+      "actualSHA256": "a306862fa099e7fd39b2efe1b63a6d30b8abf0462e141a075cd7b9ec24106922",
+      "bytes": 26543,
+      "matches": true
+    },
+    "src/11p_treattrans.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "139dadb053110d87439248116d7e2ccf5b8f629cdd72c6412313649fde76ee25",
+        "bytes": 70314
+      },
+      "actualSHA256": "139dadb053110d87439248116d7e2ccf5b8f629cdd72c6412313649fde76ee25",
+      "bytes": 70314,
+      "matches": true
+    },
+    "src/11p_typo1.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "0a1c61c77ebdd61754120283078a1e79e339a3de5341974e9ac7b5bb5a2878da",
+        "bytes": 54214
+      },
+      "actualSHA256": "0a1c61c77ebdd61754120283078a1e79e339a3de5341974e9ac7b5bb5a2878da",
+      "bytes": 54214,
+      "matches": true
+    },
+    "src/11p_typo2.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "0fefc16f3e3711da71763bf6f874d02532820e3bbf2f8fd9e327af1a107914e6",
+        "bytes": 25653
+      },
+      "actualSHA256": "0fefc16f3e3711da71763bf6f874d02532820e3bbf2f8fd9e327af1a107914e6",
+      "bytes": 25653,
+      "matches": true
+    },
+    "src/11p_typo3.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "bf8f19513f94044faedf74b45601d6cffa467edb79e37542149d34213c03df77",
+        "bytes": 24014
+      },
+      "actualSHA256": "bf8f19513f94044faedf74b45601d6cffa467edb79e37542149d34213c03df77",
+      "bytes": 24014,
+      "matches": true
+    },
+    "src/11q_media_cameras.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "23254987957792ef1acb612d5f2485401f31d5cb0ba50f31cc3de8d6754f8fd8",
+        "bytes": 3595
+      },
+      "actualSHA256": "23254987957792ef1acb612d5f2485401f31d5cb0ba50f31cc3de8d6754f8fd8",
+      "bytes": 3595,
+      "matches": true
+    },
+    "src/11q_sets.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "c7089d50d5a3eeabd9e4b236812201e87e7f55c4fb22b2d6c06f1efb0d02fc76",
+        "bytes": 2581
+      },
+      "actualSHA256": "c7089d50d5a3eeabd9e4b236812201e87e7f55c4fb22b2d6c06f1efb0d02fc76",
+      "bytes": 2581,
+      "matches": true
+    },
+    "src/11r_themes.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "31fe85b17a3faf6c2ebe6a3e5a2badcd4807bf4de0ddfceac4e0668e24b5577c",
+        "bytes": 14940
+      },
+      "actualSHA256": "31fe85b17a3faf6c2ebe6a3e5a2badcd4807bf4de0ddfceac4e0668e24b5577c",
+      "bytes": 14940,
+      "matches": true
+    },
+    "src/11s_color_theme.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "13221ae70b44a6b7222bbac3d32ee926b30f442427ca33c01ac35f905a847593",
+        "bytes": 6260
+      },
+      "actualSHA256": "13221ae70b44a6b7222bbac3d32ee926b30f442427ca33c01ac35f905a847593",
+      "bytes": 6260,
+      "matches": true
+    },
+    "src/11s_decor_details.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "40014b35c1f53fca227767bc6e758e69831b7c9e80a130b58bee3e5f000b64dc",
+        "bytes": 3558
+      },
+      "actualSHA256": "40014b35c1f53fca227767bc6e758e69831b7c9e80a130b58bee3e5f000b64dc",
+      "bytes": 3558,
+      "matches": true
+    },
+    "src/11t_effect_preview.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "2169525db51841181d477f84826145a1fe6c3de5a852f99ead95ededb65ee6ba",
+        "bytes": 9804
+      },
+      "actualSHA256": "2169525db51841181d477f84826145a1fe6c3de5a852f99ead95ededb65ee6ba",
+      "bytes": 9804,
+      "matches": true
+    },
+    "src/11u_effect_favorites.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "bbe922b1edd9b3488163c69f0c6e99b62d98649b0a91e3923c02cdcc348872ae",
+        "bytes": 21649
+      },
+      "actualSHA256": "bbe922b1edd9b3488163c69f0c6e99b62d98649b0a91e3923c02cdcc348872ae",
+      "bytes": 21649,
+      "matches": true
+    },
+    "src/11u_note_layouts.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "8bd64c9068384332be36710653ed4bb171373f8ae81ed58f4f7bd0d2f1e1b783",
+        "bytes": 303
+      },
+      "actualSHA256": "8bd64c9068384332be36710653ed4bb171373f8ae81ed58f4f7bd0d2f1e1b783",
+      "bytes": 303,
+      "matches": true
+    },
+    "src/11v_modal_scroll.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "09e3742f65e7c1076b068aabb8d7fa018723a5377c65f49786a6b382df156ac8",
+        "bytes": 905
+      },
+      "actualSHA256": "09e3742f65e7c1076b068aabb8d7fa018723a5377c65f49786a6b382df156ac8",
+      "bytes": 905,
+      "matches": true
+    },
+    "src/11w_custom_draw.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "00bc020f5cac3ea8dbe98421bebd35867fde0a83f71fdf656d9ec614747a62ad",
+        "bytes": 10294
+      },
+      "actualSHA256": "00bc020f5cac3ea8dbe98421bebd35867fde0a83f71fdf656d9ec614747a62ad",
+      "bytes": 10294,
+      "matches": true
+    },
+    "src/11wa_custom_effects.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "079f75f0117d35d1ebfb48d2a781dd52e7a74adc4811c4077eca9f320c3e0937",
+        "bytes": 18060
+      },
+      "actualSHA256": "079f75f0117d35d1ebfb48d2a781dd52e7a74adc4811c4077eca9f320c3e0937",
+      "bytes": 18060,
+      "matches": true
+    },
+    "src/11x_favorite_api.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "c46c2c7d751be5b8372b50e71ce80cdcc72fc9e3623a38173ee7dec57db0e37b",
+        "bytes": 5683
+      },
+      "actualSHA256": "c46c2c7d751be5b8372b50e71ce80cdcc72fc9e3623a38173ee7dec57db0e37b",
+      "bytes": 5683,
+      "matches": true
+    },
+    "src/11y_short_export.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "83589822ac6a2aba57210a185c2b45ccbf4b15599900a71942e6ebe84821b9f7",
+        "bytes": 4667
+      },
+      "actualSHA256": "83589822ac6a2aba57210a185c2b45ccbf4b15599900a71942e6ebe84821b9f7",
+      "bytes": 4667,
+      "matches": true
+    },
+    "src/11z_layoutsC_transport.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+        "bytes": 371
+      },
+      "actualSHA256": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+      "bytes": 371,
+      "matches": true
+    },
+    "src/12_ui.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "a61d2d2142e3535db0f6a5a4e0c423ad1dcff6285e04c1cc0e442d893b91e66d",
+        "bytes": 366429
+      },
+      "actualSHA256": "a61d2d2142e3535db0f6a5a4e0c423ad1dcff6285e04c1cc0e442d893b91e66d",
+      "bytes": 366429,
+      "matches": true
+    },
+    "src/13_sprite_extractor.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "07fa6e11b6a02bafd555a0c50299efb993cdbb9e18df648d251bd7bbfa93ee39",
+        "bytes": 16214
+      },
+      "actualSHA256": "07fa6e11b6a02bafd555a0c50299efb993cdbb9e18df648d251bd7bbfa93ee39",
+      "bytes": 16214,
+      "matches": true
+    },
+    "index.html": {
+      "exists": true,
+      "expected": {
+        "sha256": "90214392ab7187dcab10dc4b8e9d99bcad792d4573b495a2159d663df31feac1",
+        "bytes": 5268781
+      },
+      "actualSHA256": "90214392ab7187dcab10dc4b8e9d99bcad792d4573b495a2159d663df31feac1",
+      "bytes": 5268781,
+      "matches": true
+    },
+    "en/index.html": {
+      "exists": true,
+      "expected": {
+        "sha256": "5e358a8e7fffb82ce2d1f5342e091b92bc0302882fe93cf52e698bd2c20367b8",
+        "bytes": 5283703
+      },
+      "actualSHA256": "5e358a8e7fffb82ce2d1f5342e091b92bc0302882fe93cf52e698bd2c20367b8",
+      "bytes": 5283703,
+      "matches": true
+    },
+    "dev/avoidance/layouts-b-fixture.js": {
+      "exists": true,
+      "expected": {
+        "sha256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+        "bytes": 6552
+      },
+      "actualSHA256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+      "bytes": 6552,
+      "matches": true
+    },
+    "dev/browser.cjs": {
+      "exists": true,
+      "expected": {
+        "sha256": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+        "bytes": 267
+      },
+      "actualSHA256": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+      "bytes": 267,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-hang-preview.cjs": {
+      "exists": true,
+      "expected": {
+        "sha256": "d8f0f4dbed79a35ee2323b5b073a2c813584f0794c50ce679b4e7cf68e645070",
+        "bytes": 12470
+      },
+      "actualSHA256": "d8f0f4dbed79a35ee2323b5b073a2c813584f0794c50ce679b4e7cf68e645070",
+      "bytes": 12470,
+      "matches": true
+    },
+    "tasks/evidence/AVOID-008/hang01/probe03.json.gz": {
+      "exists": true,
+      "expected": {
+        "sha256": "ef400c7db66cc15379b6d9a2ffe60669a4ae9a576ccd9164a79598c3769903c1",
+        "bytes": 2126915
+      },
+      "actualSHA256": "ef400c7db66cc15379b6d9a2ffe60669a4ae9a576ccd9164a79598c3769903c1",
+      "bytes": 2126915,
+      "matches": true
+    },
+    "tasks/evidence/AVOID-008/hang01/baseline/index.html.gz": {
+      "exists": true,
+      "expected": {
+        "sha256": "422ddea5d7175594b0b528b07a7ec288cb3a5d95ad994c5ae5410908df071e82",
+        "bytes": 2262385
+      },
+      "actualSHA256": "422ddea5d7175594b0b528b07a7ec288cb3a5d95ad994c5ae5410908df071e82",
+      "bytes": 2262385,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/manifest.json": {
+      "exists": true,
+      "expected": {
+        "sha256": "419ea25a6b669b16743abad0d8b93abd85c05e7dc96d363848f2bcda0e92a7b3",
+        "bytes": 65358
+      },
+      "actualSHA256": "419ea25a6b669b16743abad0d8b93abd85c05e7dc96d363848f2bcda0e92a7b3",
+      "bytes": 65358,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/sans-regular.otf": {
+      "exists": true,
+      "expected": {
+        "sha256": "d45698e59ebbd0b43a3e31cd232fb050d615e717207a5b6bf1a9e90640884460",
+        "bytes": 252176
+      },
+      "actualSHA256": "d45698e59ebbd0b43a3e31cd232fb050d615e717207a5b6bf1a9e90640884460",
+      "bytes": 252176,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/sans-bold.otf": {
+      "exists": true,
+      "expected": {
+        "sha256": "cd367fbf8b06b8c0e76abd41c097556a31f480c6d04bd5f480a90b6ce10f3b66",
+        "bytes": 257552
+      },
+      "actualSHA256": "cd367fbf8b06b8c0e76abd41c097556a31f480c6d04bd5f480a90b6ce10f3b66",
+      "bytes": 257552,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/serif-regular.otf": {
+      "exists": true,
+      "expected": {
+        "sha256": "9bca7f2c615b4ebbd83fc9293a6e230b160f1b8958d6a578e176eece11e80ec8",
+        "bytes": 370352
+      },
+      "actualSHA256": "9bca7f2c615b4ebbd83fc9293a6e230b160f1b8958d6a578e176eece11e80ec8",
+      "bytes": 370352,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/serif-bold.otf": {
+      "exists": true,
+      "expected": {
+        "sha256": "f66a61762e6c2e65ce509fd0bd924cf19caf01c70d3c02b145efb1716b8beda4",
+        "bytes": 372536
+      },
+      "actualSHA256": "f66a61762e6c2e65ce509fd0bd924cf19caf01c70d3c02b145efb1716b8beda4",
+      "bytes": 372536,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/mono.otf": {
+      "exists": true,
+      "expected": {
+        "sha256": "cb19c50466730f2621d91e369cc7822d3862b7230eb0fd6996f480c2f2ee26cf",
+        "bytes": 238864
+      },
+      "actualSHA256": "cb19c50466730f2621d91e369cc7822d3862b7230eb0fd6996f480c2f2ee26cf",
+      "bytes": 238864,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/dot.ttf": {
+      "exists": true,
+      "expected": {
+        "sha256": "10c99a9c5ee164530d94a237d6781b5539485af5f18be525a640a12ba4630c2c",
+        "bytes": 169300
+      },
+      "actualSHA256": "10c99a9c5ee164530d94a237d6781b5539485af5f18be525a640a12ba4630c2c",
+      "bytes": 169300,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/rounded.ttf": {
+      "exists": true,
+      "expected": {
+        "sha256": "a5788eb908af51d5ece843de7ecee8d8c0edf25703adeb58fd0433accb676a9c",
+        "bytes": 141512
+      },
+      "actualSHA256": "a5788eb908af51d5ece843de7ecee8d8c0edf25703adeb58fd0433accb676a9c",
+      "bytes": 141512,
+      "matches": true
+    },
+    "dev/avoidance/layouts-c-japanese-fonts/symbols.ttf": {
+      "exists": true,
+      "expected": {
+        "sha256": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1",
+        "bytes": 3528
+      },
+      "actualSHA256": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1",
+      "bytes": 3528,
+      "matches": true
+    }
+  },
+  "sourceHashesAtEnd": {
+    "src/01_util.js": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+    "src/02_fonts.js": "3e687cfd1045349f36eb65f4fa802973ad4303f48b21069cf6dcc68a546c0415",
+    "src/02b_lang.js": "a0464cc32ec396e2198801387f3640ec217ec1d0ea790ee2e88dbafebd7fc770",
+    "src/03_text.js": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+    "src/04_styles.js": "29ecef9319dabebbadea198f3915c50bd76f2c48f1cf34d034c833106aa19ca7",
+    "src/05_anim.js": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+    "src/05b_registry.js": "ecaefd208377658bb23adca79c36e093a7b3fce796f5facdb7d10806f6619cea",
+    "src/06_layouts.js": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+    "src/07_decor.js": "9e0c6edc62ea6e0d220a5f5619e1ba10b35f776a45305fe1cde3288513fe4d24",
+    "src/08_planner.js": "608bf692d183fd5db2b4eecaa469d6278092be57796b5a3353175941bfddba37",
+    "src/08b_omakase.js": "0bcc4a74b12ea70a293cb6e3307c4fe62c8ddf391183bcbaceeb5747847bb870",
+    "src/08c_composition.js": "26ee97660d62e61eaf5817e7c0ad8afd465e976fb2213cadf6adb1c8b247572c",
+    "src/08ca_lyric_avoidance.js": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d",
+    "src/08cb_background_layouts.js": "9122c219b4013391a5cc14dbdb289a7e205daf6088b8e4ed744f00b64aef560e",
+    "src/08d_media.js": "bf175deb61f4a197eb28dc538f8daaae9da55efe6711dbec61adba0c38407ffd",
+    "src/08e_lyric_features.js": "54f4b361f23bf8f78e293cf11a570a3088bc209dd80e6acf52ea7cffdc1f5373",
+    "src/08e_media_effects.js": "eeb89f3b2424ad912ecc16d6f2affb186eb8c608a8b1a290d2b9c3d791b77f40",
+    "src/08eb_lyric_scene.js": "c88e6f489446ffb77eac5856217a5b0c3ff04684c1c11750e29fe3c7fece681a",
+    "src/08f_media_variations.js": "fa6c9db6aabf77de42dcd7dc87ff1f20cd401deaab541eddd5361548e247a38b",
+    "src/08g_media_decor.js": "68c7506146e71de5d89a691fb7738f23e86c847126a2f05fd887cfdcc6b395b6",
+    "src/08g_media_masks.js": "168fee9b91f7b24502daa16b101a5d65cd19a4c44377eb8f25c317812dbcaad8",
+    "src/08g_media_phases.js": "ac91c6ea9e355a11f5734304de7d75dd6427923b431f6162eb29ec0a2322ad6f",
+    "src/08g_media_rhythm.js": "1b7821f7b8e3a760a081ecfcc869b840dcff451a00b3cabac113ecb73201193c",
+    "src/08g_media_scenes.js": "e71facca3a86a25c9404ad35a44494e0bf0781cfcfcf64957f01a3c615fd3414",
+    "src/08h_cut_details.js": "bd8a814c97bb281a596d978478368061f5d596cb2dedcb6a57adb3eee1f07864",
+    "src/08i_effect_clipboard.js": "9f0e7b10c1688312298ce262a78174530cfeec940f66531efa11de8cb6cb405e",
+    "src/08j_cut_mask.js": "556e924f69fe9435d3d3bfe452aa6e9b130f20d316e0f852e2e6b309050eeb6c",
+    "src/08k_detail_search.js": "6472c8ad6013e5d14a0e3abf65fc32e39ee030e213bb8fa05530858df45f2db9",
+    "src/08l_detail_labels.js": "895d35845cd1304502a9c3427ad0d697a024b10cf783d75169f5caa4333b67d8",
+    "src/08m_person_cutout.js": "5559074b5a08786097f273d84b0f652abb21455a0d0023df68692f5269016185",
+    "src/09_render.js": "d51a1ccca3a5b42d2204a401c57c859abf71a228aefd45e3a1dee14ecc7ea067",
+    "src/09a_placement.js": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a",
+    "src/09b_basic_placement.js": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+    "src/09c_layoutsA_placement.js": "ff603fe43f54296865ae59ab1268c581cbfbbf7a489d02aafbfda83221b03c36",
+    "src/09d_adaptive_placement.js": "ab3e8c727284eacbf642e4fdb2e71197aa6cfde7a68e1473450710289c05a595",
+    "src/09e_layoutsB_placement.js": "268e8f8132f70a9e9627a703656f56d00e50a7145b8b84b1eef31c2371d249d1",
+    "src/09f_layoutsB_editorial.js": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+    "src/09g_layoutsC_placement.js": "f604351f1f3098777c5b330b34ef427e1ee6a0d9b4227a337af3778e15455107",
+    "src/09h_layoutsC_editorial.js": "26564f109a0c9d5819bc921687e88c124007a4f36b70e9f5adb7526c59fe904c",
+    "src/09i_layoutsC_objects.js": "64d18debd737f610bcbd3d1d1748b5791b38efdfc783a473de4bbb4f0f6ef5cc",
+    "src/09j_layoutsC_japanese.js": "ab106bd0d12a42478580dae40192d26c497cd948c6bf797ff47d7bb98a8624de",
+    "src/10_audio.js": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57",
+    "src/11_export.js": "d05692567f7893a3258500838091fc0e8cf7536b4ae763f20d0b6aa91a59037f",
+    "src/11b_project_file.js": "9659b8d0bce2919830704c25ab230fc5a7faaad4c3d3783205dd9b5bd2630286",
+    "src/11p_bgcamB.js": "baad1dab7a4743b4eab351c9e9dfa76d9af5f4e00b29538ce41837a5628dd644",
+    "src/11p_decor.js": "b533343d8ad5ad114300fed174d4eb0dff092201c778a6697345157595b933a5",
+    "src/11p_decorB.js": "f49747910c456cb829bdfeffa5c0342898305a8e01eebfa8ac18b2cc279bcd62",
+    "src/11p_enter.js": "949b506310fd7f6f23a11f30691e0edc722ff1b953c157517093aec562644638",
+    "src/11p_enterB.js": "7896363367fb5e5d19c4ccd59cd76ac707328bf018a91b24a137562a421819ce",
+    "src/11p_exit.js": "a013c8d40ba71fa69ea1bfa0782d2a55b7a152aa91bc7c0f7d85a9e89dca0b2b",
+    "src/11p_exitB.js": "565ee042f3f3382b05bb1cfdde8cb140231dba21f7ab58001af45e37d1faaf2e",
+    "src/11p_fxB.js": "168dc3c65c197ddbe4252b9fbe013d6c35a5e7758cf95585ee34263b831d3101",
+    "src/11p_horror1.js": "792d6dace596a0503e1055d3bbf9e56d63dc00c7151a1fb350067f2faac9f033",
+    "src/11p_horror2.js": "828ff4c48181e9755c5e2a82be4e30cab491ca0614cc25d711131108af50b7e4",
+    "src/11p_horror3.js": "c99a0d0cef6cf2b246e84586d5a33ebc750d1ef659a1490f211e8316d2727853",
+    "src/11p_kinetic1.js": "012282d5f3d44ef99c1b5fa26dd85210b138c4ecc73f54084f929bc74bd0045e",
+    "src/11p_kinetic2.js": "8c0401cfc265b6fe79d83e6a056e1bed93f42ae60a17890db165058f842ffd45",
+    "src/11p_kinetic3.js": "c1905cb3a5fb7fb7a14e9984b7ee4ce6b435eddeaab89fb71742c0075b7b3393",
+    "src/11p_layoutsA.js": "9d2b6cda27b049e6b2594603c6dee25d930e09ba536274a21a5ace5ddc7bfcd5",
+    "src/11p_layoutsB.js": "6e9730f7647fe5ff0d0f28a9f795efa54475a77659b8975a22711b910cd82064",
+    "src/11p_layoutsC.js": "e4a3ac0327590b62ae6a76176d99e1ea9a1d6c6a554a974dcca4f9458edcf84a",
+    "src/11p_layoutsD.js": "563f2e90ca86a4196606c48b0ccd0b4e555e672de64781c1a3125d3fd2922978",
+    "src/11p_looks.js": "724f124e9b0dfac715bcffb56bbc0342ccc78fdc5f3151481b2c52583470afba",
+    "src/11p_styles.js": "a306862fa099e7fd39b2efe1b63a6d30b8abf0462e141a075cd7b9ec24106922",
+    "src/11p_treattrans.js": "139dadb053110d87439248116d7e2ccf5b8f629cdd72c6412313649fde76ee25",
+    "src/11p_typo1.js": "0a1c61c77ebdd61754120283078a1e79e339a3de5341974e9ac7b5bb5a2878da",
+    "src/11p_typo2.js": "0fefc16f3e3711da71763bf6f874d02532820e3bbf2f8fd9e327af1a107914e6",
+    "src/11p_typo3.js": "bf8f19513f94044faedf74b45601d6cffa467edb79e37542149d34213c03df77",
+    "src/11q_media_cameras.js": "23254987957792ef1acb612d5f2485401f31d5cb0ba50f31cc3de8d6754f8fd8",
+    "src/11q_sets.js": "c7089d50d5a3eeabd9e4b236812201e87e7f55c4fb22b2d6c06f1efb0d02fc76",
+    "src/11r_themes.js": "31fe85b17a3faf6c2ebe6a3e5a2badcd4807bf4de0ddfceac4e0668e24b5577c",
+    "src/11s_color_theme.js": "13221ae70b44a6b7222bbac3d32ee926b30f442427ca33c01ac35f905a847593",
+    "src/11s_decor_details.js": "40014b35c1f53fca227767bc6e758e69831b7c9e80a130b58bee3e5f000b64dc",
+    "src/11t_effect_preview.js": "2169525db51841181d477f84826145a1fe6c3de5a852f99ead95ededb65ee6ba",
+    "src/11u_effect_favorites.js": "bbe922b1edd9b3488163c69f0c6e99b62d98649b0a91e3923c02cdcc348872ae",
+    "src/11u_note_layouts.js": "8bd64c9068384332be36710653ed4bb171373f8ae81ed58f4f7bd0d2f1e1b783",
+    "src/11v_modal_scroll.js": "09e3742f65e7c1076b068aabb8d7fa018723a5377c65f49786a6b382df156ac8",
+    "src/11w_custom_draw.js": "00bc020f5cac3ea8dbe98421bebd35867fde0a83f71fdf656d9ec614747a62ad",
+    "src/11wa_custom_effects.js": "079f75f0117d35d1ebfb48d2a781dd52e7a74adc4811c4077eca9f320c3e0937",
+    "src/11x_favorite_api.js": "c46c2c7d751be5b8372b50e71ce80cdcc72fc9e3623a38173ee7dec57db0e37b",
+    "src/11y_short_export.js": "83589822ac6a2aba57210a185c2b45ccbf4b15599900a71942e6ebe84821b9f7",
+    "src/11z_layoutsC_transport.js": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+    "src/12_ui.js": "a61d2d2142e3535db0f6a5a4e0c423ad1dcff6285e04c1cc0e442d893b91e66d",
+    "src/13_sprite_extractor.js": "07fa6e11b6a02bafd555a0c50299efb993cdbb9e18df648d251bd7bbfa93ee39",
+    "index.html": "90214392ab7187dcab10dc4b8e9d99bcad792d4573b495a2159d663df31feac1",
+    "en/index.html": "5e358a8e7fffb82ce2d1f5342e091b92bc0302882fe93cf52e698bd2c20367b8",
+    "dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+    "dev/browser.cjs": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+    "dev/avoidance/layouts-c-hang-preview.cjs": "d8f0f4dbed79a35ee2323b5b073a2c813584f0794c50ce679b4e7cf68e645070",
+    "tasks/evidence/AVOID-008/hang01/probe03.json.gz": "ef400c7db66cc15379b6d9a2ffe60669a4ae9a576ccd9164a79598c3769903c1",
+    "tasks/evidence/AVOID-008/hang01/baseline/index.html.gz": "422ddea5d7175594b0b528b07a7ec288cb3a5d95ad994c5ae5410908df071e82",
+    "dev/avoidance/layouts-c-japanese-fonts/manifest.json": "419ea25a6b669b16743abad0d8b93abd85c05e7dc96d363848f2bcda0e92a7b3",
+    "dev/avoidance/layouts-c-japanese-fonts/sans-regular.otf": "d45698e59ebbd0b43a3e31cd232fb050d615e717207a5b6bf1a9e90640884460",
+    "dev/avoidance/layouts-c-japanese-fonts/sans-bold.otf": "cd367fbf8b06b8c0e76abd41c097556a31f480c6d04bd5f480a90b6ce10f3b66",
+    "dev/avoidance/layouts-c-japanese-fonts/serif-regular.otf": "9bca7f2c615b4ebbd83fc9293a6e230b160f1b8958d6a578e176eece11e80ec8",
+    "dev/avoidance/layouts-c-japanese-fonts/serif-bold.otf": "f66a61762e6c2e65ce509fd0bd924cf19caf01c70d3c02b145efb1716b8beda4",
+    "dev/avoidance/layouts-c-japanese-fonts/mono.otf": "cb19c50466730f2621d91e369cc7822d3862b7230eb0fd6996f480c2f2ee26cf",
+    "dev/avoidance/layouts-c-japanese-fonts/dot.ttf": "10c99a9c5ee164530d94a237d6781b5539485af5f18be525a640a12ba4630c2c",
+    "dev/avoidance/layouts-c-japanese-fonts/rounded.ttf": "a5788eb908af51d5ece843de7ecee8d8c0edf25703adeb58fd0433accb676a9c",
+    "dev/avoidance/layouts-c-japanese-fonts/symbols.ttf": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+  },
+  "sourceUnchangedAtEnd": true,
+  "manifestStartEndEqual": true,
+  "ffprobe": {
+    "before": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 960,
+          "height": 540,
+          "r_frame_rate": "24/1",
+          "avg_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_frames": "96",
+          "nb_read_frames": "96"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    "after": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 960,
+          "height": 540,
+          "r_frame_rate": "24/1",
+          "avg_frame_rate": "24/1",
+          "duration": "4.000000",
+          "nb_frames": "96",
+          "nb_read_frames": "96"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    }
+  },
+  "specAsManifest": {
+    "layout": "priceTag",
+    "W": 960,
+    "H": 540,
+    "radius": 0.2,
+    "cx": 0.5,
+    "cy": 0.42,
+    "start": 12.5,
+    "text": "風 風の先へ",
+    "params": {
+      "variant": "hang",
+      "font": "gothic_med",
+      "swing": 10
+    }
+  },
+  "circleAsManifest": {
+    "cx": 480,
+    "cy": 226.79999999999998,
+    "r": 108
+  },
+  "fontAuditAsManifest": {
+    "mode": "pinned-multiface",
+    "faces": [
+      {
+        "id": "sans-regular",
+        "url": "http://127.0.0.1:34499/dev/avoidance/layouts-c-japanese-fonts/sans-regular.otf",
+        "sha256": "d45698e59ebbd0b43a3e31cd232fb050d615e717207a5b6bf1a9e90640884460",
+        "family": "Avoid008Japanese-sans-regular",
+        "weight": 400,
+        "label": "Noto Sans CJK JP Regular",
+        "status": "loaded"
+      },
+      {
+        "id": "sans-bold",
+        "url": "http://127.0.0.1:34499/dev/avoidance/layouts-c-japanese-fonts/sans-bold.otf",
+        "sha256": "cd367fbf8b06b8c0e76abd41c097556a31f480c6d04bd5f480a90b6ce10f3b66",
+        "family": "Avoid008Japanese-sans-bold",
+        "weight": 700,
+        "label": "Noto Sans CJK JP Bold",
+        "status": "loaded"
+      },
+      {
+        "id": "serif-regular",
+        "url": "http://127.0.0.1:34499/dev/avoidance/layouts-c-japanese-fonts/serif-regular.otf",
+        "sha256": "9bca7f2c615b4ebbd83fc9293a6e230b160f1b8958d6a578e176eece11e80ec8",
+        "family": "Avoid008Japanese-serif-regular",
+        "weight": 400,
+        "label": "Noto Serif CJK JP Regular",
+        "status": "loaded"
+      },
+      {
+        "id": "serif-bold",
+        "url": "http://127.0.0.1:34499/dev/avoidance/layouts-c-japanese-fonts/serif-bold.otf",
+        "sha256": "f66a61762e6c2e65ce509fd0bd924cf19caf01c70d3c02b145efb1716b8beda4",
+        "family": "Avoid008Japanese-serif-bold",
+        "weight": 700,
+        "label": "Noto Serif CJK JP Bold",
+        "status": "loaded"
+      },
+      {
+        "id": "mono",
+        "url": "http://127.0.0.1:34499/dev/avoidance/layouts-c-japanese-fonts/mono.otf",
+        "sha256": "cb19c50466730f2621d91e369cc7822d3862b7230eb0fd6996f480c2f2ee26cf",
+        "family": "Avoid008Japanese-mono",
+        "weight": 400,
+        "label": "Noto Sans Mono CJK JP Regular",
+        "status": "loaded"
+      },
+      {
+        "id": "dot",
+        "url": "http://127.0.0.1:34499/dev/avoidance/layouts-c-japanese-fonts/dot.ttf",
+        "sha256": "10c99a9c5ee164530d94a237d6781b5539485af5f18be525a640a12ba4630c2c",
+        "family": "Avoid008Japanese-dot",
+        "weight": 400,
+        "label": "DotGothic16 Regular",
+        "status": "loaded"
+      },
+      {
+        "id": "rounded",
+        "url": "http://127.0.0.1:34499/dev/avoidance/layouts-c-japanese-fonts/rounded.ttf",
+        "sha256": "a5788eb908af51d5ece843de7ecee8d8c0edf25703adeb58fd0433accb676a9c",
+        "family": "Avoid008Japanese-rounded",
+        "weight": 800,
+        "label": "M PLUS Rounded 1c ExtraBold",
+        "status": "loaded"
+      },
+      {
+        "id": "symbols",
+        "url": "http://127.0.0.1:34499/dev/avoidance/layouts-c-japanese-fonts/symbols.ttf",
+        "sha256": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1",
+        "family": "Avoid008Japanese-symbols",
+        "weight": 400,
+        "label": "Noto Sans Symbols2 Regular",
+        "status": "loaded"
+      }
+    ],
+    "assignments": {
+      "gothic_black": "sans-bold",
+      "gothic_bold": "sans-bold",
+      "gothic_med": "sans-regular",
+      "gothic_light": "sans-regular",
+      "dela": "sans-bold",
+      "zenkaku": "sans-bold",
+      "mincho_black": "serif-bold",
+      "mincho_bold": "serif-bold",
+      "mincho": "serif-regular",
+      "mincho_light": "serif-regular",
+      "tokumin": "serif-bold",
+      "round": "rounded",
+      "pop": "sans-bold",
+      "dot": "dot",
+      "brush": "serif-regular",
+      "mono": "mono",
+      "reggae": "sans-bold",
+      "rampart": "sans-bold",
+      "potta": "sans-bold",
+      "kiwi": "rounded",
+      "klee": "sans-bold",
+      "shippori": "serif-bold",
+      "sansui": "sans-regular"
+    }
+  },
+  "testedProductCommitAsManifest": "1f308631f99a5275a8115a08513bc821bae2ec1f",
+  "sourceRawSHA256AsManifest": "856cd9955156ed235b5d1e0c154835400c7577cc89975edeb18b6d5d9050307d",
+  "baselineAsManifest": {
+    "path": "tasks/evidence/AVOID-008/hang01/baseline/index.html.gz",
+    "sha256": "f46d883e2c999e26be53ad02fa1bf6397522efd1078ffe59c48d4a49eaeec039"
+  },
+  "limitationsJa": [
+    "連続再生していない。8PNGとMP4各2抽出frameのみ目視。",
+    "pixel精密circle certificate、時計、raw対描画、cmap、幾何の証明ではない。",
+    "空白の厳密な組版は画像から証明しない。",
+    "production font全般および他条件は検査外。"
+  ],
+  "forbiddenActionsPerformed": false,
+  "persistentOutputs": [
+    "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/hang-visual01-review.md",
+    "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/hang-visual01-metadata.json"
+  ]
+}

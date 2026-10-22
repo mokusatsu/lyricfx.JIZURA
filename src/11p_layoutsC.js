@@ -3433,36 +3433,45 @@ reg('priceTag', {
       return bb ? box(x0, y0, x0 + bw, y0 + bh) : null;
     }
     // hanging swing tag
-    const tw = port ? W * 0.62 : Math.min(W * 0.34, H * 0.46), th = tw * 1.45;
+    const nativeTW = port ? W * 0.62 : Math.min(W * 0.34, H * 0.46);
+    const hangRecipe=env.cut.placementLayoutsC?env.cut.layoutCRecipe:null, tagScale=hangRecipe?.hangPhysicalScale??1;
+    const tw = nativeTW * tagScale, th = tw * 1.45;
     const hx = W / 2 + (port ? 0 : W * 0.04), hy = H * 0.08;
     const cord = H * (port ? 0.12 : 0.1);
     const t = Math.max(0, env.lt);
     const swing = p.swing * Math.exp(-t * 2.2) * Math.cos(t * 5.2) * (1 - eo) + Math.sin(env.ltb * 1.1) * 1.2 + eo * p.swing * 1.5;
     const drop = (1 - E.outBack(e, 1.4)) * -H * 0.4;
+    const priorHangBody=env.placementCBody;
+    if(env.cut.placementLayoutsC)env.placementCBody={kind:'price-hang-pin',group:'priceTag.hang.pin',entryEnd:0,exitStart:env.cut.dur,strictDuringAlphaExit:true};
     env.circle(hx, hy, u * 0.008, sc.sub, null, 0, a, false);
+    if(env.cut.placementLayoutsC)env.placementCBody={kind:'price-hang-body',group:'priceTag.hang.body',pivot:[hx,hy+drop],angle:swing,drop,entryEnd:.45,exitStart:env.cut.dur-env.cut.outDur,physicalScale:tagScale};
+    const hangOwned=(role,fn)=>{const prior=env.placementCBody;if(env.cut.placementLayoutsC)env.placementCBody={...prior,feature:role};try{return fn();}finally{env.placementCBody=prior;}};
     ctx.save(); ctx.translate(hx, hy + drop); ctx.rotate(swing * J.DEG);
     // string loop
-    env.line([[0, 0], [-tw * 0.1, cord], [0, cord + tw * 0.12], [tw * 0.1, cord], [0, 0]], sc.sub, Math.max(1.5, u * 0.002), a, false);
+    hangOwned('loop',()=>env.line([[0, 0], [-tw * 0.1, cord], [0, cord + tw * 0.12], [tw * 0.1, cord], [0, 0]], sc.sub, Math.max(1.5, u * 0.002), a, false));
     const top = cord + tw * 0.05;
     const ch = tw * 0.22;
     const pts = [[-tw / 2 + ch, top], [tw / 2 - ch, top], [tw / 2, top + ch], [tw / 2, top + th], [-tw / 2, top + th], [-tw / 2, top + ch]];
-    if (env.pass === 'main') { ctx.save(); ctx.translate(u * 0.008, u * 0.012); env.poly(pts, J.rgba(darkest(sc), J.lum(sc.bg) > 0.5 ? 0.22 : 0.5), a, false); ctx.restore(); }
-    env.poly(pts, tagC, a, false);
+    if (env.pass === 'main') { ctx.save(); ctx.translate(u * 0.008, u * 0.012); hangOwned('shadow',()=>env.poly(pts, J.rgba(darkest(sc), J.lum(sc.bg) > 0.5 ? 0.22 : 0.5), a, false)); ctx.restore(); }
+    hangOwned('paper',()=>env.poly(pts, tagC, a, false));
     if (J.contrast(tagC, sc.bg) < 1.4) env.line(closeLoop(pts), J.mix(sc.fg, tagC, 0.4), 1.5, a, false);
-    env.circle(0, top + tw * 0.13, tw * 0.045, sc.bg, J.mix(tagC, tc, 0.3), Math.max(1.5, tw * 0.012), a, false);
+    hangOwned('hole',()=>env.circle(0, top + tw * 0.13, tw * 0.045, sc.bg, J.mix(tagC, tc, 0.3), Math.max(1.5, tw * 0.012), a, false));
     const m = tw * 0.1;
     const fb = fitBlock(t0, p.font, tw - m * 2, th * 0.4, { lead: 1.08 }, 3);
-    const size = Math.min(fb.size, tw * 0.3);
-    const bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: 0, y: top + th * 0.36, lead: 1.08, color: tc, noHold: true, plain: true, mi: miAt(env, 0.2) });
+    const nativeFB=hangRecipe?.hangPhysicalScale?fitBlock(t0,p.font,nativeTW*.8,nativeTW*1.45*.4,{lead:1.08},3):fb;
+    const size = hangRecipe?.hangPhysicalScale?Math.min(nativeFB.size,nativeTW*.3)*Math.max(.7,tagScale):Math.min(fb.size,tw*.3);
+    const mainZone={x0:-tw*.4,x1:tw*.4,y0:top+th*.16,y1:top+th*.60};
+    const bb = hangOwned('main',()=>J.mainDraw(env, { ...(env.cut.placementLayoutsC?{placementCOwnedZone:mainZone}:{}), text: nativeFB.text, font: p.font, size, x: 0, y: top + th * 0.36, lead: 1.08, color: tc, noHold: true, plain: true, mi: miAt(env, 0.2) }));
     env.line([[-tw / 2 + m, top + th * 0.62], [tw / 2 - m, top + th * 0.62]], tc, Math.max(1, u * 0.0015), a * 0.5, false);
     const pa = tin(env, 0.35, 0.35, E.outBack) * out;
     const was = yen(p.was), now = yen(p.price);
-    const ws = tw * 0.1;
-    env.draw({ text: was, font: monoF(env), size: ws, x: 0, y: top + th * 0.71, color: tc, alpha: J.clamp(pa) * 0.6, ghost: false });
+    const ws = nativeTW * 0.1;
+    hangOwned('former-price',()=>env.draw({ ...(env.cut.placementLayoutsC?{placementCOwnedZone:{x0:-tw*.4,x1:tw*.4,y0:top+th*.64,y1:top+th*.78}}:{}), text: was, font: monoF(env), size: ws, x: 0, y: top + th * 0.71, color: tc, alpha: J.clamp(pa) * 0.6, ghost: false }));
     const wm = meas(was, monoF(env), ws).w;
-    env.line([[-wm / 2 - ws * 0.2, top + th * 0.71], [-wm / 2 - ws * 0.2 + (wm + ws * 0.4) * J.clamp(pa), top + th * 0.71]], red, Math.max(2, ws * 0.12), 1, false);
-    env.draw({ text: now, font: 'gothic_black', size: tw * 0.17 * J.clamp(pa), x: 0, y: top + th * 0.86, color: red, alpha: J.clamp(pa), ghost: false });
+    hangOwned('strike',()=>env.line([[-wm / 2 - ws * 0.2, top + th * 0.71], [-wm / 2 - ws * 0.2 + (wm + ws * 0.4) * J.clamp(pa), top + th * 0.71]], red, Math.max(2, ws * 0.12), 1, false));
+    hangOwned('current-price',()=>env.draw({ ...(env.cut.placementLayoutsC?{placementCOwnedZone:{x0:-tw*.44,x1:tw*.44,y0:top+th*.77,y1:top+th*.97}}:{}), text: now, font: 'gothic_black', size: nativeTW * 0.17 * J.clamp(pa), x: 0, y: top + th * 0.86, color: red, alpha: J.clamp(pa), ghost: false }));
     ctx.restore();
+    if(env.cut.placementLayoutsC)env.placementCBody=priorHangBody;
     return bb ? box(hx - tw / 2, hy + cord, hx + tw / 2, hy + cord + th) : null;
   },
 });

@@ -7,6 +7,12 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- 値札hangの[独立raw/幾何親レビュー](evidence/AVOID-008/parent-hang03-review.json)・[限定視覚レビュー](evidence/AVOID-008/hang-visual01-review.md)を経て、[main限定結合](evidence/AVOID-008/parent-hang-main01-review.json)を受入。全84source/JAENがtested`1f30863`と全byte一致し、170選択path・他82source・既存pycを実照合。日英各28条件6safe/18不足/4未対応、663実native/replay組、12segment120polygonと成立条件の実strict画素円cross0を確認。固定横移動以外の寸法/意味/時計は保持し、1代表8PNG+MP4抽出4frameに新crop/縮小/欠落がないため、この追加の人間確認は不要と親判断。旧empty-program FAILは保存、6物理サイズはcrop未証明で不採用、全条件成功とはしない。別4例の全体008人間確認・shadow/最終性能/回帰22jobは未完。
+
+- 依存最適化03の[新browser正確性親レビュー](evidence/AVOID-008/parent-cache-dependencies03-correctness-review.json)を受入。104開始終了/live/archive pin、62,676全leaf/stringを独立照合し、534差分は実key会計のみ。40cold/warm値/alias、25負例、18+18frame/15+15実観測、110 ledgerが一致。render record/replay独立counterは未計測で推定しない。速度は未再計測、元94/76の正式経路FAILも未更新、cache sourceはmain未結合。
+
+- 依存表現候補a383は、改変mapにより実collectorのJ.native差分が落ちる[親再現/修正レビュー](evidence/AVOID-008/parent-cache-dependencies03-review.json)でexpected FAILを保存。指定担当の`8f1ef58`はcaptured native/descriptor・map/constructor/speciesを厳格確認し、親の独立pure再実行も258同値・30区別・23新guard/変更getter呼出0・5途中変化拒否までbyte一致。source段階のみ受入、browser/速度は未確認。元formal/100単点のFAILと94/76経路不足は未解消扱い。製品sourceを変えない証拠checkpoint`afe7a94`をworkへpush済み、公開確認なし。容量不足は固定Git blob一致の旧worktree証拠のみsparse除外して復元可能にし、未commit変更/未追跡媒体を保持（[integrated記録](evidence/AVOID-008/storage-recovery01/integrated.json)、[editorial記録](evidence/AVOID-008/storage-recovery01/editorial.json)）。
+
 - 性能調査の固定証拠1212件を、子の`7e6e375`からGit blob/両ファイルhash/1209 hardlink/保護87入力の実照合付きで保存（[親importレビュー](evidence/AVOID-008/parent-performance-evidence-import01-review.json)）。原raw・旧FAILは保持し、main製品source/cacheは未変更。最終回帰の[準備02親レビュー](evidence/AVOID-008/parent-core-preparation02-review.json)では元2bbの4入力・66準備file・173依存fileと、所有プロセス清掃の実synthetic3件を確認。candidate未封印、22本番回帰jobは未実行。値札hangと障子shadowの追加は別worktreeで実装中、未検証を成功とせず008内で継続する。
 
 - 隔離decoder候補`6dcd2a1`の[親コード/104・118pin/実rawレビュー](evidence/AVOID-008/parent-cache-decoder01-review.json)を記録。196 graph/98 setter負例/6826 object/17未対応形、40組全field・18native・25依存負例を通過し、旧128版の値/alias/描画を維持。一方、非CDPの100単点診断はON計画2.996倍/描画+5.4ms、OFF2.353倍で速度未達。加えて元corpusは94/100 staged、80 frame呼出し中C record/replay/観測は各76で、shadow障子3・hang値札3が未対応。正式試験の全経路条件も未達であり、全80観測・全34成功とは呼ばない。旧記述の80観測は全76記録済み観測の一致へ訂正する。依存表現の限定効率化と2variantの実source対応案を調査中、guard/閾値/元corpusを変更して合格へ置換しない。mainは未達cacheを含めずf828のまま、008実装中/009以降未着手。
