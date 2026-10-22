@@ -1,0 +1,2104 @@
+{
+  "schema": "C008-local-native-preview-v1",
+  "build": "sticky-preview01",
+  "scope": "stickyNotes source-native recipe preview; independent visual judgement pending; C33 adapters pending",
+  "capture": {
+    "fps": 24,
+    "frames": 96,
+    "method": "Original Canvas native frames piped directly to ffmpeg H264; animation only, no UI capture or PNG playback"
+  },
+  "source": {
+    "beforeCompiledSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57",
+    "afterCompiledSHA256": "8e5970614294555b46743237214efc28115ea6c72cfb57fb77d10e7c6449380f",
+    "files": [
+      {
+        "path": "src/01_util.js",
+        "sha256": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447"
+      },
+      {
+        "path": "src/02_fonts.js",
+        "sha256": "3e687cfd1045349f36eb65f4fa802973ad4303f48b21069cf6dcc68a546c0415"
+      },
+      {
+        "path": "src/02b_lang.js",
+        "sha256": "a0464cc32ec396e2198801387f3640ec217ec1d0ea790ee2e88dbafebd7fc770"
+      },
+      {
+        "path": "src/03_text.js",
+        "sha256": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c"
+      },
+      {
+        "path": "src/04_styles.js",
+        "sha256": "29ecef9319dabebbadea198f3915c50bd76f2c48f1cf34d034c833106aa19ca7"
+      },
+      {
+        "path": "src/05_anim.js",
+        "sha256": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc"
+      },
+      {
+        "path": "src/05b_registry.js",
+        "sha256": "ecaefd208377658bb23adca79c36e093a7b3fce796f5facdb7d10806f6619cea"
+      },
+      {
+        "path": "src/06_layouts.js",
+        "sha256": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce"
+      },
+      {
+        "path": "src/07_decor.js",
+        "sha256": "9e0c6edc62ea6e0d220a5f5619e1ba10b35f776a45305fe1cde3288513fe4d24"
+      },
+      {
+        "path": "src/08_planner.js",
+        "sha256": "608bf692d183fd5db2b4eecaa469d6278092be57796b5a3353175941bfddba37"
+      },
+      {
+        "path": "src/08b_omakase.js",
+        "sha256": "0bcc4a74b12ea70a293cb6e3307c4fe62c8ddf391183bcbaceeb5747847bb870"
+      },
+      {
+        "path": "src/08c_composition.js",
+        "sha256": "26ee97660d62e61eaf5817e7c0ad8afd465e976fb2213cadf6adb1c8b247572c"
+      },
+      {
+        "path": "src/08ca_lyric_avoidance.js",
+        "sha256": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d"
+      },
+      {
+        "path": "src/08cb_background_layouts.js",
+        "sha256": "9122c219b4013391a5cc14dbdb289a7e205daf6088b8e4ed744f00b64aef560e"
+      },
+      {
+        "path": "src/08d_media.js",
+        "sha256": "bf175deb61f4a197eb28dc538f8daaae9da55efe6711dbec61adba0c38407ffd"
+      },
+      {
+        "path": "src/08e_lyric_features.js",
+        "sha256": "54f4b361f23bf8f78e293cf11a570a3088bc209dd80e6acf52ea7cffdc1f5373"
+      },
+      {
+        "path": "src/08e_media_effects.js",
+        "sha256": "eeb89f3b2424ad912ecc16d6f2affb186eb8c608a8b1a290d2b9c3d791b77f40"
+      },
+      {
+        "path": "src/08eb_lyric_scene.js",
+        "sha256": "c88e6f489446ffb77eac5856217a5b0c3ff04684c1c11750e29fe3c7fece681a"
+      },
+      {
+        "path": "src/08f_media_variations.js",
+        "sha256": "fa6c9db6aabf77de42dcd7dc87ff1f20cd401deaab541eddd5361548e247a38b"
+      },
+      {
+        "path": "src/08g_media_decor.js",
+        "sha256": "68c7506146e71de5d89a691fb7738f23e86c847126a2f05fd887cfdcc6b395b6"
+      },
+      {
+        "path": "src/08g_media_masks.js",
+        "sha256": "168fee9b91f7b24502daa16b101a5d65cd19a4c44377eb8f25c317812dbcaad8"
+      },
+      {
+        "path": "src/08g_media_phases.js",
+        "sha256": "ac91c6ea9e355a11f5734304de7d75dd6427923b431f6162eb29ec0a2322ad6f"
+      },
+      {
+        "path": "src/08g_media_rhythm.js",
+        "sha256": "1b7821f7b8e3a760a081ecfcc869b840dcff451a00b3cabac113ecb73201193c"
+      },
+      {
+        "path": "src/08g_media_scenes.js",
+        "sha256": "e71facca3a86a25c9404ad35a44494e0bf0781cfcfcf64957f01a3c615fd3414"
+      },
+      {
+        "path": "src/08h_cut_details.js",
+        "sha256": "bd8a814c97bb281a596d978478368061f5d596cb2dedcb6a57adb3eee1f07864"
+      },
+      {
+        "path": "src/08i_effect_clipboard.js",
+        "sha256": "9f0e7b10c1688312298ce262a78174530cfeec940f66531efa11de8cb6cb405e"
+      },
+      {
+        "path": "src/08j_cut_mask.js",
+        "sha256": "556e924f69fe9435d3d3bfe452aa6e9b130f20d316e0f852e2e6b309050eeb6c"
+      },
+      {
+        "path": "src/08k_detail_search.js",
+        "sha256": "6472c8ad6013e5d14a0e3abf65fc32e39ee030e213bb8fa05530858df45f2db9"
+      },
+      {
+        "path": "src/08l_detail_labels.js",
+        "sha256": "895d35845cd1304502a9c3427ad0d697a024b10cf783d75169f5caa4333b67d8"
+      },
+      {
+        "path": "src/08m_person_cutout.js",
+        "sha256": "5559074b5a08786097f273d84b0f652abb21455a0d0023df68692f5269016185"
+      },
+      {
+        "path": "src/09_render.js",
+        "sha256": "d51a1ccca3a5b42d2204a401c57c859abf71a228aefd45e3a1dee14ecc7ea067"
+      },
+      {
+        "path": "src/09a_placement.js",
+        "sha256": "ac82886c965291d9564512aa70c9e36fb8b29367eb0965d0f16ae69b25f3069b"
+      },
+      {
+        "path": "src/09b_basic_placement.js",
+        "sha256": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8"
+      },
+      {
+        "path": "src/09c_layoutsA_placement.js",
+        "sha256": "ff603fe43f54296865ae59ab1268c581cbfbbf7a489d02aafbfda83221b03c36"
+      },
+      {
+        "path": "src/09d_adaptive_placement.js",
+        "sha256": "ab3e8c727284eacbf642e4fdb2e71197aa6cfde7a68e1473450710289c05a595"
+      },
+      {
+        "path": "src/09e_layoutsB_placement.js",
+        "sha256": "268e8f8132f70a9e9627a703656f56d00e50a7145b8b84b1eef31c2371d249d1"
+      },
+      {
+        "path": "src/09f_layoutsB_editorial.js",
+        "sha256": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410"
+      },
+      {
+        "path": "src/09g_layoutsC_placement.js",
+        "sha256": "e71a8d0748278eff571a68d9edff4ac16566b9ad06261027c923790c76950edd"
+      },
+      {
+        "path": "src/10_audio.js",
+        "sha256": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57"
+      },
+      {
+        "path": "src/11_export.js",
+        "sha256": "d05692567f7893a3258500838091fc0e8cf7536b4ae763f20d0b6aa91a59037f"
+      },
+      {
+        "path": "src/11b_project_file.js",
+        "sha256": "9659b8d0bce2919830704c25ab230fc5a7faaad4c3d3783205dd9b5bd2630286"
+      },
+      {
+        "path": "src/11p_bgcamB.js",
+        "sha256": "baad1dab7a4743b4eab351c9e9dfa76d9af5f4e00b29538ce41837a5628dd644"
+      },
+      {
+        "path": "src/11p_decor.js",
+        "sha256": "b533343d8ad5ad114300fed174d4eb0dff092201c778a6697345157595b933a5"
+      },
+      {
+        "path": "src/11p_decorB.js",
+        "sha256": "f49747910c456cb829bdfeffa5c0342898305a8e01eebfa8ac18b2cc279bcd62"
+      },
+      {
+        "path": "src/11p_enter.js",
+        "sha256": "949b506310fd7f6f23a11f30691e0edc722ff1b953c157517093aec562644638"
+      },
+      {
+        "path": "src/11p_enterB.js",
+        "sha256": "7896363367fb5e5d19c4ccd59cd76ac707328bf018a91b24a137562a421819ce"
+      },
+      {
+        "path": "src/11p_exit.js",
+        "sha256": "a013c8d40ba71fa69ea1bfa0782d2a55b7a152aa91bc7c0f7d85a9e89dca0b2b"
+      },
+      {
+        "path": "src/11p_exitB.js",
+        "sha256": "565ee042f3f3382b05bb1cfdde8cb140231dba21f7ab58001af45e37d1faaf2e"
+      },
+      {
+        "path": "src/11p_fxB.js",
+        "sha256": "168dc3c65c197ddbe4252b9fbe013d6c35a5e7758cf95585ee34263b831d3101"
+      },
+      {
+        "path": "src/11p_horror1.js",
+        "sha256": "792d6dace596a0503e1055d3bbf9e56d63dc00c7151a1fb350067f2faac9f033"
+      },
+      {
+        "path": "src/11p_horror2.js",
+        "sha256": "828ff4c48181e9755c5e2a82be4e30cab491ca0614cc25d711131108af50b7e4"
+      },
+      {
+        "path": "src/11p_horror3.js",
+        "sha256": "c99a0d0cef6cf2b246e84586d5a33ebc750d1ef659a1490f211e8316d2727853"
+      },
+      {
+        "path": "src/11p_kinetic1.js",
+        "sha256": "012282d5f3d44ef99c1b5fa26dd85210b138c4ecc73f54084f929bc74bd0045e"
+      },
+      {
+        "path": "src/11p_kinetic2.js",
+        "sha256": "8c0401cfc265b6fe79d83e6a056e1bed93f42ae60a17890db165058f842ffd45"
+      },
+      {
+        "path": "src/11p_kinetic3.js",
+        "sha256": "c1905cb3a5fb7fb7a14e9984b7ee4ce6b435eddeaab89fb71742c0075b7b3393"
+      },
+      {
+        "path": "src/11p_layoutsA.js",
+        "sha256": "9d2b6cda27b049e6b2594603c6dee25d930e09ba536274a21a5ace5ddc7bfcd5"
+      },
+      {
+        "path": "src/11p_layoutsB.js",
+        "sha256": "6e9730f7647fe5ff0d0f28a9f795efa54475a77659b8975a22711b910cd82064"
+      },
+      {
+        "path": "src/11p_layoutsC.js",
+        "sha256": "b5b5668ae9520a45ca8c6893dc089fbb35f0065b83589984a51035eaa6b786cd"
+      },
+      {
+        "path": "src/11p_layoutsD.js",
+        "sha256": "563f2e90ca86a4196606c48b0ccd0b4e555e672de64781c1a3125d3fd2922978"
+      },
+      {
+        "path": "src/11p_looks.js",
+        "sha256": "724f124e9b0dfac715bcffb56bbc0342ccc78fdc5f3151481b2c52583470afba"
+      },
+      {
+        "path": "src/11p_styles.js",
+        "sha256": "a306862fa099e7fd39b2efe1b63a6d30b8abf0462e141a075cd7b9ec24106922"
+      },
+      {
+        "path": "src/11p_treattrans.js",
+        "sha256": "139dadb053110d87439248116d7e2ccf5b8f629cdd72c6412313649fde76ee25"
+      },
+      {
+        "path": "src/11p_typo1.js",
+        "sha256": "0a1c61c77ebdd61754120283078a1e79e339a3de5341974e9ac7b5bb5a2878da"
+      },
+      {
+        "path": "src/11p_typo2.js",
+        "sha256": "0fefc16f3e3711da71763bf6f874d02532820e3bbf2f8fd9e327af1a107914e6"
+      },
+      {
+        "path": "src/11p_typo3.js",
+        "sha256": "bf8f19513f94044faedf74b45601d6cffa467edb79e37542149d34213c03df77"
+      },
+      {
+        "path": "src/11q_media_cameras.js",
+        "sha256": "23254987957792ef1acb612d5f2485401f31d5cb0ba50f31cc3de8d6754f8fd8"
+      },
+      {
+        "path": "src/11q_sets.js",
+        "sha256": "c7089d50d5a3eeabd9e4b236812201e87e7f55c4fb22b2d6c06f1efb0d02fc76"
+      },
+      {
+        "path": "src/11r_themes.js",
+        "sha256": "31fe85b17a3faf6c2ebe6a3e5a2badcd4807bf4de0ddfceac4e0668e24b5577c"
+      },
+      {
+        "path": "src/11s_color_theme.js",
+        "sha256": "13221ae70b44a6b7222bbac3d32ee926b30f442427ca33c01ac35f905a847593"
+      },
+      {
+        "path": "src/11s_decor_details.js",
+        "sha256": "40014b35c1f53fca227767bc6e758e69831b7c9e80a130b58bee3e5f000b64dc"
+      },
+      {
+        "path": "src/11t_effect_preview.js",
+        "sha256": "2169525db51841181d477f84826145a1fe6c3de5a852f99ead95ededb65ee6ba"
+      },
+      {
+        "path": "src/11u_effect_favorites.js",
+        "sha256": "bbe922b1edd9b3488163c69f0c6e99b62d98649b0a91e3923c02cdcc348872ae"
+      },
+      {
+        "path": "src/11u_note_layouts.js",
+        "sha256": "8bd64c9068384332be36710653ed4bb171373f8ae81ed58f4f7bd0d2f1e1b783"
+      },
+      {
+        "path": "src/11v_modal_scroll.js",
+        "sha256": "09e3742f65e7c1076b068aabb8d7fa018723a5377c65f49786a6b382df156ac8"
+      },
+      {
+        "path": "src/11w_custom_draw.js",
+        "sha256": "00bc020f5cac3ea8dbe98421bebd35867fde0a83f71fdf656d9ec614747a62ad"
+      },
+      {
+        "path": "src/11wa_custom_effects.js",
+        "sha256": "079f75f0117d35d1ebfb48d2a781dd52e7a74adc4811c4077eca9f320c3e0937"
+      },
+      {
+        "path": "src/11x_favorite_api.js",
+        "sha256": "c46c2c7d751be5b8372b50e71ce80cdcc72fc9e3623a38173ee7dec57db0e37b"
+      },
+      {
+        "path": "src/11y_short_export.js",
+        "sha256": "83589822ac6a2aba57210a185c2b45ccbf4b15599900a71942e6ebe84821b9f7"
+      },
+      {
+        "path": "src/11z_layoutsC_transport.js",
+        "sha256": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091"
+      },
+      {
+        "path": "src/12_ui.js",
+        "sha256": "a61d2d2142e3535db0f6a5a4e0c423ad1dcff6285e04c1cc0e442d893b91e66d"
+      },
+      {
+        "path": "src/13_sprite_extractor.js",
+        "sha256": "07fa6e11b6a02bafd555a0c50299efb993cdbb9e18df648d251bd7bbfa93ee39"
+      }
+    ],
+    "fixtureSHA256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "cFixtureSHA256": "e67edc0fe7aacba848cf88089576505946611559c5691234288dbb7698fd8a1b",
+    "scriptSHA256": "dff950453a7e704a3a4acbb37b2191eea0b8347f24e648745097d4e043428b40",
+    "fontSHA256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a"
+  },
+  "assets": {
+    "images/sticky-landscape-before-6.png": {
+      "sha256": "7ff03a14582edcdffdf2256700e90aeab33858657248bef5042585f5c4edff32",
+      "bytes": 356476
+    },
+    "images/sticky-landscape-before-36.png": {
+      "sha256": "6d001583586db292cd4c70a008823399a7a64fcd682252f21688cc5d13639313",
+      "bytes": 355011
+    },
+    "images/sticky-landscape-before-91.png": {
+      "sha256": "90639132e2c21514ddbe1b24e27e842a2e9d0a70aa9fb2daa11e6597e903a9db",
+      "bytes": 365208
+    },
+    "videos/sticky-landscape-before.mp4": {
+      "sha256": "63ce2b958d817742e17406e7dca10cc05157407eab042f3045cc91cb4b13fe8a",
+      "bytes": 107590
+    },
+    "sticky-landscape-before-frames.json.gz": {
+      "sha256": "4fec1edb594d8e672a94ec5504970f427e5721e01b36be0a06372dda330889f5",
+      "bytes": 4098
+    },
+    "images/sticky-landscape-after-6.png": {
+      "sha256": "2bb9e2c120ba789b0ce846a939717deca74dea06b9bafaede0c3a1c73e18e0fd",
+      "bytes": 363416
+    },
+    "images/sticky-landscape-after-36.png": {
+      "sha256": "4975648ef9ccdc1f6004c4d979e1009ec39b8d8d3eca9b5c0fbf464877a10b87",
+      "bytes": 362320
+    },
+    "images/sticky-landscape-after-91.png": {
+      "sha256": "5783b766f53c77899057e5c477edd9fa6003402229881d90790c9c4f81911747",
+      "bytes": 372782
+    },
+    "videos/sticky-landscape-after.mp4": {
+      "sha256": "8061d16f75663a9bcafb6c60705ba99222f39d79f5106d03601fbf578805b40c",
+      "bytes": 107368
+    },
+    "sticky-landscape-after-frames.json.gz": {
+      "sha256": "c896461de1f40eb998f71732ac999aea97cf17f26d295b2b8f1f1dc7e3704e3b",
+      "bytes": 4982
+    },
+    "images/sticky-portrait-before-6.png": {
+      "sha256": "52401cff0a7858fc2c671ff84822f6dd1875ff1e383d2e87fef97f87b48adf5c",
+      "bytes": 902447
+    },
+    "images/sticky-portrait-before-36.png": {
+      "sha256": "1310c15609d6bc1dbe3c2567eb84623c43d70dd9e0ecd99a7d9ceb6714f3019a",
+      "bytes": 899128
+    },
+    "images/sticky-portrait-before-91.png": {
+      "sha256": "cd57189381a081c6cb0e7ffe8136ab895f56cb7f817d7fcd6cdee2bb689d7531",
+      "bytes": 941507
+    },
+    "videos/sticky-portrait-before.mp4": {
+      "sha256": "ce38f19ee0e971aee873faf717d9dc2029b7c028329bcfeb65eeb95920d069d7",
+      "bytes": 265952
+    },
+    "sticky-portrait-before-frames.json.gz": {
+      "sha256": "f36a88fff68e3b15cb0a3bff0e5da2c1b14c861de2ab04ebefff5217afc90564",
+      "bytes": 4101
+    },
+    "images/sticky-portrait-after-6.png": {
+      "sha256": "d1c7464b7fb4e2297f7a1cc340b549aeacf6b19c45cd6c0d63db03d4e8f9e4bc",
+      "bytes": 1056764
+    },
+    "images/sticky-portrait-after-36.png": {
+      "sha256": "c680fb0a18392464f36ea575f7594efb7361fefde1641e25ad3ca505d4384314",
+      "bytes": 1058735
+    },
+    "images/sticky-portrait-after-91.png": {
+      "sha256": "a5c83922308af3049327d4c5dc4ae70014bb6a3a7ac68106b4ed593829c67a49",
+      "bytes": 1094868
+    },
+    "videos/sticky-portrait-after.mp4": {
+      "sha256": "0ef427f55b480db3913375504e7b19d6d2bb177c78b3b7892fe99dfe800630c6",
+      "bytes": 232494
+    },
+    "sticky-portrait-after-frames.json.gz": {
+      "sha256": "e3c54199ff6201e3d4d8dfab795e968bb8144dd93264daad22bb3562f8cda7bb",
+      "bytes": 4958
+    },
+    "index.html": {
+      "sha256": "80666934ccb4455e20a52c52a1619c3e4239377ac1734caa6a23924ba32e813a",
+      "bytes": 1983
+    }
+  },
+  "cases": [
+    {
+      "id": "sticky-landscape",
+      "conditions": {
+        "id": "sticky-landscape",
+        "layout": "stickyNotes",
+        "W": 960,
+        "H": 540,
+        "radius": 0.2,
+        "seed": 704,
+        "text": "風の先へ",
+        "center": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "font": "Avoid006Fixture NotoSansCJK regular",
+        "sameFontBothSides": true,
+        "stage": [
+          960,
+          540
+        ]
+      },
+      "sides": {
+        "before": {
+          "video": "videos/sticky-landscape-before.mp4",
+          "initial": {
+            "diagnostics": [],
+            "trajectory": null
+          },
+          "keys": [
+            "images/sticky-landscape-before-6.png",
+            "images/sticky-landscape-before-36.png",
+            "images/sticky-landscape-before-91.png"
+          ],
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 31,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "211256",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/work/avoid008-c-preview/sticky-preview01/videos/sticky-landscape-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "107590",
+              "bit_rate": "215180",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "24",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        },
+        "after": {
+          "video": "videos/sticky-landscape-after.mp4",
+          "initial": {
+            "diagnostics": [
+              {
+                "cut": 0,
+                "code": "STAGED_C_ADAPTER",
+                "safety": "certified-hold-adapter"
+              }
+            ],
+            "trajectory": {
+              "version": 1,
+              "kind": "layouts-c-source-native",
+              "revision": 4,
+              "evaluationRange": [
+                -0.041666666666666664,
+                4.82
+              ],
+              "holdWindow": [
+                0.25,
+                3.6
+              ],
+              "units": [
+                {
+                  "owner": "stickyNotes.composition",
+                  "envelopes": [
+                    [
+                      [
+                        293.6007137965281,
+                        444.0050524076522
+                      ],
+                      [
+                        303.04683771283214,
+                        95.69400983456006
+                      ],
+                      [
+                        325.0955877128322,
+                        95.69400983456006
+                      ],
+                      [
+                        671.6924567930114,
+                        105.09364571790235
+                      ],
+                      [
+                        671.6924567930114,
+                        127.14239571790233
+                      ],
+                      [
+                        662.2463328767071,
+                        475.45343829099454
+                      ],
+                      [
+                        640.1975828767072,
+                        475.45343829099454
+                      ],
+                      [
+                        293.6007137965281,
+                        466.0538024076522
+                      ]
+                    ],
+                    [
+                      [
+                        287.20890015449436,
+                        426.6773653466754
+                      ],
+                      [
+                        296.5620480048748,
+                        81.7946697594092
+                      ],
+                      [
+                        318.6107980048748,
+                        81.7946697594092
+                      ],
+                      [
+                        663.4934935921409,
+                        91.14781760978968
+                      ],
+                      [
+                        663.4934935921409,
+                        113.19656760978967
+                      ],
+                      [
+                        654.1403457417605,
+                        458.07926319705587
+                      ],
+                      [
+                        632.0915957417606,
+                        458.07926319705587
+                      ],
+                      [
+                        287.20890015449436,
+                        448.72611534667544
+                      ]
+                    ],
+                    [
+                      [
+                        592.7676669958037,
+                        430.880011011398
+                      ],
+                      [
+                        593.502614405147,
+                        403.77997499102526
+                      ],
+                      [
+                        615.502614405147,
+                        403.77997499102526
+                      ],
+                      [
+                        650.9695741249118,
+                        404.74183165216505
+                      ],
+                      [
+                        654.8932074942065,
+                        408.2699137986866
+                      ],
+                      [
+                        654.8932074942065,
+                        430.31866379868654
+                      ],
+                      [
+                        654.1403457417605,
+                        458.07926319705587
+                      ],
+                      [
+                        632.0915957417606,
+                        458.07926319705587
+                      ],
+                      [
+                        595.7601288788264,
+                        457.09396127980085
+                      ],
+                      [
+                        592.7676669958037,
+                        452.880011011398
+                      ]
+                    ],
+                    [
+                      [
+                        296.5729943745208,
+                        119.17715303512028
+                      ],
+                      [
+                        297.5597815920978,
+                        82.79091804631022
+                      ],
+                      [
+                        317.5597815920978,
+                        82.79091804631022
+                      ],
+                      [
+                        662.49724530524,
+                        92.14555119701271
+                      ],
+                      [
+                        662.49724530524,
+                        112.14555119701271
+                      ],
+                      [
+                        661.510458087663,
+                        148.53178618582277
+                      ],
+                      [
+                        657.4293672606838,
+                        151.66007193246884
+                      ],
+                      [
+                        637.4293672606838,
+                        151.66007193246884
+                      ],
+                      [
+                        300.6996894443156,
+                        142.52803224904972
+                      ],
+                      [
+                        296.5729943745208,
+                        139.17715303512028
+                      ]
+                    ],
+                    [
+                      [
+                        351.45659198248785,
+                        253.11327695571055
+                      ],
+                      [
+                        351.54358405542297,
+                        159.8951925466493
+                      ],
+                      [
+                        395.641084055423,
+                        159.8951925466493
+                      ],
+                      [
+                        495.00541578815864,
+                        159.98792036065703
+                      ],
+                      [
+                        592.3876576484445,
+                        167.24942659043768
+                      ],
+                      [
+                        597.395580073606,
+                        289.3599624501441
+                      ],
+                      [
+                        597.395580073606,
+                        333.45746245014413
+                      ],
+                      [
+                        597.3324869218068,
+                        401.06618301056216
+                      ],
+                      [
+                        493.7848786009377,
+                        414.28643211862345
+                      ],
+                      [
+                        449.68737860093773,
+                        414.28643211862345
+                      ],
+                      [
+                        352.37179597609355,
+                        414.1956162183066
+                      ],
+                      [
+                        351.45659198248785,
+                        297.21077695571057
+                      ]
+                    ]
+                  ],
+                  "segments": [
+                    {
+                      "start": 0,
+                      "end": 4,
+                      "region": "fixture",
+                      "circle": {
+                        "cx": 480,
+                        "cy": 270,
+                        "r": 108
+                      },
+                      "from": [
+                        290.2596654168135,
+                        7.871782494110325
+                      ],
+                      "to": [
+                        290.2596654168135,
+                        7.871782494110325
+                      ],
+                      "status": "safe-hold",
+                      "decision": "certified-hold-adapter",
+                      "failure": null,
+                      "safetyScope": "source-owned-note-entry-exit-relaxed",
+                      "holdWindow": [
+                        0.25,
+                        3.6
+                      ],
+                      "attempts": [
+                        {
+                          "strategy": "native-note-cluster-translation",
+                          "status": "insufficient-space",
+                          "reason": "bounded-candidate-search-exhausted"
+                        },
+                        {
+                          "noteScale": 1,
+                          "pitch": 1.2,
+                          "strategy": "native-note-slot-pitch",
+                          "status": "insufficient-space",
+                          "quality": {
+                            "minNativeFontRatio": 1,
+                            "minPrimaryPx": 101.07169811320756,
+                            "floor": 18.900000000000002
+                          }
+                        },
+                        {
+                          "noteScale": 1,
+                          "pitch": 1.5,
+                          "strategy": "native-note-slot-pitch",
+                          "status": "insufficient-space",
+                          "quality": {
+                            "minNativeFontRatio": 1,
+                            "minPrimaryPx": 101.07169811320756,
+                            "floor": 18.900000000000002
+                          }
+                        },
+                        {
+                          "noteScale": 1,
+                          "pitch": 2,
+                          "strategy": "native-note-slot-pitch",
+                          "status": "insufficient-space",
+                          "quality": {
+                            "minNativeFontRatio": 1,
+                            "minPrimaryPx": 101.07169811320756,
+                            "floor": 18.900000000000002
+                          }
+                        },
+                        {
+                          "noteScale": 0.95,
+                          "pitch": 1,
+                          "strategy": "source-note-size-and-slot-pitch",
+                          "status": "safe",
+                          "quality": {
+                            "minNativeFontRatio": 0.95,
+                            "minPrimaryPx": 96.01811320754717,
+                            "floor": 18.900000000000002
+                          }
+                        }
+                      ],
+                      "composition": {
+                        "noteScale": 0.95,
+                        "pitch": 1,
+                        "strategy": "source-note-size-and-slot-pitch"
+                      },
+                      "quality": {
+                        "minNativeFontRatio": 0.95,
+                        "minPrimaryPx": 96.01811320754717,
+                        "floor": 18.900000000000002
+                      },
+                      "envelopes": [
+                        [
+                          [
+                            302.31687077301046,
+                            434.80339985380544
+                          ],
+                          [
+                            311.2934655564003,
+                            103.80550955913421
+                          ],
+                          [
+                            333.34221555640033,
+                            103.80550955913421
+                          ],
+                          [
+                            662.7116410328042,
+                            112.73794071121031
+                          ],
+                          [
+                            662.7116410328042,
+                            134.78669071121033
+                          ],
+                          [
+                            653.7350462494145,
+                            465.7845810058816
+                          ],
+                          [
+                            631.6862962494145,
+                            465.7845810058816
+                          ],
+                          [
+                            302.31687077301046,
+                            456.85214985380543
+                          ]
+                        ],
+                        [
+                          [
+                            296.24464781307836,
+                            418.3420971458775
+                          ],
+                          [
+                            305.13291533384074,
+                            90.60113648774089
+                          ],
+                          [
+                            327.1816653338408,
+                            90.60113648774089
+                          ],
+                          [
+                            654.9226259919775,
+                            99.48940400850324
+                          ],
+                          [
+                            654.9226259919775,
+                            121.53815400850326
+                          ],
+                          [
+                            646.0343584712151,
+                            449.2791146666399
+                          ],
+                          [
+                            623.9856084712151,
+                            449.2791146666399
+                          ],
+                          [
+                            296.24464781307836,
+                            440.3908471458775
+                          ]
+                        ],
+                        [
+                          [
+                            586.5279464075109,
+                            422.3346438387765
+                          ],
+                          [
+                            587.2288574290847,
+                            396.48964637331255
+                          ],
+                          [
+                            609.2288574290847,
+                            396.48964637331255
+                          ],
+                          [
+                            643.0224324089711,
+                            397.406121184093
+                          ],
+                          [
+                            646.7523541989398,
+                            400.75539538795533
+                          ],
+                          [
+                            646.7523541989398,
+                            422.80414538795526
+                          ],
+                          [
+                            646.0343584712151,
+                            449.2791146666399
+                          ],
+                          [
+                            623.9856084712151,
+                            449.2791146666399
+                          ],
+                          [
+                            589.368315101194,
+                            448.34030078234673
+                          ],
+                          [
+                            586.5279464075109,
+                            444.3346438387765
+                          ]
+                        ],
+                        [
+                          [
+                            305.19034973644864,
+                            126.26944627053905
+                          ],
+                          [
+                            306.13064892106377,
+                            91.59738477464191
+                          ],
+                          [
+                            326.13064892106377,
+                            91.59738477464191
+                          ],
+                          [
+                            653.9263777050764,
+                            100.48713759572627
+                          ],
+                          [
+                            653.9263777050764,
+                            120.48713759572627
+                          ],
+                          [
+                            652.9860785204612,
+                            155.1591990916234
+                          ],
+                          [
+                            649.1078252792788,
+                            158.1297855683938
+                          ],
+                          [
+                            629.1078252792788,
+                            158.1297855683938
+                          ],
+                          [
+                            309.1119948616948,
+                            149.4515643885677
+                          ],
+                          [
+                            305.19034973644864,
+                            146.26944627053905
+                          ]
+                        ],
+                        [
+                          [
+                            356.8800606757491,
+                            253.37386524173286
+                          ],
+                          [
+                            356.962272964457,
+                            165.27765360240022
+                          ],
+                          [
+                            401.05977296445695,
+                            165.27765360240022
+                          ],
+                          [
+                            496.3266064814097,
+                            165.36655758902623
+                          ],
+                          [
+                            588.5330452544472,
+                            171.5988582601995
+                          ],
+                          [
+                            592.5229598126829,
+                            286.8860881715245
+                          ],
+                          [
+                            592.5229598126829,
+                            330.9835881715245
+                          ],
+                          [
+                            592.4617785745747,
+                            396.5435596240511
+                          ],
+                          [
+                            494.0918852546451,
+                            408.74426518282826
+                          ],
+                          [
+                            449.99438525464507,
+                            408.74426518282826
+                          ],
+                          [
+                            357.8006753995295,
+                            408.6582290667386
+                          ],
+                          [
+                            356.8800606757491,
+                            297.4713652417329
+                          ]
+                        ]
+                      ],
+                      "proof": {
+                        "kind": "sticky-notes-static-hold-source-proof",
+                        "entry": "Every note shares its source entry uniform squash with all owned paper/fold/shadow/pin/glyphs; last note starts .03+(k-1)*.13 and settles after .22",
+                        "exit": "Every note shares source peel geometry from cut.end-outDur; no newly static plate is exempted",
+                        "hold": "Native sq=1, peel=0, all slots/angles/font sizes fixed; complete recorded ink plus bounded camera/ghost/AA",
+                        "explicitSizePreserved": false
+                      }
+                    }
+                  ]
+                }
+              ],
+              "sourceProof": {
+                "sourceMapping": {
+                  "complete": true,
+                  "source": "風の先へ",
+                  "main": [
+                    {
+                      "index": 0,
+                      "text": "風の\n先へ",
+                      "font": "klee",
+                      "size": 101.07169811320756,
+                      "mi": 4.390907417978326
+                    }
+                  ],
+                  "metadata": [],
+                  "shapes": [
+                    {
+                      "kind": "nativePath",
+                      "order": 0,
+                      "owner": "cut:0"
+                    },
+                    {
+                      "kind": "nativePath",
+                      "order": 1,
+                      "owner": "cut:0"
+                    },
+                    {
+                      "kind": "nativePath",
+                      "order": 2,
+                      "owner": "cut:0"
+                    },
+                    {
+                      "kind": "rect",
+                      "order": 3,
+                      "owner": "cut:0"
+                    }
+                  ],
+                  "rule": "Ordered native source occurrences, meaningful metadata and every owned shape retained; no substitute glyphs/plates"
+                },
+                "recipe": "native-note-cluster/ordered-slot/source-note-size",
+                "sourceIdentity": "unchanged registered C source + renderer/makeEnv prototypes",
+                "nativeFontSizePreserved": false,
+                "ownedShapesPreserved": true
+              },
+              "measurementSupported": true,
+              "safety": "certified-hold-adapter",
+              "explicitSizePreserved": false
+            }
+          },
+          "keys": [
+            "images/sticky-landscape-after-6.png",
+            "images/sticky-landscape-after-36.png",
+            "images/sticky-landscape-after-91.png"
+          ],
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 31,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "210780",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/work/avoid008-c-preview/sticky-preview01/videos/sticky-landscape-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "107368",
+              "bit_rate": "214736",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "24",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        }
+      }
+    },
+    {
+      "id": "sticky-portrait",
+      "conditions": {
+        "id": "sticky-portrait",
+        "layout": "stickyNotes",
+        "W": 1080,
+        "H": 1920,
+        "radius": 0.2,
+        "seed": 704,
+        "text": "風の先へ",
+        "center": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "font": "Avoid006Fixture NotoSansCJK regular",
+        "sameFontBothSides": true,
+        "stage": [
+          1080,
+          1920
+        ]
+      },
+      "sides": {
+        "before": {
+          "video": "videos/sticky-portrait-before.mp4",
+          "initial": {
+            "diagnostics": [],
+            "trajectory": null
+          },
+          "keys": [
+            "images/sticky-portrait-before-6.png",
+            "images/sticky-portrait-before-36.png",
+            "images/sticky-portrait-before-91.png"
+          ],
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 1080,
+                "height": 1920,
+                "coded_width": 1080,
+                "coded_height": 1920,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 40,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "527962",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 47,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/work/avoid008-c-preview/sticky-preview01/videos/sticky-portrait-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "265952",
+              "bit_rate": "531904",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "24",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        },
+        "after": {
+          "video": "videos/sticky-portrait-after.mp4",
+          "initial": {
+            "diagnostics": [
+              {
+                "cut": 0,
+                "code": "STAGED_C_ADAPTER",
+                "safety": "certified-hold-adapter"
+              }
+            ],
+            "trajectory": {
+              "version": 1,
+              "kind": "layouts-c-source-native",
+              "revision": 4,
+              "evaluationRange": [
+                -0.041666666666666664,
+                4.82
+              ],
+              "holdWindow": [
+                0.25,
+                3.6
+              ],
+              "units": [
+                {
+                  "owner": "stickyNotes.composition",
+                  "envelopes": [
+                    [
+                      [
+                        179.27757172440306,
+                        1318.0382675726985
+                      ],
+                      [
+                        198.11427829899236,
+                        623.4641794311891
+                      ],
+                      [
+                        220.16302829899234,
+                        623.4641794311891
+                      ],
+                      [
+                        911.3087694546757,
+                        642.2079099398547
+                      ],
+                      [
+                        911.3087694546757,
+                        664.2566599398547
+                      ],
+                      [
+                        892.4720628800865,
+                        1358.8307480813642
+                      ],
+                      [
+                        870.4233128800865,
+                        1358.8307480813642
+                      ],
+                      [
+                        179.27757172440306,
+                        1340.0870175726984
+                      ]
+                    ],
+                    [
+                      [
+                        166.49394444033555,
+                        1283.3828934507446
+                      ],
+                      [
+                        185.14469888307764,
+                        595.6654992808874
+                      ],
+                      [
+                        207.19344888307762,
+                        595.6654992808874
+                      ],
+                      [
+                        894.9108430529351,
+                        614.3162537236294
+                      ],
+                      [
+                        894.9108430529351,
+                        636.3650037236295
+                      ],
+                      [
+                        876.260088610193,
+                        1324.0823978934868
+                      ],
+                      [
+                        854.211338610193,
+                        1324.0823978934868
+                      ],
+                      [
+                        166.49394444033555,
+                        1305.4316434507448
+                      ]
+                    ],
+                    [
+                      [
+                        777.5620762796825,
+                        1291.7875146474637
+                      ],
+                      [
+                        778.9777514444153,
+                        1239.5867075289148
+                      ],
+                      [
+                        800.9777514444153,
+                        1239.5867075289148
+                      ],
+                      [
+                        869.9124059617485,
+                        1241.4562011972405
+                      ],
+                      [
+                        877.7102708570661,
+                        1248.5604461014232
+                      ],
+                      [
+                        877.7102708570661,
+                        1270.609196101423
+                      ],
+                      [
+                        876.260088610193,
+                        1324.0823978934868
+                      ],
+                      [
+                        854.211338610193,
+                        1324.0823978934868
+                      ],
+                      [
+                        783.5964018889998,
+                        1322.1673353169956
+                      ],
+                      [
+                        777.5620762796825,
+                        1313.7875146474637
+                      ]
+                    ],
+                    [
+                      [
+                        184.22588459348742,
+                        667.3314524148575
+                      ],
+                      [
+                        186.1424324703006,
+                        596.6617475677884
+                      ],
+                      [
+                        206.1424324703006,
+                        596.6617475677884
+                      ],
+                      [
+                        893.9145947660342,
+                        615.3139873108523
+                      ],
+                      [
+                        893.9145947660342,
+                        635.3139873108523
+                      ],
+                      [
+                        891.9980468892209,
+                        705.9836921579216
+                      ],
+                      [
+                        883.860204406805,
+                        712.265959397605
+                      ],
+                      [
+                        863.860204406805,
+                        712.265959397605
+                      ],
+                      [
+                        192.45357861475281,
+                        694.0575496423259
+                      ],
+                      [
+                        184.22588459348742,
+                        687.3314524148575
+                      ]
+                    ],
+                    [
+                      [
+                        307.0125797027876,
+                        946.2364852668519
+                      ],
+                      [
+                        307.1836959781214,
+                        762.8734401105665
+                      ],
+                      [
+                        351.28119597812145,
+                        762.8734401105665
+                      ],
+                      [
+                        546.9367357817556,
+                        763.0560278680457
+                      ],
+                      [
+                        741.7012195023274,
+                        777.5790403276071
+                      ],
+                      [
+                        750.6926897987044,
+                        1021.7991560901744
+                      ],
+                      [
+                        750.6926897987044,
+                        1065.8966560901742
+                      ],
+                      [
+                        750.5693713656426,
+                        1198.0409735491733
+                      ],
+                      [
+                        543.4751106807498,
+                        1223.4570972113502
+                      ],
+                      [
+                        499.37761068074974,
+                        1223.4570972113502
+                      ],
+                      [
+                        308.8439436468443,
+                        1223.2792892380983
+                      ],
+                      [
+                        307.0125797027876,
+                        990.3339852668519
+                      ]
+                    ]
+                  ],
+                  "segments": [
+                    {
+                      "start": 0,
+                      "end": 4,
+                      "region": "fixture",
+                      "circle": {
+                        "cx": 540,
+                        "cy": 960,
+                        "r": 216
+                      },
+                      "from": [
+                        -15.166230261897775,
+                        559.2310159416279
+                      ],
+                      "to": [
+                        -15.166230261897775,
+                        559.2310159416279
+                      ],
+                      "status": "safe-hold",
+                      "decision": "certified-hold-adapter",
+                      "failure": null,
+                      "safetyScope": "source-owned-note-entry-exit-relaxed",
+                      "holdWindow": [
+                        0.25,
+                        3.6
+                      ],
+                      "attempts": [
+                        {
+                          "strategy": "native-note-cluster-translation",
+                          "status": "insufficient-space",
+                          "reason": "bounded-candidate-search-exhausted"
+                        },
+                        {
+                          "noteScale": 1,
+                          "pitch": 1.2,
+                          "strategy": "native-note-slot-pitch",
+                          "status": "insufficient-space",
+                          "quality": {
+                            "minNativeFontRatio": 1,
+                            "minPrimaryPx": 202.14339622641512,
+                            "floor": 37.800000000000004
+                          }
+                        },
+                        {
+                          "noteScale": 1,
+                          "pitch": 1.5,
+                          "strategy": "native-note-slot-pitch",
+                          "status": "insufficient-space",
+                          "quality": {
+                            "minNativeFontRatio": 1,
+                            "minPrimaryPx": 202.14339622641512,
+                            "floor": 37.800000000000004
+                          }
+                        },
+                        {
+                          "noteScale": 1,
+                          "pitch": 2,
+                          "strategy": "native-note-slot-pitch",
+                          "status": "insufficient-space",
+                          "quality": {
+                            "minNativeFontRatio": 1,
+                            "minPrimaryPx": 202.14339622641512,
+                            "floor": 37.800000000000004
+                          }
+                        },
+                        {
+                          "noteScale": 0.95,
+                          "pitch": 1,
+                          "strategy": "source-note-size-and-slot-pitch",
+                          "status": "safe",
+                          "quality": {
+                            "minNativeFontRatio": 0.95,
+                            "minPrimaryPx": 192.03622641509435,
+                            "floor": 37.800000000000004
+                          }
+                        }
+                      ],
+                      "composition": {
+                        "noteScale": 0.95,
+                        "pitch": 1,
+                        "strategy": "source-note-size-and-slot-pitch"
+                      },
+                      "quality": {
+                        "minNativeFontRatio": 0.95,
+                        "minPrimaryPx": 192.03622641509435,
+                        "floor": 37.800000000000004
+                      },
+                      "envelopes": [
+                        [
+                          [
+                            196.70988567736788,
+                            1299.6349468342828
+                          ],
+                          [
+                            214.6075339861286,
+                            639.6871632496154
+                          ],
+                          [
+                            236.65628398612864,
+                            639.6871632496154
+                          ],
+                          [
+                            893.3471379342616,
+                            657.4964842957486
+                          ],
+                          [
+                            893.3471379342616,
+                            679.5452342957486
+                          ],
+                          [
+                            875.449489625501,
+                            1339.4930178804161
+                          ],
+                          [
+                            853.4007396255009,
+                            1339.4930178804161
+                          ],
+                          [
+                            196.70988567736788,
+                            1321.6836968342827
+                          ]
+                        ],
+                        [
+                          [
+                            184.56543975750378,
+                            1266.712341418427
+                          ],
+                          [
+                            202.28643354100967,
+                            613.2784171068288
+                          ],
+                          [
+                            224.33518354100966,
+                            613.2784171068288
+                          ],
+                          [
+                            877.7691078526079,
+                            630.9994108903346
+                          ],
+                          [
+                            877.7691078526079,
+                            653.0481608903347
+                          ],
+                          [
+                            860.048114069102,
+                            1306.4820852019327
+                          ],
+                          [
+                            837.9993640691021,
+                            1306.4820852019327
+                          ],
+                          [
+                            184.56543975750378,
+                            1288.761091418427
+                          ]
+                        ],
+                        [
+                          [
+                            765.0826351030968,
+                            1274.6967650434317
+                          ],
+                          [
+                            766.4302374922906,
+                            1225.0060350347003
+                          ],
+                          [
+                            788.4302374922906,
+                            1225.0060350347003
+                          ],
+                          [
+                            854.018122529867,
+                            1226.7847650023073
+                          ],
+                          [
+                            861.4285642665325,
+                            1233.5313936492385
+                          ],
+                          [
+                            861.4285642665325,
+                            1255.5801436492384
+                          ],
+                          [
+                            860.048114069102,
+                            1306.4820852019327
+                          ],
+                          [
+                            837.9993640691021,
+                            1306.4820852019327
+                          ],
+                          [
+                            770.8127743337348,
+                            1304.6599986913652
+                          ],
+                          [
+                            765.0826351030968,
+                            1296.6967650434317
+                          ]
+                        ],
+                        [
+                          [
+                            201.46059531734312,
+                            681.516023254973
+                          ],
+                          [
+                            203.28416712823264,
+                            614.2746653937297
+                          ],
+                          [
+                            223.28416712823264,
+                            614.2746653937297
+                          ],
+                          [
+                            876.772859565707,
+                            631.9971444775576
+                          ],
+                          [
+                            876.772859565707,
+                            651.9971444775576
+                          ],
+                          [
+                            874.9492877548173,
+                            719.2385023388008
+                          ],
+                          [
+                            867.217120443995,
+                            725.2053714106659
+                          ],
+                          [
+                            847.217120443995,
+                            725.2053714106659
+                          ],
+                          [
+                            209.27818944951127,
+                            707.9045986625728
+                          ],
+                          [
+                            201.46059531734312,
+                            701.516023254973
+                          ]
+                        ],
+                        [
+                          [
+                            316.835282517912,
+                            946.7406845156175
+                          ],
+                          [
+                            316.99875113848236,
+                            771.5726357908981
+                          ],
+                          [
+                            361.09625113848233,
+                            771.5726357908981
+                          ],
+                          [
+                            548.5567945105506,
+                            771.7475758936137
+                          ],
+                          [
+                            732.9687160997801,
+                            785.236551789906
+                          ],
+                          [
+                            740.9466333025607,
+                            1017.8597607204472
+                          ],
+                          [
+                            740.9466333025607,
+                            1061.9572607204473
+                          ],
+                          [
+                            740.8290506105716,
+                            1187.955330855772
+                          ],
+                          [
+                            545.1145944815032,
+                            1211.3333233762262
+                          ],
+                          [
+                            501.01709448150325,
+                            1211.3333233762262
+                          ],
+                          [
+                            319.70279843310936,
+                            1211.1641190145829
+                          ],
+                          [
+                            316.835282517912,
+                            990.8381845156175
+                          ]
+                        ]
+                      ],
+                      "proof": {
+                        "kind": "sticky-notes-static-hold-source-proof",
+                        "entry": "Every note shares its source entry uniform squash with all owned paper/fold/shadow/pin/glyphs; last note starts .03+(k-1)*.13 and settles after .22",
+                        "exit": "Every note shares source peel geometry from cut.end-outDur; no newly static plate is exempted",
+                        "hold": "Native sq=1, peel=0, all slots/angles/font sizes fixed; complete recorded ink plus bounded camera/ghost/AA",
+                        "explicitSizePreserved": false
+                      }
+                    }
+                  ]
+                }
+              ],
+              "sourceProof": {
+                "sourceMapping": {
+                  "complete": true,
+                  "source": "風の先へ",
+                  "main": [
+                    {
+                      "index": 0,
+                      "text": "風の\n先へ",
+                      "font": "klee",
+                      "size": 202.14339622641512,
+                      "mi": 4.390907417978326
+                    }
+                  ],
+                  "metadata": [],
+                  "shapes": [
+                    {
+                      "kind": "nativePath",
+                      "order": 0,
+                      "owner": "cut:0"
+                    },
+                    {
+                      "kind": "nativePath",
+                      "order": 1,
+                      "owner": "cut:0"
+                    },
+                    {
+                      "kind": "nativePath",
+                      "order": 2,
+                      "owner": "cut:0"
+                    },
+                    {
+                      "kind": "rect",
+                      "order": 3,
+                      "owner": "cut:0"
+                    }
+                  ],
+                  "rule": "Ordered native source occurrences, meaningful metadata and every owned shape retained; no substitute glyphs/plates"
+                },
+                "recipe": "native-note-cluster/ordered-slot/source-note-size",
+                "sourceIdentity": "unchanged registered C source + renderer/makeEnv prototypes",
+                "nativeFontSizePreserved": false,
+                "ownedShapesPreserved": true
+              },
+              "measurementSupported": true,
+              "safety": "certified-hold-adapter",
+              "explicitSizePreserved": false
+            }
+          },
+          "keys": [
+            "images/sticky-portrait-after-6.png",
+            "images/sticky-portrait-after-36.png",
+            "images/sticky-portrait-after-91.png"
+          ],
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 1080,
+                "height": 1920,
+                "coded_width": 1080,
+                "coded_height": 1920,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 40,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "461062",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 47,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/work/avoid008-c-preview/sticky-preview01/videos/sticky-portrait-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "232494",
+              "bit_rate": "464988",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "24",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        }
+      }
+    }
+  ],
+  "timestamp": "2026-10-22T15:42:23.629Z",
+  "status": "local capture/ffprobe passed; independent visual review pending; no public verification"
+}

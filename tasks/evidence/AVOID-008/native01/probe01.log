@@ -1,0 +1,13 @@
+{"rows":136,"unsupported":[{"layout":"newspaper","time":0.01,"diagnostics":[{"code":"UNSUPPORTED_DRAW_PROGRAM","message":"Finite solid native path paint required"}]},{"layout":"vinyl","time":0.01,"diagnostics":[{"code":"UNSUPPORTED_DRAW_PROGRAM","message":"Finite solid native path paint required"}]},{"layout":"vinyl","time":0.25,"diagnostics":[{"code":"UNSUPPORTED_DRAW_PROGRAM","message":"Finite solid native path paint required"}]},{"layout":"vinyl","time":1.5,"diagnostics":[{"code":"UNSUPPORTED_DRAW_PROGRAM","message":"Finite solid native path paint required"}]},{"layout":"vinyl","time":3.8,"diagnostics":[{"code":"UNSUPPORTED_DRAW_PROGRAM","message":"Finite solid native path paint required"}]}],"mismatches":[{"layout":"clapper","time":0.01},{"layout":"clapper","time":0.25},{"layout":"clapper","time":1.5},{"layout":"clapper","time":3.8}],"offMismatch":[]}
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(rows.every(r=>r.supported&&r.equal))
+
+    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-native-test.cjs:4:3655 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

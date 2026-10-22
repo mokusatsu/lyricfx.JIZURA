@@ -1,0 +1,1002 @@
+{
+  "phase": "source inspection; not acceptance",
+  "layouts": [
+    {
+      "id": "magazine",
+      "ownedUnits": "paired pages/gutter/folio/headline+body",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 3,
+      "rawCanvasOps": [
+        "createLinearGradient",
+        "fillRect",
+        "restore",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "headlineDeck",
+      "ownedUnits": "headline/deck/rules/metadata",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "contents",
+      "ownedUnits": "ordered contents rows/numbers/leaders",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "footnote",
+      "ownedUnits": "main text/footnote marker+note/rule",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "proofread",
+      "ownedUnits": "main text/proof marks/marginal notes",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "numbered",
+      "ownedUnits": "ordered numbered blocks",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 3,
+      "rawCanvasOps": [
+        "beginPath",
+        "clip",
+        "rect",
+        "restore",
+        "save"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "poster",
+      "ownedUnits": "poster headline/field/credits",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "swissGrid",
+      "ownedUnits": "ordered grid cells/rules/numbers",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "dictionary",
+      "ownedUnits": "headword/reading/definition/rules",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "ema",
+      "ownedUnits": "plaque/hanging cord/inscription",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "beginPath",
+        "bezierCurveTo",
+        "moveTo",
+        "restore",
+        "rotate",
+        "save",
+        "stroke",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "ransom",
+      "ownedUnits": "per-glyph cut paper",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "newspaper",
+      "ownedUnits": "newspaper/headline/columns/folio",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "arc",
+        "beginPath",
+        "createConicGradient",
+        "fill",
+        "moveTo",
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "stroke",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "vinyl",
+      "ownedUnits": "disc/label/sleeve/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "cassette",
+      "ownedUnits": "cassette/reels/label/metadata",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "bookSpine",
+      "ownedUnits": "book spines/hero inscription",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "beginPath",
+        "clip",
+        "rect",
+        "restore",
+        "save"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "polaroid",
+      "ownedUnits": "photo cards/caption/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "arc",
+        "beginPath",
+        "fill",
+        "moveTo",
+        "restore",
+        "rotate",
+        "save",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "stampSheet",
+      "ownedUnits": "stamp sheet/perforations/hero stamp",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "postcard",
+      "ownedUnits": "postcard/address/stamp/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "letterPaper",
+      "ownedUnits": "letter sheet/rules/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "beginPath",
+        "clip",
+        "rect",
+        "restore",
+        "save"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "calendar",
+      "ownedUnits": "calendar sheet/binding/date/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "beginPath",
+        "createRadialGradient",
+        "fillRect",
+        "moveTo",
+        "quadraticCurveTo",
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "stroke",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "chochin",
+      "ownedUnits": "lantern ribs/body/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "routeMap",
+      "ownedUnits": "route/stations/names/reading",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "stationSign",
+      "ownedUnits": "sign/stripe/neighbor labels",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "noren",
+      "ownedUnits": "rod/fabric panels/inscriptions",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "beginPath",
+        "clip",
+        "createLinearGradient",
+        "fillRect",
+        "rect",
+        "restore",
+        "rotate",
+        "save",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "tanzaku",
+      "ownedUnits": "cords/paper strips/inscriptions",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "omikuji",
+      "ownedUnits": "fortune paper/headings/inscription",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "beginPath",
+        "clip",
+        "rect",
+        "restore",
+        "save"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "kakejiku",
+      "ownedUnits": "scroll/rods/inscription/seal",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "beginPath",
+        "clip",
+        "fillRect",
+        "rect",
+        "restore",
+        "save"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "shoji",
+      "ownedUnits": "screen lattice/paper/foreground+shadow lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "createRadialGradient",
+        "fillRect",
+        "restore",
+        "save"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "clapper",
+      "ownedUnits": "board/clapper/fields/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "strokeRect",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "warningLabel",
+      "ownedUnits": "label/stripes/symbols/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "priceTag",
+      "ownedUnits": "tag/hole/string/price copy/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "nameTag",
+      "ownedUnits": "badge/clip/header/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 2,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "stickyNotes",
+      "ownedUnits": "notes/folds/inscriptions",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "beginPath",
+        "closePath",
+        "fill",
+        "lineTo",
+        "moveTo",
+        "quadraticCurveTo",
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    },
+    {
+      "id": "karuta",
+      "ownedUnits": "ordered cards/reading initial/lyric",
+      "roles": {
+        "default": "primary; all visible lyric-bearing units and owned shapes",
+        "tiledAux": "pending source-specific review; no automatic exemption",
+        "independentDecor": "pending explicit source review"
+      },
+      "recordability": "pending native transport probe",
+      "sourceMainCalls": 1,
+      "rawCanvasOps": [
+        "restore",
+        "rotate",
+        "save",
+        "scale",
+        "translate"
+      ],
+      "strategyOrder": [
+        "native owned-unit translation preserving internal topology",
+        "ID-specific source-space arrangement if native group cannot fit",
+        "explicit insufficient/unsupported; no whole-effect scaling"
+      ],
+      "verification": [
+        "native ordered event/text/shape/clock identity",
+        "OFF RGBA equality immutable starting HTML",
+        "ownership/source coverage",
+        "per-ID topology and clock",
+        "geometry+raster before independent visual review"
+      ]
+    }
+  ]
+}

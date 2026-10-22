@@ -1,12 +1,15 @@
 # AVOID-008 拡張Cの34レイアウトの対応
 
-- 状態: 調査中
+- 状態: 実装中
 - 段階: 通常軌道
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- 指定担当gpt-6.1-sol / mediumへ008実装を依頼済み。初期inventoryは[evidence](evidence/AVOID-008/inventory-initial.json)。共有transportの親レビューは[transport05記録](evidence/AVOID-008/parent-transport05-review.json)で承認済み（その時点の共有基盤のみ）。native136/136・OFF34/34一致、40variantのraw145イベント／可視3,117,352画素の保守境界内包含を確認した。C34回避adapterの完了を意味しない。
+- 007の完了と008開始を2bb3f864b5d40361961d8ad2aabeec24bfb5d1cbへcommit/push済み。公開結果確認は実施していない。C固有の最初の付箋adapterを試作中。他33IDはC_RECIPE_PENDINGであり対応済みに数えない。付箋も全区間の根拠・negative・画像/動画照合・親最終レビューは未完。
+- [途中checkpoint01](evidence/AVOID-008/checkpoint01/snapshot.json)は共有transport、付箋の連続stage包絡修正、名札の試作を保存したもの。C34完了ではない。付箋preview01は独立視覚FAILを保持し、修正02で配置方向を選び直した。親がstage包絡10polygonの画面内保持、padding上の実描画22frameでstage外alpha画素0、日英buildのbyte冪等を確認した。修正02の最終視覚記録と他32ID、全体の回帰/性能等は未完。名札はstage proof未完の試作であり最終対応数に含めない。
 - 利用者が007/equalizer02へOKし「続きを順次実装」を指示。007完了後、C34のみ調査開始。009以降は未着手。
 - 開始branch work、HEAD d947497be507a58e4288d59e78e05c4998b09708。既存変更はapp/__pycache__/english.cpython-312.pyc（SHA7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898）と未追跡selected B helpers/原本/work/scratch/dependencies。全て保持し対象外とする。
 - 実装はgpt-6.1-sol / medium、親がコード/テスト結果レビュー。画像・動画の照合は親の文脈を渡さないsolへ依頼する。
