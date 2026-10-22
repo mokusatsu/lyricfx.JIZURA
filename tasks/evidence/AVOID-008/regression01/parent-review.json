@@ -1,0 +1,23 @@
+{
+  "status": "ACCEPTED_SHARED_REGRESSION_CHECKPOINT_ONLY",
+  "afterCommit": "7cd5a5b",
+  "baseline": "2bb3f86",
+  "independentSnapshotHashesVerified": 12993,
+  "existingSuiteBodiesEqualGit": [
+    "drawing_frames_test.cjs",
+    "palette_stability_test.cjs",
+    "cut_detail_audit_test.cjs",
+    "effect_copy_fidelity_test.cjs",
+    "lyric_area_effects_test.cjs"
+  ],
+  "successPairs": 4,
+  "sameBaselineFailure": "lyric_area_effects line35 actual0 expected1, JA stops before remainder/EN; already tracked in AVOID-017",
+  "JAENLocalSmoke": {
+    "status": "PASS",
+    "afterCommitHTMLExact": true,
+    "initialESMResolutionFailureRetained": true
+  },
+  "reviewedEnvironmentAdaptation": "Only Chromium executable, immutable compiled reads, optional external route abort and copied dependency resolution. Existing assertions unchanged. Parent reviewed runner/preload/loader and result logs.",
+  "publicationVerification": "not executed; user prohibited",
+  "limits": "C34 coverage/visual/performance/future edits not certified by default-path regression. Save013 untouched/never PASS."
+}

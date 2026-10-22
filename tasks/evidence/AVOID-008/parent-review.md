@@ -55,3 +55,9 @@ source note pivotからrest polygonを逆回転し、entry一様scaleの端点�
 ## 後続の保留事項
 
 C34全体の回帰、日英起動、multiface/annotation/aspect/variable radius、性能、同条件の比較素材、必要な人間確認、commit/pushは未完。既知の保存013未到達失敗、012/017の合成/再抽選問題等をこの段階の成功へ置き換えない。
+
+### 途中checkpointのGitと既存回帰
+
+7cd5a5bをworkへcommit/pushした。push操作は成功戻り値を確認し、公開結果への追加アクセスは実施していない。
+
+[regression01親照合](regression01/parent-review.json)では既存suite5本がGit原本と同bytes、baseline compiledが2bb、afterが7cdと一致することとsnapshot12,993件を親が独立照合。runner/preload/loaderも読了し、変更はChromium実行位置・immutable compiled読替え・optional外部通信abort・依存解決の環境適応だけでassertionは不変。drawing_frames/palette_stability/cut_detail_audit/effect_copy_fidelityの両版PASSを受入。lyric_area_effectsは両版同じline35 FAILで、004で既に観測し017へ引継いだ問題の再現。後続assertion/ENの未到達を成功扱いしない。local smokeはJA/ENとも7cdの実HTMLをserveしhash/起動/描画PASS。初回ESM解決FAILは保持。これは既定経路の回帰checkpointであり、C34の対応完了や今後編集後の検証ではない。
