@@ -1,0 +1,36 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto'),cp=require('node:child_process'),zlib=require('node:zlib');
+const root=path.resolve(__dirname,'../..'),folder=process.argv[2]||'tasks/evidence/AVOID-008/japanese/kake-preview04',dest=path.join(root,folder),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+(async()=>{
+ const tracked=['src/09j_layoutsC_japanese.js','src/11p_layoutsC.js','src/09g_layoutsC_placement.js','index.html','en/index.html','dev/avoidance/layouts-a-fixture.js',path.relative(root,__filename)],hashes=()=>Object.fromEntries(tracked.map(f=>[f,sha(fs.readFileSync(path.join(root,f)))])),sourceStart=hashes();
+ assert(!fs.existsSync(dest),'Use a new immutable preview folder');fs.mkdirSync(dest,{recursive:true});
+ const baselinePath='tasks/evidence/AVOID-008/native01/index.html.before.gz',baseline=zlib.gunzipSync(fs.readFileSync(path.join(root,baselinePath)));
+ const server=http.createServer((req,res)=>{try{res.end(req.url==='/baseline.html'?baseline:fs.readFileSync(req.url==='/font.otf'?'/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc':path.join(root,req.url==='/'?'index.html':req.url)));}catch{res.writeHead(404).end();}});
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;
+ try{
+  browser=await require('../browser.cjs').launch();const base='http://127.0.0.1:'+server.address().port,pages={};
+  const layout=process.argv[3]||'kakejiku',spec={layout,params:layout==='chochin'?{variant:'single'}:layout==='kakejiku'?{variant:'kake'}:layout==='warningLabel'?{variant:'header'}:layout==='priceTag'?{variant:'shelf'}:layout==='stationSign'?{posts:false}:layout==='shoji'?{variant:'open'}:{},text:'風の先へ',W:['tanzaku','warningLabel','priceTag','routeMap','stationSign','shoji','noren'].includes(layout)?540:960,H:['tanzaku','warningLabel','priceTag','routeMap','stationSign','shoji','noren'].includes(layout)?960:540,cx:.5,cy:.42,radius:.2},conditions={};
+  for(const side of ['before','after']){
+   const page=pages[side]=await browser.newPage();await page.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());await page.goto(base+(side==='before'?'/baseline.html':''));await page.waitForFunction(()=>J?.ui?.plan);await page.addScriptTag({content:fs.readFileSync(path.join(__dirname,'layouts-a-fixture.js'),'utf8')});
+   conditions[side]=await page.evaluate(async({spec,side})=>{
+    const r=await runLayoutsAFixture(J,spec,{newPath:false,fontURL:location.origin+'/font.otf'}),nativeCut=r.plan.cuts[0];
+    if(nativeCut.placementTrajectory)throw Error('Fixture native input unexpectedly has a trajectory');
+    const inputs={W:r.plan.W,H:r.plan.H,text:nativeCut.text,lineText:nativeCut.lineText,note:nativeCut.note,params:nativeCut.params,contentScale:nativeCut.contentScale,enter:nativeCut.enter,exit:nativeCut.exit,hold:nativeCut.hold,cam:nativeCut.cam,camP:nativeCut.camP,start:nativeCut.start,end:nativeCut.end,dur:nativeCut.dur,inDur:nativeCut.inDur,outDur:nativeCut.outDur,seed:nativeCut.seed,stagger:nativeCut.stagger,style:r.plan.style,fx:r.plan.fx};
+    let plan;if(side==='before'){const cut={...nativeCut,area:null,fullStagePlacement:false};delete cut.placementTrajectory;plan={...r.plan,cuts:[cut]};delete plan.placementFinalization;}else plan=J.finalizePlacementPlan(r.plan,{layoutsC:true});
+    if(side==='before'&&(plan.cuts[0].area||plan.cuts[0].placementTrajectory||plan.cuts[0].fullStagePlacement))throw Error('Baseline must draw original source directly with explicit full-stage area=null, no adapter/trajectory');
+    if(side==='after'&&plan.cuts[0].placementTrajectory?.safety!=='certified-hold-adapter')throw Error('Expected certified prototype after');
+    window.japanesePreview={r,plan};return {inputs,sourceIdentity:J.LAYOUTS[spec.layout].render.toString(),nativeHasTrajectory:!!nativeCut.placementTrajectory,actualArea:plan.cuts[0].area,trajectory:plan.cuts[0].placementTrajectory||null};
+   },{spec,side});
+  }
+  assert.deepEqual(conditions.before.inputs,conditions.after.inputs,'Independent immutable-before and candidate native inputs must agree exactly');
+  for(const side of ['before','after']){
+   const frames=path.join(dest,side);fs.mkdirSync(frames);
+   for(let i=0;i<96;i++){const png=await pages[side].evaluate(i=>{const {r,plan}=window.japanesePreview;r.renderer.frame(r.canvas.getContext('2d'),plan,i/24,{noHud:true,noPost:true});return r.canvas.toDataURL().split(',')[1];},i),b=Buffer.from(png,'base64');fs.writeFileSync(path.join(frames,String(i).padStart(3,'0')+'.png'),b);if(i===36)fs.writeFileSync(path.join(dest,side+'.png'),b);if(layout==='noren'&&[4,5,6,7,9,36,90,94].includes(i))fs.writeFileSync(path.join(dest,side+'-f'+String(i).padStart(2,'0')+'.png'),b);}
+   cp.execFileSync('/usr/bin/ffmpeg',['-hide_banner','-loglevel','error','-framerate','24','-i',path.join(frames,'%03d.png'),'-c:v','libx264','-pix_fmt','yuv420p','-movflags','+faststart',path.join(dest,side+'.mp4')]);fs.rmSync(frames,{recursive:true});
+  }
+  fs.writeFileSync(path.join(dest,'index.html'),'<!doctype html><meta charset="utf-8"><title>AVOID-008 Japanese prototype</title><style>body{background:#151923;color:white;font:16px sans-serif}main{display:flex;gap:12px}section{width:49%}video,img{width:100%}</style><h1>Japanese prototype: native before / avoidance after</h1><p>Recipe and font ratios are recorded in receipt.json; a proportional object change also changes native font size.</p><p>960×540, 24 fps, 4 seconds, independently planned immutable-before and candidate, identical native inputs. Circle center (.5,.42), radius .2. Before explicitly uses original source with area=null for full stage. Single-Noto transport preview; independent visual approval pending.</p><main><section><h2>Before — immutable native full stage</h2><video controls loop preload="metadata" src="before.mp4"></video><img src="before.png"></section><section><h2>After — source candidate (actual recipe in receipt)</h2><video controls loop preload="metadata" src="after.mp4"></video><img src="after.png"></section></main>'.replaceAll('960×540',spec.W+'×'+spec.H));
+  const files=['before.png','after.png','before.mp4','after.mp4','index.html',...(layout==='noren'?['before','after'].flatMap(s=>[4,5,6,7,9,36,90,94].map(i=>s+'-f'+String(i).padStart(2,'0')+'.png')):[])];
+  const sourceEnd=hashes();assert.deepEqual(sourceStart,sourceEnd,'Source/build/tool bytes must remain fixed throughout capture');
+  fs.writeFileSync(path.join(dest,'receipt.json'),JSON.stringify({spec,conditions,inputSHA256:sha(Buffer.from(JSON.stringify(conditions.before.inputs))),time:new Date().toISOString(),scope:'Local independent immutable native before/after; no image inspection by implementation agent; no public operation',baseline:{path:baselinePath,gzipSHA256:sha(fs.readFileSync(path.join(root,baselinePath))),htmlSHA256:sha(baseline)},sourceHashes:sourceEnd,sourceStart,sourceEnd,sourceUnchangedDuringRun:true,assets:Object.fromEntries(files.map(f=>[f,{sha256:sha(fs.readFileSync(path.join(dest,f))),bytes:fs.statSync(path.join(dest,f)).size}]))},null,2));console.log(dest);
+ }finally{if(browser)await browser.close();await new Promise(r=>server.close(r));}
+})().catch(e=>{console.error(e);process.exitCode=1;});

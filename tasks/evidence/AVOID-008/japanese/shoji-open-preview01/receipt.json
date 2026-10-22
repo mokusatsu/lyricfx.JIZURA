@@ -1,0 +1,704 @@
+{
+  "spec": {
+    "layout": "shoji",
+    "params": {
+      "variant": "open"
+    },
+    "text": "風の先へ",
+    "W": 540,
+    "H": 960,
+    "cx": 0.5,
+    "cy": 0.42,
+    "radius": 0.2
+  },
+  "conditions": {
+    "before": {
+      "inputs": {
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "mincho_light",
+          "variant": "open",
+          "rows": 5,
+          "cols": 2
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.02869506224989891,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const C = card(sc);\n    const paperC = J.lum(sc.bg) < 0.5 ? J.mix(C.fill, sc.accent, 0.08) : J.mix(C.fill, sc.dim, 0.2);\n    const woodC = J.mix(darkest(sc), plateCol(sc, [sc.accent, sc.sub]), 0.35);\n    const nP = port ? 2 : 4;\n    const pw = W / nP, ph = H;\n    const t0 = env.cut.text.trim();\n    const glow = 0.92 + 0.08 * J.noise1(env.ltb * 0.8, env.cut.seed);\n    let bb = null;\n    if (p.variant === 'shadow') {\n      // the lyric is a silhouette behind the paper; the lattice sits in front of it\n      const a = tin(env, 0, 0.3, E.outCubic) * (1 - J.clamp((env.pOut - 0.5) / 0.5));\n      if (a <= 0.01) return null;\n      env.rect(0, 0, W, H, paperC, a * glow, false);\n      if (env.pass === 'main') {\n        const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.hypot(W, H) * 0.6);\n        g.addColorStop(0, J.rgba(lightest(sc), 0.25)); g.addColorStop(1, J.rgba(darkest(sc), 0.25));\n        ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();\n      }\n      const fb = fitBlock(t0, p.font, W * 0.8, H * 0.5, { lead: 1.15, track: 0.04 }, port ? 4 : 2);\n      const size = Math.min(fb.size, u * 0.26);\n      const near = E.outCubic(J.clamp(env.lt / 0.9));\n      const shade = J.mix(paperC, darkest(sc), 0.86);\n      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: W / 2 + (1 - near) * W * 0.03, y: H / 2, lead: 1.15, track: 0.04, color: shade, blur: env.allowFilter ? J.lerp(size * 0.08, size * 0.012, near) : 0, sx: J.lerp(1.06, 1, near), sy: J.lerp(1.06, 1, near) });\n      for (let i = 0; i < nP; i++) shojiPanel(env, i * pw, 0, pw, ph, null, woodC, a, p.cols, p.rows);\n      return bb;\n    }\n    // panels slide open to reveal the lyric; they close again on exit\n    const fb = fitBlock(t0, p.font, W * (port ? 0.6 : 0.5), H * 0.46, { lead: 1.15, track: 0.04 }, port ? 4 : 3);\n    const size = Math.min(fb.size, u * 0.24);\n    const mm = meas(fb.text, p.font, size, { lead: 1.15, track: 0.04 });\n    bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: W / 2, y: H / 2, lead: 1.15, track: 0.04, color: sc.fg, mi: miAt(env, 0.12) });\n    const gapW = Math.min(W * (port ? 0.76 : 0.9), mm.w + size * 1.4);\n    const op = E.inOutCubic(J.clamp((env.lt - 0.05) / 0.55)) * (1 - E.inOutCubic(env.pOut));\n    const half = nP / 2;\n    for (let i = 0; i < nP; i++) {\n      const left = i < half;\n      const dx = (left ? -1 : 1) * (gapW / 2) * op;\n      shojiPanel(env, i * pw + dx, 0, pw, ph, paperC, woodC, 1, p.cols, p.rows, glow);\n    }\n    return bb;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": null
+    },
+    "after": {
+      "inputs": {
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "mincho_light",
+          "variant": "open",
+          "rows": 5,
+          "cols": 2
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.02869506224989891,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const C = card(sc);\n    const paperC = J.lum(sc.bg) < 0.5 ? J.mix(C.fill, sc.accent, 0.08) : J.mix(C.fill, sc.dim, 0.2);\n    const woodC = J.mix(darkest(sc), plateCol(sc, [sc.accent, sc.sub]), 0.35);\n    const nP = port ? 2 : 4;\n    const pw = W / nP, ph = H;\n    const t0 = env.cut.text.trim();\n    const glow = 0.92 + 0.08 * J.noise1(env.ltb * 0.8, env.cut.seed);\n    let bb = null;\n    if (p.variant === 'shadow') {\n      // the lyric is a silhouette behind the paper; the lattice sits in front of it\n      const a = tin(env, 0, 0.3, E.outCubic) * (1 - J.clamp((env.pOut - 0.5) / 0.5));\n      if (a <= 0.01) return null;\n      env.rect(0, 0, W, H, paperC, a * glow, false);\n      if (env.pass === 'main') {\n        const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.hypot(W, H) * 0.6);\n        g.addColorStop(0, J.rgba(lightest(sc), 0.25)); g.addColorStop(1, J.rgba(darkest(sc), 0.25));\n        ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();\n      }\n      const fb = fitBlock(t0, p.font, W * 0.8, H * 0.5, { lead: 1.15, track: 0.04 }, port ? 4 : 2);\n      const size = Math.min(fb.size, u * 0.26);\n      const near = E.outCubic(J.clamp(env.lt / 0.9));\n      const shade = J.mix(paperC, darkest(sc), 0.86);\n      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: W / 2 + (1 - near) * W * 0.03, y: H / 2, lead: 1.15, track: 0.04, color: shade, blur: env.allowFilter ? J.lerp(size * 0.08, size * 0.012, near) : 0, sx: J.lerp(1.06, 1, near), sy: J.lerp(1.06, 1, near) });\n      for (let i = 0; i < nP; i++) shojiPanel(env, i * pw, 0, pw, ph, null, woodC, a, p.cols, p.rows);\n      return bb;\n    }\n    // panels slide open to reveal the lyric; they close again on exit\n    const fb = fitBlock(t0, p.font, W * (port ? 0.6 : 0.5), H * 0.46, { lead: 1.15, track: 0.04 }, port ? 4 : 3);\n    const size = Math.min(fb.size, u * 0.24);\n    const mm = meas(fb.text, p.font, size, { lead: 1.15, track: 0.04 });\n    const gapW = Math.min(W * (port ? 0.76 : 0.9), mm.w + size * 1.4);\n    const lyricY=env.cut.placementLayoutsC && env.cut.layoutCRecipe ? (env.cut.layoutCRecipe.lyricY??.5)*H : H/2;\n    bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC?{placementCOwnedZone:{x0:0,x1:W,y0:0,y1:H},placementCAperture:{gapW,textWidth:mm.w,nP,pw,ph,paperC,localX:W/2,lyricY}}:{}), text: fb.text, font: p.font, size, x: W / 2, y: lyricY, lead: 1.15, track: 0.04, color: sc.fg, mi: miAt(env, 0.12) });\n    const op = E.inOutCubic(J.clamp((env.lt - 0.05) / 0.55)) * (1 - E.inOutCubic(env.pOut));\n    const half = nP / 2;\n    for (let i = 0; i < nP; i++) {\n      const left = i < half;\n      const dx = (left ? -1 : 1) * (gapW / 2) * op;\n      if(env.cut.placementLayoutsC){const prior=env.placementCBody;env.placementCBody={kind:'shoji-architecture',group:'shoji.panel.'+i,x:i*pw+dx,y:0,w:pw,h:ph,opaque:1};env.withDrawRole('independentDecor','shoji.architecture',()=>shojiPanel(env, i * pw + dx, 0, pw, ph, paperC, woodC, 1, p.cols, p.rows, glow));env.placementCBody=prior;}else shojiPanel(env, i * pw + dx, 0, pw, ph, paperC, woodC, 1, p.cols, p.rows, glow);\n    }\n    return bb;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": {
+        "version": 1,
+        "kind": "layouts-c-source-native",
+        "revision": 4,
+        "evaluationRange": [
+          -0.041666666666666664,
+          4.82
+        ],
+        "holdWindow": [
+          0.6,
+          3.6
+        ],
+        "units": [
+          {
+            "owner": "shoji.composition",
+            "envelopes": [
+              [
+                [
+                  115.61340223659516,
+                  325.53029375000006
+                ],
+                [
+                  422.7538906921005,
+                  325.53029375000006
+                ],
+                [
+                  422.7538906921005,
+                  642.15251875
+                ],
+                [
+                  115.61340223659516,
+                  642.15251875
+                ]
+              ]
+            ],
+            "stageEnvelopes": [
+              [
+                [
+                  115.61340223659516,
+                  325.53029375000006
+                ],
+                [
+                  422.7538906921005,
+                  325.53029375000006
+                ],
+                [
+                  422.7538906921005,
+                  642.15251875
+                ],
+                [
+                  115.61340223659516,
+                  642.15251875
+                ]
+              ]
+            ],
+            "segments": [
+              {
+                "start": 0,
+                "end": 4,
+                "region": "fixture",
+                "circle": {
+                  "cx": 270,
+                  "cy": 403.2,
+                  "r": 108
+                },
+                "from": [
+                  0,
+                  0
+                ],
+                "to": [
+                  0,
+                  0
+                ],
+                "status": "safe-hold",
+                "decision": "certified-hold-adapter",
+                "safetyScope": "source-owned-object-entry-exit-relaxed",
+                "failure": null,
+                "holdWindow": [
+                  0.6,
+                  3.6
+                ],
+                "composition": {
+                  "lyricY": 0.75,
+                  "strategy": "source-local-lyric-y-fixed-architecture"
+                },
+                "quality": {
+                  "minNativeFontRatio": 1,
+                  "minPrimaryPx": 129.6,
+                  "floor": 18.900000000000002,
+                  "secondaryFloor": 12,
+                  "nativeFontSizePreserved": true
+                },
+                "envelopes": [
+                  [
+                    [
+                      115.61340223659516,
+                      571.38029375
+                    ],
+                    [
+                      118.81113092041016,
+                      568.73
+                    ],
+                    [
+                      419.5950122680664,
+                      568.73
+                    ],
+                    [
+                      422.7538906921005,
+                      571.38029375
+                    ],
+                    [
+                      422.7538906921005,
+                      888.00251875
+                    ],
+                    [
+                      115.61340223659516,
+                      888.00251875
+                    ]
+                  ]
+                ],
+                "stageEnvelopes": [
+                  [
+                    [
+                      115.61340223659516,
+                      571.38029375
+                    ],
+                    [
+                      118.81113092041016,
+                      568.73
+                    ],
+                    [
+                      419.5950122680664,
+                      568.73
+                    ],
+                    [
+                      422.7538906921005,
+                      571.38029375
+                    ],
+                    [
+                      422.7538906921005,
+                      888.00251875
+                    ],
+                    [
+                      115.61340223659516,
+                      888.00251875
+                    ]
+                  ]
+                ],
+                "attempts": [
+                  {
+                    "strategy": "native-owned-joint-translation",
+                    "objectScale": 1,
+                    "status": "insufficient-space",
+                    "reason": "bounded-candidate-search-exhausted",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 129.6,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "lyricY": 0.35,
+                    "strategy": "source-local-lyric-y-fixed-architecture",
+                    "objectScale": 1,
+                    "status": "insufficient-space",
+                    "reason": "bounded-candidate-search-exhausted",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 129.6,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "lyricY": 0.65,
+                    "strategy": "source-local-lyric-y-fixed-architecture",
+                    "objectScale": 1,
+                    "status": "insufficient-space",
+                    "reason": "bounded-candidate-search-exhausted",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 129.6,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "lyricY": 0.25,
+                    "strategy": "source-local-lyric-y-fixed-architecture",
+                    "objectScale": 1,
+                    "status": "insufficient-space",
+                    "reason": "bounded-candidate-search-exhausted",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 129.6,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "lyricY": 0.75,
+                    "strategy": "source-local-lyric-y-fixed-architecture",
+                    "objectScale": 1,
+                    "status": "safe",
+                    "reason": null,
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 129.6,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "measurementSupported": true,
+        "safety": "certified-hold-adapter",
+        "explicitSizePreserved": true,
+        "sourceProof": {
+          "sourceMapping": {
+            "aperture": {
+              "gapW": 410.4,
+              "textWidth": 264.3837626953125,
+              "nP": 2,
+              "pw": 270,
+              "ph": 960,
+              "paperC": "#fffbf1",
+              "localX": 270
+            },
+            "complete": true,
+            "source": "風の先へ",
+            "main": [
+              {
+                "text": "風の\n先へ",
+                "font": "mincho_light",
+                "size": 129.6,
+                "mi": 4.181904153228409
+              }
+            ],
+            "metadata": [],
+            "owned": [
+              {
+                "kind": "item",
+                "owner": "shoji.unit.4.181904153228409",
+                "order": 0,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 1,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 2,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 3,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 4,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 5,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 6,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 7,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 8,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 9,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 10,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 11,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 12,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 13,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 14,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 15,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 16,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 17,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 18,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 19,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 20,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 21,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "shoji.architecture",
+                "order": 22,
+                "role": "independentDecor"
+              }
+            ],
+            "rule": "Retain native glyph occurrences, real replica/metadata, every paper, line, roller, clip and painter order"
+          },
+          "recipe": "native-local-lyric-y-fixed-architecture",
+          "interval": "Open architectural panels keep original full-height opaque paper, lattice, glow, gapW and open/close clocks. Lyric recipe changes only source-local y, preserving local x/font/size/all glyphs, and solver world offset is exactly zero. All glyph ink remains inside stage y and full-open gap x. At every clock the foreground paper union spans full stage y, so each glyph-relative point has the identical local-x paper-occlusion membership before/after. The identical root camera preserves this membership. Thus no new panel occlusion or shortened readable clock is introduced. Shadow/filter variant remains unsupported.",
+          "stageProof": "All primary lyric ink stays inside native stage y and the unchanged source aperture. Full-height opaque foreground architectural panels remain fixed in native source coordinates and replay with zero world offset. Every clock preserves the same local-x occlusion membership.",
+          "nativeFontSizePreserved": true,
+          "ownedShapesPreserved": true,
+          "candidateBudget": {
+            "reconstructed": 5,
+            "cacheHits": 1,
+            "rejected": 0,
+            "uniqueRecipes": 5,
+            "perCutLimit": 54,
+            "nativeProgramReusedForBase": true
+          },
+          "limitations": "Cut/still text motion only; unsupported source domains fail explicitly"
+        },
+        "sourceAdapter": "c-japanese"
+      }
+    }
+  },
+  "inputSHA256": "39c343d40f4c4fca38ee916f7843156adaa5a6aee31af416c4cf0d812cf79fa8",
+  "time": "2026-10-22T17:13:09.485Z",
+  "scope": "Local independent immutable native before/after; no image inspection by implementation agent; no public operation",
+  "baseline": {
+    "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+    "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+    "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+  },
+  "sourceHashes": {
+    "src/09j_layoutsC_japanese.js": "3200b54cfb5cd7ac35346f9ae88359bde4ca34e54a5321952e1c8ba64670b8fe",
+    "src/11p_layoutsC.js": "8a54309976a1da76be103c2283fd55f8d8dd01c8a2d18ac236146539b86d7859",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "339f7593f49fb488368290c9dad237998ff4027bb082d7dfaf066f66977f1650",
+    "en/index.html": "cad32e69391fc8e0e4fea09211e56c3be4c94f22c2cbd45f1730b93c3b174729",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "50a2db53df3cd93817561f0f47f1d1aaaabd1febafc73cfa66b7c505d504c1ee"
+  },
+  "sourceStart": {
+    "src/09j_layoutsC_japanese.js": "3200b54cfb5cd7ac35346f9ae88359bde4ca34e54a5321952e1c8ba64670b8fe",
+    "src/11p_layoutsC.js": "8a54309976a1da76be103c2283fd55f8d8dd01c8a2d18ac236146539b86d7859",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "339f7593f49fb488368290c9dad237998ff4027bb082d7dfaf066f66977f1650",
+    "en/index.html": "cad32e69391fc8e0e4fea09211e56c3be4c94f22c2cbd45f1730b93c3b174729",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "50a2db53df3cd93817561f0f47f1d1aaaabd1febafc73cfa66b7c505d504c1ee"
+  },
+  "sourceEnd": {
+    "src/09j_layoutsC_japanese.js": "3200b54cfb5cd7ac35346f9ae88359bde4ca34e54a5321952e1c8ba64670b8fe",
+    "src/11p_layoutsC.js": "8a54309976a1da76be103c2283fd55f8d8dd01c8a2d18ac236146539b86d7859",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "339f7593f49fb488368290c9dad237998ff4027bb082d7dfaf066f66977f1650",
+    "en/index.html": "cad32e69391fc8e0e4fea09211e56c3be4c94f22c2cbd45f1730b93c3b174729",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "50a2db53df3cd93817561f0f47f1d1aaaabd1febafc73cfa66b7c505d504c1ee"
+  },
+  "sourceUnchangedDuringRun": true,
+  "assets": {
+    "before.png": {
+      "sha256": "61d321befb1128fed89ca064808486103672615b05378650dad11eb705a91896",
+      "bytes": 281719
+    },
+    "after.png": {
+      "sha256": "8d777e0a744771efc82eaee270beeeb4fc03fec4e5aa12f8e50a13c230aec407",
+      "bytes": 288292
+    },
+    "before.mp4": {
+      "sha256": "20717cd55158955330af26cd0488a3bf4075339ccc14d0fda5ebf80d4d7f419d",
+      "bytes": 76450
+    },
+    "after.mp4": {
+      "sha256": "0f100125ed83c98aca02552678de052f48841d246d554f98af29341e3940f58f",
+      "bytes": 76081
+    },
+    "index.html": {
+      "sha256": "04f1b5ea5d6aa70ce2c91b63c16a8d05614a1c7f81866bc6320c2bfdcbc852be",
+      "bytes": 1016
+    }
+  }
+}

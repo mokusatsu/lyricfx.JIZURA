@@ -1,0 +1,755 @@
+{
+  "spec": {
+    "layout": "tanzaku",
+    "params": {},
+    "text": "風の先へ",
+    "W": 540,
+    "H": 960,
+    "cx": 0.5,
+    "cy": 0.42,
+    "radius": 0.2
+  },
+  "conditions": {
+    "before": {
+      "inputs": {
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "brush",
+          "chunks": [
+            "風の先へ"
+          ],
+          "extra": 3,
+          "cols": [
+            3,
+            0,
+            3,
+            2,
+            3,
+            4
+          ],
+          "ph": 0.9528360022231936,
+          "dir": -1
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.05199092271155678,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const out = tout(env);\n    const C = card(sc);\n    const chunks = (p.chunks && p.chunks.length ? p.chunks : [vtext(env.cut.text)]).filter(Boolean).map(vtext);\n    const k = chunks.length;\n    const pal = [plateCol(sc, [sc.accent, sc.ink]), C.fill, plateCol(sc, [sc.accent2, sc.sub, sc.accent]), J.mix(sc.bg, sc.accent, 0.55), plateCol(sc, [sc.ink, sc.fg])];\n    // bamboo branch across the top\n    const by = x => H * 0.1 + (x / W) * H * 0.06 * p.dir + Math.sin(x / W * 3) * H * 0.012;\n    const be = tin(env, 0, 0.5, E.inOutCubic) * out;\n    const bpts = []; for (let i = 0; i <= 24; i++) { const x = J.lerp(-20, W + 20, i / 24); bpts.push([x, by(x)]); }\n    const stemC = J.mix(plateCol(sc, [sc.accent2, sc.sub]), sc.sub, 0.3);\n    env.polyPartial(bpts, be, stemC, Math.max(5, u * 0.01), 1, false);\n    for (let i = 1; i < 8; i++) { const nx = W * i / 8; if (nx / W < be) env.line([[nx, by(nx) - u * 0.009], [nx, by(nx) + u * 0.009]], J.mix(stemC, darkest(sc), 0.4), Math.max(3, u * 0.005), out, false); }\n    // leaves\n    for (let i = 0; i < 9; i++) {\n      const lx = W * (0.05 + i * 0.115), la = J.clamp(be * 9 - i) * out;\n      if (la <= 0) continue;\n      const ang = (i % 2 ? 1 : -1) * 35 + Math.sin(env.ltb * 1.4 + i) * 6, L = u * 0.07, wdt = u * 0.018;\n      const ly = by(lx), ca = Math.cos(ang * J.DEG), sa = Math.sin(ang * J.DEG);\n      const pts = [[lx, ly], [lx + ca * L * 0.5 - sa * wdt, ly + sa * L * 0.5 + ca * wdt], [lx + ca * L, ly + sa * L], [lx + ca * L * 0.5 + sa * wdt, ly + sa * L * 0.5 - ca * wdt]];\n      env.blob(pts, stemC, la * 0.85, false);\n    }\n    // strips: lyric strips + blank decoration strips\n    const nS = k + (port ? 1 : p.extra);\n    const hero = [];\n    const order = [];\n    for (let i = 0; i < nS; i++) order.push(i);\n    // lyric strips go to the middle slots\n    const mid = Math.floor((nS - k) / 2);\n    const maxG = Math.max(...chunks.map(c => J.glyphCount(c)));\n    const sw = Math.min(W * (port ? 0.9 : 0.62) / (nS * 1.3), u * (port ? 0.2 : 0.16)), shMax = H * (port ? 0.7 : 0.72);\n    const size = Math.min(sw * 0.64, (shMax - sw * 0.4) / (Math.max(maxG, 2.5) * 1.08 + 1.6));\n    let bb = null;\n    for (let i = 0; i < nS; i++) {\n      const isL = i >= mid && i < mid + k;\n      const t = isL ? chunks[i - mid] : '';\n      const x = W / 2 + (i - (nS - 1) / 2) * sw * 1.3 * (port ? 1 : 1.1);\n      const top = by(x) + u * 0.012;\n      const sh = isL ? Math.max(sw * 2.6, J.glyphCount(t) * size * 1.08 + size * 1.6) : sw * (2.4 + (i % 3) * 0.5);\n      const string = u * (0.03 + (i % 3) * 0.022);\n      const t1 = 0.05 + Math.abs(i - (nS - 1) / 2) * 0.07;\n      const e = J.clamp((env.lt - t1) / 0.5);\n      if (e <= 0) continue;\n      const drop = (1 - E.outBack(e, 1.6)) * H * 0.25;\n      const sway = Math.sin(env.ltb * 1.3 + i * 0.9 + p.ph) * 2.5 + E.inCubic(env.pOut) * (i % 2 ? 1 : -1) * 20;\n      const a = J.clamp(e * 3) * (1 - J.clamp((env.pOut - 0.4) / 0.6));\n      ctx.save(); ctx.translate(x, top); ctx.rotate(sway * J.DEG); ctx.translate(0, -drop);\n      env.line([[0, 0], [0, string]], sc.sub, Math.max(1, u * 0.0016), a, false);\n      const col = isL ? pal[p.cols[i % 6] % 3 === 1 ? 1 : p.cols[i % 6] % 3 === 2 ? 2 : 0] : pal[(p.cols[i % 6] + 3) % 5];\n      shadowR(env, -sw / 2, string, sw, sh, 0, a, u * 0.008);\n      env.rect(-sw / 2, string, sw, sh, col, a, false);\n      if (J.contrast(col, sc.bg) < 1.3) env.line([[-sw / 2, string], [sw / 2, string], [sw / 2, string + sh], [-sw / 2, string + sh], [-sw / 2, string]], J.mix(sc.fg, col, 0.5), 1.2, a, false);\n      env.circle(0, string + sw * 0.18, sw * 0.05, sc.bg, null, 0, a, false);\n      if (isL) {\n        const r = J.mainDraw(env, { text: t, font: p.font, size, x: 0, y: string + size * 0.9, vertical: true, align: 'left', track: 0.06, color: onCol(sc, col), noHold: plateHold(env), mi: miAt(env, t1 + 0.25) });\n        if (r) hero.push(1);\n        bb = J.unionBB(bb, box(x - sw / 2, top + string, x + sw / 2, top + string + sh));\n      }\n      ctx.restore();\n    }\n    return bb;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": null
+    },
+    "after": {
+      "inputs": {
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "brush",
+          "chunks": [
+            "風の先へ"
+          ],
+          "extra": 3,
+          "cols": [
+            3,
+            0,
+            3,
+            2,
+            3,
+            4
+          ],
+          "ph": 0.9528360022231936,
+          "dir": -1
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.05199092271155678,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const out = tout(env);\n    const C = card(sc);\n    const chunks = (p.chunks && p.chunks.length ? p.chunks : [vtext(env.cut.text)]).filter(Boolean).map(vtext);\n    const k = chunks.length;\n    const pal = [plateCol(sc, [sc.accent, sc.ink]), C.fill, plateCol(sc, [sc.accent2, sc.sub, sc.accent]), J.mix(sc.bg, sc.accent, 0.55), plateCol(sc, [sc.ink, sc.fg])];\n    // bamboo branch across the top\n    const by = x => H * 0.1 + (x / W) * H * 0.06 * p.dir + Math.sin(x / W * 3) * H * 0.012;\n    const be = tin(env, 0, 0.5, E.inOutCubic) * out;\n    const bpts = []; for (let i = 0; i <= 24; i++) { const x = J.lerp(-20, W + 20, i / 24); bpts.push([x, by(x)]); }\n    const stemC = J.mix(plateCol(sc, [sc.accent2, sc.sub]), sc.sub, 0.3);\n    env.withDrawRole('independentDecor','tanzaku.branch',()=>env.polyPartial(bpts, be, stemC, Math.max(5, u * 0.01), 1, false));\n    for (let i = 1; i < 8; i++) { const nx = W * i / 8; if (nx / W < be) env.withDrawRole('independentDecor','tanzaku.branch',()=>env.line([[nx, by(nx) - u * 0.009], [nx, by(nx) + u * 0.009]], J.mix(stemC, darkest(sc), 0.4), Math.max(3, u * 0.005), out, false)); }\n    // leaves\n    for (let i = 0; i < 9; i++) {\n      const lx = W * (0.05 + i * 0.115), la = J.clamp(be * 9 - i) * out;\n      if (la <= 0) continue;\n      const ang = (i % 2 ? 1 : -1) * 35 + Math.sin(env.ltb * 1.4 + i) * 6, L = u * 0.07, wdt = u * 0.018;\n      const ly = by(lx), ca = Math.cos(ang * J.DEG), sa = Math.sin(ang * J.DEG);\n      const pts = [[lx, ly], [lx + ca * L * 0.5 - sa * wdt, ly + sa * L * 0.5 + ca * wdt], [lx + ca * L, ly + sa * L], [lx + ca * L * 0.5 + sa * wdt, ly + sa * L * 0.5 - ca * wdt]];\n      env.withDrawRole('independentDecor','tanzaku.leaves',()=>env.blob(pts, stemC, la * 0.85, false));\n    }\n    // strips: lyric strips + blank decoration strips\n    const nS = k + (port ? 1 : p.extra);\n    const hero = [];\n    const order = [];\n    for (let i = 0; i < nS; i++) order.push(i);\n    // lyric strips go to the middle slots\n    const mid = Math.floor((nS - k) / 2);\n    const maxG = Math.max(...chunks.map(c => J.glyphCount(c)));\n    const objectScale = env.cut.placementLayoutsC ? (env.cut.layoutCRecipe?.objectScale ?? 1) : 1;\n    const sw = Math.min(W * (port ? 0.9 : 0.62) / (nS * 1.3), u * (port ? 0.2 : 0.16)) * objectScale, shMax = H * (port ? 0.7 : 0.72) * objectScale;\n    const size = Math.min(sw * 0.64, (shMax - sw * 0.4) / (Math.max(maxG, 2.5) * 1.08 + 1.6));\n    let bb = null;\n    for (let i = 0; i < nS; i++) {\n      const isL = i >= mid && i < mid + k;\n      const t = isL ? chunks[i - mid] : '';\n      const x = W / 2 + (i - (nS - 1) / 2) * sw * 1.3 * (port ? 1 : 1.1);\n      const top = by(x) + u * 0.012;\n      const sh = isL ? Math.max(sw * 2.6, J.glyphCount(t) * size * 1.08 + size * 1.6) : sw * (2.4 + (i % 3) * 0.5);\n      const string = u * (0.03 + (i % 3) * 0.022) * objectScale;\n      const t1 = 0.05 + Math.abs(i - (nS - 1) / 2) * 0.07;\n      const e = J.clamp((env.lt - t1) / 0.5);\n      if (e <= 0) continue;\n      const drop = (1 - E.outBack(e, 1.6)) * H * 0.25;\n      const sway = Math.sin(env.ltb * 1.3 + i * 0.9 + p.ph) * 2.5 + E.inCubic(env.pOut) * (i % 2 ? 1 : -1) * 20;\n      const a = J.clamp(e * 3) * (1 - J.clamp((env.pOut - 0.4) / 0.6));\n      if(env.cut.placementLayoutsC)env.placementCBody={kind:'tanzaku-strip',pivot:[x,top],angle:sway,holdAngle:2.5,fullAngle:22.5,localDy:[-H*.25,H*.05],referenceLocalDy:-drop,entryEnd:t1+.5,exitStart:env.cut.dur-env.cut.outDur,group:'tanzaku.strip.'+i};\n      ctx.save(); ctx.translate(x, top); ctx.rotate(sway * J.DEG); ctx.translate(0, -drop);\n      env.line([[0, 0], [0, string]], sc.sub, Math.max(1, u * 0.0016), a, false);\n      const col = isL ? pal[p.cols[i % 6] % 3 === 1 ? 1 : p.cols[i % 6] % 3 === 2 ? 2 : 0] : pal[(p.cols[i % 6] + 3) % 5];\n      shadowR(env, -sw / 2, string, sw, sh, 0, a, u * 0.008);\n      env.rect(-sw / 2, string, sw, sh, col, a, false);\n      if (J.contrast(col, sc.bg) < 1.3) env.line([[-sw / 2, string], [sw / 2, string], [sw / 2, string + sh], [-sw / 2, string + sh], [-sw / 2, string]], J.mix(sc.fg, col, 0.5), 1.2, a, false);\n      env.circle(0, string + sw * 0.18, sw * 0.05, sc.bg, null, 0, a, false);\n      if (isL) {\n        const r = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:-sw/2,x1:sw/2,y0:string,y1:string+sh}} : {}), text: t, font: p.font, size, x: 0, y: string + size * 0.9, vertical: true, align: 'left', track: 0.06, color: onCol(sc, col), noHold: plateHold(env), mi: miAt(env, t1 + 0.25) });\n        if (r) hero.push(1);\n        bb = J.unionBB(bb, box(x - sw / 2, top + string, x + sw / 2, top + string + sh));\n      }\n      ctx.restore();\n    }\n    return bb;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": {
+        "version": 1,
+        "kind": "layouts-c-source-native",
+        "revision": 4,
+        "evaluationRange": [
+          -0.041666666666666664,
+          4.82
+        ],
+        "holdWindow": [
+          0.585,
+          3.6
+        ],
+        "units": [
+          {
+            "owner": "tanzaku.composition",
+            "envelopes": [
+              [
+                [
+                  102.65085599121176,
+                  45.44879412246837
+                ],
+                [
+                  436.4152158748353,
+                  45.44879412246837
+                ],
+                [
+                  436.4152158748353,
+                  545.7554626770736
+                ],
+                [
+                  102.65085599121176,
+                  545.7554626770736
+                ]
+              ]
+            ],
+            "stageEnvelopes": [
+              [
+                [
+                  -64.27799791712488,
+                  -201.16153011610822
+                ],
+                [
+                  575.608177867832,
+                  -201.16153011610822
+                ],
+                [
+                  575.608177867832,
+                  614.9434925746385
+                ],
+                [
+                  -64.27799791712488,
+                  614.9434925746385
+                ]
+              ]
+            ],
+            "segments": [
+              {
+                "start": 0,
+                "end": 4,
+                "region": "fixture",
+                "circle": {
+                  "cx": 270,
+                  "cy": 403.2,
+                  "r": 108
+                },
+                "from": [
+                  2.8521685107351134e-14,
+                  465.7944662446192
+                ],
+                "to": [
+                  2.8521685107351134e-14,
+                  465.7944662446192
+                ],
+                "status": "safe-hold",
+                "decision": "certified-hold-adapter",
+                "safetyScope": "source-owned-object-entry-exit-relaxed",
+                "failure": null,
+                "holdWindow": [
+                  0.585,
+                  3.6
+                ],
+                "composition": {
+                  "objectScale": 0.7,
+                  "strategy": "source-strip-proportional-size"
+                },
+                "quality": {
+                  "minNativeFontRatio": 0.7,
+                  "minPrimaryPx": 48.384,
+                  "floor": 18.900000000000002,
+                  "secondaryFloor": 12,
+                  "nativeFontSizePreserved": false
+                },
+                "envelopes": [
+                  [
+                    [
+                      146.521331981951,
+                      48.105633755380836
+                    ],
+                    [
+                      393.67222143657455,
+                      48.105633755380836
+                    ],
+                    [
+                      393.67222143657455,
+                      412.5429381021827
+                    ],
+                    [
+                      391.2053412437579,
+                      414.6239786232412
+                    ],
+                    [
+                      148.98360657176423,
+                      414.6239786232412
+                    ],
+                    [
+                      146.521331981951,
+                      412.5429381021827
+                    ]
+                  ]
+                ],
+                "stageEnvelopes": [
+                  [
+                    [
+                      23.917570713422407,
+                      -198.4362746472151
+                    ],
+                    [
+                      497.3042780851125,
+                      -198.4362746472151
+                    ],
+                    [
+                      497.3042780851125,
+                      476.1042416949466
+                    ],
+                    [
+                      492.37147342048814,
+                      476.672841190918
+                    ],
+                    [
+                      29.29720142860029,
+                      476.672841190918
+                    ],
+                    [
+                      23.917570713422407,
+                      476.1042416949466
+                    ]
+                  ]
+                ],
+                "attempts": [
+                  {
+                    "strategy": "native-owned-joint-translation",
+                    "objectScale": 1,
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 69.12,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "strategy": "source-strip-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.95,
+                      "minPrimaryPx": 65.664,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.9,
+                    "strategy": "source-strip-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9,
+                      "minPrimaryPx": 62.208000000000006,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.85,
+                    "strategy": "source-strip-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.85,
+                      "minPrimaryPx": 58.752,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.8,
+                    "strategy": "source-strip-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "bounded-candidate-search-exhausted",
+                    "quality": {
+                      "minNativeFontRatio": 0.8,
+                      "minPrimaryPx": 55.29600000000001,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.75,
+                    "strategy": "source-strip-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "bounded-candidate-search-exhausted",
+                    "quality": {
+                      "minNativeFontRatio": 0.75,
+                      "minPrimaryPx": 51.84,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.7,
+                    "strategy": "source-strip-proportional-size",
+                    "status": "safe",
+                    "reason": null,
+                    "quality": {
+                      "minNativeFontRatio": 0.7,
+                      "minPrimaryPx": 48.384,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "measurementSupported": true,
+        "safety": "certified-hold-adapter",
+        "explicitSizePreserved": true,
+        "sourceProof": {
+          "sourceMapping": {
+            "complete": true,
+            "source": "風の先へ",
+            "main": [
+              {
+                "text": "風の先へ",
+                "font": "brush",
+                "size": 69.12,
+                "mi": 6.443432478753348
+              }
+            ],
+            "metadata": [],
+            "owned": [
+              {
+                "kind": "line",
+                "owner": "tanzaku.branch",
+                "order": 0,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "line",
+                "owner": "tanzaku.branch",
+                "order": 1,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "line",
+                "owner": "tanzaku.branch",
+                "order": 2,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "line",
+                "owner": "tanzaku.branch",
+                "order": 3,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "line",
+                "owner": "tanzaku.branch",
+                "order": 4,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "line",
+                "owner": "tanzaku.branch",
+                "order": 5,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "line",
+                "owner": "tanzaku.branch",
+                "order": 6,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "line",
+                "owner": "tanzaku.branch",
+                "order": 7,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 8,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 9,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 10,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 11,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 12,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 13,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 14,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 15,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "blob",
+                "owner": "tanzaku.leaves",
+                "order": 16,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "line",
+                "owner": "cut:0",
+                "order": 17,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 18,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "cut:0",
+                "order": 19,
+                "role": "primary"
+              },
+              {
+                "kind": "circle",
+                "owner": "cut:0",
+                "order": 20,
+                "role": "primary"
+              },
+              {
+                "kind": "item",
+                "owner": "tanzaku.unit.6.443432478753348",
+                "order": 21,
+                "role": "primary"
+              },
+              {
+                "kind": "line",
+                "owner": "cut:0",
+                "order": 22,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 23,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "cut:0",
+                "order": 24,
+                "role": "primary"
+              },
+              {
+                "kind": "circle",
+                "owner": "cut:0",
+                "order": 25,
+                "role": "primary"
+              }
+            ],
+            "rule": "Retain native glyph occurrences, real replica/metadata, every paper, line, roller, clip and painter order"
+          },
+          "recipe": "native-owned-joint-translation-then-source-dimensions",
+          "interval": "Every lyric and blank strip retains source paper/string/hole/shadow and clock. Hold sway +/-2.5, full sway +/-22.5 degrees. Source local drop stays in [-.25H,+.05H], from clamped outBack(s=1.6). Branch/leaves have no text and are drawn before strips. They are explicit background supports; horizontal offset is constrained to zero so native edge supports and reveal clock remain unchanged.",
+          "stageProof": "Per-source pivot/trigonometric/drop/scale intervals enclose every primary owned event. Every blank panel, crest, body, cap, rib and lyric stays classified; camera interval and joint replay preserve clips and connections.",
+          "nativeFontSizePreserved": false,
+          "ownedShapesPreserved": true,
+          "candidateBudget": {
+            "reconstructed": 7,
+            "cacheHits": 1,
+            "rejected": 0,
+            "uniqueRecipes": 7,
+            "perCutLimit": 54,
+            "nativeProgramReusedForBase": true
+          },
+          "limitations": "Cut/still text motion only; unsupported source domains fail explicitly"
+        },
+        "sourceAdapter": "c-japanese"
+      }
+    }
+  },
+  "inputSHA256": "e85d66f9487d34dad662e37a50cdb319ab7f5f957779e61c03a1b0c736cb9cc4",
+  "time": "2026-10-22T16:39:53.918Z",
+  "scope": "Local independent immutable native before/after; no image inspection by implementation agent; no public operation",
+  "baseline": {
+    "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+    "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+    "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+  },
+  "sourceHashes": {
+    "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+    "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+    "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+  },
+  "sourceStart": {
+    "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+    "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+    "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+  },
+  "sourceEnd": {
+    "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+    "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+    "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+  },
+  "sourceUnchangedDuringRun": true,
+  "assets": {
+    "before.png": {
+      "sha256": "61d447284494d43c722672dcbea1bcad3261715c164a4fc2d7a6170fc9b4fa37",
+      "bytes": 340132
+    },
+    "after.png": {
+      "sha256": "6188b302941630dcab522603c5fd42cc92111b7acb9d1e4ca6fd9d19d4155f17",
+      "bytes": 366903
+    },
+    "before.mp4": {
+      "sha256": "9fd7995c8b0b415ddd3090300f83030e1630f78476292440287e4b5a0c2fc917",
+      "bytes": 120801
+    },
+    "after.mp4": {
+      "sha256": "f4768c5fd5a5869651d4a123bf554b88b2170c68649efed190fd05633737543a",
+      "bytes": 95194
+    },
+    "index.html": {
+      "sha256": "9a903675b3489faab322e51e7d6c77fcf5543f27c2f0408bcb1ddc5a5ce10fbe",
+      "bytes": 1024
+    }
+  }
+}
