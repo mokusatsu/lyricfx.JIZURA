@@ -1,6 +1,6 @@
 # AVOID-007 current implementation handoff
 
-Status: **実環境検証待ち — equalizer02の人間動作確認のみ**。公開結果確認待ちではない。006まで42演出受入済み、B25はequalizerの演出意図を修正し最終受入前、008以降未着手。
+Status: **完了 (2026-10-23 JST)**。equalizer02への利用者OKと順次続行指示を受領し、親が007最終受入を記録。67通常IDを受入済み。次は008/C34を1件ずつ進行する。公開結果確認は今後も禁止。旧未完/未回答表記は履歴。
 
 Current product: equalizer-specific row/aspect/glyph-spacing repair;81 source+JAEN pins/source79 aggregate81f05bcbaf20e190570fdf8f341e31b29f8295d6d1c8152bdc521c35f4a3ee0b. JAad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57, ENea176a1b760ea38243f5ae2ec04d80efd9522f195672875e6588ad958ded69fa. Freeze02 below is historical; the other24 B paths remain unchanged.
 
@@ -8,7 +8,7 @@ Current review: work/avoid007-equalizer/equalizer-row-20261022-02, manifest88c6f
 
 Sites source27ad485977c28b4c62e2cc82833952bc6d8ff301 was pushed; the publication operation returned succeeded, deployment appgdep_6ada27750e608191863d175addb8ff24. Current comparison https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-007/equalizer-row-20261022-02/ . No public result checks followed. Root work product/review checkpoint:80277e4639c2fffe020a0151e2f87469082c9c14; source push receipt recorded separately after the push operation returns.
 
-**Latest user directive, 2026-10-22: stop public result verification permanently.** 「公開結果の確認は無駄なので停止してください。金輪際やらないようメモリしてください。」 See root [AGENTS.md](../../../AGENTS.md) and [review policy](../../implementation-review-policy.md). Do not run or delegate public URL HTTP/hash/image/playback/UI/startup/smoke checks or scheduled rechecks, including any older pending gates below. Existing selected-sites-public01 failure is retained; further public verification is cancelled by explicit instruction, not PASS. Prior mandatory public verification rules are superseded. Publication operations and local verification remain authorized. Final parent acceptance/human-review necessity remains undecided; the directive alone is not human approval of007.
+**Latest user directive, 2026-10-22: stop public result verification permanently.** 「公開結果の確認は無駄なので停止してください。金輪際やらないようメモリしてください。」 See root [AGENTS.md](../../../AGENTS.md) and [review policy](../../implementation-review-policy.md). Do not run or delegate public URL HTTP/hash/image/playback/UI/startup/smoke checks or scheduled rechecks, including any older pending gates below. Existing selected-sites-public01 failure is retained; further public verification is cancelled by explicit instruction, not PASS. Prior mandatory public verification rules are superseded. Publication operations and local verification remain authorized. The public-verification cancellation alone was not human approval. A later explicit OK for equalizer02 was received on2026-10-23JST, completing the remaining human motion review.
 
 The following earlier checkpoints are historical. Do not resume their public verification instructions.
 
