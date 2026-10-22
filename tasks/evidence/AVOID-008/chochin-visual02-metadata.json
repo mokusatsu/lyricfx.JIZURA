@@ -1,0 +1,231 @@
+{
+  "review": "chochin-visual02",
+  "result": "PASS",
+  "scope": "same single chochin 960x540 seed704 four-character fixture only; distinct from native103sharedfreeze",
+  "bundle": "/workspace/avoid008-japanese/tasks/evidence/AVOID-008/japanese/chochin-preview02",
+  "receipt_sha256": "ed614f087557058082c2288c663121c46bc319e471c05aace3604deefa0770b4",
+  "spec": {
+    "layout": "chochin",
+    "params": {
+      "variant": "single"
+    },
+    "text": "風の先へ",
+    "W": 960,
+    "H": 540,
+    "cx": 0.5,
+    "cy": 0.42,
+    "radius": 0.2
+  },
+  "assets": [
+    {
+      "path": "before.png",
+      "bytes": 542221,
+      "sha256": "591c1e84b76fd032c2f6c222ea9b1232eb4942b84d26ee382527246cbfc3a80f",
+      "matches_receipt": true,
+      "byte_identical_to_01": true
+    },
+    {
+      "path": "after.png",
+      "bytes": 500836,
+      "sha256": "334fea802e75de8d6c96e32ac40a6a89880cc6794b23a56d8aaafe192ab29936",
+      "matches_receipt": true
+    },
+    {
+      "path": "before.mp4",
+      "bytes": 159617,
+      "sha256": "4fb0a2382a7897d2dbd17013a5b3b6b2e60edc9110679f9e54d839159efec078",
+      "matches_receipt": true,
+      "byte_identical_to_01": true
+    },
+    {
+      "path": "after.mp4",
+      "bytes": 107581,
+      "sha256": "d297bc1c01ce61f59807d8696798aa4e0cdd6fe6d5625dd1dba41073a4f986a1",
+      "matches_receipt": true
+    },
+    {
+      "path": "index.html",
+      "bytes": 1024,
+      "sha256": "c28c974d5f7b43402b2cb3ea3f8f76fd1a9bc6a9e0a1ec3c791b8e17101e60d2",
+      "matches_receipt": true
+    }
+  ],
+  "streams": [
+    {
+      "video": "before.mp4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 540,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_read_frames": "96"
+          }
+        ]
+      },
+      "new_frames_visually_seen": [],
+      "review_carry": "chochin-visual01 before 96 frames and native PNG"
+    },
+    {
+      "video": "after.mp4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 540,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_read_frames": "96"
+          }
+        ]
+      },
+      "new_frames_visually_seen": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ],
+      "review_carry": null
+    }
+  ],
+  "new_native_png_seen": [
+    "after.png"
+  ],
+  "new_native_decoded_frames_seen": [
+    1,
+    6,
+    48,
+    95
+  ],
+  "new_after_frames_decoded": 96,
+  "sheets_seen": [
+    "sheet-0.jpg",
+    "sheet-1.jpg",
+    "sheet-2.jpg",
+    "sheet-3.jpg"
+  ],
+  "method": "All after 96 frames in contact sheets at 320x180; native PNG and four decoded singles at full resolution. Not real-time playback.",
+  "prior_failure": "chochin-visual01 moderate halo hard-edge FAIL retained without edits; resolved only for preview02",
+  "halo_comparison": "Viewed original 01 upper-glow native crop again and corresponding 02 crop: shallow slanted cutoff around y110-120 absent in 02; diffuse upper light continuous.",
+  "findings": [
+    {
+      "result": "PASS",
+      "detail": "Halo no longer has internal straight cutoff; diffuse illumination surrounds lantern and follows same motion."
+    },
+    {
+      "result": "PASS",
+      "detail": "Rounded body, ribs, caps, vertical four glyphs and ceiling-cord connection preserved; no new stage crop, split or overlap."
+    },
+    {
+      "result": "PASS",
+      "detail": "Entry body first, all glyphs at f5; same subtle hold sway and exit fade f91-f95. f95 remains nonblank."
+    }
+  ],
+  "limits": [
+    "No numeric circle or other ID/row wire/other-variant acceptance.",
+    "No native multi-font acceptance.",
+    "No implementation review or strict-unit numeric validation.",
+    "No exact gradient center/radius/stops numeric verification or alpha/subframe measurement.",
+    "Before visual evidence carried, not newly re-viewed.",
+    "No public verification."
+  ],
+  "media_cpu_released": true,
+  "reviewed_at_utc": "2026-10-22T16:29:07.186851+00:00"
+}

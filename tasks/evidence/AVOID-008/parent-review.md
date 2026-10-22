@@ -79,3 +79,22 @@ CSS fontの`parseFloat`はweight500をサイズ500と誤認するため、実px 
 提灯のradial lightingは字影を持たない背景照明と実sourceから判定し、円の大きさによらない固定分類を認める。本体/rib/cap/短紐/主文字はprimaryのまま。長紐・stage wireを背景扱いする場合も、接続とrevealを保つ必要がある。単純translationで天井端が浮く問題、we>0でwire延長が瞬間出現する問題、各unitの静止期間を後続入場で一律緩和する問題を実装担当へ返した。提灯01の独立実見では、物体/文字/時計は保持する一方、移動して見えるようになったhaloの直線切断を検出したため視覚FAILとして保持し、同gradientのsupport範囲の修正を依頼した。
 
 掛け軸は[独立視覚](kake-visual01-review.md)で1fixture限定PASS。元のunrollによる途中clipとstage端の新規cropを区別した。objectScale .9を使っているためHTMLの「translationのみ」と読める説明の訂正も返却。正式字体/多variant/他IDへの受入はしない。親は画像・動画を実見していない。公開結果確認も実施していない。
+
+## interval包絡の追加指摘（freeze02保存後）
+
+物体担当のactual stamp matrixで包絡逸脱28件を検出したことから、独立x/y intervalの2対角点だけをconvexHullへ入れる数学上の不足が判明した。[親の独立反例](parent-interval-hull-counterexample.json)でも、点(0,1)の回転弧の中点が2点hullから外れることを確認した。main09gのsourceStageEnvelopes、editorial09hのnewsStage、objects09iのsweepへ全Cartesian4cornerを追加する修正と、関連するactual phase/carry/成立条件の再確認を各実装担当へ返却した。frame試験の増加や偶然のcamera余白で数学上の証明を代用しない。Japanese09jは直後にA.bounds→rectへ変換して両軸の全範囲を含むため、この構造自体は同じ問題ではない。
+
+freeze02のregistry/font/各note phase/画像同一性の実結果と視覚観測は保持する。連続sweep proofはこの追加指摘で再審査し、過去の承認文を黙って最終保証へ拡張しない。e881904へのcheckpoint commit/push成功は[Git操作記録](git-operations.json)に記録し、公開結果確認は実施していない。
+
+
+## 2026-10-23 JST clapper02固定版と監査範囲訂正
+
+[親receipt](parent-checkpoint-clapper02.json)はcheckpoint-clapper02の127source＋25result raw/gzip、190一致pins、JAENへの09g/11p実byte埋込み、freeze02 registry/CSS px parser prefix同一を確認。probe12のindex/en/09g/11pの4pins不一致を検出したため旧18matrixは履歴に限定した。旧matrix格納値の独立polygon-circle再計算は8safe segment/216hold/216exit/216entry polygonsで違反0だが、現実装の実行証拠とは区別する。現source raster04は全pins一致し、clapper02の2fixture/192runtime frames/native clip40events/18circle sample/全shape padded alpha6,259,000の違反0を確認した。
+
+親は09gの四角全corner区間計算、clapper hinge -28..0のsin/cos極値・body drop/shake包絡とtop/左右のentry fit、strict-unit円侵入throw、C専用fitBlockの正確な寸法keyとtry/finally復元、sourceの14文字欄・metadata/main可読floor保持、元のnative clipのみを扱う経路をコードレビューした。板は縮めても元の文字/時計/上下棒/hinge/gridを保ち、各欄に全inkが入る場合だけ採用する。stage全時刻no-cropを原義にはしない：clapperの元の下端入場cropは許容し、新しい上棒top/side欠損を禁じる。別文脈solの[02視覚](clapper-visual02-review.md)で旧portrait f4〜9上棒欠損解消・原寸全字保持・snap順序を確認した。この内部2fixtureとshared/stickyの限定checkpointは追加人間確認/公開不要と判定。C34全完了にはしない。
+
+検証支援の重大な範囲訂正：旧C auditはctxの浅い置換だけでhelper閉包を再生成せず、rrect/circle/arc/blobを監査canvasから落としていた。旧receiptの全shape解釈は撤回し、[scope記録](audit-helper-context-scope01.md)とcorrected stage03/acceptance03/boundary05/raster04を採用。実source4kindのpositive/negativeでは旧audit0/元canvas>0、再束縛audit>0/元canvas0を確認。旧数学包絡・direct-context raw145・native frame carryは影響範囲を限定して維持する。現sourceのOFF34/cache12/付箋192frames/静止5＋移動5のfalse-safe throwもPASS。
+
+名札は未受入。crop02は採点launcherがexit0でもportrait schoolの新規主字cropが存在し、失敗/残件として保持する。紙面preview01は動画と原寸画像copy不一致のmaterial FAILを保持し、[bundle02独立照合](editorial-visual02-review.md)で条件一致を修正確認した。物体系bookの棚線右端cropは独立背景線の端で主物体/文字/接地関係が保たれる限定所見として記録し、カチンコ上棒という重要部品cropと同じ不具合には扱わない。stampSheetのfull carrierはphysical sheetでヘッダーの印刷面でもあるため、blank余白をindependentDecorとして除外する案は親が却下しprimary修正を返した。
+
+公開結果確認は利用者指示で中止・対象外。保存013既知FAILを保存成功へ置換しない。main sourceは3IDのopt-in段階、他31は別worktreeで未統合。全008完了前に009へ進めない。

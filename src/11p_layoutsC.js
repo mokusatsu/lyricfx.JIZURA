@@ -4,7 +4,8 @@
 const E = J.E;
 const P = 'layoutsC';
 const nativeSources = new Map();
-const reg = (key, def) => { nativeSources.set(key,def.render); return J.register('layout', key, def, P); };
+let exactCMeasure=false;
+const reg = (key, def) => { const source=def.render;def.render=function(env){const previous=exactCMeasure;exactCMeasure=env.cut.placementLayoutsC===true;try{return source.call(this,env);}finally{exactCMeasure=previous;}};nativeSources.set(key,def.render); return J.register('layout', key, def, P); };
 J.placement.layoutsCSourceKnown = key => nativeSources.has(key) && nativeSources.get(key) === J.LAYOUTS[key]?.render;
 
 /* ---------------------------------------------------------------- helpers */
@@ -210,7 +211,7 @@ function memo(key, fn) {
 /* best line break + size for a text block that must fit aw × ah */
 function fitBlock(text, font, aw, ah, o = {}, maxLines = 4) {
   const t = String(text || '').trim();
-  const key = ['fb', t, font, aw | 0, ah | 0, o.lead || 0, o.track || 0, o.vertical ? 1 : 0, o.sx || 1, maxLines].join('|');
+  const key = [exactCMeasure?'fb-exact':'fb', t, font, exactCMeasure?aw:aw|0, exactCMeasure?ah:ah|0, o.lead || 0, o.track || 0, o.vertical ? 1 : 0, o.sx || 1, maxLines].join('|');
   return memo(key, () => {
     const n = Math.max(1, J.glyphCount(t));
     let best = null; const seen = new Set();
@@ -2978,9 +2979,10 @@ reg('clapper', {
   enterBias: { cut: 1.8, pop: 1.2, blur: 0.5 },
   plan: (rng, cut, st) => ({ font: rng.chance(0.5) ? 'klee' : rng.pick(fontsOf(st, ['display', 'body'])), tilt: rng.range(-6, 6), roll: 'A' + rng.int(1, 9), take: rng.int(1, 12) }),
   render(env) {
-    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    const { W, H, sc, ctx } = env, p = env.cut.params, port = isPort(env);
+    const recipe=env.cut.placementLayoutsC?env.cut.layoutCRecipe:null, boardScale=recipe?.boardScale??1, slateMeasure=recipe?.slateMeasure??1, u=U(env)*boardScale;
     const out = tout(env), ls = smallSize(env);
-    const bw = port ? W * 0.88 : Math.min(W * 0.56, H * 0.74 * 1.3), bh = bw * 0.62;
+    const nativeBW = port ? W * 0.88 : Math.min(W * 0.56, H * 0.74 * 1.3), bw=nativeBW*boardScale*slateMeasure, bh=nativeBW*.62*boardScale;
     const slate = plateCol(sc, [darkest(sc), sc.ink, sc.fg], sc.bg, 1.4);
     const chalk = onCol(sc, slate);
     const e = E.outCubic(J.clamp(env.lt / 0.4)), eo = E.inCubic(env.pOut);
@@ -2991,6 +2993,8 @@ reg('clapper', {
     const tcl = 0.42;
     const openA = env.lt < tcl ? -28 * E.outCubic(J.clamp(env.lt / 0.25)) * (1 - E.inQuad(J.clamp((env.lt - 0.28) / (tcl - 0.28)))) : 0;
     const shake = env.lt > tcl && env.lt < tcl + 0.15 ? J.rs(env.step, 7) * u * 0.006 * (1 - (env.lt - tcl) / 0.15) : 0;
+    const previousBody=env.placementCBody;
+    if(env.cut.placementLayoutsC)env.placementCBody={kind:'clapper-body',entryDrop:H*.5,entryShake:u*.006,pivot:[W/2,H/2+bh*.1],angle:p.tilt,turn:0,dx:0,dy:env.cut.outDur>0?H*.2:0,minYScale:1,maxEntryScale:1,entryEnd:env.cut.start+.4,exitStart:env.cut.outDur>0?env.cut.end-env.cut.outDur:Number.MAX_VALUE,motionWindows:[[env.cut.start+.42,env.cut.start+.57]]};
     ctx.save(); ctx.translate(cx + shake, cy + shake * 0.6); ctx.rotate(p.tilt * J.DEG);
     const x0 = -bw / 2, y0 = -bh / 2;
     shadowR(env, x0, y0 - bh * 0.3, bw, bh * 1.3, bh * 0.03, a, u * 0.016);
@@ -3005,7 +3009,9 @@ reg('clapper', {
     };
     drawStick(y0 - sh - bh * 0.01);
     ctx.save(); ctx.translate(x0, y0 - sh - bh * 0.01); ctx.rotate(openA * J.DEG); ctx.translate(-x0, -(y0 - sh - bh * 0.01));
+    const bodyTag=env.placementCBody;if(bodyTag)env.placementCBody={...bodyTag,kind:'clapper-stick',hinge:[x0,y0-sh-bh*.01],entryEnd:env.cut.start+.42};
     drawStick(y0 - sh * 2 - bh * 0.02);
+    env.placementCBody=bodyTag;
     ctx.restore();
     env.circle(x0 + sh * 0.5, y0 - sh * 1.05, sh * 0.22, chalk, null, 0, a, false);
     // grid & fields
@@ -3014,17 +3020,18 @@ reg('clapper', {
     env.line([[x0, r1], [x0 + bw, r1]], chalk, lw, a * 0.8, false);
     env.line([[x0, r2], [x0 + bw, r2]], chalk, lw, a * 0.8, false);
     [1 / 3, 2 / 3].forEach(f => env.line([[x0 + bw * f, r1], [x0 + bw * f, y0 + bh]], chalk, lw, a * 0.8, false));
-    const lab = (t, x, y) => env.draw({ text: t, font: monoF(env), size: ls * 0.72, track: 0.2, align: 'left', x, y, color: chalk, alpha: a * 0.75, ghost: false });
-    const val = (t, x, y, s2) => env.draw({ text: t, font: p.font, size: s2, align: 'left', x, y, color: chalk, alpha: a * J.clamp((env.lt - 0.2) * 4), ghost: false });
+    const lab = (t, x, y, zone) => env.draw({ placementCOwnedZone:zone, text: t, font: monoF(env), size: ls * 0.72, track: 0.2, align: 'left', x, y, color: chalk, alpha: a * 0.75, ghost: false });
+    const val = (t, x, y, s2, zone) => env.draw({ placementCOwnedZone:zone, text: t, font: p.font, size: s2, align: 'left', x, y, color: chalk, alpha: a * J.clamp((env.lt - 0.2) * 4), ghost: false });
     const pad = bw * 0.025;
-    lab('PROD.', x0 + pad, y0 + pad + ls * 0.4);
+    lab('PROD.', x0 + pad, y0 + pad + ls * 0.4,{x0,y0,x1:x0+bw,y1:r1});
     const rowH = r2 - r1;
-    [['SCENE', lineNo(env)], ['TAKE', String(p.take)], ['ROLL', p.roll]].forEach(([k2, v], i) => { lab(k2, x0 + bw * i / 3 + pad, r1 + ls * 0.6); val(v, x0 + bw * i / 3 + pad, r1 + rowH * 0.62, rowH * 0.46); });
-    [['DATE', J.fmtTime(env.cut.start)], ['DIR.', 'JIZURA'], ['CAM.', 'A']].forEach(([k2, v], i) => { lab(k2, x0 + bw * i / 3 + pad, r2 + ls * 0.6); val(v, x0 + bw * i / 3 + pad + ls * 3.2, r2 + (y0 + bh - r2) * 0.55, Math.min((y0 + bh - r2) * 0.42, ls * 1.3)); });
-    const fb = fitBlock(env.cut.text.trim(), p.font, bw - pad * 2, (r1 - y0) - ls * 1.6, { lead: 1.08 }, 2);
-    const size = Math.min(fb.size, bh * 0.3);
-    const bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: x0 + pad * 1.4, y: y0 + ls * 1.2 + ((r1 - y0) - ls * 1.2) / 2, align: 'left', lead: 1.08, color: chalk, noHold: plateHold(env), mi: miAt(env, 0.25) });
+    [['SCENE', lineNo(env)], ['TAKE', String(p.take)], ['ROLL', p.roll]].forEach(([k2, v], i) => { const z={x0:x0+bw*i/3,y0:r1,x1:x0+bw*(i+1)/3,y1:r2}; lab(k2, x0 + bw * i / 3 + pad, r1 + ls * 0.6,z); val(v, x0 + bw * i / 3 + pad, r1 + rowH * 0.62, Math.max(rowH*.46,recipe&&boardScale<.7?rowH/boardScale*.46*.7:0),z); });
+    [['DATE', J.fmtTime(env.cut.start)], ['DIR.', 'JIZURA'], ['CAM.', 'A']].forEach(([k2, v], i) => { const z={x0:x0+bw*i/3,y0:r2,x1:x0+bw*(i+1)/3,y1:y0+bh}; lab(k2, x0 + bw * i / 3 + pad, r2 + ls * 0.6,z); val(v, x0 + bw * i / 3 + pad + (recipe?.metadataLayout==='stacked'?0:ls*3.2), r2 + (y0 + bh - r2) * 0.55, Math.min((y0+bh-r2)/(recipe&&boardScale<.7?boardScale:1)*.42,ls*1.3),z); });
+    const fb = fitBlock(env.cut.text.trim(), p.font, bw - pad * 2, (r1-y0)-ls*(recipe?.writingMeasure?1.2:1.6), { lead: 1.08 }, 2);
+    const size = Math.min(fb.size, nativeBW*.62*Math.max(boardScale,recipe?.writingMeasure ? .7 : 0)*.3);
+    const bb = J.mainDraw(env, { placementCOwnedZone:{x0:x0+pad,y0:y0+ls*.7,x1:x0+bw-pad,y1:r1}, text: fb.text, font: p.font, size, x: x0 + pad * 1.4, y: y0 + ls * 1.2 + ((r1 - y0) - ls * 1.2) / 2, align: 'left', lead: 1.08, color: chalk, noHold: plateHold(env), mi: miAt(env, 0.25) });
     ctx.restore();
+    env.placementCBody=previousBody;
     return bb ? box(cx - bw / 2, cy - bh / 2, cx + bw / 2, cy + bh / 2) : null;
   },
 });
@@ -3199,6 +3206,7 @@ reg('nameTag', {
     const rot = p.tilt * q + (1 - q) * -25 + eo * 18;
     const across=env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.exitAxis==='across', exitDX=across?H*.5:W*.1,exitDY=across?W*.1:H*.5;
     const cx = W / 2 + eo * exitDX, cy = H / 2 + (1 - q) * -H * 0.35 + eo * exitDY;
+    const previousBody=env.placementCBody;
     if(env.cut.placementLayoutsC)env.placementCBody={kind:'name-badge',pivot:[W/2,H/2],angle:p.tilt,turn:env.cut.outDur>0?18:0,dx:env.cut.outDur>0?exitDX:0,dy:env.cut.outDur>0?exitDY:0,minYScale:1,maxEntryScale:1,entryEnd:env.cut.start+.5,exitStart:env.cut.outDur>0?env.cut.end-env.cut.outDur:Number.MAX_VALUE};
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG);
     const x0 = -bw / 2, y0 = -bh / 2, r = bh * 0.08;
@@ -3206,30 +3214,31 @@ reg('nameTag', {
     let bb;
     if (p.variant === 'hello') {
       env.rrect(x0, y0, bw, bh, r, bandC, a, false);
-      const hh = bh * 0.3;
-      env.rect(x0 + bw * 0.035, y0 + hh, bw * 0.93, bh * 0.58, C.fill, a, false);
+      const headerMeasure=env.cut.placementLayoutsC?env.cut.layoutCRecipe?.headerMeasure??1:1,hh=bh*.3*headerMeasure,whiteBottom=headerMeasure<1?.94:.88,whiteHeight=headerMeasure<1?whiteBottom-hh/bh:.58;
+      env.rect(x0 + bw * 0.035, y0 + hh, bw * 0.93, bh * whiteHeight, C.fill, a, false);
       const hc = onCol(sc, bandC);
-      env.draw({ text: 'HELLO', font: 'gothic_black', size: hh * 0.52, track: 0.08, x: 0, y: y0 + hh * 0.4, color: hc, alpha: a, ghost: false });
-      env.draw({ text: 'my name is', font: bodyF(env), size: hh * 0.2, track: 0.15, x: 0, y: y0 + hh * 0.82, color: hc, alpha: a, ghost: false });
-      const fb = fitBlock(t0, p.font, bw * 0.84, bh * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .56 : .46), { lead: 1.05 }, 2);
+      env.draw({ placementCOwnedZone:{x0:x0+bw*.035,x1:x0+bw*.965,y0,y1:y0+hh*.7}, text: 'HELLO', font: 'gothic_black', size: bh*.3*.52, track: 0.08, x: 0, y: y0 + hh * 0.4, color: hc, alpha: a, ghost: false });
+      env.draw({ placementCOwnedZone:{x0:x0+bw*.035,x1:x0+bw*.965,y0:y0+hh*.65,y1:y0+hh}, text: 'my name is', font: bodyF(env), size: bh*.3*.2, track: 0.15, x: 0, y: y0 + hh * 0.82, color: hc, alpha: a, ghost: false });
+      const fb = fitBlock(t0, p.font, bw * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .91 : .84), bh * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.headerMeasure<1 ? whiteHeight-.02 : env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .56 : .46), { lead: 1.05 }, 2);
       const size = Math.min(fb.size, bh * 0.36);
-      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.045,x1:x0+bw*.955,y0:y0+bh*.3,y1:y0+bh*.88}} : {}), text: fb.text, font: p.font, size, x: 0, y: y0 + hh + bh * 0.29, lead: 1.05, rot: -2, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.045,x1:x0+bw*.955,y0:y0+hh,y1:y0+bh*whiteBottom}} : {}), text: fb.text, font: p.font, size, x: 0, y: headerMeasure<1?y0+hh+bh*whiteHeight/2:y0+hh+bh*.29, lead: 1.05, rot: -2, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     } else {
       // school name badge: safety pin, class fields, なまえ
       env.rrect(x0, y0, bw, bh, r, C.fill, a, false, bandC, Math.max(4, bw * 0.014));
       const pinY = y0 - bh * 0.06;
       env.line([[x0 + bw * 0.2, pinY], [x0 + bw * 0.8, pinY]], sc.sub, Math.max(3, u * 0.004), a, false);
       env.circle(x0 + bw * 0.8, pinY, u * 0.008, sc.sub, null, 0, a, false);
-      const fy = y0 + bh * 0.2;
-      env.draw({ text: p.grade + ' ねん　' + p.cls + ' くみ', font: p.font, size: bh * 0.1, align: 'left', x: x0 + bw * 0.08, y: fy, color: C.text, alpha: a, ghost: false });
+      const compactClass=env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.classMeasure===.5,fy=y0+bh*(compactClass?.1:.2);
+      env.draw({ placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.78,y0:y0+bh*(compactClass?.015:.06),y1:fy+bh*.09}, text: p.grade + ' ねん　' + p.cls + ' くみ', font: p.font, size: bh * 0.1, align: 'left', x: x0 + bw * 0.08, y: fy, color: C.text, alpha: a, ghost: false });
       env.line([[x0 + bw * 0.06, fy + bh * 0.09], [x0 + bw * 0.94, fy + bh * 0.09]], bandC, Math.max(2, u * 0.003), a, false);
-      env.draw({ text: 'なまえ', font: bodyF(env), size: bh * 0.07, align: 'left', x: x0 + bw * 0.08, y: fy + bh * 0.19, color: bandC, alpha: a, ghost: false });
-      env.circle(x0 + bw * 0.88, y0 + bh * 0.2, bh * 0.08, bandC, null, 0, a, false);
-      const fb = fitBlock(t0, p.font, bw * 0.84, bh * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .56 : .44), { lead: 1.05 }, 2);
+      env.draw({ placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:fy+bh*.09,y1:y0+bh*(compactClass?.28:.45)}, text: 'なまえ', font: bodyF(env), size: bh * 0.07, align: 'left', x: x0 + bw * 0.08, y: fy+bh*(compactClass?.13:.19), color: bandC, alpha: a, ghost: false });
+      env.circle(x0 + bw * 0.88, fy, bh * 0.08, bandC, null, 0, a, false);
+      const fb = fitBlock(t0, p.font, bw * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .91 : .84), bh * (compactClass?.68:env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .56 : .44), { lead: 1.05 }, 2);
       const size = Math.min(fb.size, bh * 0.34);
-      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:y0+bh*.4,y1:y0+bh*.96}} : {}), text: fb.text, font: p.font, size, x: 0, y: y0 + bh * 0.66, lead: 1.05, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
+      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:y0+bh*(compactClass?.28:.4),y1:y0+bh*.96}} : {}), text: fb.text, font: p.font, size, x: 0, y: y0+bh*(compactClass?.62:.66), lead: 1.05, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     }
     ctx.restore();
+    env.placementCBody=previousBody;
     return bb ? box(cx - bw / 2, cy - bh / 2, cx + bw / 2, cy + bh / 2) : null;
   },
 });

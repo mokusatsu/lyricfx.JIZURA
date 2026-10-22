@@ -1,0 +1,468 @@
+{
+  "task": "AVOID-008",
+  "review": "editorial-visual01",
+  "reviewer": "independent child visual agent; parent did not view images",
+  "overall": "FAIL_MATERIAL_CORRESPONDENCE",
+  "publicVerification": "not performed; permanently excluded by user instruction / AGENTS.md",
+  "sourceDirectory": "/workspace/avoid008-editorial/tasks/evidence/AVOID-008/editorial",
+  "manifestSHA256": {
+    "preview01": "dc082b1f634adbdf83aeca80bb640023f20248cf95ae43587e1bb44fb7daa91b",
+    "native-stills01": "73a025ee24cad24792517aeb8897736b9dd862d91a085029c9a7a8f48e2b4bfc"
+  },
+  "identity": {
+    "previewAssetsVerified": 31,
+    "nativePNGVerified": 18,
+    "allNativeInputPinsMatch": true,
+    "nativeChangedInputsRecorded": [],
+    "beforeGit7cd5a5bCompiledVerified": true,
+    "afterCompiledSHA256": "db371e02b0365e6368b1e4cfe7973f4f438ee7cdc35f929d0a244530a86f0bc5",
+    "afterSource4c3d36dExact": false,
+    "sourceMismatch": [
+      "src/09g_layoutsC_placement.js"
+    ],
+    "checkedInAfterIndexIdentityClaimed": false
+  },
+  "method": {
+    "decodedMP4": 6,
+    "framesPerVideo": 96,
+    "allFramesViewed": true,
+    "pairContactSheetsViewed": 24,
+    "nativePNGViewed": 18,
+    "nativeFrames": [
+      6,
+      36,
+      91
+    ],
+    "realtimePlayback": false,
+    "browserStarted": false,
+    "newProductRendering": false,
+    "persistentMediaProcesses": 0
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "major evidence failure",
+      "case": "magazine-headline-4",
+      "frames": [
+        6,
+        36,
+        91
+      ],
+      "beforeAndAfter": true,
+      "previewActualCopy": "雨上がり Hello 123",
+      "nativeActualCopy": "風の先へ",
+      "outcome": "FAIL corresponding native supplement; mixed-copy fine detail unassessed"
+    },
+    {
+      "id": "F2",
+      "severity": "major evidence requirement failure",
+      "case": "footnote-native-1",
+      "frames": [
+        36,
+        91
+      ],
+      "beforeAndAfter": true,
+      "inputNote": "遠い空の向こうへ",
+      "displayedNotes": [
+        "※1 風の 00:00.00",
+        "※2 先へ 00:02.00"
+      ],
+      "afterRegressionClaimed": false,
+      "outcome": "FAIL requested actual note evidence; limited pass on displayed note composition"
+    }
+  ],
+  "limitedPass": [
+    "contents visible column/title/number/read order preservation at native frames6/36/91 and coarse motion frame0-95",
+    "footnote displayed main copy/marks/notes/rule relationship and no detected new crop at native6/36/91 plus coarse frame0-95",
+    "magazine coarse page/heading/photo/body/page-number structure at frame0-95 only"
+  ],
+  "unassessed": [
+    "circle safety: no circle guide",
+    "magazine mixed-copy native fine detail",
+    "contents active transition: no transition in clip",
+    "requested real footnote copy",
+    "realtime motion perception",
+    "full production font families",
+    "animation outside frame0-95"
+  ],
+  "verification": {
+    "probes": [
+      {
+        "case": "magazine-headline-4",
+        "side": "before",
+        "width": 320,
+        "height": 320,
+        "frames": "96",
+        "fps": "24/1",
+        "duration": "4.000000"
+      },
+      {
+        "case": "magazine-headline-4",
+        "side": "after",
+        "width": 320,
+        "height": 320,
+        "frames": "96",
+        "fps": "24/1",
+        "duration": "4.000000"
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "before",
+        "width": 480,
+        "height": 270,
+        "frames": "96",
+        "fps": "24/1",
+        "duration": "4.000000"
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "after",
+        "width": 480,
+        "height": 270,
+        "frames": "96",
+        "fps": "24/1",
+        "duration": "4.000000"
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "before",
+        "width": 480,
+        "height": 270,
+        "frames": "96",
+        "fps": "24/1",
+        "duration": "4.000000"
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "after",
+        "width": 480,
+        "height": 270,
+        "frames": "96",
+        "fps": "24/1",
+        "duration": "4.000000"
+      }
+    ],
+    "correspondence": [
+      {
+        "case": "magazine-headline-4",
+        "side": "before",
+        "frame": 6,
+        "native_to_preview_MAE_rgb": [
+          7.82849609375,
+          7.703681640625,
+          7.39806640625
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.64447265625,
+          0.91470703125,
+          0.916533203125
+        ]
+      },
+      {
+        "case": "magazine-headline-4",
+        "side": "before",
+        "frame": 36,
+        "native_to_preview_MAE_rgb": [
+          9.34775390625,
+          9.181279296875,
+          8.75552734375
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.4802734375,
+          0.878369140625,
+          1.161474609375
+        ]
+      },
+      {
+        "case": "magazine-headline-4",
+        "side": "before",
+        "frame": 91,
+        "native_to_preview_MAE_rgb": [
+          8.32234375,
+          8.193193359375,
+          7.852666015625
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.676875,
+          0.979482421875,
+          0.95041015625
+        ]
+      },
+      {
+        "case": "magazine-headline-4",
+        "side": "after",
+        "frame": 6,
+        "native_to_preview_MAE_rgb": [
+          7.80279296875,
+          7.676796875,
+          7.368173828125
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.61984375,
+          0.8899609375,
+          0.86009765625
+        ]
+      },
+      {
+        "case": "magazine-headline-4",
+        "side": "after",
+        "frame": 36,
+        "native_to_preview_MAE_rgb": [
+          9.49208984375,
+          9.321337890625,
+          8.883564453125
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.4544921875,
+          0.901259765625,
+          1.186767578125
+        ]
+      },
+      {
+        "case": "magazine-headline-4",
+        "side": "after",
+        "frame": 91,
+        "native_to_preview_MAE_rgb": [
+          8.353330078125,
+          8.22330078125,
+          7.875107421875
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.643837890625,
+          0.95033203125,
+          0.96955078125
+        ]
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "before",
+        "frame": 6,
+        "native_to_preview_MAE_rgb": [
+          0.923395061728395,
+          0.918858024691358,
+          0.9046296296296297
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8334027777777777,
+          0.8340740740740741,
+          0.9314429012345679
+        ]
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "before",
+        "frame": 36,
+        "native_to_preview_MAE_rgb": [
+          1.0331018518518518,
+          1.021682098765432,
+          0.9873533950617284
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8239043209876544,
+          0.8362191358024691,
+          0.9669521604938272
+        ]
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "before",
+        "frame": 91,
+        "native_to_preview_MAE_rgb": [
+          1.0508564814814816,
+          1.0402932098765432,
+          1.005679012345679
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8959182098765432,
+          0.8943827160493827,
+          1.0732484567901235
+        ]
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "after",
+        "frame": 6,
+        "native_to_preview_MAE_rgb": [
+          0.902337962962963,
+          0.8981867283950618,
+          0.882608024691358
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8125694444444445,
+          0.810516975308642,
+          0.8964120370370371
+        ]
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "after",
+        "frame": 36,
+        "native_to_preview_MAE_rgb": [
+          1.0036496913580246,
+          0.9950617283950617,
+          0.9652932098765432
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8193364197530864,
+          0.8149305555555556,
+          0.9103009259259259
+        ]
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "after",
+        "frame": 91,
+        "native_to_preview_MAE_rgb": [
+          1.0478472222222222,
+          1.0386033950617284,
+          1.0070216049382716
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8599614197530865,
+          0.8513271604938272,
+          0.9867206790123457
+        ]
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "before",
+        "frame": 6,
+        "native_to_preview_MAE_rgb": [
+          0.9254629629629629,
+          0.9239429012345679,
+          0.9161188271604939
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.7968364197530864,
+          0.8145679012345679,
+          0.856304012345679
+        ]
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "before",
+        "frame": 36,
+        "native_to_preview_MAE_rgb": [
+          1.0847916666666666,
+          1.0703626543209876,
+          1.0222067901234568
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8362345679012346,
+          0.8324228395061728,
+          0.9918904320987655
+        ]
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "before",
+        "frame": 91,
+        "native_to_preview_MAE_rgb": [
+          1.0647067901234568,
+          1.0532484567901235,
+          1.0125231481481483
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.878695987654321,
+          0.8800077160493828,
+          1.030324074074074
+        ]
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "after",
+        "frame": 6,
+        "native_to_preview_MAE_rgb": [
+          0.9134876543209877,
+          0.9124768518518519,
+          0.9038811728395062
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8146450617283951,
+          0.8280324074074074,
+          0.8859336419753087
+        ]
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "after",
+        "frame": 36,
+        "native_to_preview_MAE_rgb": [
+          1.0516975308641976,
+          1.0361188271604937,
+          0.9826697530864198
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8533256172839505,
+          0.8467361111111111,
+          1.0132561728395062
+        ]
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "after",
+        "frame": 91,
+        "native_to_preview_MAE_rgb": [
+          1.0656635802469137,
+          1.0532716049382715,
+          1.0084259259259258
+        ],
+        "preview_to_decoded_MAE_rgb": [
+          1.8810802469135803,
+          0.8953472222222222,
+          1.0445216049382715
+        ]
+      }
+    ],
+    "frameLogs": [
+      {
+        "case": "magazine-headline-4",
+        "side": "before",
+        "96_contiguous_timestamps": true,
+        "observations": [
+          "[]"
+        ]
+      },
+      {
+        "case": "magazine-headline-4",
+        "side": "after",
+        "96_contiguous_timestamps": true,
+        "observations": [
+          "[{'pass': 'main', 'realTime': 0, 'motionTime': 0, 'safety': 'safe'}]"
+        ]
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "before",
+        "96_contiguous_timestamps": true,
+        "observations": [
+          "[]"
+        ]
+      },
+      {
+        "case": "contents-tate-1",
+        "side": "after",
+        "96_contiguous_timestamps": true,
+        "observations": [
+          "[{'pass': 'main', 'realTime': 0, 'motionTime': 0, 'safety': 'safe'}]"
+        ]
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "before",
+        "96_contiguous_timestamps": true,
+        "observations": [
+          "[]"
+        ]
+      },
+      {
+        "case": "footnote-native-1",
+        "side": "after",
+        "96_contiguous_timestamps": true,
+        "observations": [
+          "[{'pass': 'main', 'realTime': 0, 'motionTime': 0, 'safety': 'safe'}]"
+        ]
+      }
+    ]
+  }
+}

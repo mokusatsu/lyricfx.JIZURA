@@ -1,0 +1,130 @@
+{
+  "review": "objects-visual01-a",
+  "timestampUTC": "2026-10-22T16:50:35.894505+00:00",
+  "bundle": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/preview02",
+  "manifestSHA256": "a22ba2f4049835d1712b3388223fb03e1dcad227a0da8adbd2e805f1ab847e2a",
+  "receipt": "scratch/avoid008-objects-visual01-a/receipt.json",
+  "receiptSHA256": "65a5f3d54ecfeee09bfb0585ab07cf31e57a840a54338b5c1582cbf28e2693cc",
+  "assetCount": 32,
+  "allAssetBytesHashesMatch": true,
+  "assignedRecords": [
+    "ransom-default",
+    "polaroid-default"
+  ],
+  "conditions": [
+    {
+      "id": "ransom-default",
+      "layout": "ransom",
+      "W": 960,
+      "H": 540,
+      "text": "風の先へ",
+      "cx": 0.5,
+      "cy": 0.42,
+      "radius": 0.2,
+      "seed": 704
+    },
+    {
+      "id": "polaroid-default",
+      "layout": "polaroid",
+      "W": 960,
+      "H": 540,
+      "text": "風の先へ",
+      "cx": 0.5,
+      "cy": 0.42,
+      "radius": 0.2,
+      "seed": 704
+    }
+  ],
+  "sameParamsBothSides": true,
+  "sameFontAuditBothSides": true,
+  "sourceGitChecks": {
+    "before": {
+      "commit": "7cd5a5b36eb637967bc78626d9b6eaea89e162ed",
+      "compiledSHA256": "17e35475df196fc87a931802a21683a1d4c7b0cafcbba88feb2e50c9ba708456",
+      "matchesStartup": true
+    },
+    "after": {
+      "commit": "493b9b3fda7392d0e170b7134dbe0b0128ad9a9a",
+      "compiledSHA256": "17e35475df196fc87a931802a21683a1d4c7b0cafcbba88feb2e50c9ba708456",
+      "matchesStartup": false,
+      "note": "Product source commit; its checked-in generated index is stale by design, not the capture engine. Do not equate Git generated index with after engine."
+    }
+  },
+  "engines": {
+    "before": {
+      "sha256": "17e35475df196fc87a931802a21683a1d4c7b0cafcbba88feb2e50c9ba708456",
+      "startupMatch": true
+    },
+    "after": {
+      "sha256": "2a138fcd1e670dd68cf9bd48841cfc82c4e140a79567c6a5b70ad0d42cd7cf3c",
+      "startupMatch": true,
+      "embeddedSourceMatches": {
+        "src/09i_layoutsC_objects.js": {
+          "exactSourceBytesContained": true,
+          "sourceSHA256": "ef23237d0ccb63e3714b20cf52ecb0b18d62fadb837ea20534a8a7fee64c7680"
+        },
+        "src/11p_layoutsC.js": {
+          "exactSourceBytesContained": true,
+          "sourceSHA256": "db0c193ca07421bfd92828075e34c34d745871f990b926d5655e72aed58c6f55"
+        }
+      }
+    }
+  },
+  "frameMapping": {
+    "ransom-default-before": true,
+    "ransom-default-after": true,
+    "polaroid-default-before": true,
+    "polaroid-default-after": true
+  },
+  "visualCoverage": {
+    "allDecodedFramesContactViewed": 384,
+    "contactSheets": [
+      "scratch/avoid008-objects-visual01-a/ransom-default-pair-0.png",
+      "scratch/avoid008-objects-visual01-a/ransom-default-pair-1.png",
+      "scratch/avoid008-objects-visual01-a/ransom-default-pair-2.png",
+      "scratch/avoid008-objects-visual01-a/ransom-default-pair-3.png",
+      "scratch/avoid008-objects-visual01-a/polaroid-default-pair-0.png",
+      "scratch/avoid008-objects-visual01-a/polaroid-default-pair-1.png",
+      "scratch/avoid008-objects-visual01-a/polaroid-default-pair-2.png",
+      "scratch/avoid008-objects-visual01-a/polaroid-default-pair-3.png"
+    ],
+    "nativePngFrames": [
+      6,
+      42,
+      90
+    ],
+    "nativePngCount": 12,
+    "nativeExtraDecodedFrames": [
+      1,
+      16,
+      95
+    ],
+    "nativeExtraCount": 12,
+    "realTimePlayback": false,
+    "browserOrServerStarted": false
+  },
+  "results": {
+    "ransomSpatialReadability": "PASS observed transport and frames; wider gaps reduce overlapping collage density",
+    "ransomOrderClockSequence": "PASS sampled static sequence, not real-time feel",
+    "polaroidSpatialReadability": "PASS observed transport and frames",
+    "polaroidDevelopmentAndDropSequence": "PASS static sequence; real-time feel unseen",
+    "newUnexpectedStageCropOrLostOwnedItems": "none found in viewed frames",
+    "tape": "UNSEEN this case tape=false",
+    "circleSafety": "UNJUDGED no guide",
+    "productionFontAppearance": "UNJUDGED eight-face transport only"
+  },
+  "existingBehavior": [
+    "ransom f90 and f95 white の stays bright as other papers/glyphs fade, on both before and after; not classified as a new regression",
+    "polaroid entry f1 top-edge crop on both sides; final f95 before lower-edge crop, after remains in stage"
+  ],
+  "newFailures": [],
+  "limits": [
+    "No real-time playback",
+    "All frames viewed in reduced contacts; fine detail limited to 24 native images",
+    "No production brush/klee face proof",
+    "No numeric circle safety approval",
+    "Other two cases excluded from visual review",
+    "Public verification excluded by user instruction"
+  ],
+  "processesReleased": true
+}
