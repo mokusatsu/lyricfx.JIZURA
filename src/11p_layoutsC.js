@@ -1015,6 +1015,10 @@ reg('numbered', {
     const chunks = (p.chunks && p.chunks.length ? p.chunks : [env.cut.text.trim()]).filter(Boolean);
     const k = chunks.length, out = tout(env), ls = smallSize(env);
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberMeasure ?? 1 : 1;
+    const columnSpread = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberColumnsSpread : null;
+    if (columnSpread && (p.variant !== 'cols' || port || k !== 2 || ![columnSpread.width,columnSpread.left,columnSpread.right].every(Number.isFinite) || columnSpread.width < .25 || columnSpread.width > .36 || columnSpread.left < .02 || columnSpread.right + columnSpread.width > .98 || columnSpread.left + columnSpread.width > columnSpread.right)) { const e = new Error('Numbered column gutter recipe requires two native landscape columns'); e.code = 'NUMBERED_SPREAD_DOMAIN'; throw e; }
+    const rowPacking = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberRowsPacking : null;
+    if (rowPacking && (p.variant === 'behind' || p.variant === 'cols' && !port && k <= 3 || ![rowPacking.measure,rowPacking.numberScale].every(Number.isFinite) || rowPacking.measure < .4 || rowPacking.measure > .7 || rowPacking.numberScale < .7 || rowPacking.numberScale > 1)) { const e = new Error('Numbered packed rows require native row flow and bounded type'); e.code = 'NUMBERED_ROWS_DOMAIN'; throw e; }
     const lw = Math.max(1.2, u * 0.0018);
     const numItem = (i, size, x, y, align, big) => {
       const it = { text: pad2(i + 1), font: p.numFont, size, x, y, align, track: -0.02, ghost: false };
@@ -1035,12 +1039,12 @@ reg('numbered', {
     const lab = (i, x, y, align, a) => env.draw({ text: p.label === 'No.' ? 'No.' : p.label, font: monoF(env), size: ls * 0.85, track: 0.3, align, x, y, color: i === 0 ? sc.accent : sc.sub, alpha: a, ghost: false });
     let bb = null;
     if (p.variant === 'cols' && !port && k <= 3) {
-      const cw = W * 0.86 / k * editorialMeasure, x0 = editorialMeasure === 1 ? W*.07 : (W-cw*k)/2;
+      const cw = columnSpread ? W*columnSpread.width : W * 0.86 / k * editorialMeasure, x0 = editorialMeasure === 1 ? W*.07 : (W-cw*k)/2;
       const csize = Math.min(...chunks.map(c => J.fitSize(c, p.font, cw * 0.86, H * 0.3, { track: 0.02 })), u * 0.2);
       const nsz = Math.min(cw * 0.42, Math.max(csize * 1.5, u * 0.14), H * 0.3);
       const top = H / 2 - (nsz * 1.05 + csize * 1.4) / 2 + ls;
       chunks.forEach((c, i) => {
-        const x = x0 + i * cw;
+        const x = columnSpread ? W*(i ? columnSpread.right : columnSpread.left) : x0 + i * cw;
         const re = tin(env, 0.1 + i * 0.08, 0.6, E.inOutCubic) * out;
         if (i > 0) env.line([[x, H / 2 - H * 0.28 * re], [x, H / 2 + H * 0.28 * re]], sc.sub, lw, 0.7, false);
         const xl = x + cw * 0.07;
@@ -1072,9 +1076,10 @@ reg('numbered', {
       return bb;
     }
     // rows: numeral left, chunk right, hairlines between
-    const bw = W * (port ? 0.86 : 0.7) * editorialMeasure, bx = (W - bw) / 2;
+    const rowMeasure = rowPacking ? rowPacking.measure : editorialMeasure, rowNumberScale = rowPacking ? rowPacking.numberScale : 1;
+    const bw = W * (port ? 0.86 : 0.7) * rowMeasure, bx = (W - bw) / 2;
     const rowH = Math.min(H * (port ? 0.62 : 0.72) / k, u * (port ? 0.3 : 0.34));
-    const nsz = rowH * (port ? 0.56 : 0.72);
+    const nsz = rowH * (port ? 0.56 : 0.72) * rowNumberScale;
     const nW = meas('00', p.numFont, nsz).w + nsz * 0.3;
     const csize = Math.min(...chunks.map(c => J.fitSize(c, p.font, (bw - nW) * 0.96, rowH * 0.6, { track: 0.02 })), u * 0.2);
     const y0 = H / 2 - k * rowH / 2;
@@ -1084,7 +1089,7 @@ reg('numbered', {
       env.line([[bx, y0 + (i + 1) * rowH], [bx + bw * re, y0 + (i + 1) * rowH]], sc.sub, lw, 0.8, false);
       if (i === 0) env.line([[bx + bw, y0], [bx + bw - bw * re, y0]], sc.fg, lw * 1.6, 1, false);
       if (i === 0) lab(0, bx + bw, y0 - ls * 0.9, 'right', tin(env, 0.1, 0.4, E.outCubic) * out);
-      drawNum(numItem(i, nsz, bx, y + nsz * 0.02, 'left'), i, [bx - 2, y - rowH / 2 + 2, nW, rowH - 4]);
+      drawNum(numItem(i, nsz, bx, y + nsz * 0.02, 'left'), i, [bx - 2 * rowNumberScale, y + (-rowH / 2 + 2) * rowNumberScale, nW, (rowH - 4) * rowNumberScale]);
       if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:bx+nW-ls*.25,y0:y-rowH*.5,x1:bx+bw,y1:y+rowH*.5};
         bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size: csize, x: bx + nW, y, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
     });

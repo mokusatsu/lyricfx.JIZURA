@@ -1,0 +1,6287 @@
+{
+  "start": "2026-10-22T17:52:41.195Z",
+  "pins": {
+    "index.html": "93b46f84a7fcd392cdb45cbeb14b054960ce44bfa42f11e8ba7ba3a3e2b229a8",
+    "en/index.html": "1893e733c35563c484b56cc0ae686aad8e025d722700c8cc61f04a1fde7b4eb4",
+    "src/09h_layoutsC_editorial.js": "8bb499432853c26588f8ee34fb9593fd5a07c996fd4dcf4aca4f059afc73fe30",
+    "src/11p_layoutsC.js": "4a644017df4ea76fe62a1d437f73c927c5bc9df6498ad1dfc923bdaf209682da",
+    "dev/avoidance/layouts-c-editorial-numbered-boundary.cjs": "984e8cc5a5169ca64c1f4adf100b8934414665155d3d68adc4b22adce1f61b5a"
+  },
+  "rows": [
+    {
+      "layout": "numbered",
+      "variant": "cols",
+      "mode": "epochs",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "cols"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42,
+        "regions": [
+          {
+            "id": "epoch-0",
+            "start": 0,
+            "end": 0.5,
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0.02
+          },
+          {
+            "id": "epoch-1",
+            "start": 0.5,
+            "end": 1,
+            "center": {
+              "x": 0.5,
+              "y": 0.42
+            },
+            "radius": 0.05
+          },
+          {
+            "id": "epoch-2",
+            "start": 1,
+            "end": 1.5,
+            "center": {
+              "x": 1,
+              "y": 1
+            },
+            "radius": 0.1
+          },
+          {
+            "id": "epoch-3",
+            "start": 1.5,
+            "end": 2,
+            "center": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 0.15
+          },
+          {
+            "id": "epoch-4",
+            "start": 2,
+            "end": 2.5,
+            "center": {
+              "x": 0.9,
+              "y": 0.1
+            },
+            "radius": 0.2
+          },
+          {
+            "id": "epoch-5",
+            "start": 2.5,
+            "end": 3,
+            "center": {
+              "x": 0.25,
+              "y": 0.75
+            },
+            "radius": 0.25
+          },
+          {
+            "id": "epoch-6",
+            "start": 3,
+            "end": 3.5,
+            "center": {
+              "x": 0.75,
+              "y": 0.25
+            },
+            "radius": 0.35
+          },
+          {
+            "id": "epoch-7",
+            "start": 3.5,
+            "end": 4,
+            "center": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "radius": 0.45
+          }
+        ]
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 14,
+        "reconstructed": 13,
+        "cacheHits": 14,
+        "rejected": 6,
+        "unique": 13,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "epoch-0",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-1",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-2",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-3",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-4",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-5",
+          "status": "safe-hold",
+          "composition": {
+            "numberMeasure": 0.7,
+            "strategy": "numbered-native-numberMeasure"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-two-column-gutter",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-6",
+          "status": "safe-hold",
+          "composition": {
+            "numberMeasure": 0.8,
+            "strategy": "numbered-native-numberMeasure"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-two-column-gutter",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-7",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-two-column-gutter",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_COPY_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_COPY_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_COPY_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5001,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "cols",
+      "mode": "ghost",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "cols"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "ghost": true,
+        "camera": "dutch",
+        "radius": 0.05,
+        "cx": 0,
+        "cy": 1
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "cols",
+      "mode": "aspect-before",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "cols"
+        },
+        "W": 1000,
+        "H": 1079,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 14,
+        "reconstructed": 13,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 13,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-two-column-gutter",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "cols",
+      "mode": "aspect-after",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "cols"
+        },
+        "W": 1000,
+        "H": 1081,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 14,
+        "reconstructed": 13,
+        "cacheHits": 0,
+        "rejected": 6,
+        "unique": 13,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-two-column-gutter",
+              "status": "rejected",
+              "reason": "UNSUPPORTED_MEASUREMENT"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "cols",
+      "mode": "short",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "cols"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "duration": 0.8,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "unsupported",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INSUFFICIENT_HOLD_WINDOW",
+          "details": "Editorial source has not completed all required reveals before exit",
+          "safety": "unsupported"
+        }
+      ],
+      "observations": [],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "cols",
+      "mode": "long",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "cols"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "世界の向こうに響く歌声をいつまでも覚えている夜明けの空へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 7,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 3,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 10,
+          "relaxedEvents": 4,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 13,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 10,
+          "relaxedEvents": 4,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "cols",
+      "mode": "explicit-small",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "cols"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 0.7,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "cols",
+      "mode": "explicit-large",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "cols"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 1.4,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "rows",
+      "mode": "epochs",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "rows"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42,
+        "regions": [
+          {
+            "id": "epoch-0",
+            "start": 0,
+            "end": 0.5,
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0.02
+          },
+          {
+            "id": "epoch-1",
+            "start": 0.5,
+            "end": 1,
+            "center": {
+              "x": 0.5,
+              "y": 0.42
+            },
+            "radius": 0.05
+          },
+          {
+            "id": "epoch-2",
+            "start": 1,
+            "end": 1.5,
+            "center": {
+              "x": 1,
+              "y": 1
+            },
+            "radius": 0.1
+          },
+          {
+            "id": "epoch-3",
+            "start": 1.5,
+            "end": 2,
+            "center": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 0.15
+          },
+          {
+            "id": "epoch-4",
+            "start": 2,
+            "end": 2.5,
+            "center": {
+              "x": 0.9,
+              "y": 0.1
+            },
+            "radius": 0.2
+          },
+          {
+            "id": "epoch-5",
+            "start": 2.5,
+            "end": 3,
+            "center": {
+              "x": 0.25,
+              "y": 0.75
+            },
+            "radius": 0.25
+          },
+          {
+            "id": "epoch-6",
+            "start": 3,
+            "end": 3.5,
+            "center": {
+              "x": 0.75,
+              "y": 0.25
+            },
+            "radius": 0.35
+          },
+          {
+            "id": "epoch-7",
+            "start": 3.5,
+            "end": 4,
+            "center": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "radius": 0.45
+          }
+        ]
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 3,
+        "rejected": 4,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "epoch-0",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-1",
+          "status": "safe-hold",
+          "composition": {
+            "numberRowsPacking": {
+              "measure": 0.46,
+              "numberScale": 0.7
+            },
+            "strategy": "numbered-native-packed-row-ledger"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-2",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-3",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-4",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-5",
+          "status": "safe-hold",
+          "composition": {
+            "numberRowsPacking": {
+              "measure": 0.46,
+              "numberScale": 0.7
+            },
+            "strategy": "numbered-native-packed-row-ledger"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-6",
+          "status": "safe-hold",
+          "composition": {
+            "numberRowsPacking": {
+              "measure": 0.46,
+              "numberScale": 0.7
+            },
+            "strategy": "numbered-native-packed-row-ledger"
+          },
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-7",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 5,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 5,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5001,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "rows",
+      "mode": "ghost",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "rows"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "ghost": true,
+        "camera": "dutch",
+        "radius": 0.05,
+        "cx": 0,
+        "cy": 1
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 5,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 5,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "rows",
+      "mode": "aspect-before",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "rows"
+        },
+        "W": 1000,
+        "H": 1079,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 10,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "rows",
+      "mode": "aspect-after",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "rows"
+        },
+        "W": 1000,
+        "H": 1081,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 5,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "rows",
+      "mode": "short",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "rows"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "duration": 0.8,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "unsupported",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INSUFFICIENT_HOLD_WINDOW",
+          "details": "Editorial source has not completed all required reveals before exit",
+          "safety": "unsupported"
+        }
+      ],
+      "observations": [],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "rows",
+      "mode": "long",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "rows"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "世界の向こうに響く歌声をいつまでも覚えている夜明けの空へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 13,
+        "reconstructed": 12,
+        "cacheHits": 0,
+        "rejected": 7,
+        "unique": 12,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-packed-row-ledger",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 9,
+          "relaxedEvents": 3,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 10,
+          "relaxedEvents": 4,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 13,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 14,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 10,
+          "relaxedEvents": 4,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "rows",
+      "mode": "explicit-small",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "rows"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 0.7,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "rows",
+      "mode": "explicit-large",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "rows"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 1.4,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 5,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 6,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "behind",
+      "mode": "epochs",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "behind"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42,
+        "regions": [
+          {
+            "id": "epoch-0",
+            "start": 0,
+            "end": 0.5,
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0.02
+          },
+          {
+            "id": "epoch-1",
+            "start": 0.5,
+            "end": 1,
+            "center": {
+              "x": 0.5,
+              "y": 0.42
+            },
+            "radius": 0.05
+          },
+          {
+            "id": "epoch-2",
+            "start": 1,
+            "end": 1.5,
+            "center": {
+              "x": 1,
+              "y": 1
+            },
+            "radius": 0.1
+          },
+          {
+            "id": "epoch-3",
+            "start": 1.5,
+            "end": 2,
+            "center": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 0.15
+          },
+          {
+            "id": "epoch-4",
+            "start": 2,
+            "end": 2.5,
+            "center": {
+              "x": 0.9,
+              "y": 0.1
+            },
+            "radius": 0.2
+          },
+          {
+            "id": "epoch-5",
+            "start": 2.5,
+            "end": 3,
+            "center": {
+              "x": 0.25,
+              "y": 0.75
+            },
+            "radius": 0.25
+          },
+          {
+            "id": "epoch-6",
+            "start": 3,
+            "end": 3.5,
+            "center": {
+              "x": 0.75,
+              "y": 0.25
+            },
+            "radius": 0.35
+          },
+          {
+            "id": "epoch-7",
+            "start": 3.5,
+            "end": 4,
+            "center": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "radius": 0.45
+          }
+        ]
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 12,
+        "reconstructed": 11,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 11,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "epoch-0",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-1",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-2",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-3",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-4",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        },
+        {
+          "region": "epoch-5",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-6",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "region": "epoch-7",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.5001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.9999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.0001,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.4999,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.5001,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "behind",
+      "mode": "ghost",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "behind"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "ghost": true,
+        "camera": "dutch",
+        "radius": 0.05,
+        "cx": 0,
+        "cy": 1
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": "native-identity-preserves-original-stage-crop"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "B",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "A",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "behind",
+      "mode": "aspect-before",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "behind"
+        },
+        "W": 1000,
+        "H": 1079,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 12,
+        "reconstructed": 11,
+        "cacheHits": 0,
+        "rejected": 4,
+        "unique": 11,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "behind",
+      "mode": "aspect-after",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "behind"
+        },
+        "W": 1000,
+        "H": 1081,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 12,
+        "reconstructed": 11,
+        "cacheHits": 0,
+        "rejected": 2,
+        "unique": 11,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "behind",
+      "mode": "short",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "behind"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "duration": 0.8,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "unsupported",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INSUFFICIENT_HOLD_WINDOW",
+          "details": "Editorial source has not completed all required reveals before exit",
+          "safety": "unsupported"
+        }
+      ],
+      "observations": [],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "behind",
+      "mode": "long",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "behind"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "世界の向こうに響く歌声をいつまでも覚えている夜明けの空へ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 12,
+        "reconstructed": 11,
+        "cacheHits": 0,
+        "rejected": 5,
+        "unique": 11,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "insufficient-space",
+              "reason": "bounded-candidate-search-exhausted"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            },
+            {
+              "strategy": "numbered-native-numberMeasure",
+              "status": "rejected",
+              "reason": "EDITORIAL_TYPE_QUALITY"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 3,
+          "relaxedEvents": 3,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 4,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 7,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 8,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 4,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "behind",
+      "mode": "explicit-small",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "behind"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 0.7,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "certified-hold-adapter",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "safe-hold",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "safe",
+              "reason": null
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "certified-hold-adapter"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "safe",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": true,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "layout": "numbered",
+      "variant": "behind",
+      "mode": "explicit-large",
+      "spec": {
+        "layout": "numbered",
+        "params": {
+          "variant": "behind"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "explicitScale": 1.4,
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "unchanged": true,
+      "safety": "insufficient-space",
+      "budget": {
+        "recordCalls": 1,
+        "reconstructed": 0,
+        "cacheHits": 0,
+        "rejected": 0,
+        "unique": 0,
+        "perCutRecipeLimit": 16,
+        "perCutRecordLimit": 128
+      },
+      "segments": [
+        {
+          "region": "fixture",
+          "status": "insufficient-space",
+          "composition": null,
+          "attempts": [
+            {
+              "strategy": "native-joint-translation",
+              "status": "insufficient-space",
+              "reason": "unit-envelope-exceeds-stage"
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_C_ADAPTER",
+          "adapter": "c-editorial",
+          "safety": "insufficient-space"
+        }
+      ],
+      "observations": [
+        {
+          "time": 0.01,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.15,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 1,
+          "relaxedEvents": 1,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.35,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.55,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 0.85,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 1.5,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 2.8,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.59,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.61,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 4,
+          "relaxedEvents": 0,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        },
+        {
+          "time": 3.9,
+          "pass": "main",
+          "safety": "conflict",
+          "strictEvents": 2,
+          "relaxedEvents": 2,
+          "strictCircleClear": false,
+          "envelopeCovered": true,
+          "stageEnvelopeCovered": true,
+          "stageCropPreserved": true
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "guards": [
+    {
+      "test": {
+        "layout": "numbered",
+        "time": 0.65,
+        "params": {
+          "variant": "cols"
+        }
+      },
+      "center": {
+        "x": 0.15009996344248452,
+        "y": 0.38409722222222226
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        0.7800999999999999,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    },
+    {
+      "test": {
+        "layout": "numbered",
+        "time": 0.65,
+        "params": {
+          "variant": "rows"
+        }
+      },
+      "center": {
+        "x": 0.19062630582173667,
+        "y": 0.3399596574074074
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        0.7800999999999999,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    },
+    {
+      "test": {
+        "layout": "numbered",
+        "time": 0.65,
+        "params": {
+          "variant": "behind"
+        }
+      },
+      "center": {
+        "x": 0.32969066573588063,
+        "y": 0.32713252314814817
+      },
+      "calls": 1,
+      "safety": "certified-hold-adapter",
+      "globalWindow": [
+        0.7800999999999999,
+        3.6
+      ],
+      "error": {
+        "code": "EDITORIAL_STRICT_CIRCLE_VIOLATION",
+        "message": "An already-settled source event entered the margin circle while another source event was still entering/exiting"
+      }
+    }
+  ],
+  "browser": "154.0.8037.57",
+  "sourceUnchanged": true,
+  "passed": true,
+  "end": "2026-10-22T17:52:45.446Z"
+}
