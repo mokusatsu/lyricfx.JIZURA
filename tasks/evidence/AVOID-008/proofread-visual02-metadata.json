@@ -1,0 +1,1934 @@
+{
+  "manifestSHA256": "0fa1a1016d687ed4fa8f5a421cfb3bce3021cca93e6539fecdc50044fd67a4a9",
+  "assets": {
+    "capture-runner.cjs": {
+      "bytes": 9077,
+      "sha256": "69e983e3429077329bbffbd7738d9ff56bc179f572ec099ff450a60ae1f618a5"
+    },
+    "before-actual-inputs.json": {
+      "bytes": 11542,
+      "sha256": "61a748b884c2b24cef3ef4d45f7be77223f755540260eaa62117070ca3a7533a"
+    },
+    "before-6-native.png": {
+      "bytes": 427265,
+      "sha256": "bccfe06cc94cb5fb62b42da165b4a7ed30aada50cb98b03086d8e83f8b09d751"
+    },
+    "before-36-native.png": {
+      "bytes": 446495,
+      "sha256": "4d3298ab270334efde880c8dbf5d1dba52fca4a4aeb857c033c0d42523db5352"
+    },
+    "before-91-native.png": {
+      "bytes": 437296,
+      "sha256": "b94577300acfef00c3140b46cd3c7ebdcc0a7f65ee21931192286535cd99660e"
+    },
+    "before.mp4": {
+      "bytes": 49126,
+      "sha256": "bd3113454e61e5a45f8f1f0ef874ed4d2a69868cbc44e1754c4b9476b4ba98c6"
+    },
+    "before-frames.json.gz": {
+      "bytes": 4110,
+      "sha256": "53aa6b13974b1786473ece2a8218fa8bdd5498b8a81a529dbaecfcdaff06b0ee"
+    },
+    "after-actual-inputs.json": {
+      "bytes": 513968,
+      "sha256": "7d3e2c59301b45670c28bbfbd0daabd73176bcd5662945c39a0f1b21e7a2c477"
+    },
+    "after-6-native.png": {
+      "bytes": 425157,
+      "sha256": "cdcf6acfe8f4cf2409d948e9fcf1fdc7522433589bd74dfdd39b48eed6a7ccad"
+    },
+    "after-36-native.png": {
+      "bytes": 441228,
+      "sha256": "93978f7485abb2ad80c1e184eef810d24725473e9e8690d03edaf7e3090b1986"
+    },
+    "after-91-native.png": {
+      "bytes": 433977,
+      "sha256": "ec5f78e0125bec573cd5eb3f81164e0e587ec4dbafefd33ecaf9b788cca1e898"
+    },
+    "after.mp4": {
+      "bytes": 41088,
+      "sha256": "12a05ed2df74711a00796e60d56432f2ed8c2c14cf5e8222bcddec5b147cf6df"
+    },
+    "after-frames.json.gz": {
+      "bytes": 4145,
+      "sha256": "b30b276815c755d02e5ffa614babef24b4cb162a72e57020a48f08f8836c9a71"
+    },
+    "index.html": {
+      "bytes": 2040,
+      "sha256": "756e86b0ad4a771f9879c049f411d6d76d71a8027848b9d9b178ee253ca44322"
+    }
+  },
+  "inputs": {
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-proofread-preview.cjs": "69e983e3429077329bbffbd7738d9ff56bc179f572ec099ff450a60ae1f618a5",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-fixture.js": "ee147ffa07823f708dc0f061005b0616813f4a1cdc02864afcfbe49692eb137f",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/mono.otf": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/dot.ttf": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/rounded.ttf": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6",
+    "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/symbols.ttf": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+  },
+  "compiled": {
+    "before": "7c72a80f4b9889427fb38cac2d11d4df37c1388e234dcd98c6118908f4313f3b",
+    "after": "d28ceee1702b2ef66020f023432bbfa0ae613029a4347ec85bac965820457054"
+  },
+  "sources": {
+    "src/09h_layoutsC_editorial.js": {
+      "snapshotSHA256": "a81810bde40efe7b9b7053fd4337c64b0fe9cbf812967896ee1c97e326847a36",
+      "workingTreeSHA256": "7b0336cf3984359d6a255b105dd3f6ebc228f8fca853eab0948e441d15c76712"
+    },
+    "src/11p_layoutsC.js": {
+      "snapshotSHA256": "a45d678a52bb2c4cd412d7479d2ca1fe1dbbf91e75c2a075794c5a379623f365",
+      "workingTreeSHA256": "55d510d38a056a8c12769e0e68d8ed8c4e0e3ca5f760ce0dc2eb05104d958075"
+    }
+  },
+  "decode": {
+    "before": {
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 480,
+            "height": 270,
+            "coded_width": 480,
+            "coded_height": 270,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 21,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 49152,
+            "duration": "4.000000",
+            "bit_rate": "94280",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "96",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/avoid008-editorial/tasks/evidence/AVOID-008/editorial/proofread-preview02/before.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "49126",
+          "bit_rate": "98252",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "frames": [
+        {
+          "frame": 0,
+          "time": 0.0,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-001.png",
+          "sha256": "ba767247d519545b824712e87d5a08097b101dae521d96562587f4448a1588f4",
+          "bytes": 20451
+        },
+        {
+          "frame": 1,
+          "time": 0.041666666666666664,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-002.png",
+          "sha256": "6709c67e174ccc0f8a9ecf5962fd51adf9b7eb53a996901cc3cd38e656a2bed3",
+          "bytes": 21222
+        },
+        {
+          "frame": 2,
+          "time": 0.08333333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-003.png",
+          "sha256": "1fd47803bbf5b057c1be2aacb10bfc8c114001ba3fd8008223637d216a4cebe9",
+          "bytes": 21898
+        },
+        {
+          "frame": 3,
+          "time": 0.125,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-004.png",
+          "sha256": "40aba26c0b21c9112f9a6040cab89a980df7440a90263364f2f75dc04dd8b23c",
+          "bytes": 22028
+        },
+        {
+          "frame": 4,
+          "time": 0.16666666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-005.png",
+          "sha256": "a5ba2bd648a1bb30e4a2bf0274f89747530f4cc4044ddfb70ac1fb96d61c3e78",
+          "bytes": 22302
+        },
+        {
+          "frame": 5,
+          "time": 0.20833333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-006.png",
+          "sha256": "ef00ab1da8231c4ae48a4e415d3f11d419ae408eb1354365dd7b4bc3cc1b8800",
+          "bytes": 22754
+        },
+        {
+          "frame": 6,
+          "time": 0.25,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-007.png",
+          "sha256": "154933f17b5064cdf4e4dee6b7d855630929ded6eec50ca99c12d3aabaa3a032",
+          "bytes": 22691
+        },
+        {
+          "frame": 7,
+          "time": 0.2916666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-008.png",
+          "sha256": "68a8b9f717c51d49b8e334a0ff05f37ea3d8384978d451a4f93943c459d9b5ef",
+          "bytes": 23155
+        },
+        {
+          "frame": 8,
+          "time": 0.3333333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-009.png",
+          "sha256": "99180a25f19f01f43036aa17ba2009df0d2fadd749151db4d476ae0ac65a1f4a",
+          "bytes": 23347
+        },
+        {
+          "frame": 9,
+          "time": 0.375,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-010.png",
+          "sha256": "5e6b3bf47c25828299eaa13546710c3bf036ddc2c5ceadccdadde2a55f07dc02",
+          "bytes": 23159
+        },
+        {
+          "frame": 10,
+          "time": 0.4166666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-011.png",
+          "sha256": "4e7b9f2e13917200af467714798734afd7031722893e40942186c1b98df23b6d",
+          "bytes": 24340
+        },
+        {
+          "frame": 11,
+          "time": 0.4583333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-012.png",
+          "sha256": "252f06b9eb8813ece6065ff9de301f2ec6a31910d626201ed625957972753aac",
+          "bytes": 25027
+        },
+        {
+          "frame": 12,
+          "time": 0.5,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-013.png",
+          "sha256": "a66bfd9ab79443ed9cef449909525b337dd47bcff53c5aa352864e1a9bf52ff6",
+          "bytes": 25312
+        },
+        {
+          "frame": 13,
+          "time": 0.5416666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-014.png",
+          "sha256": "3f56f78368b6c3d65fa62397b9be413931a2bf6b606d168f26dff7c8405f3615",
+          "bytes": 25611
+        },
+        {
+          "frame": 14,
+          "time": 0.5833333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-015.png",
+          "sha256": "33bd5d63219b0cba5a5d51ec78c33fb248d2205637760e2bd90ffb3f40e558ea",
+          "bytes": 26032
+        },
+        {
+          "frame": 15,
+          "time": 0.625,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-016.png",
+          "sha256": "9d3e4702fbabfa21b5aa0e1b3bfe6b9d6c6ca48cb5349a40a8878f0cbe504829",
+          "bytes": 27523
+        },
+        {
+          "frame": 16,
+          "time": 0.6666666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-017.png",
+          "sha256": "2de7cf071f6e558813158f185cba3a879e0b44fcd6fa3dd637f2c0d641264a74",
+          "bytes": 27893
+        },
+        {
+          "frame": 17,
+          "time": 0.7083333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-018.png",
+          "sha256": "ddd401f6fd49642b9903ab721d861716d1ba6b72f4d46c6718e45adc2ee01bfb",
+          "bytes": 28215
+        },
+        {
+          "frame": 18,
+          "time": 0.75,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-019.png",
+          "sha256": "8cc6d6eeba1325bd3f84c8875d15e46cf3f167f9d90c0e0f3267340465d129b2",
+          "bytes": 28372
+        },
+        {
+          "frame": 19,
+          "time": 0.7916666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-020.png",
+          "sha256": "60791d8428881bdfce3262693cbb53d026ee101bcfd3e0611f4e2ed4424a2c04",
+          "bytes": 28312
+        },
+        {
+          "frame": 20,
+          "time": 0.8333333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-021.png",
+          "sha256": "2bfcaadf81cf733fec1dd6d46c51cb9c1e9fc681f2fe6e7c40c50caf13d7bc92",
+          "bytes": 28386
+        },
+        {
+          "frame": 21,
+          "time": 0.875,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-022.png",
+          "sha256": "5f02e090d801eda77ac47c225432d8098c56cac918c9a3c5d7158e82a574ad8b",
+          "bytes": 28480
+        },
+        {
+          "frame": 22,
+          "time": 0.9166666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-023.png",
+          "sha256": "a8ed44fd41d105f98ac35da8f14799fb2fabdaccb996e9f5ad8f90cc740c850c",
+          "bytes": 28692
+        },
+        {
+          "frame": 23,
+          "time": 0.9583333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-024.png",
+          "sha256": "64fbeb699dc6ca21b47007159f526f8f50fc03a98abbcbbf838687fa64cf4235",
+          "bytes": 28609
+        },
+        {
+          "frame": 24,
+          "time": 1.0,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-025.png",
+          "sha256": "3a36407c2284929ee647f476901f76f67c98d2e2445171aff0abb18c7e02078e",
+          "bytes": 28643
+        },
+        {
+          "frame": 25,
+          "time": 1.0416666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-026.png",
+          "sha256": "c313241eb28f9bd243a87fea73666e12a140df0d3e1f21eca7ebabb630737c57",
+          "bytes": 28636
+        },
+        {
+          "frame": 26,
+          "time": 1.0833333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-027.png",
+          "sha256": "df4637b8d704ba83ac3f76a2fcf190d25f8388d8357282a2700a252422cd649b",
+          "bytes": 28792
+        },
+        {
+          "frame": 27,
+          "time": 1.125,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-028.png",
+          "sha256": "9a12540d3255687b1a6f99fd7334ed48075aff247e6a7c9b5b90cad40d91beb9",
+          "bytes": 28838
+        },
+        {
+          "frame": 28,
+          "time": 1.1666666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-029.png",
+          "sha256": "9a37b6b74137a736c37c7be59211be74cceb5d966df92b1d94be964def51a207",
+          "bytes": 34357
+        },
+        {
+          "frame": 29,
+          "time": 1.2083333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-030.png",
+          "sha256": "3b3b2d1ea4920f33e83fa80498d406bea1c0b952f34d623a587a9d4671d78402",
+          "bytes": 34184
+        },
+        {
+          "frame": 30,
+          "time": 1.25,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-031.png",
+          "sha256": "b68e9a61dbf986e665f3c9355f7f2143b44730d62936a02cd25c7096875fac04",
+          "bytes": 33388
+        },
+        {
+          "frame": 31,
+          "time": 1.2916666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-032.png",
+          "sha256": "4a805eb2177899e24e788f87496886df5075901e2f83648098adde677f5da1fe",
+          "bytes": 33448
+        },
+        {
+          "frame": 32,
+          "time": 1.3333333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-033.png",
+          "sha256": "8a9872a9bb9d0a380b3964eed400de21241552b67ef0a3635363dc33c03a56d5",
+          "bytes": 33214
+        },
+        {
+          "frame": 33,
+          "time": 1.375,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-034.png",
+          "sha256": "161305647cb8883c48cd650b4aff0670dc710a88ded3c39587414684dcf4ba72",
+          "bytes": 33264
+        },
+        {
+          "frame": 34,
+          "time": 1.4166666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-035.png",
+          "sha256": "17ebf5ba4686fdce6b1369c8d2f36b5de61657f121db8b903855973ce9e22490",
+          "bytes": 33296
+        },
+        {
+          "frame": 35,
+          "time": 1.4583333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-036.png",
+          "sha256": "ea85b470e88cd4305201d07e22c6184fb8f09a54c85e80fd29d05465e70989aa",
+          "bytes": 33207
+        },
+        {
+          "frame": 36,
+          "time": 1.5,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-037.png",
+          "sha256": "3fcd6edb2c1fd343b89ee01b5da3b4a2a95d2067febb8c54ace826bd3ceaaf0c",
+          "bytes": 33201
+        },
+        {
+          "frame": 37,
+          "time": 1.5416666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-038.png",
+          "sha256": "3195728df652a2bd127700312250986d4769f55c51dc09ec84db8ef43ad39e2e",
+          "bytes": 33251
+        },
+        {
+          "frame": 38,
+          "time": 1.5833333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-039.png",
+          "sha256": "19616823044b7fdf1114b0fc7fbd3b8420a5d8dc0a7969b55f8534f659a45d85",
+          "bytes": 33353
+        },
+        {
+          "frame": 39,
+          "time": 1.625,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-040.png",
+          "sha256": "9867f500a03e3a8ae307df2ef06ae190db912aca457cfd5adb29ad0cb99ca42d",
+          "bytes": 33294
+        },
+        {
+          "frame": 40,
+          "time": 1.6666666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-041.png",
+          "sha256": "2e2d9f9ac65aab8f82b1b77fbbbc885bf5b961b03cdc0d239eb76f41f430fb38",
+          "bytes": 33398
+        },
+        {
+          "frame": 41,
+          "time": 1.7083333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-042.png",
+          "sha256": "535cd7732bf27786772b3ac19b58b1a059e3bd4a4c43cae4b95d5571cda03139",
+          "bytes": 33536
+        },
+        {
+          "frame": 42,
+          "time": 1.75,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-043.png",
+          "sha256": "a3d6b37226d5066f8cce7633dec8a8e1a00125ceff9efeecd4fc9efc60f0c9ba",
+          "bytes": 33626
+        },
+        {
+          "frame": 43,
+          "time": 1.7916666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-044.png",
+          "sha256": "0122ef8dc50fabc15a1582e8db42632a3ac94274cefe71a5e7af61d8df034b4a",
+          "bytes": 33527
+        },
+        {
+          "frame": 44,
+          "time": 1.8333333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-045.png",
+          "sha256": "60bdcdda7733820d3a587d54d19972b3789d6abcaef023ecd3e67cd86f70e98a",
+          "bytes": 33593
+        },
+        {
+          "frame": 45,
+          "time": 1.875,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-046.png",
+          "sha256": "8b9e1c0e122914b7614ed6310a074d1425470baf5c09059ab97d9989800b936b",
+          "bytes": 33594
+        },
+        {
+          "frame": 46,
+          "time": 1.9166666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-047.png",
+          "sha256": "99a4d333a0534211a14cc3d512611faf4070cae76889d7bfc2f72c15216be62f",
+          "bytes": 33727
+        },
+        {
+          "frame": 47,
+          "time": 1.9583333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-048.png",
+          "sha256": "502f8ff7ef8a5e951f3eaa78f54b4f9b484c77a8bf47c0896bbfea305d42677a",
+          "bytes": 33773
+        },
+        {
+          "frame": 48,
+          "time": 2.0,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-049.png",
+          "sha256": "8915a274a898a4591c847af90302362478c1fb2edc38dd000f6e54f9d30b2d24",
+          "bytes": 33965
+        },
+        {
+          "frame": 49,
+          "time": 2.0416666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-050.png",
+          "sha256": "2a5f366c1236f661b2700999ecf77b6242b907a7407e8e44729c5f80d6c6a79f",
+          "bytes": 33816
+        },
+        {
+          "frame": 50,
+          "time": 2.0833333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-051.png",
+          "sha256": "f548801c35ce7dd818eb16efbd5c86cfe5efd27109ccd13b92bef82aa75462dd",
+          "bytes": 33853
+        },
+        {
+          "frame": 51,
+          "time": 2.125,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-052.png",
+          "sha256": "e83d6fd0b637f2038030249b70461e721d8c3b58d571864777c9bbb294f0d52e",
+          "bytes": 33911
+        },
+        {
+          "frame": 52,
+          "time": 2.1666666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-053.png",
+          "sha256": "247fa2a9309caa7bec4ab27d7c21f0b5d2bbdbd1d41b8e5db7151ff7500b55cb",
+          "bytes": 34062
+        },
+        {
+          "frame": 53,
+          "time": 2.2083333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-054.png",
+          "sha256": "c372150312e0cf55d8eb9ee0a6628c66129fd65261fc9563d72a20396740976c",
+          "bytes": 33789
+        },
+        {
+          "frame": 54,
+          "time": 2.25,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-055.png",
+          "sha256": "d6f4a0ee50d3f4da5c90d1f28f00fc7b3a19a0f9daeadb60b29edb42cde1bc49",
+          "bytes": 33847
+        },
+        {
+          "frame": 55,
+          "time": 2.2916666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-056.png",
+          "sha256": "563fbbe6fbc326c69077b411363e67333b23a03f03ff0e4adc4c4c53a69fc78f",
+          "bytes": 33961
+        },
+        {
+          "frame": 56,
+          "time": 2.3333333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-057.png",
+          "sha256": "f5a84109c3f3cff955c87fdd97df6e11212cbbeb25e737fb28d7081c11410369",
+          "bytes": 34120
+        },
+        {
+          "frame": 57,
+          "time": 2.375,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-058.png",
+          "sha256": "b695d610b365526905a661e46fa63533bfaea60c36cdfe0d12677aec875f497d",
+          "bytes": 34064
+        },
+        {
+          "frame": 58,
+          "time": 2.4166666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-059.png",
+          "sha256": "340ba8a80bad35c814cab14ef32f49db237d3764d600205ddbc803f0d5e87052",
+          "bytes": 34143
+        },
+        {
+          "frame": 59,
+          "time": 2.4583333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-060.png",
+          "sha256": "5cf867c99683d6323880513495e9a0a0dbdab0fd7bd8d01b3ff107fa51e2570d",
+          "bytes": 34297
+        },
+        {
+          "frame": 60,
+          "time": 2.5,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-061.png",
+          "sha256": "e029991ab0b5e79596936438062384f7d95496a581d9cd8efeee616e5aeddcdc",
+          "bytes": 34385
+        },
+        {
+          "frame": 61,
+          "time": 2.5416666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-062.png",
+          "sha256": "bd9c1b76194ed118c1374bd9690221aecaa3015e651a2e0e0f57bae1447f45d6",
+          "bytes": 34264
+        },
+        {
+          "frame": 62,
+          "time": 2.5833333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-063.png",
+          "sha256": "81a17b8ed0b3b31cc070e36ae4a62f7b2e1b94dff8bcc47add3bf3852f705907",
+          "bytes": 34247
+        },
+        {
+          "frame": 63,
+          "time": 2.625,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-064.png",
+          "sha256": "cd0dfaba9ddd98e07cbd683876d2ab71634822e2ecf20a6436b8d1f613fa7bac",
+          "bytes": 34266
+        },
+        {
+          "frame": 64,
+          "time": 2.6666666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-065.png",
+          "sha256": "8eab9e12c9a8f91f678c3e046492768afddcfff595935ee0cced64856b9ec46a",
+          "bytes": 34461
+        },
+        {
+          "frame": 65,
+          "time": 2.7083333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-066.png",
+          "sha256": "59831d655a025be0fce18b03ba17a4751e79527d13836d77ccd8ce694e8c5a0b",
+          "bytes": 34653
+        },
+        {
+          "frame": 66,
+          "time": 2.75,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-067.png",
+          "sha256": "309021e4c4d98f7455290ad42d13eb38fefaf5acadac30c72c44c69676069c99",
+          "bytes": 34587
+        },
+        {
+          "frame": 67,
+          "time": 2.7916666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-068.png",
+          "sha256": "44611d4e8a6f26f98b1efca8d82a49f4dba63efcdd2d4352ae4266229e071f80",
+          "bytes": 34452
+        },
+        {
+          "frame": 68,
+          "time": 2.8333333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-069.png",
+          "sha256": "fdeba4393f82e79538a40fa644186a46fff9cf6789a2ae8507bb23b92f4d5322",
+          "bytes": 34532
+        },
+        {
+          "frame": 69,
+          "time": 2.875,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-070.png",
+          "sha256": "cdfc6d1e44b32ae1f3d5cec9352c77207d0de203e006fb17e386a850a6ed05eb",
+          "bytes": 34726
+        },
+        {
+          "frame": 70,
+          "time": 2.9166666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-071.png",
+          "sha256": "7222a6674c7569f1fb99dc56185a769e544fd74296c387a24e7a65c06f3be055",
+          "bytes": 35086
+        },
+        {
+          "frame": 71,
+          "time": 2.9583333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-072.png",
+          "sha256": "53c920de44059de472c5551df4067929684df7275353c341ba1757b226d12800",
+          "bytes": 35193
+        },
+        {
+          "frame": 72,
+          "time": 3.0,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-073.png",
+          "sha256": "2c7151ad616e7b38ad0e1a8b4c7ea7e13527e0012b9739f60fff418297446e07",
+          "bytes": 35166
+        },
+        {
+          "frame": 73,
+          "time": 3.0416666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-074.png",
+          "sha256": "3a101b3d8d6786c2ac47a25eba7a67b8ea9363c76973c93997307d7855eea8f4",
+          "bytes": 35261
+        },
+        {
+          "frame": 74,
+          "time": 3.0833333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-075.png",
+          "sha256": "f940481ff5375d07aa40fc3ca2eb04cf45581938384a3714c0a6ee85c829135c",
+          "bytes": 35169
+        },
+        {
+          "frame": 75,
+          "time": 3.125,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-076.png",
+          "sha256": "ebcda9b40548cbca4ef64e17e418495aee710d7f603d8bd9235758957e4f0442",
+          "bytes": 35300
+        },
+        {
+          "frame": 76,
+          "time": 3.1666666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-077.png",
+          "sha256": "5fe897dbfd7614d30130a7a3739d4ac32c80fa873cf3f4954bb9adc3793fee94",
+          "bytes": 35264
+        },
+        {
+          "frame": 77,
+          "time": 3.2083333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-078.png",
+          "sha256": "6be89c9b9d008e3873f635df434b53427adcefc6d437c0cdbafdb1d27280c845",
+          "bytes": 35520
+        },
+        {
+          "frame": 78,
+          "time": 3.25,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-079.png",
+          "sha256": "9867e05d290a9c09f0596ef568ddfddff55d0c84115d65da29474cbbd4e242cc",
+          "bytes": 35449
+        },
+        {
+          "frame": 79,
+          "time": 3.2916666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-080.png",
+          "sha256": "f5beef98dcc26fd7b69a4ae2b1f06386b12933645cce01a058fa7e665fd86007",
+          "bytes": 35487
+        },
+        {
+          "frame": 80,
+          "time": 3.3333333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-081.png",
+          "sha256": "2aceb7f5ddd992e0eda20fb57cb385931c51c528c1a410f9acd658d9e669027c",
+          "bytes": 35511
+        },
+        {
+          "frame": 81,
+          "time": 3.375,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-082.png",
+          "sha256": "9f465099c7c7d639866540e0b6c0485e624770edba42c29c690ef303960f1887",
+          "bytes": 35646
+        },
+        {
+          "frame": 82,
+          "time": 3.4166666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-083.png",
+          "sha256": "71f11ebe434f977d1c2c335d0a964ebcaee42426df265a93552329e0ff3603d5",
+          "bytes": 35679
+        },
+        {
+          "frame": 83,
+          "time": 3.4583333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-084.png",
+          "sha256": "8992dd858f8d6f32aaaf5095334c66a3301dbd2f5cb514a03351c73b75261cfc",
+          "bytes": 35568
+        },
+        {
+          "frame": 84,
+          "time": 3.5,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-085.png",
+          "sha256": "2a21d10c4627eb3051870860553fbc4038e41cd8a8604fc0fc2f7da5c73f7cb4",
+          "bytes": 35607
+        },
+        {
+          "frame": 85,
+          "time": 3.5416666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-086.png",
+          "sha256": "85f23faf6e40d9488171037e002da2d7c0d06a63e6541fbc9c9efad16e874832",
+          "bytes": 35758
+        },
+        {
+          "frame": 86,
+          "time": 3.5833333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-087.png",
+          "sha256": "c407131e12f1fe9e2467e45bef098904070c3067f0e83941553ff5dc2693b0af",
+          "bytes": 35857
+        },
+        {
+          "frame": 87,
+          "time": 3.625,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-088.png",
+          "sha256": "22413a3fac1fe97f373dac79b0266965a7236a41a7371a4fc05cd4f0f6c87e44",
+          "bytes": 34748
+        },
+        {
+          "frame": 88,
+          "time": 3.6666666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-089.png",
+          "sha256": "58c69cf932fd61a855cd43f4f98b1e5b94bf2153dbd04b387ba24ffc9c700690",
+          "bytes": 33420
+        },
+        {
+          "frame": 89,
+          "time": 3.7083333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-090.png",
+          "sha256": "9e656c5b8761c4e834e0caefde6bd4e739ca13eb4eee872aabcf5d5883fd1cad",
+          "bytes": 31646
+        },
+        {
+          "frame": 90,
+          "time": 3.75,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-091.png",
+          "sha256": "5c8f5761320ce26e9e9be74e1ae25bd20bacdc8909cd63c88f9342931af589e4",
+          "bytes": 29054
+        },
+        {
+          "frame": 91,
+          "time": 3.7916666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-092.png",
+          "sha256": "0225e51389f2284f1ed513213d3e5e90ba6cee7ecb886c96d3bc46ed87a61cbb",
+          "bytes": 27580
+        },
+        {
+          "frame": 92,
+          "time": 3.8333333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-093.png",
+          "sha256": "0495e64bb9514882262252a346c2357e720d484f723a84b535154a6e0b37d6d6",
+          "bytes": 24266
+        },
+        {
+          "frame": 93,
+          "time": 3.875,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-094.png",
+          "sha256": "e99666dc082b7ce615bc4ba5ca7074c286b15b6e2af45245743cc4ef4f41915b",
+          "bytes": 22874
+        },
+        {
+          "frame": 94,
+          "time": 3.9166666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-095.png",
+          "sha256": "93b42527ec4b1fb7dc72ae165d821de05d14f8c3e3e4b1785d9fb2f77724672e",
+          "bytes": 22820
+        },
+        {
+          "frame": 95,
+          "time": 3.9583333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-096.png",
+          "sha256": "f69c81a9e5b6c04add10bc078ba2a1be33057096ec209da8893e664fbdb579f6",
+          "bytes": 22806
+        }
+      ],
+      "sheets": [
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-sheet-00-15.png",
+          "sha256": "fa24178ffdf74901553d8fd4e96c313f749d6a0c9542e667fbc65c0180be583e"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-sheet-16-31.png",
+          "sha256": "11b4e65f58168227593208153b2a413c152b9f8ebadcce8bb2cce2ffa0c162ef"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-sheet-32-47.png",
+          "sha256": "b2e435f141e66ef0e4dbb275f1a3210d70797e59c20511895b1c663baefe6188"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-sheet-48-63.png",
+          "sha256": "51796c19a6a594e4d8c545a864b526dde12af2422377e5139590e95ea06240bb"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-sheet-64-79.png",
+          "sha256": "d0a7b3b13088d136856772992ad3fd7d3f46099042a2432b05f7e3aac5ecc2cf"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/before-sheet-80-95.png",
+          "sha256": "0c83236a1e0bd48f66d004af4690ed7d76c3eba45e3f9aa310289d72fbc0e771"
+        }
+      ]
+    },
+    "after": {
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 480,
+            "height": 270,
+            "coded_width": 480,
+            "coded_height": 270,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 21,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 49152,
+            "duration": "4.000000",
+            "bit_rate": "78252",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "96",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/avoid008-editorial/tasks/evidence/AVOID-008/editorial/proofread-preview02/after.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "41088",
+          "bit_rate": "82176",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "frames": [
+        {
+          "frame": 0,
+          "time": 0.0,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-001.png",
+          "sha256": "1fb1342e49af1cbf6f1fa1655a6db55d4d93a9548d05f6ef3ed448ec74f3bad0",
+          "bytes": 17682
+        },
+        {
+          "frame": 1,
+          "time": 0.041666666666666664,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-002.png",
+          "sha256": "712572a1c4aedceae204a4c4be5ef59987d98ba3d755f93254815eecc3bb9782",
+          "bytes": 18355
+        },
+        {
+          "frame": 2,
+          "time": 0.08333333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-003.png",
+          "sha256": "138ec083c41dcc6abeac63ad2ca189b2cd8dae894bd6541851704f9087bc0341",
+          "bytes": 18821
+        },
+        {
+          "frame": 3,
+          "time": 0.125,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-004.png",
+          "sha256": "965a9102fa3249408960d3325d14442428e4e5bf9932ade920e276001cc58e6e",
+          "bytes": 19407
+        },
+        {
+          "frame": 4,
+          "time": 0.16666666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-005.png",
+          "sha256": "3020849a7303b9604da65249cf40be67bfe40327170c69b7a21666c37b660386",
+          "bytes": 19687
+        },
+        {
+          "frame": 5,
+          "time": 0.20833333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-006.png",
+          "sha256": "4c85d5c582210c79c2f244c086e4e7933267027dedc95dccc556b971bb00cf6e",
+          "bytes": 20136
+        },
+        {
+          "frame": 6,
+          "time": 0.25,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-007.png",
+          "sha256": "7480a5d1ec0d8faf65ab3b81619c781e2f858cc66002d7335825451476d43fc1",
+          "bytes": 20049
+        },
+        {
+          "frame": 7,
+          "time": 0.2916666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-008.png",
+          "sha256": "6cbcd0b2ada74ff9563ec594c368ab6a4d917acdec3f833fbd00478acf4f2b02",
+          "bytes": 20222
+        },
+        {
+          "frame": 8,
+          "time": 0.3333333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-009.png",
+          "sha256": "116595e50ce7a8f110820762169283cc77ede3ade9ac3f71d4d664ff1e96c7cb",
+          "bytes": 19935
+        },
+        {
+          "frame": 9,
+          "time": 0.375,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-010.png",
+          "sha256": "6d25d32e0149ae6e2c52cdca76f782111b468e9f83a50f2ab62afa186b8859d1",
+          "bytes": 20033
+        },
+        {
+          "frame": 10,
+          "time": 0.4166666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-011.png",
+          "sha256": "476c3002146d68e9bc8f598ecbec244684e6157ab4c6f28094a2ae303fbd89d0",
+          "bytes": 20799
+        },
+        {
+          "frame": 11,
+          "time": 0.4583333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-012.png",
+          "sha256": "a75beec735af6b9d72a1b4010733fcc4c87512692cddcae9be23f3b3a9b16db1",
+          "bytes": 21174
+        },
+        {
+          "frame": 12,
+          "time": 0.5,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-013.png",
+          "sha256": "95a532e6e37dab145c79cb91dd3a5a5e50b599e4478b76ba9ca0e6441a63d47a",
+          "bytes": 21461
+        },
+        {
+          "frame": 13,
+          "time": 0.5416666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-014.png",
+          "sha256": "85492d9bb6dc8c39fd65a7c0822e8fcc59884fcea44832850ac67a3d2973b9ae",
+          "bytes": 21814
+        },
+        {
+          "frame": 14,
+          "time": 0.5833333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-015.png",
+          "sha256": "ee421415ec54ec3db77c89fb8770c0270e4a9773c3884eccfeabeed01b4cbabc",
+          "bytes": 21820
+        },
+        {
+          "frame": 15,
+          "time": 0.625,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-016.png",
+          "sha256": "175e37a739fc2ac8bc2d72a03757c4ae86238e7b919e046a43b424095dac8304",
+          "bytes": 23332
+        },
+        {
+          "frame": 16,
+          "time": 0.6666666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-017.png",
+          "sha256": "ed799aec2dbfd211eb233063a0c8dcbdb5df6a2f7a735281068d6b891190bd28",
+          "bytes": 23797
+        },
+        {
+          "frame": 17,
+          "time": 0.7083333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-018.png",
+          "sha256": "bd9def7f227aff977f0136288a06b96aa77e55c5a17f4383327abc943abdb899",
+          "bytes": 23930
+        },
+        {
+          "frame": 18,
+          "time": 0.75,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-019.png",
+          "sha256": "04583dbdfa04de93d08570a4a3e41c3d2210c632cd0595cc4a1020dc17554b46",
+          "bytes": 24133
+        },
+        {
+          "frame": 19,
+          "time": 0.7916666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-020.png",
+          "sha256": "fa2013f96b0ffc05eadb81522f92c38d4e4e6f232fd9d14bd1a1a51acbc3c643",
+          "bytes": 24172
+        },
+        {
+          "frame": 20,
+          "time": 0.8333333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-021.png",
+          "sha256": "a41e0da49b030384ae3ef34926d4ec2eeeaeeaa0a7ec0e56b533903ba90a74b5",
+          "bytes": 24155
+        },
+        {
+          "frame": 21,
+          "time": 0.875,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-022.png",
+          "sha256": "6d890db3220d3c923c30765b3352454db0805a4d90039e318e3391852c09e8ed",
+          "bytes": 24126
+        },
+        {
+          "frame": 22,
+          "time": 0.9166666666666666,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-023.png",
+          "sha256": "e944bc262245bfa3ad87ae2f4664f725ee6627fd286a975c08277e173c9d8dcd",
+          "bytes": 24244
+        },
+        {
+          "frame": 23,
+          "time": 0.9583333333333334,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-024.png",
+          "sha256": "9d1101c6f2943e210ba288809bb4250c3e1f8f3d396186c7b8a71f68bc6fd9aa",
+          "bytes": 24394
+        },
+        {
+          "frame": 24,
+          "time": 1.0,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-025.png",
+          "sha256": "178eedaa38f4c7fb10fb862d104957b84e07316dba2954270d79c5ec8883e1a4",
+          "bytes": 24444
+        },
+        {
+          "frame": 25,
+          "time": 1.0416666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-026.png",
+          "sha256": "5d840de091010c76294f266e8432b2a657dca00b9eed4ebe55019800a19b72cb",
+          "bytes": 24447
+        },
+        {
+          "frame": 26,
+          "time": 1.0833333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-027.png",
+          "sha256": "bb669cb30573588533d326c05ba774d4f125f40c5b02034d73ffecc2560bee6d",
+          "bytes": 24558
+        },
+        {
+          "frame": 27,
+          "time": 1.125,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-028.png",
+          "sha256": "fff9f41ab7ff532a3586a31890112c0ded82b0a2d882973306c6d05c5eab999f",
+          "bytes": 24446
+        },
+        {
+          "frame": 28,
+          "time": 1.1666666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-029.png",
+          "sha256": "a48a0a65c37ce2d33f8049b554060fbc2338952371bdd2401fe47c6f67e5f172",
+          "bytes": 30244
+        },
+        {
+          "frame": 29,
+          "time": 1.2083333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-030.png",
+          "sha256": "e23f518eff091316723d19f72f482e88f82fbf89610a948f35e92c2121fe1570",
+          "bytes": 29754
+        },
+        {
+          "frame": 30,
+          "time": 1.25,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-031.png",
+          "sha256": "8b05c6b1cd3d131321a8e99e2f216c6b85cf8b72c6bae1a8fe299541b1bc4be1",
+          "bytes": 29323
+        },
+        {
+          "frame": 31,
+          "time": 1.2916666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-032.png",
+          "sha256": "4ed4e1bde4caf1f917c1807cbf7de11ad95d550ba4b00cc95b8ff3ef0517c977",
+          "bytes": 29385
+        },
+        {
+          "frame": 32,
+          "time": 1.3333333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-033.png",
+          "sha256": "079eed7faff537d4e6f1809594a3fb10e3d3d8aba97a1138aa2fee0ff1bf9956",
+          "bytes": 29420
+        },
+        {
+          "frame": 33,
+          "time": 1.375,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-034.png",
+          "sha256": "4158b531affca4c82fceca0ae6a3bd857a41f8dd30f5f87653f600a8dbc99019",
+          "bytes": 29346
+        },
+        {
+          "frame": 34,
+          "time": 1.4166666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-035.png",
+          "sha256": "4cd020752b86bbbb32ae0af9441cc8667da10f58386526271579600f21dd156d",
+          "bytes": 29360
+        },
+        {
+          "frame": 35,
+          "time": 1.4583333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-036.png",
+          "sha256": "969e81eafa9e33a71522738cf9a15e50934449acd56fa143a76bc5220a1266aa",
+          "bytes": 29345
+        },
+        {
+          "frame": 36,
+          "time": 1.5,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-037.png",
+          "sha256": "a2855f37fb5a3f675670aa675b472b40fb222e2a16241475a50882f063776587",
+          "bytes": 29536
+        },
+        {
+          "frame": 37,
+          "time": 1.5416666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-038.png",
+          "sha256": "14428bf4d2ac9f8219cdabd58ff6e57abf335d9174c72a7e7a210d67c4d4a124",
+          "bytes": 29628
+        },
+        {
+          "frame": 38,
+          "time": 1.5833333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-039.png",
+          "sha256": "c43b2a73c127452d07ad7bb720039b25ed33ce5116068fed9af20b25313bc0ce",
+          "bytes": 29729
+        },
+        {
+          "frame": 39,
+          "time": 1.625,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-040.png",
+          "sha256": "c009f20f78fd20d4a04b828ca00f7a3ec7266a43a27b77bee06fab51a0077d9c",
+          "bytes": 29721
+        },
+        {
+          "frame": 40,
+          "time": 1.6666666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-041.png",
+          "sha256": "7789f3a0719ab047e990275db41b2ba917a571df458262edb0d348ce59e343f3",
+          "bytes": 29801
+        },
+        {
+          "frame": 41,
+          "time": 1.7083333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-042.png",
+          "sha256": "1a17dca083dbb1fd5c7490c3858baa3e08b9b8925379fbc786425b33e984b258",
+          "bytes": 29842
+        },
+        {
+          "frame": 42,
+          "time": 1.75,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-043.png",
+          "sha256": "2b51e384ad6b2794f9bad43b80ba486d2b76ed877a379ebc12a2b03f38224a58",
+          "bytes": 29841
+        },
+        {
+          "frame": 43,
+          "time": 1.7916666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-044.png",
+          "sha256": "5ef747bdd2287c0e48cac47f93a2c9e9604107bf4d600dcfaf1301336b3c8fb6",
+          "bytes": 29818
+        },
+        {
+          "frame": 44,
+          "time": 1.8333333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-045.png",
+          "sha256": "21ca01b86c65dd358e39652b275c37cfefa285aa5585f1878ee047ea76eed391",
+          "bytes": 29915
+        },
+        {
+          "frame": 45,
+          "time": 1.875,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-046.png",
+          "sha256": "73e755af9fdf5dee8ee988b29b0f270cb50130919181c0c362af9ab7e54b1870",
+          "bytes": 30000
+        },
+        {
+          "frame": 46,
+          "time": 1.9166666666666667,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-047.png",
+          "sha256": "e1054de46df96993039d635580ca182527d661b23759b8ba86b9dbcaa574742d",
+          "bytes": 30092
+        },
+        {
+          "frame": 47,
+          "time": 1.9583333333333333,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-048.png",
+          "sha256": "fad1f3e856a44ef4aa6a5d03ed4747389320f0b87aa4a37886beafb5445d60a1",
+          "bytes": 30073
+        },
+        {
+          "frame": 48,
+          "time": 2.0,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-049.png",
+          "sha256": "8bd2abcde151e30f12d3c4a27a83addc573c001e40a165e02acc840b581ffb7e",
+          "bytes": 30139
+        },
+        {
+          "frame": 49,
+          "time": 2.0416666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-050.png",
+          "sha256": "6fbc6846abac75e2bf68ba6965ed1a378eb47ae70c96f6d4c04c465150b224d4",
+          "bytes": 30051
+        },
+        {
+          "frame": 50,
+          "time": 2.0833333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-051.png",
+          "sha256": "1a59cabdefa792e84160f13416b41ca5ca84054cfd7ab5fee3bca2ae3a3f59e0",
+          "bytes": 30109
+        },
+        {
+          "frame": 51,
+          "time": 2.125,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-052.png",
+          "sha256": "0d806563393f37af5c8db582f6619027525cc4e52be9ec32168365256c631222",
+          "bytes": 30130
+        },
+        {
+          "frame": 52,
+          "time": 2.1666666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-053.png",
+          "sha256": "dd0043a17aa25f63fc2cd8f8906744b3ae1eab688852feb78b59ce716b928557",
+          "bytes": 30174
+        },
+        {
+          "frame": 53,
+          "time": 2.2083333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-054.png",
+          "sha256": "69eeb7cfedbfa49faab8bba0cec79837682c5a8ec32cd8e891bc66ddad313a8a",
+          "bytes": 30139
+        },
+        {
+          "frame": 54,
+          "time": 2.25,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-055.png",
+          "sha256": "b3532dadd2f1564e370f70f56a56b991b120444d548387212f9b6168cb8f32f5",
+          "bytes": 30192
+        },
+        {
+          "frame": 55,
+          "time": 2.2916666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-056.png",
+          "sha256": "3ea382aa673a2e042453fecfacb96b02420fd39c6c2d38c583fe7f20fa2def4e",
+          "bytes": 30162
+        },
+        {
+          "frame": 56,
+          "time": 2.3333333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-057.png",
+          "sha256": "c34615f190e95a77f7c41606242bf0903234a4b6d165af5fdb99208bd3cb7ec1",
+          "bytes": 30362
+        },
+        {
+          "frame": 57,
+          "time": 2.375,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-058.png",
+          "sha256": "1c2614e3214567e2ee5e465737c031df3096360823e0bdb829c49c031456b0c0",
+          "bytes": 30445
+        },
+        {
+          "frame": 58,
+          "time": 2.4166666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-059.png",
+          "sha256": "b663bf56a50a9a54bf0caf297402db12b6c4e332a2c9f1c60015d9d3f225c2b0",
+          "bytes": 30469
+        },
+        {
+          "frame": 59,
+          "time": 2.4583333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-060.png",
+          "sha256": "b0169f918ab5c9372531a3c9b35c17c0a3aaf97603000ad6231f572245645327",
+          "bytes": 30428
+        },
+        {
+          "frame": 60,
+          "time": 2.5,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-061.png",
+          "sha256": "0737a2f97d643df9393d06e5172ec10573024a1af3fc27b81e8f30f1a6832e35",
+          "bytes": 30451
+        },
+        {
+          "frame": 61,
+          "time": 2.5416666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-062.png",
+          "sha256": "089735b8f1170d47e1330e0f23381c75b67b1603d3999b0994ce48a09ed36747",
+          "bytes": 30462
+        },
+        {
+          "frame": 62,
+          "time": 2.5833333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-063.png",
+          "sha256": "743e992c145c181394e13a674846776339f24c3939e9e346ce644ac024f3a80b",
+          "bytes": 30528
+        },
+        {
+          "frame": 63,
+          "time": 2.625,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-064.png",
+          "sha256": "4d6a17e83dca123f479035a254172f99246c0ce5a25aae034a220c73ed9d7fd3",
+          "bytes": 30481
+        },
+        {
+          "frame": 64,
+          "time": 2.6666666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-065.png",
+          "sha256": "a4d5869f80a9fb92144204107b4869a4638bd59dead638d93bfff3dd3734d091",
+          "bytes": 30540
+        },
+        {
+          "frame": 65,
+          "time": 2.7083333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-066.png",
+          "sha256": "ecd5cefa5d6de498991fe9dfd5c1ee79d6c110583d97b7814aa82aff44b639a9",
+          "bytes": 30323
+        },
+        {
+          "frame": 66,
+          "time": 2.75,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-067.png",
+          "sha256": "4ac3b3916d9eb25b1198515fc620c8c66f1a56b2b46ce69e3ae7c204db45f33a",
+          "bytes": 30442
+        },
+        {
+          "frame": 67,
+          "time": 2.7916666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-068.png",
+          "sha256": "dfddd065ffc884972104fed5ca708f8c0f4b710959b2e39bb82939e5cbb405f6",
+          "bytes": 30597
+        },
+        {
+          "frame": 68,
+          "time": 2.8333333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-069.png",
+          "sha256": "b653034a066df0e72b4371cfb75aa55ae0f5eee2ca7aa77bef35b03d3839ec1e",
+          "bytes": 30809
+        },
+        {
+          "frame": 69,
+          "time": 2.875,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-070.png",
+          "sha256": "3a13a0551401357032ad85988b958f635aa351af210aaa4e27810b89e504aa97",
+          "bytes": 30676
+        },
+        {
+          "frame": 70,
+          "time": 2.9166666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-071.png",
+          "sha256": "f702e4170c5f0c0d6935b159342c8a57670007b252d9c3827938d416f53f4924",
+          "bytes": 30519
+        },
+        {
+          "frame": 71,
+          "time": 2.9583333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-072.png",
+          "sha256": "172c384ac90bf7fc27f58c7a1a1f8dbd344677cede8d94d2203e7f2989d0c8c1",
+          "bytes": 30648
+        },
+        {
+          "frame": 72,
+          "time": 3.0,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-073.png",
+          "sha256": "1e9c2b7ad66a1bd972a96854b687eda3c4255dee4037d03e38d30a1f90216590",
+          "bytes": 30733
+        },
+        {
+          "frame": 73,
+          "time": 3.0416666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-074.png",
+          "sha256": "b7f79a2c559fdcc4cb5e3100ae9d1817a6bb41dd5f2cea71481eb3623bab29f8",
+          "bytes": 30628
+        },
+        {
+          "frame": 74,
+          "time": 3.0833333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-075.png",
+          "sha256": "a0cfdcc3a96eb8d90597ec74a8be0c17bb758937b4f83a7ca6dd61a71f3eece4",
+          "bytes": 30686
+        },
+        {
+          "frame": 75,
+          "time": 3.125,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-076.png",
+          "sha256": "312a1bc7a7f3f8dce2c2e40d76b901b0780e772de744ef83264426f0aaa55335",
+          "bytes": 30725
+        },
+        {
+          "frame": 76,
+          "time": 3.1666666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-077.png",
+          "sha256": "be0b443c2c1094ebf7c74c64d12d93d949f997c471985e2001bc3d1a995ea2bb",
+          "bytes": 30898
+        },
+        {
+          "frame": 77,
+          "time": 3.2083333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-078.png",
+          "sha256": "a019fd74afeace77dde77afeca673a1e3b1d97ea559943e16089e4db800f65e1",
+          "bytes": 31002
+        },
+        {
+          "frame": 78,
+          "time": 3.25,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-079.png",
+          "sha256": "62e02f16c1d152291c77508c650c7ec58a07df254d92abe8fee8b84d23e074f5",
+          "bytes": 30990
+        },
+        {
+          "frame": 79,
+          "time": 3.2916666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-080.png",
+          "sha256": "f428469c8ebc1e37ea68927d8eb89253707afd0265989bc42367353147b05b77",
+          "bytes": 31114
+        },
+        {
+          "frame": 80,
+          "time": 3.3333333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-081.png",
+          "sha256": "82236f7359af65c3c5549254e0081c5de53d91d07498a5d0db75f23dc48d4b8a",
+          "bytes": 31275
+        },
+        {
+          "frame": 81,
+          "time": 3.375,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-082.png",
+          "sha256": "485e12324a632b1f3298f4e807171256cfe6f60d1bfe678feaee8f9e8885ca91",
+          "bytes": 31296
+        },
+        {
+          "frame": 82,
+          "time": 3.4166666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-083.png",
+          "sha256": "0b07b710945229d81aaad391aa2eff8e786faec363be97f34894ba57e0e7134b",
+          "bytes": 31279
+        },
+        {
+          "frame": 83,
+          "time": 3.4583333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-084.png",
+          "sha256": "839e637ca42ce5f9d993b8fa69dbd90883462126fba0dfb5296634e63d10230b",
+          "bytes": 31273
+        },
+        {
+          "frame": 84,
+          "time": 3.5,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-085.png",
+          "sha256": "7a10a7a9fdf5133327cfb414c94bec10d54e3f914ec769bfecf7396c70577e31",
+          "bytes": 31325
+        },
+        {
+          "frame": 85,
+          "time": 3.5416666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-086.png",
+          "sha256": "38328a0ee91d2eaa1a29d532f1cad1d008ea8cbc3d098b3876b3b9e248f78002",
+          "bytes": 31288
+        },
+        {
+          "frame": 86,
+          "time": 3.5833333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-087.png",
+          "sha256": "5d20e3428cd6d10c429e669a23aa2f9521ec0fdbcee2937e362bfc92eea46aec",
+          "bytes": 31338
+        },
+        {
+          "frame": 87,
+          "time": 3.625,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-088.png",
+          "sha256": "08f75b3ecb267c16d01aa44842056c6173864f2c348dc679143958e3f2507638",
+          "bytes": 30658
+        },
+        {
+          "frame": 88,
+          "time": 3.6666666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-089.png",
+          "sha256": "68d9d138af171ba0b784707a2175d9b89d7f3a7755162da72b3974f8655fed89",
+          "bytes": 29164
+        },
+        {
+          "frame": 89,
+          "time": 3.7083333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-090.png",
+          "sha256": "8115498aaa4d3ed258692ec09302ed108e29c478597b014154ffb6baca1c2e5f",
+          "bytes": 27197
+        },
+        {
+          "frame": 90,
+          "time": 3.75,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-091.png",
+          "sha256": "1cff958ab5a82d067ee68457e5fc6446a5b9d47f1d6d6d3a28329cbd94bdd005",
+          "bytes": 26187
+        },
+        {
+          "frame": 91,
+          "time": 3.7916666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-092.png",
+          "sha256": "c7c76122f92ac8916009f06e02498b35260466a653a196835babf2998acc5d3d",
+          "bytes": 24362
+        },
+        {
+          "frame": 92,
+          "time": 3.8333333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-093.png",
+          "sha256": "c6c4b57b918086e45e31a3a893829bd10ca55a705b397241c679144ba25900dd",
+          "bytes": 20296
+        },
+        {
+          "frame": 93,
+          "time": 3.875,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-094.png",
+          "sha256": "42c82f29259d9161bcba47075caa024b7d37d98b92c40b80650100bf988e7fc9",
+          "bytes": 19210
+        },
+        {
+          "frame": 94,
+          "time": 3.9166666666666665,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-095.png",
+          "sha256": "df50c03b0e3030d720ad1234d3dc6b744b2cd876fb73d421094d51f2bacae287",
+          "bytes": 19208
+        },
+        {
+          "frame": 95,
+          "time": 3.9583333333333335,
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-096.png",
+          "sha256": "d0c2aaae54489e837e2e3dd22899acd2222311bf2c6e7dc1db68701cb5b04256",
+          "bytes": 19270
+        }
+      ],
+      "sheets": [
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-sheet-00-15.png",
+          "sha256": "3a8e784693d7219fbe6c66c69736161a4eb0281789cb80a9889ca8bd58b91ad1"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-sheet-16-31.png",
+          "sha256": "486917c5ef04ea332477286659f2b249e2857dd9204ebc82d577a317e4cb8216"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-sheet-32-47.png",
+          "sha256": "b5cd54dfb08245714150933de2bbdd176b5c075912039ffdbd610195878b8cef"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-sheet-48-63.png",
+          "sha256": "acea9424fd40b89b82a7b1f49c9d68afee65ebf66b4456c17d2af4d2fe0bd8b0"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-sheet-64-79.png",
+          "sha256": "0d43427f13a2e5100fce1ed424bdb869fcccef6bb21a426d599c245964a19056"
+        },
+        {
+          "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-proofread-visual02/after-sheet-80-95.png",
+          "sha256": "20394461121415fdf5d370056918a6418f8da17e57b7e0de53a42a4481cacc9e"
+        }
+      ]
+    }
+  },
+  "sourceStartEndPins": 100,
+  "sourcePlansEqualOldAndNew": true,
+  "actualCut": {
+    "params": {
+      "font": "mincho",
+      "pen": "klee",
+      "marks": [
+        "box",
+        "circle"
+      ],
+      "stamp": true,
+      "tombo": true,
+      "g1": 63,
+      "g2": 89,
+      "rot": -5.459103994071484
+    },
+    "text": "風の先へ",
+    "seed": 704
+  },
+  "composition": {
+    "proofBottomMargin": {
+      "typeScale": 0.7
+    },
+    "proofMargin": 0.35,
+    "strategy": "proofread-bottom-proof-margin"
+  },
+  "snapshotPinsActualBytesVerified": 100,
+  "review": {
+    "verdict": "LIMITED_PASS",
+    "scope": "proofread-preview02 fixed media; landscape 960x540 short four-glyph mincho box target=[3] only",
+    "reviewedAt": "2026-10-22T19:24:54.044875+00:00",
+    "requestedCommit": "4d72d23",
+    "commitObjectIndependentlyChecked": false,
+    "reasonCommitNotChecked": "Git/index operations prohibited; fixed snapshot and compiled hashes independently checked. Parent commit review is separate.",
+    "nativePNGsViewed": [
+      "before-6-native.png",
+      "before-36-native.png",
+      "before-91-native.png",
+      "after-6-native.png",
+      "after-36-native.png",
+      "after-91-native.png"
+    ],
+    "additionalOldPNGViewed": "proofread-preview01/after-36-native.png",
+    "decodedFramesViewed": {
+      "before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ],
+      "after": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ]
+    },
+    "sheetCellPixels": [
+      480,
+      270
+    ],
+    "realtimePlaybackPerformed": false,
+    "browserPerformed": false,
+    "publicAccessPerformed": false,
+    "productEditsPerformed": false,
+    "gitIndexOperationsPerformed": false,
+    "oldIssue": "PROOFREAD-VIS-001 no longer observed in fixed preview02",
+    "concerns": [
+      "Long top-left elbow resembles a bracket around whole text",
+      "Left vertical leader appears to cross gray left lower trim short strokes; no claim of trim/leader nonintersection",
+      "Upper-right concentration and large left/bottom negative space remain"
+    ],
+    "unverified": [
+      "Other mark types incl circle/wave/dots",
+      "Other fonts incl genuine Klee",
+      "Other text lengths/dimensions/seeds/rotations/avoidance regions",
+      "Between-frame continuous time",
+      "Realtime playback/smoothness/audio sync",
+      "UI/HTML browser interactions",
+      "Public results",
+      "Current mutable product working tree"
+    ],
+    "implementationSelfReportUsedAsVisualEvidence": false
+  },
+  "reportSHA256": "08e7f46750786f49074c49628982733c848989dc5935edce9951add2577a6ceb"
+}

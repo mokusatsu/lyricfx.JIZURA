@@ -691,8 +691,11 @@ reg('contents', {
   },
   render(env) {
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    const contentsOwned=(role,row,fn)=>{const prior=env.placementCBody;if(env.cut.placementLayoutsC)env.placementCBody={...prior,contentsOwner:{role,row}};try{return fn();}finally{env.placementCBody=prior;}};
     let chunks = (p.chunks && p.chunks.length ? p.chunks : [env.cut.text.trim()]).filter(Boolean);
     const k = chunks.length, out = tout(env), editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.contentsMeasure ?? 1 : 1;
+    const contentsLedger = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.contentsLedger : null;
+    if(contentsLedger && (port || p.variant==='tate' || ![.34,.31,.29].includes(contentsLedger.width) || contentsLedger.numberScale!==.75 || contentsLedger.pageScale!==.7 || !Number.isInteger(p.page0) || p.page0<3 || p.page0>40 || !Number.isInteger(p.step) || p.step<6 || p.step>22 || !['bar','tri','dot'].includes(p.mark))) { const e=new Error('Compact ledger requires native landscape contents rows');e.code='CONTENTS_LEDGER_DOMAIN';throw e; }
     const ls = smallSize(env), lw = Math.max(1.2, u * 0.0016);
     const cur = env.placementCEditorialActive ?? Math.min(k - 1, Math.floor(J.clamp(env.lt / Math.max(0.3, env.cut.dur * 0.92)) * k));
     const pages = chunks.map((c, i) => pad3(p.page0 + i * p.step));
@@ -742,50 +745,61 @@ reg('contents', {
     }
     // horizontal rows
     const nRows = k + (ctxRows ? 2 : 0);
-    const bw = W * (port ? 0.84 : 0.66) * editorialMeasure, bx = (W - bw) / 2;
-    const numW = ls * 3.4, pgW = ls * 5;
-    const tw = bw - numW - pgW - ls * 2;
-    const cxH = ls * 2.6;
-    const rowH0 = Math.min((H * 0.66 - (ctxRows ? cxH * 2 : 0)) / k, u * 0.26);
-    const size = Math.min(rowH0 * 0.64, ...chunks.map(c => J.fitSize(c, p.font, tw * 0.92, rowH0 * 0.7, { track: 0.03 })));
+    const bw = contentsLedger ? W*contentsLedger.width : W * (port ? 0.84 : 0.66) * editorialMeasure, bx = (W - bw) / 2;
+    const numW = ls * (contentsLedger?1.3:3.4), pgW = ls * (contentsLedger?2.1:5);
+    const tw = bw - numW - pgW - ls * (contentsLedger?1.1:2);
+    const nativeCxH=ls*2.6,cxH=contentsLedger?nativeCxH*.8:nativeCxH;
+    const rowH0 = Math.min((H * 0.66 - (ctxRows ? nativeCxH * 2 : 0)) / k, u * 0.26);
+    const nativeBW=W*(port?.84:.66),nativeBX=(W-nativeBW)/2,nativeTW=nativeBW-ls*3.4-ls*5-ls*2;
+    const nativeSize=contentsLedger?Math.min(rowH0*.64,...chunks.map(c=>J.fitSize(c,p.font,nativeTW*.92,rowH0*.7,{track:.03}))):null;
+    const size = Math.min(rowH0 * 0.64, ...chunks.map(c => J.fitSize(c, p.font, contentsLedger?tw-4:tw*.92, rowH0*.7, { track: 0.03 })));
     const rowH = Math.max(size * 1.62, ls * 2.4);
     const blockH = k * rowH + (ctxRows ? cxH * 2 : 0);
     const y0 = H / 2 - blockH / 2 + ls * 1.8;
     // header
     const ha = tin(env, 0, 0.4, E.outCubic) * out;
     const hy = y0 - ls * 2.8;
-    env.draw({ text: '目次', font: serifF(env), size: ls * 2.1, track: 0.5, align: 'left', x: bx, y: hy - ls * 0.2, color: sc.fg, alpha: ha, ghost: false });
-    env.draw({ text: 'CONTENTS', font: monoF(env), size: ls * 0.85, track: 0.3, align: 'right', x: bx + bw, y: hy, color: sc.sub, alpha: ha, ghost: false });
+    contentsOwned('header-title',0,()=>env.draw({ text: '目次', font: serifF(env), size: ls * 2.1, track: 0.5, align: 'left', x: bx, y: hy - ls * 0.2, color: sc.fg, alpha: ha, ghost: false }));
+    contentsOwned('header-en',0,()=>env.draw({ text: 'CONTENTS', font: monoF(env), size: ls * 0.85, track: 0.3, align: 'right', x: bx + bw, y: hy, color: sc.sub, alpha: ha, ghost: false }));
     const le = tin(env, 0.05, 0.6, E.inOutCubic) * out;
-    env.line([[bx, hy + ls * 1.4], [bx + bw * le, hy + ls * 1.4]], sc.fg, lw * 1.6, 1, false);
-    env.line([[bx + bw, y0 + blockH + ls * 0.2], [bx + bw - bw * le, y0 + blockH + ls * 0.2]], sc.fg, lw, 0.7, false);
+    contentsOwned('top-rule',0,()=>env.line([[bx, hy + ls * 1.4], [bx + bw * le, hy + ls * 1.4]], sc.fg, lw * 1.6, 1, false));
+    contentsOwned('bottom-rule',0,()=>env.line([[bx + bw, y0 + blockH + ls * 0.2], [bx + bw - bw * le, y0 + blockH + ls * 0.2]], sc.fg, lw, 0.7, false));
     const off0 = ctxRows ? cxH : 0;
     const rowY = i => y0 + off0 + (i + 0.5) * rowH;
     const drawCtx = (lab, pg, y, d) => {
       const a = tin(env, d, 0.4, E.outCubic) * out * 0.45;
-      env.draw({ text: lab + '章', font: serifF(env), size: ls * 1.1, align: 'left', x: bx + numW, y, color: sc.sub, alpha: a, ghost: false });
-      leader(env, bx + numW + ls * 3.4, bx + bw - pgW, y + ls * 0.3, sc.sub, a, ls * 0.55, Math.max(1, ls * 0.07));
-      env.draw({ text: pg, font: monoF(env), size: ls, align: 'right', x: bx + bw, y, color: sc.sub, alpha: a, ghost: false });
+      contentsOwned('context-label',lab,()=>env.draw({ text: lab + '章', font: serifF(env), size: ls * 1.1, align: 'left', x: bx + numW, y, color: sc.sub, alpha: a, ghost: false }));
+      contentsOwned('context-leader',lab,()=>leader(env, bx + numW + ls * 3.4, bx + bw - pgW, y + ls * 0.3, sc.sub, a, ls * 0.55, Math.max(1, ls * 0.07)));
+      contentsOwned('context-page',lab,()=>env.draw({ text: pg, font: monoF(env), size: ls, align: 'right', x: bx + bw, y, color: sc.sub, alpha: a, ghost: false }));
     };
     if (ctxRows) drawCtx(ctxRows[0][0], ctxRows[0][1], y0 + cxH * 0.5, 0.05);
     chunks.forEach((c, i) => {
       const y = rowY(i);
       const isCur = i === cur;
       const a = tin(env, 0.1 + i * 0.1, 0.5, E.outCubic) * out;
-      env.draw({ text: pad2(i + 1), font: monoF(env), size: ls * 1.2, align: 'left', x: bx, y, color: isCur ? sc.accent : sc.sub, alpha: a, ghost: false });
+      contentsOwned('ordinal',i,()=>env.draw({ text: pad2(i + 1), font: monoF(env), size: ls*1.2*(contentsLedger?contentsLedger.numberScale:1), align: 'left', x: bx, y, color: isCur ? sc.accent : sc.sub, alpha: a, ghost: false }));
       if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:bx+numW-ls*.25,y0:y-rowH/2,x1:bx+bw-pgW+ls*.25,y1:y+rowH/2};
-      const r = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size, x: bx + numW, y, align: 'left', track: 0.03, color: sc.fg, mi: i * 3 });
+      const r = contentsOwned('main',i,()=>J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size, x: bx + numW, y, align: 'left', track: 0.03, color: sc.fg, mi: i * 3 }));
       bb = J.unionBB(bb, r);
       const tx1 = bx + numW + meas(c, p.font, size, { track: 0.03 }).w + ls * 0.8;
       const lx1 = bx + bw - pgW;
-      leader(env, tx1, J.lerp(tx1, lx1, a), y + size * 0.3, isCur ? sc.accent : sc.sub, a, ls * 0.55, Math.max(1.2, ls * 0.08));
-      env.draw({ text: pages[i], font: monoF(env), size: ls * 1.4, align: 'right', x: bx + bw, y, color: isCur ? sc.accent : sc.fg, alpha: a, ghost: false });
-      if (isCur) {
+      contentsOwned('leader',i,()=>{
+        if(!contentsLedger)return leader(env,tx1,J.lerp(tx1,lx1,a),y+size*.3,isCur?sc.accent:sc.sub,a,ls*.55,Math.max(1.2,ls*.08));
+        // Keep this original owned leader's actual appearance/opacity clock,
+        // even when its new printing measure gives fewer/closer dots.
+        const sourceLeft=nativeBX+ls*3.4+meas(c,p.font,nativeSize,{track:.03}).w+ls*.8,sourceRight=nativeBX+nativeBW-ls*5,step=ls*.55,R=Math.max(1.2,ls*.08);
+        env.placementCBody.nativeLeaderClock={size:nativeSize,left:sourceLeft,right:sourceRight,gate:'native-lerp-length-and-alpha'};
+        if(env.pass!=='main'||a<=.01||J.lerp(sourceLeft,sourceRight,a)-sourceLeft<step)return;
+        const end=J.lerp(tx1,lx1,a),n=Math.min(200,Math.max(1,Math.floor((end-tx1)/step))),ctx=env.ctx;ctx.save();ctx.globalAlpha=a;ctx.fillStyle=isCur?sc.accent:sc.sub;ctx.beginPath();
+        for(let j=0;j<=n;j++){const x=tx1+(end-tx1)*j/n;ctx.moveTo(x+R,y+size*.3);ctx.arc(x,y+size*.3,R,0,J.TAU);}ctx.fill();ctx.restore();
+      });
+      contentsOwned('page',i,()=>env.draw({ text: pages[i], font: monoF(env), size: ls*1.4*(contentsLedger?contentsLedger.pageScale:1), align: 'right', x: bx + bw, y, color: isCur ? sc.accent : sc.fg, alpha: a, ghost: false }));
+      if (isCur) { contentsOwned('marker',i,()=>{
         const ma = J.clamp(a * 2 - 0.4);
         if (p.mark === 'bar') env.rect(bx - ls * 1.1, y - size * 0.45, ls * 0.35, size * 0.9, sc.accent, ma, false);
         else if (p.mark === 'tri') env.poly([[bx - ls * 1.3, y - ls * 0.5], [bx - ls * 0.4, y], [bx - ls * 1.3, y + ls * 0.5]], sc.accent, ma, false);
         else env.circle(bx - ls * 0.9, y, ls * 0.3, sc.accent, null, 0, ma, false);
-      }
+      }); }
     });
     if (ctxRows) drawCtx(ctxRows[1][0], ctxRows[1][1], y0 + off0 + k * rowH + cxH * 0.5, 0.1 + k * 0.1);
     return bb || box(bx, y0, bx + bw, y0 + blockH);
