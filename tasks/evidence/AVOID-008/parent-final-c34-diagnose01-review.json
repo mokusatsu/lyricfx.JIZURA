@@ -1,0 +1,65 @@
+{
+  "task": "AVOID-008",
+  "reviewer": "parent",
+  "reviewedUTC": "2026-10-22T22:57:33.526232+00:00",
+  "result": "ORIGINAL100_PATH_COVERAGE_ACCEPTED_SPEED_DIAGNOSTIC_FAIL",
+  "sourceCommit": "fd6ae6631654fc2d50cb703707db15df6ee782bd",
+  "rawSHA256": "9acba5ce4ff5b8175c36f5f043a34761b9e77709385bac3815888cf603674df2",
+  "rawBytes": 681881,
+  "actualSourceLiveArchivePins": 120,
+  "originalInputSHA256": "f6eef273216bb998c7dc1174901381e54ff833a0cf2d2ed75e34c32ab4a82792",
+  "actualON": {
+    "stagedCuts": 100,
+    "regions": 100,
+    "planAndRenderIDs": 34,
+    "recordCalls": 80,
+    "replayCalls": 80,
+    "observations": 80,
+    "nativeFontAuditComplete": true,
+    "unknownGlyphs": 0,
+    "coldMs": 6172.20000000298,
+    "measuredPlan": {
+      "sourceMs": 54.099999994039536,
+      "finalizeMs": 72.3999999910593,
+      "totalMs": 126.49999998509884,
+      "actualPlanningRecordCalls": 0
+    }
+  },
+  "comparisons": [
+    {
+      "n": 100,
+      "on": true,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 45.3999999910593,
+      "candidatePlanningMs": 126.49999998509884,
+      "planningRatio": 2.7863436125553016,
+      "additionalRenderP95Ms": 4.5,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    },
+    {
+      "n": 100,
+      "on": false,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 230.70000000298023,
+      "candidatePlanningMs": 112.29999999701977,
+      "planningRatio": 0.48677936712426984,
+      "additionalRenderP95Ms": -10.599999994039536,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    }
+  ],
+  "interpretation": [
+    "Correctness route coverage formerly94/76 is now actual100staged/80Cpipeline on unchanged original100input; typedinsufficient is not safe avoidance success.",
+    "ON one post-warm planning point126.5ms versus45.4=2.78634x, renderp95+4.5ms. Existing2x/+3ms limits unmet. This is not qualified planningp95 or formal1000 execution.",
+    "OFF original measured baseline230.7/candidate112.3 andrender14.5/3.9 retained as single-run evidence; no asserted cause or substituted timing.",
+    "Warm wholecachehit with0planning record still72.4ms finalize; newsource CDP diagnostic authorized to locate actualcost, no productoptimization yet."
+  ],
+  "limits": "Formal100/1000,core22,necessary4humancompositions pending; source cache/shadow stillisolatedfrommain. No public checks."
+}

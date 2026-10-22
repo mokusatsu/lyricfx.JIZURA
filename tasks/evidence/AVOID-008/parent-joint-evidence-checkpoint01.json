@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-10-22T23:22:49.414974+00:00",
+  "purpose": "Evidence-only checkpoint of exact fd6 core/correctness/CPU and proposal; product remains5f",
+  "selectedList": "/tmp/avoid008-joint-evidence-stage01.txt",
+  "selectedPaths": 659,
+  "productFiles": 0,
+  "wholeDiffCheck": {
+    "exit": 2,
+    "rawOutput": "tasks/evidence/AVOID-008/regression-final01/runs01/baseline-lyric_placement_stability_test/stdout-stderr.log:1: trailing whitespace.\n+ja unlocked placement preserves effect choices and movement preserves layout variants \ntasks/evidence/AVOID-008/regression-final01/runs01/baseline-lyric_placement_stability_test/stdout-stderr.log:2: trailing whitespace.\n+en/ unlocked placement preserves effect choices and movement preserves layout variants \ntasks/evidence/AVOID-008/regression-final01/runs01/candidate-lyric_placement_stability_test/stdout-stderr.log:1: trailing whitespace.\n+ja unlocked placement preserves effect choices and movement preserves layout variants \ntasks/evidence/AVOID-008/regression-final01/runs01/candidate-lyric_placement_stability_test/stdout-stderr.log:2: trailing whitespace.\n+en/ unlocked placement preserves effect choices and movement preserves layout variants \ntasks/evidence/AVOID-008/regression-final01/snapshots/candidate/en/index.html:11921: trailing whitespace.\n+ if(cut.layout==='tunnel')for(const e of prepared.events.filter(e=>e.role==='primary'&&e.kind==='item'&&e.args[0].placementTunnelFragment)){const i=e.args[0],r=i.placementSource;if(i.placementGlobalGlyphIndex!==r.start||r.end!==r.start+1||i.mi!==0)fail('TUNNEL_GLYPH_CLOCK','Split tunnel glyph must keep original occurrence index and native item clock0');} \ntasks/evidence/AVOID-008/regression-final01/snapshots/candidate/index.html:11921: trailing whitespace.\n+ if(cut.layout==='tunnel')for(const e of prepared.events.filter(e=>e.role==='primary'&&e.kind==='item'&&e.args[0].placementTunnelFragment)){const i=e.args[0],r=i.placementSource;if(i.placementGlobalGlyphIndex!==r.start||r.end!==r.start+1||i.mi!==0)fail('TUNNEL_GLYPH_CLOCK','Split tunnel glyph must keep original occurrence index and native item clock0');} \ntasks/evidence/AVOID-008/regression-final01/snapshots/candidate/src/09e_layoutsB_placement.js:250: trailing whitespace.\n+ if(cut.layout==='tunnel')for(const e of prepared.events.filter(e=>e.role==='primary'&&e.kind==='item'&&e.args[0].placementTunnelFragment)){const i=e.args[0],r=i.placementSource;if(i.placementGlobalGlyphIndex!==r.start||r.end!==r.start+1||i.mi!==0)fail('TUNNEL_GLYPH_CLOCK','Split tunnel glyph must keep original occurrence index and native item clock0');} \n",
+    "decision": "Preserve seven byte-exact historical-source/raw-log whitespace lines; do not normalize immutable evidence."
+  },
+  "nonSnapshotNonRawDiffCheck": {
+    "exit": 0
+  },
+  "parentReviews": [
+    "parent-core-fd6-review01.json",
+    "parent-final-c34-profile02-review.json",
+    "parent-final-c34-evidence-import01-review.json",
+    "parent-tree-wire-proposal01-review.json"
+  ],
+  "pycSHA256": "7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898",
+  "publicChecks": false
+}

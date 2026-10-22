@@ -1,0 +1,3 @@
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const p=JSON.parse(fs.readFileSync('tasks/evidence/AVOID-008/final-c34-profile02-preparation/fixture-transform.json')),h=b=>crypto.createHash('sha256').update(b).digest('hex');let derived=fs.readFileSync(p.derived,'utf8');assert.equal(h(derived),p.derivedSHA256);const original=fs.readFileSync(p.original,'utf8');assert.equal(h(original),p.originalSHA256);for(const c of p.changes.slice().reverse()){assert.equal(derived.split(c.after).length-1,1);derived=derived.replace(c.after,c.before);}assert.equal(derived,original);console.log('PASS all five exact fixture transformations reverse to7650; original loops/inputs/guards preserved');

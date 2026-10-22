@@ -1,0 +1,29 @@
+{
+  "original": "dev/avoidance/layouts-c-perf-shadow-native-fixture.js",
+  "originalSHA256": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+  "derived": "dev/avoidance/layouts-c-perf-phases-fixture.js",
+  "derivedSHA256": "e1ef5650d701db6509974a5ef09234d24e69b82430031286bb6b8b5d3631beb7",
+  "exactReverse": true,
+  "changes": [
+    {
+      "before": "   const planningCalls={...calls};",
+      "after": "   // Diagnostic-only: same final normalized source/lineage; public wrappers stay fixed.\n   const profileGraph=value=>{const seen=new WeakMap(),nodes=[];const visit=v=>{if(v===undefined)return ['u'];if(v===null||typeof v!=='object')return typeof v==='number'&&Object.is(v,-0)?['negative-zero']:['value',v];if(seen.has(v))return ['ref',seen.get(v)];const id=nodes.length;seen.set(v,id);nodes.push(null);nodes[id]=[Array.isArray(v)?'array':Object.getPrototypeOf(v)===null?'null-prototype':'object',Object.getOwnPropertyNames(v).map(k=>[k,visit(v[k])])];return ['ref',id];};return JSON.stringify({root:visit(value),nodes});};\n   const beforeProfileGraph=profileGraph(final),beforeProfileJSON=JSON.stringify(final),beforeProfileSourceJSON=JSON.stringify(source),warmFinalizations=[],warmOutputs=[];\n   phase='planning';await window.__CProfilePhase({phase:'warm-finalization',action:'start',on});\n   for(let i=0;i<6;i++){const before=cacheSnapshot(),recordStart=calls.record,startMS=performance.now();const output=J.finalizePlacementPlan(source,{layoutsC:true});const endMS=performance.now(),after=cacheSnapshot(),delta=cacheDelta(before,after);warmOutputs.push(output);warmFinalizations.push({iteration:i,startMS,endMS,actualRecordCalls:calls.record-recordStart,before,after,delta});}\n   await window.__CProfilePhase({phase:'warm-finalization',action:'stop',on});phase='idle';\n   for(let i=0;i<warmOutputs.length;i++){const output=warmOutputs[i],w=warmFinalizations[i];must(w.actualRecordCalls===0&&w.delta.hits===1&&w.delta.misses===0&&w.delta.stores===0,'six actual whole-result hits required');must(JSON.stringify(output)===beforeProfileJSON&&profileGraph(output)===beforeProfileGraph,'six warm full values/internal aliases changed');must(output!==final&&Object.isFrozen(output)&&Object.isFrozen(output.cuts[0]),'fresh frozen warm output required');for(let j=0;j<i;j++)must(output!==warmOutputs[j]&&output.cuts[0]!==warmOutputs[j].cuts[0],'warm reads must be independent');w.fullValueAndInternalAliasExact=true;w.freshFrozenIndependent=true;}\n   must(JSON.stringify(source)===beforeProfileSourceJSON,'profile mutated original normalized source');final=warmOutputs.at(-1);\n   const planningCalls={...calls};"
+    },
+    {
+      "before": "   for(let i=0;i<config.renderFrames;i++){",
+      "after": "   await window.__CProfilePhase({phase:'render',action:'start',on});\n   for(let i=0;i<config.renderFrames;i++){"
+    },
+    {
+      "before": "frames.push({frame:i,layout:cut.layout,time,ms:performance.now()-t,warmup:i<config.renderWarmup,error})",
+      "after": "frames.push({frame:i,layout:cut.layout,time,profileStartMS:t,ms:performance.now()-t,warmup:i<config.renderWarmup,error})"
+    },
+    {
+      "before": "}phase='idle';cv.width=cv.height=1;",
+      "after": "}await window.__CProfilePhase({phase:'render',action:'stop',on});phase='idle';cv.width=cv.height=1;"
+    },
+    {
+      "before": "   return{n,on,side,fontQualification,projectSHA256,",
+      "after": "   window.CPerfPhasesOutput={normalizedJSON:JSON.stringify(source),fullValueJSON:JSON.stringify(final),fullAliasGraph:profileGraph(final),sourceRevision:J.metrics.revision,rootFrozen:Object.isFrozen(final)};\n   return{warmFinalizations,n,on,side,fontQualification,projectSHA256,"
+    }
+  ]
+}

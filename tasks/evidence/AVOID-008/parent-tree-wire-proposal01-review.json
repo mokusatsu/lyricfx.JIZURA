@@ -1,0 +1,35 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-22T23:19:00.021Z",
+  "source": "fd6ae6631654fc2d50cb703707db15df6ee782bd",
+  "oldCodecExtractSHA256": "b8668ca57e6a248978c082a80ffc6269b5d7a4d9401c5805c76db7c100f04fb4",
+  "rows": [
+    {
+      "on": true,
+      "oldBytes": 4680011,
+      "wireBytes": 3258207,
+      "aliases": 2723,
+      "specials": 0,
+      "nullPrototypes": 0,
+      "fullOldWireExact": true,
+      "wireSHA256": "a7d4d4e6ec1a6107550a2b46d85291d658b0cc04e6d368a269876c84b12ce545"
+    },
+    {
+      "on": false,
+      "oldBytes": 458919,
+      "wireBytes": 285411,
+      "aliases": 0,
+      "specials": 0,
+      "nullPrototypes": 0,
+      "fullOldWireExact": true,
+      "wireSHA256": "ce51faf60434dcbb0da88897bd5648cdce27eb381b7e03c07645ee4cac1e9d8a"
+    }
+  ],
+  "decision": "Authorize payload-only direct tree repair prototype; old admission and key/deps/verify/freeze unchanged",
+  "limitations": [
+    "Two recorded graphs validate representation only, not special-type or generic new codec correctness.",
+    "30% smaller is actual wire estimate, not measured runtime improvement.",
+    "No browser or performance executed in this review.",
+    "No public result checks or visual viewing."
+  ]
+}

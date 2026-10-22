@@ -1,0 +1,37 @@
+# Native-path first-hull bounds study — read only
+
+Basis: fixed Git fd6ae6631654fc2d50cb703707db15df6ee782bd:src/09a_placement.js, exact blob/SHA in source-pins.json. No mutable integration-tree file was read or edited. No implementation, browser, test, timing, image inspection or public operation. This is not the rejected contains early-return proposal.
+
+## Scope and provenance
+
+Only the FIRST `A.bounds([A.convexHull(guardedPoints.flatMap(four +/-1 corners))])` at09a:168 is a candidate. Keep strokePad construction167, the subsequent rect(x0,y0,x1-x0,y1-y0), its A.point calls, the SECOND transformed/AA convexHull, all recorded commands/painter state and push validation unchanged. A C-only admission would leave B/A legacy behavior untouched; a shared B change would require its own foundation evidence.
+
+bPoints is a private array reset by beginPath144. Capture147–156 rejects ordinary nonfinite/object arguments, checks unchanged path matrix and stores native endpoints/control/radius corners. Literal pairs and args.slice supply points; stroke167 expands each into two diagonal points before the additional four-corner AA expansion. It is not universally proven to be finite Number data: the argument guard permits primitive booleans; rect x+w and arc arithmetic can overflow despite finite arguments; custom Array.every/slice/push/species or matrix/Canvas callbacks can alter provenance. None of the renderer/layout identity seals proves these methods are unchanged.
+
+## Numerical equivalence conditions
+
+In exact real geometry, bounds(convexHull(S))=bounds(S). The direct candidate would evaluate each actual guarded p[0]-1,p[0]+1,p[1]-1,p[1]+1 with the SAME parenthesization as168 and collect extrema. Do not merge strokePad+1, change min/max-before-pad algebra, replace rect's x+(x1-x0) by x1, change the final hull, or alter any transform operation: these are different floating computations.
+
+**Finite Number alone is insufficient for a blanket proof of the current implementation.** Stock hull18 uses floating cross<=0 and sort, not robust/exact predicates. Cancellation/overflow can change retained vertices. At very large coordinates +/-1 may collapse, yielding a hull with fewer than3 vertices and A.bounds17 throwing Invalid polygon. A direct rectangle would incorrectly succeed. Nonfinite intermediate guarded/AA points must go through the old path to preserve exact failure code/message/order. NaN/Infinity, signed zero and degenerate cases need the literal old algorithm as oracle; mathematical hull equivalence alone does not establish its observable behavior.
+
+One deliberately restrictive sufficient NUMERIC domain is: every already constructed guarded coordinate is a primitive finite Number, abs(value)<=2^16, and exactly on the2^-8 grid. The +/-1 corners are then exact grid numbers; sorted coordinate differences have fewer than27 significant integer bits, and each cross product/subtraction has fewer than53 bits after common power-of-two scaling. Thus the old hull orientation/sort arithmetic is exact, a single expanded point already supplies a nondegenerate2x2 rectangle, and the mathematical extrema theorem applies. Direct extrema can preserve exact bounds, including zero behavior. This is a proof example, not an approved production guard or evidence that actual hot curves satisfy it. Fractional native typography/curves/stroke expansion may often miss it. A broader ordinary-float admission needs its own proof or must retain the old hull.
+
+## Required observational boundary
+
+Old expression168 reads A.bounds first, then A.convexHull, then invokes flatMap/coordinate reads, hull slice/sort/push/pop, then bounds validation/min/max. A.point and the second A.convexHull come later. Removing the first hull/bounds call cannot bypass a wrapper/getter/proxy/throwing helper or changed intrinsic and still claim identical observations.
+
+A possible narrow fast branch therefore needs captured ORIGINAL stock identities and own data descriptors for A.bounds/A.convexHull, relevant Object/Array/Number/Math intrinsics and prototypes/species. Checking `A.bounds===stock` by ordinary property access is not itself safe if that property is a getter; a captured descriptor inspection of the original ordinary A object can reject the fast branch without invoking it, then the original expression must run unchanged. Custom A.point can remain observable in exactly its old downstream calls if they are left untouched; never inline it. Final-hull/helper call order remains unchanged. A.bounds shape/finite checks and Object.freeze do not establish no-accessor/no-Proxy provenance.
+
+A fill-time stock check alone also misses transient mutations that earlier leaked bPoints via a custom push or produced a Proxy point via custom slice/species and then restored the methods. There is currently no private provenance brand/history flag. Either prove the particular point arrays were constructed under stock operations throughout capture (and never exposed), or keep this branch legacy. Generic Proxy detection/descriptor scanning of an untrusted point would itself introduce new traps and is not a safe fallback discriminator. Building a broad new validation/provenance framework solely for this optimization is not recommended.
+
+Consequently, an unconditional scalar-extrema substitution is **not accepted by this analysis**. A tightly proved numeric/data-provenance domain with immediate legacy fallback is conceivable, but neither useful actual-path coverage nor a cheap fully observational admission guard has been demonstrated. No current function or guard rejects all the counterexamples, so they cannot merely be relabeled unsupported.
+
+## Required oracle if later authorized
+
+Use the exact fd6 old expression and unchanged rest of168 as reference. Compare bounds AND complete final nativePath event/program, every numeric leaf with Object.is (including -0), exception type/code/message and helper/getter/prototype call/throw sequence. No tolerance or JSON-only comparison.
+
+Cover fill/stroke, one/repeated/collinear/all-equal points, zero-area and huge-coordinate collapse, both signs/orientations, +/-0/subnormals, adjacent representable numbers around +/-1/pad/binade and numeric-admission boundaries, finite-input overflow, NaN/Infinity, signed/large strokePad and actual curves/arcs/rectangles from the saved original workload. For fallback, include helper wrappers/accessors, changed Math.min/max/Number.isFinite, Array methods/species/numeric accessors, sparse/Proxy slice outputs and transient mutation-then-restore. Test forced failure ordering and the unchanged downstream A.point/final-hull/push calls. Only after exact pure oracles should a separately authorized bounded browser correctness/native-pixel/trace gate run; a shared B admission additionally needs real B raw-fill/stroke regression. No such oracle or run occurred here.
+
+## Potential gain
+
+New supplied profile: record203.651ms/80, convexHull inclusive34.746ms/80 (~.4343ms/frame average), with41 ticks attributed to the whole168 source position. That line also performs bounds, transformed rectangle/final hull and recording; those ticks do not isolate the first hull. Only part of the34.746ms could be removed, and admission guards/fallback can erase the gain. No p95 distribution or +4.5ms p95 fix is implied. A broad correctness refactor, general hull replacement, simplified circle proof or new cache is outside this proposal.
