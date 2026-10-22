@@ -7,6 +7,10 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- shadow1214044は[親source/実Canvasレビュー](evidence/AVOID-008/parent-shadow07-review.json)を通過。native camera rootを保つ09a限定修正後、日英120RGBA組・40guard・82役割字体文字/cmap・34font URL byte・294開始終了pin・両filter PNG2組byte一致を実照合。全10条件はtyped不足/safe0であり、blurを変えたり安全と偽認したりしない。原1画素FAIL・fixtureの字体/guardcode/URL失敗を保持。構図変更なしのためこの追加は人間不要、別4構図は必要なまま。cache/hang/shadowの[仮結合の独立逆変換・JAEN全84bundle](evidence/AVOID-008/parent-final-c34-provisional-merge01.json)まで確認したが、旧be15版の証拠なので修正版結合/全経路/性能/22回帰は未受入。source/checkpointを混同せず008のみ継続する。
+
+- shadowのbe15 scope修正は[親source/pureレビュー](evidence/AVOID-008/parent-shadow-source01-review.json)で受入（12入力180不足/22positive49negative、実Canvas未受入）。初回browser01は試験字体の未収録「雨」で停止、元corpusを変えず追加mixed fixtureを収録済み字へ訂正したbrowser02もJA横長t=.6の実RGBA不一致で停止。両FAIL/旧runnerを保持し、原因の1時刻再現を担当へ返却。shadow/cacheはmain未結合、最終sourceは仮組立てのみ、全体回帰22job/正式性能/人間4構図は引き続き未完。main製品は値札受入版5f982bcまでpush操作成功、公開結果確認なし。
+
 - 値札hangの[独立raw/幾何親レビュー](evidence/AVOID-008/parent-hang03-review.json)・[限定視覚レビュー](evidence/AVOID-008/hang-visual01-review.md)を経て、[main限定結合](evidence/AVOID-008/parent-hang-main01-review.json)を受入。全84source/JAENがtested`1f30863`と全byte一致し、170選択path・他82source・既存pycを実照合。日英各28条件6safe/18不足/4未対応、663実native/replay組、12segment120polygonと成立条件の実strict画素円cross0を確認。固定横移動以外の寸法/意味/時計は保持し、1代表8PNG+MP4抽出4frameに新crop/縮小/欠落がないため、この追加の人間確認は不要と親判断。旧empty-program FAILは保存、6物理サイズはcrop未証明で不採用、全条件成功とはしない。別4例の全体008人間確認・shadow/最終性能/回帰22jobは未完。
 
 - 依存最適化03の[新browser正確性親レビュー](evidence/AVOID-008/parent-cache-dependencies03-correctness-review.json)を受入。104開始終了/live/archive pin、62,676全leaf/stringを独立照合し、534差分は実key会計のみ。40cold/warm値/alias、25負例、18+18frame/15+15実観測、110 ledgerが一致。render record/replay独立counterは未計測で推定しない。速度は未再計測、元94/76の正式経路FAILも未更新、cache sourceはmain未結合。

@@ -1,0 +1,36 @@
+{
+  "task": "AVOID-008",
+  "reviewer": "parent",
+  "reviewedUTC": "2026-10-22T22:44:06.354853+00:00",
+  "sourceCommit": "fd6ae6631654fc2d50cb703707db15df6ee782bd",
+  "result": "COMBINED_SOURCE_ACCEPTED_FOR_BOUNDED_CORRECTNESS_NOT_PERFORMANCE",
+  "source09aSHA256": "e22e968e8c6b4619216c2e432805d4af469338366fd78e8a4fd2f0b9771a3ae4",
+  "independentInverseProof": {
+    "removeRootFixYieldsExact2215": true,
+    "rootFixHunks": 5,
+    "removeCacheYieldsExact121Shadow": true,
+    "cacheHunks": 3,
+    "other83SourceExact2215": true
+  },
+  "compiled": {
+    "index.html": {
+      "sha256": "ccf7ee7295269b64b24b45f7f58e4123b0e2dc5d8a52f90568aefe4c8579b75b",
+      "all84TransformedBundleSHA256": "4a9245e81e639b576f65116e518b42b6c2a307d8a3cda5ff64506a9417d50d30",
+      "embeddedOnce": true
+    },
+    "en/index.html": {
+      "sha256": "2339c0f8a04a3e6ac102eb8889696484e701bfedc7c0e27da0666b21e3dc8279",
+      "all84TransformedBundleSHA256": "f8057d76225cb771a522d08cccfd41355e05d8ec38fe595d3f8e2e8f172cd8ab",
+      "embeddedOnce": true
+    }
+  },
+  "priorReview": [
+    "parent-final-c34-provisional-merge01.json",
+    "parent-shadow07-review.json",
+    "parent-cache-dependencies03-correctness-review.json",
+    "parent-hang03-review.json"
+  ],
+  "sourceReview": "Only09a rootfix/source1215hunks applied to accepted prior cache/hang/be15merge. All3cache seams exact. Shadow per-event replay preserves original live camera root under strict immutable zerooffset/root/ops/clip guards; generic paths unchanged. New helper identities remain in full public dependency collector. No contains optimization.",
+  "nextGate": "One bounded joint cache correctness browser run using existing40cold/warm/25negative/4control/schema/LRU/dual-limit assertions, no timing/formal1000. Drivers/helpers changes must be declared, oldguards preserved.",
+  "limits": "Donor/component correctness is not joint correctness. Fulloriginal34coverage, speed/1000/core22 andhuman4 pending; no public checks."
+}

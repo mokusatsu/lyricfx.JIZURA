@@ -1,0 +1,37 @@
+{
+  "task": "AVOID-008",
+  "reviewer": "parent",
+  "reviewedUTC": "2026-10-22T22:27:38.710932+00:00",
+  "sourceCommit": "be15a213f412a4ff8941f9bb57ac6d08cbdff85f",
+  "result": "SOURCE_AND_PURE_ACCEPTED_REAL_CANVAS_PENDING",
+  "source": {
+    "src/09_render.js": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623",
+    "src/09a_placement.js": "d705f1ec03a39831edcd1174253d5e82e1f9286ca94d6510325cb3ac03c179ad",
+    "src/09g_layoutsC_placement.js": "e477462f776a052dd735d234706b11d47207b5c7e4ff5da06e8f3d3560cda40c",
+    "src/09j_layoutsC_japanese.js": "daf83b6f14f69c82b926f6e4a1bda2e6b0ea7a3f81e39aed920224e0f055cf89",
+    "src/11p_layoutsC.js": "7eb5a88f97ee4e0c724e89fbcada4345a0741777d84d041d2f365b46cbda02e3"
+  },
+  "raw": {
+    "file": "shadow-output01/node14.json",
+    "sha256": "5dba582f0ab872574068a7932a306c2c813d0a4cc9b8df413f6af7b4d912562d",
+    "pinsChecked": 14,
+    "positive": 22,
+    "negative": 49,
+    "finiteInputs": 12,
+    "finiteInsufficientSegments": 180,
+    "safeSegments": 0
+  },
+  "actualParentReview": [
+    "Private original-frame issuer and exact scale/bitmap/clock/root source capability, native silhouette bounded only by existing destination output; no additional clip or filter alteration.",
+    "Own-data clone into private immutable program, WeakMap identity, no JSON-signature integrity assumption; ordinary shared ctx/plan/fonts not frozen.",
+    "Never-safe root/segment validation and zero offset preserve typed conflict scope; no unsupported promotion to safe.",
+    "Actual be15a21 two predicates restrict issuer/replay capability to Ctrue while keeping private/scoped spoof guards; exact f828 fake-context generic replay/frame hashes equal and mutable paths retained."
+  ],
+  "limits": [
+    "Node metrics and Canvas are fake; private final-plan cache gate modelled. No actual pixels/cmap/Canvas acceptance from pure test.",
+    "Bounded browser test separately authorized, not yet reviewed.",
+    "Native Cfalse/Ctrue comparison uses same new source; actual old full-baseline pixel comparison is not claimed.",
+    "No speed/formal/core/human-composition success claimed; cache not main integrated.",
+    "No public result checks performed."
+  ]
+}

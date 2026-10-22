@@ -1,0 +1,33 @@
+{
+  "status": "FAIL retained; no retry",
+  "report": "browser01.json",
+  "driverSHA256": "2beaaf3d6191e540dbc654ed4279e6f6d948a56c304b4c20a22e8d9060dc7111",
+  "sourcePinsUnchanged": true,
+  "error": {
+    "message": "page.evaluate: Error: unresolved emitted glyph mincho U+96e8\n    at check (eval at evaluate (:311:30), <anonymous>:1:228)\n    at eval (eval at evaluate (:311:30), <anonymous>:3:1419)\n    at async <anonymous>:337:30",
+    "stack": "page.evaluate: Error: unresolved emitted glyph mincho U+96e8\n    at check (eval at evaluate (:311:30), <anonymous>:1:228)\n    at eval (eval at evaluate (:311:30), <anonymous>:3:1419)\n    at async <anonymous>:337:30\n    at /workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-browser.cjs:23:457"
+  },
+  "framesInJournal": 1,
+  "completedLocaleRows": 0,
+  "nativeStagePNGCount": 0,
+  "coverage": {
+    "char": "雨",
+    "codepoint": 38632,
+    "requestedKey": "mincho",
+    "assigned": "serif-regular",
+    "assignedCmapContains": false,
+    "explicitFixtureFallback": "symbols",
+    "fallbackCmapContains": false,
+    "actualSystemFallbackNotDetermined": true,
+    "qualification": "unresolved; not named-face accepted"
+  },
+  "cleanup": {
+    "spawned": 1,
+    "ownedAtClose": 9,
+    "remainingSameIdentities": 0,
+    "signals": [],
+    "closeErrors": [],
+    "serverClosed": true
+  },
+  "scope": "Same-new-source Cfalse/Ctrue only; no actual full f828 baseline pixels. Product/build/pure source untouched. Browser run stopped after one early t=.04 pair in the journal, before a completed case; no 120-pair/media/font/visual/performance PASS."
+}

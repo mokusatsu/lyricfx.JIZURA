@@ -1,0 +1,49 @@
+{
+  "base": "f828ff234d8f45659734af58397233a9fdf71c50",
+  "precedingSource": "1ea3739",
+  "pureReceipt": "node14.json",
+  "passed": true,
+  "sourceStartEndUnchanged": true,
+  "positives": 22,
+  "negatives": 49,
+  "studyInputs": 12,
+  "segments": 180,
+  "genericBaseline": {
+    "placementSHA256": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a",
+    "pairs": [
+      {
+        "version": "f828",
+        "events": 35,
+        "mutable": true,
+        "replayLogSHA256": "4d98cdb4a6a7518c5aed37299d1216057e903f56bfaebfec322fc8bbd9285d24",
+        "frameLogSHA256": "946a67dd7a0e709ad5b603992ad0a376bb15cf4da83737492b6a3d9caafb8ccd"
+      },
+      {
+        "version": "after",
+        "events": 35,
+        "mutable": true,
+        "replayLogSHA256": "4d98cdb4a6a7518c5aed37299d1216057e903f56bfaebfec322fc8bbd9285d24",
+        "frameLogSHA256": "946a67dd7a0e709ad5b603992ad0a376bb15cf4da83737492b6a3d9caafb8ccd"
+      }
+    ],
+    "trueBlurRejectedBoth": true,
+    "scope": "Exact f828 versus after A.record/A.replay and stock frame; fake Canvas calls only, C flag false, allowFilter false; ordinary returned graph remains mutable."
+  },
+  "pins": {
+    "src/01_util.js": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+    "src/03_text.js": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+    "src/05_anim.js": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+    "src/06_layouts.js": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+    "src/09a_placement.js": "d705f1ec03a39831edcd1174253d5e82e1f9286ca94d6510325cb3ac03c179ad",
+    "src/09b_basic_placement.js": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+    "src/09g_layoutsC_placement.js": "e477462f776a052dd735d234706b11d47207b5c7e4ff5da06e8f3d3560cda40c",
+    "src/09j_layoutsC_japanese.js": "daf83b6f14f69c82b926f6e4a1bda2e6b0ea7a3f81e39aed920224e0f055cf89",
+    "src/09_render.js": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623",
+    "src/11p_layoutsC.js": "7eb5a88f97ee4e0c724e89fbcada4345a0741777d84d041d2f365b46cbda02e3",
+    "src/11z_layoutsC_transport.js": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+    "dev/avoidance/layouts-c-shadow-native-shoji.txt": "0e1411a8158dc63939361ab0d36e99cd7bb4a5798e5a8ffa76e7032cc53b394c",
+    "dev/avoidance/layouts-c-shadow-native-placement.txt": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a",
+    "dev/avoidance/layouts-c-shadow-output-node.cjs": "84a001710a90c39a4bece3a27cb0e7bfc3be12022037e40b4b4c952cb5c68323"
+  },
+  "scope": "Pure Node fake metrics/canvas; private finalization gate modelled identically for exact f828 and after controls. No build/browser/real pixels/fonts/timing."
+}

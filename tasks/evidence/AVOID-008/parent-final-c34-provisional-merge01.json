@@ -1,0 +1,68 @@
+{
+  "task": "AVOID-008",
+  "reviewer": "parent",
+  "reviewedUTC": "2026-10-22T22:40:03.987460+00:00",
+  "result": "PROVISIONAL_OLD_SHADOW_MERGE_PROVEN_NOT_ACCEPTED_PRODUCT",
+  "sourceCommit": "2215b51efdee86310be41d64f6c0ce573eca074e",
+  "parentIndependentInverseHunks": [
+    {
+      "path": "src/09_render.js",
+      "sha256": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623",
+      "removeCacheHangHunks": 0,
+      "removeShadowHunks": 3,
+      "bothExact": true
+    },
+    {
+      "path": "src/09a_placement.js",
+      "sha256": "8742ba1434b8f1d3101efa5b8385eaec11ba365963d32ee9c71ff1418a0b116b",
+      "removeCacheHangHunks": 3,
+      "removeShadowHunks": 6,
+      "bothExact": true
+    },
+    {
+      "path": "src/09g_layoutsC_placement.js",
+      "sha256": "b645d5f39c72b88ad99e83cfb1eac455d4a5abdb5402180bbe08f8ce0da84b39",
+      "removeCacheHangHunks": 1,
+      "removeShadowHunks": 3,
+      "bothExact": true
+    },
+    {
+      "path": "src/09j_layoutsC_japanese.js",
+      "sha256": "f428c45a10d238a049c4f41e2bd40f0b580585960f82f622e1a98453180d8194",
+      "removeCacheHangHunks": 3,
+      "removeShadowHunks": 4,
+      "bothExact": true
+    },
+    {
+      "path": "src/11p_layoutsC.js",
+      "sha256": "2229f1cb916d73e730beeef494c3ee77411bfffbb2ea64eb173111cc4d2a4b17",
+      "removeCacheHangHunks": 10,
+      "removeShadowHunks": 4,
+      "bothExact": true
+    }
+  ],
+  "inverseMethod": "Exact base/donor edits reversed against actual combinedGit bytes with only matching equal-line context; both outputs equal full donor bytes.",
+  "otherSourceExactBase": 79,
+  "compiled": {
+    "index.html": {
+      "sha256": "2a5db6df0f2ef82a7f91918afa9c6f85f8c9e0c4821999c862a1be5b42700174",
+      "all84TransformedBundleSHA256": "5fd24c1bc99ace6cd172fb6d04ee0dd1f892c3e3644f14a831dffeb068750a25",
+      "bundleCount": 1,
+      "fiveChangedModulesExactOnce": true
+    },
+    "en/index.html": {
+      "sha256": "f4403942f8a541b05725045060160102dca5efc6e46fa633b48b871771a5b89b",
+      "all84TransformedBundleSHA256": "135a750b121c7ff2edd4a68ca82202307aae221ee812a6858ef838f58aa86cff",
+      "bundleCount": 1,
+      "fiveChangedModulesExactOnce": true
+    }
+  },
+  "bundleQualification": "All84 rebuilt in memory with actual build.py English localization/injection and preview-image replacement; all84 raw modules individually embedded is NOT claimed. No build/output mutation.",
+  "harnessAdaptation": {
+    "originalSHA256": "2269618fd6b8ba8b36cddd03d67efceed7a4fc749932d7ba441aef506455f906",
+    "newSHA256": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+    "exactOnlyInsertion": "if(c.layout==='shoji'&&c.params?.variant==='shadow')env.placementOutputDomain=J.placement.layoutsCShadowOutputDomain(renderer,env,true);",
+    "scope": "Post-timing native font audit only; corpus/timers/assertions intact, virtual non-replay domain. Runner not connected."
+  },
+  "unresolved": "Old be15pixelFAIL retained. Replacement source, joint correctness/coverage/speed,22core jobs and4humancompositions pending. No browser/performance/public runs authorized by this receipt."
+}

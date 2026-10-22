@@ -1,0 +1,86 @@
+{
+  "status": "FAIL; no retry",
+  "sourceCheckpoint": "e1e2bfb",
+  "reportSHA256": "b8b282cafb09044dd8caba16ec9c693505db1ebc844b685f0c458751eaf505b3",
+  "driverSHA256": "5fcbb60b26d04c3147af842f1d4b730af59dd8308dd5c93341f3d0096f207ecf",
+  "sourceStartEndEqual": true,
+  "sourcePins": 294,
+  "error": {
+    "message": "page.evaluate: Error: native/staged actual RGBA mismatch\n    at check (eval at evaluate (:311:30), <anonymous>:1:228)\n    at eval (eval at evaluate (:311:30), <anonymous>:3:1811)\n    at async <anonymous>:337:30",
+    "stack": "page.evaluate: Error: native/staged actual RGBA mismatch\n    at check (eval at evaluate (:311:30), <anonymous>:1:228)\n    at eval (eval at evaluate (:311:30), <anonymous>:3:1811)\n    at async <anonymous>:337:30\n    at /workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-browser.cjs:23:457"
+  },
+  "journalCompletedPairs": [
+    {
+      "locale": "ja",
+      "fontDomain": "japanese8",
+      "spec": {
+        "layout": "shoji",
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ Hello 123",
+        "params": {
+          "variant": "shadow",
+          "font": "mincho",
+          "rows": 6,
+          "cols": 3
+        },
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "time": 0.04,
+      "fast": false,
+      "before": "11283ef755895422e6f28b93f3d78cad7539891cf2893c9fdccefb923c5bf70b",
+      "after": "11283ef755895422e6f28b93f3d78cad7539891cf2893c9fdccefb923c5bf70b",
+      "equal": true
+    },
+    {
+      "locale": "ja",
+      "fontDomain": "japanese8",
+      "spec": {
+        "layout": "shoji",
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ Hello 123",
+        "params": {
+          "variant": "shadow",
+          "font": "mincho",
+          "rows": 6,
+          "cols": 3
+        },
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "time": 0.3,
+      "fast": false,
+      "before": "fb4517f61525cd96182015738fce5753b7e9d1f0560f091c45fde6f09cff3a46",
+      "after": "fb4517f61525cd96182015738fce5753b7e9d1f0560f091c45fde6f09cff3a46",
+      "equal": true
+    }
+  ],
+  "firstMismatchInferredFromOrderedLoop": {
+    "locale": "ja",
+    "domain": "japanese8",
+    "W": 960,
+    "H": 540,
+    "text": "風の先へ Hello 123",
+    "font": "mincho",
+    "rows": 6,
+    "cols": 3,
+    "fast": false,
+    "time": 0.6,
+    "qualification": "failure frame exact buffers/hashes were not persisted before assertion; time inferred from unchanged sequential loop and2 completed records"
+  },
+  "completedCases": 0,
+  "pngCount": 0,
+  "originalPerformanceCasesReached": false,
+  "cleanup": {
+    "ownedAtClose": 9,
+    "remaining": 0,
+    "signals": [],
+    "closeErrors": [],
+    "serverClosed": true
+  },
+  "scope": "Same-new-source native Cfalse/staged Ctrue actual RGBA mismatch; not actual full f828 pixel baseline. Typeface preflight passed; no transport/browser qualification or full120/visual/performance PASS."
+}

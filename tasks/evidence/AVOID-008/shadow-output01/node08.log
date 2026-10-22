@@ -1,0 +1,38 @@
+{"study":12,"segments":180,"positives":13,"negatives":8}
+node:assert:604
+    throw err;
+    ^
+
+AssertionError [ERR_ASSERTION]: The error is expected to be an instance of "TypeError". Received an error with identical name but a different prototype.
+
+Error message:
+
+Cannot assign to read only property '0' of object '[object Array]'
+    at readonlyNegative (/workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-output-node.cjs:39:41)
+    at Object.<anonymous> (/workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-output-node.cjs:53:255)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: TypeError: Cannot assign to read only property '0' of object '[object Array]'
+      at Array.splice (<anonymous>)
+      at /workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-output-node.cjs:53:313
+      at getActual (node:assert:611:5)
+      at strict.throws (node:assert:759:24)
+      at readonlyNegative (/workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-output-node.cjs:39:41)
+      at Object.<anonymous> (/workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-output-node.cjs:53:255)
+      at Module._compile (node:internal/modules/cjs/loader:1872:14)
+      at Object..js (node:internal/modules/cjs/loader:2003:10)
+      at Module.load (node:internal/modules/cjs/loader:1594:32)
+      at Module._load (node:internal/modules/cjs/loader:1396:12),
+  expected: [Function: TypeError],
+  operator: 'throws',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

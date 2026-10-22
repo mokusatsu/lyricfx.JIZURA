@@ -56,7 +56,7 @@
 | AVOID-016 | 書き出し・MCP・AE capabilityの統合 | 未着手 | AVOID-015 | [詳細](AVOID-016.md) |
 | AVOID-017 | 全体検証・文書更新・新方式の有効化判定 | 未着手 | AVOID-016 | [詳細](AVOID-017.md) |
 
-2026-10-23 JST 現在: 008の34 sourceは便箋/Posterを含め親受入し`f828ff2`までpush済み。隔離cache/decoderは正確性を通過したが、速度は未達（最新100単点ON2.996倍/描画+5.4ms、OFF2.353倍）。元corpusはshadow障子・hang値札で94/100 staged、C観測76/80となり正式全経路条件も未達。入力乱数の比較fixture修正は元raw一致で親受入、旧FAILを保持。依存表現のmap依存欠落FAILを再現し、厳格guard修正は親pure再実行まで受入（browser/速度は未確認）。hang値札は日英28条件/663native組・独立視覚を経てmain限定結合、固定横移動で人間不要。cache03は40組/25負例のbrowser正確性も親受入だが速度は未再計測、shadow障子はnarrow conflict-only経路を実装中。未達cacheはmain未結合、全体回帰と必要4例の人間動作確認も未完。34登録は34完成ではない。008実装中/009以降未着手、公開結果確認は恒久停止。[最新の親記録](evidence/AVOID-008/parent-cache-decoder01-review.json)。
+2026-10-23 JST 現在: 008の34 sourceは便箋/Posterを含め親受入し`f828ff2`までpush済み。隔離cache/decoderは正確性を通過したが、速度は未達（最新100単点ON2.996倍/描画+5.4ms、OFF2.353倍）。元corpusはshadow障子・hang値札で94/100 staged、C観測76/80となり正式全経路条件も未達。入力乱数の比較fixture修正は元raw一致で親受入、旧FAILを保持。依存表現のmap依存欠落FAILを再現し、厳格guard修正は親pure再実行まで受入（browser/速度は未確認）。hang値札は日英28条件/663native組・独立視覚を経てmain限定結合、固定横移動で人間不要。cache03は40組/25負例のbrowser正確性も親受入だが速度は未再計測、shadow障子はnative camera root修正後、日英120実RGBA組/40guard/字体cmapが通過し親受入（typed不足のみ、main未結合）。未達cacheはmain未結合、全体回帰と必要4例の人間動作確認も未完。34登録は34完成ではない。008実装中/009以降未着手、公開結果確認は恒久停止。[最新の親記録](evidence/AVOID-008/parent-cache-decoder01-review.json)。
 
 2026-10-19: AVOID-005はStack修正版へのOKと親の根拠付き完了判定を記録済み。006の拡張A26IDは指定モデルの実装と親レビュー・ローカル/公開比較検証を完了し、H01〜H03の動作確認を待つ。007以降は未着手。
 

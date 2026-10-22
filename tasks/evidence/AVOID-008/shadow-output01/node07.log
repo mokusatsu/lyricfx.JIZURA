@@ -1,0 +1,29 @@
+{"study":0,"segments":0,"positives":0,"negatives":0}
+node:assert:152
+  throw new AssertionError(obj);
+  ^
+
+AssertionError [ERR_ASSERTION]: [{"cut":0,"code":"SHADOW_OUTPUT_PROGRAM","details":"External objects cannot enter the frozen native snapshot","safety":"unsupported"}]
++ actual - expected
+
++ 'SHADOW_OUTPUT_PROGRAM'
+- 'STAGED_C_ADAPTER'
+
+    at finalize (/workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-output-node.cjs:38:155)
+    at Object.<anonymous> (/workspace/avoid008-shadow/dev/avoidance/layouts-c-shadow-output-node.cjs:42:154)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'SHADOW_OUTPUT_PROGRAM',
+  expected: 'STAGED_C_ADAPTER',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.19.0
