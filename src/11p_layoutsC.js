@@ -3197,7 +3197,9 @@ reg('nameTag', {
     const nativeBW = port ? W * 0.86 : Math.min(W * 0.62, H * 1.2), measure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.badgeMeasure ?? 1 : 1, bw = nativeBW * objectScale * measure, bh = nativeBW * objectScale * (p.variant === 'hello' ? 0.66 : 0.56);
     const q = E.outBack(e, 1.6);
     const rot = p.tilt * q + (1 - q) * -25 + eo * 18;
-    const cx = W / 2 + eo * W * 0.1, cy = H / 2 + (1 - q) * -H * 0.35 + eo * H * 0.5;
+    const across=env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.exitAxis==='across', exitDX=across?H*.5:W*.1,exitDY=across?W*.1:H*.5;
+    const cx = W / 2 + eo * exitDX, cy = H / 2 + (1 - q) * -H * 0.35 + eo * exitDY;
+    if(env.cut.placementLayoutsC)env.placementCBody={kind:'name-badge',pivot:[W/2,H/2],angle:p.tilt,turn:env.cut.outDur>0?18:0,dx:env.cut.outDur>0?exitDX:0,dy:env.cut.outDur>0?exitDY:0,minYScale:1,maxEntryScale:1,entryEnd:env.cut.start+.5,exitStart:env.cut.outDur>0?env.cut.end-env.cut.outDur:Number.MAX_VALUE};
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG);
     const x0 = -bw / 2, y0 = -bh / 2, r = bh * 0.08;
     shadowR(env, x0, y0, bw, bh, r, a, u * 0.014);
@@ -3209,7 +3211,7 @@ reg('nameTag', {
       const hc = onCol(sc, bandC);
       env.draw({ text: 'HELLO', font: 'gothic_black', size: hh * 0.52, track: 0.08, x: 0, y: y0 + hh * 0.4, color: hc, alpha: a, ghost: false });
       env.draw({ text: 'my name is', font: bodyF(env), size: hh * 0.2, track: 0.15, x: 0, y: y0 + hh * 0.82, color: hc, alpha: a, ghost: false });
-      const fb = fitBlock(t0, p.font, bw * 0.84, bh * 0.46, { lead: 1.05 }, 2);
+      const fb = fitBlock(t0, p.font, bw * 0.84, bh * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .56 : .46), { lead: 1.05 }, 2);
       const size = Math.min(fb.size, bh * 0.36);
       bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.045,x1:x0+bw*.955,y0:y0+bh*.3,y1:y0+bh*.88}} : {}), text: fb.text, font: p.font, size, x: 0, y: y0 + hh + bh * 0.29, lead: 1.05, rot: -2, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     } else {
@@ -3223,7 +3225,7 @@ reg('nameTag', {
       env.line([[x0 + bw * 0.06, fy + bh * 0.09], [x0 + bw * 0.94, fy + bh * 0.09]], bandC, Math.max(2, u * 0.003), a, false);
       env.draw({ text: 'なまえ', font: bodyF(env), size: bh * 0.07, align: 'left', x: x0 + bw * 0.08, y: fy + bh * 0.19, color: bandC, alpha: a, ghost: false });
       env.circle(x0 + bw * 0.88, y0 + bh * 0.2, bh * 0.08, bandC, null, 0, a, false);
-      const fb = fitBlock(t0, p.font, bw * 0.84, bh * 0.44, { lead: 1.05 }, 2);
+      const fb = fitBlock(t0, p.font, bw * 0.84, bh * (env.cut.placementLayoutsC&&env.cut.layoutCRecipe?.writingMeasure ? .56 : .44), { lead: 1.05 }, 2);
       const size = Math.min(fb.size, bh * 0.34);
       bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:x0+bw*.06,x1:x0+bw*.94,y0:y0+bh*.4,y1:y0+bh*.96}} : {}), text: fb.text, font: p.font, size, x: 0, y: y0 + bh * 0.66, lead: 1.05, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
     }
@@ -3285,7 +3287,7 @@ reg('stickyNotes', {
       const tc = onCol(sc, col);
       const rot = p.rots[i % 4] + peel * 25 * (i % 2 ? 1 : -1);
       const priorCBody=env.placementCBody;
-      if(env.cut.placementLayoutsC)env.placementCBody={kind:'sticky-note',pivot:[x,y-ns/2],angle:p.rots[i%4],turn:25*(i%2?1:-1),dx:0,dy:H*.3,minYScale:.7,maxEntryScale:1.18};
+      if(env.cut.placementLayoutsC)env.placementCBody={kind:'sticky-note',pivot:[x,y-ns/2],angle:p.rots[i%4],turn:env.cut.outDur>0?25*(i%2?1:-1):0,dx:0,dy:env.cut.outDur>0?H*.3:0,minYScale:env.cut.outDur>0?.7:1,maxEntryScale:1.18,entryEnd:env.cut.start+t1+.22,exitStart:env.cut.outDur>0?env.cut.end-env.cut.outDur+env.cut.outDur*i*.1/1.3:Number.MAX_VALUE};
       ctx.save(); ctx.translate(x, y - ns / 2 + peel * H * 0.3); ctx.rotate(rot * J.DEG); ctx.scale(sq, sq * (1 - peel * 0.3)); ctx.translate(0, ns / 2);
       const hs = ns / 2;
       // curled-corner shadow + note

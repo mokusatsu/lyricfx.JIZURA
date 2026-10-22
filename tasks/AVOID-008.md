@@ -7,6 +7,9 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- 最新の共有・付箋checkpointは[freeze02](evidence/AVOID-008/shared-sticky-freeze02/manifest.json)。親がraw/gzip113件・結果のsource pins120件と実結果を独立照合し、registryの型/region/hold検証、CSSの実px抽出、付箋の各note別入退場判定を受入れた。[親記録](evidence/AVOID-008/parent-shared-sticky-freeze02.json)。既受入preview02の全192 native frame bytesが一致し、同じMP4/PNGの独立視覚結果をcarryできる。この基盤・付箋限定の受入に追加の人間確認・公開は不要。名札の退場方向/文字領域recipeは同snapshot内の未受入試作であり、clapperと他31IDも最終対応完了には数えない。
+- 和風の試作は掛け軸・おみくじ・暖簾・提灯の4IDで検証中、残り7IDはそのcheckpointでは未実装。[親の幾何照合](evidence/AVOID-008/parent-japanese-checkpoint03.json)は掛け軸/提灯のsafe-hold6条件の円距離とstage包絡を独立再計算したもの。掛け軸の[独立視覚](evidence/AVOID-008/kake-visual01-review.md)はsingle-Notoの1fixture限定PASSで、正規のbrush字体・他variant・C34完了ではない。提灯01は光の上辺に新しい直線切断が見つかり修正中。先に静止するunitの期間を、後続unitの入場で一律緩和しない修正も各群へ返している。紙面/物体系も専用worktreeで実装・検証中。009以降には進んでいない。
+- 以下の「付箋試作中」「残り33ID pending」等は開始からの履歴であり、最新checkpointの受入範囲と区別する。C34全体の状態は引き続き実装中。
 - 指定担当gpt-6.1-sol / mediumへ008実装を依頼済み。初期inventoryは[evidence](evidence/AVOID-008/inventory-initial.json)。共有transportの親レビューは[transport05記録](evidence/AVOID-008/parent-transport05-review.json)で承認済み（その時点の共有基盤のみ）。native136/136・OFF34/34一致、40variantのraw145イベント／可視3,117,352画素の保守境界内包含を確認した。C34回避adapterの完了を意味しない。
 - 007の完了と008開始を2bb3f864b5d40361961d8ad2aabeec24bfb5d1cbへcommit/push済み。公開結果確認は実施していない。C固有の最初の付箋adapterを試作中。他33IDはC_RECIPE_PENDINGであり対応済みに数えない。付箋も全区間の根拠・negative・画像/動画照合・親最終レビューは未完。
 - [途中checkpoint01](evidence/AVOID-008/checkpoint01/snapshot.json)は共有transport、付箋の連続stage包絡修正、名札の試作を保存したもの。C34完了ではない。付箋preview01は独立視覚FAILを保持し、修正02で配置方向を選び直した。親がstage包絡10polygonの画面内保持、padding上の実描画22frameでstage外alpha画素0、日英buildのbyte冪等を確認した。修正02の最終視覚記録と他32ID、全体の回帰/性能等は未完。名札はstage proof未完の試作であり最終対応数に含めない。
