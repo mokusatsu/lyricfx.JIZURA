@@ -1,0 +1,120 @@
+{
+  "sourceCommit": "843f7b09f00a033c7ddd9120608949fe57f2bc20",
+  "sourceSHA256": "acd53f14e3ff03c8486d09ede3a579cd204d4a52317f3e6c992166204d2b87fc",
+  "JA": "01c9280a086705379db2927c0bac0d7d0dcc8b35d626585be4ac03a7fef92b53",
+  "EN": "b68d17bb6af7937f41b9fad8219561cdaa8355f9135df720e68b73535761919e",
+  "pins": 104,
+  "allLivePinsMatchStartAndEnd": true,
+  "normalPairs": 40,
+  "externalAdapters": 31,
+  "negativeCases": 25,
+  "nonCControls": 4,
+  "coldPlanningActualRecordCalls": 410,
+  "warmPlanningActualRecordCalls": 0,
+  "all40WholeResultHits": true,
+  "nativeFrames": {
+    "coldFrames": {
+      "actualFrameCallsRecorded": 18,
+      "actualObservationEntries": 15,
+      "errors": 0,
+      "pixelDigestsRecorded": 18,
+      "independentRecordCounter": null,
+      "independentReplayCounter": null,
+      "qualification": "Pixel/trace equality measured; render record/replay counters were not instrumented by this unchanged driver. Observations are not relabeled as replay counts."
+    },
+    "warmFrames": {
+      "actualFrameCallsRecorded": 18,
+      "actualObservationEntries": 15,
+      "errors": 0,
+      "pixelDigestsRecorded": 18,
+      "independentRecordCounter": null,
+      "independentReplayCounter": null,
+      "qualification": "Pixel/trace equality measured; render record/replay counters were not instrumented by this unchanged driver. Observations are not relabeled as replay counts."
+    }
+  },
+  "schemaBefore": 20,
+  "schemaAfter": 21,
+  "schemaSyntheticFinalizeCalls": 1,
+  "eviction": {
+    "hits": 0,
+    "misses": 40,
+    "stores": 40,
+    "bypasses": 0,
+    "evictions": 8,
+    "identityDrifts": 0,
+    "entries": 32,
+    "keySerializedBytes": 6901562,
+    "payloadSerializedBytes": 206042,
+    "managementBytes": 16384,
+    "lastAttemptKeyBytes": 215680,
+    "lastAttemptKeyResidentBytes": 427924,
+    "lastAttemptPayloadBytes": 6441,
+    "serializedBytes": 7123988,
+    "residentStringAndHeaderBytes": 14117544,
+    "maxEntries": 32,
+    "maxSerializedBytes": 134217728,
+    "maxResidentStringAndHeaderBytes": 134217728,
+    "entryHeaderBytes": 512,
+    "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+  },
+  "oversizeFixtures": [
+    {
+      "scope": "ASCII UTF16-only total overflow",
+      "characters": 37748736,
+      "charges": {
+        "keyUTF8": 37964451,
+        "keyUTF16": 75925406,
+        "payloadUTF8": 37755233,
+        "payloadUTF16": 75510242,
+        "header": 512,
+        "serialized": 75720196,
+        "resident": 151436160
+      },
+      "actualRecordCalls": 0,
+      "payloadGraphSHA256": "e9e0960900703bedbb213f4bfd22e4bd220c8052ab80309d0b849076552fcd52"
+    },
+    {
+      "scope": "CJK UTF8-only total overflow",
+      "characters": 26843546,
+      "charges": {
+        "keyUTF8": 80746353,
+        "keyUTF16": 54115026,
+        "payloadUTF8": 80537135,
+        "payloadUTF16": 53699862,
+        "header": 512,
+        "serialized": 161284000,
+        "resident": 107815400
+      },
+      "actualRecordCalls": 0,
+      "payloadGraphSHA256": "851eb095d4b39b9bc24b7a28849778f8c4f568e4e597a0d2c33b4cfdc5c8e18e"
+    }
+  ],
+  "verifiedActualPoolLedgerSnapshots": 110,
+  "comparedLeaves": 62676,
+  "actualKeyLedgerDifferences": 534,
+  "unexpectedSemanticDifferences": 0,
+  "safetyCounts": {
+    "insufficient-space": 20,
+    "certified-hold-adapter": 13,
+    "unsupported/preserved": 7
+  },
+  "cleanup": {
+    "ownRunnerPID": 335507,
+    "ownRunnerStillExists": false,
+    "runnerExitCode": 0,
+    "driverFinallyBrowserCloseReturned": true,
+    "driverFinallyServerCloseReturned": true,
+    "liveChromiumProcesses": [],
+    "zombieChromiumExcludedFromLive": 1437,
+    "timestampUTC": "2026-10-22T22:00:16.334519+00:00"
+  },
+  "disk": {
+    "beforeApproxMiB": 729,
+    "duringObservedApproxMiB": 719,
+    "afterAvailableBytes": 719302656,
+    "requiredReserveBytes": 262144000
+  },
+  "errors": [],
+  "changedInputs": [],
+  "qualification": "Correctness only, no speed/size1000/CDP/formal. Native frame counters distinct from observations. Original perf corpus94staged/76observations remains unresolved."
+}

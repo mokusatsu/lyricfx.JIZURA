@@ -1,0 +1,194 @@
+{
+  "passed": true,
+  "baseCommit": "a383e3ff6764b9dd5d4f175eecacaa2de04fc954",
+  "baseSHA256": "61351435c0a7a79c591961d6683b128f60df4966c92506b5272d21ba743cad4a",
+  "candidateSHA256": "acd53f14e3ff03c8486d09ede3a579cd204d4a52317f3e6c992166204d2b87fc",
+  "declaredSourceReverseExact": true,
+  "encoderDecoderInputPayloadCollectorUnchanged": true,
+  "capBytes": 134217728,
+  "entries": 32,
+  "headerBytes": 512,
+  "equivalenceCases": 258,
+  "distinctEligibleGraphKeys": 258,
+  "collisionDistinctionCases": 30,
+  "unsupportedAndCrossAlias": {
+    "rejected": 18,
+    "fontGetterCalls": 0
+  },
+  "priorRuntimeGuards": {
+    "cases": [
+      "JSON.stringify same behavior wrapper",
+      "Array.prototype.toJSON data",
+      "Array.prototype.toJSON accessor",
+      "Object.prototype.toJSON data",
+      "Object.prototype.toJSON accessor",
+      "nonordinary Array.prototype chain",
+      "JSON seam drift during arbitrary font graph read"
+    ],
+    "getterCalls": 0,
+    "initialReplacementWrapperCalls": 0,
+    "midFontDriftOldCodecWrapperCalls": 6
+  },
+  "completeCollector": {
+    "oldCompleteGraphExact": true,
+    "changesDistinguished": 15
+  },
+  "capturedNativeGuards": {
+    "cases": [
+      {
+        "name": "map dropping every row",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "map accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "Array constructor replacement",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "Array constructor accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "species getter returning own-toJSON carrier",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "species own-data constructor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "species same getter changed descriptor flags",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "getOwnPropertyDescriptor same behavior wrapper",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "getOwnPropertyDescriptor accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "getPrototypeOf same behavior wrapper",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "getPrototypeOf accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "hasOwn same behavior wrapper",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "hasOwn accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "is same behavior wrapper",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "is accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "isFinite same behavior wrapper",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "isFinite accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "stringify same behavior wrapper",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "stringify accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "global Object accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "global Array accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "global JSON accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      },
+      {
+        "name": "global Number accessor",
+        "rejected": true,
+        "message": "C cache dependency JSON seam"
+      }
+    ],
+    "changedCallbacksInvokedWithinEligibility": 0,
+    "changedGettersInvokedWithinEligibility": 0
+  },
+  "postFontDriftGuards": [
+    {
+      "key": "map",
+      "rejected": true,
+      "changed": true
+    },
+    {
+      "key": "constructor",
+      "rejected": true,
+      "changed": true
+    },
+    {
+      "rejected": true,
+      "changed": true
+    },
+    {
+      "key": "getOwnPropertyDescriptor",
+      "rejected": true,
+      "changed": true
+    },
+    {
+      "key": "getPrototypeOf",
+      "rejected": true,
+      "changed": true
+    }
+  ],
+  "fixedActualCollector": {
+    "oldGraphDiffers": true,
+    "firstRejected": true,
+    "secondRejected": true,
+    "noDependencyKeyReturned": true
+  },
+  "eligibleA383KeyByteCompatibility": 258,
+  "conservativeSmallCapGuard": true,
+  "allActualUTF8AndUTF16WithinConservativeBound": true,
+  "browserExecuted": false,
+  "timingExecuted": false
+}

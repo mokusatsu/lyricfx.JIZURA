@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "base09gSHA256": "4538ff06092b73661d668ef11297b86b697a5501b2f98d443c073b570d47081a",
+  "candidate09gSHA256": "61351435c0a7a79c591961d6683b128f60df4966c92506b5272d21ba743cad4a",
+  "onlyDeclaredDependencyRepresentationChanged": true,
+  "encoderDecoderInputPayloadUnchanged": true,
+  "capBytes": 134217728,
+  "entries": 32,
+  "headerBytes": 512,
+  "equivalenceCases": 258,
+  "distinctEligibleGraphKeys": 258,
+  "collisionDistinctionCases": 30,
+  "unsupportedAndCrossAlias": {
+    "rejected": 18,
+    "fontGetterCalls": 0
+  },
+  "runtimeGuards": {
+    "cases": [
+      "JSON.stringify same behavior wrapper",
+      "Array.prototype.toJSON data",
+      "Array.prototype.toJSON accessor",
+      "Object.prototype.toJSON data",
+      "Object.prototype.toJSON accessor",
+      "nonordinary Array.prototype chain",
+      "JSON seam drift during arbitrary font graph read"
+    ],
+    "getterCalls": 0,
+    "initialReplacementWrapperCalls": 0,
+    "midFontDriftOldCodecWrapperCalls": 6
+  },
+  "completeCollector": {
+    "oldCompleteGraphExact": true,
+    "changesDistinguished": 15
+  },
+  "conservativeSmallCapGuard": true,
+  "allActualUTF8AndUTF16WithinConservativeUpperBound": true,
+  "browserExecuted": false,
+  "timingExecuted": false
+}
