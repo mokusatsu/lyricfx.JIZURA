@@ -1,0 +1,38 @@
+{
+  "reviewedAtUTC": "2026-10-22T20:50:58.141344+00:00",
+  "candidateCommit": "778eb302b97ab84abe36206c163918335073acbd",
+  "candidateSHA256": "a509c6ca7318baa7ba27e720a9962d10daf4cb32d7a099b1a92cfab426d3a030",
+  "rawPath": "/workspace/avoid008-cache-final/tasks/evidence/AVOID-008/performance/final-c34-cache128-formal01/results.json",
+  "rawSHA256": "34ec11ec1fbcc04193c47f6244b37f61ebfc36c70cfac1dc4b94fc4948288f9c",
+  "rawBytes": 697644,
+  "pinsIndependentlyVerified": 117,
+  "sourceUnchanged": true,
+  "aloneMonitorNoForeignJobs": true,
+  "completed100Comparisons": [
+    {
+      "n": 100,
+      "on": true,
+      "inputParity": true,
+      "baselinePlanningP95Ms": 54.400000005960464,
+      "candidatePlanningP95Ms": 233.90000000596046,
+      "planningRatio": 4.2996323525796445,
+      "additionalRenderP95Ms": 4.600000008940697,
+      "candidateColdMs": 5424.4000000059605,
+      "allSixWarmHitsAndZeroActualRecords": true
+    },
+    {
+      "n": 100,
+      "on": false,
+      "inputParity": true,
+      "baselinePlanningP95Ms": 49,
+      "candidatePlanningP95Ms": 150.20000000298023,
+      "planningRatio": 3.0653061225098006,
+      "additionalRenderP95Ms": 0.7999999970197678,
+      "candidateColdMs": 170.19999998807907,
+      "allSixWarmHitsAndZeroActualRecords": true
+    }
+  ],
+  "executionLimit": "Baseline1000ON ran9planning points in stdout but failed fixture input-identity assertion before returning side result. Candidate1000ON/OFF and baseline1000OFF were not executed. formalExecuted:false is runner completion state, not evidence that no timing ran. Periteration normalized bytes/hashes of failing side were not persisted by original fixture; no exact mismatch field is known.",
+  "decision": "Reject performance acceptance. Independently completed100ON planning/render and100OFF planning exceed unchanged2x/+3ms limits. Baseline1000 input instability is a separate harness diagnosis, not a waiver of completed100 FAIL. Preserve raw and diagnose before boundedfix.",
+  "publicResultChecks": "Not performed; forbidden by user."
+}

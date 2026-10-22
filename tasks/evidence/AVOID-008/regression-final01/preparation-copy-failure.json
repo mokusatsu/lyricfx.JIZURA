@@ -1,0 +1,42 @@
+{
+  "scope": "Preparation-only failure and confined cleanup. No test/browser/build/Git/index jobs executed.",
+  "failure": "shutil.copytree followed existing scratch/regression01/dependencies/node_modules -> . self-link, recursively copied until ENOSPC.",
+  "boundedError": "copytree self-link recursion / Errno28 no space left; failed destination only regression-final01/common/dependencies.",
+  "correction": "Removed only that newly created failed-copy subtree. Replaced with two explicit package directory symlinks and nonrecursive real-file hash manifests. No package installation or originalpath mutation.",
+  "priorOriginalPackages": [
+    {
+      "name": "playwright",
+      "files": 62,
+      "allHashesEqualPriorImmutableDependency": true,
+      "actualRealPath": "/workspace/lyricfx.JIZURA/scratch/avoid008-regression01/dependencies/playwright",
+      "linkPath": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/regression-final01/common/dependencies/playwright"
+    },
+    {
+      "name": "playwright-core",
+      "files": 111,
+      "allHashesEqualPriorImmutableDependency": true,
+      "actualRealPath": "/workspace/lyricfx.JIZURA/scratch/avoid008-regression01/dependencies/playwright-core",
+      "linkPath": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/regression-final01/common/dependencies/playwright-core"
+    }
+  ],
+  "originalTestsUnchanged": [
+    "dev/lyric_test.js",
+    "dev/drawing_frames_test.cjs",
+    "dev/palette_stability_test.cjs",
+    "dev/cut_detail_audit_test.cjs",
+    "dev/effect_copy_fidelity_test.cjs",
+    "dev/lyric_area_effects_test.cjs",
+    "dev/lyric_compositing_test.cjs",
+    "dev/lyric_placement_stability_test.cjs",
+    "dev/lyric_avoid_center_test.cjs",
+    "dev/lyric_group_avoidance_test.cjs",
+    "dev/browser.cjs",
+    "dev/ui_helpers.cjs"
+  ],
+  "mainProductPinsStillEqualAcceptedPosterF828": 86,
+  "pycSHA256": "7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898",
+  "freeBytesAfterCorrection": 529743872,
+  "reserveMinimumBytes": 262144000,
+  "reserveSatisfied": true,
+  "noOriginalPathsModified": "Evidence: all173prior package hashes,12original test/helper hashes,86accepted main product hashes andpyc exact; failed destination confined to newly created D. No claim about unrelated parent docs."
+}

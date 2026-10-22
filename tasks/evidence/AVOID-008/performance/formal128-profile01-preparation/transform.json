@@ -1,0 +1,22 @@
+[
+  [
+    "let finalizeMs=0;",
+    "let finalizeMs=0,profileFinalizeStartMS=null;"
+  ],
+  [
+    "finalizeMs=performance.now()-f;",
+    "finalizeMs=performance.now()-f;profileFinalizeStartMS=f;"
+  ],
+  [
+    "planningCache:{source:sourceCache,finalization:finalizationCache}};parts.push(sample);",
+    "planningCache:{source:sourceCache,finalization:finalizationCache},profileTimeline:{sourceStartMS:t,sourceEndMS:t+sourceMs,finalizeStartMS:profileFinalizeStartMS,finalizeEndMS:profileFinalizeStartMS==null?null:profileFinalizeStartMS+finalizeMs}};parts.push(sample);"
+  ],
+  [
+    "ms:performance.now()-t,warmup:i<config.renderWarmup,error});",
+    "ms:performance.now()-t,warmup:i<config.renderWarmup,error,profileStartMS:t});"
+  ],
+  [
+    "   must(new Set(planHashes).size===1,'same input normalized differently across warmup/samples');",
+    "   must(new Set(planHashes).size===1,'same input normalized differently across warmup/samples');\n   window.CPerfProfileOutput={normalizedJSON:JSON.stringify(source),payloadGraph:window.CPerfProfileEncode({plan:final,originalCuts:JSON.parse(JSON.stringify(source.cuts))}),sourceRevision:J.metrics.revision,rootFrozen:Object.isFrozen(final),firstCutFrozen:Object.isFrozen(final.cuts[0])};"
+  ]
+]

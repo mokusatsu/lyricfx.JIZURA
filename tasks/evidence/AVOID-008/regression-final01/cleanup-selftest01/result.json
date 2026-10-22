@@ -1,0 +1,63 @@
+{
+  "status": "HARNESS_ONLY_PASS",
+  "timestamp": "2026-10-22T21:27:16.563014+00:00",
+  "scope": "Three synthetic normal/exception/timeout process-tree tests, detached child+grandchild and unrelated live sentinel. No browser/product/core22 tests executed. Signals and adopted-child reaping use identity-checked pidfd.",
+  "rows": [
+    {
+      "mode": "timeout",
+      "exitCode": 124,
+      "runnerError": "TIMEOUT0.6s",
+      "cleanupComplete": true,
+      "ownedCount": 3,
+      "detachedChildAndGrandchildReaped": true,
+      "unrelatedSentinelStillAlive": true,
+      "sentinelIdentity": {
+        "pid": 331574,
+        "startTicks": "8364615",
+        "ppid": 331570,
+        "pgid": 331574,
+        "session": 331574,
+        "state": "R"
+      },
+      "cleanupReceipt": "cleanup-selftest01/timeout/cleanup.json"
+    },
+    {
+      "mode": "exception",
+      "exitCode": 97,
+      "runnerError": "RuntimeError: SYNTHETIC_AFTER_LAUNCH_EXCEPTION",
+      "cleanupComplete": true,
+      "ownedCount": 3,
+      "detachedChildAndGrandchildReaped": true,
+      "unrelatedSentinelStillAlive": true,
+      "sentinelIdentity": {
+        "pid": 331574,
+        "startTicks": "8364615",
+        "ppid": 331570,
+        "pgid": 331574,
+        "session": 331574,
+        "state": "R"
+      },
+      "cleanupReceipt": "cleanup-selftest01/exception/cleanup.json"
+    },
+    {
+      "mode": "normal",
+      "exitCode": 0,
+      "runnerError": null,
+      "cleanupComplete": true,
+      "ownedCount": 3,
+      "detachedChildAndGrandchildReaped": true,
+      "unrelatedSentinelStillAlive": true,
+      "sentinelIdentity": {
+        "pid": 331574,
+        "startTicks": "8364615",
+        "ppid": 331570,
+        "pgid": 331574,
+        "session": 331574,
+        "state": "R"
+      },
+      "cleanupReceipt": "cleanup-selftest01/normal/cleanup.json"
+    }
+  ],
+  "coreJobsExecuted": 0,
+  "passed": true
+}

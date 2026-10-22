@@ -1,0 +1,98 @@
+diff --git a/src/09a_placement.js b/src/09a_placement.js
+index 1fa5977..50bbbe3 100644
+--- a/src/09a_placement.js
++++ b/src/09a_placement.js
+@@ -243,6 +243,8 @@ A.solve = (polygons,circle,W,H) => {
+ const signature=plan=>{const source={...plan};delete source.placementFinalization;source.cuts=plan.cuts.map(c=>{const n={...c};delete n.placementTrajectory;delete n.fullStagePlacement;delete n.placementUnits;delete n.placementGlyphs;delete n.placementLayoutsA;delete n.placementLayoutsB;delete n.placementLayoutsC;delete n.layoutCRecipe;delete n.layoutBRecipe;delete n.layoutBEvaluationRange;delete n.placementAdaptiveTrial;delete n.layoutARecipe;delete n.layoutAHoldRange;delete n.placementSelectionOrigin;return n;});return JSON.stringify(source);};
+ A.planSignature=signature;
+ const finalized=new WeakMap(),requests=new WeakMap(),sources=new WeakMap();
++let layoutsCFinalCache=null;
++A.installLayoutsCFinalCache=hooks=>{if(layoutsCFinalCache||!hooks||!['begin','read','keep'].every(k=>typeof hooks[k]==='function'))fail('INVALID_C_CACHE_HOOKS','Single C cache installation required');layoutsCFinalCache=Object.freeze({...hooks});delete A.installLayoutsCFinalCache;};
+ const oldPlan=J.plan;
+ J.plan=function(project,...args){const plan=oldPlan(project,...args),intrinsicScales={};for(const c of plan.cuts){const scale=J.areaIntrinsicScales?.get(c);if(c.suppressed&&scale!=null&&c.area&&c.areaMode==='auto'){intrinsicScales[c.index]={observed:c.contentScale,scale};}}sources.set(plan,{locked:plan.cuts.filter(c=>project.overrides?.[c.line]?.lock).map(c=>c.index),intrinsicScales,layoutOrigins:Object.fromEntries(plan.cuts.map(c=>[c.index,{layout:c.layout,kind:project.overrides?.[c.line]?.layout||Object.hasOwn(project.lyricCutOptions?.[`${c.line}:${c.part}`]?.details||{},'layout')?'explicit':'automatic'}])),explicitSizes:plan.cuts.filter(c=>c.lyricSize!=null||Object.hasOwn(project.lyricCutOptions?.[`${c.line}:${c.part}`]?.details||{},'contentScale')).map(c=>c.index)});return plan;};
+ const freeze=value=>{if(value&&typeof value==='object'&&!Object.isFrozen(value)){Object.values(value).forEach(freeze);Object.freeze(value);}return value;};
+@@ -254,7 +256,9 @@ J.finalizePlacementPlan = (input,options={}) => {
+   if(optionsCacheable&&prior?.signature===sig&&prior.revision===revision&&prior.options===JSON.stringify(options))return input;
+   if(!Number.isFinite(input.duration))fail('FINAL_DURATION_REQUIRED','Final composed duration required');
+   if(!sources.has(input))fail('SOURCE_PLAN_REQUIRED','Finalize an actual composed J.plan result; serialized clones require replanning from project');
+-  const lineage=sources.get(input),plan=jsonClone(input);delete plan.placementFinalization;
++  const lineage=sources.get(input),cCache=layoutsCFinalCache?.begin(input,options,lineage),cPrior=layoutsCFinalCache?.read(cCache);
++  if(cPrior){const cached=cPrior.plan;finalized.set(cached,{signature:signature(cached),revision,options:optionsCacheable?JSON.stringify(options):null});sources.set(cached,{...lineage,originalCuts:cPrior.originalCuts});return freeze(cached);}
++  const plan=jsonClone(input);delete plan.placementFinalization;
+   if(lineage.originalCuts)plan.cuts=jsonClone(lineage.originalCuts);
+   const originalCuts=jsonClone(plan.cuts);
+   const diagnostics=[],stepDur=J.stepDur(plan.fx,plan.fps),maxSupportedTransDur=.6,maxStep=1;
+@@ -302,6 +306,7 @@ J.finalizePlacementPlan = (input,options={}) => {
+     diagnostics.push({cut:cut.index,code:'STAGED_ADAPTER',measurement:'supported',safety:cut.placementTrajectory.safety});
+   }
+   plan.placementFinalization={version:1,revision,diagnostics,duration:plan.duration};
++  layoutsCFinalCache?.keep(cCache,{plan,originalCuts});
+   finalized.set(plan,{signature:signature(plan),revision,options:optionsCacheable?JSON.stringify(options):null});sources.set(plan,{...lineage,originalCuts});return freeze(plan);
+ };
+ J.finalizePlacementPlanAsync = async (plan,wait,options={}) => {const token={},sig=signature(plan);requests.set(plan,token);await wait; if(requests.get(plan)!==token||signature(plan)!==sig)fail('STALE_FINALIZATION','A newer request or composed plan superseded this result');return J.finalizePlacementPlan(plan,options);};
+diff --git a/src/09g_layoutsC_placement.js b/src/09g_layoutsC_placement.js
+index 687e826..d912c7d 100644
+--- a/src/09g_layoutsC_placement.js
++++ b/src/09g_layoutsC_placement.js
+@@ -5,6 +5,61 @@
+ const A=J.placement,fail=(code,message)=>{const e=new Error(message);e.code=code;throw e;};
+ A.layoutsC34=['magazine','headlineDeck','contents','footnote','proofread','numbered','poster','swissGrid','dictionary','ema','ransom','newspaper','vinyl','cassette','bookSpine','polaroid','stampSheet','postcard','letterPaper','calendar','chochin','routeMap','stationSign','noren','tanzaku','omikuji','kakejiku','shoji','clapper','warningLabel','priceTag','nameTag','stickyNotes','karuta'];
+ const externalAdapters=new Map();
++// Whole-C-finalization exact reuse. No geometry/quality/search operation changes.
++// One shared input key per finalization, never one whole-plan key per cut.
++const completedPool=new Map(),cacheIDs=new WeakMap();let nextCacheID=1;
++const CACHE_ENTRIES=32,CACHE_BYTES=16*1024*1024,CACHE_HEADER=512;
++let cacheBytes=0,cacheResidentBytes=0,lastKeyBytes=0,lastKeyResidentBytes=0,lastPayloadBytes=0,cacheCounters={hits:0,misses:0,stores:0,bypasses:0,evictions:0,identityDrifts:0};
++const cacheID=v=>{if(!cacheIDs.has(v))cacheIDs.set(v,nextCacheID++);return cacheIDs.get(v);};
++// Exact plain data only: undefined/-0/null prototypes/ordered own properties
++// survive. Accessors, symbols, sparse arrays, opaque objects and cycles bypass.
++function cacheEncode(value){
++ const active=new WeakSet(),objectIDs=new WeakMap(),nodes=[];let encodedChars=0;
++ const visit=v=>{
++  if(v===undefined)return ['u'];if(v===null)return ['n'];
++  if(typeof v==='number'){if(!Number.isFinite(v))throw Error('nonfinite cache data');return ['d',Object.is(v,-0)?'-0':v];}
++  if(typeof v==='string'&&v.length*2>CACHE_BYTES)throw Error('oversized cache string');if(typeof v==='string'||typeof v==='boolean')return [typeof v==='string'?'s':'b',v];
++  if(typeof v!=='object'||active.has(v)||Object.getOwnPropertySymbols(v).length)throw Error('opaque cache data');if(objectIDs.has(v))return ['r',objectIDs.get(v)];
++  const objectID=nodes.length;objectIDs.set(v,objectID);nodes.push(null);
++  const array=Array.isArray(v),proto=Object.getPrototypeOf(v),keys=Object.getOwnPropertyNames(v);
++  if(array?(proto!==Array.prototype||keys.length!==v.length+1||keys.some(k=>k!=='length'&&(!/^(0|[1-9]\d*)$/.test(k)||+k>=v.length))):(proto!==Object.prototype&&proto!==null))throw Error('opaque cache prototype');
++  active.add(v);const data=[];for(const k of keys){if(array&&k==='length')continue;const d=Object.getOwnPropertyDescriptor(v,k);if(!d||!Object.hasOwn(d,'value')||!d.enumerable)throw Error('cache accessor');data.push(array?visit(d.value):[k,visit(d.value)]);}active.delete(v);
++  const node=[array?'a':proto===null?'z':'o',data],key=JSON.stringify(node);encodedChars+=key.length+1;if(encodedChars*2>CACHE_BYTES)throw Error('oversized cache encoding');nodes[objectID]=node;return ['r',objectID];
++ };
++ const root=visit(value);return JSON.stringify({codec:'C008-exact-graph-v1',root,nodes});
++}
++function cacheDecode(text){
++ const packed=JSON.parse(text);if(packed.codec!=='C008-exact-graph-v1')throw Error('C cache codec');const memo=[];
++ const visit=v=>{switch(v[0]){case'u':return undefined;case'n':return null;case'd':return v[1]==='-0'?-0:v[1];case's':case'b':return v[1];case'r':{if(memo[v[1]])return memo[v[1]];const [kind,data]=packed.nodes[v[1]],out=kind==='a'?[]:kind==='z'?Object.create(null):{};memo[v[1]]=out;for(const [i,child]of data.entries()){const k=kind==='a'?String(i):child[0],value=visit(kind==='a'?child:child[1]);Object.defineProperty(out,k,{value,enumerable:true,writable:true,configurable:true});}return out;}default:throw Error('C cache tag');}};
++ return visit(packed.root);
++}
++function cacheDependencies(){
++ if(typeof document==='undefined'||document.fonts.status!=='loaded')throw Error('C cache fonts not loaded');
++ const faces=Array.from(document.fonts);if(faces.length>128||faces.some(f=>f.status!=='loaded'))throw Error('C cache font domain');
++ const seams=[],seen=new WeakSet(),walk=(obj,path,depth)=>{if(!obj||seen.has(obj))return;seen.add(obj);for(const key of Object.getOwnPropertyNames(obj).sort()){if(['caller','callee','arguments'].includes(key))continue;const d=Object.getOwnPropertyDescriptor(obj,key);if(!d||!Object.hasOwn(d,'value')){seams.push([path+'.'+key,'accessor',d?.get?cacheID(d.get):null,d?.set?cacheID(d.set):null]);continue;}const v=d.value;if(typeof v==='function')seams.push([path+'.'+key,cacheID(v)]);else if(v===null||typeof v!=='object')seams.push([path+'.'+key,'data',v]);else if(depth&&(Object.getPrototypeOf(v)===Object.prototype||Array.isArray(v)))walk(v,path+'.'+key,depth-1);}};
++ // All public placement/editorial/object helpers, easing/metrics/glyph methods
++ // and registered native layouts participate, plus every root J function.
++ walk(J,'J',0);walk(A,'placement',4);walk(J.E,'E',4);walk(J.metrics,'metrics',2);walk(J.glyphs,'glyphs',2);walk(J.Renderer.prototype,'Renderer',2);walk(J.LAYOUTS,'layouts',2);for(const [name,obj]of [['Math',Math],['JSON',JSON],['Object',Object],['Array',Array.prototype],['String',String.prototype],['Number',Number.prototype],['Map',Map.prototype],['Set',Set.prototype],['TextEncoder',TextEncoder.prototype]])walk(obj,'intrinsic.'+name,0);for(const name of ['CanvasRenderingContext2D','TextMetrics','FontFace']){const ctor=globalThis[name];if(typeof ctor==='function'){seams.push(['global.'+name,cacheID(ctor)]);walk(ctor.prototype,name+'.prototype',1);}}
++ const fontGetter=Object.getOwnPropertyDescriptor(document,'fonts')||Object.getOwnPropertyDescriptor(Document.prototype,'fonts');const fontSetAccessor={get:fontGetter?.get?cacheID(fontGetter.get):null,set:fontGetter?.set?cacheID(fontGetter.set):null};
++ const measurement=A.measurementContext(),measurementOwnSeams=[];for(const key of Object.getOwnPropertyNames(measurement).sort()){const d=Object.getOwnPropertyDescriptor(measurement,key);if(typeof d?.value==='function')measurementOwnSeams.push([key,'function',cacheID(d.value)]);else if(d?.get||d?.set)measurementOwnSeams.push([key,'accessor',d.get?cacheID(d.get):null,d.set?cacheID(d.set):null]);}
++ const adapters=Array.from(externalAdapters,([id,a])=>[id,a.id,cacheID(a.finalize),cacheID(a.render)]);
++ return cacheEncode({version:'C008-completed-v1',revision:J.metrics.revision,language:J.lang,fonts:J.FONTS,fontSetIdentity:cacheID(document.fonts),fontSetAccessor,measurementContextIdentity:cacheID(measurement),measurementOwnSeams,devicePixelRatio:globalThis.devicePixelRatio,faces:faces.map(f=>({identity:cacheID(f),family:f.family,style:f.style,weight:f.weight,stretch:f.stretch,unicodeRange:f.unicodeRange,status:f.status,featureSettings:f.featureSettings,variationSettings:f.variationSettings,display:f.display,ascentOverride:f.ascentOverride,descentOverride:f.descentOverride,lineGapOverride:f.lineGapOverride})),seams,adapters});
++}
++A.clearLayoutsCFinalCache=()=>{completedPool.clear();cacheBytes=cacheResidentBytes=lastKeyBytes=lastKeyResidentBytes=lastPayloadBytes=0;cacheCounters={hits:0,misses:0,stores:0,bypasses:0,evictions:0,identityDrifts:0};};
++A.layoutsCFinalCacheStats=()=>({...cacheCounters,entries:completedPool.size,keySerializedBytes:Array.from(completedPool.values()).reduce((n,e)=>n+e.keyBytes,0),payloadSerializedBytes:Array.from(completedPool.values()).reduce((n,e)=>n+e.payloadBytes,0),managementBytes:completedPool.size*CACHE_HEADER,lastAttemptKeyBytes:lastKeyBytes,lastAttemptKeyResidentBytes:lastKeyResidentBytes,lastAttemptPayloadBytes:lastPayloadBytes,serializedBytes:cacheBytes,residentStringAndHeaderBytes:cacheResidentBytes,maxEntries:CACHE_ENTRIES,maxSerializedBytes:CACHE_BYTES,maxResidentStringAndHeaderBytes:CACHE_BYTES,entryHeaderBytes:CACHE_HEADER,scope:'whole exact C finalization; hits do not reconstruct or claim candidate work'});
++const beginFinalCache=(input,options,lineage)=>{
++ if(options.layoutsC!==true||options.layoutsA===true||options.layoutsB===true)return null;
++ try{const dependencies=cacheDependencies(),inputKey=cacheEncode({input,options,lineage}),key=dependencies+'\n'+inputKey,bytes=new TextEncoder().encode(key).length+CACHE_HEADER,resident=key.length*2+CACHE_HEADER;lastKeyBytes=bytes-CACHE_HEADER;lastKeyResidentBytes=key.length*2;lastPayloadBytes=0;if(bytes>CACHE_BYTES||resident>CACHE_BYTES)throw Error('C cache oversized key');return {key,dependencies,inputKey,input,options,lineage};}catch{cacheCounters.bypasses++;return null;}
++};
++function verifyCacheContext(context){return cacheDependencies()===context.dependencies&&cacheEncode({input:context.input,options:context.options,lineage:context.lineage})===context.inputKey;}
++const readFinalCache=context=>{
++ if(!context)return null;const entry=completedPool.get(context.key);if(!entry){cacheCounters.misses++;return null;}
++ try{if(!verifyCacheContext(context))throw Error('C cache dependency drift');const result=cacheDecode(entry.payload);completedPool.delete(context.key);completedPool.set(context.key,entry);cacheCounters.hits++;return result;}catch{cacheCounters.identityDrifts++;cacheCounters.bypasses++;return null;}
++};
++const keepFinalCache=(context,result)=>{
++ if(!context)return;try{if(!verifyCacheContext(context)){cacheCounters.identityDrifts++;throw Error('C cache dependency drift');}const payload=cacheEncode(result),keyBytes=new TextEncoder().encode(context.key).length,payloadBytes=new TextEncoder().encode(payload).length,bytes=keyBytes+payloadBytes+CACHE_HEADER,resident=(context.key.length+payload.length)*2+CACHE_HEADER;lastKeyBytes=keyBytes;lastPayloadBytes=payloadBytes;if(bytes>CACHE_BYTES||resident>CACHE_BYTES)throw Error('C cache oversized result');const prior=completedPool.get(context.key);if(prior){cacheBytes-=prior.bytes;cacheResidentBytes-=prior.resident;completedPool.delete(context.key);}while(completedPool.size>=CACHE_ENTRIES||cacheBytes+bytes>CACHE_BYTES||cacheResidentBytes+resident>CACHE_BYTES){const [key,old]=completedPool.entries().next().value;completedPool.delete(key);cacheBytes-=old.bytes;cacheResidentBytes-=old.resident;cacheCounters.evictions++;}completedPool.set(context.key,Object.freeze({payload,keyBytes,payloadBytes,bytes,resident}));cacheBytes+=bytes;cacheResidentBytes+=resident;cacheCounters.stores++;}catch{cacheCounters.bypasses++;}
++};
++A.installLayoutsCFinalCache(Object.freeze({begin:beginFinalCache,read:readFinalCache,keep:keepFinalCache}));
+ A.registerLayoutsCAdapter=(layout,adapter)=>{
+  if(!A.layoutsC34.includes(layout)||['stickyNotes','nameTag','clapper'].includes(layout)||externalAdapters.has(layout)||!adapter||typeof adapter.id!=='string'||!/^[A-Za-z0-9_-]{3,64}$/.test(adapter.id)||typeof adapter.finalize!=='function'||typeof adapter.render!=='function')fail('INVALID_C_ADAPTER_REGISTRATION','Unique C source ID, stable adapter ID, finalize and render functions required');
+  externalAdapters.set(layout,Object.freeze({id:adapter.id,finalize:adapter.finalize,render:adapter.render}));

@@ -1,0 +1,52 @@
+{
+  "reviewedAtUTC": "2026-10-22T21:31:35.618409+00:00",
+  "commit": "6dcd2a1d9b08bb85a557a59afef0c34f670b44e7",
+  "source09gSHA256": "4538ff06092b73661d668ef11297b86b697a5501b2f98d443c073b570d47081a",
+  "sourceOnlyDecoderAndCompiledExactReplacement": true,
+  "other83SourceIdentical": true,
+  "correctnessRawSHA256": "da2e47941d3994f6d67419462e5614953b7f8ce7c24b73c82d3e529cf96d66c7",
+  "correctnessRawBytes": 12859703,
+  "pinsIndependentlyArchivedAndLiveVerified": {
+    "correctness": 104,
+    "diagnostic": 118
+  },
+  "normal40AllFieldsAnd18FramesExactOld128": true,
+  "existing23NegativeResultsAndAllControlsLedgerSchemaExactOld128": true,
+  "newHelperNegatives": 2,
+  "unitOracleParentRerun": "PASS196graphs/98inheritedsetterguards/6826objectoccurrences/17unsupported-shapes; actual source and independentolddecoder read/reviewed.",
+  "diagnostic100": [
+    {
+      "on": true,
+      "baselinePlanningSingleMs": 51.20000000298023,
+      "candidatePlanningSingleMs": 153.40000000596046,
+      "ratio": 2.9960937499420197,
+      "additionalRenderP95Ms": 5.4000000059604645,
+      "coldMs": 4969.4000000059605,
+      "cutsStaged": 94,
+      "renderFrameCalls": 80,
+      "actualRecordReplay": {
+        "record": 76,
+        "replay": 76
+      },
+      "actualObservations": 76
+    },
+    {
+      "on": false,
+      "baselinePlanningSingleMs": 51.80000001192093,
+      "candidatePlanningSingleMs": 121.90000000596046,
+      "ratio": 2.3532818528553507,
+      "additionalRenderP95Ms": 1.7999999970197678,
+      "coldMs": 156.29999999701977,
+      "cutsStaged": 0,
+      "renderFrameCalls": 80,
+      "actualRecordReplay": {
+        "record": 0,
+        "replay": 0
+      },
+      "actualObservations": 0
+    }
+  ],
+  "coverageGateUnresolved": "ON94of100 staged and76record/replay/observations of80framecalls. shoji.shadow3/priceTag.hang3 preservedunsupported. ExistingformalFullCoverage/Pipeline gates false independently ofspeed; no waiver.",
+  "decision": "Accept decoder correctness/cost prototype only. Reject performance acceptance: diagnostic singlepoint2.996x/+5.4ms ON and2.353x OFF. Formal unexecutedfor6d; alloriginalFAIL preserved. Main stillf828source, prototype notimported.",
+  "publicResultChecks": "Not performed; prohibited by user."
+}

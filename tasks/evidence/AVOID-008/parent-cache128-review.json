@@ -1,0 +1,45 @@
+{
+  "reviewedAtUTC": "2026-10-22T20:45:10.751945+00:00",
+  "commit": "778eb302b97ab84abe36206c163918335073acbd",
+  "base16": "605282741d3a97cca2618a31dff87255114fae94",
+  "productDifference": "Only CACHE_BYTES16→128MiB; other83source exact, allgeometry/key/codec/LRU/32entries/512header unchanged.",
+  "source09gSHA256": "67f04fd9cd0b94fcbecc397f775c941bf1d2432c029d43fd882f85538a6585c2",
+  "JAEN": {
+    "index.html": "a509c6ca7318baa7ba27e720a9962d10daf4cb32d7a099b1a92cfab426d3a030",
+    "en/index.html": "83321b2c41f16b805c5bbb263fed2d17e08f2e26b1d0e6ed2c92ca3a33bba435"
+  },
+  "correctnessPins": 104,
+  "largeProbePins": 105,
+  "normal40ValueAliasAnd18NativeFramesExact16And128": true,
+  "dependencyNegatives": 23,
+  "nonCControls": 4,
+  "schemaOnlyRegistryBeforeAfter": [
+    20,
+    21
+  ],
+  "schemaGeometryContribution": 0,
+  "entryLRU40Stores8Evictions32Entries": true,
+  "individualLedgerOversizes": [
+    {
+      "scope": "ASCII UTF16-only total overflow",
+      "serialized": 75780905,
+      "resident": 151557578,
+      "bypasses": 2
+    },
+    {
+      "scope": "CJK UTF8-only total overflow",
+      "serialized": 161344709,
+      "resident": 107936818,
+      "bypasses": 2
+    }
+  ],
+  "same1000NormalizedInputAnd46328110ByteGraphExactOldColdWarm": true,
+  "largeColdRecordCalls": 5998,
+  "largeWarmRecordCalls": 0,
+  "largeWarmFinalizeCalls": 0,
+  "largeStoredResidentStringAndHeaderBytes": 97412800,
+  "keyChargeDifference": "Largeprobe key2UTF8/4UTF16bytes smaller than prior100→1000size harness. Fresh realm/functionID history differs; actual charges retained and no exact dependency field guessed. Payload/outputgraph/input are byte-exact.",
+  "decision": "Approve128MiB bounded cache candidate. Formal source-bound performance and final core regressions remain mandatory and unexecuted; no blanketappspeed/heap/34safe claim.",
+  "formalExecuted": false,
+  "publicResultChecks": "Not performed, prohibited by user."
+}

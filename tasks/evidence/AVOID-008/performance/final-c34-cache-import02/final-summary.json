@@ -1,0 +1,125 @@
+{
+  "gate": "f828ff234d8f45659734af58397233a9fdf71c50",
+  "verified": true,
+  "trackedSources": 84,
+  "gateSourceBytes": 3455414,
+  "cacheReverseRestoresAllGateSources": true,
+  "protectedOther82SourcesExact": true,
+  "ownedImports": [
+    {
+      "path": "dev/avoidance/layouts-c-final-cache-test.cjs",
+      "sha256": "51042901fb29172cea6c02a1046e5476e227c2a3157b5a2086c317418cd85b3b",
+      "bytes": 18292,
+      "action": "copy fixed donor bytes only in future isolated gate checkout after permission",
+      "sourceCommit": "21eebb6b394896097873bd7de055b6e165deb62c"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-final-cache-size.cjs",
+      "sha256": "d7719cdfcaddb1b51897dca208dffe9d3930a60464619335543e0241c7d09308",
+      "bytes": 8579,
+      "action": "copy fixed donor bytes only in future isolated gate checkout after permission",
+      "sourceCommit": "6c2302e72994c9f53c2021b6f462381f4c151338"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-perf-fixture.js",
+      "sha256": "e01ffdc6f44a11a86653c58ee1cbdc78a1bfeea83e9014c8058bb082211ba0d2",
+      "bytes": 13475,
+      "action": "copy fixed donor bytes only in future isolated gate checkout after permission",
+      "sourceCommit": "21eebb6b394896097873bd7de055b6e165deb62c"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-perf.cjs",
+      "sha256": "010c3f9187f90872769c8dec06d4b095fa73ea7f734215f4314845efea864fb1",
+      "bytes": 15543,
+      "action": "copy fixed donor bytes only in future isolated gate checkout after permission",
+      "sourceCommit": "cffdb384a28c2d8cd52cec066fcb47a462293ab4"
+    }
+  ],
+  "compiledSHA256": {
+    "JA": "30e704c8432a3804cb1b3e7475e2d833b2b63383830926116bfc13f71ee65430",
+    "EN": "62086cbab4cd4ad8ff42c0b75d55446497d1c15c79c9a721ed95e34cb5f0b84f"
+  },
+  "correctness": {
+    "pins": 104,
+    "normalNativeIDs": 34,
+    "normalExternalAdapters": 31,
+    "pairs": 40,
+    "exactFullValuesAndAliases": true,
+    "negativeDependencies": 23,
+    "nonCControls": 4,
+    "coldActualRecordCalls": 410,
+    "warmActualRecordCalls": 0,
+    "nativeFramePairs": 18,
+    "nativeFrameErrors": 0,
+    "frameObservationPairs": 15,
+    "unsupportedParameterFramePairsWithNoObservation": 3,
+    "normalSafety": {
+      "insufficient-space": 19,
+      "certified-hold-adapter": 13,
+      "unsupported/preserved": 2
+    },
+    "schema": {
+      "normalModules": 84,
+      "schemaModules": 83,
+      "omitted09jBytes": 38061,
+      "registryBefore": 20,
+      "registryAfter": 21,
+      "syntheticFinalizeCalls": 1,
+      "geometryCases": 0,
+      "acceptanceC34Cases": 0,
+      "failedRestoreWarmExact": true
+    }
+  },
+  "size": {
+    "pins": 105,
+    "oneFullInputEach": [
+      100,
+      1000
+    ],
+    "productCapBytes": 16777216,
+    "readOnlyMeterCapBytes": 134217728,
+    "cases": [
+      {
+        "n": 100,
+        "actualRecordCalls": 595,
+        "keyUTF8": 507417,
+        "keyUTF16": 1002690,
+        "payloadUTF8": 4572143,
+        "payloadUTF16": 9101510,
+        "headerBytes": 512,
+        "totalUTF8": 5080072,
+        "residentStringHeader": 10104712,
+        "stores": 1,
+        "bypasses": 0,
+        "statuses": {
+          "insufficient-space": 29,
+          "certified-hold-adapter": 65,
+          "unsupported/preserved": 6
+        }
+      },
+      {
+        "n": 1000,
+        "actualRecordCalls": 5998,
+        "keyUTF8": 2636270,
+        "keyUTF16": 5181820,
+        "payloadUTF8": 46328110,
+        "payloadUTF16": 92230472,
+        "headerBytes": 512,
+        "totalUTF8": 48964892,
+        "residentStringHeader": 97412804,
+        "stores": 0,
+        "bypasses": 1,
+        "statuses": {
+          "insufficient-space": 294,
+          "certified-hold-adapter": 648,
+          "unsupported/preserved": 58
+        }
+      }
+    ]
+  },
+  "sourceDriverFontChangedInputs": [],
+  "liveBrowserOrEncoderAfter": [],
+  "performanceExecuted": false,
+  "capChanged": false,
+  "publicChecksExecuted": false
+}

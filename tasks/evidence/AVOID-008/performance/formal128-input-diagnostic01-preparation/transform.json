@@ -1,0 +1,7 @@
+{
+  "oldHash": "hash=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(value))))).map(x=>x.toString(16).padStart(2,'0')).join('')",
+  "newHash": "hash=async (value,observation=null)=>{const text=JSON.stringify(value);if(observation)window.CPerfNormalizedEvidence.push({...observation,preHashJSON:text});const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))).map(x=>x.toString(16).padStart(2,'0')).join('');if(observation)window.CPerfNormalizedEvidence.at(-1).preHashSHA256=digest;return digest;}",
+  "oldPoint": "inputSHA256=await hash(source),sourceJSON=JSON.stringify(source);",
+  "newPoint": "inputSHA256=await hash(source,{iteration:i,n,on,side,warmup:i<config.planningWarmup}),sourceJSON=JSON.stringify(source);window.CPerfNormalizedEvidence.at(-1).postHashJSON=sourceJSON;",
+  "initialize": "window.CPerfNormalizedEvidence=[];\n"
+}

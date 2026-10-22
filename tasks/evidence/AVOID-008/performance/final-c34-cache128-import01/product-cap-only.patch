@@ -1,0 +1,13 @@
+diff --git a/src/09g_layoutsC_placement.js b/src/09g_layoutsC_placement.js
+index d912c7d..b282164 100644
+--- a/src/09g_layoutsC_placement.js
++++ b/src/09g_layoutsC_placement.js
+@@ -8,7 +8,7 @@ const externalAdapters=new Map();
+ // Whole-C-finalization exact reuse. No geometry/quality/search operation changes.
+ // One shared input key per finalization, never one whole-plan key per cut.
+ const completedPool=new Map(),cacheIDs=new WeakMap();let nextCacheID=1;
+-const CACHE_ENTRIES=32,CACHE_BYTES=16*1024*1024,CACHE_HEADER=512;
++const CACHE_ENTRIES=32,CACHE_BYTES=128*1024*1024,CACHE_HEADER=512;
+ let cacheBytes=0,cacheResidentBytes=0,lastKeyBytes=0,lastKeyResidentBytes=0,lastPayloadBytes=0,cacheCounters={hits:0,misses:0,stores:0,bypasses:0,evictions:0,identityDrifts:0};
+ const cacheID=v=>{if(!cacheIDs.has(v))cacheIDs.set(v,nextCacheID++);return cacheIDs.get(v);};
+ // Exact plain data only: undefined/-0/null prototypes/ordered own properties

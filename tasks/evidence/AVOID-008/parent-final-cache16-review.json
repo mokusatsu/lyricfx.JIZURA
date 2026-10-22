@@ -1,0 +1,72 @@
+{
+  "reviewedAtUTC": "2026-10-22T20:30:59.441846+00:00",
+  "gate": "f828ff234d8f45659734af58397233a9fdf71c50",
+  "sourcePrefixReview": "Previously parent-reviewed exact cache seams; independently reversed actual final09a/09g to gate in separate pureNode assertion. Geometry and allother82source unchanged.",
+  "phases": {
+    "final-c34-cache-correctness01": {
+      "pins": 104,
+      "resultSHA256": "fd360c9e70c82450d7aa702e65de7ab8af9075d01ba96405065429d216bfbd72",
+      "canonicalRawGzipPath": "tasks/evidence/AVOID-008/performance/final-c34-cache-correctness01/results.raw.json.gz",
+      "canonicalRawGzipSHA256": "a9ae40f9fb6aa6dad169868ca00516b00bbf9153841e8a0fc588246f5cd15248",
+      "rawBytes": 12848674
+    },
+    "final-c34-cache-size01": {
+      "pins": 105,
+      "resultSHA256": "0b134cd55707e3b4fd628a43a6a5ef660aefc68e91bd8b9cb62385e108faa05e",
+      "canonicalRawGzipPath": "tasks/evidence/AVOID-008/performance/final-c34-cache-size01/results.raw.json.gz",
+      "canonicalRawGzipSHA256": "b4ed7f33e5fd930fccd588474010d5cbf8ef60a361c5b2e7360336e3f3f0598c",
+      "rawBytes": 204358
+    }
+  },
+  "coldWarmWholePlanAndAliasPairs": 40,
+  "dependencyMissNegatives": 23,
+  "nonCControls": 4,
+  "nativePixelAndTracePairs": 18,
+  "coldActualRecords": 410,
+  "warmActualRecords": 0,
+  "normalNativeCIDs": 34,
+  "normalExternalAdapters": 31,
+  "schemaExternalBeforeAfter": [
+    20,
+    21
+  ],
+  "schemaGeometryContribution": 0,
+  "preservedStates": {
+    "insufficient-space": 19,
+    "certified-hold-adapter": 13,
+    "unsupported/preserved": 2
+  },
+  "finalC34SizeOnly": [
+    {
+      "cuts": 100,
+      "recordCalls": 595,
+      "keyUTF8": 507417,
+      "keyUTF16": 1002690,
+      "payloadUTF8": 4572143,
+      "payloadUTF16": 9101510,
+      "serializedCharge": 5080072,
+      "storedStringAndHeaderCharge": 10104712,
+      "storedAt16MiB": true
+    },
+    {
+      "cuts": 1000,
+      "recordCalls": 5998,
+      "keyUTF8": 2636270,
+      "keyUTF16": 5181820,
+      "payloadUTF8": 46328110,
+      "payloadUTF16": 92230472,
+      "serializedCharge": 48964892,
+      "storedStringAndHeaderCharge": 97412804,
+      "storedAt16MiB": false
+    }
+  ],
+  "proposed128MiBHeadroomBothPlans": 26700212,
+  "decision": "FinalC34 exact correctness PASS at16MiB; one-shot1000entry bypass is correctly observed. Next separate parent gate may approve128MiB to fit actual97,412,804byte1000 entry plus100 workload. No cap change or timing performed in this receipt.",
+  "accountingLimit": "Stored UTF16 strings and512byte entry headers only; not a complete heap/transient/browser memory guarantee.",
+  "publicResultChecks": "Not performed, prohibited by user.",
+  "sourceReverseActualPASS": true,
+  "parentReverseFirstDriverFailure": "Node execFileSync git threw EPERM despite child status0; result not accepted. Python Git extraction followed by pureNode reverse equality over84actual files PASS, no permission escalation or public request.",
+  "sourceReverseInputSHA256": "7fc80e10a677116edc7afd9ef1be6957e75b1f4cb0f56959728d8300e036640a",
+  "sourceCheckpoint16Commit": "605282741d3a97cca2618a31dff87255114fae94",
+  "nativeObservationFrameScope": "18native pixel pairs;15 have actual placement observations,3unsupported tilt99 frames preserve original native rendering with empty observation traces. No geometry proof from empty traces."
+}
