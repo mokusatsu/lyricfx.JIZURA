@@ -382,3 +382,21 @@ adapter担当005〜011がunit所有と変換を確定し、018が補助を実装
 ### AVOID-006 filmstrip の保持条件（2026-10-21追加）
 
 露光コマはライカ判36×24の3:2（縦送り版は回転した2:3）をnative/OFFと回避ONで保つ。laneの幅と高さへ独立に伸ばさず、frame lengthとbandを共同寸法として求める。ONで文字の局所余白/構成・可読性下限内の文字サイズを調整しても、nativeの送り方向・入退場距離・hold速度・各slotの順次描画時刻は保つ。hold包絡は実際と同じ送り速度を使い、strict holdを証明する。入退場は既存のsource-tagged moving eventsだけの許容条件を維持する。露光コマの縦横比のためにframe clipや主歌詞マスクで不足を隠さない。
+
+
+### AVOID-007 採用戦略・検証記録（2026-10-22、実装中）
+
+25IDの現行設計・役割対応は[007設計レビュー](evidence/AVOID-007/design-review.md)と[inventory](evidence/AVOID-007/inventory.json)、現状態/未達は[AVOID-007](AVOID-007.md)を参照する。旧比較local-20261022-01は独立sol画像照合で所有形状・可読性・附属構図の不一致が見つかり、完成証拠とは扱わない（[親判定](evidence/AVOID-007/parent-visual01-review.json)）。
+
+現在の修正方針は、equalizerの細棒も図表へ結合、typeSpecimenのcaptionは意味tokenを分断せず、kanjiFocusの巨大字と全文・点線は一体cluster、elasticは一続きの軸を先行する。tunnelは補助反復を据え置き、主歌詞をnative中央quiet域で読める候補を優先する。数と文字が残るだけで原意保持の成功にせず、成立しない条件は不足と記録する。元の184ID表や旧数値成功を、新候補の全adapter・視覚・公開受入へ読み替えない。017既定切替/018補助mask/012群間衝突統合は未実施のまま。
+
+5演出の修正は指定3時刻の独立画像照合を通過したが、連続MP4・公開の受入は別途必要。B専用proof cacheの数値fingerprintは候補検索だけに使い、型付きの完全一致照合を省略しない。容量上限8MiB・context1024・entry4096は維持し、capacity04は1000区間/360contextを保持した。正式性能03は1000区間の描画増分4msで基準3msを超え、未達のまま。診断結果を成功へ置き換えず、[親レビュー](evidence/AVOID-007/parent-pool-capacity04-formal03-review.json)と007記録から修正・再検証を追跡する。
+
+その後、包含判定の同値な早期終了だけを追加し、[正式04の親レビュー](evidence/AVOID-007/parent-perf-formal04-review.json)で固定100/1000条件・計画2倍以内・描画増分3ms以内を確認した。03の失敗は保持する。新比較02の25代表条件は従来と同じで、性能合格から動画・視覚・公開の受入を推定しない。
+
+
+### 2026-10-22 AVOID-007 H03と012の検証範囲
+
+007 H03は、nativeな長い残留cutを同時刻へ順逆seekしたときのsource/clock/camera安定性と、背景・前景動画を動かさないことを検証する。raw H03 native02の3sceneは数値上の円回避とmedia clockには合格したが、独立solの全576frame実見で新たなcross-cut/media重なりを検出し、視覚FAILを維持する。実cut対応と再現は[範囲分析](evidence/AVOID-007/h03-visual02-scope-proposal.md)、[親の拒否記録](evidence/AVOID-007/parent-h03-visual02-rejection.json)を参照。epochごとの同時owner配置と前景制約統合は元から012の範囲であり、007の単cut certificateをscene全体の可読性保証と扱わない。012未実装・017の既定有効化未許可は維持する。
+
+別controlは元の3全文・seed704・8fonts・中央(.5,.42,.2)の円・元2動画と配置を保ち、普通のsingle:trueと別の歌詞時刻0/4.5/8を使う。paired native J.planが全文3cutと既知outro2cutを生成し、first slotEnd3.6/displayEnd9.5と[.5,4.5)の実owner[0]を確認済み。4秒動画には通常holdと実残留[3.6,4.5)を含め、seek4/4.25でslot後を実検査する。4秒すべてslot後という初案は元要件ではなく、metadata01で可視interludeが追加され不成立だった実結果も保持する。cut/slotの手修正・interludeの無根拠除外・元FAILの合格化は行わない。[metadata02親照合](evidence/AVOID-007/parent-h03-control-metadata02-review.json)は描画/新動画/公開の成功証拠ではない。

@@ -97,3 +97,21 @@
 - 計画根拠: [AVOID-001](AVOID-001.md) と [設計書のE01〜E23](avoidance-design.md)。
 - 実装差分: なし。検証ログ: なし。上のチェックボックスはすべて未達/未確認。
 - 個別の追加判断は着手時に記録し、共通設計と矛盾させない。
+
+## 2026-10-22 既存再抽選回帰の未解決引継ぎ（未着手のまま）
+
+007で既存 `dev/group_reroll_test.cjs` を実行し、plain/avoid のunified条件で他行effectsが各3件変化して失敗した。現版と変更前e96cbb2の実JA HTML（a3c4d0e…4ba7）で全rawlog SHA `b37a8e15f7229edec540daaa1ec2cc16029a5a5a815867b129a41e03d4d22c6b` が一致。livelyのotherFx=0/areaMoved=0、全条件placement移動0。012の再抽選安定性・group回帰の開始時に再現し、契約と原因を確認する。期待値を変更して成功にしない。本追記は既知事項の引継ぎであり012の実装開始ではない。証拠: [007親独立照合](evidence/AVOID-007/parent-existing-regression-review.json)、[実control/未到達locale](evidence/AVOID-007/regression-existing-failures.json)。017の総合回帰へも残す。
+
+
+## 007からの未解決H03統合再現引継ぎ（012実装は未着手）
+
+[独立H03 raw02視覚FAIL](evidence/AVOID-007/h03-visual02-review.md)と[cut別source/座標分析](evidence/AVOID-007/h03-visual02-scope-proposal.md)を012の具体的診断入力として保持する。原本 `work/avoid007-h03/native-local-20261022-02`、manifest `8f84ccb6b4f5c40156a86b91127dc541027bff89835a97426c25b2264073d32c`、同native8cut group/seed704/3200×1080/circle(.5,.42,.2)/撮影[3,7)。rain f3ではcut2 recapがBG時計へ、credits f3/15ではcut0主文と別cut2 recapが交差、bubbles f90ではcut5 recap『越』とowned bubbleがFGに覆われる。全3視覚FAILを成功へ読み替えない。
+
+007の各cutの主文字/owned形状の円回避証明は、同時残留する別ownerや動画の可読性を保証しない。実event/source照合ではcreditsの当該衝突は同cut内のowned行の剥離ではなく、別cutの相対配置変更である。fixtureは明示full-stage原演出条件、avoidForeground=falseであり、元J.plan areaのscene配置も外している。このため012でactive epochごとのcross-owner全primary-copy、FG/背景内容と既存scene制約、優先順位を統合する範囲へ引き継ぐ。単なるaux分類や主文字mask/動画移動で解消しない。時刻/phase/media positionが同じという007証拠を、これらの衝突解決証拠に流用しない。
+
+別の真正native retention controlの[metadata02](evidence/AVOID-007/h03-control-metadata02-summary.md)は0/4.5/8・single:trueの別projectであり、既8cut再現の修正ではない。全3metadata-qualifiedに留まり、focused/visual未実施。012の実装/全group成功は未着手・未証明のまま。
+
+
+### Distinct control01 visual outcome: keep the integration boundary precise
+
+[H03 control01 independent review](evidence/AVOID-007/h03-control-visual01-review.md) examined all384frames/16keys/24crops of the separate single-owner control. Rain has an observed-scope PASS with white-frame contact noted. Bubbles has a new **background pale-bar local contrast** FAIL for the lower stroke of『先』, while source/owned bubble/phase/read order/media positions remain present. This background-content contrast finding belongs to017's final visual quality gate;012 group/FG packing does not automatically solve arbitrary BG contrast. Credits' separate control-focused primary/FG support conflict remains an012 integration diagnostic, and old eight-cut raw02 cross-owner/FG FAILs remain unchanged. No012 implementation has begun.

@@ -1,0 +1,84 @@
+{
+  "scope": "Derived bookkeeping explanation of failed05 raw receipt; no canonical substitution or new successful run claimed. Original rows remain six and final count assertion failed.",
+  "rawReceiptSHA256": "7257309e2a67c56487cff0f900d9503836d47fb007ef93e8e14c382f3273de98",
+  "pairedDuplicateRowsDeepEqual": true,
+  "pairs": [
+    [
+      0,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      4,
+      5
+    ]
+  ],
+  "distinctActualCases": [
+    {
+      "spec": {
+        "layout": "rain",
+        "camera": "panL"
+      },
+      "status": "safe",
+      "beforeFrames": 8,
+      "afterFrames": 8,
+      "beforeDecoderStats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      },
+      "afterDecoderStats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    },
+    {
+      "spec": {
+        "layout": "bubbles",
+        "camera": "push"
+      },
+      "status": "safe",
+      "beforeFrames": 8,
+      "afterFrames": 8,
+      "beforeDecoderStats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      },
+      "afterDecoderStats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    },
+    {
+      "spec": {
+        "layout": "credits",
+        "camera": "dutch"
+      },
+      "status": "safe",
+      "beforeFrames": 8,
+      "afterFrames": 8,
+      "beforeDecoderStats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      },
+      "afterDecoderStats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    }
+  ],
+  "negativeRecords": 6,
+  "warnings": [],
+  "endInputsUnchanged": true,
+  "environmentContinuity": "not observed at both ends; no stable-revision claim",
+  "failure": "runner pushed same row before and after processing; final count6 != expected3",
+  "witnessLimitation": "fresh witness reference aliasing was fixed after this run; witness02/focused06 are separate current qualification"
+}

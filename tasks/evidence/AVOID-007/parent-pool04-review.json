@@ -1,0 +1,30 @@
+{
+  "reviewedAt": "2026-10-22T08:19:24.017763+00:00",
+  "parentCodeAndTestReview": true,
+  "reports": [
+    {
+      "name": "pool04",
+      "reportSHA256": "e160bd2c489d29af0e0d3284bf4517955f5f123cd84ea98b99227cf2a569570b",
+      "verifiedSnapshotPins": 102
+    },
+    {
+      "name": "cache07",
+      "reportSHA256": "b48b4a5d8d170f7f0cf767a99fbda02ad77d586c2f340f289fd119c63541e790",
+      "verifiedSnapshotPins": 102
+    }
+  ],
+  "actualOwnersRemoved": [
+    "nodesByID statistics Map",
+    "duplicated per-node children array and slots",
+    "per-node WeakSet brand entry replaced by private shared prototype"
+  ],
+  "accounting": {
+    "nodeFixedReserve": 288,
+    "dataSlotReserve": 16,
+    "removedSecondMapReserve": 64,
+    "removedWeakSetReserve": 32,
+    "maxBytesUnchanged": 8388608,
+    "scope": "conservative retained data/bookkeeping budget, not actual Chromium heap measurement"
+  },
+  "decision": "source and targeted correctness accepted; capacity02 and formal02 still required before capture"
+}

@@ -1,0 +1,2996 @@
+{
+  "schema": 1,
+  "task": "AVOID-007",
+  "baseline": "e96cbb2f8379eb5895c36f1312f5083b0c583e75",
+  "product": {
+    "JA": "a3c4",
+    "EN": "3d1e"
+  },
+  "sourceSHA256": "3cf4fd059e72d1748f96af01f9eedddd8a33e977bc88f2f887a727e4698ada82",
+  "rolesBasis": "AVOID-002 reviewed auxiliary unit list retained. Additional unreviewed lyric-bearing units remain primary.",
+  "layouts": [
+    {
+      "id": "rain",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 90,
+      "sourceBlockSHA256": "cd3360ac2a80064661b690dde00ec197a15c83695772552b301cbe46132be150",
+      "primary": "main glyphs + falling lead glyph + each delivery trail, one composition",
+      "primaryOwner": "rain.composition",
+      "independentDecor": "none; grid is tiledAux",
+      "tiledAux": "background glyph grid only; falling leading glyph/trail primary",
+      "sweep": "falling y quadratic; trail extends 8*tsp; delayed mainDraw by ta; fade-only trail remains strict",
+      "candidateOrder": [
+        "native-joint-translation",
+        "delivery-block-wrap",
+        "delivery-row-spacing",
+        "delivery-reduce"
+      ],
+      "intent": "Keep glyph rank and falling stream aligned to its final glyph; no background-grid movement",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 130,
+          "source": "env.draw({ text: chs.join(''), font: Pm.rf, size: rs, track: trk, vertical: true, align: 'left', x, y: r0 * cell + cell * 0.5 - rs * 0.5, color: sc.sub, ghost: false, alpha: bgA,"
+        },
+        {
+          "line": 158,
+          "source": "env.draw({ text: chs.join(''), font: Pm.rf, size: ts, track: 0.12, vertical: true, align: 'left', x: g.x, y: yh - hs * 0.5 - trailN * tsp, color: tail, ghost: false, alpha: fade * outK(env),"
+        },
+        {
+          "line": 160,
+          "source": "if (u < 1) env.draw({ text: g.ch, font: Pm.font, size: hs, x: g.x, y: yh, vertical: vert, color: sc.fg, ghost: false, alpha: 0.6 + 0.4 * u });"
+        },
+        {
+          "line": 164,
+          "source": "bb = U(bb, J.mainDraw(env, it));"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "source-sign-wrap",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          521.1668190015412,
+          0
+        ],
+        "attempts": 2,
+        "limits": "All delivery pool/trails strict including stationary fade; fixed CSS lead changes ON AA only; grid is approved aux."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "source-sign-wrap",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "hanging",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 171,
+      "sourceBlockSHA256": "179110b1b93edb399cb205bada52978ddb5e640b726e34c72763a348438366f0",
+      "primary": "all lyric tags/glyphs; tag plates/hole; strings, pins and rail owned together",
+      "primaryOwner": "hanging.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "pendulum sin with decaying kick; grow/bounce; full angular/radial swept tag, rope and rail",
+      "candidateOrder": [
+        "native-joint-translation",
+        "suspension-row-wrap",
+        "suspension-spacing-path",
+        "suspension-reduce"
+      ],
+      "intent": "Keep attachment at rail, common ordered suspension rows and tag-to-letter relationship",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 192,
+          "source": "env.line([[W * 0.5 - W * 0.52 * inA, railY], [W * 0.5 + W * 0.52 * inA, railY]], sc.sub, Math.max(1.2, M * 0.0022), 0.8 * out, false);"
+        },
+        {
+          "line": 226,
+          "source": "env.line([[ax, railY], [ex, ey]], sc.sub, strokeW, 0.9 * out, false);"
+        },
+        {
+          "line": 227,
+          "source": "if (Pm.rail) env.circle(ax, railY, Math.max(2.5, M * 0.004), sc.fg, null, 0, out, false);"
+        },
+        {
+          "line": 239,
+          "source": "env.rrect(-tagW / 2, -tagH / 2, tagW, tagH, tagW * 0.12, pc, 1, gIn(env));"
+        },
+        {
+          "line": 240,
+          "source": "env.circle(0, -tagH / 2 + tagH * 0.1, Math.max(2, size * 0.055), sc.bg, null, 0, 1, false);"
+        },
+        {
+          "line": 243,
+          "source": "bb = U(bb, J.mainDraw(env, { text: chars[q.i], font: Pm.font, size: csize, x: q.ccx + Math.sin(q.th * J.DEG) * tagH * 0.06, y: q.ccy + Math.cos(q.th * J.DEG) * tagH * 0.06, rot: -q.th, color: onCol(sc, pc), plain: true, noHold: plateHold(env), mi: miAt(env, q.ta) }));"
+        },
+        {
+          "line": 245,
+          "source": "bb = U(bb, J.mainDraw(env, { text: chars[q.i], font: Pm.font, size: csize, x: q.ccx, y: q.ccy, rot: -q.th, color: sc.fg, mi: miAt(env, q.ta) }));"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "suspension-row-path-discrete-reduce",
+        "fontScale": 0.75,
+        "minNativeActualRatio": 0.75,
+        "offset": [
+          -568.1387223225227,
+          251.05556494949826
+        ],
+        "attempts": 12,
+        "limits": "Native angular clock and rope/tag ownership; residual kick/rail included; ordinary .2 representative needs explicit .75 size."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "suspension-row-path-discrete-reduce",
+        "declaredFontScale": 0.75,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "tunnel",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 326,
+      "sourceBlockSHA256": "8f575df783f78fa369680a4f985a316be54018ff22592949af23cf3104546e9b",
+      "primary": "central lyric block only",
+      "primaryOwner": "tunnel.composition",
+      "independentDecor": "perspective rails independent; perimeter glyph rows/edge rules tiledAux",
+      "tiledAux": "repeated perimeter glyphs only; central main line primary",
+      "sweep": "primary mainDraw; perimeter phase and q unchanged",
+      "candidateOrder": [
+        "unchanged-safe-native-composition",
+        "same-size quiet wrap variants",
+        "same-size quiet ordered columns",
+        "discrete .95/.90/.85/.80/.75/.70, wrap then ordered columns within each size"
+      ],
+      "intent": "Keep screen tunnel dimensions and perspective rather than contracting whole tunnel",
+      "status": "visual01 correction locally qualified; visual-draft01 independent review pending, not finally accepted",
+      "drawEvidence": [
+        {
+          "line": 356,
+          "source": "for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) env.line([[cx + sx * W * 0.75, cy + sy * H * 0.75], [cx + sx * a0, cy + sy * b0]], sc.sub, lw, 0.28 * e * out, false);"
+        },
+        {
+          "line": 380,
+          "source": "env.draw(Object.assign({ text: edge(hl), x: cx, y: cy - b + inset }, common));"
+        },
+        {
+          "line": 381,
+          "source": "env.draw(Object.assign({ text: edge(vl), x: cx + a - inset, y: cy, rot: 90 }, common));"
+        },
+        {
+          "line": 382,
+          "source": "env.draw(Object.assign({ text: edge(hl), x: cx, y: cy + b - inset, rot: 180 }, common));"
+        },
+        {
+          "line": 383,
+          "source": "env.draw(Object.assign({ text: edge(vl), x: cx - a + inset, y: cy, rot: -90 }, common));"
+        },
+        {
+          "line": 384,
+          "source": "env.rect(cx - a, cy - b, a * 2, lw, sc.sub, alpha * 0.5, false);"
+        },
+        {
+          "line": 385,
+          "source": "env.rect(cx - a, cy + b - lw, a * 2, lw, sc.sub, alpha * 0.5, false);"
+        },
+        {
+          "line": 387,
+          "source": "return J.mainDraw(env, { text: mt, font: Pm.fontC, size, x: cx, y: cy, track: 0.05, lead: 1.15, color: sc.fg });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          356.10087666228077,
+          356.1008766622807
+        ],
+        "attempts": 1,
+        "limits": "Main plus repeated edge main passes primary; perimeter fill alone is approved aux.",
+        "scope": "Historical font-functional05 numeric witness only, superseded by visual01 finding; not current visual acceptance"
+      },
+      "visual01": {
+        "report": "visual-b-review.md",
+        "finding": "fixed perimeter repeats cross relocated main lyric",
+        "correction": "native quiet-domain placement; B recipe-only fixed CSS aux with original positions/phase/effective size",
+        "status": "historical failure corrected in current geometry; static and bounded-motion independent review pass, final acceptance pending"
+      },
+      "repairCheckpoint": {
+        "receipt": "visual-fix08.json",
+        "draft": "visual-draft01.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "fontScale": 0.75,
+        "intent": "native aux unchanged; finite-CSS ring alpha-skip quiet support; two ordered source columns",
+        "acceptance": "static30 draft and independent visual-motion02 bounded-frame review PASS within stated scope; current numeric/formal04/localbrowser04 pass; publication/final acceptance pending",
+        "independentMotion": "visual-motion02-review.md"
+      },
+      "sourceIndexScope": "normalized source occurrence index, not native Canvas g.i; native whole-item mi0 retained under cut/still/treatnone",
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "tunnel-quiet-two-ordered-columns-discrete-reduce",
+        "declaredFontScale": 0.75,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "wordCloud",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 393,
+      "sourceBlockSHA256": "529b7eec40fff426fd6fd3be3cfff40b085321f32455fe8ed722f9924b7ce595",
+      "primary": "central lyric block only",
+      "primaryOwner": "wordCloud.composition",
+      "independentDecor": "none; buildCloud copies tiledAux",
+      "tiledAux": "buildCloud decorative copies only; central main line primary",
+      "sweep": "primary mainDraw; auxiliary pop/drift clocks unchanged",
+      "candidateOrder": [
+        "native-joint-translation",
+        "central-wrap",
+        "central-spacing",
+        "central-reduce"
+      ],
+      "intent": "Keep full-screen cloud layout; only move/reflow central protected lyric",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 417,
+          "source": "env.draw(it);"
+        },
+        {
+          "line": 419,
+          "source": "return J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, color: sc.fg });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          381.082215690334,
+          381.08221569033395
+        ],
+        "attempts": 1,
+        "limits": "Central main primary; approved cloud tiling preserved separately."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "bounceLine",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 477,
+      "sourceBlockSHA256": "d527595c92e34855fd56ee8def63ffea0b9ba3b3e1420b8cdb8acd69bd02c9ee",
+      "primary": "all glyphs; baseline/dots and per-glyph ground shadows owned",
+      "primaryOwner": "bounceLine.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "piecewise hop polynomial, squash, tilt; beat/random periodic phases",
+      "candidateOrder": [
+        "native-joint-translation",
+        "bounce-row-wrap",
+        "bounce-leading",
+        "bounce-reduce"
+      ],
+      "intent": "Keep hop phase/index and ground below glyph; never independently scatter letters",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 531,
+          "source": "env.circle(0, 0, size * 0.34 * k * pr.sx, sc.sub, null, 0, 0.28 * k * out * inA, false);"
+        },
+        {
+          "line": 537,
+          "source": "bb = U(bb, J.mainDraw(env, it));"
+        },
+        {
+          "line": 542,
+          "source": "if (Pm.line === 'line') env.line([[x0, y], [J.lerp(x0, x1, inA), y]], sc.sub, lw, 0.7 * out, false);"
+        },
+        {
+          "line": 543,
+          "source": "else if (Pm.line === 'dots') { const m = Math.max(4, Math.round((x1 - x0) / (size * 0.25))); for (let j = 0; j <= m; j++) if (j / m <= inA) env.circle(J.lerp(x0, x1, j / m), y, lw * 1.2, sc.sub, null, 0, 0.8 * out, false); }"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "source-sign-wrap",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          545.0651614258425,
+          0
+        ],
+        "attempts": 2,
+        "limits": "Original glyph indices/beat/shadow kept; fixed-native size wrap representative."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "source-sign-wrap",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "elastic",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 550,
+      "sourceBlockSHA256": "246a7aba656e737d25eab2b8daa8ee2a33ce82dca144b1e0648850738bb498f4",
+      "primary": "all glyphs; spring anchors/pins and connecting band owned",
+      "primaryOwner": "elastic.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "spring damped exponential; standing wave; sx/sy and slope rotation; exit extension",
+      "candidateOrder": [
+        "native-joint-translation",
+        "elastic-axis-path",
+        "elastic-spacing",
+        "elastic-reduce"
+      ],
+      "intent": "Keep connected anchored band and wave phase; axis may choose a side lane",
+      "status": "visual01 correction locally qualified; visual-draft01 independent review pending, not finally accepted",
+      "drawEvidence": [
+        {
+          "line": 594,
+          "source": "env.line(seg(aA, tA), sc.sub, lw, 0.9 * out * inA, false);"
+        },
+        {
+          "line": 595,
+          "source": "env.line(seg(tB, aB), sc.sub, lw, 0.9 * out * inA, false);"
+        },
+        {
+          "line": 604,
+          "source": "bb = U(bb, J.mainDraw(env, it));"
+        },
+        {
+          "line": 612,
+          "source": "if (Pm.anchor === 'dot') env.circle(x, y, R * q, sc.accent, null, 0, 1, true);"
+        },
+        {
+          "line": 613,
+          "source": "else if (Pm.anchor === 'ring') { env.circle(x, y, R * 1.3 * q, null, sc.accent, lw * 1.3, 1, true); env.circle(x, y, R * 0.45 * q, sc.fg, null, 0, 1, false); }"
+        },
+        {
+          "line": 614,
+          "source": "else { const [px, py] = P2(a, -R * 3.2); env.line([[px, py], [x, y]], sc.fg, lw, q, false); env.circle(px, py, R * 0.9 * q, sc.accent, null, 0, 1, true); env.circle(x, y, R * 0.4 * q, sc.fg, null, 0, 1, false); }"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        3200,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          3200,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "elastic-axis-path-discrete-reduce",
+        "fontScale": 0.7,
+        "minNativeActualRatio": 0.7,
+        "offset": [
+          847.7936704527583,
+          0
+        ],
+        "attempts": 14,
+        "limits": "3200x1080 representative only; original indices/spring/anchors/bands retained; .70 native-size floor.",
+        "scope": "Historical font-functional05 numeric witness only, superseded by visual01 finding; not current visual acceptance"
+      },
+      "visual01": {
+        "report": "visual-a-review.md",
+        "finding": "native single diagonal axis became two independent rows",
+        "correction": "native orientation/angle and one coherent axis first; exact existing pad with oriented support",
+        "status": "historical failure corrected in current geometry; static and bounded-motion independent review pass, final acceptance pending"
+      },
+      "repairCheckpoint": {
+        "receipt": "visual-fix02.json",
+        "draft": "visual-draft01.json",
+        "stage": [
+          3200,
+          1080
+        ],
+        "fontScale": 0.75,
+        "intent": "native single coherent axis/angle; analytic entry/pluck phases and correlated k/st supports;1920 still insufficient",
+        "acceptance": "static30 draft and independent visual-motion02 bounded-frame review PASS within stated scope; current numeric/formal04/localbrowser04 pass; publication/final acceptance pending",
+        "independentMotion": "visual-motion02-review.md"
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          3200,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "elastic-native-single-axis-discrete-reduce",
+        "declaredFontScale": 0.75,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "crossBands",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 621,
+      "sourceBlockSHA256": "edba741ba36c4e3965da9e74ca18ef87c98cdd42f0376eccac99a4d842678639",
+      "primary": "central lyric + box/double/shadow plate",
+      "primaryOwner": "crossBands.composition",
+      "independentDecor": "none; repeated band text and both carrier bands tiledAux",
+      "tiledAux": "交差する2帯のunit.repeat。中央主歌詞のプレートはprimary。",
+      "sweep": "primary plate outBack; mainDraw; repeated text scroll unaffected",
+      "candidateOrder": [
+        "native-joint-translation",
+        "crossing-plate-wrap",
+        "crossing-plate-spacing",
+        "crossing-plate-reduce"
+      ],
+      "intent": "Move lyric plate with its outline/shadow; do not relocate or shrink the two screen-spanning bands",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 648,
+          "source": "env.rect(x0, -bh / 2, L, bh, cols[b], 1, lt < 0.6);"
+        },
+        {
+          "line": 649,
+          "source": "ctx.beginPath(); ctx.rect(x0, -bh / 2, L, bh); ctx.save(); ctx.clip();"
+        },
+        {
+          "line": 651,
+          "source": "env.draw({ text: unit.repeat(reps), font: Pm.fb, size: fsz, track: 0.08, align: 'left', x: -len * 0.6 - per + off, y: 0, color: onCol(sc, cols[b]), ghost: false });"
+        },
+        {
+          "line": 664,
+          "source": "if (Pm.plate === 'shadow') { const o = size * 0.12; env.rect(-pw / 2 + o, -ph / 2 + o, pw, ph, cols[1], 1, false); }"
+        },
+        {
+          "line": 665,
+          "source": "env.rect(-pw / 2, -ph / 2, pw, ph, sc.bg, 1, false);"
+        },
+        {
+          "line": 666,
+          "source": "env.rrect(-pw / 2, -ph / 2, pw, ph, 0, null, 1, false, sc.fg, lw);"
+        },
+        {
+          "line": 667,
+          "source": "if (Pm.plate === 'double') { const o = lw * 2.6; env.rrect(-pw / 2 + o, -ph / 2 + o, pw - o * 2, ph - o * 2, 0, null, 1, false, sc.fg, lw * 0.5); }"
+        },
+        {
+          "line": 670,
+          "source": "return J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.04, lead: 1.12, color: sc.fg });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          351.63482011745816,
+          349.40238018749983
+        ],
+        "attempts": 1,
+        "limits": "Central plate+main primary; approved repeating carriers remain auxiliary."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "stickerBomb",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 685,
+      "sourceBlockSHA256": "5e31f1cc904203765d607d19dfcac4682ee356c417ea5d899a7625f314e75e34",
+      "primary": "main lyric and all secondary word/romaji/No./symbol stickers, plates/shadows",
+      "primaryOwner": "stickerBomb.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "slap rotation + scale max 1.3, exit plate grow 1.08; late sticker availability",
+      "candidateOrder": [
+        "native-joint-translation",
+        "sticker-cluster-reflow",
+        "sticker-cluster-spacing",
+        "sticker-reduce"
+      ],
+      "intent": "Preserve sticker count/order/words and overlapping cluster hierarchy; no dropping secondary stickers",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 711,
+          "source": "if (!dark) { ctx.save(); ctx.translate(bw * 0.5, bw * 0.7); stickerPath(ctx, sh, w, h, bw, seed); ctx.globalAlpha = 0.22 * q.a * out; ctx.fillStyle = sc.fg; ctx.fill(); ctx.restore(); }"
+        },
+        {
+          "line": 712,
+          "source": "stickerPath(ctx, sh, w, h, bw, seed); ctx.globalAlpha = q.a * out; ctx.fillStyle = border; ctx.fill();"
+        },
+        {
+          "line": 713,
+          "source": "stickerPath(ctx, sh, w, h, 0, seed); ctx.fillStyle = fill; ctx.fill(); ctx.globalAlpha = 1;"
+        },
+        {
+          "line": 714,
+          "source": "} else if (env.passColor && gIn(env)) { stickerPath(ctx, sh, w, h, bw, seed); ctx.globalAlpha = q.a; ctx.fillStyle = env.passColor; ctx.fill(); ctx.globalAlpha = 1; }"
+        },
+        {
+          "line": 749,
+          "source": "env.draw({ text: it.word, font: Pm.fs, size: it.fsz, track: 0.06, x: 0, y: 0, color: onCol(sc, it.fill), alpha: q.a * out, ghost: false });"
+        },
+        {
+          "line": 760,
+          "source": "const lb = J.mainDraw(env, { text: mt, font: Pm.font, size, x: 0, y: 0, track: 0.03, lead: 1.1, color: onCol(sc, mainFill), noHold: plateHold(env) });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        3200,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          3200,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "sticker-cluster-reflow",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          714.8572138097145,
+          0
+        ],
+        "attempts": 2,
+        "limits": "3200x1080 representative; native integer count4..6 only; cnt20 explicit unsupported, no late-event snapshot claim."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          3200,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "sticker-cluster-reflow",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "neon",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 767,
+      "sourceBlockSHA256": "c0e40c17be63dd0c4dd201a0ffd366971501aa9a9bbc91ce6d4ddd9b74728534",
+      "primary": "both core/tube glyph draws; frame; subtitle/romaji and glow owned",
+      "primaryOwner": "neon.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "ignition/flicker are strict; shadow blur bounded to alpha1; frame built from real main bounds",
+      "candidateOrder": [
+        "native-joint-translation",
+        "neon-sign-wrap",
+        "neon-frame-sub-spacing",
+        "neon-reduce"
+      ],
+      "intent": "Keep tube/core overlap and frame/subtitle attachment; flicker does not justify circle passage",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 805,
+          "source": "if (solid) { bb = U(bb, J.mainDraw(env, Object.assign(common, { color: tube, shadow: glow, alpha: k }))); return; }"
+        },
+        {
+          "line": 806,
+          "source": "const r = J.mainDraw(env, Object.assign({}, common, { fill: false, stroke: tw, strokeColor: tube, color: tube, shadow: k > 0.5 ? glow : null, alpha: k }));"
+        },
+        {
+          "line": 807,
+          "source": "J.mainDraw(env, Object.assign({}, common, { fill: false, stroke: cw, strokeColor: core, color: core, alpha: k > 0.5 ? 1 : 0.3, ghost: false }));"
+        },
+        {
+          "line": 821,
+          "source": "ctx.save(); ctx.shadowColor = glow.color; ctx.shadowBlur = glow.blur * 0.8 * env.scale; ctx.lineCap = 'round';"
+        },
+        {
+          "line": 822,
+          "source": "if (Pm.frame === 'box') env.rrect(x0, y0, x1 - x0, y1 - y0, size * 0.3, null, fk, false, tube, lw);"
+        },
+        {
+          "line": 823,
+          "source": "else path.forEach(p => env.line(p, tube, lw, fk, false));"
+        },
+        {
+          "line": 825,
+          "source": "if (Pm.frame === 'box') env.rrect(x0, y0, x1 - x0, y1 - y0, size * 0.3, null, fk, false, core, lw * 0.35);"
+        },
+        {
+          "line": 826,
+          "source": "else path.forEach(p => env.line(p, core, lw * 0.35, fk, false));"
+        },
+        {
+          "line": 828,
+          "source": "if (Pm.frame === 'box') env.rrect(x0, y0, x1 - x0, y1 - y0, size * 0.3, null, fk, true, tube, lw);"
+        },
+        {
+          "line": 829,
+          "source": "else path.forEach(p => env.line(p, tube, lw, fk, true));"
+        },
+        {
+          "line": 837,
+          "source": "ctx.save(); ctx.shadowColor = J.rgba(c2, 0.9); ctx.shadowBlur = fs * 0.6 * env.scale;"
+        },
+        {
+          "line": 838,
+          "source": "env.draw({ text: st, font: monoF(env), size: fs, track: 0.3, x: (x0 + x1) / 2, y: y1 + fs * 1.6, color: c2, alpha: fk * on(98, 0.4), ghost: false });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "outline/core copies are separate intentional passes of one logical main copy",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          2.123336378522623e-14,
+          328.23295375
+        ],
+        "attempts": 1,
+        "limits": "ON finite stroke glow layers instead of raw blur; all tube/subtitle/frame events primary; OFF original shadow unchanged."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "keycaps",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 864,
+      "sourceBlockSHA256": "7c5eef80f4697375e4f111fab607e44ade2be9ca2f9d916a956a320892010af3",
+      "primary": "glyphs, legend text; key bodies and optional backing plate owned",
+      "primaryOwner": "keycaps.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "pop overshoot, press depth and re-press; all key layers same cell",
+      "candidateOrder": [
+        "native-joint-translation",
+        "keyboard-row-wrap",
+        "keyboard-cell-gap",
+        "keyboard-reduce"
+      ],
+      "intent": "Keep typed glyph order and legend/top/depth registration; preserve optional continuous backing",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 890,
+          "source": "env.rrect(x0 - p, y0 - p, x1 - x0 + p * 2, (y1 - y0 + p * 2) * e, rr * 1.4, J.mix(sc.bg, darkC === sc.bg ? lightC : darkC, 0.1), 1, false, sc.sub, 1);"
+        },
+        {
+          "line": 914,
+          "source": "env.rrect(-k / 2, -k / 2 + d * 0.35, k, k + d * 0.65, rr, side, out, gh);"
+        },
+        {
+          "line": 916,
+          "source": "env.rrect(-k / 2 + ins * 0.5, -k / 2 + dy, k - ins, k - ins * 0.9, rr * 0.85, J.mix(top, side, 0.35), out, false);"
+        },
+        {
+          "line": 917,
+          "source": "env.rrect(-k / 2 + ins, -k / 2 + dy + ins * 0.35, k - ins * 2, k - ins * 2.1, rr * 0.7, top, out, false, Pm.style === 'dark' && !isA ? sc.sub : null, 1);"
+        },
+        {
+          "line": 920,
+          "source": "if (rom) env.draw({ text: rom.toUpperCase(), font: monoF(env), size: k * 0.13, align: 'left', x: -k / 2 + ins * 1.9, y: -k / 2 + dy + ins * 1.7, color: leg, alpha: 0.7 * out, ghost: false });"
+        },
+        {
+          "line": 925,
+          "source": "bb = U(bb, J.mainDraw(env, it));"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          0,
+          313.20457500000003
+        ],
+        "attempts": 1,
+        "limits": "Owned legends/cap shape remain attached; fixed-CSS continuous uniform glyph growth only ON."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "bubbles",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 932,
+      "sourceBlockSHA256": "da19332a8f4ee7adbac9e9912946f92333d511abcafe9690748d72bfb1a7d4f6",
+      "primary": "all lyric-bearing bubbles, rim/highlight/glint and text owned",
+      "primaryOwner": "bubbles.composition",
+      "independentDecor": "background motes only",
+      "tiledAux": "none",
+      "sweep": "rise linear over complete ltb range; sin wobble; outBack overshoot and exit pop 1.35",
+      "candidateOrder": [
+        "native-joint-translation",
+        "bubble-row-path",
+        "bubble-pitch",
+        "bubble-reduce"
+      ],
+      "intent": "Keep bubble/glyph centres and rising/wobble phases, row order; no collision jitter per frame",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 953,
+          "source": "env.circle(x, y, r, null, sc.sub, Math.max(1, r * 0.12), 0.45 * out * inE(env, 0.5), false);"
+        },
+        {
+          "line": 973,
+          "source": "env.circle(x, y, Rr, f, null, 0, out, gIn(env));"
+        },
+        {
+          "line": 976,
+          "source": "env.circle(x, y, Rr, sc.fg, null, 0, 0.07 * out, false);"
+        },
+        {
+          "line": 977,
+          "source": "env.circle(x, y, Rr, null, sc.fg, Math.max(1.2, R * 0.035), 0.85 * out, gIn(env));"
+        },
+        {
+          "line": 978,
+          "source": "env.arc(x, y, Rr * 0.78, 200, 245, sc.fg, Math.max(1.5, R * 0.07), 0.9 * out, false);"
+        },
+        {
+          "line": 979,
+          "source": "env.circle(x + Rr * 0.52, y - Rr * 0.52, Math.max(1.5, R * 0.05), sc.fg, null, 0, 0.9 * out, false);"
+        },
+        {
+          "line": 981,
+          "source": "bb = U(bb, J.mainDraw(env, { text: c.ch, font: Pm.font, size: R * 1.05 * Math.min(1, q), x, y, color: tc, noHold: plateHold(env), mi: miAt(env, t0) }));"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-cell-row-wrap-discrete-reduce",
+        "fontScale": 0.75,
+        "minNativeActualRatio": 0.7499999999999999,
+        "offset": [
+          596.8744336242441,
+          7.295563052443185
+        ],
+        "attempts": 12,
+        "limits": "Finite actual long-tail bound; owned circles/highlights/strokes included; runtime02 camera+ghost condition insufficient."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-cell-row-wrap-discrete-reduce",
+        "declaredFontScale": 0.75,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "slotMachine",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 988,
+      "sourceBlockSHA256": "93c50c7e47f383039d9cad8b17c4a04975ea8ca6405666275d34935806cef6e3",
+      "primary": "final glyph, intermediate reel symbols/blur, cabinet/window/shading/payline/arrows owned",
+      "primaryOwner": "slotMachine.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "reel p linear then damped settle; native rectangular clip; fixed cell window",
+      "candidateOrder": [
+        "native-joint-translation",
+        "reel-row-wrap",
+        "reel-cell-gap",
+        "reel-reduce"
+      ],
+      "intent": "Keep reel animation inside same windows and cabinet; intermediate symbols are primary reveal content",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1011,
+          "source": "if (cab) { const p = k * 0.22; env.rrect(x0 - p, y0 - p, x1 - x0 + p * 2, y1 - y0 + p * 2, p * 1.2, panel, out * inA, gIn(env)); }"
+        },
+        {
+          "line": 1020,
+          "source": "env.rect(wx, wy, w, h * inA, winC, out, false);"
+        },
+        {
+          "line": 1021,
+          "source": "ctx.save(); ctx.beginPath(); ctx.rect(wx, wy, w, h); ctx.clip();"
+        },
+        {
+          "line": 1029,
+          "source": "for (const o of [-0.16, 0.16]) env.draw({ text: ch, font: Pm.font, size: gsz, x: c.x, y: y + o * step, color: glyC, alpha: 0.22 * out, ghost: false });"
+        },
+        {
+          "line": 1030,
+          "source": "env.draw({ text: ch, font: Pm.font, size: gsz, x: c.x, y, color: glyC, alpha: 0.5 * out, ghost: false });"
+        },
+        {
+          "line": 1031,
+          "source": "} else env.draw({ text: ch, font: Pm.font, size: gsz, x: c.x, y, color: glyC, alpha: 0.9 * out, ghost: false });"
+        },
+        {
+          "line": 1033,
+          "source": "if (tau <= 0) bb = U(bb, J.mainDraw(env, { text: c.ch, font: Pm.font, size: gsz, x: c.x, y: c.y + (FIN - p) * step, color: glyC, noHold: plateHold(env), mi: miAt(env, ts) }));"
+        },
+        {
+          "line": 1038,
+          "source": "ctx.save(); ctx.globalAlpha = out; ctx.fillStyle = g; ctx.fillRect(wx, wy, w, h); ctx.restore();"
+        },
+        {
+          "line": 1040,
+          "source": "env.rrect(wx, wy, w, h, k * 0.06, null, out * inA, false, cab ? J.mix(panel, winC, 0.5) : sc.fg, Math.max(1.5, k * 0.02));"
+        },
+        {
+          "line": 1046,
+          "source": "env.line([[xa, y], [J.lerp(xa, xb, inA), y]], sc.accent, Math.max(1.2, k * 0.012), 0.7 * out, false);"
+        },
+        {
+          "line": 1047,
+          "source": "env.poly([[xa - tri * 1.6, y - tri], [xa, y], [xa - tri * 1.6, y + tri]], sc.accent, out * inA, false);"
+        },
+        {
+          "line": 1048,
+          "source": "env.poly([[xb + tri * 1.6, y - tri], [xb, y], [xb + tri * 1.6, y + tri]], sc.accent, out * inA, false);"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-cell-row-wrap",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          576.5757137437273,
+          -93.52610500000003
+        ],
+        "attempts": 2,
+        "limits": "Native mechanical aperture retained for explicit pool glyphs; complete main and pool remain primary."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-cell-row-wrap",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "flipBoard",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1056,
+      "sourceBlockSHA256": "3207bcb0ecfd79248697117bdb0638e7a8000c0d1e3bb4af218ba495c6a0abdc",
+      "primary": "all final/intermediate half-glyphs, flaps/hinges, LINE/TIME header owned",
+      "primaryOwner": "flipBoard.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "finite flap sy levels; settle varies by index; per-half clipY",
+      "candidateOrder": [
+        "native-joint-translation",
+        "flap-row-wrap",
+        "flap-cell-gap",
+        "flap-reduce"
+      ],
+      "intent": "Keep top/bottom half correspondence and header; do not treat random reveal symbols as auxiliary",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1082,
+          "source": "env.rrect(wx, wy, w, h, k * 0.07, panel, q, gIn(env));"
+        },
+        {
+          "line": 1089,
+          "source": "const half = (ch, top, sy) => { if (!ch || ch === ' ' || sy <= 0.01) return; env.draw(Object.assign({}, g, { text: ch, charFn: () => ({ clipY: top ? [-0.75, 0] : [0, 0.75], sy }) })); };"
+        },
+        {
+          "line": 1091,
+          "source": "if (!space) bb = U(bb, J.mainDraw(env, { text: c.ch, font: Pm.font, size: gsz, x: c.x, y: c.y, color: gc, alpha: q, noHold: plateHold(env), mi: miAt(env, settle) }));"
+        },
+        {
+          "line": 1099,
+          "source": "if (f < 0.5) { env.rect(wx, c.y - h / 2 * sy, w, h / 2 * sy, flap, q, false); half(A, true, sy); env.rect(wx, c.y - h / 2 * sy, w, h / 2 * sy, sc.bg, q * f * 0.5, false); }"
+        },
+        {
+          "line": 1100,
+          "source": "else { env.rect(wx, c.y, w, h / 2 * sy, flap, q, false); half(B, false, sy); env.rect(wx, c.y, w, h / 2 * sy, sc.bg, q * (1 - f) * 0.5, false); }"
+        },
+        {
+          "line": 1103,
+          "source": "env.rect(wx, c.y - lw / 2, w, lw, sc.bg, q, false);"
+        },
+        {
+          "line": 1104,
+          "source": "env.rect(wx - lw * 0.6, c.y - h * 0.07, lw * 1.2, h * 0.14, J.mix(panel, sc.bg, 0.5), q, false);"
+        },
+        {
+          "line": 1105,
+          "source": "env.rect(wx + w - lw * 0.6, c.y - h * 0.07, lw * 1.2, h * 0.14, J.mix(panel, sc.bg, 0.5), q, false);"
+        },
+        {
+          "line": 1111,
+          "source": "env.draw({ text: lab, font: monoF(env), size: fs, track: 0.2, align: 'left', x: x0, y: y0 - fs * 1.4, color: sc.sub, alpha: a, ghost: false });"
+        },
+        {
+          "line": 1112,
+          "source": "env.draw({ text: tm, font: monoF(env), size: fs, track: 0.2, align: 'right', x: x1, y: y0 - fs * 1.4, color: sc.accent, alpha: a, ghost: false });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          375.0530900000001,
+          332.2907299999999
+        ],
+        "attempts": 1,
+        "limits": "Native chs occurrence mapping preserves ASCII/newline/fullwidth-space distinctions; intentional flap clipping retained."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "credits",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1119,
+      "sourceBlockSHA256": "0efad15a7a8ba032a498f404ee0843038756934c7dfd3f6f9b350207464268e4",
+      "primary": "main lyric and all scrolling rows/labels/READING/NOTE/LINE/TIME; side separator owned",
+      "primaryOwner": "credits.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "scroll modulo block: every row traverses viewport; edge/band fade alone strict",
+      "candidateOrder": [
+        "native-joint-translation",
+        "credit-side-lanes",
+        "credit-row-wrap",
+        "credit-reduce"
+      ],
+      "intent": "Scrolling rows are semantic finite records, not exempt tiling; reserve side corridors so rows need not traverse circle",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1159,
+          "source": "if (r) env.draw({ text: r, font: monoF(env), size: fs * 0.62, track: 0.3, x: cx, y: yy - fs * 0.95, color: sc.sub, alpha: a * 0.8, ghost: false });"
+        },
+        {
+          "line": 1160,
+          "source": "env.draw({ text: v, font: Pm.fc, size: fs, track: 0.12, x: cx, y: yy, color: sc.fg, alpha: a * 0.85, ghost: false });"
+        },
+        {
+          "line": 1163,
+          "source": "if (r) env.draw({ text: r, font: /[A-Z]/.test(r) ? monoF(env) : Pm.fc, size: fs * 0.72, track: 0.25, align: 'right', x: cx - g, y: yy, color: sc.sub, alpha: a * 0.85, ghost: false });"
+        },
+        {
+          "line": 1164,
+          "source": "env.draw({ text: v, font: Pm.fc, size: fs, track: 0.1, align: 'left', x: cx + g, y: yy, color: sc.fg, alpha: a * 0.85, ghost: false });"
+        },
+        {
+          "line": 1168,
+          "source": "if (side) env.line([[W * 0.52, H * 0.2], [W * 0.52, H * 0.2 + H * 0.6 * inE(env, 0.8)]], sc.sub, lw, 0.5 * outK(env), false);"
+        },
+        {
+          "line": 1169,
+          "source": "return J.mainDraw(env, { text: mt, font: Pm.font, size, x: mx, y: H / 2, track: 0.06, lead: 1.2, color: sc.fg });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "credits-native-clock-paired-lanes",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          0,
+          0
+        ],
+        "attempts": 2,
+        "limits": "All semantic rows/labels and finite12 native repetitions primary; signed modulo/native row identity/phase preserved."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "credits-native-clock-paired-lanes",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "zoomRepeat",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1174,
+      "sourceBlockSHA256": "5cfcb887fab52fd8be05e7b9d25d68f91235606079ba5b493bf276bcf9429c22",
+      "primary": "central lyric and its background-colour thick outline",
+      "primaryOwner": "zoomRepeat.composition",
+      "independentDecor": "none; large expanding env.draw copies tiledAux",
+      "tiledAux": "env.draw background copies only; mainDraw main line/outline primary",
+      "sweep": "primary mainDraw; outline stroke .2size; auxiliary q/twist phases unchanged",
+      "candidateOrder": [
+        "native-joint-translation",
+        "central-wrap",
+        "central-spacing",
+        "central-reduce"
+      ],
+      "intent": "Preserve primary knockout outline and full-screen expanding auxiliary field",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1203,
+          "source": "env.draw(it);"
+        },
+        {
+          "line": 1205,
+          "source": "J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, fill: false, stroke: size * 0.2, strokeColor: sc.bg, ghost: false, plain: true });"
+        },
+        {
+          "line": 1206,
+          "source": "return J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, color: sc.fg });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "outline/core copies are separate intentional passes of one logical main copy",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          469.4844179380416,
+          284.6059457031249
+        ],
+        "attempts": 1,
+        "limits": "Both central primary main calls including outline/knockout retained; only background loops are approved aux."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "splitHalves",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1211,
+      "sourceBlockSHA256": "4b69b4fdf1bc2e16219be91dc89318180a3d77e60f2da22b7b6be027cf3b7878",
+      "primary": "both complementary half-glyphs for each line + cut rule/end dots",
+      "primaryOwner": "splitHalves.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "exponential entry/exit horizontal travel, hold shear sin; source half-plane clips",
+      "candidateOrder": [
+        "native-joint-translation",
+        "split-line-wrap",
+        "split-gap-travel",
+        "split-reduce"
+      ],
+      "intent": "Both halves count as one logical full copy; keep horizontal split/reading order and shear",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1238,
+          "source": "ctx.clip();"
+        },
+        {
+          "line": 1241,
+          "source": "const r = J.mainDraw(env, it);"
+        },
+        {
+          "line": 1249,
+          "source": "env.line([[W / 2 - half * le, y], [W / 2 + half * le, y]], sc.accent, lw, 1, true);"
+        },
+        {
+          "line": 1250,
+          "source": "if (Pm.line === 'short') { env.circle(W / 2 - half * le, y, lw * 1.6, sc.accent, null, 0, 1, false); env.circle(W / 2 + half * le, y, lw * 1.6, sc.accent, null, 0, 1, false); }"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "complementary halves form one logical copy",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          0,
+          302.6185073104094
+        ],
+        "attempts": 1,
+        "limits": "Native full horizontal travel and full-width line restored; native screen-edge crop only, circle strict; runtime02 camera+ghost insufficient."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "columnsBig",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1258,
+      "sourceBlockSHA256": "760da3d80a8bb60f166f814c9cfd7040d7e9aff57b01506a4d0aaaa59d35529f",
+      "primary": "big column, full-line annotation, romaji/NOTE/No./TIME, rule/mark",
+      "primaryOwner": "columnsBig.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "mainDraw; reveal prefixes only; annotation geometry stable",
+      "candidateOrder": [
+        "native-joint-translation",
+        "column-annotation-reflow",
+        "column-gap",
+        "column-reduce"
+      ],
+      "intent": "Keep large/small hierarchy and specified side/read-after relationship; no disappearing annotation",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1272,
+          "source": "const bb = J.mainDraw(env, { text: txt, font: Pm.font, size, x: hx, y: H / 2, vertical: true, track: 0.02, color: sc.fg });"
+        },
+        {
+          "line": 1288,
+          "source": "env.draw({ text: lineT, font: Pm.fs, size: fs, vertical: true, align: 'left', lead: 1.7, track: 0.06, x: x1 + sgn * (nL - 1) * fs * 0.85, y: top, color: sc.fg, alpha: 0.9 * out, ghost: false, charFn: reveal(0.18, c1) });"
+        },
+        {
+          "line": 1289,
+          "source": "env.draw({ text: sub2, font: rom ? monoF(env) : Pm.fs, size: fs * 0.72, vertical: true, align: 'left', track: 0.18, x: x2, y: top, color: sc.sub, alpha: 0.9 * out, ghost: false, charFn: reveal(0.35, J.glyphCount(sub2) + 2) });"
+        },
+        {
+          "line": 1293,
+          "source": "env.line([[rx, top], [rx, top + colH * E.outCubic(J.clamp((lt - 0.1) / 0.6))]], sc.sub, lw, 0.7 * out, false);"
+        },
+        {
+          "line": 1297,
+          "source": "if (Pm.mark === 'bar') env.rect(hx - size * 0.5, top - size * 0.28, size * q, Math.max(3, size * 0.06), sc.accent, 1, true);"
+        },
+        {
+          "line": 1298,
+          "source": "else env.circle(hx + (size * 0.5 + fs * 0.85) * sgn, top - fs * 0.9, fs * 0.28 * q, sc.accent, null, 0, 1, true);"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "source-sign-wrap-discrete-reduce",
+        "fontScale": 0.85,
+        "minNativeActualRatio": 0.85,
+        "offset": [
+          332.92079272772565,
+          0
+        ],
+        "attempts": 8,
+        "limits": "Original source occurrence/clock preserved in wrapped rows; representative .85 actual-native size."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "source-sign-wrap-discrete-reduce",
+        "declaredFontScale": 0.85,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "dotMatrix",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1404,
+      "sourceBlockSHA256": "724e0319fd86c812212e9880c2f9119111f67b0e0d9a3511f8751c3e9dffd94b",
+      "primary": "sampled LED lyric; panel/off-grid/bright scan column owned",
+      "primaryOwner": "dotMatrix.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "scroll integer shift; stencil topology; reveal sweep/random; finite dot paths",
+      "candidateOrder": [
+        "native-joint-translation",
+        "led-line-wrap",
+        "led-pitch-panel",
+        "led-reduce"
+      ],
+      "intent": "Preserve sampled glyph topology/dot pitch relationship; native stencil is not an avoidance mask",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1428,
+          "source": "if (Pm.panel) { const pd = p * 1.2; env.rrect(gx - pd, gy - pd, gw + pd * 2, gh + pd * 2, p * 1.2, panel, inA * out, false, J.mix(panel, litC, 0.3), Math.max(1, p * 0.12)); }"
+        },
+        {
+          "line": 1431,
+          "source": "const pat = ctx.createPattern(tile.cv, 'repeat');"
+        },
+        {
+          "line": 1434,
+          "source": "if (ok) { ctx.save(); ctx.globalAlpha = inA * out; ctx.fillStyle = pat; ctx.fillRect(gx, gy, gw * fr, gh); ctx.restore(); }"
+        },
+        {
+          "line": 1453,
+          "source": "ctx.clip();"
+        },
+        {
+          "line": 1455,
+          "source": "const bb = J.mainDraw(env, { text: mt, font: Pm.font, size: fsz, x: W / 2 + shift * p, y: H / 2, lead, color: litC, stroke: p * 0.9, strokeColor: litC, strokeUnder: true, noHold: true, ghost: false, mi: miAt(env, t0) });"
+        },
+        {
+          "line": 1460,
+          "source": "ctx.save(); ctx.globalAlpha = 0.9 * out; ctx.fillStyle = sc.fg; ctx.beginPath();"
+        },
+        {
+          "line": 1462,
+          "source": "ctx.fill(); ctx.restore();"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "led-grid-wrap-discrete-reduce",
+        "fontScale": 0.7,
+        "minNativeActualRatio": 0.7000000000000001,
+        "offset": [
+          582.941476,
+          0
+        ],
+        "attempts": 14,
+        "limits": "Native pattern/compound clip exact; actual-font B stencil revision invalidates independently; representative .70 grid wrap; runtime02 camera+ghost insufficient."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "led-grid-wrap-discrete-reduce",
+        "declaredFontScale": 0.7,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "depthStack",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1469,
+      "sourceBlockSHA256": "eb702fe7904760cfefbbddce256ffd6e3fa3a2413804276ceab00e2ef84182f7",
+      "primary": "front lyric and every receding copy; perspective connector rules",
+      "primaryOwner": "depthStack.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "depth e*out; copy scales rational; vanishing sway sin; convex full front-to-vanishing envelopes",
+      "candidateOrder": [
+        "native-joint-translation",
+        "depth-axis-path",
+        "depth-wrap-spacing",
+        "depth-reduce"
+      ],
+      "intent": "Depth copies are principal stacked typography; preserve count and order/hierarchy, no mask or auxiliary exemption",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1491,
+          "source": "env.line([[x0, y0], [x1, y1]], sc.sub, Math.max(1, M * 0.0013), 0.5 * out, false);"
+        },
+        {
+          "line": 1502,
+          "source": "env.draw(it);"
+        },
+        {
+          "line": 1504,
+          "source": "return J.mainDraw(env, { text: mt, font: Pm.font, size, x: cx, y: cy, track: 0.03, lead: 1.1, color: sc.fg });"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          -189.20035033202657,
+          372.84579131541466
+        ],
+        "attempts": 1,
+        "limits": "All depth copies/connectors primary; ON continuous effective size via fixed CSS; two-point stroke support retains native pad."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "typeSpecimen",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1510,
+      "sourceBlockSHA256": "3197f2e6ddaf9a5e3bc04b5ec049afa6fb432fcbc4745c1671a78a7b1de93b25",
+      "primary": "every main/secondary font specimen; captions and cell rules",
+      "primaryOwner": "typeSpecimen.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "secondary y offset <=1.5cap; e fade strictly; mainDraw",
+      "candidateOrder": [
+        "native-joint-translation",
+        "specimen-cell-reflow",
+        "specimen-caption-gap",
+        "specimen-reduce"
+      ],
+      "intent": "All font versions are primary comparison content, preserve font/count and main hierarchy",
+      "status": "visual01 correction locally qualified; visual-draft01 independent review pending, not finally accepted",
+      "drawEvidence": [
+        {
+          "line": 1549,
+          "source": "env.line([[c.x, c.y], [c.x + c.w * E.outExpo(J.clamp((lt - d) / 0.5)), c.y]], c.main ? sc.accent : sc.sub, c.main ? lw * 3 : lw, (c.main ? 1 : 0.6) * out, false);"
+        },
+        {
+          "line": 1552,
+          "source": "env.draw({ text: label, font: mono, size: cap, align: 'left', track: 0.08, x: c.x, y: c.y + cap * 1.1, color: c.main ? sc.accent : sc.sub, alpha: e, ghost: false });"
+        },
+        {
+          "line": 1558,
+          "source": "if (c.main) bb = J.mainDraw(env, it);"
+        },
+        {
+          "line": 1559,
+          "source": "else env.draw(Object.assign(it, { color: sc.sub, alpha: e * 0.9, y: it.y + (1 - e) * cap * 1.5, ghost: false }));"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "specimen-discrete-size-ordered-bands",
+        "fontScale": 0.85,
+        "minNativeActualRatio": 0.85,
+        "offset": [
+          80.14896757478843,
+          -13.439294126425239
+        ],
+        "attempts": 19,
+        "limits": "All six actual distinct faces and captions primary; explicit native-size scales only; runtime02 camera+ghost and portrait5 editorial condition insufficient.",
+        "scope": "Historical font-functional05 numeric witness only, superseded by visual01 finding; not current visual acceptance"
+      },
+      "visual01": {
+        "report": "visual-c-review.md",
+        "finding": "caption 400 token split and 800 orphan across cells",
+        "correction": "semantic atom wrap and minimum atom cell width; full label whitespace/text retained",
+        "status": "historical failure corrected in current geometry; static and bounded-motion independent review pass, final acceptance pending"
+      },
+      "repairCheckpoint": {
+        "receipt": "caption-regression02-current.json",
+        "draft": "visual-draft01.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "fontScale": 0.85,
+        "intent": "atomic font/style-weight captions and required cell width; actual six faces",
+        "acceptance": "static30 draft and independent visual-motion02 bounded-frame review PASS within stated scope; current numeric/formal04/localbrowser04 pass; publication/final acceptance pending",
+        "independentMotion": "visual-motion02-review.md"
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "specimen-discrete-size-ordered-bands",
+        "declaredFontScale": 0.85,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "kanjiFocus",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1566,
+      "sourceBlockSHA256": "d1b0f22b8961d37277b719a2f2c948a6fcaeeceeb813e5afd37ee8234fd5ab83",
+      "primary": "giant focus glyph + full smaller lyric, focus dot/underline",
+      "primaryOwner": "kanjiFocus.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "giant scale 1.08 to1 plus exit1.04; fade strict; full lyric mainDraw",
+      "candidateOrder": [
+        "native-joint-translation",
+        "focus-side-pair",
+        "focus-vertical-pair",
+        "focus-hierarchy-reduce"
+      ],
+      "intent": "Huge single glyph is primary focal content; retain oversized relationship, cannot shrink it to small annotation",
+      "status": "visual01 correction locally qualified; visual-draft01 independent review pending, not finally accepted",
+      "drawEvidence": [
+        {
+          "line": 1591,
+          "source": "env.draw(bi);"
+        },
+        {
+          "line": 1601,
+          "source": "bb = U(bb, J.mainDraw(env, { text: g.ch, font: Pm.fs, size: base.size, x: g.x, y: g.y, color: isF ? sc.accent : sc.fg, mi: i * 0.6 }));"
+        },
+        {
+          "line": 1604,
+          "source": "env.circle(g.x, g.y - base.size * 0.78, base.size * 0.075 * q, sc.accent, null, 0, 1, true);"
+        },
+        {
+          "line": 1611,
+          "source": "env.line([[x0, y], [J.lerp(x0, x1, le), y]], sc.sub, Math.max(1, M * 0.0013), 0.6, false);"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        3200,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          3200,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "focus-oversized-pair-discrete-reduce",
+        "fontScale": 0.85,
+        "minNativeActualRatio": 0.85,
+        "offset": [
+          0,
+          0
+        ],
+        "attempts": 8,
+        "limits": "3200x1080 representative; giant primary linear .85 scale, never scale-squared; astral UTF16 native accent ambiguity unsupported.",
+        "scope": "Historical font-functional05 numeric witness only, superseded by visual01 finding; not current visual acceptance"
+      },
+      "visual01": {
+        "report": "visual-c-review.md",
+        "finding": "giant and full lyric separated by over1000px",
+        "correction": "native relative joint cluster then declared discrete cluster scale; no distant pair success",
+        "status": "historical failure corrected in current geometry; static and bounded-motion independent review pass, final acceptance pending"
+      },
+      "repairCheckpoint": {
+        "receipt": "visual-fix02.json",
+        "draft": "visual-draft01.json",
+        "stage": [
+          3200,
+          1080
+        ],
+        "fontScale": 0.85,
+        "intent": "native-relative giant/full-text/owned-line joint cluster;1920 still insufficient",
+        "acceptance": "static30 draft and independent visual-motion02 bounded-frame review PASS within stated scope; current numeric/formal04/localbrowser04 pass; publication/final acceptance pending",
+        "independentMotion": "visual-motion02-review.md"
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          3200,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "focus-native-joint-cluster-discrete-reduce",
+        "declaredFontScale": 0.85,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "halfVertical",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1618,
+      "sourceBlockSHA256": "fd859791e9e12b81ba4d6082cc4f1496b985e5a4a5a72b4c17122495413347dd",
+      "primary": "both arms of lyric, outside bracket/tick/corner mark",
+      "primaryOwner": "halfVertical.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "mainDraw arms; guide partial reveal and mark outBack",
+      "candidateOrder": [
+        "native-joint-translation",
+        "corner-arm-length-wrap",
+        "corner-gap",
+        "corner-reduce"
+      ],
+      "intent": "Preserve natural A/B split and horizontal/vertical elbow; no reversal or independent arm relocation",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1657,
+          "source": "bb = U(bb, J.mainDraw(env, itA));"
+        },
+        {
+          "line": 1658,
+          "source": "if (B) bb = U(bb, J.mainDraw(env, { text: B, font: Pm.font, size, x: last.x, y: y0 + size * 1.25, vertical: true, align: 'left', track: tr, color: sc.fg, mi: 3 }));"
+        },
+        {
+          "line": 1663,
+          "source": "bb = U(bb, J.mainDraw(env, itA));"
+        },
+        {
+          "line": 1664,
+          "source": "if (B) bb = U(bb, J.mainDraw(env, { text: B, font: Pm.font, size, x: x0 + size * 1.25, y: last.y, align: 'left', track: tr, color: sc.fg, mi: 3 }));"
+        },
+        {
+          "line": 1674,
+          "source": "env.polyPartial(pts, le, sc.sub, lw, 0.8, false);"
+        },
+        {
+          "line": 1680,
+          "source": "env.rect(px - cs / 2 * q, py - cs / 2 * q, cs * q, cs * q, sc.accent, 1, true);"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          -69.97619668585406,
+          144.17051661999994
+        ],
+        "attempts": 1,
+        "limits": "Main native ordering/font/source retained with native joint translation representative."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "curtain",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1687,
+      "sourceBlockSHA256": "dd2558d3d7eb68d8691c903d7f54bb955216219a76516e173a9db9fb86bdb820",
+      "primary": "central lyric; shutter LINE/TIME slate retained as primary metadata with its native shutter attachment",
+      "primaryOwner": "curtain.composition",
+      "independentDecor": "theatre panels/pleats/tiebacks; primary slate is independently audited; no scenery mask or movement",
+      "tiledAux": "none",
+      "sweep": "mainDraw strict; curtain geometry/open clock untouched",
+      "candidateOrder": [
+        "native-joint-translation",
+        "stage-lyric-wrap",
+        "stage-lyric-spacing",
+        "stage-lyric-reduce"
+      ],
+      "intent": "Keep screen-sized curtain opening/reveal and slate attachment; any recipe unable to keep metadata safe on native shutter is explicitly excluded",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1697,
+          "source": "const bb = J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.05, lead: 1.15, color: sc.fg, mi: miAt(env, t0 + T * 0.25) });"
+        },
+        {
+          "line": 1708,
+          "source": "for (let i = 1; i < m; i++) { const x = x0 + w * i / m; env.rect(x - lw * 1.5, y0, lw * 3, y1 - y0, i % 2 ? shade : lite, 0.55 * k, false); }"
+        },
+        {
+          "line": 1716,
+          "source": "env.poly(L, panel, 1, moving); env.poly(R, panel, 1, moving);"
+        },
+        {
+          "line": 1720,
+          "source": "env.rect(xl - W * 0.012, H * 0.62, W * 0.012 + 2, H * 0.018, sc.accent === panel ? sc.fg : sc.accent, q, false);"
+        },
+        {
+          "line": 1721,
+          "source": "env.rect(xr - 2, H * 0.62, W * 0.012 + 2, H * 0.018, sc.accent === panel ? sc.fg : sc.accent, q, false);"
+        },
+        {
+          "line": 1726,
+          "source": "env.rect(-5, -5, W + 10, yt + 5, panel, 1, moving);"
+        },
+        {
+          "line": 1727,
+          "source": "env.rect(-5, yb, W + 10, H - yb + 5, panel, 1, moving);"
+        },
+        {
+          "line": 1730,
+          "source": "env.draw({ text: `${String((cut.line | 0) + 1).padStart(2, '0')} ／ ${J.fmtTime(cut.start)}`, font: monoF(env), size: fs, track: 0.3, align: 'left', x: W * 0.05, y: yt / 2, color: onCol(sc, panel), alpha: a, ghost: false });"
+        },
+        {
+          "line": 1739,
+          "source": "env.blob ? env.poly(pts, panel, 1, moving) : null;"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          484.9729679380416,
+          262.47944570312484
+        ],
+        "attempts": 1,
+        "limits": "Panel scenery remains native; shutter LINE/TIME fixed primary offset0 attached to native panel; fixed-caption circle conflict explicitly rejects."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "equalizer",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1747,
+      "sourceBlockSHA256": "0d1161dd85ba3e3b3b729481d7ed137076b782fd48e9742d04b4aa69b9f2df68",
+      "primary": "all glyphs, lettered bars, thin interstitial bars/mirrors, peak markers and row baselines",
+      "primaryOwner": "equalizer.composition",
+      "independentDecor": "none; unlettered interstitial thin bars and mirrors belong to the primary chart composition",
+      "tiledAux": "none",
+      "sweep": "noise/pulse range clamped .06..1; max bar, six-sample peak; letter y follows peak",
+      "candidateOrder": [
+        "native-joint-translation",
+        "spectrum-row-wrap",
+        "spectrum-lane-height",
+        "spectrum-reduce"
+      ],
+      "intent": "Keep letters atop corresponding animated bars, beat/index/level phase; whole row retained",
+      "status": "visual01 correction locally qualified; visual-draft01 independent review pending, not finally accepted",
+      "drawEvidence": [
+        {
+          "line": 1782,
+          "source": "env.line([[x0 - sw * 0.2, yb], [x0 - sw * 0.2 + (cnt * sw + sw * 0.4) * e, yb]], sc.sub, lw, 0.7 * out, false);"
+        },
+        {
+          "line": 1787,
+          "source": "for (let k = 0; k < m; k++) env.rect(x - w / 2, yb - (k + 1) * seg + gap / 2, w, seg - gap, k > hmax / seg * 0.72 ? colB : col, a, false);"
+        },
+        {
+          "line": 1788,
+          "source": "} else env.rect(x - w / 2, yb - h, w, h, col, a, false);"
+        },
+        {
+          "line": 1789,
+          "source": "if (Pm.style === 'mirror') env.rect(x - w / 2, yb + lw * 2, w, h * 0.35, col, a * 0.22, false);"
+        },
+        {
+          "line": 1810,
+          "source": "env.rect(x - bw / 2, yb - ph - Math.max(3, sw * 0.05) - sw * 0.04, bw, Math.max(3, sw * 0.05), sc.fg, 0.9 * out * e, false);"
+        },
+        {
+          "line": 1812,
+          "source": "bb = U(bb, J.mainDraw(env, { text: chs[i], font: Pm.font, size, x, y: yb - h - size * 0.62 - (Pm.peaks ? sw * 0.1 : 0), color: sc.fg, mi: i }));"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        1920,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "equalizer-native-signal-rows-discrete-reduce",
+        "fontScale": 0.7,
+        "minNativeActualRatio": 0.7,
+        "offset": [
+          561.1826477500953,
+          38.12134900000001
+        ],
+        "attempts": 14,
+        "limits": "Mirror/peak/tick shapes and original signal keys retained; .70 representative; runtime02 camera+ghost condition insufficient.",
+        "scope": "Historical font-functional05 numeric witness only, superseded by visual01 finding; not current visual acceptance"
+      },
+      "visual01": {
+        "report": "visual-c-review.md",
+        "finding": "thin spectrum and its mirrors detach from owned bars",
+        "correction": "chart-owned thin/reflect primary + native global signal identity/envelope/topology",
+        "status": "historical failure corrected in current geometry; static and bounded-motion independent review pass, final acceptance pending"
+      },
+      "repairCheckpoint": {
+        "receipt": "visual-fix02.json",
+        "draft": "visual-draft01.json",
+        "stage": [
+          1920,
+          1080
+        ],
+        "fontScale": 0.7,
+        "intent": "chart-owned thin spectrum and mirrors follow main signal/baseline composition",
+        "acceptance": "static30 draft and independent visual-motion02 bounded-frame review PASS within stated scope; current numeric/formal04/localbrowser04 pass; publication/final acceptance pending",
+        "independentMotion": "visual-motion02-review.md"
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          1920,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "equalizer-native-signal-rows-discrete-reduce",
+        "declaredFontScale": 0.7,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    },
+    {
+      "id": "tape",
+      "source": "src/11p_layoutsB.js",
+      "sourceLine": 1829,
+      "sourceBlockSHA256": "7215a55092b3b72103a96b8d97a9e40b7de10c0de4e8a82d208f60cf9cf83ede",
+      "primary": "all lyric strips; crossed lineText strip and attached piece label/romaji/No.; torn tape bodies",
+      "primaryOwner": "tape.composition",
+      "independentDecor": "none",
+      "tiledAux": "none",
+      "sweep": "strip reveal clipping, strip rotations, owned full ink; exit fade strict",
+      "candidateOrder": [
+        "native-joint-translation",
+        "tape-strip-wrap",
+        "tape-stack-pitch",
+        "tape-reduce"
+      ],
+      "intent": "Keep text on same tape, crossing/stack structure and attached piece; preserve all meaningful text",
+      "status": "implemented; font05 representative and native capture passed; full browser/H03/visual/public acceptance pending",
+      "drawEvidence": [
+        {
+          "line": 1852,
+          "source": "ctx.save(); ctx.beginPath(); ctx.rect(-h, -h, vis + h * (u >= 1 ? 2 : 0), h * 2); ctx.clip();"
+        },
+        {
+          "line": 1854,
+          "source": "ctx.globalAlpha = 0.9 * out; ctx.fillStyle = col; ctx.fill();"
+        },
+        {
+          "line": 1855,
+          "source": "if (Pm.lines) { ctx.globalAlpha = 0.07 * out; ctx.fillStyle = onCol(sc, col); for (let j = 1; j < 6; j++) ctx.fillRect(0, -h / 2 + h * j / 6, L, Math.max(1, h * 0.012)); }"
+        },
+        {
+          "line": 1856,
+          "source": "ctx.globalAlpha = 0.12 * out; ctx.fillStyle = dark ? '#000000' : '#FFFFFF'; ctx.fillRect(0, -h / 2, L, h * 0.08); ctx.fillRect(0, h / 2 - h * 0.08, L, h * 0.08);"
+        },
+        {
+          "line": 1861,
+          "source": "ctx.save(); ctx.beginPath(); ctx.rect(-h, -h * 2, vis + h * (u >= 1 ? 2 : 0), h * 4); ctx.clip();"
+        },
+        {
+          "line": 1884,
+          "source": "const r = strip(x, y, ang, L, h, i % 3 === 1 ? tapeC2 : tapeC, i, 0.03 + i * 0.12, 0.3, (cx2, cy2) => J.mainDraw(env, { text: p, font: Pm.font, size, x: cx2, y: cy2, track: 0.05, color: onCol(sc, i % 3 === 1 ? tapeC2 : tapeC), noHold: plateHold(env), mi: miAt(env, 0.05 + i * 0.12) }));"
+        },
+        {
+          "line": 1897,
+          "source": "strip(W / 2 + L * 0.15, H / 2 + h * 0.1, -Pm.ang * 2.4, L2, h * 0.5, tapeC2, 9, 0.0, 0.4, (cx2, cy2) => env.draw({ text: unit, font: Pm.fs, size: fs, track: 0.1, x: cx2, y: cy2, color: onCol(sc, tapeC2), alpha: out, ghost: false }));"
+        },
+        {
+          "line": 1899,
+          "source": "const r = strip(W / 2, H / 2, Pm.ang, L, h, tapeC, 0, 0.06, 0.34, (cx2, cy2) => J.mainDraw(env, { text: mt, font: Pm.font, size, x: cx2, y: cy2, track: 0.05, lead: 1.15, color: txtC, noHold: plateHold(env), mi: miAt(env, 0.1) }));"
+        },
+        {
+          "line": 1905,
+          "source": "strip(ex - ph * 0.3, ey - ph * 0.4, Pm.ang - 38 * Math.sign(Pm.ang || 1), pl, ph, tapeC2, 5, 0.32, 0.18, (cx2, cy2) => env.draw({ text: lab, font: monoF(env), size: Math.min(ph * 0.34, pl * 0.7 / Math.max(3, lab.length) * 1.6), track: 0.12, x: cx2, y: cy2, color: onCol(sc, tapeC2), alpha: out, ghost: false }));"
+        }
+      ],
+      "sourceCoveragePlan": {
+        "copyPolicy": "all native lyric-bearing primary copies retained",
+        "check": "Observed grapheme ranges and native copy/metadata text-font-count against same-input native event inventory; no text inferred from mainDraw presence"
+      },
+      "implementationReceipt": "font-functional05.json",
+      "representativeStage": [
+        3200,
+        1080
+      ],
+      "acceptedRepresentative": {
+        "receipt": "font-functional05.json",
+        "stage": [
+          3200,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "safety": "certified-bounded-adapter",
+        "strategy": "native-joint-translation",
+        "fontScale": 1,
+        "minNativeActualRatio": 1,
+        "offset": [
+          323.25286181045004,
+          322.5405293957906
+        ],
+        "attempts": 1,
+        "limits": "3200x1080 representative; cross/strip/piece primary, native reveal jump and ownership retained."
+      },
+      "currentRepresentative": {
+        "receipt": "font-functional06.json",
+        "nativeManifest": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+        "stage": [
+          3200,
+          1080
+        ],
+        "text": "風の先へ",
+        "circle": {
+          "id": "fixture",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "strategy": "native-joint-translation",
+        "declaredFontScale": 1,
+        "scope": "one pinned .2 representative and current native02; variable-radius insufficiencies remain explicit; not blanket acceptance"
+      }
+    }
+  ],
+  "phase1": {
+    "status": "native transport qualification passed; parent review pending",
+    "receipt": "native-stage/summary.json",
+    "coverage": "25 IDs + selected branches; single-face glyph fixture; primary main-copy counts only; safety not yet implemented"
+  },
+  "phase2": {
+    "status": "five visual corrections locally numeric/raster qualified; current 30PNG independent visual review pending; broad/final gates not rerun",
+    "fontFunctional": "font-functional05.json",
+    "focused": "interval-focused02.json",
+    "wideRepresentatives": {
+      "ids": [
+        "elastic",
+        "stickerBomb",
+        "kanjiFocus",
+        "tape"
+      ],
+      "stage": [
+        3200,
+        1080
+      ],
+      "limitation": "not general16:9 support;1920 insufficiency history retained"
+    },
+    "nativeCSS": "ON-only fixed CSS plus continuous native uniform multiplier for delivery lead/depth/focus/keycaps/bubbles; OFF unchanged; AA difference intentional; tunnel recipe-only fixed perimeter CSS preserves native anchors/advance/phase/effective size/physical stroke, AA difference declared",
+    "pending": [
+      "independent visual-draft01 review",
+      "current all25 semantic/font/transport gates",
+      "changed-family matrix/camera/raster",
+      "current cache/capacity and reviewed formal performance",
+      "new immutable25pair capture + phase-isolated browser",
+      "actual8cut H03 focused/capture",
+      "parent public/private acceptance"
+    ],
+    "matrix": {
+      "receipt": "matrix01.json.gz",
+      "conditions": 350,
+      "certified": 288,
+      "insufficient": 62,
+      "unsupported": 0
+    },
+    "actualCameraGhost": {
+      "receipt": "runtime02.json.gz",
+      "certified": 20,
+      "insufficient": 5,
+      "rasterCertified": 80,
+      "rasterInsufficient": 20,
+      "seekRevisitsAll25": true
+    },
+    "performance": {
+      "receipt": "perf-formal02.json.gz",
+      "planningP95Ratios": [
+        1.963,
+        1.289
+      ],
+      "renderAddedP95ms": [
+        0.2,
+        0.5
+      ],
+      "parentReview": "parent-formal02-review.json"
+    },
+    "regression": {
+      "passedSuites": 8,
+      "additionalMediaCutCompositing": "passed",
+      "knownUnmet": [
+        "lyric_compositing exact e96 failure",
+        "group_reroll exact e96 failure",
+        "AVOID-013 save expected0 actual1 unresolved"
+      ],
+      "receipt": "regression-existing-failures.json"
+    },
+    "nextGatePlan": "visual-repair-next-gates.md"
+  },
+  "baselineEvidenceScope": "Top product/sourceLine/sourceBlockSHA/drawEvidence refer to immutable e96 investigation, not current file line numbers or final products.",
+  "currentIdentity": {
+    "sourceAggregateSHA256": "1c2596754795804f021546f1e985f0863ace5ebf243b03ff2fcb29ff72299737",
+    "JA_SHA256": "8138228718eddce37760fd9d19fbd38c252c665b358827e5d8499123b7f61aa8",
+    "EN_SHA256": "9cef94822c30fbe9f7c53fa03367f874f564da8f4f977eb5840b495d1bcee57f",
+    "sourceFiles": {
+      "src/09a_placement.js": "40330a8c750bf713361d0afaaee9ae2609241ce664bfde7729e0835749e1dc21",
+      "src/09e_layoutsB_placement.js": "6fbc64619ada31da464462d9a1303ca2e8cbcac2104a349e715076611e95c486",
+      "src/09f_layoutsB_editorial.js": "3798fb3602e21d8445cd895ffd51cb7d76a26e21768fcd6f95307ce0cd70a670",
+      "src/11p_layoutsB.js": "b33038079c490b2d1d8c17c0516d41155b5a0c09631f7f9fe04814d3b2b6fcdb"
+    },
+    "fontAudit": "font-functional05.json",
+    "nativeBundleManifestSHA256": "c0c64e78bbbfc33761e378acd21fd7899cd59353e3a1ac1dcb02e6c9c2a77274",
+    "scope": "Historical captured01 freeze; working source changed for visual corrections and is not yet accepted"
+  },
+  "workingIdentity": {
+    "receipt": "freeze02-identity.json",
+    "sourceAggregateSHA256": "c0e72b76a33296039d8f1e6946bb96c2b84a6a53ab0e22535ab62bf46e54eb70",
+    "JA_SHA256": "f2d02788a9e68cf7ebf34c189954142c3b425fee42d29660753a680fd734831e",
+    "EN_SHA256": "5504094cb89df8c23689a32f8962a3d3a48c1ccb7a0ea0a679a923c3562e9a02",
+    "sourceFiles": {
+      "src/09a_placement.js": "40330a8c750bf713361d0afaaee9ae2609241ce664bfde7729e0835749e1dc21",
+      "src/09e_layoutsB_placement.js": "5667bc92a76b50d27da2cfaec65195b18f0b478703d66184a94ec36a31d9b887",
+      "src/09f_layoutsB_editorial.js": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+      "src/11p_layoutsB.js": "137b53a86c9dbc50170ec39fd10eab097c4fe4e2e5595305f85a21875e32aee3"
+    },
+    "fontAudit": "font-functional06.json",
+    "nativeBundleManifestSHA256": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+    "scope": "Current immutable native02 product freeze; local full browser04 passes. Independent motion/H03/publication/final acceptance still pending."
+  },
+  "currentCheckpoint": {
+    "status": "実環境検証待ち",
+    "freeze": "freeze02-identity.json",
+    "visual": "Main25 current independent repair/motion scope PASS with retained wordCloud-before91 historical bitwise inequality; H03 current rain-only02 observed-scope PASS exact carry independently approved. Rejected eight-cut raw02 all3visualFAIL, two-pair control01overallFAIL, bubbles BGcontrastFAIL and credits FG-insufficient remain unchanged.",
+    "currentGeometry": [
+      "font-functional06.json",
+      "matrix02.json",
+      "runtime03.json",
+      "source-native10.json",
+      "caption-regression02-current.json",
+      "elastic-boundary01.json",
+      "tunnel-quiet03.json",
+      "attachment02.json",
+      "visual-contract01.json"
+    ],
+    "runtimeScope": "19 camera conditions certified,6 insufficient;76 certified alpha1 circle checks pass;all100 support checks pass;24 insufficient circle crossings not measured",
+    "cache": "pool08/collision03/cache09; capacity04 360 contexts/7824044 accounted bytes/warm360 hits/0candidate/0evict",
+    "performance": "formal03 failed additional render1000 +4ms; exact predicate-only early false has same booleans; formal04 passed100:1.701x/+0.5ms,1000:1.288x/-1ms, independently reviewed parent-perf-formal04-review.json",
+    "native02": "native-capture02 file qualified554assets; native-browser04 complete phase-isolated raw/UI/50playback/50native-parity pass, input integrity unchanged; independent motion/public/final acceptance pending",
+    "pending": [
+      "native02 raw files and exact stream/draft handoff",
+      "phase-isolated local browser04",
+      "H03 actual8-cut retained decoded-video focused outcomes and approved safe video subset",
+      "independent continuous visual review",
+      "private/public raw playback/native proof and final parent acceptance"
+    ],
+    "streamHandoff": "after20 unchanged1920frames exact and changed5after15draftkeys exact; before2399/2400 exact,wordCloud91 differs. One boundedfresh sequential96+direct91/90/91 matches old hashes, original anomaly cause unknown, both immutable captures retained.",
+    "H03": "focused06 reviewed3safe; raw native02 manifest8f84ccb6b4f5c40156a86b91127dc541027bff89835a97426c25b2264073d32c file-qualified238assets/6MP4. h03-native-browser02 passes6playback+2inputPlayback+6nativeParity+6live,245inputs unchanged. Independent visual and separate lossless-gzip publication package gates pending; raw114MB JSONs unchanged.",
+    "h03VisualBlocker": {
+      "status": "historical eight-cut raw02 all3visualFAIL remains rejected/unpublished; distinct rain-only02 current candidate separately qualified",
+      "findings": [
+        "rain cut2 recap primary versus background clock",
+        "credits cut0 main versus cut2 recap main",
+        "bubbles cut5 recap glyph and owned bubble versus foreground"
+      ],
+      "classification": "cross-cut and primary/video integration findings; per-cut circle safety does not establish composition safety",
+      "proposal": "h03-visual02-scope-proposal.md",
+      "proposalState": "source/cut scope separation parent-approved; native control01 rejected overall; rain-only02 local-qualified separately, no public yet"
+    },
+    "h03ControlMetadata02": {
+      "status": "all3 metadata-qualified only; no focused/render/foreground/visual/capture qualification",
+      "receipt": "h03-control-metadata02.json",
+      "summary": "h03-control-metadata02-summary.md",
+      "window": [
+        0.5,
+        4.5
+      ],
+      "actualFirstSlotEnd": 3.6,
+      "actualNativeGroupEnd": 9.5,
+      "actualOwners": [
+        0
+      ],
+      "semanticIDs": [
+        0,
+        1,
+        2
+      ],
+      "rawAllCutCount": 5,
+      "oldFailures": "raw02 all3 visual FAIL and metadata01 all3 ineligible remain unchanged",
+      "gate": "007 incomplete;012 unimplemented;017 activation unreleased"
+    },
+    "h03ControlFocused01": {
+      "receipt": "h03-control-focused01.json",
+      "summary": "h03-control-focused01-summary.md",
+      "results": {
+        "rain-panL": "safe within measured focused scope",
+        "bubbles-push": "safe within measured focused scope",
+        "credits-dutch": "insufficient; circle safe but primary support intersects FG alpha bounds"
+      },
+      "allNativeLyricCutsPreservedAndCertified": 3,
+      "frames": 48,
+      "mediaNegatives": 6,
+      "snapshotPins": 284,
+      "endInputsUnchanged": true,
+      "notEstablished": [
+        "continuous FG clearance",
+        "background content readability",
+        "independent visual acceptance",
+        "control capture/publication"
+      ],
+      "draftBuild": "local-20261022-h03-control-01",
+      "oldFailure": "raw02 all3 visual FAIL retained;012 diagnostic"
+    },
+    "h03ControlVisual01": {
+      "status": "old two-pair control01 overall visual FAIL",
+      "review": "h03-control-visual01-review.md",
+      "rain": "observed-scope PASS; white-frame contact noted",
+      "bubbles": "FAIL; new local lower-stroke contrast loss against BG pale-yellow bar, despite retained source/shape/phase",
+      "credits": "FG-insufficient in focused receipt; no media",
+      "scopeBoundary": "bubble arbitrary-background contrast residual to017; group/FG/cross-owner integration remains012; neither task implemented/activated",
+      "rainOnlyCandidate": "local-20261022-h03-control-02 prepared only; no capture/browser/comparison success",
+      "preparation": "h03-control-native02-preparation.md"
+    },
+    "h03RainOnlyControl02": {
+      "status": "rain-only current candidate: local files/exact observed-scope visual carry/full browser02 PASS; public/final acceptance pending",
+      "buildID": "local-20261022-h03-control-02",
+      "manifestSHA256": "9d16f11518628b28d64bb238ba6a764a5fc17bb262ca8a7446f572b809564b47",
+      "captureReceipt": "h03-control-native-capture02.json",
+      "comparisonReceipt": "h03-control-native-comparison02.json",
+      "summary": "h03-control-native-capture02-summary.md",
+      "exactCarry": {
+        "nativePNGRecords": 192,
+        "rgbaRecords": 192,
+        "keyPNGBytes": 8,
+        "MP4Bytes": 2
+      },
+      "oldFailures": "oldcontrol01overallFAIL, bubbleBGcontrast, creditsFGinsufficient, raw02all3visualFAIL remain",
+      "browserReceipt": "h03-control-native-browser02.json",
+      "browserSummary": "h03-control-native-browser02-summary.md",
+      "browserScope": {
+        "rawHTTP": 214,
+        "JAENUI": 4,
+        "generatedPlayback": 2,
+        "originalMediaPlayback": 2,
+        "nativeParity": 2,
+        "live": 2,
+        "ownedPhasesClosed": 3,
+        "wrapperPins": 292,
+        "assetInputs": 210,
+        "validatorInputs": 216,
+        "allInputsUnchanged": true
+      },
+      "currentToolSHA256": "874b97823036eeb7da072e51cccab631b0be5d1bef50805be362c68ed2a14873",
+      "browserReceiptSHA256": "90fd70a5ee9a4ceec66a61d45dfb1c6110b44a42196c9222e4724ec1a48678df",
+      "parentNativeReview": "parent-h03-control-native02-review.json",
+      "parentVisualCarryReview": "parent-h03-control-visual02-review.json",
+      "parentBrowserReview": "independent latest-browser review in progress; not fabricated as complete"
+    },
+    "completion": "not complete; no public qualification or final parent acceptance;008 unstarted",
+    "public": {
+      "status": "not performed",
+      "owner": "parent Git/Sites/Pages",
+      "activation017": "unreleased",
+      "integration012": "unimplemented"
+    }
+  },
+  "visualDraft01Identity": {
+    "receiptSHA256": "ff78fe6f36dc6ffa3df52f5b5db5f1037f5931855055c27579fabc8f74c91896",
+    "JA": "8eb372043d948a08b7f1756256f8443ee08e78ceb8af33184911cbd36340877f",
+    "EN": "9a84ce9159b342cf6f55880a4a690c5f5c5505ac0dbc270768e071cca5972a39",
+    "sourceAggregateSHA256": "21255d8f61c31366bdbc49fd0b16ed98c8c8347dff1b467ac93ec574d50fb9b6",
+    "aggregateRule": "SHA256 sorted source path + NUL + raw SHA256 + LF per source",
+    "src": {
+      "src/09a_placement.js": "40330a8c750bf713361d0afaaee9ae2609241ce664bfde7729e0835749e1dc21",
+      "src/09e_layoutsB_placement.js": "9c020ac90abe0882aac9ff568218ae8f5fdbae9e936821e3370d02555181e525",
+      "src/09f_layoutsB_editorial.js": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+      "src/11p_layoutsB.js": "137b53a86c9dbc50170ec39fd10eab097c4fe4e2e5595305f85a21875e32aee3"
+    },
+    "scope": "visual-draft01 candidate freeze; final acceptance pending"
+  }
+}

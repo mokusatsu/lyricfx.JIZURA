@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-10-22T19:55:14.364834+09:00",
+  "scope": "Parent independent code/variant/snapshot/runtime/raw-sample review of formal04",
+  "reportSHA256": "455f75e954c3ad0352d05bcb4d660b14795026b07be686db2750d2acc1f891c5",
+  "verifiedSnapshotPins": 105,
+  "sourceSHA256": "5667bc92a76b50d27da2cfaec65195b18f0b478703d66184a94ec36a31d9b887",
+  "exactNativeVariantBranchRemoval": true,
+  "sameInputCountsStatusesCandidatesAsFailed03": true,
+  "unchangedAcceptance": {
+    "planningFactorMax": 2,
+    "renderIncreaseMsMax": 3,
+    "warmup": 3,
+    "samples": 6,
+    "renderFrames": 80,
+    "renderWarmup": 16
+  },
+  "comparisons": [
+    {
+      "cuts": 100,
+      "nativePlanningP95ms": 237.79999999701977,
+      "candidatePlanningP95ms": 404.4999999925494,
+      "planningFactor": 1.7010092514618116,
+      "nativeRenderP95ms": 5.5,
+      "candidateRenderP95ms": 6,
+      "renderIncreaseMs": 0.5
+    },
+    {
+      "cuts": 1000,
+      "nativePlanningP95ms": 2773.7999999970198,
+      "candidatePlanningP95ms": 3573.3000000044703,
+      "planningFactor": 1.288232749299989,
+      "nativeRenderP95ms": 6.199999995529652,
+      "candidateRenderP95ms": 5.199999995529652,
+      "renderIncreaseMs": -1.0
+    }
+  ],
+  "environment": {
+    "revision": "195",
+    "savedAndObservedMatch": true,
+    "currentRunningConnected": true,
+    "preMidPostEqual": true,
+    "prePostResourceEqual": true,
+    "concurrentTaskBrowsersOrEncoders": 0
+  },
+  "accepted": true,
+  "limitations": [
+    "Formal03 remains failed. This measured improvement does not retrospectively identify its single delayed sticker frame cause.",
+    "Cache reservation is not a total measured JS heap guarantee.",
+    "Performance acceptance does not replace native visual/H03/public validation."
+  ],
+  "next": "Freeze product bytes, review concrete25-case capture config, then nativeMP4 acquisition and full phase-isolated validation."
+}

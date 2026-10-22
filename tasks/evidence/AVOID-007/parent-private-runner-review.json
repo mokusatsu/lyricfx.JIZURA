@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-10-22T09:31:22.009726+00:00",
+  "scope": "Parent code/results review of synthetic private validator runner only; no actual Sites validation",
+  "commits": [
+    "96d6f1dabd6acc7d1ab0479c94baca3a44137853",
+    "a4dea4782055ccc7f7e39cf5da45569d4085043c"
+  ],
+  "inputs": [
+    {
+      "path": "dev/avoidance/layouts-b-public-test.cjs",
+      "sha256": "3f6c983fd05669d48302a9cd420da1dc62335f55d8cf9ca90b4163d94723e53a"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-public-offline-test.cjs",
+      "sha256": "07211cdcbac517d5e4406ef36551847d23d0a8639244d41c05bb802d36aee13f"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-public-cli-offline-test.py",
+      "sha256": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437"
+    }
+  ],
+  "nodeOfflineTests": 6,
+  "actualSyntheticCLIInputCases": 2,
+  "rawLogSHA256": "16934d43be772ee9748ab10ff00782fd2c3687ef8d31d8bcbb6cf3a3344e20e9",
+  "cliReceiptSHA256": "d7f8bad5cd42318d213ccd63ff4a60114799b1b44868fc96dc4682429c9fe745",
+  "decision": "Integrated after correcting live fixture scope from all25 to actual first case2 rows. Exact-origin auth, memory stdin, strict same-origin routing, proxy/CA/TLS delegated to reviewed validator, sanitized known-field report and final input mutation rejection reviewed. CLI harness tracked for fresh-clone reproduction. H03 success remains contingent on its independently qualified tool; external runtime dependencies must be separately pinned for actual public execution."
+}

@@ -1,0 +1,157 @@
+{
+  "phase": "native transport only; avoidance not tested",
+  "timestamp": "2026-10-22T05:33:34.449Z",
+  "sourceSHA256": "071ef8c1831010a0a484967a2664495e1942ef2b464fae969383d4b900b0d551",
+  "compiledSHA256": "3d25b8ce5034f0a7b700c79e86043349a245078291bbff8af17176c60dbff13b",
+  "scriptSHA256": "a1b9fa45fd7bd6b34834f352f12eb3657e220008f0ff4357c26db3053f7f6e29",
+  "qualification": {
+    "negatives": [
+      {
+        "name": "raw-shadow",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "Unbounded shape shadow"
+          }
+        ]
+      },
+      {
+        "name": "unknown-curve",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "Unadapted B path operation bezierCurveTo"
+          }
+        ]
+      },
+      {
+        "name": "nonfinite-path",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "INVALID_GEOMETRY",
+            "message": "Finite native B path required"
+          }
+        ]
+      },
+      {
+        "name": "acute-arcTo",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "Only source right-angle contained B arcTo supported"
+          }
+        ]
+      },
+      {
+        "name": "oversize-pattern",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "B pattern requires finite <=64px native repeat tile"
+          }
+        ]
+      },
+      {
+        "name": "path-transform-change",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "B path transform changed inside path"
+          }
+        ]
+      },
+      {
+        "name": "arc-current-arcTo",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "INVALID_GEOMETRY",
+            "message": "Invalid B arcTo"
+          }
+        ]
+      },
+      {
+        "name": "rect-current-arcTo",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "INVALID_GEOMETRY",
+            "message": "Invalid B arcTo"
+          }
+        ]
+      },
+      {
+        "name": "close-current-arcTo",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "INVALID_GEOMETRY",
+            "message": "Invalid B arcTo"
+          }
+        ]
+      },
+      {
+        "name": "end-path-transform-fill",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "Finite solid B path fill required"
+          }
+        ]
+      },
+      {
+        "name": "end-path-transform-clip",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "Finite unchanged-transform native B path clip required"
+          }
+        ]
+      },
+      {
+        "name": "raw-image",
+        "rejected": true,
+        "diagnostics": [
+          {
+            "code": "UNSUPPORTED_DRAW_PROGRAM",
+            "message": "Unadapted Canvas operation drawImage"
+          }
+        ]
+      }
+    ],
+    "pattern": {
+      "name": "pattern-transform-between-two-fills",
+      "supported": true,
+      "equal": true,
+      "transforms": [
+        [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  "off": [],
+  "rows": [],
+  "failed": []
+}

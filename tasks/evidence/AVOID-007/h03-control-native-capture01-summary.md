@@ -1,0 +1,11 @@
+# Native retention control capture01 — files qualified, browser/visual pending
+
+Output `work/avoid007-h03/control-native-local-20261022-01` is a fresh immutable native control bundle, build local-20261022-h03-control-01/profile native-single-retention-v1. Manifest SHA256 `9788b3b3ac0efac2d403460baf94a09fecd5737537600f0b5fa2ea6917550934`.
+
+Parent-approved two-case acquisition completed: rain/panL and bubbles/push, two sides each,4native MP4s/384Canvas frames,24fps,absolute[.5,4.5). Tool capture directly pipes native PNGs to H264 and includes validateFiles. It returned acquired2; no extra file-verification rerun was done. Both case statuses are safe within the reviewed numeric acquisition scope. Full focused diagnosis still records credits/dutch insufficient due FG-support conflict, with no acquired credits media. Original eight-cut raw02 all3 visual FAIL remains separate and unchanged.
+
+Raw capture wrapper receipt `h03-control-native-capture01.json` SHA256 `9edc4e00e2d5daa5b782a98004203b3e7591a1503f47c5fcf1fdeadb3a55098f`,289prelaunch snapshot pins, wrapper endInputsUnchanged true. Tool manifest endCheck.allInputsUnchanged true. Exact file closure224indexed assets+manifest=225files, no extra/missing file. Asset bytes100,159,162 plus manifest121,691. Size inventory `h03-control-native01-asset-sizes.json`: largest asset and JSON is observations/h03-rain-panL-after-frames.json24,154,768B; bubbles after19,444,062B. No assumption about public platform per-asset acceptance is made here.
+
+Environment fresh pre/post200/observed200/current/running/connected/unrestricted/enforced, both original observations saved. The earlier unknown-policy-state observation from parent remains distinct. Current79source/JAEN verified exact freeze02 before and after. Fixture, focused source/receipts, original two video bytes, old tools/fixtures, sealed main02 and all failed runs remain unchanged. No live Chromium/ffmpeg remains; CPU released.
+
+Separate local browser validation, independent visual acceptance, any lossless publication package and public verification have **not** occurred on this bundle. Browser wrapper is prepared but awaits separate parent approval.007 incomplete/008 unstarted; no017 activation or012 integration success follows from this file qualification.

@@ -1,0 +1,39 @@
+{
+  "scope": "AVOID-007 caption test portability only; approved product source unchanged",
+  "command": "JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-b-caption-test.cjs > caption-portable01.log 2>&1",
+  "exitCode": 0,
+  "nodeChecks": [
+    "dev/avoidance/layouts-b-caption-test.cjs",
+    "dev/avoidance/fixtures/layouts-b-editorial-caption-before.js"
+  ],
+  "receiptDefault": "tasks/evidence/AVOID-007/caption-regression01.json",
+  "receiptOverride": "JIZURA_B25_CAPTION_REPORT (absolute path or path relative to repository root; requires fresh receipt/snapshot)",
+  "baselineFixtureLiteralSHA256": "3798fb3602e21d8445cd895ffd51cb7d76a26e21768fcd6f95307ce0cd70a670",
+  "beforeAfterProductSHA256": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+  "startupPins": 103,
+  "terminalPinVerification": true,
+  "assertionsWeakened": false,
+  "sharedFilesEdited": false,
+  "files": [
+    {
+      "path": "src/09f_layoutsB_editorial.js",
+      "sha256": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-caption-test.cjs",
+      "sha256": "05e03ae40c6d362929e7afea1366ed4fde329a1fc1208d56873022073085a4e3"
+    },
+    {
+      "path": "dev/avoidance/fixtures/layouts-b-editorial-caption-before.js",
+      "sha256": "3798fb3602e21d8445cd895ffd51cb7d76a26e21768fcd6f95307ce0cd70a670"
+    },
+    {
+      "path": "tasks/evidence/AVOID-007/caption-regression01.json",
+      "sha256": "4b0b0d72cfedb05a68e56c40fbe7c5b11c2e53e60aab7828a6a579e5a0c06f77"
+    },
+    {
+      "path": "caption-portable01.log",
+      "sha256": "e849bab0a94cf1a534d1707c2ff80677eb00c4f41cfc509cea81a8c5b667b15f"
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+node:child_process:981
+    throw err;
+    ^
+
+<ref *1> Error: spawnSync git EPERM
+    at Object.spawnSync (node:internal/child_process:1160:20)
+    at spawnSync (node:child_process:928:24)
+    at Object.execFileSync (node:child_process:971:15)
+    at Object.startup (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-review.cjs:448:73)
+    at Object.<anonymous> (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-capture-config-test.cjs:5:854)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19) {
+  errno: -1,
+  code: 'EPERM',
+  syscall: 'spawnSync git',
+  path: 'git',
+  spawnargs: [
+    'ls-tree',
+    '-r',
+    '--name-only',
+    'e96cbb2f8379eb5895c36f1312f5083b0c583e75',
+    'src'
+  ],
+  error: [Circular *1],
+  status: 0,
+  signal: null,
+  output: [
+    null,
+    'src/01_util.js\n' +
+      'src/02_fonts.js\n' +
+      'src/02b_lang.js\n' +
+      'src/03_text.js\n' +
+      'src/04_styles.js\n' +
+      'src/05_anim.js\n' +
+      'src/05b_registry.js\n' +
+      'src/06_layouts.js\n' +
+      'src/07_decor.js\n' +
+      'src/08_planner.js\n' +
+      'src/08b_omakase.js\n' +
+      'src/08c_composition.js\n' +
+      'src/08ca_lyric_avoidance.js\n' +
+      'src/08cb_background_layouts.js\n' +
+      'src/08d_media.js\n' +
+      'src/08e_lyric_features.js\n' +
+      'src/08e_media_effects.js\n' +
+      'src/08eb_lyric_scene.js\n' +
+      'src/08f_media_variations.js\n' +
+      'src/08g_media_decor.js\n' +
+      'src/08g_media_masks.js\n' +
+      'src/08g_media_phases.js\n' +
+      'src/08g_media_rhythm.js\n' +
+      'src/08g_media_scenes.js\n' +
+      'src/08h_cut_details.js\n' +
+      'src/08i_effect_clipboard.js\n' +
+      'src/08j_cut_mask.js\n' +
+      'src/08k_detail_search.js\n' +
+      'src/08l_detail_labels.js\n' +
+      'src/08m_person_cutout.js\n' +
+      'src/09_render.js\n' +
+      'src/09a_placement.js\n' +
+      'src/09b_basic_placement.js\n' +
+      'src/09c_layoutsA_placement.js\n' +
+      'src/09d_adaptive_placement.js\n' +
+      'src/10_audio.js\n' +
+      'src/11_export.js\n' +
+      'src/11b_project_file.js\n' +
+      'src/11p_bgcamB.js\n' +
+      'src/11p_decor.js\n' +
+      'src/11p_decorB.js\n' +
+      'src/11p_enter.js\n' +
+      'src/11p_enterB.js\n' +
+      'src/11p_exit.js\n' +
+      'src/11p_exitB.js\n' +
+      'src/11p_fxB.js\n' +
+      'src/11p_horror1.js\n' +
+      'src/11p_horror2.js\n' +
+      'src/11p_horror3.js\n' +
+      'src/11p_kinetic1.js\n' +
+      'src/11p_kinetic2.js\n' +
+      'src/11p_kinetic3.js\n' +
+      'src/11p_layoutsA.js\n' +
+      'src/11p_layoutsB.js\n' +
+      'src/11p_layoutsC.js\n' +
+      'src/11p_layoutsD.js\n' +
+      'src/11p_looks.js\n' +
+      'src/11p_styles.js\n' +
+      'src/11p_treattrans.js\n' +
+      'src/11p_typo1.js\n' +
+      'src/11p_typo2.js\n' +
+      'src/11p_typo3.js\n' +
+      'src/11q_media_cameras.js\n' +
+      'src/11q_sets.js\n' +
+      'src/11r_themes.js\n' +
+      'src/11s_color_theme.js\n' +
+      'src/11s_decor_details.js\n' +
+      'src/11t_effect_preview.js\n' +
+      'src/11u_effect_favorites.js\n' +
+      'src/11u_note_layouts.js\n' +
+      'src/11v_modal_scroll.js\n' +
+      'src/11w_custom_draw.js\n' +
+      'src/11wa_custom_effects.js\n' +
+      'src/11x_favorite_api.js\n' +
+      'src/11y_short_export.js\n' +
+      'src/12_ui.js\n' +
+      'src/13_sprite_extractor.js\n',
+    ''
+  ],
+  pid: 59257,
+  stdout: 'src/01_util.js\n' +
+    'src/02_fonts.js\n' +
+    'src/02b_lang.js\n' +
+    'src/03_text.js\n' +
+    'src/04_styles.js\n' +
+    'src/05_anim.js\n' +
+    'src/05b_registry.js\n' +
+    'src/06_layouts.js\n' +
+    'src/07_decor.js\n' +
+    'src/08_planner.js\n' +
+    'src/08b_omakase.js\n' +
+    'src/08c_composition.js\n' +
+    'src/08ca_lyric_avoidance.js\n' +
+    'src/08cb_background_layouts.js\n' +
+    'src/08d_media.js\n' +
+    'src/08e_lyric_features.js\n' +
+    'src/08e_media_effects.js\n' +
+    'src/08eb_lyric_scene.js\n' +
+    'src/08f_media_variations.js\n' +
+    'src/08g_media_decor.js\n' +
+    'src/08g_media_masks.js\n' +
+    'src/08g_media_phases.js\n' +
+    'src/08g_media_rhythm.js\n' +
+    'src/08g_media_scenes.js\n' +
+    'src/08h_cut_details.js\n' +
+    'src/08i_effect_clipboard.js\n' +
+    'src/08j_cut_mask.js\n' +
+    'src/08k_detail_search.js\n' +
+    'src/08l_detail_labels.js\n' +
+    'src/08m_person_cutout.js\n' +
+    'src/09_render.js\n' +
+    'src/09a_placement.js\n' +
+    'src/09b_basic_placement.js\n' +
+    'src/09c_layoutsA_placement.js\n' +
+    'src/09d_adaptive_placement.js\n' +
+    'src/10_audio.js\n' +
+    'src/11_export.js\n' +
+    'src/11b_project_file.js\n' +
+    'src/11p_bgcamB.js\n' +
+    'src/11p_decor.js\n' +
+    'src/11p_decorB.js\n' +
+    'src/11p_enter.js\n' +
+    'src/11p_enterB.js\n' +
+    'src/11p_exit.js\n' +
+    'src/11p_exitB.js\n' +
+    'src/11p_fxB.js\n' +
+    'src/11p_horror1.js\n' +
+    'src/11p_horror2.js\n' +
+    'src/11p_horror3.js\n' +
+    'src/11p_kinetic1.js\n' +
+    'src/11p_kinetic2.js\n' +
+    'src/11p_kinetic3.js\n' +
+    'src/11p_layoutsA.js\n' +
+    'src/11p_layoutsB.js\n' +
+    'src/11p_layoutsC.js\n' +
+    'src/11p_layoutsD.js\n' +
+    'src/11p_looks.js\n' +
+    'src/11p_styles.js\n' +
+    'src/11p_treattrans.js\n' +
+    'src/11p_typo1.js\n' +
+    'src/11p_typo2.js\n' +
+    'src/11p_typo3.js\n' +
+    'src/11q_media_cameras.js\n' +
+    'src/11q_sets.js\n' +
+    'src/11r_themes.js\n' +
+    'src/11s_color_theme.js\n' +
+    'src/11s_decor_details.js\n' +
+    'src/11t_effect_preview.js\n' +
+    'src/11u_effect_favorites.js\n' +
+    'src/11u_note_layouts.js\n' +
+    'src/11v_modal_scroll.js\n' +
+    'src/11w_custom_draw.js\n' +
+    'src/11wa_custom_effects.js\n' +
+    'src/11x_favorite_api.js\n' +
+    'src/11y_short_export.js\n' +
+    'src/12_ui.js\n' +
+    'src/13_sprite_extractor.js\n',
+  stderr: ''
+}
+
+Node.js v24.19.0

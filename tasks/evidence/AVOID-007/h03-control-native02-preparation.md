@@ -1,0 +1,11 @@
+# Rain-only control02 — preparation, not acquisition
+
+Old control01 remains overall visual FAIL. Independent384frame/16key/24crop review finds rain observed-scope PASS and bubbles local BG-bar contrast FAIL. Credits is already FG-insufficient. The new candidate selects only rain for later publication while retaining all3 numeric diagnosis and all failed originals/receipts. Selection does not change any original status.
+
+Prepared config: `layouts-b-h03-control-capture.local-20261022-02.json`, build local-20261022-h03-control-02, approvedCaseIDs[h03-rain-panL], unchanged profile/fixture/focused/metadata/seed/fonts/circle/window/media bytes/content/placement. Freshdir `work/avoid007-h03/control-native-local-20261022-02`.
+
+Prepared wrappers `layouts-b-h03-control-capture02-run.cjs` / `layouts-b-h03-control-browser02-run.cjs` inherit the reviewed01 input-pinning/freeze79/JAEN/closure/partial/failure discipline. Required tool review changes to `parent-h03-control-tool02-review.json`. Fresh stage environment-pre/post files use capture02/browser02 names; reports h03-control-native-capture02.json / h03-control-native-browser02.json with partials. CLOCK remains[.5,4.5),24fps,96nativeframes per side. No work starts before parent integrates/reviews the new UI-onlytool patch and explicitly authorizes execution.
+
+`layouts-b-h03-control-compare02.cjs` is prepared for **after** acquisition. It compares exact original/current fixture/source/font/input assets, paired rain conditions and clock, all192native Canvas PNG hashes/RGBA/proof hashes, all8actual key PNG byte buffers, and both MP4 byte buffers. It checks fresh manifest has only acquired rain, snapshots manifests/frame records before comparing, hashes every input before/after and writes h03-control-native-comparison02.json even for a comparison mismatch. No comparison has run or passed yet. Importing each prepared entry point does not invoke main.
+
+Only node --check and safe module-import/export checks were run. Output02 remains absent. A later exact comparison may justify carrying the previous rain192frame/8key independent visual observation forward; it is not a fresh visual review or a general background readability guarantee. Any mismatch is preserved and returned to parent without rewriting either bundle.

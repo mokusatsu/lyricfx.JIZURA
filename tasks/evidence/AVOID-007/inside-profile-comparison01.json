@@ -1,0 +1,113 @@
+{
+  "scope": "Two separate single instrumented diagnostic runs; no formal performance acceptance or proof that residual/GC explains formal03. Product change only sign-flag early rejection; no allocation change.",
+  "inputs": [
+    {
+      "path": "tasks/evidence/AVOID-007/render-profile01.json",
+      "sha256": "71de04badccbb54b5a551e16d28d304814155c94273d846b4473989c18f972ce",
+      "counts": {
+        "cuts": 1000,
+        "regions": 1000,
+        "segments": 2998
+      },
+      "inputSHA256": "632a61dad13becfeff14ce2af6e2c46b2e8218e19bf967049090471d2f181860",
+      "candidateInstrumentedP95": 10.099999994039536,
+      "warnings": []
+    },
+    {
+      "path": "tasks/evidence/AVOID-007/render-profile02.json",
+      "sha256": "2baa4ca83f5341e7235147b5a4ac47c9b0c5f7cb36395ebf924990004c3da020",
+      "counts": {
+        "cuts": 1000,
+        "regions": 1000,
+        "segments": 2998
+      },
+      "inputSHA256": "632a61dad13becfeff14ce2af6e2c46b2e8218e19bf967049090471d2f181860",
+      "candidateInstrumentedP95": 7,
+      "warnings": []
+    }
+  ],
+  "typeSpecimen": [
+    {
+      "run": 1,
+      "frames": [
+        {
+          "i": 19,
+          "ms": 10.099999994039536,
+          "components": {
+            "record": 1.6000000014901161,
+            "inkPolygons": 0.10000000149011612,
+            "coverage": 6.399999998509884,
+            "clear": 0.29999999701976776,
+            "replay": 1.2999999970197678
+          },
+          "GCevents": 0
+        },
+        {
+          "i": 44,
+          "ms": 11.100000001490116,
+          "components": {
+            "record": 1.5,
+            "inkPolygons": 0,
+            "coverage": 5.399999998509884,
+            "clear": 0.10000000149011612,
+            "replay": 3.899999998509884
+          },
+          "GCevents": 0
+        },
+        {
+          "i": 69,
+          "ms": 7.800000004470348,
+          "components": {
+            "record": 1.3999999985098839,
+            "inkPolygons": 0.10000000149011612,
+            "coverage": 5.100000001490116,
+            "clear": 0.10000000149011612,
+            "replay": 0.7000000029802322
+          },
+          "GCevents": 0
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "frames": [
+        {
+          "i": 19,
+          "ms": 7,
+          "components": {
+            "record": 1.3999999985098839,
+            "inkPolygons": 0,
+            "coverage": 3.2999999970197678,
+            "clear": 0.5,
+            "replay": 1.4000000059604645
+          },
+          "GCevents": 0
+        },
+        {
+          "i": 44,
+          "ms": 10.099999994039536,
+          "components": {
+            "record": 1.6000000014901161,
+            "inkPolygons": 0,
+            "coverage": 4.199999995529652,
+            "clear": 0.10000000149011612,
+            "replay": 3.899999998509884
+          },
+          "GCevents": 0
+        },
+        {
+          "i": 69,
+          "ms": 5.399999998509884,
+          "components": {
+            "record": 1.2999999970197678,
+            "inkPolygons": 0.10000000149011612,
+            "coverage": 2.7999999970197678,
+            "clear": 0.10000000149011612,
+            "replay": 0.7000000029802322
+          },
+          "GCevents": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "timestamp": "2026-10-22T20:22:11.702680+09:00",
+  "scope": "Parent native02 acquisition/historical comparison/bounded wordCloud and isolated motion review; no images opened",
+  "reports": [
+    {
+      "report": "native-capture02.json",
+      "sha256": "0888bf43cc17b4d88344b04bfba9a77b16e44cc410d20e90d7318acada96e125",
+      "snapshotPinsVerified": 116
+    },
+    {
+      "report": "native-stream-comparison02.json",
+      "sha256": "d380f39d2f864739723c955d03f407738d4404fd99e6a22e6016a180c2f4b71c",
+      "snapshotPinsVerified": 205
+    },
+    {
+      "report": "wordcloud-before91-diagnostic01.json",
+      "sha256": "e4728a5e22e4a7812b3cad95b2644558c0a880351fc4cd0e6672dc715202833b",
+      "snapshotPinsVerified": 287
+    }
+  ],
+  "manifestSHA256": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+  "historicalComparison": {
+    "beforeSame": 2399,
+    "beforeTotal": 2400,
+    "unchangedAfterSame": 1920,
+    "unchangedAfterTotal": 1920
+  },
+  "unexpectedNativeDifference": [
+    {
+      "id": "b25-wordCloud",
+      "side": "before",
+      "frame": 91,
+      "old": "258d23404f9929eee8540bab3cfa9bca191f7795ec21c1e0eee65b1feb444716",
+      "new": "3d4373a1725cafe878fb75031bf2e9c046c347eae48d570492e035d0a1063877"
+    }
+  ],
+  "changedFiveDraftKeyPNGAndRGBAExact": 15,
+  "baselineInputs89Exact": true,
+  "sameChromiumVersion": true,
+  "boundedDiagnostic": {
+    "freshSequentialMatchesOld": 96,
+    "independentDirectFrames": [
+      91,
+      90,
+      91
+    ],
+    "allDirectMatchOld": true,
+    "decodedH264Difference": {
+      "frame": 91,
+      "oldRGBA": "86f30345d7f37306e6293ba0cc8141b9d668a646ed1589c0b686ec39e08693b7",
+      "newRGBA": "2ed752508611084ed6f5485ee0e318e91a02e2bcca865e159eaa33ddf6438e1b",
+      "differentPixels": 532,
+      "differentRGBChannels": 1581,
+      "MAE": 0.0006442901234567901,
+      "MSE": 0.003473508230452675,
+      "maxRGBDifference": 19,
+      "bbox": {
+        "x0": 366,
+        "y0": 695,
+        "x1": 1379,
+        "y1": 845
+      },
+      "nativeOldPixelsUnavailable": true
+    }
+  },
+  "isolatedMotion": {
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "fork": "none",
+    "reviewSHA256": "18655f917a746fff2c3f27448716143e0a4efa6d20dec1991b4602bf9718c92f",
+    "metadataSHA256": "89ae8b2420e0a81cf9589e1ce50424400c164ad7ea9195f173f85834ee3ba5ec",
+    "scope": "12MP4 x96frame contact sheets plus selected native1:1 views; not real-time playback or allframes native resolution",
+    "judgment": "PASS_WITH_OBSERVATIONS",
+    "observations": [
+      "Tunnel ordered horizontal-text blocks are left column then right; different from conventional right-first Japanese vertical columns.",
+      "Equalizer source cap/character intersections persist; no new detached thin spectrum.",
+      "WordCloud main remains legible with partial secondary overlap; no composition jump/glyph loss at91."
+    ]
+  },
+  "disposition": {
+    "historicalAllBeforeBitEquality": "FAILED; original assertion/report retained, never relabelled full equality",
+    "captureSourceContract": "Same exact e96 source/fixture/fonts/conditions and genuine02capture. Historical01 rejected candidate is not canonical source. Current selected-key parity remains mandatory.",
+    "cause": "Unresolved; lossy decoded difference cannot establish native pixel count/cause, and old91 native PNG is unavailable.",
+    "acceptedNext": "One unchanged strict fullbrowser04 on current02; native-key/parity or playback failures still block. No original replacement, recapture, test expectation change or successful historical-bitwise claim."
+  },
+  "publicH03AndCompletion": "pending"
+}

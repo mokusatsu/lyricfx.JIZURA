@@ -1,0 +1,80 @@
+{
+  "baselineCommit": "e96cbb2f8379eb5895c36f1312f5083b0c583e75",
+  "passed": false,
+  "scope": "Existing assertion failures reproduced in identical browser/test/preload; not AVOID-007 successes",
+  "rows": [
+    {
+      "suite": "lyric-compositing",
+      "sameFailureSignature": true,
+      "results": [
+        {
+          "side": "current",
+          "log": "tasks/evidence/AVOID-007/regression-extra03-logs/lyric-compositing.log",
+          "sha256": "25a2b128a178216d46fe390a58a66cbe90a5ea414eaec157f8a21085aa4e0576",
+          "signature": "page.evaluate: Error: background transition preserves each cut's composite: 30,105,214 vs 60,103,137\n"
+        },
+        {
+          "side": "e96",
+          "log": "tasks/evidence/AVOID-007/regression-e96-01-logs/lyric-compositing.log",
+          "sha256": "25a2b128a178216d46fe390a58a66cbe90a5ea414eaec157f8a21085aa4e0576",
+          "signature": "page.evaluate: Error: background transition preserves each cut's composite: 30,105,214 vs 60,103,137\n"
+        }
+      ],
+      "actualControlLog": "tasks/evidence/AVOID-007/regression-e96-02-logs/lyric-compositing.log",
+      "actualControlLogSHA256": "25a2b128a178216d46fe390a58a66cbe90a5ea414eaec157f8a21085aa4e0576",
+      "actualControlFullLogSameAsCurrent": true
+    },
+    {
+      "suite": "group-reroll",
+      "sameFailureSignature": true,
+      "results": [
+        {
+          "side": "current",
+          "log": "tasks/evidence/AVOID-007/regression-extra03-logs/group-reroll.log",
+          "sha256": "b37a8e15f7229edec540daaa1ec2cc16029a5a5a815867b129a41e03d4d22c6b",
+          "signature": "{\"plain lively\":{\"selfChanged\":100,\"total\":100,\"otherFx\":0,\"areaMoved\":0},\"plain unified\":{\"selfChanged\":100,\"total\":100,\"otherFx\":3,\"areaMoved\":0},\"avoid lively\":{\"selfChanged\":100,\"total\":100,\"otherFx\":0,\"areaMoved\":0},\"avoid unified\":{\"selfChanged\":100,\"total\":100,\"otherFx\":3,\"areaMoved\":0}}"
+        },
+        {
+          "side": "e96",
+          "log": "tasks/evidence/AVOID-007/regression-e96-01-logs/group-reroll.log",
+          "sha256": "b37a8e15f7229edec540daaa1ec2cc16029a5a5a815867b129a41e03d4d22c6b",
+          "signature": "{\"plain lively\":{\"selfChanged\":100,\"total\":100,\"otherFx\":0,\"areaMoved\":0},\"plain unified\":{\"selfChanged\":100,\"total\":100,\"otherFx\":3,\"areaMoved\":0},\"avoid lively\":{\"selfChanged\":100,\"total\":100,\"otherFx\":0,\"areaMoved\":0},\"avoid unified\":{\"selfChanged\":100,\"total\":100,\"otherFx\":3,\"areaMoved\":0}}"
+        }
+      ],
+      "actualControlLog": "tasks/evidence/AVOID-007/regression-e96-02-logs/group-reroll.log",
+      "actualControlLogSHA256": "b37a8e15f7229edec540daaa1ec2cc16029a5a5a815867b129a41e03d4d22c6b",
+      "actualControlFullLogSameAsCurrent": true
+    }
+  ],
+  "actualBaselineControl": {
+    "receipt": "tasks/evidence/AVOID-007/regression-e96-02.json",
+    "rootAsserted": "/tmp/avoid007-regression-e96",
+    "command": "JIZURA_REGRESSION_ROOT=/tmp/avoid007-regression-e96 JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-b-regression-e96.cjs",
+    "actualReadSidecar": "tasks/evidence/AVOID-007/regression-e96-02-actual-reads.jsonl",
+    "sidecarSHA256": "575d40743d6968ed216a681759fe1a7eb2f7bbb9a5cd870d44e90ebb0f7e5b3d",
+    "actualReads": [
+      {
+        "source": "localhost-served",
+        "actual": "/tmp/avoid007-regression-e96/index.html",
+        "bytes": 4891958,
+        "sha256": "a3c4d0e3c76994033910d61711180787576a0bec938d397da8425c37b8124ba7"
+      },
+      {
+        "source": "suite-compiled-read",
+        "suite": "/workspace/lyricfx.JIZURA/dev/group_reroll_test.cjs",
+        "requested": "/workspace/lyricfx.JIZURA/index.html",
+        "actual": "/tmp/avoid007-regression-e96/index.html",
+        "bytes": 4891958,
+        "sha256": "a3c4d0e3c76994033910d61711180787576a0bec938d397da8425c37b8124ba7"
+      }
+    ],
+    "locales": {
+      "ja": "both suites executed",
+      "en": "lyric assertion fails in JA before EN; group suite has JA only"
+    },
+    "baselineENPrelaunchPinnedNotExecuted": {
+      "file": "/tmp/avoid007-regression-e96/en/index.html",
+      "sha256": "3d1eb2dcb69f81ca3b86879720d7595aae683bec551a7e24380ffa2e9ef4deeb"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+# bridge startup pins [
+  {
+    "name": "layouts-b-pages-bridge-test.cjs",
+    "sha256": "452c949761bcca23c7aa17ab8ea5bdedd95a24de86eb20670eb91b3b7c3250f0"
+  },
+  {
+    "name": "layouts-b-pages-bridge.cjs",
+    "sha256": "77eec2d43e62ec61f8b61330d663a306d8099697de5ca0d457ba2a09942a4e10"
+  },
+  {
+    "name": "pages-output-audit.py",
+    "sha256": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+  }
+]
+# synthetic unchanged Pages audit {
+  "syntheticAudit": true,
+  "manifestCount": 2,
+  "siteBytes": 34111,
+  "legacyMutationRejected": true
+}
+# synthetic unchanged Pages audit {
+  "syntheticAudit": true,
+  "manifestCount": 2,
+  "siteBytes": 35547,
+  "legacyMutationRejected": true
+}
+# committed no-supplement golden source SHA256 d68a58e7b0ba5673a4843a40caaed947d31fb6ca186bd8e4d5535153c2049694
+# bridge tool receipt {
+  "scope": "synthetic metadata/local audit only; no real Sites generation or publication",
+  "inputs": [
+    {
+      "name": "layouts-b-pages-bridge-test.cjs",
+      "sha256": "452c949761bcca23c7aa17ab8ea5bdedd95a24de86eb20670eb91b3b7c3250f0"
+    },
+    {
+      "name": "layouts-b-pages-bridge.cjs",
+      "sha256": "77eec2d43e62ec61f8b61330d663a306d8099697de5ca0d457ba2a09942a4e10"
+    },
+    {
+      "name": "pages-output-audit.py",
+      "sha256": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+    }
+  ],
+  "endInputsUnchanged": true
+}
+✔ bridge metadata fixes all 25 IDs, conditions, H anchors and source hashes (20.188125ms)
+✔ canonical HTTPS input rejects secrets, query, traversal and external English destination (1.155392ms)
+✔ four-file immutable bridge has local audit closure, bilingual anchors and direct case links (9.396896ms)
+✔ missing, tampered, rehashed, extra and symlink assets and changed conditions are rejected (8.783475ms)
+✔ Sites hub is relative, leaves old deep URLs intact and never overwrites a root (1.174277ms)
+✔ unchanged Pages audit accepts bridge and still rejects changed old public bytes (62.844248ms)
+✔ unchanged Pages audit accepts supplemented bridge and still rejects changed old public bytes (57.817719ms)
+✔ no-supplement output is byte-identical to committed fa05519 golden helper (14.385569ms)
+✔ mixed H03 outcomes retain all diagnoses and link only acquired safe media in JA/EN (280.913565ms)
+✔ H03 fails closed on source, EN, font roles, clock, receipt, condition and media mismatches (33.689476ms)
+✔ optional supplement URL and private audience follow strict canonical reference rules (6.349926ms)
+✔ supplemented relative hub checks real deep manifests and leaves frozen deep bytes unchanged (4.208994ms)
+✔ CLI rejected credentials are not echoed; startup source and audit bytes stay unchanged (50.322934ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 558.796402

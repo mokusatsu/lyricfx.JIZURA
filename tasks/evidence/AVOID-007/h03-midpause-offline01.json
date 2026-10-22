@@ -1,0 +1,63 @@
+{
+  "scope": "pure synthetic Node/CLI only; no browser/capture/ffmpeg/network/public credential",
+  "startedAt": "2026-10-22T10:47:25.079188+00:00",
+  "endedAt": "2026-10-22T10:47:26.129109+00:00",
+  "preSHA256": {
+    "dev/avoidance/layouts-b-h03-review.cjs": "17755bd3cb457405fcfc253083032d2626a3a042236cbfe5c567bd0c441ea81c",
+    "dev/avoidance/layouts-b-h03-review-test.cjs": "d758418be2a79c0ba60d5651ccdcbede3485c98c45b133014a7006463fa7138e",
+    "dev/avoidance/layouts-b-public-test.cjs": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "f7cf78e0f1d55383ba73e7a910740c83aff1e2a45b645c0901377a5e745f9cf3",
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "a428341ee85fe0d355686163675289eebb9976f3f3c8abb46d2a23c082d56b45",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+  },
+  "postSHA256": {
+    "dev/avoidance/layouts-b-h03-review.cjs": "17755bd3cb457405fcfc253083032d2626a3a042236cbfe5c567bd0c441ea81c",
+    "dev/avoidance/layouts-b-h03-review-test.cjs": "d758418be2a79c0ba60d5651ccdcbede3485c98c45b133014a7006463fa7138e",
+    "dev/avoidance/layouts-b-public-test.cjs": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "f7cf78e0f1d55383ba73e7a910740c83aff1e2a45b645c0901377a5e745f9cf3",
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "a428341ee85fe0d355686163675289eebb9976f3f3c8abb46d2a23c082d56b45",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+  },
+  "inputsUnchanged": true,
+  "results": [
+    {
+      "name": "h03",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-h03-review-test.cjs"
+      ],
+      "cases": 15,
+      "exitCode": 0,
+      "log": "h03-midpause-h0301.log",
+      "logSHA256": "5579d9cedcfef3b5e3e82bb5a81dae4a40d714e07a21b023e5806c13c0ba5259"
+    },
+    {
+      "name": "runner",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-public-offline-test.cjs"
+      ],
+      "cases": 7,
+      "exitCode": 0,
+      "log": "h03-midpause-runner01.log",
+      "logSHA256": "56bb67ab6d89384d4d7d0bea65bacd1f2f09f05ff598385e02ce695fa2d144a8"
+    },
+    {
+      "name": "cli",
+      "command": [
+        "python3",
+        "dev/avoidance/layouts-b-public-cli-offline-test.py",
+        "--report",
+        "tasks/evidence/AVOID-007/h03-midpause-cli01.json"
+      ],
+      "cases": 2,
+      "exitCode": 0,
+      "log": "h03-midpause-cli01.log",
+      "logSHA256": "6c8ba82da096489f985466cfc1e68c9aa68e708bb9edb55bc0217e502e8b365c"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "scope": "Independent finite-grid feasibility probe, not an exhaustive proof or safety acceptance; exact oracle used for each tested polygon",
+  "rows": [
+    {
+      "layout": "crossBands",
+      "status": "insufficient-space",
+      "polygonCount": 6,
+      "bounds": {
+        "x0": 425.9773525011748,
+        "x1": 1494.022647498825,
+        "y0": 349.40238018749994,
+        "y1": 730.5976198125002
+      },
+      "offsetRange": [
+        [
+          -425.9773525011748,
+          -349.40238018749994
+        ],
+        [
+          425.9773525011749,
+          349.40238018749983
+        ]
+      ],
+      "sampledOffsets": 2,
+      "found": [
+        -425.9773525011748,
+        349.40238018749983
+      ]
+    },
+    {
+      "layout": "neon",
+      "status": "insufficient-space",
+      "polygonCount": 28,
+      "bounds": {
+        "x0": 380.3802761408996,
+        "x1": 1539.6197238591003,
+        "y0": 328.23295375,
+        "y1": 751.76704625
+      },
+      "offsetRange": [
+        [
+          -380.3802761408996,
+          -328.23295375
+        ],
+        [
+          380.3802761408997,
+          328.23295375
+        ]
+      ],
+      "sampledOffsets": 174,
+      "found": [
+        -348.3802761408996,
+        328.23295375
+      ]
+    }
+  ],
+  "diagnosis": "Probe used intended initial fixture circle y=.42. Implementation investigation found central01 actually planned at inherited fixture default y=.5. The discovered offsets do not refute the y=.5 solver result. Shared solveBasic unchanged; B fixture now aligns to intended y=.42, with actual normalized circle retained in later receipts."
+}

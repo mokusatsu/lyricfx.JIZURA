@@ -1,0 +1,106 @@
+{
+  "scope": "Parent integrated code review and actual pure guard/real focused data tests; no browser/media/public acceptance",
+  "patchSHA256": "85c12c6d2c50b5a93590779522d3db49edfbb4e57c114bab31ed8aa19e44645a",
+  "preSHA256": {
+    "dev/avoidance/layouts-b-h03-control-review.cjs": "0356dcdfb190c0600d6ef515a7e0bcaaa8cd20508255954c3fd91077de62ff5d",
+    "dev/avoidance/layouts-b-h03-control-review-test.cjs": "afa2ef206a5651ca4daf04927f672ef0ee3650a8f26019dc1f407bc601ea2110",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "35b8c548a72dec9614c7bda44980758d11b8d51af8b3ffab04fe13257de3db2b",
+    "dev/avoidance/layouts-b-h03-review.cjs": "55061584b5cd2271ef9892c72794edf94cac676b4dc11fc0e2990911b45f6f2d",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-public-test.cjs": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01",
+    "dev/avoidance/layouts-b-h03-control-fixture.js": "7dcc8e9ef704639503fcaf0b9c33fb73d4d0755313d29414b16f10674b2b7814",
+    "dev/avoidance/layouts-b-h03-control-test.cjs": "df8113eadba0c92a576b5a557ca24e0bda15a419ff940b0ac492081bec01c8e6",
+    "tasks/evidence/AVOID-007/h03-control-focused01.json": "2be224b1515a4fca7e8150018bfd783d8b57fe9adb96b4825c349cbd59524acb",
+    "tasks/evidence/AVOID-007/h03-control-metadata02.json": "24358908cd3acc111ec684c7cb5aad5a982ee84ef7b6570a9ea5a4c7ae11887a"
+  },
+  "postSHA256": {
+    "dev/avoidance/layouts-b-h03-control-review.cjs": "0356dcdfb190c0600d6ef515a7e0bcaaa8cd20508255954c3fd91077de62ff5d",
+    "dev/avoidance/layouts-b-h03-control-review-test.cjs": "afa2ef206a5651ca4daf04927f672ef0ee3650a8f26019dc1f407bc601ea2110",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "35b8c548a72dec9614c7bda44980758d11b8d51af8b3ffab04fe13257de3db2b",
+    "dev/avoidance/layouts-b-h03-review.cjs": "55061584b5cd2271ef9892c72794edf94cac676b4dc11fc0e2990911b45f6f2d",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-public-test.cjs": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01",
+    "dev/avoidance/layouts-b-h03-control-fixture.js": "7dcc8e9ef704639503fcaf0b9c33fb73d4d0755313d29414b16f10674b2b7814",
+    "dev/avoidance/layouts-b-h03-control-test.cjs": "df8113eadba0c92a576b5a557ca24e0bda15a419ff940b0ac492081bec01c8e6",
+    "tasks/evidence/AVOID-007/h03-control-focused01.json": "2be224b1515a4fca7e8150018bfd783d8b57fe9adb96b4825c349cbd59524acb",
+    "tasks/evidence/AVOID-007/h03-control-metadata02.json": "24358908cd3acc111ec684c7cb5aad5a982ee84ef7b6570a9ea5a4c7ae11887a"
+  },
+  "allInputsUnchanged": true,
+  "results": [
+    {
+      "name": "control",
+      "command": [
+        "node",
+        "--test-reporter=tap",
+        "dev/avoidance/layouts-b-h03-control-review-test.cjs",
+        "--focused",
+        "tasks/evidence/AVOID-007/h03-control-focused01.json"
+      ],
+      "expectedCases": 8,
+      "exitCode": 0,
+      "log": "tasks/evidence/AVOID-007/parent-h03-control-tool-control01.log",
+      "logSHA256": "327ef8f9c5e841c88d1af82bdf81b20125d9b9d97c2e473ef03f7f75c5dba47e"
+    },
+    {
+      "name": "bridge",
+      "command": [
+        "node",
+        "--test-reporter=tap",
+        "dev/avoidance/layouts-b-pages-bridge-test.cjs"
+      ],
+      "expectedCases": 14,
+      "exitCode": 0,
+      "log": "tasks/evidence/AVOID-007/parent-h03-control-tool-bridge01.log",
+      "logSHA256": "0208cfe46a20ab9c11b433176b3431d6d02d9aec81a320b51d24ec45814dbe21"
+    },
+    {
+      "name": "legacy-h03",
+      "command": [
+        "node",
+        "--test-reporter=tap",
+        "dev/avoidance/layouts-b-h03-review-test.cjs"
+      ],
+      "expectedCases": 17,
+      "exitCode": 0,
+      "log": "tasks/evidence/AVOID-007/parent-h03-control-tool-legacy-h0301.log",
+      "logSHA256": "c710da8c2a19c1b53befe8baee00a143cd95d5c14303801d004231aa93c4492d"
+    },
+    {
+      "name": "runner",
+      "command": [
+        "node",
+        "--test-reporter=tap",
+        "dev/avoidance/layouts-b-public-offline-test.cjs"
+      ],
+      "expectedCases": 7,
+      "exitCode": 0,
+      "log": "tasks/evidence/AVOID-007/parent-h03-control-tool-runner01.log",
+      "logSHA256": "2bbdaf5d1a5d8fd7db54937d722cb6832382c5498d7be6790913018e4789da9e"
+    },
+    {
+      "name": "cli",
+      "command": [
+        "python3",
+        "dev/avoidance/layouts-b-public-cli-offline-test.py",
+        "--report",
+        "tasks/evidence/AVOID-007/parent-h03-control-tool-cli01.json"
+      ],
+      "expectedCases": 2,
+      "exitCode": 0,
+      "log": "tasks/evidence/AVOID-007/parent-h03-control-tool-cli01.log",
+      "logSHA256": "6c8ba82da096489f985466cfc1e68c9aa68e708bb9edb55bc0217e502e8b365c"
+    }
+  ],
+  "legacyTestQualification": "Child isolated legacy unit used optional-gzip5e4 source; parent explicitly reran17 against actual shared550615, preserving that original unchanged.",
+  "reviewed": "Diff against legacy550615; all3 full native source cuts and all5 raw units, exact native clocks/params/profile/window, actual focused FG recomputation, source/decoder/no-reseek/media gates, 5 narrow directional JSON omissions with explicit schema, native runtime and half-open UI, exact B profile window.",
+  "acceptedToolIntegration": true,
+  "approvedCaptureSubset": [
+    "h03-rain-panL",
+    "h03-bubbles-push"
+  ],
+  "creditsInsufficientPreserved": true,
+  "AVOID007Complete": false,
+  "AVOID008Started": false
+}

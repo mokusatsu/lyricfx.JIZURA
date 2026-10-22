@@ -1,0 +1,17 @@
+evalmachine.<anonymous>:65
+(()=>{const p=createRecipePool(),must=(x,m)=>{if(!x)throw Error(m);},shared=recipeSafeData({font:'Sans',style:{x:1}}),snapshot=JSON.stringify(shared),payload={shape:Array.from({length:1000},(_,i)=>[i,Math.sin(i)]),proof:{text:'風風',range:[0,2],minus:-0,missing:undefined,nullProto:Object.assign(Object.create(null),{x:1}),ownProto:JSON.parse('{"__proto__":{"x":1}}')}},a=p.context(shared,recipeSafeData({cut:1}),snapshot),base=p.stats().serializedBytes;
+                                                    ^
+
+Error: live oversize admitted
+    at must (evalmachine.<anonymous>:65:59)
+    at evalmachine.<anonymous>:66:477
+    at evalmachine.<anonymous>:71:345
+    at Script.runInContext (node:vm:149:12)
+    at Script.runInNewContext (node:vm:154:17)
+    at Object.runInNewContext (node:vm:310:38)
+    at Object.<anonymous> (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-pool-test.cjs:5:17)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+
+Node.js v24.19.0

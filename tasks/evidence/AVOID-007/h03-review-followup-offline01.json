@@ -1,0 +1,63 @@
+{
+  "scope": "offline fake/VM synthetic only; no actual H03 capture/browser/ffmpeg/network/credential/publication",
+  "startedAt": "2026-10-22T10:39:50.271414+00:00",
+  "endedAt": "2026-10-22T10:39:51.269766+00:00",
+  "preSHA256": {
+    "dev/avoidance/layouts-b-h03-review.cjs": "d953a611d6d600b322e57d2b1aaac8cfc4c60cc08b2c394ca43f35d444ee472e",
+    "dev/avoidance/layouts-b-h03-review-test.cjs": "8939c4d3b68034834e25a75f450c2d277331b7bc88a9a748010fec7559bfb337",
+    "dev/avoidance/layouts-b-public-test.cjs": "c101d9d10b220d825f8e83a3601ca904173def77ceaa9b074ad555f4e322f63c",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "307fd060a26c3eaac6b8e49d5a4ed161fc54bb3517aa1c8ba8424e31b5e3d314",
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "a428341ee85fe0d355686163675289eebb9976f3f3c8abb46d2a23c082d56b45",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+  },
+  "postSHA256": {
+    "dev/avoidance/layouts-b-h03-review.cjs": "d953a611d6d600b322e57d2b1aaac8cfc4c60cc08b2c394ca43f35d444ee472e",
+    "dev/avoidance/layouts-b-h03-review-test.cjs": "8939c4d3b68034834e25a75f450c2d277331b7bc88a9a748010fec7559bfb337",
+    "dev/avoidance/layouts-b-public-test.cjs": "c101d9d10b220d825f8e83a3601ca904173def77ceaa9b074ad555f4e322f63c",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "307fd060a26c3eaac6b8e49d5a4ed161fc54bb3517aa1c8ba8424e31b5e3d314",
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "a428341ee85fe0d355686163675289eebb9976f3f3c8abb46d2a23c082d56b45",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+  },
+  "inputsUnchanged": true,
+  "results": [
+    {
+      "name": "h03",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-h03-review-test.cjs"
+      ],
+      "expectedCases": 14,
+      "exitCode": 0,
+      "log": "h03-review-followup-h0301.log",
+      "logSHA256": "c7cc6c8c7dfd5c024ef5df7b9a734309e3c337a4705477908bdc77ae33020063"
+    },
+    {
+      "name": "runner",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-public-offline-test.cjs"
+      ],
+      "expectedCases": 7,
+      "exitCode": 0,
+      "log": "h03-review-followup-runner01.log",
+      "logSHA256": "77363808013c0f87e6ca2a4cf28646ade14615ea04bd0b3cd63d4e56ce58555b"
+    },
+    {
+      "name": "cli",
+      "command": [
+        "python3",
+        "dev/avoidance/layouts-b-public-cli-offline-test.py",
+        "--report",
+        "tasks/evidence/AVOID-007/h03-review-followup-cli01.json"
+      ],
+      "expectedCases": 2,
+      "exitCode": 0,
+      "log": "h03-review-followup-cli01.log",
+      "logSHA256": "72e105b48efcb723ada9b4c4df38ece886c0b6a78f405d9e483fb8c23cc74c15"
+    }
+  ]
+}

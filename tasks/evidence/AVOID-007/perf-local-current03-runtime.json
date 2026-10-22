@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-10-22T10:35:15.801Z",
+  "environment": {
+    "environment_id": "ccarenv_b64_Y2NhcmVudl9iNTNiMjlkNmNlYzA4MTkxYTdlYmM4MDA2N2YwNDczYw",
+    "source_config_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfg_6ad48aa510ac8193888ec17160277acd",
+    "source_config_version_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfgver_6ad4cb133f2081938362cf953cd01341",
+    "spec_revision": "195",
+    "observed_spec_revision": "195",
+    "observations_current": true,
+    "provider": "cloud",
+    "desired_phase": "running",
+    "observed_phase": "running",
+    "failure": null,
+    "connectivity": "connected",
+    "network_policy": {
+      "mode": "unrestricted",
+      "state": "enforced"
+    },
+    "capabilities": [],
+    "secrets": [],
+    "runtime_variables": [],
+    "outbound_identities": [],
+    "network_diagnostics": null
+  },
+  "resource": {
+    "platform": "linux",
+    "architecture": "x64",
+    "kernel": "6.18.55",
+    "availableParallelism": 4,
+    "logicalCPUs": 5,
+    "cpuModels": [
+      "INTEL(R) XEON(R) PLATINUM 8573C"
+    ],
+    "totalMemoryBytes": 18882674688,
+    "affinity": [
+      "Cpus_allowed_list:\t0-4",
+      "Mems_allowed_list:\t0"
+    ],
+    "cpuMax": "400000 100000",
+    "memoryMax": "17179869184",
+    "effectiveCPUSet": "0-4",
+    "bootIdentitySHA256": "7134056757f7d043882f41937f23cac27010157d7c486b8ee9fc84a425245efb",
+    "node": "v24.19.0",
+    "nodeBinary": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "chromium": "Chromium 154.0.8037.57 built on Debian GNU/Linux 13 (trixie)"
+  },
+  "scope": "Prelaunch runtime/resource identity; serialized cache accounting is not measured JS heap. CPU isolation additionally requires no overlapping task browser/encoder."
+}

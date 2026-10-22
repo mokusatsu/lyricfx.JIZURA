@@ -1,0 +1,29 @@
+{
+  "reviewedAt": "2026-10-22T08:11:49.130459+00:00",
+  "parentCodeAndTestReview": true,
+  "reports": [
+    {
+      "name": "pool02",
+      "reportSHA256": "67910bc6fd62ff0bbba16d3b1f12171ee0f7a49be60f9dba17d3b52050da343e",
+      "verifiedSnapshotPins": 102,
+      "actualPrivateCodeSHA256": "c317608480daf8c8a7cdfaa1c70ec30b52d2afb40be9840ac4dd58596ba6442e",
+      "sharedGeometryNodes1": 1012,
+      "sharedGeometryNodes2": 1014,
+      "evictions": 7,
+      "freshLookupAndStalePendingCounterexamplesPassed": true
+    },
+    {
+      "name": "dependency01",
+      "reportSHA256": "1f8b0d059ad3ba37154ceebfd0922189466a5d6743014342bbc5e5081190bd75",
+      "verifiedSnapshotPins": 102,
+      "actualMidPlanningDependencyRejections": 3
+    }
+  ],
+  "fixesReviewed": [
+    "node lookup corruption from two pending admissions is prevented by generation guard and identity delete",
+    "fresh lookup after eviction tested, not only saved handle lookup",
+    "shared immutable nodes retain/release with complete bounded accounting",
+    "same-cut mutable dependencies rejected explicitly"
+  ],
+  "scope": "pool/dependency local qualification only; formal100/1000 remains failed and recapture not authorized yet"
+}

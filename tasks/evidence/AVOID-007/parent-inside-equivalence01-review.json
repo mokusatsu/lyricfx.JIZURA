@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-10-22T19:51:42.119055+09:00",
+  "scope": "Parent review of single early-false predicate change. No images; performance acceptance pending.",
+  "beforeSourceSHA256": "6de40d631613f76864f2616aa72540b44c0cdd90d0ebd76fcc66e4bf1fb03f84",
+  "afterSourceSHA256": "5667bc92a76b50d27da2cfaec65195b18f0b478703d66184a94ec36a31d9b887",
+  "onlyChange": "After both monotone sign flags become true, return false immediately. Same arithmetic, tolerance and result for plain numeric polygon inputs.",
+  "snapshotPinsVerified": 103,
+  "comparisonGroups": [
+    {
+      "name": "stored current specimen source and recipe envelope vertex/boundary/grid probes",
+      "polygons": 354,
+      "cases": 36462,
+      "inside": 10499,
+      "originalEdges": 218772,
+      "earlyExitEdges": 140426
+    },
+    {
+      "name": "synthetic convex/reversed/concave/degenerate/nonfinite",
+      "polygons": 9,
+      "cases": 753,
+      "inside": 453,
+      "originalEdges": 2209,
+      "earlyExitEdges": 1801
+    }
+  ],
+  "equivalence": true,
+  "reason": "pos and neg never become false; !(pos&&neg) remains false for every suffix. Finite numeric point arrays have no access side effects.",
+  "sourceGeometryCandidateClockOwnershipAndReplayUnchanged": true,
+  "next": "Review one nonformal same-input1000 diagnostic before unchanged paired formal04; no broad visual recapture solely for this equivalent predicate."
+}

@@ -1,0 +1,92 @@
+{
+  "reviewedAt": "2026-10-22T07:55:55.699371+00:00",
+  "reportSHA256": "cf8415250cefafc7a2693f39e0cb53a06facfdf5ddf7616bef7075db1d479906",
+  "verifiedSnapshotPins": 103,
+  "baselineDiffOnlyUnsuccessfulNativeCandidateCacheBranch": true,
+  "actualCountsAndAll25IDDistributionsVerified": true,
+  "formalPassed": false,
+  "thresholdsUnchanged": {
+    "planningFactor": 2,
+    "additionalRenderMs": 3
+  },
+  "rows": [
+    {
+      "n": 100,
+      "segments": 298,
+      "inputSHA256": "980bf88c7cca37ee4be029e80860ce0a2aa2a2c28a66fa42d9f918935a85b490",
+      "baselinePlanningP95": 203.39999999850988,
+      "candidatePlanningP95": 428.4999999925494,
+      "comparison": {
+        "n": 100,
+        "inputIdentical": true,
+        "planningFactor": 2.1066863323288527,
+        "additionalRenderMs": -0.3999999985098839,
+        "planningLimit": 2,
+        "renderLimitMs": 3
+      },
+      "baselineStates": {
+        "safe": 202,
+        "insufficient-space": 96
+      },
+      "candidateStates": {
+        "safe": 286,
+        "insufficient-space": 12
+      },
+      "candidateCache": {
+        "revision": 5,
+        "contexts": 32,
+        "entries": 32,
+        "hits": 256,
+        "misses": 32,
+        "bypasses": 0,
+        "evictions": 0,
+        "serializedBytes": 1932110,
+        "keyBytes": 748386,
+        "payloadBytes": 1101804,
+        "bookkeepingReserved": 81920,
+        "maxSerializedBytes": 8388608,
+        "maxContexts": 1024,
+        "maxEntries": 4096
+      }
+    },
+    {
+      "n": 1000,
+      "segments": 2998,
+      "inputSHA256": "632a61dad13becfeff14ce2af6e2c46b2e8218e19bf967049090471d2f181860",
+      "baselinePlanningP95": 1954.4000000059605,
+      "candidatePlanningP95": 7039,
+      "comparison": {
+        "n": 1000,
+        "inputIdentical": true,
+        "planningFactor": 3.601616864499863,
+        "additionalRenderMs": 1.4000000059604645,
+        "planningLimit": 2,
+        "renderLimitMs": 3
+      },
+      "baselineStates": {
+        "safe": 2038,
+        "insufficient-space": 960
+      },
+      "candidateStates": {
+        "safe": 2878,
+        "insufficient-space": 120
+      },
+      "candidateCache": {
+        "revision": 6,
+        "contexts": 137,
+        "entries": 137,
+        "hits": 0,
+        "misses": 2880,
+        "bypasses": 0,
+        "evictions": 2743,
+        "serializedBytes": 8233268,
+        "keyBytes": 3207930,
+        "payloadBytes": 4728378,
+        "bookkeepingReserved": 296960,
+        "maxSerializedBytes": 8388608,
+        "maxContexts": 1024,
+        "maxEntries": 4096
+      }
+    }
+  ]
+}

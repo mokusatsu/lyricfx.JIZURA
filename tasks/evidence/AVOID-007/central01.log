@@ -1,0 +1,16 @@
+AssertionError [ERR_ASSERTION]: {"layout":"crossBands","d":[{"cut":0,"code":"STAGED_ADAPTER","measurement":"supported","safety":"insufficient-space"}],"tr":{"version":1,"kind":"layouts-b-source-native","revision":4,"evaluationRange":[-0.041666666666666664,4.82],"units":[{"owner":"crossBands.composition","envelopes":[[[429.59780106367486,353.02282875],[1490.4021989363255,353.02282875],[1490.4021989363255,726.97717125],[429.59780106367486,726.97717125]],[[425.9773525011748,349.40238018749994],[1494.022647498825,349.40238018749994],[1494.022647498825,730.5976198125002],[425.9773525011748,730.5976198125002]],[[555.6415694539261,438.834287109375],[777.9803194539261,438.834287109375],[782.7873771362305,440.765625],[782.7873771362305,648.765625],[777.9803194539261,650.929287109375],[555.6415694539261,650.929287109375]],[[761.4834072658921,452.151162109375],[962.310282265892,452.151162109375],[962.7312090454102,453.765625],[962.7312090454102,638.765625],[962.310282265892,640.685537109375],[761.4834072658921,640.685537109375]],[[948.6750409545898,430.765625],[948.886495077858,428.59053710937496],[1167.127745077858,428.59053710937496],[1167.127745077858,650.929287109375],[948.886495077858,650.929287109375],[948.6750409545898,648.765625]],[[1141.6188728637696,464.765625],[1146.5333328898241,463.419287109375],[1361.701457889824,463.419287109375],[1361.701457889824,628.393037109375],[1146.5333328898241,628.393037109375],[1141.6188728637696,626.765625]]],"segments":[{"start":0,"end":4,"region":"fixture","from":[0,0],"to":[0,0],"status":"insufficient-space","decision":"excluded-during-avoidance","failure":"no-certified-composition","attempts":[{"strategy":"native-joint-translation","status":"insufficient-space"}],"proof":{"kind":"source-static-sign-with-declared-owned-motion-envelope","clock":"native clocks, complete interval; camera and AA included"}}]}],"measurementSupported":true,"safety":"insufficient-space","explicitSizePreserved":false}}
++ actual - expected
+
++ 'insufficient-space'
+- 'certified-bounded-adapter'
+
+    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-central-test.cjs:4:1680
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at process.processImmediate (node:internal/timers:502:9) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'insufficient-space',
+  expected: 'certified-bounded-adapter',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

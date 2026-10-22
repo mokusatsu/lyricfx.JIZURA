@@ -1,0 +1,51 @@
+{
+  "scope": "Parent source and integrated actual8 UI/guard tests; no capture/browser/public success",
+  "timestamp": "2026-10-22T13:16:09.341Z",
+  "inputs": [
+    {
+      "file": "dev/avoidance/layouts-b-h03-control-review.cjs",
+      "sha256": "874b97823036eeb7da072e51cccab631b0be5d1bef50805be362c68ed2a14873"
+    },
+    {
+      "file": "dev/avoidance/layouts-b-h03-control-review-test.cjs",
+      "sha256": "96532489d3dec49f510c9475afef64c1190729a37aeb41f1f040fda7fe557605"
+    },
+    {
+      "file": "dev/avoidance/layouts-b-pages-bridge.cjs",
+      "sha256": "35b8c548a72dec9614c7bda44980758d11b8d51af8b3ffab04fe13257de3db2b"
+    },
+    {
+      "file": "dev/avoidance/layouts-b-h03-review.cjs",
+      "sha256": "55061584b5cd2271ef9892c72794edf94cac676b4dc11fc0e2990911b45f6f2d"
+    },
+    {
+      "file": "dev/avoidance/layouts-b-review.cjs",
+      "sha256": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03"
+    },
+    {
+      "file": "dev/avoidance/layouts-b-public-test.cjs",
+      "sha256": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c"
+    },
+    {
+      "file": "dev/avoidance/layouts-b-h03-control-fixture.js",
+      "sha256": "7dcc8e9ef704639503fcaf0b9c33fb73d4d0755313d29414b16f10674b2b7814"
+    }
+  ],
+  "wholeSourceEqualsPriorExceptPageHTML": true,
+  "unchangedOtherExportedFunctions": 35,
+  "integratedTests": 8,
+  "testLogSHA256": "8489a22394a178cb7a2b72a726a93f1fd1351f564ab02ad6162d0000b476b48e",
+  "review": "Numeric成立 explicitly differs from visual acceptance; unselected safe media is not pending human approval. No status, source, clocks, geometry, native, decoder, capture or browser gate changes. Prior actual shared legacy17/B14/runner7/CLI2 remain valid because their inputs/behavior are unchanged.",
+  "approvedNewBuildID": "local-20261022-h03-control-02",
+  "approvedCaptureSubset": [
+    "h03-rain-panL"
+  ],
+  "keepAll3NumericOutcomes": true,
+  "originalTwoPairVisualFAILPreserved": true,
+  "requiredBeforePublication": [
+    "capture/byte equivalence or isolated visual",
+    "strict local browser",
+    "all actual Sites and Pages gates"
+  ],
+  "AVOID007Complete": false
+}

@@ -1,0 +1,63 @@
+{
+  "scope": "pure synthetic Node/CLI only; no browser/capture/media/ffmpeg/network/public credential",
+  "startedAt": "2026-10-22T11:57:11.535109+00:00",
+  "endedAt": "2026-10-22T11:57:12.711705+00:00",
+  "preSHA256": {
+    "dev/avoidance/layouts-b-h03-review.cjs": "55061584b5cd2271ef9892c72794edf94cac676b4dc11fc0e2990911b45f6f2d",
+    "dev/avoidance/layouts-b-h03-review-test.cjs": "21bb3a163aecc8ba0125a5789e7e6b426e24a0120fdc8afe2f6669a20e5abe9d",
+    "dev/avoidance/layouts-b-public-test.cjs": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "f7cf78e0f1d55383ba73e7a910740c83aff1e2a45b645c0901377a5e745f9cf3",
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "a428341ee85fe0d355686163675289eebb9976f3f3c8abb46d2a23c082d56b45",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+  },
+  "postSHA256": {
+    "dev/avoidance/layouts-b-h03-review.cjs": "55061584b5cd2271ef9892c72794edf94cac676b4dc11fc0e2990911b45f6f2d",
+    "dev/avoidance/layouts-b-h03-review-test.cjs": "21bb3a163aecc8ba0125a5789e7e6b426e24a0120fdc8afe2f6669a20e5abe9d",
+    "dev/avoidance/layouts-b-public-test.cjs": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "f7cf78e0f1d55383ba73e7a910740c83aff1e2a45b645c0901377a5e745f9cf3",
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "a428341ee85fe0d355686163675289eebb9976f3f3c8abb46d2a23c082d56b45",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+  },
+  "inputsUnchanged": true,
+  "results": [
+    {
+      "name": "h03",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-h03-review-test.cjs"
+      ],
+      "cases": 17,
+      "exitCode": 0,
+      "log": "h03-json-slot-h0301.log",
+      "logSHA256": "1c2b6288c87504b026c1adf3ee1934987427b46bea1e38ef43e0271fc6a04945"
+    },
+    {
+      "name": "runner",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-public-offline-test.cjs"
+      ],
+      "cases": 7,
+      "exitCode": 0,
+      "log": "h03-json-slot-runner01.log",
+      "logSHA256": "27acfe19602a1803620a57f0dad826cf5f7f755c5b3bd6e1661faea3eeb3c016"
+    },
+    {
+      "name": "cli",
+      "command": [
+        "python3",
+        "dev/avoidance/layouts-b-public-cli-offline-test.py",
+        "--report",
+        "tasks/evidence/AVOID-007/h03-json-slot-cli01.json"
+      ],
+      "cases": 2,
+      "exitCode": 0,
+      "log": "h03-json-slot-cli01.log",
+      "logSHA256": "6c8ba82da096489f985466cfc1e68c9aa68e708bb9edb55bc0217e502e8b365c"
+    }
+  ]
+}

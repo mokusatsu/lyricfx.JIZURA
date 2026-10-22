@@ -1,0 +1,1767 @@
+{
+  "manifestSHA256": "c0c64e78bbbfc33761e378acd21fd7899cd59353e3a1ac1dcb02e6c9c2a77274",
+  "sampleFrames": [
+    0,
+    6,
+    12,
+    24,
+    36,
+    48,
+    72,
+    90,
+    95
+  ],
+  "sampleTimesSeconds": [
+    0.0,
+    0.25,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0,
+    3.75,
+    3.9583333333333335
+  ],
+  "cases": [
+    {
+      "id": "b25-rain",
+      "conditions": {
+        "layout": "rain",
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "params": {},
+        "seed": 704
+      },
+      "focus": {
+        "ja": "落下する先頭字・後続の軌跡・着地した主歌詞の対応",
+        "en": "Falling lead glyphs, delivery trails and their final lyric positions"
+      },
+      "intent": {
+        "ja": "文字が落ちて定位置に収まる動きと、円との位置関係を見てください。",
+        "en": "Watch the falling letters settle and compare their position around the circle."
+      },
+      "preserve": {
+        "ja": "読む順と背景模様の動きを保ちます。拡大・縮小する文字は、輪郭の滑らかさが変わる場合があります。円に収めるため文字サイズを調整する場合があります。拡大・縮小する動きと、そのタイミングを保ちます。",
+        "en": "Reading order and background motion are retained. Scaling letters may have different edge smoothness. Text size may be adjusted to fit around the circle. The scaling motion and its timing are retained."
+      },
+      "sides": {
+        "before": {
+          "video": "videos/b25-rain-before.mp4",
+          "actualSHA256": "dc94d068cb05d9086100b756c6b2ae7afcd316230039f0a4d02e7e05db30039c",
+          "manifestSHA256": "dc94d068cb05d9086100b756c6b2ae7afcd316230039f0a4d02e7e05db30039c",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-rain-before.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-rain-before-3.png",
+              "actualSHA256": "abd4dbd79e3622bfafd49389777cdb4b76e6ddd532e356a913d7188c72433184",
+              "manifestSHA256": "abd4dbd79e3622bfafd49389777cdb4b76e6ddd532e356a913d7188c72433184"
+            },
+            {
+              "path": "images/b25-rain-before-15.png",
+              "actualSHA256": "ded1dac65be2ef10633228ac0e5901a265478144e1dd0731d25a41ebc9a20698",
+              "manifestSHA256": "ded1dac65be2ef10633228ac0e5901a265478144e1dd0731d25a41ebc9a20698"
+            },
+            {
+              "path": "images/b25-rain-before-36.png",
+              "actualSHA256": "3ae47a2a65b55c3148b4a7a37210bef4b682e192168816384c013a8ad4c79906",
+              "manifestSHA256": "3ae47a2a65b55c3148b4a7a37210bef4b682e192168816384c013a8ad4c79906"
+            },
+            {
+              "path": "images/b25-rain-before-90.png",
+              "actualSHA256": "c99549618e416cefd7349327923e3efb1f446f8dc1a967f6bca201f6eb9678ea",
+              "manifestSHA256": "c99549618e416cefd7349327923e3efb1f446f8dc1a967f6bca201f6eb9678ea"
+            }
+          ]
+        },
+        "after": {
+          "video": "videos/b25-rain-after.mp4",
+          "actualSHA256": "5b7b1b37bdf3e4318b91785944e2866a30d7aacdeceada2e4af120f8df57f22f",
+          "manifestSHA256": "5b7b1b37bdf3e4318b91785944e2866a30d7aacdeceada2e4af120f8df57f22f",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-rain-after.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-rain-after-3.png",
+              "actualSHA256": "d3e3514600dd7281bdca93e293b762a196dbdfcf91066998a3922846f9d0b068",
+              "manifestSHA256": "d3e3514600dd7281bdca93e293b762a196dbdfcf91066998a3922846f9d0b068"
+            },
+            {
+              "path": "images/b25-rain-after-15.png",
+              "actualSHA256": "8a7bb48526f1d613f80ff476ecd029945ed388ad6ab7a34b98267e75d651dc18",
+              "manifestSHA256": "8a7bb48526f1d613f80ff476ecd029945ed388ad6ab7a34b98267e75d651dc18"
+            },
+            {
+              "path": "images/b25-rain-after-36.png",
+              "actualSHA256": "1f765e361f90fe6369f032d8fd2d6c6c1a0292eeacb7698b69ea9b71e2f8c59f",
+              "manifestSHA256": "1f765e361f90fe6369f032d8fd2d6c6c1a0292eeacb7698b69ea9b71e2f8c59f"
+            },
+            {
+              "path": "images/b25-rain-after-90.png",
+              "actualSHA256": "b53cdc10cb739de16de3814802b400c5e4fe89dbd44612fd0deb9f444e1a919f",
+              "manifestSHA256": "b53cdc10cb739de16de3814802b400c5e4fe89dbd44612fd0deb9f444e1a919f"
+            }
+          ]
+        }
+      },
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-contact.png"
+    },
+    {
+      "id": "b25-hanging",
+      "conditions": {
+        "layout": "hanging",
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "params": {},
+        "seed": 704
+      },
+      "focus": {
+        "ja": "吊り札・文字・紐・支点・レールのつながり",
+        "en": "Connections between lyric tags, strings, pins and rail"
+      },
+      "intent": {
+        "ja": "所有部材を含む吊り札のまとまりが円を避けるか確認",
+        "en": "Check that the tag composition and owned attachments avoid the circle"
+      },
+      "preserve": {
+        "ja": "札内の文字、揺れ、支点の対応と読む順を保つ",
+        "en": "Preserve tag-to-glyph attachment, swing phase, anchors and reading order."
+      },
+      "sides": {
+        "before": {
+          "video": "videos/b25-hanging-before.mp4",
+          "actualSHA256": "665dc003dcf6d29702d61bd2daf6c4a2ee64780a8bee81166c81d9df96f489d7",
+          "manifestSHA256": "665dc003dcf6d29702d61bd2daf6c4a2ee64780a8bee81166c81d9df96f489d7",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-hanging-before.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-hanging-before-3.png",
+              "actualSHA256": "e7720470ea3e260c1b58242286493a0d5f74f199d7ce6080dd9d8ae1f11a32c2",
+              "manifestSHA256": "e7720470ea3e260c1b58242286493a0d5f74f199d7ce6080dd9d8ae1f11a32c2"
+            },
+            {
+              "path": "images/b25-hanging-before-15.png",
+              "actualSHA256": "696724f356854655a5e5f5e062fefe15ecf34a3c209555eb34578bf8d74bd16b",
+              "manifestSHA256": "696724f356854655a5e5f5e062fefe15ecf34a3c209555eb34578bf8d74bd16b"
+            },
+            {
+              "path": "images/b25-hanging-before-36.png",
+              "actualSHA256": "572e57e5a477e5ac76fc726720c70c420c54638d5b11334ae44ebd412f05e013",
+              "manifestSHA256": "572e57e5a477e5ac76fc726720c70c420c54638d5b11334ae44ebd412f05e013"
+            },
+            {
+              "path": "images/b25-hanging-before-90.png",
+              "actualSHA256": "13d437bc63ade75372d0be28bb700825b7cc844dc82cc450301713c7dc279909",
+              "manifestSHA256": "13d437bc63ade75372d0be28bb700825b7cc844dc82cc450301713c7dc279909"
+            }
+          ]
+        },
+        "after": {
+          "video": "videos/b25-hanging-after.mp4",
+          "actualSHA256": "735a736d3013538c44a32a9b35d882e8661efb362059f458c81a8456dc0b198c",
+          "manifestSHA256": "735a736d3013538c44a32a9b35d882e8661efb362059f458c81a8456dc0b198c",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-hanging-after.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-hanging-after-3.png",
+              "actualSHA256": "1548074d4ba63c9cb8a6936abc7ecd78c61cdd6cc6a4f6e1275a3680bf82f2fa",
+              "manifestSHA256": "1548074d4ba63c9cb8a6936abc7ecd78c61cdd6cc6a4f6e1275a3680bf82f2fa"
+            },
+            {
+              "path": "images/b25-hanging-after-15.png",
+              "actualSHA256": "4a56169ac5c614faba19d95f2721724aecb53055171131c6ca4b22c421b7c29d",
+              "manifestSHA256": "4a56169ac5c614faba19d95f2721724aecb53055171131c6ca4b22c421b7c29d"
+            },
+            {
+              "path": "images/b25-hanging-after-36.png",
+              "actualSHA256": "85c976c7070ad9aead65cc7a2916b813fbd0ea43007e6a8d0f937c33bfd796aa",
+              "manifestSHA256": "85c976c7070ad9aead65cc7a2916b813fbd0ea43007e6a8d0f937c33bfd796aa"
+            },
+            {
+              "path": "images/b25-hanging-after-90.png",
+              "actualSHA256": "50196f50e79ded64ed5c9bde269ff4861e1e6bd47b070bd25335a3a5fb733643",
+              "manifestSHA256": "50196f50e79ded64ed5c9bde269ff4861e1e6bd47b070bd25335a3a5fb733643"
+            }
+          ]
+        }
+      },
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-contact.png"
+    },
+    {
+      "id": "b25-bounceLine",
+      "conditions": {
+        "layout": "bounceLine",
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "params": {},
+        "seed": 704
+      },
+      "focus": {
+        "ja": "跳ねる各文字と地面の線・点・影",
+        "en": "Bouncing glyphs and their baseline, dots and ground shadows"
+      },
+      "intent": {
+        "ja": "文字と所有する地面表現が一緒に回避するか確認",
+        "en": "Check joint avoidance of glyphs and their owned ground elements"
+      },
+      "preserve": {
+        "ja": "字順、跳躍の位相、影が文字の下にある関係を保つ",
+        "en": "Preserve reading order, bounce phase and shadows below their glyphs."
+      },
+      "sides": {
+        "before": {
+          "video": "videos/b25-bounceLine-before.mp4",
+          "actualSHA256": "40813a317e0313e56458f12b5fa786e78c163819df3460660f8c6eab98f7aaf9",
+          "manifestSHA256": "40813a317e0313e56458f12b5fa786e78c163819df3460660f8c6eab98f7aaf9",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-bounceLine-before.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-bounceLine-before-3.png",
+              "actualSHA256": "0162b8b5815c4dde295fb4f39709c29569e002e0651b542eaa1dfe8c6a590d0a",
+              "manifestSHA256": "0162b8b5815c4dde295fb4f39709c29569e002e0651b542eaa1dfe8c6a590d0a"
+            },
+            {
+              "path": "images/b25-bounceLine-before-15.png",
+              "actualSHA256": "d612241b31722b64b74a958af650a7a6952e940378fe3bdc3ec1690723c68bcf",
+              "manifestSHA256": "d612241b31722b64b74a958af650a7a6952e940378fe3bdc3ec1690723c68bcf"
+            },
+            {
+              "path": "images/b25-bounceLine-before-36.png",
+              "actualSHA256": "414492c3cfde8e49e676b5f4af480fc9a1d5a1f2b0950867a08f8fa8ba299f8b",
+              "manifestSHA256": "414492c3cfde8e49e676b5f4af480fc9a1d5a1f2b0950867a08f8fa8ba299f8b"
+            },
+            {
+              "path": "images/b25-bounceLine-before-90.png",
+              "actualSHA256": "efb25ee74c8c1b5cfc75763384d8994af954a12e893bfd66cb9b29e85dcee22b",
+              "manifestSHA256": "efb25ee74c8c1b5cfc75763384d8994af954a12e893bfd66cb9b29e85dcee22b"
+            }
+          ]
+        },
+        "after": {
+          "video": "videos/b25-bounceLine-after.mp4",
+          "actualSHA256": "a4f1cc543632f69dad07da464eb739eed321ec1c2ceb5580e6d17e41266b6cc1",
+          "manifestSHA256": "a4f1cc543632f69dad07da464eb739eed321ec1c2ceb5580e6d17e41266b6cc1",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-bounceLine-after.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-bounceLine-after-3.png",
+              "actualSHA256": "521d21c62a690a8444c149b7a9e259968cb2df2e660180354350b19f08822f17",
+              "manifestSHA256": "521d21c62a690a8444c149b7a9e259968cb2df2e660180354350b19f08822f17"
+            },
+            {
+              "path": "images/b25-bounceLine-after-15.png",
+              "actualSHA256": "ec434caddd8a9c06f75cb18da592b6da65ccfda55fc9a909f7df20f4b9422de3",
+              "manifestSHA256": "ec434caddd8a9c06f75cb18da592b6da65ccfda55fc9a909f7df20f4b9422de3"
+            },
+            {
+              "path": "images/b25-bounceLine-after-36.png",
+              "actualSHA256": "a043ebb452e2847922e4528202ff2db85b77454d4e2dd70ceb14eaba5720fa28",
+              "manifestSHA256": "a043ebb452e2847922e4528202ff2db85b77454d4e2dd70ceb14eaba5720fa28"
+            },
+            {
+              "path": "images/b25-bounceLine-after-90.png",
+              "actualSHA256": "e3c1a4942f6df5e3896ae070f4b91997fe8377394b220d8c4d05da4aa0c12ad7",
+              "manifestSHA256": "e3c1a4942f6df5e3896ae070f4b91997fe8377394b220d8c4d05da4aa0c12ad7"
+            }
+          ]
+        }
+      },
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-contact.png"
+    },
+    {
+      "id": "b25-elastic",
+      "conditions": {
+        "layout": "elastic",
+        "text": "風の先へ",
+        "W": 3200,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "params": {},
+        "seed": 704
+      },
+      "focus": {
+        "ja": "3200×1080での弾性軸と文字・付属線の関係",
+        "en": "Elastic axis, glyphs and attached strokes at 3200×1080"
+      },
+      "intent": {
+        "ja": "弾性軸を保つ文字組の回避構成を確認",
+        "en": "Check avoidance composition while preserving the elastic axis"
+      },
+      "preserve": {
+        "ja": "文字をばらばらに移さず、伸縮方向と部材の連結を保つ",
+        "en": "Preserve stretching direction and attachment; do not scatter individual glyphs."
+      },
+      "sides": {
+        "before": {
+          "video": "videos/b25-elastic-before.mp4",
+          "actualSHA256": "36a9c01d2b299888341edb04bb45532b02e78240175746f47486cc94a88ce059",
+          "manifestSHA256": "36a9c01d2b299888341edb04bb45532b02e78240175746f47486cc94a88ce059",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 3200,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-elastic-before.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-elastic-before-3.png",
+              "actualSHA256": "56f4954760702fbbe5dcd557387e2104c6deda7bf824546f0b32062f5244d4f3",
+              "manifestSHA256": "56f4954760702fbbe5dcd557387e2104c6deda7bf824546f0b32062f5244d4f3"
+            },
+            {
+              "path": "images/b25-elastic-before-15.png",
+              "actualSHA256": "f4fe9b721216a99bd94617f829f583cc54eee1c8b0ae2342238d427c58cec065",
+              "manifestSHA256": "f4fe9b721216a99bd94617f829f583cc54eee1c8b0ae2342238d427c58cec065"
+            },
+            {
+              "path": "images/b25-elastic-before-36.png",
+              "actualSHA256": "a237f4544f0e0e3a89725bee644f564e44c29d2beac366b891fac5aa9d62cfa2",
+              "manifestSHA256": "a237f4544f0e0e3a89725bee644f564e44c29d2beac366b891fac5aa9d62cfa2"
+            },
+            {
+              "path": "images/b25-elastic-before-90.png",
+              "actualSHA256": "296250808d798aa20a2814d2f23b1ab27e6ea7b861b9f5b9b19c70a886f6a8bf",
+              "manifestSHA256": "296250808d798aa20a2814d2f23b1ab27e6ea7b861b9f5b9b19c70a886f6a8bf"
+            }
+          ]
+        },
+        "after": {
+          "video": "videos/b25-elastic-after.mp4",
+          "actualSHA256": "a04b04026e3fb29ab779d8837ecdb1c3f92c859d50de0c1ad194eac5d35bc141",
+          "manifestSHA256": "a04b04026e3fb29ab779d8837ecdb1c3f92c859d50de0c1ad194eac5d35bc141",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 3200,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-elastic-after.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-elastic-after-3.png",
+              "actualSHA256": "b162d1a6dbfe5b120b872b7632a0704013d99d6bf76f4664f13f1932054ba2f1",
+              "manifestSHA256": "b162d1a6dbfe5b120b872b7632a0704013d99d6bf76f4664f13f1932054ba2f1"
+            },
+            {
+              "path": "images/b25-elastic-after-15.png",
+              "actualSHA256": "777a9e0e963003bdcca81e7afb7cca1bb1494f728dcd6e4aff36a0f963a5afb3",
+              "manifestSHA256": "777a9e0e963003bdcca81e7afb7cca1bb1494f728dcd6e4aff36a0f963a5afb3"
+            },
+            {
+              "path": "images/b25-elastic-after-36.png",
+              "actualSHA256": "b4906f391bc5d1d6b5d9149910d3df978a574e54c99e4f338c1833d853c8f62a",
+              "manifestSHA256": "b4906f391bc5d1d6b5d9149910d3df978a574e54c99e4f338c1833d853c8f62a"
+            },
+            {
+              "path": "images/b25-elastic-after-90.png",
+              "actualSHA256": "2f77ee8a06b39d44f65f61fdb2656c02f003534906ba0c3e6b7644dd441b385c",
+              "manifestSHA256": "2f77ee8a06b39d44f65f61fdb2656c02f003534906ba0c3e6b7644dd441b385c"
+            }
+          ]
+        }
+      },
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-contact.png"
+    },
+    {
+      "id": "b25-stickerBomb",
+      "conditions": {
+        "layout": "stickerBomb",
+        "text": "風の先へ",
+        "W": 3200,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "params": {},
+        "seed": 704
+      },
+      "focus": {
+        "ja": "3200×1080のステッカー板とその中の各文字",
+        "en": "Sticker plates and their glyphs at 3200×1080"
+      },
+      "intent": {
+        "ja": "板と文字を所有単位で再配置して円を避けるか確認",
+        "en": "Check avoidance by moving plate-and-glyph ownership groups"
+      },
+      "preserve": {
+        "ja": "元の文字数、読む順、板と文字の対応を保つ",
+        "en": "Preserve glyph count, reading order and plate-to-glyph correspondence."
+      },
+      "sides": {
+        "before": {
+          "video": "videos/b25-stickerBomb-before.mp4",
+          "actualSHA256": "9b4211693da60fc5c6869347a6acc751f9de240a8d09a1b4d2c8bca231b99ed8",
+          "manifestSHA256": "9b4211693da60fc5c6869347a6acc751f9de240a8d09a1b4d2c8bca231b99ed8",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 3200,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-stickerBomb-before.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-stickerBomb-before-3.png",
+              "actualSHA256": "6c3b642c3080dbbac770809b964c2689584eb8dfe74558e6c459007444d8d9e5",
+              "manifestSHA256": "6c3b642c3080dbbac770809b964c2689584eb8dfe74558e6c459007444d8d9e5"
+            },
+            {
+              "path": "images/b25-stickerBomb-before-15.png",
+              "actualSHA256": "f16df062632d1be491a4c3f7fc0e492c6737934122dd5b61686823ed95d7fa26",
+              "manifestSHA256": "f16df062632d1be491a4c3f7fc0e492c6737934122dd5b61686823ed95d7fa26"
+            },
+            {
+              "path": "images/b25-stickerBomb-before-36.png",
+              "actualSHA256": "2d62ef9836f415bd41c3b8fd86ff27850caa5ff3df3c04f306168f90d31e0a34",
+              "manifestSHA256": "2d62ef9836f415bd41c3b8fd86ff27850caa5ff3df3c04f306168f90d31e0a34"
+            },
+            {
+              "path": "images/b25-stickerBomb-before-90.png",
+              "actualSHA256": "daedcd7700903f4e86053d52107d8e909029a592f8626196d2f8fa9207fc009c",
+              "manifestSHA256": "daedcd7700903f4e86053d52107d8e909029a592f8626196d2f8fa9207fc009c"
+            }
+          ]
+        },
+        "after": {
+          "video": "videos/b25-stickerBomb-after.mp4",
+          "actualSHA256": "72a05aa26042b8e21d8f622528163556a08cbf09664f41cfade47f67201a3f90",
+          "manifestSHA256": "72a05aa26042b8e21d8f622528163556a08cbf09664f41cfade47f67201a3f90",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 3200,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-stickerBomb-after.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-stickerBomb-after-3.png",
+              "actualSHA256": "8ed7f6d20f47e098ef484f97b6f675b0ef5c4b240462ff36af7e7d72308cb593",
+              "manifestSHA256": "8ed7f6d20f47e098ef484f97b6f675b0ef5c4b240462ff36af7e7d72308cb593"
+            },
+            {
+              "path": "images/b25-stickerBomb-after-15.png",
+              "actualSHA256": "678f95e297d887d2fb5c921ec845d138fe6a1989a46d136ecc4bdcca17e03719",
+              "manifestSHA256": "678f95e297d887d2fb5c921ec845d138fe6a1989a46d136ecc4bdcca17e03719"
+            },
+            {
+              "path": "images/b25-stickerBomb-after-36.png",
+              "actualSHA256": "9b05978e60926418c230b653ebc11da018e2c5e011a5b7ac7941258a35db150c",
+              "manifestSHA256": "9b05978e60926418c230b653ebc11da018e2c5e011a5b7ac7941258a35db150c"
+            },
+            {
+              "path": "images/b25-stickerBomb-after-90.png",
+              "actualSHA256": "184bdb0a0a3a3e850fb3518271b9e121498d81b92c12f3c8ab0c12dfcd60f4ea",
+              "manifestSHA256": "184bdb0a0a3a3e850fb3518271b9e121498d81b92c12f3c8ab0c12dfcd60f4ea"
+            }
+          ]
+        }
+      },
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-contact.png"
+    },
+    {
+      "id": "b25-neon",
+      "conditions": {
+        "layout": "neon",
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "params": {},
+        "seed": 704
+      },
+      "focus": {
+        "ja": "文字と枠の動き、周りに広がる光",
+        "en": "Moving letters, frame and surrounding glow"
+      },
+      "intent": {
+        "ja": "変更後は、円の外に収まるよう発光の描き方を変えています。文字と枠の動きを見てください。",
+        "en": "After changes how the glow is drawn to fit outside the circle. Watch the letters and frame move."
+      },
+      "preserve": {
+        "ja": "文字と枠、発光の印象を保ちます。光の広がり方には差があります。",
+        "en": "The letters, frame and glowing impression are retained. The spread of light differs."
+      },
+      "sides": {
+        "before": {
+          "video": "videos/b25-neon-before.mp4",
+          "actualSHA256": "b9db98762625cf96426d493bdfee85064c962e9673f0f64c844796ec2affd4ff",
+          "manifestSHA256": "b9db98762625cf96426d493bdfee85064c962e9673f0f64c844796ec2affd4ff",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-neon-before.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-neon-before-3.png",
+              "actualSHA256": "9b9d62476e5d06dcba8554f387460be16cb196d429b7714e92642d653d7e28d1",
+              "manifestSHA256": "9b9d62476e5d06dcba8554f387460be16cb196d429b7714e92642d653d7e28d1"
+            },
+            {
+              "path": "images/b25-neon-before-15.png",
+              "actualSHA256": "347982c0b6e4a6f09fef0e0e54e143a1ba6806ad1678b4ee32effc60c347918a",
+              "manifestSHA256": "347982c0b6e4a6f09fef0e0e54e143a1ba6806ad1678b4ee32effc60c347918a"
+            },
+            {
+              "path": "images/b25-neon-before-36.png",
+              "actualSHA256": "0174e952bbdcaca9ca3782fed2eb2b481c365aa52cc38a478d648688f6ff4ada",
+              "manifestSHA256": "0174e952bbdcaca9ca3782fed2eb2b481c365aa52cc38a478d648688f6ff4ada"
+            },
+            {
+              "path": "images/b25-neon-before-90.png",
+              "actualSHA256": "644d59f3edb1aed19dfafc91dc6cb3d18f7ebe5acf385ce0e7f2567d7efc4b40",
+              "manifestSHA256": "644d59f3edb1aed19dfafc91dc6cb3d18f7ebe5acf385ce0e7f2567d7efc4b40"
+            }
+          ]
+        },
+        "after": {
+          "video": "videos/b25-neon-after.mp4",
+          "actualSHA256": "aa81bde61974a447e6aa630343abfee6c2860dcbff7610db98773f69aa59b021",
+          "manifestSHA256": "aa81bde61974a447e6aa630343abfee6c2860dcbff7610db98773f69aa59b021",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-neon-after.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-neon-after-3.png",
+              "actualSHA256": "5a8cddaf3b4da64fd4f18d782f18eed0bf3e674e8e6de6ad777ce3d2f8e8c88c",
+              "manifestSHA256": "5a8cddaf3b4da64fd4f18d782f18eed0bf3e674e8e6de6ad777ce3d2f8e8c88c"
+            },
+            {
+              "path": "images/b25-neon-after-15.png",
+              "actualSHA256": "3bbae0a40949ac5b985cba31fe223f463293c97b5edcb83661257b9fd21c80af",
+              "manifestSHA256": "3bbae0a40949ac5b985cba31fe223f463293c97b5edcb83661257b9fd21c80af"
+            },
+            {
+              "path": "images/b25-neon-after-36.png",
+              "actualSHA256": "934ca620c0a0a5ffae59997d2a1417555c88390bd4085ed77461bcd846b2ca1d",
+              "manifestSHA256": "934ca620c0a0a5ffae59997d2a1417555c88390bd4085ed77461bcd846b2ca1d"
+            },
+            {
+              "path": "images/b25-neon-after-90.png",
+              "actualSHA256": "dbb873fc4632edc181e4e2c8491742bbaae8b75d54ac8aa82f64a3ab2123b383",
+              "manifestSHA256": "dbb873fc4632edc181e4e2c8491742bbaae8b75d54ac8aa82f64a3ab2123b383"
+            }
+          ]
+        }
+      },
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-contact.png"
+    },
+    {
+      "id": "b25-keycaps",
+      "conditions": {
+        "layout": "keycaps",
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "params": {},
+        "seed": 704
+      },
+      "focus": {
+        "ja": "キーの字・凡例・板の対応",
+        "en": "Key glyphs, legends and their plate"
+      },
+      "intent": {
+        "ja": "文字とキーの板が一緒に円を避ける動きを見てください。",
+        "en": "Watch the letters and key plates move together around the circle."
+      },
+      "preserve": {
+        "ja": "キーの並びと、文字と板のつながりを保ちます。拡大・縮小する文字は、輪郭の滑らかさが変わる場合があります。円に収めるため文字サイズを調整する場合があります。拡大・縮小する動きと、そのタイミングを保ちます。",
+        "en": "Key order and the connection between each letter and its plate are retained. Scaling letters may have different edge smoothness. Text size may be adjusted to fit around the circle. The scaling motion and its timing are retained."
+      },
+      "sides": {
+        "before": {
+          "video": "videos/b25-keycaps-before.mp4",
+          "actualSHA256": "1a238a8502eed0817881abe16fc7cbf54d9334bb87732759ac0fe92d5c872db0",
+          "manifestSHA256": "1a238a8502eed0817881abe16fc7cbf54d9334bb87732759ac0fe92d5c872db0",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-keycaps-before.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-keycaps-before-3.png",
+              "actualSHA256": "f6cbec8a4faca6059ef115f3500094fbe4f0e6289ad041748dc002a9f06664ac",
+              "manifestSHA256": "f6cbec8a4faca6059ef115f3500094fbe4f0e6289ad041748dc002a9f06664ac"
+            },
+            {
+              "path": "images/b25-keycaps-before-15.png",
+              "actualSHA256": "66abac4f8efdbec111980a45d4efdc86d821ead0d5e1ca3ccb2339e289e4de4c",
+              "manifestSHA256": "66abac4f8efdbec111980a45d4efdc86d821ead0d5e1ca3ccb2339e289e4de4c"
+            },
+            {
+              "path": "images/b25-keycaps-before-36.png",
+              "actualSHA256": "7a2a91d9bd283b77a2d61affebcd61a6ead4861151b2f5b0b3ee8146a41d008b",
+              "manifestSHA256": "7a2a91d9bd283b77a2d61affebcd61a6ead4861151b2f5b0b3ee8146a41d008b"
+            },
+            {
+              "path": "images/b25-keycaps-before-90.png",
+              "actualSHA256": "545072bc9cada3122c5795bea105f5e125c9d812f6c3ef926ac5de643547d33e",
+              "manifestSHA256": "545072bc9cada3122c5795bea105f5e125c9d812f6c3ef926ac5de643547d33e"
+            }
+          ]
+        },
+        "after": {
+          "video": "videos/b25-keycaps-after.mp4",
+          "actualSHA256": "b7d3f513b92a8818835ca071a25082a8135db27e8193a27d8f2cd251fddc063d",
+          "manifestSHA256": "b7d3f513b92a8818835ca071a25082a8135db27e8193a27d8f2cd251fddc063d",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-keycaps-after.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-keycaps-after-3.png",
+              "actualSHA256": "870fd2bf6f7586527708bba020b831f7539ebced16a8a623b2fd59be1afbaae7",
+              "manifestSHA256": "870fd2bf6f7586527708bba020b831f7539ebced16a8a623b2fd59be1afbaae7"
+            },
+            {
+              "path": "images/b25-keycaps-after-15.png",
+              "actualSHA256": "3372acb16ea22b8e2fb5e401115494c83e8c4acc418669f0e736c053c7f28297",
+              "manifestSHA256": "3372acb16ea22b8e2fb5e401115494c83e8c4acc418669f0e736c053c7f28297"
+            },
+            {
+              "path": "images/b25-keycaps-after-36.png",
+              "actualSHA256": "62843a240245d135eccd3d4f2c9f8742916a306e5281e23295ee146b7dbf1e89",
+              "manifestSHA256": "62843a240245d135eccd3d4f2c9f8742916a306e5281e23295ee146b7dbf1e89"
+            },
+            {
+              "path": "images/b25-keycaps-after-90.png",
+              "actualSHA256": "989dd9c1dd9beb6ec7decb434253cb03d4ac8b047dbdcb488c005676bee1767c",
+              "manifestSHA256": "989dd9c1dd9beb6ec7decb434253cb03d4ac8b047dbdcb488c005676bee1767c"
+            }
+          ]
+        }
+      },
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-contact.png"
+    },
+    {
+      "id": "b25-bubbles",
+      "conditions": {
+        "layout": "bubbles",
+        "text": "風の先へ",
+        "W": 1920,
+        "H": 1080,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "params": {},
+        "seed": 704
+      },
+      "focus": {
+        "ja": "泡ごとの語と丸い所有板",
+        "en": "Words and their owned bubble plates"
+      },
+      "intent": {
+        "ja": "泡と中の言葉が一緒に円を避ける動きを見てください。",
+        "en": "Watch each bubble and its word move together around the circle."
+      },
+      "preserve": {
+        "ja": "語順と、泡と言葉のつながりを保ちます。拡大・縮小する文字は、輪郭の滑らかさが変わる場合があります。円に収めるため文字サイズを調整する場合があります。拡大・縮小する動きと、そのタイミングを保ちます。",
+        "en": "Word order and the connection between each bubble and its word are retained. Scaling letters may have different edge smoothness. Text size may be adjusted to fit around the circle. The scaling motion and its timing are retained."
+      },
+      "sides": {
+        "before": {
+          "video": "videos/b25-bubbles-before.mp4",
+          "actualSHA256": "3a3e6b8f6a02329a12aee463c76cd3cdfaa29daad5835225052ae08c5a8b660e",
+          "manifestSHA256": "3a3e6b8f6a02329a12aee463c76cd3cdfaa29daad5835225052ae08c5a8b660e",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-bubbles-before.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-bubbles-before-3.png",
+              "actualSHA256": "4288c6a10256d00f8e1d88bea142cd85eeb225b3c7c8fba69fc6ec646cd8a373",
+              "manifestSHA256": "4288c6a10256d00f8e1d88bea142cd85eeb225b3c7c8fba69fc6ec646cd8a373"
+            },
+            {
+              "path": "images/b25-bubbles-before-15.png",
+              "actualSHA256": "d42b25d73d7aba1c5f04379944179902ab390eaad600a7f6d522b14ed433d85b",
+              "manifestSHA256": "d42b25d73d7aba1c5f04379944179902ab390eaad600a7f6d522b14ed433d85b"
+            },
+            {
+              "path": "images/b25-bubbles-before-36.png",
+              "actualSHA256": "54d007ab344e5436823bc0acad74a3b4f30984e0e6827c18972d5da54324fe2d",
+              "manifestSHA256": "54d007ab344e5436823bc0acad74a3b4f30984e0e6827c18972d5da54324fe2d"
+            },
+            {
+              "path": "images/b25-bubbles-before-90.png",
+              "actualSHA256": "d541d3718035d87a0851aee2c958354d3a170f304a80a8b16e06e917294eecd7",
+              "manifestSHA256": "d541d3718035d87a0851aee2c958354d3a170f304a80a8b16e06e917294eecd7"
+            }
+          ]
+        },
+        "after": {
+          "video": "videos/b25-bubbles-after.mp4",
+          "actualSHA256": "ec50e44d4a8b5c307c2c3a2dc1a1927f7919f1a629dcd770b9a6a4e971a48849",
+          "manifestSHA256": "ec50e44d4a8b5c307c2c3a2dc1a1927f7919f1a629dcd770b9a6a4e971a48849",
+          "probe": {
+            "programs": [],
+            "stream_groups": [],
+            "streams": [
+              {
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "duration": "4.000000",
+                "nb_frames": "96"
+              }
+            ]
+          },
+          "decodeCommand": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "1",
+            "-i",
+            "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-bubbles-after.mp4",
+            "-vf",
+            "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+            "-vsync",
+            "0",
+            "-threads",
+            "1",
+            "-n",
+            "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/%02d.png"
+          ],
+          "keyImages": [
+            {
+              "path": "images/b25-bubbles-after-3.png",
+              "actualSHA256": "0f318376337c86ac6bb30bd2fbd5c630f0930564760fa0adf5ec68285ca3c50f",
+              "manifestSHA256": "0f318376337c86ac6bb30bd2fbd5c630f0930564760fa0adf5ec68285ca3c50f"
+            },
+            {
+              "path": "images/b25-bubbles-after-15.png",
+              "actualSHA256": "7f75175ac574542afd24143aec1e3453408a9ad15dac2fc430986e219a842c28",
+              "manifestSHA256": "7f75175ac574542afd24143aec1e3453408a9ad15dac2fc430986e219a842c28"
+            },
+            {
+              "path": "images/b25-bubbles-after-36.png",
+              "actualSHA256": "c8d284f561880d92c601240c90b93a76a6b914a5b36c6fe4eca572838de89f24",
+              "manifestSHA256": "c8d284f561880d92c601240c90b93a76a6b914a5b36c6fe4eca572838de89f24"
+            },
+            {
+              "path": "images/b25-bubbles-after-90.png",
+              "actualSHA256": "eb25a671b1277cb231a357d42b902e936e6d6b05f1a55d5e3038c77f54781086",
+              "manifestSHA256": "eb25a671b1277cb231a357d42b902e936e6d6b05f1a55d5e3038c77f54781086"
+            }
+          ]
+        }
+      },
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-contact.png"
+    }
+  ],
+  "reviewedAtUTC": "2026-10-22T09:25:48.825853+00:00",
+  "reviewer": "avoid007_visual_a (independent visual-only subagent)",
+  "viewedImageFiles": [
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-dense-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-dense-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-dense-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-dense-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-dense-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/06.png",
+    "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-neon-before-36.png",
+    "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-neon-after-36.png",
+    "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-elastic-before-15.png",
+    "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-elastic-after-15.png",
+    "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-stickerBomb-before-36.png",
+    "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-stickerBomb-after-36.png"
+  ],
+  "viewImagePresentationLimit": "1280x2214 main sheets displayed at1184x2048; 3200x1080 native images at2048x691 by image tool. Other images displayed at original dimensions. Native files opened directly, no altered source.",
+  "additionalSamples": {
+    "rain": {
+      "frames": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        10,
+        14,
+        16,
+        18,
+        20,
+        22,
+        91,
+        92,
+        93,
+        94
+      ],
+      "timesSeconds": [
+        0.041666666666666664,
+        0.08333333333333333,
+        0.125,
+        0.16666666666666666,
+        0.20833333333333334,
+        0.3333333333333333,
+        0.4166666666666667,
+        0.5833333333333334,
+        0.6666666666666666,
+        0.75,
+        0.8333333333333334,
+        0.9166666666666666,
+        3.7916666666666665,
+        3.8333333333333335,
+        3.875,
+        3.9166666666666665
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "method": "ffmpeg -threads 1 input, select original frame numbers, -vsync 0 -threads 1 PNG; see scratch dense.py",
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-dense-contact.png"
+    },
+    "keycaps": {
+      "frames": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        10,
+        14,
+        16,
+        18,
+        20,
+        22,
+        91,
+        92,
+        93,
+        94
+      ],
+      "timesSeconds": [
+        0.041666666666666664,
+        0.08333333333333333,
+        0.125,
+        0.16666666666666666,
+        0.20833333333333334,
+        0.3333333333333333,
+        0.4166666666666667,
+        0.5833333333333334,
+        0.6666666666666666,
+        0.75,
+        0.8333333333333334,
+        0.9166666666666666,
+        3.7916666666666665,
+        3.8333333333333335,
+        3.875,
+        3.9166666666666665
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "method": "ffmpeg -threads 1 input, select original frame numbers, -vsync 0 -threads 1 PNG; see scratch dense.py",
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-dense-contact.png"
+    },
+    "bubbles": {
+      "frames": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        10,
+        14,
+        16,
+        18,
+        20,
+        22,
+        91,
+        92,
+        93,
+        94
+      ],
+      "timesSeconds": [
+        0.041666666666666664,
+        0.08333333333333333,
+        0.125,
+        0.16666666666666666,
+        0.20833333333333334,
+        0.3333333333333333,
+        0.4166666666666667,
+        0.5833333333333334,
+        0.6666666666666666,
+        0.75,
+        0.8333333333333334,
+        0.9166666666666666,
+        3.7916666666666665,
+        3.8333333333333335,
+        3.875,
+        3.9166666666666665
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "method": "ffmpeg -threads 1 input, select original frame numbers, -vsync 0 -threads 1 PNG; see scratch dense.py",
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-dense-contact.png"
+    },
+    "elastic": {
+      "frames": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        10,
+        14,
+        16,
+        18,
+        20,
+        22,
+        91,
+        92,
+        93,
+        94
+      ],
+      "timesSeconds": [
+        0.041666666666666664,
+        0.08333333333333333,
+        0.125,
+        0.16666666666666666,
+        0.20833333333333334,
+        0.3333333333333333,
+        0.4166666666666667,
+        0.5833333333333334,
+        0.6666666666666666,
+        0.75,
+        0.8333333333333334,
+        0.9166666666666666,
+        3.7916666666666665,
+        3.8333333333333335,
+        3.875,
+        3.9166666666666665
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "method": "ffmpeg -threads 1 input, select original frame numbers, -vsync 0 -threads 1 PNG; see scratch dense.py",
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-dense-contact.png"
+    },
+    "hanging": {
+      "frames": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        10,
+        14,
+        16,
+        18,
+        20,
+        22,
+        91,
+        92,
+        93,
+        94
+      ],
+      "timesSeconds": [
+        0.041666666666666664,
+        0.08333333333333333,
+        0.125,
+        0.16666666666666666,
+        0.20833333333333334,
+        0.3333333333333333,
+        0.4166666666666667,
+        0.5833333333333334,
+        0.6666666666666666,
+        0.75,
+        0.8333333333333334,
+        0.9166666666666666,
+        3.7916666666666665,
+        3.8333333333333335,
+        3.875,
+        3.9166666666666665
+      ],
+      "sides": [
+        "before",
+        "after"
+      ],
+      "method": "ffmpeg -threads 1 input, select original frame numbers, -vsync 0 -threads 1 PNG; see scratch dense.py",
+      "contactSheet": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-dense-contact.png"
+    }
+  },
+  "inspectionFileSHA256": {
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-dense-contact.png": "d1b37dc06b45472636543d1c9df81ce81cbd7f1dbf5bba778c74bc77c81e980d",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-dense-contact.png": "659fea9d8348869d9aa371b7d59773c4d57986f73a3574d48ed2e0d2e78d42ae",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-contact.png": "8978556c75faf481caf35c31d503d4109822427c4fc1d7e96cde333bf784b021",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-contact.png": "5a08f020fd9332435ab4c60da3f578c7e9023c827359698016f221eeda4358a7",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-dense-contact.png": "f43f17131ef412dc7c10babba1603687a80b000dd7424359bcb51ad1bcb77c8f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-contact.png": "0e3a0e4f8d3f521e7af52ed33504d92dabd12c07d1a0573791085750c46733ee",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-contact.png": "3cea53832ddf02576f8ebf9de5fd4e8d193cd8659044cb8d89591567233b0338",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-contact.png": "59d698f5217b55c13641a3e6a90d809ae51d2ec7530533180db52552e7b9380a",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-contact.png": "2ab39d387392c7bfb3918a61daa12f7cda77a795e38356531aa06d1369fb5fa7",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-dense-contact.png": "eb7b2cdeec15606a631bcafe2b1a3e1db450624e12385ceb6f6905e2a805ebcf",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-contact.png": "a4861abb4158a64ad011dcebd31332988e7ec308ebd16a76bd87d78fa15d2dda",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-contact.png": "8272e2ee293c0f6e90cde8ba896e7e1269beec87b515325b65eb76960af85b08",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-dense-contact.png": "2cd072fa740b3ebf6a9e3075c4b0c141a4ab1041af8b51f0d47d3ee072e2eb89",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/01.png": "1f83d778db6ed8200dbba7099bcec41c3c906fd003a9af6ac0e9f49517be409b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/09.png": "c6045f4548804f89b8d11e0764869e4aa15fbfe995294cb0d5d07d0cdc7b1a44",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/02.png": "2a32ee82b98fb646ef3b254632a4e6dd8cf9e9cfc7df19b808de34355d0e48e9",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/05.png": "5e51391b1691ee7a5c907635b3d38d5d4ab9e65d6595d786c1eca778e9ab9285",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/08.png": "c54dba4ed79efcfd649523abffd95fc7406e128fd85b1e80d1fc8062384aa878",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/03.png": "7d1faf7dd1c7ba3853b2186ccb37f77cc5472d83eb61de380da82e7e4f817d51",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/07.png": "00158712112a5cf1cb12e3e8ac9edd8fb574301b5ac79312dfb0892c415313c2",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/04.png": "564c1daf4d285ebfded850d7c3c1425a53a395f54e781faf3b905d832e446670",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-after/06.png": "b22822016ffcb4aaae0bcdad66f573307b1ef1d27e1f4681813bf6327205a475",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/01.png": "8709b5497de93979e550f16f27f38268af5cf16517cd4928046c5fa9cdecbc0b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/09.png": "1c4116964b621aac71053365b8606dbc41c47a515685852b271d7344bc948db4",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/02.png": "c68595ccef822dcf89eb60d3abc08ca43e11f3f5b0ffd4e9696b3f3acf94d10c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/05.png": "1a56312108d2e2af7141513064bf1d2fece6eb034f3e890a10dc1030b865187d",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/08.png": "1f1b4d27afedb924b42c9b374cf08de4c6ab20e80c5d31ae4faf65c67120e351",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/03.png": "4e0b93145c8eda2ec5916566ab2362949f68c39b95dd084bada23a444a8480f7",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/07.png": "ac24ca0f29f207eb2b858346920316714a1b05e905d1222f89883c3def7c58a9",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/04.png": "cbefa8807ba3b5bdd41357a401551449348b9a3b4cc350255b4dde4e59d0c588",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before/06.png": "551f73ffae4b98d3f35e7c4aec9dadfb4ce117d1c75c07cbd8b33a38341e342e",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/01.png": "74812209d599092a4721f071303ab145744eb7f3293b5b16a2c708e15c3230e0",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/09.png": "ae458edac101f0ff3a7d9c269909bffe3a36883f5a743f02d095d7ca1ff76bcc",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/02.png": "7787eb31792b9b27100a8fc2a9ee126e14929bb4240c567e4c0569c82a20c4ec",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/05.png": "4edb140fa476fd9c9734997292caf3f79d5565f77358357ade6a3771f7fdbd9b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/08.png": "50e66c6d3f9529c40eca2f79b6a637186b8d43243cb99dbed4dbc420fb6e7e84",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/03.png": "21ca1c6cee73c5fa8bf73f0d998b2f3834b23f0bc4626f9de7008600e735a67d",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/07.png": "765438c1748f469108c71f7275f7ef02c88ca436e2838300e3939e229e350ea6",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/04.png": "f71b7717e028a64b9e9960906d2e247ea8467c401d91fd5818cad9e421fc68f3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after/06.png": "b7613ae7336c3567bcab58c09741af18eadd3d11fbfd79e932f60c49de1c2302",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/01.png": "3e6b909525d2aad457c646943c1d8c0bb1202125bb4dd47ead6519707b23ee46",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/09.png": "db6a04fa939ba9b9a778edeee9a5537d33786431c3129ac19991445c356bfae5",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/02.png": "ae985b5403b749d7307c844db251dd605b22033e7cc1b2fdadb709430cf8a911",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/05.png": "d8b26e141f489a267efc9eefea1e3f8d7f0f62c8490a59313df6885c23b7758c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/08.png": "b0e22c9ac39e4b65fb50f7bc993d7b14dc42e5e09633d62f149c6cafe16f5a8d",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/03.png": "b488eea64e044ff70f65b61f7a30c3a7bef5da6fd29b2fe33d7f7e08e9c87fda",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/07.png": "cde020aaf7764a43358850232fb179e431b13ebe1f23a5b9eea7154cf3aeb725",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/04.png": "cfe2be19f2f5e4eed455b31bfe9d36d72e86b9b1cdf0e26c4af882630e954863",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before/06.png": "c85b2ca9ce7cc47c73bcfa054e9392327fd382c0c494e0529e50c16053983858",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/01.png": "eebe0f94e8bca80dafe7797001bc4bef48f0404b8c351406bde11fe9eebf05a5",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/09.png": "d22914c78b875c7ebb35daefb9677fb0135a77619f50a294e4542de7539df7a8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/15.png": "23c516bf17ad4bc96ebb7d93bff3c502777c71a1d87de8d6fd1672996d950a33",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/02.png": "88b5be43dc342a3542de594c2242ac70a6391852f2a166c2daf1daf12385d40d",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/05.png": "952e6204d2e89ae73290833ce2f1bd4b5954b756b5f561f7d55d00ddf0f454f8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/08.png": "a4d05b5e97e2a4f4ac2f995da1393892635eb4ad12b503e28e31721606351c79",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/10.png": "c8c2393719bc58d2bd07e6c549506bc9abd33be2009e490be0ced0f3abce4848",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/03.png": "ecc463eabd0feeeba5a30c5b14e2f901f1fa9f77d6f8dba74453ddf36b06abea",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/07.png": "487ba2880ba0a4483f269c3710b7c4324f709887fae2b388c4a0dab711553f1b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/04.png": "349a67ee498d51abb4b7a63050c2d5ecb01fe824e6b009a1a1752db7e2c76f86",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/14.png": "2f753f221fcead863f56a8a10d987e6b7465896de1b40b56ba2ed72b97543394",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/12.png": "babbd11224068826572b87981da2792308d4473de1efe31d8ea36b1035d0b970",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/11.png": "2746603f03e967b0af43ad657af87f3d71c9617a7f2fb5a1afa4d18eb2875efd",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/13.png": "9261d2e610ed708981916da43c0bbed1ffc09485061d3be9612dd3082878e7e0",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/06.png": "69e82d0d7cd22b8905ba1dfe6d35d1880331de9669d64c20fd6306661f36df9d",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before-dense/16.png": "b3d23845417c64e4fbfcf0c8f19eae005a6253482f428d931d9d5c2a8f3c16e4",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/01.png": "77b41bfbef9aa9c1ac73437eb1cb371d33a6e6dc0b687b64a882e56dd9b32225",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/09.png": "8489a6f289a94ecbb139f42e419c382796dc7f9725cb95a05273c0b31c093c01",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/15.png": "720c071089c4a06b345ea840bfccb416524a58d9bc46a8eb5cb7e831d7059062",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/02.png": "9638436de333aedfe0c8d79790aef81bf1b59ace4bdead43be7f0550e46694ef",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/05.png": "70613e6ff203063e35877bd6688c0af1d11f10b1aec8a1d4abbccacc503ee543",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/08.png": "3b8f38456a313189a65ca81f73696761dd25a761db8375e44cd854b42650cc22",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/10.png": "c5ff73128c556fddfa335dd13e085084cc3dc7a0aeb27553de64ccca1fb84e4e",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/03.png": "06b9088ee63306f759131e3fcef06f9fd64a3cb6f0eef0441eb5d78e3b0380a8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/07.png": "b20527bb7230323c3b616712958ad9597d0e22898288f08fd127b2e542264d55",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/04.png": "97a714bea1fc0ff27fc758465472c29a0893dd6705fa5f413947759f8fd49f13",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/14.png": "24fc9d772e200cc6848301f08645fffff6f6892a93d854b3eba3837b10ffe8e1",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/12.png": "3a9a5e8b7c9958688cf3ba30c2c026c69df72e1acc589a4f2261e5d53b00f6d6",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/11.png": "85bfc2a06272157d4ef53e9e3ddc509978800504c9da7116a67b513c0dfe8d6b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/13.png": "f035f78795eea9e4704702a9b1dfeb72cef700ce5270a56d409ebdaa3f896c28",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/06.png": "3de6af3f3f972c76933671c95eb9cfd9d7c85ba8f3957432c0e7802ea94fbcc8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-after-dense/16.png": "b1de4cc95112fc0b71520938b9da4f543b6ab011469da9c38af599b708ecbf25",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/01.png": "21ba855cd4c55d14f9ad7e2144b2dff4c2557e24dcae6441c8c561e18e809785",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/09.png": "6d83acead7fa14b2432f3f85813d926d1969cda2e015ed9db38213459b282f03",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/02.png": "6df18b514c2d5e2e75990dff23f19d0707855532076090318dbb53b0b97ad0a2",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/05.png": "cc6d332502c141da83ae484b46bda542545032bf74712fc22a15e1a039db82c7",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/08.png": "4329101fa08bb834abd293a128ea4b93ae9c8b15a995ad13fdaf635ea3b2d5f9",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/03.png": "7c38d0e06725c489c7a7e455e10863d73c45e5c0b947879169939c90a8b04855",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/07.png": "cee5f3f0dbf135eb1568bb6ac39409bf7c50fa866d6ebb1856b777d1e0f5f8b9",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/04.png": "fec3f6a9af4e14f74b61b55b811b091e0a3547eb57066d80044c82058fe88812",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-after/06.png": "d6c89d0cdcc2864eb46450d271b95d6f048b50373b752d5f23d6afa5c32bcd0a",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/01.png": "b9b82af9ca8fdbdd37fb91cdc62c4d2d7324c9ceb6fd2cdd9e542d4b85209414",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/09.png": "5c3b1ef0140131795935106cac0e3861f36b940d905d29c6e4631903c6f07816",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/02.png": "9906f99152e8ec133e0afe53c610642be6b5c91dd2bf06c90c9dfe725ac15ada",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/05.png": "9abf656c40517a4e2500e2862c83bf1280bda1f8529c74f163c68b894ed2271b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/08.png": "4bc92c4703a8f9ad4b23cb674b74ca743837fa89f8d5b353028223d2c35366cd",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/03.png": "5ab248d7e16f8f311a0e61f756159b7729df3af76f81e53c1c8a58ef5c0db3d3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/07.png": "746250d3565d5e3b40ef6d3c8ea0ff6daee24b575f6509c2f14268a3fb2f4b74",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/04.png": "3049a1c9bea2ea29e2f79ac518957db617d73d2574ef655e684e0e4b6c28171e",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after/06.png": "4aac70258987cef2c4e536bd99b23f17baca3b52b126f216d538d2290e3a2b82",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/01.png": "f26ec59e19f65c2992d9844ae1aec98b0b9937f6391797071309e79ddb680cce",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/09.png": "ebb2391dabd04287e0271320874bce0f2fcf2ae08b486f50b8553c172dbc2a43",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/15.png": "e6ef223b207fe15a6ac0c63288bccc8a31f9e2bf482256ac103dc91a14771a78",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/02.png": "bfc457a18a2e89713c2894c8dc10106ca9409a31e62c83cf483965f6742b723c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/05.png": "9fc4a32669cd1bd7eb193d5ef67c103b82624b165a19594e748859f451c2583a",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/08.png": "bcdc999e0dacb995ebfdd1be7edc5589faa71e6a45db45b11cb9599451b36d14",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/10.png": "de6e7c6bf81fc9d8fcaedd82b76d5c5535ece4866475fe23528f3566207f3970",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/03.png": "9cdc49ac0115ac4356ab6adca89d93957ab9884213f895466eafea614a123bac",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/07.png": "21ee713b186fe62cbd1344d91f0ce655cbfb6097188e08859c2ac6e0e5b170af",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/04.png": "4a6241d80ffbd5252a4fab78573547fc95aca14d424cad44073297da6d111c85",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/14.png": "49682a146def958ab26a052c196c0f562ef75936c645e1490837973807fc92db",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/12.png": "3f3afecfa841e33582cd1f93b2249ab7c12c7cc295753f762ba72b0a16a9eedd",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/11.png": "6ddf195181602ff30d1e1e25c6a151bde939c2aba6bd8067c923b7b076d93e99",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/13.png": "8abc2c3675ab4e5898fd8e9aeaa47580b7a3d614444b714e6f80eb2fa940e876",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/06.png": "b27d9c72d981e63340475326ae9de4d8058a446dbae6d192c072312347b52536",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after-dense/16.png": "ab7d46dc6e5601009633d2f9612b66b677d51f8ef50922a925e9ac0060a90c38",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/01.png": "68df019edd1c5d93233d85f6af01c71be5a26e701e1e9951e7fe44a4ed18b56d",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/09.png": "5afd900e5faa7bc42b62c087df0fce2a79a32d0eae3268d5eacb71f931913762",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/02.png": "bbef7a86cfbabee9033d8c46cbab8479f9f3ee02bc8d21d9b171357b75c504c3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/05.png": "710d4b7caf465235dbdc2a7d4b0095c17a0f824ecfa17953b53fd2b76d7fdbbc",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/08.png": "5a1f8e2aff2a775c1e669915dbe6cb02481cfce25af512ffcabba89af9f3b2bb",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/03.png": "db22de9e4e22fe2aebe5b78b8106cbe98e965c335d5264ab939bb2ad648a4c7f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/07.png": "7989b12e21ba39dce22977b61c123fdea743961d83e628be21acae7fd8f05ec6",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/04.png": "e0a771a381401961d0092dec364af30aef3907e651e3279c2bb81cb9d92bba53",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-before/06.png": "1c879732009f41212013bd94ee0b3b020a5b070cbc013a1b2fe4e9d70aaa900b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/01.png": "c6456df57db321ce6a8b4aac22563973deca9b61b62c7c5c1fba3bbfc3d83313",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/09.png": "9d9e7594a50827393294bfd655b2468c8136f50f2f00ba475c1af5505ca5b1fa",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/02.png": "24553ea25b73d0effe5e926a49a1e7aa1e061e18393795fa13fc0273d075ec32",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/05.png": "faa6a801d3e3d29d8fc6a074f007f15f2b208765d22f2b42d14e3650a6450d9f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/08.png": "4515301a4eab40eb4e8d2a63c154551abf9c723a74495e3cd1a1dd63ee37d1cb",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/03.png": "022a7d69af7de10626cfc73134fb6c386b392cd4a5bb364fd71b6eecb0368dfa",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/07.png": "154d7e1148818171b84116254b79121ebbbf6159acc294dc3d381f13bd498171",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/04.png": "bd0876e5ae8ed95e8bfea207a092dbfd03aaa91365c3a2d144fbc31a415a0644",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-stickerBomb-before/06.png": "8a48fc66a411141123851554c5b565053b2fdca851182303903853815f16063a",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/01.png": "624dd60719655928c794ebf25154474434f01725e9867ad11960936e5d251aa8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/09.png": "a752a8d8868aad19d2ca9a7cb8e5b0665f92862946633e08c234e268a710fa97",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/02.png": "62758f9a6b70e57b6e9e84fc8ca0e5010b6c42b589fa05225d6e9414086c2883",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/05.png": "d121de7bac84a05e21f98995d4575c3db59c2dde85ee0cadef581b3ad9c1c264",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/08.png": "97a0f0bcffc0c12481ce90f4c244c813e201d488f12d3b22fc0ef91c885faabf",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/03.png": "9e108947e1af6afd2765305dba0e0bedb0a66a87949e44a28b59737049fe0659",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/07.png": "fbb21bd6eb7eb611b76bfb616d7c333fd4a43c2c8e05dec21d943a4121934d28",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/04.png": "f285a615bcb39e3d994180f3acbb71b0b632da9bceba97f7057c009edb4e5cf8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before/06.png": "d61d3f4e993d4743208004ca101726005791d010b10190b1d65f3ba5c056dd7b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/01.png": "7118a38a9ac18932c4f2547bc230fb44657bc846d72897c10ef065359136b0c1",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/09.png": "84efce45dc4b9282d51d9f4ea35d526a1862fa7ab17128a31505bd0bed24cbe3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/15.png": "d4e01221cb5a220e29772bc1b1ee0658287479b42c728047105140cf02b83876",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/02.png": "366bb57b6e6735ac8509e392388781ae09111bfd77c69f72583d66b762b30eff",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/05.png": "093a89839246e559d881cddb113277938efce3a615c14dd9013759537778f0f6",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/08.png": "5d9b6fd50d7f14ea14605e5e1d59fa96634ed1399a4c1d2b8467c53a59b7ab03",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/10.png": "6f81c28efd257ee435d006ffecfac5507c0cfc1df57617d9f45324aa903a437f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/03.png": "6a0aabe6f63245109872ac64661cdcfcaea160ae53d5c004947d01c7f40e9758",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/07.png": "327c8f2efa454efda40727f2911455ab9f03a27b48df0dd176f43a11b43c6d88",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/04.png": "63c7dca2af18f137cedb2ba1b68bfdd3a7d9b3a96f607f0c24daf19758e8ea07",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/14.png": "186dc95e0281feaf8d336aae7e3552f99e98d690d374cfb6b24e43db8688780e",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/12.png": "b91f5cf39bca053a32d12bf895608f170342f0c7ef2302d0ce8dfd2e064b1efa",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/11.png": "38981c1b5487b0866d5b14773b457160840407a656b2047cb1732a06d1e382a3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/13.png": "7bea4ffa01aa884f22afee0e25bc0285c2d453e97385e69cfb9ccf0e6732da31",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/06.png": "f8fc65276222840f1277560f48de368384639b9288007c36cb35e1888a4d97cc",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after-dense/16.png": "c9e848f9b9d9f8bea7b0a370ea58975a558c6f8e14b946a6bd0f1972989bc6e4",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/01.png": "4240586eb297822abdbba5cd9344adc7083c4795c67025b6889b34e1a39791e5",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/09.png": "6c6525901ce1c757ccf02a2ef965b8704a22044306050ba4ff7d49891c346fc8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/15.png": "0a4f33d6385c46607a02bbbdaa5c56393ab0a0670d879bb8cd102bfd83905d6f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/02.png": "c9c124f0ef0aef27787da95f4e71c2616d1309ce1c73a73bacf76da0e18cf349",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/05.png": "dd9b9f887588722291826923cc22de4ef192a835e2c10e64d6ce3e5c71bcf9ae",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/08.png": "fc91a9d576ce1480725b986e7f0763823afe6460a42d875a217393a6fe1884d7",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/10.png": "0a52f4920f729bfb87aff3059144307b978a25a830c6f87a33fd7d20f603c7c0",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/03.png": "4ea0a2a61b7118f77eb3d0e439ad790d48a50c21fa3f053a4e14d83360c41a66",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/07.png": "69164f728f7d5206108cfbabfd9c1574442d3c19db3ba25735a1ed3b2ea9f853",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/04.png": "10a7f50177c2949935b3f60092323d976bdd82eae1e701b4a1ce89ab332dbe76",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/14.png": "f089cec7cc2d51c6df819b89d07e9e360eb093ed49c23f21dc49a157cab14b2e",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/12.png": "00760a9bb3481c43b40c1e06b3cd14a046f0dff9a389b789f22d1aad5ac866c8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/11.png": "1ab205ebc316f0e11b113644378e71ebf61f182e31a6456f641e88d91daf3abb",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/13.png": "aa1574b6f8e42230b0b357c97b499612cd6b945bfeb7b284be3513bfd572aab3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/06.png": "c61a8c08c65c3ad63e0631f16eccac28b5854f1002877e332bdc4148ce7b301f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-before-dense/16.png": "861a2a611c27d21824b6380b07a9a0efeecad1a6ecde02bec97122a65b32850b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/01.png": "8888d0d1b134504957affac01a2fb46a5a597eceae86598f35c32e694e185f0c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/09.png": "ce3eeabc4d9f824dd17f3a5f45c691dc9035237be2ffc27a1b6eb0a2f585e5b2",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/15.png": "88dd96afcc44e3f0a8967b809d457ae1d664b06984f967841b348a9cbd138afe",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/02.png": "54ada850bd5400dd5cea2d1d5365dd2c11a4d1756f00007887196d73a11a71ff",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/05.png": "540dac3f1a7ac90df9264abcd135ba5f7895328731a5e7ce7af3ed576f5bffa0",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/08.png": "4f37653ae6274ace72ece9735b77370733044db93e29e49ce9e8989c1c7e1c03",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/10.png": "6db475ad29dd0010f2e4cc69df688447fe416ebfb622c9746b2deee754196672",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/03.png": "074dc1e256fd47537f1463a34686d83678fddd6061c186f5b1910f5ae718f3c4",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/07.png": "9dee3969dbabb1d9e0f87edab4bee19021e38167544e65e9e74495e83abfeb18",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/04.png": "bbd4313ee9f07f84d8341fb75e974b802128c9fd52143cbc7ed37224a8976411",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/14.png": "6d7188f8a6d9d92b14eddc47e17dfa1d18be2e4fa1dbaec99c792ec7447effa2",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/12.png": "332b9488045933916535acf8f4dd97753442bc246e7fbc730c2924fdce612311",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/11.png": "5e51d762aad227336e2557cb4c6907c0f6f2c4bb0cfe9dca443449e370f0cc11",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/13.png": "457d4ed85536e87d386aa034cd331908b68eb20308c9e513279ae7b1dbd54eda",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/06.png": "d281ac1e25775aefcf05e52858d94c22fef5f7bab6057749f9f6d0ebe51fdea2",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-before-dense/16.png": "58e87d6c2acce53a2f9252519f75dd119f2a2ddc96f722ee61f506ac1fd90df1",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/01.png": "d494e05da66be65b90dd8a8f8df2c870594c55d98ee4a208c58ec84f23ddd711",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/09.png": "c51caca2280719c8bc22e2cf170ba1c2e34a7f9cc6ab8d105af8da699ecc62d0",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/15.png": "a85c41653a98e8bcd0d380c7ae93b18f2ebe15be040a1ae03950b8908f245126",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/02.png": "11775e6b86db9763a073b41be752d6b3aba6847ac7bf0a5a39d035ea7ad49b37",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/05.png": "de13ec30c663235d69dec41188cbe325a9df2286acecb70890218dcc3fa3c9e3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/08.png": "57735efea050fc649d10b18c3818a83b835fcc2202aaf64da229e7618bc241ec",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/10.png": "f0f8ed5c51f929d0e31dc30a932af7fcab9a5bceb35bc16ab34eba9aaf749134",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/03.png": "9bbd26b375db3ada56af5d8488875658ee5205d4858d92ed6d1a3a49dcfe8b43",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/07.png": "cac52c811a61a60a63df789ac3f92c72584d8ec7de5459cd45d1986ca2c5e90b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/04.png": "5587f189ce1f4eb9252af048d6edaf35fa66897e9728e0fda5a77cd4ba03b0c3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/14.png": "76d51bef1bb9a3602d3551d6f313894cbeacf1ffc85c59a0b96920062239ba69",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/12.png": "bd7fd4226c0844c6c281e04156f2d90249c5cd231958a4f8465119e5a260f36e",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/11.png": "627a139356fdf9c9a7141c220ebcb0116c9cc3205a38741a219f398d75079c32",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/13.png": "751974fe6339152975d7fcd76dcbe49dcb7f06652170cddd0b57e49c13898c68",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/06.png": "7fc4408aee1977a2e874b1cc5fb78fc363d60a01e711cc4b18fc7f7c94467997",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before-dense/16.png": "5e9e3368aa5728ba18b77a26b377334b963eb5167ba249964dbcd4cc1f5b8140",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/01.png": "0d28694a595205c97b98d67e2ae82ced9317eca103da06e5a1841040041f8fa8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/09.png": "2ed498ffac0fc9c68c22474ce25993d34f56c1cae156c20e609c421bfff424ef",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/02.png": "b389750f13e6188fd8907a69636ef6c7fd8aa679d9512df2c479344648f17729",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/05.png": "f03bf4b072d37970087d084ad92615915f88357a5d89278e84d1dec7ef23a985",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/08.png": "c830db34282e443081d7ba46573cdfb9f20574de547c5d0752ad270474f9292f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/03.png": "ddf75308556640aabd675b182ccd7b947e90b01dd05e9b960299c0d32d1686f4",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/07.png": "70738d5480ffaa5e8162983ce66dfd68fd28040f9c4387ad5ab72b9d8f721796",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/04.png": "6d1cad9fc52d2f48ab4d34a08f986ac4a593ad648cc753e99e3c43a178c6cf56",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-neon-before/06.png": "077ca463a3f9972a8538718c28ee52abdde31b9613351b82f09f3211aed7bd29",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/01.png": "a1b8418da3057fbced5a742899156e9c2e52e88443070c58042733cc041d0c47",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/09.png": "c68babf02e554a585c7cc5313f9d9a2b4e03462e82453b7b2afda7f21d5d46d3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/15.png": "79300b010518f2b48e0efecbce9167eda22a04af520981552739707b66da8084",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/02.png": "54744c7e71a8d30803883ffe1c48cb883eefd1745dbeef7ea0ea9e958430359c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/05.png": "ba9fe5ad039198bc748b3a42a7d2ae4d8023cea9706052421836559c9cd2c3de",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/08.png": "15662eb02b5860fe627c5859165c9f4ce89630b6b8283055e5de3a8bf3cc57e6",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/10.png": "4eae77facbc968fe0f6c7a2139d8d75d0d70f5f72741cf8e5c236cbc26b4474b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/03.png": "2e67dbd6c4fa55105c139f85307e71a38c9b9900a6b66560eff6a85f2409b996",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/07.png": "2757fcade6fd84975028f734c2a5965e8b075e00f703206bedaf1896df9078af",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/04.png": "b8fbfeb1299e2999ee574df8732ba6303309a1a5eff9ea39d3a4ff1bfec79720",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/14.png": "9c238b332141e064dbc0c275bbc1c8b409fbbe9274326de119745eada41ce218",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/12.png": "deb8fe9b4926267dec7953e769c998764e1776f65658bcf40cb83b39b2eb16b4",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/11.png": "536fa2c9ef094082a1ce64c4ef14cc275f90ef85661b28cd95637b0baa26d846",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/13.png": "2d663b61a40e0f42bd18297826c4a84e09d78ebee70b16e7785ab1cee57ebb90",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/06.png": "f710ec32dc4c913e1b628b18abfcd28a40c863dcb2813d9594b840bdf8165216",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-elastic-after-dense/16.png": "8baaebb6403ae3bf1dd8847a5aba70deb7f6530a964e58adc7bc77b867fa20e9",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/01.png": "c2dd9900edd3a672e41e63fa20eb8d26081eabd1a310220604f040d383f89e80",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/09.png": "3c664864e220d1fa929c2031212044f3bcdea68a852d0a30356ac8d3e4f1a119",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/02.png": "21c439244eb560f15408d7ebd478726a6b94f309f7b17867d4135d5809f525c9",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/05.png": "d53041cc91c0337a6268e29f53f6137cced32d11317bf1d76234832688c98773",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/08.png": "2453e5b78ca2845a7071c0de62cfe13789ad3922801bc71475b58cc622436896",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/03.png": "50918a896e20cdf43acff04dc9a8ed3cb3cf8f95acd4a7877132491909806951",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/07.png": "21fccc22e91c81005757aa865add88fbdeb09c23a7218dfd1c8866789207f9e6",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/04.png": "69a76ae31b8d0c6446b4adb9b90316332833d0f73a4bd04fdce5336ebd6872bb",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-hanging-after/06.png": "558562d6c9a90d4090bff4a3c6ae3815d2c7ba10180eb2e46ee046e69b51420f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/01.png": "63172832011ca8e1f1eb3f16bc66518ea5403e24b9e8096831da11f097049c43",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/09.png": "27bfcc41ecc5e882474ba62d0d45b2508874f44d84d97d4f333568bd4088adf8",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/02.png": "e81f3f62a00baf8a97d9c6ff4ba7398bbdb6d87622bbfd9cdee017e8c4e475b2",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/05.png": "8ae7632ff65def0bd5141110e5981caa90180b0f4b3fd8e5f08287718dce821b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/08.png": "922244605b9e854e554c30b809d6c712de91a209686cf6bd36d17bdba711f291",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/03.png": "b5e8193ec506c579b6fd2fd8b818c25696636d6f0d482cf2c737963810c77f36",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/07.png": "cdabda76889e742e8a19eaf2892d22a7e1d4662623694145fa6801803ec16f2a",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/04.png": "f057a007a267d4120022de123e60782188097a36dfb2320f260ddf6fe7c68d1c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-after/06.png": "499925aca4bda83a4d789d7b73facb8ffdf2c85ac42bcad1ef70c96787ee3e21",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/01.png": "ba6e2103946ac27afb9a64872b3a1f623b9d8dbb01b90926f6e5b5a31affb11a",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/09.png": "5c1c76f8c0b873f3e11cd0a6a60d74e10bb9afa52703fe4188704d15db80b324",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/02.png": "76c2c69eceffb702f69e2e88c9f1a913b587d68526bf42c722bea2848d404eca",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/05.png": "998f71ade5fa1fe5bf76f738f9e1d730bc74cbfa414cdfc2708cad9d9226dd52",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/08.png": "01102327a6cd7c0d63ef47aec59c3c989cc8530401f2845dfa90664725bef036",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/03.png": "f939c209aeb8cbaa135a8ba8261d90dea3f6c454896fe669aa32e1dcebbf5e3e",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/07.png": "6116640caaaf0797482155a83930fde3fc315417a1506cc1e864e7e55766febf",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/04.png": "2d6bb85cdfbe2731498c58a74377ab59c92200819e4913ecf7a4bd41c57d7fa6",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bubbles-before/06.png": "2fa1339684f3893e542e06d1f883a9c62e66f5a83a23bbb804091ccfb4954cbc",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/01.png": "71097a08121c5b37696389acd620cf03ebb981f330ace0a129de468557b14998",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/09.png": "5da5dd4fc32404f9994a592045d3ad6834f6e73290296354f23cbdf0060c268c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/02.png": "32b784b2d1cb4eee28c2bae925959d130cb440a91385a413988e1ab42b272c25",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/05.png": "dcd016f35e108f2deddb1d85f4678024bb9dbcc21f7f4e08f80cf95c6e334ead",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/08.png": "a61a28e6647a0e3b35c1f7f126fffbd9c9b5d38c209c5b7eefd6d7e017b96ba4",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/03.png": "f4f5847f5762721e9525a696193eea57f23900c14f800427cf1088546ad18ca9",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/07.png": "b18d913d89276fc81842afd2c512dee89a212fe39b34ddb96359fea9d00ef02b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/04.png": "d2dbda8fdaad231c4260e8d6f15bd5f5a1051156b69a32e6d6ea42272608563a",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-rain-before/06.png": "6741b01dc5dd1b7f4ab1cbcc8846f6d28b46c0c0cc245a5bf47145538739cccd",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/01.png": "4ffc9b6807e732242ede1640c984bd22b925a07ad6bcda4e325acda08f64bc15",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/09.png": "1bd3093eb1fa2698a27f664dd6da123b9de45a685b2e3b52c1c0c9511168584b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/02.png": "f11fe528bada2729ce2f7e4138fef800b4dfd0d3a06578d9faee17643a64849b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/05.png": "0476d4dba120328c9fa74d94b1e185e8bc0007ebaebed2bd858bf8ad44bd06d3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/08.png": "63d59dfd7b08828efe416ec3040e94cc16f7e4dbaad3f548c36e75bec7f7e8a6",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/03.png": "d0e1896597910ace40f66ad47962f3a78c8eafb883f526cae07c7a4cf77f7d64",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/07.png": "3c4e08b59ae0d5781ee434f09e04f5f22b2c233ed284569f781114018c4857ff",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/04.png": "b2635c598e28417ce2e007a6a07ed3f353091cdac6e2fc34365684b265129445",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after/06.png": "96b720be37627462398adc928f48f40fe32c099da14762072b7df6d14f79047c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/01.png": "94474f11423d2e0098474022ca8a7506c8bc934b5c6e84ba965e64a5ede0dbaa",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/09.png": "f10588236bf36f1b562b3481532947a4e61fb65271185e0a17c9d8fe93fad9af",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/02.png": "8660cba72601137a90a41afbd4a5db3a26c8576934e79a79f4d781621d49652b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/05.png": "9fb2eed50f676763714dd85e2ae7be2410c95b9578e3ac162f3ab849055fdd57",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/08.png": "f69cf7e1df38b2d66dbce6bb59a4c1e5194f8de1a9a9c0e524b4dc78a9c34350",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/03.png": "11c6e463f783be3a119ceca02a2c340c00b5f42d5b161256185fd2137e6c383f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/07.png": "53fef7f92999e8d3c13899e888aeac7b8e53a5380e6a69b008f2c9cf90bec1f1",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/04.png": "05f348838f7c27092c246db365d3076255a02e511348119fc56ee4e15ba1e67f",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-bounceLine-after/06.png": "075f2cabea607b3721a7d6ca0760ecf86a1a1ba793a0e29741d4729e13bc8e21",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/01.png": "45a5481a734d49c4f0e0bc6de7d98314f9838f6888b5fcbef0e6177fd5221d17",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/09.png": "2b24692113da4d79da26974da71d26d27f8be4a96038e714847e507b6d95b3b1",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/15.png": "d8bd714330e076e9b67e2f6958788ca96a8d2fe9b0424ca80a7c3ff0f1220156",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/02.png": "85f2ecacfbf40f855e38bcc38835a8584916d83c47338b5c951e63a7b3b1e1af",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/05.png": "efaa4e29554e08ac458f18347cbc02a5808fe69d2ac2333056ff5821d0774c00",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/08.png": "aa1a2996494542c428871b5525ece9acbe8deb738193f80aeb83174288f08ef1",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/10.png": "cb531c80d004867acc7d797dca673da34edec5e7fe76582613532afd2eda7cf3",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/03.png": "95dcc75e2e8db0d90cdd090a90e820ea815506f995531c2f15499d85489faa5d",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/07.png": "65e7b37d07be8c9c56c35e68686f37f2a9d062fd33991e2c16a542a599350d16",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/04.png": "292df7861b7608f02f85dc7f18d87a2b9329bae6175b6d2a60a0fc7ecb860975",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/14.png": "2b4631c59c55168538bc8ba039ba2e9df7709706d0f0ff636676f71d202cbc22",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/12.png": "fb2dd06d770bb53dbd74a886cd9acd1d8d89d6a13260e5acf6026c39aa33d2e7",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/11.png": "412e7d6cde8dd363a5e5cda632d6b1e42e080ea60d6ffa54676b7040ee140a62",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/13.png": "72200e6111e31bec778c1170331836b697aafe82aa24f8fc9d9a269df1739618",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/06.png": "975455bd0a60d1bae2842006e6ba69307612adca3143d9f800372a6f616c30ae",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-before-dense/16.png": "ced4de230dbf110293a3b5e89be4626f2830c22d8e11826708ac0e074bd2eb03",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/01.png": "f8bfb14e138ca7f4966259c53447ba08813492525b9f44e924fcedcabb269fd9",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/09.png": "a9395e653ba6eebc97825ffa4c2dfb416043bb053c5911b8cbd5a9df4ee56423",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/15.png": "98bd7e58dd5698ec0de8a86943b38ffe6dbededa2ed6dcc6c1b49210bf2efadb",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/02.png": "3d12faf2602058f118895f6a9f3159cfd19f67d20621629ab773ac2905adbac0",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/05.png": "5277b146faae68360cc192bdb7afa69a1864838d485b02302bbfe477f0e12a43",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/08.png": "b7afc741f9f5816cec068e82b2ff0b5b437067ce6dfe1d75c14c7ed19025374a",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/10.png": "fd04de3a4dcb97d439778b01900c31746b3094a86fce6ec2dc7d453c6035533c",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/03.png": "68c75f0bf087275ed3c73558acc153426cc1e4b01949b16348df58ac62f4d43e",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/07.png": "29f0a23e19a7ea4f18e810deea26faf6273319c6d259df11f2f50280eb97d3dc",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/04.png": "e4de91f0883a7077dcafe78c85151a352ece327f0bf2aab3ef4f4e41d292930b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/14.png": "5480640feddc9b5702e4129972aacbb7602e65e57125bca445e5596ad3434a7b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/12.png": "801c6e9ebb56ab1b160fa27d2679e2be50823b0cae079124711477eb9ca75bd1",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/11.png": "7750e590845302ec6893e8d64e9cafb15cbbadccc6ffd56548f751f59770c1e4",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/13.png": "97be9ae485c05cea80a9b28c7258a50c7f1f9a45f45ca884eea77c35cbeb4c73",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/06.png": "5baa0bef62640edefd2d991605cd60646f7c0d3379284ef5dcb4a6c1625b443b",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-a/b25-keycaps-after-dense/16.png": "b4060076becc4d492f8b5c0bcdefbd78b9b2b86539ae9f0279cd7c276cee5777"
+  },
+  "allMP4HashesMatchManifest": true,
+  "allNativeKeyImageHashesMatchManifest": true,
+  "disposition": {
+    "confirmedBlockingDefects": [],
+    "visualConcerns": [
+      "hanging: after f48 plate edges overlap; all four glyphs remain readable in inspected full frame",
+      "elastic: original single descending axis becomes two separately attached rows; exact single-axis preservation cannot be signed off by this review"
+    ],
+    "limits": [
+      "sampled frames, not continuous playback or all-time safety proof",
+      "neon declared rendering change retained as visible difference",
+      "rain background grid exempt; AVOID-018 masking excluded"
+    ]
+  }
+}

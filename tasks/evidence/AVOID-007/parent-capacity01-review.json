@@ -1,0 +1,77 @@
+{
+  "reviewedAt": "2026-10-22T08:17:59.272149+00:00",
+  "parentCodeAndTestReview": true,
+  "reports": [
+    {
+      "name": "cache06",
+      "reportSHA256": "2e9c39019e993494c860525d340df0c3310b6c195fd9537178024377d42ee626",
+      "verifiedSnapshotPins": 102,
+      "cases": 25,
+      "invalidations": 30,
+      "opaque": 8,
+      "actualProductNegatives": 3,
+      "evictions": 7,
+      "scope": "historical corrected generation/dot-stencil cache; superseded by pending structural storage change"
+    },
+    {
+      "name": "perf-local-pool02",
+      "reportSHA256": "ef7d6d63a53e2cf60045f446a4d243ebca928fdf4c52e8a9fa631838a81dbe96",
+      "verifiedSnapshotPins": 103,
+      "comparisons": [
+        {
+          "n": 25,
+          "inputIdentical": true,
+          "planningFactor": 1.5167630057286665,
+          "additionalRenderMs": -0.5,
+          "planningLimit": 2,
+          "renderLimitMs": 3
+        }
+      ],
+      "scope": "25-cut non-formal diagnostic, not contract success"
+    },
+    {
+      "name": "capacity01",
+      "reportSHA256": "0dfa6370232aa7b1fb3e91396adda35df43b1861e5befe0a0641caf182f7dfdf",
+      "verifiedSnapshotPins": 103,
+      "coldCache": {
+        "revision": 5,
+        "contexts": 279,
+        "entries": 279,
+        "nodes": 7976,
+        "hits": 0,
+        "misses": 320,
+        "bypasses": 0,
+        "evictions": 41,
+        "serializedBytes": 8388196,
+        "keyBytes": 2137866,
+        "payloadBytes": 874926,
+        "bookkeepingReserved": 5358640,
+        "commonSnapshotBytes": 16764,
+        "maxSerializedBytes": 8388608,
+        "maxContexts": 1024,
+        "maxEntries": 4096
+      },
+      "warmCache": {
+        "revision": 5,
+        "contexts": 278,
+        "entries": 278,
+        "nodes": 7961,
+        "hits": 0,
+        "misses": 640,
+        "bypasses": 0,
+        "evictions": 362,
+        "serializedBytes": 8381878,
+        "keyBytes": 2146018,
+        "payloadBytes": 872648,
+        "bookkeepingReserved": 5346448,
+        "commonSnapshotBytes": 16764,
+        "maxSerializedBytes": 8388608,
+        "maxContexts": 1024,
+        "maxEntries": 4096
+      },
+      "recordCallsEach": 3240,
+      "scope": "candidate-only capacity FAIL; no paired baseline/performance success"
+    }
+  ],
+  "decision": "formal02 not authorized yet; actual redundant-owner removal and new capacity proof required; 8MiB/1024/4096 unchanged"
+}
