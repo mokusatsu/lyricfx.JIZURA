@@ -1,0 +1,599 @@
+{
+  "spec": {
+    "layout": "chochin",
+    "params": {
+      "variant": "single"
+    },
+    "text": "風の先へ",
+    "W": 960,
+    "H": 540,
+    "cx": 0.5,
+    "cy": 0.42,
+    "radius": 0.2
+  },
+  "conditions": {
+    "before": {
+      "inputs": {
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "mincho",
+          "variant": "single",
+          "units": [
+            "風の先へ"
+          ],
+          "body": "accent",
+          "ph": 0.0914166304282844
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.02869506224989891,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const out = tout(env);\n    const C = card(sc);\n    const paperB = p.body === 'paper' && J.contrast(C.fill, sc.bg) >= 1.5;\n    const bodyC = paperB ? C.fill : plateCol(sc, [sc.accent, sc.ink], sc.bg, 1.3);\n    const tc = paperB ? plateCol(sc, [sc.accent, darkest(sc)], C.fill, 2.2) : onCol(sc, bodyC);\n    const units = (p.units && p.units.length ? p.units : [strip(env.cut.text)]).filter(Boolean);\n    const flick = 0.8 + 0.2 * J.noise1(env.ltb * 3, env.cut.seed);\n    const ein = E.outCubic(J.clamp(env.lt / 0.5)), a = J.clamp(ein * 2) * (1 - J.clamp((env.pOut - 0.4) / 0.6));\n    if (a <= 0.01) return null;\n    let bb = null;\n    if (p.variant === 'single') {\n      const t = units[0];\n      const n = J.glyphCount(t);\n      const lw = port ? W * 0.56 : Math.min(W * 0.34, H * 0.56), lh = Math.min(lw * 1.45, H * 0.8);\n      const top = H / 2 - lh / 2 + H * 0.03 - (1 - ein) * H * 0.3;\n      const sw = Math.sin(env.ltb * 1.3 + p.ph) * 2.2 + (1 - ein) * 6;\n      env.line([[W / 2, -5], [W / 2, top]], sc.sub, Math.max(2, u * 0.003), a, false);\n      ctx.save(); ctx.translate(W / 2, top); ctx.rotate(sw * J.DEG); ctx.translate(-W / 2, -top);\n      const L = lantern(env, W / 2, top, lw, lh, bodyC, a, true, flick);\n      const cols = n > 5 ? 2 : 1;\n      const vt = cols > 1 ? brk(t, Math.ceil(n / 2)) : t;\n      const per = Math.max(...vt.split('\\n').map(l => J.glyphCount(l)));\n      const size = Math.min(L.bh * 0.8 / per, lw * (cols > 1 ? 0.3 : 0.46));\n      const r = J.mainDraw(env, { text: vt, font: p.font, size, x: W / 2, y: L.y0 + L.bh / 2 - per * size * 0.5, vertical: true, align: 'left', lead: 1.15, color: tc, noHold: plateHold(env), mi: miAt(env, 0.2) });\n      ctx.restore();\n      if (r) bb = box(W / 2 - lw / 2, top, W / 2 + lw / 2, top + lh);\n      return bb;\n    }\n    // a string of festival lanterns\n    const k = units.length;\n    const rowsN = port && k > 3 ? 2 : 1, per = Math.ceil(k / rowsN);\n    const sp = W * 0.88 / per;\n    const lw = Math.min(sp * 0.78, H * (rowsN > 1 ? 0.2 : 0.3)), lh = lw * 1.4;\n    for (let r = 0; r < rowsN; r++) {\n      const cnt = Math.min(per, k - r * per);\n      const wireY = rowsN > 1 ? H * (r ? 0.55 : 0.14) : H * 0.22;\n      const x0 = W / 2 - (cnt - 1) / 2 * sp;\n      const sag = H * 0.05;\n      const wy = x => wireY + sag * (1 - Math.pow((x - W / 2) / (W * 0.5), 2));\n      const we = tin(env, 0, 0.5, E.inOutCubic) * out;\n      const pts = []; for (let i = 0; i <= 30; i++) { const x = J.lerp(-10, W + 10, i / 30); pts.push([x, wy(x)]); }\n      env.polyPartial(pts, we, sc.sub, Math.max(1.5, u * 0.0025), 0.8, false);\n      for (let j = 0; j < cnt; j++) {\n        const i = r * per + j, t = units[i];\n        const x = x0 + j * sp, ty = wy(x) + lw * 0.1;\n        const t1 = 0.08 + i * 0.07;\n        const e = E.outBack(J.clamp((env.lt - t1) / 0.35), 1.4);\n        if (e <= 0) continue;\n        const sw = Math.sin(env.ltb * 1.6 + i * 1.1 + p.ph) * 3 + (1 - e) * 10 * (i % 2 ? 1 : -1);\n        ctx.save(); ctx.translate(x, ty); ctx.rotate(sw * J.DEG); ctx.scale(e, e); ctx.translate(-x, -ty);\n        env.line([[x, ty - lw * 0.1], [x, ty]], sc.sub, Math.max(1.5, u * 0.002), a, false);\n        const L = lantern(env, x, ty, lw, lh, bodyC, a, true, flick * (0.85 + 0.15 * J.noise1(env.ltb * 4 + i, 3)));\n        const n = J.glyphCount(t), lat = hasLatin(t);\n        const size = lat ? Math.min(J.fitSize(t, p.font, lw * 0.8, L.bh * 0.5), lw * 0.4) : Math.min(L.bh * 0.78 / Math.max(1, n), lw * 0.5);\n        const rr = J.mainDraw(env, lat ? { text: t, font: p.font, size, x, y: L.y0 + L.bh / 2, color: tc, noHold: plateHold(env), mi: miAt(env, t1 + 0.12) }\n          : { text: strip(t), font: p.font, size, x, y: L.y0 + L.bh / 2 - n * size * 0.5, vertical: true, align: 'left', color: tc, noHold: plateHold(env), mi: miAt(env, t1 + 0.12) });\n        ctx.restore();\n        if (rr) bb = J.unionBB(bb, box(x - lw / 2, ty, x + lw / 2, ty + lh));\n      }\n    }\n    return bb;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": null
+    },
+    "after": {
+      "inputs": {
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "mincho",
+          "variant": "single",
+          "units": [
+            "風の先へ"
+          ],
+          "body": "accent",
+          "ph": 0.0914166304282844
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.02869506224989891,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const out = tout(env);\n    const C = card(sc);\n    const paperB = p.body === 'paper' && J.contrast(C.fill, sc.bg) >= 1.5;\n    const bodyC = paperB ? C.fill : plateCol(sc, [sc.accent, sc.ink], sc.bg, 1.3);\n    const tc = paperB ? plateCol(sc, [sc.accent, darkest(sc)], C.fill, 2.2) : onCol(sc, bodyC);\n    const units = (p.units && p.units.length ? p.units : [strip(env.cut.text)]).filter(Boolean);\n    const flick = 0.8 + 0.2 * J.noise1(env.ltb * 3, env.cut.seed);\n    const ein = E.outCubic(J.clamp(env.lt / 0.5)), a = J.clamp(ein * 2) * (1 - J.clamp((env.pOut - 0.4) / 0.6));\n    if (a <= 0.01) return null;\n    let bb = null;\n    if (p.variant === 'single') {\n      const t = units[0];\n      const n = J.glyphCount(t);\n      const objectScale = env.cut.placementLayoutsC ? (env.cut.layoutCRecipe?.objectScale ?? 1) : 1;\n      const nativeLW = port ? W * 0.56 : Math.min(W * 0.34, H * 0.56);\n      const lw = nativeLW * objectScale, lh = Math.min(nativeLW * 1.45, H * 0.8) * objectScale;\n      const top = H / 2 - lh / 2 + H * 0.03 - (1 - ein) * H * 0.3;\n      const sw = Math.sin(env.ltb * 1.3 + p.ph) * 2.2 + (1 - ein) * 6;\n      const jointOffset = env.cut.placementLayoutsC ? (env.cut.layoutCRecipe?.jointOffset || [0,0]) : [0,0];\n      const rootMatrix = ctx.getTransform(), determinant = rootMatrix.a*rootMatrix.d-rootMatrix.b*rootMatrix.c, worldDY = (env.scale||1)*jointOffset[1];\n      const ceilingX = env.cut.placementLayoutsC ? W/2 + rootMatrix.c*worldDY/determinant : W/2, ceilingY = env.cut.placementLayoutsC ? -5-rootMatrix.a*worldDY/determinant : -5;\n      env.withDrawRole('independentDecor', 'chochin.cord', () => env.line([[ceilingX, ceilingY], [W / 2, top]], sc.sub, Math.max(2, u * 0.003), a, false));\n      if (env.cut.placementLayoutsC) env.placementCBody={kind:'chochin',pivot:[W/2,top],angle:sw,holdAngle:2.2,fullAngle:8.2,fullScale:1,dy:[-H*.3,0],entryEnd:.5,exitStart:env.cut.dur-env.cut.outDur,group:'chochin.single'};\n      ctx.save(); ctx.translate(W / 2, top); ctx.rotate(sw * J.DEG); ctx.translate(-W / 2, -top);\n      const L = lantern(env, W / 2, top, lw, lh, bodyC, a, true, flick);\n      const cols = n > 5 ? 2 : 1;\n      const vt = cols > 1 ? brk(t, Math.ceil(n / 2)) : t;\n      const per = Math.max(...vt.split('\\n').map(l => J.glyphCount(l)));\n      const size = Math.min(L.bh * 0.8 / per, lw * (cols > 1 ? 0.3 : 0.46));\n      const r = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:W/2-lw*.45,x1:W/2+lw*.45,y0:L.y0,y1:L.y1}} : {}), text: vt, font: p.font, size, x: W / 2, y: L.y0 + L.bh / 2 - per * size * 0.5, vertical: true, align: 'left', lead: 1.15, color: tc, noHold: plateHold(env), mi: miAt(env, 0.2) });\n      ctx.restore();\n      if (r) bb = box(W / 2 - lw / 2, top, W / 2 + lw / 2, top + lh);\n      return bb;\n    }\n    // a string of festival lanterns\n    const k = units.length;\n    const rowsN = port && k > 3 ? 2 : 1, per = Math.ceil(k / rowsN);\n    const sp = W * 0.88 / per;\n    const objectScale = env.cut.placementLayoutsC ? (env.cut.layoutCRecipe?.objectScale ?? 1) : 1;\n    const lw = Math.min(sp * 0.78, H * (rowsN > 1 ? 0.2 : 0.3)) * objectScale, lh = lw * 1.4;\n    for (let r = 0; r < rowsN; r++) {\n      const cnt = Math.min(per, k - r * per);\n      const wireY = rowsN > 1 ? H * (r ? 0.55 : 0.14) : H * 0.22;\n      const x0 = W / 2 - (cnt - 1) / 2 * sp;\n      const sag = H * 0.05;\n      const wy = x => wireY + sag * (1 - Math.pow((x - W / 2) / (W * 0.5), 2));\n      const we = tin(env, 0, 0.5, E.inOutCubic) * out;\n      const pts = []; for (let i = 0; i <= 30; i++) { const x = J.lerp(-10, W + 10, i / 30); pts.push([x, wy(x)]); }\n      env.withDrawRole('independentDecor', 'chochin.wire', () => env.polyPartial(pts, we, sc.sub, Math.max(1.5, u * 0.0025), 0.8, false));\n      for (let j = 0; j < cnt; j++) {\n        const i = r * per + j, t = units[i];\n        const x = x0 + j * sp, ty = wy(x) + lw * 0.1;\n        const t1 = 0.08 + i * 0.07;\n        const e = E.outBack(J.clamp((env.lt - t1) / 0.35), 1.4);\n        if (e <= 0) continue;\n        const sw = Math.sin(env.ltb * 1.6 + i * 1.1 + p.ph) * 3 + (1 - e) * 10 * (i % 2 ? 1 : -1);\n        if (env.cut.placementLayoutsC) env.placementCBody={kind:'chochin',pivot:[x,ty],angle:sw,holdAngle:3,fullAngle:13,fullScale:1.2,dy:[0,0],entryEnd:t1+.35,exitStart:env.cut.dur-env.cut.outDur,group:'chochin.row.'+i};\n        ctx.save(); ctx.translate(x, ty); ctx.rotate(sw * J.DEG); ctx.scale(e, e); ctx.translate(-x, -ty);\n        env.line([[x, ty - lw * 0.1], [x, ty]], sc.sub, Math.max(1.5, u * 0.002), a, false);\n        const L = lantern(env, x, ty, lw, lh, bodyC, a, true, flick * (0.85 + 0.15 * J.noise1(env.ltb * 4 + i, 3)));\n        const n = J.glyphCount(t), lat = hasLatin(t);\n        const size = lat ? Math.min(J.fitSize(t, p.font, lw * 0.8, L.bh * 0.5), lw * 0.4) : Math.min(L.bh * 0.78 / Math.max(1, n), lw * 0.5);\n        const zone=env.cut.placementLayoutsC?{placementCOwnedZone:{x0:x-lw*.45,x1:x+lw*.45,y0:L.y0,y1:L.y1}}:{};\n        const rr = J.mainDraw(env, lat ? { ...zone, text: t, font: p.font, size, x, y: L.y0 + L.bh / 2, color: tc, noHold: plateHold(env), mi: miAt(env, t1 + 0.12) }\n          : { ...zone, text: strip(t), font: p.font, size, x, y: L.y0 + L.bh / 2 - n * size * 0.5, vertical: true, align: 'left', color: tc, noHold: plateHold(env), mi: miAt(env, t1 + 0.12) });\n        ctx.restore();\n        if (rr) bb = J.unionBB(bb, box(x - lw / 2, ty, x + lw / 2, ty + lh));\n      }\n    }\n    return bb;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": {
+        "version": 1,
+        "kind": "layouts-c-source-native",
+        "revision": 4,
+        "evaluationRange": [
+          -0.041666666666666664,
+          4.82
+        ],
+        "holdWindow": [
+          0.5,
+          3.6
+        ],
+        "units": [
+          {
+            "owner": "chochin.composition",
+            "envelopes": [
+              [
+                [
+                  277.54242339272196,
+                  40.531222747689014
+                ],
+                [
+                  682.5086645919422,
+                  40.531222747689014
+                ],
+                [
+                  682.5086645919422,
+                  532.6585272606374
+                ],
+                [
+                  277.54242339272196,
+                  532.6585272606374
+                ]
+              ]
+            ],
+            "stageEnvelopes": [
+              [
+                [
+                  235.01303842882626,
+                  -135.59528377153782
+                ],
+                [
+                  725.032511475178,
+                  -135.59528377153782
+                ],
+                [
+                  725.032511475178,
+                  542.836283796765
+                ],
+                [
+                  235.01303842882626,
+                  542.836283796765
+                ]
+              ]
+            ],
+            "segments": [
+              {
+                "start": 0,
+                "end": 4,
+                "region": "fixture",
+                "circle": {
+                  "cx": 480,
+                  "cy": 226.79999999999998,
+                  "r": 108
+                },
+                "from": [
+                  259.36996169578356,
+                  65.08071972905282
+                ],
+                "to": [
+                  259.36996169578356,
+                  65.08071972905282
+                ],
+                "status": "safe-hold",
+                "decision": "certified-hold-adapter",
+                "safetyScope": "source-owned-object-entry-exit-relaxed",
+                "failure": null,
+                "holdWindow": [
+                  0.5,
+                  3.6
+                ],
+                "composition": {
+                  "objectScale": 0.7,
+                  "strategy": "source-lantern-proportional-size"
+                },
+                "quality": {
+                  "minNativeFontRatio": 0.7,
+                  "minPrimaryPx": 52.0128,
+                  "floor": 18.900000000000002,
+                  "secondaryFloor": 12,
+                  "nativeFontSizePreserved": false
+                },
+                "envelopes": [
+                  [
+                    [
+                      331.33013830421646,
+                      108.02365295612583
+                    ],
+                    [
+                      628.7209498425802,
+                      108.02365295612583
+                    ],
+                    [
+                      628.7209498425802,
+                      465.16609704387406
+                    ],
+                    [
+                      331.33013830421646,
+                      465.16609704387406
+                    ]
+                  ]
+                ],
+                "stageEnvelopes": [
+                  [
+                    [
+                      301.46264508834525,
+                      -65.08071972905282
+                    ],
+                    [
+                      658.5829049777916,
+                      -65.08071972905282
+                    ],
+                    [
+                      658.5829049777916,
+                      472.3217197290528
+                    ],
+                    [
+                      301.46264508834525,
+                      472.3217197290528
+                    ]
+                  ]
+                ],
+                "attempts": [
+                  {
+                    "strategy": "native-owned-joint-translation",
+                    "objectScale": 1,
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 74.304,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "strategy": "source-lantern-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9499999999999998,
+                      "minPrimaryPx": 70.58879999999999,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.9,
+                    "strategy": "source-lantern-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.8999999999999999,
+                      "minPrimaryPx": 66.8736,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.85,
+                    "strategy": "source-lantern-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.8500000000000001,
+                      "minPrimaryPx": 63.15840000000001,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.8,
+                    "strategy": "source-lantern-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.8,
+                      "minPrimaryPx": 59.443200000000004,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.75,
+                    "strategy": "source-lantern-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.75,
+                      "minPrimaryPx": 55.728,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.7,
+                    "strategy": "source-lantern-proportional-size",
+                    "status": "safe",
+                    "reason": null,
+                    "quality": {
+                      "minNativeFontRatio": 0.7,
+                      "minPrimaryPx": 52.0128,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "measurementSupported": true,
+        "safety": "certified-hold-adapter",
+        "explicitSizePreserved": true,
+        "sourceProof": {
+          "sourceMapping": {
+            "complete": true,
+            "source": "風の先へ",
+            "main": [
+              {
+                "text": "風の先へ",
+                "font": "mincho",
+                "size": 74.304,
+                "mi": 6.969840255380682
+              }
+            ],
+            "metadata": [],
+            "owned": [
+              {
+                "kind": "line",
+                "owner": "chochin.cord",
+                "order": 0,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "rect",
+                "owner": "chochin.glow",
+                "order": 1,
+                "role": "independentDecor"
+              },
+              {
+                "kind": "nativePath",
+                "owner": "cut:0",
+                "order": 2,
+                "role": "primary"
+              },
+              {
+                "kind": "nativePath",
+                "owner": "cut:0",
+                "order": 3,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 4,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 5,
+                "role": "primary"
+              },
+              {
+                "kind": "item",
+                "owner": "chochin.unit.6.969840255380682",
+                "order": 6,
+                "role": "primary"
+              }
+            ],
+            "rule": "Retain native glyph occurrences, real replica/metadata, every paper, line, roller, clip and painter order"
+          },
+          "recipe": "native-owned-joint-translation-then-source-dimensions",
+          "interval": "Lantern body/ribs/caps/verse share source pivot. Persistent hold sway is +/-2.2 single or +/-3 row. Full motion is bounded by +/-8.2 or +/-13 degrees, single top displacement [-.3H,0], and row outBack scale [0,1.2]. Light glow and stage wire/cord are explicitly background decoration, jointly replayed without changing attachment; they are not lyric/paper ink.",
+          "stageProof": "Per-source pivot/trigonometric/drop/scale intervals enclose every primary owned event. Every blank panel, crest, body, cap, rib and lyric stays classified; camera interval and joint replay preserve clips and connections.",
+          "nativeFontSizePreserved": false,
+          "ownedShapesPreserved": true,
+          "backgroundDecoration": {
+            "owners": [
+              "chochin.glow",
+              "chochin.wire",
+              "chochin.cord"
+            ],
+            "glowReason": "Source radial body-colour lighting fading to transparency contains no glyph silhouette or letter shadow; physical body/ribs/caps/verse remain primary. This source-based role is fixed for every radius.",
+            "attachment": "All decoration uses the same joint replay offset. Single ceiling cord compensates replay dy through the inverse native root affine, preserving its original screen y. Row x offset is constrained to zero; its original 31-point reveal and edge supports remain unchanged."
+          },
+          "candidateBudget": {
+            "reconstructed": 7,
+            "cacheHits": 1,
+            "rejected": 0,
+            "uniqueRecipes": 7,
+            "perCutLimit": 54,
+            "nativeProgramReusedForBase": true
+          },
+          "limitations": "Cut/still text motion only; unsupported source domains fail explicitly"
+        },
+        "sourceAdapter": "c-japanese"
+      }
+    }
+  },
+  "inputSHA256": "5a74780b1e6f4d67108982374afb54ada17fe343740e456d4015b0462b5d94c4",
+  "time": "2026-10-22T16:26:26.727Z",
+  "scope": "Local independent immutable native before/after; no image inspection by implementation agent; no public operation",
+  "baseline": {
+    "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+    "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+    "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+  },
+  "sourceHashes": {
+    "src/09j_layoutsC_japanese.js": "96bf041b3bc397dc21fbf8086ad854814dfb50be605f2d15fc6821e17a461a16",
+    "src/11p_layoutsC.js": "8b8735e2e1ad0a85f6e400cd742c24aa2df1de913fe2379469c811941aaf5b68",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "73a6f93e938266f0d7a4b57b822b068a86e4e4abfb08e7a522b251ba18ec0648",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "8da5f1a9a342c4ea1c7c45bf5c7a8187ba6b1ee6d12dc820aa5a2769e5e0f444"
+  },
+  "assets": {
+    "before.png": {
+      "sha256": "591c1e84b76fd032c2f6c222ea9b1232eb4942b84d26ee382527246cbfc3a80f",
+      "bytes": 542221
+    },
+    "after.png": {
+      "sha256": "334fea802e75de8d6c96e32ac40a6a89880cc6794b23a56d8aaafe192ab29936",
+      "bytes": 500836
+    },
+    "before.mp4": {
+      "sha256": "4fb0a2382a7897d2dbd17013a5b3b6b2e60edc9110679f9e54d839159efec078",
+      "bytes": 159617
+    },
+    "after.mp4": {
+      "sha256": "d297bc1c01ce61f59807d8696798aa4e0cdd6fe6d5625dd1dba41073a4f986a1",
+      "bytes": 107581
+    },
+    "index.html": {
+      "sha256": "c28c974d5f7b43402b2cb3ea3f8f76fd1a9bc6a9e0a1ec3c791b8e17101e60d2",
+      "bytes": 1024
+    }
+  }
+}

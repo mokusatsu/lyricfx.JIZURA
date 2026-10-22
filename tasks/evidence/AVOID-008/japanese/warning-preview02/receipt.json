@@ -1,0 +1,590 @@
+{
+  "spec": {
+    "layout": "warningLabel",
+    "params": {
+      "variant": "header"
+    },
+    "text": "風の先へ",
+    "W": 540,
+    "H": 960,
+    "cx": 0.5,
+    "cy": 0.42,
+    "radius": 0.2
+  },
+  "conditions": {
+    "before": {
+      "inputs": {
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "gothic_black",
+          "variant": "header",
+          "word": 2,
+          "tilt": -2.9085833695717156
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.02869506224989891,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const out = tout(env), ls = smallSize(env);\n    const C = card(sc);\n    const lw0 = port ? W * 0.9 : Math.min(W * 0.78, H * 1.55), lh0 = lw0 * (port ? 0.78 : 0.5);\n    const q = E.outBack(J.clamp(env.lt / 0.32), 1.5), eo = E.inCubic(env.pOut);\n    const a = J.clamp(q * 3) * (1 - eo);\n    if (a <= 0.01) return null;\n    const warnC = plateCol(sc, [sc.accent, sc.accent2, sc.ink], C.fill, 1.6);\n    const inkC = plateCol(sc, [darkest(sc), sc.ink, sc.fg], C.fill, 3);           // text & dark stripes on the label body\n    const hazard = plateCol(sc, [sc.accent, sc.accent2, C.fill], inkC, 1.8);\n    const [we, wj] = WARN[p.word % WARN.length];\n    const flash = env.lt < 0.9 ? (Math.floor(env.lt / 0.12) % 2 ? 0.25 : 1) : 1;\n    ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate((p.tilt + (1 - q) * 4) * J.DEG); ctx.scale(0.85 + 0.15 * q, 0.85 + 0.15 * q);\n    const x0 = -lw0 / 2, y0 = -lh0 / 2;\n    shadowR(env, x0, y0, lw0, lh0, lh0 * 0.04, a, u * 0.014);\n    env.rrect(x0, y0, lw0, lh0, lh0 * 0.04, C.fill, a, false, inkC, Math.max(3, u * 0.004));\n    let ax0 = x0, ay0 = y0, aw = lw0, ah = lh0;\n    if (p.variant === 'header') {\n      const hh = lh0 * 0.26;\n      const he = tin(env, 0.06, 0.35, E.outCubic);\n      env.rrect(x0, y0, lw0, hh, lh0 * 0.04, warnC, a, false);\n      env.rect(x0, y0 + hh * 0.5, lw0, hh * 0.5, warnC, a, false);\n      warnTri(env, x0 + hh * 0.75, y0 + hh * 0.52, hh * 0.72, onCol(sc, warnC), warnC, a * he, flash);\n      const ht = we + '  ' + wj, hs = Math.min(hh * 0.46, J.fitSize(ht, 'gothic_black', lw0 - hh * 1.8, hh, { track: 0.12 }));\n      env.draw({ text: ht, font: 'gothic_black', size: hs, track: 0.12, align: 'left', x: x0 + hh * 1.45, y: y0 + hh * 0.52, color: onCol(sc, warnC), alpha: a * he, ghost: false });\n      ay0 = y0 + hh; ah = lh0 - hh;\n    } else if (p.variant === 'stripe') {\n      const sb = lh0 * 0.11;\n      const off = env.ltb * sb * 1.2;\n      stripes(env, x0 + 2, y0 + 2, lw0 - 4, sb, inkC, hazard, sb * 0.7, 45, a, off);\n      stripes(env, x0 + 2, y0 + lh0 - sb - 2, lw0 - 4, sb, inkC, hazard, sb * 0.7, 45, a, -off);\n      warnTri(env, x0 + lw0 / 2, y0 + sb + lh0 * 0.16, lh0 * 0.2, warnC, onCol(sc, warnC), a, flash);\n      env.draw({ text: wj + '　' + we, font: 'gothic_black', size: lh0 * 0.06, track: 0.2, x: x0 + lw0 / 2, y: y0 + sb + lh0 * 0.33, color: inkC, alpha: a, ghost: false });\n      ay0 = y0 + sb + lh0 * 0.38; ah = lh0 - sb * 2 - lh0 * 0.38;\n    } else {\n      const sw2 = lw0 * (port ? 0.3 : 0.26);\n      env.rrect(x0, y0, sw2, lh0, lh0 * 0.04, warnC, a, false);\n      env.rect(x0 + sw2 * 0.5, y0, sw2 * 0.5, lh0, warnC, a, false);\n      warnTri(env, x0 + sw2 / 2, y0 + lh0 * 0.42, sw2 * 0.68, onCol(sc, warnC), warnC, a, flash);\n      env.draw({ text: we, font: 'gothic_black', size: sw2 * 0.14, track: 0.1, x: x0 + sw2 / 2, y: y0 + lh0 * 0.78, color: onCol(sc, warnC), alpha: a, ghost: false });\n      ax0 = x0 + sw2; aw = lw0 - sw2;\n    }\n    const fb = fitBlock(env.cut.text.trim(), p.font, aw * 0.86, ah * 0.66, { lead: 1.08, track: 0.02 }, port ? 3 : 2);\n    const size = Math.min(fb.size, u * 0.2);\n    const bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: ax0 + aw / 2, y: ay0 + ah / 2 - (p.variant === 'stripe' ? 0 : ah * 0.04), lead: 1.08, track: 0.02, color: inkC, noHold: plateHold(env), mi: miAt(env, 0.12) });\n    if (p.variant !== 'stripe') env.draw({ text: 'No.' + lineNo(env) + '  —  ' + J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.8, track: 0.2, align: 'right', x: ax0 + aw - ls, y: ay0 + ah - ls * 0.9, color: inkC, alpha: a * 0.6 * out, ghost: false });\n    ctx.restore();\n    return bb ? box(W / 2 - lw0 / 2, H / 2 - lh0 / 2, W / 2 + lw0 / 2, H / 2 + lh0 / 2) : null;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": null
+    },
+    "after": {
+      "inputs": {
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "gothic_black",
+          "variant": "header",
+          "word": 2,
+          "tilt": -2.9085833695717156
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.02869506224989891,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const out = tout(env), ls = smallSize(env);\n    const C = card(sc);\n    const objectScale = env.cut.placementLayoutsC ? (env.cut.layoutCRecipe?.objectScale ?? 1) : 1;\n    const lw0 = (port ? W * 0.9 : Math.min(W * 0.78, H * 1.55)) * objectScale, lh0 = lw0 * (port ? 0.78 : 0.5);\n    const q = E.outBack(J.clamp(env.lt / 0.32), 1.5), eo = E.inCubic(env.pOut);\n    const a = J.clamp(q * 3) * (1 - eo);\n    if (a <= 0.01) return null;\n    const warnC = plateCol(sc, [sc.accent, sc.accent2, sc.ink], C.fill, 1.6);\n    const inkC = plateCol(sc, [darkest(sc), sc.ink, sc.fg], C.fill, 3);           // text & dark stripes on the label body\n    const hazard = plateCol(sc, [sc.accent, sc.accent2, C.fill], inkC, 1.8);\n    const [we, wj] = WARN[p.word % WARN.length];\n    const flash = env.lt < 0.9 ? (Math.floor(env.lt / 0.12) % 2 ? 0.25 : 1) : 1;\n    if(env.cut.placementLayoutsC)env.placementCBody={kind:'warning-body',pivot:[W/2,H/2],angle:p.tilt+(1-q)*4,holdRange:[p.tilt,p.tilt],fullRange:[p.tilt-.8,p.tilt+4],fullScale:1.03,entryEnd:.32,exitStart:env.cut.dur,strictDuringAlphaExit:true,group:'warningLabel.body'};\n    ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate((p.tilt + (1 - q) * 4) * J.DEG); ctx.scale(0.85 + 0.15 * q, 0.85 + 0.15 * q);\n    const x0 = -lw0 / 2, y0 = -lh0 / 2;\n    shadowR(env, x0, y0, lw0, lh0, lh0 * 0.04, a, u * 0.014);\n    env.rrect(x0, y0, lw0, lh0, lh0 * 0.04, C.fill, a, false, inkC, Math.max(3, u * 0.004));\n    let ax0 = x0, ay0 = y0, aw = lw0, ah = lh0;\n    if (p.variant === 'header') {\n      const hh = lh0 * 0.26;\n      const he = tin(env, 0.06, 0.35, E.outCubic);\n      env.rrect(x0, y0, lw0, hh, lh0 * 0.04, warnC, a, false);\n      env.rect(x0, y0 + hh * 0.5, lw0, hh * 0.5, warnC, a, false);\n      warnTri(env, x0 + hh * 0.75, y0 + hh * 0.52, hh * 0.72, onCol(sc, warnC), warnC, a * he, flash);\n      const ht = we + '  ' + wj, hs = Math.min(hh * 0.46, J.fitSize(ht, 'gothic_black', lw0 - hh * 1.8, hh, { track: 0.12 }));\n      env.draw({ text: ht, font: 'gothic_black', size: hs, track: 0.12, align: 'left', x: x0 + hh * 1.45, y: y0 + hh * 0.52, color: onCol(sc, warnC), alpha: a * he, ghost: false });\n      ay0 = y0 + hh; ah = lh0 - hh;\n    } else if (p.variant === 'stripe') {\n      const sb = lh0 * 0.11;\n      const off = env.ltb * sb * 1.2;\n      stripes(env, x0 + 2, y0 + 2, lw0 - 4, sb, inkC, hazard, sb * 0.7, 45, a, off);\n      stripes(env, x0 + 2, y0 + lh0 - sb - 2, lw0 - 4, sb, inkC, hazard, sb * 0.7, 45, a, -off);\n      warnTri(env, x0 + lw0 / 2, y0 + sb + lh0 * 0.16, lh0 * 0.2, warnC, onCol(sc, warnC), a, flash);\n      env.draw({ text: wj + '　' + we, font: 'gothic_black', size: lh0 * 0.06, track: 0.2, x: x0 + lw0 / 2, y: y0 + sb + lh0 * 0.33, color: inkC, alpha: a, ghost: false });\n      ay0 = y0 + sb + lh0 * 0.38; ah = lh0 - sb * 2 - lh0 * 0.38;\n    } else {\n      const sw2 = lw0 * (port ? 0.3 : 0.26);\n      env.rrect(x0, y0, sw2, lh0, lh0 * 0.04, warnC, a, false);\n      env.rect(x0 + sw2 * 0.5, y0, sw2 * 0.5, lh0, warnC, a, false);\n      warnTri(env, x0 + sw2 / 2, y0 + lh0 * 0.42, sw2 * 0.68, onCol(sc, warnC), warnC, a, flash);\n      env.draw({ text: we, font: 'gothic_black', size: sw2 * 0.14, track: 0.1, x: x0 + sw2 / 2, y: y0 + lh0 * 0.78, color: onCol(sc, warnC), alpha: a, ghost: false });\n      ax0 = x0 + sw2; aw = lw0 - sw2;\n    }\n    const fb = fitBlock(env.cut.text.trim(), p.font, aw * 0.86, ah * 0.66, { lead: 1.08, track: 0.02 }, port ? 3 : 2);\n    const size = Math.min(fb.size, u * 0.2);\n    const bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:ax0,x1:ax0+aw,y0:ay0,y1:ay0+ah}} : {}), text: fb.text, font: p.font, size, x: ax0 + aw / 2, y: ay0 + ah / 2 - (p.variant === 'stripe' ? 0 : ah * 0.04), lead: 1.08, track: 0.02, color: inkC, noHold: plateHold(env), mi: miAt(env, 0.12) });\n    if (p.variant !== 'stripe') env.draw({ text: 'No.' + lineNo(env) + '  —  ' + J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.8, track: 0.2, align: 'right', x: ax0 + aw - ls, y: ay0 + ah - ls * 0.9, color: inkC, alpha: a * 0.6 * out, ghost: false });\n    ctx.restore();\n    return bb ? box(W / 2 - lw0 / 2, H / 2 - lh0 / 2, W / 2 + lw0 / 2, H / 2 + lh0 / 2) : null;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": {
+        "version": 1,
+        "kind": "layouts-c-source-native",
+        "revision": 4,
+        "evaluationRange": [
+          -0.041666666666666664,
+          4.82
+        ],
+        "holdWindow": [
+          0.9,
+          3.6
+        ],
+        "units": [
+          {
+            "owner": "warningLabel.composition",
+            "envelopes": [
+              [
+                [
+                  -10.310722063618812,
+                  251.60299878728983
+                ],
+                [
+                  553.802003173771,
+                  251.60299878728983
+                ],
+                [
+                  553.802003173771,
+                  714.3532588607428
+                ],
+                [
+                  -10.310722063618812,
+                  714.3532588607428
+                ]
+              ]
+            ],
+            "stageEnvelopes": [
+              [
+                [
+                  -21.057861599362013,
+                  241.69967801249902
+                ],
+                [
+                  564.7670227647103,
+                  241.69967801249902
+                ],
+                [
+                  564.7670227647103,
+                  724.3746187205836
+                ],
+                [
+                  -21.057861599362013,
+                  724.3746187205836
+                ]
+              ]
+            ],
+            "segments": [
+              {
+                "start": 0,
+                "end": 4,
+                "region": "fixture",
+                "circle": {
+                  "cx": 270,
+                  "cy": 403.2,
+                  "r": 108
+                },
+                "from": [
+                  1.480071778984391e-14,
+                  241.7140648250376
+                ],
+                "to": [
+                  1.480071778984391e-14,
+                  241.7140648250376
+                ],
+                "status": "safe-hold",
+                "decision": "certified-hold-adapter",
+                "safetyScope": "source-owned-object-entry-exit-relaxed",
+                "failure": null,
+                "holdWindow": [
+                  0.9,
+                  3.6
+                ],
+                "composition": {
+                  "objectScale": 0.9,
+                  "strategy": "source-warning-label-proportional-size"
+                },
+                "quality": {
+                  "minNativeFontRatio": 0.9000000000000002,
+                  "minPrimaryPx": 92.65131509833736,
+                  "floor": 18.900000000000002,
+                  "secondaryFloor": 12,
+                  "nativeFontSizePreserved": false
+                },
+                "envelopes": [
+                  [
+                    [
+                      15.463686409144685,
+                      272.1860351749624
+                    ],
+                    [
+                      528.0275947010075,
+                      272.1860351749624
+                    ],
+                    [
+                      528.0275947010075,
+                      693.7702224730704
+                    ],
+                    [
+                      15.463686409144685,
+                      693.7702224730704
+                    ]
+                  ]
+                ],
+                "stageEnvelopes": [
+                  [
+                    [
+                      5.781467425576039,
+                      263.26325307625086
+                    ],
+                    [
+                      537.9276937397724,
+                      263.26325307625086
+                    ],
+                    [
+                      537.9276937397724,
+                      702.8110436568318
+                    ],
+                    [
+                      5.781467425576039,
+                      702.8110436568318
+                    ]
+                  ]
+                ],
+                "attempts": [
+                  {
+                    "strategy": "native-owned-joint-translation",
+                    "objectScale": 1,
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 102.94590566481926,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "strategy": "source-warning-label-proportional-size",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9500000000000002,
+                      "minPrimaryPx": 97.79861038157831,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.9,
+                    "strategy": "source-warning-label-proportional-size",
+                    "status": "safe",
+                    "reason": null,
+                    "quality": {
+                      "minNativeFontRatio": 0.9000000000000002,
+                      "minPrimaryPx": 92.65131509833736,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "measurementSupported": true,
+        "safety": "certified-hold-adapter",
+        "explicitSizePreserved": true,
+        "sourceProof": {
+          "sourceMapping": {
+            "complete": true,
+            "source": "風の先へ",
+            "main": [
+              {
+                "text": "風の先へ",
+                "font": "gothic_black",
+                "size": 102.94590566481926,
+                "mi": 4.181904153228409
+              }
+            ],
+            "metadata": [
+              {
+                "kind": "item",
+                "text": "DANGER  危険",
+                "font": "gothic_black",
+                "size": 41.366059807832784
+              },
+              {
+                "kind": "item",
+                "text": "No.01  —  00:00.00",
+                "font": "mono",
+                "size": 11.200000000000001
+              }
+            ],
+            "owned": [
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 0,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 1,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 2,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "cut:0",
+                "order": 3,
+                "role": "primary"
+              },
+              {
+                "kind": "nativePath",
+                "owner": "cut:0",
+                "order": 4,
+                "role": "primary"
+              },
+              {
+                "kind": "line",
+                "owner": "cut:0",
+                "order": 5,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 6,
+                "role": "primary"
+              },
+              {
+                "kind": "circle",
+                "owner": "cut:0",
+                "order": 7,
+                "role": "primary"
+              },
+              {
+                "kind": "item",
+                "owner": "cut:0",
+                "order": 8,
+                "role": "primary"
+              },
+              {
+                "kind": "item",
+                "owner": "warningLabel.unit.4.181904153228409",
+                "order": 9,
+                "role": "primary"
+              },
+              {
+                "kind": "item",
+                "owner": "cut:0",
+                "order": 10,
+                "role": "primary"
+              }
+            ],
+            "rule": "Retain native glyph occurrences, real replica/metadata, every paper, line, roller, clip and painter order"
+          },
+          "recipe": "native-owned-joint-translation-then-source-dimensions",
+          "interval": "Native outBack(s=1.5) q stays in [0,1.2], source rotation in [tilt-.8,tilt+4] degrees, source scale [.85,1.03]. The entire body/header/triangle/metadata/verse shares that pivot transform. Flash and header reveal only change alpha; every positive ink primitive is enclosed. Stripe variant remains unsupported.",
+          "stageProof": "Per-source pivot/trigonometric/drop/scale intervals enclose every primary owned event. Every blank panel, crest, body, cap, rib and lyric stays classified; camera interval and joint replay preserve clips and connections.",
+          "nativeFontSizePreserved": false,
+          "ownedShapesPreserved": true,
+          "candidateBudget": {
+            "reconstructed": 3,
+            "cacheHits": 1,
+            "rejected": 0,
+            "uniqueRecipes": 3,
+            "perCutLimit": 54,
+            "nativeProgramReusedForBase": true
+          },
+          "limitations": "Cut/still text motion only; unsupported source domains fail explicitly"
+        },
+        "sourceAdapter": "c-japanese"
+      }
+    }
+  },
+  "inputSHA256": "3e61eb68d5d2358b6dec74dc144ab4519b4bb69080064f7fa6de34f3afff8141",
+  "time": "2026-10-22T16:40:34.781Z",
+  "scope": "Local independent immutable native before/after; no image inspection by implementation agent; no public operation",
+  "baseline": {
+    "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+    "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+    "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+  },
+  "sourceHashes": {
+    "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+    "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+    "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+  },
+  "sourceStart": {
+    "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+    "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+    "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+  },
+  "sourceEnd": {
+    "src/09j_layoutsC_japanese.js": "ca65577801a38befd0c28e56e571d1d00034b21e6f0dfd912790e2bc41f27bba",
+    "src/11p_layoutsC.js": "3c2e4a25c5e6aa22422185ef740b2582f41e676a336166ddeb12f132c5997a41",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "b3dca3d46f27725eb0a7af0296f12edb578e08bbda88185a5176c3129b881d0b",
+    "en/index.html": "75315f3511cf25116afad6d1c01adbc43ffba0246705e6a1e206a334e3b50d98",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "1e7e77718caa15288760cc7996ef7532c47e4d95f40c1180d21ec02f19e170a8"
+  },
+  "sourceUnchangedDuringRun": true,
+  "assets": {
+    "before.png": {
+      "sha256": "3ae6c09d79af7d9ea999767cdb1b35d7e2f578398f765765a20c3e03b68cbb33",
+      "bytes": 251785
+    },
+    "after.png": {
+      "sha256": "d9d03fb8d6489d4d1d1c6952a0051543b5489a4a0ae31c270e57e9cb638dbaba",
+      "bytes": 314896
+    },
+    "before.mp4": {
+      "sha256": "263d58a99632b91b17c9d10cf8447c97ef0e94e2efe33ff18ef3d8cc6db87797",
+      "bytes": 103346
+    },
+    "after.mp4": {
+      "sha256": "f9d3ab86f5cdb02ae568260ec919232498f189cd893cad55749f0b62e144c342",
+      "bytes": 90918
+    },
+    "index.html": {
+      "sha256": "9a903675b3489faab322e51e7d6c77fcf5543f27c2f0408bcb1ddc5a5ce10fbe",
+      "bytes": 1024
+    }
+  }
+}

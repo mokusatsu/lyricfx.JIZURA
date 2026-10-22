@@ -1,0 +1,705 @@
+{
+  "spec": {
+    "layout": "kakejiku",
+    "params": {
+      "variant": "kake"
+    },
+    "text": "風の先へ",
+    "W": 960,
+    "H": 540,
+    "cx": 0.5,
+    "cy": 0.42,
+    "radius": 0.2
+  },
+  "conditions": {
+    "before": {
+      "inputs": {
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "brush",
+          "variant": "kake",
+          "mount": "ink",
+          "seal": true
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.02869506224989891,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const out = tout(env);\n    const C = card(sc);\n    const t0 = vtext(env.cut.text);\n    const mountC = J.mix(plateCol(sc, p.mount === 'accent' ? [sc.accent, sc.ink] : p.mount === 'ink' ? [sc.ink, sc.accent] : [sc.sub, sc.ink]), darkest(sc), 0.3);\n    const goldC = J.mix(plateCol(sc, [sc.accent, sc.accent2, sc.sub], mountC, 1.5), mountC, 0.25);\n    const rodC = J.mix(darkest(sc), sc.sub, 0.35);\n    const seal = plateCol(sc, [sc.accent, sc.accent2], C.fill, 1.6);\n    const open = E.inOutCubic(J.clamp((ltU(env) - 0.08) / 0.7)) * (1 - E.inOutCubic(J.clamp(pOutU(env) / 0.85)));\n    const a = tin(env, 0, 0.2, E.outCubic) * (1 - J.clamp((env.pOut - 0.8) / 0.2));\n    if (a <= 0.01) return null;\n    let bb = null;\n    if (p.variant === 'yoko' && !port) {\n      // horizontal scroll unrolling right → left\n      const sw = W * 0.86, sh = Math.min(H * 0.56, sw * 0.4);\n      const x1 = W / 2 + sw / 2, y0 = H / 2 - sh / 2;\n      const xr = x1 - sw * open;\n      const rodW = sh * 0.07;\n      ctx.save(); ctx.beginPath(); ctx.rect(xr, y0 - sh, x1 - xr + rodW, sh * 3); ctx.clip();\n      env.rect(x1 - sw, y0, sw, sh, mountC, a, false);\n      const px0 = x1 - sw + sw * 0.08, pw = sw * 0.84, py0 = y0 + sh * 0.12, ph2 = sh * 0.76;\n      env.rect(px0 - sh * 0.02, py0 - sh * 0.02, pw + sh * 0.04, ph2 + sh * 0.04, goldC, a, false);\n      env.rect(px0, py0, pw, ph2, C.fill, a, false);\n      const fb = fitBlock(t0, p.font, pw * 0.8, ph2 * 0.86, { vertical: true, lead: 1.4, track: 0.06 }, 4);\n      const size = Math.min(fb.size, ph2 * 0.4);\n      const mm = meas(fb.text, p.font, size, { vertical: true, lead: 1.4, track: 0.06 });\n      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: px0 + pw / 2 + mm.w * 0.1, y: py0 + (ph2 - mm.h) / 2, vertical: true, align: 'left', lead: 1.4, track: 0.06, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.25) });\n      if (p.seal) env.rect(px0 + pw / 2 - mm.w * 0.5 - size * 0.7, py0 + (ph2 + mm.h) / 2 - size * 0.55, size * 0.45, size * 0.45, seal, a * J.clamp((env.lt - 0.6) * 4), false);\n      ctx.restore();\n      // rollers\n      env.rrect(x1, y0 - rodW * 0.8, rodW, sh + rodW * 1.6, rodW * 0.4, rodC, a, false);\n      env.rrect(xr - rodW, y0 - rodW * 1.4, rodW * 1.3, sh + rodW * 2.8, rodW * 0.5, rodC, a, false);\n      return bb;\n    }\n    // hanging scroll unrolling downwards\n    const sw = port ? W * 0.6 : Math.min(W * 0.32, H * 0.42), sh = H * (port ? 0.8 : 0.86);\n    const cx = W / 2, y0 = H / 2 - sh / 2 + H * 0.03;\n    const rodH = sw * 0.06;\n    // cord + hook\n    env.line([[cx - sw * 0.28, y0], [cx, y0 - H * 0.06], [cx + sw * 0.28, y0]], sc.sub, Math.max(1.5, u * 0.0025), a, false);\n    env.circle(cx, y0 - H * 0.06, u * 0.006, sc.fg, null, 0, a, false);\n    const yb = y0 + sh * Math.max(0.03, open);\n    ctx.save(); ctx.beginPath(); ctx.rect(cx - sw, y0 - 2, sw * 2, yb - y0 + 2); ctx.clip();\n    env.rect(cx - sw / 2, y0, sw, sh, mountC, a, false);\n    // 一文字 strips + paper\n    const pt = y0 + sh * 0.2, pb = y0 + sh * 0.84, pw = sw * 0.78;\n    env.rect(cx - pw / 2 - sw * 0.02, pt - sh * 0.03, pw + sw * 0.04, pb - pt + sh * 0.06, goldC, a, false);\n    env.rect(cx - pw / 2, pt, pw, pb - pt, C.fill, a, false);\n    const fb = fitBlock(t0, p.font, pw * 0.82, (pb - pt) * 0.86, { vertical: true, lead: 1.35, track: 0.08 }, 2);\n    const size = Math.min(fb.size, pw * 0.5);\n    const mm = meas(fb.text, p.font, size, { vertical: true, lead: 1.35, track: 0.08 });\n    const ty = pt + ((pb - pt) - mm.h) * 0.4;\n    bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: cx, y: ty, vertical: true, align: 'left', lead: 1.35, track: 0.08, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.2) });\n    if (p.seal) {\n      // seal below-left of the last column, like a signature stamp\n      const ss = Math.min(Math.max(size * 0.42, pw * 0.1), pw * 0.16);\n      const sxx = Math.max(cx - pw / 2 + ss * 0.3, cx - mm.w / 2 - ss * 1.1), syy = Math.min(pb - ss * 1.3, ty + mm.h - ss * 0.6);\n      const sa = a * J.clamp((env.lt - 0.7) * 4);\n      env.rect(sxx, syy, ss, ss, seal, sa, false);\n      env.rect(sxx + ss * 0.18, syy + ss * 0.18, ss * 0.64, ss * 0.64, J.mix(seal, C.fill, 0.35), sa * 0.5, false);\n    }\n    ctx.restore();\n    // top rod and bottom roller with knobs\n    env.rrect(cx - sw * 0.53, y0 - rodH * 0.5, sw * 1.06, rodH, rodH * 0.4, rodC, a, false);\n    env.rrect(cx - sw * 0.55, yb - rodH * 0.3, sw * 1.1, rodH * 1.3, rodH * 0.5, rodC, a, false);\n    env.rrect(cx - sw * 0.62, yb - rodH * 0.45, sw * 0.08, rodH * 1.6, rodH * 0.3, goldC, a, false);\n    env.rrect(cx + sw * 0.54, yb - rodH * 0.45, sw * 0.08, rodH * 1.6, rodH * 0.3, goldC, a, false);\n    return bb ? box(cx - sw / 2, y0, cx + sw / 2, y0 + sh) : null;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": null
+    },
+    "after": {
+      "inputs": {
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "lineText": "風の先へ",
+        "note": "",
+        "params": {
+          "font": "brush",
+          "variant": "kake",
+          "mount": "ink",
+          "seal": true
+        },
+        "contentScale": 1,
+        "enter": "cut",
+        "exit": "cut",
+        "hold": "still",
+        "cam": "push",
+        "camP": {
+          "a": 0.022,
+          "dir": 1
+        },
+        "start": 0,
+        "end": 4,
+        "dur": 4,
+        "inDur": 0.35,
+        "outDur": 0.4,
+        "seed": 704,
+        "stagger": 0.02869506224989891,
+        "style": {
+          "name": "ノワール・クロマ",
+          "desc": "黒地・白文字・シアン/琥珀の色ズレ",
+          "schemes": [
+            {
+              "bg": "#151923",
+              "fg": "#ffffff",
+              "sub": "#a6b2c2",
+              "accent": "#ffce4d",
+              "accent2": "#7ee9ea",
+              "ink": "#e6edf7",
+              "dim": "#384354",
+              "ghostA": "#e9529e",
+              "ghostB": "#4bcade"
+            }
+          ],
+          "fonts": {
+            "display": [
+              "gothic_black",
+              "dela",
+              "zenkaku"
+            ],
+            "serif": [
+              "mincho_light",
+              "mincho"
+            ],
+            "body": [
+              "gothic_med"
+            ],
+            "mono": [
+              "mono"
+            ]
+          },
+          "texture": {
+            "paper": 0
+          },
+          "ghost": 0,
+          "bias": {
+            "layout": {
+              "vcols": 2,
+              "condensed": 2,
+              "marquee": 1.6,
+              "tile": 1.4,
+              "center": 1.2
+            },
+            "enter": {
+              "assemble": 2.2,
+              "slice": 1.8,
+              "stretch": 1.4
+            },
+            "exit": {
+              "explode": 1.8,
+              "fall": 1.2,
+              "drift": 1.4
+            }
+          },
+          "decor": {
+            "rings": 0.8,
+            "hud": 0.4,
+            "slash": 0.6
+          },
+          "hud": false,
+          "glow": 0
+        },
+        "fx": {
+          "motion": 0.65,
+          "glitch": 0.55,
+          "chroma": 0,
+          "decor": 0.5,
+          "density": 0.55,
+          "texture": 0,
+          "flash": true,
+          "onTwos": true,
+          "koma": 0,
+          "hud": "auto",
+          "bgSwitch": 0.35
+        }
+      },
+      "sourceIdentity": "render(env) {\n    const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);\n    const objectScale = env.cut.placementLayoutsC ? (env.cut.layoutCRecipe?.objectScale ?? 1) : 1;\n    const out = tout(env);\n    const C = card(sc);\n    const t0 = vtext(env.cut.text);\n    const mountC = J.mix(plateCol(sc, p.mount === 'accent' ? [sc.accent, sc.ink] : p.mount === 'ink' ? [sc.ink, sc.accent] : [sc.sub, sc.ink]), darkest(sc), 0.3);\n    const goldC = J.mix(plateCol(sc, [sc.accent, sc.accent2, sc.sub], mountC, 1.5), mountC, 0.25);\n    const rodC = J.mix(darkest(sc), sc.sub, 0.35);\n    const seal = plateCol(sc, [sc.accent, sc.accent2], C.fill, 1.6);\n    const open = E.inOutCubic(J.clamp((ltU(env) - 0.08) / 0.7)) * (1 - E.inOutCubic(J.clamp(pOutU(env) / 0.85)));\n    const a = tin(env, 0, 0.2, E.outCubic) * (1 - J.clamp((env.pOut - 0.8) / 0.2));\n    if (a <= 0.01) return null;\n    let bb = null;\n    if (p.variant === 'yoko' && !port) {\n      // horizontal scroll unrolling right → left\n      const paperMeasure = env.cut.placementLayoutsC ? (env.cut.layoutCRecipe?.paperMeasure ?? 1) : 1;\n      const sw = W * 0.86 * objectScale * paperMeasure, sh = Math.min(H * 0.56, W * 0.86 * 0.4) * objectScale;\n      const x1 = W / 2 + sw / 2, y0 = H / 2 - sh / 2;\n      const xr = x1 - sw * open;\n      const rodW = sh * 0.07;\n      ctx.save(); ctx.beginPath(); ctx.rect(xr, y0 - sh, x1 - xr + rodW, sh * 3); ctx.clip();\n      env.rect(x1 - sw, y0, sw, sh, mountC, a, false);\n      const px0 = x1 - sw + sw * 0.08, pw = sw * 0.84, py0 = y0 + sh * 0.12, ph2 = sh * 0.76;\n      env.rect(px0 - sh * 0.02, py0 - sh * 0.02, pw + sh * 0.04, ph2 + sh * 0.04, goldC, a, false);\n      env.rect(px0, py0, pw, ph2, C.fill, a, false);\n      const fb = fitBlock(t0, p.font, pw * 0.8, ph2 * 0.86, { vertical: true, lead: 1.4, track: 0.06 }, 4);\n      const size = Math.min(fb.size, ph2 * 0.4);\n      const mm = meas(fb.text, p.font, size, { vertical: true, lead: 1.4, track: 0.06 });\n      bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:px0,x1:px0+pw,y0:py0,y1:py0+ph2}} : {}), text: fb.text, font: p.font, size, x: px0 + pw / 2 + mm.w * 0.1, y: py0 + (ph2 - mm.h) / 2, vertical: true, align: 'left', lead: 1.4, track: 0.06, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.25) });\n      if (p.seal) env.rect(px0 + pw / 2 - mm.w * 0.5 - size * 0.7, py0 + (ph2 + mm.h) / 2 - size * 0.55, size * 0.45, size * 0.45, seal, a * J.clamp((env.lt - 0.6) * 4), false);\n      ctx.restore();\n      // rollers\n      env.rrect(x1, y0 - rodW * 0.8, rodW, sh + rodW * 1.6, rodW * 0.4, rodC, a, false);\n      env.rrect(xr - rodW, y0 - rodW * 1.4, rodW * 1.3, sh + rodW * 2.8, rodW * 0.5, rodC, a, false);\n      return bb;\n    }\n    // hanging scroll unrolling downwards\n    const sw = (port ? W * 0.6 : Math.min(W * 0.32, H * 0.42)) * objectScale, sh = H * (port ? 0.8 : 0.86) * objectScale;\n    const cx = W / 2, y0 = H / 2 - sh / 2 + H * 0.03;\n    const rodH = sw * 0.06;\n    // cord + hook\n    env.line([[cx - sw * 0.28, y0], [cx, y0 - H * 0.06], [cx + sw * 0.28, y0]], sc.sub, Math.max(1.5, u * 0.0025), a, false);\n    env.circle(cx, y0 - H * 0.06, u * 0.006, sc.fg, null, 0, a, false);\n    const yb = y0 + sh * Math.max(0.03, open);\n    ctx.save(); ctx.beginPath(); ctx.rect(cx - sw, y0 - 2, sw * 2, yb - y0 + 2); ctx.clip();\n    env.rect(cx - sw / 2, y0, sw, sh, mountC, a, false);\n    // 一文字 strips + paper\n    const pt = y0 + sh * 0.2, pb = y0 + sh * 0.84, pw = sw * 0.78;\n    env.rect(cx - pw / 2 - sw * 0.02, pt - sh * 0.03, pw + sw * 0.04, pb - pt + sh * 0.06, goldC, a, false);\n    env.rect(cx - pw / 2, pt, pw, pb - pt, C.fill, a, false);\n    const fb = fitBlock(t0, p.font, pw * 0.82, (pb - pt) * 0.86, { vertical: true, lead: 1.35, track: 0.08 }, 2);\n    const size = Math.min(fb.size, pw * 0.5);\n    const mm = meas(fb.text, p.font, size, { vertical: true, lead: 1.35, track: 0.08 });\n    const ty = pt + ((pb - pt) - mm.h) * 0.4;\n    bb = J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:{x0:cx-pw/2,x1:cx+pw/2,y0:pt,y1:pb}} : {}), text: fb.text, font: p.font, size, x: cx, y: ty, vertical: true, align: 'left', lead: 1.35, track: 0.08, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.2) });\n    if (p.seal) {\n      // seal below-left of the last column, like a signature stamp\n      const ss = Math.min(Math.max(size * 0.42, pw * 0.1), pw * 0.16);\n      const sxx = Math.max(cx - pw / 2 + ss * 0.3, cx - mm.w / 2 - ss * 1.1), syy = Math.min(pb - ss * 1.3, ty + mm.h - ss * 0.6);\n      const sa = a * J.clamp((env.lt - 0.7) * 4);\n      env.rect(sxx, syy, ss, ss, seal, sa, false);\n      env.rect(sxx + ss * 0.18, syy + ss * 0.18, ss * 0.64, ss * 0.64, J.mix(seal, C.fill, 0.35), sa * 0.5, false);\n    }\n    ctx.restore();\n    // top rod and bottom roller with knobs\n    env.rrect(cx - sw * 0.53, y0 - rodH * 0.5, sw * 1.06, rodH, rodH * 0.4, rodC, a, false);\n    env.rrect(cx - sw * 0.55, yb - rodH * 0.3, sw * 1.1, rodH * 1.3, rodH * 0.5, rodC, a, false);\n    env.rrect(cx - sw * 0.62, yb - rodH * 0.45, sw * 0.08, rodH * 1.6, rodH * 0.3, goldC, a, false);\n    env.rrect(cx + sw * 0.54, yb - rodH * 0.45, sw * 0.08, rodH * 1.6, rodH * 0.3, goldC, a, false);\n    return bb ? box(cx - sw / 2, y0, cx + sw / 2, y0 + sh) : null;\n  }",
+      "nativeHasTrajectory": false,
+      "actualArea": null,
+      "trajectory": {
+        "version": 1,
+        "kind": "layouts-c-source-native",
+        "revision": 4,
+        "evaluationRange": [
+          -0.041666666666666664,
+          4.82
+        ],
+        "holdWindow": [
+          1,
+          3.6
+        ],
+        "units": [
+          {
+            "owner": "kakejiku.composition",
+            "envelopes": [
+              [
+                [
+                  314.93211,
+                  -8.798099999999977
+                ],
+                [
+                  645.06789,
+                  -8.798099999999977
+                ],
+                [
+                  645.06789,
+                  561.50977425
+                ],
+                [
+                  314.93211,
+                  561.50977425
+                ]
+              ]
+            ],
+            "stageEnvelopes": [
+              [
+                [
+                  314.93211,
+                  -8.798099999999977
+                ],
+                [
+                  645.06789,
+                  -8.798099999999977
+                ],
+                [
+                  645.06789,
+                  561.50977425
+                ],
+                [
+                  314.93211,
+                  561.50977425
+                ]
+              ]
+            ],
+            "segments": [
+              {
+                "start": 0,
+                "end": 4,
+                "region": "fixture",
+                "circle": {
+                  "cx": 480,
+                  "cy": 226.79999999999998,
+                  "r": 108
+                },
+                "from": [
+                  261.3636385,
+                  0
+                ],
+                "to": [
+                  261.3636385,
+                  0
+                ],
+                "status": "safe-hold",
+                "decision": "certified-hold-adapter",
+                "safetyScope": "source-owned-object-entry-exit-relaxed",
+                "failure": null,
+                "holdWindow": [
+                  1,
+                  3.6
+                ],
+                "composition": {
+                  "objectScale": 0.9,
+                  "paperMeasure": 1,
+                  "strategy": "source-paper-size-and-column-measure"
+                },
+                "quality": {
+                  "minNativeFontRatio": 0.9000000000000002,
+                  "minPrimaryPx": 54.255939622641506,
+                  "floor": 18.900000000000002,
+                  "secondaryFloor": 12,
+                  "nativeFontSizePreserved": false
+                },
+                "envelopes": [
+                  [
+                    [
+                      329.33646150000004,
+                      14.9878875
+                    ],
+                    [
+                      630.6635385,
+                      14.9878875
+                    ],
+                    [
+                      630.6635385,
+                      536.120721825
+                    ],
+                    [
+                      329.33646150000004,
+                      536.120721825
+                    ]
+                  ]
+                ],
+                "stageEnvelopes": [
+                  [
+                    [
+                      329.33646150000004,
+                      14.9878875
+                    ],
+                    [
+                      630.6635385,
+                      14.9878875
+                    ],
+                    [
+                      630.6635385,
+                      536.120721825
+                    ],
+                    [
+                      329.33646150000004,
+                      536.120721825
+                    ]
+                  ]
+                ],
+                "attempts": [
+                  {
+                    "strategy": "native-owned-joint-translation",
+                    "objectScale": 1,
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 60.284377358490545,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "paperMeasure": 0.85,
+                    "objectScale": 1,
+                    "strategy": "source-paper-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 60.284377358490545,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "paperMeasure": 0.7,
+                    "objectScale": 1,
+                    "strategy": "source-paper-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 60.284377358490545,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "paperMeasure": 0.6,
+                    "objectScale": 1,
+                    "strategy": "source-paper-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 60.284377358490545,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "paperMeasure": 0.5,
+                    "objectScale": 1,
+                    "strategy": "source-paper-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 60.284377358490545,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "paperMeasure": 0.4,
+                    "objectScale": 1,
+                    "strategy": "source-paper-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 1,
+                      "minPrimaryPx": 60.284377358490545,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": true
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "paperMeasure": 1,
+                    "strategy": "source-paper-size-and-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9500000000000002,
+                      "minPrimaryPx": 57.270158490566025,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "paperMeasure": 0.85,
+                    "strategy": "source-paper-size-and-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9500000000000002,
+                      "minPrimaryPx": 57.270158490566025,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "paperMeasure": 0.7,
+                    "strategy": "source-paper-size-and-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9500000000000002,
+                      "minPrimaryPx": 57.270158490566025,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "paperMeasure": 0.6,
+                    "strategy": "source-paper-size-and-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9500000000000002,
+                      "minPrimaryPx": 57.270158490566025,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "paperMeasure": 0.5,
+                    "strategy": "source-paper-size-and-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9500000000000002,
+                      "minPrimaryPx": 57.270158490566025,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.95,
+                    "paperMeasure": 0.4,
+                    "strategy": "source-paper-size-and-column-measure",
+                    "status": "insufficient-space",
+                    "reason": "unit-envelope-exceeds-stage",
+                    "quality": {
+                      "minNativeFontRatio": 0.9500000000000002,
+                      "minPrimaryPx": 57.270158490566025,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  },
+                  {
+                    "objectScale": 0.9,
+                    "paperMeasure": 1,
+                    "strategy": "source-paper-size-and-column-measure",
+                    "status": "safe",
+                    "reason": null,
+                    "quality": {
+                      "minNativeFontRatio": 0.9000000000000002,
+                      "minPrimaryPx": 54.255939622641506,
+                      "floor": 18.900000000000002,
+                      "secondaryFloor": 12,
+                      "nativeFontSizePreserved": false
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "measurementSupported": true,
+        "safety": "certified-hold-adapter",
+        "explicitSizePreserved": true,
+        "sourceProof": {
+          "sourceMapping": {
+            "complete": true,
+            "source": "風の先へ",
+            "main": [
+              {
+                "text": "風の先へ",
+                "font": "brush",
+                "size": 60.284377358490545,
+                "mi": 6.969840255380682
+              }
+            ],
+            "metadata": [],
+            "owned": [
+              {
+                "kind": "line",
+                "owner": "cut:0",
+                "order": 0,
+                "role": "primary"
+              },
+              {
+                "kind": "circle",
+                "owner": "cut:0",
+                "order": 1,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "cut:0",
+                "order": 2,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "cut:0",
+                "order": 3,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "cut:0",
+                "order": 4,
+                "role": "primary"
+              },
+              {
+                "kind": "item",
+                "owner": "kakejiku.unit.6.969840255380682",
+                "order": 5,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "cut:0",
+                "order": 6,
+                "role": "primary"
+              },
+              {
+                "kind": "rect",
+                "owner": "cut:0",
+                "order": 7,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 8,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 9,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 10,
+                "role": "primary"
+              },
+              {
+                "kind": "rrect",
+                "owner": "cut:0",
+                "order": 11,
+                "role": "primary"
+              }
+            ],
+            "rule": "Retain native glyph occurrences, real replica/metadata, every paper, line, roller, clip and painter order"
+          },
+          "recipe": "native-paper-joint-translation-then-proportional-object-size",
+          "interval": "open in [0,1]; mount, paper, seal, hook and cord are fixed. Native clips only reveal subsets. Moving roller centers lie between the native full-open endpoints; the full event rectangle covers all roller/knob extremes.",
+          "stageProof": "All source ink enclosed by the full-open event rectangle plus camera interval; the identical matrix translates paper, clips, glyphs, metadata, rollers and cords",
+          "nativeFontSizePreserved": false,
+          "ownedShapesPreserved": true,
+          "candidateBudget": {
+            "reconstructed": 13,
+            "cacheHits": 1,
+            "rejected": 0,
+            "uniqueRecipes": 13,
+            "perCutLimit": 54,
+            "nativeProgramReusedForBase": true
+          },
+          "limitations": "Cut/still text motion only; unsupported source domains fail explicitly"
+        },
+        "sourceAdapter": "c-japanese"
+      }
+    }
+  },
+  "inputSHA256": "6b04d82f17ef1b8cc11b43486ebc5d0e3579d1efc8d3f402f1144b25e7729493",
+  "time": "2026-10-22T16:11:27.393Z",
+  "scope": "Local independent immutable native before/after; no image inspection by implementation agent; no public operation",
+  "baseline": {
+    "path": "tasks/evidence/AVOID-008/native01/index.html.before.gz",
+    "gzipSHA256": "fdf2a22d260ad55ff57b8c875387d23fc36dca16d36294f8fd304c13a5c5c6fa",
+    "htmlSHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57"
+  },
+  "sourceHashes": {
+    "src/09j_layoutsC_japanese.js": "fe1a9911e87786e4faaf14e734c353ac96c36fb80d15e97ae91a18f0a27e444f",
+    "src/11p_layoutsC.js": "c7ce86ec45a85497e2be73987ed6cb41c9a9350602822f3cee1b8c3c1f703fb8",
+    "src/09g_layoutsC_placement.js": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+    "index.html": "747cc65dd7e11a10d6866385181d755e0e074819ad3582e623b5e1b6debd45d3",
+    "dev/avoidance/layouts-c-japanese-capture.cjs": "6847706278247759b19790f32bb2ebce4fcd4e739e2e3952ac5b0fffe482784e"
+  },
+  "assets": {
+    "before.png": {
+      "sha256": "cb8475e236e8c2131e513a8a9b2efd16d76078ca2d3c96d5c4a991447be5fbe3",
+      "bytes": 356056
+    },
+    "after.png": {
+      "sha256": "b98e8828180b458b3b3418b011fa1edad1bd7356f6f7881f2121937b9cc5d236",
+      "bytes": 359785
+    },
+    "before.mp4": {
+      "sha256": "df9188c505232ee927e0095cf1cd1886f455be60dfe78ab215fb2c13ad778b70",
+      "bytes": 41774
+    },
+    "after.mp4": {
+      "sha256": "30a4ba43ee64bf0632da597c8781542adbbf855b86fe4f6a7613b6a9121105c8",
+      "bytes": 41217
+    },
+    "index.html": {
+      "sha256": "c6a9e88010e2ee92c83faadcc8d4817c700bf4fa75e5736f36fb7bcb3bf33bbe",
+      "bytes": 882
+    }
+  }
+}
