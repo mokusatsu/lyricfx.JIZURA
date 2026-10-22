@@ -1,6 +1,6 @@
 # AVOID-006 拡張Aの26通常レイアウトの対応
 
-- 状態: 実環境検証待ち
+- 状態: 完了
 - 段階: 通常軌道
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -59,7 +59,7 @@
 
 - [x] 全H-IDに対応する同条件の変更前後キャプチャと比較HTMLを生成し、Pagesで全画像の表示・ハッシュ一致・前後ラベル・項目リンクを確認した。新機能不在/条件差/仕様見本を明示し、画像比較と必要な実操作を含む依頼を用意した。
 - [x] workへコミット・プッシュした対象版がGitHub Pagesへ反映され、日英HTMLと確認fixtureの一致、公開版の起動/描画を確認した。
-- [ ] 親がコードとテスト結果をレビューし、指摘を解消した。人間の動作確認が必要なら比較URL・操作・期待結果を提示し、必須項目のOKと動作判定を記録した。不要なら利用者の委任に基づく親の判断理由と完了判定を記録した。
+- [x] 親がコードとテスト結果をレビューし、指摘を解消した。人間の動作確認が必要なら比較URL・操作・期待結果を提示し、必須項目のOKと動作判定を記録した。不要なら利用者の委任に基づく親の判断理由と完了判定を記録した。
 
 - [x] 26IDの対応表に方式・対象副歌詞・例外・frame証拠が揃う。
 - [x] 主歌詞の円侵入を検出する検証が各経路を通り、反復補助は全ステージ上の配置を維持して018のマスク対象へ渡る。
@@ -175,7 +175,7 @@ schema4公開工具は固定旧ca1fの28条件smokeでcapture、native/UI各56�
 - [x] 履歴を渡さないsolによる最終画像・動画・診断UI照合を完了した。範囲と限界は下記に記録。
 - [x] 最終indexからの公式Jekyll実出力が容量・既存URL維持・全bytes/hashの条件を満たした。
 - [x] workへcommit/pushした04の全公開画像・共有先・manifest・日英HTMLと実起動を確認した。
-- [ ] 新8演出の必要な人間動作確認を取得し、親が最終完了判定を記録した。旧18例への承認は保持し、新8例へ流用しない。
+- [x] 新8演出の受入と親の最終完了判定を記録した。今回film/ticketの人間OKと続行指示、他6の追加人間再確認不要という親判断を区別し、旧18承認を新8の人間OKへ流用しない。
 
 manifest SHA-256 `2d9a87544a5a8b4818591b0daeb0b1ccd659c241d52d1383111422aca579e01d`。[ローカル検証](evidence/AVOID-006/adaptive-revision/parent-final/schema4-final-local/summary.json)、[最終04の公開済み動作確認依頼](reviews/AVOID-006-local-20261020-04.md)。commit `e15a330909a34e786abb5d13ee190e216c310413` を公開検証済みであり、007以降は未着手。保存試験の既知の初期cut不一致は013へ引継ぎ、保存成功として扱わない。
 
@@ -372,3 +372,11 @@ Pages run [39457255823](https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs
 - [公開07 validator結果](evidence/AVOID-006/film-ticket-edges/public07-validation-01.json)はpassed:true/acceptanceComplete:true。raw20 assets＋manifest計21件HTTP200/hash一致、18動画のplay/pause・2.6秒decoded seek・ended、日英1280×900/390×844の同時再生・停止/幅確認を通過。minDecoded92/drop0/corrupt0。公開nativeFrames:0で、native54再描画は既存local結果、after864 PNG parity mismatch0は公開結果にも記録される。再撮影や公開環境でのnative再描画を主張しない。
 - [公開日英アプリ起動/描画log](evidence/AVOID-006/film-ticket-edges/public07-site-smoke.log)は両言語passed・current JA a3c4/EN3d1e hash一致・歌詞描画を確認。[通常HTTPS結果](evidence/AVOID-006/film-ticket-edges/public07-normal-https.json)は2026-10-22 11:47 JST、継承proxy/既定CA・TLS検証を維持しJA/EN/07manifestの3対象HTTP200/TLSverify0・完全byte一致。
 - [現行公開確認依頼](reviews/AVOID-006-local-20261021-07.md)をfilm帯の左右/上下端と穴列・ticket終盤切離しの見え方確認へ更新。技術上の未解決失敗はないが、人間の今回回答は未受領なので006は実環境検証待ちを維持。縦film r.2のinsufficient-space診断をOK対象/認証成功へ含めない。旧18のみ承認/他6新例未回答・007以降未着手・既定017/補助018未完、保存013のexpected0/actual1既知failureは維持する。過去05/06失敗や公開前の未完記述は履歴であり、現在の公開結果は本節を正本とする。
+
+## 2026-10-22 最終受入・完了判定
+
+利用者の「確認OKです。タスクリストの続きを順次実装していってください。」を公開07のfilm/ticket修正へのOKと後続への続行指示として記録した。[受入記録](evidence/AVOID-006/film-ticket-edges/acceptance-20261022.json)。公開07の全raw21 hash・18動画・日英起動描画、最終metadata版の公開一致まで成功済み。機能・数値・正式性能・親コード/結果レビューの未解決指摘はない。
+
+親は最新の続行指示と委任に基づき、旧18の受入、全26代表の原寸MP4公開検証、新8の独立sol視覚証拠、他6の演出構成が今回修正で変わらないことと回帰成功を合わせ、他6への追加人間再確認は不要と判定した。これは他6の項目別人間OKを受けた記録ではなく、親の根拠付き判定である。過去の「他6未回答」は履歴として保持する。
+
+全必須条件を満たしたためAVOID-006を完了にし、次のAVOID-007を開始する。縦film r=.2等の明示診断を成功例に含めず、既定切替017・補助018・保存013の既知不一致は後続へ保持する。

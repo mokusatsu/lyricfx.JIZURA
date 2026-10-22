@@ -251,3 +251,7 @@ local/native54 playback、新05のPages/公開全検証と人間受入は未完�
 - [公開07 validator結果](public07-validation-01.json)はpassed:true/acceptanceComplete:true。raw20 assets＋manifest計21件HTTP200/hash一致、18動画のplay/pause・2.6秒decoded seek・ended、日英1280×900/390×844の同時再生・停止/幅確認を通過。minDecoded92/drop0/corrupt0。公開nativeFrames:0で、native54再描画は既存local結果、after864 PNG parity mismatch0は公開結果にも記録される。再撮影や公開環境でのnative再描画を主張しない。
 - [公開日英アプリ起動/描画log](public07-site-smoke.log)は両言語passed・current JA a3c4/EN3d1e hash一致・歌詞描画を確認。[通常HTTPS結果](public07-normal-https.json)は2026-10-22 11:47 JST、継承proxy/既定CA・TLS検証を維持しJA/EN/07manifestの3対象HTTP200/TLSverify0・完全byte一致。
 - [現行公開確認依頼](../../../reviews/AVOID-006-local-20261021-07.md)をfilm帯の左右/上下端と穴列・ticket終盤切離しの見え方確認へ更新。技術上の未解決失敗はないが、人間の今回回答は未受領なので006は実環境検証待ちを維持。縦film r.2のinsufficient-space診断をOK対象/認証成功へ含めない。旧18のみ承認/他6新例未回答・007以降未着手・既定017/補助018未完、保存013のexpected0/actual1既知failureは維持する。過去05/06失敗や公開前の未完記述は履歴であり、現在の公開結果は本節を正本とする。
+
+## 2026-10-22 最終受入と006完了
+
+[受入・根拠付き判定](acceptance-20261022.json)に利用者の最新OK/続行指示を記録。07film/ticketの人間受入、他6の追加人間再確認不要という親の委任判断を分ける。原寸視覚/全26MP4公開/新旧回帰・数値・正式性能/公開全hash再生・日英描画が揃い、技術上未解決指摘なし。006完了、007へ順次進行。保存failureや018/017未完を006成功へ混ぜない。
