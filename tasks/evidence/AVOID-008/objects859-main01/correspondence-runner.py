@@ -1,0 +1,8 @@
+import json,gzip,hashlib,gc
+from pathlib import Path
+D=Path('tasks/evidence/AVOID-008/objects859-main01');old=Path('tasks/evidence/AVOID-008/objects/integrated01/matrix01.json.gz');cur=D/'matrix01.json';sha=lambda b:hashlib.sha256(b).hexdigest();canon=lambda x:sha(json.dumps(x,sort_keys=True,separators=(',',':')).encode());fields=['spec','safety','corpus','eventKinds','bodyPhases','segments','observations','candidateBudget']
+o=json.loads(gzip.decompress(old.read_bytes())); prior=[{k:canon(r.get(k)) for k in fields} for r in o['rows']];oldsummary=o['summary'];del o;gc.collect();n=json.loads(cur.read_text());rows=[]
+for i,r in enumerate(n['rows']):
+ equal={k:canon(r.get(k))==prior[i][k] for k in fields};assert all(equal.values()),(i,r['spec'],equal);rows.append({'case':i,'layout':r['spec']['layout'],'safety':r['safety'],**equal})
+assert len(rows)==333;assert n['summary']['safe']==oldsummary['safe']==93;assert n['summary']['insufficient']==oldsummary['insufficient']==236;assert n['summary']['unsupported']==oldsummary['unsupported']==4
+result={'scope':'Current main/fixed859 integrated333 corpus, source-phase observations and complete selected geometric segments/recipe/attempts correspondence; execution times excluded. Nine previously downgraded vinyl conditions remain insufficient; old101safe is not carried.','oldGzipSHA256':sha(old.read_bytes()),'currentRawSHA256':sha(cur.read_bytes()),'rows':rows,'summary':{k:n['summary'][k] for k in ['cases','safe','insufficient','unsupported','controls','negatives']},'passed':True};(D/'correspondence01.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'all333Exact':True,'fields':fields,'summary':result['summary']}))

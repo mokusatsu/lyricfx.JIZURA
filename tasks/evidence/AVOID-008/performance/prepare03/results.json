@@ -1,0 +1,259 @@
+{
+  "start": "2026-10-22T18:40:26.742Z",
+  "mode": "--prepare",
+  "config": {
+    "diagnostic": false,
+    "formal": false,
+    "sizes": [
+      100
+    ],
+    "onStates": [
+      true,
+      false
+    ],
+    "planningWarmup": 3,
+    "planningSamples": 1,
+    "renderFrames": 80,
+    "renderWarmup": 16,
+    "stage": [
+      3200,
+      1080
+    ],
+    "canvas": [
+      1600,
+      540
+    ],
+    "renderScale": 0.5,
+    "viewport": [
+      1280,
+      720
+    ],
+    "DPR": 1,
+    "cutStart": 1.25,
+    "cutDuration": 4,
+    "seed": 704,
+    "maxWallMs": 1800000,
+    "limits": {
+      "standard": {
+        "regions": 100,
+        "cuts": 100
+      },
+      "stress": {
+        "regions": 1000,
+        "cuts": 1000
+      },
+      "planningP95MaxBaselineFactor": 2,
+      "additionalRenderP95Ms": 3,
+      "environment": "same browser, local font, viewport and warmup; compare in 004/017",
+      "bufferBudget": "004/018 must measure lifetime and impose max buffers; no per-glyph stage buffer"
+    }
+  },
+  "baseline": {
+    "commit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+    "sha256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57",
+    "path": "baseline2bb-index.html.gz",
+    "kind": "Immutable2bb native J.plan/render; no C API is injected or simulated. This is not the B current-native-only source variant."
+  },
+  "candidate": {
+    "HEAD": "85928e6f75c2116d47c768481d6feba1a09b463b",
+    "sha256": "43bd766a974d9092de970090c14ad6ca35fd0c0b7911d574d1a3937a5111cb75",
+    "sourceBundleEmbedded": true,
+    "sourceBundleSHA256": "f938d10df7e9e0552a1c1ffc16b3e2f762857a2c9f58a7f7398ff6332cd37509",
+    "scope": "Current branch has23 C recipes including oldnameTag; missing Japanese11/NumberedSwiss updates remain explicit, no C34 success claim"
+  },
+  "pins": {
+    "index.html": "43bd766a974d9092de970090c14ad6ca35fd0c0b7911d574d1a3937a5111cb75",
+    "en/index.html": "7fe89c12efb11661608e330117285b60193f6f8887b0e02e4845a9f7fd4bee75",
+    "dev/browser.cjs": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+    "dev/package.json": "add82c136451f4b9430617d9e637b8d8def0312db464f6e0fbad073e5fcd3e91",
+    "dev/package-lock.json": "49305ffe0e14e58c15de5069c03d17760ffc7c544a4952ac3267451004064a66",
+    "dev/avoidance/contract.json": "aba40d0991c671225dcd264e3e046f44b7c98ffe2869a5371fa4e19b8178b8da",
+    "build.py": "3d5e1b4b2744f1b33bdf6fe5c647bb3fd69ae91d0a7555cc77c45e51a8c1ce4e",
+    "assets/effect-preview.png": "930e34e294ca9e3cf434086ae6b8bc10fb309b84c6d9b9f98db066c0b6cb961d",
+    "dev/avoidance/layouts-c-perf.cjs": "dfb94e853a230527b319c6b5c74833a30f73ee29e901a9f725124e9d9fc619c5",
+    "dev/avoidance/layouts-c-perf-fixture.js": "7a35fb7a4c692906f0d9422086cb035637a204acb49df3557dea1a205959a938",
+    "dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+    "dev/avoidance/layouts-b-perf.cjs": "907e1a81f08be98c019d7db65a818a4218eda22bf1e332ceddccac7dd9dea75e",
+    "dev/avoidance/layouts-b-test-harness.cjs": "d0d76e2d5f76c5ed5a52aef821943097e401a3d800a21dd53c60b1873569217f",
+    "dev/avoidance/layouts-b-runtime-identity.cjs": "7dbe48452023a95f9680ce604a8dcdd62b4c68ad2a0854ed1ad8373ae2e8b8f3",
+    "dev/avoidance/stage-perf.cjs": "5e6faaea97663fa25b514d7ec08ea49ddf39d119327598c49fc05b03cb3ea7d4",
+    "dev/avoidance/fx-perf.cjs": "ea4595e0e512a1f45229bb953d78e03b22ab57c50fef2d955a931dbc9840bf82",
+    "tasks/AVOID-002.md": "6193c0d3569804231749eddc74e202a12187b8f336b289779c837918a7fcfb28",
+    "tasks/AVOID-004.md": "2aab7ce18a9cd1ee36c8e0bb87c29ef2f69c26aae07dac484ae623dc5843fc2f",
+    "src/01_util.js": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+    "src/02_fonts.js": "3e687cfd1045349f36eb65f4fa802973ad4303f48b21069cf6dcc68a546c0415",
+    "src/02b_lang.js": "a0464cc32ec396e2198801387f3640ec217ec1d0ea790ee2e88dbafebd7fc770",
+    "src/03_text.js": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+    "src/04_styles.js": "29ecef9319dabebbadea198f3915c50bd76f2c48f1cf34d034c833106aa19ca7",
+    "src/05_anim.js": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+    "src/05b_registry.js": "ecaefd208377658bb23adca79c36e093a7b3fce796f5facdb7d10806f6619cea",
+    "src/06_layouts.js": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+    "src/07_decor.js": "9e0c6edc62ea6e0d220a5f5619e1ba10b35f776a45305fe1cde3288513fe4d24",
+    "src/08_planner.js": "608bf692d183fd5db2b4eecaa469d6278092be57796b5a3353175941bfddba37",
+    "src/08b_omakase.js": "0bcc4a74b12ea70a293cb6e3307c4fe62c8ddf391183bcbaceeb5747847bb870",
+    "src/08c_composition.js": "26ee97660d62e61eaf5817e7c0ad8afd465e976fb2213cadf6adb1c8b247572c",
+    "src/08ca_lyric_avoidance.js": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d",
+    "src/08cb_background_layouts.js": "9122c219b4013391a5cc14dbdb289a7e205daf6088b8e4ed744f00b64aef560e",
+    "src/08d_media.js": "bf175deb61f4a197eb28dc538f8daaae9da55efe6711dbec61adba0c38407ffd",
+    "src/08e_lyric_features.js": "54f4b361f23bf8f78e293cf11a570a3088bc209dd80e6acf52ea7cffdc1f5373",
+    "src/08e_media_effects.js": "eeb89f3b2424ad912ecc16d6f2affb186eb8c608a8b1a290d2b9c3d791b77f40",
+    "src/08eb_lyric_scene.js": "c88e6f489446ffb77eac5856217a5b0c3ff04684c1c11750e29fe3c7fece681a",
+    "src/08f_media_variations.js": "fa6c9db6aabf77de42dcd7dc87ff1f20cd401deaab541eddd5361548e247a38b",
+    "src/08g_media_decor.js": "68c7506146e71de5d89a691fb7738f23e86c847126a2f05fd887cfdcc6b395b6",
+    "src/08g_media_masks.js": "168fee9b91f7b24502daa16b101a5d65cd19a4c44377eb8f25c317812dbcaad8",
+    "src/08g_media_phases.js": "ac91c6ea9e355a11f5734304de7d75dd6427923b431f6162eb29ec0a2322ad6f",
+    "src/08g_media_rhythm.js": "1b7821f7b8e3a760a081ecfcc869b840dcff451a00b3cabac113ecb73201193c",
+    "src/08g_media_scenes.js": "e71facca3a86a25c9404ad35a44494e0bf0781cfcfcf64957f01a3c615fd3414",
+    "src/08h_cut_details.js": "bd8a814c97bb281a596d978478368061f5d596cb2dedcb6a57adb3eee1f07864",
+    "src/08i_effect_clipboard.js": "9f0e7b10c1688312298ce262a78174530cfeec940f66531efa11de8cb6cb405e",
+    "src/08j_cut_mask.js": "556e924f69fe9435d3d3bfe452aa6e9b130f20d316e0f852e2e6b309050eeb6c",
+    "src/08k_detail_search.js": "6472c8ad6013e5d14a0e3abf65fc32e39ee030e213bb8fa05530858df45f2db9",
+    "src/08l_detail_labels.js": "895d35845cd1304502a9c3427ad0d697a024b10cf783d75169f5caa4333b67d8",
+    "src/08m_person_cutout.js": "5559074b5a08786097f273d84b0f652abb21455a0d0023df68692f5269016185",
+    "src/09_render.js": "d51a1ccca3a5b42d2204a401c57c859abf71a228aefd45e3a1dee14ecc7ea067",
+    "src/09a_placement.js": "13915d73407581fb3749c7d50a11b3a70103bbe1e70a55559d78427a6153e75a",
+    "src/09b_basic_placement.js": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+    "src/09c_layoutsA_placement.js": "ff603fe43f54296865ae59ab1268c581cbfbbf7a489d02aafbfda83221b03c36",
+    "src/09d_adaptive_placement.js": "ab3e8c727284eacbf642e4fdb2e71197aa6cfde7a68e1473450710289c05a595",
+    "src/09e_layoutsB_placement.js": "268e8f8132f70a9e9627a703656f56d00e50a7145b8b84b1eef31c2371d249d1",
+    "src/09f_layoutsB_editorial.js": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+    "src/09g_layoutsC_placement.js": "f9e268d728df0732866097f110624fc5aafc0e3ba7436697b978834b6cdec12f",
+    "src/09h_layoutsC_editorial.js": "42fda55319cf73064e6bfd47c4298bd7a51420b72f2440a858d82dfa4c4ac1c0",
+    "src/09i_layoutsC_objects.js": "5a96d21b632b3e0a962ea8e30b48c2abd1dd9d27a940d63d20493a67561e5dc9",
+    "src/10_audio.js": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57",
+    "src/11_export.js": "d05692567f7893a3258500838091fc0e8cf7536b4ae763f20d0b6aa91a59037f",
+    "src/11b_project_file.js": "9659b8d0bce2919830704c25ab230fc5a7faaad4c3d3783205dd9b5bd2630286",
+    "src/11p_bgcamB.js": "baad1dab7a4743b4eab351c9e9dfa76d9af5f4e00b29538ce41837a5628dd644",
+    "src/11p_decor.js": "b533343d8ad5ad114300fed174d4eb0dff092201c778a6697345157595b933a5",
+    "src/11p_decorB.js": "f49747910c456cb829bdfeffa5c0342898305a8e01eebfa8ac18b2cc279bcd62",
+    "src/11p_enter.js": "949b506310fd7f6f23a11f30691e0edc722ff1b953c157517093aec562644638",
+    "src/11p_enterB.js": "7896363367fb5e5d19c4ccd59cd76ac707328bf018a91b24a137562a421819ce",
+    "src/11p_exit.js": "a013c8d40ba71fa69ea1bfa0782d2a55b7a152aa91bc7c0f7d85a9e89dca0b2b",
+    "src/11p_exitB.js": "565ee042f3f3382b05bb1cfdde8cb140231dba21f7ab58001af45e37d1faaf2e",
+    "src/11p_fxB.js": "168dc3c65c197ddbe4252b9fbe013d6c35a5e7758cf95585ee34263b831d3101",
+    "src/11p_horror1.js": "792d6dace596a0503e1055d3bbf9e56d63dc00c7151a1fb350067f2faac9f033",
+    "src/11p_horror2.js": "828ff4c48181e9755c5e2a82be4e30cab491ca0614cc25d711131108af50b7e4",
+    "src/11p_horror3.js": "c99a0d0cef6cf2b246e84586d5a33ebc750d1ef659a1490f211e8316d2727853",
+    "src/11p_kinetic1.js": "012282d5f3d44ef99c1b5fa26dd85210b138c4ecc73f54084f929bc74bd0045e",
+    "src/11p_kinetic2.js": "8c0401cfc265b6fe79d83e6a056e1bed93f42ae60a17890db165058f842ffd45",
+    "src/11p_kinetic3.js": "c1905cb3a5fb7fb7a14e9984b7ee4ce6b435eddeaab89fb71742c0075b7b3393",
+    "src/11p_layoutsA.js": "9d2b6cda27b049e6b2594603c6dee25d930e09ba536274a21a5ace5ddc7bfcd5",
+    "src/11p_layoutsB.js": "6e9730f7647fe5ff0d0f28a9f795efa54475a77659b8975a22711b910cd82064",
+    "src/11p_layoutsC.js": "6142bb9f9d7824ddf6e56e6bc8500232088d96f6f0c4ed0620b83023d73a4172",
+    "src/11p_layoutsD.js": "563f2e90ca86a4196606c48b0ccd0b4e555e672de64781c1a3125d3fd2922978",
+    "src/11p_looks.js": "724f124e9b0dfac715bcffb56bbc0342ccc78fdc5f3151481b2c52583470afba",
+    "src/11p_styles.js": "a306862fa099e7fd39b2efe1b63a6d30b8abf0462e141a075cd7b9ec24106922",
+    "src/11p_treattrans.js": "139dadb053110d87439248116d7e2ccf5b8f629cdd72c6412313649fde76ee25",
+    "src/11p_typo1.js": "0a1c61c77ebdd61754120283078a1e79e339a3de5341974e9ac7b5bb5a2878da",
+    "src/11p_typo2.js": "0fefc16f3e3711da71763bf6f874d02532820e3bbf2f8fd9e327af1a107914e6",
+    "src/11p_typo3.js": "bf8f19513f94044faedf74b45601d6cffa467edb79e37542149d34213c03df77",
+    "src/11q_media_cameras.js": "23254987957792ef1acb612d5f2485401f31d5cb0ba50f31cc3de8d6754f8fd8",
+    "src/11q_sets.js": "c7089d50d5a3eeabd9e4b236812201e87e7f55c4fb22b2d6c06f1efb0d02fc76",
+    "src/11r_themes.js": "31fe85b17a3faf6c2ebe6a3e5a2badcd4807bf4de0ddfceac4e0668e24b5577c",
+    "src/11s_color_theme.js": "13221ae70b44a6b7222bbac3d32ee926b30f442427ca33c01ac35f905a847593",
+    "src/11s_decor_details.js": "40014b35c1f53fca227767bc6e758e69831b7c9e80a130b58bee3e5f000b64dc",
+    "src/11t_effect_preview.js": "2169525db51841181d477f84826145a1fe6c3de5a852f99ead95ededb65ee6ba",
+    "src/11u_effect_favorites.js": "bbe922b1edd9b3488163c69f0c6e99b62d98649b0a91e3923c02cdcc348872ae",
+    "src/11u_note_layouts.js": "8bd64c9068384332be36710653ed4bb171373f8ae81ed58f4f7bd0d2f1e1b783",
+    "src/11v_modal_scroll.js": "09e3742f65e7c1076b068aabb8d7fa018723a5377c65f49786a6b382df156ac8",
+    "src/11w_custom_draw.js": "00bc020f5cac3ea8dbe98421bebd35867fde0a83f71fdf656d9ec614747a62ad",
+    "src/11wa_custom_effects.js": "079f75f0117d35d1ebfb48d2a781dd52e7a74adc4811c4077eca9f320c3e0937",
+    "src/11x_favorite_api.js": "c46c2c7d751be5b8372b50e71ce80cdcc72fc9e3623a38173ee7dec57db0e37b",
+    "src/11y_short_export.js": "83589822ac6a2aba57210a185c2b45ccbf4b15599900a71942e6ebe84821b9f7",
+    "src/11z_layoutsC_transport.js": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+    "src/12_ui.js": "a61d2d2142e3535db0f6a5a4e0c423ad1dcff6285e04c1cc0e442d893b91e66d",
+    "src/13_sprite_extractor.js": "07fa6e11b6a02bafd555a0c50299efb993cdbb9e18df648d251bd7bbfa93ee39",
+    "dev/avoidance/layouts-c-objects-fonts-v2/LICENSE-DejaVu.txt": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9",
+    "dev/avoidance/layouts-c-objects-fonts-v2/dot.ttf": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c",
+    "dev/avoidance/layouts-c-objects-fonts-v2/dotgothic16-OFL.txt": "b6630c61ea078cacd7fabe37d14ffe557a0b45b06683374a9aa9e24262993e33",
+    "dev/avoidance/layouts-c-objects-fonts-v2/fonts-noto-cjk-copyright.txt": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b",
+    "dev/avoidance/layouts-c-objects-fonts-v2/fonts-noto-symbols-copyright.txt": "075f91382875da1c4b491f1facf2586f55448705133264d98ce15cab6211b125",
+    "dev/avoidance/layouts-c-objects-fonts-v2/fractions.ttf": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597",
+    "dev/avoidance/layouts-c-objects-fonts-v2/manifest.json": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+    "dev/avoidance/layouts-c-objects-fonts-v2/mono.otf": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585",
+    "dev/avoidance/layouts-c-objects-fonts-v2/mplusrounded1c-OFL.txt": "455b95114b9649159e624e9176d004a85ee730e0cb3f743ed40155d490d07be1",
+    "dev/avoidance/layouts-c-objects-fonts-v2/rounded.ttf": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527",
+    "dev/avoidance/layouts-c-objects-fonts-v2/sans-bold.otf": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359",
+    "dev/avoidance/layouts-c-objects-fonts-v2/sans-regular.otf": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5",
+    "dev/avoidance/layouts-c-objects-fonts-v2/serif-bold.otf": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce",
+    "dev/avoidance/layouts-c-objects-fonts-v2/serif-regular.otf": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19",
+    "dev/avoidance/layouts-c-objects-fonts-v2/symbols.ttf": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9"
+  },
+  "resources": {
+    "timestamp": "2026-10-22T18:40:25.975Z",
+    "platform": "linux",
+    "arch": "x64",
+    "kernel": "6.18.55",
+    "availableParallelism": 4,
+    "logicalCPUs": 5,
+    "cpuModels": [
+      "INTEL(R) XEON(R) PLATINUM 8573C"
+    ],
+    "totalMemory": 18882674688,
+    "cpuMax": "400000 100000",
+    "memoryMax": "17179869184",
+    "cpuSet": "0-4",
+    "node": "v24.19.0",
+    "nodeExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "nodeSHA256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+    "chromium": "Chromium 154.0.8037.57 built on Debian GNU/Linux 13 (trixie)",
+    "controlPlaneIdentity": "Not supplied: OS snapshot is not a claim of current environment-control revision qualification"
+  },
+  "fontFixture": {
+    "manifestSHA256": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+    "faces": [
+      {
+        "id": "sans-regular",
+        "sha256": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5"
+      },
+      {
+        "id": "sans-bold",
+        "sha256": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359"
+      },
+      {
+        "id": "serif-regular",
+        "sha256": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19"
+      },
+      {
+        "id": "serif-bold",
+        "sha256": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce"
+      },
+      {
+        "id": "mono",
+        "sha256": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585"
+      },
+      {
+        "id": "dot",
+        "sha256": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c"
+      },
+      {
+        "id": "rounded",
+        "sha256": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527"
+      },
+      {
+        "id": "symbols",
+        "sha256": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9"
+      },
+      {
+        "id": "fractions",
+        "sha256": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597"
+      }
+    ],
+    "scope": "local-only extended C corpus, eight original transport faces plus one explicit fraction fallback; source font keys retain B role mapping. Brush/klee/etc are fixture substitutions, not production native faces."
+  },
+  "historicalProfiles": {
+    "B": "3200x1080 stage,1280x720 DPR1,3 planning warmups+6 samples,80 render frames/16 warmup; retained for formal C",
+    "stage004": "3+7 planning and30frames/10warmup, older center-only workload; not relabelled same workload",
+    "fx002": "2+12 native planner samples, no evaluated new regions; historical only"
+  },
+  "sides": [],
+  "concurrency": [],
+  "errors": [],
+  "formalExecuted": false,
+  "passed": false,
+  "preparedOnly": true,
+  "formalNotExecuted": true,
+  "executionNote": "No page/app/performance workload executed. Harness config, immutable baseline and source/font bytes only.",
+  "changedInputs": [],
+  "end": "2026-10-22T18:40:26.851Z"
+}

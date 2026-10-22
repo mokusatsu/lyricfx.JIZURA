@@ -1,0 +1,66 @@
+{
+  "kind": "Derived existing profile; no new measurement",
+  "clapperCuts": [
+    {
+      "iteration": 3,
+      "layout": "clapper",
+      "index": 28,
+      "start": 113.25,
+      "ms": 1053.2000000029802,
+      "recordCalls": 57,
+      "budget": {
+        "reconstructed": 56,
+        "cacheHits": 112,
+        "perCutLimit": 128,
+        "violations": []
+      },
+      "staged": true
+    },
+    {
+      "iteration": 3,
+      "layout": "clapper",
+      "index": 62,
+      "start": 249.25,
+      "ms": 1057.2999999970198,
+      "recordCalls": 57,
+      "budget": {
+        "reconstructed": 56,
+        "cacheHits": 112,
+        "perCutLimit": 128,
+        "violations": []
+      },
+      "staged": true
+    },
+    {
+      "iteration": 3,
+      "layout": "clapper",
+      "index": 96,
+      "start": 385.25,
+      "ms": 1005.5,
+      "recordCalls": 57,
+      "budget": {
+        "reconstructed": 56,
+        "cacheHits": 112,
+        "perCutLimit": 128,
+        "violations": []
+      },
+      "staged": true
+    }
+  ],
+  "clapperInclusiveMs": 3116,
+  "finalizeMs": 4005.199999988079,
+  "shareOfFinalize": 0.7779886148030746,
+  "allInclusiveCutWrapperMs": 3979.199999988079,
+  "outsideCutWrappersMs": 26,
+  "outsideCutWrappersMeaning": "Inclusive wrapper subtraction only; cannot assign serialization/clone/freeze costs",
+  "separatelyTimed": {
+    "record": false,
+    "quality": false,
+    "analyticStage": false,
+    "analyticEntry": false,
+    "solve": false,
+    "serialization": false
+  },
+  "phaseAmountsNotInvented": true,
+  "candidateCounterInterpretation": "Each cut:1 initial native record +56 reconstructions=57records;112 hits reuses candidate results across3 segments. Failed candidate quality may prevent solve; exact solve count unavailable."
+}

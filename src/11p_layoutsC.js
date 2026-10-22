@@ -1419,6 +1419,8 @@ reg('ema', {
     back: Array.from({ length: 7 }, () => [rng.range(-1, 1), rng.range(-8, 8), rng.range(0.8, 1.05), rng.int(0, 99)]),
   }),
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
+    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const C = card(sc);
@@ -1430,6 +1432,7 @@ reg('ema', {
     const cordL = H * (port ? 0.06 : 0.08);
     const rackY = port ? H / 2 - cordL - hh * 0.55 : H * 0.13;
     const re = tin(env, 0, 0.45, E.outCubic) * out;
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'independentDecor', 'rack-and-background-plaques', null);
     // rack: a beam with pegs
     env.rect(W * 0.04, rackY - u * 0.012, W * 0.92 * re, u * 0.024, woodD, 1, false);
     // plaques hanging behind
@@ -1460,7 +1463,8 @@ reg('ema', {
     const ang = p.swing * Math.exp(-td * 2.6) * Math.cos(td * 6) * J.clamp(td / 0.1) + Math.sin(env.ltb * 0.9) * 0.8 + E.inCubic(env.pOut) * p.swing;
     const ha = J.clamp(env.lt / 0.12) * (1 - J.clamp((env.pOut - 0.5) / 0.5));
     if (ha <= 0.01) return null;
-    ctx.save(); ctx.translate(hx, rackY + drop); ctx.rotate(ang * J.DEG);
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'ema', frame:[hx,rackY+drop,ang,objectScale,objectScale], anchor:[hx,rackY], swing:p.swing, H, support:[-hw*.55,0,hw*.55,cordL+hh*1.04] });
+    ctx.save(); ctx.translate(hx, rackY + drop); ctx.rotate(ang * J.DEG); if(objectScale!==1)ctx.scale(objectScale,objectScale);
     env.line([[0, 0], [-hw * 0.06, cordL], [0, cordL + hh * 0.1], [hw * 0.06, cordL], [0, 0]], cord, Math.max(2, u * 0.003), ha, false);
     ctx.translate(0, cordL + hh * 0.5);
     const pts = emaPts(hw, hh);
@@ -1482,7 +1486,7 @@ reg('ema', {
     else if (p.emblem === 'wave') { for (let j = 0; j < 2; j++) { const pp = []; for (let i = 0; i <= 12; i++) pp.push([-hw * 0.38 + hw * 0.16 * i / 12, ey + j * es * 0.7 + Math.sin(i / 12 * J.TAU) * es * 0.25]); env.line(pp, emb, Math.max(2, es * 0.18), ha, false); } }
     else if (p.emblem === 'mount') env.poly([[-hw * 0.4, ey + es * 0.7], [-hw * 0.3, ey - es * 0.8], [-hw * 0.2, ey + es * 0.7]], emb, ha, false);
     else { env.circle(-hw * 0.32, ey, es * 0.6, null, emb, Math.max(2, es * 0.2), ha, false); env.circle(-hw * 0.26, ey, es * 0.6, null, emb, Math.max(2, es * 0.2), ha, false); }
-    env.draw({ text: '奉納', font: serifF(env), size: es * 1.1, track: 0.3, x: hw * 0.3, y: ey, color: ink, alpha: ha * 0.8, ghost: false });
+    objectDraw({ text: '奉納', font: serifF(env), size: es * 1.1, track: 0.3, x: hw * 0.3, y: ey, color: ink, alpha: ha * 0.8, ghost: false });
     // the wish (lyric), handwritten
     const ax = -hw * 0.42, aw = hw * 0.84, ay = -hh / 2 + r * 1.6, ah = hh / 2 - ay - hh * 0.14;
     let bb;
@@ -1496,7 +1500,7 @@ reg('ema', {
       const size = Math.min(fb.size, hh * 0.3);
       bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: 0, y: ay + ah / 2, lead: 1.2, track: 0.02, rot: -1.5, color: ink, noHold: true, plain: true, mi: miAt(env, 0.35) });
     }
-    env.draw({ text: 'No.' + lineNo(env) + '  ' + J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.8, track: 0.15, align: 'right', x: hw * 0.44, y: hh * 0.42, color: ink, alpha: ha * 0.6, ghost: false });
+    objectDraw({ text: 'No.' + lineNo(env) + '  ' + J.fmtTime(env.cut.start), font: monoF(env), size: ls * 0.8, track: 0.15, align: 'right', x: hw * 0.44, y: hh * 0.42, color: ink, alpha: ha * 0.6, ghost: false });
     ctx.restore();
     return bb ? box(hx - hw / 2, rackY + cordL, hx + hw / 2, rackY + cordL + hh) : null;
   },
@@ -1517,31 +1521,38 @@ reg('ransom', {
     };
   },
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const units = slotsOf(env.cut.text);
     const n = units.length;
     if (!n) return null;
     const out = 1 - E.outCubic(J.clamp(env.pOut * 1.1));
     let perRow = port ? Math.min(n, n <= 4 ? 4 : Math.ceil(n / Math.ceil(n / 4))) : Math.min(n, n <= 8 ? 8 : Math.ceil(n / 2));
-    // rows of slot indices; latin lyrics break between words
-    const rowsA = [];
-    if (hasLatin(env.cut.text)) {
-      let cur = [], len = 0, i0 = 0;
-      const words = [];
-      for (let i = 0; i <= n; i++) { if (i === n || units[i] === ' ') { if (i > i0) words.push([i0, i]); i0 = i + 1; } }
-      const target = Math.max(perRow, ...words.map(w => w[1] - w[0]));
-      for (const [a0, a1] of words) {
-        const wl = a1 - a0;
-        if (cur.length && len + 1 + wl > target) { rowsA.push(cur); cur = []; len = 0; }
-        if (cur.length) { cur.push(-1); len++; }
-        for (let i = a0; i < a1; i++) cur.push(i);
-        len += wl;
-      }
-      if (cur.length) rowsA.push(cur);
-    } else for (let i = 0; i < n; i += perRow) rowsA.push(Array.from({ length: Math.min(perRow, n - i) }, (_, j) => i + j));
-    perRow = Math.max(...rowsA.map(r => r.length));
-    const rowsN = rowsA.length;
-    const base = Math.min(W * 0.84 / (perRow * 1.18), H * 0.64 / (rowsN * 1.35), u * 0.26);
+    // Native word grouping is retained for both the source and reflow recipe.
+    const makeRows = targetSlots => {
+      const rows = [];
+      if (hasLatin(env.cut.text)) {
+        let cur = [], len = 0, i0 = 0;
+        const words = [];
+        for (let i = 0; i <= n; i++) { if (i === n || units[i] === ' ') { if (i > i0) words.push([i0, i]); i0 = i + 1; } }
+        const target = Math.max(targetSlots, ...words.map(w => w[1] - w[0]));
+        for (const [a0, a1] of words) {
+          const wl = a1 - a0;
+          if (cur.length && len + 1 + wl > target) { rows.push(cur); cur = []; len = 0; }
+          if (cur.length) { cur.push(-1); len++; }
+          for (let i = a0; i < a1; i++) cur.push(i);
+          len += wl;
+        }
+        if (cur.length) rows.push(cur);
+      } else for (let i = 0; i < n; i += targetSlots) rows.push(Array.from({ length: Math.min(targetSlots, n - i) }, (_, j) => i + j));
+      return rows;
+    };
+    const nativeRows = makeRows(perRow), nativePerRow = Math.max(...nativeRows.map(r => r.length));
+    // Reflow moves the original scraps. It does not enlarge their native type.
+    const base = Math.min(W * 0.84 / (nativePerRow * 1.18), H * 0.64 / (nativeRows.length * 1.35), u * 0.26);
+    const recipe = env.cut.placementLayoutsC ? env.cut.layoutCRecipe : null;
+    const rowsA = recipe?.ransomColumns ? makeRows(recipe.ransomColumns) : nativeRows;
+    const rowsN = rowsA.length, pitchX = recipe?.ransomPitch?.[0] ?? 1, pitchY = recipe?.ransomPitch?.[1] ?? 1;
     const place = new Map();
     rowsA.forEach((r, ri) => r.forEach((idx, j) => { if (idx >= 0) place.set(idx, [ri, j, r.length]); }));
     const C = card(sc);
@@ -1557,8 +1568,8 @@ reg('ransom', {
       const pl = place.get(i); if (!pl) continue;
       const [row, j, cnt] = pl;
       const sz = base * lk[3];
-      const x = W / 2 + (j - (cnt - 1) / 2) * base * 1.18 + J.rs(lk[5], 1) * base * 0.05;
-      const y = H / 2 + (row - (rowsN - 1) / 2) * base * 1.35 + lk[4] * base;
+      const x = W / 2 + (j - (cnt - 1) / 2) * base * 1.18 * pitchX + J.rs(lk[5], 1) * base * 0.05;
+      const y = H / 2 + (row - (rowsN - 1) / 2) * base * 1.35 * pitchY + lk[4] * base;
       const font = fonts[lk[0] % fonts.length];
       let [fill, mode] = pal[lk[1] % pal.length];
       if (J.contrast(fill, sc.bg) < 1.25 && mode !== 'line') mode = 'edge';
@@ -1580,7 +1591,8 @@ reg('ransom', {
         else if (s2 === 2) pts.push([w / 2 - w * f, h / 2 + jit]);
         else pts.push([-w / 2 + jit, h / 2 - h * f]);
       }
-      ctx.save(); ctx.translate(x, y); ctx.rotate(rot * J.DEG); ctx.scale(k, k);
+      if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'glyph.' + i + '', { kind:'ransom', frame:[x,y,rot,k*objectScale,k*objectScale], anchor:[x,y], rot, tStart:t0, support:[-w*.55,-h*.55,w*.62,h*.64] });
+      ctx.save(); ctx.translate(x, y); ctx.rotate(rot * J.DEG); ctx.scale(k*objectScale, k*objectScale);
       if (p.shadow && env.pass === 'main') { ctx.save(); ctx.translate(sz * 0.05, sz * 0.07); env.poly(pts, J.rgba(darkest(sc), 0.45), a, false); ctx.restore(); }
       if (mode === 'line') { env.poly(pts, sc.bg, a, false); env.line(closeLoop(pts), sc.fg, Math.max(1.5, sz * 0.02), a, false); }
       else { env.poly(pts, fill, a, false); if (mode === 'edge') env.line(closeLoop(pts), J.mix(sc.fg, fill, 0.4), Math.max(1, sz * 0.012), a, false); }
@@ -1736,6 +1748,8 @@ reg('vinyl', {
     sleeve: rng.pick(['ink', 'accent', 'card']), cat: rng.int(100, 9999), arm: rng.chance(0.7),
   }),
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
+    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const t0 = env.cut.text.trim();
@@ -1748,17 +1762,20 @@ reg('vinyl', {
       const T = Math.max(0.5, env.cut.inDur + 0.35);
       const ang = 540 * (1 - E.outCubic(J.clamp(env.lt / T))) - 300 * E.inCubic(env.pOut);
       const k = J.lerp(0.9, 1, E.outCubic(J.clamp(env.lt / 0.4)));
-      ctx.save(); ctx.translate(cx, cy); ctx.scale(k, k); ctx.translate(-cx, -cy);
+      if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'vinyl-label', frame:[cx,cy,0,k*objectScale,k*objectScale], anchor:[cx,cy], R, support:[-R,-R,R,R] });
+      ctx.save(); ctx.translate(cx, cy); ctx.scale(k*objectScale, k*objectScale); ctx.translate(-cx, -cy);
       disc(env, cx, cy, R, ang, labC, a, arc.repeat(2), p.cat, true);
       // tone arm swings in
       if (p.arm) {
         const q = tin(env, 0.2, 0.7, E.inOutCubic) * out;
+        if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'tonearm', { kind:'vinyl-arm', frame:[cx,cy,0,k*objectScale,k*objectScale], anchor:[cx,cy], R, support:[R*.9,-R*1.02,R*2.1,R*.1] });
         const px = cx + R * 1.02, py = cy - R * 0.92, L = R * 1.05, th = (-58 + q * 30) * J.DEG + Math.PI / 2;
         const ex = px + Math.cos(th) * L, ey = py + Math.sin(th) * L;
         env.line([[px, py], [ex, ey]], sc.sub, Math.max(3, R * 0.02), a, false);
         env.rect(ex - R * 0.035, ey - R * 0.035, R * 0.07, R * 0.07, sc.fg, a, false);
         env.circle(px, py, R * 0.06, sc.sub, null, 0, a, false);
       }
+      if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'vinyl-label', frame:[cx,cy,0,k*objectScale,k*objectScale], anchor:[cx,cy], R, support:[-R,-R,R,R] });
       const lab = R * 0.5;
       const fb = fitBlock(t0, p.font, lab * 1.3, lab * 0.8, { lead: 1.1 }, 2);
       ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang * J.DEG);
@@ -1775,23 +1792,27 @@ reg('vinyl', {
     const off = (1 - ein) * S * 0.25;
     const R = S * 0.47;
     const dcx = port ? sx : sx + slide * S * 0.56, dcy = port ? sy + slide * S * 0.56 : sy;
+    ctx.save(); if(objectScale!==1){ctx.translate(sx,sy);ctx.scale(objectScale,objectScale);ctx.translate(-sx,-sy);}
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'disc', { kind:'vinyl-disc', frame:[sx+objectScale*(dcx+(port?0:off)-sx),sy+objectScale*(dcy+(port?off:0)-sy),0,objectScale,objectScale], anchor:[sx,sy], S, port, support:[-R,-R,R,R] });
     disc(env, dcx + (port ? 0 : off), dcy + (port ? off : 0), R, env.ltb * 120, labC, a, arc.repeat(2), p.cat);
     const slC = p.sleeve === 'card' ? card(sc).fill : plateCol(sc, p.sleeve === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.fg]);
     const tc = onCol(sc, slC);
     const x0 = sx - S / 2 + (port ? 0 : off), y0 = sy - S / 2 + (port ? off : 0);
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'sleeve', { kind:'vinyl-sleeve', frame:[sx+objectScale*(port?0:off),sy+objectScale*(port?off:0),0,objectScale,objectScale], anchor:[sx,sy], S, port, support:[-S/2,-S/2,S/2,S/2] });
     shadowR(env, x0, y0, S, S, 0, a, u * 0.015);
     env.rect(x0, y0, S, S, slC, a, false);
     if (J.contrast(slC, sc.bg) < 1.4) env.line([[x0, y0], [x0 + S, y0], [x0 + S, y0 + S], [x0, y0 + S], [x0, y0]], J.mix(sc.fg, slC, 0.4), 1.5, a, false);
     const m = S * 0.07;
     const fa = tin(env, 0.15, 0.4, E.outCubic) * out;
-    env.draw({ text: 'JZR-' + p.cat, font: monoF(env), size: ls * 0.9, track: 0.2, align: 'right', x: x0 + S - m, y: y0 + m + ls * 0.3, color: tc, alpha: fa, ghost: false });
-    env.draw({ text: 'SIDE ' + p.side, font: monoF(env), size: ls * 0.9, track: 0.2, align: 'left', x: x0 + m, y: y0 + m + ls * 0.3, color: tc, alpha: fa, ghost: false });
+    objectDraw({ text: 'JZR-' + p.cat, font: monoF(env), size: ls * 0.9, track: 0.2, align: 'right', x: x0 + S - m, y: y0 + m + ls * 0.3, color: tc, alpha: fa, ghost: false });
+    objectDraw({ text: 'SIDE ' + p.side, font: monoF(env), size: ls * 0.9, track: 0.2, align: 'left', x: x0 + m, y: y0 + m + ls * 0.3, color: tc, alpha: fa, ghost: false });
     env.line([[x0 + m, y0 + m + ls * 1.3], [x0 + m + (S - m * 2) * fa, y0 + m + ls * 1.3]], tc, Math.max(1, u * 0.0015), 0.8, false);
     const fb = fitBlock(t0, p.font, S - m * 2, S * 0.52, { lead: 1.05, track: 0.01 }, 4);
     const size = Math.min(fb.size, S * 0.3);
     const mm = meas(fb.text, p.font, size, { lead: 1.05, track: 0.01 });
     const bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: x0 + m, y: y0 + S - m - ls * 1.6 - mm.h / 2, align: 'left', lead: 1.05, track: 0.01, color: tc, noHold: plateHold(env), mi: miAt(env, 0.22) });
-    env.draw({ text: (romajiOf(env) || J.fmtTime(env.cut.start)).slice(0, 26), font: monoF(env), size: ls * 0.8, track: 0.15, align: 'left', x: x0 + m, y: y0 + S - m, color: tc, alpha: fa * 0.8, ghost: false });
+    objectDraw({ text: (romajiOf(env) || J.fmtTime(env.cut.start)).slice(0, 26), font: monoF(env), size: ls * 0.8, track: 0.15, align: 'left', x: x0 + m, y: y0 + S - m, color: tc, alpha: fa * 0.8, ghost: false });
+    ctx.restore();
     return bb || box(x0, y0, x0 + S, y0 + S);
   },
 });
@@ -1807,6 +1828,8 @@ reg('cassette', {
     side: rng.pick(['A', 'B']), tilt: rng.range(-4, 4), len: rng.pick(['C-46', 'C-60', 'C-90']),
   }),
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
+    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const cw = port ? W * 0.92 : Math.min(W * 0.66, H * 0.8 * 1.58), ch = cw / 1.58;
@@ -1822,7 +1845,8 @@ reg('cassette', {
     const labF = J.contrast(C.fill, shellC) > 1.3 ? C.fill : plateCol(sc, [sc.bg, sc.fg], shellC, 1.5);
     const labT = onCol(sc, labF);
     const bandC = p.band === 'ink' ? plateCol(sc, [sc.ink, sc.fg], labF, 2) : plateCol(sc, [sc.accent, sc.accent2, sc.ink], labF, 1.6);
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG);
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'cassette', frame:[cx,cy,rot,objectScale,objectScale], anchor:[cx,H/2], tilt:p.tilt, H, support:[-cw/2,-ch/2,cw/2,ch/2] });
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG); if(objectScale!==1)ctx.scale(objectScale,objectScale);
     const x0 = -cw / 2, y0 = -ch / 2, r = ch * 0.05;
     shadowR(env, x0, y0, cw, ch, r, a, u * 0.015);
     env.rrect(x0, y0, cw, ch, r, shellC, a, false, clear ? sc.fg : null, Math.max(2, u * 0.003));
@@ -1836,8 +1860,8 @@ reg('cassette', {
     // side letter box
     const sb = lh2 * 0.3;
     env.rect(lx + lw2 * 0.03, ly + lh2 * 0.08, sb, sb, labT, a, false);
-    env.draw({ text: p.side, font: 'gothic_black', size: sb * 0.78, x: lx + lw2 * 0.03 + sb / 2, y: ly + lh2 * 0.08 + sb / 2, color: labF, alpha: a, ghost: false });
-    env.draw({ text: p.len + '  ·  NR  ·  No.' + lineNo(env), font: monoF(env), size: ls * 0.75, track: 0.2, align: 'right', x: lx + lw2 * 0.97, y: ly + lh2 * 0.9, color: labT, alpha: a * 0.8, ghost: false });
+    objectDraw({ text: p.side, font: 'gothic_black', size: sb * 0.78, x: lx + lw2 * 0.03 + sb / 2, y: ly + lh2 * 0.08 + sb / 2, color: labF, alpha: a, ghost: false });
+    objectDraw({ text: p.len + '  ·  NR  ·  No.' + lineNo(env), font: monoF(env), size: ls * 0.75, track: 0.2, align: 'right', x: lx + lw2 * 0.97, y: ly + lh2 * 0.9, color: labT, alpha: a * 0.8, ghost: false });
     // writing lines
     const tx0 = lx + lw2 * 0.06 + sb, tw = lw2 * 0.9 - sb;
     const rl = ly + lh2 * 0.5;
@@ -1879,6 +1903,7 @@ reg('bookSpine', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'independentDecor', 'shelf-and-neighbor-books', null);
     const out = tout(env), ls = smallSize(env);
     const t0 = env.cut.text.trim();
     const heroC = plateCol(sc, p.hero === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.accent]);
@@ -1910,6 +1935,7 @@ reg('bookSpine', {
         const yy = y - (1 - e) * H * 0.6 - eo * (nb - i) * H * 0.02;
         const col = i === hi ? heroC : pal[b[2] % pal.length];
         const a = J.clamp(e * 3) * (1 - eo);
+        if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, '' + (i===hi?'primary':'independentDecor') + '', 'book.' + i + '', { kind:'book-pile', frame:[W/2+xo,yy,0,1,1], anchor:[W/2+xo,y], H, tStart:t, exitDrop:-(nb-i)*H*.02, support:[-w/2,0,w/2,h] });
         env.rect(W / 2 - w / 2 + xo, yy, w, h - 2, col, a, false);
         const bc = i === hi ? htc : J.mix(col, sc.fg, 0.35);
         env.rect(W / 2 - w / 2 + xo + w * 0.06, yy, Math.max(2, w * 0.008), h - 2, bc, a * 0.7, false);
@@ -1947,6 +1973,7 @@ reg('bookSpine', {
       const lift = i === hi ? E.inOutCubic(J.clamp((env.lt - 0.35) / 0.4)) * size * 0.6 * (1 - eo) : 0;
       const yy = shelfY - h * e - lift + eo * h * 1.05;
       const a = (1 - eo * 0.4);
+      if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, '' + (i===hi?'primary':'independentDecor') + '', 'book.' + i + '', { kind:'book-shelf', frame:[bx,yy,0,1,1], anchor:[bx,shelfY-h], H, h, tStart:t, lift:size*.6, support:[0,0,w,h] });
       ctx.save(); ctx.beginPath(); ctx.rect(-W, -H, W * 3, shelfY + H - 1); ctx.clip();
       const col = i === hi ? heroC : pal[b[2] % pal.length];
       env.rect(bx, yy, w, h, col, a, false);
@@ -1984,6 +2011,8 @@ reg('polaroid', {
     };
   },
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
+    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const chunks = (p.chunks && p.chunks.length ? p.chunks : [env.cut.text.trim()]).filter(Boolean);
     const k = chunks.length;
@@ -1994,10 +2023,11 @@ reg('polaroid', {
     if (port) fw = Math.min(W * (k === 1 ? 0.78 : 0.62), H * 0.78 / (k === 1 ? 1.2 : 1 + (k - 1) * 0.72) / 1.2);
     else fw = Math.min(H * 0.8 / 1.2, W * 0.86 / (k === 1 ? 1 : k * 0.92));
     const fh = fw * 1.2, iw = fw * 0.88;
+    const slotPitch = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.slotPitch ?? 1 : 1;
     const pos = i => {
       if (k === 1) return [W / 2, H / 2];
-      if (port) return [W / 2 + (i % 2 ? 1 : -1) * W * 0.07, H / 2 + (i - (k - 1) / 2) * fh * 0.72];
-      return [W / 2 + (i - (k - 1) / 2) * fw * 0.92, H / 2 + (i % 2 ? 1 : -1) * H * 0.025];
+      if (port) return [W / 2 + (i % 2 ? 1 : -1) * W * 0.07, H / 2 + (i - (k - 1) / 2) * fh * 0.72 * slotPitch];
+      return [W / 2 + (i - (k - 1) / 2) * fw * 0.92 * slotPitch, H / 2 + (i % 2 ? 1 : -1) * H * 0.025];
     };
     const imgC = p.img === 'accent' ? plateCol(sc, [sc.accent, sc.ink], C.fill, 1.8) : p.img === 'dusk' ? J.mix(darkest(sc), sc.accent, 0.35) : darkest(sc);
     const tc = onCol(sc, imgC);
@@ -2010,7 +2040,8 @@ reg('polaroid', {
       const rot = p.tilts[i % 3] * (k === 1 ? 0.6 : 1) + (1 - e) * 14;
       const yy = y - (1 - e) * H * 0.15 + eo * H * 0.1 * (i + 1);
       const a = J.clamp(e * 2.5) * (1 - eo);
-      ctx.save(); ctx.translate(x, yy); ctx.rotate(rot * J.DEG);
+      if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'photo.' + i + '', { kind:'polaroid', frame:[x,yy,rot,objectScale,objectScale], anchor:[x,y], H, index:i, tStart:t, tilt:p.tilts[i%3]*(k===1?.6:1), support:[-fw/2,-fh/2-fw*.05,fw/2,fh/2] });
+      ctx.save(); ctx.translate(x, yy); ctx.rotate(rot * J.DEG); if(objectScale!==1)ctx.scale(objectScale,objectScale);
       shadowR(env, -fw / 2, -fh / 2, fw, fh, fw * 0.01, a, u * 0.014);
       env.rect(-fw / 2, -fh / 2, fw, fh, C.fill, a, false);
       if (C.edge) env.line([[-fw / 2, -fh / 2], [fw / 2, -fh / 2], [fw / 2, fh / 2], [-fw / 2, fh / 2], [-fw / 2, -fh / 2]], C.line, 1.2, a, false);
@@ -2027,7 +2058,7 @@ reg('polaroid', {
       // handwritten caption in the thick bottom border
       const capA = J.clamp((env.lt - t - 0.5) / 0.4) * a;
       const cap = i === k - 1 ? (romajiOf(env) || J.fmtTime(env.cut.start)) : ('No.' + lineNo(env) + '-' + (i + 1));
-      if (capA > 0.01) env.draw({ text: cap.slice(0, 20), font: p.pen, size: Math.min(fw * 0.07, (fw * 0.84) / Math.max(6, cap.length * 0.62)), x: 0, y: iy + iw + (fh / 2 - iy - iw) * 0.5, rot: -2, color: C.text, alpha: capA * 0.85, ghost: false });
+      if (capA > 0.01) objectDraw({ text: cap.slice(0, 20), font: p.pen, size: Math.min(fw * 0.07, (fw * 0.84) / Math.max(6, cap.length * 0.62)), x: 0, y: iy + iw + (fh / 2 - iy - iw) * 0.5, rot: -2, color: C.text, alpha: capA * 0.85, ghost: false });
       ctx.restore();
       if (r) bb = J.unionBB(bb, box(x - fw / 2, yy - fh / 2, x + fw / 2, yy + fh / 2));
     });
@@ -2056,6 +2087,7 @@ reg('stampSheet', {
     return { font: rng.pick(fontsOf(st, ['display', 'serif'])), cols, rows, hc: port ? rng.int(0, 1) : 1, hr: port ? 1 : rng.int(0, 1), val: rng.pick([63, 84, 94, 110, 120, 140]), motif: rng.pick(['circle', 'wave', 'char']), tear: rng.chance(0.6) };
   },
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env);
     const out = tout(env), ls = smallSize(env);
     const cols = p.cols, rows = p.rows;
@@ -2066,10 +2098,12 @@ reg('stampSheet', {
     const m = cell * 0.2;
     const sa = tin(env, 0, 0.35, E.outCubic) * (1 - J.clamp((env.pOut - 0.5) / 0.5));
     if (sa <= 0.01) return null;
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'sheet-carrier', {kind:'fixed',frame:[0,0,0,1,1],anchor:[0,0],support:[sx-m,sy-m*1.8,sx+sw+m,sy+sh+m]});
     // sheet (selvage)
     shadowR(env, sx - m, sy - m * 1.8, sw + m * 2, sh + m * 2.8, 0, sa, u * 0.012);
     env.rect(sx - m, sy - m * 1.8, sw + m * 2, sh + m * 2.8, C.fill, sa, false);
     if (C.edge) env.line([[sx - m, sy - m * 1.8], [sx + sw + m, sy - m * 1.8], [sx + sw + m, sy + sh + m], [sx - m, sy + sh + m], [sx - m, sy - m * 1.8]], C.line, 1.2, sa, false);
+    if(env.cut.placementLayoutsC)J.placement.layoutsCObjectsTag(env,'primary','sheet-header',{kind:'fixed',frame:[0,0,0,1,1],anchor:[0,0],support:[sx,sy-m*1.8,sx+sw,sy]});
     env.draw({ text: 'JIZURA POST  ·  ' + p.val + ' × ' + (cols * rows - 3) + '  ·  No.' + lineNo(env), font: monoF(env), size: Math.min(ls * 0.8, m * 0.7), track: 0.2, align: 'left', x: sx, y: sy - m * 0.9, color: C.text, alpha: sa * 0.7, ghost: false });
     const port2 = rows > cols;
     const spc = port2 ? 2 : 3, spr = port2 ? 3 : 2;
@@ -2087,15 +2121,19 @@ reg('stampSheet', {
       const tone = tones[(c + r * 2) % tones.length], tt = onCol(sc, tone);
       const q = (cell - pad * 2) * e;
       const ox = x + cell / 2 - q / 2, oy = y + cell / 2 - q / 2;
+      if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'stamp.' + r + '.' + c + '', { kind:'stamp-replica', frame:[x+cell/2,y+cell/2,0,e,e], anchor:[x+cell/2,y+cell/2], tStart:.05+(c+r)*.03, support:[-cell/2,-cell/2,cell/2,cell/2] });
       env.rect(ox, oy, q, q, tone, 1, false);
       if (e > 0.6) {
         const cxm = x + cell / 2, cym = y + cell / 2;
         if (p.motif === 'circle') env.circle(cxm, cym + q * 0.08, q * 0.24, null, tt, Math.max(1.5, q * 0.03), 0.6, false);
         else if (p.motif === 'wave') { const pts = []; for (let i = 0; i <= 16; i++) pts.push([ox + q * 0.15 + q * 0.7 * i / 16, cym + q * 0.1 + Math.sin(i / 16 * J.TAU * 1.5) * q * 0.08]); env.line(pts, tt, Math.max(1.5, q * 0.03), 0.6, false); }
+        else if(env.cut.placementLayoutsC){ctx.save();ctx.translate(cxm,cym+q*.08);ctx.scale(e,e);env.draw({text:first,font:p.font,size:(cell-pad*2)*.45,x:0,y:0,color:tt,alpha:.5,ghost:false,placementReplica:'first-glyph'});ctx.restore();}
         else env.draw({ text: first, font: p.font, size: q * 0.45, x: cxm, y: cym + q * 0.08, color: tt, alpha: 0.5, ghost: false });
-        env.draw({ text: String(p.val), font: monoF(env), size: q * 0.16, align: 'left', x: ox + q * 0.08, y: oy + q * 0.13, color: tt, alpha: 0.9, ghost: false });
+        if(env.cut.placementLayoutsC){ctx.save();ctx.translate(ox+q*.08,oy+q*.13);ctx.scale(e,e);env.draw({text:String(p.val),font:monoF(env),size:(cell-pad*2)*.16,align:'left',x:0,y:0,color:tt,alpha:.9,ghost:false});ctx.restore();}
+        else env.draw({ text: String(p.val), font: monoF(env), size: q * 0.16, align: 'left', x: ox + q * 0.08, y: oy + q * 0.13, color: tt, alpha: 0.9, ghost: false });
       }
     }
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'sheet-carrier', {kind:'fixed',frame:[0,0,0,1,1],anchor:[0,0],support:[sx-m,sy-m*1.8,sx+sw+m,sy+sh+m]});
     // perforations between all stamps
     for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) perfRect(env, sx + c * cell, sy + r * cell, cell, cell, hole, sc.bg === C.fill ? J.mix(C.fill, C.text, 0.2) : sc.bg, sa * 0.9);
     // the hero stamp (3×2 / 2×3) — lifts and tears away on exit
@@ -2103,7 +2141,8 @@ reg('stampSheet', {
     const he = E.outBack(J.clamp((env.lt - 0.12) / 0.35), 1.3);
     const tear = p.tear ? E.inCubic(env.pOut) : 0;
     const ha = J.clamp(he * 2) * (p.tear ? 1 - J.clamp((env.pOut - 0.6) / 0.4) : out);
-    ctx.save(); ctx.translate(hx + hw / 2 + tear * cell * 0.4, hy + hh / 2 - tear * cell * 0.8); ctx.rotate((tear * 14 + (1 - he) * -6) * J.DEG); ctx.scale(0.9 + 0.1 * he + tear * 0.06, 0.9 + 0.1 * he + tear * 0.06);
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'hero', { kind:'stamp-hero', frame:[hx+hw/2+tear*cell*.4,hy+hh/2-tear*cell*.8,tear*14+(1-he)*-6,objectScale*(.9+.1*he+.06*tear),objectScale*(.9+.1*he+.06*tear)], anchor:[hx+hw/2,hy+hh/2], cell, tear:p.tear, support:[-hw/2,-hh/2,hw/2,hh/2] });
+    ctx.save(); ctx.translate(hx + hw / 2 + tear * cell * 0.4, hy + hh / 2 - tear * cell * 0.8); ctx.rotate((tear * 14 + (1 - he) * -6) * J.DEG); ctx.scale(objectScale*(0.9 + 0.1 * he + tear * 0.06), objectScale*(0.9 + 0.1 * he + tear * 0.06));
     if (tear > 0) shadowR(env, -hw / 2, -hh / 2, hw, hh, 0, ha, u * 0.02 * (1 + tear * 2));
     env.rect(-hw / 2, -hh / 2, hw, hh, C.fill, ha, false);
     perfRect(env, -hw / 2, -hh / 2, hw, hh, hole * 1.2, sc.bg === C.fill ? J.mix(C.fill, C.text, 0.2) : sc.bg, ha);
@@ -2111,8 +2150,8 @@ reg('stampSheet', {
     const heroC = plateCol(sc, [sc.accent, sc.ink], C.fill, 1.8);
     env.rect(-hw / 2 + ip, -hh / 2 + ip, hw - ip * 2, hh - ip * 2, heroC, ha, false);
     const htc = onCol(sc, heroC);
-    env.draw({ text: String(p.val), font: monoF(env), size: hs * 0.1, align: 'left', x: -hw / 2 + ip * 1.8, y: -hh / 2 + ip * 2.4, color: htc, alpha: ha, ghost: false });
-    env.draw({ text: 'LYRIC  ' + lineNo(env), font: monoF(env), size: hs * 0.045, track: 0.3, align: 'right', x: hw / 2 - ip * 1.8, y: hh / 2 - ip * 1.9, color: htc, alpha: ha * 0.8, ghost: false });
+    env.draw({ text: String(p.val), font: monoF(env), size: hs * 0.1 / objectScale, align: 'left', x: -hw / 2 + ip * 1.8, y: -hh / 2 + ip * 2.4, color: htc, alpha: ha, ghost: false });
+    env.draw({ text: 'LYRIC  ' + lineNo(env), font: monoF(env), size: hs * 0.045 / objectScale, track: 0.3, align: 'right', x: hw / 2 - ip * 1.8, y: hh / 2 - ip * 1.9, color: htc, alpha: ha * 0.8, ghost: false });
     const fb = fitBlock(t0, p.font, hw * 0.76, hh * 0.56, { lead: 1.08 }, 3);
     const bb = J.mainDraw(env, { text: fb.text, font: p.font, size: Math.min(fb.size, hs * 0.34), x: 0, y: hs * 0.03, lead: 1.08, color: htc, noHold: plateHold(env), mi: miAt(env, 0.15) });
     ctx.restore();
@@ -2131,6 +2170,8 @@ reg('postcard', {
     zip: Array.from({ length: 7 }, () => rng.int(0, 9)).join(''), mark: rng.range(-18, 18), stamp: rng.pick(['circle', 'mount', 'wave']),
   }),
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
+    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const C = card(sc);
@@ -2142,7 +2183,8 @@ reg('postcard', {
     if (a <= 0.01) return null;
     const cx = W / 2 - (1 - ein) * W * 0.4 + eo * W * 0.3, cy = H / 2 + (1 - ein) * H * 0.05;
     const rot = p.tilt + (1 - ein) * -18 + eo * 10;
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG);
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'postcard', frame:[cx,cy,rot,objectScale,objectScale], anchor:[W/2,H/2], tilt:p.tilt, W,H, support:[-cw/2,-ch/2,cw/2,ch/2] });
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot * J.DEG); if(objectScale!==1)ctx.scale(objectScale,objectScale);
     const x0 = -cw / 2, y0 = -ch / 2;
     shadowR(env, x0, y0, cw, ch, cw * 0.012, a, u * 0.016);
     env.rrect(x0, y0, cw, ch, cw * 0.012, C.fill, a, false, C.edge ? C.line : null, 1.2);
@@ -2158,7 +2200,7 @@ reg('postcard', {
     if (p.stamp === 'circle') env.circle(stx + stw / 2, sty + sth * 0.56, stw * 0.26, stt, null, 0, a * 0.8, false);
     else if (p.stamp === 'mount') env.poly([[stx + stw * 0.12, sty + sth * 0.78], [stx + stw * 0.5, sty + sth * 0.3], [stx + stw * 0.88, sty + sth * 0.78]], stt, a * 0.8, false);
     else { const pts = []; for (let i = 0; i <= 12; i++) pts.push([stx + stw * (0.12 + 0.76 * i / 12), sty + sth * 0.6 + Math.sin(i / 12 * J.TAU) * sth * 0.08]); env.line(pts, stt, Math.max(2, stw * 0.05), a, false); }
-    env.draw({ text: String(p.val), font: monoF(env), size: stw * 0.2, align: 'left', x: stx + stw * 0.1, y: sty + sth * 0.14, color: stt, alpha: a, ghost: false });
+    objectDraw({ text: String(p.val), font: monoF(env), size: stw * 0.2, align: 'left', x: stx + stw * 0.1, y: sty + sth * 0.14, color: stt, alpha: a, ghost: false });
     // postal code boxes (top-right)
     const bs = Math.min(cw, ch) * 0.062, gap = bs * 0.22;
     const zx1 = x0 + cw - m;
@@ -2168,9 +2210,9 @@ reg('postcard', {
       const bx = zx1 - (7 - i) * (bs + gap) - (i < 3 ? gap * 1.5 : 0);
       env.rrect(bx, zy, bs, bs * 1.25, bs * 0.08, null, za, false, red, Math.max(1.2, bs * 0.06));
       if (i === 3) env.line([[bx - gap * 2.2, zy + bs * 0.62], [bx - gap * 0.6, zy + bs * 0.62]], red, Math.max(1.2, bs * 0.06), za, false);
-      env.draw({ text: p.zip[i], font: p.font, size: bs * 0.8, x: bx + bs / 2, y: zy + bs * 0.66, color: C.text, alpha: za * 0.9, ghost: false });
+      objectDraw({ text: p.zip[i], font: p.font, size: bs * 0.8, x: bx + bs / 2, y: zy + bs * 0.66, color: C.text, alpha: za * 0.9, ghost: false });
     }
-    env.draw({ text: vertCard ? '郵便はがき' : 'POST CARD', font: vertCard ? serifF(env) : monoF(env), size: ls * (vertCard ? 1.2 : 0.9), track: 0.5, x: vertCard ? 0 : x0 + cw * 0.46, y: vertCard ? y0 + m + sth + ls * 0.9 : y0 + m * 0.75, color: C.text, alpha: a * 0.75, ghost: false });
+    objectDraw({ text: vertCard ? '郵便はがき' : 'POST CARD', font: vertCard ? serifF(env) : monoF(env), size: ls * (vertCard ? 1.2 : 0.9), track: 0.5, x: vertCard ? 0 : x0 + cw * 0.46, y: vertCard ? y0 + m + sth + ls * 0.9 : y0 + m * 0.75, color: C.text, alpha: a * 0.75, ghost: false });
     // address lines + lyric
     const t0 = env.cut.text.trim();
     let bb;
@@ -2185,7 +2227,7 @@ reg('postcard', {
       const ty = top + Math.max(0, (bot - top) - mm.h - size * 1.3) * 0.3;
       bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: lx, y: ty, vertical: true, align: 'left', lead: 1.3, track: 0.06, color: C.text, noHold: plateHold(env), mi: miAt(env, 0.3) });
       const lastLen = J.glyphCount(fb.text.split('\n').pop());
-      env.draw({ text: '様', font: p.font, size: size * 0.7, x: lx - (fb.lines - 1) * size * 0.65, y: ty + lastLen * size * 1.06 + size * 0.75, color: C.text, alpha: la, ghost: false });
+      objectDraw({ text: '様', font: p.font, size: size * 0.7, x: lx - (fb.lines - 1) * size * 0.65, y: ty + lastLen * size * 1.06 + size * 0.75, color: C.text, alpha: la, ghost: false });
     } else {
       const top = y0 + m + sth + ls * 1.8, bot = y0 + ch - m;
       const lines = 4, lh = (bot - top) / lines;
@@ -2203,7 +2245,7 @@ reg('postcard', {
       ctx.save(); ctx.translate(stx + stw * 0.95, sty + sth * 0.62); ctx.rotate(p.mark * J.DEG); ctx.scale(q, q);
       env.circle(0, 0, R, null, C.text, Math.max(1.5, R * 0.05), pa, false);
       env.circle(0, 0, R * 0.8, null, C.text, Math.max(1, R * 0.025), pa, false);
-      env.draw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: R * 0.26, x: 0, y: 0, color: C.text, alpha: pa, ghost: false });
+      objectDraw({ text: J.fmtTime(env.cut.start), font: monoF(env), size: R * 0.26, x: 0, y: 0, color: C.text, alpha: pa, ghost: false });
       env.line([[-R * 0.8, -R * 0.36], [R * 0.8, -R * 0.36]], C.text, Math.max(1, R * 0.025), pa, false);
       env.line([[-R * 0.8, R * 0.36], [R * 0.8, R * 0.36]], C.text, Math.max(1, R * 0.025), pa, false);
       for (let k2 = 0; k2 < 3; k2++) { const pts = []; for (let i = 0; i <= 20; i++) pts.push([R * 1.15 + i * R * 0.1, (k2 - 1) * R * 0.32 + Math.sin(i * 0.9) * R * 0.08]); env.line(pts, C.text, Math.max(1.5, R * 0.04), pa, false); }
@@ -2225,6 +2267,8 @@ reg('letterPaper', {
     rule: rng.pick(['accent', 'accent', 'accent', 'sub']), sign: rng.chance(0.7),
   }),
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
+    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const C = card(sc), out = tout(env), ls = smallSize(env);
     const tate = p.variant === 'tate';
@@ -2233,6 +2277,8 @@ reg('letterPaper', {
     if (tate) { pw = port ? W * 0.88 : Math.min(W * 0.8, H * 0.86 * 1.45); ph = port ? Math.min(H * 0.74, pw * 1.5) : pw / 1.45; }
     else { ph = port ? Math.min(H * 0.8, W * 0.9 * 1.35) : H * 0.86; pw = port ? ph / 1.35 : Math.min(W * 0.8, ph * 1.1); }
     const x0 = W / 2 - pw / 2, y0 = H / 2 - ph / 2 + (port ? (1 - E.outCubic(J.clamp(env.lt / 0.45))) * H * 0.25 + E.inCubic(env.pOut) * H * 0.05 : 0);
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'letterPaper', frame:[W/2,y0+ph/2,0,objectScale,objectScale], anchor:[W/2,H/2], port,H, support:[-pw/2,-ph/2,pw/2,ph/2] });
+    ctx.save(); if(objectScale!==1){ctx.translate(W/2,y0+ph/2);ctx.scale(objectScale,objectScale);ctx.translate(-W/2,-y0-ph/2);}
     const ruleC = p.rule === 'accent' ? plateCol(sc, [sc.accent, sc.accent2], C.fill, 1.6) : J.mix(C.fill, C.text, 0.4);
     const lw = Math.max(1.5, u * 0.002);
     const fadeOut = 1 - J.clamp((env.pOut - 0.55) / 0.45);
@@ -2241,7 +2287,7 @@ reg('letterPaper', {
     const fold = port ? 0 : E.inOutCubic(J.clamp(pOutU(env) / 0.7));
     const k = uf * (1 - fold);
     const a0 = tin(env, 0, 0.2, E.outCubic) * fadeOut;
-    if (a0 <= 0.01) return null;
+    if (a0 <= 0.01) {ctx.restore();return null;}
     const third = port ? ph / 3 : tate ? pw / 3 : ph / 3;
     // panel rects (in sheet order); tate → columns, yoko → rows
     const vis = [[x0 + third * (tate ? 1 - k : 0), y0 + (tate ? 0 : third * (1 - k))], [tate ? third * (1 + 2 * k) : pw, tate ? ph : third * (1 + 2 * k)]];
@@ -2269,9 +2315,9 @@ reg('letterPaper', {
       const ctxT = deckCopy(env);
       const cs = size * 0.62;
       if (ctxT && a2 > 0.01 && base + (nl + 1.5) * pitch < x0 + pw - mS) {
-        env.draw({ text: [...strip(ctxT)].slice(0, Math.floor((bot - top) / (cs * 1.1))).join(''), font: p.font, size: cs, vertical: true, align: 'left', track: 0.08, x: base + (nl + 1.5) * pitch, y: top + cs * 0.4, color: C.text, alpha: a2 * 0.5, ghost: false });
+        objectDraw({ text: [...strip(ctxT)].slice(0, Math.floor((bot - top) / (cs * 1.1))).join(''), font: p.font, size: cs, vertical: true, align: 'left', track: 0.08, x: base + (nl + 1.5) * pitch, y: top + cs * 0.4, color: C.text, alpha: a2 * 0.5, ghost: false });
       }
-      if (p.sign && a2 > 0.01 && base - 1.5 * pitch > x0 + mS) env.draw({ text: 'No.' + lineNo(env), font: p.font, size: ls, vertical: true, align: 'left', x: base - 1.5 * pitch, y: bot - ls * 5, color: C.text, alpha: a2 * 0.7, ghost: false });
+      if (p.sign && a2 > 0.01 && base - 1.5 * pitch > x0 + mS) objectDraw({ text: 'No.' + lineNo(env), font: p.font, size: ls, vertical: true, align: 'left', x: base - 1.5 * pitch, y: bot - ls * 5, color: C.text, alpha: a2 * 0.7, ghost: false });
     } else {
       const left = x0 + pw * 0.1, right = x0 + pw * 0.9;
       const top = y0 + ph * 0.1, bot = y0 + ph * 0.92;
@@ -2286,8 +2332,8 @@ reg('letterPaper', {
       bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: left, y: top + (r0 + nl / 2) * pitch - size * 0.12, align: 'left', lead: 1.7, track: 0.04, color: C.text, noHold: plateHold(env) });
       const a2 = J.clamp((k - 0.6) / 0.4) * out;
       const ctxT = deckCopy(env);
-      if (ctxT && a2 > 0.01 && r0 > 0) env.draw({ text: ctxT, font: p.font, size: size * 0.6, align: 'left', x: left, y: top + (r0 - 0.5) * pitch - size * 0.1, color: C.text, alpha: a2 * 0.45, ghost: false });
-      if (p.sign && a2 > 0.01) env.draw({ text: '— No.' + lineNo(env), font: p.font, size: ls, align: 'right', x: right, y: top + (nRow - 0.5) * pitch - ls * 0.2, color: C.text, alpha: a2 * 0.7, ghost: false });
+      if (ctxT && a2 > 0.01 && r0 > 0) objectDraw({ text: ctxT, font: p.font, size: size * 0.6, align: 'left', x: left, y: top + (r0 - 0.5) * pitch - size * 0.1, color: C.text, alpha: a2 * 0.45, ghost: false });
+      if (p.sign && a2 > 0.01) objectDraw({ text: '— No.' + lineNo(env), font: p.font, size: ls, align: 'right', x: right, y: top + (nRow - 0.5) * pitch - ls * 0.2, color: C.text, alpha: a2 * 0.7, ghost: false });
     }
     ctx.restore();
     // creases + shading on the swinging thirds
@@ -2299,6 +2345,7 @@ reg('letterPaper', {
     const cr = J.mix(C.fill, C.text, 0.12);
     if (tate) { env.line([[x0 + third, y0], [x0 + third, y0 + ph]], cr, lw, a0 * 0.8, false); env.line([[x0 + third * 2, y0], [x0 + third * 2, y0 + ph]], cr, lw, a0 * 0.8 * k, false); }
     else { env.line([[x0, y0 + third], [x0 + pw, y0 + third]], cr, lw, a0 * 0.8 * k, false); env.line([[x0, y0 + third * 2], [x0 + pw, y0 + third * 2]], cr, lw, a0 * 0.8 * k, false); }
+    ctx.restore();
     return bb;
   },
 });
@@ -2316,6 +2363,8 @@ reg('calendar', {
     font: rng.pick(fontsOf(st, ['display', 'serif'])), variant: rng.pick(['month', 'himekuri']), month: rng.int(0, 11), off: rng.int(0, 6), day: rng.int(3, 27), days: rng.pick([30, 31]),
   }),
   render(env) {
+    const objectScale = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.objectScale ?? 1 : 1;
+    const objectDraw = it => env.draw(objectScale===1?it:{...it,size:Math.max(it.size*objectScale,Math.min(it.size,Math.max(12,.02*U(env))/(env.cut.contentScale??1)))/objectScale});
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const out = tout(env), ls = smallSize(env);
     const C = card(sc);
@@ -2328,6 +2377,8 @@ reg('calendar', {
       // tear-off day pad: the lyric takes the place of the big date
       const pw = port ? W * 0.84 : Math.min(W * 0.6, H * 0.86 * 0.95), ph = port ? Math.min(H * 0.7, pw * 1.3) : H * 0.84;
       const x0 = W / 2 - pw / 2, y0 = H / 2 - ph / 2 + ph * 0.03;
+      if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'body', { kind:'calendar-pad', frame:[W/2,y0+ph/2,0,objectScale,objectScale], anchor:[W/2,y0+ph/2], pw,ph,day:p.day,bindH:ph*.08,support:[-pw*.55,-ph*.55,pw*.55,ph*.6] });
+      ctx.save(); if(objectScale!==1){ctx.translate(W/2,y0+ph/2);ctx.scale(objectScale,objectScale);ctx.translate(-W/2,-y0-ph/2);}
       const a = tin(env, 0, 0.3, E.outCubic);
       const bindH = ph * 0.08;
       const bindC = [darkest(sc), sc.ink, sc.accent, sc.sub].find(c => J.contrast(c, sc.bg) >= 1.5 && J.contrast(c, C.fill) >= 1.8) || sc.sub;
@@ -2337,7 +2388,7 @@ reg('calendar', {
       env.rect(x0, y0 + bindH, pw, ph - bindH, C.fill, a, false);
       // next page (revealed as this one tears away)
       const tear = E.inCubic(env.pOut);
-      env.draw({ text: String(day % p.days + 1), font: p.font, size: ph * 0.3, x: W / 2, y: y0 + ph * 0.55, color: dayCol((wd + 1) % 7), alpha: a * 0.18, ghost: false });
+      objectDraw({ text: String(day % p.days + 1), font: p.font, size: ph * 0.3, x: W / 2, y: y0 + ph * 0.55, color: dayCol((wd + 1) % 7), alpha: a * 0.18, ghost: false });
       ctx.save();
       const hx = x0 + pw * (p.day % 2 ? 0.1 : 0.9), hy = y0 + bindH;
       ctx.translate(hx, hy); ctx.rotate((p.day % 2 ? 1 : -1) * tear * 28 * J.DEG); ctx.translate(-hx, -hy + tear * tear * ph * 0.6);
@@ -2346,29 +2397,32 @@ reg('calendar', {
       if (C.edge) env.line([[x0, y0 + bindH], [x0 + pw, y0 + bindH], [x0 + pw, y0 + ph], [x0, y0 + ph], [x0, y0 + bindH]], C.line, 1.2, pa, false);
       const fa = tin(env, 0.1, 0.4, E.outCubic) * pa;
       const m = pw * 0.07;
-      env.draw({ text: String(p.month + 1), font: p.font, size: ph * 0.1, align: 'left', x: x0 + m, y: y0 + bindH + ph * 0.09, color: C.text, alpha: fa, ghost: false });
-      env.draw({ text: MON_E[p.month], font: monoF(env), size: ls * 0.9, track: 0.3, align: 'left', x: x0 + m + ph * 0.1 * 0.9, y: y0 + bindH + ph * 0.1, color: C.text, alpha: fa * 0.8, ghost: false });
+      objectDraw({ text: String(p.month + 1), font: p.font, size: ph * 0.1, align: 'left', x: x0 + m, y: y0 + bindH + ph * 0.09, color: C.text, alpha: fa, ghost: false });
+      objectDraw({ text: MON_E[p.month], font: monoF(env), size: ls * 0.9, track: 0.3, align: 'left', x: x0 + m + ph * 0.1 * 0.9, y: y0 + bindH + ph * 0.1, color: C.text, alpha: fa * 0.8, ghost: false });
       env.rrect(x0 + pw - m - ls * 3.2, y0 + bindH + ph * 0.06, ls * 3.2, ls * 1.6, ls * 0.2, null, fa, false, red, Math.max(1.5, ls * 0.08));
-      env.draw({ text: ROKUYO[(day + p.month) % 6], font: serifF(env), size: ls * 1.05, x: x0 + pw - m - ls * 1.6, y: y0 + bindH + ph * 0.06 + ls * 0.8, color: red, alpha: fa, ghost: false });
+      objectDraw({ text: ROKUYO[(day + p.month) % 6], font: serifF(env), size: ls * 1.05, x: x0 + pw - m - ls * 1.6, y: y0 + bindH + ph * 0.06 + ls * 0.8, color: red, alpha: fa, ghost: false });
       const dcol0 = dayCol(wd), dcol = J.contrast(dcol0, C.fill) >= 3 ? dcol0 : C.text;
       const fb = fitBlock(t0, p.font, pw - m * 2, ph * 0.46, { lead: 1.08, track: 0.02 }, 3);
       const size = Math.min(fb.size, u * 0.24);
       const bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: W / 2, y: y0 + bindH + ph * 0.47, lead: 1.08, track: 0.02, color: dcol === C.text ? C.text : dcol, noHold: plateHold(env) });
       env.line([[x0 + m, y0 + ph * 0.8], [x0 + pw - m, y0 + ph * 0.8]], C.text, Math.max(1, u * 0.0015), fa * 0.5, false);
-      env.draw({ text: WD_J[wd] + '曜日', font: serifF(env), size: ls * 1.5, align: 'left', x: x0 + m, y: y0 + ph * 0.88, color: dcol, alpha: fa, ghost: false });
-      env.draw({ text: day + '  ' + WD_E[wd], font: monoF(env), size: ls * 1.1, track: 0.2, align: 'right', x: x0 + pw - m, y: y0 + ph * 0.88, color: dcol, alpha: fa, ghost: false });
+      objectDraw({ text: WD_J[wd] + '曜日', font: serifF(env), size: ls * 1.5, align: 'left', x: x0 + m, y: y0 + ph * 0.88, color: dcol, alpha: fa, ghost: false });
+      objectDraw({ text: day + '  ' + WD_E[wd], font: monoF(env), size: ls * 1.1, track: 0.2, align: 'right', x: x0 + pw - m, y: y0 + ph * 0.88, color: dcol, alpha: fa, ghost: false });
       ctx.restore();
       // binding with rings
       env.rect(x0 - pw * 0.02, y0, pw * 1.04, bindH, bindC, a, false);
       [0.3, 0.7].forEach(f => env.circle(x0 + pw * f, y0 + bindH * 0.5, bindH * 0.22, sc.bg, null, 0, a, false));
+      ctx.restore();
       return bb;
     }
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'independentDecor', 'calendar-month-grid', null);
     // month grid; today's cell zooms into the lyric panel
     const cols = 7, rows = 5;
     const gw = port ? W * 0.9 : Math.min(W * 0.84, H * 1.5), cell = gw / cols, gh = cell * rows * (port ? 1 : 0.72);
     const rh = gh / rows;
     const hdrH = ls * 2.2;
     const gx = W / 2 - gw / 2, gy = H / 2 - (gh + hdrH + ls * 3) / 2 + ls * 3 + hdrH;
+    if(env.cut.placementLayoutsC)J.placement.layoutsCObjectsTag(env,'primary','calendar-grid-copy',{kind:'fixed',frame:[0,0,0,1,1],anchor:[0,0],support:[gx,gy-hdrH-ls*3,gx+gw,gy+gh]});
     const ga = tin(env, 0, 0.3, E.outCubic) * out;
     env.draw({ text: String(p.month + 1), font: p.font, size: ls * 2.6, align: 'left', x: gx, y: gy - hdrH - ls * 1.7, color: sc.fg, alpha: ga, ghost: false });
     env.draw({ text: MON_E[p.month], font: monoF(env), size: ls, track: 0.4, align: 'left', x: gx + ls * 2.6, y: gy - hdrH - ls * 1.3, color: sc.sub, alpha: ga, ghost: false });
@@ -2392,6 +2446,7 @@ reg('calendar', {
     const bx = J.lerp(tcx, X1, zoom), by = J.lerp(tcy, Y1, zoom), bw = J.lerp(cell, PW, zoom), bh = J.lerp(rh, PH, zoom);
     const plate = plateCol(sc, [sc.accent, sc.ink]);
     const pa = J.clamp(env.lt / 0.12) * out;
+    if (env.cut.placementLayoutsC) J.placement.layoutsCObjectsTag(env, 'primary', 'today-panel', { kind:'calendar-month', frame:[bx+bw/2,by+bh/2,0,1,1], anchor:[X1+PW/2,Y1+PH/2], cell,rh,PW,PH,tcx,tcy,X1,Y1,support:[-PW/2,-PH/2,PW/2,PH/2] });
     shadowR(env, bx, by, bw, bh, 0, pa * zoom, u * 0.015);
     env.rect(bx, by, bw, bh, plate, pa, false);
     const tc = onCol(sc, plate);
