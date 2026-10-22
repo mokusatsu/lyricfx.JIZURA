@@ -1,0 +1,3 @@
+# HELLO comparison caption correction pending
+
+Parent independent visual review reported that the generic anchor explanation in the HELLO landscape preview01 caption does not describe this actual fixture. The selected fixture uses the native path with fixed translation, not the physical-school screen-anchor strategy. The immutable preview01/numbered54 freeze is retained unchanged. At a later, separately authorized publication-copy preparation step, correct that fixture caption and identify its exact selected recipe from the manifest; do not change the frozen original or imply native plate aspect/field proportions are unchanged. This note performs no publication or public-result check.
