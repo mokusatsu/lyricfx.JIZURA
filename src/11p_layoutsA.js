@@ -1531,22 +1531,28 @@ reg('filmstrip', {
     ctx.save(); ctx.translate(...center); ctx.rotate((fr?fr.turn:p.tilt) * J.DEG); ctx.translate(-center[0],-center[1]);
     if(env.cut.placementAdaptiveTrial)env.layoutAMotion='film-strip';
     // band
-    const bandLen = fr?fw0*3.2:A * 1.6, c0 = (v?center[1]:center[0]) + off;
+    const bandLen = A * 1.6, c0 = (v?center[1]:center[0]) + off;
     if(env.placementEnvelope){const sweep=env.layoutAEvaluationRange,drift=Math.max(...sweep.map(t=>Math.abs(t-env.cut.start-env.cut.dur/2)))*u*.03;const along=A*2.4+drift;const theta=(fr?fr.turn:p.tilt)*J.DEG,axis=v?[-Math.sin(theta),Math.cos(theta)]:[Math.cos(theta),Math.sin(theta)];env.layoutASweep={vector:axis.map(v=>v*along)};}
     if (v) env.rect(center[0] - band / 2, c0 - bandLen / 2, band, bandLen, stripC, fa, false);
     else env.rect(c0 - bandLen / 2, center[1] - band / 2, bandLen, band, stripC, fa, false);
     // sprocket holes
     const hp = band * 0.11, hw = hp * 0.55, hh = hp * 0.72, hm = (band - fh) / 4;
-    const nH = Math.min(120, Math.ceil(bandLen / hp));
-    for (let i = 0; i < nH; i++) {
+    const nH = fr?Math.ceil(bandLen / hp):Math.min(120, Math.ceil(bandLen / hp));
+    // Adaptive film has smaller exposures but retains the full native band.
+    // Emit its finite band indices so a later placement offset cannot lose holes.
+    // The recorder's normal draw-resource budget still rejects oversized recipes.
+    const priorRRectBounds=env.placementRRectBounds;
+    if(fr)env.placementRRectBounds='rect';
+    const visitHoles=draw=>{for (let i = 0; i < nH; i++) {
       const a = c0 - bandLen / 2 + (i + 0.5) * hp;
-      if (a < -hp || a > A + hp) continue;
+      if (!fr&&(a < -hp || a > A + hp)) continue;
       [-1, 1].forEach(sd => {
         const q = P2(a, sd * (band / 2 - hm));
-        if (v) env.rrect(q[0] - hh / 2, q[1] - hw / 2, hh, hw, hw * 0.25, sc.bg, fa, false);
-        else env.rrect(q[0] - hw / 2, q[1] - hh / 2, hw, hh, hw * 0.25, sc.bg, fa, false);
+        if (v) draw(q[0] - hh / 2, q[1] - hw / 2, hh, hw, hw * 0.25, sc.bg, fa, false);
+        else draw(q[0] - hw / 2, q[1] - hh / 2, hw, hh, hw * 0.25, sc.bg, fa, false);
       });
-    }
+    }};
+    try{if(fr&&env.placementRecorder?.validateFilmRRectBatch){let rows=[];visitHoles((...args)=>{rows.push(args);if(rows.length===128){env.placementRecorder.validateFilmRRectBatch(rows);rows=[];}});if(rows.length)env.placementRecorder.validateFilmRRectBatch(rows);}else visitHoles((...args)=>env.rrect(...args));}finally{env.placementRRectBounds=priorRRectBounds;}
     // edge codes
     if (p.codes) {
       const cs = Math.max(ar?ar.secondaryFloor:10, hm * 0.9), ca = J.clamp(eIn * 2 - 1) * fa;
@@ -1912,7 +1918,7 @@ reg('ticket', {
     if(env.placementEnvelope)env.layoutASweep={pivot:[cx,cy],scale:[1,1],angle:Math.abs(p.tilt)*.5+(tr?tr.entryTurn+tr.tearTurn:22),negativeY:(tr?tr.travel*.06:H*.04)+(tr?tr.tearDistance:Math.hypot(tw*.12,th*.2)),positiveY:(tr?tr.travel:H*.7)+(tr?tr.tearDistance:Math.hypot(tw*.12,th*.2)),dx:tr?tr.tearDistance:Math.hypot(tw*.12,th*.2)};
     const tear = eOut;
     if(env.cut.placementAdaptiveTrial)env.layoutAMotion='ticket-stub';
-    ctx.save(); ctx.translate(tear*(tr?tr.tearDistance*.5:tw*.12),tear*(tr?tr.tearDistance*.8:th*.2));ctx.rotate(tear*(tr?tr.tearTurn:12)*J.DEG);
+    ctx.save(); ctx.translate(tear*(tr?tr.tearOffset[0]:tw*.12),tear*(tr?tr.tearOffset[1]:th*.2));ctx.rotate(tear*(tr?tr.tearTurn:12)*J.DEG);
     if (outline) env.line(closeLoop(T.stub), sc.fg, Math.max(2, th * 0.012), a, false); else env.poly(T.stub, plate, a, false);
     const ls = Math.max(ar?ar.secondaryFloor/.8:11, th * 0.07), sx = px0 + stubW / 2;
     env.draw({ text: p.label, font: monoF(env), size: ls, track: 0.25, x: ar?px0+stubW*.25:sx - stubW * 0.22, y: 0, rot: -90, color: tc, alpha: a, ghost: false,placementOwnedBox:ar?[px0,-th/2,stubW*.48,th]:null });

@@ -1,0 +1,126 @@
+{
+  "passed": true,
+  "sourceSHA256": "b81d12ee0ad091934330822e36dfbe03ce2114bae3e90aa2a7b903e364decf96",
+  "toolSHA256": "b72529d2f81ddfc88d039ecfe232d13297f2889faabeee50be5c5a25ff97233e",
+  "checks": {
+    "cases": [
+      {
+        "id": "ordinary",
+        "validationSupported": true,
+        "events": 1,
+        "diagnostics": []
+      },
+      {
+        "id": "uncertain-origin",
+        "validationSupported": false,
+        "events": 3,
+        "diagnostics": []
+      },
+      {
+        "id": "nan-radius",
+        "validationSupported": false,
+        "events": 3,
+        "diagnostics": []
+      },
+      {
+        "id": "negative-radius",
+        "validationSupported": false,
+        "events": 2,
+        "diagnostics": []
+      },
+      {
+        "id": "negative-stroke",
+        "validationSupported": false,
+        "events": 2,
+        "diagnostics": []
+      },
+      {
+        "id": "zero-invisible",
+        "validationSupported": true,
+        "events": 1,
+        "diagnostics": []
+      },
+      {
+        "id": "budget-last",
+        "validationSupported": false,
+        "events": 0,
+        "diagnostics": [
+          {
+            "code": "GEOMETRY_LIMIT",
+            "message": "Frame draw event ceiling exceeded"
+          }
+        ]
+      },
+      {
+        "id": "budget-first",
+        "validationSupported": false,
+        "events": 0,
+        "diagnostics": [
+          {
+            "code": "GEOMETRY_LIMIT",
+            "message": "Frame draw event ceiling exceeded"
+          }
+        ]
+      },
+      {
+        "id": "malformed-bounds",
+        "validationSupported": false,
+        "events": 0,
+        "diagnostics": [
+          {
+            "code": "UNMEASURED_INK",
+            "message": "Empty/nonfinite ink"
+          }
+        ]
+      },
+      {
+        "id": "bounds-budget-priority",
+        "validationSupported": false,
+        "events": 0,
+        "diagnostics": [
+          {
+            "code": "GEOMETRY_LIMIT",
+            "message": "Frame draw event ceiling exceeded"
+          }
+        ]
+      },
+      {
+        "id": "singular-transform",
+        "validationSupported": false,
+        "events": 0,
+        "diagnostics": [
+          {
+            "code": "SINGULAR_AFFINE",
+            "message": "Singular parent/item transform"
+          }
+        ]
+      },
+      {
+        "id": "rotated",
+        "validationSupported": true,
+        "events": 1,
+        "diagnostics": []
+      },
+      {
+        "id": "tiny-scale",
+        "validationSupported": false,
+        "events": 3,
+        "diagnostics": []
+      }
+    ],
+    "fullRecorderHookAbsent": true,
+    "allProgramsAndDiagnosticsEqual": true,
+    "rowsUnchanged": true,
+    "tinyPitch": {
+      "chunks": 32,
+      "maxChunk": 128,
+      "generatedRows": 4096,
+      "diagnostics": [
+        {
+          "code": "GEOMETRY_LIMIT",
+          "message": "Frame draw event ceiling exceeded"
+        }
+      ]
+    }
+  }
+}

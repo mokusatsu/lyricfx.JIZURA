@@ -84,7 +84,10 @@ A.record = (renderer,env,options={}) => {
   const nativeA26=env.cut.placementLayoutsA===true;let nativeRoot=nativeA26?matrix(c):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
   const events=[],diagnostics=[],gradients=new WeakMap();let recorder,glyphCount=0,clips=[],pathRect=null,pathInvalid=false,pathPoints=[],pathClosed=false,pathMatrix=null;const clipStack=[];
   const budget=env.placementBudget?(validationOnly?{...env.placementBudget}:env.placementBudget):{events:0,glyphs:0};
-  const push=(kind,args,polygons,knownMatrix)=>{if(++budget.events>MAX_EVENTS)fail('GEOMETRY_LIMIT','Frame draw event ceiling exceeded');if(events.length>=MAX_EVENTS)fail('GEOMETRY_LIMIT','Draw event ceiling exceeded');const ownership=recorder.drawOwnership||{role:'primary',owner:'cut:'+env.cut.index};if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=knownMatrix||matrix(c);A.affine(m);if(polygons.length)A.bounds(polygons);events.push({...(nativeA26?{nativeTransform:nativeState(),nativeSweep:recorder.layoutASweep?jsonClone(recorder.layoutASweep):null}:{}),...(recorder.layoutAMotion?{nativeMotion:recorder.layoutAMotion}:{}),kind,args:args.map(v=>v&&typeof v==='object'&&gradients.has(v)?gradients.get(v):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
+  // Validation-only hole/ticket-shape checks retain scalar/affine/resource validation above
+  // but need no native transform/sweep/clip payload: only items feed owned quality.
+  // Such incomplete prepasses remain explicitly non-measurement and non-replayable.
+  const push=(kind,args,polygons,knownMatrix,batchValidated=false)=>{if(++budget.events>MAX_EVENTS)fail('GEOMETRY_LIMIT','Frame draw event ceiling exceeded');if(events.length>=MAX_EVENTS)fail('GEOMETRY_LIMIT','Draw event ceiling exceeded');const ownership=recorder.drawOwnership||{role:'primary',owner:'cut:'+env.cut.index};if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=knownMatrix||matrix(c);if(!batchValidated){A.affine(m);if(polygons.length)A.bounds(polygons);}if(validationOnly&&!shapeValidationUncertain&&(kind==='rrect'&&recorder.placementRRectBounds==='rect'||env.cut.layout==='ticket'&&kind!=='item'))return;events.push({...(nativeA26?{nativeTransform:nativeState(),nativeSweep:recorder.layoutASweep?jsonClone(recorder.layoutASweep):null}:{}),...(recorder.layoutAMotion?{nativeMotion:recorder.layoutAMotion}:{}),kind,args:args.map(v=>v&&typeof v==='object'&&gradients.has(v)?gradients.get(v):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
   const proxy=new Proxy(c,{get(target,k){
     if(k==='save')return ()=>{clipStack.push(clips.slice());if(nativeA26)nativeStack.push(nativeState());target.save();};
     if(k==='restore')return ()=>{clips=clipStack.pop()||[];const state=nativeA26?nativeStack.pop():null;if(state){nativeRoot=state.root;nativeOps=state.ops;}target.restore();};
@@ -102,6 +105,24 @@ A.record = (renderer,env,options={}) => {
   recorder=renderer.makeEnv(proxy,env.plan,env.cut,env.sc,{...env,ctx:proxy,placementRecording:true});
   if(env.placementEnvelope){recorder.pIn=1;recorder.pOut=0;}
   recorder.placementRecorder={item(it){const count=[...String(it.text||'')].length;glyphCount+=count;budget.glyphs+=count;if(budget.glyphs>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Frame glyph ceiling exceeded');if(glyphCount>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Program glyph ceiling exceeded');if(env.pass!=='main'&&it.ghost===false)return null;if(env.cut.placementUnits&&recorder.drawOwnership?.role==='tiledAux'&&!it.charFn){for(const key of ['pieceFn','blur','shadow','extrude','pattern'])if(it[key])fail('UNSUPPORTED_ITEM',key+' requires a bounded adapter');if(!finite([it.x,it.y,it.size,it.sx??1,it.sy??1,it.rot??0,it.skew??0,it.track??0,it.lead??1.3]))fail('UNMEASURED_INK','Finite auxiliary text geometry required');push('item',[snapshotItem(it)],[]);return recordedItemBounds(it);}let ink=A.itemGeometry(it,matrix(c),env,{validationOnly});if(env.placementEnvelope&&it.placementSweep){const sweep=it.placementSweep,local=A.itemGeometry({...it,x:0,y:0,rot:0},ID,env).polygons;const b=A.bounds(local);ink={...ink,polygons:[rect(sweep.x0+b.x0,sweep.y0+b.y0,sweep.x1-sweep.x0+b.x1-b.x0,sweep.y1-sweep.y0+b.y1-b.y0)]};}if(env.cut.placementGlyphs&&it.placementMain){for(const glyph of ink.glyphs){const copy=snapshotItem(it);copy.placementGlyphIndex=glyph.index;copy.placementRouteKey='huge.main.glyph.'+glyph.index;push('item',[copy],[glyph.polygon]);const event=events.at(-1);event.owner=copy.placementRouteKey;event.anchor=[glyph.matrix[4],glyph.matrix[5]];event.inkPolygons=[glyph.inkPolygon];}}else{push('item',[snapshotItem(it)],ink.polygons);events.at(-1).inkPolygons=ink.inkPolygons;}return recordedItemBounds(it);}};
+  // Source-owned film holes have no context/state changes between rows.
+  // Only the non-certifying prepass batches their common transform checks;
+  // each original argument row still consumes its own resource/shape guards.
+  if(validationOnly&&env.cut.layout==='filmstrip')recorder.placementRecorder.validateFilmRRectBatch=rows=>{
+    if(recorder.placementRRectBounds!=='rect')fail('UNSUPPORTED_DRAW_PROGRAM','Film hole validation requires explicit rectangle bounds');
+    let m,linearNorm,det,batchValidated=false;
+    for(const args of rows){
+      const [x,y,w,h]=args;if(w<=0||h<=0)continue;
+      const pad=(args[8]?args[9]??1:0)/2,alpha=args[6]??1,ghost=args[7]??true;
+      if(alpha<=0||env.pass!=='main'&&!ghost)continue;
+      if(!m){m=matrix(c);A.affine(m);linearNorm=Math.hypot(...m.slice(0,4));det=Math.abs(m[0]*m[3]-m[1]*m[2]);}
+      const radius=Math.min(args[4],w/2,h/2);
+      if(!finite([x,y,w,h,pad,radius])||radius<0||pad<0||J.TAU!==Math.PI*2||
+         Math.max(Math.abs(x),Math.abs(y),w,h,pad,radius)>1e5||Math.min(w,h)<.01||
+         linearNorm>100||det/linearNorm<.01||Math.max(Math.abs(m[4]),Math.abs(m[5]))>1e6)shapeValidationUncertain=true;
+      push('rrect',args,[],m,batchValidated);batchValidated=true;
+    }
+  };
   recorder.withDrawRole=(role,owner,fn)=>A.withRole(recorder,role,owner,fn);
   recorder.withPlacementBounds=(bounds,fn)=>{const previous=recorder.placementBounds;recorder.placementBounds=bounds;try{return fn();}finally{recorder.placementBounds=previous;}};
   // High-level shape adapters preserve the original operation and painter order.
@@ -133,7 +154,10 @@ A.record = (renderer,env,options={}) => {
     }else{
       const r=Math.min(args[4],w/2,h/2);if(!Number.isFinite(r)||r<0)fail('INVALID_GEOMETRY','Finite nonnegative rounded rectangle radius required');
       const N=32,capPad=c.lineCap==='square'&&c.getLineDash().length?Math.SQRT2*pad:pad,radius=(r+capPad)/Math.cos(Math.PI/N),corners=[[x+r,y+r],[x+w-r,y+r],[x+w-r,y+h-r],[x+r,y+h-r]];
-      local=r===0?rect(x-pad,y-pad,w+2*pad,h+2*pad):roundedRectHull(corners,radius);
+      // Source-owned small perforations may use the complete outer rectangle.
+      // This contains the curved fill/stroke; device-axis AA is still added below.
+      // It changes measurement cost only, never the replayed rrect arguments.
+      local=recorder.placementRRectBounds==='rect'?rect(x-capPad,y-capPad,w+2*capPad,h+2*capPad):r===0?rect(x-pad,y-pad,w+2*pad,h+2*pad):roundedRectHull(corners,radius);
     }
     // The circumscribed local polygon contains the complete curved shape and
     // stroke. Device-axis Minkowski padding covers one pixel of raster AA even
