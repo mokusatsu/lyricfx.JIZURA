@@ -1,0 +1,104 @@
+{
+  "token": "635a7b61aea844d5b8a9f9e208bc9336",
+  "root": {
+    "pid": 331581,
+    "startTicks": "8364622",
+    "ppid": 331570,
+    "pgid": 331581,
+    "session": 331581,
+    "state": "R"
+  },
+  "preexistingIdentityCount": 2979,
+  "owned": [
+    {
+      "identity": {
+        "pid": 331581,
+        "startTicks": "8364622",
+        "ppid": 331570,
+        "pgid": 331581,
+        "session": 331581,
+        "state": "R"
+      },
+      "proof": "Direct Popen child with PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 331588,
+        "startTicks": "8364629",
+        "ppid": 331581,
+        "pgid": 331588,
+        "session": 331588,
+        "state": "S"
+      },
+      "proof": "Node spawn registry with root PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 331596,
+        "startTicks": "8364635",
+        "ppid": 331588,
+        "pgid": 331596,
+        "session": 331596,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    }
+  ],
+  "actions": [
+    {
+      "identity": {
+        "pid": 331581,
+        "startTicks": "8364622",
+        "ppid": 331570,
+        "pgid": 331581,
+        "session": 331581,
+        "state": "S"
+      },
+      "signal": 15,
+      "method": "pidfd_send_signal"
+    },
+    {
+      "identity": {
+        "pid": 331588,
+        "startTicks": "8364629",
+        "ppid": 331581,
+        "pgid": 331588,
+        "session": 331588,
+        "state": "S"
+      },
+      "signal": 15,
+      "method": "pidfd_send_signal"
+    },
+    {
+      "identity": {
+        "pid": 331596,
+        "startTicks": "8364635",
+        "ppid": 331588,
+        "pgid": 331596,
+        "session": 331596,
+        "state": "S"
+      },
+      "signal": 15,
+      "method": "pidfd_send_signal"
+    }
+  ],
+  "reapedAdoptedChildren": [
+    {
+      "pid": 331588,
+      "startTicks": "8364629",
+      "waitCode": 2,
+      "waitStatus": 15
+    },
+    {
+      "pid": 331596,
+      "startTicks": "8364635",
+      "waitCode": 2,
+      "waitStatus": 15
+    }
+  ],
+  "remainingOwnedIdentities": [],
+  "errors": [],
+  "complete": true,
+  "seconds": 0.4691453139967052,
+  "policy": "No killpg and no PID-only signal. Direct spawn/descendant/unique-token ownership plus start identity; signal uses pinned pidfd. Python process subreaper reaps only owned adopted children."
+}

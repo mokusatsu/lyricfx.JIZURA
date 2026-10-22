@@ -1,0 +1,7 @@
+{
+  "insert": "  for(const name of ['fromEntries','setPrototypeOf']){const original=Object[name];await miss('Object '+name+' decoder helper identity',()=>{Object[name]=function(...args){return original(...args);};},()=>{Object[name]=original;});}\n",
+  "originalNegativeCount": 23,
+  "newHelperNegatives": 2,
+  "totalExpectedNegatives": 25,
+  "otherDriverBytesUnchanged": true
+}

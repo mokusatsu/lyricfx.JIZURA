@@ -1,0 +1,29 @@
+{
+  "reviewedAtUTC": "2026-10-22T20:56:47.630275+00:00",
+  "decision": "Accept evidence diagnosis; no performance acceptance or productnativechange authorized by this receipt. Minimalfixturepinning must retain originallyqualified realizedinput and originalguards/timedsource calls.",
+  "diagnosticPath": "/workspace/avoid008-cache-final/tasks/evidence/AVOID-008/performance/formal128-baseline1000-input-diagnostic01",
+  "actualConditions": [
+    {
+      "n": 1000,
+      "on": true,
+      "side": "baseline"
+    }
+  ],
+  "actual9OriginalPrePostBytesMatched": true,
+  "iterations0to5SHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa",
+  "iterations6to8SHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7",
+  "iteration0MatchesOld1000NormalizedRaw": true,
+  "independentExactDiffPaths": 204,
+  "omikujiCategoryPaths": 87,
+  "staggerPaths": 67,
+  "treatPPaths": 50,
+  "sourceUnchangedPins": 107,
+  "sourceCause": "Immutable2bb contains random inconsistent omikuji sort comparator. Same RNG feeds later planner treatment/stagger. Source-level candidate explanation and exact differences established; exact comparator call/JIT switching was not instrumented and is not asserted.",
+  "missingVsNullDistinguished": true,
+  "firstExactDifference": [
+    "$.cuts[25].params.cats[1]",
+    "健康",
+    "失物"
+  ],
+  "publicResultChecks": "Not performed; prohibited by user."
+}

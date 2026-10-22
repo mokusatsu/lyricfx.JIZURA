@@ -1,0 +1,40 @@
+{
+  "authorizedByParent": true,
+  "allC34Stable": true,
+  "qualification": "34 source-stable IDs; not 34 successful avoidance cases. Source, geometry correctness, values/aliases/native frame identity, bounded128MiB cache and exact1000input hit approved. Formal performance unexecuted.",
+  "candidateCommit": "778eb302b97ab84abe36206c163918335073acbd",
+  "candidateSHA256": "a509c6ca7318baa7ba27e720a9962d10daf4cb32d7a099b1a92cfab426d3a030",
+  "baselineCommit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+  "runtimeIdentityFile": "tasks/evidence/AVOID-008/performance/20261022-formal128-01-runtime.json",
+  "parentReviewReferences": [
+    "parent-final-cache16-review.json",
+    "parent-cache128-review.json"
+  ],
+  "productCache": {
+    "entries": 32,
+    "serializedByteCap": 134217728,
+    "residentStringAndHeaderByteCap": 134217728,
+    "headerBytes": 512,
+    "scope": "C-only exact full finalization; no guarantee for cold edits, mixed/default UI, transient or whole-browser heap."
+  },
+  "fixedWorkload": {
+    "sizes": [
+      100,
+      1000
+    ],
+    "on": [
+      true,
+      false
+    ],
+    "planningWarmup": 3,
+    "planningSamples": 6,
+    "renderFrames": 80,
+    "renderWarmup": 16,
+    "planningMaxFactor": 2,
+    "additionalRenderP95MaxMs": 3
+  },
+  "aloneCondition": "All foreign browsers/test/encoders and CPU-heavy jobs stopped. Parent does only small status reads/commentary during timing. Existing monitor required; no relaxed predicates.",
+  "publicResultChecks": "Forbidden by user; no public connection.",
+  "authorizedAtUTC": "2026-10-22 20:48:15 UTC",
+  "fontManifestSHA256": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2"
+}

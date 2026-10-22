@@ -1,0 +1,36 @@
+{
+  "reviewedAtUTC": "2026-10-22T21:05:07.788447+00:00",
+  "decision": "Accept product-uninstrumented boundedprofiling raw scope/identity. CPU aggregates and proposed optimization pending. Not formal qualification.",
+  "pinsArchivedAndLive": 107,
+  "conditions": [
+    {
+      "on": true,
+      "cpuSamples": 56085,
+      "all9NormalizedHashesMatchOriginal100": true,
+      "allCutsObservationsFontsAndCountsExactToUnprofiledFormal100": true,
+      "nativeRecordCold": 595,
+      "all8WarmActualRecord0Hits": true,
+      "all34RenderIDs": 34,
+      "completeFrames": 80
+    },
+    {
+      "on": false,
+      "cpuSamples": 7894,
+      "all9NormalizedHashesMatchOriginal100": true,
+      "allCutsObservationsFontsAndCountsExactToUnprofiledFormal100": true,
+      "nativeRecordCold": 0,
+      "all8WarmActualRecord0Hits": true,
+      "all34RenderIDs": 34,
+      "completeFrames": 80
+    }
+  ],
+  "onNormalizedInputExactOld100Canonical": true,
+  "onOldSize100GraphComparison": {
+    "nodes": 53025,
+    "differences": 95,
+    "onlyDifference": "95 namedrevision data5→6; root/codec/otherentries all exact. Different harness metricsrevision preserved; no byteexactfullgraph claim."
+  },
+  "parentVerificationCorrection": "Initial crossharnessfullgraphbyteequalityassert failed solely95 revision fields. Compared actualfields, not productexpectedvalue changes; corrected scope rather than acceptingbyteidentity.",
+  "clockCaution": "Sequential Timestamp and performance.now anchors carry roundtrip offset about1.3ms. Exact frame durations are fixture observations; CPU phase/frame attribution must state clockbasis/uncertainty.",
+  "publicResultChecks": "Not performed; prohibited by user."
+}

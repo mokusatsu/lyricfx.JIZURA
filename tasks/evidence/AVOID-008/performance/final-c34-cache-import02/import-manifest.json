@@ -1,0 +1,291 @@
+{
+  "version": 1,
+  "status": "PREPARATION_ONLY_TARGET_GATE_NOT_SUPPLIED",
+  "donorCommit": "21eebb6b394896097873bd7de055b6e165deb62c",
+  "targetGateCommit": null,
+  "productCapBytes": 16777216,
+  "productEntryCap": 32,
+  "patch": {
+    "path": "tasks/evidence/AVOID-008/performance/final-main-cache-import01/cache-only.patch",
+    "sha256": "4a72200962193e46546fe52acb382062e02f368b01a169795199143b0bdacce0",
+    "scope": [
+      "src/09a_placement.js",
+      "src/09g_layoutsC_placement.js"
+    ],
+    "source09gAlgorithmBodyMustRemainTargetExact": true,
+    "canonicalApplication": "apply-method.cjs prepare(inputs), strict once seams; cache-only.patch is review/check artifact. No Git fuzz/3way application or entire donor source replacement."
+  },
+  "seams": {
+    "path": "tasks/evidence/AVOID-008/performance/final-main-cache-import01/cache-seams.json",
+    "sha256": "1367cbab3f905e24c605200b7835a8724839c696cb3d1afa2f9984aff8acbca4",
+    "matchPolicy": "one exact match each; no fuzz/3way/whole source replacement"
+  },
+  "ownedImports": [
+    {
+      "path": "dev/avoidance/layouts-c-final-cache-test.cjs",
+      "sha256": "51042901fb29172cea6c02a1046e5476e227c2a3157b5a2086c317418cd85b3b",
+      "bytes": 18292,
+      "action": "copy fixed donor bytes only in future isolated gate checkout after permission",
+      "sourceCommit": "21eebb6b394896097873bd7de055b6e165deb62c"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-final-cache-size.cjs",
+      "sha256": "d7719cdfcaddb1b51897dca208dffe9d3930a60464619335543e0241c7d09308",
+      "bytes": 8579,
+      "action": "copy fixed donor bytes only in future isolated gate checkout after permission",
+      "sourceCommit": "6c2302e72994c9f53c2021b6f462381f4c151338"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-perf-fixture.js",
+      "sha256": "e01ffdc6f44a11a86653c58ee1cbdc78a1bfeea83e9014c8058bb082211ba0d2",
+      "bytes": 13475,
+      "action": "copy fixed donor bytes only in future isolated gate checkout after permission",
+      "sourceCommit": "21eebb6b394896097873bd7de055b6e165deb62c"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-perf.cjs",
+      "sha256": "010c3f9187f90872769c8dec06d4b095fa73ea7f734215f4314845efea864fb1",
+      "bytes": 15543,
+      "action": "copy fixed donor bytes only in future isolated gate checkout after permission",
+      "sourceCommit": "cffdb384a28c2d8cd52cec066fcb47a462293ab4"
+    }
+  ],
+  "prerequisites": [
+    {
+      "path": "dev/avoidance/layouts-b-fixture.js",
+      "donorReferenceSHA256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+      "bytes": 6552,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-perf.cjs",
+      "donorReferenceSHA256": "907e1a81f08be98c019d7db65a818a4218eda22bf1e332ceddccac7dd9dea75e",
+      "bytes": 9051,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-test-harness.cjs",
+      "donorReferenceSHA256": "d0d76e2d5f76c5ed5a52aef821943097e401a3d800a21dd53c60b1873569217f",
+      "bytes": 2689,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-runtime-identity.cjs",
+      "donorReferenceSHA256": "7dbe48452023a95f9680ce604a8dcdd62b4c68ad2a0854ed1ad8373ae2e8b8f3",
+      "bytes": 1943,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/stage-perf.cjs",
+      "donorReferenceSHA256": "5e6faaea97663fa25b514d7ec08ea49ddf39d119327598c49fc05b03cb3ea7d4",
+      "bytes": 3631,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/fx-perf.cjs",
+      "donorReferenceSHA256": "ea4595e0e512a1f45229bb953d78e03b22ab57c50fef2d955a931dbc9840bf82",
+      "bytes": 5288,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/contract.json",
+      "donorReferenceSHA256": "aba40d0991c671225dcd264e3e046f44b7c98ffe2869a5371fa4e19b8178b8da",
+      "bytes": 8087,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/browser.cjs",
+      "donorReferenceSHA256": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+      "bytes": 267,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/package.json",
+      "donorReferenceSHA256": "add82c136451f4b9430617d9e637b8d8def0312db464f6e0fbad073e5fcd3e91",
+      "bytes": 255,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/package-lock.json",
+      "donorReferenceSHA256": "49305ffe0e14e58c15de5069c03d17760ffc7c544a4952ac3267451004064a66",
+      "bytes": 20822,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "build.py",
+      "donorReferenceSHA256": "3d5e1b4b2744f1b33bdf6fe5c647bb3fd69ae91d0a7555cc77c45e51a8c1ce4e",
+      "bytes": 3869,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "assets/effect-preview.png",
+      "donorReferenceSHA256": "930e34e294ca9e3cf434086ae6b8bc10fb309b84c6d9b9f98db066c0b6cb961d",
+      "bytes": 1229739,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "tasks/AVOID-002.md",
+      "donorReferenceSHA256": "6193c0d3569804231749eddc74e202a12187b8f336b289779c837918a7fcfb28",
+      "bytes": 23059,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "tasks/AVOID-004.md",
+      "donorReferenceSHA256": "2aab7ce18a9cd1ee36c8e0bb87c29ef2f69c26aae07dac484ae623dc5843fc2f",
+      "bytes": 18578,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/LICENSE-DejaVu.txt",
+      "donorReferenceSHA256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9",
+      "bytes": 3859,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/dot.ttf",
+      "donorReferenceSHA256": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c",
+      "bytes": 189468,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/dotgothic16-OFL.txt",
+      "donorReferenceSHA256": "b6630c61ea078cacd7fabe37d14ffe557a0b45b06683374a9aa9e24262993e33",
+      "bytes": 4492,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/fonts-noto-cjk-copyright.txt",
+      "donorReferenceSHA256": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b",
+      "bytes": 14712,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/fonts-noto-symbols-copyright.txt",
+      "donorReferenceSHA256": "075f91382875da1c4b491f1facf2586f55448705133264d98ce15cab6211b125",
+      "bytes": 5208,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/fractions.ttf",
+      "donorReferenceSHA256": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597",
+      "bytes": 9320,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/manifest.json",
+      "donorReferenceSHA256": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+      "bytes": 120192,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/mono.otf",
+      "donorReferenceSHA256": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585",
+      "bytes": 279512,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/mplusrounded1c-OFL.txt",
+      "donorReferenceSHA256": "455b95114b9649159e624e9176d004a85ee730e0cb3f743ed40155d490d07be1",
+      "bytes": 4262,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/rounded.ttf",
+      "donorReferenceSHA256": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527",
+      "bytes": 181480,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/sans-bold.otf",
+      "donorReferenceSHA256": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359",
+      "bytes": 300524,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/sans-regular.otf",
+      "donorReferenceSHA256": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5",
+      "bytes": 293812,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/serif-bold.otf",
+      "donorReferenceSHA256": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce",
+      "bytes": 436768,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/serif-regular.otf",
+      "donorReferenceSHA256": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19",
+      "bytes": 433516,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    },
+    {
+      "path": "dev/avoidance/layouts-c-objects-fonts-v2/symbols.ttf",
+      "donorReferenceSHA256": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9",
+      "bytes": 3864,
+      "action": "verify/reuse target; never overwrite existing accepted final fixture or runner dependency on mismatch"
+    }
+  ],
+  "fixturePolicy": "Existing driver fontDir is layouts-c-objects-fonts-v2. Final-target fixture selection/readiness/cmap must be parent-qualified. Donor hashes are references, not permission to replace final fixture bytes or fall back. Missing assets may only be imported as an explicitly accepted package.",
+  "neverImport": [
+    "src/09h_layoutsC_editorial.js",
+    "src/09i_layoutsC_objects.js",
+    "src/09j_layoutsC_japanese.js",
+    "src/11p_layoutsC.js",
+    "src/11z_layoutsC_transport.js",
+    "index.html",
+    "en/index.html",
+    "whole donor src/09a_placement.js",
+    "whole donor src/09g_layoutsC_placement.js"
+  ],
+  "protectedSourcePolicy": {
+    "selection": "all src paths tracked by explicit accepted targetGateCommit, except two patched files; complete11p protects34 blocks/header/reg/exactCMeasure together",
+    "mustInclude": [
+      "src/09h_layoutsC_editorial.js",
+      "src/09i_layoutsC_objects.js",
+      "src/09j_layoutsC_japanese.js",
+      "src/11p_layoutsC.js",
+      "src/11z_layoutsC_transport.js"
+    ],
+    "compare": "before/after complete file byte SHA; patched files must roundtrip by reversing exact seams",
+    "ignore": "other task untracked files outside explicit owned product/fixture/build input set; no whole-worktree clean assertion and no unrelated staging/deletion"
+  },
+  "compiledPolicy": "rebuild JAEN from target C34 + cache-only seams; never import C23 HTML",
+  "baseline": {
+    "commit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+    "JA_SHA256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57",
+    "policy": "immutable baseline; do not substitute B variant or donor candidate HTML"
+  },
+  "pinRefresh": {
+    "source": "explicit final gate product inputs/qualified fixture and latest drivers; record start/end hashes and exact copies",
+    "oldCounts": [
+      103,
+      104
+    ],
+    "policy": "oldC23 pin counts are historical, not final-target requirements; include tracked09j/final fixture files and report actual counts",
+    "correctnessDriverSHA256": "51042901fb29172cea6c02a1046e5476e227c2a3157b5a2086c317418cd85b3b",
+    "registryContract": "latest21eebb schema-only page; no synthetic registration on full34 page"
+  },
+  "executionGate": "No main read/patch/browser/correctness/size/performance now. Parent stable-main gate required; later fresh40normal/schema/18native correctness then authorized size-only100/1000 once each. Formal still unauthorized.",
+  "postGateMetadataReview": [
+    "Bind exact full target gate SHA; no branch-name/latest lookup during patching.",
+    "Refresh actual target source/qualified fixture start/end pins; do not require historical103/104 counts or import C23 source snapshots.",
+    "Performance runner scope now captures pinned actual source modules plus future runtime native IDs/count, external adapters/count and source-known IDs per condition; prepare stays null/unobserved. Its metadata-only provenance is cffdb384a28c2d8cd52cec066fcb47a462293ab4. No fullC34 runtime observed yet.",
+    "16MiB cap and current17MiB oversize-negative remain together. Any later parent-approved cap change requires separately reviewed budget-negative adaptation; not part of this import.",
+    "Size-only scope metadata is updated at6c2302e72994c9f53c2021b6f462381f4c151338: actual source hashes and null counts before execution, future loaded page actual native/external/sourceKnown IDs and counts. Nonmetadata full-input key/payload/counter/16MiB product/128MiB read-only meter/once100once1000 body remains byte identical."
+  ],
+  "runtimeIdentityPolicy": "Strict runtimeIdentity.environment assertion unchanged. Parent preserves fresh raw cloud response and explicitly maps actual observation fields into a separate environment sidecar if needed; unavailable/mismatched/older observations cannot be accepted or made true.",
+  "sourceBases": {
+    "09a": {
+      "commit": "85928e6f75c2116d47c768481d6feba1a09b463b",
+      "path": "src/09a_placement.js",
+      "snapshot": "base09a.js.gz"
+    },
+    "09g": {
+      "commit": "4994e0f91748db0c057ab669394b05988730349b",
+      "path": "src/09g_layoutsC_placement.js",
+      "snapshot": "base09g.js.gz",
+      "policy": "Only cache block from prototype; source algorithm bodies must come from accepted future gate"
+    }
+  }
+}

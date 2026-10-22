@@ -1,0 +1,2419 @@
+{
+  "kind": "Offline sampled CPU estimates from one diagnostic; not formal qualification",
+  "samplingIntervalUs": 100,
+  "clockBasis": "CDP Profiler timestamp and Performance.NavigationStart treated as same TimeTicks basis (inference). Sequential Timestamp vs page performance.now discrepancy is recorded, not an exact anchor. Function-stack totals do not use clock anchors. Per-ID recorded wall durations are exact diagnostic frame timers; interior CPU estimates exclude boundary margin.",
+  "modules": {
+    "src/09a_placement.js": {
+      "start": 10567,
+      "end": 10897
+    },
+    "src/09g_layoutsC_placement.js": {
+      "start": 12131,
+      "end": 12386
+    },
+    "src/09h_layoutsC_editorial.js": {
+      "start": 12387,
+      "end": 12701
+    },
+    "src/09i_layoutsC_objects.js": {
+      "start": 12702,
+      "end": 12988
+    },
+    "src/09j_layoutsC_japanese.js": {
+      "start": 12989,
+      "end": 13121
+    },
+    "src/09_render.js": {
+      "start": 10032,
+      "end": 10566
+    },
+    "src/11p_layoutsC.js": {
+      "start": 33018,
+      "end": 36725
+    }
+  },
+  "sides": [
+    {
+      "on": true,
+      "sampleCount": 56085,
+      "totalSampleDurationMs": 11478.277000001459,
+      "cold": {
+        "iteration": 0,
+        "warmup": true,
+        "sourceMs": 128.40000000596046,
+        "normalizationMs": 6,
+        "finalizeMs": 7386.79999999702,
+        "totalMs": 7515.20000000298,
+        "finalizationRecordCalls": 595,
+        "actualPlanningRecordCalls": 595,
+        "planningCache": {
+          "source": {
+            "before": {
+              "hits": 0,
+              "misses": 0,
+              "stores": 0,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 0,
+              "keySerializedBytes": 0,
+              "payloadSerializedBytes": 0,
+              "managementBytes": 0,
+              "lastAttemptKeyBytes": 0,
+              "lastAttemptKeyResidentBytes": 0,
+              "lastAttemptPayloadBytes": 0,
+              "serializedBytes": 0,
+              "residentStringAndHeaderBytes": 0,
+              "maxEntries": 32,
+              "maxSerializedBytes": 134217728,
+              "maxResidentStringAndHeaderBytes": 134217728,
+              "entryHeaderBytes": 512,
+              "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+            },
+            "after": {
+              "hits": 0,
+              "misses": 0,
+              "stores": 0,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 0,
+              "keySerializedBytes": 0,
+              "payloadSerializedBytes": 0,
+              "managementBytes": 0,
+              "lastAttemptKeyBytes": 0,
+              "lastAttemptKeyResidentBytes": 0,
+              "lastAttemptPayloadBytes": 0,
+              "serializedBytes": 0,
+              "residentStringAndHeaderBytes": 0,
+              "maxEntries": 32,
+              "maxSerializedBytes": 134217728,
+              "maxResidentStringAndHeaderBytes": 134217728,
+              "entryHeaderBytes": 512,
+              "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+            },
+            "delta": {
+              "hits": 0,
+              "misses": 0,
+              "stores": 0,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 0,
+              "keySerializedBytes": 0,
+              "payloadSerializedBytes": 0,
+              "managementBytes": 0,
+              "lastAttemptKeyBytes": 0,
+              "lastAttemptKeyResidentBytes": 0,
+              "lastAttemptPayloadBytes": 0,
+              "serializedBytes": 0,
+              "residentStringAndHeaderBytes": 0,
+              "maxEntries": 0,
+              "maxSerializedBytes": 0,
+              "maxResidentStringAndHeaderBytes": 0,
+              "entryHeaderBytes": 0
+            },
+            "actualRecordCalls": 0
+          },
+          "finalization": {
+            "executed": true,
+            "before": {
+              "hits": 0,
+              "misses": 0,
+              "stores": 0,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 0,
+              "keySerializedBytes": 0,
+              "payloadSerializedBytes": 0,
+              "managementBytes": 0,
+              "lastAttemptKeyBytes": 0,
+              "lastAttemptKeyResidentBytes": 0,
+              "lastAttemptPayloadBytes": 0,
+              "serializedBytes": 0,
+              "residentStringAndHeaderBytes": 0,
+              "maxEntries": 32,
+              "maxSerializedBytes": 134217728,
+              "maxResidentStringAndHeaderBytes": 134217728,
+              "entryHeaderBytes": 512,
+              "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+            },
+            "after": {
+              "hits": 0,
+              "misses": 1,
+              "stores": 1,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 1,
+              "keySerializedBytes": 507417,
+              "payloadSerializedBytes": 4572143,
+              "managementBytes": 512,
+              "lastAttemptKeyBytes": 507417,
+              "lastAttemptKeyResidentBytes": 1002690,
+              "lastAttemptPayloadBytes": 4572143,
+              "serializedBytes": 5080072,
+              "residentStringAndHeaderBytes": 10104712,
+              "maxEntries": 32,
+              "maxSerializedBytes": 134217728,
+              "maxResidentStringAndHeaderBytes": 134217728,
+              "entryHeaderBytes": 512,
+              "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+            },
+            "delta": {
+              "hits": 0,
+              "misses": 1,
+              "stores": 1,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 1,
+              "keySerializedBytes": 507417,
+              "payloadSerializedBytes": 4572143,
+              "managementBytes": 512,
+              "lastAttemptKeyBytes": 507417,
+              "lastAttemptKeyResidentBytes": 1002690,
+              "lastAttemptPayloadBytes": 4572143,
+              "serializedBytes": 5080072,
+              "residentStringAndHeaderBytes": 10104712,
+              "maxEntries": 0,
+              "maxSerializedBytes": 0,
+              "maxResidentStringAndHeaderBytes": 0,
+              "entryHeaderBytes": 0
+            },
+            "actualRecordCalls": 595,
+            "wholeResultHit": false
+          }
+        },
+        "profileTimeline": {
+          "sourceStartMS": 1763.7999999970198,
+          "sourceEndMS": 1892.2000000029802,
+          "finalizeStartMS": 1906.6000000089407,
+          "finalizeEndMS": 9293.40000000596
+        }
+      },
+      "cache": {
+        "hits": 8,
+        "misses": 1,
+        "stores": 1,
+        "bypasses": 0,
+        "evictions": 0,
+        "identityDrifts": 0,
+        "entries": 1,
+        "keySerializedBytes": 507417,
+        "payloadSerializedBytes": 4572143,
+        "managementBytes": 512,
+        "lastAttemptKeyBytes": 507417,
+        "lastAttemptKeyResidentBytes": 1002690,
+        "lastAttemptPayloadBytes": 0,
+        "serializedBytes": 5080072,
+        "residentStringAndHeaderBytes": 10104712,
+        "maxEntries": 32,
+        "maxSerializedBytes": 134217728,
+        "maxResidentStringAndHeaderBytes": 134217728,
+        "entryHeaderBytes": 512,
+        "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+      },
+      "actualPlanningCalls": {
+        "record": 595,
+        "replay": 0
+      },
+      "actualRenderCalls": {
+        "record": 76,
+        "replay": 76
+      },
+      "unanchoredFunctionInclusiveMs": {
+        "finalization": {
+          "J.finalizePlacementPlan": 8866.708000000532,
+          "signature": 42.228999999999985,
+          "beginFinalCache": 283.1580000000012,
+          "cacheDependencies": 310.3550000000013,
+          "cacheEncode": 557.7649999999968,
+          "readFinalCache": 1386.4140000000198,
+          "A.record": 1618.7910000000188,
+          "A.convexHull": 2107.9750000001018,
+          "mapping": 17.339999999999996,
+          "A.clear": 4.699,
+          "A.solveBasic": 309.0150000000008,
+          "ownedQuality": 9.961,
+          "sourceStageEnvelopes": 3104.261000000016,
+          "sourceEntryEnvelopes": 421.2250000000013,
+          "sourceCandidate": 4090.614999999887,
+          "verifyCacheContext": 210.56000000000054,
+          "keepFinalCache": 213.46099999999973,
+          "freeze": 126.41900000000048,
+          "cacheDecode": 1192.4679999999887
+        },
+        "render": {
+          "A.record": 178.74699999999999,
+          "A.convexHull": 32.858000000000025,
+          "A.replay": 59.72700000000002,
+          "A.validateFinal": 0.21,
+          "A.clear": 4.7139999999999995
+        }
+      },
+      "unanchoredExclusiveBucketsMs": {
+        "finalization": {
+          "signature": 42.228999999999985,
+          "cold source search/geometry/finalize other": 5196.236000000071,
+          "begin other (UTF8/check/context)": 39.29599999999997,
+          "cacheDependencies (walk+dependency graph encoding)": 310.3550000000013,
+          "input/payload cacheEncode outside dependencies": 293.97400000000005,
+          "read other (verify dispatch/lookup/LRU)": 11.988000000000003,
+          "cold actual native record": 1618.7910000000188,
+          "keep other (UTF8/ledger/LRU/store)": 34.95199999999998,
+          "freeze": 126.41900000000048,
+          "cacheDecode (parse/object-property reconstruction)": 1192.4679999999887
+        },
+        "render": {
+          "native renderer other": 69.76999999999994,
+          "adapter geometry/checks/dispatch other": 119.51600000000023,
+          "record/native measurement": 178.74699999999999,
+          "replay/drawing": 59.72700000000002,
+          "validateFinal/signature": 0.21
+        }
+      },
+      "approxSixMeasuredWarmFinalization": {
+        "sampleMs": 1520.1310000000296,
+        "samples": 7442,
+        "inclusiveMs": {
+          "J.finalizePlacementPlan": 1391.816000000006,
+          "beginFinalCache": 184.8579999999998,
+          "cacheDependencies": 207.6310000000004,
+          "cacheEncode": 270.09200000000055,
+          "readFinalCache": 1109.7749999999849,
+          "verifyCacheContext": 142.79600000000005,
+          "cacheDecode": 962.4449999999872,
+          "signature": 18.789999999999992,
+          "freeze": 78.56500000000015
+        },
+        "exclusiveMs": {
+          "cacheDependencies (walk+dependency graph encoding)": 207.6310000000004,
+          "begin other (UTF8/check/context)": 26.560000000000002,
+          "input/payload cacheEncode outside dependencies": 90.21100000000023,
+          "read other (verify dispatch/lookup/LRU)": 7.785999999999998,
+          "unattributed GC": 127.75500000000012,
+          "cacheDecode (parse/object-property reconstruction)": 962.4449999999872,
+          "signature": 18.789999999999992,
+          "freeze": 78.21600000000015,
+          "cold source search/geometry/finalize other": 0.177,
+          "unresolved program/other": 0.5599999999999999
+        }
+      },
+      "topFunctionSelfSamples": [
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "sourceStageEnvelopes",
+          "lineNumber": 12279,
+          "samples": 6092,
+          "ms": 1151.3919999999998
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "A.convexHull",
+          "lineNumber": 10584,
+          "samples": 5451,
+          "ms": 1044.2799999999982
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "visit",
+          "lineNumber": 12163,
+          "samples": 4344,
+          "ms": 880.113999999986
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "",
+          "lineNumber": 10584,
+          "samples": 3821,
+          "ms": 755.8080000000016
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "visit",
+          "lineNumber": 12148,
+          "samples": 1964,
+          "ms": 381.86799999999903
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "trig",
+          "lineNumber": 12282,
+          "samples": 1643,
+          "ms": 315.5690000000006
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "cacheDecode",
+          "lineNumber": 12161,
+          "samples": 1626,
+          "ms": 312.3540000000011
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "cross",
+          "lineNumber": 10584,
+          "samples": 1596,
+          "ms": 307.88700000000046
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "hull",
+          "lineNumber": 11105,
+          "samples": 1453,
+          "ms": 282.90599999999927
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "sourceCandidate",
+          "lineNumber": 12313,
+          "samples": 1133,
+          "ms": 213.26500000000019
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "cacheEncode",
+          "lineNumber": 12146,
+          "samples": 803,
+          "ms": 157.7070000000001
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "",
+          "lineNumber": 11105,
+          "samples": 792,
+          "ms": 147.274
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "solveBasicRaw",
+          "lineNumber": 10912,
+          "samples": 667,
+          "ms": 140.4690000000002
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "mul",
+          "lineNumber": 12282,
+          "samples": 710,
+          "ms": 133.29000000000042
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "freeze",
+          "lineNumber": 10816,
+          "samples": 623,
+          "ms": 126.41900000000048
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "measureText",
+          "lineNumber": -1,
+          "samples": 438,
+          "ms": 99.41200000000006
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "jsonClone",
+          "lineNumber": 10817,
+          "samples": 437,
+          "ms": 89.38600000000014
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "push",
+          "lineNumber": 10659,
+          "samples": 400,
+          "ms": 79.16299999999998
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "getTransform",
+          "lineNumber": -1,
+          "samples": 380,
+          "ms": 78.81300000000014
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "A.itemGeometry",
+          "lineNumber": 10610,
+          "samples": 372,
+          "ms": 74.76800000000004
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "finite",
+          "lineNumber": 10572,
+          "samples": 351,
+          "ms": 72.18699999999997
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "cross",
+          "lineNumber": 11105,
+          "samples": 336,
+          "ms": 70.802
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "A.solveBasic",
+          "lineNumber": 10949,
+          "samples": 333,
+          "ms": 67.22199999999997
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "encode",
+          "lineNumber": -1,
+          "samples": 322,
+          "ms": 59.961999999999904
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "",
+          "lineNumber": 10583,
+          "samples": 305,
+          "ms": 58.952999999999925
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "cameraEnvelope",
+          "lineNumber": 11170,
+          "samples": 294,
+          "ms": 56.28999999999996
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "",
+          "lineNumber": 12299,
+          "samples": 275,
+          "ms": 54.451999999999956
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "inkMetric",
+          "lineNumber": 10603,
+          "samples": 240,
+          "ms": 49.90899999999997
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "A.finalizeLayoutsC",
+          "lineNumber": 12343,
+          "samples": 229,
+          "ms": 43.657999999999994
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "matrix",
+          "lineNumber": 10581,
+          "samples": 214,
+          "ms": 40.10699999999999
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "walk",
+          "lineNumber": 12169,
+          "samples": 187,
+          "ms": 39.814999999999976
+        },
+        {
+          "phase": "finalization",
+          "module": "src/11p_layoutsC.js",
+          "function": "def.render",
+          "lineNumber": 33025,
+          "samples": 177,
+          "ms": 39.12199999999998
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "",
+          "lineNumber": 10685,
+          "samples": 167,
+          "ms": 31.676
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "validateTextState",
+          "lineNumber": 10609,
+          "samples": 168,
+          "ms": 30.662999999999986
+        },
+        {
+          "phase": "render",
+          "module": "src/09h_layoutsC_editorial.js",
+          "function": "contains",
+          "lineNumber": 12393,
+          "samples": 167,
+          "ms": 29.747000000000003
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "",
+          "lineNumber": 10689,
+          "samples": 148,
+          "ms": 29.21099999999998
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "",
+          "lineNumber": 12288,
+          "samples": 156,
+          "ms": 29.191999999999997
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09i_layoutsC_objects.js",
+          "function": "sweep",
+          "lineNumber": 12719,
+          "samples": 153,
+          "ms": 28.733999999999988
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "",
+          "lineNumber": 10668,
+          "samples": 145,
+          "ms": 28.473000000000006
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09i_layoutsC_objects.js",
+          "function": "pose",
+          "lineNumber": 12725,
+          "samples": 119,
+          "ms": 28.435999999999993
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "adv",
+          "lineNumber": 1822,
+          "samples": 139,
+          "ms": 27.240999999999996
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09i_layoutsC_objects.js",
+          "function": "mul",
+          "lineNumber": 12717,
+          "samples": 131,
+          "ms": 26.342
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "item",
+          "lineNumber": 10702,
+          "samples": 124,
+          "ms": 25.86400000000001
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "A.record",
+          "lineNumber": 10644,
+          "samples": 101,
+          "ms": 24.938000000000002
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "signature",
+          "lineNumber": 10809,
+          "samples": 129,
+          "ms": 24.355999999999998
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "recorder.<computed>",
+          "lineNumber": 10724,
+          "samples": 99,
+          "ms": 20.691999999999997
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "",
+          "lineNumber": 10925,
+          "samples": 67,
+          "ms": 20.326000000000004
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "range",
+          "lineNumber": 12298,
+          "samples": 109,
+          "ms": 20.302
+        },
+        {
+          "phase": "render",
+          "module": "src/09a_placement.js",
+          "function": "A.convexHull",
+          "lineNumber": 10584,
+          "samples": 109,
+          "ms": 20.081000000000007
+        },
+        {
+          "phase": "render",
+          "module": "src/09h_layoutsC_editorial.js",
+          "function": "",
+          "lineNumber": 12693,
+          "samples": 109,
+          "ms": 19.999000000000006
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "recorder.line",
+          "lineNumber": 10764,
+          "samples": 69,
+          "ms": 19.986
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09i_layoutsC_objects.js",
+          "function": "intervalPose",
+          "lineNumber": 12753,
+          "samples": 107,
+          "ms": 19.611
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "fillText",
+          "lineNumber": -1,
+          "samples": 102,
+          "ms": 19.511
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "recordedItemBounds",
+          "lineNumber": 10643,
+          "samples": 91,
+          "ms": 18.614000000000004
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "",
+          "lineNumber": 10942,
+          "samples": 93,
+          "ms": 18.184000000000005
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "get",
+          "lineNumber": 10660,
+          "samples": 85,
+          "ms": 18.031
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "drawImage",
+          "lineNumber": -1,
+          "samples": 93,
+          "ms": 17.965999999999998
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "",
+          "lineNumber": 10809,
+          "samples": 94,
+          "ms": 17.873
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "arc",
+          "lineNumber": -1,
+          "samples": 96,
+          "ms": 17.839000000000002
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "A.bounds",
+          "lineNumber": 10583,
+          "samples": 78,
+          "ms": 15.552
+        }
+      ],
+      "verifyDedicatedCPUFramePresent": true,
+      "verifyAttributionNote": "verifyCacheContext may be inlined/not materialized. Dependency+input codec descendants under read/keep are observable, not a separately measured verify wall time. Inclusive totals overlap and recursive frames count once per sample.",
+      "allDiagnosticGC": {
+        "samples": 2038,
+        "ms": 568.6849999999996
+      },
+      "unattributedToBenchmarkStack": {
+        "samples": 2889,
+        "ms": 1056.3879999999954
+      },
+      "clock": {
+        "navStartTimeTicksMS": 82145127.72999999,
+        "anchorTimestampMS": 82146522.60700001,
+        "pagePerformanceNowMS": 1396.2000000029802,
+        "sequentialAnchorDiscrepancyMS": -1.3229999840259552,
+        "excludedBoundaryMarginMS": 2,
+        "sameClockMappingIsInference": true,
+        "renderInteriorSampleMs": 110.19800000000023,
+        "renderBoundaryOrUnmappedSampleMs": 317.7720000000001,
+        "perFrameCPUIsApproximate": true
+      },
+      "all34RecordedRenderContributors": [
+        {
+          "layout": "stampSheet",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            26.200000002980232,
+            9.700000002980232
+          ],
+          "recordedWallP95Ms": 26.200000002980232,
+          "recordedWallTotalMs": 35.900000005960464,
+          "approxInteriorSampleCount": 152,
+          "approxInteriorComponentMs": {
+            "native renderer other": 13.275999999999996,
+            "record/native measurement": 13.224,
+            "adapter geometry/checks/dispatch other": 2.21
+          }
+        },
+        {
+          "layout": "clapper",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            15.599999994039536,
+            7.5
+          ],
+          "recordedWallP95Ms": 15.599999994039536,
+          "recordedWallTotalMs": 23.099999994039536,
+          "approxInteriorSampleCount": 51,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 1.4489999999999998,
+            "adapter geometry/checks/dispatch other": 13.532999999999998
+          }
+        },
+        {
+          "layout": "postcard",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            15.100000008940697,
+            11.799999997019768
+          ],
+          "recordedWallP95Ms": 15.100000008940697,
+          "recordedWallTotalMs": 26.900000005960464,
+          "approxInteriorSampleCount": 54,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 7.484,
+            "adapter geometry/checks/dispatch other": 2.122
+          }
+        },
+        {
+          "layout": "newspaper",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            13.799999997019768,
+            10.400000005960464
+          ],
+          "recordedWallP95Ms": 13.799999997019768,
+          "recordedWallTotalMs": 24.200000002980232,
+          "approxInteriorSampleCount": 92,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 16.268
+          }
+        },
+        {
+          "layout": "dictionary",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            12.5,
+            7.0999999940395355
+          ],
+          "recordedWallP95Ms": 12.5,
+          "recordedWallTotalMs": 19.599999994039536,
+          "approxInteriorSampleCount": 67,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 2.027,
+            "adapter geometry/checks/dispatch other": 9.692999999999998
+          }
+        },
+        {
+          "layout": "swissGrid",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            12.099999994039536,
+            9.5
+          ],
+          "recordedWallP95Ms": 12.099999994039536,
+          "recordedWallTotalMs": 21.599999994039536,
+          "approxInteriorSampleCount": 67,
+          "approxInteriorComponentMs": {
+            "native renderer other": 2.17,
+            "record/native measurement": 4.8740000000000006,
+            "adapter geometry/checks/dispatch other": 6.387999999999999
+          }
+        },
+        {
+          "layout": "magazine",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            5.5,
+            8.299999997019768
+          ],
+          "recordedWallP95Ms": 8.299999997019768,
+          "recordedWallTotalMs": 13.799999997019768,
+          "approxInteriorSampleCount": 32,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 3.2769999999999997,
+            "adapter geometry/checks/dispatch other": 0.362,
+            "replay/drawing": 2.086
+          }
+        },
+        {
+          "layout": "cassette",
+          "measuredFrames": 1,
+          "recordedWallMs": [
+            7.700000002980232
+          ],
+          "recordedWallP95Ms": 7.700000002980232,
+          "recordedWallTotalMs": 7.700000002980232,
+          "approxInteriorSampleCount": 10,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 1.107,
+            "adapter geometry/checks/dispatch other": 2.5170000000000003
+          }
+        },
+        {
+          "layout": "footnote",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.7000000029802322,
+            5.600000008940697
+          ],
+          "recordedWallP95Ms": 5.600000008940697,
+          "recordedWallTotalMs": 8.300000011920929,
+          "approxInteriorSampleCount": 9,
+          "approxInteriorComponentMs": {
+            "adapter geometry/checks/dispatch other": 1.653
+          }
+        },
+        {
+          "layout": "bookSpine",
+          "measuredFrames": 1,
+          "recordedWallMs": [
+            4.899999991059303
+          ],
+          "recordedWallP95Ms": 4.899999991059303,
+          "recordedWallTotalMs": 4.899999991059303,
+          "approxInteriorSampleCount": 5,
+          "approxInteriorComponentMs": {
+            "adapter geometry/checks/dispatch other": 0.72,
+            "replay/drawing": 0.193
+          }
+        },
+        {
+          "layout": "ransom",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.2999999970197678,
+            4.799999997019768
+          ],
+          "recordedWallP95Ms": 4.799999997019768,
+          "recordedWallTotalMs": 8.099999994039536,
+          "approxInteriorSampleCount": 5,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 0.8540000000000001
+          }
+        },
+        {
+          "layout": "poster",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            4.700000002980232,
+            4.0999999940395355
+          ],
+          "recordedWallP95Ms": 4.700000002980232,
+          "recordedWallTotalMs": 8.799999997019768,
+          "approxInteriorSampleCount": 4,
+          "approxInteriorComponentMs": {
+            "adapter geometry/checks/dispatch other": 0.689
+          }
+        },
+        {
+          "layout": "nameTag",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            4.600000008940697,
+            4.199999988079071
+          ],
+          "recordedWallP95Ms": 4.600000008940697,
+          "recordedWallTotalMs": 8.799999997019768,
+          "approxInteriorSampleCount": 5,
+          "approxInteriorComponentMs": {
+            "adapter geometry/checks/dispatch other": 0.8500000000000001
+          }
+        },
+        {
+          "layout": "vinyl",
+          "measuredFrames": 1,
+          "recordedWallMs": [
+            4.600000008940697
+          ],
+          "recordedWallP95Ms": 4.600000008940697,
+          "recordedWallTotalMs": 4.600000008940697,
+          "approxInteriorSampleCount": 4,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 0.669
+          }
+        },
+        {
+          "layout": "routeMap",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.7999999970197678,
+            4.5
+          ],
+          "recordedWallP95Ms": 4.5,
+          "recordedWallTotalMs": 8.299999997019768,
+          "approxInteriorSampleCount": 3,
+          "approxInteriorComponentMs": {
+            "record/native measurement": 0.5029999999999999
+          }
+        },
+        {
+          "layout": "chochin",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            4.100000008940697,
+            2
+          ],
+          "recordedWallP95Ms": 4.100000008940697,
+          "recordedWallTotalMs": 6.100000008940697,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "contents",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.7000000029802322,
+            4
+          ],
+          "recordedWallP95Ms": 4,
+          "recordedWallTotalMs": 6.700000002980232,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "ema",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.5,
+            3.6000000089406967
+          ],
+          "recordedWallP95Ms": 3.6000000089406967,
+          "recordedWallTotalMs": 7.100000008940697,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "shoji",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.4000000059604645,
+            0.9000000059604645
+          ],
+          "recordedWallP95Ms": 3.4000000059604645,
+          "recordedWallTotalMs": 4.300000011920929,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "letterPaper",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.5999999940395355,
+            3.2000000029802322
+          ],
+          "recordedWallP95Ms": 3.2000000029802322,
+          "recordedWallTotalMs": 4.799999997019768,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "tanzaku",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.2000000029802322,
+            2.2000000029802322
+          ],
+          "recordedWallP95Ms": 3.2000000029802322,
+          "recordedWallTotalMs": 5.4000000059604645,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "warningLabel",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.2000000029802322,
+            2.7999999970197678
+          ],
+          "recordedWallP95Ms": 3.2000000029802322,
+          "recordedWallTotalMs": 6,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "stationSign",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.1000000089406967,
+            2
+          ],
+          "recordedWallP95Ms": 3.1000000089406967,
+          "recordedWallTotalMs": 5.100000008940697,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "noren",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.8999999910593033,
+            2.5999999940395355
+          ],
+          "recordedWallP95Ms": 2.8999999910593033,
+          "recordedWallTotalMs": 5.499999985098839,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "proofread",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.8999999910593033,
+            2.3999999910593033
+          ],
+          "recordedWallP95Ms": 2.8999999910593033,
+          "recordedWallTotalMs": 5.299999982118607,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "calendar",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.7999999970197678,
+            2.2000000029802322
+          ],
+          "recordedWallP95Ms": 2.7999999970197678,
+          "recordedWallTotalMs": 5,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "priceTag",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.7000000029802322,
+            0.4000000059604645
+          ],
+          "recordedWallP95Ms": 2.7000000029802322,
+          "recordedWallTotalMs": 3.1000000089406967,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "headlineDeck",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.9000000059604645,
+            2.2999999970197678
+          ],
+          "recordedWallP95Ms": 2.2999999970197678,
+          "recordedWallTotalMs": 4.200000002980232,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "polaroid",
+          "measuredFrames": 1,
+          "recordedWallMs": [
+            2.2000000029802322
+          ],
+          "recordedWallP95Ms": 2.2000000029802322,
+          "recordedWallTotalMs": 2.2000000029802322,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "karuta",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2,
+            1.6000000089406967
+          ],
+          "recordedWallP95Ms": 2,
+          "recordedWallTotalMs": 3.6000000089406967,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "omikuji",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.7000000029802322,
+            1.7999999970197678
+          ],
+          "recordedWallP95Ms": 1.7999999970197678,
+          "recordedWallTotalMs": 3.5,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "numbered",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.4000000059604645,
+            1.6000000089406967
+          ],
+          "recordedWallP95Ms": 1.6000000089406967,
+          "recordedWallTotalMs": 3.000000014901161,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "kakejiku",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.2999999970197678,
+            1.0999999940395355
+          ],
+          "recordedWallP95Ms": 1.2999999970197678,
+          "recordedWallTotalMs": 2.3999999910593033,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "stickyNotes",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.199999988079071,
+            1
+          ],
+          "recordedWallP95Ms": 1.199999988079071,
+          "recordedWallTotalMs": 2.199999988079071,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        }
+      ],
+      "profilingNotFormal": true
+    },
+    {
+      "on": false,
+      "sampleCount": 7894,
+      "totalSampleDurationMs": 1755.5980000000784,
+      "cold": {
+        "iteration": 0,
+        "warmup": true,
+        "sourceMs": 79.09999999403954,
+        "normalizationMs": 3.0999999940395355,
+        "finalizeMs": 90.90000000596046,
+        "totalMs": 170,
+        "finalizationRecordCalls": 0,
+        "actualPlanningRecordCalls": 0,
+        "planningCache": {
+          "source": {
+            "before": {
+              "hits": 0,
+              "misses": 0,
+              "stores": 0,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 0,
+              "keySerializedBytes": 0,
+              "payloadSerializedBytes": 0,
+              "managementBytes": 0,
+              "lastAttemptKeyBytes": 0,
+              "lastAttemptKeyResidentBytes": 0,
+              "lastAttemptPayloadBytes": 0,
+              "serializedBytes": 0,
+              "residentStringAndHeaderBytes": 0,
+              "maxEntries": 32,
+              "maxSerializedBytes": 134217728,
+              "maxResidentStringAndHeaderBytes": 134217728,
+              "entryHeaderBytes": 512,
+              "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+            },
+            "after": {
+              "hits": 0,
+              "misses": 0,
+              "stores": 0,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 0,
+              "keySerializedBytes": 0,
+              "payloadSerializedBytes": 0,
+              "managementBytes": 0,
+              "lastAttemptKeyBytes": 0,
+              "lastAttemptKeyResidentBytes": 0,
+              "lastAttemptPayloadBytes": 0,
+              "serializedBytes": 0,
+              "residentStringAndHeaderBytes": 0,
+              "maxEntries": 32,
+              "maxSerializedBytes": 134217728,
+              "maxResidentStringAndHeaderBytes": 134217728,
+              "entryHeaderBytes": 512,
+              "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+            },
+            "delta": {
+              "hits": 0,
+              "misses": 0,
+              "stores": 0,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 0,
+              "keySerializedBytes": 0,
+              "payloadSerializedBytes": 0,
+              "managementBytes": 0,
+              "lastAttemptKeyBytes": 0,
+              "lastAttemptKeyResidentBytes": 0,
+              "lastAttemptPayloadBytes": 0,
+              "serializedBytes": 0,
+              "residentStringAndHeaderBytes": 0,
+              "maxEntries": 0,
+              "maxSerializedBytes": 0,
+              "maxResidentStringAndHeaderBytes": 0,
+              "entryHeaderBytes": 0
+            },
+            "actualRecordCalls": 0
+          },
+          "finalization": {
+            "executed": true,
+            "before": {
+              "hits": 0,
+              "misses": 0,
+              "stores": 0,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 0,
+              "keySerializedBytes": 0,
+              "payloadSerializedBytes": 0,
+              "managementBytes": 0,
+              "lastAttemptKeyBytes": 0,
+              "lastAttemptKeyResidentBytes": 0,
+              "lastAttemptPayloadBytes": 0,
+              "serializedBytes": 0,
+              "residentStringAndHeaderBytes": 0,
+              "maxEntries": 32,
+              "maxSerializedBytes": 134217728,
+              "maxResidentStringAndHeaderBytes": 134217728,
+              "entryHeaderBytes": 512,
+              "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+            },
+            "after": {
+              "hits": 0,
+              "misses": 1,
+              "stores": 1,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 1,
+              "keySerializedBytes": 507418,
+              "payloadSerializedBytes": 458919,
+              "managementBytes": 512,
+              "lastAttemptKeyBytes": 507418,
+              "lastAttemptKeyResidentBytes": 1002692,
+              "lastAttemptPayloadBytes": 458919,
+              "serializedBytes": 966849,
+              "residentStringAndHeaderBytes": 1906690,
+              "maxEntries": 32,
+              "maxSerializedBytes": 134217728,
+              "maxResidentStringAndHeaderBytes": 134217728,
+              "entryHeaderBytes": 512,
+              "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+            },
+            "delta": {
+              "hits": 0,
+              "misses": 1,
+              "stores": 1,
+              "bypasses": 0,
+              "evictions": 0,
+              "identityDrifts": 0,
+              "entries": 1,
+              "keySerializedBytes": 507418,
+              "payloadSerializedBytes": 458919,
+              "managementBytes": 512,
+              "lastAttemptKeyBytes": 507418,
+              "lastAttemptKeyResidentBytes": 1002692,
+              "lastAttemptPayloadBytes": 458919,
+              "serializedBytes": 966849,
+              "residentStringAndHeaderBytes": 1906690,
+              "maxEntries": 0,
+              "maxSerializedBytes": 0,
+              "maxResidentStringAndHeaderBytes": 0,
+              "entryHeaderBytes": 0
+            },
+            "actualRecordCalls": 0,
+            "wholeResultHit": false
+          }
+        },
+        "profileTimeline": {
+          "sourceStartMS": 1601.7999999970198,
+          "sourceEndMS": 1680.8999999910593,
+          "finalizeStartMS": 1688.699999988079,
+          "finalizeEndMS": 1779.5999999940395
+        }
+      },
+      "cache": {
+        "hits": 8,
+        "misses": 1,
+        "stores": 1,
+        "bypasses": 0,
+        "evictions": 0,
+        "identityDrifts": 0,
+        "entries": 1,
+        "keySerializedBytes": 507418,
+        "payloadSerializedBytes": 458919,
+        "managementBytes": 512,
+        "lastAttemptKeyBytes": 507418,
+        "lastAttemptKeyResidentBytes": 1002692,
+        "lastAttemptPayloadBytes": 0,
+        "serializedBytes": 966849,
+        "residentStringAndHeaderBytes": 1906690,
+        "maxEntries": 32,
+        "maxSerializedBytes": 134217728,
+        "maxResidentStringAndHeaderBytes": 134217728,
+        "entryHeaderBytes": 512,
+        "scope": "whole exact C finalization; hits do not reconstruct or claim candidate work"
+      },
+      "actualPlanningCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "actualRenderCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "unanchoredFunctionInclusiveMs": {
+        "finalization": {
+          "J.finalizePlacementPlan": 527.6540000000007,
+          "signature": 30.683999999999987,
+          "beginFinalCache": 198.17499999999964,
+          "cacheDependencies": 223.40299999999945,
+          "cacheEncode": 312.60999999999814,
+          "readFinalCache": 248.777,
+          "verifyCacheContext": 164.97800000000024,
+          "keepFinalCache": 40.21199999999997,
+          "freeze": 4.181,
+          "cacheDecode": 100.90500000000011
+        },
+        "render": {}
+      },
+      "unanchoredExclusiveBucketsMs": {
+        "finalization": {
+          "signature": 30.683999999999987,
+          "cold source search/geometry/finalize other": 5.625,
+          "begin other (UTF8/check/context)": 31.626000000000015,
+          "cacheDependencies (walk+dependency graph encoding)": 223.40299999999945,
+          "input/payload cacheEncode outside dependencies": 117.50700000000046,
+          "read other (verify dispatch/lookup/LRU)": 6.5729999999999995,
+          "keep other (UTF8/ledger/LRU/store)": 7.1499999999999995,
+          "freeze": 4.181,
+          "cacheDecode (parse/object-property reconstruction)": 100.90500000000011
+        },
+        "render": {
+          "native renderer other": 179.7000000000002
+        }
+      },
+      "approxSixMeasuredWarmFinalization": {
+        "sampleMs": 324.65499999999764,
+        "samples": 1702,
+        "inclusiveMs": {
+          "J.finalizePlacementPlan": 308.19699999999733,
+          "beginFinalCache": 123.27500000000056,
+          "cacheDependencies": 140.20900000000077,
+          "cacheEncode": 192.7950000000002,
+          "readFinalCache": 183.5750000000003,
+          "verifyCacheContext": 107.59200000000018,
+          "cacheDecode": 73.535,
+          "signature": 1.3470000000000002
+        },
+        "exclusiveMs": {
+          "cacheDependencies (walk+dependency graph encoding)": 140.20900000000077,
+          "input/payload cacheEncode outside dependencies": 68.61699999999995,
+          "begin other (UTF8/check/context)": 21.172000000000008,
+          "read other (verify dispatch/lookup/LRU)": 3.3169999999999997,
+          "cacheDecode (parse/object-property reconstruction)": 73.535,
+          "unattributed GC": 15.749000000000002,
+          "signature": 1.3470000000000002,
+          "unresolved program/other": 0.7090000000000001
+        }
+      },
+      "topFunctionSelfSamples": [
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "visit",
+          "lineNumber": 12148,
+          "samples": 1175,
+          "ms": 220.80999999999966
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "cacheEncode",
+          "lineNumber": 12146,
+          "samples": 432,
+          "ms": 79.27500000000005
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "visit",
+          "lineNumber": 12163,
+          "samples": 374,
+          "ms": 72.68599999999999
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "encode",
+          "lineNumber": -1,
+          "samples": 165,
+          "ms": 30.69600000000002
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "cacheDecode",
+          "lineNumber": 12161,
+          "samples": 152,
+          "ms": 28.219000000000023
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "walk",
+          "lineNumber": 12169,
+          "samples": 138,
+          "ms": 25.348000000000006
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "fillText",
+          "lineNumber": -1,
+          "samples": 137,
+          "ms": 23.588999999999984
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "def.render",
+          "lineNumber": 33025,
+          "samples": 115,
+          "ms": 19.79700000000001
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "signature",
+          "lineNumber": 10809,
+          "samples": 97,
+          "ms": 18.001
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "drawImage",
+          "lineNumber": -1,
+          "samples": 78,
+          "ms": 13.697999999999999
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "",
+          "lineNumber": 10809,
+          "samples": 67,
+          "ms": 12.682999999999998
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "measureText",
+          "lineNumber": -1,
+          "samples": 69,
+          "ms": 12.160000000000004
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "",
+          "lineNumber": 12155,
+          "samples": 51,
+          "ms": 9.684000000000001
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "J.drawItem",
+          "lineNumber": 2251,
+          "samples": 46,
+          "ms": 8.174
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "beginFinalCache",
+          "lineNumber": 12180,
+          "samples": 35,
+          "ms": 6.5699999999999985
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "scale",
+          "lineNumber": -1,
+          "samples": 32,
+          "ms": 5.716000000000001
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "readFinalCache",
+          "lineNumber": 12185,
+          "samples": 28,
+          "ms": 4.885
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "save",
+          "lineNumber": -1,
+          "samples": 26,
+          "ms": 4.2700000000000005
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "freeze",
+          "lineNumber": 10816,
+          "samples": 23,
+          "ms": 4.181
+        },
+        {
+          "phase": "render",
+          "module": "src/09_render.js",
+          "function": "frame",
+          "lineNumber": 10096,
+          "samples": 23,
+          "ms": 4.177
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "jsonClone",
+          "lineNumber": 10817,
+          "samples": 23,
+          "ms": 4.146
+        },
+        {
+          "phase": "finalization",
+          "module": null,
+          "function": "RegExp: ^(0|[1-9]\\d*)$",
+          "lineNumber": -1,
+          "samples": 15,
+          "ms": 2.8409999999999997
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "adv",
+          "lineNumber": 1822,
+          "samples": 16,
+          "ms": 2.8020000000000005
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "fill",
+          "lineNumber": -1,
+          "samples": 16,
+          "ms": 2.659
+        },
+        {
+          "phase": "render",
+          "module": "src/09_render.js",
+          "function": "env.draw",
+          "lineNumber": 10383,
+          "samples": 14,
+          "ms": 2.4819999999999998
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "drawCtx",
+          "lineNumber": 33735,
+          "samples": 2,
+          "ms": 1.9589999999999999
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "fillRect",
+          "lineNumber": -1,
+          "samples": 10,
+          "ms": 1.8079999999999998
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "arc",
+          "lineNumber": -1,
+          "samples": 10,
+          "ms": 1.807
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "cacheDependencies",
+          "lineNumber": 12166,
+          "samples": 10,
+          "ms": 1.7650000000000001
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "verifyCacheContext",
+          "lineNumber": 12184,
+          "samples": 8,
+          "ms": 1.6879999999999997
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "J.layoutText",
+          "lineNumber": 2152,
+          "samples": 8,
+          "ms": 1.57
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09a_placement.js",
+          "function": "J.finalizePlacementPlan",
+          "lineNumber": 10820,
+          "samples": 8,
+          "ms": 1.4789999999999999
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "draw",
+          "lineNumber": 13712,
+          "samples": 8,
+          "ms": 1.46
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "halftone",
+          "lineNumber": 33315,
+          "samples": 8,
+          "ms": 1.398
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "render",
+          "lineNumber": 33447,
+          "samples": 8,
+          "ms": 1.375
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "photo",
+          "lineNumber": 34712,
+          "samples": 6,
+          "ms": 1.363
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "J.hex",
+          "lineNumber": 1524,
+          "samples": 8,
+          "ms": 1.36
+        },
+        {
+          "phase": "finalization",
+          "module": "src/09g_layoutsC_placement.js",
+          "function": "keepFinalCache",
+          "lineNumber": 12189,
+          "samples": 8,
+          "ms": 1.336
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "J.lyricCutsAt",
+          "lineNumber": 7100,
+          "samples": 7,
+          "ms": 1.3219999999999998
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "stroke",
+          "lineNumber": -1,
+          "samples": 8,
+          "ms": 1.29
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "J.segments",
+          "lineNumber": 4583,
+          "samples": 8,
+          "ms": 1.276
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "",
+          "lineNumber": 34136,
+          "samples": 2,
+          "ms": 1.2189999999999999
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "",
+          "lineNumber": 7103,
+          "samples": 7,
+          "ms": 1.207
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "draw",
+          "lineNumber": 26580,
+          "samples": 7,
+          "ms": 1.202
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "",
+          "lineNumber": 2161,
+          "samples": 6,
+          "ms": 1.116
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "drawLow",
+          "lineNumber": 13779,
+          "samples": 7,
+          "ms": 1.086
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "render",
+          "lineNumber": 35228,
+          "samples": 6,
+          "ms": 0.9989999999999999
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "J.fontCSS",
+          "lineNumber": 1750,
+          "samples": 5,
+          "ms": 0.938
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "render",
+          "lineNumber": 35705,
+          "samples": 5,
+          "ms": 0.8600000000000001
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "render",
+          "lineNumber": 34477,
+          "samples": 5,
+          "ms": 0.815
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "clearRect",
+          "lineNumber": -1,
+          "samples": 5,
+          "ms": 0.794
+        },
+        {
+          "phase": "render",
+          "module": "src/09_render.js",
+          "function": "makeEnv",
+          "lineNumber": 10361,
+          "samples": 5,
+          "ms": 0.786
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "render",
+          "lineNumber": 34673,
+          "samples": 4,
+          "ms": 0.7849999999999999
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "render",
+          "lineNumber": 34886,
+          "samples": 4,
+          "ms": 0.7610000000000001
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "moveTo",
+          "lineNumber": -1,
+          "samples": 4,
+          "ms": 0.742
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "onCol",
+          "lineNumber": 33090,
+          "samples": 4,
+          "ms": 0.7229999999999999
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "addColorStop",
+          "lineNumber": -1,
+          "samples": 3,
+          "ms": 0.722
+        },
+        {
+          "phase": "render",
+          "module": null,
+          "function": "createPattern",
+          "lineNumber": -1,
+          "samples": 5,
+          "ms": 0.7210000000000001
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "perfRect",
+          "lineNumber": 35128,
+          "samples": 4,
+          "ms": 0.7060000000000001
+        },
+        {
+          "phase": "render",
+          "module": "src/11p_layoutsC.js",
+          "function": "PAL",
+          "lineNumber": 33086,
+          "samples": 4,
+          "ms": 0.6950000000000001
+        }
+      ],
+      "verifyDedicatedCPUFramePresent": true,
+      "verifyAttributionNote": "verifyCacheContext may be inlined/not materialized. Dependency+input codec descendants under read/keep are observable, not a separately measured verify wall time. Inclusive totals overlap and recursive frames count once per sample.",
+      "allDiagnosticGC": {
+        "samples": 230,
+        "ms": 57.85299999999997
+      },
+      "unattributedToBenchmarkStack": {
+        "samples": 955,
+        "ms": 474.4940000000007
+      },
+      "clock": {
+        "navStartTimeTicksMS": 82158675.381,
+        "anchorTimestampMS": 82159941.249,
+        "pagePerformanceNowMS": 1267.2999999970198,
+        "sequentialAnchorDiscrepancyMS": -1.431999996304512,
+        "excludedBoundaryMarginMS": 2,
+        "sameClockMappingIsInference": true,
+        "renderInteriorSampleMs": 14.776000000000002,
+        "renderBoundaryOrUnmappedSampleMs": 164.92400000000006,
+        "perFrameCPUIsApproximate": true
+      },
+      "all34RecordedRenderContributors": [
+        {
+          "layout": "stampSheet",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            14,
+            1.2000000029802322
+          ],
+          "recordedWallP95Ms": 14,
+          "recordedWallTotalMs": 15.200000002980232,
+          "approxInteriorSampleCount": 58,
+          "approxInteriorComponentMs": {
+            "native renderer other": 9.902
+          }
+        },
+        {
+          "layout": "nameTag",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            7.699999988079071,
+            0.20000000298023224
+          ],
+          "recordedWallP95Ms": 7.699999988079071,
+          "recordedWallTotalMs": 7.899999991059303,
+          "approxInteriorSampleCount": 22,
+          "approxInteriorComponentMs": {
+            "native renderer other": 3.8489999999999998
+          }
+        },
+        {
+          "layout": "postcard",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            5,
+            1.1000000089406967
+          ],
+          "recordedWallP95Ms": 5,
+          "recordedWallTotalMs": 6.100000008940697,
+          "approxInteriorSampleCount": 6,
+          "approxInteriorComponentMs": {
+            "native renderer other": 1.025
+          }
+        },
+        {
+          "layout": "clapper",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.6000000089406967,
+            0.7000000029802322
+          ],
+          "recordedWallP95Ms": 3.6000000089406967,
+          "recordedWallTotalMs": 4.300000011920929,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "newspaper",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3.5,
+            1.5
+          ],
+          "recordedWallP95Ms": 3.5,
+          "recordedWallTotalMs": 5,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "calendar",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            3,
+            0.5999999940395355
+          ],
+          "recordedWallP95Ms": 3,
+          "recordedWallTotalMs": 3.5999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "swissGrid",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.7999999970197678,
+            2.9000000059604645
+          ],
+          "recordedWallP95Ms": 2.9000000059604645,
+          "recordedWallTotalMs": 5.700000002980232,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "warningLabel",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.7999999970197678,
+            1
+          ],
+          "recordedWallP95Ms": 2.7999999970197678,
+          "recordedWallTotalMs": 3.7999999970197678,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "karuta",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.7000000029802322,
+            0.5999999940395355
+          ],
+          "recordedWallP95Ms": 2.7000000029802322,
+          "recordedWallTotalMs": 3.2999999970197678,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "letterPaper",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.5999999940395355,
+            0.5
+          ],
+          "recordedWallP95Ms": 2.5999999940395355,
+          "recordedWallTotalMs": 3.0999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "numbered",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.5999999940395355,
+            1.5
+          ],
+          "recordedWallP95Ms": 2.5999999940395355,
+          "recordedWallTotalMs": 4.0999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "omikuji",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.3999999910593033,
+            0.7000000029802322
+          ],
+          "recordedWallP95Ms": 2.3999999910593033,
+          "recordedWallTotalMs": 3.0999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "shoji",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.3999999910593033,
+            1
+          ],
+          "recordedWallP95Ms": 2.3999999910593033,
+          "recordedWallTotalMs": 3.3999999910593033,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "routeMap",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            2.2000000029802322,
+            0.29999999701976776
+          ],
+          "recordedWallP95Ms": 2.2000000029802322,
+          "recordedWallTotalMs": 2.5,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "tanzaku",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.9000000059604645,
+            0.7999999970197678
+          ],
+          "recordedWallP95Ms": 1.9000000059604645,
+          "recordedWallTotalMs": 2.7000000029802322,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "priceTag",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.9000000059604645,
+            0.5
+          ],
+          "recordedWallP95Ms": 1.9000000059604645,
+          "recordedWallTotalMs": 2.4000000059604645,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "magazine",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.8999999910593033,
+            1.7000000029802322
+          ],
+          "recordedWallP95Ms": 1.8999999910593033,
+          "recordedWallTotalMs": 3.5999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "footnote",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            0.7999999970197678,
+            1.7999999970197678
+          ],
+          "recordedWallP95Ms": 1.7999999970197678,
+          "recordedWallTotalMs": 2.5999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "stationSign",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.7000000029802322,
+            0.3999999910593033
+          ],
+          "recordedWallP95Ms": 1.7000000029802322,
+          "recordedWallTotalMs": 2.0999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "chochin",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.5,
+            0.4000000059604645
+          ],
+          "recordedWallP95Ms": 1.5,
+          "recordedWallTotalMs": 1.9000000059604645,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "proofread",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            0.7000000029802322,
+            1.5
+          ],
+          "recordedWallP95Ms": 1.5,
+          "recordedWallTotalMs": 2.2000000029802322,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "ransom",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.5,
+            1.3999999910593033
+          ],
+          "recordedWallP95Ms": 1.5,
+          "recordedWallTotalMs": 2.8999999910593033,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "kakejiku",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.4000000059604645,
+            0.29999999701976776
+          ],
+          "recordedWallP95Ms": 1.4000000059604645,
+          "recordedWallTotalMs": 1.7000000029802322,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "noren",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.2999999970197678,
+            0.4000000059604645
+          ],
+          "recordedWallP95Ms": 1.2999999970197678,
+          "recordedWallTotalMs": 1.7000000029802322,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "stickyNotes",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.2999999970197678,
+            0.20000000298023224
+          ],
+          "recordedWallP95Ms": 1.2999999970197678,
+          "recordedWallTotalMs": 1.5,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "poster",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.1000000089406967,
+            1.2999999970197678
+          ],
+          "recordedWallP95Ms": 1.2999999970197678,
+          "recordedWallTotalMs": 2.4000000059604645,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "headlineDeck",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            0.800000011920929,
+            1.2000000029802322
+          ],
+          "recordedWallP95Ms": 1.2000000029802322,
+          "recordedWallTotalMs": 2.000000014901161,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "ema",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            0.6000000089406967,
+            1.1000000089406967
+          ],
+          "recordedWallP95Ms": 1.1000000089406967,
+          "recordedWallTotalMs": 1.7000000178813934,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "bookSpine",
+          "measuredFrames": 1,
+          "recordedWallMs": [
+            1.1000000089406967
+          ],
+          "recordedWallP95Ms": 1.1000000089406967,
+          "recordedWallTotalMs": 1.1000000089406967,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "dictionary",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            1.0999999940395355,
+            0.8999999910593033
+          ],
+          "recordedWallP95Ms": 1.0999999940395355,
+          "recordedWallTotalMs": 1.9999999850988388,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "vinyl",
+          "measuredFrames": 1,
+          "recordedWallMs": [
+            0.5999999940395355
+          ],
+          "recordedWallP95Ms": 0.5999999940395355,
+          "recordedWallTotalMs": 0.5999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "cassette",
+          "measuredFrames": 1,
+          "recordedWallMs": [
+            0.5999999940395355
+          ],
+          "recordedWallP95Ms": 0.5999999940395355,
+          "recordedWallTotalMs": 0.5999999940395355,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "contents",
+          "measuredFrames": 2,
+          "recordedWallMs": [
+            0.29999999701976776,
+            0.5
+          ],
+          "recordedWallP95Ms": 0.5,
+          "recordedWallTotalMs": 0.7999999970197678,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        },
+        {
+          "layout": "polaroid",
+          "measuredFrames": 1,
+          "recordedWallMs": [
+            0.3999999910593033
+          ],
+          "recordedWallP95Ms": 0.3999999910593033,
+          "recordedWallTotalMs": 0.3999999910593033,
+          "approxInteriorSampleCount": 0,
+          "approxInteriorComponentMs": {}
+        }
+      ],
+      "profilingNotFormal": true
+    }
+  ]
+}

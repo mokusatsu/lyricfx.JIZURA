@@ -1,0 +1,92 @@
+{
+  "token": "21dcd8baad9a442bb9da652f7e6561a8",
+  "root": {
+    "pid": 331625,
+    "startTicks": "8364798",
+    "ppid": 331570,
+    "pgid": 331625,
+    "session": 331625,
+    "state": "R"
+  },
+  "preexistingIdentityCount": 2979,
+  "owned": [
+    {
+      "identity": {
+        "pid": 331625,
+        "startTicks": "8364798",
+        "ppid": 331570,
+        "pgid": 331625,
+        "session": 331625,
+        "state": "R"
+      },
+      "proof": "Direct Popen child with PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 331632,
+        "startTicks": "8364802",
+        "ppid": 331625,
+        "pgid": 331632,
+        "session": 331632,
+        "state": "S"
+      },
+      "proof": "Node spawn registry with root PID/start identity"
+    },
+    {
+      "identity": {
+        "pid": 331640,
+        "startTicks": "8364806",
+        "ppid": 331632,
+        "pgid": 331640,
+        "session": 331640,
+        "state": "S"
+      },
+      "proof": "Observed descendant of live owned PID/start identity"
+    }
+  ],
+  "actions": [
+    {
+      "identity": {
+        "pid": 331632,
+        "startTicks": "8364802",
+        "ppid": 331570,
+        "pgid": 331632,
+        "session": 331632,
+        "state": "S"
+      },
+      "signal": 15,
+      "method": "pidfd_send_signal"
+    },
+    {
+      "identity": {
+        "pid": 331640,
+        "startTicks": "8364806",
+        "ppid": 331632,
+        "pgid": 331640,
+        "session": 331640,
+        "state": "S"
+      },
+      "signal": 15,
+      "method": "pidfd_send_signal"
+    }
+  ],
+  "reapedAdoptedChildren": [
+    {
+      "pid": 331632,
+      "startTicks": "8364802",
+      "waitCode": 2,
+      "waitStatus": 15
+    },
+    {
+      "pid": 331640,
+      "startTicks": "8364806",
+      "waitCode": 2,
+      "waitStatus": 15
+    }
+  ],
+  "remainingOwnedIdentities": [],
+  "errors": [],
+  "complete": true,
+  "seconds": 0.4936137179902289,
+  "policy": "No killpg and no PID-only signal. Direct spawn/descendant/unique-token ownership plus start identity; signal uses pinned pidfd. Python process subreaper reaps only owned adopted children."
+}

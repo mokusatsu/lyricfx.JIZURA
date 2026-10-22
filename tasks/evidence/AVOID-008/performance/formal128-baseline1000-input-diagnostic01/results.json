@@ -1,0 +1,643 @@
+{
+  "kind": "Authorized single baseline1000ON normalized input diagnostic, NOT formal qualification",
+  "config": {
+    "diagnostic": false,
+    "formal": true,
+    "sizes": [
+      100,
+      1000
+    ],
+    "onStates": [
+      true,
+      false
+    ],
+    "planningWarmup": 3,
+    "planningSamples": 6,
+    "renderFrames": 80,
+    "renderWarmup": 16,
+    "stage": [
+      3200,
+      1080
+    ],
+    "canvas": [
+      1600,
+      540
+    ],
+    "renderScale": 0.5,
+    "viewport": [
+      1280,
+      720
+    ],
+    "DPR": 1,
+    "cutStart": 1.25,
+    "cutDuration": 4,
+    "seed": 704,
+    "maxWallMs": 1800000,
+    "limits": {
+      "standard": {
+        "regions": 100,
+        "cuts": 100
+      },
+      "stress": {
+        "regions": 1000,
+        "cuts": 1000
+      },
+      "planningP95MaxBaselineFactor": 2,
+      "additionalRenderP95Ms": 3,
+      "environment": "same browser, local font, viewport and warmup; compare in 004/017",
+      "bufferBudget": "004/018 must measure lifetime and impose max buffers; no per-glyph stage buffer"
+    }
+  },
+  "actualConditions": [
+    {
+      "n": 1000,
+      "on": true,
+      "side": "baseline"
+    }
+  ],
+  "baseline": {
+    "commit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+    "sha256": "ad7257a257ff7bfc43c07fe06bc83490d3cdf8b7fcf716019eb9b3e70e67ce57",
+    "path": "baseline2bb-index.html.gz",
+    "kind": "Immutable2bb native J.plan/render; no C API is injected or simulated. This is not the B current-native-only source variant."
+  },
+  "pins": {
+    "src/01_util.js": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+    "src/02_fonts.js": "3e687cfd1045349f36eb65f4fa802973ad4303f48b21069cf6dcc68a546c0415",
+    "src/02b_lang.js": "a0464cc32ec396e2198801387f3640ec217ec1d0ea790ee2e88dbafebd7fc770",
+    "src/03_text.js": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+    "src/04_styles.js": "29ecef9319dabebbadea198f3915c50bd76f2c48f1cf34d034c833106aa19ca7",
+    "src/05_anim.js": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+    "src/05b_registry.js": "ecaefd208377658bb23adca79c36e093a7b3fce796f5facdb7d10806f6619cea",
+    "src/06_layouts.js": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+    "src/07_decor.js": "9e0c6edc62ea6e0d220a5f5619e1ba10b35f776a45305fe1cde3288513fe4d24",
+    "src/08_planner.js": "608bf692d183fd5db2b4eecaa469d6278092be57796b5a3353175941bfddba37",
+    "src/08b_omakase.js": "0bcc4a74b12ea70a293cb6e3307c4fe62c8ddf391183bcbaceeb5747847bb870",
+    "src/08c_composition.js": "26ee97660d62e61eaf5817e7c0ad8afd465e976fb2213cadf6adb1c8b247572c",
+    "src/08ca_lyric_avoidance.js": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d",
+    "src/08cb_background_layouts.js": "9122c219b4013391a5cc14dbdb289a7e205daf6088b8e4ed744f00b64aef560e",
+    "src/08d_media.js": "bf175deb61f4a197eb28dc538f8daaae9da55efe6711dbec61adba0c38407ffd",
+    "src/08e_lyric_features.js": "54f4b361f23bf8f78e293cf11a570a3088bc209dd80e6acf52ea7cffdc1f5373",
+    "src/08e_media_effects.js": "eeb89f3b2424ad912ecc16d6f2affb186eb8c608a8b1a290d2b9c3d791b77f40",
+    "src/08eb_lyric_scene.js": "c88e6f489446ffb77eac5856217a5b0c3ff04684c1c11750e29fe3c7fece681a",
+    "src/08f_media_variations.js": "fa6c9db6aabf77de42dcd7dc87ff1f20cd401deaab541eddd5361548e247a38b",
+    "src/08g_media_decor.js": "68c7506146e71de5d89a691fb7738f23e86c847126a2f05fd887cfdcc6b395b6",
+    "src/08g_media_masks.js": "168fee9b91f7b24502daa16b101a5d65cd19a4c44377eb8f25c317812dbcaad8",
+    "src/08g_media_phases.js": "ac91c6ea9e355a11f5734304de7d75dd6427923b431f6162eb29ec0a2322ad6f",
+    "src/08g_media_rhythm.js": "1b7821f7b8e3a760a081ecfcc869b840dcff451a00b3cabac113ecb73201193c",
+    "src/08g_media_scenes.js": "e71facca3a86a25c9404ad35a44494e0bf0781cfcfcf64957f01a3c615fd3414",
+    "src/08h_cut_details.js": "bd8a814c97bb281a596d978478368061f5d596cb2dedcb6a57adb3eee1f07864",
+    "src/08i_effect_clipboard.js": "9f0e7b10c1688312298ce262a78174530cfeec940f66531efa11de8cb6cb405e",
+    "src/08j_cut_mask.js": "556e924f69fe9435d3d3bfe452aa6e9b130f20d316e0f852e2e6b309050eeb6c",
+    "src/08k_detail_search.js": "6472c8ad6013e5d14a0e3abf65fc32e39ee030e213bb8fa05530858df45f2db9",
+    "src/08l_detail_labels.js": "895d35845cd1304502a9c3427ad0d697a024b10cf783d75169f5caa4333b67d8",
+    "src/08m_person_cutout.js": "5559074b5a08786097f273d84b0f652abb21455a0d0023df68692f5269016185",
+    "src/09_render.js": "d51a1ccca3a5b42d2204a401c57c859abf71a228aefd45e3a1dee14ecc7ea067",
+    "src/09a_placement.js": "8c013368bc0cc13908004838bf179f1f628ac2f60343cde6e30daeb701f3e601",
+    "src/09b_basic_placement.js": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+    "src/09c_layoutsA_placement.js": "ff603fe43f54296865ae59ab1268c581cbfbbf7a489d02aafbfda83221b03c36",
+    "src/09d_adaptive_placement.js": "ab3e8c727284eacbf642e4fdb2e71197aa6cfde7a68e1473450710289c05a595",
+    "src/09e_layoutsB_placement.js": "268e8f8132f70a9e9627a703656f56d00e50a7145b8b84b1eef31c2371d249d1",
+    "src/09f_layoutsB_editorial.js": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+    "src/09g_layoutsC_placement.js": "67f04fd9cd0b94fcbecc397f775c941bf1d2432c029d43fd882f85538a6585c2",
+    "src/09h_layoutsC_editorial.js": "26564f109a0c9d5819bc921687e88c124007a4f36b70e9f5adb7526c59fe904c",
+    "src/09i_layoutsC_objects.js": "64d18debd737f610bcbd3d1d1748b5791b38efdfc783a473de4bbb4f0f6ef5cc",
+    "src/09j_layoutsC_japanese.js": "d7c82dd58a39dc5792368b0577808cb68ab0fd128a24aae79502b2c65d007ff3",
+    "src/10_audio.js": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57",
+    "src/11_export.js": "d05692567f7893a3258500838091fc0e8cf7536b4ae763f20d0b6aa91a59037f",
+    "src/11b_project_file.js": "9659b8d0bce2919830704c25ab230fc5a7faaad4c3d3783205dd9b5bd2630286",
+    "src/11p_bgcamB.js": "baad1dab7a4743b4eab351c9e9dfa76d9af5f4e00b29538ce41837a5628dd644",
+    "src/11p_decor.js": "b533343d8ad5ad114300fed174d4eb0dff092201c778a6697345157595b933a5",
+    "src/11p_decorB.js": "f49747910c456cb829bdfeffa5c0342898305a8e01eebfa8ac18b2cc279bcd62",
+    "src/11p_enter.js": "949b506310fd7f6f23a11f30691e0edc722ff1b953c157517093aec562644638",
+    "src/11p_enterB.js": "7896363367fb5e5d19c4ccd59cd76ac707328bf018a91b24a137562a421819ce",
+    "src/11p_exit.js": "a013c8d40ba71fa69ea1bfa0782d2a55b7a152aa91bc7c0f7d85a9e89dca0b2b",
+    "src/11p_exitB.js": "565ee042f3f3382b05bb1cfdde8cb140231dba21f7ab58001af45e37d1faaf2e",
+    "src/11p_fxB.js": "168dc3c65c197ddbe4252b9fbe013d6c35a5e7758cf95585ee34263b831d3101",
+    "src/11p_horror1.js": "792d6dace596a0503e1055d3bbf9e56d63dc00c7151a1fb350067f2faac9f033",
+    "src/11p_horror2.js": "828ff4c48181e9755c5e2a82be4e30cab491ca0614cc25d711131108af50b7e4",
+    "src/11p_horror3.js": "c99a0d0cef6cf2b246e84586d5a33ebc750d1ef659a1490f211e8316d2727853",
+    "src/11p_kinetic1.js": "012282d5f3d44ef99c1b5fa26dd85210b138c4ecc73f54084f929bc74bd0045e",
+    "src/11p_kinetic2.js": "8c0401cfc265b6fe79d83e6a056e1bed93f42ae60a17890db165058f842ffd45",
+    "src/11p_kinetic3.js": "c1905cb3a5fb7fb7a14e9984b7ee4ce6b435eddeaab89fb71742c0075b7b3393",
+    "src/11p_layoutsA.js": "9d2b6cda27b049e6b2594603c6dee25d930e09ba536274a21a5ace5ddc7bfcd5",
+    "src/11p_layoutsB.js": "6e9730f7647fe5ff0d0f28a9f795efa54475a77659b8975a22711b910cd82064",
+    "src/11p_layoutsC.js": "376627003f1a2414097da2ba995884486f48f91999374c7d00cb9461559126d6",
+    "src/11p_layoutsD.js": "563f2e90ca86a4196606c48b0ccd0b4e555e672de64781c1a3125d3fd2922978",
+    "src/11p_looks.js": "724f124e9b0dfac715bcffb56bbc0342ccc78fdc5f3151481b2c52583470afba",
+    "src/11p_styles.js": "a306862fa099e7fd39b2efe1b63a6d30b8abf0462e141a075cd7b9ec24106922",
+    "src/11p_treattrans.js": "139dadb053110d87439248116d7e2ccf5b8f629cdd72c6412313649fde76ee25",
+    "src/11p_typo1.js": "0a1c61c77ebdd61754120283078a1e79e339a3de5341974e9ac7b5bb5a2878da",
+    "src/11p_typo2.js": "0fefc16f3e3711da71763bf6f874d02532820e3bbf2f8fd9e327af1a107914e6",
+    "src/11p_typo3.js": "bf8f19513f94044faedf74b45601d6cffa467edb79e37542149d34213c03df77",
+    "src/11q_media_cameras.js": "23254987957792ef1acb612d5f2485401f31d5cb0ba50f31cc3de8d6754f8fd8",
+    "src/11q_sets.js": "c7089d50d5a3eeabd9e4b236812201e87e7f55c4fb22b2d6c06f1efb0d02fc76",
+    "src/11r_themes.js": "31fe85b17a3faf6c2ebe6a3e5a2badcd4807bf4de0ddfceac4e0668e24b5577c",
+    "src/11s_color_theme.js": "13221ae70b44a6b7222bbac3d32ee926b30f442427ca33c01ac35f905a847593",
+    "src/11s_decor_details.js": "40014b35c1f53fca227767bc6e758e69831b7c9e80a130b58bee3e5f000b64dc",
+    "src/11t_effect_preview.js": "2169525db51841181d477f84826145a1fe6c3de5a852f99ead95ededb65ee6ba",
+    "src/11u_effect_favorites.js": "bbe922b1edd9b3488163c69f0c6e99b62d98649b0a91e3923c02cdcc348872ae",
+    "src/11u_note_layouts.js": "8bd64c9068384332be36710653ed4bb171373f8ae81ed58f4f7bd0d2f1e1b783",
+    "src/11v_modal_scroll.js": "09e3742f65e7c1076b068aabb8d7fa018723a5377c65f49786a6b382df156ac8",
+    "src/11w_custom_draw.js": "00bc020f5cac3ea8dbe98421bebd35867fde0a83f71fdf656d9ec614747a62ad",
+    "src/11wa_custom_effects.js": "079f75f0117d35d1ebfb48d2a781dd52e7a74adc4811c4077eca9f320c3e0937",
+    "src/11x_favorite_api.js": "c46c2c7d751be5b8372b50e71ce80cdcc72fc9e3623a38173ee7dec57db0e37b",
+    "src/11y_short_export.js": "83589822ac6a2aba57210a185c2b45ccbf4b15599900a71942e6ebe84821b9f7",
+    "src/11z_layoutsC_transport.js": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+    "src/12_ui.js": "a61d2d2142e3535db0f6a5a4e0c423ad1dcff6285e04c1cc0e442d893b91e66d",
+    "src/13_sprite_extractor.js": "07fa6e11b6a02bafd555a0c50299efb993cdbb9e18df648d251bd7bbfa93ee39",
+    "index.html": "a509c6ca7318baa7ba27e720a9962d10daf4cb32d7a099b1a92cfab426d3a030",
+    "en/index.html": "83321b2c41f16b805c5bbb263fed2d17e08f2e26b1d0e6ed2c92ca3a33bba435",
+    "dev/browser.cjs": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+    "dev/avoidance/layouts-c-perf.cjs": "010c3f9187f90872769c8dec06d4b095fa73ea7f734215f4314845efea864fb1",
+    "dev/avoidance/layouts-c-perf-fixture.js": "e01ffdc6f44a11a86653c58ee1cbdc78a1bfeea83e9014c8058bb082211ba0d2",
+    "dev/avoidance/layouts-c-perf-normalized-evidence-fixture.js": "1fea4a56bebe4fe1a052e0fc38eb9a8a8eaddae1624471520c66b17dd54cae68",
+    "dev/avoidance/layouts-c-perf-normalized-diagnostic.cjs": "c1d3b003203cc0100e6d8eaea1518b17078827941e3aeccf856b6bdaea1237c7",
+    "dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+    "dev/avoidance/layouts-c-objects-fonts-v2/LICENSE-DejaVu.txt": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9",
+    "dev/avoidance/layouts-c-objects-fonts-v2/dot.ttf": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c",
+    "dev/avoidance/layouts-c-objects-fonts-v2/dotgothic16-OFL.txt": "b6630c61ea078cacd7fabe37d14ffe557a0b45b06683374a9aa9e24262993e33",
+    "dev/avoidance/layouts-c-objects-fonts-v2/fonts-noto-cjk-copyright.txt": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b",
+    "dev/avoidance/layouts-c-objects-fonts-v2/fonts-noto-symbols-copyright.txt": "075f91382875da1c4b491f1facf2586f55448705133264d98ce15cab6211b125",
+    "dev/avoidance/layouts-c-objects-fonts-v2/fractions.ttf": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597",
+    "dev/avoidance/layouts-c-objects-fonts-v2/manifest.json": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+    "dev/avoidance/layouts-c-objects-fonts-v2/mono.otf": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585",
+    "dev/avoidance/layouts-c-objects-fonts-v2/mplusrounded1c-OFL.txt": "455b95114b9649159e624e9176d004a85ee730e0cb3f743ed40155d490d07be1",
+    "dev/avoidance/layouts-c-objects-fonts-v2/rounded.ttf": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527",
+    "dev/avoidance/layouts-c-objects-fonts-v2/sans-bold.otf": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359",
+    "dev/avoidance/layouts-c-objects-fonts-v2/sans-regular.otf": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5",
+    "dev/avoidance/layouts-c-objects-fonts-v2/serif-bold.otf": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce",
+    "dev/avoidance/layouts-c-objects-fonts-v2/serif-regular.otf": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19",
+    "dev/avoidance/layouts-c-objects-fonts-v2/symbols.ttf": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9"
+  },
+  "originalFixtureSHA256": "e01ffdc6f44a11a86653c58ee1cbdc78a1bfeea83e9014c8058bb082211ba0d2",
+  "evidenceFixtureSHA256": "1fea4a56bebe4fe1a052e0fc38eb9a8a8eaddae1624471520c66b17dd54cae68",
+  "concurrency": [
+    {
+      "phase": "prelaunch",
+      "foreign": []
+    },
+    {
+      "phase": "post",
+      "foreign": []
+    }
+  ],
+  "progress": [
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 0,
+      "warmup": true,
+      "sourceMs": 563.1000000089407,
+      "normalizationMs": 13,
+      "finalizeMs": 0,
+      "totalMs": 563.1000000089407,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    },
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 1,
+      "warmup": true,
+      "sourceMs": 470.69999998807907,
+      "normalizationMs": 14.899999991059303,
+      "finalizeMs": 0,
+      "totalMs": 470.69999998807907,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    },
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 2,
+      "warmup": true,
+      "sourceMs": 493.20000000298023,
+      "normalizationMs": 11.799999997019768,
+      "finalizeMs": 0,
+      "totalMs": 493.20000000298023,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    },
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 3,
+      "warmup": false,
+      "sourceMs": 434.90000000596046,
+      "normalizationMs": 12.599999994039536,
+      "finalizeMs": 0,
+      "totalMs": 434.90000000596046,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    },
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 4,
+      "warmup": false,
+      "sourceMs": 434.09999999403954,
+      "normalizationMs": 11.100000008940697,
+      "finalizeMs": 0,
+      "totalMs": 434.09999999403954,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    },
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 5,
+      "warmup": false,
+      "sourceMs": 426,
+      "normalizationMs": 14.400000005960464,
+      "finalizeMs": 0,
+      "totalMs": 426,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    },
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 6,
+      "warmup": false,
+      "sourceMs": 441,
+      "normalizationMs": 9.799999997019768,
+      "finalizeMs": 0,
+      "totalMs": 441,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    },
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 7,
+      "warmup": false,
+      "sourceMs": 459.3999999910593,
+      "normalizationMs": 12.600000008940697,
+      "finalizeMs": 0,
+      "totalMs": 459.3999999910593,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    },
+    {
+      "kind": "plan",
+      "side": "baseline",
+      "n": 1000,
+      "on": true,
+      "iteration": 8,
+      "warmup": false,
+      "sourceMs": 464.40000000596046,
+      "normalizationMs": 15.900000005960464,
+      "finalizeMs": 0,
+      "totalMs": 464.40000000596046,
+      "finalizationRecordCalls": 0,
+      "actualPlanningRecordCalls": 0,
+      "planningCache": {
+        "source": {
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0
+        },
+        "finalization": {
+          "executed": false,
+          "before": null,
+          "after": null,
+          "delta": null,
+          "actualRecordCalls": 0,
+          "wholeResultHit": null
+        }
+      }
+    }
+  ],
+  "snapshots": [
+    {
+      "iteration": 0,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": true,
+      "preHashSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa",
+      "preHashJSON": {
+        "path": "normalized-0-preHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "postHashJSON": {
+        "path": "normalized-0-postHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "prePostHashBytesEqual": true
+    },
+    {
+      "iteration": 1,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": true,
+      "preHashSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa",
+      "preHashJSON": {
+        "path": "normalized-1-preHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "postHashJSON": {
+        "path": "normalized-1-postHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "prePostHashBytesEqual": true
+    },
+    {
+      "iteration": 2,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": true,
+      "preHashSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa",
+      "preHashJSON": {
+        "path": "normalized-2-preHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "postHashJSON": {
+        "path": "normalized-2-postHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "prePostHashBytesEqual": true
+    },
+    {
+      "iteration": 3,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": false,
+      "preHashSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa",
+      "preHashJSON": {
+        "path": "normalized-3-preHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "postHashJSON": {
+        "path": "normalized-3-postHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "prePostHashBytesEqual": true
+    },
+    {
+      "iteration": 4,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": false,
+      "preHashSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa",
+      "preHashJSON": {
+        "path": "normalized-4-preHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "postHashJSON": {
+        "path": "normalized-4-postHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "prePostHashBytesEqual": true
+    },
+    {
+      "iteration": 5,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": false,
+      "preHashSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa",
+      "preHashJSON": {
+        "path": "normalized-5-preHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "postHashJSON": {
+        "path": "normalized-5-postHashJSON.json.gz",
+        "rawBytes": 1547895,
+        "rawSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+      },
+      "prePostHashBytesEqual": true
+    },
+    {
+      "iteration": 6,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": false,
+      "preHashSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7",
+      "preHashJSON": {
+        "path": "normalized-6-preHashJSON.json.gz",
+        "rawBytes": 1547728,
+        "rawSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7"
+      },
+      "postHashJSON": {
+        "path": "normalized-6-postHashJSON.json.gz",
+        "rawBytes": 1547728,
+        "rawSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7"
+      },
+      "prePostHashBytesEqual": true
+    },
+    {
+      "iteration": 7,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": false,
+      "preHashSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7",
+      "preHashJSON": {
+        "path": "normalized-7-preHashJSON.json.gz",
+        "rawBytes": 1547728,
+        "rawSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7"
+      },
+      "postHashJSON": {
+        "path": "normalized-7-postHashJSON.json.gz",
+        "rawBytes": 1547728,
+        "rawSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7"
+      },
+      "prePostHashBytesEqual": true
+    },
+    {
+      "iteration": 8,
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "warmup": false,
+      "preHashSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7",
+      "preHashJSON": {
+        "path": "normalized-8-preHashJSON.json.gz",
+        "rawBytes": 1547728,
+        "rawSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7"
+      },
+      "postHashJSON": {
+        "path": "normalized-8-postHashJSON.json.gz",
+        "rawBytes": 1547728,
+        "rawSHA256": "6c3d6fbf8e4f1f33a9fe781b45ecfe33e3f5f41832effaf18f358ac9411b51f7"
+      },
+      "prePostHashBytesEqual": true
+    }
+  ],
+  "fixtureError": {
+    "message": "page.evaluate: Error: C_PERF_FIXTURE: same input normalized differently across warmup/samples\n    at must (http://127.0.0.1:32949/fixture.js:6:33)\n    at Object.run (http://127.0.0.1:32949/fixture.js:38:4)\n    at async <anonymous>:337:30",
+    "stack": "page.evaluate: Error: C_PERF_FIXTURE: same input normalized differently across warmup/samples\n    at must (http://127.0.0.1:32949/fixture.js:6:33)\n    at Object.run (http://127.0.0.1:32949/fixture.js:38:4)\n    at async <anonymous>:337:30\n    at /workspace/avoid008-cache-final/dev/avoidance/layouts-c-perf-normalized-diagnostic.cjs:15:33"
+  },
+  "errors": [],
+  "formalExecuted": false,
+  "performanceQualified": false,
+  "candidateExecuted": false,
+  "browser": "154.0.8037.57",
+  "reproducedOriginalInputMismatch": true,
+  "uniquePreHashCount": 2,
+  "contaminated": false,
+  "changedInputs": []
+}

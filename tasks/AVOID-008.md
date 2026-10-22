@@ -7,6 +7,12 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- 性能調査の固定証拠1212件を、子の`7e6e375`からGit blob/両ファイルhash/1209 hardlink/保護87入力の実照合付きで保存（[親importレビュー](evidence/AVOID-008/parent-performance-evidence-import01-review.json)）。原raw・旧FAILは保持し、main製品source/cacheは未変更。最終回帰の[準備02親レビュー](evidence/AVOID-008/parent-core-preparation02-review.json)では元2bbの4入力・66準備file・173依存fileと、所有プロセス清掃の実synthetic3件を確認。candidate未封印、22本番回帰jobは未実行。値札hangと障子shadowの追加は別worktreeで実装中、未検証を成功とせず008内で継続する。
+
+- 隔離decoder候補`6dcd2a1`の[親コード/104・118pin/実rawレビュー](evidence/AVOID-008/parent-cache-decoder01-review.json)を記録。196 graph/98 setter負例/6826 object/17未対応形、40組全field・18native・25依存負例を通過し、旧128版の値/alias/描画を維持。一方、非CDPの100単点診断はON計画2.996倍/描画+5.4ms、OFF2.353倍で速度未達。加えて元corpusは94/100 staged、80 frame呼出し中C record/replay/観測は各76で、shadow障子3・hang値札3が未対応。正式試験の全経路条件も未達であり、全80観測・全34成功とは呼ばない。旧記述の80観測は全76記録済み観測の一致へ訂正する。依存表現の限定効率化と2variantの実source対応案を調査中、guard/閾値/元corpusを変更して合格へ置換しない。mainは未達cacheを含めずf828のまま、008実装中/009以降未着手。
+
+- 最終34 source結合は`f828ff2`までworkへpush済み。隔離cache候補`778eb302`は[親128MiB正確性レビュー](evidence/AVOID-008/parent-cache128-review.json)で値・alias・18native frame・23依存負例・4非C対照・両ledger超過拒否・同一1000入力cold/warm完全一致を受入。ただし[正式性能01の親レビュー](evidence/AVOID-008/parent-cache128-formal01-review.json)では100ON計画4.300倍/描画+4.600ms、100OFF計画3.065倍で既定2倍/+3msを未達。baseline1000ONの9計画後に入力同一性assertも失敗し、candidate1000は未実行。正確性/cache hitを速度合格に置換せず、旧FAILを保持して入力差分と実コストを調査する。性能未達候補はmainへ結合していない。最終回帰・必要4例の人間動作確認も未完、008実装中/009以降未着手を維持。公開結果確認は恒久停止。
+
 - Poster4d0の限定main結合を[親344入力/19結果・全raw比較](evidence/AVOID-008/parent-poster4d0-main01.json)で受入。50条件27safe/21不足/2既存未対応、500OFF/36fault/96copy-clock/8cmap1894glyph/EN33+3guard/192native・192元encoder・6key/日英起動が固定4d0と一致。他33block/header/物体09i64/和風09j/共有は保持。126変更配置stage外0と15nativeidentity元crop6948は分離。旧carry01の480縮小誤比較FAILを保存し、元960×540入力のcarry02で訂正、168inkは限定継承。34のsource結合が安定したため次は正確な値/別名関係を保つ限定cacheの最終C34実証と16MiBサイズ調査へ進める。formal100/1000はまだ未許可・未実行で、source stableを34成功や008完了に置換しない。
 
 - writingc861の限定修正02を[親335入力/74結果・3群321開始pin・raw照合](evidence/AVOID-008/parent-writingC861-main02.json)で受入。延べ323/405/276条件、safe94/83/51、24fault・新日英起動を確認。親が独立に503区間polygon/77,471実strict polygon/3,752hold頂点を再計算。共通fitBoundsの01候補は本棚の新cropで[独立視覚FAIL](evidence/AVOID-008/translation-visual01-review.md)を保持し、新列挙を2paperだけへ限定して他8の258行を旧859の位置・図形・時計へ完全復元、9組18PNGのbyte一致で限定FAILを解消。新guardは維持。paper530行は01/c861の全selectedが一致し、384native/encoder/12keysと375/574/287/101は依存を示す限定継承であってfresh02再撮影ではない。次はPoster4d0のみの限定結合、性能/全体回帰/最後の少数人間確認は必須未完。

@@ -1,0 +1,38 @@
+{
+  "reviewedAtUTC": "2026-10-22T21:11:10.600788+00:00",
+  "aggregateSHA256": "0521763d71ea2f677a4e57ec7b9134b533b81523af21ff5e592d9350d9274761",
+  "rows": [
+    {
+      "on": true,
+      "warmInteriorSamples": 7442,
+      "warmInteriorSampleMs": 1520.131,
+      "inclusiveOverlappingMs": {
+        "cacheDecode": 962.445,
+        "cacheEncode": 270.092,
+        "cacheDependencies": 207.631,
+        "freeze": 78.565,
+        "signature": 18.79,
+        "(garbage collector)": 127.755
+      },
+      "render34FrameTablesIndependentlyExact": true
+    },
+    {
+      "on": false,
+      "warmInteriorSamples": 1702,
+      "warmInteriorSampleMs": 324.655,
+      "inclusiveOverlappingMs": {
+        "cacheDecode": 73.535,
+        "cacheEncode": 192.795,
+        "cacheDependencies": 140.209,
+        "freeze": 0.0,
+        "signature": 1.347,
+        "(garbage collector)": 15.749
+      },
+      "render34FrameTablesIndependentlyExact": true
+    }
+  ],
+  "decision": "Accept sampledcause diagnosis and measured34-ID frame tables. ON warm decode dominates sampled stack; OFF dependencies/keyencoding substantial. Sampling overhead and inferredNavStart/2msboundary exclusion retained. No formal/p95qualification from this diagnostic.",
+  "overlapWarning": "Inclusive sums overlap and are not additive. GC timing approximatephase attribution; renderper-ID CPU unassignedshortframes retained by child.",
+  "fixScope": "Only decoder prototype initially authorized. Rendering remains failedmandatorygate; no waivedguard/quality/changedthreshold acceptance.",
+  "publicResultChecks": "Not performed; prohibited by user."
+}
