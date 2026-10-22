@@ -7,6 +7,8 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- 校正4d72の限定main結合を[親302入力/17結果/302start=endレビュー](evidence/AVOID-008/parent-proofread4d72-main01.json)で受入。52条件/80fault/520OFF/116copy-clock/192native＋192encoder/6key/日英ローカルが固定版と一致。旧64stampαは同source/時計/媒体で限定継承し、fresh64やfresh168inkとは呼ばない。856重複条件indexの更新は旧Proofread11行→52だけ。次はwritingc861の2paperと09iのみを結合、校正の大括弧状leader/tombo交差の構図は最後の少数人間確認に残す。
+
 - 目次e13の限定main結合を[親293入力/19結果/292start=end照合](evidence/AVOID-008/parent-contentsE13-main01.json)で受入。54条件/51fault/540OFF/234copy-clock/実markerα45/192native carry＋192encoder/6key/日英ローカルが一致。summary01の234誤集計は歴史保存しsummary02/freeze02へ訂正、試験再実行での合格化ではない。全34登録と815重複条件indexは完了数ではなく、次は固定校正4d72のみを結合する。
 
 - 新writing c861は[315pinと3最終raw・独立幾何・owned/ruling/負例の親レビュー](evidence/AVOID-008/parent-writingc861-review.json)、校正4d72は[100pin/80fault/actual ink/clockの親レビュー](evidence/AVOID-008/parent-proofread09-review.json)を通過し、固定候補として後続main結合へ進める。writing05限定PASSと、校正02の192frame/6key限定PASSを接続。校正の大括弧状leader/tombo交差は最後の限定した人間構図確認候補として残す。旧writing04/校正01のFAILは保持。現在mainは目次e13のfresh検証中であり、未結合候補の成功をmain成功に数えない。

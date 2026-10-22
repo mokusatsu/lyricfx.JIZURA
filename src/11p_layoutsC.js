@@ -897,12 +897,17 @@ reg('proofread', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
+    const bottomProof = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.proofBottomMargin : null;
+    if (bottomProof && (port || bottomProof.typeScale !== .7 || J.glyphCount(env.cut.text)>4 || J.glyphCount(env.cut.text)<2)) throw Object.assign(new Error('Bounded landscape proof margin required'), {code:'PROOF_MARGIN_DOMAIN'});
+    const proofOwned = (owner, fn, target = null) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {...prior, proofOwner:{owner,target}}; try { return fn(); } finally { env.placementCBody = prior; } };
     const out = 1 - E.outCubic(J.clamp(env.pOut * 1.15));   // pen marks leave with the text
     const t0 = env.cut.text.trim();
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.proofMeasure ?? 1 : 1, editorialMargin = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.proofMargin ?? 1 : 1;
     const aw = W * (port ? 0.7 : 0.62) * editorialMeasure, ah = H * (port ? 0.34 : 0.4);
-    const fb = fitBlock(t0, p.font, aw, ah, { lead: 1.45, track: 0.06 }, port ? 5 : 3);
-    const size = Math.min(fb.size, u * 0.14);
+    const nativeProof = bottomProof ? fitBlock(t0,p.font,W*(port?.7:.62),ah,{lead:1.45,track:.06},port?5:3) : null;
+    const fb = nativeProof || fitBlock(t0, p.font, aw, ah, { lead: 1.45, track: 0.06 }, port ? 5 : 3);
+    const nativeProofSize = Math.min(fb.size,u*.14);
+    const size = nativeProofSize * (bottomProof ? bottomProof.typeScale : 1);
     const cx = W / 2 - (port ? 0 : W * 0.06), cy = H / 2 + (port ? H * 0.02 : 0);
     const it = { text: fb.text, font: p.font, size, x: cx, y: cy, lead: 1.45, track: 0.06, color: sc.fg };
     const m = meas(fb.text, p.font, size, { lead: 1.45, track: 0.06 });
@@ -912,16 +917,16 @@ reg('proofread', {
     const x0 = cx - m.w / 2 - pad, x1 = cx + m.w / 2 + pad, y0 = cy - m.h / 2 - pad, y1 = cy + m.h / 2 + pad;
     if (p.tombo) {
       const te = tin(env, 0, 0.5, E.outCubic) * out;
-      tombo(env, x0, y0, x1, y1, size * 0.18, size * 0.55 * te, sc.sub, lw, 0.8 * te);
+      proofOwned('trim-marks', () => tombo(env, x0, y0, x1, y1, size * 0.18, size * 0.55 * te, sc.sub, lw, 0.8 * te));
     }
     if (env.cut.placementLayoutsC) it.placementCOwnedZone = {x0,y0,x1,y1};
-    const bb = J.mainDraw(env, it);
+    const bb = proofOwned('main', () => J.mainDraw(env, it));
     // red-pen marks
     const pen = plateCol(sc, [sc.accent, sc.accent2, sc.fg]);
     const gl = glyphPts(it);
     if (!gl.length) return bb;
     const pw = Math.max(2, size * 0.035);
-    const ns = Math.max(ls0(env) * 1.5, size * 0.42);
+    const ns = Math.max(ls0(env) * 1.5, (bottomProof ? nativeProofSize : size) * 0.42);
     const t1 = env.cut.inDur * 0.8 + 0.1;
     const nChunks = env.cut.words && env.cut.words.length ? env.cut.words : [t0];
     const used = new Set();
@@ -938,19 +943,23 @@ reg('proofread', {
       if (e <= 0) return;
       const a = out;
       const seed = mi ? p.g2 : p.g1;
-      let anchor;
+      let anchor, target = [];
+      const priorProof = env.placementCBody;
+      if (env.cut.placementLayoutsC) env.placementCBody = {proofOwner:{owner:'pen-mark',occurrence:mi,mark:mk,target}};
+      try {
       if (mk === 'circle') {
         const g = pickGlyph(seed, c => J.isKanji(c) || J.isKata(c));
+        target.push(g.i);
         const pts = penEllipse(g.x, g.y, g.w * 0.72, g.h * 0.66, seed);
         env.polyPartial(pts, E.outCubic(J.clamp(e * 1.6)), pen, pw, a, false);
-        anchor = [g.x + g.w * 0.5, g.y - g.h * 0.55];
+        anchor = bottomProof ? pts.slice(0,14).reduce((best,q)=>q[1]<best[1]?q:best) : [g.x + g.w * 0.5, g.y - g.h * 0.55];
       } else if (mk === 'box' || mk === 'wave' || mk === 'dots') {
         // a run of glyphs on one line (the first word chunk that fits)
         const g0 = pickGlyph(seed, c => !J.isPunct(c));
         const want = Math.max(2, Math.min(4, J.glyphCount(nChunks[0] || '')));
         const run = [g0];
         for (const g of gl) { if (run.length >= want) break; if (g.i > run[run.length - 1].i && g.li === g0.li && !used.has(g.i) && g.i === run[run.length - 1].i + 1) run.push(g); }
-        run.forEach(g => used.add(g.i));
+        run.forEach(g => { used.add(g.i); target.push(g.i); });
         const rx0 = Math.min(...run.map(g => g.x - g.w / 2)), rx1 = Math.max(...run.map(g => g.x + g.w / 2));
         const ry = g0.y;
         if (mk === 'box') {
@@ -973,25 +982,35 @@ reg('proofread', {
       const le = E.outCubic(J.clamp(e * 1.4 - 0.4));
       if (le <= 0 || !anchor) return;
       let nx, ny;
-      if (noteSide === 'right') { nx = Math.min(W * 0.93 - ns * 2.2, x1 + size * 0.7 * editorialMargin + mi * ns * 0.4); ny = y0 + (mi ? m.h * 0.7 : m.h * 0.15); }
+      if (bottomProof) { nx = x0 + (mi ? .50 : .04) * (x1-x0); ny = y1 + ns * (.9 + mi*1.6); }
+      else if (noteSide === 'right') { nx = Math.min(W * 0.93 - ns * 2.2, x1 + size * 0.7 * editorialMargin + mi * ns * 0.4); ny = y0 + (mi ? m.h * 0.7 : m.h * 0.15); }
       else { nx = J.clamp(anchor[0] + (mi ? ns * 2 : -ns * 2), W * 0.1, W * 0.85); ny = y0 - size * 0.9 * editorialMargin - mi * ns * 1.6; }
-      const mxp = noteSide === 'right' ? [J.lerp(anchor[0], nx, 0.5), anchor[1] - size * 0.25] : [anchor[0], J.lerp(anchor[1], ny, 0.5)];
-      const pts = [anchor, mxp, [nx - ns * 0.2, ny]];
+      const mxp = !bottomProof && noteSide === 'right' ? [J.lerp(anchor[0], nx, 0.5), anchor[1] - size * 0.25] : [anchor[0], J.lerp(anchor[1], ny, 0.5)];
+      let pts = [anchor, mxp, [nx - ns * 0.2, ny]];
+      if (bottomProof) {
+        // Keep the original leader reveal/opacity clock, but route through
+        // the outside proof margin and approach the rotated note from left.
+        const noteInk=J.placement.itemGeometry({text:note,font:p.pen,size:ns,align:'left',x:nx,y:ny,rot:-4,alpha:1},[1,0,0,1,0,0],{pass:'main',scale:1}),nb=J.placement.bounds(noteInk.polygons),guard=pw*.7/2+2,left=Math.min(x0-size*.18,nb.x0-guard-ns*.25),lane=mk==='circle'||mk==='box'?y0-size*.2:Math.min(y1+size*.1,nb.y0-guard-ns*.15),end=nb.x0-guard-2;
+        pts=[anchor,[anchor[0],lane],[left,lane],[left,ny],[end,ny]];
+      }
+      if (env.cut.placementLayoutsC) env.placementCBody = {proofOwner:{owner:'pen-leader',occurrence:mi,mark:mk,target,anchor:[...anchor],destination:[...pts[pts.length-1]],...(bottomProof?{route:'bottom-left-ink-elbow-v1'}:{})}};
       env.polyPartial(pts, le, pen, pw * 0.7, a, false);
       const na = J.clamp((le - 0.6) / 0.4);
+      if (env.cut.placementLayoutsC) env.placementCBody = {proofOwner:{owner:'pen-note',occurrence:mi,mark:mk,target,anchor:[nx,ny],fontSize:ns,...(bottomProof?{field:{x0:nx-ns*.12,y0:ny-ns*.85,x1:x1+size*.1,y1:ny+ns*.85}}:{})}};
       if (na > 0) env.draw({ text: note, font: p.pen, size: ns, align: 'left', x: nx, y: ny, rot: -4, color: pen, alpha: na * a, ghost: false });
+      } finally { env.placementCBody = priorProof; }
     });
     // 校了 stamp
     if (p.stamp) {
       const ts = env.cut.inDur + 0.55 + marks.length * 0.25;
       const x = (env.lt - ts) / 0.18;
       if (x > 0) {
-        const nativeStampType = editorialMeasure === 1 ? size : Math.min(fitBlock(t0, p.font, W*(port?.7:.62), ah, {lead:1.45,track:.06}, port?5:3).size,u*.14);
+        const nativeStampType = bottomProof ? nativeProofSize : editorialMeasure === 1 ? size : Math.min(fitBlock(t0, p.font, W*(port?.7:.62), ah, {lead:1.45,track:.06}, port?5:3).size,u*.14);
         const S = Math.max(ls0(env) * 4.2, nativeStampType * 1.05);
-        const sx = port ? W * 0.78 : Math.min(W * 0.9 - S * 0.6, x1 + S * 0.5), sy = port ? Math.min(H * 0.88, y1 + S * 0.9) : y1 - S * 0.1;
+        const sx = bottomProof ? cx + m.w*.15 : port ? W * 0.78 : Math.min(W * 0.9 - S * 0.6, x1 + S * 0.5), sy = bottomProof ? y1 + ns*2.9 + S*.5 : port ? Math.min(H * 0.88, y1 + S * 0.9) : y1 - S * 0.1;
         const k2 = J.lerp(1.5, 1, E.outBack(J.clamp(x), 1.4)), a = J.clamp(x * 3) * out;
         const priorEditorialBody = env.placementCBody;
-        if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-proof-stamp",pivot:[sx,sy],maxScale:1.5,entryEnd:ts+.18,exitStart:null};
+        if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-proof-stamp",pivot:[sx,sy],maxScale:1.5,entryEnd:ts+.18,exitStart:null,proofOwner:{owner:"stamp",sourceSize:S,sourceStart:ts}};
         ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.rot * J.DEG); ctx.scale(k2, k2);
         const w2 = S * 1.25, h2 = S * 0.72;
         env.rrect(-w2 / 2, -h2 / 2, w2, h2, S * 0.08, null, a * 0.9, false, pen, Math.max(2, S * 0.05));
