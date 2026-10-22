@@ -1,0 +1,9 @@
+# Material correspondence correction
+
+preview01 and native-stills01 have a FAIL for cross-material input correspondence. The original preview renderer used matrix04 source specs, but its manifest.conditions overwrote magazine mixed text with 風の先へ. The native-stills01 supplement trusted that wrong field and therefore rendered a different magazine copy. Their original bytes/manifests are retained; they are not a matching review bundle.
+
+bundle02 reads actual specs from pinned matrix04 cases, serves immutable matrix04 compiled after plus original compiled before, records the actual source/render plans and cut inputs, and asserts actual cut text/stage/note against the spec. Every one of 576 rerendered .5 PNG frames matches the original encoder-input frame hash. Original MP4 bytes are carried only after exact asset-hash verification; 18 native PNGs come from those same renders at f6/f36/f91. This is reconstruction evidence, not a claim that wrong native-stills01 images match old videos.
+
+Input note 遠い空の向こうへ is an input field, not evidence of rendered editorial annotation. In the footnote source, the emitted notes use native chunks, markers and times (※1/風の/00:00, ※2/先へ/00:02). The manifest records actual emitted metadata separately. Magazine mixed-copy square corner r.1 remains a diagnostic example, not central normal-circle acceptance. Independent visual review remains pending.
+
+Separately, original matrix04 hold/early/stage raster audits used shallow ctx substitution during replay. High-level circle/rrect/arc/blob helpers retained the original context, so those raster results have incomplete high-level plate coverage. Preserve them as that narrower scope; new rebound-context receipts must establish full raster plate inclusion. Analytic geometry, renderer output/MP4 and audit raster are separate paths.

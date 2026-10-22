@@ -1,0 +1,167 @@
+{
+  "task": "AVOID-008",
+  "review": "dictionary-visual01",
+  "reviewer": "independent visual child; parent images unseen",
+  "materialCorrespondence": "PASS",
+  "visualOutcome": "LIMITED_PASS_ONE_MINCHO_PAGE_EXAMPLE",
+  "manifestSHA256": "e35dbd8e57430fd8560d1cea4011d9a955772dcafe0c523404f4751752b14b31",
+  "scope": {
+    "layout": "dictionary",
+    "variant": "page",
+    "font": "mincho",
+    "stage": [
+      960,
+      540
+    ],
+    "center": [
+      0.5,
+      0.42
+    ],
+    "radiusShortEdge": 0.2,
+    "copy": "風の先へ",
+    "displayedDefinition": "遠い空の向こうへ"
+  },
+  "method": {
+    "newMP4Decoded": 2,
+    "framesPerVideo": 96,
+    "allFramePairsViewed": true,
+    "contactSheetsViewed": 8,
+    "nativePNGViewed": 6,
+    "nativeFrames": [
+      6,
+      36,
+      91
+    ],
+    "nativeResolution": [
+      960,
+      540
+    ],
+    "priorVisualCarry": false,
+    "realtimePlayback": false,
+    "browserOrServerStarted": false,
+    "persistentMediaProcesses": 0
+  },
+  "identity": {
+    "sourcePlansBeforeAfterDeepEqual": true,
+    "actualCutEqualsRenderCut": true,
+    "actualTextNoteStageClockAsserted": true,
+    "semanticMetadataOccurrences": 16,
+    "contextCharacters": 338,
+    "contextFragments": 22,
+    "orderedReconstructionEqualsBefore": true,
+    "beforeCompiled": "db371e02b0365e6368b1e4cfe7973f4f438ee7cdc35f929d0a244530a86f0bc5",
+    "afterCompiled": "5b7ed4e11be1187b857e88f1ee707aaabd0c91b039537230678a84cd369396ac",
+    "sourceCheckpoint": "2943460",
+    "sourceCheckpointExactClaim": false,
+    "compiledVsCheckedInIndexExactClaim": false,
+    "encoderInputPNGsIndependentlyRegenerated": false
+  },
+  "observations": [
+    "headword changes from one line to 風の先/へ; about .7 native size, hierarchy and four glyphs remain",
+    "context top becomes left field; context bottom becomes right field; semantic fragment order retained",
+    "POS glyphs stay inside plate; definition1/2 bullet and displayed copy stay connected",
+    "thumb glyph stays attached to white tab and rail",
+    "highlight follows new line count under native global action clock; pixel/per-glyph coverage equality not claimed",
+    "no detected new glyph crop, duplication, reordering or text/plate separation in inspected scope"
+  ],
+  "definiteVisualFailures": [],
+  "unassessed": [
+    "numerical circle safety",
+    "realtime motion feel",
+    "all font families and variants",
+    "outside 4 seconds",
+    "every tiny glyph at non-native-key frames"
+  ],
+  "publicVerification": "excluded permanently under AGENTS.md; none performed",
+  "numericalTestResultsUsedAsVisualProof": false,
+  "verification": {
+    "assetsVerified": 13,
+    "inputPinsVerified": 12,
+    "probes": {
+      "before": {
+        "codec_name": "h264",
+        "pix_fmt": "yuv420p",
+        "width": 480,
+        "height": 270,
+        "avg_frame_rate": "24/1",
+        "nb_read_frames": "96"
+      },
+      "after": {
+        "codec_name": "h264",
+        "pix_fmt": "yuv420p",
+        "width": 480,
+        "height": 270,
+        "avg_frame_rate": "24/1",
+        "nb_read_frames": "96"
+      }
+    },
+    "nativeDecodedComparison": [
+      {
+        "side": "before",
+        "frame": 6,
+        "rgbMAE": [
+          2.799189814814815,
+          1.8957175925925926,
+          1.9144907407407408
+        ]
+      },
+      {
+        "side": "before",
+        "frame": 36,
+        "rgbMAE": [
+          3.0072376543209876,
+          2.1131944444444444,
+          2.1959953703703703
+        ]
+      },
+      {
+        "side": "before",
+        "frame": 91,
+        "rgbMAE": [
+          2.948719135802469,
+          2.0920756172839505,
+          2.1527546296296296
+        ]
+      },
+      {
+        "side": "after",
+        "frame": 6,
+        "rgbMAE": [
+          2.849212962962963,
+          1.9160339506172839,
+          1.8991820987654322
+        ]
+      },
+      {
+        "side": "after",
+        "frame": 36,
+        "rgbMAE": [
+          3.0428086419753084,
+          2.123804012345679,
+          2.1373611111111113
+        ]
+      },
+      {
+        "side": "after",
+        "frame": 91,
+        "rgbMAE": [
+          2.9459336419753086,
+          2.0508024691358027,
+          2.063904320987654
+        ]
+      }
+    ],
+    "sourceCommitMismatches": [
+      {
+        "path": "src/09g_layoutsC_placement.js",
+        "commitSHA256": "f84a8052c413e184c202f17a143f2ee18c2bab4cb17ee5523eaf00798ebc3429",
+        "pinSHA256": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9"
+      }
+    ]
+  },
+  "notOverallCheckpointAcceptance": true,
+  "separateParentCodeFindings": [
+    "context measure omitted actual ctx letterSpacing .04fs; field containment guarantee incomplete",
+    "Latin softbreak may lose interword spaces"
+  ]
+}

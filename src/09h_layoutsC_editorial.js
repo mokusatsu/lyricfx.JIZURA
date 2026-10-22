@@ -1,0 +1,220 @@
+/* AVOID-008 editorial source recipes. Stage coordinates and native clocks stay
+   intact; no viewport substitution, text mask or implicit auxiliary exclusion. */
+(() => {
+'use strict';
+const A=J.placement,IDS=['magazine','headlineDeck','contents','footnote','proofread','numbered','poster','swissGrid','dictionary','newspaper'];
+const fail=(code,message)=>{const e=new Error(message);e.code=code;throw e;},norm=t=>String(t||'').replace(/\s/g,''),rect=(x0,y0,x1,y1)=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]],short=p=>Math.min(p.W,p.H);
+const contains=(p,q)=>{let pos=false,neg=false;for(let i=0;i<q.length;i++){const a=q[i],b=q[(i+1)%q.length],c=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);if(c>1e-4)pos=true;if(c< -1e-4)neg=true;}return !(pos&&neg);};
+const box=ps=>{const b=A.bounds(ps);return rect(b.x0,b.y0,b.x1,b.y1);};
+const camera=(ps,plan,cut)=>A.cameraEnvelope(ps,{...plan,style:cut.effectStyle||plan.style,fx:cut.effectFx||plan.fx},cut,20);
+function record(renderer,plan,cut,T,extra={}){
+ const ctx=A.measurementContext();ctx.reset();const time=cut.start+T,env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:time,realTime:time,lt:T,ltb:T,step:Math.floor(time*(plan.fps||24)),scale:1,allowFilter:false,...extra}),program=A.record(renderer,env);
+ if(!program.measurementSupported)fail('UNSUPPORTED_MEASUREMENT',JSON.stringify(program.diagnostics));if(program.events.some(e=>e.role!=='primary'))fail('EDITORIAL_OWNERSHIP','Every editorial source draw belongs to the protected composition');return program;
+}
+// Dictionary-only source construction: native occurrences are frozen before
+// column reflow. Ranges count Unicode codepoints, including source spaces.
+function dictionaryOwnerClock(owner,i,cut,rows){
+ const D=cut.inDur;
+ if(owner.startsWith('context-'))return {source:'native-context-row',start:0,duration:.5,ease:'outCubic',row:i,rows,multiplier:1.2};
+ if(owner==='definition'||owner==='definition-number'||owner==='definition-bullet')return {source:'native-definition',start:D*.8+.1+i*.12,duration:.4,ease:'outCubic'};
+ if(owner.startsWith('header-'))return {source:'native-guide',start:.1,duration:.4,ease:'outCubic'};
+ if(owner.startsWith('thumb-'))return {source:'native-tab',start:.15,duration:.5,ease:'outExpo'};
+ if(owner==='highlight')return {source:'native-highlighter',start:D*.6,duration:.5,ease:'inOutCubic',lineProgress:'native-headword-remapped'};
+ if(owner==='part-of-speech'||owner==='pos-bracket')return {source:'native-POS',start:D*.7,duration:.35,ease:'outBack'};
+ if(owner==='headword')return {source:'native-main',mi:0};
+ return {source:'native-furniture',start:.05,duration:.35,ease:'outCubic'};
+}
+function renderDictionaryColumn(env,m){
+ const recipe=env.cut.layoutCRecipe.dictionaryColumn,W=env.W,H=env.H,U=Math.min(W,H),sc=env.sc,w=W*recipe.measure,x=recipe.spread?W*.06:(W-w)/2,pad=m.dfs*.7,inner=w-2*pad-(recipe.spread?0:U*.075+pad),contextLead=recipe.spread?m.fs*1.4:m.fs*1.8,mainSize=m.main.size*recipe.typeScale;
+ if(!(recipe.measure>=.24&&recipe.measure<=.55&&recipe.typeScale>=.7&&recipe.typeScale<=1)||!Number.isFinite(inner)||inner<40)fail('DICTIONARY_COLUMN_PARAMETERS','Bounded dictionary print-column parameters required');
+ const measure=(text,font,size,track=0)=>J.measure({text,font,size,track}).w,bodyPadding=m.fs*.5+4;
+ const rawFits=(text,width)=>{const c=env.ctx;c.save();try{c.font=J.fontCSS(m.bodyFont,m.fs);c.letterSpacing=(m.fs*.04).toFixed(2)+'px';c.textAlign='left';c.textBaseline='middle';const ink=c.measureText(text);return ink.actualBoundingBoxLeft<=bodyPadding-3+1e-8&&ink.actualBoundingBoxRight<=width-bodyPadding-3+1e-8;}finally{c.restore();}};
+ const wrap=(text,font,size,width,track=0,raw=false,words=false)=>{const chars=[...text],out=[],fits=t=>raw?rawFits(t,width):measure(t,font,size,track)<=width;let start=0;while(start<chars.length){let end=start+1;while(end<chars.length&&fits(chars.slice(start,end+1).join('')))end++;if(!fits(chars.slice(start,end).join('')))fail('DICTIONARY_COLUMN_CAPACITY','One actual glyph exceeds its print column');if(words&&end<chars.length){let boundary=end;while(boundary>start&&!/\s/.test(chars[boundary-1]))boundary--;if(boundary>start&&chars.slice(start,boundary).some(c=>! /\s/.test(c)))end=boundary;else if(/[A-Za-z]/.test(chars[end-1])&&/[A-Za-z]/.test(chars[end]))fail('DICTIONARY_WORD_CAPACITY','A lexical word exceeds this dictionary field at its allowed point size');}out.push({text:chars.slice(start,end).join(''),start,end,total:chars.length});start=end;}return out;};
+ const mainText=String(env.cut.text).trim();if(/[\r\n]/.test(mainText))fail('DICTIONARY_HARD_BREAK','This dictionary recipe requires one logical source headword line');const mainFragments=wrap(mainText,m.main.font,mainSize,inner-mainSize*.42,.02,false,true),mainString=mainFragments.map(f=>f.text).join('\n'),mainMeasure=J.measure({...m.main,text:mainString,size:mainSize});
+ const Arows=m.contextA.map(row=>({...row,fragments:wrap(row.text,m.bodyFont,m.fs,inner,0,true)})),Brows=m.contextB.map(row=>({...row,fragments:wrap(row.text,m.bodyFont,m.fs,recipe.spread?W*.18:inner,0,true)})),defs=m.defs.map(text=>wrap(text,m.serifFont,m.dfs,inner-m.dfs*1.4,0,false,true));
+ const top=H*.08,headerY=top+m.ls*.6,headerBottom=headerY+m.ls*1.8,contextAH=Arows.reduce((n,r)=>n+r.fragments.length,0)*contextLead+(Arows.length?m.fs+8:0),mainTop=headerBottom+contextAH+m.ls*2.2,mainY=mainTop+mainMeasure.h/2,defTop=mainTop+mainMeasure.h+m.ls*1.7,defHeights=defs.map(fs=>Math.max(1,fs.length)*m.dfs*1.7),leftBottom=defTop+defHeights.reduce((a,b)=>a+b,0)+m.fs,contextBTop=recipe.spread?headerBottom+m.fs:leftBottom,contextBH=Brows.reduce((n,r)=>n+r.fragments.length,0)*contextLead+(Brows.length?m.fs+8:0),bottom=Math.max(leftBottom,contextBTop+contextBH)+m.ls;
+ if(bottom>H*.93)fail('DICTIONARY_COLUMN_HEIGHT','All native copy occurrences exceed this dictionary print column height');
+ const own=(owner,i,text,fn,range=null,rows=null,phase=null,field=null)=>{const prior=env.placementCBody;env.placementCBody={...prior,...phase,dictionaryRows:rows,dictionaryCopy:{owner,occurrence:i,clock:dictionaryOwnerClock(owner,i,env.cut,rows),...(field?{field}:{}),...(owner==='headword'?{sourceText:mainText,sourceFragments:mainFragments.map(f=>[f.start,f.end])}:{}),...(text==null?{}:{range:range||[0,[...text].length],total:[...text].length})}};try{return fn();}finally{env.placementCBody=prior;}};
+ const draw=(owner,i,it,totalText=it.text,range=null,rows=null,phase=null)=>own(owner,i,totalText,()=>env.draw(it),range,rows,phase);
+ const renderContext=(owner,rows,y,xPos=x+pad,width=inner,height=contextAH)=>{const field={x0:xPos,y0:y,x1:xPos+width,y1:y+height};let baseline=y+4+m.fs*.65;for(const row of rows){const vis=J.clamp(m.ca*row.rows*1.2-row.r);for(const f of row.fragments){if(env.pass==='main'&&m.ca*.4*vis>.01)own(owner,row.r,row.text,()=>{const c=env.ctx;c.save();c.font=J.fontCSS(m.bodyFont,m.fs);c.letterSpacing=(m.fs*.04).toFixed(2)+'px';c.textAlign='left';c.textBaseline='middle';c.fillStyle=sc.sub;c.globalAlpha=m.ca*.4*vis;c.fillText(f.text,xPos+bodyPadding,baseline);c.restore();},[f.start,f.end],row.rows,null,field);baseline+=contextLead;}}};
+ // Preserve source copy/read flow and keep real body ink inside explicit fields.
+ renderContext('context-top',Arows,headerBottom);renderContext('context-bottom',Brows,contextBTop,recipe.spread?W*.65:x+pad,recipe.spread?W*.18:inner,contextBH);
+ if(m.page&&m.highlight>0)mainString.split('\n').forEach((line,i,lines)=>{const width=measure(line,m.main.font,mainSize,.02),ly=mainY+(i-(lines.length-1)/2)*mainSize*1.1;own('highlight',i,null,()=>env.rect(x+pad+mainSize*.32,ly-mainSize*.05,(width+mainSize*.2)*J.clamp(m.highlight*lines.length-i),mainSize*.5,sc.accent,.45,false));});
+ draw('header-page',0,{text:m.pageNumber,font:m.monoFont,size:m.ls,align:'left',x:x+pad,y:headerY,color:sc.sub,alpha:m.ga,ghost:false});
+ draw('header-guide',0,{text:m.guide,font:m.serifFont,size:m.ls,align:'right',x:recipe.spread?W*.92:x+pad+inner,y:recipe.spread?headerY:headerY+m.ls*1.3,color:sc.sub,alpha:m.ga,ghost:false});
+ own('header-rule',0,null,()=>env.line([[x+pad,headerBottom],[x+pad+(recipe.spread?W*.86:inner)*m.ga,headerBottom]],sc.sub,m.lw,.6,false));
+ draw('entry-mark',0,{text:m.mark,font:m.bodyFont,size:mainSize*.32,x:x+pad,y:mainY-mainMeasure.h/2+mainSize*.5,color:sc.accent,alpha:m.fa,ghost:false});
+ if(m.romaji)draw('romaji',0,{text:m.romaji,font:m.serifFont,size:m.ls*1.2,track:.15,align:'left',x:x+pad+mainSize*.62,y:mainTop-m.ls*1.2,color:sc.sub,alpha:m.fa,ghost:false});
+ const mainX=x+pad+mainSize*.42;const bb=own('headword',0,mainText,()=>J.mainDraw(env,{...m.main,text:mainString,size:mainSize,x:mainX,y:mainY,align:'left',color:sc.fg,placementCOwnedZone:{x0:x+pad,y0:mainTop-mainSize*.3,x1:x+w-pad,y1:mainTop+mainMeasure.h+mainSize*.3}}));
+ const pw=m.ls*(m.pos.length*1.25+.9),px=x+w-pad-pw,py=defTop-m.ls*.85;
+ if(m.pa>.01){own('pos-bracket',0,null,()=>env.rrect(px,py-m.ls*.85,pw,m.ls*1.7,m.ls*.3,null,J.clamp(m.pa),false,sc.fg,m.lw*1.4));draw('part-of-speech',0,{text:m.pos,font:m.serifFont,size:m.ls*1.1,x:px+pw/2,y:py,color:sc.fg,alpha:J.clamp(m.pa),ghost:false});}
+ let dy=defTop;defs.forEach((fragments,i)=>{const a=J.E.outCubic(J.clamp((env.lt-(env.cut.inDur*.8+.1+i*.12))/.4))*m.out,y=dy+m.dfs*.8;if(a>.01){own('definition-bullet',i,null,()=>env.circle(x+pad+m.dfs*.45,y,m.dfs*.48,sc.fg,null,0,a,false));draw('definition-number',i,{text:String(i+1),font:m.monoFont,size:m.dfs*.62,x:x+pad+m.dfs*.45,y,color:sc.bg,alpha:a,ghost:false});for(let j=0;j<fragments.length;j++){const f=fragments[j];draw('definition',i,{text:f.text,font:m.serifFont,size:m.dfs,align:'left',x:x+pad+m.dfs*1.4+(1-a)*m.dfs,y:y+j*m.dfs*1.7,color:sc.fg,alpha:a,ghost:false},m.defs[i],[f.start,f.end],null,{kind:'editorial-phase',entryEnd:env.cut.inDur*.8+.1+i*.12+.4,exitStart:env.cut.dur-env.cut.outDur});}}dy+=defHeights[i];});
+ if(m.tq>.01){const tw=U*.075,th=U*.16,edge=recipe.spread?W*.90:x+w,ty=top+(bottom-top-th)*env.cut.params.tabY,tabC=m.tabColor;own('thumb-rule',0,null,()=>env.line([[edge-tw*1.05,top],[edge-tw*1.05,bottom]],sc.sub,m.lw,.35*m.tq,false));own('thumb-plate',0,null,()=>env.rect(edge-tw*m.tq,ty,tw+2,th,tabC,1,false),null,null,{kind:'editorial-phase',entryEnd:.65,exitStart:env.cut.dur-env.cut.outDur});draw('thumb-glyph',0,{text:m.tab,font:m.main.font,size:tw*.62,x:edge-tw*m.tq+tw*.5,y:ty+th/2,color:m.tabText,ghost:false},m.tab,null,null,{kind:'editorial-phase',entryEnd:.65,exitStart:env.cut.dur-env.cut.outDur});}
+ return bb;
+}
+Object.defineProperty(A,'dictionaryOwnerClock',{value:dictionaryOwnerClock,writable:false,configurable:false});
+Object.defineProperty(A,'renderDictionaryColumn',{value:renderDictionaryColumn,writable:false,configurable:false});
+
+function dictionaryHeadwordProof(it,tag,cut){
+ const sourceText=String(cut.text).trim(),source=[...sourceText],display=[...String(it.text)],softBreaks=[];if(tag.sourceText!==sourceText)fail('DICTIONARY_MAIN_COPY','Logical headword must retain original meaningful word gaps');
+ if(tag.sourceFragments){const ranges=tag.sourceFragments,lines=String(it.text).split('\n');let end=0;if(ranges.length!==lines.length)fail('DICTIONARY_MAIN_COPY','Every inserted headword line needs one exact source range');for(let i=0;i<ranges.length;i++){const r=ranges[i];if(!Array.isArray(r)||r.length!==2||!r.every(Number.isInteger)||r[0]!==end||r[1]<=r[0]||r[1]>source.length||lines[i]!==source.slice(r[0],r[1]).join(''))fail('DICTIONARY_MAIN_COPY','Headword fragments lost/duplicated/reordered source characters or word spaces');end=r[1];}if(end!==source.length||lines.join('')!==sourceText)fail('DICTIONARY_MAIN_COPY','Inserted line breaks must reconstruct the exact source headword including spaces');return {sourceText,renderedText:it.text,fragmentRanges:ranges,semanticWordGapsPreserved:true};}
+ // Native fitBlock may replace a source word gap with a soft line break.
+ // It may also insert a break between Japanese characters without a source gap.
+ let p=0,n=0;while(n<display.length){const ch=display[n];if(ch==='\n'){const begin=p;while(p<source.length&&/\s/.test(source[p]))p++;softBreaks.push({displayOffset:n,sourceGap:[begin,p]});n++;continue;}if(/\s/.test(ch)){if(!/\s/.test(source[p]||''))fail('DICTIONARY_MAIN_COPY','Native whitespace has no logical source gap');while(p<source.length&&/\s/.test(source[p]))p++;while(n<display.length&&/\s/.test(display[n])&&display[n]!=='\n')n++;continue;}if(source[p]!==ch)fail('DICTIONARY_MAIN_COPY','Native headword lost source characters or meaningful word spacing');p++;n++;}if(p!==source.length)fail('DICTIONARY_MAIN_COPY','Native headword does not cover the full logical source');return {sourceText,renderedText:it.text,nativeSoftBreaks:softBreaks,semanticWordGapsPreserved:true};
+}
+
+function dictionaryCorrespondence(program,cut){
+ const groups=[],shapes=[];let previous=null,headword=null;
+ for(const e of program.events){const it=e.kind==='item'?e.args[0]:null,tag=e.nativeCBody?.dictionaryCopy;if(!tag||!tag.owner||!Number.isInteger(tag.occurrence)||!tag.clock)fail('DICTIONARY_OWNER_REQUIRED','Every dictionary text/plate/bullet needs a named source occurrence and clock');
+ if(it?.placementMain){headword=dictionaryHeadwordProof(it,tag,cut);continue;}
+ if(e.kind!=='item'&&e.kind!=='nativeText'){shapes.push({owner:tag.owner,occurrence:tag.occurrence,kind:e.kind,clock:tag.clock});continue;}
+ const text=String(e.kind==='item'?it.text:e.args[0]),chars=[...text],range=tag.range;if(!Array.isArray(range)||range.length!==2||!range.every(Number.isInteger)||!Number.isInteger(tag.total)||tag.total<1||range[0]<0||range[1]-range[0]!==chars.length||range[1]>tag.total)fail('DICTIONARY_FRAGMENT_RANGE','Fragment range must match its exact emitted Unicode copy');
+ const font=e.kind==='item'?it.font:String(e.args[3].font).replace(/[\d.]+px/,'SIZEpx'),size=e.kind==='item'?it.size:Number(String(e.args[3].font).match(/(?:^|\s)([0-9]+(?:\.[0-9]+)?)px(?:\s|\/|$)/)?.[1]),key=tag.owner+':'+tag.occurrence;
+ if(previous?.key!==key){if(groups.some(g=>g.key===key))fail('DICTIONARY_FRAGMENT_REORDER','An occurrence resumed after a different copy occurrence');previous={key,owner:tag.owner,occurrence:tag.occurrence,kind:e.kind,font,size,clock:tag.clock,total:tag.total,text:'',ranges:[]};groups.push(previous);}
+ if(font!==previous.font||size!==previous.size||JSON.stringify(tag.clock)!==JSON.stringify(previous.clock)||tag.total!==previous.total||range[0]!== (previous.ranges.at(-1)?.[1]??0))fail('DICTIONARY_FRAGMENT_CORRESPONDENCE','Fragments have a gap/overlap or changed font/point/clock');
+ previous.text+=text;previous.ranges.push(range);
+ }
+ if(groups.some(g=>g.ranges.at(-1)[1]!==g.total||[...g.text].length!==g.total))fail('DICTIONARY_FRAGMENT_COVERAGE','A source occurrence is incomplete');
+ if(!headword)fail('DICTIONARY_MAIN_COPY','Missing logical headword');return {groups,shapes,headword};
+}
+function dictionaryAttachments(program,actual){
+ const get=(owner,i=0)=>program.events.filter(e=>e.nativeCBody?.dictionaryCopy?.owner===owner&&e.nativeCBody.dictionaryCopy.occurrence===i),near=(a,b)=>Math.abs(a-b)<1e-5,point=(e,x,y)=>A.point(e.matrix,[x,y]),anchor=e=>point(e,e.args[0].x,e.args[0].y),main=program.events.find(e=>e.kind==='item'&&e.args[0].placementMain),mi=main.args[0],attachments=[];
+ const check=(ok,what)=>{if(!ok)fail('DICTIONARY_ATTACHMENT',what);attachments.push(what);};
+ for(const e of program.events.filter(e=>e.kind==='nativeText'&&e.nativeCBody.dictionaryCopy.owner.startsWith('context-'))){const f=e.nativeCBody.dictionaryCopy.field;if(!f||![f.x0,f.y0,f.x1,f.y1].every(Number.isFinite)||f.x0>=f.x1||f.y0>=f.y1)fail('DICTIONARY_COPY_FIELD','Every real context fragment requires its source print field');const field=rect(f.x0,f.y0,f.x1,f.y1).map(p=>A.point(e.matrix,p)),ctx=A.measurementContext();ctx.reset();Object.assign(ctx,e.args[3]);const tm=ctx.measureText(String(e.args[0])),ink=rect(e.args[1]-tm.actualBoundingBoxLeft-3,e.args[2]-tm.actualBoundingBoxAscent-3,e.args[1]+tm.actualBoundingBoxRight+3,e.args[2]+tm.actualBoundingBoxDescent+3).map(p=>A.point(e.matrix,p));if(ink.some(p=>!contains(p,field))||e.polygons.some(p=>p.some(v=>!contains(v,field))))fail('DICTIONARY_COPY_FIELD','Same-CSS/letterSpacing preclip body ink escaped its allocated print field');attachments.push('same-CSS-print-field:'+e.nativeCBody.dictionaryCopy.owner+':'+e.nativeCBody.dictionaryCopy.occurrence);}
+
+ for(const g of actual.dictionary.groups){const es=get(g.owner,g.occurrence).filter(e=>['item','nativeText'].includes(e.kind)),ps=es.map(e=>e.kind==='nativeText'?point(e,e.args[1],e.args[2]):anchor(e));for(let i=1;i<ps.length;i++)check(near(ps[i][0],ps[0][0])&&ps[i][1]-ps[i-1][1]>=g.size*1.2-1e-5,'ordered-readable-fragments:'+g.key);}
+ for(let i=0;i<2;i++){const b=get('definition-bullet',i)[0],n=get('definition-number',i)[0],d=get('definition',i)[0];if(!b||!n||!d)fail('DICTIONARY_ATTACHMENT','Missing numbered definition furniture');const bp=point(b,b.args[0],b.args[1]),np=anchor(n),dp=anchor(d),size=d.args[0].size;check(near(bp[0],np[0])&&near(bp[1],np[1])&&near(b.args[2],size*.48)&&near(n.args[0].size,size*.62)&&near(dp[0]-np[0],size*.95)&&near(dp[1],np[1]),'definition-bullet-number-text:'+i);}
+ const bracket=get('pos-bracket')[0],pos=get('part-of-speech')[0];if(!bracket||!pos)fail('DICTIONARY_ATTACHMENT','Missing POS bracket');const p=anchor(pos),c=point(bracket,bracket.args[0]+bracket.args[2]/2,bracket.args[1]+bracket.args[3]/2),pb=A.bounds(bracket.polygons),mb=A.bounds(main.inkPolygons||main.polygons);check(near(p[0],c[0])&&near(p[1],c[1])&&near(bracket.args[3],pos.args[0].size*1.7/1.1)&&!(Math.min(pb.x1,mb.x1)>Math.max(pb.x0,mb.x0)+1e-6&&Math.min(pb.y1,mb.y1)>Math.max(pb.y0,mb.y0)+1e-6),'POS-contained-adjacent-to-headword');
+ const plate=get('thumb-plate')[0],tab=get('thumb-glyph')[0];if(!plate||!tab)fail('DICTIONARY_ATTACHMENT','Missing thumb index');const tp=anchor(tab),center=point(plate,plate.args[0]+(plate.args[2]-2)/2,plate.args[1]+plate.args[3]/2);check(near(tp[0],center[0])&&near(tp[1],center[1])&&near(tab.args[0].size,(plate.args[2]-2)*.62),'thumb-glyph-owned-by-tab');
+ const lines=mi.text.split('\n'),hs=program.events.filter(e=>e.nativeCBody?.dictionaryCopy?.owner==='highlight');for(let i=0;i<hs.length;i++){const h=hs[i],ly=mi.y+(i-(lines.length-1)/2)*mi.size*1.1,width=J.measure({text:lines[i],font:mi.font,size:mi.size,track:.02}).w;check(near(h.args[0],mi.x-mi.size*.1)&&near(h.args[1],ly-mi.size*.05)&&near(h.args[2],width+mi.size*.2)&&near(h.args[3],mi.size*.5),'highlight-actual-headword-line:'+i);}
+ return attachments;
+}
+
+function dictionaryQuality(actual,expected,program,cut,explicitSize,contentScale,secondaryFloor){
+ const a=actual.dictionary,b=expected.dictionary;if(!a||!b||a.headword.sourceText!==b.headword.sourceText||a.groups.length!==b.groups.length)fail('DICTIONARY_OCCURRENCE_COVERAGE','Every native dictionary occurrence must survive');
+ a.groups.forEach((g,i)=>{const n=b.groups[i];if(g.key!==n.key||g.text!==n.text||g.kind!==n.kind||g.font!==n.font||JSON.stringify(g.clock)!==JSON.stringify(n.clock))fail('DICTIONARY_OCCURRENCE_IDENTITY','Native full copy/order/font/reveal clock changed');if(!Number.isFinite(g.size)||g.size<n.size*.7-1e-8||g.size*contentScale<Math.min(n.size*contentScale,secondaryFloor)-1e-8||explicitSize&&g.size!==n.size)fail('DICTIONARY_COPY_QUALITY','A dictionary occurrence violated its actual readable point floor');});
+ const nonHighlight=x=>x.filter(s=>s.owner!=='highlight');if(JSON.stringify(nonHighlight(a.shapes))!==JSON.stringify(nonHighlight(b.shapes)))fail('DICTIONARY_OWNED_TOPOLOGY','Native POS/bullets/tab/rules must retain their owner and clock');
+ const highlights=a.shapes.filter(s=>s.owner==='highlight'),nativeHighlights=b.shapes.filter(s=>s.owner==='highlight'),lines=actual.main[0].text.split('\n').length;if(nativeHighlights.length&&(highlights.length!==lines||highlights.some((s,i)=>s.kind!=='rect'||s.occurrence!==i||JSON.stringify(s.clock)!==JSON.stringify(nativeHighlights[0].clock))))fail('DICTIONARY_HIGHLIGHT_CORRESPONDENCE','Every reflowed headword line needs its native-clock highlighter plate');
+ const attachments=dictionaryAttachments(program,actual);
+ return {version:2,headword:a.headword,attachments,logicalOccurrences:a.groups.map(g=>({owner:g.owner,occurrence:g.occurrence,text:g.text,font:g.font,size:g.size,clock:g.clock,total:g.total,fragmentRanges:g.ranges})),ownedShapes:a.shapes,scope:'Exact native emitted occurrences; ordered codepoint fragments cover [0,total] without gap/overlap; owner/font/point/reveal and POS/bullet/tab/rule correspondence; headword highlight mapped to its actual reflowed lines'};
+}
+
+function mapping(program,cut){
+ const items=program.events.filter(e=>e.kind==='item'),main=items.filter(e=>e.args[0].placementMain).map(e=>e.args[0]);if(!main.length||norm(main.map(i=>i.text).join(''))!==norm(cut.text))fail('SOURCE_COVERAGE','Every ordered editorial main occurrence must be retained exactly once');
+ const nativeFontSize=font=>{const m=String(font).match(/(?:^|\s)([0-9]+(?:\.[0-9]+)?)px(?:\s|\/|$)/),size=m?Number(m[1]):NaN;if(!Number.isFinite(size)||size<=0)fail('EDITORIAL_NATIVE_FONT_SIZE','Finite positive CSS px size required for every fastRow copy');return size;};
+ const metadata=program.events.filter(e=>e.kind==='nativeText'||e.kind==='item'&&!e.args[0].placementMain).map(e=>e.kind==='nativeText'?{kind:e.kind,text:e.args[0],font:e.args[3].font.replace(/[\d.]+px/,'SIZEpx'),size:nativeFontSize(e.args[3].font)}:{kind:e.kind,text:e.args[0].text,font:e.args[0].font,size:e.args[0].size});
+ return {...(cut.layout==='dictionary'?{dictionary:dictionaryCorrespondence(program,cut)}:{}),main:main.map(i=>({text:i.text,font:i.font,size:i.size,mi:i.mi??0,lead:i.lead??1.3,track:i.track??0})),metadata,shapes:program.events.filter(e=>!['item','nativeText'].includes(e.kind)).map(e=>e.kind),complete:true};
+}
+function quality(program,cut,expected,explicitSize,plan){
+ const actual=mapping(program,cut),semantic=m=>m.map(({size,...v})=>v),U=short(plan),floor=Math.max(18,.035*U),secondaryFloor=Math.max(12,.02*U),contentScale=cut.contentScale??1;
+ // Role-level fastRow floors are checked before a remeasure can change row cardinality.
+ for(const it of actual.metadata.filter(i=>i.kind==='nativeText')){const peers=expected.metadata.filter(n=>n.kind===it.kind&&n.font===it.font);if(!peers.length)fail('EDITORIAL_NATIVE_FONT_IDENTITY','Native fastRow weight/style/family changed');const nativeMin=Math.min(...peers.map(n=>n.size));if(it.size<nativeMin*.7-1e-8||it.size*contentScale<Math.min(nativeMin*contentScale,secondaryFloor)-1e-8)fail('EDITORIAL_COPY_QUALITY','FastRow CSS px size fell below its role readable floor');}
+ const dictionaryProof=cut.layout==='dictionary'&&cut.layoutCRecipe?.dictionaryColumn?dictionaryQuality(actual,expected,program,cut,explicitSize,contentScale,secondaryFloor):null;
+ if(actual.main.length!==expected.main.length||!dictionaryProof&&(JSON.stringify(semantic(actual.metadata))!==JSON.stringify(semantic(expected.metadata))||JSON.stringify(actual.shapes)!==JSON.stringify(expected.shapes)))fail('EDITORIAL_SEMANTIC_MAPPING','Recipe changed native copy/metadata/owned operation topology');
+ let minRatio=Infinity;actual.main.forEach((it,i)=>{const n=expected.main[i],ratio=it.size/n.size;minRatio=Math.min(minRatio,ratio);if(norm(it.text)!==norm(n.text)||it.font!==n.font||it.mi!==n.mi||it.lead!==n.lead||it.track!==n.track||ratio<.7-1e-8||it.size*contentScale<floor-1e-8||explicitSize&&Math.abs(ratio-1)>1e-8||cut.layout==='proofread'&&it.text!==n.text)fail('EDITORIAL_TYPE_QUALITY','Native font/clock/order, actual floor, annotation run or explicit type size changed');});
+ if(!dictionaryProof)actual.metadata.forEach((it,i)=>{const n=expected.metadata[i];if(!Number.isFinite(it.size)||it.size<n.size*.7-1e-8||it.size*contentScale<Math.min(n.size*contentScale,secondaryFloor)-1e-8||explicitSize&&Math.abs(it.size-n.size)>1e-8)fail('EDITORIAL_COPY_QUALITY','Real editorial copy fell below native ratio/readable floor or explicit size');});
+ let fields=0;for(const e of program.events.filter(e=>e.kind==='item'&&e.args[0].placementMain)){const z=e.args[0].placementCOwnedZone;if(!z||![z.x0,z.y0,z.x1,z.y1].every(Number.isFinite)||z.x0>=z.x1||z.y0>=z.y1)fail('OWNED_ZONE_REQUIRED','Source editorial field required');const field=rect(z.x0,z.y0,z.x1,z.y1).map(p=>A.point(e.matrix,p));if(!e.inkPolygons?.length||e.inkPolygons.some(p=>p.some(v=>!contains(v,field))))fail('OWNED_TEXT_OUTSIDE_FIELD','Complete pre-clip main ink escaped its source editorial field');fields++;}
+ return {source:actual,dictionaryProof,minNativeFontRatio:minRatio,minPrimaryPx:Math.min(...actual.main.map(i=>i.size*contentScale)),floor,secondaryFloor,completePreClipFields:fields,explicitSizePreserved:explicitSize};
+}
+// Every native clip used by these sources is a rectangle (number rise masks
+// and halftone photo windows). Keep it owned and transport it with the source.
+function clipped(event){let ps=event.polygons;for(const c of event.clips||[]){const a=c.args||c.commands?.find(([k])=>k==='rect')?.[1];if(!a||c.commands?.some(([k])=>k!=='rect'))fail('UNSUPPORTED_EDITORIAL_CLIP','Only the source rectangular mask is certified');const q=rect(a[0],a[1],a[0]+a[2],a[1]+a[3]).map(p=>A.point(c.matrix,p)),b=A.bounds([q]),out=[];for(const p of ps){const z=A.bounds([p]),x0=Math.max(z.x0,b.x0-1),x1=Math.min(z.x1,b.x1+1),y0=Math.max(z.y0,b.y0-1),y1=Math.min(z.y1,b.y1+1);if(x1>x0&&y1>y0)out.push(rect(x0,y0,x1,y1));}ps=out;}return ps;}
+function sourceClock(cut,plan){
+ const p=cut.params,D=cut.inDur,k=(p.chunks||p.lines||[cut.text]).filter(Boolean).length,port=plan.H>plan.W*1.08;let finish;
+ switch(cut.layout){
+ case 'magazine':finish=p.variant==='headline'?.75:.56;break;
+ case 'headlineDeck':finish=Math.max(.8,.8*D+.45,D+.55,.6*D+.64);break;
+ case 'contents':finish=Math.max(.65,.65+.1*(k-1),p.ctx?.5+.1*k:0);break;
+ case 'footnote':finish=Math.max(.7*D+.37+.14*(k-1),.6*D+.5,.7*D+.6+.12*(k-1),.6);break;
+ case 'proofread':{const marks=J.glyphCount(cut.text)<=4?1:p.marks.length;finish=Math.max(.5,.8*D+.1+.35*(marks-1)+.45,p.stamp?D+.55+marks*.25+.18:0);break;}
+ case 'numbered':finish=Math.max(.59+.1*(k-1),.7+.08*(k-1),.5+.1*(k-1));break;
+ case 'poster':finish=.76;break;
+ case 'swissGrid':finish=Math.max(.55+.035*(port?4:6),.6+.035*(port?8:6),.62+.1*(k-1),.7);break;
+ case 'dictionary':finish=Math.max(.65,.7*D+.35,.8*D+.62,p.variant==='page'?.6*D+.5:0);break;
+ case 'newspaper':finish=1.1;break;
+ default:fail('UNSUPPORTED_EDITORIAL_ID',cut.layout);
+ }
+ // Source mi is retained verbatim, including mainDraw's integer truncation.
+ const maxDelay=cut.layout==='newspaper'?(Math.max(0,p.spin?.45:.3)/Math.max(.005,cut.stagger||.04)|0)*(cut.stagger||0):['contents','numbered','poster','swissGrid'].includes(cut.layout)?3*Math.max(k-1,J.glyphCount(cut.text)/5)*(cut.stagger||0):0;
+ return Math.max(finish,Math.max(.01,D)+maxDelay)+.0001;
+}
+const fields={magazine:'pageScale',headlineDeck:'headlineMeasure',contents:'contentsMeasure',footnote:'footnoteMeasure',proofread:'proofMeasure',numbered:'numberMeasure',poster:'posterMeasure',swissGrid:'gridMeasure',dictionary:'dictionaryMeasure',newspaper:'sheetScale'};
+function recipes(cut,explicitSize){
+ const spacing=cut.layout==='footnote'?[14,28,42].map(noteMargin=>({noteMargin,strategy:'footnote-native-running-margin'})):cut.layout==='dictionary'?[14,28,42].map(dictionaryInset=>({dictionaryInset,strategy:'dictionary-native-page-edge-inset'})):cut.layout==='proofread'?[.7,.5,.35].map(proofMargin=>({proofMargin,strategy:'proofread-native-margin-packing'})):[];
+ if(explicitSize)return spacing;
+ const field=fields[cut.layout],measures=['headlineDeck','contents','footnote','proofread','numbered','swissGrid'].includes(cut.layout)?[.95,.9,.85,.8,.75,.7,.6,.5,.45,.4,.36]:[.95,.9,.85,.8,.75,.7];
+ return [...spacing,...measures.map(value=>({[field]:value,...(cut.layout==='footnote'?{noteMargin:42}:{}),...(cut.layout==='proofread'&&value<.7?{proofMargin:.35}:{}),strategy:cut.layout+'-native-'+field})),...(cut.layout==='dictionary'?[{dictionaryColumn:{measure:.32,typeScale:.7,spread:true},strategy:'dictionary-logical-column-spread'},{dictionaryColumn:{measure:.32,typeScale:.7},strategy:'dictionary-logical-column-32'},{dictionaryColumn:{measure:.36,typeScale:.7},strategy:'dictionary-logical-column-36'},{dictionaryColumn:{measure:.4,typeScale:.7},strategy:'dictionary-logical-column-40'},{dictionaryTypeScale:.95,strategy:'dictionary-body-point-size'}]:[])];
+}
+function domain(cut){
+ if(cut.hold!=='still'||cut.enter!=='cut'||cut.exit!=='cut'||cut.treat!=='none')fail('UNSUPPORTED_EDITORIAL_EFFECT','Dedicated editorial proof requires unchanged still/cut/cut and no treatment');
+ const finite=v=>typeof v==='number'?Number.isFinite(v):!v||typeof v!=='object'||Object.values(v).every(finite);if(!finite(cut.params))fail('UNSUPPORTED_PARAMETER_RANGE','Finite editorial parameters required');
+ const p=cut.params,variants={magazine:['headline','vertical','plate'],headlineDeck:['top','bottom','split'],contents:['rows','tate'],numbered:['cols','rows','behind'],poster:['stack','block','tate'],swissGrid:['a','b'],dictionary:['entry','page'],newspaper:['yoko','tate']};if(variants[cut.layout]&&!variants[cut.layout].includes(p.variant))fail('UNSUPPORTED_PARAMETER_RANGE','Unknown editorial source variant');
+ if(['contents','footnote','numbered','swissGrid'].includes(cut.layout)&&(!Array.isArray(p.chunks)||p.chunks.length<1||p.chunks.length>4||norm(p.chunks.join(''))!==norm(cut.text)))fail('SOURCE_COVERAGE','Native ordered source chunks required');
+ if(cut.layout==='footnote'&&(!['num','kome','star'].includes(p.marks)||!['left','center'].includes(p.align)))fail('UNSUPPORTED_PARAMETER_RANGE','Native footnote mark/alignment domain required');
+ if(cut.layout==='proofread'&&(!Array.isArray(p.marks)||p.marks.length!==2||p.marks.some(k=>!['circle','wave','box','dots'].includes(k))||Math.abs(p.rot)>8))fail('UNSUPPORTED_PARAMETER_RANGE','Native proof mark/stamp domain required');
+ if(cut.layout==='dictionary'&&(!(p.tabY>=.2&&p.tabY<=.75)||!['名','連語','感','形動','副'].includes(p.pos)))fail('UNSUPPORTED_PARAMETER_RANGE','Native dictionary tab/POS domain required');
+}
+function scaled(poly,pivot,lo,hi){return A.convexHull(poly.flatMap(p=>[lo,hi].map(s=>[pivot[0]+(p[0]-pivot[0])*s,pivot[1]+(p[1]-pivot[1])*s])));}
+function eventStage(e,plan,cut){
+ let ps=clipped(e),it=e.kind==='item'?e.args[0]:null,body=e.nativeCBody,U=short(plan),ls=J.clamp(U*.024,14,34);
+ if(!ps.length)return [];
+ if(body?.kind==='editorial-proof-stamp'||body?.kind==='editorial-superscript')ps=ps.map(p=>scaled(p,A.point(e.matrix,body.kind==='editorial-proof-stamp'?[0,0]:body.pivot),0,body.maxScale));
+ // All partial source paths are subsets of their completed path. Native dots
+ // may overshoot; outBack(s<=2.2) has max <1.2 for p in [0,1].
+ if(e.kind==='circle'&&['headlineDeck','poster','swissGrid'].includes(cut.layout))ps=ps.map(p=>scaled(p,A.point(e.matrix,[e.args[0],e.args[1]]),0,1.2));
+ if(cut.layout==='swissGrid'&&e.kind==='rect'&&body?.kind==='editorial-phase')ps=ps.map(p=>{const b=A.bounds([p]);return scaled(p,[(b.x0+b.x1)/2,(b.y0+b.y1)/2],0,1.2);});
+ if(cut.layout==='dictionary'&&e.kind==='rect'&&body?.kind==='editorial-phase'&&body.entryEnd===.65)ps=ps.map(p=>A.convexHull(p.flatMap(v=>[[v[0],v[1]],[v[0]+U*.075,v[1]]])));
+ if(it&&!it.placementMain){let dx=0,dy=0;if(cut.layout==='headlineDeck'&&body?.kind==='editorial-phase')dy=J.clamp(U*.032,16,44)*.5;
+ if(cut.layout==='footnote'&&body?.kind==='editorial-phase')dx=ls;
+ if(cut.layout==='dictionary'&&body?.kind==='editorial-phase')dx=body.entryEnd===.65?U*.075:J.clamp(U*.028,14,36);
+ if(dx||dy)ps=ps.map(p=>A.convexHull(p.flatMap(v=>[[v[0],v[1]],[v[0]+dx,v[1]+dy]])));
+ }
+ if(cut.layout==='numbered'&&e.clips?.length){const clip=e.clips[0],a=clip.args||clip.commands?.find(([k])=>k==='rect')?.[1];if(a)ps=[rect(a[0]-2,a[1]-2,a[0]+a[2]+2,a[1]+a[3]+2).map(p=>A.point(clip.matrix,p))];}
+ return ps;
+}
+const mul=(a,b)=>{const v=[a[0]*b[0],a[0]*b[1],a[1]*b[0],a[1]*b[1]];return [Math.min(...v),Math.max(...v)];};
+function trig(a,b,cos){const f=cos?Math.cos:Math.sin,out=[f(a),f(b)],start=cos?0:Math.PI/2;for(let k=Math.ceil((a-start)/Math.PI);start+k*Math.PI<b;k++)out.push(f(start+k*Math.PI));return [Math.min(...out),Math.max(...out)];}
+function newsStage(ps,plan,cut){
+ const cx=plan.W/2,cy=plan.H/2,out=[];
+ for(const p of ps)for(const [x,y]of p){const dx=x-cx,dy=y-cy;if(!cut.params.spin){out.push([x,y],[x,y+plan.H*.98]);continue;}
+  for(let i=0;i<64;i++){const e0=i/64,e1=(i+1)/64,q0=1-(1-e0)**3,q1=1-(1-e1)**3,s=[Math.max(.001,q0),Math.max(.001,q1)],angles=[(1-q1)*4*Math.PI,(1-q0)*4*Math.PI],cs=trig(...angles,true),sn=trig(...angles,false);
+   // Signed dx/dy require interval multiplication, not endpoint ordering.
+   const xc=mul([dx,dx],cs),ysn=mul([dy,dy],sn),xs2=mul(s,[xc[0]-ysn[1],xc[1]-ysn[0]]),xsn=mul([dx,dx],sn),yc=mul([dy,dy],cs),ys2=mul(s,[xsn[0]+yc[0],xsn[1]+yc[1]]);for(const xx of xs2)for(const yy of ys2)out.push([cx+xx,cy+yy]);
+  }out.push([x,y+plan.H*.08]);
+ }return [A.convexHull(out)];
+}
+function prepare(renderer,plan,cut,T,expected,explicitSize,nativeProgram=null,budget=null){
+ const take=extra=>{if(budget&&++budget.recordCalls>128)fail("CUT_CANDIDATE_BUDGET","Editorial native record budget exhausted before reconstruction");return record(renderer,plan,cut,T,extra);};
+ const programs=[nativeProgram||take({})],qualityResult=quality(programs[0],cut,expected,explicitSize,plan);
+ if(cut.layout==='contents'){const k=cut.params.chunks.length,active=Math.min(k-1,Math.floor(J.clamp(T/Math.max(.3,cut.dur*.92))*k));for(let i=0;i<k;i++)if(i!==active)programs.push(take({placementCEditorialActive:i}));}
+ const events=programs.flatMap(p=>p.events),hold=events.flatMap(e=>clipped(e).map(p=>camera([p],plan,cut))),rawStage=events.flatMap(e=>eventStage(e,plan,cut));
+ let stage=rawStage;if(cut.layout==='magazine')stage=[box(rawStage)];if(cut.layout==='newspaper')stage=newsStage(rawStage,plan,cut);stage=stage.map(p=>camera([p],plan,cut));
+ if(!hold.length||!stage.length)fail('EMPTY_EDITORIAL_GEOMETRY','Full source drawing required');
+ return {envelopes:hold,stageEnvelopes:stage,quality:qualityResult,sourceMapping:qualityResult.source};
+}
+function finalize({plan,cut,revision,stepDur,reachTail,explicitSize}){
+ domain(cut);cut.placementUnits=true;cut.placementLayoutsC=true;
+ const renderer=Object.create(J.Renderer.prototype),T=sourceClock(cut,plan),holdWindow=[cut.start+T,cut.end-cut.outDur];if(holdWindow[1]-holdWindow[0]<.04)fail('INSUFFICIENT_HOLD_WINDOW','Editorial source has not completed all required reveals before exit');
+ const budget={recordCalls:1,reconstructed:0,cacheHits:0,rejected:0},native=record(renderer,plan,cut,T),expected=mapping(native,cut),base=prepare(renderer,plan,cut,T,expected,explicitSize,native,budget),evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail],segments=[],cache=new Map();
+ for(let i=0;i<plan.lyricAvoidanceIndex.regions.length;i++){
+  const r=plan.lyricAvoidanceIndex.regions[i],end=Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration);if(r.start>=evaluationRange[1])break;if(end<=evaluationRange[0]||end<=r.start)continue;
+  const circle={cx:r.center.x*plan.W,cy:r.center.y*plan.H,r:r.radius*short(plan)},attempts=[];let chosen=base,composition=null,solution,stageScope="new-crop-forbidden";
+  for(const recipe of [null,...recipes(cut,explicitSize)]){let p=base;try{if(recipe){const key=JSON.stringify(recipe);if(!cache.has(key)){if(++budget.reconstructed>16)fail("CUT_CANDIDATE_BUDGET","Editorial source recipe reconstruction budget exhausted");try{cache.set(key,prepare(renderer,plan,{...cut,layoutCRecipe:recipe},T,expected,explicitSize,null,budget));}catch(e){budget.rejected++;cache.set(key,{error:{code:e.code,message:e.message}});}}else budget.cacheHits++;p=cache.get(key);if(p.error)fail(p.error.code,p.error.message);}
+    const identity=!recipe&&A.clear(p.envelopes,circle,Math.max(2,.005*short(plan))),solved=identity?{status:"safe",offset:[0,0],reason:"native-identity-preserves-original-stage-crop"}:A.solveBasic(p.envelopes,circle,plan.W,plan.H,cut.seed,{fitBounds:A.bounds(p.stageEnvelopes)});attempts.push({strategy:recipe?.strategy||'native-joint-translation',recipe,status:solved.status,reason:solved.reason||null,quality:p.quality});if(!solution)solution=solved;if(solved.status==='safe'){solution=solved;chosen=p;composition=recipe;stageScope=identity?"native-identity":"new-crop-forbidden";break;}
+   }catch(e){attempts.push({strategy:recipe?.strategy||'native-joint-translation',recipe,status:'rejected',reason:e.code||'DRAW_PROGRAM_ERROR',details:e.message});}}
+  const safe=solution?.status==='safe';segments.push({start:r.start,end,region:r.id,circle,from:safe?solution.offset:[0,0],to:safe?solution.offset:[0,0],status:safe?'safe-hold':'insufficient-space',decision:safe?'certified-hold-adapter':'excluded-during-avoidance',failure:safe?null:'editorial-owned-source-candidate-family-exhausted',safetyScope:'per-source-event-entry-exit',holdWindow,composition,stageScope,quality:chosen.quality,envelopes:chosen.envelopes,stageEnvelopes:chosen.stageEnvelopes,attempts});
+ }
+ return {version:1,kind:'layouts-c-source-native',revision,evaluationRange,holdWindow,units:[{owner:cut.layout+'.editorial-composition',envelopes:base.envelopes,segments}],measurementSupported:true,safety:segments.every(s=>s.status==='safe-hold')?'certified-hold-adapter':'insufficient-space',explicitSizePreserved:explicitSize,sourceProof:{sourceMapping:base.sourceMapping,stage:'Source-native all-event rectangle masks; completed partial paths; analytic outBack<=1.2, superscript/stamp scale hulls; newspaper signed-trig interval arithmetic over all entry scale/angles and exit displacement; camera/contentScale/ghost reserve. Stage containment includes relaxed entry/exit.',time:{entryFinish:T,exitStart:cut.dur-cut.outDur,hold:cut.hold,contentsActiveSchedule:cut.layout==='contents'?{count:cut.params.chunks.length,period:Math.max(.3,cut.dur*.92),envelope:'all active states enumerated from unchanged source'}:null},candidateBudget:{...budget,unique:cache.size,perCutRecipeLimit:16,perCutRecordLimit:128},eventClockPolicy:'Static main/copy/plates are strict immediately when visible. Only source-tagged pose/position/scale units relax until their individual entryEnd and during their individual geometric exitStart..cut.dur; static events never relax, and any surviving ink is strict again after exit completion. Contents active states are strict under their enumerated union; no global sourceClock relaxation.',ownership:'All real main, bodyRows/vbody fastRow copies, notes, metadata and plates primary; no auxiliary exemption'}};
+}
+function render({renderer,env,trajectory:tr}){
+ const unit=tr.units[0],active=unit.segments.find(s=>s.start<=env.realTime&&env.realTime<s.end),safe=active?.status==='safe-hold',offset=safe?active.from:[0,0];
+ if(safe&&active.composition){const cut={...env.cut,layoutCRecipe:active.composition};env=renderer.makeEnv(env.ctx,env.plan,cut,env.sc,{...env,cut});}
+ const program=A.record(renderer,env);if(!program.measurementSupported)fail('UNSUPPORTED_DRAW_PROGRAM',JSON.stringify(program.diagnostics));const scale=env.scale||1;
+ const classified=program.events.map(e=>{const body=e.nativeCBody,entryEnd=body?.entryEnd??0,exitStart=body?.exitStart??null;if(!Number.isFinite(entryEnd)||exitStart!==null&&!Number.isFinite(exitStart)||entryEnd<0||entryEnd>env.cut.dur||exitStart!==null&&(exitStart<0||exitStart>env.cut.dur))fail('EDITORIAL_EVENT_CLOCK','Source event requires finite local entry/exit clocks');return {event:e,polygons:clipped(e).map(p=>p.map(v=>[v[0]/scale,v[1]/scale])),strict:env.lt>=entryEnd&&!(exitStart!==null&&env.lt>=exitStart&&env.lt<env.cut.dur),entryEnd,exitStart};}),polygons=classified.flatMap(c=>c.polygons),strict=classified.filter(c=>c.strict),covered=!safe||strict.every(c=>c.polygons.every(p=>active.envelopes.some(q=>p.every(v=>contains(v,q))))),stageCovered=!safe||polygons.every(p=>active.stageEnvelopes.some(q=>p.every(v=>contains(v,q))));
+ if(!covered)fail('ENVELOPE_VIOLATION','A settled editorial event escaped its certified source envelope');if(!stageCovered)fail('STAGE_ENVELOPE_VIOLATION','Editorial source motion escaped its full entry/exit stage envelope');
+ const move=ps=>ps.map(p=>p.map(v=>[v[0]+offset[0],v[1]+offset[1]])),moved=move(polygons),strictMoved=move(strict.flatMap(c=>c.polygons)),contained=moved.every(p=>p.every(v=>v[0]>=0&&v[0]<=env.plan.W&&v[1]>=0&&v[1]<=env.plan.H));if(safe&&active.stageScope!=='native-identity'&&!contained)fail('STAGE_CONTAINMENT_VIOLATION','Certified editorial source introduced stage crop');const r=J.resolveAvoidanceAt(env.plan,env.realTime),circle=r?J.avoidanceCirclePixels(r,env.plan.W,env.plan.H):null,margin=Math.max(2,.005*short(env.plan)),clear=!circle||!moved.length||A.clear(moved,circle,margin),strictClear=!circle||!strictMoved.length||A.clear(strictMoved,circle,margin);
+ if(safe&&!strictClear)fail('EDITORIAL_STRICT_CIRCLE_VIOLATION','An already-settled source event entered the margin circle while another source event was still entering/exiting');
+ env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,safety:!active?'safe':!safe?'conflict':clear?'safe':'source-entry-exit-relaxed',measurementSupported:true,envelopeCovered:covered,strictCircleClear:strictClear,strictEvents:strict.length,relaxedEvents:classified.length-strict.length,stageEnvelopeCovered:stageCovered,stageContained:contained,stageCropPreserved:!safe||contained||active.stageScope==="native-identity",stageScope:active?.stageScope,safetyScope:'per-source-event-entry-exit',polygons:moved,events:classified.map(c=>({kind:c.event.kind,role:c.event.role,owner:c.event.owner,order:c.event.order,polygons:c.event.polygons,strict:c.strict,entryEnd:c.entryEnd,exitStart:c.exitStart}))});A.replay(env,program,offset);
+}
+for(const id of IDS)A.registerLayoutsCAdapter(id,{id:'c-editorial',finalize,render});
+})();
