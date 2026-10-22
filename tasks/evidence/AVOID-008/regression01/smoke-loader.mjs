@@ -1,0 +1,1 @@
+export function resolve(specifier,context,nextResolve){if(specifier==='playwright')return nextResolve(new URL('./dependencies/playwright/index.mjs',import.meta.url).href,context);return nextResolve(specifier,context);}
