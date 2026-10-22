@@ -1,0 +1,94 @@
+{
+  "scope": "isolated qualification only; not full04 or product/public evidence",
+  "baselineCommit": "89534b0",
+  "preSHA": {
+    "review": "81bf50e17fdc0079f81826c2548a2ff07e9ba6e57e432b6da81332f210128b58",
+    "reviewTest": "53c562191e73332b60a40369a081bd2c55f735fa0a12f30fb57b42be7356689a",
+    "windowTest": "b1edd8230dfe3a72cda01b1da86f627ea6d01ceb1708eb5698533b1aa5a49362"
+  },
+  "finalSources": [
+    {
+      "path": "dev/avoidance/layouts-b-review.cjs",
+      "bytes": 68187,
+      "sha256": "89f182d197acc28e3ba0c0fc5ff0be89455cf20c39ab49e309261bd76d0fae9b"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-review-test.cjs",
+      "bytes": 18448,
+      "sha256": "487f1e4db1e4ebfdd0668583d4bf7b568ccc976af2ba593618b223c10f3c68f1"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-playback-window-test.cjs",
+      "bytes": 5379,
+      "sha256": "b4bbcad9bcdb60fe5995a93f025ef4cae1b81c9266f7a08b767821ed55d22ed3"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-phase-lifecycle-test.cjs",
+      "bytes": 9621,
+      "sha256": "1cd486d5bec7e08e61e4ed8de0ede3c55eef7e6c4c1fd979c0e09499c0ae5947"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-public-test.cjs",
+      "bytes": 17604,
+      "sha256": "cd0247e45d90e4dd013f065bc6c3df78cd4c1bb4c3412c61981fe74ddb309346"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-public-offline-test.cjs",
+      "bytes": 12513,
+      "sha256": "4f2bd49c5331034a53ec308e4bb92bbe0af55df18f3518ef2bc4743ff1d2430c"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-pages-bridge.cjs",
+      "bytes": 25474,
+      "sha256": "a428341ee85fe0d355686163675289eebb9976f3f3c8abb46d2a23c082d56b45"
+    },
+    {
+      "path": "dev/avoidance/layouts-b-pages-bridge-test.cjs",
+      "bytes": 24276,
+      "sha256": "82799071d8a16cfc1f62dd60ea6ab4a0abc4dcc13484986711aed17420afc523"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "tasks/evidence/AVOID-007/browser-phase-mocks01.log",
+      "bytes": 1305,
+      "sha256": "c87af51626c59ef059a4b75922498d8d2146332729e35be3334eed40e9a108ee"
+    },
+    {
+      "path": "tasks/evidence/AVOID-007/browser-phase-synthetic01.log",
+      "bytes": 36929,
+      "sha256": "be0bd4852165afcc4b6f23aa577392f06ec71637800c0893e49dbe8025e7cc02"
+    },
+    {
+      "path": "tasks/evidence/AVOID-007/browser-phase-private01.log",
+      "bytes": 1024,
+      "sha256": "333a1667a6d09ec8207dc1d39e25302aeda30b35c3f8a2adbf7400c4ed1f6b6c"
+    },
+    {
+      "path": "tasks/evidence/AVOID-007/browser-phase-bridge01.log",
+      "bytes": 3225,
+      "sha256": "34f6c9b6906ca293de7479599f204717fcf2f3a5b3dc73ceb8d650b574dfc41c"
+    },
+    {
+      "path": "tasks/evidence/AVOID-007/browser-phase-cli-offline-receipt02.json",
+      "bytes": 1315,
+      "sha256": "62847f3a531d77ba3089cd6402b878176fecee349c2da33199a93a03ef04b863"
+    },
+    {
+      "path": "tasks/evidence/AVOID-007/browser-phase-generation-proof01.json",
+      "bytes": 9561,
+      "sha256": "43eb1ec342b6d7d50061ba346c375319389112e5e9301c64f937c717b198a0e7"
+    }
+  ],
+  "checks": {
+    "lifecycleMocks": 8,
+    "syntheticSuite": 8,
+    "privateMocks": 6,
+    "bridgeOffline": 14,
+    "cliOffline": 2,
+    "actualSamples": 0,
+    "full50": false,
+    "network": false,
+    "generationPrefixByteExact": true
+  }
+}

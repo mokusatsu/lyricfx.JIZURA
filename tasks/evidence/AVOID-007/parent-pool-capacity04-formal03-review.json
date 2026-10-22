@@ -1,0 +1,181 @@
+{
+  "timestamp": "2026-10-22T19:47:25.319920+09:00",
+  "scope": "Independent parent code/raw-sample/snapshot review; no images opened",
+  "reports": [
+    {
+      "file": "tasks/evidence/AVOID-007/pool08.json",
+      "sha256": "595df9ef2c7e85b332ffddce08015c2b5a0f8c5cc9a3f785adb829f808f3b739",
+      "verifiedStartupSnapshotPins": 102
+    },
+    {
+      "file": "tasks/evidence/AVOID-007/pool-collision03.json",
+      "sha256": "493fc7747f0e5f00af05df9c86594de462f8308d68f16f0c192318eb7a368a34",
+      "verifiedStartupSnapshotPins": 102
+    },
+    {
+      "file": "tasks/evidence/AVOID-007/cache09.json.gz",
+      "sha256": "cbeece32653e05a98288748e96231a0acf4c22177fd752d37e3ed086aa47a1b2",
+      "verifiedStartupSnapshotPins": 102
+    },
+    {
+      "file": "tasks/evidence/AVOID-007/capacity04.json.gz",
+      "sha256": "2c33fead4d63bcaa904cf59244af2c3a695d63ae9c300a7511e90d72710a7f2d",
+      "verifiedStartupSnapshotPins": 103
+    },
+    {
+      "file": "tasks/evidence/AVOID-007/perf-formal03.json.gz",
+      "sha256": "a74c0fd8b4da0c6d0238c13da54d761f9ffb9892fac5d95d880532a786c8c0fb",
+      "verifiedStartupSnapshotPins": 105
+    },
+    {
+      "file": "tasks/evidence/AVOID-007/render-profile01.json",
+      "sha256": "71de04badccbb54b5a551e16d28d304814155c94273d846b4473989c18f972ce",
+      "verifiedStartupSnapshotPins": 106
+    }
+  ],
+  "poolCodeReview": {
+    "current09eSHA256": "6de40d631613f76864f2616aa72540b44c0cdd90d0ebd76fcc66e4bf1fb03f84",
+    "onlyPoolChangedFromVisualDraft": true,
+    "collisionEquality": "kind/length and Object.is primitive values or canonical child identity; hash never establishes equality",
+    "accounting": "Resident full JSON keys removed; dense hash buckets, references and boxed primitive payload/header roots reserved. Logical reservation is not measured total JS heap.",
+    "accept": true
+  },
+  "capacity": {
+    "inputSHA256": "632a61dad13becfeff14ce2af6e2c46b2e8218e19bf967049090471d2f181860",
+    "actualCuts": 1000,
+    "regions": 1000,
+    "segments": 2998,
+    "contexts": 360,
+    "warmCandidateRecordings": 0,
+    "warmNativeRecords": 1000,
+    "retainedReservedBytes": 7824044,
+    "limit": 8388608,
+    "acceptCapacityOnly": true
+  },
+  "formal03": {
+    "comparisonsRecomputed": [
+      {
+        "cuts": 100,
+        "planningFactor": 1.7763507528170888,
+        "renderIncreaseMs": 1.3000000044703484,
+        "passed": true
+      },
+      {
+        "cuts": 1000,
+        "planningFactor": 1.8205553253186433,
+        "renderIncreaseMs": 4.000000007450581,
+        "passed": false
+      }
+    ],
+    "accepted": false,
+    "reason": "1000-cut render P95 increase exceeds unchanged 3ms threshold. Retain failure; not replaced by diagnostic."
+  },
+  "diagnostic": {
+    "traceSHA256": "f8c4b0ba3fafc40f11d42f13aaf41980350801ef20ebe10cf266ae84976c23e7",
+    "slowFrames": [
+      {
+        "frame": 16,
+        "layout": "columnsBig",
+        "ms": 11.700000002980232,
+        "components": {
+          "record": 0.3999999985098839,
+          "inkPolygons": 0,
+          "coverage": 0,
+          "clear": 0,
+          "replay": 0.29999999701976776
+        },
+        "majorMinorGC": []
+      },
+      {
+        "frame": 17,
+        "layout": "dotMatrix",
+        "ms": 12.299999997019768,
+        "components": {
+          "record": 10.800000004470348,
+          "inkPolygons": 0.19999999552965164,
+          "coverage": 0,
+          "clear": 0,
+          "replay": 0.8999999985098839
+        },
+        "majorMinorGC": [
+          {
+            "name": "MinorGC",
+            "microseconds": 8886
+          }
+        ]
+      },
+      {
+        "frame": 19,
+        "layout": "typeSpecimen",
+        "ms": 10.099999994039536,
+        "components": {
+          "record": 1.6000000014901161,
+          "inkPolygons": 0.10000000149011612,
+          "coverage": 6.399999998509884,
+          "clear": 0.29999999701976776,
+          "replay": 1.2999999970197678
+        },
+        "majorMinorGC": []
+      },
+      {
+        "frame": 25,
+        "layout": "rain",
+        "ms": 9.200000002980232,
+        "components": {
+          "record": 2.2999999970197678,
+          "inkPolygons": 0,
+          "coverage": 0.10000000149011612,
+          "clear": 0,
+          "replay": 6.600000001490116
+        },
+        "majorMinorGC": []
+      },
+      {
+        "frame": 44,
+        "layout": "typeSpecimen",
+        "ms": 11.100000001490116,
+        "components": {
+          "record": 1.5,
+          "inkPolygons": 0,
+          "coverage": 5.399999998509884,
+          "clear": 0.10000000149011612,
+          "replay": 3.899999998509884
+        },
+        "majorMinorGC": []
+      },
+      {
+        "frame": 62,
+        "layout": "flipBoard",
+        "ms": 9.200000002980232,
+        "components": {
+          "record": 8.700000002980232,
+          "inkPolygons": 0,
+          "coverage": 0,
+          "clear": 0.10000000149011612,
+          "replay": 0.10000000149011612
+        },
+        "majorMinorGC": [
+          {
+            "name": "MinorGC",
+            "microseconds": 8105
+          }
+        ]
+      },
+      {
+        "frame": 69,
+        "layout": "typeSpecimen",
+        "ms": 7.800000004470348,
+        "components": {
+          "record": 1.3999999985098839,
+          "inkPolygons": 0.10000000149011612,
+          "coverage": 5.100000001490116,
+          "clear": 0.10000000149011612,
+          "replay": 0.7000000029802322
+        },
+        "majorMinorGC": []
+      }
+    ],
+    "interpretation": "Observed profile-window MinorGC and non-GC typeSpecimen coverage overhead; columnsBig residual and rain replay latency also remain. Instrumented one-side data does not prove cause of formal03 stickerBomb delay or qualify performance."
+  },
+  "next": "Review allocation/coverage optimization proposal before product change, formal rerun or new native capture."
+}

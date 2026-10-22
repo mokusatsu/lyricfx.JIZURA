@@ -1,0 +1,49 @@
+{
+  "phase": "1 native transport qualification only",
+  "result": "passed",
+  "report": "tasks/evidence/AVOID-007/native-stage/final08-report.json",
+  "reportSHA256": "7620d93d052ae0e80c4375f81afe19981025f1b93f3acbc33df675dd534161f0",
+  "startupReceipt": "tasks/evidence/AVOID-007/native-stage/final08-report-snapshot/startup.json",
+  "nativeFrames": 240,
+  "sourceMainHoldCases": 60,
+  "nonOptInBaselineFrames": 100,
+  "negativeCases": 12,
+  "patternMutationParity": {
+    "name": "pattern-transform-between-two-fills",
+    "supported": true,
+    "equal": true,
+    "transforms": [
+      [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    ]
+  },
+  "all25": true,
+  "fullAvoidanceSafety": "not implemented/not tested",
+  "limitations": [
+    "Single Noto font fixture only; not a typeSpecimen/font-role visual acceptance",
+    "Source primary main-copy glyph counts only; semantic non-main copies/metadata/owned shapes require native-to-recipe mapping in phase2",
+    "Selected native branch/timestamp parity is not whole-interval proof",
+    "No final performance, numeric matrix, MP4 capture, parent code acceptance or publication yet"
+  ],
+  "history": {
+    "run01": "listen EPERM; retained",
+    "run02/run03/run04/run05": "earlier selected qualification snapshots; superseded",
+    "custom06": "localized parent counterexamples",
+    "final07": "pass but no prelaunch hash recorded; snapshot while running explicitly labeled",
+    "final08": "all bytes captured pre-browser, end hash checks verify unchanged"
+  }
+}

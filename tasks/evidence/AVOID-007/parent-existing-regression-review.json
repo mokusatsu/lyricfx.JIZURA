@@ -1,0 +1,66 @@
+{
+  "reviewedAt": "2026-10-22T07:40:10.237983+00:00",
+  "parentIndependentReview": true,
+  "baselineCommit": "e96cbb2f8379eb5895c36f1312f5083b0c583e75",
+  "introducedFailureFound": false,
+  "existingTestsPassed": false,
+  "assertionsChanged": false,
+  "snapshots": [
+    {
+      "receipt": "regression-extra03.json",
+      "prelaunchSnapshotPinsVerified": 195,
+      "results": [
+        {
+          "name": "media-compositing",
+          "status": 0
+        },
+        {
+          "name": "lyric-compositing",
+          "status": 1
+        },
+        {
+          "name": "group-reroll",
+          "status": 1
+        }
+      ]
+    },
+    {
+      "receipt": "regression-e96-01.json",
+      "prelaunchSnapshotPinsVerified": 198,
+      "results": [
+        {
+          "name": "lyric-compositing",
+          "status": 1
+        },
+        {
+          "name": "group-reroll",
+          "status": 1
+        }
+      ]
+    }
+  ],
+  "unresolved": [
+    {
+      "suite": "lyric-compositing",
+      "unchangedWholeRawLogSHA256": "25a2b128a178216d46fe390a58a66cbe90a5ea414eaec157f8a21085aa4e0576",
+      "passed": false,
+      "handoff": "AVOID-017",
+      "signature": "page.evaluate: Error: background transition preserves each cut's composite: 30,105,214 vs 60,103,137\n"
+    },
+    {
+      "suite": "group-reroll",
+      "unchangedWholeRawLogSHA256": "b37a8e15f7229edec540daaa1ec2cc16029a5a5a815867b129a41e03d4d22c6b",
+      "passed": false,
+      "handoff": "AVOID-012 and AVOID-017",
+      "signature": "{\"plain lively\":{\"selfChanged\":100,\"total\":100,\"otherFx\":0,\"areaMoved\":0},\"plain unified\":{\"selfChanged\":100,\"total\":100,\"otherFx\":3,\"areaMoved\":0},\"avoid lively\":{\"selfChanged\":100,\"total\":100,\"otherFx\":0,\"areaMoved\":0},\"avoid unified\":{\"selfChanged\":100,\"total\":100,\"otherFx\":3,\"areaMoved\":0}}"
+    }
+  ],
+  "actualE96Control02": {
+    "snapshotPinsVerified": 199,
+    "expectedRootAsserted": "/tmp/avoid007-regression-e96",
+    "actualJAServedOrReadHashesMatchGitBlob": true,
+    "actualReadSHA256": "575d40743d6968ed216a681759fe1a7eb2f7bbb9a5cd870d44e90ebb0f7e5b3d",
+    "EN": "pinned only, not executed: JA failure before EN",
+    "wholeFailureLogsStillIdentical": true
+  }
+}

@@ -1,0 +1,18 @@
+{"plain lively":{"selfChanged":100,"total":100,"otherFx":0,"areaMoved":0},"plain unified":{"selfChanged":100,"total":100,"otherFx":3,"areaMoved":0},"avoid lively":{"selfChanged":100,"total":100,"otherFx":0,"areaMoved":0},"avoid unified":{"selfChanged":100,"total":100,"otherFx":3,"areaMoved":0}}
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   'plain unified: other lyrics changed effects 3',
++   'avoid unified: other lyrics changed effects 3'
++ ]
+- []
+
+    at /workspace/lyricfx.JIZURA/dev/group_reroll_test.cjs:45:50 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Array],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

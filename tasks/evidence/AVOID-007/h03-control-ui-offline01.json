@@ -1,0 +1,108 @@
+{
+  "scope": "Caption-only qualification: pure synthetic Node/fs/CLI and read-only actual focused01; no actual browser, capture, ffmpeg, network, publication or credential",
+  "startedAt": "2026-10-22T13:14:24.129086+00:00",
+  "endedAt": "2026-10-22T13:14:26.277625+00:00",
+  "preSHA256": {
+    "dev/avoidance/layouts-b-h03-control-review.cjs": "874b97823036eeb7da072e51cccab631b0be5d1bef50805be362c68ed2a14873",
+    "dev/avoidance/layouts-b-h03-control-review-test.cjs": "96532489d3dec49f510c9475afef64c1190729a37aeb41f1f040fda7fe557605",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "35b8c548a72dec9614c7bda44980758d11b8d51af8b3ffab04fe13257de3db2b",
+    "dev/avoidance/layouts-b-pages-bridge-test.cjs": "82799071d8a16cfc1f62dd60ea6ab4a0abc4dcc13484986711aed17420afc523",
+    "dev/avoidance/layouts-b-h03-review.cjs": "5e4b13f6daba669113aa38f698d8cb8727532f0ac7548fcceb994560ce19916f",
+    "dev/avoidance/layouts-b-h03-review-test.cjs": "21bb3a163aecc8ba0125a5789e7e6b426e24a0120fdc8afe2f6669a20e5abe9d",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-public-test.cjs": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "f7cf78e0f1d55383ba73e7a910740c83aff1e2a45b645c0901377a5e745f9cf3",
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01",
+    "actualFocused01": "2be224b1515a4fca7e8150018bfd783d8b57fe9adb96b4825c349cbd59524acb",
+    "actualMetadata02": "24358908cd3acc111ec684c7cb5aad5a982ee84ef7b6570a9ea5a4c7ae11887a"
+  },
+  "postSHA256": {
+    "dev/avoidance/layouts-b-h03-control-review.cjs": "874b97823036eeb7da072e51cccab631b0be5d1bef50805be362c68ed2a14873",
+    "dev/avoidance/layouts-b-h03-control-review-test.cjs": "96532489d3dec49f510c9475afef64c1190729a37aeb41f1f040fda7fe557605",
+    "dev/avoidance/layouts-b-pages-bridge.cjs": "35b8c548a72dec9614c7bda44980758d11b8d51af8b3ffab04fe13257de3db2b",
+    "dev/avoidance/layouts-b-pages-bridge-test.cjs": "82799071d8a16cfc1f62dd60ea6ab4a0abc4dcc13484986711aed17420afc523",
+    "dev/avoidance/layouts-b-h03-review.cjs": "5e4b13f6daba669113aa38f698d8cb8727532f0ac7548fcceb994560ce19916f",
+    "dev/avoidance/layouts-b-h03-review-test.cjs": "21bb3a163aecc8ba0125a5789e7e6b426e24a0120fdc8afe2f6669a20e5abe9d",
+    "dev/avoidance/layouts-b-review.cjs": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+    "dev/avoidance/layouts-b-public-test.cjs": "2f05388d320741c73dca68d55f604b028e333cfe745344b75dc8140831fb5d0c",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "f7cf78e0f1d55383ba73e7a910740c83aff1e2a45b645c0901377a5e745f9cf3",
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01",
+    "actualFocused01": "2be224b1515a4fca7e8150018bfd783d8b57fe9adb96b4825c349cbd59524acb",
+    "actualMetadata02": "24358908cd3acc111ec684c7cb5aad5a982ee84ef7b6570a9ea5a4c7ae11887a"
+  },
+  "inputsUnchanged": true,
+  "results": [
+    {
+      "name": "control",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-h03-control-review-test.cjs"
+      ],
+      "expectedCases": 7,
+      "exitCode": 0,
+      "log": "h03-control-ui-control01.log",
+      "logSHA256": "ddcda214f3487de0c9ac12033a96abdf109f5e026e8e003a25e0065a2e90ec7c"
+    },
+    {
+      "name": "actual-focused",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-h03-control-review-test.cjs",
+        "--focused",
+        "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-007/h03-control-focused01.json"
+      ],
+      "expectedCases": 8,
+      "exitCode": 0,
+      "log": "h03-control-ui-actual-focused01.log",
+      "logSHA256": "76497fc0485303f45bfdc6bd224503680aaac8eb0096b63dcb6b3cd8479695bb"
+    },
+    {
+      "name": "bridge",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-pages-bridge-test.cjs"
+      ],
+      "expectedCases": 14,
+      "exitCode": 0,
+      "log": "h03-control-ui-bridge01.log",
+      "logSHA256": "c862aa04ca7a108e9f5616e388eeec2f5a9521adeb1026bcf2ffe5f0d86e5b2b"
+    },
+    {
+      "name": "legacy-h03",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-h03-review-test.cjs"
+      ],
+      "expectedCases": 17,
+      "exitCode": 0,
+      "log": "h03-control-ui-legacy-h0301.log",
+      "logSHA256": "945ce58654e1942762e59b4a599c2018d2796f24418dbf3fa3e7fbac01af1f99"
+    },
+    {
+      "name": "runner",
+      "command": [
+        "node",
+        "dev/avoidance/layouts-b-public-offline-test.cjs"
+      ],
+      "expectedCases": 7,
+      "exitCode": 0,
+      "log": "h03-control-ui-runner01.log",
+      "logSHA256": "205b6b319251e714f9df227d6b214b020571c97476a1cdd9e1854a3bd2d3f7be"
+    },
+    {
+      "name": "cli",
+      "command": [
+        "python3",
+        "dev/avoidance/layouts-b-public-cli-offline-test.py",
+        "--report",
+        "tasks/evidence/AVOID-007/h03-control-ui-cli01.json"
+      ],
+      "expectedCases": 2,
+      "exitCode": 0,
+      "log": "h03-control-ui-cli01.log",
+      "logSHA256": "6c8ba82da096489f985466cfc1e68c9aa68e708bb9edb55bc0217e502e8b365c"
+    }
+  ]
+}

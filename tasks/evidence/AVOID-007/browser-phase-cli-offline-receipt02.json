@@ -1,0 +1,35 @@
+{
+  "schema": "avoid007-private-cli-offline-qualification-v1",
+  "scope": "synthetic fake validator only; no real credential/browser/network",
+  "versions": {
+    "node": "v24.19.0",
+    "python": "3.12.14"
+  },
+  "sourcePins": {
+    "dev/avoidance/layouts-b-public-cli-offline-test.py": "98c555be84f2826b0f906d5bd4b59c1f46b03656bee0171972a8ab7b41947437",
+    "dev/avoidance/layouts-b-public-test.cjs": "cd0247e45d90e4dd013f065bc6c3df78cd4c1bb4c3412c61981fe74ddb309346",
+    "dev/avoidance/layouts-b-public-offline-test.cjs": "4f2bd49c5331034a53ec308e4bb92bbe0af55df18f3518ef2bc4743ff1d2430c",
+    "dev/avoidance/pages-output-audit.py": "8e67722fc662bd3fa14aabd85a30e0cfae71887024dab4f20d9f6c2797738a01"
+  },
+  "endInputsUnchanged": true,
+  "results": [
+    {
+      "mode": "success",
+      "exitCode": 0,
+      "status": "success",
+      "stdinJSONOneLine": true,
+      "noCredentialInOutputs": true,
+      "reportHashVerified": true,
+      "reportSHA256": "16f24c898f482d9958b765796d3d41260ba4cdf9aa377bae080333d32f0662b1"
+    },
+    {
+      "mode": "failure",
+      "exitCode": 1,
+      "status": "failure",
+      "stdinJSONOneLine": true,
+      "noCredentialInOutputs": true,
+      "reportHashVerified": true,
+      "reportSHA256": "862dfaf4dc43892d9a1065803f7852e3d680ca49cd50ce314c612a48f5c44460"
+    }
+  ]
+}

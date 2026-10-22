@@ -1,0 +1,13 @@
+END native [{"n":100,"planning":225.80000000447035,"render":7.299999997019768,"candidates":0,"states":{"safe":190,"insufficient-space":108}},{"n":1000,"planning":1930.4000000059605,"render":4.0999999940395355,"candidates":0,"states":{"safe":1918,"insufficient-space":1080}}]
+END candidate [{"n":100,"planning":401.09999999403954,"render":8.600000001490116,"candidates":296,"states":{"safe":274,"insufficient-space":24}},{"n":1000,"planning":3514.4000000059605,"render":8.100000001490116,"candidates":2960,"states":{"safe":2758,"insufficient-space":240}}]
+{"local":false,"actualCountsValid":true,"comparisons":[{"n":100,"inputIdentical":true,"planningFactor":1.7763507528170888,"additionalRenderMs":1.3000000044703484,"planningLimit":2,"renderLimitMs":3},{"n":1000,"inputIdentical":true,"planningFactor":1.8205553253186433,"additionalRenderMs":4.000000007450581,"planningLimit":2,"renderLimitMs":3}],"passed":false}
+AssertionError [ERR_ASSERTION]: B performance contract
+    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-perf.cjs:21:1044
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

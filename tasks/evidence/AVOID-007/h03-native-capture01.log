@@ -1,0 +1,22 @@
+CAPTURE START local-20261022-h03-01
+AssertionError [ERR_ASSERTION]: same native input media
++ actual - expected
+... Skipped lines
+
+  {
+    applyLyricBackground: true,
+    blend: 'normal',
+    cuts: [
+      {
+...
+        placementMode: 'default',
++       placementSeed: undefined,
+        seed: 3769415660,
+        sourceItemId: 'h03-media',
+        start: 0,
+        technique: 'none',
+        treat: 'none',
+
+    at pairGuard (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-h03-review.cjs:153:12)
+    at Object.capture (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-h03-review.cjs:417:33)
+    at async /workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-h03-capture01-run.cjs:3:832

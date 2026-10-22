@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/lyricfx.JIZURA/dev/avoidance/build-b-font-fixture.py", line 41, in <module>
+    path,meta=remote(directory,name);build(id,label,weight,path,provenance=meta)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/lyricfx.JIZURA/dev/avoidance/build-b-font-fixture.py", line 19, in remote
+    licenceCommit=json.loads(fetch('https://api.github.com/repos/google/fonts/commits?path=ofl/'+directory+'/OFL.txt&per_page=1'))[0]['sha']
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range

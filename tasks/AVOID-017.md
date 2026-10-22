@@ -121,3 +121,21 @@ line0のeffectsOnlyでなくline=-1/layout=title/bg=noneであることをprobe�
 
 - 固定変更前 `3d8f52c` の `dev/lyric_features_test.cjs` はline24の「seek backward and forward must reconstruct the stack」で失敗。正規のdefaultProjectに初期titleがあり、t=.1でFirst(line0)とtitle(line-1)の2cut、期待値は1。t=4.5の4cutは一致。日英の独立probeで同じ構成を確認。
 - 005実装前の失敗として[変更前ログ/結果](evidence/AVOID-005/baseline-before/results.json)と[実データprobe](evidence/AVOID-005/baseline-before/features-probe.json)を保持。005変更後の同条件比較は005側で追記する。期待値やtitleを変更して既存試験成功にしない。後続assertionは未到達。
+
+## 2026-10-22 007で切り分けた既存回帰の未解決引継ぎ
+
+`dev/lyric_compositing_test.cjs` はJAのbackground transition比較で実RGB30,105,214/期待60,103,137となり失敗し、その後のMP4・UI・EN検査は未到達。`dev/group_reroll_test.cjs` はplain/avoid unifiedの他行effects各3件変化で失敗（012へも引継ぎ）。007現版とe96cbb2の実JA source供給/read hashを記録したcontrol02でも、それぞれrawlog全bytesのSHAが一致した。既存の失敗であり007の成功に含めない。017の主要group/全合成/既存dev回帰の必須ゲートで原因・仕様を解決し、必要な未到達項目も実行する。単に期待値を合わせたり、ENも通過したと扱わない。証拠: [実controlと失敗署名](evidence/AVOID-007/regression-existing-failures.json)、[親snapshot/raw/hash照合](evidence/AVOID-007/parent-existing-regression-review.json)。本追記は未着手タスクへの既知事項引継ぎのみ。
+
+
+## 007 H03統合退行に関する有効化gate（未解除）
+
+[H03 raw02独立視覚FAIL](evidence/AVOID-007/h03-visual02-review.md)はrain recap/BG時計、credits cut0主文/cut2 recap、bubbles cut5『越』/FGの新交差を全3で確認した。円回避・同時刻seek・decoded media・位置不変の数値成功は、この可読性FAILを上書きしない。[012への具体的引継ぎ](AVOID-012.md)と[scope分析](evidence/AVOID-007/h03-visual02-scope-proposal.md)を最終有効化判定で必ず参照する。旧raw02は未受入・未公開のまま保持する。
+
+別native controlの[metadata02](evidence/AVOID-007/h03-control-metadata02-summary.md)は全3で実slot3.6→native end9.5、window[.5,4.5)にholdと.9sの真正残留を確認しただけであり、foreground/視覚/公開資格は未取得。007完了・012統合・017既定切替はいずれも、このmetadata成功から推定しない。017のactivation gateは解除していない。
+
+
+### Background-content visual quality remains an independent gate
+
+[Control01 visual review](evidence/AVOID-007/h03-control-visual01-review.md) gives rain observed-scope PASS but bubbles FAIL: after『先』lower white stroke lands on the BG pale-yellow bar, reducing local contrast at f15/f36 despite recognizable source/bubble/read order/phase and numeric circle+FG clearance. Old control01 overallFAIL remains.017 must assess actual background-content readability separately from012 group/FG geometry; no assumption that future group packing repairs arbitrary BG contrast is valid. No media content/bar/clock is deleted or moved to hide this failure.
+
+A rain-only fresh control02 candidate is being prepared, not captured or accepted at this point. Bubbles remains numerically safe but visually unaccepted, credits remains FG-insufficient, and the whole original raw02 three-case visualFAIL remains linked. Final activation gate is still unreleased.

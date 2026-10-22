@@ -1,0 +1,148 @@
+{
+  "scope": "Parent actual H03 focused06 and witness02 review, not acquisition/browser/public acceptance",
+  "inputs": {
+    "file": "tasks/evidence/AVOID-007/h03-focused06.json",
+    "sha256": "b9fdb9dd3241020b15f3c0749a0c089f1d2c7553df1567e58e898f41980cd4db",
+    "mainSHA256": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+    "fixtureSHA256": "662ad185119a513f7df69e0f2d2e4e48c786c5db3974fb6b367649a5e3455408",
+    "witnessSHA256": "46172aa8c7b1c83484ff7454de53369f53e3b45d8f96de9ae130c88252887026"
+  },
+  "snapshotPins": 280,
+  "witnessSnapshotPins": 103,
+  "scopeFix": "Eight actual semantic cuts with identical native clocks/params; only exact empty native outros8/9 outside retained group/window excluded; all ten recorded",
+  "rows": [
+    {
+      "id": "h03-rain-panL",
+      "hids": [
+        "AVOID-007-H03"
+      ],
+      "conditions": {
+        "layout": "rain",
+        "camera": "panL",
+        "W": 3200,
+        "H": 1080,
+        "seed": 704,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "text": "風の先へ\n光を越えて\n夢の続き"
+      },
+      "status": "safe"
+    },
+    {
+      "id": "h03-bubbles-push",
+      "hids": [
+        "AVOID-007-H03"
+      ],
+      "conditions": {
+        "layout": "bubbles",
+        "camera": "push",
+        "W": 3200,
+        "H": 1080,
+        "seed": 704,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "text": "風の先へ\n光を越えて\n夢の続き"
+      },
+      "status": "safe"
+    },
+    {
+      "id": "h03-credits-dutch",
+      "hids": [
+        "AVOID-007-H03"
+      ],
+      "conditions": {
+        "layout": "credits",
+        "camera": "dutch",
+        "W": 3200,
+        "H": 1080,
+        "seed": 704,
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "text": "風の先へ\n光を越えて\n夢の続き"
+      },
+      "status": "safe"
+    }
+  ],
+  "engines": [
+    {
+      "layout": "rain",
+      "side": "before",
+      "status": "native-fullstage",
+      "frames": 8,
+      "stats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    },
+    {
+      "layout": "rain",
+      "side": "after",
+      "status": "safe",
+      "frames": 8,
+      "stats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    },
+    {
+      "layout": "bubbles",
+      "side": "before",
+      "status": "native-fullstage",
+      "frames": 8,
+      "stats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    },
+    {
+      "layout": "bubbles",
+      "side": "after",
+      "status": "safe",
+      "frames": 8,
+      "stats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    },
+    {
+      "layout": "credits",
+      "side": "before",
+      "status": "native-fullstage",
+      "frames": 8,
+      "stats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    },
+    {
+      "layout": "credits",
+      "side": "after",
+      "status": "safe",
+      "frames": 8,
+      "stats": {
+        "fresh": 20,
+        "reused": 2,
+        "failed": 0
+      }
+    }
+  ],
+  "frameWitnessCounts": {
+    "fresh": 84,
+    "reused": 12
+  },
+  "negativeRecords": 6,
+  "environmentPrePostEqual": true,
+  "environmentRevision": "199",
+  "witnessCodeReview": "Private WeakMap per video; source/time/state and event/method epochs invalidate; strict both-signal proof checked; same-target stable paused decoded frame reused explicitly. Private cache and fresh/reused return values cloned; 14 invalidation controls plus failed-proof and fresh/reused caller-mutation negatives pass. General T decoder/threshold/order/product unchanged.",
+  "historicalFailures": "02 metadata scope,03 unlocalized timeout,04 confirmed redundant identity seek timeout,05 duplicate-row count failure retained. None relabelled.",
+  "approvedNext": "Capture all three actual-safe cases into fresh H03 bundle using reviewed native generator, absolute[3,7), then actual local all-assets/browser/native and isolated visual. No publication acceptance yet.",
+  "passed": true
+}

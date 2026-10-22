@@ -1,0 +1,10 @@
+{"actualCountsValid":true,"workingSetAccepted":false,"rows":[{"phase":"cold","recordCalls":3960,"actualCandidateRecords":2960,"states":{"safe":2758,"insufficient-space":240},"cache":{"revision":5,"contexts":321,"entries":321,"nodes":9077,"hits":0,"misses":360,"bypasses":0,"evictions":39,"serializedBytes":8379016,"keyBytes":2479884,"payloadBytes":1019264,"bookkeepingReserved":4863104,"commonSnapshotBytes":16764,"maxSerializedBytes":8388608,"maxContexts":1024,"maxEntries":4096}},{"phase":"warm","recordCalls":3960,"actualCandidateRecords":2960,"states":{"safe":2758,"insufficient-space":240},"cache":{"revision":5,"contexts":320,"entries":320,"nodes":9052,"hits":0,"misses":720,"bypasses":0,"evictions":400,"serializedBytes":8368352,"keyBytes":2486966,"payloadBytes":1015998,"bookkeepingReserved":4848624,"commonSnapshotBytes":16764,"maxSerializedBytes":8388608,"maxContexts":1024,"maxEntries":4096}}],"warnings":[]}
+AssertionError [ERR_ASSERTION]: current1000 working set must remain resident without warm candidates/evictions/bypasses
+    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-capacity-test.cjs:10:1001 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

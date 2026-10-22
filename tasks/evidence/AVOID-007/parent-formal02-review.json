@@ -1,0 +1,94 @@
+{
+  "reviewedAt": "2026-10-22T08:23:10.037284+00:00",
+  "parentCodeAndTestReview": true,
+  "reportSHA256": "ffcc5da4cac5b93297020ac2a6a6aac3e362ff91707c66dbd2ebbdbaa27305a6",
+  "verifiedSnapshotPins": 103,
+  "currentPinsUnchanged": true,
+  "exactBaselineBranchRemovalVerified": true,
+  "actualCountsInputsAndRenderWorkVerified": true,
+  "comparisons": [
+    {
+      "n": 100,
+      "nativeP95": 197.30000000447035,
+      "candidateP95": 387.30000000447035,
+      "factor": 1.9630005068205527,
+      "renderDelta": 0.19999999552965164,
+      "nativeSamples": [
+        197.30000000447035,
+        189.29999999701977,
+        185.60000000149012,
+        174.79999999701977,
+        184.69999999552965,
+        179.10000000149012
+      ],
+      "candidateSamples": [
+        383.19999999552965,
+        387.30000000447035,
+        361.8999999985099,
+        328.79999999701977,
+        346.79999999701977,
+        316.20000000298023
+      ],
+      "candidateCache": {
+        "revision": 5,
+        "contexts": 32,
+        "entries": 32,
+        "nodes": 2908,
+        "hits": 256,
+        "misses": 32,
+        "bypasses": 0,
+        "evictions": 0,
+        "serializedBytes": 1837566,
+        "keyBytes": 479032,
+        "payloadBytes": 139644,
+        "bookkeepingReserved": 1202128,
+        "commonSnapshotBytes": 16762,
+        "maxSerializedBytes": 8388608,
+        "maxContexts": 1024,
+        "maxEntries": 4096
+      }
+    },
+    {
+      "n": 1000,
+      "nativeP95": 3159.7000000029802,
+      "candidateP95": 4072.2000000029802,
+      "factor": 1.2887932398642716,
+      "renderDelta": 0.5,
+      "nativeSamples": [
+        1727.7000000029802,
+        2313.5999999940395,
+        2305.8000000044703,
+        3159.7000000029802,
+        2344.10000000149,
+        1829.3000000044703
+      ],
+      "candidateSamples": [
+        3283.2000000029802,
+        3291.5,
+        3226.39999999851,
+        3366.5,
+        3630,
+        4072.2000000029802
+      ],
+      "candidateCache": {
+        "revision": 6,
+        "contexts": 320,
+        "entries": 320,
+        "nodes": 9029,
+        "hits": 2560,
+        "misses": 320,
+        "bypasses": 0,
+        "evictions": 0,
+        "serializedBytes": 8338154,
+        "keyBytes": 2476184,
+        "payloadBytes": 1003108,
+        "bookkeepingReserved": 4842096,
+        "commonSnapshotBytes": 16766,
+        "maxSerializedBytes": 8388608,
+        "maxContexts": 1024,
+        "maxEntries": 4096
+      }
+    }
+  ],
+  "decision": "formal02 satisfies fixed performance contract; does not claim arbitrary workload/heap/global acceptance; authorize final font-functional and final capture config preparation, actual capture pending config review"
+}

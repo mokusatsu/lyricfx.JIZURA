@@ -1,0 +1,43 @@
+{
+  "atUTC": "2026-10-22T07:06:48.734340+00:00",
+  "report": "tasks/evidence/AVOID-007/interval-focused02.json",
+  "reportSHA256": "901821d8f33daf5fae5b34982508cb7b6e7e2ed500e2368e3d78d8d9270e9d56",
+  "prelaunchSnapshotPinsVerified": 102,
+  "sourcePins": [
+    {
+      "file": "src/09a_placement.js",
+      "sha256": "125dccdd6b4198cf2661a4446f670e942ef3775b63dce3c3a7e9d2434baac0c1",
+      "currentMatches": true
+    },
+    {
+      "file": "src/09e_layoutsB_placement.js",
+      "sha256": "f8ec8dc4817394b86233641e4e5c24182ebd5d328053fca4b1ff0c2a1807e67b",
+      "currentMatches": false
+    },
+    {
+      "file": "src/11p_layoutsB.js",
+      "sha256": "36dc805ee37e24a43b81e003b8a913b45d6dfce86ad63f9f7d4fb99dfb491f79",
+      "currentMatches": true
+    }
+  ],
+  "rows": 38,
+  "sameNativeEffectiveSizePairs": 429,
+  "rasterFrames": 57,
+  "nonemptyRasterFrames": 42,
+  "alpha1EnvelopeEscapes": 0,
+  "certifiedCircleConflicts": 0,
+  "fixedSlateConflictExplicitlyRejected": true,
+  "codeReview": [
+    "ON-only fixed-font CSS and continuous native uniform scale preserve source growth; <=.5px skip matches existing drawItem threshold",
+    "Two-point line source support now uses transformed segment endpoint Minkowski hull with max original AABB stroke/AA pad; common recorder/replay unchanged",
+    "Effective-size quality reads positive uniform scale and validates declared size against fontSize*sx",
+    "Owned elastic/equalizer topology guards validate source/max-envelope rows; real mutations reject missing/duplicate shapes"
+  ],
+  "openFindings": [
+    "Slate attachment test currently checks raw native branch against formula; requested direct enabled/disabled emitted coordinate and actual fixed-offset comparison",
+    "All-time raster scope includes primary-only replay under source/native context plus planned offset, not complete actual camera/ghost-pass matrix",
+    "Nonempty raster count reported separately; native invisible instants are not proof of source completeness",
+    "Final matrix/shared regression/performance/native MP4/visual/publication remain pending"
+  ],
+  "parentViewedImages": false
+}

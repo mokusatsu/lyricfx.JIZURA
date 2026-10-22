@@ -1,0 +1,124 @@
+{
+  "timestamp": "2026-10-22T20:31:25.041721+09:00",
+  "scope": "Parent independent current02 full local validation review; no images opened, no public/H03 success",
+  "reportSHA256": "5793cd88268c6a883c21c95c539492aac6fc93784a7e368120bdc1cd1bf788c4",
+  "startupPinsVerified": 106,
+  "validationToolSHA256": "6e829d8a4361480bc9f62f87f2886715ae1f6c6c0534e41cff0f1babcee6db03",
+  "manifestSHA256": "186580a8269d1b51f481f84001277f154722fee700226876ed0b82f3c80cbc4f",
+  "rawChecks": {
+    "HTTP200": 555,
+    "MP4HTTP206": 50,
+    "total": 605
+  },
+  "ui": [
+    {
+      "lang": "index.html",
+      "width": 1100,
+      "cases": 25,
+      "controls": true,
+      "guideMeasurements": 1800,
+      "guideKeyboardOnOff": true
+    },
+    {
+      "lang": "index.html",
+      "width": 390,
+      "cases": 25,
+      "controls": true,
+      "guideMeasurements": 1800,
+      "guideKeyboardOnOff": true
+    },
+    {
+      "lang": "en.html",
+      "width": 1100,
+      "cases": 25,
+      "controls": true,
+      "guideMeasurements": 1800,
+      "guideKeyboardOnOff": true
+    },
+    {
+      "lang": "en.html",
+      "width": 390,
+      "cases": 25,
+      "controls": true,
+      "guideMeasurements": 1800,
+      "guideKeyboardOnOff": true
+    }
+  ],
+  "fullPlayback": {
+    "sides": 50,
+    "decodedMin": 92,
+    "dropped": 0,
+    "corrupt": 0,
+    "allEnded4s": true,
+    "decodedSeekTargetsEach": 3,
+    "failureMarkers": 0
+  },
+  "nativeParity": {
+    "sides": 50,
+    "forwardAndReverseFrameChecks": 400,
+    "frames": [
+      3,
+      15,
+      36,
+      90
+    ]
+  },
+  "mobileLive": [
+    {
+      "case": "b25-rain",
+      "side": "after",
+      "frame": 90,
+      "canvas": [
+        1920,
+        1080
+      ],
+      "width": 390
+    },
+    {
+      "case": "b25-rain",
+      "side": "before",
+      "frame": 90,
+      "canvas": [
+        1920,
+        1080
+      ],
+      "width": 390
+    }
+  ],
+  "ownedClosedNonoverlappingPhases": [
+    {
+      "phase": "raw-ui",
+      "lifecycle": "owned",
+      "startedAt": "2026-10-22T11:20:33.537Z",
+      "status": "closed",
+      "acquiredAt": "2026-10-22T11:20:34.123Z",
+      "closeStartedAt": "2026-10-22T11:21:44.310Z",
+      "closedAt": "2026-10-22T11:21:44.420Z"
+    },
+    {
+      "phase": "playback",
+      "lifecycle": "owned",
+      "startedAt": "2026-10-22T11:21:44.421Z",
+      "status": "closed",
+      "acquiredAt": "2026-10-22T11:21:44.640Z",
+      "closeStartedAt": "2026-10-22T11:25:42.693Z",
+      "closedAt": "2026-10-22T11:25:42.781Z"
+    },
+    {
+      "phase": "native-live",
+      "lifecycle": "owned",
+      "startedAt": "2026-10-22T11:25:42.786Z",
+      "status": "closed",
+      "acquiredAt": "2026-10-22T11:25:43.041Z",
+      "closeStartedAt": "2026-10-22T11:27:57.736Z",
+      "closedAt": "2026-10-22T11:27:57.797Z"
+    }
+  ],
+  "all559InputsAndGuideAssetsUnchanged": true,
+  "acceptedLocalMain": true,
+  "limitations": [
+    "Historical wordCloud-before91 difference remains; all-before historical equality is not claimed.",
+    "Local result does not replace actual public HTTP/hash/playback/app startup.",
+    "H03 focused02 failed due actualEffects scope including two native outros; separate fix and focused03 pending."
+  ]
+}

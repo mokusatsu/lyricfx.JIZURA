@@ -1,0 +1,69 @@
+{
+  "reviewer": "parent",
+  "checkedAt": "2026-10-22T07:33:04.508758+00:00",
+  "method": "independent gzip snapshot rehash, actual runtime seek/raster/policy assertions, regression raw log hashes; performance diagnostic only",
+  "reports": {
+    "runtime02": {
+      "reportSHA256": "73a8ad98150cb628a75fbcfd920bcde4cba52264c54bcd7bc9201d22881987fe",
+      "startupTimestamp": "2026-10-22T07:24:18.588Z",
+      "verifiedSnapshotPins": 102,
+      "layouts": 25,
+      "selectedConditionStates": {
+        "certified-bounded-adapter": 20,
+        "insufficient-space": 5
+      },
+      "seekRevisitEqualPairs": 50,
+      "selectedPrimaryAlpha1Rasters": 100,
+      "certifiedRasters": 80,
+      "insufficientConditionRasters": 20,
+      "nonemptyRasters": 100,
+      "rasterEscapes": 0,
+      "rasterCircleConflicts": 0,
+      "ownFieldPolicies": {
+        "preclip-source-or-metadata": 24,
+        "native-clipped-reveal-pool": 12
+      },
+      "scope": "25 selected pan/push/dutch + chromatic ghost enabled; actual primary alpha1 raster and deterministic seek; own-field source/metadata preclip ink at hold for six owned families; native reel/flap substitution events retain their intentional reveal clips, not a claim that intentional sticker/tape overlap disappears"
+    },
+    "regression01": {
+      "reportSHA256": "e604b5769d5ddd1fa73a875d616168d628b8534d92954ff66f9e56361f9999cb",
+      "startupTimestamp": "2026-10-22T07:27:17.888Z",
+      "verifiedSnapshotPins": 188,
+      "suites": [
+        "lyric",
+        "stage",
+        "basic-native",
+        "basic-acceptance",
+        "stack",
+        "a-native",
+        "a-adaptive",
+        "a-font"
+      ],
+      "exit0": 8,
+      "allLogHashesMatch": true,
+      "remainingRequiredCore": [
+        "media_cut_compositing",
+        "lyric_compositing",
+        "group_reroll"
+      ],
+      "savePassed": false
+    },
+    "perf-local02": {
+      "reportSHA256": "893c36e6f7489a378af59170fe582c2f8dd2a2aa97e069e6540c84491c384fff",
+      "startupTimestamp": "2026-10-22T07:26:23.487Z",
+      "verifiedSnapshotPins": 103,
+      "formalPass": false,
+      "countsValid": true,
+      "comparisons": [
+        {
+          "n": 25,
+          "inputIdentical": true,
+          "planningFactor": 2.530113297570842,
+          "additionalRenderMs": 2.800000000745058,
+          "planningLimit": 2,
+          "renderLimitMs": 3
+        }
+      ]
+    }
+  }
+}

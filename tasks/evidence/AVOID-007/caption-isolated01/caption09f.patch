@@ -1,0 +1,33 @@
+--- a/src/09f_layoutsB_editorial.js
++++ b/src/09f_layoutsB_editorial.js
+@@ -41,7 +41,7 @@
+   // Cell packing never calls fitSize to obtain an implicit extra reduction.
+   for(const scale of (explicitSize?[1]:[1,.95,.9,.85,.8,.75,.7])){
+    const measures=source.map((it,i)=>{
+-    const size=it.size*scale,b=A.bounds(A.itemGeometry({...it,size,x:0,y:0,align:'center'},[1,0,0,1,0,0],{pass:'main',scale:1}).polygons),w=b.x1-b.x0+2*padding,label=wrapLabel(captions[i].text,captions[i].font,cap,w),labelH=J.measure({text:label,font:captions[i].font,size:cap,track:.08}).h,h=labelH+.8*cap+(b.y1-b.y0)+(i?1.5*cap:0)+2*padding;
++    const size=it.size*scale,b=A.bounds(A.itemGeometry({...it,size,x:0,y:0,align:'center'},[1,0,0,1,0,0],{pass:'main',scale:1}).polygons),w=Math.max(b.x1-b.x0+2*padding,...labelAtoms(captions[i].text).map(text=>J.measure({text,font:captions[i].font,size:cap,track:.08}).w)),label=wrapLabel(captions[i].text,captions[i].font,cap,w),labelH=J.measure({text:label,font:captions[i].font,size:cap,track:.08}).h,h=labelH+.8*cap+(b.y1-b.y0)+(i?1.5*cap:0)+2*padding;
+     return {w,h,size,b,labelH};
+    });
+    let used=0,greedy=0;for(const m of measures){const width=used+(greedy?gap:0)+m.w;if(width>W-2*margin)break;used=width;greedy++;}
+@@ -62,6 +62,10 @@
+  const items=p=>p.events.filter(e=>e.role==='primary'&&e.kind==='item').map(e=>{const it=e.args[0],s=it.placementSource;return {group:e.nativeGroup,text:s?plain(it.text):String(it.text).replace(/\n/g,''),font:it.font,source:s?{copy:s.copy,start:s.start,end:s.end,offsets:s.originalCodepointOffsets,text:s.text}:null,metadata:it.placementMetadata?.id??null};});
+  const shapes=p=>p.events.filter(e=>e.role==='primary'&&e.kind!=='item').map(e=>({kind:e.kind,group:e.nativeGroup}));
+  for(const [label,fn]of [['items',items],['shapes',shapes]])if(JSON.stringify(fn(native))!==JSON.stringify(fn(prepared)))bad('EDITORIAL_COPY_MAPPING','Editorial '+label+' count/source/copy/font/owned mapping changed');
++ if(cut.layout==='typeSpecimen'){
++  const labels=p=>p.events.filter(e=>e.role==='primary'&&e.kind==='item'&&!e.args[0].placementSource).map(e=>e.args[0].text),original=labels(native);
++  labels(prepared).forEach((text,i)=>{let offset=0;const breaks=[];for(const ch of text){if(ch==='\n')breaks.push(offset);else offset+=ch.length;}offset=0;for(const atom of labelAtoms(original[i])){const end=offset+atom.trimEnd().length;if(breaks.some(b=>b>offset&&b<end))bad('EDITORIAL_LABEL_ATOM','Specimen caption number, word or style/weight split across lines');offset+=atom.length;}});
++ }
+  return {expected,actual,items:items(native),shapes:shapes(native),complete:true,rule:'Full source-envelope enumeration; all finite row/repeat/label/value or face/caption/rule identities, not visible-time samples'};
+ }
+ function quality(program,plan,cut,{native=null,explicitSize=false}={}){
+@@ -75,6 +79,9 @@
+  }
+  return {faceSizeChanges:cut.layout==='typeSpecimen'?primary.map((e,i)=>({copy:e.args[0].placementSource.copy,font:e.args[0].font,native: native?.events.filter(e=>e.kind==='item'&&e.args[0].placementSource)[i]?.args[0].size,actual:e.args[0].size,reason:'declared discrete specimen scale; native metric ink packed into ordered bands'})):undefined,minPrimary:Math.min(...primary.map(e=>e.args[0].size*scale)),minMetadata:Math.min(...metadata.map(e=>e.args[0].size*scale))};
+ }
+-function wrapLabel(text,font,size,width){const lines=[];let line='';for(const ch of [...text]){if(line&&J.measure({text:line+ch,font,size,track:.08}).w>width){lines.push(line);line='';}line+=ch;}if(line)lines.push(line);return lines.join('\n');}
++// Retain every source space. A word owns its following spaces, so wrapping
++// inserts only newlines. Keep the final face-style and numeric weight together.
++function labelAtoms(text){const atoms=String(text).match(/\S+[^\S\n]*|[^\S\n]+|\n/g)||[];if(atoms.length>1&&/^\d{3,4}\s*$/.test(atoms[atoms.length-1])&&/^[A-Z][A-Z0-9_-]*\s+$/i.test(atoms[atoms.length-2]))atoms.splice(-2,2,atoms[atoms.length-2]+atoms[atoms.length-1]);return atoms;}
++function wrapLabel(text,font,size,width){const lines=[];let line='';for(const atom of labelAtoms(text)){if(atom==='\n'){lines.push(line);line='';continue;}if(line&&J.measure({text:line+atom,font,size,track:.08}).w>width){lines.push(line);line='';}line+=atom;}if(line)lines.push(line);return lines.join('\n');}
+ A.layoutsBEditorial={wrapLabel,supports:id=>ids.includes(id),envelope,fitBounds,candidates,sourceMapping,quality};
+ })();

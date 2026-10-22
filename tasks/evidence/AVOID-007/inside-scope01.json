@@ -1,0 +1,11 @@
+{
+  "scope": "Exact product delta against prechange render-profile01 snapshot; B-only containment predicate early false. No allocation change, no point/polygon/candidate/tolerance/order change.",
+  "beforeSHA256": "6de40d631613f76864f2616aa72540b44c0cdd90d0ebd76fcc66e4bf1fb03f84",
+  "afterSHA256": "5667bc92a76b50d27da2cfaec65195b18f0b478703d66184a94ec36a31d9b887",
+  "replacement": {
+    "before": "if(v>1e-5)pos=true;if(v< -1e-5)neg=true;}return !(pos&&neg);",
+    "after": "if(v>1e-5)pos=true;if(v< -1e-5)neg=true;if(pos&&neg)return false;}return !(pos&&neg);"
+  },
+  "exactSingleReplacement": true,
+  "logic": "pos and neg only change from false to true, so once both are true the final negated conjunction is necessarily false regardless of all remaining edges. Applies also to nonfinite/degenerate inputs under the same JavaScript arithmetic."
+}

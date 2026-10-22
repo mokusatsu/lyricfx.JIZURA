@@ -1,0 +1,152 @@
+{
+  "created": "2026-10-22T06:13:26.723160+00:00",
+  "parentMethod": "Independently enumerate raw input Unicode codepoints and filter whitespace; compare every visible native main source range, copy, fragment and original-codepoint-offset tuple. Empty newline source events are native whitespace-cell artifacts, not lyric occurrences.",
+  "inputSHA256": "21af37c37921030bb5e9e1cb5c0a9077766ea7cda98734bc0bd2bc0a5ea98bfe",
+  "compiledSHA256": "b816db4d3dadd5597035dad325a2b193f90f61ad36a4e7a1ff40c15b19b4dfca",
+  "scope": "Four selected native flipBoard mapping reports only; does not certify recipe mappings, all B IDs, all-time bounds, fonts or final source state.",
+  "passed": true,
+  "rows": [
+    {
+      "input": "風  の風",
+      "expected": [
+        {
+          "start": 0,
+          "end": 1,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            0
+          ],
+          "text": "風"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            3
+          ],
+          "text": "の"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            4
+          ],
+          "text": "風"
+        }
+      ],
+      "nonemptySourceEvents": 3,
+      "nativeWhitespaceEvents": 0,
+      "passed": true
+    },
+    {
+      "input": "風\nの風",
+      "expected": [
+        {
+          "start": 0,
+          "end": 1,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            0
+          ],
+          "text": "風"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            2
+          ],
+          "text": "の"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            3
+          ],
+          "text": "風"
+        }
+      ],
+      "nonemptySourceEvents": 3,
+      "nativeWhitespaceEvents": 1,
+      "passed": true
+    },
+    {
+      "input": "風　の風",
+      "expected": [
+        {
+          "start": 0,
+          "end": 1,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            0
+          ],
+          "text": "風"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            2
+          ],
+          "text": "の"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            3
+          ],
+          "text": "風"
+        }
+      ],
+      "nonemptySourceEvents": 3,
+      "nativeWhitespaceEvents": 0,
+      "passed": true
+    },
+    {
+      "input": "  風  風  ",
+      "expected": [
+        {
+          "start": 0,
+          "end": 1,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            2
+          ],
+          "text": "風"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "copy": "main",
+          "fragment": null,
+          "originalCodepointOffsets": [
+            5
+          ],
+          "text": "風"
+        }
+      ],
+      "nonemptySourceEvents": 2,
+      "nativeWhitespaceEvents": 0,
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "timestamp": "2026-10-22T13:33:30.427Z",
+  "status": "PASS_LOCAL_BROWSER_PARENT_REVIEW",
+  "report": "tasks/evidence/AVOID-007/h03-control-native-browser02.json",
+  "reportSHA256": "90fd70a5ee9a4ceec66a61d45dfb1c6110b44a42196c9222e4724ec1a48678df",
+  "manifestSHA256": "9d16f11518628b28d64bb238ba6a764a5fc17bb262ca8a7446f572b809564b47",
+  "independentReview": {
+    "completionGuard": "executed current exact tool; all owned phases / raw UI output input playback / parity / live guards passed",
+    "snapshotsVerified": 292,
+    "sealedAssetsVerified": 210,
+    "startupPinsRegenerated": 216,
+    "rawHTTP200": 210,
+    "rawRange206": 4,
+    "ui": 4,
+    "outputPlayback": [
+      {
+        "case": "h03-rain-panL",
+        "side": "before",
+        "decoded": 92,
+        "dropped": 0,
+        "corrupt": 0,
+        "ended": true
+      },
+      {
+        "case": "h03-rain-panL",
+        "side": "after",
+        "decoded": 92,
+        "dropped": 0,
+        "corrupt": 0,
+        "ended": true
+      }
+    ],
+    "inputPlayback": [
+      {
+        "layer": "media",
+        "frames": 288,
+        "decoded": 284,
+        "dropped": 0,
+        "ended": true
+      },
+      {
+        "layer": "foreground",
+        "frames": 288,
+        "decoded": 284,
+        "dropped": 0,
+        "ended": true
+      }
+    ],
+    "uniqueNativeKeys": 8,
+    "nativeVisits": 16,
+    "live": 2,
+    "phases": [
+      {
+        "phase": "raw-ui",
+        "lifecycle": "owned",
+        "startedAt": "2026-10-22T13:26:03.782Z",
+        "status": "closed",
+        "acquiredAt": "2026-10-22T13:26:04.317Z",
+        "closeStartedAt": "2026-10-22T13:26:10.332Z",
+        "closedAt": "2026-10-22T13:26:10.403Z"
+      },
+      {
+        "phase": "playback",
+        "lifecycle": "owned",
+        "startedAt": "2026-10-22T13:26:10.404Z",
+        "status": "closed",
+        "acquiredAt": "2026-10-22T13:26:10.633Z",
+        "closeStartedAt": "2026-10-22T13:26:45.979Z",
+        "closedAt": "2026-10-22T13:26:46.075Z"
+      },
+      {
+        "phase": "native-live",
+        "lifecycle": "owned",
+        "startedAt": "2026-10-22T13:26:46.076Z",
+        "status": "closed",
+        "acquiredAt": "2026-10-22T13:26:46.294Z",
+        "closeStartedAt": "2026-10-22T13:27:03.881Z",
+        "closedAt": "2026-10-22T13:27:03.963Z"
+      }
+    ],
+    "inputsUnchanged": true
+  },
+  "limitations": [
+    "Local only; actual Sites publication and full remote validators pending",
+    "Browser decoded deltas 92/284 do not claim all 96/288 source frames decoded",
+    "Rain-only [.5,4.5); prior white-border observation remains",
+    "Rejected raw02 and bubbles control01 remain FAIL; no 012/017/018 or default activation acceptance"
+  ],
+  "parentViewedImages": false
+}

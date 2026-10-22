@@ -1,0 +1,178 @@
+{
+  "checked": "2026-10-22T06:23:13.788Z",
+  "sourceCommit": "1f0c47bea00a795bb156e17a8ef961c4932a3b3b",
+  "passed": true,
+  "review": "Parent read source/test and actual execution log, independently matched current executable bytes to commit/start/end receipt, and compared all13 proxy branches against existing review.cjs policy. Production B25 capture/performance/font intent/publication remain unverified.",
+  "history": "Initial Node child-process Git read hit sandbox EPERM before any evidence write; direct read-only Git exports then Node hash comparison succeeded. No code/test expectations changed.",
+  "proxyBranches": 13,
+  "sourceHashes": {
+    "dev/avoidance/layouts-b-review.cjs": "3a04cc456ff5f9b0eaba7b0a3711ad558950e61b956cc41e3c739ebda9b7f96b",
+    "dev/avoidance/layouts-b-review-test.cjs": "0288581c5a54c5cb0263822fe4b3cd24f6297f7f0c55d0e1c7b6a49504b446b1"
+  },
+  "qualification": {
+    "toolSHA256": "3a04cc456ff5f9b0eaba7b0a3711ad558950e61b956cc41e3c739ebda9b7f96b",
+    "testSHA256": "0288581c5a54c5cb0263822fe4b3cd24f6297f7f0c55d0e1c7b6a49504b446b1",
+    "manifestSHA256": "26a72e4a8ca035d3d927ba2272a915a92d741e803f8be9da67aa0d8d5d5af2d8",
+    "rawAssets": 31,
+    "ui": [
+      {
+        "lang": "index.html",
+        "width": 1100,
+        "cases": 1,
+        "controls": true
+      },
+      {
+        "lang": "index.html",
+        "width": 390,
+        "cases": 1,
+        "controls": true
+      },
+      {
+        "lang": "en.html",
+        "width": 1100,
+        "cases": 1,
+        "controls": true
+      },
+      {
+        "lang": "en.html",
+        "width": 390,
+        "cases": 1,
+        "controls": true
+      }
+    ],
+    "playback": [
+      {
+        "case": "synthetic",
+        "side": "before",
+        "seeks": [
+          {
+            "seekedAt": 1.5,
+            "decodedAfterSeek": {
+              "mediaTime": 1.5,
+              "presentedFrames": 2
+            },
+            "ignoredFrames": []
+          },
+          {
+            "seekedAt": 0.125,
+            "decodedAfterSeek": {
+              "mediaTime": 0.125,
+              "presentedFrames": 3
+            },
+            "ignoredFrames": []
+          },
+          {
+            "seekedAt": 3.75,
+            "decodedAfterSeek": {
+              "mediaTime": 3.75,
+              "presentedFrames": 4
+            },
+            "ignoredFrames": []
+          }
+        ],
+        "playback": {
+          "ended": true,
+          "currentTime": 4,
+          "decoded": 96,
+          "dropped": 0,
+          "corrupt": 0
+        }
+      },
+      {
+        "case": "synthetic",
+        "side": "after",
+        "seeks": [
+          {
+            "seekedAt": 1.5,
+            "decodedAfterSeek": {
+              "mediaTime": 1.5,
+              "presentedFrames": 2
+            },
+            "ignoredFrames": []
+          },
+          {
+            "seekedAt": 0.125,
+            "decodedAfterSeek": {
+              "mediaTime": 0.125,
+              "presentedFrames": 3
+            },
+            "ignoredFrames": []
+          },
+          {
+            "seekedAt": 3.75,
+            "decodedAfterSeek": {
+              "mediaTime": 3.75,
+              "presentedFrames": 4
+            },
+            "ignoredFrames": []
+          }
+        ],
+        "playback": {
+          "ended": true,
+          "currentTime": 4,
+          "decoded": 96,
+          "dropped": 0,
+          "corrupt": 0
+        }
+      }
+    ],
+    "nativeParity": [
+      {
+        "case": "synthetic",
+        "side": "before",
+        "frames": [
+          3,
+          15,
+          36,
+          90
+        ],
+        "reverseFrames": [
+          90,
+          36,
+          15,
+          3
+        ]
+      },
+      {
+        "case": "synthetic",
+        "side": "after",
+        "frames": [
+          3,
+          15,
+          36,
+          90
+        ],
+        "reverseFrames": [
+          90,
+          36,
+          15,
+          3
+        ]
+      }
+    ],
+    "startup": {
+      "phase": "before synthetic browser launch",
+      "inputs": [
+        {
+          "name": "layouts-b-review.cjs",
+          "sha256": "3a04cc456ff5f9b0eaba7b0a3711ad558950e61b956cc41e3c739ebda9b7f96b"
+        },
+        {
+          "name": "layouts-b-review-test.cjs",
+          "sha256": "0288581c5a54c5cb0263822fe4b3cd24f6297f7f0c55d0e1c7b6a49504b446b1"
+        },
+        {
+          "name": "package.json",
+          "sha256": "ca170ec143a88ed3043ac953eb3b2377b2b97304104f4e1e23316684ce2c35af"
+        },
+        {
+          "name": "DejaVuSans.ttf",
+          "sha256": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e"
+        }
+      ],
+      "node": "v24.19.0"
+    },
+    "endInputsUnchanged": true,
+    "scope": "one synthetic 64x48 case; no B25/product capture or public checks"
+  }
+}

@@ -1,0 +1,16 @@
+/* Prepared phase-isolated control browser entry point. Importing never launches. */
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),H=require('./layouts-b-test-harness.cjs'),P=require('./layouts-b-h03-control-capture02-run.cjs');
+async function main(){
+ const dir=path.join(H.root,P.paths.dir),receipt=path.join(H.root,'tasks/evidence/AVOID-007/h03-control-native-browser02.json'),partial=receipt.replace('.json','-partial.json');assert.ok(!fs.existsSync(partial),'fresh browser partial');const frozen=P.verifyFrozen(),{files}=P.coreInputs('browser'),C=require('./layouts-b-h03-control-review.cjs');assert.deepEqual(C.CLOCK,{absoluteStart:.5,absoluteEnd:4.5,fps:24,frames:96,duration:4});
+ const capturePath='tasks/evidence/AVOID-007/h03-control-native-capture02.json',capture=JSON.parse(fs.readFileSync(path.join(H.root,capturePath)));assert.equal(capture.endInputsUnchanged,true);assert.ok(!capture.incomplete);const raw=fs.readFileSync(path.join(dir,'manifest.json')),manifest=JSON.parse(raw);assert.equal(manifest.profile,'native-single-retention-v1');assert.equal(manifest.buildID,'local-20261022-h03-control-02');
+ const startup=H.pin(receipt,__filename,[...files,capturePath,path.relative(H.root,path.join(dir,'manifest.json'))]);
+ // Seal every existing bundle asset before entering the browser validator; no media copies.
+ const assetInputs=[];let latest,assetsSealed=false;
+ const verifyAssets=()=>{for(const p of assetInputs)assert.equal(H.sha(fs.readFileSync(path.join(dir,p.file))),p.sha256,'asset changed during browser '+p.file);};
+ const save=v=>fs.writeFileSync(partial,JSON.stringify({startup,frozen,assetInputs,...v}));save({incomplete:true,stage:'wrapper pinned; bundle asset sealing pending'});
+ try{assetInputs.push({file:'manifest.json',sha256:H.sha(raw),bytes:raw.length});for(const [file,sha256]of Object.entries(manifest.assets)){const b=fs.readFileSync(path.join(dir,file));assert.equal(H.sha(b),sha256,'sealed bundle asset '+file);assetInputs.push({file,sha256,bytes:b.length});}assetsSealed=true;save({incomplete:true,stage:'all bundle inputs sealed before browser'});const result=await C.validateBrowser(dir,{onProgress:report=>{latest=report;save({incomplete:true,report});}});assert.equal(result.status,'raw HTTP, UI, MP4 decoded seek/playback and native parity verified');H.verify(startup);P.verifyFrozen();verifyAssets();fs.writeFileSync(receipt,JSON.stringify({startup,frozen,assetInputs,result,endInputsUnchanged:true}));save({incomplete:false,result});console.log(JSON.stringify({status:result.status,phases:result.phases,playback:result.playback?.length,nativeParity:result.nativeParity?.length,live:result.live?.length}));}
+ catch(e){let unchanged=false,verificationFailure;try{H.verify(startup);P.verifyFrozen();assert.ok(assetsSealed,'bundle startup sealing incomplete');verifyAssets();unchanged=true;}catch(v){verificationFailure=v.stack;}const body={startup,frozen,assetInputs,incomplete:true,endInputsUnchanged:unchanged,failure:e.stack,partial:latest,...(verificationFailure?{verificationFailure}:{})};fs.writeFileSync(receipt,JSON.stringify(body));save(body);throw e;}
+}
+module.exports={main};
+if(require.main===module)main().catch(e=>{console.error(e.stack);process.exitCode=1;});

@@ -3,6 +3,31 @@
 'use strict';
 const E = J.E;
 const P = 'layoutsB';
+// Dormant outside the explicit B25 stage adapter. Ownership never follows
+// mainDraw presence: semantic copies/reveal substitutes stay primary.
+const bRole=(env,role='primary',unit='composition')=>{if(env.cut.placementLayoutsB)env.drawOwnership={role,owner:env.cut.layout+'.'+unit};};
+
+const bFlat=t=>[...String(t||'').replace(/\s/g,'')];
+const bSpan=(env,start,end,copy='main',fragment=null)=>({field:'cut.text',normalization:'remove-whitespace/codepoints',start,end,copy,fragment,originalCodepointOffsets:[...String(env.cut.text)].flatMap((ch,i)=>/\s/.test(ch)?[]:[i]).slice(start,end),text:bFlat(env.cut.text).slice(start,end).join('')});
+const bSlot=(env,i)=>bFlat(slotsOf(env.cut.text).slice(0,i).join('')).length;
+const bText=(env,text)=>env.cut.placementLayoutsB&&env.cut.layoutBRecipe?env.cut.layoutBRecipe.mainText:text;
+const bSize=(env,size)=>env.cut.placementLayoutsB&&env.cut.layoutBRecipe?env.cut.layoutBRecipe.mainSize*env.cut.layoutBRecipe.fontScale:size;
+const bMain=(env,it)=>{
+ if(!env.cut.placementLayoutsB)return J.mainDraw(env,it);
+ if(it.placementContinuousFontScale&&it.placementEffectiveSize<=.5)return null;
+ if(env.cut.layoutBRecipe&&!it.placementTunnelFragment&&['tunnel','wordCloud','zoomRepeat','curtain'].includes(env.cut.layout)){it={...it,text:bText(env,it.text),size:bSize(env,it.size)};}
+ const source=bFlat(env.cut.text),text=bFlat(it.text),cursors=env.placementBSourceCursors||(env.placementBSourceCursors={});
+ if(!it.placementSource){let start=cursors.main||0;if(start===source.length)start=0;it.placementSource=bSpan(env,start,start+text.length);cursors.main=start+text.length;}
+ if(it.placementSource.text!==text.join('')){const e=new Error('B source range differs from native draw');e.code='SOURCE_COVERAGE';throw e;}
+ if(env.cut.layout==='neon')it.placementSource={...it.placementSource,copy:'neon-'+(it.fill===false?((it.stroke||0)/it.size).toFixed(5):'solid')};
+ return J.mainDraw(env,it);
+};
+const bGroup=(env,id)=>{if(env.cut.placementLayoutsB)env.placementBGroup=id;};
+const bDraw=(env,it)=>{
+ if(env.cut.placementLayoutsB&&it.placementContinuousFontScale&&it.placementEffectiveSize<=.5)return null;
+ if(env.cut.placementLayoutsB&&env.drawOwnership?.role==='primary')it={...it,placementNativeGroup:env.placementBGroup||'composition',...(!it.placementSource?{placementMetadata:{id:env.placementBMetadata||('native:'+it.font+':'+it.text),text:String(it.text||''),font:it.font},...(env.placementBReveal?{placementReveal:env.placementBReveal}:{})}:{})};
+ return env.draw(it);
+};
 
 /* ------------------------------------------------------------------ helpers */
 const clean = t => String(t || '').replace(/\s+/g, '');
@@ -102,11 +127,13 @@ J.register('layout', 'rain', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const vert = Pm.orient === 'v';
-    const mt = vert ? clean(cut.text) : mainLines(cut.text, W, H, 11, 6);
+    const mt = bText(env,vert ? clean(cut.text) : mainLines(cut.text, W, H, 11, 6));
     const base = { text: mt, font: Pm.font, x: W / 2, y: H / 2, track: 0.1, lead: 1.25, vertical: vert };
-    base.size = Math.min(J.fitSize(mt, Pm.font, W * (vert ? 0.5 : 0.84), H * (vert ? 0.8 : 0.5), base), vert ? H * 0.15 : H * 0.24);
+    base.size = bSize(env,Math.min(J.fitSize(mt, Pm.font, W * (vert ? 0.5 : 0.84), H * (vert ? 0.8 : 0.5), base), vert ? H * 0.15 : H * 0.24));
     const gl = glyphPts(base), n = gl.length;
     const lb = J.itemBox(base);
     const kx0 = lb.x0 - base.size * 0.3, kx1 = lb.x1 + base.size * 0.3, ky0 = lb.y0 - base.size * 0.3, ky1 = lb.y1 + base.size * 0.3;
@@ -117,6 +144,7 @@ J.register('layout', 'rain', {
     const bgA = E.outCubic(J.clamp(env.ltb / 0.35)) * outK(env);
     const rs = cell * 0.72, trk = (cell - rs) / rs;
     const tail = Pm.tint === 'accent' ? sc.accent : sc.sub;
+    bRole(env,'tiledAux','background-grid');
     if (bgA > 0.01) {
       for (let c = 0; c < cols; c++) {
         if (J.r(s, c, 1) > Pm.density) continue;
@@ -127,7 +155,7 @@ J.register('layout', 'rain', {
         const x = ox + (c + 0.5) * cell, chs = [];
         for (let r = r0; r <= r1; r++) chs.push(pool[J.h(s, c, r, Math.floor((env.step + (J.h(s, r, c) & 15)) / 14)) % NP]);
         const inK = x > kx0 && x < kx1;
-        env.draw({ text: chs.join(''), font: Pm.rf, size: rs, track: trk, vertical: true, align: 'left', x, y: r0 * cell + cell * 0.5 - rs * 0.5, color: sc.sub, ghost: false, alpha: bgA,
+        bDraw(env,{ text: chs.join(''), font: Pm.rf, size: rs, track: trk, vertical: true, align: 'left', x, y: r0 * cell + cell * 0.5 - rs * 0.5, color: sc.sub, ghost: false, alpha: bgA,
           charFn: (i) => {
             const r = r0 + i, d = hy - r;
             let a = d < 1 ? 1 : 0.1 + Math.pow(1 - d / Ls, 1.4) * 0.6;
@@ -137,6 +165,7 @@ J.register('layout', 'rain', {
           } });
       }
     }
+    bRole(env);
     // --- lyric: each glyph is delivered by its own falling stream and locks in place
     const span = J.clamp(cut.dur * 0.2, 0.1, 0.5), fd = J.clamp(cut.dur * 0.1, 0.14, 0.26);
     const rank = gl.map((g, i) => i);
@@ -144,10 +173,12 @@ J.register('layout', 'rain', {
     const pos = new Array(n); rank.forEach((gi, k) => { pos[gi] = k; });
     let bb = null;
     const trailN = 8, ts = J.clamp(base.size * 0.32, cell * 0.8, cell * 1.5), tsp = ts * 1.12;
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'rain',base:{...base},gl,pool:pool.slice(),trailN,ts,tsp,span,fd,rank:pos.slice(),vertical:vert,leadRecipe:'fixed-css-continuous-uniform-scale'};
     gl.forEach((g, i) => {
+      bGroup(env,'glyph-'+i);
       const k = vert ? n - 1 - i : pos[i];
       const ta = 0.05 + fd + (n > 1 ? k / (n - 1) : 0) * span;
-      const u = (lt - (ta - fd)) / fd;
+      const u = env.placementEnvelope&&cut.placementLayoutsB?.5:(lt - (ta - fd)) / fd;
       if (u > 0 && u < 2) {
         const e = E.inQuad(Math.min(1, u));
         const yh = J.lerp(-tsp * 2, g.y, e);
@@ -155,13 +186,13 @@ J.register('layout', 'rain', {
         const chs = [];
         for (let j = trailN - 1; j >= 0; j--) chs.push(pool[J.h(s, i, j, env.step >> 1) % NP]);
         const hs = u < 1 ? J.lerp(ts, base.size, Math.pow(u, 3)) : base.size;
-        env.draw({ text: chs.join(''), font: Pm.rf, size: ts, track: 0.12, vertical: true, align: 'left', x: g.x, y: yh - hs * 0.5 - trailN * tsp, color: tail, ghost: false, alpha: fade * outK(env),
+        bDraw(env,{ text: chs.join(''), font: Pm.rf, size: ts, track: 0.12, vertical: true, align: 'left', x: g.x, y: yh - hs * 0.5 - trailN * tsp, color: tail, ghost: false, alpha: fade * outK(env),
           charFn: (j) => ({ a: Math.pow((j + 1) / trailN, 1.6) * 0.95 }) });
-        if (u < 1) env.draw({ text: g.ch, font: Pm.font, size: hs, x: g.x, y: yh, vertical: vert, color: sc.fg, ghost: false, alpha: 0.6 + 0.4 * u });
+        if (u < 1) bDraw(env,{ placementSource:env.cut.placementLayoutsB?bSpan(env,i,i+1,'delivery-lead'):undefined, text:g.ch,font:Pm.font,size:cut.placementLayoutsB?base.size:hs,...(cut.placementLayoutsB?{sx:hs/base.size,sy:hs/base.size,placementEffectiveSize:hs,placementContinuousFontScale:'delivery-lead',placementLeadRecipe:'fixed-css-continuous-uniform-scale'}:{}),x:g.x,y:yh,vertical:vert,color:sc.fg,ghost:false,alpha:.6+.4*u });
       }
       const fl = J.clamp((lt - ta) / 0.45);
-      const it = { text: g.ch, font: Pm.font, size: base.size, x: g.x, y: g.y, vertical: vert, color: fl < 1 ? J.mix(sc.accent, sc.fg, E.outCubic(fl)) : sc.fg, mi: miAt(env, ta) };
-      bb = U(bb, J.mainDraw(env, it));
+      const it = { placementSource: env.cut.placementLayoutsB?bSpan(env,i,i+1):undefined, text: g.ch, font: Pm.font, size: base.size, x: g.x, y: g.y, vertical: vert, color: fl < 1 ? J.mix(sc.accent, sc.fg, E.outCubic(fl)) : sc.fg, mi: miAt(env, ta) };
+      bb = U(bb, bMain(env, it));
     });
     return bb;
   },
@@ -178,24 +209,29 @@ J.register('layout', 'hanging', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const chars = slotsOf(cut.text), n = chars.length;
     if (!n) return null;
-    const rowsN = W < H && n > 5 ? 2 : 1, per = Math.ceil(n / rowsN);
-    const sp = W * (rowsN > 1 ? 0.84 / (per + 0.5) : 0.88 / per);
-    const size = Math.min(sp * (Pm.tag ? 0.76 : 0.84), M * 0.19);
+    const recipe=cut.placementLayoutsB?cut.layoutBRecipe:null;
+    const rowsN = recipe?.hangingPer?Math.ceil(n/recipe.hangingPer):(W < H && n > 5 ? 2 : 1), per = recipe?.hangingPer||Math.ceil(n / rowsN);
+    const nativeSp = W * (rowsN > 1 ? 0.84 / (per + 0.5) : 0.88 / per),sp = recipe?.hangingPer?recipe.mainSize*recipe.fontScale*1.6:nativeSp;
+    const size = bSize(env,Math.min(sp * (Pm.tag ? 0.76 : 0.84), M * 0.19));
     const tagW = size * 1.12, tagH = size * 1.36;
     const csize = Pm.tag ? size * 0.8 : size;
     const railY = Pm.rail ? H * 0.075 : -2;
     const out = outK(env), inA = inE(env, 0.45);
+    const railSpan=recipe?.hangingPer?per*sp*.5+size*.2:W*.52;
     if (Pm.rail) {
-      env.line([[W * 0.5 - W * 0.52 * inA, railY], [W * 0.5 + W * 0.52 * inA, railY]], sc.sub, Math.max(1.2, M * 0.0022), 0.8 * out, false);
+      env.line([[W * 0.5 - railSpan * inA, railY], [W * 0.5 + railSpan * inA, railY]], sc.sub, Math.max(1.2, M * 0.0022), 0.8 * out, false);
     }
     const gap = J.clamp(cut.dur * 0.35 / n, 0.03, 0.08);
     let bb = null;
     const strokeW = Math.max(1, M * 0.0016);
     const items = [];
     for (let i = 0; i < n; i++) {
+      bGroup(env,'suspension-'+i);
       if (chars[i] === ' ') continue;
       const row = Math.floor(i / per), j = i - row * per, cnt = Math.min(per, n - row * per);
       const u = cnt > 1 ? j / (cnt - 1) : 0.5;
@@ -207,19 +243,20 @@ J.register('layout', 'hanging', {
       else dev = J.rs(s, i, 3) * H * 0.08;
       dev = Math.max(-H * 0.14, Math.min(H * 0.14, dev * amp));
       const ax = W / 2 + (j - (cnt - 1) / 2) * sp + (rowsN > 1 ? (row ? 0.25 : -0.25) * sp : 0);
-      const cy = rowsN > 1 ? (row ? H * 0.64 : H * 0.4) + dev * 0.5 : H * 0.52 + dev;
+      const cy = recipe?.hangingPer?H*.48+(row-(rowsN-1)/2)*size*1.6+dev*.5:rowsN > 1 ? (row ? H * 0.64 : H * 0.4) + dev * 0.5 : H * 0.52 + dev;
       const attach = Pm.tag ? tagH * 0.5 - tagH * 0.1 : size * 0.56;
       const L = Math.max(H * 0.06, cy - attach - railY);
-      const T = 1.5 * Math.sqrt(L / (H * 0.45)), w = J.TAU / T;
+      const T = 1.5 * Math.sqrt(L / (H * 0.45)), nativeMotion=recipe?.suspensionIdentity?.[i],w=nativeMotion?.w??J.TAU/T;
       const ta = 0.12 + i * gap;
-      const tau = lt - ta;
-      const ampK = rowsN > 1 && row === 1 ? 0.5 : 1;
-      const dk = sp / L / J.DEG;                                   // degrees per 'one char spacing' of sideways travel
+      const tau = env.placementEnvelope&&cut.placementLayoutsB?2:lt-ta;
+      const ampK = nativeMotion?.ampK??(rowsN > 1 && row === 1 ? 0.5 : 1);
+      const dk = nativeMotion?.dk??sp / L / J.DEG;                                   // degrees per 'one char spacing' of sideways travel
       let th = Pm.amp * dk * ampK * Math.sin(w * env.ltb + J.r(s, i, 5) * 6);
       if (tau > 0) th += Pm.kick * dk * ampK * (J.r(s, i, 6) < 0.5 ? 1 : -1) * Math.exp(-tau / 0.7) * Math.sin(w * tau * 1.3);
+      if(recipe?.hangingAngleScale)th*=recipe.hangingAngleScale;
       const bounce = tau > 0 ? 1 + 0.05 * Math.exp(-tau / 0.18) * Math.cos(tau * 30) : 1;
       const r = th * J.DEG;
-      const grow = E.outCubic(J.clamp((lt - (ta - 0.3)) / 0.3));
+      const grow = env.placementEnvelope&&cut.placementLayoutsB?1:E.outCubic(J.clamp((lt - (ta - 0.3)) / 0.3));
       const Ls = L * bounce * grow;
       const ex = ax + Math.sin(r) * Ls, ey = railY + Math.cos(r) * Ls;
       if (grow > 0) {
@@ -227,9 +264,11 @@ J.register('layout', 'hanging', {
         if (Pm.rail) env.circle(ax, railY, Math.max(2.5, M * 0.004), sc.fg, null, 0, out, false);
       }
       const ccx = ax + Math.sin(r) * (Ls + attach), ccy = railY + Math.cos(r) * (Ls + attach);
-      items.push({ i, ccx, ccy, th, ta, tau });
+      items.push({ i, ccx, ccy, th, ta, tau, ax,cy,L,attach,w,dk,ampK });
     }
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'hanging',size,csize,tagW,tagH,sp,rowsN,per,railY,railSpan,strokeW,angleScale:recipe?.hangingAngleScale||1,items};
     for (const q of items) {
+      bGroup(env,'suspension-'+q.i);
       if (q.tau < 0) continue;
       if (Pm.tag) {
         const pc = q.i % 2 ? plateCol(sc, [sc.accent, sc.ink]) : plateCol(sc, [sc.ink, sc.fg]);
@@ -240,9 +279,9 @@ J.register('layout', 'hanging', {
           env.circle(0, -tagH / 2 + tagH * 0.1, Math.max(2, size * 0.055), sc.bg, null, 0, 1, false);
           ctx.restore();
         }
-        bb = U(bb, J.mainDraw(env, { text: chars[q.i], font: Pm.font, size: csize, x: q.ccx + Math.sin(q.th * J.DEG) * tagH * 0.06, y: q.ccy + Math.cos(q.th * J.DEG) * tagH * 0.06, rot: -q.th, color: onCol(sc, pc), plain: true, noHold: plateHold(env), mi: miAt(env, q.ta) }));
+        bb = U(bb, bMain(env, { placementSource:env.cut.placementLayoutsB?bSpan(env,bSlot(env,q.i),bSlot(env,q.i)+1):undefined,text: chars[q.i], font: Pm.font, size: csize, x: q.ccx + Math.sin(q.th * J.DEG) * tagH * 0.06, y: q.ccy + Math.cos(q.th * J.DEG) * tagH * 0.06, rot: -q.th, color: onCol(sc, pc), plain: true, noHold: plateHold(env), mi: miAt(env, q.ta) }));
       } else {
-        bb = U(bb, J.mainDraw(env, { text: chars[q.i], font: Pm.font, size: csize, x: q.ccx, y: q.ccy, rot: -q.th, color: sc.fg, mi: miAt(env, q.ta) }));
+        bb = U(bb, bMain(env, { placementSource:env.cut.placementLayoutsB?bSpan(env,bSlot(env,q.i),bSlot(env,q.i)+1):undefined,text: chars[q.i], font: Pm.font, size: csize, x: q.ccx, y: q.ccy, rot: -q.th, color: sc.fg, mi: miAt(env, q.ta) }));
       }
     }
     return bb;
@@ -333,6 +372,8 @@ J.register('layout', 'tunnel', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H);
     const cx = W / 2, cy = H / 2;
     const mt = mainLines(cut.text, W, H, 10, 5);
@@ -350,11 +391,15 @@ J.register('layout', 'tunnel', {
     const unit = [...((Pm.unit === 'line' && cut.lineText && clean(cut.lineText) !== clean(cut.text) ? cut.lineText : cut.text).replace(/\s+/g, ' ').trim() + '　')];
     const NU = unit.length;
     const lw = Math.max(1, M * 0.0015);
+    const fixedAux=!!(cut.placementLayoutsB&&cut.layoutBRecipe?.tunnelFixedCSS),auxRef=M*.11;
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'tunnel',auxSource:{font:Pm.font,unit:unit.join(''),q:Pm.q,speed:Pm.speed,style:Pm.style,persp:Pm.persp,A,B,s0,ref:auxRef,lw},fixedAux};
     // perspective rails from the screen corners to the innermost frame
+    bRole(env,'independentDecor','perspective-rails');
     if (Pm.persp) {
       const a0 = s0 * A, b0 = s0 * B;
       for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) env.line([[cx + sx * W * 0.75, cy + sy * H * 0.75], [cx + sx * a0, cy + sy * b0]], sc.sub, lw, 0.28 * e * out, false);
     }
+    bRole(env,'tiledAux','perimeter');
     const K = Math.ceil(Lmax) + 1;
     for (let k = K; k >= 0; k--) {
       const L = k + ph - 1;
@@ -376,15 +421,22 @@ J.register('layout', 'tunnel', {
       };
       const common = { font: Pm.font, size: f, track: 0.06, ghost: false, alpha, color: col };
       if (outline) Object.assign(common, { fill: false, stroke: Math.max(1, f * 0.035), strokeColor: col });
+      if(fixedAux)Object.assign(common,{size:auxRef,sx:f/auxRef,sy:f/auxRef,placementEffectiveSize:f,placementContinuousFontScale:'tunnel-perimeter'});
       const hl = 2 * a - inset * 2.4, vl = 2 * b - inset * 2.4;
-      env.draw(Object.assign({ text: edge(hl), x: cx, y: cy - b + inset }, common));
-      env.draw(Object.assign({ text: edge(vl), x: cx + a - inset, y: cy, rot: 90 }, common));
-      env.draw(Object.assign({ text: edge(hl), x: cx, y: cy + b - inset, rot: 180 }, common));
-      env.draw(Object.assign({ text: edge(vl), x: cx - a + inset, y: cy, rot: -90 }, common));
+      const tag=edge=>cut.placementLayoutsB?{placementAuxiliary:{unit:'tunnel-perimeter',ring:k,edge}}:{};
+      bDraw(env,Object.assign({ text: edge(hl), x: cx, y: cy - b + inset },tag('top'),common));
+      bDraw(env,Object.assign({ text: edge(vl), x: cx + a - inset, y: cy, rot: 90 },tag('right'),common));
+      bDraw(env,Object.assign({ text: edge(hl), x: cx, y: cy + b - inset, rot: 180 },tag('bottom'),common));
+      bDraw(env,Object.assign({ text: edge(vl), x: cx - a + inset, y: cy, rot: -90 },tag('left'),common));
       env.rect(cx - a, cy - b, a * 2, lw, sc.sub, alpha * 0.5, false);
       env.rect(cx - a, cy + b - lw, a * 2, lw, sc.sub, alpha * 0.5, false);
     }
-    return J.mainDraw(env, { text: mt, font: Pm.fontC, size, x: cx, y: cy, track: 0.05, lead: 1.15, color: sc.fg });
+    bRole(env);
+    if(cut.placementLayoutsB&&cut.layoutBRecipe?.tunnelBlocks){
+      const recipe=cut.layoutBRecipe,chars=bFlat(cut.text),per=Math.ceil(chars.length/2),fontSize=recipe.mainSize*recipe.fontScale;let bb=null;
+      for(let i=0;i<chars.length;i++){const col=Math.floor(i/per),row=i%per,count=Math.min(per,chars.length-col*per);bb=U(bb,bMain(env,{placementTunnelFragment:true,placementGlobalGlyphIndex:i,placementSource:bSpan(env,i,i+1),text:chars[i],font:Pm.fontC,size:fontSize,x:recipe.tunnelBlocks[col],y:cy+(row-(count-1)/2)*fontSize*1.15,track:.05,lead:1.15,color:sc.fg,mi:0}));}return bb;
+    }
+    return bMain(env, { text: mt, font: Pm.fontC, size, x: cx, y: cy, track: 0.05, lead: 1.15, color: sc.fg });
   },
 }, P);
 
@@ -400,6 +452,8 @@ J.register('layout', 'wordCloud', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H);
     const mt = mainLines(cut.text, W, H, 9, 5);
     const size = Math.min(J.fitSize(mt, Pm.font, W * (W < H ? 0.7 : 0.52), H * 0.24, { track: 0.03, lead: 1.1 }), H * 0.18);
@@ -407,6 +461,7 @@ J.register('layout', 'wordCloud', {
     let lay = _cloud.get(key);
     if (!lay) { lay = buildCloud(env, mt, size); if (_cloud.size > 60) _cloud.clear(); _cloud.set(key, lay); }
     const out = outK(env);
+    bRole(env,'tiledAux','cloud');
     lay.forEach((w, k) => {
       const q = J.clamp((env.lt - w.delay) / 0.32);
       if (q <= 0) return;
@@ -414,9 +469,10 @@ J.register('layout', 'wordCloud', {
       const dx = J.noise1(env.ltb * 0.35 + k * 3.1, s) * M * 0.004, dy = J.noise1(env.ltb * 0.3 + k * 5.7, s + 1) * M * 0.004;
       const it = { text: w.text, font: w.font, size: w.size * sq, x: w.x + dx, y: w.y + dy, vertical: w.vertical, track: 0.02, color: w.col === 'a' ? sc.accent : w.col === 'f' ? sc.fg : sc.sub, alpha: Math.min(1, q * 2.5) * out * w.a, ghost: false };
       if (w.outline) Object.assign(it, { fill: false, stroke: Math.max(1, w.size * 0.03), strokeColor: it.color });
-      env.draw(it);
+      bDraw(env,it);
     });
-    return J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, color: sc.fg });
+    bRole(env);
+    return bMain(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, color: sc.fg });
   },
 }, P);
 function buildCloud(env, mt, size) {
@@ -484,12 +540,14 @@ J.register('layout', 'bounceLine', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const n0 = J.glyphCount(cut.text);
-    const mt = mainLines(cut.text, W, H, 11, 6);
+    const mt = bText(env,mainLines(cut.text, W, H, 11, 6));
     const nL = mt.split('\n').length;
     const base = { text: mt, font: Pm.font, x: W / 2, y: H / 2 + (nL > 1 ? 0 : H * 0.03), track: 0.1, lead: 2.0 };
-    base.size = Math.min(J.fitSize(mt, Pm.font, W * 0.84, H * (nL > 1 ? 0.52 : 0.3), base), H * 0.2);
+    base.size = bSize(env,Math.min(J.fitSize(mt, Pm.font, W * 0.84, H * (nL > 1 ? 0.52 : 0.3), base), H * 0.2));
     const size = base.size;
     const gl = glyphPts(base), n = gl.length;
     const out = outK(env), inA = inE(env, 0.5);
@@ -501,10 +559,12 @@ J.register('layout', 'bounceLine', {
       if (tau < hd) { const u = tau / hd; return { h: 4 * u * (1 - u), sx: 0.94, sy: 1.08 }; }
       const k = Math.sin(Math.PI * (tau - hd) / sq); return { h: 0, sx: 1 + 0.2 * k, sy: 1 - 0.24 * k };
     };
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'bounceLine',base:{...base},gl};
     const start = 0.25;
     let bb = null;
     const lines = {};
     gl.forEach((g, i) => {
+      bGroup(env,'glyph-'+i);
       let tau = -1;
       const t = lt - start;
       if (t > -0.1) {
@@ -531,13 +591,14 @@ J.register('layout', 'bounceLine', {
         env.circle(0, 0, size * 0.34 * k * pr.sx, sc.sub, null, 0, 0.28 * k * out * inA, false);
         ctx.restore();
       }
-      const it = { text: g.ch, font: Pm.font, size, x: g.x, y: yb - size * 0.5 * pr.sy - pr.h * hopH, sx: pr.sx, sy: pr.sy,
+      const it = { placementSource: env.cut.placementLayoutsB?bSpan(env,i,i+1):undefined, text: g.ch, font: Pm.font, size, x: g.x, y: yb - size * 0.5 * pr.sy - pr.h * hopH, sx: pr.sx, sy: pr.sy,
         rot: Pm.tilt && pr.h > 0 ? Math.sin(tau / hd * Math.PI * 2) * 7 * (i % 2 ? 1 : -1) : 0,
         color: Pm.mode === 'beat' && pr.h > 0 ? sc.accent : sc.fg, mi: i };
-      bb = U(bb, J.mainDraw(env, it));
+      bb = U(bb, bMain(env, it));
     });
     const lw = Math.max(1.5, M * 0.0022);
     for (const k of Object.keys(lines)) {
+      bGroup(env,'baseline-'+k);
       const L = lines[k], pad = size * 0.35, x0 = L.x0 - pad, x1 = L.x1 + pad, y = L.y + size * 0.1;
       if (Pm.line === 'line') env.line([[x0, y], [J.lerp(x0, x1, inA), y]], sc.sub, lw, 0.7 * out, false);
       else if (Pm.line === 'dots') { const m = Math.max(4, Math.round((x1 - x0) / (size * 0.25))); for (let j = 0; j <= m; j++) if (j / m <= inA) env.circle(J.lerp(x0, x1, j / m), y, lw * 1.2, sc.sub, null, 0, 0.8 * out, false); }
@@ -558,18 +619,21 @@ J.register('layout', 'elastic', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
-    const vert = Pm.orient === 'v';
-    const txt = vert ? clean(cut.text) : String(cut.text).trim();
-    const ang = Pm.orient === 'diag' ? Pm.ang : 0;
+    const recipe=cut.placementLayoutsB?cut.layoutBRecipe:null,vert=Pm.orient==='v';
+    const txt = vert?clean(cut.text):String(cut.text).trim();
+    const ang = Pm.orient==='diag'?Pm.ang:0;
     const base = { text: txt, font: Pm.font, x: 0, y: 0, track: 0.08, vertical: vert };
     const avail = vert ? H * 0.58 : (W < H ? W * 0.7 : W * 0.62);
-    base.size = Math.min(J.fitSize(txt, Pm.font, vert ? W * 0.3 : avail, vert ? avail : H * 0.22, base), H * 0.2);
+    base.size = bSize(env,Math.min(J.fitSize(txt, Pm.font, vert ? W * 0.3 : avail, vert ? avail : H * 0.22, base), H * 0.2));
     const size = base.size;
     const gl = glyphPts(base), n = gl.length;
     if (!n) return null;
     const along = g => (vert ? g.y : g.x);
-    const a0 = along(gl[0]) - (vert ? gl[0].h : gl[0].w) / 2, a1 = along(gl[n - 1]) + (vert ? gl[n - 1].h : gl[n - 1].w) / 2;
+    const rowCount=1;
+    const a0 = along(gl[0])-(vert?gl[0].h:gl[0].w)/2,a1=along(gl[n-1])+(vert?gl[n-1].h:gl[n-1].w)/2;
     const gap = size * 0.85;
     const half = (a1 - a0) / 2 + gap;
     // spring: anchors fly out from the centre and overshoot
@@ -583,35 +647,36 @@ J.register('layout', 'elastic', {
     const A = size * Pm.amp * ampK * (lt < 0.45 ? 0 : 1);
     const wv = (u) => (tau < 0 ? 0 : A * Math.sin(Math.PI * u) * Math.cos(tau * 22) * Math.exp(-tau / 0.42));
     const cx = W / 2, cy = H / 2, cr = Math.cos(ang * J.DEG), sr = Math.sin(ang * J.DEG);
-    const P2 = (a, d) => (vert ? [cx + d, cy + a] : [cx + a * cr - d * sr, cy + a * sr + d * cr]);   // along / across → screen
+    const P2 = (a,d,row=0) => (vert?[cx+d,cy+a]:[cx+a*cr-d*sr,cy+a*sr+d*cr+(row-(rowCount-1)/2)*size*3.2]);   // along / across → screen
     const aA = -half * k, aB = half * k;
     const uOf = a => (a - aA) / Math.max(1, aB - aA);
     const out = outK(env), inA = inE(env, 0.3);
     // band segments (anchor → text end)
     const lw = Math.max(1.5, size * 0.03);
-    const seg = (from, to) => { const pts = []; for (let j = 0; j <= 12; j++) { const a = J.lerp(from, to, j / 12); pts.push(P2(a, wv(uOf(a)))); } return pts; };
+    const seg = (from, to,row=0) => { const pts = []; for (let j = 0; j <= 12; j++) { const a = J.lerp(from, to, j / 12); pts.push(P2(a, wv(uOf(a)),row)); } return pts; };
     const tA = a0 * k - size * 0.12, tB = a1 * k + size * 0.12;
-    env.line(seg(aA, tA), sc.sub, lw, 0.9 * out * inA, false);
-    env.line(seg(tB, aB), sc.sub, lw, 0.9 * out * inA, false);
+    for(let row=0;row<rowCount;row++){bGroup(env,'elastic-band-'+row);env.line(seg(aA,tA,row),sc.sub,lw,.9*out*inA,false);env.line(seg(tB,aB,row),sc.sub,lw,.9*out*inA,false);}
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'elastic',size,vert,ang,half,a0,a1,rowCount,text:txt,gl:gl.map(g=>({...g})),amp:Pm.amp};
     let bb = null;
     gl.forEach((g, i) => {
+      bGroup(env,'glyph-'+i);
       const a = along(g) * k, u = uOf(a);
       const d = wv(u), slope = (wv(u + 0.01) - wv(u - 0.01)) / (0.02 * Math.max(1, aB - aA));
-      const [x, y] = P2(a, d);
+      const [x, y] = P2(a,d,0);
       const st = J.clamp(k, 0.15, 1.6);
-      const it = { text: g.ch, font: Pm.font, size, x, y, vertical: vert, sx: vert ? 1 / Math.sqrt(st) : st, sy: vert ? st : 1 / Math.sqrt(st),
+      const it = { placementSource: env.cut.placementLayoutsB?bSpan(env,i,i+1):undefined, text: g.ch, font: Pm.font, size, x, y, vertical: vert, sx: vert ? 1 / Math.sqrt(st) : st, sy: vert ? st : 1 / Math.sqrt(st),
         rot: (vert ? -Math.atan(slope) : Math.atan(slope)) / J.DEG + ang, color: sc.fg, mi: i * 0.5 };
-      bb = U(bb, J.mainDraw(env, it));
+      bb = U(bb, bMain(env, it));
     });
     // anchors
     const R = Math.max(5, size * 0.1);
-    for (const a of [aA, aB]) {
-      const [x, y] = P2(a, 0);
+    for(let row=0;row<rowCount;row++)for (const a of [aA, aB]) {
+      bGroup(env,'elastic-anchor-'+row);const [x,y]=P2(a,0,row);
       const q = E.outBack(J.clamp(lt / 0.2), 2) * out;
       if (q <= 0) continue;
       if (Pm.anchor === 'dot') env.circle(x, y, R * q, sc.accent, null, 0, 1, true);
       else if (Pm.anchor === 'ring') { env.circle(x, y, R * 1.3 * q, null, sc.accent, lw * 1.3, 1, true); env.circle(x, y, R * 0.45 * q, sc.fg, null, 0, 1, false); }
-      else { const [px, py] = P2(a, -R * 3.2); env.line([[px, py], [x, y]], sc.fg, lw, q, false); env.circle(px, py, R * 0.9 * q, sc.accent, null, 0, 1, true); env.circle(x, y, R * 0.4 * q, sc.fg, null, 0, 1, false); }
+      else { const [px, py] = P2(a,-R*3.2,row); env.line([[px, py], [x, y]], sc.fg, lw, q, false); env.circle(px, py, R * 0.9 * q, sc.accent, null, 0, 1, true); env.circle(x, y, R * 0.4 * q, sc.fg, null, 0, 1, false); }
     }
     return bb;
   },
@@ -627,6 +692,8 @@ J.register('layout', 'crossBands', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H), lt = env.lt;
     const port = W < H;
     const ang = (port ? Pm.ang + 16 : Pm.ang);
@@ -639,6 +706,7 @@ J.register('layout', 'crossBands', {
     const per = J.measure({ text: unit, font: Pm.fb, size: fsz, track: 0.08 }).w;
     const reps = Math.min(40, Math.ceil(len * 1.2 / Math.max(1, per)) + 2);
     const outE = E.inCubic(env.pOut);
+    bRole(env,'tiledAux','bands');
     [0, 1].forEach(b => {
       const e = E.outExpo(J.clamp((lt - b * 0.08) / 0.5)) * (1 - outE);
       if (e <= 0) return;
@@ -648,13 +716,14 @@ J.register('layout', 'crossBands', {
       env.rect(x0, -bh / 2, L, bh, cols[b], 1, lt < 0.6);
       ctx.beginPath(); ctx.rect(x0, -bh / 2, L, bh); ctx.save(); ctx.clip();
       const off = ((env.ltb * Pm.speed * M * 0.12 * dir) % per + per) % per;
-      env.draw({ text: unit.repeat(reps), font: Pm.fb, size: fsz, track: 0.08, align: 'left', x: -len * 0.6 - per + off, y: 0, color: onCol(sc, cols[b]), ghost: false });
+      bDraw(env,{ text: unit.repeat(reps), font: Pm.fb, size: fsz, track: 0.08, align: 'left', x: -len * 0.6 - per + off, y: 0, color: onCol(sc, cols[b]), ghost: false });
       ctx.restore();
       ctx.restore();
     });
+    bRole(env);
     // lyric plate at the crossing
-    const mt = mainLines(cut.text, W, H, 9, 5);
-    const size = Math.min(J.fitSize(mt, Pm.font, W * (port ? 0.66 : 0.5), H * 0.24, { track: 0.04, lead: 1.12 }), H * 0.17);
+    const mt = bText(env,mainLines(cut.text, W, H, 9, 5));
+    const size = bSize(env,Math.min(J.fitSize(mt, Pm.font, W * (port ? 0.66 : 0.5), H * 0.24, { track: 0.04, lead: 1.12 }), H * 0.17));
     const mm = J.measure({ text: mt, font: Pm.font, size, track: 0.04, lead: 1.12 });
     const pw = mm.w + size * 0.9, ph = mm.h + size * 0.7;
     const q = E.outBack(J.clamp((lt - 0.1) / 0.28), 1.6) * (1 - outE);
@@ -667,7 +736,7 @@ J.register('layout', 'crossBands', {
       if (Pm.plate === 'double') { const o = lw * 2.6; env.rrect(-pw / 2 + o, -ph / 2 + o, pw - o * 2, ph - o * 2, 0, null, 1, false, sc.fg, lw * 0.5); }
       ctx.restore();
     }
-    return J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.04, lead: 1.12, color: sc.fg });
+    return bMain(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.04, lead: 1.12, color: sc.fg });
   },
 }, P);
 
@@ -694,10 +763,12 @@ J.register('layout', 'stickerBomb', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const port = W < H;
-    const mt = mainLines(cut.text, W, H, 8, 5);
-    const size = Math.min(J.fitSize(mt, Pm.font, W * (port ? 0.64 : 0.5), H * 0.26, { track: 0.03, lead: 1.1 }), H * (Pm.main === 'circle' || Pm.main === 'burst' ? 0.15 : 0.19));
+    const mt = bText(env,mainLines(cut.text, W, H, 8, 5));
+    const size = bSize(env,Math.min(J.fitSize(mt, Pm.font, W * (port ? 0.64 : 0.5), H * 0.26, { track: 0.03, lead: 1.1 }), H * (Pm.main === 'circle' || Pm.main === 'burst' ? 0.15 : 0.19)));
     const mm = J.measure({ text: mt, font: Pm.font, size, track: 0.03, lead: 1.1 });
     const pw = mm.w + size * 0.8, ph = mm.h + size * 0.6;
     const dark = J.lum(sc.bg) < 0.45;
@@ -740,15 +811,18 @@ J.register('layout', 'stickerBomb', {
       const a = (k / cnt) * J.TAU + J.rs(s, k, 4) * 0.35 + Pm.spin;
       let x = W / 2 + Math.cos(a) * (hw + w * 0.32), y = H / 2 + Math.sin(a) * (hh + h * 0.4);
       x = J.clamp(x, W * 0.05 + w / 2, W * 0.95 - w / 2); y = J.clamp(y, H * 0.06 + h / 2, H * 0.94 - h / 2);
-      items.push({ word, sh, fsz, w, h, x, y, rot: J.rs(s, k, 5) * 18, fill: fills[k % fills.length] === mainFill ? fills[(k + 1) % fills.length] : fills[k % fills.length], t0: 0.14 + k * 0.07 });
+      items.push({ index:k,word, sh, fsz, w, h, x, y, rot: J.rs(s, k, 5) * 18, fill: fills[k % fills.length] === mainFill ? fills[(k + 1) % fills.length] : fills[k % fills.length], t0: 0.14 + k * 0.07 });
     }
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'stickers',items:items.map(it=>({index:it.index,x:it.x,y:it.y,word:it.word,t0:it.t0,rot:it.rot})),size};
     for (const it of items) {
+      bGroup(env,'sticker-'+it.index);if(env.cut.placementLayoutsB)env.placementBMetadata={kind:'sticker-label',index:it.index,text:it.word};
       const q = slap(it.t0); if (!q) continue;
       drawSticker(it.x, it.y, it.rot, it.sh, it.w, it.h, it.fill, q, s);
       ctx.save(); ctx.translate(it.x, it.y); ctx.rotate((it.rot + q.r) * J.DEG); ctx.scale(q.s * grow, q.s * grow);
-      env.draw({ text: it.word, font: Pm.fs, size: it.fsz, track: 0.06, x: 0, y: 0, color: onCol(sc, it.fill), alpha: q.a * out, ghost: false });
+      bDraw(env,{ text: it.word, font: Pm.fs, size: it.fsz, track: 0.06, x: 0, y: 0, color: onCol(sc, it.fill), alpha: q.a * out, ghost: false });
       ctx.restore();
     }
+    bGroup(env,'main-sticker');if(env.cut.placementLayoutsB)env.placementBMetadata=null;
     // main sticker last (on top)
     const q = slap(0.02);
     if (!q) return null;
@@ -757,7 +831,7 @@ J.register('layout', 'stickerBomb', {
     if (sh === 'circle' || sh === 'burst') w = h = Math.max(pw, ph) * 1.02;
     drawSticker(W / 2, H / 2, Pm.rot, sh, w, h, mainFill, q, s);
     ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate((Pm.rot + q.r) * J.DEG); ctx.scale(q.s, q.s);
-    const lb = J.mainDraw(env, { text: mt, font: Pm.font, size, x: 0, y: 0, track: 0.03, lead: 1.1, color: onCol(sc, mainFill), noHold: plateHold(env) });
+    const lb = bMain(env, { text: mt, font: Pm.font, size, x: 0, y: 0, track: 0.03, lead: 1.1, color: onCol(sc, mainFill), noHold: plateHold(env) });
     ctx.restore();
     return lb ? bbRect(W / 2 - w / 2, H / 2 - h / 2, W / 2 + w / 2, H / 2 + h / 2) : null;
   },
@@ -774,10 +848,13 @@ J.register('layout', 'neon', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const mt = mainLines(cut.text, W, H, 9, 5);
     const base = { text: mt, font: Pm.font, x: W / 2, y: H / 2, track: 0.08, lead: 1.25 };
     base.size = Math.min(J.fitSize(mt, Pm.font, W * 0.72, H * 0.34, base), H * 0.19);
+    if(cut.layoutBRecipe&&cut.placementLayoutsB){base.text=bText(env,base.text);base.size=bSize(env,base.size);}
     const size = base.size;
     const dark = J.lum(sc.bg) < 0.45;
     const cand = Pm.tube === 'accent2' ? [sc.accent2, sc.accent, sc.fg] : Pm.tube === 'fg' ? [sc.fg, sc.accent] : [sc.accent, sc.accent2, sc.fg];
@@ -787,7 +864,7 @@ J.register('layout', 'neon', {
     const solid = (EN && EN.pieces && env.pIn < 1) || (EX && EX.pieces && env.pOut > 0);
     const gl = glyphPts(base);
     const tw = Math.max(1.5, size * (dark ? 0.05 : 0.06)), cw = Math.max(1, size * 0.018);
-    const glow = { color: J.rgba(tube, dark ? 0.95 : 0.55), blur: Math.min(60, size * (dark ? 0.24 : 0.14)) };
+    const glow = env.cut.placementLayoutsB ? null : { color: J.rgba(tube, dark ? 0.95 : 0.55), blur: Math.min(60, size * (dark ? 0.24 : 0.14)) };
     let bb = null;
     // ignition + occasional flicker (on the ≤24 Hz step clock)
     const on = (i, t0) => {
@@ -798,13 +875,15 @@ J.register('layout', 'neon', {
       return 1;
     };
     gl.forEach((g, i) => {
+      bGroup(env,'glyph-'+i);
       const t0 = 0.04 + J.r(s, i, 5) * 0.28;
       const k = on(i, t0);
       if (k <= 0) return;
-      const common = { text: g.ch, font: Pm.font, size, x: g.x, y: g.y, mi: i * 0.4 };
-      if (solid) { bb = U(bb, J.mainDraw(env, Object.assign(common, { color: tube, shadow: glow, alpha: k }))); return; }
-      const r = J.mainDraw(env, Object.assign({}, common, { fill: false, stroke: tw, strokeColor: tube, color: tube, shadow: k > 0.5 ? glow : null, alpha: k }));
-      J.mainDraw(env, Object.assign({}, common, { fill: false, stroke: cw, strokeColor: core, color: core, alpha: k > 0.5 ? 1 : 0.3, ghost: false }));
+      const common = { placementSource:env.cut.placementLayoutsB?bSpan(env,i,i+1):undefined,text: g.ch, font: Pm.font, size, x: g.x, y: g.y, mi: i * 0.4 };
+      if (solid) { bb = U(bb, bMain(env, Object.assign(common, { color: tube, shadow: glow, alpha: k }))); return; }
+      if(env.cut.placementLayoutsB)for(const [width,alpha]of [[.34,.05],[.22,.09],[.13,.16]])bMain(env,Object.assign({},common,{fill:false,stroke:size*width,strokeColor:tube,color:tube,alpha:k*alpha,ghost:false}));
+      const r = bMain(env, Object.assign({}, common, { fill: false, stroke: tw, strokeColor: tube, color: tube, shadow: k > 0.5 ? glow : null, alpha: k }));
+      bMain(env, Object.assign({}, common, { fill: false, stroke: cw, strokeColor: core, color: core, alpha: k > 0.5 ? 1 : 0.3, ghost: false }));
       bb = U(bb, r);
     });
     // neon frame
@@ -818,7 +897,7 @@ J.register('layout', 'neon', {
       if (Pm.frame === 'under') path.push([[x0 + px * 0.5, y1], [x1 - px * 0.5, y1]]);
       else if (Pm.frame === 'bracket') { const c = size * 0.5; path.push([[x0, y0 + c], [x0, y0], [x0 + c, y0]], [[x1 - c, y0], [x1, y0], [x1, y0 + c]], [[x1, y1 - c], [x1, y1], [x1 - c, y1]], [[x0 + c, y1], [x0, y1], [x0, y1 - c]]); }
       if (env.pass === 'main') {
-        ctx.save(); ctx.shadowColor = glow.color; ctx.shadowBlur = glow.blur * 0.8 * env.scale; ctx.lineCap = 'round';
+        ctx.save(); if(glow){ctx.shadowColor = glow.color; ctx.shadowBlur = glow.blur * 0.8 * env.scale;} ctx.lineCap = 'round';
         if (Pm.frame === 'box') env.rrect(x0, y0, x1 - x0, y1 - y0, size * 0.3, null, fk, false, tube, lw);
         else path.forEach(p => env.line(p, tube, lw, fk, false));
         ctx.restore();
@@ -834,8 +913,8 @@ J.register('layout', 'neon', {
         if (st) {
           const fs = J.clamp(size * 0.2, 12, 34);
           const c2 = [sc.accent2, sc.fg, sc.sub].find(c => c && c !== tube && J.contrast(c, sc.bg) >= 2) || sc.sub;
-          ctx.save(); ctx.shadowColor = J.rgba(c2, 0.9); ctx.shadowBlur = fs * 0.6 * env.scale;
-          env.draw({ text: st, font: monoF(env), size: fs, track: 0.3, x: (x0 + x1) / 2, y: y1 + fs * 1.6, color: c2, alpha: fk * on(98, 0.4), ghost: false });
+          ctx.save(); if(!env.cut.placementLayoutsB){ctx.shadowColor = J.rgba(c2, 0.9); ctx.shadowBlur = fs * 0.6 * env.scale;}
+          bDraw(env,{ text: st, font: monoF(env), size: fs, track: 0.3, x: (x0 + x1) / 2, y: y1 + fs * 1.6, color: c2, alpha: fk * on(98, 0.4), ghost: false });
           ctx.restore();
         }
       }
@@ -845,11 +924,12 @@ J.register('layout', 'neon', {
 }, P);
 
 /* rows of equal cells for per-glyph layouts: returns [{i, ch, x, y}] and the cell size */
-const cellRows = (chs, W, H, maxPerRow, cellAsp, maxK, gapK = 0.14, stagger = false) => {
-  const n = chs.length, rows = Math.ceil(n / maxPerRow), per = Math.ceil(n / rows);
+const cellRows = (chs, W, H, maxPerRow, cellAsp, maxK, gapK = 0.14, stagger = false, env = null) => {
+  const n = chs.length;let rows = Math.ceil(n / maxPerRow), per = Math.ceil(n / rows);
   const wk = per + (per - 1) * gapK + (stagger && rows > 1 ? 0.5 : 0);
   const hk = rows * cellAsp + (rows - 1) * gapK * 1.6;
-  const k = Math.min(W * 0.86 / wk, H * 0.7 / hk, maxK);
+  const nativeK = Math.min(W * 0.86 / wk, H * 0.7 / hk, maxK),recipe=env?.cut.placementLayoutsB?env.cut.layoutBRecipe:null;
+  let k=nativeK;if(recipe?.cellPer){per=recipe.cellPer;rows=Math.ceil(n/per);k=nativeK*recipe.fontScale;if(recipe.cellStagger===false)stagger=false;}
   const out = [];
   for (let i = 0; i < n; i++) {
     const r = Math.floor(i / per), j = i - r * per, cnt = Math.min(per, n - r * per);
@@ -857,6 +937,7 @@ const cellRows = (chs, W, H, maxPerRow, cellAsp, maxK, gapK = 0.14, stagger = fa
     const y = H / 2 + (r - (rows - 1) / 2) * k * (cellAsp + gapK * 1.6);
     out.push({ i, ch: chs[i], x, y, r, j });
   }
+  if(env?.cut.placementLayoutsB)env.placementBGeometry={kind:'cells',cells:out,k,nativeK,rows,per,cellAsp,gapK,stagger};
   return { cells: out, k, rows };
 };
 
@@ -871,11 +952,13 @@ J.register('layout', 'keycaps', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const chs = slotsOf(cut.text), n = chs.length;
     if (!n) return null;
     const port = W < H;
-    const { cells, k, rows } = cellRows(chs, W, H, port ? 4 : (n > 8 ? 5 : 10), 1.06, M * 0.26, 0.16, Pm.stagger);
+    const { cells, k, rows } = cellRows(chs, W, H, port ? 4 : (n > 8 ? 5 : 10), 1.06, M * 0.26, 0.16, Pm.stagger, env);
     const lightC = J.lum(sc.fg) > J.lum(sc.bg) ? sc.fg : sc.bg, darkC = lightC === sc.fg ? sc.bg : sc.fg;
     const d = k * 0.15, rr = k * 0.16;
     const out = outK(env);
@@ -885,11 +968,14 @@ J.register('layout', 'keycaps', {
     if (Pm.plate) {
       const e = inE(env, 0.35) * out;
       let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
-      for (const c of cells) { x0 = Math.min(x0, c.x - k / 2); x1 = Math.max(x1, c.x + k / 2); y0 = Math.min(y0, c.y - k / 2); y1 = Math.max(y1, c.y + k / 2 + d); }
+      for (const c of cells) {
+      bGroup(env,'cell-'+c.i); x0 = Math.min(x0, c.x - k / 2); x1 = Math.max(x1, c.x + k / 2); y0 = Math.min(y0, c.y - k / 2); y1 = Math.max(y1, c.y + k / 2 + d); }
+      bGroup(env,'backing');
       const p = k * 0.22;
       env.rrect(x0 - p, y0 - p, x1 - x0 + p * 2, (y1 - y0 + p * 2) * e, rr * 1.4, J.mix(sc.bg, darkC === sc.bg ? lightC : darkC, 0.1), 1, false, sc.sub, 1);
     }
     for (const c of cells) {
+      bGroup(env,'cell-'+c.i);
       if (c.ch === ' ') continue;
       const ti = 0.14 + c.i * gap;
       const q = E.outBack(J.clamp((lt - c.i * 0.025) / 0.2), 1.6);
@@ -917,12 +1003,13 @@ J.register('layout', 'keycaps', {
       env.rrect(-k / 2 + ins, -k / 2 + dy + ins * 0.35, k - ins * 2, k - ins * 2.1, rr * 0.7, top, out, false, Pm.style === 'dark' && !isA ? sc.sub : null, 1);
       if (Pm.legend && lt > ti) {
         const rom = J.romaji(c.ch);
-        if (rom) env.draw({ text: rom.toUpperCase(), font: monoF(env), size: k * 0.13, align: 'left', x: -k / 2 + ins * 1.9, y: -k / 2 + dy + ins * 1.7, color: leg, alpha: 0.7 * out, ghost: false });
+        if (rom) bDraw(env,{ text: rom.toUpperCase(), font: monoF(env), size: k * 0.13, align: 'left', x: -k / 2 + ins * 1.9, y: -k / 2 + dy + ins * 1.7, color: leg, alpha: 0.7 * out, ghost: false });
       }
       ctx.restore();
-      const it = { text: c.ch, font: Pm.font, size: k * 0.52, x: c.x, y: c.y - k * 0.03 + dy * q, color: leg, noHold: plateHold(env), mi: miAt(env, ti) };
-      if (q < 1) { it.size *= q; it.x = c.x; it.y = c.y + (it.y - c.y) * q; }
-      bb = U(bb, J.mainDraw(env, it));
+      const it = { placementSource:env.cut.placementLayoutsB?bSpan(env,bSlot(env,c.i),bSlot(env,c.i)+1):undefined,text: c.ch, font: Pm.font, size: k * 0.52, x: c.x, y: c.y - k * 0.03 + dy * q, color: leg, noHold: plateHold(env), mi: miAt(env, ti) };
+      if(cut.placementLayoutsB)Object.assign(it,{sx:Math.min(1,q),sy:Math.min(1,q),placementEffectiveSize:it.size*Math.min(1,q),placementContinuousFontScale:'keycap-glyph'});
+      if (q < 1) { if(!cut.placementLayoutsB)it.size *= q; it.x = c.x; it.y = c.y + (it.y - c.y) * q; }
+      bb = U(bb, bMain(env, it));
     }
     return bb;
   },
@@ -936,14 +1023,17 @@ J.register('layout', 'bubbles', {
     return { font: rng.pick(fontsOf(st, ['display', 'body'])), style: rng.pick(['soap', 'soap', 'solid', 'mixed']), rise: rng.range(0.018, 0.035), wob: rng.range(0.6, 1.2), motes: rng.chance(0.75) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const chs = slotsOf(cut.text), n = chs.length;
     if (!n) return null;
     const port = W < H;
-    const { cells, k } = cellRows(chs, W, H, port ? 4 : 7, 1.1, M * 0.3, 0.12, true);
+    const { cells, k } = cellRows(chs, W, H, port ? 4 : 7, 1.1, M * 0.3, 0.12, true, env);
     const out = outK(env), popK = 1 + 0.35 * E.outCubic(env.pOut);
     const lift = -H * Pm.rise * env.ltb;
     // background motes rising
+    bRole(env,'independentDecor','motes');
     if (Pm.motes) {
       for (let m = 0; m < 14; m++) {
         const sp = J.rr(0.05, 0.12, s, m, 1) * H, per = H * 1.2 / sp;
@@ -953,8 +1043,10 @@ J.register('layout', 'bubbles', {
         env.circle(x, y, r, null, sc.sub, Math.max(1, r * 0.12), 0.45 * out * inE(env, 0.5), false);
       }
     }
+    bRole(env);
     let bb = null;
     for (const c of cells) {
+      bGroup(env,'cell-'+c.i);
       if (c.ch === ' ') continue;
       const kind = J.isKanji(c.ch) ? 1 : J.isSmallKana(c.ch) || J.isPunct(c.ch) ? 0.7 : 0.86;
       const R = k * 0.5 * kind * (0.94 + 0.12 * J.r(s, c.i, 5));
@@ -964,7 +1056,7 @@ J.register('layout', 'bubbles', {
       const q = E.outBack(q0, 2.2);
       const ph = J.r(s, c.i, 7) * J.TAU;
       const x = c.x + Math.sin(env.ltb * 1.6 * Pm.wob + ph) * R * 0.1 + J.rs(s, c.i, 8) * k * 0.1;
-      const y = c.y + lift * (0.7 + 0.6 * J.r(s, c.i, 9)) + Math.cos(env.ltb * 1.2 + ph) * R * 0.06 + J.rs(s, c.i, 10) * k * 0.14;
+      const y = c.y + lift * (cut.placementLayoutsB&&cut.layoutBRecipe?.commonLift?1:(0.7 + 0.6 * J.r(s, c.i, 9))) + Math.cos(env.ltb * 1.2 + ph) * R * 0.06 + J.rs(s, c.i, 10) * k * 0.14;
       const solid = Pm.style === 'solid' || (Pm.style === 'mixed' && J.r(s, c.i, 11) < 0.4);
       const Rr = R * q * popK;
       let tc = sc.fg;
@@ -978,7 +1070,7 @@ J.register('layout', 'bubbles', {
         env.arc(x, y, Rr * 0.78, 200, 245, sc.fg, Math.max(1.5, R * 0.07), 0.9 * out, false);
         env.circle(x + Rr * 0.52, y - Rr * 0.52, Math.max(1.5, R * 0.05), sc.fg, null, 0, 0.9 * out, false);
       }
-      bb = U(bb, J.mainDraw(env, { text: c.ch, font: Pm.font, size: R * 1.05 * Math.min(1, q), x, y, color: tc, noHold: plateHold(env), mi: miAt(env, t0) }));
+      bb = U(bb, bMain(env, { placementSource:env.cut.placementLayoutsB?bSpan(env,bSlot(env,c.i),bSlot(env,c.i)+1):undefined,text: c.ch, font: Pm.font, size: R*1.05*(cut.placementLayoutsB?1:Math.min(1,q)),...(cut.placementLayoutsB?{sx:Math.min(1,q),sy:Math.min(1,q),placementEffectiveSize:R*1.05*Math.min(1,q),placementContinuousFontScale:'bubble-glyph'}:{}),x,y,color:tc, noHold: plateHold(env), mi: miAt(env, t0) }));
     }
     return bb;
   },
@@ -992,13 +1084,16 @@ J.register('layout', 'slotMachine', {
     return { font: rng.pick(fontsOf(st, ['display'])), style: rng.pick(['cabinet', 'window', 'cabinet']), v: rng.range(13, 18), line: rng.chance(0.7) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const chs = slotsOf(cut.text), n = chs.length;
     if (!n) return null;
     const port = W < H;
-    const { cells, k } = cellRows(chs, W, H, port ? 5 : 10, 1.34, M * 0.24, 0.1);
+    const { cells, k } = cellRows(chs, W, H, port ? 5 : 10, 1.34, M * 0.24, 0.1, false, env);
     const w = k, h = k * 1.34, step = k * 0.92, gsz = k * 0.7;
     const pool = poolOf(cut), NP = pool.length;
+    if(cut.placementLayoutsB)env.placementBGeometry.revealPool=pool.slice();
     const out = outK(env), inA = inE(env, 0.25);
     const gap = J.clamp(cut.dur * 0.3 / n, 0.08, 0.2);
     const t1 = J.clamp(cut.dur * 0.16, 0.2, 0.45);
@@ -1007,13 +1102,17 @@ J.register('layout', 'slotMachine', {
     const winC = cab ? onCol(sc, panel) === sc.bg ? sc.bg : J.mix(sc.bg, sc.fg, 0.06) : sc.bg;
     const glyC = J.contrast(sc.fg, winC) > 2.5 ? sc.fg : onCol(sc, winC);
     let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
-    for (const c of cells) { x0 = Math.min(x0, c.x - w / 2); x1 = Math.max(x1, c.x + w / 2); y0 = Math.min(y0, c.y - h / 2); y1 = Math.max(y1, c.y + h / 2); }
+    for (const c of cells) {
+      bGroup(env,'cell-'+c.i); x0 = Math.min(x0, c.x - w / 2); x1 = Math.max(x1, c.x + w / 2); y0 = Math.min(y0, c.y - h / 2); y1 = Math.max(y1, c.y + h / 2); }
+    bGroup(env,'cabinet');
     if (cab) { const p = k * 0.22; env.rrect(x0 - p, y0 - p, x1 - x0 + p * 2, y1 - y0 + p * 2, p * 1.2, panel, out * inA, gIn(env)); }
     let bb = null;
     for (const c of cells) {
+      bGroup(env,'cell-'+c.i);
       if (c.ch === ' ') continue;
       const ts = t1 + c.i * gap;
       const tau = ts - lt;
+      if(env.cut.placementLayoutsB)env.placementBReveal={kind:'reel',cellID:c.i,settle:ts,pool:pool.slice(),sourceGlyph:c.ch};
       const FIN = 1000;
       let p = tau > 0 ? FIN - Pm.v * tau : FIN + 0.22 * Math.sin(-tau * 30) * Math.exp(tau / 0.08);
       const wx = c.x - w / 2, wy = c.y - h / 2;
@@ -1026,11 +1125,11 @@ J.register('layout', 'slotMachine', {
         if (j === FIN && tau <= 0) continue;
         const ch = j === FIN ? c.ch : pool[J.h(s, c.i, j) % NP];
         if (fast) {                   // cheap motion blur: the same (cached) glyph smeared along the reel
-          for (const o of [-0.16, 0.16]) env.draw({ text: ch, font: Pm.font, size: gsz, x: c.x, y: y + o * step, color: glyC, alpha: 0.22 * out, ghost: false });
-          env.draw({ text: ch, font: Pm.font, size: gsz, x: c.x, y, color: glyC, alpha: 0.5 * out, ghost: false });
-        } else env.draw({ text: ch, font: Pm.font, size: gsz, x: c.x, y, color: glyC, alpha: 0.9 * out, ghost: false });
+          for (const o of [-0.16, 0.16]) bDraw(env,{ text: ch, font: Pm.font, size: gsz, x: c.x, y: y + o * step, color: glyC, alpha: 0.22 * out, ghost: false });
+          bDraw(env,{ text: ch, font: Pm.font, size: gsz, x: c.x, y, color: glyC, alpha: 0.5 * out, ghost: false });
+        } else bDraw(env,{ text: ch, font: Pm.font, size: gsz, x: c.x, y, color: glyC, alpha: 0.9 * out, ghost: false });
       }
-      if (tau <= 0) bb = U(bb, J.mainDraw(env, { text: c.ch, font: Pm.font, size: gsz, x: c.x, y: c.y + (FIN - p) * step, color: glyC, noHold: plateHold(env), mi: miAt(env, ts) }));
+      if (tau <= 0) bb = U(bb, bMain(env, { placementSource:env.cut.placementLayoutsB?bSpan(env,bSlot(env,c.i),bSlot(env,c.i)+1):undefined,text: c.ch, font: Pm.font, size: gsz, x: c.x, y: c.y + (FIN - p) * step, color: glyC, noHold: plateHold(env), mi: miAt(env, ts) }));
       ctx.restore();
       if (env.pass === 'main') {       // cylinder shading
         const g = ctx.createLinearGradient(0, wy, 0, wy + h);
@@ -1039,6 +1138,7 @@ J.register('layout', 'slotMachine', {
       }
       env.rrect(wx, wy, w, h, k * 0.06, null, out * inA, false, cab ? J.mix(panel, winC, 0.5) : sc.fg, Math.max(1.5, k * 0.02));
     }
+    bGroup(env,'payline');
     if (Pm.line) {
       const rowsY = [...new Set(cells.map(c => c.y))];
       for (const y of rowsY) {
@@ -1060,21 +1160,25 @@ J.register('layout', 'flipBoard', {
     return { font: rng.pick(fontsOf(st, ['display', 'body'])), header: rng.chance(0.65), flips: rng.int(3, 5), style: rng.pick(['ink', 'ink', 'fg']) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const chs = [...String(cut.text).trim()].filter(c => c !== '　'), n = chs.length;
     if (!n) return null;
     const port = W < H;
-    const { cells, k, rows } = cellRows(chs, W, H, port ? 5 : 12, 1.32, M * 0.24, 0.08);
+    const { cells, k, rows } = cellRows(chs, W, H, port ? 5 : 12, 1.32, M * 0.24, 0.08, false, env);
     const w = k, h = k * 1.32, gsz = k * 0.78;
     const panel = plateCol(sc, Pm.style === 'fg' ? [sc.fg, sc.ink] : [sc.ink, sc.fg]);
     const flap = J.mix(panel, sc.bg, 0.08), gc = onCol(sc, panel);
     const pool = poolOf(cut), NP = pool.length;
+    if(cut.placementLayoutsB)env.placementBGeometry.revealPool=pool.slice();
     const fd = 0.065, t0 = 0.06;
     const out = outK(env), inA = inE(env, 0.2);
     const lw = Math.max(1.5, k * 0.018);
     let bb = null;
     let x0 = 1e9, x1 = -1e9, y0 = 1e9;
     for (const c of cells) {
+      bGroup(env,'cell-'+c.i);
       x0 = Math.min(x0, c.x - w / 2); x1 = Math.max(x1, c.x + w / 2); y0 = Math.min(y0, c.y - h / 2);
       const q = E.outCubic(J.clamp((lt - c.i * 0.02) / 0.18)) * out;
       if (q <= 0) continue;
@@ -1082,13 +1186,14 @@ J.register('layout', 'flipBoard', {
       env.rrect(wx, wy, w, h, k * 0.07, panel, q, gIn(env));
       const F = Pm.flips + c.i % 3 + Math.floor(c.i * 0.7);
       const settle = t0 + F * fd;
+      if(env.cut.placementLayoutsB)env.placementBReveal={kind:'flap',cellID:c.i,flips:F,settle,pool:pool.slice(),sourceGlyph:c.ch};
       const space = c.ch === ' ';
       const chAt = (m) => (m <= 0 ? '' : m >= F ? c.ch : pool[J.h(s, c.i, m) % NP]);
       const u = (lt - t0) / fd;
       const g = { font: Pm.font, size: gsz, x: c.x, y: c.y, color: gc, ghost: false, alpha: q };
-      const half = (ch, top, sy) => { if (!ch || ch === ' ' || sy <= 0.01) return; env.draw(Object.assign({}, g, { text: ch, charFn: () => ({ clipY: top ? [-0.75, 0] : [0, 0.75], sy }) })); };
+      const half = (ch, top, sy) => { if (!ch || ch === ' ' || sy <= 0.01) return; bDraw(env,Object.assign({}, g, { text: ch, charFn: () => ({ clipY: top ? [-0.75, 0] : [0, 0.75], sy }) })); };
       if (lt >= settle) {
-        if (!space) bb = U(bb, J.mainDraw(env, { text: c.ch, font: Pm.font, size: gsz, x: c.x, y: c.y, color: gc, alpha: q, noHold: plateHold(env), mi: miAt(env, settle) }));
+        if (!space) bb = U(bb, bMain(env, { placementSource:env.cut.placementLayoutsB?bSpan(env,bFlat(chs.slice(0,c.i).join('')).length,bFlat(chs.slice(0,c.i+1).join('')).length):undefined,text: c.ch, font: Pm.font, size: gsz, x: c.x, y: c.y, color: gc, alpha: q, noHold: plateHold(env), mi: miAt(env, settle) }));
       } else if (u > 0) {
         const m = Math.floor(u), f = u - m;
         const A = chAt(m), B = chAt(m + 1);
@@ -1104,12 +1209,13 @@ J.register('layout', 'flipBoard', {
       env.rect(wx - lw * 0.6, c.y - h * 0.07, lw * 1.2, h * 0.14, J.mix(panel, sc.bg, 0.5), q, false);
       env.rect(wx + w - lw * 0.6, c.y - h * 0.07, lw * 1.2, h * 0.14, J.mix(panel, sc.bg, 0.5), q, false);
     }
+    bGroup(env,'header');if(env.cut.placementLayoutsB)env.placementBReveal=null;
     if (Pm.header) {
       const fs = J.clamp(k * 0.2, 12, 30);
       const lab = `LINE ${String((cut.line | 0) + 1).padStart(2, '0')}`, tm = J.fmtTime(cut.start);
       const a = inA * out;
-      env.draw({ text: lab, font: monoF(env), size: fs, track: 0.2, align: 'left', x: x0, y: y0 - fs * 1.4, color: sc.sub, alpha: a, ghost: false });
-      env.draw({ text: tm, font: monoF(env), size: fs, track: 0.2, align: 'right', x: x1, y: y0 - fs * 1.4, color: sc.accent, alpha: a, ghost: false });
+      bDraw(env,{ text: lab, font: monoF(env), size: fs, track: 0.2, align: 'left', x: x0, y: y0 - fs * 1.4, color: sc.sub, alpha: a, ghost: false });
+      bDraw(env,{ text: tm, font: monoF(env), size: fs, track: 0.2, align: 'right', x: x1, y: y0 - fs * 1.4, color: sc.accent, alpha: a, ghost: false });
     }
     return bb;
   },
@@ -1122,51 +1228,62 @@ J.register('layout', 'credits', {
     return { font: rng.pick(fontsOf(st, ['serif', 'display'])), fc: rng.pick(fontsOf(st, ['serif', 'body'])), variant: rng.pick(['center', 'center', 'side', 'single']), speed: rng.range(0.035, 0.06), off: rng.range(0, 10) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H);
     const port = W < H;
     const variant = port && Pm.variant === 'side' ? 'center' : Pm.variant;
     const side = variant === 'side';
-    const mt = mainLines(cut.text, W, H, side ? 6 : 10, 5);
-    const size = Math.min(J.fitSize(mt, Pm.font, side ? W * 0.44 : W * 0.72, H * 0.26, { track: 0.06, lead: 1.2 }), H * 0.16);
-    const mx = side ? W * 0.3 : W / 2;
+    const recipe=cut.placementLayoutsB?cut.layoutBRecipe:null, proof=env.placementEnvelope&&cut.placementLayoutsB;
+    const nativeMt = mainLines(cut.text, W, H, side ? 6 : 10, 5);
+    const nativeSize = Math.min(J.fitSize(nativeMt, Pm.font, side ? W * 0.44 : W * 0.72, H * 0.26, { track: 0.06, lead: 1.2 }), H * 0.16);
+    const mt=recipe?.mainText??nativeMt,size=recipe?.mainSize??nativeSize,mx=recipe?.mainX??(side ? W*.3:W/2);
     // credit rows
     const txt = clean(cut.text), rom = romaOf(txt);
-    const vals = [], seen = new Set();
-    const add = (r, v) => { v = String(v || '').trim(); if (v && !seen.has(v)) { seen.add(v); vals.push([r, v]); } };
+    const vals = [], seen = new Set(),rowOrigins=[];
+    const originCursors={};
+    const origin=(kind,field,raw,value,transform=null)=>{if(!cut.placementLayoutsB)return null;const text=String(value||'').trim(),chars=[...String(raw??'')],indices=[];let cursor=originCursors[kind]||0;if(!transform)for(const ch of [...text]){while(cursor<chars.length&&chars[cursor]!==ch)cursor++;indices.push(cursor++);}originCursors[kind]=cursor;return {kind,field,text,transform,originalCodepointOffsets:transform?chars.flatMap((ch,i)=>/\s/.test(ch)?[]:[i]):indices,sourceText:String(raw??''),supported:!!transform||indices.every(i=>i<chars.length)};};
+    const add = (r, v,source) => { v = String(v || '').trim(); if (v && !seen.has(v)) { seen.add(v); vals.push([r, v]);rowOrigins.push(source); } };
     const line = cut.lineText || cut.text;
-    add('詞', line);
-    J.chunkText(line).forEach((c, i) => add(i === 0 ? '語' : '', c));
-    (J.segments(line) || []).forEach(g => { if (J.glyphCount(g) >= 2) add('', g); });
-    if (rom) add('READING', rom);
-    if (cut.note) add('NOTE', cut.note);
-    add('LINE', String((cut.line | 0) + 1).padStart(2, '0'));
-    add('TIME', J.fmtTime(cut.start));
-    const fs = J.clamp(M * 0.026, 14, 36), rowH = fs * 2.3, block = vals.length * rowH + rowH * 2;
+    const lineField=cut.lineText?'cut.lineText':'cut.text';
+    add('詞', line,origin('line',lineField,line,line));
+    J.chunkText(line).forEach((c, i) => add(i === 0 ? '語' : '', c,origin('chunk',lineField,line,c)));
+    (J.segments(line) || []).forEach(g => {const source=origin('segment',lineField,line,g);if(J.glyphCount(g)>=2)add('',g,source);});
+    if (rom) add('READING', rom,origin('reading','cut.text',cut.text,rom,'romaji-uppercase'));
+    if (cut.note) add('NOTE', cut.note,origin('note','cut.note',cut.note,cut.note));
+    add('LINE', String((cut.line | 0) + 1).padStart(2, '0'),{kind:'generated-line',field:'cut.line',sourceValue:cut.line});
+    add('TIME', J.fmtTime(cut.start),{kind:'generated-time',field:'cut.start',sourceValue:cut.start});
+    const nativeFs=J.clamp(M*.026,14,36),fs=recipe?.creditSize??nativeFs,rowH=nativeFs*2.3,block=vals.length*rowH+rowH*2;
     const scroll = (env.ltb + Pm.off) * Pm.speed * H;
     const a0 = inE(env, 0.6) * outK(env);
-    const cx = side ? W * 0.74 : W / 2;
-    const bandH = side ? 0 : size * mt.split('\n').length * 1.25 / 2 + fs * 2.2;
+    const cx=recipe?.creditX??(side?W*.74:W/2);
+    const bandH=side?0:nativeSize*nativeMt.split('\n').length*1.25/2+nativeFs*2.2;
     const lw = Math.max(1, M * 0.0012);
-    for (let y = H * 1.05 - (scroll % block) - block * Math.ceil(H * 1.1 / block), rep = 0; y < H * 1.05 && rep < 12; y += block, rep++) {
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'credits',variant,rowOrigins,rows:vals.map(([label,value],i)=>({i,label,value})),nativeFs,rowH,block,speed:Pm.speed,off:Pm.off,nativeMainText:nativeMt,nativeMainSize:nativeSize,mainFont:Pm.font,creditFont:Pm.fc,repeatCap:12,signedRemainder:true,bandH};
+    const creditDraw=it=>bDraw(env,proof?{...it,placementSweep:{x0:it.x,x1:it.x,y0:H*.02+(it.y-H/2),y1:H*.98+(it.y-H/2)}}:it);
+    for (let y = H * 1.05 - (scroll % block) - block * Math.ceil(H * 1.1 / block), rep = 0; (proof||y < H * 1.05) && rep < 12; y += block, rep++) {
       vals.forEach(([r, v], i) => {
-        const yy = y + i * rowH;
-        if (yy < -rowH || yy > H + rowH) return;
+        bGroup(env,'credit-row-'+i);if(env.cut.placementLayoutsB)env.placementBMetadata={kind:'credit-record',rowID:i,rep,label:r,value:v,source:rowOrigins[i],nativeScroll:scroll,nativeBlock:block,normalizedScroll:((scroll%block)+block)%block/block};
+        const yy=proof?H/2:y+i*rowH;
+        if (!proof&&(yy < -rowH || yy > H + rowH)) return;
         const edge = J.smooth(H * 0.02, H * 0.14, yy) * J.smooth(H * 0.98, H * 0.86, yy);
-        const band = side ? 1 : J.smooth(bandH, bandH + fs * 2, Math.abs(yy - H / 2));
-        const a = a0 * edge * band;
+        const band = side ? 1 : J.smooth(bandH, bandH + nativeFs * 2, Math.abs(yy - H / 2));
+        const a=proof?1:a0*edge*band;
         if (a < 0.01) return;
         if (variant === 'single') {
-          if (r) env.draw({ text: r, font: monoF(env), size: fs * 0.62, track: 0.3, x: cx, y: yy - fs * 0.95, color: sc.sub, alpha: a * 0.8, ghost: false });
-          env.draw({ text: v, font: Pm.fc, size: fs, track: 0.12, x: cx, y: yy, color: sc.fg, alpha: a * 0.85, ghost: false });
+          if (r) creditDraw({ text: r, font: monoF(env), size: fs * 0.62, track: 0.3, x: cx, y: yy - fs * 0.95, color: sc.sub, alpha: a * 0.8, ghost: false });
+          creditDraw({ text: v, font: Pm.fc, size: fs, track: 0.12, x: cx, y: yy, color: sc.fg, alpha: a * 0.85, ghost: false });
         } else {
           const g = fs * 0.9;
-          if (r) env.draw({ text: r, font: /[A-Z]/.test(r) ? monoF(env) : Pm.fc, size: fs * 0.72, track: 0.25, align: 'right', x: cx - g, y: yy, color: sc.sub, alpha: a * 0.85, ghost: false });
-          env.draw({ text: v, font: Pm.fc, size: fs, track: 0.1, align: 'left', x: cx + g, y: yy, color: sc.fg, alpha: a * 0.85, ghost: false });
+          if (r) creditDraw({ text: r, font: /[A-Z]/.test(r) ? monoF(env) : Pm.fc, size: fs * 0.72, track: 0.25, align: 'right', x: cx - g, y: yy, color: sc.sub, alpha: a * 0.85, ghost: false });
+          creditDraw({ text: v, font: Pm.fc, size: fs, track: 0.1, align: 'left', x: cx + g, y: yy, color: sc.fg, alpha: a * 0.85, ghost: false });
         }
       });
     }
-    if (side) env.line([[W * 0.52, H * 0.2], [W * 0.52, H * 0.2 + H * 0.6 * inE(env, 0.8)]], sc.sub, lw, 0.5 * outK(env), false);
-    return J.mainDraw(env, { text: mt, font: Pm.font, size, x: mx, y: H / 2, track: 0.06, lead: 1.2, color: sc.fg });
+    bGroup(env,'credit-separator');
+    if (side) env.line([[recipe?.separatorX??W * 0.52, H * 0.2], [recipe?.separatorX??W * 0.52, H * 0.2 + H * 0.6 * inE(env, 0.8)]], sc.sub, lw, 0.5 * outK(env), false);
+    bGroup(env,'main');if(env.cut.placementLayoutsB){env.placementBMetadata=null;env.placementBReveal=null;}
+    return bMain(env, { text: mt, font: Pm.font, size, x: mx, y: H / 2, track: 0.06, lead: 1.2, color: sc.fg });
   },
 }, P);
 
@@ -1180,6 +1297,8 @@ J.register('layout', 'zoomRepeat', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H);
     const mt = mainLines(cut.text, W, H, 9, 5);
     const size = Math.min(J.fitSize(mt, Pm.font, W * 0.64, H * 0.3, { track: 0.03, lead: 1.1 }), H * 0.2);
@@ -1189,6 +1308,7 @@ J.register('layout', 'zoomRepeat', {
     const ph0 = env.ltb * Pm.speed * Pm.dir + (1 - e) * 1.5 * Pm.dir;
     const ph = ((ph0 % 1) + 1) % 1, base = Math.floor(ph0);
     const K = Math.min(9, Math.ceil(Lmax) + 1);
+    bRole(env,'tiledAux','zoom-copies');
     for (let k = K; k >= 0; k--) {
       const L = k + ph;
       if (L < 0.3 || L > Lmax) continue;
@@ -1200,10 +1320,11 @@ J.register('layout', 'zoomRepeat', {
       const it = { text: mt, font: Pm.font, size: fs, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, rot: Pm.twist * L, ghost: false };
       if (outline) Object.assign(it, { fill: false, stroke: Math.max(1.2, fs * 0.01), strokeColor: sc.sub, alpha: a * 0.75 });
       else Object.assign(it, { color: J.mix(sc.bg, sc.sub, 0.16), alpha: a });
-      env.draw(it);
+      bDraw(env,it);
     }
-    J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, fill: false, stroke: size * 0.2, strokeColor: sc.bg, ghost: false, plain: true });
-    return J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, color: sc.fg });
+    bRole(env);
+    bMain(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, fill: false, stroke: size * 0.2, strokeColor: sc.bg, ghost: false, plain: true, placementSource:env.cut.placementLayoutsB?bSpan(env,0,bFlat(cut.text).length,'knockout'):undefined });
+    return bMain(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.03, lead: 1.1, color: sc.fg });
   },
 }, P);
 
@@ -1215,12 +1336,15 @@ J.register('layout', 'splitHalves', {
     return { font: rng.pick(fontsOf(st, ['display', 'serif'])), variant: rng.pick(['slide', 'slide', 'shear', 'duo']), dir: rng.pick([1, -1]), line: rng.pick(['full', 'short']), gap: rng.pick([0.07, 0.1, 0.13]) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H), lt = env.lt;
-    const mt = mainLines(cut.text, W, H, 11, 5);
+    const mt = bText(env,mainLines(cut.text, W, H, 11, 5));
     const lines = mt.split('\n');
-    const size = Math.min(J.fitSize(mt, Pm.font, W * 0.84, H * 0.5, { track: 0.04, lead: 1.3 }), H * 0.24);
+    const size = bSize(env,Math.min(J.fitSize(mt, Pm.font, W * 0.84, H * 0.5, { track: 0.04, lead: 1.3 }), H * 0.24));
     const lead = size * 1.3 + (Pm.gap * size);
-    const D = W * 0.32;
+    const pathScale=cut.placementLayoutsB&&cut.layoutBRecipe?cut.layoutBRecipe.splitTravelScale:1,D=W*.32*pathScale;
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'split',mt,size,pathScale,lines:[]};
     const e = E.outExpo(J.clamp((lt - 0.04) / 0.7));
     const ex = E.inExpo(env.pOut);
     const lw = Math.max(1.5, size * 0.016);
@@ -1228,24 +1352,27 @@ J.register('layout', 'splitHalves', {
     lines.forEach((ln, li) => {
       const y = H / 2 + (li - (lines.length - 1) / 2) * lead;
       const m = J.measure({ text: ln, font: Pm.font, size, track: 0.04 });
+      if(cut.placementLayoutsB)env.placementBGeometry.lines.push({ln,y,width:m.w,half:Pm.line==='full'?W*.5:m.w/2+size*.7});
+      bGroup(env,'split-row-'+li);
       const dirL = Pm.dir * (li % 2 ? -1 : 1);
-      let off = D * (1 - e) + (Pm.variant === 'shear' ? size * 0.14 * e * (1 + 0.25 * Math.sin(env.ltb * 1.7)) : 0) + W * 0.4 * ex;
+      let off = D * (1 - e) + (Pm.variant === 'shear' ? size * 0.14 * e * (1 + 0.25 * Math.sin(env.ltb * 1.7)) : 0) + W * 0.4 * pathScale * ex;
       const g = Pm.gap * size / 2;
       [0, 1].forEach(h => {
         const dx = (h ? -1 : 1) * off * dirL;
         ctx.save(); ctx.beginPath();
         if (h === 0) ctx.rect(-W, y - size * 2 - g, W * 3, size * 2); else ctx.rect(-W, y + g, W * 3, size * 2);
         ctx.clip();
-        const it = { text: ln, font: Pm.font, size, x: W / 2 + dx, y: y + (h ? g : -g), track: 0.04, color: sc.fg, mi: li * 2 + h };
+        const start=bFlat(lines.slice(0,li).join('')).length;
+        const it = { placementSource:env.cut.placementLayoutsB?bSpan(env,start,start+bFlat(ln).length,'main',h?'lower':'upper'):undefined,text: ln, font: Pm.font, size, x: W / 2 + dx, y: y + (h ? g : -g), track: 0.04, color: sc.fg, mi: li * 2 + h };
         if (Pm.variant === 'duo' && h) Object.assign(it, { color: sc.accent });
-        const r = J.mainDraw(env, it);
+        const r = bMain(env, it);
         ctx.restore();
         if (r) bb = U(bb, r);
       });
       // the cut line
       const le = E.outExpo(J.clamp((lt - 0.1) / 0.6)) * (1 - E.inCubic(env.pOut));
       if (le > 0) {
-        const half = Pm.line === 'full' ? W * 0.5 : m.w / 2 + size * 0.7;
+        const half = Pm.line === 'full' ? W*.5:m.w/2+size*.7;
         env.line([[W / 2 - half * le, y], [W / 2 + half * le, y]], sc.accent, lw, 1, true);
         if (Pm.line === 'short') { env.circle(W / 2 - half * le, y, lw * 1.6, sc.accent, null, 0, 1, false); env.circle(W / 2 + half * le, y, lw * 1.6, sc.accent, null, 0, 1, false); }
       }
@@ -1261,15 +1388,17 @@ J.register('layout', 'columnsBig', {
     return { font: rng.pick(fontsOf(st, ['display', 'serif'])), fs: rng.pick(fontsOf(st, ['serif', 'body'])), side: rng.pick(['left', 'left', 'right']), rule: rng.chance(0.7), mark: rng.pick(['bar', 'dot', 'none']), off: rng.range(-0.05, 0.05) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H), lt = env.lt;
     const port = W < H;
     const txt = String(cut.text).trim().replace(/[\s\u3000]+/g, ' '), n = J.glyphCount(txt);
-    const size = Math.min(J.fitSize(txt, Pm.font, port ? W * 0.44 : W * 0.3, H * 0.84, { vertical: true, track: 0.02 }), H * 0.42);
+    const size = bSize(env,Math.min(J.fitSize(txt, Pm.font, port ? W * 0.44 : W * 0.3, H * 0.84, { vertical: true, track: 0.02 }), H * 0.42));
     const colH = J.measure({ text: txt, font: Pm.font, size, vertical: true, track: 0.02 }).h;
     const left = Pm.side === 'left';           // annotation columns on the left (read after the big column)
     const hx = W * (port ? (left ? 0.62 : 0.38) : (left ? 0.58 : 0.4)) + Pm.off * W;
     const top = H / 2 - colH / 2;
-    const bb = J.mainDraw(env, { text: txt, font: Pm.font, size, x: hx, y: H / 2, vertical: true, track: 0.02, color: sc.fg });
+    const bb = bMain(env, { text: txt, font: Pm.font, size, x: hx, y: H / 2, vertical: true, track: 0.02, color: sc.fg });
     const fs = J.clamp(M * 0.031, 14, 44);
     const perCol = Math.max(4, Math.floor(colH * 0.92 / (fs * 1.08)));
     const line = String(cut.lineText || cut.text).replace(/\s+/g, '');
@@ -1285,8 +1414,8 @@ J.register('layout', 'columnsBig', {
     const out = outK(env);
     const c1 = J.glyphCount(lineT);
     // column block: multi-line vertical text grows right→left from its first column
-    env.draw({ text: lineT, font: Pm.fs, size: fs, vertical: true, align: 'left', lead: 1.7, track: 0.06, x: x1 + sgn * (nL - 1) * fs * 0.85, y: top, color: sc.fg, alpha: 0.9 * out, ghost: false, charFn: reveal(0.18, c1) });
-    env.draw({ text: sub2, font: rom ? monoF(env) : Pm.fs, size: fs * 0.72, vertical: true, align: 'left', track: 0.18, x: x2, y: top, color: sc.sub, alpha: 0.9 * out, ghost: false, charFn: reveal(0.35, J.glyphCount(sub2) + 2) });
+    bDraw(env,{ text: lineT, font: Pm.fs, size: fs, vertical: true, align: 'left', lead: 1.7, track: 0.06, x: x1 + sgn * (nL - 1) * fs * 0.85, y: top, color: sc.fg, alpha: 0.9 * out, ghost: false, charFn: reveal(0.18, c1) });
+    bDraw(env,{ text: sub2, font: rom ? monoF(env) : Pm.fs, size: fs * 0.72, vertical: true, align: 'left', track: 0.18, x: x2, y: top, color: sc.sub, alpha: 0.9 * out, ghost: false, charFn: reveal(0.35, J.glyphCount(sub2) + 2) });
     const lw = Math.max(1, M * 0.0014);
     if (Pm.rule) {
       const rx = hx + sgn * (size * 0.5 + fs * 0.85);
@@ -1359,15 +1488,16 @@ J.register('layout', 'circleWords', {
 }, P);
 
 /* ================================================================== 20 dotMatrix — ドット表示 */
-const _dm = new Map(), _dmGrid = new Map();
+const _dm = new Map(), _dmB = new Map(), _dmGrid = new Map();
+let _dmBRevision = -1;
 let _dmCv = null;
 /* the unlit LED grid: one cached dot tile per colour/shape, laid down as a pattern aligned to the grid */
-const dotTile = (col, shape) => {
-  const key = col + '|' + shape;
+const dotTile = (col, shape, nativeB = false) => {
+  const key = col + '|' + shape + (nativeB?'|B-readback':'');
   let t = _dmGrid.get(key);
   if (t) return t;
   const T = 64, cv = document.createElement('canvas'); cv.width = cv.height = T;
-  const x = cv.getContext('2d'); x.fillStyle = col; x.beginPath();
+  const x = cv.getContext('2d',nativeB?{willReadFrequently:true}:undefined); x.fillStyle = col; x.beginPath();
   const rr = T * (shape === 'round' ? 0.38 : 0.4);
   if (shape === 'round') x.arc(T / 2, T / 2, rr, 0, J.TAU); else x.rect(T / 2 - rr, T / 2 - rr, rr * 2, rr * 2);
   x.fill();
@@ -1375,9 +1505,10 @@ const dotTile = (col, shape) => {
   t = { cv, T }; _dmGrid.set(key, t);
   return t;
 };
-const dotSample = (mt, font, D, lead) => {
-  const key = mt + '|' + font + '|' + D + '|' + lead;
-  let r = _dm.get(key);
+const dotSample = (mt, font, D, lead, nativeB = false) => {
+  const revision=J.metrics.revision||0;if(nativeB&&_dmBRevision!==revision){_dmB.clear();_dmBRevision=revision;}const cache=nativeB?_dmB:_dm;
+  const key = mt + '|' + font + '|' + D + '|' + lead + (nativeB?'|B-font:'+JSON.stringify([revision,J.lang,J.fontCSS(font,D*4*.94),[...new Set(mt)].map(ch=>J.fontCSS(font,D*4*.94,ch))]):'');
+  let r = cache.get(key);
   if (r) return r;
   const SS = 4, fpx = D * SS * 0.94;
   const lay = J.layoutText({ text: mt, font, size: fpx, lead });
@@ -1397,8 +1528,8 @@ const dotSample = (mt, font, D, lead) => {
     if (a / (SS * SS * 255) > 0.38) lit.push(c0, r0);
   }
   r = { cols, rows, lit, fscale: 0.94 * D, D };
-  if (_dm.size > 40) _dm.clear();
-  _dm.set(key, r);
+  if (cache.size > 40) cache.clear();
+  cache.set(key, r);
   return r;
 };
 J.register('layout', 'dotMatrix', {
@@ -1408,13 +1539,16 @@ J.register('layout', 'dotMatrix', {
     return { font: rng.pick(['dot', 'gothic_black', 'dot']), reveal: rng.pick(['sweep', 'sweep', 'scroll', 'random']), panel: rng.chance(0.7), col: rng.pick(['accent', 'accent', 'fg']), shape: rng.pick(['round', 'round', 'square']) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
-    const mt = mainLines(cut.text, W, H, 8, 4);
+    const mt = bText(env,mainLines(cut.text, W, H, 8, 4));
     const lines = mt.split('\n'), maxL = Math.max(...lines.map(l => J.glyphCount(l) || 1));
-    const D = J.clamp(Math.floor(W * 0.86 / (maxL * M * 0.011)), 10, 16);
+    const D = cut.placementLayoutsB&&cut.layoutBRecipe?.dotD?cut.layoutBRecipe.dotD:J.clamp(Math.floor(W * 0.86 / (maxL * M * 0.011)), 10, 16);
     const lead = 1.3;
-    const smp = dotSample(mt, Pm.font, D, lead);
-    const p = Math.min(W * 0.88 / smp.cols, H * 0.62 / smp.rows);
+    const smp = dotSample(mt, Pm.font, D, lead,cut.placementLayoutsB===true);
+    const p = cut.placementLayoutsB&&cut.layoutBRecipe?.dotPitch?cut.layoutBRecipe.dotPitch*cut.layoutBRecipe.fontScale:Math.min(W * 0.88 / smp.cols, H * 0.62 / smp.rows);
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'dotMatrix',D,p,smp,mt,font:Pm.font};
     const gw = smp.cols * p, gh = smp.rows * p, gx = W / 2 - gw / 2, gy = H / 2 - gh / 2;
     const dark = J.lum(sc.bg) < 0.45;
     const panel = Pm.panel ? (dark ? J.mix(sc.bg, sc.fg, 0.05) : (J.lum(sc.fg) < J.lum(sc.ink) ? sc.fg : sc.ink)) : sc.bg;
@@ -1426,7 +1560,7 @@ J.register('layout', 'dotMatrix', {
     if (env.pass !== 'main') return null;          // the LED panel carries no chromatic ghosts (and it keeps the clip cheap)
     if (out > 0) {
       if (Pm.panel) { const pd = p * 1.2; env.rrect(gx - pd, gy - pd, gw + pd * 2, gh + pd * 2, p * 1.2, panel, inA * out, false, J.mix(panel, litC, 0.3), Math.max(1, p * 0.12)); }
-      const tile = dotTile(offC, Pm.shape), fr = J.clamp(lt / 0.3);
+      const tile = dotTile(offC, Pm.shape, cut.placementLayoutsB===true), fr = J.clamp(lt / 0.3);
       if (fr > 0) {
         const pat = ctx.createPattern(tile.cv, 'repeat');
         let ok = true;
@@ -1452,7 +1586,7 @@ J.register('layout', 'dotMatrix', {
     if (!any) ctx.rect(-10, -10, 1, 1);
     ctx.clip();
     const fsz = smp.fscale * p;
-    const bb = J.mainDraw(env, { text: mt, font: Pm.font, size: fsz, x: W / 2 + shift * p, y: H / 2, lead, color: litC, stroke: p * 0.9, strokeColor: litC, strokeUnder: true, noHold: true, ghost: false, mi: miAt(env, t0) });
+    const bb = bMain(env, { text: mt, font: Pm.font, size: fsz, x: W / 2 + shift * p, y: H / 2, lead, color: litC, stroke: p * 0.9, strokeColor: litC, strokeUnder: true, noHold: true, ghost: false, mi: miAt(env, t0) });
     ctx.restore();
     // bright scan column at the sweep front
     if (Pm.reveal === 'sweep' && u > 0 && u < 1) {
@@ -1473,16 +1607,20 @@ J.register('layout', 'depthStack', {
     return { font: rng.pick(fontsOf(st, ['display', 'serif'])), ang: a, copies: rng.int(5, 8), dist: rng.range(0.42, 0.62), style: rng.pick(['outline', 'outline', 'dim', 'lines']), sway: rng.chance(0.7) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H), lt = env.lt;
-    const mt = mainLines(cut.text, W, H, 9, 5);
-    const size = Math.min(J.fitSize(mt, Pm.font, W * 0.66, H * 0.3, { track: 0.03, lead: 1.1 }), H * 0.2);
+    const mt = bText(env,mainLines(cut.text, W, H, 9, 5));
+    const size = bSize(env,Math.min(J.fitSize(mt, Pm.font, W * 0.66, H * 0.3, { track: 0.03, lead: 1.1 }), H * 0.2));
     const a = Pm.ang * J.DEG, dx = Math.cos(a), dy = Math.sin(a);
     const cx = W / 2 - dx * M * 0.05, cy = H / 2 - dy * M * 0.05;
-    let vx = cx + dx * M * Pm.dist, vy = cy + dy * M * Pm.dist;
+    const pathScale=cut.placementLayoutsB&&cut.layoutBRecipe?cut.layoutBRecipe.depthPathScale||1:1;
+    let vx = cx + dx * M * Pm.dist*pathScale, vy = cy + dy * M * Pm.dist*pathScale;
     if (Pm.sway) { vx += Math.sin(env.ltb * 0.7) * M * 0.05; vy += Math.cos(env.ltb * 0.55) * M * 0.035; }
     const N = Pm.copies, e = E.outCubic(J.clamp(lt / 0.7)), out = 1 - E.inCubic(env.pOut);
     const depth = e * out;
     const mm = J.measure({ text: mt, font: Pm.font, size, track: 0.03, lead: 1.1 });
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'depthStack',mt,size,cx,cy,dx,dy,dist:Pm.dist*pathScale,mm,copies:N,sway:Pm.sway};
     if (Pm.style === 'lines' && depth > 0.01) {
       const sN = 1 / (1 + N * 0.26 * depth);
       for (const [ox, oy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
@@ -1492,16 +1630,18 @@ J.register('layout', 'depthStack', {
       }
     }
     for (let k = N; k >= 1; k--) {
+      bGroup(env,'depth-'+k);
       const s1 = 1 / (1 + k * 0.26 * depth);
       if (depth <= 0.001) break;
       const x = J.lerp(cx, vx, 1 - s1), y = J.lerp(cy, vy, 1 - s1);
       const f = k / N;
-      const it = { text: mt, font: Pm.font, size: size * s1, x, y, track: 0.03, lead: 1.1, ghost: false };
+      const it = { placementSource:env.cut.placementLayoutsB?bSpan(env,0,bFlat(cut.text).length,'depth-'+k):undefined,text: mt, font:Pm.font,size:cut.placementLayoutsB?size:size*s1,...(cut.placementLayoutsB?{sx:s1,sy:s1,placementEffectiveSize:size*s1,placementContinuousFontScale:'depth-copy'}:{}),x,y,track:.03,lead:1.1,ghost:false };
       if (Pm.style === 'dim') Object.assign(it, { color: J.mix(sc.bg, sc.sub, 0.55 - 0.4 * f), alpha: out });
       else Object.assign(it, { fill: false, stroke: Math.max(1, size * s1 * 0.014), strokeColor: k === 1 ? sc.accent : sc.sub, alpha: (0.85 - 0.6 * f) * out });
-      env.draw(it);
+      bDraw(env,it);
     }
-    return J.mainDraw(env, { text: mt, font: Pm.font, size, x: cx, y: cy, track: 0.03, lead: 1.1, color: sc.fg });
+    bGroup(env,'main');if(env.cut.placementLayoutsB){env.placementBMetadata=null;env.placementBReveal=null;}
+    return bMain(env, { text: mt, font: Pm.font, size, x: cx, y: cy, track: 0.03, lead: 1.1, color: sc.fg });
   },
 }, P);
 
@@ -1517,11 +1657,14 @@ J.register('layout', 'typeSpecimen', {
     return { main, fonts: pool.slice(0, 6), grid: port ? 'list' : rng.pick(['g2', 'g3', 'list']), num: rng.int(1, 30) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H), lt = env.lt;
     const txt = String(cut.text).trim();
     const out = outK(env);
     const lw = Math.max(1, M * 0.0014);
-    const cap = J.clamp(M * 0.017, 11, 24);
+    const recipe=cut.placementLayoutsB?cut.layoutBRecipe:null,proof=env.placementEnvelope&&cut.placementLayoutsB;
+    const cap=recipe?.captionSize??J.clamp(M*.017,11,24);
     const mono = monoF(env);
     const cells = [];                 // {x, y, w, h, font, main}
     const mx = W * 0.07, my = H * 0.1, gw = W - mx * 2, gh = H - my * 2;
@@ -1540,23 +1683,29 @@ J.register('layout', 'typeSpecimen', {
       let y = my;
       hs.forEach((hh, i) => { const h = gh * hh / tot; cells.push({ x: mx, y, w: gw, h, font: i === 0 ? Pm.main : Pm.fonts[i - 1], main: i === 0 }); y += h; });
     }
+    if(recipe?.specimenCells)cells.forEach((c,i)=>Object.assign(c,recipe.specimenCells[i]));
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'typeSpecimen',grid:Pm.grid,num:Pm.num,cells:cells.map((c,i)=>({i,font:c.font,main:c.main,delay:.06+i*.07})),captionSize:cap};
     let bb = null;
     cells.forEach((c, i) => {
+      bGroup(env,'specimen-'+i);if(env.cut.placementLayoutsB)env.placementBMetadata={kind:'font-label',index:i,font:c.font};
       const d = 0.06 + i * 0.07;
-      const e = E.outCubic(J.clamp((lt - d) / 0.4)) * out;
+      const e=proof?1:E.outCubic(J.clamp((lt-d)/.4))*out;
       if (e <= 0) return;
       // rule on top of each cell + caption
-      env.line([[c.x, c.y], [c.x + c.w * E.outExpo(J.clamp((lt - d) / 0.5)), c.y]], c.main ? sc.accent : sc.sub, c.main ? lw * 3 : lw, (c.main ? 1 : 0.6) * out, false);
+      env.line([[c.x, c.y], [c.x + c.w * (proof?1:E.outExpo(J.clamp((lt-d)/.5))), c.y]], c.main ? sc.accent : sc.sub, c.main ? lw * 3 : lw, (c.main ? 1 : 0.6) * out, false);
       const F = (J.FONTS[c.font] && J.faceOf ? J.faceOf(c.font) : J.FONTS[c.font]) || {};   // the face actually drawn (lyric language)
-      const label = `${String(Pm.num + i).padStart(2, '0')}  ${(F.name || F.label || c.font).toUpperCase()}  ${F.weight || ''}`;
-      env.draw({ text: label, font: mono, size: cap, align: 'left', track: 0.08, x: c.x, y: c.y + cap * 1.1, color: c.main ? sc.accent : sc.sub, alpha: e, ghost: false });
+      let label = `${String(Pm.num + i).padStart(2, '0')}  ${(F.name || F.label || c.font).toUpperCase()}  ${F.weight || ''}`;
+      if(recipe)label=J.placement.layoutsBEditorial.wrapLabel(label,mono,cap,c.w);
+      const labelH=J.measure({text:label,font:mono,size:cap,track:.08}).h;
+      bDraw(env,{ text: label, font: mono, size: cap, align: 'left', track: 0.08, x: c.x, y:recipe?c.y+cap*.4+labelH/2:c.y+cap*1.1, color: c.main ? sc.accent : sc.sub, alpha: e, ghost: false });
       const list = Pm.grid === 'list';
-      const tw = list ? c.w * (c.main ? 1 : 0.8) : c.w * 0.9, th = c.h - cap * (list ? 1.8 : 2.8);
-      const fsz = Math.min(J.fitSize(txt, c.font, tw, th * (list ? 0.78 : 0.7), { track: 0.02 }), c.main ? H * 0.3 : H * 0.14);
-      const it = { text: txt, font: c.font, size: fsz, track: 0.02, x: list ? c.x : c.x + c.w / 2, y: c.y + cap * (list ? 1.8 : 2.2) + th / 2, align: list ? 'left' : 'center', color: sc.fg };
-      if (list && !c.main) { it.x = c.x + c.w * 0.2; it.y = c.y + c.h / 2 + cap * 0.3; }
-      if (c.main) bb = J.mainDraw(env, it);
-      else env.draw(Object.assign(it, { color: sc.sub, alpha: e * 0.9, y: it.y + (1 - e) * cap * 1.5, ghost: false }));
+      const tw = list ? c.w * (c.main ? 1 : 0.8) : c.w * 0.9, th = recipe?c.h-labelH-cap*2.1:c.h-cap*(list?1.8:2.8);
+      const fsz = c.textSize??Math.min(J.fitSize(txt, c.font, tw, th * (list ? 0.78 : 0.7), { track: 0.02 }), c.main ? H * 0.3 : H * 0.14);
+      const it = { placementSource:env.cut.placementLayoutsB?bSpan(env,0,bFlat(cut.text).length,'specimen-'+i):undefined,text: txt, font: c.font, size: fsz, track: 0.02, x: list ? c.x : c.x + c.w / 2, y:recipe?c.y+labelH+cap*.6+th/2:c.y+cap*(list?1.8:2.2)+th/2, align: list ? 'left' : 'center', color: sc.fg };
+      if(recipe){it.x=c.textX;it.y=c.textY;it.align='center';}
+      if (list && !c.main && !recipe) { it.x = c.x + c.w * 0.2; it.y = c.y + c.h / 2 + cap * 0.3; }
+      if (c.main) bb = bMain(env, it);
+      else bDraw(env,Object.assign(it, { color: sc.sub, alpha: e * 0.9, y: it.y + (1 - e) * cap * 1.5, ghost: false }));
     });
     return bb;
   },
@@ -1569,6 +1718,8 @@ J.register('layout', 'kanjiFocus', {
     return { font: rng.pick(fontsOf(st, ['display', 'serif'])), fs: rng.pick(fontsOf(st, ['serif', 'display', 'body'])), mode: rng.pick(['dim', 'outline', 'tint']), pos: rng.pick(['center', 'side', 'side']), low: rng.chance(0.45), dots: rng.chance(0.7), dir: rng.pick([1, -1]) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H), lt = env.lt;
     const port = W < H;
     const raw = String(cut.text).trim();
@@ -1578,27 +1729,32 @@ J.register('layout', 'kanjiFocus', {
     if (fi < 0) fi = 0;
     const fch = chs[fi];
     // the huge background glyph
-    const big = port ? W * 1.05 : H * 1.02;
+    const recipe=cut.placementLayoutsB?cut.layoutBRecipe:null,nativeBig=port?W*1.05:H*1.02,big=nativeBig*(recipe?recipe.fontScale:1);
     const side = !port && Pm.pos === 'side';
-    const bx = side ? W / 2 + Pm.dir * W * 0.2 : W / 2, by = H / 2;
+    const clusterScale=recipe?recipe.fontScale:1,nativeBx=side?W/2+Pm.dir*W*.2:W/2;
+    const bx = W/2+(nativeBx-W/2)*clusterScale, by = H / 2;
     const u = J.clamp(lt / Math.max(0.5, cut.dur));
     const e = E.outCubic(J.clamp(lt / 0.8)), out = outK(env);
     const sz = big * (1.08 - 0.08 * E.outCubic(u)) * (1 + 0.04 * E.inCubic(env.pOut));
-    const bi = { text: fch, font: Pm.font, size: sz, x: bx, y: by, ghost: false, alpha: e * out };
+    const focusIndex=bFlat(chs.slice(0,fi).join('')).length;
+    const bi = { placementSource:env.cut.placementLayoutsB?bSpan(env,focusIndex,focusIndex+1,'focus'):undefined,text:fch,font:Pm.font,size:cut.placementLayoutsB?big:sz,...(cut.placementLayoutsB?{sx:sz/big,sy:sz/big,placementEffectiveSize:sz,placementContinuousFontScale:'focus-giant'}:{}),x:bx, y: by, ghost: false, alpha: e * out };
     if (Pm.mode === 'dim') bi.color = J.mix(sc.bg, sc.fg, 0.13);
     else if (Pm.mode === 'tint') bi.color = J.mix(sc.bg, sc.accent, 0.22);
     else Object.assign(bi, { fill: false, stroke: Math.max(1.2, sz * 0.004), strokeColor: sc.sub, alpha: e * out * 0.7 });
-    env.draw(bi);
+    bDraw(env,bi);
     // the full lyric, small, over it
     const mt = mainLines(raw, W, H, 16, 8);
-    const base = { text: mt, font: Pm.fs, x: side ? W / 2 - Pm.dir * W * 0.12 : W / 2, y: Pm.low ? H * 0.74 : H / 2, track: 0.14, lead: 1.5 };
-    base.size = Math.min(J.fitSize(mt, Pm.fs, side ? W * 0.44 : W * 0.7, H * 0.2, base), M * 0.075);
+    const nativeMainX=side?W/2-Pm.dir*W*.12:W/2,nativeMainY=Pm.low?H*.74:H/2;
+    const base = { text: mt, font: Pm.fs, x: W/2+(nativeMainX-W/2)*clusterScale, y: H/2+(nativeMainY-H/2)*clusterScale, track: 0.14, lead: 1.5 };
+    base.size = bSize(env,Math.min(J.fitSize(mt, Pm.fs, side ? W * 0.44 : W * 0.7, H * 0.2, base), M * 0.075));
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'kanjiFocus',big,nativeBig,bx,by,nativeBx,nativeMainX,nativeMainY,clusterScale,stageCenter:[W/2,H/2],fch,focusIndex,font:Pm.font,base:{...base},giantMainRatio:big/base.size};
     const gl = glyphPts(base);
     let bb = null;
     let k = 0;
     gl.forEach((g, i) => {
+      bGroup(env,'glyph-'+i);
       const isF = i === fi - [...raw.slice(0, fi)].filter(c => c === ' ' || c === '　').length;
-      bb = U(bb, J.mainDraw(env, { text: g.ch, font: Pm.fs, size: base.size, x: g.x, y: g.y, color: isF ? sc.accent : sc.fg, mi: i * 0.6 }));
+      bb = U(bb, bMain(env, { placementSource: env.cut.placementLayoutsB?bSpan(env,i,i+1):undefined, text: g.ch, font: Pm.fs, size: base.size, x: g.x, y: g.y, color: isF ? sc.accent : sc.fg, mi: i * 0.6 }));
       if (isF && Pm.dots) {
         const q = E.outBack(J.clamp((lt - 0.35) / 0.25), 2) * out;
         env.circle(g.x, g.y - base.size * 0.78, base.size * 0.075 * q, sc.accent, null, 0, 1, true);
@@ -1621,6 +1777,8 @@ J.register('layout', 'halfVertical', {
     return { font: rng.pick(fontsOf(st, ['display', 'serif'])), shape: rng.pick(['rowCol', 'rowCol', 'colRow']), guide: rng.pick(['bracket', 'tick', 'bracket']) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H), lt = env.lt;
     const txt = String(cut.text).trim().replace(/[\s\u3000]+/g, ' '), arr = [...txt], n = arr.length;
     const rowCol = Pm.shape === 'rowCol', port = W < H;
@@ -1646,7 +1804,7 @@ J.register('layout', 'halfVertical', {
     // extent in 'size' units
     const wU = rowCol ? mA.w / 100 : 1.25 + mB.w / 100;
     const hU = rowCol ? 1.25 + mB.h / 100 : mA.h / 100;
-    const size = Math.min(W * 0.82 / wU, H * 0.8 / hU, M * 0.26);
+    const size = bSize(env,Math.min(W * 0.82 / wU, H * 0.8 / hU, M * 0.26));
     const x0 = W / 2 - wU * size / 2, y0 = H / 2 - hU * size / 2;
     let bb = null;
     const out = outK(env);
@@ -1654,14 +1812,14 @@ J.register('layout', 'halfVertical', {
     if (rowCol) {
       const itA = { text: A, font: Pm.font, size, x: x0, y: y0 + size / 2, align: 'left', track: tr, color: sc.fg, mi: 0 };
       const gA = glyphPts(itA), last = gA[gA.length - 1] || { x: x0 + size / 2 };
-      bb = U(bb, J.mainDraw(env, itA));
-      if (B) bb = U(bb, J.mainDraw(env, { text: B, font: Pm.font, size, x: last.x, y: y0 + size * 1.25, vertical: true, align: 'left', track: tr, color: sc.fg, mi: 3 }));
+      bb = U(bb, bMain(env, itA));
+      if (B) bb = U(bb, bMain(env, { text: B, font: Pm.font, size, x: last.x, y: y0 + size * 1.25, vertical: true, align: 'left', track: tr, color: sc.fg, mi: 3 }));
       corner = [last.x, y0 + size / 2];
     } else {
       const itA = { text: A, font: Pm.font, size, x: x0 + size / 2, y: y0, vertical: true, align: 'left', track: tr, color: sc.fg, mi: 0 };
       const gA = glyphPts(itA), last = gA[gA.length - 1] || { y: y0 + size / 2 };
-      bb = U(bb, J.mainDraw(env, itA));
-      if (B) bb = U(bb, J.mainDraw(env, { text: B, font: Pm.font, size, x: x0 + size * 1.25, y: last.y, align: 'left', track: tr, color: sc.fg, mi: 3 }));
+      bb = U(bb, bMain(env, itA));
+      if (B) bb = U(bb, bMain(env, { text: B, font: Pm.font, size, x: x0 + size * 1.25, y: last.y, align: 'left', track: tr, color: sc.fg, mi: 3 }));
       corner = [x0 + size / 2, last.y];
     }
     // thin guide hugging the outside of the corner
@@ -1690,11 +1848,14 @@ J.register('layout', 'curtain', {
     return { font: rng.pick(fontsOf(st, ['display', 'serif'])), variant: rng.pick(['side', 'side', 'shutter', 'rise']), col: rng.pick(['velvet', 'velvet', 'accent', 'ink']), drape: rng.chance(0.7), pleats: rng.chance(0.75) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, M = Math.min(W, H), lt = env.lt;
     const mt = mainLines(cut.text, W, H, 10, 5);
     const size = Math.min(J.fitSize(mt, Pm.font, W * (Pm.drape && Pm.variant === 'side' ? 0.7 : 0.8), H * (Pm.variant === 'shutter' ? 0.34 : 0.44), { track: 0.05, lead: 1.15 }), H * 0.2);
     const t0 = 0.02, T = J.clamp(cut.dur * 0.16, 0.22, 0.48);
-    const bb = J.mainDraw(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.05, lead: 1.15, color: sc.fg, mi: miAt(env, t0 + T * 0.25) });
+    const bb = bMain(env, { text: mt, font: Pm.font, size, x: W / 2, y: H / 2, track: 0.05, lead: 1.15, color: sc.fg, mi: miAt(env, t0 + T * 0.25) });
+    bRole(env,'independentDecor','theatre');
     const open = E.inOutCubic(J.clamp((lt - t0) / T)) * (1 - E.inOutCubic(env.pOut));
     const dark = J.lum(sc.bg) < 0.45;
     const panel = Pm.col === 'velvet' ? J.mix(sc.bg, sc.accent, dark ? 0.38 : 0.6) : plateCol(sc, Pm.col === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.accent]);
@@ -1727,7 +1888,8 @@ J.register('layout', 'curtain', {
       env.rect(-5, yb, W + 10, H - yb + 5, panel, 1, moving);
       if (Pm.drape && open > 0.9) {
         const fs = J.clamp(H * 0.018, 11, 22), a = J.clamp((open - 0.9) * 10);
-        env.draw({ text: `${String((cut.line | 0) + 1).padStart(2, '0')} ／ ${J.fmtTime(cut.start)}`, font: monoF(env), size: fs, track: 0.3, align: 'left', x: W * 0.05, y: yt / 2, color: onCol(sc, panel), alpha: a, ghost: false });
+        bRole(env,'primary','slate');
+        bDraw(env,{ placementFixedStage:cut.placementLayoutsB===true,text: `${String((cut.line | 0) + 1).padStart(2, '0')} ／ ${J.fmtTime(cut.start)}`, font: monoF(env), size: fs, track: 0.3, align: 'left', x: W * 0.05, y: yt / 2, color: onCol(sc, panel), alpha: a, ghost: false });
       }
     } else {
       // theatre curtain rising, leaving a scalloped valance
@@ -1739,6 +1901,7 @@ J.register('layout', 'curtain', {
       env.blob ? env.poly(pts, panel, 1, moving) : null;
       pleat(0, W, 0, Math.max(0, yb), 1);
     }
+    bRole(env);
     return bb;
   },
 }, P);
@@ -1751,13 +1914,15 @@ J.register('layout', 'equalizer', {
     return { font: rng.pick(fontsOf(st, ['display'])), style: rng.pick(['bars', 'blocks', 'blocks', 'mirror']), thin: rng.pick([0, 2, 3]), peaks: rng.chance(0.7), col: rng.pick(['accent', 'accent', 'duo', 'fg']), tempo: rng.range(0.42, 0.55) };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const chs = slotsOf(cut.text), n = chs.length;
     if (!n) return null;
     const port = W < H;
-    const rows = port && n > 6 ? 2 : 1, per = Math.ceil(n / rows);
-    const sw = W * 0.86 / per;
-    const size = Math.min(sw * 0.78, H * (rows > 1 ? 0.1 : 0.14));
+    const recipe=cut.placementLayoutsB?cut.layoutBRecipe:null,nativeRows=port&&n>6?2:1,nativePer=Math.ceil(n/nativeRows),nativeSw=W*.86/nativePer,nativeSize=Math.min(nativeSw*.78,H*(nativeRows>1?.1:.14));
+    const per=recipe?.equalizerPer||nativePer,rows=Math.ceil(n/per),sw=recipe?nativeSw*recipe.fontScale:nativeSw,size=bSize(env,nativeSize);
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'equalizer',size,sw,rows,per,nativePer,items:[],thinItems:[]};
     const bw = Math.min(sw * 0.6, size * 1.15);
     const e = inE(env, 0.45), out = outK(env);
     const colA = plateCol(sc, [sc.accent, sc.fg]), colB = plateCol(sc, [sc.accent2, sc.sub, sc.fg]);
@@ -1770,15 +1935,16 @@ J.register('layout', 'equalizer', {
       else { const k = Math.floor(t / Pm.tempo), ph = t - k * Pm.tempo; pulse = Math.exp(-ph * 7) * (0.3 + 0.7 * J.r(s, k, Math.round(x * 3))); }
       v = v * 0.75 + pulse * 0.45;
       if (env.energy != null) v = v * (0.45 + 0.75 * env.energy);
-      return J.clamp(v, 0.06, 1);
+      return cut.placementLayoutsB&&env.placementEnvelope?1:J.clamp(v, 0.06, 1);
     };
     const lw = Math.max(1, M * 0.0016);
     let bb = null;
     for (let r = 0; r < rows; r++) {
       const cnt = Math.min(per, n - r * per);
-      const yb = rows > 1 ? (r ? H * 0.84 : H * 0.47) : H * 0.74;
-      const hmax = (rows > 1 ? H * 0.26 : H * 0.44) - size * 0.4;
+      const yb=recipe?H*.12+(r+1)*H*.76/rows:(rows>1?(r?H*.84:H*.47):H*.74);
+      const hmax=((nativeRows>1?H*.26:H*.44)-nativeSize*.4)*(recipe?recipe.equalizerHeightScale:1);
       const x0 = W / 2 - cnt * sw / 2;
+      bGroup(env,'baseline-'+r);
       env.line([[x0 - sw * 0.2, yb], [x0 - sw * 0.2 + (cnt * sw + sw * 0.4) * e, yb]], sc.sub, lw, 0.7 * out, false);
       const drawBar = (x, w, h, col, a) => {
         if (h <= 0.5) return;
@@ -1789,27 +1955,35 @@ J.register('layout', 'equalizer', {
         if (Pm.style === 'mirror') env.rect(x - w / 2, yb + lw * 2, w, h * 0.35, col, a * 0.22, false);
       };
       // thin spectrum bars between the lettered ones
+      bRole(env);
       if (Pm.thin) for (let j = 0; j <= cnt; j++) for (let q = 1; q <= Pm.thin; q++) {
         if (j === cnt && q > 0) break;
-        const xi = j + q / (Pm.thin + 1);
+        const i=r*per+j,xi = j + q / (Pm.thin + 1);
         const x = x0 + xi * sw;
-        drawBar(x, sw * 0.06, hmax * 0.8 * level(xi + r * 7 + 0.5, env.ltb) * e * out, sc.sub, 0.55);
+        const signalKey=(i%nativePer)+q/(Pm.thin+1)+Math.floor(i/nativePer)*7+.5;
+        bGroup(env,'thin-band-'+i+'-'+q);
+        if(cut.placementLayoutsB)env.placementBGeometry.thinItems.push({i,q,x,yb,hmax:hmax*.8,bw:sw*.06,signalKey});
+        drawBar(x, sw * 0.06, hmax * 0.8 * level(signalKey, env.ltb) * e * out, sc.sub, 0.55);
       }
+      bRole(env);
       for (let j = 0; j < cnt; j++) {
         const i = r * per + j;
+        bGroup(env,'band-'+i);
         if (chs[i] === ' ') continue;
         const x = x0 + (j + 0.5) * sw;
-        const lv = level(j + 0.5 + r * 7, env.ltb);
+        const signalKey=(i%nativePer)+.5+Math.floor(i/nativePer)*7;
+        const lv = level(signalKey, env.ltb);
+        if(cut.placementLayoutsB)env.placementBGeometry.items.push({i,ch:chs[i],x,yb,hmax,bw,signalKey});
         const h = hmax * lv * e * out;
         const col = Pm.col === 'duo' ? (j % 2 ? colB : colA) : Pm.col === 'fg' ? sc.fg : colA;
         drawBar(x, bw, h, col, Pm.col === 'fg' ? 0.35 : 0.9);
         if (Pm.peaks) {
           let pk = 0;
-          for (let k = 0; k < 6; k++) { const tau = k * 0.1; pk = Math.max(pk, level(j + 0.5 + r * 7, env.ltb - tau) - tau * 0.55); }
+          for (let k = 0; k < 6; k++) { const tau = k * 0.1; pk = Math.max(pk, level(signalKey, env.ltb - tau) - tau * 0.55); }
           const ph = hmax * pk * e * out;
           env.rect(x - bw / 2, yb - ph - Math.max(3, sw * 0.05) - sw * 0.04, bw, Math.max(3, sw * 0.05), sc.fg, 0.9 * out * e, false);
         }
-        bb = U(bb, J.mainDraw(env, { text: chs[i], font: Pm.font, size, x, y: yb - h - size * 0.62 - (Pm.peaks ? sw * 0.1 : 0), color: sc.fg, mi: i }));
+        bb = U(bb, bMain(env, { placementSource:env.cut.placementLayoutsB?bSpan(env,bSlot(env,i),bSlot(env,i)+1):undefined,text: chs[i], font: Pm.font, size, x, y: yb - h - size * 0.62 - (Pm.peaks ? sw * 0.1 : 0), color: sc.fg, mi: i }));
       }
     }
     return bb;
@@ -1837,13 +2011,17 @@ J.register('layout', 'tape', {
     };
   },
   render(env) {
+    if(env.cut.placementLayoutsB){env.placementBSourceCursors={};env.placementBGroup='composition';env.placementBMetadata=null;env.placementBReveal=null;}
+    bRole(env);
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, M = Math.min(W, H), lt = env.lt;
     const port = W < H, out = outK(env);
+    if(cut.placementLayoutsB)env.placementBGeometry={kind:'tape',strips:[]};
     const dark = J.lum(sc.bg) < 0.45;
     const tapeC = plateCol(sc, Pm.col === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.accent]);
     const tapeC2 = Pm.col === 'accent' ? plateCol(sc, [sc.ink, sc.fg]) : plateCol(sc, [sc.accent, sc.fg]);
     const txtC = onCol(sc, tapeC);
     const strip = (x, y, ang, L, h, col, k, t0, dur, content) => {
+      bGroup(env,'tape-'+k);if(cut.placementLayoutsB)env.placementBGeometry.strips.push({id:k,t0,dur,angle:ang});
       const u = E.outCubic(J.clamp((lt - t0) / dur));
       if (u <= 0) return null;
       const vis = L * u;
@@ -1873,7 +2051,7 @@ J.register('layout', 'tape', {
       if (parts.length === 1 && J.glyphCount(txt) > (port ? 5 : 9)) parts = J.splitLines(txt, Math.ceil(J.glyphCount(txt) / 2)).split('\n');
       const np = parts.length;
       const longest = parts.reduce((a, p) => Math.max(a, J.measure({ text: p, font: Pm.font, size: 100, track: 0.05 }).w / 100), 1);
-      const size = Math.min(W * 0.72 / longest, H * 0.62 / (np * 1.75), M * 0.17);
+      const size = bSize(env,Math.min(W * 0.72 / longest, H * 0.62 / (np * 1.75), M * 0.17));
       const h = size * 1.5;
       parts.forEach((p, i) => {
         const m = J.measure({ text: p, font: Pm.font, size, track: 0.05 });
@@ -1881,28 +2059,28 @@ J.register('layout', 'tape', {
         const y = H / 2 + (i - (np - 1) / 2) * h * 1.12;
         const x = W / 2 + J.rs(s, i, 3) * W * 0.05;
         const ang = (i % 2 ? -1 : 1) * Math.abs(Pm.ang) * 0.45 + J.rs(s, i, 4) * 1.5;
-        const r = strip(x, y, ang, L, h, i % 3 === 1 ? tapeC2 : tapeC, i, 0.03 + i * 0.12, 0.3, (cx2, cy2) => J.mainDraw(env, { text: p, font: Pm.font, size, x: cx2, y: cy2, track: 0.05, color: onCol(sc, i % 3 === 1 ? tapeC2 : tapeC), noHold: plateHold(env), mi: miAt(env, 0.05 + i * 0.12) }));
+        const r = strip(x, y, ang, L, h, i % 3 === 1 ? tapeC2 : tapeC, i, 0.03 + i * 0.12, 0.3, (cx2, cy2) => bMain(env, { text: p, font: Pm.font, size, x: cx2, y: cy2, track: 0.05, color: onCol(sc, i % 3 === 1 ? tapeC2 : tapeC), noHold: plateHold(env), mi: miAt(env, 0.05 + i * 0.12) }));
         if (r) bb = U(bb, bbRect(x - L / 2, y - h / 2, x + L / 2, y + h / 2));
       });
       return bb;
     }
-    const mt = mainLines(txt, W, H, 11, 6);
-    const size = Math.min(J.fitSize(mt, Pm.font, W * 0.7, H * 0.3, { track: 0.05, lead: 1.15 }), H * 0.17);
+    const mt = bText(env,mainLines(txt, W, H, 11, 6));
+    const size = bSize(env,Math.min(J.fitSize(mt, Pm.font, W * 0.7, H * 0.3, { track: 0.05, lead: 1.15 }), H * 0.17));
     const mm = J.measure({ text: mt, font: Pm.font, size, track: 0.05, lead: 1.15 });
     const L = mm.w + size * 1.6, h = mm.h + size * 0.75;
     if (Pm.variant === 'cross') {
       const unit = String(cut.lineText || cut.text).replace(/\s+/g, ' ').trim();
       const fs = h * 0.26;
       const L2 = Math.min(Math.hypot(W, H) * 0.9, J.measure({ text: unit, font: Pm.fs, size: fs, track: 0.1 }).w * 1.3 + fs * 6);
-      strip(W / 2 + L * 0.15, H / 2 + h * 0.1, -Pm.ang * 2.4, L2, h * 0.5, tapeC2, 9, 0.0, 0.4, (cx2, cy2) => env.draw({ text: unit, font: Pm.fs, size: fs, track: 0.1, x: cx2, y: cy2, color: onCol(sc, tapeC2), alpha: out, ghost: false }));
+      strip(W / 2 + L * 0.15, H / 2 + h * 0.1, -Pm.ang * 2.4, L2, h * 0.5, tapeC2, 9, 0.0, 0.4, (cx2, cy2) => bDraw(env,{ text: unit, font: Pm.fs, size: fs, track: 0.1, x: cx2, y: cy2, color: onCol(sc, tapeC2), alpha: out, ghost: false }));
     }
-    const r = strip(W / 2, H / 2, Pm.ang, L, h, tapeC, 0, 0.06, 0.34, (cx2, cy2) => J.mainDraw(env, { text: mt, font: Pm.font, size, x: cx2, y: cy2, track: 0.05, lead: 1.15, color: txtC, noHold: plateHold(env), mi: miAt(env, 0.1) }));
+    const r = strip(W / 2, H / 2, Pm.ang, L, h, tapeC, 0, 0.06, 0.34, (cx2, cy2) => bMain(env, { text: mt, font: Pm.font, size, x: cx2, y: cy2, track: 0.05, lead: 1.15, color: txtC, noHold: plateHold(env), mi: miAt(env, 0.1) }));
     if (Pm.piece) {
       const ph = h * 0.42, pl = ph * 2.6;
       const ex = W / 2 + Math.cos(Pm.ang * J.DEG) * L * 0.5, ey = H / 2 + Math.sin(Pm.ang * J.DEG) * L * 0.5;
       const rom = romaOf(txt);
       const lab = rom ? rom.slice(0, 12) : 'No.' + String((cut.line | 0) + 1).padStart(2, '0');
-      strip(ex - ph * 0.3, ey - ph * 0.4, Pm.ang - 38 * Math.sign(Pm.ang || 1), pl, ph, tapeC2, 5, 0.32, 0.18, (cx2, cy2) => env.draw({ text: lab, font: monoF(env), size: Math.min(ph * 0.34, pl * 0.7 / Math.max(3, lab.length) * 1.6), track: 0.12, x: cx2, y: cy2, color: onCol(sc, tapeC2), alpha: out, ghost: false }));
+      strip(ex - ph * 0.3, ey - ph * 0.4, Pm.ang - 38 * Math.sign(Pm.ang || 1), pl, ph, tapeC2, 5, 0.32, 0.18, (cx2, cy2) => bDraw(env,{ text: lab, font: monoF(env), size: Math.min(ph * 0.34, pl * 0.7 / Math.max(3, lab.length) * 1.6), track: 0.12, x: cx2, y: cy2, color: onCol(sc, tapeC2), alpha: out, ghost: false }));
     }
     return r ? bbRect(W / 2 - L / 2, H / 2 - h / 2, W / 2 + L / 2, H / 2 + h / 2) : null;
   },

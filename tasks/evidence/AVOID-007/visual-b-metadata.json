@@ -1,0 +1,2593 @@
+{
+  "manifestSHA256": "c0c64e78bbbfc33761e378acd21fd7899cd59353e3a1ac1dcb02e6c9c2a77274",
+  "startedUTC": "2026-10-22T09:23:02.726304+00:00",
+  "samples": [
+    {
+      "frame": 0,
+      "seconds": 0.0
+    },
+    {
+      "frame": 6,
+      "seconds": 0.25
+    },
+    {
+      "frame": 12,
+      "seconds": 0.5
+    },
+    {
+      "frame": 24,
+      "seconds": 1.0
+    },
+    {
+      "frame": 36,
+      "seconds": 1.5
+    },
+    {
+      "frame": 48,
+      "seconds": 2.0
+    },
+    {
+      "frame": 72,
+      "seconds": 3.0
+    },
+    {
+      "frame": 90,
+      "seconds": 3.75
+    },
+    {
+      "frame": 95,
+      "seconds": 3.9583333333333335
+    }
+  ],
+  "files": [
+    {
+      "id": "tunnel",
+      "side": "before",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-tunnel-before.mp4",
+      "sha256": "b63cf5e96d2559b6c8241da46c8199a5551109370d32e2937e83616e5eb89018",
+      "manifestSHA256": "b63cf5e96d2559b6c8241da46c8199a5551109370d32e2937e83616e5eb89018",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-tunnel-before.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-01.png": "da3a59f542315e2d5ea1ef681fecb396e5f6eef787a9f9acaaf7e0c2050608b3",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-02.png": "070ff0bad72d40b935ca2fe91563bfa2ee852b4dfb40d443aef0e2163c2b1e7c",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-03.png": "8ecd1d9746769af5bd6fc5f6cc4814945c5670bce4b91b0ed535f4d56882f9f7",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-04.png": "5fe7f161b9e29019c61abf71d16a462e49f1f76d35814d9fabf6b59f2417f57c",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-05.png": "abf57aca5dc4f69fe97b2d50f66f76cdadda3501af6315aea7a1a439240fa01e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-06.png": "a9edc0bb0f4a264ff5b20bab8442b0e22f9883051460fe1b7d963137f855ff3b",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-07.png": "e2ca7e6dcc99a099d82d9f2d8f25ba9b557983ea7176d1f2fe0befa050635939",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-08.png": "780f79a02f518d33aa93511b9a3d30c72456ea127a5c8bc4d844560e705c0159",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/before/sample-09.png": "9d2746bcac1a75bb08be93beda14d0bbf652fb096fddb04fc3b73d87612528be"
+      }
+    },
+    {
+      "id": "tunnel",
+      "side": "after",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-tunnel-after.mp4",
+      "sha256": "3fd2f683d2166c27a62fc6a28951dbe8c7bca25501ddf451b9efb7ad746b372b",
+      "manifestSHA256": "3fd2f683d2166c27a62fc6a28951dbe8c7bca25501ddf451b9efb7ad746b372b",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-tunnel-after.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-01.png": "10003a33bb08851e0430d6d2d873ef13f6f0d3e5ec1915b1dfe383c4c6e75d5c",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-02.png": "dd460c84d4e730d47f544dc2cb37b3444685f845efb5a757c4d1d9225460659e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-03.png": "e498a5d77c002a23dc2e49400d1de5f442dcfc52adecda38ea0b234972ca9190",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-04.png": "acac44e07fb8f5080e5f6c4315fd8df0b443e503381f64fec353d52b3849ce95",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-05.png": "c18f083859595a2ce55087984a7f9ced1c7929fe35712800ce18c54a3a4748d8",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-06.png": "a42af539a0c5a16bd45e1f21ca4ac17713d4ca27fa6daa5293de9eb930591c03",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-07.png": "34b3ebbaa3d46c6b01fdb0c165a83367ce0b360f67111cce8edcb39aa3f4499b",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-08.png": "b30c7771adc7185edd6a2567b07ae6cf27630e118b9587710156ad3968d5394a",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-09.png": "c8c67448f28556bf82b7babdaefa180730777f763d32e9ae429c9c4febe2c195"
+      }
+    },
+    {
+      "id": "wordCloud",
+      "side": "before",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-wordCloud-before.mp4",
+      "sha256": "da84cb915f25bc5f22cc50a96c276ba44270896923a7df4c7cdeaa831e55db5c",
+      "manifestSHA256": "da84cb915f25bc5f22cc50a96c276ba44270896923a7df4c7cdeaa831e55db5c",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-wordCloud-before.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-01.png": "fc49343f99547afb57fd30aa938ff476f6512c351bfc1667869556bec620f081",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-02.png": "9fd0f219f62c1c7a5816a6d18605681409b8ecb814ac0598b7d07ee70aec1dad",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-03.png": "be85f0ac974cb2bcd748de11d7d993ccea1a3ca185895eae44567bb52a13b32b",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-04.png": "883fe8639d7e3cbd156db3def1db59cf33c12222857979a12cf87c87aa1e8e7f",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-05.png": "84c434c56af707c344f22bf06cf5bcbff971194363ef29eccade7b8ef40a4c2d",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-06.png": "603af0e1169d2559efd4213ea5dc70339f87083e58b41e541d94e1f06f7269c4",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-07.png": "e70003f48168ade01a173f3561c08ec2babc86f1281d4487c2e14992b67df0aa",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-08.png": "300514d1d17ecdebd504a4415bf31a5b4a826d221f914efc12745d5a840b5949",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/before/sample-09.png": "b34b125bec02512fb4fe6886683102dd6879fd2f9bb78b9d6c2d92e46ef50031"
+      }
+    },
+    {
+      "id": "wordCloud",
+      "side": "after",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-wordCloud-after.mp4",
+      "sha256": "6f2cc91f70e691dbd283d41995c343c5ddbba7d576e81340993899e9eba9384c",
+      "manifestSHA256": "6f2cc91f70e691dbd283d41995c343c5ddbba7d576e81340993899e9eba9384c",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-wordCloud-after.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-01.png": "73d58c93be635968b097bb17d54a861edf439270bb103da03fbe6a319e2ce8c5",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-02.png": "13ac1480d1a9df9d09dbce3450599dd7fcb1e3ce4aeaebbac4d83344e006ed0b",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-03.png": "4e0b8e966ae3b85ad2c9405aa7eeedb2edd1a24d8a9a1bd727237368cfa1b0b2",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-04.png": "f83539832907c3204fa3748629dfbbf7ebde97ffc3c479229811882f90a15517",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-05.png": "5e2c9c4b20f4f1e96786a5d6496da8deb60064b0b92520aba507f9fae4caed75",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-06.png": "f7463e251a0cfc278e9e971a15ad2d1e9ef702493529a05124c1f4db5afc83ee",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-07.png": "97399d24a96811cd293a88faedc07c2ead15887bf26c04499034c7a5603e3883",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-08.png": "7aec24cae5a91e01448d346aa95344bedb8c61d743a51f4e930ec369df43e191",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud/after/sample-09.png": "f75ba8c3a3890674dfb3b66f52e59168d2992e1de7b8dda594c2dc1eedb121c4"
+      }
+    },
+    {
+      "id": "crossBands",
+      "side": "before",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-crossBands-before.mp4",
+      "sha256": "afed44f555e06136046287f6ee8e46a11e617fd0cf4d5a12066e74f927605ad3",
+      "manifestSHA256": "afed44f555e06136046287f6ee8e46a11e617fd0cf4d5a12066e74f927605ad3",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-crossBands-before.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-01.png": "195ef1a2dd212c5c84dbdd089ebe8b10df5ad9b51dd95732dd9acbed30f3a38c",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-02.png": "92672b0274882d04f351b822e99a5ba88fd60570ab3b9bc40ea3282fa3a6dc77",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-03.png": "ffbded030c5618c9d795e0b7adbafee8fe96732f30bbfa2b036bbae6886ceb47",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-04.png": "e769f5132ee5fabab23f5b034c8f35907b50bf88ebb0598f30f065dc51a1a6d4",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-05.png": "ae26cc13e6bb5ddd640b4e1b9bd516f4b994ad14831442e2ab1306d453ce0092",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-06.png": "5aa9015a7782bda84b965c16e721d4f496bbd4ce1281e0694cd1ba6ed3656824",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-07.png": "3952b8a121c7e0e385641b51b23299876c7659cd66af6e6fa9ea7489a8be1e58",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-08.png": "f1608093aeeb074e51026ad60b8419af37cc87ee56defd5ae5129f63a574a2b8",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/before/sample-09.png": "c6f5cde58d57bd1d0a9695faac774aacdc1b912feaa0ea1f8b47c7338ed112c1"
+      }
+    },
+    {
+      "id": "crossBands",
+      "side": "after",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-crossBands-after.mp4",
+      "sha256": "42d77b25c6ee1e8693e81c613925f3fe87336d86e8a6348c0b8593c303dd50c0",
+      "manifestSHA256": "42d77b25c6ee1e8693e81c613925f3fe87336d86e8a6348c0b8593c303dd50c0",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-crossBands-after.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-01.png": "7c43a8b8356f1b7290a720d4eac89956c75c2b17d9d111d49f802e7be9efcb0f",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-02.png": "31e59a8a7f67b6aaa2cc98b77fd7a9808454ad8b964b7e74b8392920dd82bc99",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-03.png": "3a9e2ca228f6129f3fb76ec8a23d8b1744b3a447b8e8605467f8d34cfe5bc3f9",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-04.png": "23930129330dd29d60b791bda97deeb3bf82082f97ccf01a9fce7f8610e87c37",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-05.png": "1b211cc91408ffc8f938409f0a37557877744f0af1868e740535d2677afb99a3",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-06.png": "278d03fc362e8229d3a3d7f6ef35a96242f9e7df1d650b1458747d1c81d65d2f",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-07.png": "e9db6d48794c0d057e3c58e9dd991d51d6ee66daa8faa914e7ba65b5a92e5a82",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-08.png": "6a2d78bb2f57d2ce9cba40152add748745dbf1cadbce5ffa0419c51521459e1e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands/after/sample-09.png": "1cd2bc6246063a0b512338f42dc37cd7297fab4f9a5e857d2ca2f91146a6289b"
+      }
+    },
+    {
+      "id": "zoomRepeat",
+      "side": "before",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-zoomRepeat-before.mp4",
+      "sha256": "c77d177dcb34f2160f93237dd43ab14974490a6f0922666ea4081ed1a5f59cf7",
+      "manifestSHA256": "c77d177dcb34f2160f93237dd43ab14974490a6f0922666ea4081ed1a5f59cf7",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-zoomRepeat-before.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-01.png": "1de5a3a238f246792f3771e888ce1a127e20b5c58dc26f9ba7fb9d9f43a23bb6",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-02.png": "1245726bea4391178c8b26b92bfb74eaf830c0ec3bc16552757bd26cfb92f87c",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-03.png": "d947a0debf92eddab5fd9045039b9b1531a87994681638732d6c2452e0cf4585",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-04.png": "4b5099a46491cf620bd036ddc08ab93048cd1da7aa24bd5c1fed6d7e75654ab3",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-05.png": "96bfbe25f04a6165e8daceed014a1a91bc69a55fe7685a3f215844d43470679d",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-06.png": "da0991faa6373ca76c04f93810ac058ecfca29a8a928411bf91e13e0ef81e5d2",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-07.png": "a188139aba0f4ac7bbe9856e078f1a34262cb28d05f9269b16e766b5b3dbcf64",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-08.png": "f6515dce006a2644004017c8502a7833b8244c4c18e7406ccf12895a81d281e8",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/before/sample-09.png": "bf99afe93445f994224acd27099ce870fc1995adea60e0b5fff4bf5b9dbb87d0"
+      }
+    },
+    {
+      "id": "zoomRepeat",
+      "side": "after",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-zoomRepeat-after.mp4",
+      "sha256": "0860111a68ac07bc896eabe1bac524f1018bf3db25872001997edef209a77813",
+      "manifestSHA256": "0860111a68ac07bc896eabe1bac524f1018bf3db25872001997edef209a77813",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-zoomRepeat-after.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-01.png": "f35e1e89c12194994fef198387bb1ce6d338124b72b0f5743e94b2c9c36d49d3",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-02.png": "a7689e4833765794e8ee64fbd507e29c3ce6a6fb55abf890947b33d0ab9c52cf",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-03.png": "40a8bb5b79667543f730b3e2f470178bb8d5f91e6a79a8e1b5480605ad8abedc",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-04.png": "7ba26569d9383795ed3563520c73342883ba0558f76520d02d3cca7c29f26b3e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-05.png": "e6a46df3ad8814c1a34b8978dff87b0621d386dc9f3a376ca512f2401041afe1",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-06.png": "bb9eddc675f65f0a6bd0d1535ed53b3325d7ade20f4f9fba5573e2839bf6d79c",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-07.png": "6431e3103d0975f716e7b6be3ea6455fd9129f130f67f9e491f5ac328eb582d0",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-08.png": "76bb8bbe25586cf1e55a3734e0af42fc6588a6341a7015c9f171a7c7964afd0e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat/after/sample-09.png": "829acbb44e6c33bad96d7d9885d722577a119f4382c667b226090a369e350bd8"
+      }
+    },
+    {
+      "id": "credits",
+      "side": "before",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-credits-before.mp4",
+      "sha256": "3c2b82a01ec184d8e740b1afb0ea8f1a8a1670042f203c88e75d4f6f554b68fd",
+      "manifestSHA256": "3c2b82a01ec184d8e740b1afb0ea8f1a8a1670042f203c88e75d4f6f554b68fd",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-credits-before.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-01.png": "1a35a2dcef348cb38fe740c6f8fcfab37522cb39e1c211e42db92c001a27b8b9",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-02.png": "50f0db11b5780fe054795fd69fd6ec905eb82d4f8abd525aef5fccc97b7d00c1",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-03.png": "34c06cb5e1fe9aea9522a58c6e9fd7b9667ee4a37394a1a3c4f92b592ff022d2",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-04.png": "db6a75c0612fd0224d347fd3f19088ec200d5866f2041d990c7a9e874f8c7a86",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-05.png": "d20b97800c456763c73005d2836d5d4c30395c7e393dea451ab9a59943f8fbd0",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-06.png": "a4cbd83f4aa4e5220d097ae10bd3598cd005917217648f61d8fe59fe2504d79e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-07.png": "8c662b64a4891a51533ef29940831a1f40e3c23e25229c44598f5d9f6a7194f7",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-08.png": "71d5f0d430b1b69b09bf70a132b4d58271213eb709b8b51e7fa7fc39665174c3",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/before/sample-09.png": "dded4356fc51002453e06dfb507923bcc575615931c8700bcac5699538f0fced"
+      }
+    },
+    {
+      "id": "credits",
+      "side": "after",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-credits-after.mp4",
+      "sha256": "be3895325fc1da7bbe4fdbc4ae6041eec3e3795beb7c49b81fe3bf091726afc5",
+      "manifestSHA256": "be3895325fc1da7bbe4fdbc4ae6041eec3e3795beb7c49b81fe3bf091726afc5",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-credits-after.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-01.png": "9f338be9b483d21aa78c792939a21e133490c153d4384cc85f8f9dd19ccd8489",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-02.png": "6c827d0aaa7d6e20189290d8b11248c274be77649459a18a2fbcf54e255b62de",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-03.png": "435bbc2ba3eb05a82d0836b145ed7fde56c55fe48cb1b8fd5945a229af93ca71",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-04.png": "10c48a28be650ff0b44a0b3096b8ce33461b258fa6e1ba4b8c6885ba8006bbad",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-05.png": "e094e8143a065af90ca34602cb84f784dfb7a41ce9e3ac74a59bbcd7e08b1b91",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-06.png": "4c0c42e475b2b82aea907d1760e627cd19627c7da94352b69108819f1696e8d9",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-07.png": "6ca7f013aef0d7934167c33f49b49286f1aa57f34cf97bc8be8b8bcd61d0a1b7",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-08.png": "aad34d5763d622145c7be61a4f339827384794678e4ade11ab5f492624ca9478",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits/after/sample-09.png": "dcf951f0ac16d22e1619c400a16ca08529abdebba4f86b324376327792912508"
+      }
+    },
+    {
+      "id": "slotMachine",
+      "side": "before",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-slotMachine-before.mp4",
+      "sha256": "ad6b7bd7720efb00c3fd38d44ceef3026d50486b247778374bbc306c73fb7df7",
+      "manifestSHA256": "ad6b7bd7720efb00c3fd38d44ceef3026d50486b247778374bbc306c73fb7df7",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-slotMachine-before.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-01.png": "65ef8ea0161ba0f50448baf2a4663a6a714b01f22cf7f68107e5424ad90aa9cd",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-02.png": "b76060290855e219505ec789f80a8b62c1fb9039f4caa7361ca27b407bb6f4fe",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-03.png": "a62a41a7d39f7dceba673ac987afe92e69ec2b6ab3626e47f8e55a02509d735f",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-04.png": "1a00f2ad398e6c1b798f278ac94efef2d5ca9c0a9d442e4dd0c0b66b61292f15",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-05.png": "eab9ba949da49c52d9fdae8f6a7d036006453aa7c602fdbb74f96360f15b531f",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-06.png": "8c7be6309d585f36929d5446d12faac70437ee7f0db8357e782db54881a7ac96",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-07.png": "c73ab47bea70bf9cc9a2c5c4254fcb3bd58f758776567e5a2865093a502ba383",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-08.png": "14fb0a4b3168eefc4a13500fb5460076c9eeb74dab8ed7abb05595e34c1ef303",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before/sample-09.png": "308fdc59868f66bfcb4fa713476d28f17958b2b89f6d0ae05e4a5a73d4fdb0d5"
+      }
+    },
+    {
+      "id": "slotMachine",
+      "side": "after",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-slotMachine-after.mp4",
+      "sha256": "24ae3faa555303a46b859e358837804964b96fbc16c59b285b81ec904c163528",
+      "manifestSHA256": "24ae3faa555303a46b859e358837804964b96fbc16c59b285b81ec904c163528",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-slotMachine-after.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-01.png": "0a445e9854ab8acf73e7735a1a81d051101b5d0a7d475496c08dc0d876050eb5",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-02.png": "b77690e5f52d6db076ed02e6e2c930e414aeaaabc9fa10fedaf6505532d6d1b2",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-03.png": "fc0dcb2dc5a4c55a510a686be650486c2e0da4cd66fc3ecaa930d5cac44fbf3e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-04.png": "1d70bbed67290a9139390a587c3b642cf67f555f09f6577342325c940177f8df",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-05.png": "2cb851f090dd9c77286fbe6d4f8341026a795fcc5768582b071ff6515f830735",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-06.png": "df31bfe20f54d648940e0fd79b0031d4382faffd581692a2812d35cd46901198",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-07.png": "d5fba8c6df50ac86ff64410373195de9a829a05693234abb1989f50d8ac07eb5",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-08.png": "ad06ae5c344a0e2e308e543c607972ce48fc687d28eed669c2e87037095cdc9b",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after/sample-09.png": "3daea5167ee3e7e29abe10cca7be5564b846dc4315ca807b4a19e70c4c7858ea"
+      }
+    },
+    {
+      "id": "flipBoard",
+      "side": "before",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-flipBoard-before.mp4",
+      "sha256": "de85e9f37b719ed7ddcec1c3ac668be9771a508c673fe864b85694c15cbaedca",
+      "manifestSHA256": "de85e9f37b719ed7ddcec1c3ac668be9771a508c673fe864b85694c15cbaedca",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-flipBoard-before.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-01.png": "78f033e90f8aba1b245ff05f90f2ffd34d22978580bb26346e0c93f6abcace0e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-02.png": "db98f8bb261f7300637948a78426ffa3448976eb5d016dabdb53e1ebe08f2933",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-03.png": "d873f1aed76b4b546d1a952e3119fff9890970950efa2b73092bff0c4324012b",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-04.png": "10f6ba24b59c94af10e6d56132e94cf10548f358444de1dbf5683aa273ecfef4",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-05.png": "832a6e8c9a0da14a0a5975bbbebac1c9242e4f9251ae01cde2280e4c637fa821",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-06.png": "e0d3b624c98a5a9b9613250ced90694bc5338e8442c75465787abd559ec92191",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-07.png": "b6286434b6791ffe6bdb85532638c8c329a6d03826912da56289106b00b9e371",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-08.png": "8a806ad0bb2825dcaa07da480d032bb37a1cf7e8e75b25e85909e85be592c8b7",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before/sample-09.png": "be600b44da837158a07d9057254bd8579724e691892a9c250d11dc364a573f06"
+      }
+    },
+    {
+      "id": "flipBoard",
+      "side": "after",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-flipBoard-after.mp4",
+      "sha256": "e3b033a8dc1b05b4d27bbc8a6316c25d70c946856482390ae72a8962a75c5472",
+      "manifestSHA256": "e3b033a8dc1b05b4d27bbc8a6316c25d70c946856482390ae72a8962a75c5472",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-flipBoard-after.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-01.png": "ff23571604acc8af8353f141fd1e01736e4dd0c7494f32aee53caf19d7036834",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-02.png": "99742ac15965209de0321f0b46cbdf9d4aa89157e9a8c79a0b8ad6c4db718195",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-03.png": "d4efeda306c6f3ffde6b69dac943ca2cd9aad93d2a39ea8522e341efae5aaf48",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-04.png": "d4460fc3fa424b117834dac37bde8d0fba54238ad308814396dff5a83df09b96",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-05.png": "05e1b5a2e4c5830b34d285f6dedd35a1c241fedf5ee49f9cde780bc106bdbe37",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-06.png": "ce4db2a5554fecf4a47900e7ede29002b62008c5851451de836a6fd27814f260",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-07.png": "0227f92c5e6491c86d09dac493b2822ff5abe3e07cdc29af5838bf3b9f9658f3",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-08.png": "6689811db3629209000a06bf16e6d64b0872451943e9fffb4de7f9c390452630",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after/sample-09.png": "afaeff1e2974b360d42d18bb6fb4fa36788a0931c51a49052abc9d81b5740291"
+      }
+    },
+    {
+      "id": "curtain",
+      "side": "before",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-curtain-before.mp4",
+      "sha256": "308be578ac94f430e0dcbd27cf1a0e71829639a365410bd73041f275e3e664ce",
+      "manifestSHA256": "308be578ac94f430e0dcbd27cf1a0e71829639a365410bd73041f275e3e664ce",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-curtain-before.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-01.png": "f30f4290cfb5b23517e5dd3a18d627f61e44487a707eb8b67a62d8db0c0f6fe4",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-02.png": "faa38d35d7c264307efbe50475b53811c39f69978b1430760e02311252ad587f",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-03.png": "5ebfa42655156b477e09afca4a08915d0bd1cd201bf4fe0ed2b28fcef9f5ec7f",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-04.png": "70892a09a49120f4b0dce84a11f37cf781b45e8194fa77e3dafe855eb85db98c",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-05.png": "341fe5599ad3f35017fddfd091c4fb116e29f2dfa3f481756216abfd972c6ef2",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-06.png": "7e4ca141e92618bffd4b6128fa75ef2340bba9b3e7d0dd31fc046c95ea1df0dd",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-07.png": "7dd9a754d0c0344fcff83d896977a8f03ada60bf44aa21e441415e3cb091ec0b",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-08.png": "84c5c55ede33fd9f73b07172b53c7ec593730c7d3989a923c86dbf9c91ddd04a",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before/sample-09.png": "64d74787c7e4caeadb6430d8ac02063eebbf9000bb2cd41aea31e355b36d2f65"
+      }
+    },
+    {
+      "id": "curtain",
+      "side": "after",
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-curtain-after.mp4",
+      "sha256": "1b6155a41e521db9ea15bc68de19f9f67c47bf32b879b27a2cf03b3a2ff4a083",
+      "manifestSHA256": "1b6155a41e521db9ea15bc68de19f9f67c47bf32b879b27a2cf03b3a2ff4a083",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "24/1",
+            "duration": "4.000000",
+            "nb_frames": "96"
+          }
+        ]
+      },
+      "decodeCommand": [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/videos/b25-curtain-after.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,6)+eq(n\\,12)+eq(n\\,24)+eq(n\\,36)+eq(n\\,48)+eq(n\\,72)+eq(n\\,90)+eq(n\\,95)",
+        "-vsync",
+        "0",
+        "-threads",
+        "1",
+        "-n",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-%02d.png"
+      ],
+      "decoded": [
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-01.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-02.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-03.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-04.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-05.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-06.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-07.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-08.png",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-09.png"
+      ],
+      "actualSamples": [
+        {
+          "frame": 0,
+          "seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "seconds": 0.25
+        },
+        {
+          "frame": 12,
+          "seconds": 0.5
+        },
+        {
+          "frame": 24,
+          "seconds": 1.0
+        },
+        {
+          "frame": 36,
+          "seconds": 1.5
+        },
+        {
+          "frame": 48,
+          "seconds": 2.0
+        },
+        {
+          "frame": 72,
+          "seconds": 3.0
+        },
+        {
+          "frame": 90,
+          "seconds": 3.75
+        },
+        {
+          "frame": 95,
+          "seconds": 3.958333
+        }
+      ],
+      "sha256MatchesManifest": true,
+      "decodedSHA256": {
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-01.png": "f30f4290cfb5b23517e5dd3a18d627f61e44487a707eb8b67a62d8db0c0f6fe4",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-02.png": "fbb24a1bd15810784408433efbf8cd124867dec786a33ea90cbf9f3dfcdc5613",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-03.png": "33b52cd0ae5ab455cfb51926dffc0341b7c0b7e6108ee2582a880fe1304a196e",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-04.png": "a5dd275704f213f08777564371dc84c4cfad6d76ef1a6ec30deabb54c672de50",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-05.png": "dee53749b202922e29480809ce74cc659a7f3696ca2afc90a8d22ec570536258",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-06.png": "59c2c0519e1ae22cd23e746f5c1743f5ed51def68eefff5fa91492e4bfe5af31",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-07.png": "bfd89c175ab0e50afbf3204d87125263a3ea029deb755f50e3d6b58f30d441f6",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-08.png": "f74845a9696339cd99a8964d07ea1ceccd3da681c5ffa2dc3510f4cfa29ff3b4",
+        "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after/sample-09.png": "6d92dc0999b94be6e378897bd8494edd2e5165151e6fd28a5b7f460a0ab348f8"
+      }
+    }
+  ],
+  "sheets": [
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard-contact.png",
+    "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain-contact.png"
+  ],
+  "completedUTC": "2026-10-22T09:23:23.528663+00:00",
+  "reviewer": "avoid007_visual_b (independent image/motion comparison)",
+  "reviewCompletedUTC": "2026-10-22T09:26:43.434175+00:00",
+  "conditions": {
+    "W": 1920,
+    "H": 1080,
+    "circle": {
+      "cx": 0.5,
+      "cy": 0.42,
+      "radius": 0.2,
+      "radiusUnit": "shortside"
+    },
+    "seed": 704,
+    "text": "風の先へ",
+    "fps": 24,
+    "frames": 96,
+    "duration": 4,
+    "fonts": "same pinned fixtureOptions.fonts in manifest"
+  },
+  "scope": "image and sampled temporal correspondence only; before e96 fullstage original; after opt-in avoidance before default switch 017",
+  "findings": {
+    "tunnel": {
+      "status": "finding-readability-regression",
+      "frames": [
+        6,
+        12,
+        24,
+        36,
+        48,
+        72,
+        90
+      ],
+      "observation": "主歌詞は右下へ移り4字と読む順を維持。全画面の遠近線/周縁反復も元の大きさと動きを保つ。一方after36(1.5s)原寸では金色の逆さ反復が主歌詞「風」「の」「先」の上側に交差し、水平の枠線も主歌詞を横切る。after72(3.0s)のdecode原寸とafter90(3.75s)native原寸では、白〜灰の逆さ反復が主歌詞の下1/3を横断し「風」の下部、「の」の下部、「先」の下部、「へ」の右下側と交差する。before90では中央の主歌詞が暗い空間で独立しており、この追加の線画交差はない。欠字とは判定しないが、afterの輪郭の読み分けと主歌詞の階層が劣化。",
+      "scopeReason": "補助反復が円に入ったという判定ではない。移動した主歌詞と据置の周縁反復が可視的に交差して読みづらくなることを根拠とする。補助配置維持という条件下でprimary配置を再検討する必要がある。"
+    },
+    "wordCloud": {
+      "status": "no-additional-defect-observed-in-samples",
+      "observation": "太い中央主歌詞は右下へ移り「風の先へ」の1行を維持。雲の色/大小/向き/段階的な出現は対応するsampleで元のまま。after24以降、主歌詞近辺の薄い反復は残るが太い4字を識別でき、tunnelのような明瞭な輪郭交差による退行はこのsampleでは認めない。雲の円内残存は018待ち例外。"
+    },
+    "crossBands": {
+      "status": "no-additional-defect-observed-in-samples",
+      "observation": "主歌詞の4字と附属する暗い矩形/白枠が一緒に右下へ移動。交差する白/黄色帯と帯上の反復は全画面の対角線を維持し、主歌詞は暗い板上で読める。frame0では板がなく、6–90で板を伴い、95で板が退くという対応も保持。帯が円を横切ることは018待ち例外。"
+    },
+    "zoomRepeat": {
+      "status": "no-additional-defect-observed-in-samples",
+      "observation": "太い主歌詞と密着する抜き/輪郭の対が右下へ一緒に移り、4字と読む順を維持。native after36でも対のずれや欠字を認めない。背後の巨大な輪郭反復は全画面の拡縮意図を維持し、単一小矩形へ圧縮されていない。背景copiesの円内残存は018待ち例外。"
+    },
+    "credits": {
+      "status": "no-additional-defect-observed-in-samples",
+      "observation": "大きい主歌詞は左側の「風の」/「先へ」の2行へ組み替えられ、上行→下行で4字を読める。右側のsemantic credit rowsは削除されず、before/after36 native原寸で「詞 風の先へ」「語 風の」「先へ」「LINE 01」「TIME 00:00.00」を照合。区切り縦線と行群の上昇/上端下端のfadeもsample間で対応し、ラベルやLINE/TIMEを補助例外として除外していない。"
+    },
+    "slotMachine": {
+      "status": "no-additional-defect-observed-in-samples",
+      "observation": "4列の横一列から右側の2×2へ再構成。読む順は上段「風 の」→下段「先 へ」。回転字と窓/白い外枠/停止線/矢印が各セルと結合している。追加のframe0–15連続画像で、ランダムな回転字の対応、先頭「風」の停止、続く「の」の進行を照合。36以降の確定4字に欠落なし。frame88–95の退出fadeでも字とセルが対応する。"
+    },
+    "flipBoard": {
+      "status": "no-additional-defect-observed-in-samples",
+      "observation": "横一列の4枚の板と文字が一体で右下へ移動。追加のframe0–15連続画像で、透明な出現→代替文字の反転→「風の先へ」確定がbefore/afterで対応。反転途中の誤字状の形は両sideに対応する演出であり、確定字欠落ではない。88–95のfadeも板と文字が結合し、読む順/字数を保つ。"
+    },
+    "curtain": {
+      "status": "stage-fixed-phase-preserved-with-visibility-timing-change",
+      "observation": "全画面の黄色いstage-fixed slateは同じ位置/開閉位相を維持し、主歌詞だけが右下へ移る。追加frame0–15/88–95連続画像でslateと4字を照合。afterは下にあるためframe5で下端が露出し6で読め、beforeは7で部分露出し8で読める。退出もbefore91で文字を覆い92で隠すのに対し、after91は読め92で部分的に覆い93で隠す。これはslateを動かさない方針とprimary移動の組合せによる可視時刻の変化。slate位相破綻/主歌詞欠字とは認定しないが、見かけの出現退出時刻が厳密同一であるとは判定しない。"
+    }
+  },
+  "viewedNativeImages": [
+    {
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-tunnel-before-90.png",
+      "sha256": "42e079e7095bd5365caf667292f6ddf3b9d8f32c6e9fe53221a2800bd87fb5cd",
+      "manifestSHA256": "42e079e7095bd5365caf667292f6ddf3b9d8f32c6e9fe53221a2800bd87fb5cd",
+      "detail": "original"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-tunnel-after-90.png",
+      "sha256": "7ac1a058bd54fa700120bc139d620eb2e8a37804efe0ca4c83b2cefb264a76cf",
+      "manifestSHA256": "7ac1a058bd54fa700120bc139d620eb2e8a37804efe0ca4c83b2cefb264a76cf",
+      "detail": "original"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-tunnel-after-36.png",
+      "sha256": "6d4c96696ec11423deac9e302950e33834ca1005f8c320d285a577c8fcfbd5ac",
+      "manifestSHA256": "6d4c96696ec11423deac9e302950e33834ca1005f8c320d285a577c8fcfbd5ac",
+      "detail": "original"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-credits-before-36.png",
+      "sha256": "34b00c9e2c1bc1b5f45014a7281f88cd24154576438294765a800f334e652949",
+      "manifestSHA256": "34b00c9e2c1bc1b5f45014a7281f88cd24154576438294765a800f334e652949",
+      "detail": "original"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-credits-after-36.png",
+      "sha256": "4e73bc76a16765bff908791d1457d25837594de96ec68a60d219cd33c716ac17",
+      "manifestSHA256": "4e73bc76a16765bff908791d1457d25837594de96ec68a60d219cd33c716ac17",
+      "detail": "original"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/work/avoid007-native/local-20261022-01/images/b25-zoomRepeat-after-36.png",
+      "sha256": "8c034ee00897ef7bea95843a4caca2441010bb943d2efc4e7ffb09a30d208c8f",
+      "manifestSHA256": "8c034ee00897ef7bea95843a4caca2441010bb943d2efc4e7ffb09a30d208c8f",
+      "detail": "original"
+    }
+  ],
+  "viewedSheets": [
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/credits-contact.png",
+      "sha256": "adc8ea76d27b3924336120df05223a754bfae1d4f7e8eec3da753fadca064530",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/crossBands-contact.png",
+      "sha256": "c8d9da3e86ddfdd3adb37970d05b7bc715f83e990a0410151ebb65cbcd262183",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain-contact.png",
+      "sha256": "40c855b4474fb464b64ed6cd951d9e041bd83bde2f58c2dd082e34bacaf42047",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard-contact.png",
+      "sha256": "e6b675467e1fca50792d9495114d3b28754786c4d731980b5126d9f487272ca9",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine-contact.png",
+      "sha256": "c7e93aeecb72b6e77c855793b14121686521cd05eaaf1bd0e7601e69378eaa24",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel-contact.png",
+      "sha256": "b676e3bcaf568cf3aa58b996a64ae69e743642201d94ad1d7a41ff9de7a2c814",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/wordCloud-contact.png",
+      "sha256": "f85c3a17ae29dbbb41ec5497b4acda69b34489fe1d64befd225f597c31c6208c",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/zoomRepeat-contact.png",
+      "sha256": "bef307f3e5ebf1af56578d676ae17b3109b522087cbfd2645f254231ee76237c",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain-intro.png",
+      "sha256": "76e10fb8685a3632587aa82063564e1828278fd7d9c5a72bb3661b385c2b6b89",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard-intro.png",
+      "sha256": "69d0b823e08200168efd43799fb7ec629526773e1e2e859d57182a68c58722b4",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine-intro.png",
+      "sha256": "c8e6b71f0dc919bbcbdb66a721668160929b1d17435aafab04ad4c6de494af44",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain-exit.png",
+      "sha256": "f3bd0f749a41f936f855ffcd12e0546726613327099fb3b22e79df7cb5312cdd",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard-exit.png",
+      "sha256": "781c259fa06dca685ce13c56496f6ffd72dae9322257a7245ffb025a6d7a0929",
+      "viewed": true
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine-exit.png",
+      "sha256": "cdbf9b8bdeb0b3743166ee0eae35dc5722e3cfd2779c1567d5295fb77c25549c",
+      "viewed": true
+    }
+  ],
+  "additionalTransitions": [
+    {
+      "id": "slotMachine",
+      "side": "before",
+      "decoderThreads": 1,
+      "samples": [
+        {
+          "frame": 0,
+          "actualSeconds": 0.0,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-01.png"
+        },
+        {
+          "frame": 1,
+          "actualSeconds": 0.041667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-02.png"
+        },
+        {
+          "frame": 2,
+          "actualSeconds": 0.083333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-03.png"
+        },
+        {
+          "frame": 3,
+          "actualSeconds": 0.125,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-04.png"
+        },
+        {
+          "frame": 4,
+          "actualSeconds": 0.166667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-05.png"
+        },
+        {
+          "frame": 5,
+          "actualSeconds": 0.208333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-06.png"
+        },
+        {
+          "frame": 6,
+          "actualSeconds": 0.25,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-07.png"
+        },
+        {
+          "frame": 7,
+          "actualSeconds": 0.291667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-08.png"
+        },
+        {
+          "frame": 8,
+          "actualSeconds": 0.333333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-09.png"
+        },
+        {
+          "frame": 9,
+          "actualSeconds": 0.375,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-10.png"
+        },
+        {
+          "frame": 10,
+          "actualSeconds": 0.416667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-11.png"
+        },
+        {
+          "frame": 11,
+          "actualSeconds": 0.458333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-12.png"
+        },
+        {
+          "frame": 12,
+          "actualSeconds": 0.5,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-13.png"
+        },
+        {
+          "frame": 13,
+          "actualSeconds": 0.541667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-14.png"
+        },
+        {
+          "frame": 14,
+          "actualSeconds": 0.583333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-15.png"
+        },
+        {
+          "frame": 15,
+          "actualSeconds": 0.625,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-16.png"
+        },
+        {
+          "frame": 88,
+          "actualSeconds": 3.666667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-17.png"
+        },
+        {
+          "frame": 89,
+          "actualSeconds": 3.708333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-18.png"
+        },
+        {
+          "frame": 90,
+          "actualSeconds": 3.75,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-19.png"
+        },
+        {
+          "frame": 91,
+          "actualSeconds": 3.791667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-20.png"
+        },
+        {
+          "frame": 92,
+          "actualSeconds": 3.833333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-21.png"
+        },
+        {
+          "frame": 93,
+          "actualSeconds": 3.875,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-22.png"
+        },
+        {
+          "frame": 94,
+          "actualSeconds": 3.916667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-23.png"
+        },
+        {
+          "frame": 95,
+          "actualSeconds": 3.958333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/before-transitions/sample-24.png"
+        }
+      ]
+    },
+    {
+      "id": "slotMachine",
+      "side": "after",
+      "decoderThreads": 1,
+      "samples": [
+        {
+          "frame": 0,
+          "actualSeconds": 0.0,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-01.png"
+        },
+        {
+          "frame": 1,
+          "actualSeconds": 0.041667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-02.png"
+        },
+        {
+          "frame": 2,
+          "actualSeconds": 0.083333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-03.png"
+        },
+        {
+          "frame": 3,
+          "actualSeconds": 0.125,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-04.png"
+        },
+        {
+          "frame": 4,
+          "actualSeconds": 0.166667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-05.png"
+        },
+        {
+          "frame": 5,
+          "actualSeconds": 0.208333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-06.png"
+        },
+        {
+          "frame": 6,
+          "actualSeconds": 0.25,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-07.png"
+        },
+        {
+          "frame": 7,
+          "actualSeconds": 0.291667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-08.png"
+        },
+        {
+          "frame": 8,
+          "actualSeconds": 0.333333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-09.png"
+        },
+        {
+          "frame": 9,
+          "actualSeconds": 0.375,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-10.png"
+        },
+        {
+          "frame": 10,
+          "actualSeconds": 0.416667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-11.png"
+        },
+        {
+          "frame": 11,
+          "actualSeconds": 0.458333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-12.png"
+        },
+        {
+          "frame": 12,
+          "actualSeconds": 0.5,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-13.png"
+        },
+        {
+          "frame": 13,
+          "actualSeconds": 0.541667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-14.png"
+        },
+        {
+          "frame": 14,
+          "actualSeconds": 0.583333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-15.png"
+        },
+        {
+          "frame": 15,
+          "actualSeconds": 0.625,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-16.png"
+        },
+        {
+          "frame": 88,
+          "actualSeconds": 3.666667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-17.png"
+        },
+        {
+          "frame": 89,
+          "actualSeconds": 3.708333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-18.png"
+        },
+        {
+          "frame": 90,
+          "actualSeconds": 3.75,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-19.png"
+        },
+        {
+          "frame": 91,
+          "actualSeconds": 3.791667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-20.png"
+        },
+        {
+          "frame": 92,
+          "actualSeconds": 3.833333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-21.png"
+        },
+        {
+          "frame": 93,
+          "actualSeconds": 3.875,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-22.png"
+        },
+        {
+          "frame": 94,
+          "actualSeconds": 3.916667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-23.png"
+        },
+        {
+          "frame": 95,
+          "actualSeconds": 3.958333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/slotMachine/after-transitions/sample-24.png"
+        }
+      ]
+    },
+    {
+      "id": "flipBoard",
+      "side": "before",
+      "decoderThreads": 1,
+      "samples": [
+        {
+          "frame": 0,
+          "actualSeconds": 0.0,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-01.png"
+        },
+        {
+          "frame": 1,
+          "actualSeconds": 0.041667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-02.png"
+        },
+        {
+          "frame": 2,
+          "actualSeconds": 0.083333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-03.png"
+        },
+        {
+          "frame": 3,
+          "actualSeconds": 0.125,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-04.png"
+        },
+        {
+          "frame": 4,
+          "actualSeconds": 0.166667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-05.png"
+        },
+        {
+          "frame": 5,
+          "actualSeconds": 0.208333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-06.png"
+        },
+        {
+          "frame": 6,
+          "actualSeconds": 0.25,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-07.png"
+        },
+        {
+          "frame": 7,
+          "actualSeconds": 0.291667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-08.png"
+        },
+        {
+          "frame": 8,
+          "actualSeconds": 0.333333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-09.png"
+        },
+        {
+          "frame": 9,
+          "actualSeconds": 0.375,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-10.png"
+        },
+        {
+          "frame": 10,
+          "actualSeconds": 0.416667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-11.png"
+        },
+        {
+          "frame": 11,
+          "actualSeconds": 0.458333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-12.png"
+        },
+        {
+          "frame": 12,
+          "actualSeconds": 0.5,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-13.png"
+        },
+        {
+          "frame": 13,
+          "actualSeconds": 0.541667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-14.png"
+        },
+        {
+          "frame": 14,
+          "actualSeconds": 0.583333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-15.png"
+        },
+        {
+          "frame": 15,
+          "actualSeconds": 0.625,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-16.png"
+        },
+        {
+          "frame": 88,
+          "actualSeconds": 3.666667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-17.png"
+        },
+        {
+          "frame": 89,
+          "actualSeconds": 3.708333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-18.png"
+        },
+        {
+          "frame": 90,
+          "actualSeconds": 3.75,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-19.png"
+        },
+        {
+          "frame": 91,
+          "actualSeconds": 3.791667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-20.png"
+        },
+        {
+          "frame": 92,
+          "actualSeconds": 3.833333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-21.png"
+        },
+        {
+          "frame": 93,
+          "actualSeconds": 3.875,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-22.png"
+        },
+        {
+          "frame": 94,
+          "actualSeconds": 3.916667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-23.png"
+        },
+        {
+          "frame": 95,
+          "actualSeconds": 3.958333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/before-transitions/sample-24.png"
+        }
+      ]
+    },
+    {
+      "id": "flipBoard",
+      "side": "after",
+      "decoderThreads": 1,
+      "samples": [
+        {
+          "frame": 0,
+          "actualSeconds": 0.0,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-01.png"
+        },
+        {
+          "frame": 1,
+          "actualSeconds": 0.041667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-02.png"
+        },
+        {
+          "frame": 2,
+          "actualSeconds": 0.083333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-03.png"
+        },
+        {
+          "frame": 3,
+          "actualSeconds": 0.125,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-04.png"
+        },
+        {
+          "frame": 4,
+          "actualSeconds": 0.166667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-05.png"
+        },
+        {
+          "frame": 5,
+          "actualSeconds": 0.208333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-06.png"
+        },
+        {
+          "frame": 6,
+          "actualSeconds": 0.25,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-07.png"
+        },
+        {
+          "frame": 7,
+          "actualSeconds": 0.291667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-08.png"
+        },
+        {
+          "frame": 8,
+          "actualSeconds": 0.333333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-09.png"
+        },
+        {
+          "frame": 9,
+          "actualSeconds": 0.375,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-10.png"
+        },
+        {
+          "frame": 10,
+          "actualSeconds": 0.416667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-11.png"
+        },
+        {
+          "frame": 11,
+          "actualSeconds": 0.458333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-12.png"
+        },
+        {
+          "frame": 12,
+          "actualSeconds": 0.5,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-13.png"
+        },
+        {
+          "frame": 13,
+          "actualSeconds": 0.541667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-14.png"
+        },
+        {
+          "frame": 14,
+          "actualSeconds": 0.583333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-15.png"
+        },
+        {
+          "frame": 15,
+          "actualSeconds": 0.625,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-16.png"
+        },
+        {
+          "frame": 88,
+          "actualSeconds": 3.666667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-17.png"
+        },
+        {
+          "frame": 89,
+          "actualSeconds": 3.708333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-18.png"
+        },
+        {
+          "frame": 90,
+          "actualSeconds": 3.75,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-19.png"
+        },
+        {
+          "frame": 91,
+          "actualSeconds": 3.791667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-20.png"
+        },
+        {
+          "frame": 92,
+          "actualSeconds": 3.833333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-21.png"
+        },
+        {
+          "frame": 93,
+          "actualSeconds": 3.875,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-22.png"
+        },
+        {
+          "frame": 94,
+          "actualSeconds": 3.916667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-23.png"
+        },
+        {
+          "frame": 95,
+          "actualSeconds": 3.958333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/flipBoard/after-transitions/sample-24.png"
+        }
+      ]
+    },
+    {
+      "id": "curtain",
+      "side": "before",
+      "decoderThreads": 1,
+      "samples": [
+        {
+          "frame": 0,
+          "actualSeconds": 0.0,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-01.png"
+        },
+        {
+          "frame": 1,
+          "actualSeconds": 0.041667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-02.png"
+        },
+        {
+          "frame": 2,
+          "actualSeconds": 0.083333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-03.png"
+        },
+        {
+          "frame": 3,
+          "actualSeconds": 0.125,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-04.png"
+        },
+        {
+          "frame": 4,
+          "actualSeconds": 0.166667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-05.png"
+        },
+        {
+          "frame": 5,
+          "actualSeconds": 0.208333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-06.png"
+        },
+        {
+          "frame": 6,
+          "actualSeconds": 0.25,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-07.png"
+        },
+        {
+          "frame": 7,
+          "actualSeconds": 0.291667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-08.png"
+        },
+        {
+          "frame": 8,
+          "actualSeconds": 0.333333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-09.png"
+        },
+        {
+          "frame": 9,
+          "actualSeconds": 0.375,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-10.png"
+        },
+        {
+          "frame": 10,
+          "actualSeconds": 0.416667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-11.png"
+        },
+        {
+          "frame": 11,
+          "actualSeconds": 0.458333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-12.png"
+        },
+        {
+          "frame": 12,
+          "actualSeconds": 0.5,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-13.png"
+        },
+        {
+          "frame": 13,
+          "actualSeconds": 0.541667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-14.png"
+        },
+        {
+          "frame": 14,
+          "actualSeconds": 0.583333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-15.png"
+        },
+        {
+          "frame": 15,
+          "actualSeconds": 0.625,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-16.png"
+        },
+        {
+          "frame": 88,
+          "actualSeconds": 3.666667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-17.png"
+        },
+        {
+          "frame": 89,
+          "actualSeconds": 3.708333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-18.png"
+        },
+        {
+          "frame": 90,
+          "actualSeconds": 3.75,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-19.png"
+        },
+        {
+          "frame": 91,
+          "actualSeconds": 3.791667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-20.png"
+        },
+        {
+          "frame": 92,
+          "actualSeconds": 3.833333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-21.png"
+        },
+        {
+          "frame": 93,
+          "actualSeconds": 3.875,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-22.png"
+        },
+        {
+          "frame": 94,
+          "actualSeconds": 3.916667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-23.png"
+        },
+        {
+          "frame": 95,
+          "actualSeconds": 3.958333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/before-transitions/sample-24.png"
+        }
+      ]
+    },
+    {
+      "id": "curtain",
+      "side": "after",
+      "decoderThreads": 1,
+      "samples": [
+        {
+          "frame": 0,
+          "actualSeconds": 0.0,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-01.png"
+        },
+        {
+          "frame": 1,
+          "actualSeconds": 0.041667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-02.png"
+        },
+        {
+          "frame": 2,
+          "actualSeconds": 0.083333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-03.png"
+        },
+        {
+          "frame": 3,
+          "actualSeconds": 0.125,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-04.png"
+        },
+        {
+          "frame": 4,
+          "actualSeconds": 0.166667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-05.png"
+        },
+        {
+          "frame": 5,
+          "actualSeconds": 0.208333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-06.png"
+        },
+        {
+          "frame": 6,
+          "actualSeconds": 0.25,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-07.png"
+        },
+        {
+          "frame": 7,
+          "actualSeconds": 0.291667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-08.png"
+        },
+        {
+          "frame": 8,
+          "actualSeconds": 0.333333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-09.png"
+        },
+        {
+          "frame": 9,
+          "actualSeconds": 0.375,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-10.png"
+        },
+        {
+          "frame": 10,
+          "actualSeconds": 0.416667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-11.png"
+        },
+        {
+          "frame": 11,
+          "actualSeconds": 0.458333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-12.png"
+        },
+        {
+          "frame": 12,
+          "actualSeconds": 0.5,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-13.png"
+        },
+        {
+          "frame": 13,
+          "actualSeconds": 0.541667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-14.png"
+        },
+        {
+          "frame": 14,
+          "actualSeconds": 0.583333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-15.png"
+        },
+        {
+          "frame": 15,
+          "actualSeconds": 0.625,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-16.png"
+        },
+        {
+          "frame": 88,
+          "actualSeconds": 3.666667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-17.png"
+        },
+        {
+          "frame": 89,
+          "actualSeconds": 3.708333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-18.png"
+        },
+        {
+          "frame": 90,
+          "actualSeconds": 3.75,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-19.png"
+        },
+        {
+          "frame": 91,
+          "actualSeconds": 3.791667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-20.png"
+        },
+        {
+          "frame": 92,
+          "actualSeconds": 3.833333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-21.png"
+        },
+        {
+          "frame": 93,
+          "actualSeconds": 3.875,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-22.png"
+        },
+        {
+          "frame": 94,
+          "actualSeconds": 3.916667,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-23.png"
+        },
+        {
+          "frame": 95,
+          "actualSeconds": 3.958333,
+          "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/curtain/after-transitions/sample-24.png"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "画像から円外の数値安全を証明しない。",
+    "全96frameの連続動画を視聴した判定ではない。全8IDは指定9時点、slotMachine/flipBoard/curtainはさらに0–15と88–95を連続静止画で比較。他区間の一瞬の離散跳びは未判定。",
+    "H264は非可逆。輪郭・細字の精密な一致を保証しない。native key PNG原寸を一部併用。",
+    "mask018未実装のtunnel perimeter、wordCloud雲、crossBands repeat/bands、zoomRepeat copiesの円内残存をdefectに含めない。主歌詞/semantic rows/slot/flap字は除外しない。",
+    "単一4秒/単一文字列/単一seed・font条件。別文字・別配置・別時刻への一般化不可。",
+    "空間再構成によるサイズ/折返し/可視タイミングの変化を原画と完全同一とはしない。"
+  ],
+  "viewedOriginalDecodedImages": [
+    {
+      "path": "/workspace/lyricfx.JIZURA/scratch/avoid007-visual-b/tunnel/after/sample-07.png",
+      "frame": 72,
+      "actualSeconds": 3.0,
+      "detail": "original",
+      "sha256": "34b3ebbaa3d46c6b01fdb0c165a83367ce0b360f67111cce8edcb39aa3f4499b"
+    }
+  ]
+}

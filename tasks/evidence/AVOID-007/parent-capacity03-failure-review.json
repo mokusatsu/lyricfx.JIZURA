@@ -1,0 +1,61 @@
+{
+  "timestamp": "2026-10-22T19:20:20.809879+09:00",
+  "scope": "Parent review of failed capacity03; not formal timing success",
+  "reportSHA256": "8c1208d66bc3fb1fbd96b8ae19f238761935771c2ef5bb8978cc0f37a1bf4f3c",
+  "verifiedSnapshotPins": 103,
+  "actualCuts": 1000,
+  "regions": 1000,
+  "segments": 2998,
+  "IDs": 25,
+  "cutsPerID": 40,
+  "sameColdWarmInput": true,
+  "rows": [
+    {
+      "phase": "cold",
+      "cache": {
+        "revision": 5,
+        "contexts": 321,
+        "entries": 321,
+        "nodes": 9077,
+        "hits": 0,
+        "misses": 360,
+        "bypasses": 0,
+        "evictions": 39,
+        "serializedBytes": 8379016,
+        "keyBytes": 2479884,
+        "payloadBytes": 1019264,
+        "bookkeepingReserved": 4863104,
+        "commonSnapshotBytes": 16764,
+        "maxSerializedBytes": 8388608,
+        "maxContexts": 1024,
+        "maxEntries": 4096
+      },
+      "actualCandidateRecords": 2960,
+      "recordCalls": 3960
+    },
+    {
+      "phase": "warm",
+      "cache": {
+        "revision": 5,
+        "contexts": 320,
+        "entries": 320,
+        "nodes": 9052,
+        "hits": 0,
+        "misses": 720,
+        "bypasses": 0,
+        "evictions": 400,
+        "serializedBytes": 8368352,
+        "keyBytes": 2486966,
+        "payloadBytes": 1015998,
+        "bookkeepingReserved": 4848624,
+        "commonSnapshotBytes": 16764,
+        "maxSerializedBytes": 8388608,
+        "maxContexts": 1024,
+        "maxEntries": 4096
+      },
+      "actualCandidateRecords": 2960,
+      "recordCalls": 3960
+    }
+  ],
+  "disposition": "Reject capacity. Formal03 and new native capture remain blocked. Retain raw failure. Request real duplication reduction without changing input, limits, quality or acceptance. Numeric fingerprint lookup with exact collision comparison is a proposal, not implemented or approved by this receipt."
+}

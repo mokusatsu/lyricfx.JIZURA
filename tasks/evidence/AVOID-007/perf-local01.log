@@ -1,0 +1,16 @@
+END native [{"n":25,"planning":167,"render":7.5,"candidates":0,"states":{"safe":49,"insufficient-space":24}}]
+END candidate [{"n":25,"planning":350.69999999925494,"render":10.200000002980232,"candidates":56,"states":{"safe":70,"insufficient-space":3}}]
+{"local":true,"actualCountsValid":false,"comparisons":[{"n":25,"inputIdentical":true,"planningFactor":2.0999999999955388,"additionalRenderMs":2.7000000029802322,"planningLimit":2,"renderLimitMs":3}],"passed":false}
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(report.actualCountsValid)
+
+    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-perf.cjs:21:999
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

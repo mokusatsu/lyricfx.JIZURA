@@ -1,0 +1,36 @@
+{
+  "reviewedAt": "2026-10-22T08:55:45.903120+00:00",
+  "parentCodeAndTestReview": true,
+  "reports": [
+    {
+      "name": "decoded-seek01",
+      "sha256": "39744d8946e0a9a3e478bb0c6110496eb59af4983ecccd32c614698b1bd9d0c2",
+      "verifiedSnapshotPins": 103
+    },
+    {
+      "name": "playback-diagnostic01",
+      "sha256": "de93fe27a7705845b028883248d82d5c195ac2e59499944113e0692c6cd76e7f",
+      "verifiedSnapshotPins": 104
+    },
+    {
+      "name": "playback-diagnostic02",
+      "sha256": "1efb661e40473e2cb4792d815de207fa6d1827e00a612e334d26497ab49645b3",
+      "verifiedSnapshotPins": 104
+    }
+  ],
+  "capturedToolSHA256": "0645653678918dbe3e26be65bcc57454fb52e6e8a02629a2348f08a2f75bb8f9",
+  "correctedExternalValidatorSHA256": "b15bb512606d8175f40af3edd9a4e3dd980dec550ae77012a81e057b1ecd30da",
+  "change": "retain matching decoded target pending until independently matching seeked signal; only former arrival-order predicate removed; both signals/10s/1frame tolerance retained",
+  "actualOldFailure": {
+    "case": "b25-rain",
+    "side": "before",
+    "target": 3.75,
+    "correctCallbackBeforeSeekedMs": 2.600000001490116
+  },
+  "fixedActualSides": 50,
+  "fixedActualSeekChecks": 150,
+  "actualCallbackBeforeSeekedChecksPassed": 32,
+  "all548OriginalAssetsStillMatch": true,
+  "scope": "seek/race qualification; not complete browser/UI/playback/native/live/public acceptance",
+  "decision": "approve corrected external validator; authorize full local validate-browser fresh02; retain old01 failure and original immutable capture tool/media"
+}
