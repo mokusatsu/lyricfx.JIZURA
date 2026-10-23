@@ -1,0 +1,483 @@
+{
+  "task": "AVOID-009",
+  "build": "output",
+  "scope": "One selected bounded ribbon intent example only; no full-family/task completion or new performance acceptance claim.",
+  "baselineCommit": "23a62ee",
+  "baselineLabel": "変更前（リボン回避導入前）",
+  "afterLabel": "変更後（回避試作）",
+  "publicChecks": 0,
+  "parentMediaViews": 0,
+  "creatorVisualInspection": false,
+  "sourceSnapshot": "/tmp/avoid009-ribbon-selected-20261024-01/source-snapshot",
+  "sourceManifestSHA256": "ea7a7e3d360471bd96b22651352ac1a1abd8c27fea200cbafd215e3664a39f91",
+  "baselineHTMLSHA256": "3dd8f365893a4397a3e704b441070d53417e530eb04b90ef7dd99966a819cc25",
+  "baselineSemantics": "Whole Git23a62ee product HTML, common fixture/avoidCenter settings and full-stage area null, native renderer without D finalization/placementD flag. Original effect, not unsupported-D excluded selection.",
+  "sourceManifestScope": "Exact caddb6a source/JAEN plus actualA-fixture/browserhelper/Noto font inputs; one selected ribbon media example, no source modification",
+  "runnerSHA256": "11a12075330005f523ad9c29bab7760b60ea9eb8d01c32df8393094a0d75b1ac",
+  "localInputPins": {
+    "capture.cjs": "11a12075330005f523ad9c29bab7760b60ea9eb8d01c32df8393094a0d75b1ac",
+    "cases.json": "6bdfa285d5bff310033688336a386c6419c94551795277a9de5600754276c25b",
+    "before-23a62ee.html": "3dd8f365893a4397a3e704b441070d53417e530eb04b90ef7dd99966a819cc25",
+    "accepted-source-freeze.json": "ea7a7e3d360471bd96b22651352ac1a1abd8c27fea200cbafd215e3664a39f91"
+  },
+  "fontSHA256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+  "afterCommit": "caddb6a",
+  "supplementalPins": {
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/browser.cjs": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+    "fonts/NotoSansCJK-Regular.ttc": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a"
+  },
+  "fixturePins": {
+    "layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+  },
+  "knownBaselineIssue": "Original ribbon discrete reveal can have repeated blank opening frames; retained unchanged. Exact unique timestamps required, actual distinct image hashes reported.",
+  "capture": {
+    "fps": 60,
+    "frames": 240,
+    "duration": 4,
+    "clock": "n/60; frame0 through239; native Canvas intrinsic dimensions; no HUD/post; no frame interpolation",
+    "stillFrames": [
+      15,
+      90,
+      228
+    ],
+    "deviceScaleFactor": 1,
+    "viewport": [
+      1280,
+      1000
+    ],
+    "inputTransform": "Both fixture source plans set fps60 before D finalization; fixture defaults24, which would repeat native24 clocks in a60fps container. Both sides use native fixture default camera push, native motionScale1 and fixture fx.motion0.65; pinned single Noto font/A-fixture identical on both sides. Original native reveal retained."
+  },
+  "preflight": [
+    {
+      "case": "ribbon-landscape",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "amp": 0.05,
+        "freq": 0.55,
+        "ph": 2.4,
+        "col": "accent",
+        "reveal": "center",
+        "tilt": 0
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "ribbon-landscape",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "amp": 0.05,
+        "freq": 0.55,
+        "ph": 2.4,
+        "col": "accent",
+        "reveal": "center",
+        "tilt": 0
+      },
+      "sourceArea": null
+    }
+  ],
+  "cases": [
+    {
+      "id": "ribbon-landscape",
+      "spec": {
+        "id": "ribbon-landscape",
+        "layout": "ribbon",
+        "W": 1280,
+        "H": 720,
+        "text": "風の先へ",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "camera": "push",
+        "renderFPS": 60,
+        "params": {
+          "amp": 0.05,
+          "freq": 0.55,
+          "ph": 2.4,
+          "tilt": 0,
+          "col": "accent",
+          "reveal": "center"
+        },
+        "look": "文字の読みやすさと、短くなった帯の広がり・波の動きを確認してください。"
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "ribbon-landscape-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/ribbon-landscape-before.mp4",
+          "keys": [
+            {
+              "file": "images/ribbon-landscape-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "file": "images/ribbon-landscape-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "file": "images/ribbon-landscape-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 1280,
+              "height": 720
+            }
+          ],
+          "frameReceipt": "ribbon-landscape-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 232,
+          "uniqueEncoderInputTimestamps": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 1280,
+                "height": 720,
+                "coded_width": 1280,
+                "coded_height": 720,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "716950",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 45,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-ribbon-selected-20261024-01/output/videos/ribbon-landscape-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "362204",
+              "bit_rate": "724408",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        },
+        "after": {
+          "actualInputs": "ribbon-landscape-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/ribbon-landscape-after.mp4",
+          "keys": [
+            {
+              "file": "images/ribbon-landscape-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "file": "images/ribbon-landscape-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "file": "images/ribbon-landscape-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 1280,
+              "height": 720
+            }
+          ],
+          "frameReceipt": "ribbon-landscape-after-frames.json.gz",
+          "distinctEncoderInputPNGs": 232,
+          "uniqueEncoderInputTimestamps": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 1280,
+                "height": 720,
+                "coded_width": 1280,
+                "coded_height": 720,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "487464",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 45,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-ribbon-selected-20261024-01/output/videos/ribbon-landscape-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "247461",
+              "bit_rate": "494922",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        }
+      }
+    }
+  ],
+  "assets": {
+    "source-manifest.json": {
+      "bytes": 13666,
+      "sha256": "ea7a7e3d360471bd96b22651352ac1a1abd8c27fea200cbafd215e3664a39f91"
+    },
+    "cases.json": {
+      "bytes": 479,
+      "sha256": "6bdfa285d5bff310033688336a386c6419c94551795277a9de5600754276c25b"
+    },
+    "capture.cjs": {
+      "bytes": 14986,
+      "sha256": "11a12075330005f523ad9c29bab7760b60ea9eb8d01c32df8393094a0d75b1ac"
+    },
+    "ribbon-landscape-before-inputs.json.gz": {
+      "bytes": 1445,
+      "sha256": "b65ca4292cc32a6ca3d3f5822e2e8d78e84ad0ade9c0c1e0c0bab5585a4a32af"
+    },
+    "ribbon-landscape-after-inputs.json.gz": {
+      "bytes": 69901,
+      "sha256": "d806e9096a469a6a9c063ea9fc7b70553d0cbd2442a420018b287e87de9007bb"
+    },
+    "preflight.json": {
+      "bytes": 648,
+      "sha256": "245423d10178feea8a7f5f26cc8f082b57fda76479e27da3a059822e5b9f6e2d"
+    },
+    "images/ribbon-landscape-before-15.png": {
+      "bytes": 687844,
+      "sha256": "d40d2dd8a2fa8596c7f9769a2d17a180b79d17879949d3da7e5a2fc5db85e82b"
+    },
+    "images/ribbon-landscape-before-90.png": {
+      "bytes": 607872,
+      "sha256": "c84772890067c25ac14885aee2587b97c25437eebf2481f86f56bb1dd2b9a9d4"
+    },
+    "images/ribbon-landscape-before-228.png": {
+      "bytes": 623185,
+      "sha256": "d16c99dc370cd9bf9669f4a367268e8036da1834f6156085b9b6b42f30914e26"
+    },
+    "ribbon-landscape-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "81e282ba42e11db2157e5016bee34f1f330ace9245e07b6ef676a17a265009b7"
+    },
+    "videos/ribbon-landscape-before.mp4": {
+      "bytes": 362204,
+      "sha256": "228645922d938a5a88dcd02c5d789d8b6ea109883d104b2d361584e42cf22965"
+    },
+    "ribbon-landscape-before-frames.json.gz": {
+      "bytes": 10252,
+      "sha256": "09db243eb251a227670bff54d474a8c18741b444c37c2f3a61a1c26ff986f2c1"
+    },
+    "images/ribbon-landscape-after-15.png": {
+      "bytes": 695834,
+      "sha256": "d64a2aeb8e28d940218fe9aaea8fee1ed8d30dc65293ca388d326ac6333643df"
+    },
+    "images/ribbon-landscape-after-90.png": {
+      "bytes": 668662,
+      "sha256": "6a6cf895522eee5f8339cefcc342d087bd98ac4ae5c09cef2adcf95e747899d4"
+    },
+    "images/ribbon-landscape-after-228.png": {
+      "bytes": 675175,
+      "sha256": "f974d8473e05a66a1de1dca4b3d6b06fba5985f8362c83d1ad3ce1de0572e9e3"
+    },
+    "ribbon-landscape-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "11dfdfbbb0e9fb0ab8ea7dffa3d86a5f8919de26ee825b580034d67464e75d1f"
+    },
+    "videos/ribbon-landscape-after.mp4": {
+      "bytes": 247461,
+      "sha256": "573191f134b613cca160d4aec6a258081da9e6272f41c14b9781b1434c8882f3"
+    },
+    "ribbon-landscape-after-frames.json.gz": {
+      "bytes": 1326124,
+      "sha256": "fa8a4bc8948d781f5a63bc7dc4d87eda06f5395e01b2076330d3146e4c879f50"
+    },
+    "index.html": {
+      "bytes": 2486,
+      "sha256": "6236f9e994a2d7698bfcd3280851d4ba6a70ea57cca0fbd7b7736ab0ae1e5053"
+    },
+    "en.html": {
+      "bytes": 2400,
+      "sha256": "35ff2811f10cf81f1220cee84bca81b4d04634cbee340d69b22b9286affdc377"
+    }
+  },
+  "startedAt": "2026-10-23T19:01:57.929Z",
+  "browser": "154.0.8037.57",
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "completedAt": "2026-10-23T19:02:27.554Z",
+  "status": "Local preflight, native frame guards, source immutability, motion hashes and ffprobe passed; independent visual review pending",
+  "totalAssetBytes": 6068092
+}
