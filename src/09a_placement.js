@@ -72,26 +72,29 @@ A.inkMetricCacheStats=()=>({revision:inkMetricRevision,entries:inkMetrics.size,m
 const textDefaults={fontKerning:['auto'],letterSpacing:['0px'],wordSpacing:['0px'],textRendering:['auto'],fontStretch:['normal'],fontVariantCaps:['normal'],direction:['inherit','ltr'],lang:['inherit']};
 const defaultTextValue=(key,value)=>['letterSpacing','wordSpacing'].includes(key)?value===''||/^[-+]?0(?:\.0+)?(?:[a-z]+)?$/i.test(String(value).trim()):textDefaults[key].includes(value);
 const validateTextState=ctx=>{for(const [key,allowed]of Object.entries(textDefaults))if(key in ctx&&!defaultTextValue(key,ctx[key]))fail('UNSUPPORTED_TEXT_STATE','Default '+key+' required');if(ctx.canvas?.getAttribute?.('lang')||typeof getComputedStyle==='function'&&getComputedStyle(ctx.canvas).direction==='rtl')fail('UNSUPPORTED_TEXT_STATE','Default canvas language/direction required');};
+const D_FORWARD_ITEM=Symbol('native-D-forward-text');
+const finiteDMatrix=m=>{if(!Array.isArray(m)||m.length!==6||!finite(m))fail('INVALID_AFFINE','Finite native D projected matrix required');return m;};
 A.itemGeometry = (it,parent=ID,env={pass:'main',scale:1},options={}) => {
-  A.affine(parent);if(env.ctx)validateTextState(env.ctx);
+  const forwardD=options[D_FORWARD_ITEM]===true,checkMatrix=forwardD?finiteDMatrix:A.affine;
+  checkMatrix(parent);if(env.ctx)validateTextState(env.ctx);
   for(const k of ['pieceFn','blur','shadow','extrude','pattern'])if(it[k])fail('UNSUPPORTED_ITEM',k+' requires a bounded adapter');
   const ctx=measurementContext(), lay=J.layoutText(it), sx=it.sx||1,sy=it.sy||1;
   if(lay.length>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Glyph limit exceeded');
-  const im=compose(parent,trans(it.x,it.y),rotate(it.rot||0),shear(it.skew||0));A.affine(im);
+  const im=compose(parent,trans(it.x,it.y),rotate(it.rot||0),shear(it.skew||0));checkMatrix(im);
   const polygons=[],glyphs=[];
   for(const g of lay){
     const c=it.charFn?it.charFn(g.i,g,lay.N):null;
     if(c?.hide||!g.ch.trim()||(it.alpha??1)*(c?.a??1)*(env.pass!=='main'?(it.ghostAlpha??1):1)<=.002)continue;
     if(c?.blur)fail('UNSUPPORTED_ITEM','Per-character blur');
     const ch=c?.ch||g.ch,cs=c?.s??1,csx=sx*cs*(c?.sx||1),csy=sy*cs*(c?.sy||1);
-    const gm=compose(im,trans(g.x*sx+g.vx*sx+(c?.dx||0),g.y*sy+g.vy*sy+(c?.dy||0)),rotate((c?.rot||0)+(g.r90?90:0)),shear(c?.skew||0),scale(csx,csy));A.affine(gm);
+    const gm=compose(im,trans(g.x*sx+g.vx*sx+(c?.dx||0),g.y*sy+g.vy*sy+(c?.dy||0)),rotate((c?.rot||0)+(g.r90?90:0)),shear(c?.skew||0),scale(csx,csy));checkMatrix(gm);
     const font=J.fontCSS(it.font,it.size,ch);ctx.textAlign='center';ctx.textBaseline='middle';
     const m=inkMetric(ctx,font,ch),pad=(it.stroke>0?it.stroke:((c?.outline||it.dash!=null)?Math.max(1,it.size*.02):0))/Math.sqrt(Math.abs(csx*csy))/2+1;
     const vals=[m.actualBoundingBoxLeft,m.actualBoundingBoxRight,m.actualBoundingBoxAscent,m.actualBoundingBoxDescent,pad];
     if(!finite(vals))fail('UNMEASURED_INK','TextMetrics actual ink unavailable');
     // One font-space pixel guards font-grid/metrics rounding. Two device pixels
     // cover raster grid fitting plus edge coverage at the alpha threshold.
-    A.inverse(gm);
+    if(!forwardD)A.inverse(gm);
     const inkPolygon=rect(-vals[0]-pad,-vals[2]-pad,vals[0]+vals[1]+pad*2,vals[2]+vals[3]+pad*2).map(p=>A.point(gm,p));
     // Owned-text validation consumes this exact un-clipped ink, not raster
     // AA. At ordinary coordinates the omitted +/-2 hull is necessarily finite
@@ -101,6 +104,9 @@ A.itemGeometry = (it,parent=ID,env={pass:'main',scale:1},options={}) => {
   }
   return {polygons,glyphs,inkPolygons:glyphs.map(g=>g.inkPolygon),...(options.validationOnly?{validationOnly:true,measurement:'validation-only un-clipped TextMetrics ink; not a geometry certificate'}:{measurement:'actual TextMetrics + stroke + one font-space pixel + two device-pixel raster guard'})};
 };
+const D_PROJECTED_KIND='flipCards-face',D_PROJECTED_CAPABILITY=Object.freeze({version:1,kind:'finite-forward-text'}),dProjectedCore={mainDraw:J.mainDraw,drawItem:J.drawItem,drawFx:J.drawFx,layoutText:J.layoutText,itemGeometry:A.itemGeometry};
+const dProjectedCoreKnown=()=>Object.entries(dProjectedCore).every(([k,v])=>(k==='itemGeometry'?A[k]:J[k])===v);
+A.layoutsDProjectionCapability=kind=>kind===D_PROJECTED_KIND&&dProjectedCoreKnown()?D_PROJECTED_CAPABILITY:null;
 /* Future piece adapter must supply final ink polygons, not untransformed glyph centers. */
 A.pieceGeometry = (polygons,parent=ID) => {A.affine(parent);A.bounds(polygons);return polygons.map(p=>p.map(v=>A.point(parent,v)));};
 A.withRole = (env,role,owner,fn) => {if(!['primary','tiledAux','independentDecor'].includes(role))fail('INVALID_ROLE','Unknown draw ownership');const prior=env.drawOwnership;env.drawOwnership={role,owner:String(owner)};try{return fn();}finally{env.drawOwnership=prior;}};
@@ -169,6 +175,7 @@ A.record = (renderer,env,options={}) => {
   const reuseCommandMatrix=nativeC34&&!validationOnly;let commandMatrix=null,commandEpoch=recordMatrixEpoch;
   const commandTransform=()=>{if(!commandMatrix||commandEpoch!==recordMatrixEpoch){commandMatrix=matrix(c);commandEpoch=recordMatrixEpoch;}return commandMatrix;};
   const nativeDWorldBand=nativeD34&&dBandCut(env.cut)&&env.pass==='main',nativeDMeasurementRoot=nativeDWorldBand?matrix(c):null;
+  let dProjectionScope=false;
   const events=[],diagnostics=[],gradients=new WeakMap();let bCommands=[],bPoints=[],bPathMatrix=null,bCurrent=null;const patterns=new WeakMap();
   let recorder,glyphCount=0,clips=[],pathRect=null,pathInvalid=false,pathPoints=[],pathClosed=false,pathMatrix=null,pathDNative=null,dBandClipCount=0;const clipStack=[];
   const budget=env.placementBudget?(validationOnly?{...env.placementBudget}:env.placementBudget):{events:0,glyphs:0};
@@ -178,7 +185,7 @@ A.record = (renderer,env,options={}) => {
   const push=(kind,args,polygons,knownMatrix,batchValidated=false)=>{commandMatrix=null;if(++budget.events>MAX_EVENTS)fail('GEOMETRY_LIMIT','Frame draw event ceiling exceeded');if(events.length>=MAX_EVENTS)fail('GEOMETRY_LIMIT','Draw event ceiling exceeded');const ownership=recorder.drawOwnership||{role:'primary',owner:'cut:'+env.cut.index};if(clips.some(v=>v.nativeDWorldBand)){
     const clip=clips[0],paint=gradients.get(args[4]),state=nativeState();
     if(!nativeDWorldBand||clips.length!==1||kind!=='rect'||ownership.role!=='primary'||ownership.owner!=='cylinder.band'||args[2]<=0||args[3]<=0||!paint||paint.gradientKind||paint.args.length!==4||!finite(paint.args)||paint.stops.length!==4||paint.stops.some((stop,i)=>stop[0]!==[0,.35,.55,1][i]||typeof stop[1]!=='string')||state.ops.length||!sameMatrix(state.root,clip.nativeTransform.root)||!sameMatrix(matrix(c),nativeDMeasurementRoot)||!sameMatrix(paint.matrix,state.root))fail('UNSUPPORTED_D_BAND_CLIP','Only native root-world cylinder band linear-gradient rectangle paint is admitted');
-  }if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=knownMatrix||matrix(c);if(!batchValidated){A.affine(m);if(polygons.length)A.bounds(polygons);}if(validationOnly&&!shapeValidationUncertain&&(kind==='rrect'&&recorder.placementRRectBounds==='rect'||env.cut.layout==='ticket'&&kind!=='item'))return;events.push({...(nativeA26?{nativeTransform:nativeState(),nativeSweep:recorder.layoutASweep?jsonClone(recorder.layoutASweep):null}:{}),...(recorder.layoutAMotion?{nativeMotion:recorder.layoutAMotion}:{}),...(nativeB25?{nativeGroup:recorder.placementBGroup||'composition'}:{}),...(nativeC34?{nativeCBody:recorder.placementCBody?jsonClone(recorder.placementCBody):null}:{}),kind,args:args.map(v=>v&&typeof v==='object'&&(gradients.has(v)||patterns.has(v))?(gradients.get(v)||jsonClone(patterns.get(v))):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
+  }if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=knownMatrix||matrix(c);if(!batchValidated){if(dProjectionScope){if(kind!=='item'||clips.length)fail('D_PROJECTED_TEXT_SCOPE','Only clipless source projected text items are allowed');finiteDMatrix(m);}else A.affine(m);if(polygons.length)A.bounds(polygons);}if(validationOnly&&!shapeValidationUncertain&&(kind==='rrect'&&recorder.placementRRectBounds==='rect'||env.cut.layout==='ticket'&&kind!=='item'))return;events.push({...(nativeA26?{nativeTransform:nativeState(),nativeSweep:recorder.layoutASweep?jsonClone(recorder.layoutASweep):null}:{}),...(recorder.layoutAMotion?{nativeMotion:recorder.layoutAMotion}:{}),...(nativeB25?{nativeGroup:recorder.placementBGroup||'composition'}:{}),...(nativeC34?{nativeCBody:recorder.placementCBody?jsonClone(recorder.placementCBody):null}:{}),kind,args:args.map(v=>v&&typeof v==='object'&&(gradients.has(v)||patterns.has(v))?(gradients.get(v)||jsonClone(patterns.get(v))):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
   const proxy=new Proxy(c,{get(target,k){
     if(k==='save')return ()=>{commandMatrix=null;clipStack.push(clips.slice());if(nativeA26)nativeStack.push(nativeState());target.save();};
     if(k==='restore')return ()=>{commandMatrix=null;clips=clipStack.pop()||[];const state=nativeA26?nativeStack.pop():null;if(state){nativeRoot=state.root;nativeOps=state.ops;}target.restore();};
@@ -236,7 +243,11 @@ A.record = (renderer,env,options={}) => {
  if(recorder.placementCBody?.kind!=='shoji-shadow'||recorder.placementCBody.feature!=='silhouette'||!shadowItem.placementMain||shadowItem.font!==env.cut.params.font||shadowItem.charFn||shadowItem.pieceFn||shadowItem.shadow||shadowItem.extrude||shadowItem.pattern||shadowItem.pre||shadowItem.post||!finite([shadowItem.blur??0,shadowItem.size])||(shadowItem.blur??0)<0)fail('SHADOW_OUTPUT_ITEM','Only the unmodified native primary shadow silhouette is admitted');
  const near=J.E.outCubic(J.clamp(env.lt/.9)),expected=env.allowFilter?J.lerp(shadowItem.size*.08,shadowItem.size*.012,near):0;if(shadowItem.blur!==expected)fail('SHADOW_OUTPUT_ITEM','Original native allowFilter/near blur expression required');
  ink=A.itemGeometry({...shadowItem,blur:0},matrix(c),env,{validationOnly:false});ink={...ink,polygons:[rect(0,0,outputDomain.token.width,outputDomain.token.height)],measurement:SHADOW_OUTPUT_SCOPE};
- }else ink=A.itemGeometry(it,matrix(c),env,{validationOnly});if(env.placementEnvelope&&it.placementSweep){const sweep=it.placementSweep,local=A.itemGeometry({...it,x:0,y:0,rot:0},ID,env).polygons;const b=A.bounds(local);ink={...ink,polygons:[rect(sweep.x0+b.x0,sweep.y0+b.y0,sweep.x1-sweep.x0+b.x1-b.x0,sweep.y1-sweep.y0+b.y1-b.y0)]};}if(env.cut.placementGlyphs&&it.placementMain){for(const glyph of ink.glyphs){const copy=snapshotItem(it);copy.placementGlyphIndex=glyph.index;copy.placementRouteKey='huge.main.glyph.'+glyph.index;push('item',[copy],[glyph.polygon]);const event=events.at(-1);event.owner=copy.placementRouteKey;event.anchor=[glyph.matrix[4],glyph.matrix[5]];event.inkPolygons=[glyph.inkPolygon];}}else{push('item',[snapshotItem(outputDomain?shadowItem:it)],ink.polygons);events.at(-1).inkPolygons=ink.inkPolygons;}return recordedItemBounds(it);}};
+ }else {if(dProjectionScope){A.affine(nativeRoot);if(clips.length||!dProjectedCoreKnown()||['charFn','pieceFn','pre','post','blur','shadow','extrude','pattern','gradient','streak','echo','clip','band'].some(k=>it[k])||!finite([it.x,it.y,it.size,it.sx??1,it.sy??1,it.rot??0,it.skew??0,it.track??0,it.lead??1.3]))fail('D_PROJECTED_TEXT_SCOPE','Finite plain source glyph only; projected hooks/effects/clips unsupported');const ownership=recorder.drawOwnership;if(!(ownership?.role==='primary'&&/^flipCards\.card\.\d+$/.test(ownership.owner)||ownership?.role==='independentDecor'&&/^flipCards\.table\.-?\d+\.\d+$/.test(ownership.owner)))fail('D_PROJECTED_TEXT_SCOPE','Exact source card or literal table-peek owner required');}ink=A.itemGeometry(it,matrix(c),env,{validationOnly,...(dProjectionScope?{[D_FORWARD_ITEM]:true}:{})});}if(env.placementEnvelope&&it.placementSweep){const sweep=it.placementSweep,local=A.itemGeometry({...it,x:0,y:0,rot:0},ID,env).polygons;const b=A.bounds(local);ink={...ink,polygons:[rect(sweep.x0+b.x0,sweep.y0+b.y0,sweep.x1-sweep.x0+b.x1-b.x0,sweep.y1-sweep.y0+b.y1-b.y0)]};}if(env.cut.placementGlyphs&&it.placementMain){for(const glyph of ink.glyphs){const copy=snapshotItem(it);copy.placementGlyphIndex=glyph.index;copy.placementRouteKey='huge.main.glyph.'+glyph.index;push('item',[copy],[glyph.polygon]);const event=events.at(-1);event.owner=copy.placementRouteKey;event.anchor=[glyph.matrix[4],glyph.matrix[5]];event.inkPolygons=[glyph.inkPolygon];}}else{push('item',[snapshotItem(outputDomain?shadowItem:it)],ink.polygons);events.at(-1).inkPolygons=ink.inkPolygons;}return recordedItemBounds(it);}};
+  if(nativeD34&&env.cut.layout==='flipCards')recorder.withDProjectedText=(kind,fn)=>{
+    if(env.cut.placementLayoutsA||env.cut.placementLayoutsB||env.cut.placementLayoutsC||kind!==D_PROJECTED_KIND||typeof fn!=='function'||!dProjectedCoreKnown()||!A.layoutsDSourceKnown?.('flipCards')||!A.layoutsDTransportKnown?.(renderer)||env.cut.enter!=='cut'||env.cut.exit!=='cut'||env.cut.hold!=='still'||env.cut.treat!=='none'||env.cut.drawing||clips.length)fail('D_PROJECTED_TEXT_SCOPE','Unchanged native flipCards plain clipless projected text required');
+    A.affine(nativeRoot);const previous=dProjectionScope;dProjectionScope=true;try{return fn();}finally{dProjectionScope=previous;}
+  };
   // Source-owned film holes have no context/state changes between rows.
   // Only the non-certifying prepass batches their common transform checks;
   // each original argument row still consumes its own resource/shape guards.

@@ -1,0 +1,94 @@
+--- a/src/11p_layoutsD.js
++++ b/src/11p_layoutsD.js
+@@ -399,16 +399,18 @@
+   render(env) {
+     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+     const port = isPort(env);
+-    const rowsC = rowsOf(cut.text, port ? 4 : 7);
++    const nativeD = cut.placementLayoutsD === true, recipe = nativeD ? cut.layoutDRecipe : null;
++    const nativeRowsC = rowsOf(cut.text, port ? 4 : 7), rowsC = recipe?.columns ? rowsOf(cut.text, recipe.columns) : nativeRowsC;
+     const cards = [];
+     rowsC.forEach((row, r) => row.forEach((ch, j) => { if (ch !== ' ') cards.push({ ch, r, j, cnt: row.length }); }));
+     const n = cards.length;
+     if (!n) return null;
+-    const rowsL = rowsC.length, per = Math.max(...rowsC.map(r => r.length));
++    const rowsL = rowsC.length, per = Math.max(...rowsC.map(r => r.length)), nativeRowsL = nativeRowsC.length, nativePer = Math.max(...nativeRowsC.map(r => r.length));
+     const extra = Pm.table ? 1 : 0;
+-    const rows = rowsL + extra * 2, asp = 1.38, gap = 0.16;
+-    const k = Math.min(W * 0.86 / (per + (per - 1) * gap), H * (Pm.table ? 0.86 : 0.7) / (rows * asp + (rows - 1) * gap), u * 0.26);
++    const rows = nativeRowsL + extra * 2, asp = 1.38, gap = 0.16;
++    const k = Math.min(W * 0.86 / (nativePer + (nativePer - 1) * gap), H * (Pm.table ? 0.86 : 0.7) / (rows * asp + (rows - 1) * gap), u * 0.26);
+     const cw = k, chh = k * asp, sx = k * (1 + gap), sy = chh + k * gap;
++    const primarySX = sx * (recipe?.columnPitch || 1), primarySY = sy * (recipe?.rowPitch || 1);
+     const out = tout(env);
+     const faceC = lightOf(sc), faceT = darkOf(sc);
+     const backC = [...(Pm.back === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.accent]), sc.accent2, sc.sub, darkOf(sc)].find(c => c && J.contrast(c, faceC) >= 1.6 && J.contrast(c, sc.bg) >= 1.25) || J.mix(faceC, darkOf(sc), 0.6);
+@@ -418,6 +420,7 @@
+     if (Pm.order === 'random') rank.sort((a, b) => J.r(s, a, 31) - J.r(s, b, 31));
+     const ord = new Array(n); rank.forEach((gi, q) => { ord[gi] = q; });
+     const lw = Math.max(1, k * 0.012), rr = k * 0.08;
++    if (nativeD) env.placementDGeometry = {kind:'flipCards',k,cw,chh,lw,rows:rowsL,idx:Pm.idx,table:Pm.table,peek:Pm.peek,fd,gapT,cards:cards.map((cd,i)=>({...cd,index:i,ord:ord[i],x:W/2+(cd.j-(cd.cnt-1)/2)*primarySX,y:H/2+(cd.r-(rowsL-1)/2)*primarySY})),fontScale:recipe?.fontScale || 1};
+     const drawCard = (x, y, p, ch, isFace, key, alpha, lift) => {
+       // p: 0 face-down … 1 face-up; card rotates round its vertical axis
+       const ang = p * Math.PI, c = Math.cos(ang), sn = Math.sin(ang);
+@@ -447,23 +450,33 @@
+     // decoy table rows (face-down)
+     if (Pm.table) {
+       const ta = tin(env, 0, 0.4, E.outCubic) * (1 - E.inCubic(J.clamp((env.pOut - 0.4) / 0.6)));
+-      for (const rr0 of [-1, rowsL]) {
+-        for (let j = 0; j < per; j++) {
+-          const x = W / 2 + (j - (per - 1) / 2) * sx, y = H / 2 + (rr0 - (rowsL - 1) / 2) * sy;
++      for (const rr0 of [-1, nativeRowsL]) {
++        for (let j = 0; j < nativePer; j++) {
++          const x = W / 2 + (j - (nativePer - 1) / 2) * sx, y = H / 2 + (rr0 - (nativeRowsL - 1) / 2) * sy;
++          const prior = env.drawOwnership;
++          if (nativeD) env.drawOwnership = {role:'independentDecor',owner:'flipCards.table.'+rr0+'.'+j};
++          try {
+           let p = 0, ch = null;
+           if (Pm.peek) {
+             // one decoy peeks now and then (flips up, shows a random glyph, flips back)
+             const T = 1.3, kk = Math.floor(env.ltb / T), f = env.ltb / T - kk;
+-            if (kk >= 1 && J.h(s, kk, 5) % (per * 2) === j + (rr0 < 0 ? 0 : per)) { p = f < 0.25 ? E.inOutCubic(f / 0.25) : f < 0.6 ? 1 : 1 - E.inOutCubic((f - 0.6) / 0.25); ch = J.h(s, kk, 6) % 2 ? '？' : '★'; }
++            if (kk >= 1 && J.h(s, kk, 5) % (nativePer * 2) === j + (rr0 < 0 ? 0 : nativePer)) { p = f < 0.25 ? E.inOutCubic(f / 0.25) : f < 0.6 ? 1 : 1 - E.inOutCubic((f - 0.6) / 0.25); ch = J.h(s, kk, 6) % 2 ? '？' : '★'; }
+           }
+           const r = drawCard(x, y, p, ch, false, 0, ta * 0.8, 1);
+-          if (r.up && ch) env.draw({ text: ch, font: Pm.font, size: k * 0.46, x, y, sx: Math.abs(r.c) * r.sc2, sy: r.sc2, color: sc.accent === faceC ? faceT : sc.accent, alpha: ta * 0.8, ghost: false });
++          if (r.up && ch) {
++            const item = { text: ch, font: Pm.font, size: k * 0.46, x, y, sx: Math.abs(r.c) * r.sc2, sy: r.sc2, color: sc.accent === faceC ? faceT : sc.accent, alpha: ta * 0.8, ghost: false };
++            if (nativeD && env.withDProjectedText) env.withDProjectedText('flipCards-face', () => env.draw(item)); else env.draw(item);
++          }
++          } finally { if (nativeD) env.drawOwnership = prior; }
+         }
+       }
+     }
+     cards.forEach((cd, i) => {
++      const prior = env.drawOwnership;
++      if (nativeD) env.drawOwnership = {role:'primary',owner:'flipCards.card.'+i};
++      try {
+       const ch = cd.ch;
+-      const x = W / 2 + (cd.j - (cd.cnt - 1) / 2) * sx, y = H / 2 + (cd.r - (rowsL - 1) / 2) * sy;
++      const x = W / 2 + (cd.j - (cd.cnt - 1) / 2) * primarySX, y = H / 2 + (cd.r - (rowsL - 1) / 2) * primarySY;
+       const ti = 0.12 + ord[i] * gapT;
+       let p = E.inOutCubic(J.clamp((lt - ti) / fd));
+       const po = J.clamp(env.pOut * 1.5 - ord[i] / Math.max(1, n) * 0.5);
+@@ -473,11 +486,15 @@
+       if (!r.up) return;
+       const m = [Math.abs(r.c) * r.sc2, 0, 0, r.sc2 * r.hs, x, y];
+       if (Pm.idx && Math.abs(r.c) > 0.3) {
+-        const is = k * 0.15;
+-        drawAffPlain(env, { text: ch, font: Pm.font, size: is, x: -cw * 0.34, y: -chh * 0.36, color: sc.accent, ghost: false }, m);
+-        drawAffPlain(env, { text: ch, font: Pm.font, size: is, x: cw * 0.34, y: chh * 0.36, rot: 180, color: sc.accent, ghost: false }, m);
+-      }
+-      bb = UB(bb, drawAff(env, { text: ch, font: Pm.font, size: k * 0.6, x: 0, y: 0, color: faceT, noHold: plateHold(env), mi: miAt(env, ti + fd * 0.5) }, m));
++        const is = k * 0.15 * (recipe?.fontScale || 1);
++        const upper = { text: ch, font: Pm.font, size: is, x: -cw * 0.34, y: -chh * 0.36, color: sc.accent, ghost: false }, lower = { text: ch, font: Pm.font, size: is, x: cw * 0.34, y: chh * 0.36, rot: 180, color: sc.accent, ghost: false };
++        if (nativeD) { upper.placementDSource = {kind:'rank',index:i,corner:0,text:ch}; lower.placementDSource = {kind:'rank',index:i,corner:1,text:ch}; }
++        drawAffPlain(env, upper, m); drawAffPlain(env, lower, m);
++      }
++      const item = { text: ch, font: Pm.font, size: k * 0.6 * (recipe?.fontScale || 1), x: 0, y: 0, color: faceT, noHold: plateHold(env), mi: miAt(env, ti + fd * 0.5) };
++      if (nativeD) item.placementDSource = {kind:'main',index:i,text:ch};
++      bb = UB(bb, nativeD && env.withDProjectedText ? env.withDProjectedText('flipCards-face', () => drawAff(env, item, m)) : drawAff(env, item, m));
++      } finally { if (nativeD) env.drawOwnership = prior; }
+     });
+     const bw = per * sx, bh = rowsL * sy;
+     return bb || box(W / 2 - bw / 2, H / 2 - bh / 2, W / 2 + bw / 2, H / 2 + bh / 2);
