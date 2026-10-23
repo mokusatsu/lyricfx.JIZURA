@@ -400,6 +400,7 @@ reg('flipCards', {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
     const port = isPort(env);
     const nativeD = cut.placementLayoutsD === true, recipe = nativeD ? cut.layoutDRecipe : null;
+    const fieldRecipe = recipe?.strategy === 'stationary-field-opening-cells-v2';
     const nativeRowsC = rowsOf(cut.text, port ? 4 : 7), rowsC = recipe?.columns ? rowsOf(cut.text, recipe.columns) : nativeRowsC;
     const cards = [];
     rowsC.forEach((row, r) => row.forEach((ch, j) => { if (ch !== ' ') cards.push({ ch, r, j, cnt: row.length }); }));
@@ -420,8 +421,27 @@ reg('flipCards', {
     if (Pm.order === 'random') rank.sort((a, b) => J.r(s, a, 31) - J.r(s, b, 31));
     const ord = new Array(n); rank.forEach((gi, q) => { ord[gi] = q; });
     const lw = Math.max(1, k * 0.012), rr = k * 0.08;
-    if (nativeD) env.placementDGeometry = {kind:'flipCards',k,cw,chh,lw,rows:rowsL,idx:Pm.idx,table:Pm.table,peek:Pm.peek,fd,gapT,cards:cards.map((cd,i)=>({...cd,index:i,ord:ord[i],x:W/2+(cd.j-(cd.cnt-1)/2)*primarySX,y:H/2+(cd.r-(rowsL-1)/2)*primarySY})),fontScale:recipe?.fontScale || 1};
+    // ON-only stationary field: every native physical slot remains in place.
+    // A selected slot owns one lyric surface; unused middle slots are literal
+    // blank backs, without latent lyric/rank/reveal content. OFF stays native.
+    const fieldCells = [], selectedCells = new Map();
+    const fieldFail = message => { const e = Error(message); e.code = 'FLIPCARDS_FIELD_RECIPE'; throw e; };
+    if (fieldRecipe) {
+      if (!Array.isArray(recipe.assignments) || recipe.assignments.length !== n || !Array.isArray(recipe.extraCells) || recipe.extraCells.length > 4 || ![1,.95,.9,.85,.8,.75].includes(recipe.fontScale)) fieldFail('Bounded source field assignments and accepted font level required');
+      for (const cd of cards) fieldCells.push({id:'middle.'+cd.r+'.'+cd.j,origin:'native-middle',row:cd.r,column:cd.j,x:W/2+(cd.j-(cd.cnt-1)/2)*sx,y:H/2+(cd.r-(nativeRowsL-1)/2)*sy,appearanceOrdinal:ord[fieldCells.length]});
+      if (Pm.table) for (const row of [-1,nativeRowsL]) for (let j=0;j<nativePer;j++) fieldCells.push({id:'table.'+row+'.'+j,origin:'native-table',row,column:j,x:W/2+(j-(nativePer-1)/2)*sx,y:H/2+(row-(nativeRowsL-1)/2)*sy});
+      recipe.extraCells.forEach((cell,i)=>{ if (!cell || cell.id !== 'extra.'+i || ![cell.x,cell.y].every(Number.isFinite) || cell.x<0 || cell.x>W || cell.y<0 || cell.y>H) fieldFail('Finite stage-bounded extra cells with canonical IDs required'); fieldCells.push({id:cell.id,origin:'added-perimeter',x:cell.x,y:cell.y}); });
+      if (fieldCells.length > 46 || new Set(fieldCells.map(c=>c.x+','+c.y)).size !== fieldCells.length || new Set(recipe.assignments).size !== n) fieldFail('Unique selected cells and maximum46 field cells required');
+      recipe.assignments.forEach((id,i)=>{const cell=fieldCells.find(c=>c.id===id);if(!cell)fieldFail('Every source lyric needs a declared field cell');selectedCells.set(id,i);cell.assignedLyricIndex=i;});
+      if (recipe.extraCells.some(c=>!selectedCells.has(c.id))) fieldFail('No unused extra cells');
+      const reading=recipe.assignments.map(id=>fieldCells.find(c=>c.id===id));
+      if (reading.some((c,i)=>i && (c.y<reading[i-1].y-1e-7 || Math.abs(c.y-reading[i-1].y)<1e-7 && c.x<=reading[i-1].x))) fieldFail('Stable field row-major reading order required');
+      for (const cell of fieldCells) cell.contentKind=selectedCells.has(cell.id)?'source-lyric':cell.origin==='native-middle'?'literal-blank-back':'literal-native-peek';
+    } else if (recipe) fieldFail('Only stationary field opening recipes are supported');
+    const primaryCell = i => fieldRecipe ? fieldCells.find(c=>c.id===recipe.assignments[i]) : null;
+    if (nativeD) env.placementDGeometry = {kind:'flipCards',k,cw,chh,lw,rows:rowsL,idx:Pm.idx,table:Pm.table,peek:Pm.peek,fd,gapT,fieldCells,fieldDraws:[],cardClocks:[],fieldRecipe:fieldRecipe?{assignments:recipe.assignments,extraCells:recipe.extraCells}:null,cards:cards.map((cd,i)=>({...cd,index:i,ord:ord[i],x:primaryCell(i)?.x??(W/2+(cd.j-(cd.cnt-1)/2)*primarySX),y:primaryCell(i)?.y??(H/2+(cd.r-(rowsL-1)/2)*primarySY)})),fontScale:recipe?.fontScale || 1};
     const drawCard = (x, y, p, ch, isFace, key, alpha, lift) => {
+      if (fieldRecipe) {const cell=fieldCells.find(c=>c.x===x&&c.y===y);if(!cell)fieldFail('Physical draw must match one declared field cell');env.placementDGeometry.fieldDraws.push(cell.id);}
       // p: 0 face-down … 1 face-up; card rotates round its vertical axis
       const ang = p * Math.PI, c = Math.cos(ang), sn = Math.sin(ang);
       const w = cw * Math.max(0.02, Math.abs(c)), sc2 = 1 + 0.1 * sn * lift;
@@ -453,6 +473,7 @@ reg('flipCards', {
       for (const rr0 of [-1, nativeRowsL]) {
         for (let j = 0; j < nativePer; j++) {
           const x = W / 2 + (j - (nativePer - 1) / 2) * sx, y = H / 2 + (rr0 - (nativeRowsL - 1) / 2) * sy;
+          if (fieldRecipe && selectedCells.has('table.'+rr0+'.'+j)) continue; // one selected surface replaces this literal peek
           const prior = env.drawOwnership;
           if (nativeD) env.drawOwnership = {role:'independentDecor',owner:'flipCards.table.'+rr0+'.'+j};
           try {
@@ -471,17 +492,26 @@ reg('flipCards', {
         }
       }
     }
+    if (fieldRecipe) for (const cell of fieldCells) if (cell.contentKind === 'literal-blank-back') {
+      const prior=env.drawOwnership;
+      env.drawOwnership={role:'independentDecor',owner:'flipCards.blank.'+cell.row+'.'+cell.column};
+      try {
+        const appear=tin(env,cell.appearanceOrdinal*.02,.25,E.outCubic)*(1-E.inCubic(J.clamp((env.pOut-.55)/.45)));
+        drawCard(cell.x,cell.y,0,null,false,0,appear,1);
+      } finally {env.drawOwnership=prior;}
+    }
     cards.forEach((cd, i) => {
       const prior = env.drawOwnership;
       if (nativeD) env.drawOwnership = {role:'primary',owner:'flipCards.card.'+i};
       try {
       const ch = cd.ch;
-      const x = W / 2 + (cd.j - (cd.cnt - 1) / 2) * primarySX, y = H / 2 + (cd.r - (rowsL - 1) / 2) * primarySY;
+      const x = primaryCell(i)?.x ?? (W / 2 + (cd.j - (cd.cnt - 1) / 2) * primarySX), y = primaryCell(i)?.y ?? (H / 2 + (cd.r - (rowsL - 1) / 2) * primarySY);
       const ti = 0.12 + ord[i] * gapT;
       let p = E.inOutCubic(J.clamp((lt - ti) / fd));
       const po = J.clamp(env.pOut * 1.5 - ord[i] / Math.max(1, n) * 0.5);
       if (po > 0) p = Math.min(p, 1 - E.inOutCubic(po));
       const appear = tin(env, ord[i] * 0.02, 0.25, E.outCubic) * (1 - E.inCubic(J.clamp((env.pOut - 0.55) / 0.45)));
+      if (nativeD) env.placementDGeometry.cardClocks.push({index:i,ord:ord[i],ti,fd,gapT,p,po,appear,mi:miAt(env,ti+fd*.5)});
       const r = drawCard(x, y, p, ch, true, i, appear, 1);
       if (!r.up) return;
       const m = [Math.abs(r.c) * r.sc2, 0, 0, r.sc2 * r.hs, x, y];

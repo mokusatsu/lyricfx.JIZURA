@@ -1,0 +1,93 @@
+{
+  "status": "PASS_ALL_RUN02_ASSERTIONS_WITH_SOURCE_EXACT_MULTIPLY_GROUPING",
+  "raw": "focused-raw02.json.gz",
+  "rawSha256": "8a39da72752841c8b2b8f17a1b6ad21f06611d976ec330774a44ec9916e08958",
+  "assertionChange": "table x=W/2+(j-(per-1)/2)*(k*(1+.16)); exact source arithmetic grouping, strict equality, no tolerance widening",
+  "rows": [
+    {
+      "id": "selected",
+      "safety": "certified-bounded-adapter",
+      "failures": 0,
+      "recordErrors": 0,
+      "offExact": true,
+      "sourceUnchanged": true,
+      "cacheTrajectoryEqual": true
+    },
+    {
+      "id": "random",
+      "safety": "certified-bounded-adapter",
+      "failures": 0,
+      "recordErrors": 0,
+      "offExact": true,
+      "sourceUnchanged": true,
+      "cacheTrajectoryEqual": true
+    },
+    {
+      "id": "table-false",
+      "safety": "insufficient-space",
+      "failures": 11,
+      "recordErrors": 0,
+      "offExact": true,
+      "sourceUnchanged": true,
+      "cacheTrajectoryEqual": true
+    },
+    {
+      "id": "blocked",
+      "safety": "insufficient-space",
+      "failures": 11,
+      "recordErrors": 0,
+      "offExact": true,
+      "sourceUnchanged": true,
+      "cacheTrajectoryEqual": true
+    },
+    {
+      "id": "portrait",
+      "safety": "insufficient-space",
+      "failures": 11,
+      "recordErrors": 0,
+      "offExact": true,
+      "sourceUnchanged": true,
+      "cacheTrajectoryEqual": true
+    },
+    {
+      "id": "two-regions",
+      "safety": "certified-bounded-adapter",
+      "failures": 0,
+      "recordErrors": 0,
+      "offExact": true,
+      "sourceUnchanged": true,
+      "cacheTrajectoryEqual": true
+    },
+    {
+      "id": "explicit",
+      "safety": "insufficient-space",
+      "failures": 11,
+      "recordErrors": 0,
+      "offExact": true,
+      "sourceUnchanged": true,
+      "cacheTrajectoryEqual": true
+    },
+    {
+      "id": "ordinary-unsupported",
+      "failures": 0,
+      "recordErrors": 0,
+      "offExact": true,
+      "sourceUnchanged": true,
+      "cacheTrajectoryEqual": true
+    }
+  ],
+  "pageErrors": 0,
+  "offExactFramePairs": 48,
+  "safeRows": 3,
+  "records": 81,
+  "actualScaleValues": [
+    0.1,
+    1,
+    4
+  ],
+  "selectedFontScale": 0.9,
+  "explicitScale1": "insufficient-space; complete attachment failed at fixed original font, no font search",
+  "browserRerun": 0,
+  "sourceChanges": 0,
+  "publicResultChecks": 0
+}
