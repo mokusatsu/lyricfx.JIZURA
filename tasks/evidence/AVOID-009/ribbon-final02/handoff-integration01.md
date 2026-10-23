@@ -9,3 +9,27 @@ Source65 physical-band attachment is continuous, while painted subset entry/exit
 Selected later media:1280x720 push, text風の先へ, circle(.5,.42,.2), amp.05/freq.55/ph2.4/tilt0/center. Native font115.2 ->69.12px(60%), physical span70%, bend65%, bandFactor.9, offset[0,219.83559251533376]. Prepare exactly one original-before23a62ee/committed-after pair after parent product commit,4seconds/60fps plus about6stills. Readability of reduced typography and reduced band/span identity require human motion review. No media generated yet, no human OK, no public result checks. AVOID-009 remains active,010+ unstarted; next independent D plan may proceed read-only through parent.
 
 Archive b477... remains /tmp only; parent has already written Git blob92dfd3d6dd4466ebcb6a3ce41c18badb5e5a5186 and owns index/skip-worktree/commit. Do not materialize heavy archive in main root. Preserve all four earlier intentionally absent archives.
+
+## Lightweight reproducible evidence regression
+
+The canonical entry point needs Python standard library only. It checks packet SHA, extracts only the four named raw records to a temporary directory, verifies their accepted hashes, and runs the unchanged parent geometry/clock checker with temporary input/output paths. It makes no browser/network/image calls and does not materialize the archive in the repository:
+
+```bash
+python3 dev/avoidance/layouts-d-ribbon-evidence-replay.py --packet /tmp/avoid009-ribbon-final02.tar.gz
+```
+
+If the existing /tmp packet is unavailable, restore its Git blob into /tmp (parent owns actual Git operations). This is the already stored/indexed blob, not a public URL:
+
+```bash
+git cat-file blob 92dfd3d6dd4466ebcb6a3ce41c18badb5e5a5186 > /tmp/avoid009-ribbon-final02.tar.gz
+```
+
+For exact source/dependency inspection, extract into a NEW /tmp directory and verify every available input blob/delta. This does not rerun the historical invocation or invent its missing pins:
+
+```bash
+mkdir /tmp/ribbon-packet-inspection
+tar -xzf /tmp/avoid009-ribbon-final02.tar.gz -C /tmp/ribbon-packet-inspection
+python3 /tmp/ribbon-packet-inspection/avoid009-ribbon-final02/restore-input.py
+```
+
+The original browser runner snapshots are preserved as historical invocation sources, not installed as broken main commands: they depend on original isolated evidence paths and the pre-integration main comparison HTML. matrix02/explicit01 raw and exact snapshots plus the lightweight parent checker are the reproducible bounded acceptance record. A future live browser regression should first construct a new isolated baseline with those exact dependencies and a new report path; do not overwrite old reports or treat a post-integration main page as the original before.
