@@ -1,0 +1,534 @@
+{
+  "scope": "ONE bounded representative pile comparison; no human acceptance, full family, formal performance,009 completion or010 activation",
+  "before": "bc39ce2b7893a514e6ddd7e053312dde469f8640",
+  "after": "064cd99978bc19e23051352e2bbdca0258d03220",
+  "spec": {
+    "id": "pile-normal-native60",
+    "layout": "pile",
+    "text": "風の先へ",
+    "W": 1280,
+    "H": 720,
+    "camera": "push",
+    "ghost": true,
+    "duration": 4,
+    "seed": 704,
+    "params": {
+      "font": "gothic_black",
+      "hf": "gothic_med",
+      "peak": 0.07,
+      "hgt": 0.3,
+      "order": "ltr",
+      "dust": true
+    },
+    "regions": [
+      {
+        "id": "normal",
+        "start": 0,
+        "end": 4,
+        "center": {
+          "x": 0.5,
+          "y": 0.42
+        },
+        "radius": 0.2
+      }
+    ],
+    "keyframes": [
+      0,
+      15,
+      30,
+      54,
+      90,
+      150,
+      210,
+      239
+    ]
+  },
+  "publicChecks": 0,
+  "creatorImageViews": 0,
+  "parentImageViews": 0,
+  "sourcePinsSHA256": "26f691b6ecc984d4e8b22352bb900aa70679e5308051fe62e1d793b549d37a95",
+  "sides": {
+    "before": {
+      "input": "before-inputs.json.gz",
+      "keys": [
+        {
+          "frame": 0,
+          "time": 0,
+          "file": "images/pile-before-000.png"
+        },
+        {
+          "frame": 15,
+          "time": 0.25,
+          "file": "images/pile-before-015.png"
+        },
+        {
+          "frame": 30,
+          "time": 0.5,
+          "file": "images/pile-before-030.png"
+        },
+        {
+          "frame": 54,
+          "time": 0.9,
+          "file": "images/pile-before-054.png"
+        },
+        {
+          "frame": 90,
+          "time": 1.5,
+          "file": "images/pile-before-090.png"
+        },
+        {
+          "frame": 150,
+          "time": 2.5,
+          "file": "images/pile-before-150.png"
+        },
+        {
+          "frame": 210,
+          "time": 3.5,
+          "file": "images/pile-before-210.png"
+        },
+        {
+          "frame": 239,
+          "time": 3.9833333333333334,
+          "file": "images/pile-before-239.png"
+        }
+      ],
+      "video": "videos/pile-before.mp4",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 32,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 61440,
+            "duration": "4.000000",
+            "bit_rate": "1295152",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "240",
+            "nb_read_frames": "240",
+            "extradata_size": 45,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/tmp/avoid009-pile-media01/output02/videos/pile-before.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "651249",
+          "bit_rate": "1302498",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "distinct": 239,
+      "frameReceipt": "before-frames.json.gz",
+      "encoderArgs": [
+        "-y",
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "png",
+        "-framerate",
+        "60",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-threads",
+        "2",
+        "-preset",
+        "medium",
+        "-crf",
+        "17",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "/tmp/avoid009-pile-media01/output02/videos/pile-before.mp4"
+      ]
+    },
+    "after": {
+      "input": "after-inputs.json.gz",
+      "keys": [
+        {
+          "frame": 0,
+          "time": 0,
+          "file": "images/pile-after-000.png"
+        },
+        {
+          "frame": 15,
+          "time": 0.25,
+          "file": "images/pile-after-015.png"
+        },
+        {
+          "frame": 30,
+          "time": 0.5,
+          "file": "images/pile-after-030.png"
+        },
+        {
+          "frame": 54,
+          "time": 0.9,
+          "file": "images/pile-after-054.png"
+        },
+        {
+          "frame": 90,
+          "time": 1.5,
+          "file": "images/pile-after-090.png"
+        },
+        {
+          "frame": 150,
+          "time": 2.5,
+          "file": "images/pile-after-150.png"
+        },
+        {
+          "frame": 210,
+          "time": 3.5,
+          "file": "images/pile-after-210.png"
+        },
+        {
+          "frame": 239,
+          "time": 3.9833333333333334,
+          "file": "images/pile-after-239.png"
+        }
+      ],
+      "video": "videos/pile-after.mp4",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 32,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 61440,
+            "duration": "4.000000",
+            "bit_rate": "1504332",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "240",
+            "nb_read_frames": "240",
+            "extradata_size": 45,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/tmp/avoid009-pile-media01/output02/videos/pile-after.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "755871",
+          "bit_rate": "1511742",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "distinct": 240,
+      "frameReceipt": "after-frames.json.gz",
+      "encoderArgs": [
+        "-y",
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "png",
+        "-framerate",
+        "60",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-threads",
+        "2",
+        "-preset",
+        "medium",
+        "-crf",
+        "17",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "/tmp/avoid009-pile-media01/output02/videos/pile-after.mp4"
+      ]
+    }
+  },
+  "assets": {
+    "spec.json": {
+      "bytes": 575,
+      "sha256": "9fcf40395830dcad906aa6e6f28ebcb88279e3134ae89ce011844351fc78d34d"
+    },
+    "pins.json": {
+      "bytes": 26180,
+      "sha256": "26f691b6ecc984d4e8b22352bb900aa70679e5308051fe62e1d793b549d37a95"
+    },
+    "capture02.cjs": {
+      "bytes": 9697,
+      "sha256": "30057f2e897749f5b20e44d78cd664f4587224cfeb283b5f4d195c000d6954da"
+    },
+    "before-inputs.json.gz": {
+      "bytes": 2215,
+      "sha256": "cf683b5dcf1f35826612ac17a097623969c3474088788724267d57e9a7fe5a60"
+    },
+    "after-inputs.json.gz": {
+      "bytes": 21154,
+      "sha256": "74cc5359cf877aeed4d5b29e0e7a45895b089742f46a84b3d792aa000a7dbbd7"
+    },
+    "images/pile-before-000.png": {
+      "bytes": 689338,
+      "sha256": "979b3181f2f6115271c31060b6a4290bab9b4da1e617bc1b4eb2624fbb309171"
+    },
+    "images/pile-before-015.png": {
+      "bytes": 718435,
+      "sha256": "4bf24cb1cf156602e939899e6a2bbe6639063d980eeb131d2d06172fdf1075b3"
+    },
+    "images/pile-before-030.png": {
+      "bytes": 731568,
+      "sha256": "661ae0d8bd5df357cb4b42056adce0e66929e1f71f281c1f62b72ebe9853ef4a"
+    },
+    "images/pile-before-054.png": {
+      "bytes": 722375,
+      "sha256": "672ac722065be8d22bcc8442b09b4adc3c7d5d34b566e821ccfb9cdf5c72f50a"
+    },
+    "images/pile-before-090.png": {
+      "bytes": 720580,
+      "sha256": "4cf52a619c2da8e6f321052b43d073162418dec4c40f11b66e5e6a2f73b35613"
+    },
+    "images/pile-before-150.png": {
+      "bytes": 721255,
+      "sha256": "028a936f4424d208f6bcc75a089ab2a895321bf0694b87d7a8d9f68e493b61f9"
+    },
+    "images/pile-before-210.png": {
+      "bytes": 721216,
+      "sha256": "1dcf86af4b5d00187ecdc3f406a6dda0802014aa4724efdad16a4a58498ff806"
+    },
+    "images/pile-before-239.png": {
+      "bytes": 742531,
+      "sha256": "a229a92fb8ee56b016c10e763f6613c36e6fa555733c41d2bbde199d7038ecc8"
+    },
+    "before-frames.json.gz": {
+      "bytes": 13961,
+      "sha256": "167d22bd2955e3efd23701a7d0e215501aa191ea8efb6926f535b9ae92b2ace0"
+    },
+    "before-motion.json": {
+      "bytes": 28708,
+      "sha256": "858c3489082f9ed17299200c69ce0d40ab73c7dcafbad818c14c524a583a98eb"
+    },
+    "videos/pile-before.mp4": {
+      "bytes": 651249,
+      "sha256": "bd2f9568fcd78ebb57914de35d8942209a68158a480ba3940acdeb8807073886"
+    },
+    "images/pile-after-000.png": {
+      "bytes": 614034,
+      "sha256": "3b6d5b7c66164bd196f922867e5dc890c4d6001dccdf6fbca576cdd7adbfa1cd"
+    },
+    "images/pile-after-015.png": {
+      "bytes": 707708,
+      "sha256": "c50d08d6b0e8c72a52374c8e6f603eed24855c6f23de1ac988c30afef6e1217b"
+    },
+    "images/pile-after-030.png": {
+      "bytes": 725838,
+      "sha256": "b52c3791fd58bd9dda35daf583ce77f9f7998b267c01d97fe4a491bcb83f0133"
+    },
+    "images/pile-after-054.png": {
+      "bytes": 719807,
+      "sha256": "d39445fcf258672dbf5350a079ddc7a085e1c6951426e504e034a892f93a4339"
+    },
+    "images/pile-after-090.png": {
+      "bytes": 718790,
+      "sha256": "ea8e9b561cddf5b4983a3aeb8ed964825a2728ad40c1a82db139d65ccced3805"
+    },
+    "images/pile-after-150.png": {
+      "bytes": 717961,
+      "sha256": "70f114feeff0982f13d76c87626ca638773e4edbac5afda611b0f2630b4b57ab"
+    },
+    "images/pile-after-210.png": {
+      "bytes": 718177,
+      "sha256": "708d0b5b6d0a15aa632d30eef9ee5fa7d8fa1c67581ca936ffa23c7756506011"
+    },
+    "images/pile-after-239.png": {
+      "bytes": 745568,
+      "sha256": "6da316143bfee168be76eaf201ce6b4360861f2096a2a9936f5381ddd40b191a"
+    },
+    "after-frames.json.gz": {
+      "bytes": 23584562,
+      "sha256": "bb2109ab1c1e7ff2fe078c7f24949b509a04c754a69061699e8f8ca463e61c52"
+    },
+    "after-motion.json": {
+      "bytes": 28708,
+      "sha256": "e317dce6b6601ac6d290b065e51fad21220b08350c351746753a0d20a98dbdaf"
+    },
+    "videos/pile-after.mp4": {
+      "bytes": 755871,
+      "sha256": "cf9e091078487264557269eb5544bd0a4fcc47dc3bcdd2d37681e624715d390d"
+    },
+    "index.html": {
+      "bytes": 2417,
+      "sha256": "c3affbbfbde33e0262f5fdd6404a6d64bcfc3b836ddcebe3a3323c87c359f1b1"
+    },
+    "en.html": {
+      "bytes": 2361,
+      "sha256": "cd85a590327767f11b48522f40085c54628268a4ced0aeaed3437f2c2b6a8040"
+    }
+  },
+  "errors": [],
+  "networkAborts": [
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "action": "aborted-before-request"
+    }
+  ],
+  "browser": "154.0.8037.57",
+  "status": "Local native60 capture/source guards and AFTER wholeframe clock/geometry guards and ffprobe passed; independent visual review and human review pending",
+  "completedAt": "2026-10-23T22:52:13.066Z"
+}

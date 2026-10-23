@@ -1,0 +1,60 @@
+{
+  "status": "Local native60 capture/source guards and AFTER wholeframe clock/geometry guards and ffprobe passed; independent visual review and human review pending",
+  "at": "2026-10-23T22:53:03.696871+00:00",
+  "manifestSHA256": "c1341c153d3168eaf7948d7e779f261d8fb2c59b6c918e6ded3d603f97e030bb",
+  "wholeAfterFrames": 240,
+  "afterPassObservations": 720,
+  "passCounts": {
+    "B": 240,
+    "A": 240,
+    "main": 240
+  },
+  "actualPolygons": 35978,
+  "allAfterSafe": true,
+  "regions": [
+    "normal"
+  ],
+  "candidates": [
+    "a84-split-rho110-groupY"
+  ],
+  "sourceClock": {
+    "before": "EXPECTED model only; ORIGINAL unwrapped Renderer.frame, no before observer/geometry claimed",
+    "after": "actual wholeframe main/A/B native motionTime/lt/ltb verified"
+  },
+  "errors": [],
+  "networkAbortedBeforeRequest": 10,
+  "MP4": {
+    "before": {
+      "path": "/tmp/avoid009-pile-media01/output02/videos/pile-before.mp4",
+      "bytes": 651249,
+      "sha256": "bd2f9568fcd78ebb57914de35d8942209a68158a480ba3940acdeb8807073886",
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "avg_frame_rate": "60/1",
+      "nb_frames": "240",
+      "nb_read_frames": "240",
+      "duration": "4.000000",
+      "distinctEncoderPNGs": 239
+    },
+    "after": {
+      "path": "/tmp/avoid009-pile-media01/output02/videos/pile-after.mp4",
+      "bytes": 755871,
+      "sha256": "cf9e091078487264557269eb5544bd0a4fcc47dc3bcdd2d37681e624715d390d",
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "avg_frame_rate": "60/1",
+      "nb_frames": "240",
+      "nb_read_frames": "240",
+      "duration": "4.000000",
+      "distinctEncoderPNGs": 240
+    }
+  },
+  "keyPNGs": 16,
+  "allAssetHashesMatch": true,
+  "old129PinsUnchanged": true,
+  "new130PinsUnchanged": true,
+  "imageViews": 0,
+  "publicChecks": 0
+}
