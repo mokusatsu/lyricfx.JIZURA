@@ -1,0 +1,11 @@
+# AVOID-008 dependency-string memo paired browser preparation only
+
+Model gpt-6.1-sol medium. Source/pure checkpoint9bdb23287879ae12f054af7ef71d4ea725a56534, JA0f0989faa968e4e1c165543e8837a16f41e234a909c31cfbc7d438a7af260874. New layouts-c-dependency-string-memo-browser.cjs SHA256f59dbee7993c33e4c010b9189b4e009f5213ff8166f3fa7acba13102bac59589 derives from accepted dense helperd5c4bdb9755f6bbedc40107ae7ebbaa4b3f8f87279e368595c0ec53491c7ee77 through8literal groups/10occurrences. Lossless patch reverses byte-exact. Entire40normal+2corner exercise unchanged; full deep/ordered/canonical comparison of every field,144total frames, all program/alias/pixel/observation/error data, no projection/exclusions.
+
+Baseline prior6b full84 JAcd6e8d459657751ec1d08e9b69d48dc1efb4d13f74c7e30df4a2604fe3e4e1c9 references dense-decoded-freeze-browser01/input-index.html.gz. Archive search adds that folder first. Product86 equals9b Git blobs, package173 pinned,112currently available samebytes archive references verified; no new input snapshots or HTML/gzip duplication. Runtime03/spec229 unchanged; parent must freshly confirm current=observed/running/connected.
+
+Requires parent-created dependency-string-memo-browser01-parent-gate.json with authorizedByParenttrue, authorizedMode one-paired-normal40-plus2-dependency-string-memo-correctness, formal1000Authorizedfalse, candidate source/JA/helper/baseline archive pins, product86/package173, expectedSpecRevision229, output tasks/evidence/AVOID-008/performance/dependency-string-memo-browser01. Gate not created here. Exclusive lease and actual PID/startTicks/kernel wait/reaped/gone/post-save reserve evidence remain parent execution requirements. Full84/300s/250MiB/loopback/external abort/proxy/CA/TLS/awaitclose/drift behavior inherited unchanged.
+
+Future command (NOT EXECUTED): JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-c-dependency-string-memo-browser.cjs tasks/evidence/AVOID-008/performance/dependency-string-memo-browser01
+
+Syntax/diff checks pass. No browser/performance/CDP/security mutation/fuzz/images/video/public verification. No product/main/docs changes. Parent source/pure review then one-run browser authorization required; original100 must await this browser's acceptance. Historical failures/reserve violation retained; no performance benefit claimed.
