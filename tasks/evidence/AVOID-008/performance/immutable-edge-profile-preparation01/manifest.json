@@ -1,0 +1,113 @@
+{
+  "kind": "preparation only: no browser/CDP/timing",
+  "baseDriver": "dev/avoidance/layouts-c-perf-phases-profile.cjs",
+  "baseSHA256": "593f687d74d0550520a9d7ce78a7521efb17e88235e56afb6ddc6ef07aa1eb18",
+  "derivativeDriver": "dev/avoidance/immutable-edge-phases-profile.cjs",
+  "derivativeSHA256": "e55b10826b34797e5549634be4b0a116cc6e735744283b0c00dde7af526b62da",
+  "operations": [
+    {
+      "old": "tasks/evidence/AVOID-008/performance/final-c34-diagnose01/results.raw.json.gz",
+      "new": "tasks/evidence/AVOID-008/performance/immutable-edge-diagnose01/results.raw.json.gz",
+      "occurrences": 1
+    },
+    {
+      "old": "reference=JSON.parse(zlib.gunzipSync(fs.readFileSync(root+'/'+referencePath)))",
+      "new": "referenceRaw=zlib.gunzipSync(fs.readFileSync(root+'/'+referencePath)),reference=JSON.parse(referenceRaw)",
+      "occurrences": 1
+    },
+    {
+      "old": "assert.equal(sha(compiled),'ccf7ee7295269b64b24b45f7f58e4123b0e2dc5d8a52f90568aefe4c8579b75b');",
+      "new": "assert.equal(sha(referenceRaw),'8801cc5b128d806fc08fecd24f5b04ca68f368c1a9f5251b74699fd4be2e69e6');assert.equal(sha(compiled),'f8515267ffc8bce22a8babfad51d1e90bf8b98eff82615ecb2b7d84123adb684');",
+      "occurrences": 1
+    },
+    {
+      "old": "'dev/avoidance/layouts-c-perf-phases-profile.cjs',referencePath,",
+      "new": "'dev/avoidance/layouts-c-perf-phases-profile.cjs','dev/avoidance/immutable-edge-phases-profile.cjs','dev/avoidance/immutable-edge-phases-aggregate.cjs','tasks/evidence/AVOID-008/performance/immutable-edge-profile01-parent-gate.json','tasks/evidence/AVOID-008/performance/immutable-edge-browser02-parent-gate.json',referencePath,",
+      "occurrences": 1
+    },
+    {
+      "old": "combined-c34-runtime01",
+      "new": "immutable-edge-runtime04",
+      "occurrences": 3
+    },
+    {
+      "old": "const packageReference=JSON.parse(fs.readFileSync(root+'/tasks/evidence/AVOID-008/performance/final-c34-correctness01/preflight-and-dependencies.json'))",
+      "new": "const packageReference=JSON.parse(fs.readFileSync(root+'/tasks/evidence/AVOID-008/performance/immutable-edge-browser02-parent-gate.json'))",
+      "occurrences": 1
+    },
+    {
+      "old": "assert.equal(runtime.environment.spec_revision,'214');",
+      "new": "assert.equal(runtime.environment.spec_revision,'215');",
+      "occurrences": 1
+    },
+    {
+      "old": "for(const p of packageReference.packagePins)assert.equal",
+      "new": "const gate=JSON.parse(fs.readFileSync(root+'/tasks/evidence/AVOID-008/performance/immutable-edge-profile01-parent-gate.json'));assert(gate.authorizedByParent&&gate.authorizedMode==='candidate100-onoff-separated-cpu-profile'&&gate.formal1000Authorized===false);assert.equal(gate.candidateSource,'8ff3dd8487a4fb4193d00ef9caa296372c751b4f');assert.equal(gate.expectedSpecRevision,runtime.environment.spec_revision);assert.equal(gate.candidateSHA256,sha(compiled));assert.equal(gate.driverSHA256,sha(fs.readFileSync(__filename)));assert.equal(gate.fixtureSHA256,sha(fs.readFileSync(__dirname+'/layouts-c-perf-phases-fixture.js')));assert.equal(gate.referenceRawSHA256,sha(referenceRaw));assert.equal(gate.productPins.length,86);assert.equal(packageReference.packagePins.length,173);assert.deepEqual(gate.packagePins,packageReference.packagePins);assert.deepEqual(gate.productPins,packageReference.productPins);for(const p of gate.productPins)assert.equal(sha(fs.readFileSync(root+'/'+p.path)),p.sha256);\nfor(const p of packageReference.packagePins)assert.equal",
+      "occurrences": 1
+    },
+    {
+      "old": "comm==='node'&&args.some",
+      "new": "['node','MainThread'].includes(comm)&&args.some",
+      "occurrences": 1
+    },
+    {
+      "old": "sourceCheckpoint:'fd6ae6631654fc2d50cb703707db15df6ee782bd'",
+      "new": "sourceCheckpoint:'8ff3dd8487a4fb4193d00ef9caa296372c751b4f'",
+      "occurrences": 1
+    },
+    {
+      "old": "pins,packageFiles:packageReference.packagePins.length,runtime,",
+      "new": "pins,packageFiles:packageReference.packagePins.length,runtime,gate,referenceRawSHA256:sha(referenceRaw),environmentQualification:'spec215 separate CPU diagnostic; prior unprofiled100 ran spec214; no cross-runtime formal speed inference',",
+      "occurrences": 1
+    },
+    {
+      "old": "if(f.length){contaminated=true;report.concurrency.push({phase:'during',foreign:f});browser?.close().catch(()=>{});}",
+      "new": "if(f.length){contaminated=true;report.concurrency.push({phase:'during',foreign:f});browser?.close().catch(()=>{});}if(fs.statfsSync(root).bavail*fs.statfsSync(root).bsize<250*1024*1024){contaminated=true;report.errors.push({code:'PROFILE_250MIB_RESERVE'});browser?.close().catch(()=>{});}",
+      "occurrences": 1
+    }
+  ],
+  "exactReverse": true,
+  "unchangedBrowserWorkload": "All page/fixture/CPUphase methods unchanged:4original preparations +6whole-hit finalizations,80frames16warmup on/off,4profiles100us. Extra reserve check is Node monitor only.",
+  "guardsStrengthened": [
+    "MainThread-inclusive foreign scan",
+    "source-bound gate actual86product/173packages/driver/fixture/raw/runtime215",
+    "rawreference explicit SHA",
+    "resource reserve monitored during run"
+  ],
+  "runtimeScope": "215 distinct from prior214 unprofiled100; no speed improvement inference",
+  "expectedGate": {
+    "path": "tasks/evidence/AVOID-008/performance/immutable-edge-profile01-parent-gate.json",
+    "authorizedByParent": true,
+    "authorizedMode": "candidate100-onoff-separated-cpu-profile",
+    "candidateSource": "8ff3dd8487a4fb4193d00ef9caa296372c751b4f",
+    "candidateSHA256": "f8515267ffc8bce22a8babfad51d1e90bf8b98eff82615ecb2b7d84123adb684",
+    "driverSHA256": "e55b10826b34797e5549634be4b0a116cc6e735744283b0c00dde7af526b62da",
+    "fixtureSHA256": "e1ef5650d701db6509974a5ef09234d24e69b82430031286bb6b8b5d3631beb7",
+    "referenceRawSHA256": "8801cc5b128d806fc08fecd24f5b04ca68f368c1a9f5251b74699fd4be2e69e6",
+    "expectedSpecRevision": "215",
+    "productPins": "exact browser02-parent-gate productPins86",
+    "packagePins": "exact browser02-parent-gate packagePins173",
+    "formal1000Authorized": false
+  },
+  "aggregate": {
+    "base": "dev/avoidance/layouts-c-perf-phases-aggregate.cjs",
+    "baseSHA256": "0f0c43178f863f8a10bc25a6b956e606d9fb963c0886526e8a48f2af9bd7fe02",
+    "derivative": "dev/avoidance/immutable-edge-phases-aggregate.cjs",
+    "derivativeSHA256": "64e0afdc1c621394bb894f72f2d2bb7d81b6b851a458fc5dab25ca78adcf7e16",
+    "operations": [
+      {
+        "old": "if(p.phase==='warm-finalization'){if(has(s,'cacheDecode'))",
+        "new": "if(p.phase==='warm-finalization'){if(s.some(n=>main(n)&&module(n.callFrame)==='src/09g_layoutsC_placement.js'&&n.callFrame.functionName==='payloadDecode'))return'payload decode / native parse and repairs';if(s.some(n=>main(n)&&module(n.callFrame)==='src/09g_layoutsC_placement.js'&&n.callFrame.functionName==='edgeRegisterFinal'))return'immutable edges / registration';if(has(s,'cacheDecode'))",
+        "occurrences": 1
+      }
+    ],
+    "exactReverse": true,
+    "unchanged": "scalar samples/clockNavStart inference +sequential discrepancy/margin>=2ms/positionTicks count-only/source offsets/globalGC/unattributed/inclusive overlap/all34wallcontributors",
+    "change": "two explicit exclusive warmphase buckets for current payloadDecode and edgeRegisterFinal; no sample overlap introduced"
+  },
+  "fixture": {
+    "path": "dev/avoidance/layouts-c-perf-phases-fixture.js",
+    "sha256": "e1ef5650d701db6509974a5ef09234d24e69b82430031286bb6b8b5d3631beb7"
+  },
+  "productSourceChanges": false
+}
