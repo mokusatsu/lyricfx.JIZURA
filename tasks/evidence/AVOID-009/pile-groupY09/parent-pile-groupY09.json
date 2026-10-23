@@ -1,0 +1,110 @@
+{
+  "status": "PASS",
+  "rawSHA256": "211302dec292e584202946c73529b9074d5766530de051fdc92b0199b37d8959",
+  "counts": {
+    "runs": 8,
+    "slots": 18,
+    "witnesses": 54,
+    "translatedFrames": 54,
+    "translatedVertices": 23928,
+    "sharedYRuns": 4,
+    "innerOwnerConstraints": 7,
+    "correctedFullPhaseWitnesses": 3,
+    "correctedActualFullPhaseFrames": 18
+  },
+  "diagnostics": [
+    {
+      "fullPhaseCircleClearWitnesses": 0,
+      "case": "landscape-single-row-push",
+      "recipe": "native-equivalent",
+      "split": false,
+      "stageRangeNonempty": false,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 4,
+      "trialAllowancePassed": 4,
+      "budgetTotal": 4
+    },
+    {
+      "fullPhaseCircleClearWitnesses": 0,
+      "case": "landscape-single-row-push",
+      "recipe": "a84-no-split",
+      "split": false,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 3,
+      "trialAllowancePassed": 4,
+      "budgetTotal": 4
+    },
+    {
+      "fullPhaseCircleClearWitnesses": 2,
+      "case": "landscape-single-row-push",
+      "recipe": "a84-split-rho110",
+      "split": true,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 3,
+      "strictBudgetPassed": 1,
+      "trialAllowancePassed": 2,
+      "budgetTotal": 4
+    },
+    {
+      "fullPhaseCircleClearWitnesses": 2,
+      "case": "landscape-single-row-push",
+      "recipe": "a84-split-rho110-groupY",
+      "split": true,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 3,
+      "strictBudgetPassed": 1,
+      "trialAllowancePassed": 2,
+      "budgetTotal": 4
+    },
+    {
+      "fullPhaseCircleClearWitnesses": 0,
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "native-equivalent",
+      "split": false,
+      "stageRangeNonempty": false,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 3,
+      "trialAllowancePassed": 3,
+      "budgetTotal": 3
+    },
+    {
+      "fullPhaseCircleClearWitnesses": 0,
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-no-split",
+      "split": false,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 2,
+      "trialAllowancePassed": 3,
+      "budgetTotal": 3
+    },
+    {
+      "fullPhaseCircleClearWitnesses": 1,
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-split-rho110",
+      "split": true,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 1,
+      "strictBudgetPassed": 1,
+      "trialAllowancePassed": 1,
+      "budgetTotal": 3
+    },
+    {
+      "fullPhaseCircleClearWitnesses": 1,
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-split-rho110-groupY",
+      "split": true,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 1,
+      "strictBudgetPassed": 0,
+      "trialAllowancePassed": 0,
+      "budgetTotal": 3
+    }
+  ],
+  "limitations": [
+    "SharedY source-budget trial plus fullystrictallphase geometry; no Safe/adapter/visual acceptance",
+    "No entry/exit waiver activated",
+    "Source-budget allowance does not prove physical contact or readability"
+  ]
+}

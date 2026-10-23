@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "rawSHA256": "211302dec292e584202946c73529b9074d5766530de051fdc92b0199b37d8959",
+  "counts": {
+    "trials": 8,
+    "owners": 56,
+    "cells": 1792,
+    "nominalClippedVertices": 24896,
+    "paintFrames": 90,
+    "actualSettledOwners": 120,
+    "actualClearanceExtrema": 1746,
+    "declaredSlabs": 86016,
+    "declaredPairChecks": 1493760,
+    "declaredFallbacks": 0
+  },
+  "inputsUnchanged": 1347,
+  "inputsActuallyRehashed": 1347,
+  "diagnostics": [
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "native-equivalent",
+      "strict": 4,
+      "allowed": 4,
+      "total": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-no-split",
+      "strict": 3,
+      "allowed": 4,
+      "total": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-split-rho110",
+      "strict": 1,
+      "allowed": 2,
+      "total": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-split-rho110-groupY",
+      "strict": 0,
+      "allowed": 4,
+      "total": 4
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "native-equivalent",
+      "strict": 3,
+      "allowed": 3,
+      "total": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-no-split",
+      "strict": 2,
+      "allowed": 3,
+      "total": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-split-rho110",
+      "strict": 2,
+      "allowed": 2,
+      "total": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-split-rho110-groupY",
+      "strict": 2,
+      "allowed": 3,
+      "total": 3
+    }
+  ],
+  "limitations": [
+    "Corrected correlated projection budget reproof, not filledink/quality/SAFE/adapter acceptance",
+    "SharedY correctedinputs acceptedonlywithfreshproof; controls/nativefont unchanged andbaselinefailures retained",
+    "Translated allphasecircle/stage geometry verified separately, no visual/human acceptance",
+    "Ordinary numeric model; independent nominal clipping is falsification of interval containment, not formal libm proof"
+  ]
+}

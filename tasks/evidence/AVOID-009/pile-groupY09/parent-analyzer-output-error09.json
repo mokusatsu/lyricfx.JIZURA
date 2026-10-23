@@ -1,0 +1,13 @@
+{
+  "scope": "Parent independent verification script ONLY, not product/browser failure",
+  "script": "/tmp/parent-pile-groupY09.py",
+  "actualFirstRunExit": 1,
+  "actualError": "TypeError unsupported operand type(s) for /: dict and str at result rawSHA256 output expression (base Path shadowed by baselineTrial dict)",
+  "failurePoint": "Output construction after independent geometry/innerconstraint loops; no PASS result claimed for that invocation",
+  "originalFailedScriptSnapshotAvailable": false,
+  "fix": "Rename baseline dict variable baseline_trial, preserving base Path",
+  "actualRerunExit": 0,
+  "actualRerunStatus": "PASS",
+  "productRawUntouched": true,
+  "rawSHA256": "211302dec292e584202946c73529b9074d5766530de051fdc92b0199b37d8959"
+}
