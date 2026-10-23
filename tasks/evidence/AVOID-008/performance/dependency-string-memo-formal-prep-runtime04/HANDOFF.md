@@ -1,0 +1,9 @@
+# AVOID-008 formal runtime04/spec230 preparation update
+
+Prior formal preparationb9ccf39368410df0e76a010dfecce8d67c9c2819 is retained as history. Helper only changes2occurrences native-local-bounds-runtime03→04 and1spec assertion229→230; literal reverse restores prior8a1381eea191b1168d1197b6e58b4b111093a82807cd54e2d96bf5c6400d10cc bytes. Updated helper SHA256f1e938db5cd78e717ca56bb5c9ee967dc581692d0269b83afe912e9688100362. Node syntax/diff checks pass. Exact actual runtime04 selected/raw pins and observed230/230/current/running/connected recorded; parent supplies fresh execution qualification and gate. Existing gate pending/authorizedfalse is NOT execution authority.
+
+Product9b/JA0f0989 and original runner6cc/fixture765/corpus4add/thresholds/counts unchanged. No browser/timing/formal/diagnostic retry/security/public/images. Environment230 difference is not claimed as speed improvement.
+
+formal-wrapper.py is prepared for parent pre-launch reading, not executed. It derives from the existing diagnostic wrapper with formal require-helper/mode/output plus original-required argv4 authorization, own/tmp execution folder, outer Popen.wait330→1830seconds. This preserves original formal maxWall1800000ms plus30seconds cleanup allowance; it does not shorten runner to300seconds. Actual PID/startTicks/kernel/reaped/gone, stdout/stderr, pre/post livejobs/Z/reserve and inherited proxy/CA/TLS behavior remain. Wrapper source/patch/SHA are retained; live path /tmp/avoid008-dependency-string-formal01-run.py. Parent must review it before issuing one-run execution authorization.
+
+Original formal command/8sides/3warm+6samples/80render16warm/2x+3ms,250MiB reserve, exclusive lease and samebytes archive approach remain as prior preparation. No product capacity/budget changes. Parent gate update/review is next; no user confirmation requested for this internal preparation.

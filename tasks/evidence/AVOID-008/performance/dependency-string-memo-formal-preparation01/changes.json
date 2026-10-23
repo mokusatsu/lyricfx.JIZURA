@@ -1,0 +1,21 @@
+{
+  "literalGroups": [
+    {
+      "old": "dependency-string-memo-diagnose01",
+      "new": "dependency-string-memo-formal01",
+      "count": 2
+    },
+    {
+      "old": "--diagnose100",
+      "new": "--formal",
+      "count": 2
+    },
+    {
+      "old": "gate.formal1000Authorized===false",
+      "new": "gate.formal1000Authorized===true",
+      "count": 1
+    }
+  ],
+  "formalAuthorizationBindingAddition": "assert.equal(process.argv[4],base+names[0]);assert.equal(process.argv[5],undefined);assert.equal(gate.runtimeIdentityFile,base+names[1]);",
+  "reason": "Original formal runner requires argv4 authorization. Bind it to the same preloaded gate and to the exact qualified runtime input; argv5 unsupported."
+}
