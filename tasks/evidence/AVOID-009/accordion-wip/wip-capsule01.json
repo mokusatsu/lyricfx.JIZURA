@@ -1,0 +1,105 @@
+{
+  "base": "90909a0",
+  "status": "UNACCEPTED WIP; parent vertical axes review correction applied; final test/review pending",
+  "implementationModel": "gpt-6.1-sol",
+  "reasoningEffort": "medium",
+  "sourcePins": [
+    {
+      "file": "src/09a_placement.js",
+      "sha256": "eae453d572e806fd82ddfa60e3e31dfad1de4ccd960f58adeeb47e32ee32a676"
+    },
+    {
+      "file": "src/09q_layoutsD_accordion.js",
+      "sha256": "11b028ac954ebdaf3221908b01e361b67305ddd2ab3f79fd7bd194fcd5b96892"
+    },
+    {
+      "file": "src/11p_layoutsD.js",
+      "sha256": "888f9e81ba8361fb75bfa0140e3c26f0dbbac7f61f8577cb863a097dfab3276e"
+    }
+  ],
+  "preservedReports": [
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/matrix03.json",
+      "sha256": "515f3a8ff2df8666e578b121c1d79f2bd33454da874ec0055101604d2f5632d8",
+      "summary": {
+        "cases": 81,
+        "safe": 49,
+        "insufficient": 31,
+        "unsupported": 1,
+        "failures": []
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/parity03.json",
+      "sha256": "23c4a0d9316373aecd7010bc3911363616041459b859f909ab80a6530e1745bf",
+      "summary": {
+        "baselineCases": 12,
+        "transportCases": 72,
+        "chronologyCases": 18,
+        "failures": 0
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/transport01.json",
+      "sha256": "c656018560100a7e03396adf61c0d051e00915a346d99ec22abc372bb43b6eef",
+      "summary": {
+        "pairs": 432,
+        "zeroOffset": 144,
+        "nonzeroOffset": 288,
+        "failures": 24
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/rootdiagnostic01.json",
+      "sha256": "73b8de6d7b3f3cd435774d85ed0d799a23703ade96eeb0073342a617beea4de7",
+      "summary": {
+        "pairs": 96,
+        "zeroOffset": 32,
+        "nonzeroOffset": 64,
+        "failures": 22
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/transport02.json",
+      "sha256": "9fbd74db310f2f52ee66a4ec5a68f81fba1e393c10706ac9d3078b64625dc157",
+      "summary": {
+        "pairs": 432,
+        "zeroOffset": 144,
+        "nonzeroOffset": 288,
+        "failures": 0
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/nonimpact01.json",
+      "sha256": "9823b8dbbb39126f65dbfc52f36a4079ea6802848563f7abb831c6eed6cf06bb",
+      "summary": {
+        "conditions": 18,
+        "pixelPairs": 72,
+        "cacheCases": 3,
+        "failures": 0
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/vertical01.json",
+      "sha256": "ece2f3a0df7f95fcbd8144b6417e630404b9e1c926dae509a3723a19d13d0a9a",
+      "summary": {
+        "cases": 24,
+        "projectedChecks": 192,
+        "failures": 0
+      }
+    }
+  ],
+  "pending": [
+    "Review-corrected matrix04/parity04",
+    "Review-corrected transport03",
+    "Final parent source/raw review"
+  ],
+  "publicChecks": 0,
+  "mediaViews": 0,
+  "formalPerformance": "unmet/not asserted",
+  "packet": {
+    "file": "accordion-unaccepted-wip01.tar.xz",
+    "bytes": 2493248,
+    "sha256": "3cb0974e01f0a269e530c948e10f4a0ab9041ccc17046a5b0401a4a9ea7d9f41"
+  }
+}
