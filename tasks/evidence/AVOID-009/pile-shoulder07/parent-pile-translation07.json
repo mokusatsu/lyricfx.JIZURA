@@ -1,0 +1,81 @@
+{
+  "status": "PASS",
+  "rawSHA256": "6ee35b256cc3413a44d4bac50db092098c81cd30b2632cb22b42efa7fc1ba79b",
+  "rows": [
+    {
+      "case": "landscape-push",
+      "recipe": "a90-b40-r10-k60",
+      "x": [
+        -10.969440000000034,
+        -28.089021277844495
+      ],
+      "y": [
+        518.9227031978255,
+        570.243607681783
+      ],
+      "nonempty": false,
+      "blockers": []
+    },
+    {
+      "case": "landscape-push",
+      "recipe": "a84-b25-r10-k100",
+      "x": [
+        -54.83911923459523,
+        9.92184722215984
+      ],
+      "y": [
+        514.9500106624226,
+        575.8543431486108
+      ],
+      "nonempty": true,
+      "blockers": [
+        {
+          "owner": "pile.glyph.0.0",
+          "maximumCornerDistance": 126.23060316728673,
+          "protectionRadius": 147.6
+        },
+        {
+          "owner": "pile.glyph.0.1",
+          "maximumCornerDistance": 24.38187125991942,
+          "protectionRadius": 147.6
+        },
+        {
+          "owner": "pile.glyph.0.2",
+          "maximumCornerDistance": 48.744028110430484,
+          "protectionRadius": 147.6
+        }
+      ],
+      "bodyHeapDustClearAtHighWitness": true
+    },
+    {
+      "case": "portrait-panL-scaled14",
+      "recipe": "a90-b40-r10-k60",
+      "x": [
+        48.18129980303249,
+        -64.44268706632658
+      ],
+      "y": [
+        827.1377208198275,
+        1133.355060360808
+      ],
+      "nonempty": false,
+      "blockers": []
+    },
+    {
+      "case": "portrait-panL-scaled14",
+      "recipe": "a84-b25-r10-k100",
+      "x": [
+        48.18129980303249,
+        -44.45380599853888
+      ],
+      "y": [
+        825.041473815232,
+        1128.6652492993821
+      ],
+      "nonempty": false,
+      "blockers": []
+    }
+  ],
+  "math": "Distance from point to convex set is convex in common translation; its maximum over the rectangle is bounded by corner maximum. This establishes only blockage of the supplied conservative owner envelope, not actual pixel/geometry impossibility.",
+  "limitations": "Numeric design only; not stage/circle SAFE, source-geometry reflow or quality acceptance."
+}
