@@ -1,0 +1,34 @@
+{
+  "authorizedByParent": true,
+  "authorizedAt": "2026-10-23T01:27:37.328798+00:00",
+  "authorizedMode": "--diagnose100",
+  "formal1000Authorized": false,
+  "candidateSource": "3b0c995a2c912cf3edf6583f372c215c310e11f0",
+  "candidateSHA256": "c99e0d913eb6e99e50f036c1ca8e5a6f1fda4b186396cec7b6908ad241124546",
+  "baselineCommit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+  "runnerSHA256": "6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756",
+  "fixtureSHA256": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+  "normalizedCorpusSHA256": "4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc",
+  "preloadSHA256": "53ad80f91ac5b3a74a6f6e7d617c3006a407aec3ce07840af5427f6e39e20db4",
+  "expectedSpecRevision": "215",
+  "runtimeIdentityFile": "tasks/evidence/AVOID-008/performance/immutable-edge-lazy-runtime02.json",
+  "correctnessEvidenceCommit": "b5e424934d45342d13880add2f012c2ec0c80d4b",
+  "correctnessRawSHA256": "64db130bd2ebaa2076b4a074d3ba28800f7ba2835d936fb5089ec92d07f8f4d9",
+  "correctnessParentReviewSHA256": "34ac64bc52efd57607690d378cff599937d42c7eab397125cac9c8e654070207",
+  "publicChecks": false,
+  "conditions": "ONE original100 ON/OFF baseline+candidate four sides,3warm+1planning point,80render/16warm,3200x1080 stage/.5 canvas/DPR1. Unchanged runner/fixture/corpus/counts/fonts/2x and+3ms limits. No profiles/CDP/1000/retry/source edits/images/public checks. Retain all prior failures. Run only after every other owner is idle; direct exec PID/startTicks and full prestart stdoutstderr capture; 250MiB/300s/loopback only/owned close.",
+  "exclusiveLease": {
+    "owner": "/root/avoid008_impl",
+    "scope": "Entire run through browser/server closure and post snapshots; root/integration/editorial stop test/profile/browser/encoder/heavy work and new launches. Must explicitly confirm all other owners stopped before execution.",
+    "mechanicalDuringMainThreadProfileDetection": false,
+    "limitation": "Original runner misses MainThread/profile-only jobs in its in-run monitor. New preload catches these only pre/post. Operational exclusive lease recorded, no universal transient detection guarantee."
+  },
+  "executionPermission": {
+    "sandbox_permissions": "with_additional_permissions",
+    "additional_permissions": {
+      "network": {
+        "enabled": true
+      }
+    }
+  }
+}

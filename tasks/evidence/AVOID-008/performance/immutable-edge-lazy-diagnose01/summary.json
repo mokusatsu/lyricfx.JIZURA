@@ -1,0 +1,169 @@
+{
+  "status": "PERFORMANCE_UNMET: one original100 diagnostic, not formal planning p95",
+  "productSource": "3b0c995a2c912cf3edf6583f372c215c310e11f0",
+  "comparisons": [
+    {
+      "n": 100,
+      "on": true,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 52.20000000298023,
+      "candidatePlanningMs": 113.90000000596046,
+      "planningRatio": 2.1819923371543606,
+      "additionalRenderP95Ms": 5.200000017881393,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    },
+    {
+      "n": 100,
+      "on": false,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 50.099999994039536,
+      "candidatePlanningMs": 69.79999999701977,
+      "planningRatio": 1.3932135729605581,
+      "additionalRenderP95Ms": 1.1000000089406967,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    }
+  ],
+  "actualFourSides": [
+    {
+      "side": "baseline",
+      "on": true,
+      "n": 100,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "nativeIDs": 34,
+      "renderIDs": 34,
+      "record": 0,
+      "replay": 0,
+      "observations": 0,
+      "measuredRenderFrames": 64,
+      "renderErrors": [],
+      "fontQualified": null,
+      "fullStatesSHA256": "7f98d61a9e1f66efe96449f2f22d7baad80f088333077f0035fe6bd0b968a13a",
+      "allCutsSHA256": "61969c03cdea322d2cde3832d063567f1f0e27696611d84562e329406488b021"
+    },
+    {
+      "side": "candidate",
+      "on": true,
+      "n": 100,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 100,
+        "unstaged": 0,
+        "budgetViolations": 0
+      },
+      "nativeIDs": 34,
+      "renderIDs": 34,
+      "record": 80,
+      "replay": 80,
+      "observations": 80,
+      "measuredRenderFrames": 64,
+      "renderErrors": [],
+      "fontQualified": true,
+      "fullStatesSHA256": "e71cbd482e4352b513f5a5f5f1e2b72c16458792650b38b0c3dd971f4fe99fcb",
+      "allCutsSHA256": "bf78a6a51f42aacc9322666ec5cc06e089b9bb26333d3ca493d0a38fa46d1608"
+    },
+    {
+      "side": "baseline",
+      "on": false,
+      "n": 100,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "nativeIDs": 34,
+      "renderIDs": 34,
+      "record": 0,
+      "replay": 0,
+      "observations": 0,
+      "measuredRenderFrames": 64,
+      "renderErrors": [],
+      "fontQualified": null,
+      "fullStatesSHA256": "7f98d61a9e1f66efe96449f2f22d7baad80f088333077f0035fe6bd0b968a13a",
+      "allCutsSHA256": "61969c03cdea322d2cde3832d063567f1f0e27696611d84562e329406488b021"
+    },
+    {
+      "side": "candidate",
+      "on": false,
+      "n": 100,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "nativeIDs": 34,
+      "renderIDs": 34,
+      "record": 0,
+      "replay": 0,
+      "observations": 0,
+      "measuredRenderFrames": 64,
+      "renderErrors": [],
+      "fontQualified": null,
+      "fullStatesSHA256": "7f98d61a9e1f66efe96449f2f22d7baad80f088333077f0035fe6bd0b968a13a",
+      "allCutsSHA256": "3c27d7a8953d9e78caa71bc2137c47f6851ff6402ab61e59194ba6e2640fc7b9"
+    }
+  ],
+  "countsValid": true,
+  "candidateFullCoverage": true,
+  "actualPipelineValid": true,
+  "inputParity": true,
+  "pinnedFontCorpusQualified": true,
+  "formalExecuted": false,
+  "passed": false,
+  "errors": [],
+  "changedInputs": [],
+  "raw": {
+    "path": "results.raw.json.gz",
+    "rawBytes": 695952,
+    "rawSHA256": "734d42c172b955518ca618e831829969884ddb583019abff47b50b910a1db0ba",
+    "gzipSHA256": "9eafcc4248e22cf248584a0e266d60ee4a6b6e81a913c2318472f2c4a24f8de4"
+  },
+  "process": {
+    "pid": 369130,
+    "startTicks": "9818602",
+    "kernelWaitStatus": 0,
+    "actualChildExitCode": 0,
+    "postWait": "gone after this parent waitpid reaped it",
+    "supportAfter": {
+      "jobs": [],
+      "zombieCount": 1475
+    },
+    "postClose": {
+      "phase": "post",
+      "timestamp": "2026-10-23T01:29:50.364Z",
+      "foreign": []
+    }
+  },
+  "reserveBytes": 262144000,
+  "availableBytes": 334499840,
+  "notExecuted": [
+    "retry",
+    "CDP",
+    "profile",
+    "formal1000",
+    "images",
+    "public checks"
+  ]
+}
