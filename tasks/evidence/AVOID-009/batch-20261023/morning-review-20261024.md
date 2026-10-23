@@ -1,0 +1,17 @@
+# 朝の動作確認まとめ（2026-10-24）
+
+AVOID-009は実装中。D34 IDのうち10 IDで限定条件のソース・生テストを受入済みで、全体完了ではありません。010以降は未着手です。必要な見た目の確認だけ7ページ13例へ絞っています。全例は原寸のアニメ部分をnative60fps MP4で比較できます。以下はすべて未回答で、扉・円筒の既存OKを転用していません。
+
+| 比較 | 確認点 |
+| --- | --- |
+| [魚眼・立方体・四隅折りの3例](https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-009/selected-20261023-01/) | 行配置後もレンズ・立方面・正方形の折り紙の感じが残るか。承認済みの観音開きは再確認不要。 |
+| [カード1例](https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-009/flipcards-selected-20261024-01/) | 2行の流れとめくり方、下の星や裏面との重なり。 |
+| [蛇腹の横・縦2例](https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-009/accordion-selected-20261024-01/) | 2本の折り紙として自然か。縦の読む順と表紙の見え方。 |
+| [旗の横・縦2例](https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-009/flag-selected-20261024-01/) | 旗の比率・文字サイズ・短くなった昇降が許容できるか。 |
+| [リボン1例](https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/ribbon-selected-20261024-01/) | 60%の文字の読みやすさ、狭く穏やかになった帯の自然さ。 |
+| [振り子3例](https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/pendulum-selected-20261024-01/) | 球・扇・紙それぞれの文字サイズと短い吊り糸、揺れ方。 |
+| [文字の山1例（今回追加）](https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/pile-selected-20261024-01/) | 左右2組でも一つの歌詞として読めるか。低い山・露出した平らな底・入退場の印象。 |
+
+pileは元字号・時計を保持していますが、再配置で画面内への現れ方は変わります。親のソース・生結果レビューと、別文脈solの16静止コマ照合は完了。見た目の判断は未承認です。製品064cd99、媒体6ee41a86、公開操作succeeded（原呼出616）を固定しています。
+
+公開結果確認は利用者指示により永久停止。公開先への接続・HTTP/hash・画像動画・起動/smoke・デプロイstatusの確認はしていません。公開操作の戻り値だけを記録しています。保存テストの既存cut期待0/実際1失敗は013への引継ぎのままで、保存成功とは扱っていません。
