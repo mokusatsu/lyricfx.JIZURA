@@ -160,3 +160,5 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 [代表4例](reviews/AVOID-009-selected-20261023-01.md)だけSitesへ追加し、公開操作succeededを記録した。元の606 distファイル・hosting/homeと既存の閲覧対象を保持。公開結果確認は利用者指示により中止・対象外、接続/画像/動画/起動/状態pollingは0。人間の回答は未回答。形と動きの判断だけを依頼し、人間のコードレビューは求めない。
 
 残件: 円筒は[cylinder-wip01](evidence/AVOID-009/cylinder-wip01/status.json)に独立実装・試験の未親受入packetを保存。flipCardsは未検証/未統合WIP capsuleに隔離。両者ともmain製品へ含めず、人間確認後に親レビューから再開する。他Dとcustomの実回避・正式性能は未完。009は実装中、010以降は未着手を維持する。
+
+製品・試験・記録はworkの`895bde9`へ保存しpush成功。[終了状態](evidence/AVOID-009/delivery-selected01.json)に10製品fileのGit/frozen一致、残存する性能WIP4fileと既存pycacheのhash保持、core軽量capsule153fileの親独立hash照合を記録した。無関係な未追跡ファイルは追加・削除していない。公開結果確認と親の画像閲覧は0。
