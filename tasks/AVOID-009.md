@@ -305,3 +305,12 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 これらは数値/ソースの試作受入で、演出品質・塗りつぶした文字の接地/可読性・Safeadapter・人間確認の受入ではない。Dは9件のまま。次は009内のpileadapter設計（内部physical10、AVOID-010は未着手）。完了planの通常cache hitではsegmentが復元される点を設計レビューで指摘し、依存情報の持ち方とコンパクトな実行用証明を再検討中。
 
 [2.43MB復元証拠](evidence/AVOID-009/pile-groupY09/archive-storage09.json)はGitblobのみ。親が95artifact/780非runtime入力/78fontターゲットを照合、14過去HTMLを再構築し、3つの独立判定を保存rawから再実行。567runtimeCASは外部。親の検証scriptの出力時変数衝突は修正再実行済みで、製品/ブラウザの失敗とは区別して記録。root容量確保のため、以前push済みのnative02/diagnostic04 archiveの冗長な作業コピーのみhash/Git一致・1347入力非参照を確認してskip-worktree化。元11個も保持し、新09を含め欠落flag14個。
+
+
+## Pileの限定adapterをmainへ正確に統合
+
+[親のsource/raw受入](evidence/AVOID-009/pile-adapter10/parent-source-raw-review10.json)と[統合照合](evidence/AVOID-009/pile-adapter10/parent-integration-review10.json)。元字号・落下時刻・一つの山を保ち、左右2組の再配置と小さな組共通Y補正を含む4候補から区間内固定の構成を選ぶ。全primary（山・主文字・heap・粉塵）について全位相の円/stage範囲を使い、入退場の緩和は使わない。不足区間の実描画は明示エラーで止める。未対応sourceの既存復元経路はSAFEではなく、017の再生/export事前除外が必須。UI有効化は未実装。
+
+実テストは2条件22wholeframeで失敗0、1499入力hash不変。親は610完全範囲・4採用移動候補・3192実polygon・2845実heap対応と元時計を独立照合。通常cache hitで復元された新segmentの初回描画一致、字体/camera変更時の拒否、OFF/区間外/既存蛇腹の描画一致も確認。初回は通常184演出と特殊10演出の総登録数を混同したテストだけ失敗し、元rawを保持してsource根拠によるrunner修正後に再実行した。
+
+102実ファイル（99JS・build・JAEN）が固定試験版と一致。無関係な91JSとbuild、既存pycache、14欠落skip-worktree証拠を保持。限定ソース受入は10/34 IDだが、pileの見た目は未確認。元字号の可読性やheap密度の芸術的評価、全字体/パラメータ/正式性能の受入ではない。初回準備806/876ms、warm9.2/9.7ms、証明95/108KBはこの2例の実測に限る。必要な代表動画と朝の未回答queueを次に準備し、009実装中/010以降未着手/公開結果確認0を維持する。

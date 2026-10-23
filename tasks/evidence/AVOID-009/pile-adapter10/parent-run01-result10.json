@@ -1,0 +1,31 @@
+{
+  "at": "2026-10-23T22:38:40.177129+00:00",
+  "parentSession": 26293,
+  "exitCode": 1,
+  "cases": 2,
+  "wholeFrames": 22,
+  "errors": 0,
+  "failures": [
+    {
+      "kind": "all184-layoutIDs",
+      "actualTotalRegistry": 194,
+      "cases": 2
+    }
+  ],
+  "rawSHA256": "8375a5c0d4aadd7cda943c5f134b1592e54e5e38c28fecbc3092af697d0dc011",
+  "terminal": "cases2 wholeFrames22 failures2 errors0; AssertionError2!==0",
+  "cause": "Runner mistook complete runtime registry (184ordinary+10stockspecial cards) for184ordinary inventory; source-provenance revision pending",
+  "parentAnalyzerCorrections": [
+    "Snapshot comparison of time-dependent f replaced by original (lt-when)/fd source formula; failed script preserved",
+    "JS quantization floor*step operation retained instead of algebraically equivalent division with different binary64 rounding; failed script preserved"
+  ],
+  "interruption": {
+    "environmentUnavailable": true,
+    "actualToolFailure": "No usable execution environment is available",
+    "thenRestored": "Actual HEAD bc331f4 and tmp artifacts read successfully; no duplicate browser or Git operation"
+  },
+  "notOverallTestSuccess": true,
+  "mainIntegration": false,
+  "publicChecks": 0,
+  "parentImages": 0
+}

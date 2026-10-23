@@ -1006,6 +1006,12 @@ reg('pile', {
   },
   render(env) {
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    // Native-only ownership/catalog checkpoint. This declares no safe adapter.
+    const nativeD = cut.placementLayoutsD === true;
+    const owned = (owner, fn) => nativeD ? env.withDrawRole('primary', 'pile.' + owner, fn) : fn();
+    const freeze = v => {if(v && typeof v === 'object' && !Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
+    const catalog = nativeD ? {kind:'pile',version:1,ownership:'all-primary-none-exempted',W,H,seed:s,lt,pOut:env.pOut,pass:env.pass,params:JSON.parse(JSON.stringify(Pm)),slots:[],heap:[],heapDecisions:[],dust:[]} : null;
+    try {
     const port = isPort(env);
     const t0 = flat(cut.text), n = J.glyphCount(t0);
     if (!n) return null;
@@ -1020,32 +1026,42 @@ reg('pile', {
     const Hm = yBase - (H * (0.5 + Pm.hgt * 0.25) + nR * size * 0.49);
     const rise = (1 - E.outCubic(J.clamp(lt / 0.5))) * Hm * 1.1 + E.inCubic(env.pOut) * Hm * 0.5;
     const bump = x => Math.sin(x / W * 17 + s % 7) * H * 0.006 + Math.sin(x / W * 31 + (s % 5)) * H * 0.004;
-    const surf = x => yBase + rise - Hm / (1 + Math.pow((x - cx) / sig, 4)) + bump(x);
+    const nativeSurf = x => yBase + rise - Hm / (1 + Math.pow((x - cx) / sig, 4)) + bump(x);
+    const trial = nativeD && cut.layoutDRecipe ? J.placement.pilePhysicalFrame(env,{cx,sig,Hm,yBase,size,nativeSurf,rows:rowsT}) : null;
+    const surf = trial ? trial.surface : nativeSurf;
     // heap of small glyphs under the surface (one item, glyphs placed by charFn)
     const pool = poolOf(cut), NP = pool.length;
     const cell = J.clamp(u * 0.045, 16, 60);
     const heap = [];
     // the body of the mound (dim), glyphs only in the top few layers
     const mound = [];
-    for (let i = 0; i <= 48; i++) { const x = -W * 0.02 + W * 1.04 * i / 48; mound.push([x, surf(x) + cell * 1.2]); }
-    mound.push([W * 1.02, H + 4], [-W * 0.02, H + 4]);
-    env.poly(mound, J.mix(sc.bg, sc.sub, 0.14), out, false);
+    for (let i = 0; i <= 48; i++) { const nx = -W * 0.02 + W * 1.04 * i / 48, x=trial?trial.bodyX(nx):nx; mound.push([x, surf(x) + cell * 1.2]); }
+    mound.push([trial?trial.bodyX(W*1.02):W*1.02,trial?trial.floor:H+4],[trial?trial.bodyX(-W*.02):-W*.02,trial?trial.floor:H+4]);
+    if(nativeD&&trial)catalog.physicalTrial={kind:'diagnostic-only',recipe:JSON.parse(JSON.stringify(cut.layoutDRecipe)),native:{cx,sig,Hm,yBase}};
+    if(nativeD)Object.assign(catalog,{port,t0,n,nR,rows:rowsT.slice(),size,maxTot,cx,sig,yBase,Hm,rise,out,cell,pool:pool.slice(),mound});
+    owned('mound',()=>env.poly(mound, J.mix(sc.bg, sc.sub, 0.14), out, false));
     const colsN = Math.ceil(W / cell) + 2, depth = Math.max(3, Math.min(5, Math.floor(200 / colsN)));
+    if(nativeD)Object.assign(catalog,{colsN,depth,cap:200,heapFont:Pm.hf,heapSize:cell*.8});
     for (let gx = -1; gx < colsN - 1 && heap.length < 200; gx++) {
       const x = (gx + 0.5) * cell;
-      const top = surf(x);
+      const top = nativeSurf(x);
       for (let gy = 0; gy < depth && heap.length < 200; gy++) {
         const y = top + (gy + 0.5) * cell * 0.82;
+        if(nativeD)catalog.heapDecisions.push({gx,gy,x,top,y,limit:H+cell,accepted:y<=H+cell,ordinal:heap.length});
         if (y > H + cell) break;
         const j = heap.length;
         heap.push({ x: x + J.rs(s, gx, gy, 3) * cell * 0.3, y: y + J.rs(s, gx, gy, 4) * cell * 0.2, r: J.rs(s, gx, gy, 5) * 70, ch: pool[J.h(s, gx, gy, 6) % NP], c: J.r(s, gx, gy, 7) < 0.14 ? 1 : 0, a: (0.35 + 0.5 * J.r(s, gx, gy, 8)) * (1 - gy / (depth + 1)) });
+        if(trial&&!trial.nativeEquivalent){const q=heap[j],p=trial.heap(gx,gy,x,J.rs(s,gx,gy,3)*cell*.3,J.rs(s,gx,gy,4)*cell*.2,cell);q.originalX=q.x;q.originalY=q.y;q.x=p[0];q.y=p[1];}
+        if(nativeD){const q=heap[j];catalog.heap.push({id:'pile.heap.'+gx+'.'+gy,owner:'pile.heap.'+gx+'.'+gy,eventOwner:'pile.heap',role:'primary',gx,gy,ordinal:j,poolIndex:J.h(s,gx,gy,6)%NP,...q});}
       }
     }
+    if(nativeD)freeze(heap); // Saved charFn closes over this immutable frame snapshot.
     if (env.pass === 'main' && heap.length) {
       const it = { text: heap.map(q => q.ch).join(''), font: Pm.hf, size: cell * 0.8, x: 0, y: 0, color: sc.sub, ghost: false, alpha: out };
       it._lay = J.layoutText(it);
       it.charFn = (i, g) => { const q = heap[i]; return q ? { dx: q.x - g.x, dy: q.y - g.y, rot: q.r, a: q.a, color: q.c ? sc.accent : null } : { hide: true }; };
-      env.draw(it);
+      if(nativeD)it.placementDSource={kind:'pile-heap',glyphs:catalog.heap};
+      owned('heap',()=>env.draw(it));
     }
     // lyric glyphs fall onto the heap and settle along its slope
     const fd = 0.34, gap = J.clamp(cut.dur * 0.3 / n, 0.03, 0.09);
@@ -1058,37 +1074,48 @@ reg('pile', {
       ord.forEach(i => order.push([ri, i]));
     }
     const when = new Map(); order.forEach(([ri, i], q) => when.set(ri * 100 + i, 0.08 + q * gap));
+    if(nativeD)Object.assign(catalog,{fd,gap,stagger:cut.stagger||.04,order:order.map(([row,slot],ordinal)=>({row,slot,ordinal,when:when.get(row*100+slot)}))});
+    let sourceOrdinal=0;
     rowsT.forEach((row, ri) => {
       const layer = nR - 1 - ri;
       const chars = [...row], ads = chars.map(ch => adv(Pm.font, ch) * size * 1.02), tot = ads.reduce((a, b) => a + b, 0);
       let x = cx - tot / 2;
       chars.forEach((ch, i) => {
-        const gxp = x + ads[i] / 2; x += ads[i];
+        const nativeGxp = x + ads[i] / 2, gxp = trial?trial.mainX(nativeGxp,ri,i):nativeGxp; x += ads[i];
+        const source = nativeD ? {id:'pile.glyph.'+ri+'.'+i,owner:'pile.glyph.'+ri+'.'+i,role:'primary',row:ri,slot:i,sourceOrdinal:sourceOrdinal++,nativeGxp,layer,ch,gap:ch===' ',advance:ads[i],gxp,when:when.get(ri*100+i),mi:miAt(env,when.get(ri*100+i)),f:(lt-when.get(ri*100+i))/fd} : null;
+        if(nativeD){const sharedY=cut.layoutDRecipe?.rowReflow?.sharedY;if(sharedY){const run=cut.layoutDRecipe.rowReflow.slots[i].run;source.sharedRunY={run,dy:sharedY.runs[run].dy};}catalog.slots.push(source);}
         if (ch === ' ') return;
         const ys = surf(gxp);
         const slope = Math.atan2(surf(gxp + size * 0.5) - surf(gxp - size * 0.5), size);
         const tilt = slope / J.DEG * 0.7 + J.rs(s, ri, i, 9) * 6;
-        const restY = ys - size * (0.47 + layer * 0.98);
+        const baseRestY = ys - size * (0.47 + layer * 0.98), restY = trial?trial.restY(baseRestY,ri,i):baseRestY;
+        if(nativeD&&source.sharedRunY)source.sharedRunY.baseRestY=baseRestY;
         const t1 = when.get(ri * 100 + i);
         const f = (lt - t1) / fd;
+        if(nativeD)Object.assign(source,{launchY:trial?trial.launch(-size*1.2-J.r(s,ri,i,10)*H*.2):-size*1.2-J.r(s,ri,i,10)*H*.2,originalLaunchY:-size*1.2-J.r(s,ri,i,10)*H*.2,launchRot:J.rs(s,ri,i,11)*50,tiltSeed:J.rs(s,ri,i,9)*6,colorSeed:J.r(s,ri,i,12),ys,slope,tilt,restY,t1,f,tau:f>=1?(f-1)*fd:null,phase:f<0?'not-started':f<1?'falling':'settled'});
         if (f < 0) return;
         let y, rot, sy = 1;
-        if (f < 1) { const e = E.inQuad(f); y = J.lerp(-size * 1.2 - J.r(s, ri, i, 10) * H * 0.2, restY, e); rot = J.lerp(J.rs(s, ri, i, 11) * 50, tilt, e); }
+        if (f < 1) { const e = E.inQuad(f); const nativeLaunch=-size*1.2-J.r(s,ri,i,10)*H*.2; y = J.lerp(trial?trial.launch(nativeLaunch):nativeLaunch, restY, e); rot = J.lerp(J.rs(s, ri, i, 11) * 50, tilt, e); }
         else {
           const tau = (f - 1) * fd;
           y = restY - size * 0.14 * Math.abs(Math.sin(tau * 16)) * Math.exp(-tau / 0.09); rot = tilt; sy = 1 - 0.16 * Math.exp(-tau / 0.05);
           if (Pm.dust && tau < 0.35 && env.pass === 'main') {
             for (let q = 0; q < 4; q++) {
               const dir = q < 2 ? -1 : 1, sp = J.rr(0.6, 1.2, s, ri, i, q);
-              env.circle(gxp + dir * (size * 0.35 + tau * size * 1.6 * sp), restY + size * 0.45 - tau * size * (0.9 - tau * 2.2) * sp, size * 0.035 * (1 - tau / 0.35), sc.sub, null, 0, (1 - tau / 0.35) * out, false);
+              const paintDust=()=>env.circle(gxp + dir * (size * 0.35 + tau * size * 1.6 * sp), restY + size * 0.45 - tau * size * (0.9 - tau * 2.2) * sp, size * 0.035 * (1 - tau / 0.35), sc.sub, null, 0, (1 - tau / 0.35) * out, false);
+              if(nativeD)catalog.dust.push({id:source.id+'.dust.'+q,owner:source.id+'.dust.'+q,role:'primary',row:ri,slot:i,q,dir,sp,tau,gxp,restY,size});
+              owned('glyph.'+ri+'.'+i+'.dust.'+q,paintDust);
             }
           }
         }
         idx++;
-        bb = UB(bb, J.mainDraw(env, { text: ch, font: Pm.font, size, x: gxp, y: y + size * 0.47 * (1 - sy), sy, rot, color: J.r(s, ri, i, 12) < 0.12 ? sc.accent : sc.fg, mi: miAt(env, t1) }));
+        const item = { text: ch, font: Pm.font, size, x: gxp, y: y + size * 0.47 * (1 - sy), sy, rot, color: J.r(s, ri, i, 12) < 0.12 ? sc.accent : sc.fg, mi: miAt(env, t1) };
+        if(nativeD){Object.assign(source,{y,rot,sy,itemY:item.y,color:item.color});item.placementDSource=source;}
+        bb = UB(bb, owned('glyph.'+ri+'.'+i,()=>J.mainDraw(env,item)));
       });
     });
     return bb;
+    } finally {if(nativeD)env.placementDGeometry=freeze(catalog);}
   },
 });
 
