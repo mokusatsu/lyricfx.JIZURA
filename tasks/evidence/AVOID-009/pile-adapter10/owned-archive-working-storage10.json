@@ -1,0 +1,28 @@
+{
+  "at": "2026-10-23T22:43:04.026631+00:00",
+  "reason": "rootdisk0after064cd99push; releaseONLYpushed exact redundantowned archive workingcopies, canonicalGitblob untouched",
+  "pushedHEAD": "064cd99978bc19e23051352e2bbdca0258d03220",
+  "pushEvidence": "Parent73660CLOSEDexit0 terminal bc331f4..064cd99 work -> work; no localorigin/work trackingref exists",
+  "earlierPrecheck": "Initial optional localtrackingref lookup failed before any mutations; actualpushterminal used as evidence",
+  "existing14SkipFlagsPreserved": true,
+  "files": [
+    {
+      "path": "tasks/evidence/AVOID-009/pendulum-final01/avoid009-pendulum-final-packet02.tar.gz",
+      "bytes": 2635586,
+      "sha256": "d32f78a378299a6fcdff84dab00c8dca45cb000a0ee96c53cb51d8a82cc36e46",
+      "GitBlob": "2e038fc5b13169d2e804938d752f954ac7033542",
+      "all1499InputPathsExclude": true,
+      "workingCopyOnly": true
+    },
+    {
+      "path": "tasks/evidence/AVOID-009/cylinder-canonical01/canonical-functional-capsule01.tar.xz",
+      "bytes": 9184812,
+      "sha256": "b46466c30ecec9106491e744d627a0d3012fcb8ebdbd6a8285fa00ce143a7211",
+      "GitBlob": "c952effdb791296b47348c44b7b88cc327b75255",
+      "all1499InputPathsExclude": true,
+      "workingCopyOnly": true
+    }
+  ],
+  "restore": "git cat-file blob GitBlob > /tmp/restored-archive; verifysha; optionalrestoreworkspace then git update-index --no-skip-worktree exactpath",
+  "phase": "RELEASED_WORKINGCOPIES_ONLY_GIT_CANONICAL_UNCHANGED"
+}
