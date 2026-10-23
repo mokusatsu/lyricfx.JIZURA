@@ -11,7 +11,7 @@ const rows=[
  ['flag','cloth','cloth strips and printed glyphs','wave amplitude/path and line pitch; strip shear'],
  ['ribbon','ribbon','ribbon path, edge and printed glyphs','path bend, path measure and text spacing'],
  ['pendulum','pendulum','strings, weights/fan papers and printed text','anchor pitch and string length; angular sweep'],
- ['pile','glyph','each falling/settled primary glyph; mound and dense seeded heap retain separate pending roles','settled row/column pitch; entry and exit glyph intervals'],
+ ['pile','composition','every falling/settled glyph, mound, seeded heap glyph and impact dust is primary','source-native physical field and contiguous runs; fullphase strict stage/circle bounds'],
  ['blocks','block','each block face, edges and printed glyph','block pitch and row arrangement; projected fall'],
  ['balloons','balloon','glyph balloons, highlights and tied strings','balloon pitch and string length; buoyant sweep'],
  ['magnets','magnet','lyric magnets and their actual glyph shadow copies','magnet row pitch; source attraction/rotation'],
@@ -63,7 +63,7 @@ A.finalizeLayoutsD=(plan,cut,original,diagnostics,options)=>{
 A.renderLayoutsD=(renderer,env)=>{A.validateFinal(env.plan);if(!A.layoutsDSourceKnown?.(env.cut.layout)||!A.layoutsDTransportKnown?.(renderer))fail('STALE_D_SOURCE','Unchanged D source/renderer required');if(env.cut.layout==='fisheye')return A.renderLayoutsDFisheye(renderer,env);const adapter=adapters.get(env.cut.layout);if(!adapter||env.cut.placementTrajectory.sourceAdapter!==adapter.id)fail('STALE_D_ADAPTER','Exact registered D adapter required');return adapter.render(Object.freeze({renderer,env,trajectory:env.cut.placementTrajectory}));};
 A.layoutsDInventory=()=>rows.map(([layout,unit,primary,strategy])=>({layout,unit,primary,strategy,status:'source-proof-pending',measurementSupported:false,
  tiledAux:layout==='kaleido'?'6..12 clipped sectors each repeat five radial background captions; complete hero lyric is separately protected':layout==='wordSearch'?'seeded off-path kana filler':null,
- auxiliaryCandidate:layout==='pile'?'Up to200 seeded filler glyphs in mound top layers; candidate for018, not yet exempted.':null,independentDecor:layout==='wordSearch'?'Earlier decoy capsule has no source lyric and is separate from the protected find capsule.':layout==='magnets'?'Seeded DECOY alphabet magnets at board edges; actual lyric glyph shadows remain protected.':null,
+ auxiliaryCandidate:null,independentDecor:layout==='wordSearch'?'Earlier decoy capsule has no source lyric and is separate from the protected find capsule.':layout==='magnets'?'Seeded DECOY alphabet magnets at board edges; actual lyric glyph shadows remain protected.':null,
  provenance:['mosaicTiles','halftoneBig'].includes(layout)?'Offscreen text raster is a primary construction input; final tiles/screened output are the stage ink.':layout==='maskReveal'?'Repeated texture is an input inside the primary glyph, never auxiliary stage text.':null}));
 
 // Read the portable project-owned definitions, rather than the currently active

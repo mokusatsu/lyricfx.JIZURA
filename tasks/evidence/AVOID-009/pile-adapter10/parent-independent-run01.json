@@ -1,0 +1,59 @@
+{
+  "status": "INDEPENDENT_SOURCE_GEOMETRY_RAW_PASS_ONLY_NOT_OVERALL_RUN_ACCEPTANCE",
+  "rawSHA256": "8375a5c0d4aadd7cda943c5f134b1592e54e5e38c28fecbc3092af697d0dc011",
+  "counts": {
+    "cases": 2,
+    "continuousOwnerHulls": 610,
+    "continuousVertices": 3660,
+    "firstWitnesses": 4,
+    "observations": 74,
+    "activeObservations": 54,
+    "actualPolygons": 3192,
+    "activePolygons": 2613,
+    "actualVertices": 31304,
+    "heapMappings": 2845,
+    "sourceSlots": 333,
+    "originalClockChecks": 74
+  },
+  "cases": [
+    {
+      "id": "landscape-single-row-push",
+      "minObservedCircleClearanceBeyondMargin": 33.96148637597306,
+      "coldMs": 971.6000000014901,
+      "warmMs": 12.599999994039536,
+      "trajectoryBytes": 107823,
+      "warmTrajectoryBytes": 107823,
+      "sourceGuardsAndWitnessesExactlyMatchAccepted09": true
+    },
+    {
+      "id": "landscape-gap-unicode-pool-push",
+      "minObservedCircleClearanceBeyondMargin": 34.97287431032165,
+      "coldMs": 894.2999999970198,
+      "warmMs": 12.800000004470348,
+      "trajectoryBytes": 94663,
+      "warmTrajectoryBytes": 94663,
+      "sourceGuardsAndWitnessesExactlyMatchAccepted09": true
+    }
+  ],
+  "originalRunnerFailures": [
+    {
+      "id": "landscape-single-row-push",
+      "failures": [
+        {
+          "kind": "all184-layoutIDs",
+          "count": 194
+        }
+      ]
+    },
+    {
+      "id": "landscape-gap-unicode-pool-push",
+      "failures": [
+        {
+          "kind": "all184-layoutIDs",
+          "count": 194
+        }
+      ]
+    }
+  ],
+  "limits": "Normal bounded2fixtures only, guard/contact/readability/human/performance/global009 not accepted; no image/public result checks"
+}
