@@ -1,7 +1,7 @@
 # AVOID-009 折り紙（扉）の横長優先
 
 - 比較URL: https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-009/gate-landscape-20261023-01/
-- 状態: Sites公開操作がsucceededを返した。人間の動作確認は未回答。[公開操作記録](../evidence/AVOID-009/gate-landscape01/publication.json)。公開結果確認は行っていない。
+- 状態: 利用者の「OKです 続きを順次実装して」で扉修正版の動作確認OKを受領。Sites公開操作がsucceededを返した。[公開操作記録](../evidence/AVOID-009/gate-landscape01/publication.json)。公開結果確認は行っていない。
 - 製品commit: `9f4318b`（workへpush成功）。Sites source commit: `16fa2e93b2e9fdaef42662822bdaa451c7231011`。
 - 変更前は前回公開した回避試作、変更後は横長優先の修正版。D回避導入前は参考リンクとして分ける。
 

@@ -1,0 +1,36 @@
+{
+  "base": "14beefb",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "startPins": [
+    {
+      "file": "src/09a_placement.js",
+      "sha256": "37e26c0e7466bda95ad43a6370809393952e72ecba22870490b10775419dc3b6"
+    },
+    {
+      "file": "src/09l_layoutsD_fisheye.js",
+      "sha256": "0eccb7d52162fc44780d4fb2f6063afaeda299f35094f0af575109d86a241fb5"
+    },
+    {
+      "file": "src/09n_layoutsD_origami.js",
+      "sha256": "acebd097b681c2a928c457d132826fb0e68f5343397fcdd5609b143aa3f4d4ca"
+    },
+    {
+      "file": "src/11p_layoutsD.js",
+      "sha256": "4869fb46be469fb34667f48c90943bd2ea8ec615d49da7295e8daa9219eb5c25"
+    },
+    {
+      "file": "index.html",
+      "sha256": "78aff1596fa2e00385bd35d71f8fce7533b80e7f2b9c9628b0171a5d43fb37dd"
+    },
+    {
+      "file": "en/index.html",
+      "sha256": "360788535e009efc4c58b7b9d0b95d430d0a5a1467b72691c70a748b6ccfa453"
+    },
+    {
+      "file": "app/__pycache__/english.cpython-312.pyc",
+      "sha256": "7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898"
+    }
+  ],
+  "checks": "Start SHA and entire JA/EN canonical plus ONLY working09a/09l exactly reconstructs start HTML; current localization leaves all target modules byte-identical."
+}

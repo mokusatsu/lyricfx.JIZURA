@@ -1,0 +1,98 @@
+{
+  "base": "14beefb",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "status": "Integrated approved cylinder candidate; parent validation/stage/commit/push pending",
+  "pins": [
+    {
+      "file": "src/09a_placement.js",
+      "startSHA256": "37e26c0e7466bda95ad43a6370809393952e72ecba22870490b10775419dc3b6",
+      "endSHA256": "c849565bf47a0100e66c3cf266419729f16d8b93d5b1319ac5bbc16177d68f75"
+    },
+    {
+      "file": "src/09l_layoutsD_fisheye.js",
+      "startSHA256": "0eccb7d52162fc44780d4fb2f6063afaeda299f35094f0af575109d86a241fb5",
+      "endSHA256": "0eccb7d52162fc44780d4fb2f6063afaeda299f35094f0af575109d86a241fb5"
+    },
+    {
+      "file": "src/09n_layoutsD_origami.js",
+      "startSHA256": "acebd097b681c2a928c457d132826fb0e68f5343397fcdd5609b143aa3f4d4ca",
+      "endSHA256": "acebd097b681c2a928c457d132826fb0e68f5343397fcdd5609b143aa3f4d4ca"
+    },
+    {
+      "file": "src/11p_layoutsD.js",
+      "startSHA256": "4869fb46be469fb34667f48c90943bd2ea8ec615d49da7295e8daa9219eb5c25",
+      "endSHA256": "e339a129ed1d40199767355ed865771d19b0f1e235e06844979e8a96487ab338"
+    },
+    {
+      "file": "index.html",
+      "startSHA256": "78aff1596fa2e00385bd35d71f8fce7533b80e7f2b9c9628b0171a5d43fb37dd",
+      "endSHA256": "80c8e20a10705bb2ebe4bc737ce81777e07890da97c6d66fc6846118b9c6cf6d"
+    },
+    {
+      "file": "en/index.html",
+      "startSHA256": "360788535e009efc4c58b7b9d0b95d430d0a5a1467b72691c70a748b6ccfa453",
+      "endSHA256": "0e9df9e5e9b69f7f14ac58a04e132f81dda9910f07a15c3c8619687b6c96e28f"
+    },
+    {
+      "file": "app/__pycache__/english.cpython-312.pyc",
+      "startSHA256": "7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898",
+      "endSHA256": "7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898"
+    },
+    {
+      "file": "src/09o_layoutsD_cylinder.js",
+      "startSHA256": null,
+      "endSHA256": "a498ba61132ff4549cdc86f1924386a36a864087c44e033264095d7002fe10c3"
+    }
+  ],
+  "sourceChanges": [
+    "src/11p_layoutsD.js",
+    "src/09o_layoutsD_cylinder.js",
+    "src/09a_placement.js"
+  ],
+  "assertions": [
+    "All cylinder-start01 sourceStart hashes matched immediately before integration",
+    "Shared09a source delta equals approved bridge-only delta exactly; fuzz0",
+    "11p source delta equals approved cylinder-only delta exactly; fuzz0",
+    "Candidate JA/EN inverse exactly canonical14beefb HTML",
+    "Merged JA/EN inverse exactly start working JA/EN: all non-target bytes preserved",
+    "No localization changes in09a/09l/09o/11p modules under current localize_js",
+    "Every other src and every pycache file SHA unchanged",
+    "No build or git mutation performed"
+  ],
+  "runners": [
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-test.cjs",
+      "sha256": "42530be82590ac581663a78e6651243479c895436c718dd43180e0e26fd3105d",
+      "frozenSHA256": "42530be82590ac581663a78e6651243479c895436c718dd43180e0e26fd3105d"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-canonical-test.cjs",
+      "sha256": "dba76bb3973bcc7d9aac31846e5a9ca576f4ce27e7814086aba5f761f9841838",
+      "frozenSHA256": "dba76bb3973bcc7d9aac31846e5a9ca576f4ce27e7814086aba5f761f9841838"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-parity.cjs",
+      "sha256": "853fbef2a8437d764c69b2031f4e9e731d1f26e6b770270573d7f9406224bde0",
+      "frozenSHA256": "853fbef2a8437d764c69b2031f4e9e731d1f26e6b770270573d7f9406224bde0"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-band-bridge.cjs",
+      "sha256": "707a957baefeba928e7fc48809208b9336271cb470b39c9fe166d2ef87542658",
+      "frozenSHA256": "707a957baefeba928e7fc48809208b9336271cb470b39c9fe166d2ef87542658"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-canonical-whole-parity.cjs",
+      "sha256": "c7e042fb7cb8c76d5b215a241ac874f70cb8595a3cfecb075c5da6f158a1c733",
+      "frozenSHA256": "b40be8e5060e8c4d9586f06dc33803465411a32eb366522668a242e56a38b3fd"
+    }
+  ],
+  "runnerAdaptation": "Only wholecanonical runner baseline read changes from huge root HTML file to exact read-only git show14beefb:index.html in memory; frozen runner remains unchanged in capsule",
+  "localValidation": "Prior isolated freeze functional PASS; main merged WIP runtime validation pending parent scope",
+  "formalPerformance": "unmet; not accepted",
+  "publicChecks": 0,
+  "mediaViews": 0,
+  "syntaxChecks": "node --check09a/09o/11p PASS",
+  "oldTreeUnchanged": true,
+  "canonicalFreezePinsStillValid": true
+}

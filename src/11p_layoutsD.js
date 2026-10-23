@@ -284,43 +284,51 @@ reg('cylinder', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, u = U(env), lt = env.lt;
+    const previousOwnership=env.drawOwnership;
+    if(cut.placementLayoutsD)env.drawOwnership={role:'primary',owner:'cylinder.drum'};
+    try {
+    const recipe=cut.placementLayoutsD?cut.layoutDRecipe||{}:{}, owned=(key,fn)=>cut.placementLayoutsD?env.withDrawRole('primary','cylinder.'+key,fn):fn();
     const port = isPort(env);
     const t0 = flat(cut.text), n = J.glyphCount(t0);
-    const rowsT = n > (port ? 7 : 9) ? chunksK(t0, 2) : [t0];
-    const R = Math.min(W * (port ? 0.38 : 0.3), H * 0.42), cx = W / 2, ek = Pm.tilt;
+    const nativeRows = n > (port ? 7 : 9) ? chunksK(t0, 2) : [t0], rowsT=recipe.rowCount?chunksK(t0,recipe.rowCount):nativeRows;
+    const nativeR = Math.min(W * (port ? 0.38 : 0.3), H * 0.42), R=nativeR*(recipe.radiusScale??1), cx = W / 2, ek = Pm.tilt;
     const span = 2.1;                                                  // radians the lyric may cover on the front
     let size = H * 0.2;
-    for (const r of rowsT) { let a = 0; for (const ch of r) a += adv(Pm.font, ch) * 1.04; size = Math.min(size, span * R / Math.max(1, a)); }
-    size = Math.min(size, u * (rowsT.length > 1 ? 0.15 : 0.19));
-    const rowGap = size * 1.45;
+    for (const r of nativeRows) { let a = 0; for (const ch of r) a += adv(Pm.font, ch) * 1.04; size = Math.min(size, span * nativeR / Math.max(1, a)); }
+    size = Math.min(size, u * (nativeRows.length > 1 ? 0.15 : 0.19));
+    const nativeSize=size,nativeSS=Math.max(12,nativeSize*.3); size*=recipe.fontScale??1;
+    const rowGap = size * (recipe.rowPitch??1.45);
     const nR = rowsT.length;
     const out = tout(env), dir = Pm.dir || 1;
     const spin = -(1 - E.outCubic(J.clamp(lt / 0.8))) * 1.7 * dir + Math.sin(env.ltb * 0.8) * 0.05 * (env.fx.motion ?? 0.7) + E.inCubic(env.pOut) * 1.9 * dir;
     // secondary rings above and below
-    const ss = Math.max(12, size * 0.3), unit = [...(flat(cut.lineText || cut.text) + Pm.sep)];
+    const ss = nativeSS*(recipe.secondaryScale??1), unit = [...(flat(cut.lineText || cut.text) + Pm.sep)];
     const nSec = Pm.rings;
     const yMid = H / 2;
     const ringY = [];
     const blockH = nR * rowGap;
     for (let i = 0; i < nSec; i++) {
       const side = i % 2 ? 1 : -1, k = Math.floor(i / 2);
-      ringY.push({ y: yMid + side * (blockH / 2 + ss * 0.9 + k * ss * 1.6), dir: (i % 2 ? 1 : -1) * dir, k });
+      ringY.push({ y: yMid + side * (blockH / 2 + ss * 0.9 + k * ss * (recipe.ringPitch??1.6)), dir: (i % 2 ? 1 : -1) * dir, k });
     }
     const yTop = Math.min(yMid - blockH / 2, ...ringY.map(r => r.y - ss * 0.8)) - ek * R - size * 0.12, yBot = Math.max(yMid + blockH / 2, ...ringY.map(r => r.y + ss * 0.8)) - ek * R + size * 0.12;
+    const nativeSlots=cut.placementLayoutsD?[]:null;if(nativeSlots)nativeRows.forEach((row,ri)=>{const chars=[...row],ads=chars.map(ch=>adv(Pm.font,ch)*nativeSize*1.04);let acc=-ads.reduce((a,b)=>a+b,0)/2;chars.forEach((ch,i)=>{const a0=acc+ads[i]/2;acc+=ads[i];if(ch!==' ')nativeSlots.push({ch,a0,mi:ri*4+i*.6,rowPhase:(ri%2?.08:-.08)*(nativeRows.length>1?1:0)});});});
+    const cnt=Math.min(72,Math.max(unit.length,Math.floor(J.TAU*nativeR/(nativeSS*1.05)))),ringChars=Array.from({length:cnt},(_,i)=>unit[i%unit.length]);
+    if(cut.placementLayoutsD)env.placementDGeometry={kind:'cylinder',R,nativeR,cx,ek,size,nativeSize,ss,nativeSS,rowGap,nativeRows:nativeRows.slice(),nativeSlots:nativeSlots.map(s=>({...s})),rows:rowsT.slice(),ringY:ringY.map((r,i)=>({...r,index:i})),unit:unit.slice(),ringChars:ringChars.slice(),cnt,yTop,yBot,blockH,yMid,glass:Pm.glass,band:Pm.band,main:[]};
     const ea = tin(env, 0, 0.6, E.outCubic) * out;
     const ell = (y, a0, a1, N = 40) => { const pts = []; for (let i = 0; i <= N; i++) { const t = a0 + (a1 - a0) * i / N; pts.push([cx + R * Math.sin(t), y + ek * R * Math.cos(t)]); } return pts; };
     // glass body
-    if (Pm.glass && ea > 0) {
+    if (Pm.glass && ea > 0) owned('glass',()=>{
       const lw = Math.max(1, u * 0.0016);
       env.line(ell(yTop - ek * R * 0, -Math.PI, Math.PI, 60), sc.sub, lw, 0.45 * ea, false);
       env.line(ell(yBot, -Math.PI / 2, Math.PI / 2), sc.sub, lw, 0.45 * ea, false);
       env.line([[cx - R, yTop], [cx - R, J.lerp(yTop, yBot, ea)]], sc.sub, lw, 0.45 * ea, false);
       env.line([[cx + R, yTop], [cx + R, J.lerp(yTop, yBot, ea)]], sc.sub, lw, 0.45 * ea, false);
-    }
+    });
     // wrap band behind the lyric
     const bandC = plateCol(sc, [sc.accent, sc.ink]);
     const onBand = Pm.band;
-    if (onBand && ea > 0) {
+    if (onBand && ea > 0) owned('band',()=>{
       const yb0 = yMid - blockH / 2 + size * 0.02 - ek * R, yb1 = yMid + blockH / 2 - size * 0.02 - ek * R;
       const top = ell(yb0, -Math.PI / 2, Math.PI / 2, 36), bot = ell(yb1, -Math.PI / 2, Math.PI / 2, 36).reverse();
       const pts = top.concat(bot);
@@ -330,14 +338,14 @@ reg('cylinder', {
         ctx.save(); ctx.globalAlpha = ea; ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.closePath();
         ctx.save(); ctx.clip(); ctx.fillStyle = g; ctx.fillRect(cx - R - 2, yb0 - 4, R * 2 + 4, yb1 - yb0 + ek * R * 2 + 8); ctx.restore(); ctx.restore();
       } else env.poly(pts, bandC, ea, gIn(env));
-    }
+    });
     // secondary rings: one item each, glyphs placed round the drum (back half mirrored & dim)
     if (env.pass === 'main') {
-      for (const rg of ringY) {
+      for (let ringIndex=0;ringIndex<ringY.length;ringIndex++) {
+        const rg=ringY[ringIndex];
         const a = tin(env, 0.05 + rg.k * 0.08, 0.5, E.outCubic) * out;
         if (a <= 0.01) continue;
-        const cnt = Math.min(72, Math.max(unit.length, Math.floor(J.TAU * R / (ss * 1.05))));
-        const chars = []; for (let i = 0; i < cnt; i++) chars.push(unit[i % unit.length]);
+        const chars = ringChars;
         const rot0 = env.ltb * Pm.speed * rg.dir + rg.k * 0.7 + spin * 0.5;
         const it = { text: chars.join(''), font: Pm.fs, size: ss, x: 0, y: 0, color: sc.sub, ghost: false, alpha: a };
         it._lay = J.layoutText(it);
@@ -347,11 +355,12 @@ reg('cylinder', {
           if (Math.abs(c) < 0.06) return { hide: true };
           return { dx: x - g.x, dy: y - g.y, sx: c, rot: Math.atan2(-ek * s, 1) / J.DEG * 0.8, a: c > 0 ? 0.45 + 0.55 * c : 0.12 + 0.1 * -c };
         };
-        env.draw(it);
+        owned('ring.'+ringIndex,()=>env.draw(it));
       }
     }
     // the lyric rows on the front of the drum
     let bb = null;
+    let sourceIndex=0;
     rowsT.forEach((row, ri) => {
       const y0 = yMid + (ri - (nR - 1) / 2) * rowGap;
       const chars = [...row];
@@ -361,16 +370,19 @@ reg('cylinder', {
       chars.forEach((ch, i) => {
         const a0 = acc + ads[i] / 2; acc += ads[i];
         if (ch === ' ') return;
-        const t = a0 / R + spin + (ri % 2 ? 0.08 : -0.08) * (nR > 1 ? 1 - E.outCubic(J.clamp(lt / 0.9)) : 0);
+        const source=nativeSlots?nativeSlots[sourceIndex]:{mi:ri*4+i*.6,rowPhase:(ri%2?.08:-.08)*(nR>1?1:0)};sourceIndex++;
+        if(cut.placementLayoutsD)env.placementDGeometry.main.push({row:ri,index:i,source:sourceIndex-1,ch,a0,y0,mi:source.mi,rowPhase:source.rowPhase});
+        const t = a0 / R + spin + source.rowPhase * (1 - E.outCubic(J.clamp(lt / 0.9)));
         const c = Math.cos(t), s = Math.sin(t);
         if (c < 0.03) return;
         const x = cx + R * s, y = y0 - ek * R + ek * R * c;
         const m = [c, -ek * s, 0, 1, x, y];
-        const it = { text: ch, font: Pm.font, size, x: 0, y: 0, color: onBand ? onCol(sc, bandC) : sc.fg, alpha: 0.35 + 0.65 * Math.pow(c, 0.6), mi: ri * 4 + i * 0.6, noHold: true };
-        bb = UB(bb, drawAff(env, it, m));
+        const it = { text: ch, font: Pm.font, size, x: 0, y: 0, color: onBand ? onCol(sc, bandC) : sc.fg, alpha: 0.35 + 0.65 * Math.pow(c, 0.6), mi: source.mi, noHold: true };
+        bb = UB(bb, owned('main.'+(sourceIndex-1),()=>drawAff(env, it, m)));
       });
     });
     return bb || box(cx - R, yMid - blockH / 2, cx + R, yMid + blockH / 2);
+    } finally {if(cut.placementLayoutsD)env.drawOwnership=previousOwnership;}
   },
 });
 
