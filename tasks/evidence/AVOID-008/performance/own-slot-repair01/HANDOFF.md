@@ -1,0 +1,11 @@
+# Existing own-slot assignment in validated fast repair
+
+Base8608 is product5e byteexact after separate rejectedtoken revert.09g one expression:fastscalar/alias payloadDefine(...three true attributes) becomes normal parent[key]=value. Nullprototype op unchanged. No newresolver/table/memo/reference retention. All other09gbytes and83sourcefiles identical.
+
+Provenance:initial unchangedpayloadDecode authority validates each repair destination as existingown data nullplaceholder and rejects duplicate/overlapping pending slots before admitting immutableprivate entry. Every fastread uses capturednativeJSONparse on freshwire/tree; JSON objectproperties and array indices are own writable/configurable/enumerabletrue. Arraylength is excluded by unchangedown-indexschema. Existingnullproto ops preserveown descriptors. Aliases/scalars apply sameorder aftersamepathresolve; regularassignment changes onlyvalue and preserves three trueflags. Own __proto__/constructor/prototype slots shadow inherited properties, so ownassignment does not invoke prototype setters. Freeze occurs later at original09a caller aftersignature/source metadata; nooutputobject is retained from an earlier read. This privateprovenance does not apply to arbitrarypublic input.
+
+Originalfirstfull authority, payloadGuard entryexit,2verify, keycodec/admission, ops/path caps, treeboundary/fallback, repairorder, retirementclear/eviction and general/densefreeze remain byteexact. Existingfullwire noncanonicalfast branch also has freshnativeJSONparse ownslots and sameprovenance.
+
+Normal23cases compare fullvalue/alias/descriptor/frozen graphs and detachedfresh outputs:old100ONOFF, quoted/Unicode/aliases-namedkeys,7noncanonical validwire forms, plus __proto__/constructor/prototype each as alias/undefined/-0. Repeatedclear retires memo. Existingcapacity7 coversold1000full1fast2,exact/justover3caps and frozenfresh equivalence. Existingdense22/66reads6lifecycle passes. No Proxy/fuzz/newsecurity.
+
+Build/isolatedreversebuild JAEN exact against8608; source1expression reverse proves everyotherbyte unchanged. No performance/browser/CDP/public/images run or speedpassclaim. Prior5e formal1000ONplanning2.129767xFAIL and rejectedtokenFAIL retained.
