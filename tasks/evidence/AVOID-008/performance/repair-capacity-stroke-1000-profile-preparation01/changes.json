@@ -1,0 +1,126 @@
+{
+  "basis": "dev/avoidance/layouts-c-node-wire-finalization-profile.cjs",
+  "basisSHA256": "cfba7067c4d9aa4eeddd70aa83dd9f9b6309ab4f06f174a765f28698fe097b1d",
+  "helper": "dev/avoidance/layouts-c-repair-capacity-stroke-1000-profile.cjs",
+  "helperSHA256": "654d48fd41b0a7ce9a5c77b0cb165594d80b9fe42869d95879dd0e18ee646272",
+  "literalChanges": [
+    {
+      "old": "node-wire-finalization-profile01",
+      "new": "repair-capacity-stroke-1000-profile01",
+      "count": 2
+    },
+    {
+      "old": "node-wire-encode-browser01-parent-gate.json",
+      "new": "repair-capacity-stroke-browser01-parent-gate.json",
+      "count": 1
+    },
+    {
+      "old": "native-local-bounds-runtime02",
+      "new": "native-local-bounds-runtime04",
+      "count": 2
+    },
+    {
+      "old": "node-wire-encode-diagnose01/results.json.gz",
+      "new": "repair-capacity-stroke-formal01/results.json.gz",
+      "count": 1
+    },
+    {
+      "old": "candidate100-onoff-eight-warm-finalization-cpu-profile",
+      "new": "candidate1000-on-eight-warm-finalize-and80-render-cpu-profile",
+      "count": 1
+    },
+    {
+      "old": "2f3a8375c1f27305b0e25b24db96e67ff975a73a",
+      "new": "87dbf3248f15ec5e75681615f55fc22c2f011799",
+      "count": 1
+    },
+    {
+      "old": "0a33254940b3cf069d91de8ece36fe58510927bcdd83100e22f15172322eed97",
+      "new": "4e99993052c156771aaebd654054064cd9124db30eba76c89f55681d1844e7d5",
+      "count": 1
+    },
+    {
+      "old": "7ff012ba111f26dbd5fda167678c4d4fc1f9caa1501030dbb4febcbf6e4696d2",
+      "new": "606db9efcec96b64ca506495af6be819adb68c34aa561727ce0dcf32a78b1ea2",
+      "count": 1
+    },
+    {
+      "old": "gate.expectedSpecRevision,'228'",
+      "new": "gate.expectedSpecRevision,'230'",
+      "count": 1
+    },
+    {
+      "old": "reference.config.planningSamples,1",
+      "new": "reference.config.planningSamples,6",
+      "count": 1
+    },
+    {
+      "old": "const archiveCandidates=[base+'node-wire-encode-browser01'",
+      "new": "const archiveCandidates=[base+'repair-capacity-stroke-browser01',base+'repair-capacity-stroke-formal01',base+'node-wire-encode-browser01'",
+      "count": 1
+    },
+    {
+      "old": "projectFor(J,100,on)",
+      "new": "projectFor(J,1000,on)",
+      "count": 1
+    },
+    {
+      "old": "normalize(J,state.source,100)",
+      "new": "normalize(J,state.source,1000)",
+      "count": 1
+    },
+    {
+      "old": "cuts.length===100",
+      "new": "cuts.length===1000",
+      "count": 2
+    },
+    {
+      "old": "regions.length===100",
+      "new": "regions.length===1000",
+      "count": 2
+    },
+    {
+      "old": "cuts:100,regions:100",
+      "new": "cuts:1000,regions:1000",
+      "count": 1
+    },
+    {
+      "old": "one genuine100-cut source each",
+      "new": "one genuine1000-cut ON source",
+      "count": 1
+    },
+    {
+      "old": "Fresh ON/OFF pages",
+      "new": "One fresh ON page",
+      "count": 1
+    },
+    {
+      "old": "for(const on of [true,false])",
+      "new": "for(const on of [true])",
+      "count": 1
+    },
+    {
+      "old": "corpus.bySize['100']",
+      "new": "corpus.bySize['1000']",
+      "count": 1
+    },
+    {
+      "old": "s.side==='candidate'&&s.on===on",
+      "new": "s.side==='candidate'&&s.on===on&&s.n===1000",
+      "count": 1
+    },
+    {
+      "old": "window.__NodeWireFinalizationProfile",
+      "new": "window.__CapacityStroke1000Profile",
+      "count": 3
+    }
+  ],
+  "workloadChanges": [
+    "ON1000 only",
+    "stable actual replay wrapper before prewarm",
+    "separate finalization8 and original render80 profile intervals",
+    "original frame clocks/options/observations against fixed formal",
+    "CPU raw temporary files in /tmp before gzip"
+  ],
+  "reversePatchByteExact": true
+}
