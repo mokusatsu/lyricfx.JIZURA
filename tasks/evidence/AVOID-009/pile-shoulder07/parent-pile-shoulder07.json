@@ -1,0 +1,98 @@
+{
+  "status": "PASS",
+  "rawSHA256": "71baa5d182dac0bf15b4b1cedf68f4b807b6039e33afe4c4d30413e2df1fa784",
+  "counts": {
+    "runs": 8,
+    "slots": 18,
+    "witnesses": 54,
+    "translatedFrames": 72,
+    "translatedVertices": 25896
+  },
+  "diagnostics": [
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "native-equivalent",
+      "split": false,
+      "stageRangeNonempty": false,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 4,
+      "trialAllowancePassed": 4,
+      "budgetTotal": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-no-split",
+      "split": false,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 3,
+      "trialAllowancePassed": 4,
+      "budgetTotal": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-split-rho90",
+      "split": true,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 2,
+      "trialAllowancePassed": 2,
+      "budgetTotal": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-split-rho110",
+      "split": true,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 3,
+      "strictBudgetPassed": 1,
+      "trialAllowancePassed": 2,
+      "budgetTotal": 4
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "native-equivalent",
+      "split": false,
+      "stageRangeNonempty": false,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 3,
+      "trialAllowancePassed": 3,
+      "budgetTotal": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-no-split",
+      "split": false,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 2,
+      "trialAllowancePassed": 3,
+      "budgetTotal": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-split-rho90",
+      "split": true,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 0,
+      "strictBudgetPassed": 0,
+      "trialAllowancePassed": 0,
+      "budgetTotal": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-split-rho110",
+      "split": true,
+      "stageRangeNonempty": true,
+      "circleClearWitnesses": 1,
+      "strictBudgetPassed": 1,
+      "trialAllowancePassed": 1,
+      "budgetTotal": 3
+    }
+  ],
+  "limitations": [
+    "Source-envelope trial only; no circle/Safe/adapter/visual acceptance",
+    "Entry allowance remains unregistered proposal",
+    "Source-budget allowance does not prove physical contact or readability"
+  ]
+}
