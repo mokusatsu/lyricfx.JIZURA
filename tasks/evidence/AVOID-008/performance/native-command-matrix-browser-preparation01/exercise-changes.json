@@ -1,0 +1,38 @@
+[
+  {
+    "before": "const A=J.placement,rows=[],negatives=[],",
+    "after": "const A=J.placement,rows=[],targets=[],negatives=[],"
+  },
+  {
+    "before": "const origRecord=A.record;let records=0;A.record=function(...args){records++;return origRecord(...args);};",
+    "after": "const origRecord=A.record;let records=0,renderPrograms=null;A.record=function(...args){records++;const program=origRecord(...args);if(renderPrograms){const kinds={};for(const e of program.events)kinds[e.kind]=(kinds[e.kind]||0)+1;renderPrograms.push({json:json(program),graph:graph(program),kinds});}return program;};"
+  },
+  {
+    "before": "async function pair(spec){",
+    "after": "async function pair(spec,target=false){"
+  },
+  {
+    "before": "const observations=[];let error=null;try{renderer.frame",
+    "after": "const observations=[],programs=[];let error=null;renderPrograms=programs;try{renderer.frame"
+  },
+  {
+    "before": "}catch(e){error={code:e.code,message:e.message};}const bytes=ctx.getImageData",
+    "after": "}catch(e){error={code:e.code,message:e.message};}finally{renderPrograms=null;}const programHashes=[];for(const p of programs)programHashes.push({jsonSHA256:await digest(p.json),graphSHA256:await digest(p.graph),kinds:p.kinds});const bytes=ctx.getImageData"
+  },
+  {
+    "before": "const bytes=ctx.getImageData(0,0,cv.width,cv.height).data,digest=",
+    "after": "const bytes=ctx.getImageData(0,0,cv.width,cv.height).data,frameDigest="
+  },
+  {
+    "before": "frames.push({lt,digest,observations,error});",
+    "after": "frames.push({lt,digest:frameDigest,observations,error,programs:programHashes});"
+  },
+  {
+    "before": "if(['clapper','dictionary','stickyNotes','ema'].includes(spec.layout)&&!spec.control){row.coldFrames",
+    "after": "if(target||['clapper','dictionary','stickyNotes','ema'].includes(spec.layout)&&!spec.control){row.coldFrames"
+  },
+  {
+    "before": "rows.push(row);r.canvas.width=r.canvas.height=1;return r;",
+    "after": "if(target){const frames=[...row.coldFrames,...row.warmFrames,...row.fast.frames],kind=spec.layout==='stampSheet'?'nativePath':'line',actual=frames.reduce((n,f)=>n+f.programs.reduce((n,p)=>n+(p.kinds[kind]||0),0),0);assert(actual>0,'Target actual '+kind+' count must be nonzero');row.targetProgramKind={kind,actual};targets.push(row);}else rows.push(row);r.canvas.width=r.canvas.height=1;return r;"
+  }
+]
