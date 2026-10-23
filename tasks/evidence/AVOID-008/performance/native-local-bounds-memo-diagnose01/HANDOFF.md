@@ -1,0 +1,13 @@
+# AVOID-008 native local bounds memo original100 diagnosis01
+
+Exactly one parent-authorized --diagnose100 execution from preparation11650c4230f79fe7d800c407f6c611ec9a3b9a57, fixed product98486720b67bec18571e229301c897b20d3e5188. Original runner/fixture/corpus,2bb baseline,3warmups+1point,80frames/16warm,ON/OFF four sides and2x/+3ms limits unchanged. No retry or formal1000. Model gpt-6.1-sol medium.
+
+Diagnostic completed with countsValid/candidateFullCoverage/actualPipelineValid/pinnedFontCorpusQualified/inputParity all true, four sides each100cuts/100regions, errors[] and renderErrors[]. Performance remains UNMET/passedfalse. ON full planning45.199999988→100.400000006ms ratio2.221238939 exceeds2, additional render p95 2.399999976ms. OFF49.600000009→84.599999979ms ratio1.705645161, additional render p95 3.5ms exceeds3. A single planning point is not qualified p95. Thresholds were not changed and historical failures are not replaced.
+
+Raw results.json.gz SHA256391247f9fe06097aeb48cc674f5caf996e973414a6a4ea8c747223813afa1140 (42330bytes). Original results.json and gzip retained. All pipeline detail, cache snapshots, actual622 planning record calls and80record/80replay candidate ON render calls remain in raw; manifest lists four-side counts, planning phase totals and output flags. Gate/runtime/package/product support receipt and exact support inputs retained.
+
+Actual runnerPID384039 startTicks11401906, parentPython384034 Popen.wait returned kernel0, reapedtrue/gonetrue. Wrapper before/after non-Z jobs0; Z counts separate. Original runner6cc4ef line49 finally awaits browser/server close, records completed post scan and saves before process exit. Full wrapper execution.json.gz and stdout.log.gz retained; no invented cleanup field added to original raw.
+
+Support monitor violations[], all product/package/gate drift lists empty; raw changedInputs[]. Pre-run free303484928bytes, support after291635200, wrapper post-save291553280, all above250MiB. Only after termination,103 byte-identical gzip input archives were replaced with hardlinks to verified existing browser archives; samebytes-storage-receipt.json records original/after gzip/decoded SHA and inode checks. Raw/pins unchanged, post-storage available298958848bytes. This changes storage only after the workload; runner/preload remained fixed. Large wrapper temporary files are in/tmp.
+
+No additional security, mutation/fuzz, CDP, images/video or public verification. Stop after evidence commit; parent independent raw review/next decision pending. No performance acceptance claim and no further workload authorized by this handoff.

@@ -1,0 +1,15 @@
+# AVOID-008 native local bounds memo original100 diagnosis preparation only
+
+Implementation gpt-6.1-sol medium. Browser evidence fixed at5046340c5f72986e488d0d4f22d6824f190e5a38 after parent raw acceptance. Its final-save250MiB reserve violation remains explicit; space was subsequently restored by parent without rerun.
+
+New evidence preload dev/avoidance/layouts-c-native-local-bounds-memo-perf-gate-support.cjs SHA2566d6cbcb3bc9c54829b423eac4440444e903238622151364827189647a3775f5a derives byte-exact from native-command-matrix preload9b7f6438b928dc00e64b283eeaf79298380dd65ed4ef51aac782b0cb91b16f75 through six literal groups/eight occurrences only: diagnosis gate/output namespace, runtime02 namespace, accepted browser gate, spec222→228, source98486720b67bec18571e229301c897b20d3e5188 and JA21bfb1f628ff880932e2f7ca51c22cfdfaa014e75d04840e0922b53f67776b76. Reverse proof restores all original bytes. node --check passes; preload was not evaluated.
+
+Original runner6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756, fixture7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471 and corpus4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc remain fixed. All86 product files equal source commit blobs. Baseline2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb, four100ON/OFF sides,3warmups+1planning point,80render/16warm frames, all timed bodies, actual record/replay/observation and original2x planning/+3ms render thresholds remain unchanged. One planning point is not qualified p95; previous performance failures are retained. Formal1000 is unauthorized.
+
+Future one-shot command (NOT EXECUTED): JIZURA_BROWSER=/usr/bin/chromium node --require ./dev/avoidance/layouts-c-native-local-bounds-memo-perf-gate-support.cjs dev/avoidance/layouts-c-perf-shadow-native.cjs --diagnose100 tasks/evidence/AVOID-008/performance/native-local-bounds-memo-diagnose01
+
+Execution requires parent review, a parent-created native-local-bounds-memo-diagnose01-parent-gate.json bound to candidate/baseline/runner/fixture/corpus/preload, accepted browser gate, fresh current=observed228 running/connected runtime02, exclusive browser/performance lease, actual PID/startTicks and parent wait/reaped/gone evidence. Inherited300s/250MiB checks, package173/product86 checks, proxy/CA/TLS, loopback external-abort and cleanup remain unchanged. No gate was created here.
+
+samebytes-reference-candidates.json verifies112 already available browser input archives without duplicating archives. The fixed original runner unconditionally writes its own snapshots; this preparation adds no interception. Parent permits a later separately recorded post-run samebytes hardlink preserving raw SHA; disk headroom must cover the original peak and be recorded before/after. No HTML or gzip input was created in preparation. Large temporary files stay in/tmp.
+
+Preparation only: no browser, timing, CDP, additional security/mutation/fuzz, images/video, public result check or further task executed. No product/main/docs edits. Parent review and explicit one-run gate are next.

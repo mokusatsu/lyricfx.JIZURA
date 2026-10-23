@@ -1,0 +1,115 @@
+{
+  "task": "AVOID-008",
+  "implementationModel": "gpt-6.1-sol",
+  "reasoningEffort": "medium",
+  "helperCommit": "715f316bdd86d2cd5693bfe19b15abcedcdf6808",
+  "raw": {
+    "path": "results.json.gz",
+    "bytes": 2464762,
+    "sha256": "bedada51e1a2d6015640ef19fb886195d4e5add4df4966bcd331ec0f46e74c34"
+  },
+  "execution": {
+    "runnerPID": 383324,
+    "runnerStartTicks": "11373486",
+    "parentPythonPID": 383319,
+    "kernelExitCode": 0,
+    "reaped": true,
+    "runnerGone": true,
+    "startedUTC": "2026-10-23T05:48:42Z",
+    "finishedUTC": "2026-10-23T05:49:10Z",
+    "diskAvailableBytes": 261922816
+  },
+  "comparison": {
+    "deepEqual": true,
+    "orderedJSONExact": true,
+    "canonicalJSONExact": true,
+    "baselineFullResultSHA256": "39a3f63a2969d3c35abf745f240072aaa2076712277545714fdb7aab3fe02f50",
+    "candidateFullResultSHA256": "dbebbd86a8b7863a1d517f0154c97af34473d71fabb7cb0686452c0e270aef33",
+    "baselineProjectedResultSHA256": "8f59e73f5634b34820fe6482cb02c2ddb1b2a51112a7feefc6d9f662a10853e8",
+    "candidateProjectedResultSHA256": "8f59e73f5634b34820fe6482cb02c2ddb1b2a51112a7feefc6d9f662a10853e8",
+    "canonicalSHA256": "bb09c805dc405dc871e139b05aec07fd50bf9a79e8f10db07dd1bbaa420f5e8d"
+  },
+  "counts": {
+    "reference": {
+      "normalRows": 40,
+      "targets": 2,
+      "fastReads": 84,
+      "nativeFrames": 72
+    },
+    "candidate": {
+      "normalRows": 40,
+      "targets": 2,
+      "fastReads": 84,
+      "nativeFrames": 72
+    },
+    "nativeFramesTotal": 144
+  },
+  "hitDeltas": [
+    {
+      "layout": "stampSheet",
+      "phase": "cold",
+      "hitDelta": 48
+    },
+    {
+      "layout": "stampSheet",
+      "phase": "warm",
+      "hitDelta": 48
+    },
+    {
+      "layout": "stampSheet",
+      "phase": "fast",
+      "hitDelta": 48
+    },
+    {
+      "layout": "newspaper",
+      "phase": "cold",
+      "hitDelta": 13
+    },
+    {
+      "layout": "newspaper",
+      "phase": "warm",
+      "hitDelta": 18
+    },
+    {
+      "layout": "newspaper",
+      "phase": "fast",
+      "hitDelta": 18
+    }
+  ],
+  "errors": [],
+  "ownedCleanup": {
+    "browserCloseAwaited": true,
+    "serverCloseAwaited": true,
+    "runnerPID": 383324
+  },
+  "changedInputs": [],
+  "changedPackageInputs": [],
+  "baselineArchiveChanged": false,
+  "concurrency": {
+    "before": {
+      "jobs": 0,
+      "zombies": 1483
+    },
+    "after": {
+      "jobs": 0,
+      "zombies": 1485
+    }
+  },
+  "wrapperConcurrency": {
+    "before": {
+      "jobs": 0,
+      "zombies": 1483
+    },
+    "after": {
+      "jobs": 0,
+      "zombies": 1485
+    }
+  },
+  "diskReserveCaveat": "Disk monitor reported no reserve error during run. Final results gzip write reduced wrapper post-run available bytes to261922816 (<250MiB): storage reserve violation, not a full bound PASS. Parent then restored space by relocating unrelated untracked generated preview with all113 file SHA matches, preserving original-path symlink; no browser retry.",
+  "notExecuted": [
+    "performance",
+    "additional security/mutation/fuzz",
+    "public verification",
+    "images/video"
+  ]
+}
