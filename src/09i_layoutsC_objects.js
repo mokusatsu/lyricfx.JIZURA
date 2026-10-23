@@ -10,7 +10,8 @@ const physicalScale=(e,cut)=>['fixed','stamp-replica','book-pile','book-shelf','
 const norm=t=>String(t??'').replace(/\s/g,''),rect=(x0,y0,x1,y1)=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]];
 const corners=b=>rect(b.x0,b.y0,b.x1,b.y1),finite=v=>typeof v==='number'?Number.isFinite(v):!v||typeof v!=='object'||Object.values(v).every(finite);
 const matrix=([x,y,a,sx,sy])=>{const c=Math.cos(a*J.DEG),s=Math.sin(a*J.DEG);return [c*sx,s*sx,-s*sy,c*sy,x,y];};
-const polygonContains=(p,poly)=>{let pos=false,neg=false;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],v=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);if(v>1e-5)pos=true;if(v< -1e-5)neg=true;}return !(pos&&neg);};
+const immutablePolygonContains=A.layoutsCImmutablePolygonContains;
+const polygonContains=(p,poly)=>{const cached=immutablePolygonContains(p,poly,1e-5);if(cached!==null)return cached;let pos=false,neg=false;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],v=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);if(v>1e-5)pos=true;if(v< -1e-5)neg=true;}return !(pos&&neg);};
 const contains=(p,b,eps=1e-5)=>p[0]>=b.x0-eps&&p[0]<=b.x1+eps&&p[1]>=b.y0-eps&&p[1]<=b.y1+eps;
 const back=s=>4*s*s*s/(27*(s+1)*(s+1)); // exact max(outBack(x,s))-1 on x in [0,1]
 function mul(a,b){const v=[a[0]*b[0],a[0]*b[1],a[1]*b[0],a[1]*b[1]];return [Math.min(...v),Math.max(...v)];}

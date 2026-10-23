@@ -1,0 +1,2218 @@
+{
+  "version": 1,
+  "task": "AVOID-008",
+  "build": "local-20261023-01",
+  "status": "final-source-bound-human-review-pending-prepublication",
+  "preparationStatus": {
+    "code": "final-source-bound-human-review-pending-prepublication",
+    "label": "最終版に対応する4例・動作確認待ち",
+    "sourceGate": "fdb7916329232885089119ba5023cca9aafc3d02"
+  },
+  "sourceFixed": true,
+  "publicResultVerification": "Permanently excluded by user instruction; no public requests made.",
+  "visualInspectionByGenerator": false,
+  "browserStarted": false,
+  "videoDecodedOrReencoded": false,
+  "frameHashSemantics": "Editorial frame logs hash encoder-input PNG bytes, not decoded lossy H264 frames. Letter frameHashes are direct native Canvas PNG hashes; decoded frames are a separate historical visual-review artifact.",
+  "originalManifestSubset": "Original manifests are copied unchanged; only selected review media/plan evidence are bundled. Original runner/HTML/engine/font assets remain in repository evidence and are not regenerated here.",
+  "claims": "4 fixed historical media candidates only. Independent visual findings stay limited to their original fixture. Human aesthetic/motion judgment pending. No C34 completion claim.",
+  "cases": [
+    {
+      "id": "swiss",
+      "title": "Swiss — 左の縦長ストリップ",
+      "confirmation": "左の細い縦ストリップでも、格子・欄番号・見出し・円の関係に組版らしさが残るか確認してください。",
+      "sourceCommit": "c9e22a8",
+      "sourceCommitExactClaim": false,
+      "sourceCaveat": "Swiss media is the reviewed c9 checkpoint; generated HTML/shared09g differs from checked-in Git source. Parent-reviewed96-native-frame/clock carry connects this fixed representative to main. This is limited same-condition rendering correspondence, not whole-source or whole-version identity.",
+      "sourceSelection": {
+        "preferredRepositoryDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/swiss-preview01",
+        "selectedDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/swiss-preview01",
+        "usedChildWorktreeFallback": false,
+        "manifestSHA256": "9acec46fe34d3934019e1af77333f7e84bd269b49fa0d48af805709216bfc6e1",
+        "checkedSelectedAssets": 12,
+        "rejectedCandidates": [],
+        "policy": "Repository first if immutable manifest and every selected media/plan pin match. Unselected engine/font/runner/old HTML are not required. Child worktree is temporary fallback only."
+      },
+      "originalDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/swiss-preview01",
+      "originalManifest": "swiss/original/manifest.json",
+      "originalManifestSHA256": "9acec46fe34d3934019e1af77333f7e84bd269b49fa0d48af805709216bfc6e1",
+      "spec": {
+        "id": "swiss-narrow-paper-central-mincho",
+        "layout": "swissGrid",
+        "params": {
+          "variant": "a",
+          "shape": "circle",
+          "font": "mincho"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "note": "遠い空の向こうへ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "fps": 24,
+      "frames": 96,
+      "frameDPR": 1,
+      "DPRBasis": "Canvas intrinsic native-stage PNG dimensions verified; fixture renderer scale1, no CSS/viewport capture. Browser deviceScaleFactor was not explicitly pinned in original runner.",
+      "nativeStage": [
+        960,
+        540
+      ],
+      "videoStage": [
+        480,
+        270
+      ],
+      "sourceIdentity": {
+        "compiled": {
+          "before": "93b46f84a7fcd392cdb45cbeb14b054960ce44bfa42f11e8ba7ba3a3e2b229a8",
+          "after": "4b8d72dfd0810b6b3522f83e48af383e871e826a2c5804272796603c017ad047"
+        },
+        "inputPins": {
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-swiss-preview.cjs": "7e6364490040be9482ebf5c5baea66eef18ba7326747a35d7c95a8f0af2a7049",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-fixture.js": "ee147ffa07823f708dc0f061005b0616813f4a1cdc02864afcfbe49692eb137f",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/mono.otf": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/dot.ttf": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/rounded.ttf": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/symbols.ttf": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+        }
+      },
+      "sides": {
+        "before": {
+          "video": "swiss/original/before.mp4",
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 480,
+                "height": 270,
+                "coded_width": 480,
+                "coded_height": 270,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 21,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "163416",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/swiss-preview01/before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "83686",
+              "bit_rate": "167372",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "keys": [
+            {
+              "file": "swiss/original/before-6-native.png",
+              "frame": 6,
+              "time": 0.25,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "swiss/original/before-36-native.png",
+              "frame": 36,
+              "time": 1.5,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "swiss/original/before-91-native.png",
+              "frame": 91,
+              "time": 3.7916666666666665,
+              "dimensions": [
+                960,
+                540
+              ]
+            }
+          ],
+          "planIdentities": [
+            {
+              "kind": "sourcePlan",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "3837ed68303a68a749f66405bbde247e7518e36252ae2e3c03b045583bf376df"
+            },
+            {
+              "kind": "renderPlan",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "3837ed68303a68a749f66405bbde247e7518e36252ae2e3c03b045583bf376df"
+            },
+            {
+              "kind": "actualCut",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "654618ec27b6ff551860997565b09a5671b3fa1b638433b43e9eb664eb7a51c3"
+            }
+          ]
+        },
+        "after": {
+          "video": "swiss/original/after.mp4",
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 480,
+                "height": 270,
+                "coded_width": 480,
+                "coded_height": 270,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 21,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "106608",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/swiss-preview01/after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "55282",
+              "bit_rate": "110564",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "keys": [
+            {
+              "file": "swiss/original/after-6-native.png",
+              "frame": 6,
+              "time": 0.25,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "swiss/original/after-36-native.png",
+              "frame": 36,
+              "time": 1.5,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "swiss/original/after-91-native.png",
+              "frame": 91,
+              "time": 3.7916666666666665,
+              "dimensions": [
+                960,
+                540
+              ]
+            }
+          ],
+          "planIdentities": [
+            {
+              "kind": "sourcePlan",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "3837ed68303a68a749f66405bbde247e7518e36252ae2e3c03b045583bf376df"
+            },
+            {
+              "kind": "renderPlan",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "02f12448f068a3e7016f0c773394a18a89c23430c90114d7a976010d776e92d5"
+            },
+            {
+              "kind": "actualCut",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "1b0aac343d893ee99306e3bf47352bd86419d79a4657cfeb9ccbb91972252f26"
+            }
+          ]
+        }
+      },
+      "parentAndIndependentEvidence": [
+        {
+          "file": "swiss/evidence/parent-swissC9-main01.json",
+          "bytes": 1670,
+          "sha256": "bd16af61e47d8c734a423ea172b991b51a428e8c197ed179b8445efd13090f63"
+        },
+        {
+          "file": "swiss/evidence/swiss-visual01-review.md",
+          "bytes": 7693,
+          "sha256": "d96611e3f497564d738f07fe15c3dff96c774d501c714eed38389131bb556430"
+        },
+        {
+          "file": "swiss/evidence/swiss-visual01-metadata.json",
+          "bytes": 8193,
+          "sha256": "e4ecc7b0eab152a677bf4e5b99f9cab0efaebfe649738e0957b0a5284e44e064"
+        },
+        {
+          "file": "swiss/evidence/carry01.json",
+          "bytes": 56599,
+          "sha256": "b2d794bb520362415a173231614b516dad18a52cb1df685bb477eba636aff7e9"
+        },
+        {
+          "file": "swiss/evidence/swiss-binding.json",
+          "bytes": 1910,
+          "sha256": "f043c13e2abb8e002638e98561d9bfcde5d1e33555cd0b17f5e34d03dc6a0a06"
+        },
+        {
+          "file": "swiss/evidence/main-carry-summary.json",
+          "bytes": 3295,
+          "sha256": "dea16cf4100e8f3acc3af6f6ee350d40a4b9e9de33e28707354676a806fb8408"
+        }
+      ],
+      "mainCarry": [
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/swissC9-main01/carry01.json",
+          "bytes": 56599,
+          "sha256": "b2d794bb520362415a173231614b516dad18a52cb1df685bb477eba636aff7e9",
+          "scope": "Only one fixed c9 Swiss fixture,96 native960x540 stage PNG frames each, fixed old compiled exactly matching preview manifests. Original MP4s are480x270 historical materials; this proves native source correspondence, not new visual approval or native-resolution MP4 encoding.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "9acec46fe34d3934019e1af77333f7e84bd269b49fa0d48af805709216bfc6e1",
+          "selectedRows": [
+            {
+              "mode": "adapted",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": null,
+              "nativeKeysExact": null
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        },
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/integration-owned-final01/swiss-carry.json",
+          "bytes": 56806,
+          "sha256": "723eee3f0c416450f2cd14f6bf1081b105338e4e6d27e3caec5d16692516eeab",
+          "scope": "Only one fixed c9 Swiss fixture,96 native960x540 stage PNG frames each, fixed old compiled exactly matching preview manifests. Original MP4s are480x270 historical materials; this proves native source correspondence, not new visual approval or native-resolution MP4 encoding.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "9acec46fe34d3934019e1af77333f7e84bd269b49fa0d48af805709216bfc6e1",
+          "selectedRows": [
+            {
+              "mode": "adapted",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": null,
+              "nativeKeysExact": null
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        },
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/integration-owned-final01/swiss-before-carry.json",
+          "bytes": 70516,
+          "sha256": "0ac3dd65f8cc653453605b38af25f93df5af016863d28f7dfb30ab434590f409",
+          "scope": "Fixed Swiss before/OFF only;96 native frame/clock comparisons versus its immutable preview engine,96 original480x270 encoder hashes and3 native key bytes. Historical MP4 remains480x270; no new media/visual inspection.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "9acec46fe34d3934019e1af77333f7e84bd269b49fa0d48af805709216bfc6e1",
+          "selectedRows": [
+            {
+              "mode": "before",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        }
+      ],
+      "circleGuide": {
+        "W": 960,
+        "H": 540,
+        "cx": 480,
+        "cy": 226.79999999999998,
+        "r": 108,
+        "visibleByDefault": true,
+        "bakedIntoMedia": false,
+        "maxDisplayHeight": 680,
+        "maxDisplayWidth": 1208.888888888889
+      }
+    },
+    {
+      "id": "proofread",
+      "title": "校正 — 対象から注記への線",
+      "confirmation": "大きな括弧状の線でも対象→「太字」を追え、灰色トンボとの交差を含む構図を許容できるか確認してください。",
+      "sourceCommit": "4d72d23",
+      "sourceCommitExactClaim": true,
+      "sourceCaveat": "Fixed preview02 representative has parent-approved192-native-frame/clock and historical encoder/key carry on main. Limited visual02 remains one fixture; no whole-source or whole-version identity claim.",
+      "sourceSelection": {
+        "preferredRepositoryDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/proofread-preview02",
+        "selectedDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/proofread-preview02",
+        "usedChildWorktreeFallback": false,
+        "manifestSHA256": "0fa1a1016d687ed4fa8f5a421cfb3bce3021cca93e6539fecdc50044fd67a4a9",
+        "checkedSelectedAssets": 12,
+        "rejectedCandidates": [],
+        "policy": "Repository first if immutable manifest and every selected media/plan pin match. Unselected engine/font/runner/old HTML are not required. Child worktree is temporary fallback only."
+      },
+      "originalDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/proofread-preview02",
+      "originalManifest": "proofread/original/manifest.json",
+      "originalManifestSHA256": "0fa1a1016d687ed4fa8f5a421cfb3bce3021cca93e6539fecdc50044fd67a4a9",
+      "spec": {
+        "id": "proofread-bottom-margin-box-central-mincho",
+        "layout": "proofread",
+        "params": {
+          "marks": [
+            "box",
+            "circle"
+          ],
+          "font": "mincho",
+          "stamp": true,
+          "tombo": true
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "note": "遠い空の向こうへ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "fps": 24,
+      "frames": 96,
+      "frameDPR": 1,
+      "DPRBasis": "Canvas intrinsic native-stage PNG dimensions verified; fixture renderer scale1, no CSS/viewport capture. Browser deviceScaleFactor was not explicitly pinned in original runner.",
+      "nativeStage": [
+        960,
+        540
+      ],
+      "videoStage": [
+        480,
+        270
+      ],
+      "sourceIdentity": {
+        "compiled": {
+          "before": "7c72a80f4b9889427fb38cac2d11d4df37c1388e234dcd98c6118908f4313f3b",
+          "after": "d28ceee1702b2ef66020f023432bbfa0ae613029a4347ec85bac965820457054"
+        },
+        "inputPins": {
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-proofread-preview.cjs": "69e983e3429077329bbffbd7738d9ff56bc179f572ec099ff450a60ae1f618a5",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-fixture.js": "ee147ffa07823f708dc0f061005b0616813f4a1cdc02864afcfbe49692eb137f",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/mono.otf": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/dot.ttf": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/rounded.ttf": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/symbols.ttf": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+        }
+      },
+      "sides": {
+        "before": {
+          "video": "proofread/original/before.mp4",
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 480,
+                "height": 270,
+                "coded_width": 480,
+                "coded_height": 270,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 21,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "94280",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/proofread-preview02/before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "49126",
+              "bit_rate": "98252",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "keys": [
+            {
+              "file": "proofread/original/before-6-native.png",
+              "frame": 6,
+              "time": 0.25,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "proofread/original/before-36-native.png",
+              "frame": 36,
+              "time": 1.5,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "proofread/original/before-91-native.png",
+              "frame": 91,
+              "time": 3.7916666666666665,
+              "dimensions": [
+                960,
+                540
+              ]
+            }
+          ],
+          "planIdentities": [
+            {
+              "kind": "sourcePlan",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "f044be81b1303a8cf37ae5c81e295703e659835b9d1b8d9267f6b7f218869317"
+            },
+            {
+              "kind": "renderPlan",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "f044be81b1303a8cf37ae5c81e295703e659835b9d1b8d9267f6b7f218869317"
+            },
+            {
+              "kind": "actualCut",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "bfad7a3fc2d4b8aa0db534f66d55cdd707e89fa8538d29cb1e86447138ff54c9"
+            }
+          ]
+        },
+        "after": {
+          "video": "proofread/original/after.mp4",
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 480,
+                "height": 270,
+                "coded_width": 480,
+                "coded_height": 270,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 21,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "78252",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/proofread-preview02/after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "41088",
+              "bit_rate": "82176",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "keys": [
+            {
+              "file": "proofread/original/after-6-native.png",
+              "frame": 6,
+              "time": 0.25,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "proofread/original/after-36-native.png",
+              "frame": 36,
+              "time": 1.5,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "proofread/original/after-91-native.png",
+              "frame": 91,
+              "time": 3.7916666666666665,
+              "dimensions": [
+                960,
+                540
+              ]
+            }
+          ],
+          "planIdentities": [
+            {
+              "kind": "sourcePlan",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "f044be81b1303a8cf37ae5c81e295703e659835b9d1b8d9267f6b7f218869317"
+            },
+            {
+              "kind": "renderPlan",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "9cbcb38d5ebe3a98296ce79bdfc5908fb149b7ab0d78b6da81f4e451fc22a597"
+            },
+            {
+              "kind": "actualCut",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "9c413563281fa8cf1ad6574f7796a55c4c51fd0b02b8c5f712cd78d6034d0f87"
+            }
+          ]
+        }
+      },
+      "parentAndIndependentEvidence": [
+        {
+          "file": "proofread/evidence/parent-proofread09-review.json",
+          "bytes": 2643,
+          "sha256": "e3bafe27c1a32a12f69ba3c4fb154591a688d82f5121d3eaa2054445c37f12ea"
+        },
+        {
+          "file": "proofread/evidence/proofread-visual02-review.md",
+          "bytes": 8976,
+          "sha256": "08e7f46750786f49074c49628982733c848989dc5935edce9951add2577a6ceb"
+        },
+        {
+          "file": "proofread/evidence/proofread-visual02-metadata.json",
+          "bytes": 72860,
+          "sha256": "2972ec68fed7045ca40d93992a088b41d4529588096372c97672e2761eeac88d"
+        },
+        {
+          "file": "proofread/evidence/parent-proofread4d72-main01.json",
+          "bytes": 2027,
+          "sha256": "6ea84db971db615c9341690a92186517e87fc8fc443ac5e2b21599378bfdc6fd"
+        },
+        {
+          "file": "proofread/evidence/proofread-binding.json",
+          "bytes": 1179,
+          "sha256": "46a2b924e442c31f20427e67afdc1ec31c6f9f70eb1fe4feaf4d256a451ed336"
+        },
+        {
+          "file": "proofread/evidence/main-carry-summary.json",
+          "bytes": 2717,
+          "sha256": "04320e2ebf9cd2a04d2aabd173387b3868b0c48526a583b14e6f497678427a5c"
+        }
+      ],
+      "mainCarry": [
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/proofread4d72-main01/carry01.json",
+          "bytes": 169436,
+          "sha256": "c65ea8473d69440782c640bb6af38054fa868431a4c8b3532d9d75e3e69ef2fe",
+          "scope": "One fixed4d72 representative,96native before/OFF plus96native adapted PNG comparisons and actual observation clocks versus immutable preview engines; six native key bytes and192original480x270 encoder-input hashes also linked. Historical MP4 remains480x270; no new media/visual inspection.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "0fa1a1016d687ed4fa8f5a421cfb3bce3021cca93e6539fecdc50044fd67a4a9",
+          "selectedRows": [
+            {
+              "mode": "before",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            },
+            {
+              "mode": "after",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        },
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/integration-owned-final01/proofread-carry.json",
+          "bytes": 169436,
+          "sha256": "e7608f7121a599a323ad7c238b51784dab8179b1d51a384b81ff912fc6666e7b",
+          "scope": "One fixed4d72 representative,96native before/OFF plus96native adapted PNG comparisons and actual observation clocks versus immutable preview engines; six native key bytes and192original480x270 encoder-input hashes also linked. Historical MP4 remains480x270; no new media/visual inspection.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "0fa1a1016d687ed4fa8f5a421cfb3bce3021cca93e6539fecdc50044fd67a4a9",
+          "selectedRows": [
+            {
+              "mode": "before",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            },
+            {
+              "mode": "after",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        }
+      ],
+      "circleGuide": {
+        "W": 960,
+        "H": 540,
+        "cx": 480,
+        "cy": 226.79999999999998,
+        "r": 108,
+        "visibleByDefault": true,
+        "bakedIntoMedia": false,
+        "maxDisplayHeight": 680,
+        "maxDisplayWidth": 1208.888888888889
+      }
+    },
+    {
+      "id": "letter",
+      "title": "便箋 — 紙全体と二行の本文",
+      "confirmation": "小さくなった紙全体に便箋らしさがあり、二重ヘッダー・本文罫線・主文4字・No署名を追えるか確認してください。",
+      "sourceCommit": "c86146d80e356c79adcbe099b8184a968627d572",
+      "sourceCommitExactClaim": true,
+      "sourceCaveat": "Original startup.implementation retains historical257 label; parent ties actual09i/11p pins to fixedc861. The original manifest remains unchanged. One portrait fixture only; parent-approved conditional native-frame/clock carry through paper-carry02 and exact paper geometry/source scope connects it to corrected main. The paper-carry02 is not a fresh384-frame capture or whole-source identity claim.",
+      "sourceSelection": {
+        "preferredRepositoryDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/objects/writing-preview05",
+        "selectedDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/objects/writing-preview05",
+        "usedChildWorktreeFallback": false,
+        "manifestSHA256": "2213fd7d177a361d3b26662dd00676308414ffd39c7887f5d083610f95c53f53",
+        "checkedSelectedAssets": 14,
+        "rejectedCandidates": [],
+        "policy": "Repository first if immutable manifest and every selected media/plan pin match. Unselected engine/font/runner/old HTML are not required. Child worktree is temporary fallback only."
+      },
+      "originalDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/objects/writing-preview05",
+      "originalManifest": "letter/original/manifest.json",
+      "originalManifestSHA256": "2213fd7d177a361d3b26662dd00676308414ffd39c7887f5d083610f95c53f53",
+      "spec": {
+        "id": "letter-fold-inscription-portrait",
+        "layout": "letterPaper",
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "params": {
+          "font": "gothic_med"
+        },
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42,
+        "seed": 704
+      },
+      "fps": 24,
+      "frames": 96,
+      "frameDPR": 1,
+      "DPRBasis": "Original record.DPR=1",
+      "nativeStage": [
+        540,
+        960
+      ],
+      "videoStage": [
+        540,
+        960
+      ],
+      "sourceIdentity": {
+        "time": "2026-10-22T19:06:19.618Z",
+        "implementation": "257f8da31e4400dbe4a444f9c06f6b10ea0cd63a",
+        "baseline": "7cd5a5b",
+        "beforeSHA256": "17e35475df196fc87a931802a21683a1d4c7b0cafcbba88feb2e50c9ba708456",
+        "afterSHA256": "356bf5142bcaaf46374da2f7b7d501624daf54fa3fbc8998ac990e387e6d3a11",
+        "fontManifestSHA256": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+        "scriptSHA256": "ed707f2d74147979f68dbb0ca017579b47140df7ecc9e03a09b55dae414fde68",
+        "fixtureSHA256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+        "sourceSHA256": "174ea2509eccf32dfa305533242bb12d2e5dc9c006deb787d553e3f2b7cf5733",
+        "sourcePins": [
+          {
+            "file": "src/09i_layoutsC_objects.js",
+            "sha256": "174ea2509eccf32dfa305533242bb12d2e5dc9c006deb787d553e3f2b7cf5733"
+          },
+          {
+            "file": "src/11p_layoutsC.js",
+            "sha256": "7c00507bd0426fe7df4edf04c43a6fa3f38c3264735137b0df93faa9d5b248fc"
+          },
+          {
+            "file": "src/09g_layoutsC_placement.js",
+            "sha256": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9"
+          }
+        ],
+        "carriedPNGFrames": 0,
+        "frameCadence": "96 direct native Canvas renders at t=i/24; both sides fully rerendered; separate browser pages; no HTML recording",
+        "sourceStartEndMatched": true
+      },
+      "sides": {
+        "before": {
+          "video": "letter/original/videos/letter-fold-inscription-portrait-before.mp4",
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 540,
+                "height": 960,
+                "coded_width": 540,
+                "coded_height": 960,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 31,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "160674",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/objects/writing-preview05/videos/letter-fold-inscription-portrait-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "82131",
+              "bit_rate": "164262",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "keys": [
+            {
+              "file": "letter/original/images/letter-fold-inscription-portrait-06-before.png",
+              "frame": 6,
+              "time": 0.25,
+              "dimensions": [
+                540,
+                960
+              ]
+            },
+            {
+              "file": "letter/original/images/letter-fold-inscription-portrait-42-before.png",
+              "frame": 42,
+              "time": 1.75,
+              "dimensions": [
+                540,
+                960
+              ]
+            },
+            {
+              "file": "letter/original/images/letter-fold-inscription-portrait-90-before.png",
+              "frame": 90,
+              "time": 3.75,
+              "dimensions": [
+                540,
+                960
+              ]
+            }
+          ],
+          "planIdentities": [
+            {
+              "kind": "sourcePlan",
+              "file": "fixtures/letter-fold-inscription-portrait-before-sourcePlan.json.gz",
+              "bytes": 2647,
+              "sha256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+              "gzipSHA256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+              "restore": "gzip -dc fixtures/letter-fold-inscription-portrait-before-sourcePlan.json.gz",
+              "parsedIdentitySHA256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22"
+            },
+            {
+              "kind": "renderPlan",
+              "file": "fixtures/letter-fold-inscription-portrait-before-renderPlan.json.gz",
+              "bytes": 2647,
+              "sha256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+              "gzipSHA256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+              "restore": "gzip -dc fixtures/letter-fold-inscription-portrait-before-renderPlan.json.gz",
+              "parsedIdentitySHA256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22"
+            },
+            {
+              "kind": "actualCut",
+              "file": "fixtures/letter-fold-inscription-portrait-before-actualCut.json.gz",
+              "bytes": 1067,
+              "sha256": "731c4e371b095a7ea96fc41f075654e3d9d5274a069fe65b2fe573e557e1ef5c",
+              "gzipSHA256": "9269f32a711d6d81cfddc0aadf4421dd198ce1a20827d8e5082ca87e2335c87d",
+              "restore": "gzip -dc fixtures/letter-fold-inscription-portrait-before-actualCut.json.gz",
+              "parsedIdentitySHA256": "731c4e371b095a7ea96fc41f075654e3d9d5274a069fe65b2fe573e557e1ef5c"
+            }
+          ]
+        },
+        "after": {
+          "video": "letter/original/videos/letter-fold-inscription-portrait-after.mp4",
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 540,
+                "height": 960,
+                "coded_width": 540,
+                "coded_height": 960,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 31,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "97456",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/objects/writing-preview05/videos/letter-fold-inscription-portrait-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "50674",
+              "bit_rate": "101348",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "keys": [
+            {
+              "file": "letter/original/images/letter-fold-inscription-portrait-06-after.png",
+              "frame": 6,
+              "time": 0.25,
+              "dimensions": [
+                540,
+                960
+              ]
+            },
+            {
+              "file": "letter/original/images/letter-fold-inscription-portrait-42-after.png",
+              "frame": 42,
+              "time": 1.75,
+              "dimensions": [
+                540,
+                960
+              ]
+            },
+            {
+              "file": "letter/original/images/letter-fold-inscription-portrait-90-after.png",
+              "frame": 90,
+              "time": 3.75,
+              "dimensions": [
+                540,
+                960
+              ]
+            }
+          ],
+          "planIdentities": [
+            {
+              "kind": "sourcePlan",
+              "file": "fixtures/letter-fold-inscription-portrait-after-sourcePlan.json.gz",
+              "bytes": 2647,
+              "sha256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+              "gzipSHA256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+              "restore": "gzip -dc fixtures/letter-fold-inscription-portrait-after-sourcePlan.json.gz",
+              "parsedIdentitySHA256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22"
+            },
+            {
+              "kind": "renderPlan",
+              "file": "fixtures/letter-fold-inscription-portrait-after-renderPlan.json.gz",
+              "bytes": 13321,
+              "sha256": "3db959005f529188601cfcbb9861bf487a18e242f46069a015c85562693d6475",
+              "gzipSHA256": "6c01ec8efe1108cf240c31b2e1b3a8b7dc28a1048947227a87ceaf4d6742104e",
+              "restore": "gzip -dc fixtures/letter-fold-inscription-portrait-after-renderPlan.json.gz",
+              "parsedIdentitySHA256": "3db959005f529188601cfcbb9861bf487a18e242f46069a015c85562693d6475"
+            },
+            {
+              "kind": "actualCut",
+              "file": "fixtures/letter-fold-inscription-portrait-after-actualCut.json.gz",
+              "bytes": 11569,
+              "sha256": "66feb2e5966910dcbc36ebf3c432c3334c00265af30214c15428cc101cf1fa8d",
+              "gzipSHA256": "b2619a627ab789518f2e6be789500a9c5f74472672d2045a1fee5d738609d5e9",
+              "restore": "gzip -dc fixtures/letter-fold-inscription-portrait-after-actualCut.json.gz",
+              "parsedIdentitySHA256": "66feb2e5966910dcbc36ebf3c432c3334c00265af30214c15428cc101cf1fa8d"
+            }
+          ]
+        }
+      },
+      "parentAndIndependentEvidence": [
+        {
+          "file": "letter/evidence/parent-writingc861-review.json",
+          "bytes": 3076,
+          "sha256": "a3186e96a172543be881f2602d56098e71ea0cd49a31010dec5b7beb7c89167f"
+        },
+        {
+          "file": "letter/evidence/writing-visual05-review.md",
+          "bytes": 5764,
+          "sha256": "5fa5f5d8ffade63ed33a45ca71571551947412c501b3548cd439640a0bd4b9b4"
+        },
+        {
+          "file": "letter/evidence/writing-visual05-metadata.json",
+          "bytes": 23928,
+          "sha256": "9cd930217989f48f92997284db0d329389b0a3ae79c9e12ee5b2db1a7738c09b"
+        },
+        {
+          "file": "letter/evidence/parent-writingC861-main02.json",
+          "bytes": 4253,
+          "sha256": "6258174a0b909fe1bf5d476718132cc198951e39794724ba7011bec4f2c174c2"
+        },
+        {
+          "file": "letter/evidence/letter-binding.json",
+          "bytes": 1173,
+          "sha256": "6b832aff861f22e38f40adba29b3b47e6b844bfa193deaa8ab44cbc13e6f689e"
+        },
+        {
+          "file": "letter/evidence/main-carry-summary.json",
+          "bytes": 4312,
+          "sha256": "a96901dea85c576f7a0d9560476439a107c063f649b79d5e87eec8968c8f556d"
+        }
+      ],
+      "mainCarry": [
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/writingC861-main01/paper-carry02.json",
+          "bytes": 1238,
+          "sha256": "1014a4602b9290f77659a16ae313b334aa22f41850bf99a563ecf50257749e9c",
+          "scope": "No fresh384frame recapture. Exacttwo paper sourceblocks and identicalpaper fitBounds branch/newresultguards, plus freshallpaper geometry/domain/quality/recipe/clock/attempts, justify candidate01 acceptedletter and insufficientpostcard384nativeframe/originalencoder/12keys carry. No conditionalacross-layout guess.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "2213fd7d177a361d3b26662dd00676308414ffd39c7887f5d083610f95c53f53",
+          "selectedRows": [],
+          "conditionalCarry": {
+            "oldCarry": {
+              "path": "tasks/evidence/AVOID-008/writingC861-main01/carry01.json",
+              "sha256": "024e42bfe416b6de1b05a39ff100a57b5e2f85ff9b8dc8947765cd0016989f95",
+              "nativeFrames": 384,
+              "originalNativeEncoderHashes": 384,
+              "originalKeys": 12,
+              "changed": []
+            },
+            "freshFullGeometry": {
+              "path": "tasks/evidence/AVOID-008/writingC861-main01/correspondence03.json",
+              "sha256": "c05db686f175a28f3a0c3c35d26b9efc92fb74985730818ca54f08546d6cd488",
+              "allPaperExactCandidate01": true
+            },
+            "sourceScope": {
+              "path": "tasks/evidence/AVOID-008/writingC861-main01/source-scope-correspondence02.json",
+              "sha256": "11e5975691c6b286d94fb5287ee3ba5054852e2e9537eceb0227a0858027f47a"
+            },
+            "noFresh384FrameRecapture": true
+          },
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        },
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/writingC861-main01/carry01.json",
+          "bytes": 276614,
+          "sha256": "024e42bfe416b6de1b05a39ff100a57b5e2f85ff9b8dc8947765cd0016989f95",
+          "scope": "Two fixedc861 fixtures; letter05 limitedvisual and postcard insufficient/native diagnostic. Four96native runs current versus immutable historical engines and original frame hashes; no new media or image inspection.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "2213fd7d177a361d3b26662dd00676308414ffd39c7887f5d083610f95c53f53",
+          "selectedRows": [
+            {
+              "mode": "before",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": null
+            },
+            {
+              "mode": "after",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": null
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        },
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/integration-owned-final01/letter-carry.json",
+          "bytes": 142786,
+          "sha256": "8b06cdbf5dc26f47e369899e354d286f9d7a862bbd6f69ee86c458103e62c354",
+          "scope": "One fixedc861 letter05 limitedvisual fixture. Two96native runs current versus immutable historical engines and original frame hashes; no new media or image inspection.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "2213fd7d177a361d3b26662dd00676308414ffd39c7887f5d083610f95c53f53",
+          "selectedRows": [
+            {
+              "mode": "before",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": null
+            },
+            {
+              "mode": "after",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": null
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        }
+      ],
+      "circleGuide": {
+        "W": 540,
+        "H": 960,
+        "cx": 270,
+        "cy": 403.2,
+        "r": 108,
+        "visibleByDefault": true,
+        "bakedIntoMedia": false,
+        "maxDisplayHeight": 680,
+        "maxDisplayWidth": 382.5
+      }
+    },
+    {
+      "id": "poster",
+      "title": "ポスター — 右寄せの二行構図",
+      "confirmation": "二行・右寄せの構図にポスターらしさが残り、黄色のdotに重なる白い「の」の読みやすさを許容できるか確認してください（この重なりはコントラストが低く、縮小表示で弱く見えます）。",
+      "sourceCommit": "4d0a25d",
+      "sourceCommitExactClaim": true,
+      "sourceCaveat": "Fixed poster-preview01 only; parent source/raw review plus independent192decoded/6native limited visual01. White の over yellow dot has locally low contrast, especially at reduced display size. Right-handbill composition leaves a large blank left field and reduces main text to .7 size. Parent-approved192-native-frame/clock carry connects this representative to main; no whole-source or whole-version identity claim.",
+      "sourceSelection": {
+        "preferredRepositoryDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/poster-preview01",
+        "selectedDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/poster-preview01",
+        "usedChildWorktreeFallback": false,
+        "manifestSHA256": "696272d2965718df78c7b9b4ef02630e0e1a574b3035ad78a60c6c07191f29d1",
+        "checkedSelectedAssets": 12,
+        "rejectedCandidates": [],
+        "policy": "Repository first if immutable manifest and every selected media/plan pin match. Unselected engine/font/runner/old HTML are not required. Child worktree is temporary fallback only."
+      },
+      "originalDirectory": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/poster-preview01",
+      "originalManifest": "poster/original/manifest.json",
+      "originalManifestSHA256": "696272d2965718df78c7b9b4ef02630e0e1a574b3035ad78a60c6c07191f29d1",
+      "spec": {
+        "id": "poster-native-handbill-stack-dot-central-mincho",
+        "layout": "poster",
+        "params": {
+          "variant": "stack",
+          "dot": true,
+          "font": "mincho"
+        },
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "note": "遠い空の向こうへ",
+        "radius": 0.2,
+        "cx": 0.5,
+        "cy": 0.42
+      },
+      "fps": 24,
+      "frames": 96,
+      "frameDPR": 1,
+      "DPRBasis": "Canvas intrinsic native-stage PNG dimensions verified; fixture renderer scale1, no CSS/viewport capture. Browser deviceScaleFactor was not explicitly pinned in original runner.",
+      "nativeStage": [
+        960,
+        540
+      ],
+      "videoStage": [
+        960,
+        540
+      ],
+      "sourceIdentity": {
+        "compiled": {
+          "before": "d28ceee1702b2ef66020f023432bbfa0ae613029a4347ec85bac965820457054",
+          "after": "be8f37463052ae10b17e242a74b26378356dc3b729c62a327a7031d25c577d7f"
+        },
+        "inputPins": {
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-poster-preview.cjs": "72e2a41ba76d88c1ce1f523295f929bf32829fca83fde79673180ada4475a88f",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-fixture.js": "ee147ffa07823f708dc0f061005b0616813f4a1cdc02864afcfbe49692eb137f",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/mono.otf": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/dot.ttf": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/rounded.ttf": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6",
+          "/workspace/avoid008-editorial/dev/avoidance/layouts-c-editorial-fonts/symbols.ttf": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+        }
+      },
+      "sides": {
+        "before": {
+          "video": "poster/original/before.mp4",
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 31,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "449590",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/poster-preview01/before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "226805",
+              "bit_rate": "453610",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "keys": [
+            {
+              "file": "poster/original/before-6-native.png",
+              "frame": 6,
+              "time": 0.25,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "poster/original/before-36-native.png",
+              "frame": 36,
+              "time": 1.5,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "poster/original/before-91-native.png",
+              "frame": 91,
+              "time": 3.7916666666666665,
+              "dimensions": [
+                960,
+                540
+              ]
+            }
+          ],
+          "planIdentities": [
+            {
+              "kind": "sourcePlan",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "79a2fc268ce53752348ebd0b7263f23952f10fcb9b0bddfecec290969965e596"
+            },
+            {
+              "kind": "renderPlan",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "79a2fc268ce53752348ebd0b7263f23952f10fcb9b0bddfecec290969965e596"
+            },
+            {
+              "kind": "actualCut",
+              "actualInputs": "before-actual-inputs.json",
+              "parsedIdentitySHA256": "7a49b6259105775a67d283443a5fe3354e8df21fec2fd8935cd2f86880d57e1f"
+            }
+          ]
+        },
+        "after": {
+          "video": "poster/original/after.mp4",
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 31,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 49152,
+                "duration": "4.000000",
+                "bit_rate": "300234",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "96",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-008/editorial/poster-preview01/after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "152111",
+              "bit_rate": "304222",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "keys": [
+            {
+              "file": "poster/original/after-6-native.png",
+              "frame": 6,
+              "time": 0.25,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "poster/original/after-36-native.png",
+              "frame": 36,
+              "time": 1.5,
+              "dimensions": [
+                960,
+                540
+              ]
+            },
+            {
+              "file": "poster/original/after-91-native.png",
+              "frame": 91,
+              "time": 3.7916666666666665,
+              "dimensions": [
+                960,
+                540
+              ]
+            }
+          ],
+          "planIdentities": [
+            {
+              "kind": "sourcePlan",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "79a2fc268ce53752348ebd0b7263f23952f10fcb9b0bddfecec290969965e596"
+            },
+            {
+              "kind": "renderPlan",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "30db5fc040d529beb5f4f8a029f4b0be4439804a14f2e337f20a3cf86fdf0ecd"
+            },
+            {
+              "kind": "actualCut",
+              "actualInputs": "after-actual-inputs.json",
+              "parsedIdentitySHA256": "abf00a27f197812976fa7973a0564be72600fb8ae91ba6437c59d0d2930cbbf6"
+            }
+          ]
+        }
+      },
+      "parentAndIndependentEvidence": [
+        {
+          "file": "poster/evidence/parent-poster04-review.json",
+          "bytes": 2561,
+          "sha256": "cd7a1083975cc92d23117516f11620c283841764ca75560e60465e9be52acf10"
+        },
+        {
+          "file": "poster/evidence/poster-visual01-review.md",
+          "bytes": 7114,
+          "sha256": "57f65119b652253117e4507923ed8b6ccc7ff4dc6c58eb7b998446ef711f10f5"
+        },
+        {
+          "file": "poster/evidence/poster-visual01-metadata.json",
+          "bytes": 50391,
+          "sha256": "369820061bab469c3953b3e2fde7fc2cdd4f17dbef1ff034fc91da9ba86527cd"
+        },
+        {
+          "file": "poster/evidence/parent-poster4d0-main01.json",
+          "bytes": 1693,
+          "sha256": "2000a88065e9780f353fb9b6f36d337fdce10e0604c98626a4be6d964dfb5cdd"
+        },
+        {
+          "file": "poster/evidence/poster-binding.json",
+          "bytes": 1173,
+          "sha256": "823f3973ed5502c6380913d3e24b7df02659dfb9dfaa9f7699da60b11f428264"
+        },
+        {
+          "file": "poster/evidence/main-carry-summary.json",
+          "bytes": 2708,
+          "sha256": "0ddd76a3f1f2b73c0c5921e54b5ef1915388edfd60dacfbab2ea95e13d6f1819"
+        }
+      ],
+      "mainCarry": [
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/poster4d0-main01/carry02.json",
+          "bytes": 169170,
+          "sha256": "e2296b65833b57afe3f9f595005dd609082831d230a7e0140653d21d73a057e0",
+          "scope": "One fixed4d0 representative,96native before/OFF plus96native adapted PNG comparisons and actual observation clocks versus immutable preview engines; six native key bytes and192original960x540 encoder-input hashes also linked. Historical MP4 remains960x540; no new media/visual inspection.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "696272d2965718df78c7b9b4ef02630e0e1a574b3035ad78a60c6c07191f29d1",
+          "selectedRows": [
+            {
+              "mode": "before",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            },
+            {
+              "mode": "after",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        },
+        {
+          "repositoryPath": "tasks/evidence/AVOID-008/integration-owned-final01/poster-carry.json",
+          "bytes": 169170,
+          "sha256": "e965fd16fad8f6905378d6d3874b49cea7ec59a9368bd8b82236682bbc4d6dcb",
+          "scope": "One fixed4d0 representative,96native before/OFF plus96native adapted PNG comparisons and actual observation clocks versus immutable preview engines; six native key bytes and192original960x540 encoder-input hashes also linked. Historical MP4 remains960x540; no new media/visual inspection.",
+          "passed": true,
+          "selectedFixtureManifestSHA256": "696272d2965718df78c7b9b4ef02630e0e1a574b3035ad78a60c6c07191f29d1",
+          "selectedRows": [
+            {
+              "mode": "before",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            },
+            {
+              "mode": "after",
+              "frames": 96,
+              "exactNativeFrameAndObservationClockCarry": true,
+              "originalEncoderHashesExact": true,
+              "nativeKeysExact": true
+            }
+          ],
+          "limit": "Only this fixed same-condition representative and accepted source-scope/clock correspondence. Not full main-source identity, C34 completion, realtime visual approval, or a new image inspection."
+        }
+      ],
+      "circleGuide": {
+        "W": 960,
+        "H": 540,
+        "cx": 480,
+        "cy": 226.79999999999998,
+        "r": 108,
+        "visibleByDefault": true,
+        "bakedIntoMedia": false,
+        "maxDisplayHeight": 680,
+        "maxDisplayWidth": 1208.888888888889
+      }
+    }
+  ],
+  "assets": [
+    {
+      "file": "swiss/original/manifest.json",
+      "bytes": 13741,
+      "sha256": "9acec46fe34d3934019e1af77333f7e84bd269b49fa0d48af805709216bfc6e1"
+    },
+    {
+      "file": "swiss/original/before.mp4",
+      "bytes": 83686,
+      "sha256": "e1d1171087d8a09510fccd6c86191640a6db0e4e7241f798b0b7bfcb4abe7074"
+    },
+    {
+      "file": "swiss/original/before-actual-inputs.json",
+      "bytes": 11306,
+      "sha256": "2df5121a310ad4e1d6d59b508ed5a342f1b6530faf62f92b617b3a6d3fb1448e"
+    },
+    {
+      "file": "swiss/original/before-frames.json.gz",
+      "bytes": 4149,
+      "sha256": "a721641f77bf8b5e5e3a87a387daff8052c4ef35032e3efcead8b5352df11729"
+    },
+    {
+      "file": "swiss/original/before-6-native.png",
+      "bytes": 431004,
+      "sha256": "fe7c4c45115f40169d669e07f534a3e7f45b9784ca5ae8892e4395d493b17608"
+    },
+    {
+      "file": "swiss/original/before-36-native.png",
+      "bytes": 429108,
+      "sha256": "d6e958f6770d4674f3caca4c035b1cbf17b3023447d3ca4cf9bbf994a670f393"
+    },
+    {
+      "file": "swiss/original/before-91-native.png",
+      "bytes": 433202,
+      "sha256": "9936f8c76cf3bec7ab575e0f48be1965d22c9fbb24cf9f365619a8971e54603c"
+    },
+    {
+      "file": "swiss/original/after.mp4",
+      "bytes": 55282,
+      "sha256": "e43a88192dc250b382af7b6cd793c4b60999159fa3fd2612618a55880ae570cc"
+    },
+    {
+      "file": "swiss/original/after-actual-inputs.json",
+      "bytes": 363606,
+      "sha256": "3d6b2019c731b173068849f135978a43303f653be874e858ccc19a5eebfca81c"
+    },
+    {
+      "file": "swiss/original/after-frames.json.gz",
+      "bytes": 4143,
+      "sha256": "59f2e03b696f1aee8aece20da0dc5efa27f04ef1ce7497e5b386f1ec57f5dece"
+    },
+    {
+      "file": "swiss/original/after-6-native.png",
+      "bytes": 431496,
+      "sha256": "2c39addd96ca37790e3875dd225e19f3e063f11669fa8fdd42062ff5ed073fa5"
+    },
+    {
+      "file": "swiss/original/after-36-native.png",
+      "bytes": 432372,
+      "sha256": "25f0b62c0e61ccaa1c3b42752901a66443fd74e11496228243b6bbb891f94362"
+    },
+    {
+      "file": "swiss/original/after-91-native.png",
+      "bytes": 434896,
+      "sha256": "37491d4c70cdf3e73c026ac1cbcdb42901c06f39a7eead1d209ff69b35ab3044"
+    },
+    {
+      "file": "swiss/evidence/parent-swissC9-main01.json",
+      "bytes": 1670,
+      "sha256": "bd16af61e47d8c734a423ea172b991b51a428e8c197ed179b8445efd13090f63"
+    },
+    {
+      "file": "swiss/evidence/swiss-visual01-review.md",
+      "bytes": 7693,
+      "sha256": "d96611e3f497564d738f07fe15c3dff96c774d501c714eed38389131bb556430"
+    },
+    {
+      "file": "swiss/evidence/swiss-visual01-metadata.json",
+      "bytes": 8193,
+      "sha256": "e4ecc7b0eab152a677bf4e5b99f9cab0efaebfe649738e0957b0a5284e44e064"
+    },
+    {
+      "file": "swiss/evidence/carry01.json",
+      "bytes": 56599,
+      "sha256": "b2d794bb520362415a173231614b516dad18a52cb1df685bb477eba636aff7e9"
+    },
+    {
+      "file": "swiss/evidence/swiss-binding.json",
+      "bytes": 1910,
+      "sha256": "f043c13e2abb8e002638e98561d9bfcde5d1e33555cd0b17f5e34d03dc6a0a06"
+    },
+    {
+      "file": "swiss/evidence/main-carry-summary.json",
+      "bytes": 3295,
+      "sha256": "dea16cf4100e8f3acc3af6f6ee350d40a4b9e9de33e28707354676a806fb8408"
+    },
+    {
+      "file": "proofread/original/manifest.json",
+      "bytes": 13920,
+      "sha256": "0fa1a1016d687ed4fa8f5a421cfb3bce3021cca93e6539fecdc50044fd67a4a9"
+    },
+    {
+      "file": "proofread/original/before.mp4",
+      "bytes": 49126,
+      "sha256": "bd3113454e61e5a45f8f1f0ef874ed4d2a69868cbc44e1754c4b9476b4ba98c6"
+    },
+    {
+      "file": "proofread/original/before-actual-inputs.json",
+      "bytes": 11542,
+      "sha256": "61a748b884c2b24cef3ef4d45f7be77223f755540260eaa62117070ca3a7533a"
+    },
+    {
+      "file": "proofread/original/before-frames.json.gz",
+      "bytes": 4110,
+      "sha256": "53aa6b13974b1786473ece2a8218fa8bdd5498b8a81a529dbaecfcdaff06b0ee"
+    },
+    {
+      "file": "proofread/original/before-6-native.png",
+      "bytes": 427265,
+      "sha256": "bccfe06cc94cb5fb62b42da165b4a7ed30aada50cb98b03086d8e83f8b09d751"
+    },
+    {
+      "file": "proofread/original/before-36-native.png",
+      "bytes": 446495,
+      "sha256": "4d3298ab270334efde880c8dbf5d1dba52fca4a4aeb857c033c0d42523db5352"
+    },
+    {
+      "file": "proofread/original/before-91-native.png",
+      "bytes": 437296,
+      "sha256": "b94577300acfef00c3140b46cd3c7ebdcc0a7f65ee21931192286535cd99660e"
+    },
+    {
+      "file": "proofread/original/after.mp4",
+      "bytes": 41088,
+      "sha256": "12a05ed2df74711a00796e60d56432f2ed8c2c14cf5e8222bcddec5b147cf6df"
+    },
+    {
+      "file": "proofread/original/after-actual-inputs.json",
+      "bytes": 513968,
+      "sha256": "7d3e2c59301b45670c28bbfbd0daabd73176bcd5662945c39a0f1b21e7a2c477"
+    },
+    {
+      "file": "proofread/original/after-frames.json.gz",
+      "bytes": 4145,
+      "sha256": "b30b276815c755d02e5ffa614babef24b4cb162a72e57020a48f08f8836c9a71"
+    },
+    {
+      "file": "proofread/original/after-6-native.png",
+      "bytes": 425157,
+      "sha256": "cdcf6acfe8f4cf2409d948e9fcf1fdc7522433589bd74dfdd39b48eed6a7ccad"
+    },
+    {
+      "file": "proofread/original/after-36-native.png",
+      "bytes": 441228,
+      "sha256": "93978f7485abb2ad80c1e184eef810d24725473e9e8690d03edaf7e3090b1986"
+    },
+    {
+      "file": "proofread/original/after-91-native.png",
+      "bytes": 433977,
+      "sha256": "ec5f78e0125bec573cd5eb3f81164e0e587ec4dbafefd33ecaf9b788cca1e898"
+    },
+    {
+      "file": "proofread/evidence/parent-proofread09-review.json",
+      "bytes": 2643,
+      "sha256": "e3bafe27c1a32a12f69ba3c4fb154591a688d82f5121d3eaa2054445c37f12ea"
+    },
+    {
+      "file": "proofread/evidence/proofread-visual02-review.md",
+      "bytes": 8976,
+      "sha256": "08e7f46750786f49074c49628982733c848989dc5935edce9951add2577a6ceb"
+    },
+    {
+      "file": "proofread/evidence/proofread-visual02-metadata.json",
+      "bytes": 72860,
+      "sha256": "2972ec68fed7045ca40d93992a088b41d4529588096372c97672e2761eeac88d"
+    },
+    {
+      "file": "proofread/evidence/parent-proofread4d72-main01.json",
+      "bytes": 2027,
+      "sha256": "6ea84db971db615c9341690a92186517e87fc8fc443ac5e2b21599378bfdc6fd"
+    },
+    {
+      "file": "proofread/evidence/proofread-binding.json",
+      "bytes": 1179,
+      "sha256": "46a2b924e442c31f20427e67afdc1ec31c6f9f70eb1fe4feaf4d256a451ed336"
+    },
+    {
+      "file": "proofread/evidence/main-carry-summary.json",
+      "bytes": 2717,
+      "sha256": "04320e2ebf9cd2a04d2aabd173387b3868b0c48526a583b14e6f497678427a5c"
+    },
+    {
+      "file": "letter/original/manifest.json",
+      "bytes": 88023,
+      "sha256": "2213fd7d177a361d3b26662dd00676308414ffd39c7887f5d083610f95c53f53"
+    },
+    {
+      "file": "letter/original/images/letter-fold-inscription-portrait-06-before.png",
+      "bytes": 136627,
+      "sha256": "a440860ccf232cd374a4c23a5793d21619ae55d568b284f62c3e815594569584"
+    },
+    {
+      "file": "letter/original/images/letter-fold-inscription-portrait-42-before.png",
+      "bytes": 131613,
+      "sha256": "5c4a10837698b6ef148b0d6ad89181cc2f5de03980b55b770e6686f5b008f27a"
+    },
+    {
+      "file": "letter/original/images/letter-fold-inscription-portrait-90-before.png",
+      "bytes": 127601,
+      "sha256": "a1ba0d63a5c1fd152e4b757cb36059086f627716b7d69e0b16e6959703bd9b3f"
+    },
+    {
+      "file": "letter/original/videos/letter-fold-inscription-portrait-before.mp4",
+      "bytes": 82131,
+      "sha256": "02a369d37a4d03a79a19bc326f1245c18076917ff81e8352c79cffd0a077d7ae"
+    },
+    {
+      "file": "letter/original/images/letter-fold-inscription-portrait-06-after.png",
+      "bytes": 352053,
+      "sha256": "4992933c9b92f2433913d2dece1c1ac28746ba4cebff7f1f96b5351cc7f4d974"
+    },
+    {
+      "file": "letter/original/images/letter-fold-inscription-portrait-42-after.png",
+      "bytes": 353236,
+      "sha256": "cf3a2f597830e3ef0c1f175da8535d3fe196f80f10b41827ca56d255a95e8cce"
+    },
+    {
+      "file": "letter/original/images/letter-fold-inscription-portrait-90-after.png",
+      "bytes": 353437,
+      "sha256": "7540ff2f0045d9da29d6bf9b3a538ba5944be9b6ab66ba90694e5d3fbcf6518d"
+    },
+    {
+      "file": "letter/original/videos/letter-fold-inscription-portrait-after.mp4",
+      "bytes": 50674,
+      "sha256": "f89b40ac67b5acf11ff7189451e886fefd688ae924035f8b71000cc4e634606d"
+    },
+    {
+      "file": "letter/original/fixtures/letter-fold-inscription-portrait-before-sourcePlan.json.gz",
+      "bytes": 1290,
+      "sha256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c"
+    },
+    {
+      "file": "letter/original/fixtures/letter-fold-inscription-portrait-before-renderPlan.json.gz",
+      "bytes": 1290,
+      "sha256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c"
+    },
+    {
+      "file": "letter/original/fixtures/letter-fold-inscription-portrait-before-actualCut.json.gz",
+      "bytes": 601,
+      "sha256": "9269f32a711d6d81cfddc0aadf4421dd198ce1a20827d8e5082ca87e2335c87d"
+    },
+    {
+      "file": "letter/original/fixtures/letter-fold-inscription-portrait-after-sourcePlan.json.gz",
+      "bytes": 1290,
+      "sha256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c"
+    },
+    {
+      "file": "letter/original/fixtures/letter-fold-inscription-portrait-after-renderPlan.json.gz",
+      "bytes": 4370,
+      "sha256": "6c01ec8efe1108cf240c31b2e1b3a8b7dc28a1048947227a87ceaf4d6742104e"
+    },
+    {
+      "file": "letter/original/fixtures/letter-fold-inscription-portrait-after-actualCut.json.gz",
+      "bytes": 3625,
+      "sha256": "b2619a627ab789518f2e6be789500a9c5f74472672d2045a1fee5d738609d5e9"
+    },
+    {
+      "file": "letter/evidence/parent-writingc861-review.json",
+      "bytes": 3076,
+      "sha256": "a3186e96a172543be881f2602d56098e71ea0cd49a31010dec5b7beb7c89167f"
+    },
+    {
+      "file": "letter/evidence/writing-visual05-review.md",
+      "bytes": 5764,
+      "sha256": "5fa5f5d8ffade63ed33a45ca71571551947412c501b3548cd439640a0bd4b9b4"
+    },
+    {
+      "file": "letter/evidence/writing-visual05-metadata.json",
+      "bytes": 23928,
+      "sha256": "9cd930217989f48f92997284db0d329389b0a3ae79c9e12ee5b2db1a7738c09b"
+    },
+    {
+      "file": "letter/evidence/parent-writingC861-main02.json",
+      "bytes": 4253,
+      "sha256": "6258174a0b909fe1bf5d476718132cc198951e39794724ba7011bec4f2c174c2"
+    },
+    {
+      "file": "letter/evidence/letter-binding.json",
+      "bytes": 1173,
+      "sha256": "6b832aff861f22e38f40adba29b3b47e6b844bfa193deaa8ab44cbc13e6f689e"
+    },
+    {
+      "file": "letter/evidence/main-carry-summary.json",
+      "bytes": 4312,
+      "sha256": "a96901dea85c576f7a0d9560476439a107c063f649b79d5e87eec8968c8f556d"
+    },
+    {
+      "file": "poster/original/manifest.json",
+      "bytes": 15999,
+      "sha256": "696272d2965718df78c7b9b4ef02630e0e1a574b3035ad78a60c6c07191f29d1"
+    },
+    {
+      "file": "poster/original/before.mp4",
+      "bytes": 226805,
+      "sha256": "01c42116ef128bcd62936a5c3ae147876e8636d8668be89ff6b12f78779d42c6"
+    },
+    {
+      "file": "poster/original/before-actual-inputs.json",
+      "bytes": 11664,
+      "sha256": "55ebeda4631ee17f4094c59d482e8344106e508b3217408dcae6aadfa94a3b08"
+    },
+    {
+      "file": "poster/original/before-frames.json.gz",
+      "bytes": 4146,
+      "sha256": "d3f0c91ed5092978fc172dd08bfccdee84ae81620059e0fc071525160b318cbf"
+    },
+    {
+      "file": "poster/original/before-6-native.png",
+      "bytes": 408350,
+      "sha256": "1be9772d1f959b4257e0fb1160c8f485dccb662d123e20328a8e4628ce7654f8"
+    },
+    {
+      "file": "poster/original/before-36-native.png",
+      "bytes": 412577,
+      "sha256": "84b81c4d287526a4c617696f13318e17c7663bfdea5f66f3bdbd0b17974d7014"
+    },
+    {
+      "file": "poster/original/before-91-native.png",
+      "bytes": 416313,
+      "sha256": "1cf294fa020f1b7916299adfe962ae794dbd02caaa9aa8b8c3897dfd4753c35e"
+    },
+    {
+      "file": "poster/original/after.mp4",
+      "bytes": 152111,
+      "sha256": "454e2f1fd477c539ca68bd010b088e5d5a439558f5a9253e72d4a5bc0a214376"
+    },
+    {
+      "file": "poster/original/after-actual-inputs.json",
+      "bytes": 394002,
+      "sha256": "bcf37c5ef3f3df59716de44484b1dc8538e6fd8294fd401d760b0a6fdcc9588e"
+    },
+    {
+      "file": "poster/original/after-frames.json.gz",
+      "bytes": 4106,
+      "sha256": "b361f2116049c05c8389204e57b781fc2986cc4484b5ec4fe2ecb046b122b1d6"
+    },
+    {
+      "file": "poster/original/after-6-native.png",
+      "bytes": 427439,
+      "sha256": "8ec52e88f0b412a0dfca31eebe6c5620ebebba151d0b14ae190382f11f92098a"
+    },
+    {
+      "file": "poster/original/after-36-native.png",
+      "bytes": 432212,
+      "sha256": "44d7d84f0cc78dce638f360c458d023661bc1229dec0a6b7ce39a994a97d7a1f"
+    },
+    {
+      "file": "poster/original/after-91-native.png",
+      "bytes": 433225,
+      "sha256": "25d56a61d10484ef3f7c3ea23f76695bc2f534162c8c026a78677d777b675d33"
+    },
+    {
+      "file": "poster/evidence/parent-poster04-review.json",
+      "bytes": 2561,
+      "sha256": "cd7a1083975cc92d23117516f11620c283841764ca75560e60465e9be52acf10"
+    },
+    {
+      "file": "poster/evidence/poster-visual01-review.md",
+      "bytes": 7114,
+      "sha256": "57f65119b652253117e4507923ed8b6ccc7ff4dc6c58eb7b998446ef711f10f5"
+    },
+    {
+      "file": "poster/evidence/poster-visual01-metadata.json",
+      "bytes": 50391,
+      "sha256": "369820061bab469c3953b3e2fde7fc2cdd4f17dbef1ff034fc91da9ba86527cd"
+    },
+    {
+      "file": "poster/evidence/parent-poster4d0-main01.json",
+      "bytes": 1693,
+      "sha256": "2000a88065e9780f353fb9b6f36d337fdce10e0604c98626a4be6d964dfb5cdd"
+    },
+    {
+      "file": "poster/evidence/poster-binding.json",
+      "bytes": 1173,
+      "sha256": "823f3973ed5502c6380913d3e24b7df02659dfb9dfaa9f7699da60b11f428264"
+    },
+    {
+      "file": "poster/evidence/main-carry-summary.json",
+      "bytes": 2708,
+      "sha256": "0ddd76a3f1f2b73c0c5921e54b5ef1915388edfd60dacfbab2ea95e13d6f1819"
+    },
+    {
+      "file": "index.html",
+      "bytes": 38177,
+      "sha256": "e2b4b3adb824055822c1f30965eb03a26230e9da6290a9d9cb0447d1fb3cefb7"
+    }
+  ]
+}

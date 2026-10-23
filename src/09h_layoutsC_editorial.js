@@ -4,7 +4,8 @@
 'use strict';
 const A=J.placement,IDS=['magazine','headlineDeck','contents','footnote','proofread','numbered','poster','swissGrid','dictionary','newspaper'];
 const fail=(code,message)=>{const e=new Error(message);e.code=code;throw e;},norm=t=>String(t||'').replace(/\s/g,''),rect=(x0,y0,x1,y1)=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]],short=p=>Math.min(p.W,p.H);
-const contains=(p,q)=>{let pos=false,neg=false;for(let i=0;i<q.length;i++){const a=q[i],b=q[(i+1)%q.length],c=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);if(c>1e-4)pos=true;if(c< -1e-4)neg=true;}return !(pos&&neg);};
+const immutablePolygonContains=A.layoutsCImmutablePolygonContains;
+const contains=(p,q)=>{const cached=immutablePolygonContains(p,q,1e-4);if(cached!==null)return cached;let pos=false,neg=false;for(let i=0;i<q.length;i++){const a=q[i],b=q[(i+1)%q.length],c=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);if(c>1e-4)pos=true;if(c< -1e-4)neg=true;}return !(pos&&neg);};
 const box=ps=>{const b=A.bounds(ps);return rect(b.x0,b.y0,b.x1,b.y1);};
 const camera=(ps,plan,cut)=>A.cameraEnvelope(ps,{...plan,style:cut.effectStyle||plan.style,fx:cut.effectFx||plan.fx},cut,20);
 function record(renderer,plan,cut,T,extra={}){

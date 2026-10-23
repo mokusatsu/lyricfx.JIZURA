@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AVOID-008 — 構図変更4例のローカル比較候補</title>
+<style>
+  :root { color-scheme: light; font-family: system-ui, sans-serif; background: #f4f3ef; color: #20252a; }
+  body { max-width: 1300px; margin: auto; padding: 24px; line-height: 1.7; }
+  h1 { font-size: 1.7rem; } h2 { font-size: 1.4rem; }
+  section { background: white; border: 1px solid #b8bdc1; border-radius: 10px; padding: 22px; margin: 28px 0; }
+  .check { font-weight: 650; padding: 12px; background: #edf4f4; }
+  .pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+  figure { min-width: 0; margin: 0; } figcaption { font-weight: 650; margin: 8px 0; }
+  .stage-media { position: relative; width: min(100%, var(--stage-width)); aspect-ratio: var(--stage-aspect); margin-inline: auto; background: #151923; }
+  .stage-media > video, .stage-media > a { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  .stage-media img { display: block; width: 100%; height: 100%; }
+  .circle-guide { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .circle-guide circle { fill: rgba(255, 95, 105, .06); stroke: #ff5f69; stroke-width: 2; stroke-dasharray: 7 5; vector-effect: non-scaling-stroke; }
+  .guides-hidden .circle-guide { display: none; }
+  button { font: inherit; padding: 6px 12px; margin: 6px 0; cursor: pointer; }
+  details { border-top: 1px solid #d8dadd; padding-top: 12px; margin-top: 18px; }
+  summary { cursor: pointer; font-weight: 600; } code { overflow-wrap: anywhere; }
+  nav a { margin-right: 22px; } .status { display: block; }
+  @media(max-width: 620px) { body { padding: 12px; } section { padding: 12px; } .pair { gap: 8px; } }
+</style>
+</head>
+<body>
+<h1>AVOID-008：構図変更4例の比較候補</h1>
+<p>同じ主文・円条件・時刻で、変更前と回避ONを比べます。変更後も全主文字「風の先へ」を保持しています。</p>
+<p>最終版に対応する4例・動作確認待ち。4つの構図について、変更前後の動画を見比べてください。見え方・読みやすさの判断は未回答です。</p>
+<button id="toggle-circle-guide" type="button" aria-pressed="true">円ガイドを非表示</button>
+<p>円ガイドは動画・PNGに焼き込まれていない比較用の重ね表示です（原寸PNGリンク先はガイドなしの原本です）。</p>
+<nav aria-label="比較対象"><a href="#swiss">Swiss — 左の縦長ストリップ</a>
+<a href="#proofread">校正 — 対象から注記への線</a>
+<a href="#letter">便箋 — 紙全体と二行の本文</a>
+<a href="#poster">ポスター — 右寄せの二行構図</a></nav>
+<section id="swiss">
+  <h2>Swiss — 左の縦長ストリップ</h2>
+  <p class="check">左の細い縦ストリップでも、格子・欄番号・見出し・円の関係に組版らしさが残るか確認してください。</p>
+  <p>同条件：主文「風の先へ」／960×540／円中心：左から50%・上から42%／半径：短辺の20%／4秒・24fps。</p>
+  <p>左右の標準コントロールで再生・シークできます。</p>
+  <div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><video data-side="before" controls preload="metadata" playsinline width="480" height="270"><source src="swiss/original/before.mp4" type="video/mp4"></video><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><video data-side="after" controls preload="metadata" playsinline width="480" height="270"><source src="swiss/original/after.mp4" type="video/mp4"></video><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+  <div class="actions"><button type="button" data-action="play">両方を先頭から再生</button> <button type="button" data-action="pause">両方を一時停止</button> <button type="button" data-action="align">右を左の時刻へ合わせる</button> <span role="status" class="status"></span></div>
+  <details><summary>原寸PNG：出現・保持・退出の3時刻を左右で比較</summary>
+  <h3>0.250秒（frame 6）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="swiss/original/before-6-native.png"><img loading="lazy" src="swiss/original/before-6-native.png" width="960" height="540" alt="Swiss — 左の縦長ストリップ frame 6 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="swiss/original/after-6-native.png"><img loading="lazy" src="swiss/original/after-6-native.png" width="960" height="540" alt="Swiss — 左の縦長ストリップ frame 6 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+<h3>1.500秒（frame 36）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="swiss/original/before-36-native.png"><img loading="lazy" src="swiss/original/before-36-native.png" width="960" height="540" alt="Swiss — 左の縦長ストリップ frame 36 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="swiss/original/after-36-native.png"><img loading="lazy" src="swiss/original/after-36-native.png" width="960" height="540" alt="Swiss — 左の縦長ストリップ frame 36 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+<h3>3.792秒（frame 91）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="swiss/original/before-91-native.png"><img loading="lazy" src="swiss/original/before-91-native.png" width="960" height="540" alt="Swiss — 左の縦長ストリップ frame 91 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="swiss/original/after-91-native.png"><img loading="lazy" src="swiss/original/after-91-native.png" width="960" height="540" alt="Swiss — 左の縦長ストリップ frame 91 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+  <p>PNGは静止した原寸参照です。動作は上のMP4で確認してください。</p></details>
+  <details><summary>固定版・検査根拠・確認範囲</summary>
+  <p>動画の元候補版 c9e22a8。最終実装版 fdb7916329232885089119ba5023cca9aafc3d02 との同条件描画対応を別途記録しています。Swiss media is the reviewed c9 checkpoint; generated HTML/shared09g differs from checked-in Git source. Parent-reviewed96-native-frame/clock carry connects this fixed representative to main. This is limited same-condition rendering correspondence, not whole-source or whole-version identity.</p>
+  <p>seed 704／font mincho／params <code>{&quot;variant&quot;:&quot;a&quot;,&quot;shape&quot;:&quot;circle&quot;,&quot;font&quot;:&quot;mincho&quot;}</code>。動画 480×270（H.264）。</p>
+  <p>独立担当の限定視覚判定を参照しています。このページの生成担当・親は画像を実見していません。実時間の速度感と構図の好みは未確認です。全字体・全variant・全34レイアウトの承認を意味しません。</p>
+  <p>代替transport字体を使用。Swissと校正の動画は480×270、原寸の細部は960×540のPNGを参照してください。円は設定条件であり、動画内の円形装飾とは別です。</p>
+  <p>原manifest SHA256：<code>9acec46fe34d3934019e1af77333f7e84bd269b49fa0d48af805709216bfc6e1</code>。<a href="swiss/original/manifest.json">元manifest</a>。</p>
+  <ul><li><a href="swiss/evidence/parent-swissC9-main01.json">parent-swissC9-main01.json</a> — <code>bd16af61e47d8c734a423ea172b991b51a428e8c197ed179b8445efd13090f63</code></li>
+<li><a href="swiss/evidence/swiss-visual01-review.md">swiss-visual01-review.md</a> — <code>d96611e3f497564d738f07fe15c3dff96c774d501c714eed38389131bb556430</code></li>
+<li><a href="swiss/evidence/swiss-visual01-metadata.json">swiss-visual01-metadata.json</a> — <code>e4ecc7b0eab152a677bf4e5b99f9cab0efaebfe649738e0957b0a5284e44e064</code></li>
+<li><a href="swiss/evidence/carry01.json">carry01.json</a> — <code>b2d794bb520362415a173231614b516dad18a52cb1df685bb477eba636aff7e9</code></li>
+<li><a href="swiss/evidence/swiss-binding.json">swiss-binding.json</a> — <code>f043c13e2abb8e002638e98561d9bfcde5d1e33555cd0b17f5e34d03dc6a0a06</code></li>
+<li><a href="swiss/evidence/main-carry-summary.json">main-carry-summary.json</a> — <code>dea16cf4100e8f3acc3af6f6ee350d40a4b9e9de33e28707354676a806fb8408</code></li></ul>
+  </details>
+</section>
+<section id="proofread">
+  <h2>校正 — 対象から注記への線</h2>
+  <p class="check">大きな括弧状の線でも対象→「太字」を追え、灰色トンボとの交差を含む構図を許容できるか確認してください。</p>
+  <p>同条件：主文「風の先へ」／960×540／円中心：左から50%・上から42%／半径：短辺の20%／4秒・24fps。</p>
+  <p>左右の標準コントロールで再生・シークできます。</p>
+  <div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><video data-side="before" controls preload="metadata" playsinline width="480" height="270"><source src="proofread/original/before.mp4" type="video/mp4"></video><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><video data-side="after" controls preload="metadata" playsinline width="480" height="270"><source src="proofread/original/after.mp4" type="video/mp4"></video><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+  <div class="actions"><button type="button" data-action="play">両方を先頭から再生</button> <button type="button" data-action="pause">両方を一時停止</button> <button type="button" data-action="align">右を左の時刻へ合わせる</button> <span role="status" class="status"></span></div>
+  <details><summary>原寸PNG：出現・保持・退出の3時刻を左右で比較</summary>
+  <h3>0.250秒（frame 6）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="proofread/original/before-6-native.png"><img loading="lazy" src="proofread/original/before-6-native.png" width="960" height="540" alt="校正 — 対象から注記への線 frame 6 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="proofread/original/after-6-native.png"><img loading="lazy" src="proofread/original/after-6-native.png" width="960" height="540" alt="校正 — 対象から注記への線 frame 6 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+<h3>1.500秒（frame 36）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="proofread/original/before-36-native.png"><img loading="lazy" src="proofread/original/before-36-native.png" width="960" height="540" alt="校正 — 対象から注記への線 frame 36 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="proofread/original/after-36-native.png"><img loading="lazy" src="proofread/original/after-36-native.png" width="960" height="540" alt="校正 — 対象から注記への線 frame 36 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+<h3>3.792秒（frame 91）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="proofread/original/before-91-native.png"><img loading="lazy" src="proofread/original/before-91-native.png" width="960" height="540" alt="校正 — 対象から注記への線 frame 91 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="proofread/original/after-91-native.png"><img loading="lazy" src="proofread/original/after-91-native.png" width="960" height="540" alt="校正 — 対象から注記への線 frame 91 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+  <p>PNGは静止した原寸参照です。動作は上のMP4で確認してください。</p></details>
+  <details><summary>固定版・検査根拠・確認範囲</summary>
+  <p>動画の元候補版 4d72d23。最終実装版 fdb7916329232885089119ba5023cca9aafc3d02 との同条件描画対応を別途記録しています。Fixed preview02 representative has parent-approved192-native-frame/clock and historical encoder/key carry on main. Limited visual02 remains one fixture; no whole-source or whole-version identity claim.</p>
+  <p>seed 704／font mincho／params <code>{&quot;marks&quot;:[&quot;box&quot;,&quot;circle&quot;],&quot;font&quot;:&quot;mincho&quot;,&quot;stamp&quot;:true,&quot;tombo&quot;:true}</code>。動画 480×270（H.264）。</p>
+  <p>独立担当の限定視覚判定を参照しています。このページの生成担当・親は画像を実見していません。実時間の速度感と構図の好みは未確認です。全字体・全variant・全34レイアウトの承認を意味しません。</p>
+  <p>代替transport字体を使用。Swissと校正の動画は480×270、原寸の細部は960×540のPNGを参照してください。円は設定条件であり、動画内の円形装飾とは別です。</p>
+  <p>原manifest SHA256：<code>0fa1a1016d687ed4fa8f5a421cfb3bce3021cca93e6539fecdc50044fd67a4a9</code>。<a href="proofread/original/manifest.json">元manifest</a>。</p>
+  <ul><li><a href="proofread/evidence/parent-proofread09-review.json">parent-proofread09-review.json</a> — <code>e3bafe27c1a32a12f69ba3c4fb154591a688d82f5121d3eaa2054445c37f12ea</code></li>
+<li><a href="proofread/evidence/proofread-visual02-review.md">proofread-visual02-review.md</a> — <code>08e7f46750786f49074c49628982733c848989dc5935edce9951add2577a6ceb</code></li>
+<li><a href="proofread/evidence/proofread-visual02-metadata.json">proofread-visual02-metadata.json</a> — <code>2972ec68fed7045ca40d93992a088b41d4529588096372c97672e2761eeac88d</code></li>
+<li><a href="proofread/evidence/parent-proofread4d72-main01.json">parent-proofread4d72-main01.json</a> — <code>6ea84db971db615c9341690a92186517e87fc8fc443ac5e2b21599378bfdc6fd</code></li>
+<li><a href="proofread/evidence/proofread-binding.json">proofread-binding.json</a> — <code>46a2b924e442c31f20427e67afdc1ec31c6f9f70eb1fe4feaf4d256a451ed336</code></li>
+<li><a href="proofread/evidence/main-carry-summary.json">main-carry-summary.json</a> — <code>04320e2ebf9cd2a04d2aabd173387b3868b0c48526a583b14e6f497678427a5c</code></li></ul>
+  </details>
+</section>
+<section id="letter">
+  <h2>便箋 — 紙全体と二行の本文</h2>
+  <p class="check">小さくなった紙全体に便箋らしさがあり、二重ヘッダー・本文罫線・主文4字・No署名を追えるか確認してください。</p>
+  <p>同条件：主文「風の先へ」／540×960／円中心：左から50%・上から42%／半径：短辺の20%／4秒・24fps。</p>
+  <p>左右の標準コントロールで再生・シークできます。</p>
+  <div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:540 / 960;--stage-width:382.5px" data-stage-width="540" data-stage-height="960"><video data-side="before" controls preload="metadata" playsinline width="540" height="960"><source src="letter/original/videos/letter-fold-inscription-portrait-before.mp4" type="video/mp4"></video><svg class="circle-guide" viewBox="0 0 540 960" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="270" cy="403.2" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:540 / 960;--stage-width:382.5px" data-stage-width="540" data-stage-height="960"><video data-side="after" controls preload="metadata" playsinline width="540" height="960"><source src="letter/original/videos/letter-fold-inscription-portrait-after.mp4" type="video/mp4"></video><svg class="circle-guide" viewBox="0 0 540 960" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="270" cy="403.2" r="108" /></svg></div></figure></div>
+  <div class="actions"><button type="button" data-action="play">両方を先頭から再生</button> <button type="button" data-action="pause">両方を一時停止</button> <button type="button" data-action="align">右を左の時刻へ合わせる</button> <span role="status" class="status"></span></div>
+  <details><summary>原寸PNG：出現・保持・退出の3時刻を左右で比較</summary>
+  <h3>0.250秒（frame 6）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:540 / 960;--stage-width:382.5px" data-stage-width="540" data-stage-height="960"><a href="letter/original/images/letter-fold-inscription-portrait-06-before.png"><img loading="lazy" src="letter/original/images/letter-fold-inscription-portrait-06-before.png" width="540" height="960" alt="便箋 — 紙全体と二行の本文 frame 6 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 540 960" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="270" cy="403.2" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:540 / 960;--stage-width:382.5px" data-stage-width="540" data-stage-height="960"><a href="letter/original/images/letter-fold-inscription-portrait-06-after.png"><img loading="lazy" src="letter/original/images/letter-fold-inscription-portrait-06-after.png" width="540" height="960" alt="便箋 — 紙全体と二行の本文 frame 6 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 540 960" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="270" cy="403.2" r="108" /></svg></div></figure></div>
+<h3>1.750秒（frame 42）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:540 / 960;--stage-width:382.5px" data-stage-width="540" data-stage-height="960"><a href="letter/original/images/letter-fold-inscription-portrait-42-before.png"><img loading="lazy" src="letter/original/images/letter-fold-inscription-portrait-42-before.png" width="540" height="960" alt="便箋 — 紙全体と二行の本文 frame 42 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 540 960" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="270" cy="403.2" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:540 / 960;--stage-width:382.5px" data-stage-width="540" data-stage-height="960"><a href="letter/original/images/letter-fold-inscription-portrait-42-after.png"><img loading="lazy" src="letter/original/images/letter-fold-inscription-portrait-42-after.png" width="540" height="960" alt="便箋 — 紙全体と二行の本文 frame 42 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 540 960" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="270" cy="403.2" r="108" /></svg></div></figure></div>
+<h3>3.750秒（frame 90）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:540 / 960;--stage-width:382.5px" data-stage-width="540" data-stage-height="960"><a href="letter/original/images/letter-fold-inscription-portrait-90-before.png"><img loading="lazy" src="letter/original/images/letter-fold-inscription-portrait-90-before.png" width="540" height="960" alt="便箋 — 紙全体と二行の本文 frame 90 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 540 960" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="270" cy="403.2" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:540 / 960;--stage-width:382.5px" data-stage-width="540" data-stage-height="960"><a href="letter/original/images/letter-fold-inscription-portrait-90-after.png"><img loading="lazy" src="letter/original/images/letter-fold-inscription-portrait-90-after.png" width="540" height="960" alt="便箋 — 紙全体と二行の本文 frame 90 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 540 960" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="270" cy="403.2" r="108" /></svg></div></figure></div>
+  <p>PNGは静止した原寸参照です。動作は上のMP4で確認してください。</p></details>
+  <details><summary>固定版・検査根拠・確認範囲</summary>
+  <p>動画の元候補版 c86146d80e356c79adcbe099b8184a968627d572。最終実装版 fdb7916329232885089119ba5023cca9aafc3d02 との同条件描画対応を別途記録しています。Original startup.implementation retains historical257 label; parent ties actual09i/11p pins to fixedc861. The original manifest remains unchanged. One portrait fixture only; parent-approved conditional native-frame/clock carry through paper-carry02 and exact paper geometry/source scope connects it to corrected main. The paper-carry02 is not a fresh384-frame capture or whole-source identity claim.</p>
+  <p>seed 704／font gothic_med／params <code>{&quot;font&quot;:&quot;gothic_med&quot;}</code>。動画 540×960（H.264）。</p>
+  <p>独立担当の限定視覚判定を参照しています。このページの生成担当・親は画像を実見していません。実時間の速度感と構図の好みは未確認です。全字体・全variant・全34レイアウトの承認を意味しません。</p>
+  <p>代替transport字体を使用。Swissと校正の動画は480×270、原寸の細部は960×540のPNGを参照してください。円は設定条件であり、動画内の円形装飾とは別です。</p>
+  <p>原manifest SHA256：<code>2213fd7d177a361d3b26662dd00676308414ffd39c7887f5d083610f95c53f53</code>。<a href="letter/original/manifest.json">元manifest</a>。</p>
+  <ul><li><a href="letter/evidence/parent-writingc861-review.json">parent-writingc861-review.json</a> — <code>a3186e96a172543be881f2602d56098e71ea0cd49a31010dec5b7beb7c89167f</code></li>
+<li><a href="letter/evidence/writing-visual05-review.md">writing-visual05-review.md</a> — <code>5fa5f5d8ffade63ed33a45ca71571551947412c501b3548cd439640a0bd4b9b4</code></li>
+<li><a href="letter/evidence/writing-visual05-metadata.json">writing-visual05-metadata.json</a> — <code>9cd930217989f48f92997284db0d329389b0a3ae79c9e12ee5b2db1a7738c09b</code></li>
+<li><a href="letter/evidence/parent-writingC861-main02.json">parent-writingC861-main02.json</a> — <code>6258174a0b909fe1bf5d476718132cc198951e39794724ba7011bec4f2c174c2</code></li>
+<li><a href="letter/evidence/letter-binding.json">letter-binding.json</a> — <code>6b832aff861f22e38f40adba29b3b47e6b844bfa193deaa8ab44cbc13e6f689e</code></li>
+<li><a href="letter/evidence/main-carry-summary.json">main-carry-summary.json</a> — <code>a96901dea85c576f7a0d9560476439a107c063f649b79d5e87eec8968c8f556d</code></li></ul>
+  </details>
+</section>
+<section id="poster">
+  <h2>ポスター — 右寄せの二行構図</h2>
+  <p class="check">二行・右寄せの構図にポスターらしさが残り、黄色のdotに重なる白い「の」の読みやすさを許容できるか確認してください（この重なりはコントラストが低く、縮小表示で弱く見えます）。</p>
+  <p>同条件：主文「風の先へ」／960×540／円中心：左から50%・上から42%／半径：短辺の20%／4秒・24fps。</p>
+  <p>左右の標準コントロールで再生・シークできます。</p>
+  <div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><video data-side="before" controls preload="metadata" playsinline width="960" height="540"><source src="poster/original/before.mp4" type="video/mp4"></video><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><video data-side="after" controls preload="metadata" playsinline width="960" height="540"><source src="poster/original/after.mp4" type="video/mp4"></video><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+  <div class="actions"><button type="button" data-action="play">両方を先頭から再生</button> <button type="button" data-action="pause">両方を一時停止</button> <button type="button" data-action="align">右を左の時刻へ合わせる</button> <span role="status" class="status"></span></div>
+  <details><summary>原寸PNG：出現・保持・退出の3時刻を左右で比較</summary>
+  <h3>0.250秒（frame 6）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="poster/original/before-6-native.png"><img loading="lazy" src="poster/original/before-6-native.png" width="960" height="540" alt="ポスター — 右寄せの二行構図 frame 6 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="poster/original/after-6-native.png"><img loading="lazy" src="poster/original/after-6-native.png" width="960" height="540" alt="ポスター — 右寄せの二行構図 frame 6 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+<h3>1.500秒（frame 36）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="poster/original/before-36-native.png"><img loading="lazy" src="poster/original/before-36-native.png" width="960" height="540" alt="ポスター — 右寄せの二行構図 frame 36 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="poster/original/after-36-native.png"><img loading="lazy" src="poster/original/after-36-native.png" width="960" height="540" alt="ポスター — 右寄せの二行構図 frame 36 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+<h3>3.792秒（frame 91）</h3><div class="pair"><figure><figcaption>変更前：元の描画</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="poster/original/before-91-native.png"><img loading="lazy" src="poster/original/before-91-native.png" width="960" height="540" alt="ポスター — 右寄せの二行構図 frame 91 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure>
+<figure><figcaption>変更後：回避ON・全主文字保持</figcaption><div class="stage-media" style="--stage-aspect:960 / 540;--stage-width:1208.888888888889px" data-stage-width="960" data-stage-height="540"><a href="poster/original/after-91-native.png"><img loading="lazy" src="poster/original/after-91-native.png" width="960" height="540" alt="ポスター — 右寄せの二行構図 frame 91 原寸PNG"></a><svg class="circle-guide" viewBox="0 0 960 540" aria-hidden="true" focusable="false" pointer-events="none"><circle cx="480" cy="226.79999999999998" r="108" /></svg></div></figure></div>
+  <p>PNGは静止した原寸参照です。動作は上のMP4で確認してください。</p></details>
+  <details><summary>固定版・検査根拠・確認範囲</summary>
+  <p>動画の元候補版 4d0a25d。最終実装版 fdb7916329232885089119ba5023cca9aafc3d02 との同条件描画対応を別途記録しています。Fixed poster-preview01 only; parent source/raw review plus independent192decoded/6native limited visual01. White の over yellow dot has locally low contrast, especially at reduced display size. Right-handbill composition leaves a large blank left field and reduces main text to .7 size. Parent-approved192-native-frame/clock carry connects this representative to main; no whole-source or whole-version identity claim.</p>
+  <p>seed 704／font mincho／params <code>{&quot;variant&quot;:&quot;stack&quot;,&quot;dot&quot;:true,&quot;font&quot;:&quot;mincho&quot;}</code>。動画 960×540（H.264）。</p>
+  <p>独立担当の限定視覚判定を参照しています。このページの生成担当・親は画像を実見していません。実時間の速度感と構図の好みは未確認です。全字体・全variant・全34レイアウトの承認を意味しません。</p>
+  <p>代替transport字体を使用。Swissと校正の動画は480×270、原寸の細部は960×540のPNGを参照してください。円は設定条件であり、動画内の円形装飾とは別です。</p>
+  <p>原manifest SHA256：<code>696272d2965718df78c7b9b4ef02630e0e1a574b3035ad78a60c6c07191f29d1</code>。<a href="poster/original/manifest.json">元manifest</a>。</p>
+  <ul><li><a href="poster/evidence/parent-poster04-review.json">parent-poster04-review.json</a> — <code>cd7a1083975cc92d23117516f11620c283841764ca75560e60465e9be52acf10</code></li>
+<li><a href="poster/evidence/poster-visual01-review.md">poster-visual01-review.md</a> — <code>57f65119b652253117e4507923ed8b6ccc7ff4dc6c58eb7b998446ef711f10f5</code></li>
+<li><a href="poster/evidence/poster-visual01-metadata.json">poster-visual01-metadata.json</a> — <code>369820061bab469c3953b3e2fde7fc2cdd4f17dbef1ff034fc91da9ba86527cd</code></li>
+<li><a href="poster/evidence/parent-poster4d0-main01.json">parent-poster4d0-main01.json</a> — <code>2000a88065e9780f353fb9b6f36d337fdce10e0604c98626a4be6d964dfb5cdd</code></li>
+<li><a href="poster/evidence/poster-binding.json">poster-binding.json</a> — <code>823f3973ed5502c6380913d3e24b7df02659dfb9dfaa9f7699da60b11f428264</code></li>
+<li><a href="poster/evidence/main-carry-summary.json">main-carry-summary.json</a> — <code>0ddd76a3f1f2b73c0c5921e54b5ef1915388edfd60dacfbab2ea95e13d6f1819</code></li></ul>
+  </details>
+</section>
+<p><a href="manifest.json">この比較ページのmanifest・全assetのbytes/hash・fixture/plan識別</a></p>
+<script>
+'use strict';
+const guideButton = document.querySelector('#toggle-circle-guide');
+guideButton.addEventListener('click', () => {
+  const hidden = document.body.classList.toggle('guides-hidden');
+  guideButton.setAttribute('aria-pressed', String(!hidden));
+  guideButton.textContent = hidden ? '円ガイドを表示' : '円ガイドを非表示';
+});
+for (const section of document.querySelectorAll('section')) {
+  const videos = [...section.querySelectorAll('video')];
+  const status = section.querySelector('.status');
+  let operation = false;
+  // Native controls remain independent. The explicit buttons coordinate both sides.
+  const ready = v => v.readyState >= 1 ? Promise.resolve() : new Promise((resolve, reject) => {
+    v.addEventListener('loadedmetadata', resolve, {once:true});
+    v.addEventListener('error', reject, {once:true});
+    v.load();
+  });
+  section.querySelectorAll('[data-action]').forEach(button => button.addEventListener('click', async () => {
+    if (operation) return;
+    operation = true;
+    status.textContent = '';
+    try {
+      const action = button.dataset.action;
+      if (action === 'pause') videos.forEach(v => v.pause());
+      else {
+        videos.forEach(v => v.pause());
+        await Promise.all(videos.map(ready));
+        if (action === 'align') videos[1].currentTime = videos[0].currentTime;
+        else {
+          videos.forEach(v => { v.currentTime = 0; v.playbackRate = 1; });
+          await Promise.all(videos.map(v => v.play()));
+        }
+      }
+    } catch (error) {
+      videos.forEach(v => v.pause());
+      status.textContent = '同期操作を完了できませんでした。各動画の標準コントロールを使用してください。';
+    } finally { operation = false; }
+  }));
+}
+</script>
+</body>
+</html>

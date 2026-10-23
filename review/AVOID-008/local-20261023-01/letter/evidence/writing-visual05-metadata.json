@@ -1,0 +1,610 @@
+{
+  "review": "AVOID-008 writing-preview05 independent local visual review",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "context": "none; parent supplied no visual impression",
+  "scope": "letter-fold-inscription-portrait only",
+  "verdict": "PASS_LIMITED_LOCAL_FIXTURE",
+  "realTimePlayback": false,
+  "method": "Independent ffmpeg decode; sequential complete contact sheets; six original native PNG keys; additional decoded frames 1/95 individually. Contact sheets were displayed at 1344x1838 by image viewer (source 2160x2955).",
+  "manifestSHA256": "2213fd7d177a361d3b26662dd00676308414ffd39c7887f5d083610f95c53f53",
+  "checks": [
+    {
+      "label": "asset",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/images/letter-fold-inscription-portrait-06-before.png",
+      "sha256": "a440860ccf232cd374a4c23a5793d21619ae55d568b284f62c3e815594569584",
+      "expected": "a440860ccf232cd374a4c23a5793d21619ae55d568b284f62c3e815594569584",
+      "ok": true
+    },
+    {
+      "label": "asset",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/images/letter-fold-inscription-portrait-42-before.png",
+      "sha256": "5c4a10837698b6ef148b0d6ad89181cc2f5de03980b55b770e6686f5b008f27a",
+      "expected": "5c4a10837698b6ef148b0d6ad89181cc2f5de03980b55b770e6686f5b008f27a",
+      "ok": true
+    },
+    {
+      "label": "asset",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/images/letter-fold-inscription-portrait-90-before.png",
+      "sha256": "a1ba0d63a5c1fd152e4b757cb36059086f627716b7d69e0b16e6959703bd9b3f",
+      "expected": "a1ba0d63a5c1fd152e4b757cb36059086f627716b7d69e0b16e6959703bd9b3f",
+      "ok": true
+    },
+    {
+      "label": "asset",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/videos/letter-fold-inscription-portrait-before.mp4",
+      "sha256": "02a369d37a4d03a79a19bc326f1245c18076917ff81e8352c79cffd0a077d7ae",
+      "expected": "02a369d37a4d03a79a19bc326f1245c18076917ff81e8352c79cffd0a077d7ae",
+      "ok": true
+    },
+    {
+      "label": "asset",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/images/letter-fold-inscription-portrait-06-after.png",
+      "sha256": "4992933c9b92f2433913d2dece1c1ac28746ba4cebff7f1f96b5351cc7f4d974",
+      "expected": "4992933c9b92f2433913d2dece1c1ac28746ba4cebff7f1f96b5351cc7f4d974",
+      "ok": true
+    },
+    {
+      "label": "asset",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/images/letter-fold-inscription-portrait-42-after.png",
+      "sha256": "cf3a2f597830e3ef0c1f175da8535d3fe196f80f10b41827ca56d255a95e8cce",
+      "expected": "cf3a2f597830e3ef0c1f175da8535d3fe196f80f10b41827ca56d255a95e8cce",
+      "ok": true
+    },
+    {
+      "label": "asset",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/images/letter-fold-inscription-portrait-90-after.png",
+      "sha256": "7540ff2f0045d9da29d6bf9b3a538ba5944be9b6ab66ba90694e5d3fbcf6518d",
+      "expected": "7540ff2f0045d9da29d6bf9b3a538ba5944be9b6ab66ba90694e5d3fbcf6518d",
+      "ok": true
+    },
+    {
+      "label": "asset",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/videos/letter-fold-inscription-portrait-after.mp4",
+      "sha256": "f89b40ac67b5acf11ff7189451e886fefd688ae924035f8b71000cc4e634606d",
+      "expected": "f89b40ac67b5acf11ff7189451e886fefd688ae924035f8b71000cc4e634606d",
+      "ok": true
+    },
+    {
+      "label": "source",
+      "path": "/workspace/avoid008-objects/src/09i_layoutsC_objects.js",
+      "sha256": "174ea2509eccf32dfa305533242bb12d2e5dc9c006deb787d553e3f2b7cf5733",
+      "expected": "174ea2509eccf32dfa305533242bb12d2e5dc9c006deb787d553e3f2b7cf5733",
+      "ok": true
+    },
+    {
+      "label": "source",
+      "path": "/workspace/avoid008-objects/src/11p_layoutsC.js",
+      "sha256": "7c00507bd0426fe7df4edf04c43a6fa3f38c3264735137b0df93faa9d5b248fc",
+      "expected": "7c00507bd0426fe7df4edf04c43a6fa3f38c3264735137b0df93faa9d5b248fc",
+      "ok": true
+    },
+    {
+      "label": "source",
+      "path": "/workspace/avoid008-objects/src/09g_layoutsC_placement.js",
+      "sha256": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+      "expected": "34f43d6c1e99f31ac89de6f4cffa57b24fba58978d8eae95d90970601de307b9",
+      "ok": true
+    },
+    {
+      "label": "scriptSHA256",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-writing-preview.cjs",
+      "sha256": "ed707f2d74147979f68dbb0ca017579b47140df7ecc9e03a09b55dae414fde68",
+      "expected": "ed707f2d74147979f68dbb0ca017579b47140df7ecc9e03a09b55dae414fde68",
+      "ok": true
+    },
+    {
+      "label": "fixtureSHA256",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-b-fixture.js",
+      "sha256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+      "expected": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+      "ok": true
+    },
+    {
+      "label": "fontManifestSHA256",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/manifest.json",
+      "sha256": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+      "expected": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+      "ok": true
+    },
+    {
+      "label": "font sans-regular",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/sans-regular.otf",
+      "sha256": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5",
+      "expected": "2ebd1c317512f5bb5a351973f30dc5ed42c87b08f53805aeba9bfa179c5d48a5",
+      "ok": true
+    },
+    {
+      "label": "font sans-bold",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/sans-bold.otf",
+      "sha256": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359",
+      "expected": "a50e2165aa9b6e1ffec4bc4f2e32ceb4fdfc7f1b41a10d3ebeb9ae4da3ecd359",
+      "ok": true
+    },
+    {
+      "label": "font serif-regular",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/serif-regular.otf",
+      "sha256": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19",
+      "expected": "ba3056934079ae5a1a91c68ef50b3ba1a97aba2102374f45ae893cc860e8be19",
+      "ok": true
+    },
+    {
+      "label": "font serif-bold",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/serif-bold.otf",
+      "sha256": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce",
+      "expected": "f936ac206b8e187b0d32eed7e39861defc2653ec635c0090d791d3f60438cbce",
+      "ok": true
+    },
+    {
+      "label": "font mono",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/mono.otf",
+      "sha256": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585",
+      "expected": "20077d84f64ef9cd1b103490b0d1f121de5a9b84a95e48be436f2fedf5b2c585",
+      "ok": true
+    },
+    {
+      "label": "font dot",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/dot.ttf",
+      "sha256": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c",
+      "expected": "587a2dd459b072206a9e99d0ba1983f4c1474c1bc8f8036373a13698df82c92c",
+      "ok": true
+    },
+    {
+      "label": "font rounded",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/rounded.ttf",
+      "sha256": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527",
+      "expected": "d1caebd87d52f0c2ea2a67ac7d17ffa1037ec2a3f3ac619ffe5ca53a041e6527",
+      "ok": true
+    },
+    {
+      "label": "font symbols",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/symbols.ttf",
+      "sha256": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9",
+      "expected": "2d877db0b3f858f04ab1909fa7d4640edf914ad80b545226bd6d0e4f7aad6ce9",
+      "ok": true
+    },
+    {
+      "label": "font fractions",
+      "path": "/workspace/avoid008-objects/dev/avoidance/layouts-c-objects-fonts-v2/fractions.ttf",
+      "sha256": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597",
+      "expected": "a10fbc15ea95b59667475356d115381a807cf98a5294f5e3e39fc4c17e0a1597",
+      "ok": true
+    },
+    {
+      "label": "engine before",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/before-engine.html.gz",
+      "sha256": "17e35475df196fc87a931802a21683a1d4c7b0cafcbba88feb2e50c9ba708456",
+      "expected": "17e35475df196fc87a931802a21683a1d4c7b0cafcbba88feb2e50c9ba708456",
+      "ok": true
+    },
+    {
+      "label": "plan gzip",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-before-sourcePlan.json.gz",
+      "sha256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+      "expected": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+      "ok": true
+    },
+    {
+      "label": "plan bytes",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-before-sourcePlan.json.gz",
+      "sha256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+      "expected": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+      "ok": true
+    },
+    {
+      "label": "plan gzip",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-before-renderPlan.json.gz",
+      "sha256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+      "expected": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+      "ok": true
+    },
+    {
+      "label": "plan bytes",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-before-renderPlan.json.gz",
+      "sha256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+      "expected": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+      "ok": true
+    },
+    {
+      "label": "plan gzip",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-before-actualCut.json.gz",
+      "sha256": "9269f32a711d6d81cfddc0aadf4421dd198ce1a20827d8e5082ca87e2335c87d",
+      "expected": "9269f32a711d6d81cfddc0aadf4421dd198ce1a20827d8e5082ca87e2335c87d",
+      "ok": true
+    },
+    {
+      "label": "plan bytes",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-before-actualCut.json.gz",
+      "sha256": "731c4e371b095a7ea96fc41f075654e3d9d5274a069fe65b2fe573e557e1ef5c",
+      "expected": "731c4e371b095a7ea96fc41f075654e3d9d5274a069fe65b2fe573e557e1ef5c",
+      "ok": true
+    },
+    {
+      "label": "engine after",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/after-engine.html.gz",
+      "sha256": "356bf5142bcaaf46374da2f7b7d501624daf54fa3fbc8998ac990e387e6d3a11",
+      "expected": "356bf5142bcaaf46374da2f7b7d501624daf54fa3fbc8998ac990e387e6d3a11",
+      "ok": true
+    },
+    {
+      "label": "plan gzip",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-after-sourcePlan.json.gz",
+      "sha256": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+      "expected": "97cca6884f6aaf5a48bb7fba55536236ba34120c6d18c6142856c2cbd0d02e5c",
+      "ok": true
+    },
+    {
+      "label": "plan bytes",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-after-sourcePlan.json.gz",
+      "sha256": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+      "expected": "5ce8d9b0d744b0b6676ff559fbe369cf8f6dbeb850a30624eff2b2bd51ba9f22",
+      "ok": true
+    },
+    {
+      "label": "plan gzip",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-after-renderPlan.json.gz",
+      "sha256": "6c01ec8efe1108cf240c31b2e1b3a8b7dc28a1048947227a87ceaf4d6742104e",
+      "expected": "6c01ec8efe1108cf240c31b2e1b3a8b7dc28a1048947227a87ceaf4d6742104e",
+      "ok": true
+    },
+    {
+      "label": "plan bytes",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-after-renderPlan.json.gz",
+      "sha256": "3db959005f529188601cfcbb9861bf487a18e242f46069a015c85562693d6475",
+      "expected": "3db959005f529188601cfcbb9861bf487a18e242f46069a015c85562693d6475",
+      "ok": true
+    },
+    {
+      "label": "plan gzip",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-after-actualCut.json.gz",
+      "sha256": "b2619a627ab789518f2e6be789500a9c5f74472672d2045a1fee5d738609d5e9",
+      "expected": "b2619a627ab789518f2e6be789500a9c5f74472672d2045a1fee5d738609d5e9",
+      "ok": true
+    },
+    {
+      "label": "plan bytes",
+      "path": "/workspace/avoid008-objects/tasks/evidence/AVOID-008/objects/writing-preview05/fixtures/letter-fold-inscription-portrait-after-actualCut.json.gz",
+      "sha256": "66feb2e5966910dcbc36ebf3c432c3334c00265af30214c15428cc101cf1fa8d",
+      "expected": "66feb2e5966910dcbc36ebf3c432c3334c00265af30214c15428cc101cf1fa8d",
+      "ok": true
+    }
+  ],
+  "mediaProbes": {
+    "before": {
+      "width": 540,
+      "height": 960,
+      "r_frame_rate": "24/1",
+      "nb_read_frames": "96",
+      "duration": "4.000000"
+    },
+    "after": {
+      "width": 540,
+      "height": 960,
+      "r_frame_rate": "24/1",
+      "nb_read_frames": "96",
+      "duration": "4.000000"
+    }
+  },
+  "allViewedFrameKeys": {
+    "before": [
+      "before:00",
+      "before:01",
+      "before:02",
+      "before:03",
+      "before:04",
+      "before:05",
+      "before:06",
+      "before:07",
+      "before:08",
+      "before:09",
+      "before:10",
+      "before:11",
+      "before:12",
+      "before:13",
+      "before:14",
+      "before:15",
+      "before:16",
+      "before:17",
+      "before:18",
+      "before:19",
+      "before:20",
+      "before:21",
+      "before:22",
+      "before:23",
+      "before:24",
+      "before:25",
+      "before:26",
+      "before:27",
+      "before:28",
+      "before:29",
+      "before:30",
+      "before:31",
+      "before:32",
+      "before:33",
+      "before:34",
+      "before:35",
+      "before:36",
+      "before:37",
+      "before:38",
+      "before:39",
+      "before:40",
+      "before:41",
+      "before:42",
+      "before:43",
+      "before:44",
+      "before:45",
+      "before:46",
+      "before:47",
+      "before:48",
+      "before:49",
+      "before:50",
+      "before:51",
+      "before:52",
+      "before:53",
+      "before:54",
+      "before:55",
+      "before:56",
+      "before:57",
+      "before:58",
+      "before:59",
+      "before:60",
+      "before:61",
+      "before:62",
+      "before:63",
+      "before:64",
+      "before:65",
+      "before:66",
+      "before:67",
+      "before:68",
+      "before:69",
+      "before:70",
+      "before:71",
+      "before:72",
+      "before:73",
+      "before:74",
+      "before:75",
+      "before:76",
+      "before:77",
+      "before:78",
+      "before:79",
+      "before:80",
+      "before:81",
+      "before:82",
+      "before:83",
+      "before:84",
+      "before:85",
+      "before:86",
+      "before:87",
+      "before:88",
+      "before:89",
+      "before:90",
+      "before:91",
+      "before:92",
+      "before:93",
+      "before:94",
+      "before:95"
+    ],
+    "after": [
+      "after:00",
+      "after:01",
+      "after:02",
+      "after:03",
+      "after:04",
+      "after:05",
+      "after:06",
+      "after:07",
+      "after:08",
+      "after:09",
+      "after:10",
+      "after:11",
+      "after:12",
+      "after:13",
+      "after:14",
+      "after:15",
+      "after:16",
+      "after:17",
+      "after:18",
+      "after:19",
+      "after:20",
+      "after:21",
+      "after:22",
+      "after:23",
+      "after:24",
+      "after:25",
+      "after:26",
+      "after:27",
+      "after:28",
+      "after:29",
+      "after:30",
+      "after:31",
+      "after:32",
+      "after:33",
+      "after:34",
+      "after:35",
+      "after:36",
+      "after:37",
+      "after:38",
+      "after:39",
+      "after:40",
+      "after:41",
+      "after:42",
+      "after:43",
+      "after:44",
+      "after:45",
+      "after:46",
+      "after:47",
+      "after:48",
+      "after:49",
+      "after:50",
+      "after:51",
+      "after:52",
+      "after:53",
+      "after:54",
+      "after:55",
+      "after:56",
+      "after:57",
+      "after:58",
+      "after:59",
+      "after:60",
+      "after:61",
+      "after:62",
+      "after:63",
+      "after:64",
+      "after:65",
+      "after:66",
+      "after:67",
+      "after:68",
+      "after:69",
+      "after:70",
+      "after:71",
+      "after:72",
+      "after:73",
+      "after:74",
+      "after:75",
+      "after:76",
+      "after:77",
+      "after:78",
+      "after:79",
+      "after:80",
+      "after:81",
+      "after:82",
+      "after:83",
+      "after:84",
+      "after:85",
+      "after:86",
+      "after:87",
+      "after:88",
+      "after:89",
+      "after:90",
+      "after:91",
+      "after:92",
+      "after:93",
+      "after:94",
+      "after:95"
+    ]
+  },
+  "nativeKeysViewed": [
+    "before:06",
+    "before:42",
+    "before:90",
+    "after:06",
+    "after:42",
+    "after:90"
+  ],
+  "additionalIndividualDecodedFramesViewed": [
+    "before:01",
+    "before:95",
+    "after:01",
+    "after:95"
+  ],
+  "decodedFrameReceipt": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/receipt.json",
+  "sheetHashes": [
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/after-00-11.jpg",
+      "sha256": "afc0796bc2805dc3095a5cb93529e2399fe07ac614078cc61acd76e332674937"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/after-12-23.jpg",
+      "sha256": "671f2463a9df2af97818718b1b67e3ecd6dfcdbdb50fe6b0b155050667fb3aef"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/after-24-35.jpg",
+      "sha256": "fa23d9db29ba02d82ee634da3e23489386212892b2869e77dc803b80733f238f"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/after-36-47.jpg",
+      "sha256": "71f88b63237991e3d61f58860f8a23a1808cf8e585524080441df2e8e9b1fc16"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/after-48-59.jpg",
+      "sha256": "c98e8d85295364059bd3e43c442f937bed48bf7c3e4768c8395206b061ca6554"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/after-60-71.jpg",
+      "sha256": "28ec9cbd8bb66306e60b930e385c9840fdb34ea9517a0e74c1ebda40fed3f1e7"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/after-72-83.jpg",
+      "sha256": "f1c86c186e17b07ce8f1bf4f41a736785c9082cde64b3d831c33efd4997b9509"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/after-84-95.jpg",
+      "sha256": "994b50a181a8cf448cd92db7a056f644d521f1d350d775f39d09b2ad5e7341a1"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/before-00-11.jpg",
+      "sha256": "d1283435c78489b08e9e93fa61ada0c82715529860a557472779bd706959d971"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/before-12-23.jpg",
+      "sha256": "2190eef632862768433a0aac69d8c93c62b9346a4de7bc9d692335c575a0a6f2"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/before-24-35.jpg",
+      "sha256": "bb377190ef54f3572d5352722681099a2784e99c87741fabc7817712d5ceea36"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/before-36-47.jpg",
+      "sha256": "82c784e0abadc690ea42a88badd4b16603df6ebf31b43029dc6ace1d5570fd48"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/before-48-59.jpg",
+      "sha256": "f29e7f3d1deae9433b076c1f55fb273263b76ada1a070ea93a81e816c74c0b42"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/before-60-71.jpg",
+      "sha256": "bdd07964afdc7b36407567c4ee8a7429e917af85b9426ca89d70842745de2601"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/before-72-83.jpg",
+      "sha256": "6e7ee2726b94cebfde68c57dec3e8233743f3b3a26c55dd0fa0f6f478976eda9"
+    },
+    {
+      "file": "/workspace/lyricfx.JIZURA/scratch/avoid008-writing-visual05/before-84-95.jpg",
+      "sha256": "482e4723773fdc2d7c2f69ce8c6f5a68a4e99abedf0ba244799ca9470d6271eb"
+    }
+  ],
+  "preservedOriginals": true,
+  "unconfirmedDomains": [
+    "Real-time motion cadence / perceived smoothness",
+    "Between-sample continuous-time safety",
+    "Time exactly 4.0 and later; capture ends 95/24",
+    "Other fixtures, fonts, text lengths, layout variants, aspect ratios",
+    "Production font identities; transport fixture uses pinned substitute faces",
+    "Browser/UI/live editing/save/undo/export and app startup",
+    "Public result checks permanently stopped by user instruction; out of scope"
+  ],
+  "observations": {
+    "paperEdges": "after all four edges visible on every visible decoded frame; no new stage crop; before frame1 has native bottom crop",
+    "headerRules": "close double top rule remains distinct on native keys, above main and separate from three body rules",
+    "mainText": "風の / 先へ, horizontal left-to-right then top-to-bottom, all four chars intact; meaning preserved",
+    "signature": "— No.01 intact, right aligned under main, separate from dark body rule; no source note exists",
+    "creases": "two pale source fold creases retained; cross portions of enlarged after glyphs. They read as paper folds and do not erase glyphs; not classified as dark writing-rule interference",
+    "composition": "paper reduced and moved to upper center, one row becomes two; paper/header/body ruling/signature/folds retain letter identity; original page-dominant spaciousness decreases",
+    "motion": "frame0 empty both; shared fade/vertical settling entry and faded downward exit visible in sampled sequence; after remains complete",
+    "overlap": "no new dark rule/glyph crossing, duplicated glyph, missing stroke, signature collision, or paper-edge clipping seen"
+  },
+  "planAudit": {
+    "sourcePlansEqual": true,
+    "beforeSourceEqualsRender": true,
+    "bothActualCutEqualRenderCut": true,
+    "sourceCutFieldsPreservedInAfter": true,
+    "afterComposition": {
+      "objectScale": 0.35,
+      "letterWritingScale": 0.7,
+      "strategy": "letterPaper-fold-panel-inscription"
+    },
+    "safetySelfReportUsedAsVisualVerdict": false,
+    "notes": "All six gzip snapshots decompressed and parsed independently; gzip hash, uncompressed hash and length checked. SourcePlan same; after render/actual add placement trajectory and finalization. Numeric safe/envelope observations are not visual proof."
+  },
+  "startupDifference": {
+    "onlyDifference": "manifest.startup has sourceStartEndMatched:true; startup.json saved before capture lacks it",
+    "hashOrVersionDifference": false
+  },
+  "fontAudit": {
+    "sidesEqual": true,
+    "allNineLoaded": true,
+    "assignmentsMatchPinnedManifest": true,
+    "allFaceHashesMatch": true
+  }
+}

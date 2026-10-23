@@ -1,0 +1,255 @@
+{
+  "beforeAfter": {
+    "rows": [
+      {
+        "suite": "lyric_test.js",
+        "beforeExit": 0,
+        "afterExit": 0,
+        "rawLogsExact": true,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true
+      },
+      {
+        "suite": "drawing_frames_test.cjs",
+        "beforeExit": 0,
+        "afterExit": 0,
+        "rawLogsExact": true,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true
+      },
+      {
+        "suite": "palette_stability_test.cjs",
+        "beforeExit": 0,
+        "afterExit": 0,
+        "rawLogsExact": true,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true
+      },
+      {
+        "suite": "cut_detail_audit_test.cjs",
+        "beforeExit": 0,
+        "afterExit": 0,
+        "rawLogsExact": true,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true
+      },
+      {
+        "suite": "effect_copy_fidelity_test.cjs",
+        "beforeExit": 0,
+        "afterExit": 0,
+        "rawLogsExact": true,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true
+      },
+      {
+        "suite": "lyric_area_effects_test.cjs",
+        "beforeExit": 1,
+        "afterExit": 1,
+        "rawLogsExact": false,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true,
+        "failureLogs": [
+          "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at /tmp/avoid008-integration-owned01/baseline/dev/lyric_area_effects_test.cjs:35:10 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n",
+          "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at /tmp/avoid008-integration-owned01/candidate/dev/lyric_area_effects_test.cjs:35:10 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+        ]
+      },
+      {
+        "suite": "lyric_compositing_test.cjs",
+        "beforeExit": 1,
+        "afterExit": 1,
+        "rawLogsExact": false,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true,
+        "failureLogs": [
+          "page.evaluate: Error: background transition preserves each cut's composite: 30,105,214 vs 60,103,137\n    at check (eval at evaluate (:311:30), <anonymous>:2:49)\n    at close (eval at evaluate (:311:30), <anonymous>:60:46)\n    at eval (eval at evaluate (:311:30), <anonymous>:82:13)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /tmp/avoid008-integration-owned01/baseline/dev/lyric_compositing_test.cjs:13:33 {\n  log: []\n}\n",
+          "page.evaluate: Error: background transition preserves each cut's composite: 30,105,214 vs 60,103,137\n    at check (eval at evaluate (:311:30), <anonymous>:2:49)\n    at close (eval at evaluate (:311:30), <anonymous>:60:46)\n    at eval (eval at evaluate (:311:30), <anonymous>:82:13)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /tmp/avoid008-integration-owned01/candidate/dev/lyric_compositing_test.cjs:13:33 {\n  log: []\n}\n"
+        ]
+      },
+      {
+        "suite": "lyric_placement_stability_test.cjs",
+        "beforeExit": 0,
+        "afterExit": 0,
+        "rawLogsExact": true,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true
+      },
+      {
+        "suite": "lyric_avoid_center_test.cjs",
+        "beforeExit": 0,
+        "afterExit": 0,
+        "rawLogsExact": true,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true
+      },
+      {
+        "suite": "lyric_group_avoidance_test.cjs",
+        "beforeExit": 0,
+        "afterExit": 0,
+        "rawLogsExact": true,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true
+      },
+      {
+        "suite": "lyric_area_effects_en_only.cjs",
+        "beforeExit": 1,
+        "afterExit": 1,
+        "rawLogsExact": false,
+        "snapshotPathNormalizedLogsExact": true,
+        "cleanupBoth": true,
+        "failureLogs": [
+          "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at /tmp/avoid008-integration-owned01/baseline/dev/lyric_area_effects_en_only.cjs:35:10 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n",
+          "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at /tmp/avoid008-integration-owned01/candidate/dev/lyric_area_effects_en_only.cjs:35:10 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+        ]
+      }
+    ],
+    "before": {
+      "pass": 8,
+      "fail": 3
+    },
+    "after": {
+      "pass": 8,
+      "fail": 3
+    },
+    "downstreamCoverage": "JA/independent EN lyric-area and JA compositing stop at original failures; later assertions not certified. project_file/save not executed: saved inherited cut expected0 actual1 before save body remains AVOID-013."
+  },
+  "all22RawLogHashesAndOwnedCleanupVerified": true,
+  "actualReadScope": [
+    {
+      "variant": "baseline",
+      "suite": "lyric_test.js",
+      "directReadTraceRows": 2,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_test.js",
+      "directReadTraceRows": 2,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "drawing_frames_test.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "drawing_frames_test.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "palette_stability_test.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "palette_stability_test.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "cut_detail_audit_test.cjs",
+      "directReadTraceRows": 4,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "cut_detail_audit_test.cjs",
+      "directReadTraceRows": 4,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "effect_copy_fidelity_test.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "effect_copy_fidelity_test.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "lyric_area_effects_test.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_area_effects_test.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "lyric_compositing_test.cjs",
+      "directReadTraceRows": 0,
+      "evidence": "unchanged HTTP suite under runner fixed snapshot document root; no response-byte receipt claimed"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_compositing_test.cjs",
+      "directReadTraceRows": 0,
+      "evidence": "unchanged HTTP suite under runner fixed snapshot document root; no response-byte receipt claimed"
+    },
+    {
+      "variant": "baseline",
+      "suite": "lyric_placement_stability_test.cjs",
+      "directReadTraceRows": 2,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_placement_stability_test.cjs",
+      "directReadTraceRows": 2,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "lyric_avoid_center_test.cjs",
+      "directReadTraceRows": 2,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_avoid_center_test.cjs",
+      "directReadTraceRows": 2,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "lyric_group_avoidance_test.cjs",
+      "directReadTraceRows": 4,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_group_avoidance_test.cjs",
+      "directReadTraceRows": 4,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "baseline",
+      "suite": "lyric_area_effects_en_only.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    },
+    {
+      "variant": "candidate",
+      "suite": "lyric_area_effects_en_only.cjs",
+      "directReadTraceRows": 1,
+      "evidence": "direct Node file read hashes verified"
+    }
+  ],
+  "baselineHTMLExactFixedGit": "c7af7a4",
+  "candidateHTMLExactFixedGit": "fdb7916",
+  "noNewRegressionAmongExecutedAssertions": true,
+  "saveProject": "not rerun; inherited initial cut expected0/actual1 prevents reaching save body; not passed",
+  "publicChecks": 0
+}

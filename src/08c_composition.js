@@ -208,7 +208,7 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
       if (zone) score += 2 * (1 - overlap(r, zone) / area);
       if (fgCenter) score -= .8 * Math.hypot(x + cw / 2 - fgCenter.x, y + ch / 2 - fgCenter.y);
       // Prefer the thirds grid; smaller areas cost a little.
-      score += .25 * Math.min(...anchors.map(a => Math.abs(x + cw / 2 - a))) + .25 * Math.min(...[...anchors, .72, .28].map(a => Math.abs(y + ch / 2 - a)));
+      score += .25 * Math.min(Math.abs(x + cw / 2 - (1 / 3)), Math.abs(x + cw / 2 - .5), Math.abs(x + cw / 2 - (2 / 3))) + .25 * Math.min(Math.abs(y + ch / 2 - (1 / 3)), Math.abs(y + ch / 2 - .5), Math.abs(y + ch / 2 - (2 / 3)), Math.abs(y + ch / 2 - .72), Math.abs(y + ch / 2 - .28));
       score += (1 - k) * 1.6 + rng() * .35;
       const clear = covered <= 1e-9;
       if (!best || clear && !best.clear || clear === best.clear && score < best.score) best = { score, r, clear };

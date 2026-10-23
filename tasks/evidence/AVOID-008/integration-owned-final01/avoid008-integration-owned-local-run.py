@@ -1,0 +1,2 @@
+exec(open('/tmp/avoid008-integration-owned-carry-run.py').read().split('for name,helper,key')[0])
+J=T/'local-ja-en-corrected';J.mkdir();result=execute_process(['node','--loader',str(T/'local-loader.mjs'),'mcp/site-smoke-test.mjs','--local'],cwd=R,env=env,folder=J,timeout=180);(T/'local-ja-en-corrected-execution.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'localJaEnCorrectedExit':result['exitCode']}),flush=True)
