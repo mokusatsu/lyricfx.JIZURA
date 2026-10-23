@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "rawSHA256": "dd57c6ac7cee050bcff85cec34f032fbab2576a16ddf59d27cbb8bb075e6136b",
+  "counts": {
+    "trials": 8,
+    "owners": 56,
+    "cells": 1792,
+    "nominalClippedVertices": 25088,
+    "paintFrames": 48,
+    "actualSettledOwners": 120,
+    "actualClearanceExtrema": 1780,
+    "declaredSlabs": 86016,
+    "declaredPairChecks": 1505280,
+    "declaredFallbacks": 0
+  },
+  "inputsUnchanged": 1210,
+  "inputsActuallyRehashed": 1210,
+  "diagnostics": [
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "native-equivalent",
+      "strict": 4,
+      "allowed": 4,
+      "total": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-no-split",
+      "strict": 3,
+      "allowed": 4,
+      "total": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-split-rho90",
+      "strict": 1,
+      "allowed": 2,
+      "total": 4
+    },
+    {
+      "case": "landscape-single-row-push",
+      "recipe": "a84-split-rho110",
+      "strict": 1,
+      "allowed": 2,
+      "total": 4
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "native-equivalent",
+      "strict": 3,
+      "allowed": 3,
+      "total": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-no-split",
+      "strict": 2,
+      "allowed": 3,
+      "total": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-split-rho90",
+      "strict": 2,
+      "allowed": 2,
+      "total": 3
+    },
+    {
+      "case": "landscape-gap-unicode-pool-push",
+      "recipe": "a84-split-rho110",
+      "strict": 2,
+      "allowed": 2,
+      "total": 3
+    }
+  ],
+  "limitations": [
+    "Proof-only correlated projection budget, not filledink/quality/SAFE/adapter acceptance",
+    "No geometry/groupY/font/recipe change; old07budgetfailures retained",
+    "08B0paintparity scope, no newstage/circle/fullvisible acceptance",
+    "Ordinary numeric model; independent nominal clipping is falsification of interval containment, not formal libm proof"
+  ]
+}

@@ -291,3 +291,9 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 [親ソース・生結果レビュー](evidence/AVOID-009/pile-shoulder07/parent-source-raw-review07.json)。元順序・空白・文字サイズ・時刻を保つ左右2組の試作は2条件120観測4515polygon、通常描画/移動後replayが一致。親も1074初回/1082再実行input、完全なconvex hull・位置移動を独立照合。最初の試験コードの空集合例外（exit1/完了条件0）を保持し、runnerだけの修正後exit0。rho1.1は通常円を避ける支持範囲候補があるが、文字と山の接地のsource-envelope予算は未達であり、回避adapter/品質/SAFE/人間承認には数えない。文字縮小・許容値拡大は行わず、次は斜めの下辺と山の線分のx-y対応を維持する判定の設計のみ。製品bc39ce2/限定D9件・未回答12例・009実装中/010以降未着手は維持。
 
 [復元保存](evidence/AVOID-009/pile-shoulder07/archive-storage07.json)は1.45MBのGitblobのみ、skip-worktree欠落の10個目。親が69artifact/515非runtime入力/52fontを照合し、過去10HTMLを再構築・保存rawから独立幾何を再計算。runtimeCAS567は外部、単独実行runtimeではない。公開結果確認・親画像閲覧は0。
+
+## Pile contact08: 描画不変の接地判定を限定受入
+
+[親レビュー](evidence/AVOID-009/pile-contact08/parent-source-raw-review08.json)。斜めの文字下辺と山の線分のx-y対応を保つ、判定専用の09wを追加した隔離版。既存97JS/buildは同一。2条件48観測の変更前後pixel/元trial全JSON/旧判定値が一致し、親が56owner・1792cell・25088線分交差点、実際に着地した120owner/1780端点を独立照合。1210実入力hash不変。旧判定の失敗は保持。食い込みの見積もりは精密になったが、間隔の予算未達が残るため、描画・SAFE/回避adapter/接地品質の受入ではない。次は組ごとの小さな共通Y補正の設計のみ。
+
+[1.38MB復元証拠](evidence/AVOID-009/pile-contact08/archive-storage08.json)はGitblobのみで11個目のskip-worktree欠落。親が70artifact、643非runtime入力・65fontターゲットを照合、12過去HTMLを再構築し、保存rawから独立判定を再実行。567runtimeCASは外部。新しいブラウザ・公開・画像の確認はしていない。009実装中/限定D9件、未回答12例、010以降未着手を維持。
