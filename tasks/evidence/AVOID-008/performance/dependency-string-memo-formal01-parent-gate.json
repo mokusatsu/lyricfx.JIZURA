@@ -1,0 +1,67 @@
+{
+  "authorizedByParent": true,
+  "authorizedAt": "2026-10-23T07:07:24.972370+00:00",
+  "authorizedMode": "--formal",
+  "formal1000Authorized": true,
+  "candidateSource": "9bdb23287879ae12f054af7ef71d4ea725a56534",
+  "candidateSHA256": "0f0989faa968e4e1c165543e8837a16f41e234a909c31cfbc7d438a7af260874",
+  "baselineCommit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+  "runnerSHA256": "6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756",
+  "fixtureSHA256": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+  "normalizedCorpusSHA256": "4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc",
+  "preloadSHA256": "f1e938db5cd78e717ca56bb5c9ee967dc581692d0269b83afe912e9688100362",
+  "expectedSpecRevision": "230",
+  "runtimeIdentityFile": "tasks/evidence/AVOID-008/performance/native-local-bounds-runtime04.json",
+  "correctnessEvidenceCommit": "e96f40098bfa960f4c762a635ea30b123a57fb46",
+  "correctnessRawSHA256": "63c0adeb1923daab761e9b9d28e0a5bc7bb439e04029df060247ac0975a51da9",
+  "correctnessParentReviewSHA256": "b48fea8ad0e48404415e8a28a3aacc242375ec0e5879149f29663148965db227",
+  "publicChecks": false,
+  "conditions": "ONE unchanged original formal100/1000, ON/OFF baseline/candidate eight sides. 3warm/6samples,80render16warm, original1800000ms wall,250MiB including saved results. Preserve2x/+3ms and actual native record/replay/observations. No diagnostic retry/security/CDP/public/images or source edits. Exclusive whole-run lease; actual PID/startTicks/waitpid0/reaped/gone/awaitclose and raw failures retained.",
+  "exclusiveLease": {
+    "owner": "/root/avoid008_continue_impl",
+    "scope": "Whole invocation through awaited browser/server cleanup and OS waitpid",
+    "parentCommitment": "All other agents remain idle; parent runs no browser/ffmpeg/test/perf/profile during invocation",
+    "limitations": "Original runner during scan misses MainThread/profile-only; preload scans before/after; exclusive operational lease covers whole interval, not a claim of mechanical continuous process detection."
+  },
+  "executionPermission": {
+    "sandbox_permissions": "with_additional_permissions",
+    "additional_permissions": {
+      "network": {
+        "enabled": true
+      }
+    }
+  },
+  "output": "tasks/evidence/AVOID-008/performance/dependency-string-memo-formal01",
+  "scope": "Formal qualification to measure the stable current fixture after variable one-point diagnostic render+3.1ms failure; no tolerance or automatic pass. Old1000 memo cap observation is historical only; current capacity unconfirmed. Four human compositions remain pending.",
+  "allC34Stable": true,
+  "allC34StableMeaning": "Source stable and full native34/pipeline/normal paired correctness accepted; does not mean all circular conditions safe or human aesthetic approval.",
+  "fontManifestSHA256": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+  "outerWrapperSHA256": "6c558a7430f4ba17c52f67a7432c8a955b00c0ae68bc2d63b0c7416410c186e1",
+  "outerTimeoutSeconds": 1830,
+  "parentPreparationReview": "Parent independently reconstructs b9 formal preload and f33 runtime-only literals, reviews wrapper command/1830s timeout/owned PID and waitpid evidence; original6cc/765/4add and source9b retained. Initial inspection used wrong prep subdirectory path, corrected via fixed Git listing; no workload run by that failed read.",
+  "runtimeRecheck": {
+    "capturedUTC": "2026-10-23T07:07:25.110Z",
+    "environment": {
+      "environment_id": "ccarenv_b64_Y2NhcmVudl9iNTNiMjlkNmNlYzA4MTkxYTdlYmM4MDA2N2YwNDczYw",
+      "source_config_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfg_6ad48aa510ac8193888ec17160277acd",
+      "source_config_version_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfgver_6ad4cb133f2081938362cf953cd01341",
+      "spec_revision": "230",
+      "observed_spec_revision": "230",
+      "observations_current": true,
+      "provider": "cloud",
+      "desired_phase": "running",
+      "observed_phase": "running",
+      "failure": null,
+      "connectivity": "connected",
+      "network_policy": {
+        "mode": "unrestricted",
+        "state": "enforced"
+      },
+      "capabilities": [],
+      "secrets": [],
+      "runtime_variables": [],
+      "outbound_identities": [],
+      "network_diagnostics": null
+    }
+  }
+}
