@@ -1,0 +1,44 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-23T03:11:47.847269+00:00",
+  "basis": "d256228e650382e560ce941310490581837c079d",
+  "source": "ccfe825b2d9df2f507cf55978be47f5183c9c0c9",
+  "productCommit": "3166516a48449703c3a4b0f879d5ee418978f785",
+  "sourceSHA256": "7bd1bf38c573f1341fbd6a90b63273535405cd79e507ed7063db99d2cfb5642b",
+  "other83SourceGitAndLiveExact": true,
+  "genericPayloadDecodeByteExact": true,
+  "compiled": [
+    {
+      "path": "index.html",
+      "sha256": "957953970183081b330f715015fca0378a2a97edeab820d299487968d8733a8a",
+      "all84TransformedModulesJoinedExact": true,
+      "fullReverseExact": true
+    },
+    {
+      "path": "en/index.html",
+      "sha256": "b5d2530ed6924ad9a597e8e0c93ba4a3d2686a420a76d04017c62922be1fc78c",
+      "all84TransformedModulesJoinedExact": true,
+      "fullReverseExact": true
+    }
+  ],
+  "manifestSHA256": "6485cecdb0fa023fa7464f836a44362e8e7bfaf1ad00f3d41cdd1c6ccbdfcd0e",
+  "manifestInputs": 87,
+  "manifestResults": 32,
+  "normalPureRerunExit": 0,
+  "normalCases": 165,
+  "eachNormalReads": "one full plus two fast; cap cases three full",
+  "lifecycle": [
+    "same-key replacement retires memo",
+    "LRU eviction retires memo",
+    "other-entry read replaces latest memo",
+    "clear retires and resets additive counters",
+    "unbranded entry uses generic without memo"
+  ],
+  "rawAndSummaryRerunByteExact": true,
+  "review": "Entry identity and immutable wire bind the latest-only private path/repair memo. First read remains the full old decoder. Each fast read creates an independent fresh parse tree, preserves repair order and uses the old guard; caps and errors use old decoder. No key, verification, normal freeze/signature, geometry, edge, pipeline or performance threshold changes. Normal output/descriptors/alias/freshness and actual replacement/eviction/clear checked. No new cybersecurity matrix performed.",
+  "decision": "Source and normal pure accepted. Prepare one normal forty-condition fast-read browser check next; no performance acceptance or AVOID-008 completion. Existing timing failure retained.",
+  "browserExecuted": false,
+  "newSecurityAudit": "omitted per user instruction",
+  "publicRequests": 0,
+  "parentImageViews": 0
+}

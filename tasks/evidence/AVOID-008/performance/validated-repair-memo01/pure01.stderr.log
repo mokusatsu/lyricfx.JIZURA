@@ -1,0 +1,17 @@
+evalmachine.<anonymous>:240
+verifyCacheContext=()=>true;globalThis.T={decode:payloadDecode,compact:payloadCompact,encode:cacheEncode,read:readCompletedPayload,clear:A.clearLayoutsCFinalCache,stats:A.layoutsCFinalCacheStats,retire:retireRepairMemo,pool:completedPool,entry(text,brand=true){const e=Object.freeze({payload:text});if(brand)repairBrandAdd(repairBrands,e);return e;},memo:()=>repairMemo};
+                                                                                                                                                                                                                                                                                                                                                                                   
+
+SyntaxError: Unexpected end of input
+    at new Script (node:vm:117:7)
+    at createScript (node:vm:269:10)
+    at Object.runInContext (node:vm:300:10)
+    at Object.<anonymous> (/workspace/avoid008-final-c34/dev/avoidance/layouts-c-validated-repair-memo-pure.cjs:7:4)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+
+Node.js v24.19.0

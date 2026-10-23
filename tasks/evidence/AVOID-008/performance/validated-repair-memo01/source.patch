@@ -1,0 +1,67 @@
+diff --git a/src/09g_layoutsC_placement.js b/src/09g_layoutsC_placement.js
+index e333375..c473864 100644
+--- a/src/09g_layoutsC_placement.js
++++ b/src/09g_layoutsC_placement.js
+@@ -86,6 +86,38 @@ function payloadDecode(text){
+  for(let i=0;i<p.aliases.length;i++){const row=p.aliases[i];if(!payloadArray(row)||row.length!==3)throw Error('C payload alias repair');earlier(row[2],row[0],row[1]);const target=at(row[2]);if(!target||typeof target!=='object')throw Error('C payload alias target');reserve(row[0],row[1],target);}
+  for(let i=0;i<repairs.length;i++){const r=repairs[i];payloadDefine(r[0],r[1],{value:r[2],enumerable:true,writable:true,configurable:true});}payloadGuard();return p.tree;
+ }
++// Latest private completed-entry only: validated instructions retain paths,
++// never output references. Generic payloadDecode remains the authority.
++const repairApply=Reflect.apply,repairBind=Function.prototype.bind,repairCall=Function.prototype.call,repairBrands=new WeakSet();
++const repairBrandHas=repairApply(repairBind,repairCall,[WeakSet.prototype.has]),repairBrandAdd=repairApply(repairBind,repairCall,[WeakSet.prototype.add]);
++const REPAIR_MAX_SLOTS=131072,REPAIR_MAX_CHARS=1048576,REPAIR_MAX_COUNT=8192,repairCap={};
++let repairMemo=null,repairCounters={compiles:0,fullReads:0,fastReads:0,fallbacks:0,capped:0,retired:0};
++function retireRepairMemo(entry){if(repairMemo&&(!entry||repairMemo.entry===entry)){repairMemo=null;repairCounters.retired++;}}
++function compileRepairMemo(entry){
++ if(!repairBrandHas(repairBrands,entry))return;
++ payloadGuard();const p=payloadParse(entry.payload);if(p.rootSpecial!==null)return;
++ let slots=0,chars=0,count=0;const ops=[];
++ const chargePath=path=>{slots+=path.length;for(let i=0;i<path.length;i++)if(typeof path[i]==='string')chars+=path[i].length;};
++ const add=(kind,path,key,target)=>{count++;slots+=5;chargePath(path);if(typeof key==='string')chars+=key.length;if(kind===2)chargePath(target);else if(kind===1)chars+=target.length;if(count>REPAIR_MAX_COUNT||slots>REPAIR_MAX_SLOTS||chars>REPAIR_MAX_CHARS)throw repairCap;payloadDefine(ops,ops.length,{value:[kind,path,key,target],enumerable:true,writable:true,configurable:true});};
++ for(let i=0;i<p.nullPrototypes.length;i++)add(0,p.nullPrototypes[i],null,null);
++ for(let i=0;i<p.scalars.length;i++){const r=p.scalars[i];add(1,r[1],r[2],r[0]);}
++ for(let i=0;i<p.aliases.length;i++){const r=p.aliases[i];add(2,r[0],r[1],r[2]);}
++ payloadGuard();repairMemo={entry,payload:entry.payload,ops,slots,chars,count};repairCounters.compiles++;
++}
++function readCompletedPayload(entry){
++ if(repairMemo&&repairMemo.entry!==entry)retireRepairMemo();
++ if(repairMemo&&repairBrandHas(repairBrands,entry)&&repairMemo.payload===entry.payload){
++  try{
++   payloadGuard();const root=payloadParse(entry.payload).tree,ops=repairMemo.ops;
++   const at=path=>{let value=root;for(let i=0;i<path.length;i++)value=value[path[i]];return value;};
++   for(let i=0;i<ops.length;i++){const op=ops[i],parent=at(op[1]);if(op[0]===0)payloadSetPrototype(parent,null);else payloadDefine(parent,op[2],{value:op[0]===2?at(op[3]):op[3]==='u'?undefined:-0,enumerable:true,writable:true,configurable:true});}
++   payloadGuard();repairCounters.fastReads++;return root;
++  }catch{retireRepairMemo(entry);repairCounters.fallbacks++;}
++ }
++ repairCounters.fullReads++;const result=payloadDecode(entry.payload);
++ try{compileRepairMemo(entry);}catch(e){if(e===repairCap)repairCounters.capped++;else repairCounters.fallbacks++;}
++ return result;
++}
+ // Only decoded completed-plan arrays can enter this private, latest-generation registry.
+ // Bootstrap uses standard natives; later live helper replacements are never invoked.
+ const edgeApply=Reflect.apply,edgeCall=Function.prototype.call,edgeBind=Function.prototype.bind,edgeWeakMap=WeakMap;
+@@ -189,8 +221,8 @@ function cacheDependencyEncode(m){
+  const fonts=cacheEncode(m.fonts);upperBytes+=64+12*fonts.length;if(upperBytes>CACHE_BYTES)throw Error('oversized dependency metadata');eligible();
+  const result=dependencyJSONStringify(['C008-deps-primitive-table-v2',metadata,fonts]);eligible();return result;
+ }
+-A.clearLayoutsCFinalCache=()=>{completedPool.clear();cacheBytes=cacheResidentBytes=lastKeyBytes=lastKeyResidentBytes=lastPayloadBytes=lastAdmissionPayloadBytes=lastAdmissionPayloadResidentBytes=lastCompactPayloadResidentBytes=0;lastPayloadRejection=null;cacheCounters={hits:0,misses:0,stores:0,bypasses:0,evictions:0,identityDrifts:0};};
+-A.layoutsCFinalCacheStats=()=>({...cacheCounters,entries:completedPool.size,keySerializedBytes:Array.from(completedPool.values()).reduce((n,e)=>n+e.keyBytes,0),payloadSerializedBytes:Array.from(completedPool.values()).reduce((n,e)=>n+e.payloadBytes,0),managementBytes:completedPool.size*CACHE_HEADER,lastAttemptKeyBytes:lastKeyBytes,lastAttemptKeyResidentBytes:lastKeyResidentBytes,lastAttemptPayloadBytes:lastPayloadBytes,lastAttemptPayloadResidentBytes:lastCompactPayloadResidentBytes,lastAttemptAdmissionPayloadBytes:lastAdmissionPayloadBytes,lastAttemptAdmissionPayloadResidentBytes:lastAdmissionPayloadResidentBytes,lastPayloadRejection,serializedBytes:cacheBytes,residentStringAndHeaderBytes:cacheResidentBytes,maxEntries:CACHE_ENTRIES,maxSerializedBytes:CACHE_BYTES,maxResidentStringAndHeaderBytes:CACHE_BYTES,entryHeaderBytes:CACHE_HEADER,scope:'whole exact C finalization; hits do not reconstruct or claim candidate work'});
++A.clearLayoutsCFinalCache=()=>{retireRepairMemo();repairCounters={compiles:0,fullReads:0,fastReads:0,fallbacks:0,capped:0,retired:0};completedPool.clear();cacheBytes=cacheResidentBytes=lastKeyBytes=lastKeyResidentBytes=lastPayloadBytes=lastAdmissionPayloadBytes=lastAdmissionPayloadResidentBytes=lastCompactPayloadResidentBytes=0;lastPayloadRejection=null;cacheCounters={hits:0,misses:0,stores:0,bypasses:0,evictions:0,identityDrifts:0};};
++A.layoutsCFinalCacheStats=()=>({...cacheCounters,repairMemoCompiles:repairCounters.compiles,repairMemoFullReads:repairCounters.fullReads,repairMemoFastReads:repairCounters.fastReads,repairMemoFallbacks:repairCounters.fallbacks,repairMemoCapped:repairCounters.capped,repairMemoRetired:repairCounters.retired,repairMemoSlots:repairMemo?.slots||0,repairMemoStringChars:repairMemo?.chars||0,repairMemoRepairs:repairMemo?.count||0,repairMemoMaxSlots:REPAIR_MAX_SLOTS,repairMemoMaxStringChars:REPAIR_MAX_CHARS,repairMemoMaxRepairs:REPAIR_MAX_COUNT,entries:completedPool.size,keySerializedBytes:Array.from(completedPool.values()).reduce((n,e)=>n+e.keyBytes,0),payloadSerializedBytes:Array.from(completedPool.values()).reduce((n,e)=>n+e.payloadBytes,0),managementBytes:completedPool.size*CACHE_HEADER,lastAttemptKeyBytes:lastKeyBytes,lastAttemptKeyResidentBytes:lastKeyResidentBytes,lastAttemptPayloadBytes:lastPayloadBytes,lastAttemptPayloadResidentBytes:lastCompactPayloadResidentBytes,lastAttemptAdmissionPayloadBytes:lastAdmissionPayloadBytes,lastAttemptAdmissionPayloadResidentBytes:lastAdmissionPayloadResidentBytes,lastPayloadRejection,serializedBytes:cacheBytes,residentStringAndHeaderBytes:cacheResidentBytes,maxEntries:CACHE_ENTRIES,maxSerializedBytes:CACHE_BYTES,maxResidentStringAndHeaderBytes:CACHE_BYTES,entryHeaderBytes:CACHE_HEADER,scope:'whole exact C finalization; hits do not reconstruct or claim candidate work'});
+ const beginFinalCache=(input,options,lineage)=>{
+  if(options.layoutsC!==true||options.layoutsA===true||options.layoutsB===true)return null;
+  try{const dependencies=cacheDependencies(),inputKey=cacheEncode({input,options,lineage}),key=dependencies+'\n'+inputKey,bytes=new TextEncoder().encode(key).length+CACHE_HEADER,resident=key.length*2+CACHE_HEADER;lastKeyBytes=bytes-CACHE_HEADER;lastKeyResidentBytes=key.length*2;lastPayloadBytes=lastAdmissionPayloadBytes=lastAdmissionPayloadResidentBytes=lastCompactPayloadResidentBytes=0;lastPayloadRejection=null;if(bytes>CACHE_BYTES||resident>CACHE_BYTES)throw Error('C cache oversized key');return {key,dependencies,inputKey,input,options,lineage};}catch{cacheCounters.bypasses++;return null;}
+@@ -198,10 +230,10 @@ const beginFinalCache=(input,options,lineage)=>{
+ function verifyCacheContext(context){return cacheDependencies()===context.dependencies&&cacheEncode({input:context.input,options:context.options,lineage:context.lineage})===context.inputKey;}
+ const readFinalCache=context=>{
+  if(!context)return null;const entry=completedPool.get(context.key);if(!entry){cacheCounters.misses++;return null;}
+- try{if(!verifyCacheContext(context))throw Error('C cache dependency drift');const result=payloadDecode(entry.payload);edgeRegisterFinal(result);completedPool.delete(context.key);completedPool.set(context.key,entry);cacheCounters.hits++;return result;}catch{cacheCounters.identityDrifts++;cacheCounters.bypasses++;return null;}
++ try{if(!verifyCacheContext(context))throw Error('C cache dependency drift');const result=readCompletedPayload(entry);edgeRegisterFinal(result);completedPool.delete(context.key);completedPool.set(context.key,entry);cacheCounters.hits++;return result;}catch{cacheCounters.identityDrifts++;cacheCounters.bypasses++;return null;}
+ };
+ const keepFinalCache=(context,result)=>{
+- if(!context)return;try{if(!verifyCacheContext(context)){cacheCounters.identityDrifts++;throw Error('C cache dependency drift');}lastPayloadRejection='old-payload-codec';const oldPayload=cacheEncode(result),keyBytes=new TextEncoder().encode(context.key).length;lastAdmissionPayloadBytes=new TextEncoder().encode(oldPayload).length;lastAdmissionPayloadResidentBytes=oldPayload.length*2;lastPayloadRejection='old-entry';if(keyBytes+lastAdmissionPayloadBytes+CACHE_HEADER>CACHE_BYTES||context.key.length*2+lastAdmissionPayloadResidentBytes+CACHE_HEADER>CACHE_BYTES)throw Error('C cache old admission budget');lastPayloadRejection='compact-growth';const payload=payloadCompact(oldPayload),payloadBytes=new TextEncoder().encode(payload).length,bytes=keyBytes+payloadBytes+CACHE_HEADER,resident=(context.key.length+payload.length)*2+CACHE_HEADER;lastKeyBytes=keyBytes;lastPayloadBytes=payloadBytes;lastCompactPayloadResidentBytes=payload.length*2;lastPayloadRejection='compact-entry';if(bytes>CACHE_BYTES||resident>CACHE_BYTES)throw Error('C cache oversized result');lastPayloadRejection=null;const prior=completedPool.get(context.key);if(prior){cacheBytes-=prior.bytes;cacheResidentBytes-=prior.resident;completedPool.delete(context.key);}while(completedPool.size>=CACHE_ENTRIES||cacheBytes+bytes>CACHE_BYTES||cacheResidentBytes+resident>CACHE_BYTES){const [key,old]=completedPool.entries().next().value;completedPool.delete(key);cacheBytes-=old.bytes;cacheResidentBytes-=old.resident;cacheCounters.evictions++;}completedPool.set(context.key,Object.freeze({payload,keyBytes,payloadBytes,bytes,resident}));cacheBytes+=bytes;cacheResidentBytes+=resident;cacheCounters.stores++;}catch{cacheCounters.bypasses++;}
++ if(!context)return;try{if(!verifyCacheContext(context)){cacheCounters.identityDrifts++;throw Error('C cache dependency drift');}lastPayloadRejection='old-payload-codec';const oldPayload=cacheEncode(result),keyBytes=new TextEncoder().encode(context.key).length;lastAdmissionPayloadBytes=new TextEncoder().encode(oldPayload).length;lastAdmissionPayloadResidentBytes=oldPayload.length*2;lastPayloadRejection='old-entry';if(keyBytes+lastAdmissionPayloadBytes+CACHE_HEADER>CACHE_BYTES||context.key.length*2+lastAdmissionPayloadResidentBytes+CACHE_HEADER>CACHE_BYTES)throw Error('C cache old admission budget');lastPayloadRejection='compact-growth';const payload=payloadCompact(oldPayload),payloadBytes=new TextEncoder().encode(payload).length,bytes=keyBytes+payloadBytes+CACHE_HEADER,resident=(context.key.length+payload.length)*2+CACHE_HEADER;lastKeyBytes=keyBytes;lastPayloadBytes=payloadBytes;lastCompactPayloadResidentBytes=payload.length*2;lastPayloadRejection='compact-entry';if(bytes>CACHE_BYTES||resident>CACHE_BYTES)throw Error('C cache oversized result');lastPayloadRejection=null;const prior=completedPool.get(context.key);if(prior){retireRepairMemo(prior);cacheBytes-=prior.bytes;cacheResidentBytes-=prior.resident;completedPool.delete(context.key);}while(completedPool.size>=CACHE_ENTRIES||cacheBytes+bytes>CACHE_BYTES||cacheResidentBytes+resident>CACHE_BYTES){const [key,old]=completedPool.entries().next().value;retireRepairMemo(old);completedPool.delete(key);cacheBytes-=old.bytes;cacheResidentBytes-=old.resident;cacheCounters.evictions++;}const entry=Object.freeze({payload,keyBytes,payloadBytes,bytes,resident});repairBrandAdd(repairBrands,entry);completedPool.set(context.key,entry);cacheBytes+=bytes;cacheResidentBytes+=resident;cacheCounters.stores++;}catch{cacheCounters.bypasses++;}
+ };
+ A.installLayoutsCFinalCache(Object.freeze({begin:beginFinalCache,read:readFinalCache,keep:keepFinalCache}));
+ A.registerLayoutsCAdapter=(layout,adapter)=>{

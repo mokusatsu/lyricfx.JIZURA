@@ -7,6 +7,8 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- 同一payloadの検証手順memo版`3166516`（証拠固定`ccfe825`）を[親がsource/通常pureレビュー](evidence/AVOID-008/parent-validated-repair-memo01-source-review.json)で受入。旧decoder・他83source・通常freeze/signature・key/二度目verify・budget/LRU・描画は維持し、JAEN全84moduleとHTML逆復元を照合。親再実行の165正常ケース/5lifecycle・1full+2fast・全descriptor/alias/freshnessとraw/summaryが一致した。新規サイバー審査は省略。次は同じ40通常browser条件のfast read/描画確認を準備中で、追加helper mutation/巨大budget/security matrixは再実行しない。新速度・正式1000・main製品への採用・必要4構図の人間確認は未完。新runtimeは222/222 currentで、旧215との差を速度改善とは扱わない。
+
 - 最新利用者指示により追加のサイバーセキュリティ審査・攻撃的Proxy/prototype fuzzの安全性調査は省略し、通常機能・幾何・描画・性能の確認に絞って続行する。[運用正本](implementation-review-policy.md)。事前freeze案は採用保留とし、09aの通常freeze/signatureは変えない。現在は同一のimmutable payloadについて、初回の旧decoder検証後にpath/scalar/null-prototype手順を最新1entry・上限付きで再利用し、各hitの出力graphは新規生成する通常性能改善を指定sol担当が実装中。key/dependency・二度目verify・既存budget/LRU・描画/pipeline/基準は維持する。新規安全性matrixの実行や合格は主張せず、通常DAG/alias/freshness/descriptor・保存fixture等の機能oracleを親がレビューする。
 
 - 遅延edge3bの[元100診断を親が独立再計算](evidence/AVOID-008/parent-immutable-edge-lazy-diagnose01-review.json)。ONはsource51.5+finalize62.4=113.9ms／基準52.2ms（2.182倍）、描画p95追加5.2msで未達。OFFは1.393倍/追加1.1ms。120入力/173依存/86製品/3supportを元bytes・固定Gitと照合し、全4side/100cut・region/34ID・ON100staged/実80record/replay/観測・字体を保持、旧8ffの機能fieldsも一致した。実PID369130を親bootstrapがwaitpidしexit0/reap後gone、close後livejob0を確認。これは1点の計画診断であり正式p95や1000の成功ではない。追加runをせず、描画側はnativePathの私有境界計算で高価なguardを減らせるか、計画側はprivate decode由来DAGのfreeze準備を通常経路の意味を保って改善できるかを指定担当がread-only設計中。main製品への採用・4構図の人間確認・009以降は進めていない。公開結果確認は恒久停止。
