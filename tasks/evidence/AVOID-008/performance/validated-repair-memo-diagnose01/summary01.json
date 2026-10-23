@@ -1,0 +1,4940 @@
+{
+  "diagnosticCompleted": true,
+  "formalExecuted": false,
+  "passed": false,
+  "planningStatistic": "one post-warm point, not p95; no formal threshold evaluation",
+  "comparisons": [
+    {
+      "n": 100,
+      "on": true,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 50.1000000089407,
+      "candidatePlanningMs": 99.6000000089407,
+      "planningRatio": 1.9880239519194887,
+      "additionalRenderP95Ms": 4.899999991059303,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    },
+    {
+      "n": 100,
+      "on": false,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 50.70000000298023,
+      "candidatePlanningMs": 84.00000001490116,
+      "planningRatio": 1.6568047339243293,
+      "additionalRenderP95Ms": 1.5,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    }
+  ],
+  "flags": {
+    "countsValid": true,
+    "candidateFullCoverage": true,
+    "actualPipelineValid": true,
+    "pinnedFontCorpusQualified": true,
+    "inputParity": true
+  },
+  "sides": [
+    {
+      "side": "baseline",
+      "on": true,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "measuredPoint": {
+        "sourceMs": 50.1000000089407,
+        "normalizationMs": 1.199999988079071,
+        "finalizeMs": 0,
+        "totalMs": 50.1000000089407,
+        "finalizationRecordCalls": 0,
+        "actualPlanningRecordCalls": 0
+      },
+      "planningCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "renderCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "observations": 0,
+      "renderFrames": 80,
+      "fontQualification": null,
+      "memo": null
+    },
+    {
+      "side": "candidate",
+      "on": true,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 100,
+        "unstaged": 0,
+        "budgetViolations": 0
+      },
+      "measuredPoint": {
+        "sourceMs": 50.400000005960464,
+        "normalizationMs": 1.2999999970197678,
+        "finalizeMs": 49.20000000298023,
+        "totalMs": 99.6000000089407,
+        "finalizationRecordCalls": 0,
+        "actualPlanningRecordCalls": 0
+      },
+      "planningCalls": {
+        "record": 622,
+        "replay": 0
+      },
+      "renderCalls": {
+        "record": 80,
+        "replay": 80
+      },
+      "observations": 80,
+      "renderFrames": 80,
+      "fontQualification": {
+        "scope": "Post-timing registered C-source native transport, placementLayoutsC:true with null recipe/trajectory, local1.5/3.2 for all34 IDs. No unresolved fallback is called pinned coverage. This enables C path/letterSpacing instrumentation; it does not prove pixel equality to placementLayoutsC:false, source-field safety, all-time or production-font qualification.",
+        "programs": [
+          {
+            "layout": "magazine",
+            "lt": 1.5,
+            "absoluteTime": 2.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "magazine",
+            "lt": 3.2,
+            "absoluteTime": 4.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "headlineDeck",
+            "lt": 1.5,
+            "absoluteTime": 6.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "headlineDeck",
+            "lt": 3.2,
+            "absoluteTime": 8.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "contents",
+            "lt": 1.5,
+            "absoluteTime": 10.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "contents",
+            "lt": 3.2,
+            "absoluteTime": 12.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "footnote",
+            "lt": 1.5,
+            "absoluteTime": 14.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "footnote",
+            "lt": 3.2,
+            "absoluteTime": 16.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "proofread",
+            "lt": 1.5,
+            "absoluteTime": 18.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "proofread",
+            "lt": 3.2,
+            "absoluteTime": 20.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "numbered",
+            "lt": 1.5,
+            "absoluteTime": 22.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "numbered",
+            "lt": 3.2,
+            "absoluteTime": 24.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "poster",
+            "lt": 1.5,
+            "absoluteTime": 26.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "poster",
+            "lt": 3.2,
+            "absoluteTime": 28.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "swissGrid",
+            "lt": 1.5,
+            "absoluteTime": 30.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "swissGrid",
+            "lt": 3.2,
+            "absoluteTime": 32.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "dictionary",
+            "lt": 1.5,
+            "absoluteTime": 34.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "dictionary",
+            "lt": 3.2,
+            "absoluteTime": 36.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "ema",
+            "lt": 1.5,
+            "absoluteTime": 38.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "ema",
+            "lt": 3.2,
+            "absoluteTime": 40.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "ransom",
+            "lt": 1.5,
+            "absoluteTime": 42.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "ransom",
+            "lt": 3.2,
+            "absoluteTime": 44.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "newspaper",
+            "lt": 1.5,
+            "absoluteTime": 46.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "newspaper",
+            "lt": 3.2,
+            "absoluteTime": 48.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "vinyl",
+            "lt": 1.5,
+            "absoluteTime": 50.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "vinyl",
+            "lt": 3.2,
+            "absoluteTime": 52.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "cassette",
+            "lt": 1.5,
+            "absoluteTime": 54.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "cassette",
+            "lt": 3.2,
+            "absoluteTime": 56.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "bookSpine",
+            "lt": 1.5,
+            "absoluteTime": 58.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "bookSpine",
+            "lt": 3.2,
+            "absoluteTime": 60.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "polaroid",
+            "lt": 1.5,
+            "absoluteTime": 62.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "polaroid",
+            "lt": 3.2,
+            "absoluteTime": 64.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "stampSheet",
+            "lt": 1.5,
+            "absoluteTime": 66.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "stampSheet",
+            "lt": 3.2,
+            "absoluteTime": 68.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "postcard",
+            "lt": 1.5,
+            "absoluteTime": 70.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "postcard",
+            "lt": 3.2,
+            "absoluteTime": 72.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "letterPaper",
+            "lt": 1.5,
+            "absoluteTime": 74.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "letterPaper",
+            "lt": 3.2,
+            "absoluteTime": 76.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "calendar",
+            "lt": 1.5,
+            "absoluteTime": 78.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "calendar",
+            "lt": 3.2,
+            "absoluteTime": 80.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "chochin",
+            "lt": 1.5,
+            "absoluteTime": 82.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "chochin",
+            "lt": 3.2,
+            "absoluteTime": 84.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "routeMap",
+            "lt": 1.5,
+            "absoluteTime": 86.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "routeMap",
+            "lt": 3.2,
+            "absoluteTime": 88.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "stationSign",
+            "lt": 1.5,
+            "absoluteTime": 90.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "stationSign",
+            "lt": 3.2,
+            "absoluteTime": 92.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "noren",
+            "lt": 1.5,
+            "absoluteTime": 94.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "noren",
+            "lt": 3.2,
+            "absoluteTime": 96.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "tanzaku",
+            "lt": 1.5,
+            "absoluteTime": 98.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "tanzaku",
+            "lt": 3.2,
+            "absoluteTime": 100.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "omikuji",
+            "lt": 1.5,
+            "absoluteTime": 102.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "omikuji",
+            "lt": 3.2,
+            "absoluteTime": 104.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "kakejiku",
+            "lt": 1.5,
+            "absoluteTime": 106.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "kakejiku",
+            "lt": 3.2,
+            "absoluteTime": 108.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "shoji",
+            "lt": 1.5,
+            "absoluteTime": 110.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "shoji",
+            "lt": 3.2,
+            "absoluteTime": 112.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "clapper",
+            "lt": 1.5,
+            "absoluteTime": 114.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "clapper",
+            "lt": 3.2,
+            "absoluteTime": 116.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "warningLabel",
+            "lt": 1.5,
+            "absoluteTime": 118.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "warningLabel",
+            "lt": 3.2,
+            "absoluteTime": 120.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "priceTag",
+            "lt": 1.5,
+            "absoluteTime": 122.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "priceTag",
+            "lt": 3.2,
+            "absoluteTime": 124.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "nameTag",
+            "lt": 1.5,
+            "absoluteTime": 126.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "nameTag",
+            "lt": 3.2,
+            "absoluteTime": 128.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "stickyNotes",
+            "lt": 1.5,
+            "absoluteTime": 130.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "stickyNotes",
+            "lt": 3.2,
+            "absoluteTime": 132.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "karuta",
+            "lt": 1.5,
+            "absoluteTime": 134.75,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          },
+          {
+            "layout": "karuta",
+            "lt": 3.2,
+            "absoluteTime": 136.45,
+            "nativeCTransport": true,
+            "recipe": null,
+            "measurementSupported": true,
+            "diagnostics": []
+          }
+        ],
+        "glyphs": [
+          {
+            "layout": "magazine",
+            "char": "\u98a8",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u306e",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u5148",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u3078",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u3002",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "C",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "O",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "L",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "U",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "M",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u5148",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u3078",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u98a8",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "\u306e",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "magazine",
+            "char": "4",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "E",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "A",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "Y",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "o",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "\uff0f",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": ":",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "4",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "headlineDeck",
+            "char": "\u5b57",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "\u76ee",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "\u6b21",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "\u5e8f",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "6",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "\u7d42",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "contents",
+            "char": "4",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u98a8",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u306e",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u5148",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u3078",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "*",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u98a8",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u306e",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "0",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": ":",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "1",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "3",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": ".",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "2",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "5",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u5148",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u3078",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "\u2014",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "3",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "O",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "T",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "E",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "footnote",
+            "char": "4",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "proofread",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "proofread",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "proofread",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "proofread",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "proofread",
+            "char": "\u30de",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "C",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "E",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "0",
+            "key": "zenkaku",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "1",
+            "key": "zenkaku",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "2",
+            "key": "zenkaku",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "numbered",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "L",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "Y",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "R",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "I",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "C",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "7",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": ":",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "D",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "A",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "T",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "E",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "0",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": ":",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "2",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "5",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": ".",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "o",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "7",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "/",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "4",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "W",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "O",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "\u98a8",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "\u306e",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "\u5148",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "poster",
+            "char": "\u3078",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "3",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "4",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "6",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "J",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "I",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "Z",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "U",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "R",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "A",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "\uff0f",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "o",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "8",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": ":",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "swissGrid",
+            "char": "9",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u306e",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u5148",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u3078",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u3002",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u98a8",
+            "key": null,
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "4",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u98a8",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u2500",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u306e",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u5148",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u3078",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u25bc",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u5f62",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u52d5",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u6b4c",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u8a5e",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u7b2c",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u4e5d",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u884c",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u3002",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "0",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": ":",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "3",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": ".",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "2",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "5",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "7",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "4",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "dictionary",
+            "char": "\u5b57",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "\u5949",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "\u7d0d",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "\u98a8",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "\u306e",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "\u5148",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "\u3078",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "o",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": ":",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "3",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "7",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ema",
+            "char": "5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ransom",
+            "char": "\u98a8",
+            "key": "mincho",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "ransom",
+            "char": "\u306e",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "ransom",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "ransom",
+            "char": "\u3078",
+            "key": "zenkaku",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u6b4c",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u8a5e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u65b0",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u5831",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u7b2c",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "1",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "9",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "3",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "6",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u53f7",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": ":",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "4",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "newspaper",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "I",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "D",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "E",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "B",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "\u00b7",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "3",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "\u2153",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "fractions",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "R",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "P",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "M",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "o",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "vinyl",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "A",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "C",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "-",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "6",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "\u00b7",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "R",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "o",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "4",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "\u98a8",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "\u306e",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "\u5148",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "cassette",
+            "char": "\u3078",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "bookSpine",
+            "char": "\u4e5d",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "bookSpine",
+            "char": "\u98a8",
+            "key": "zenkaku",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "bookSpine",
+            "char": "\u306e",
+            "key": "zenkaku",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "bookSpine",
+            "char": "\u5148",
+            "key": "zenkaku",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "bookSpine",
+            "char": "\u3078",
+            "key": "zenkaku",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": "0",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": "1",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": ":",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": ".",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": "2",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "polaroid",
+            "char": "5",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "J",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "I",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "Z",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "U",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "R",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "A",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "P",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "O",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "T",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "\u00b7",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "\u00d7",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "o",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "7",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "L",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "Y",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "C",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stampSheet",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "8",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "0",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "7",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "5",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "6",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "8",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "1",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "P",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "O",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "T",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "C",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "A",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "R",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "D",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "\u98a8",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "\u306e",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "\u5148",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "\u3078",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": ":",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "9",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "postcard",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "\u98a8",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "\u306e",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "\u5148",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "\u3078",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "\u2014",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "N",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "o",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": ".",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "1",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "letterPaper",
+            "char": "9",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "1",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "A",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "U",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "G",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "T",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u4ecf",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u6ec5",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u706b",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u66dc",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "\u65e5",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "calendar",
+            "char": "E",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "chochin",
+            "char": "\u98a8",
+            "key": "mincho",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "chochin",
+            "char": "\u306e",
+            "key": "mincho",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "chochin",
+            "char": "\u5148",
+            "key": "mincho",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "chochin",
+            "char": "\u3078",
+            "key": "mincho",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "K",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "routeMap",
+            "char": "K",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "N",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "o",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": ".",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "2",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "3",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "2",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "\u2190",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "3",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "stationSign",
+            "char": "\u2192",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "noren",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "noren",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "noren",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "noren",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "tanzaku",
+            "char": "\u98a8",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "tanzaku",
+            "char": "\u306e",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "tanzaku",
+            "char": "\u5148",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "tanzaku",
+            "char": "\u3078",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u7b2c",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u4e8c",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u5341",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u516d",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u756a",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u5927",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u5409",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u98a8",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u306e",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u5148",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u3078",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u9858",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u671b",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u5065",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u5eb7",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u5931",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u7269",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u5f85",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "omikuji",
+            "char": "\u4eba",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "kakejiku",
+            "char": "\u98a8",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "kakejiku",
+            "char": "\u306e",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "kakejiku",
+            "char": "\u5148",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "kakejiku",
+            "char": "\u3078",
+            "key": "brush",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "shoji",
+            "char": "\u98a8",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "shoji",
+            "char": "\u306e",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "shoji",
+            "char": "\u5148",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "shoji",
+            "char": "\u3078",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "P",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "R",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "O",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "D",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "S",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "C",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "E",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "2",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "9",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "T",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "A",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "K",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "1",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "L",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "A",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "6",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "0",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": ":",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "5",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "3",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": ".",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "I",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "J",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "I",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "Z",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "U",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "R",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "M",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "\u98a8",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "\u306e",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "\u5148",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "clapper",
+            "char": "\u3078",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "D",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "A",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "N",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "G",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "E",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "R",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "\u98a8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "\u306e",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "\u5148",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "\u3078",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "N",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "o",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": ".",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "3",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "\u2014",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": ":",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "7",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "warningLabel",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "\u98a8",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "\u306e",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "\u5148",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "\u3078",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "\u00a5",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "1",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": ",",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "2",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "3",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "0",
+            "key": "mono",
+            "assigned": "mono",
+            "actual": "mono",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "\u00a5",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "9",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "8",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "priceTag",
+            "char": "0",
+            "key": "gothic_black",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "1",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u306d",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u3093",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "4",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u304f",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u307f",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u306a",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u307e",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u3048",
+            "key": "gothic_med",
+            "assigned": "sans-regular",
+            "actual": "sans-regular",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u98a8",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u306e",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u5148",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "nameTag",
+            "char": "\u3078",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stickyNotes",
+            "char": "\u98a8",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stickyNotes",
+            "char": "\u306e",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stickyNotes",
+            "char": "\u5148",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "stickyNotes",
+            "char": "\u3078",
+            "key": "klee",
+            "assigned": "sans-bold",
+            "actual": "sans-bold",
+            "covered": true
+          },
+          {
+            "layout": "karuta",
+            "char": "\u98a8",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "karuta",
+            "char": "\u306e",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "karuta",
+            "char": "\u5148",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          },
+          {
+            "layout": "karuta",
+            "char": "\u3078",
+            "key": "mincho_light",
+            "assigned": "serif-regular",
+            "actual": "serif-regular",
+            "covered": true
+          }
+        ],
+        "unknown": [],
+        "complete": true
+      },
+      "memo": {
+        "repairMemoCompiles": 1,
+        "repairMemoFullReads": 1,
+        "repairMemoFastReads": 2,
+        "repairMemoFallbacks": 0,
+        "repairMemoCapped": 0,
+        "repairMemoRetired": 0,
+        "repairMemoSlots": 62149,
+        "repairMemoStringChars": 268219,
+        "repairMemoRepairs": 2723,
+        "repairMemoMaxSlots": 131072,
+        "repairMemoMaxStringChars": 1048576,
+        "repairMemoMaxRepairs": 8192
+      }
+    },
+    {
+      "side": "baseline",
+      "on": false,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "measuredPoint": {
+        "sourceMs": 50.70000000298023,
+        "normalizationMs": 1.2999999970197678,
+        "finalizeMs": 0,
+        "totalMs": 50.70000000298023,
+        "finalizationRecordCalls": 0,
+        "actualPlanningRecordCalls": 0
+      },
+      "planningCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "renderCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "observations": 0,
+      "renderFrames": 80,
+      "fontQualification": null,
+      "memo": null
+    },
+    {
+      "side": "candidate",
+      "on": false,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "measuredPoint": {
+        "sourceMs": 60.30000001192093,
+        "normalizationMs": 1.2999999970197678,
+        "finalizeMs": 23.700000002980232,
+        "totalMs": 84.00000001490116,
+        "finalizationRecordCalls": 0,
+        "actualPlanningRecordCalls": 0
+      },
+      "planningCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "renderCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "observations": 0,
+      "renderFrames": 80,
+      "fontQualification": null,
+      "memo": {
+        "repairMemoCompiles": 1,
+        "repairMemoFullReads": 1,
+        "repairMemoFastReads": 2,
+        "repairMemoFallbacks": 0,
+        "repairMemoCapped": 0,
+        "repairMemoRetired": 0,
+        "repairMemoSlots": 0,
+        "repairMemoStringChars": 0,
+        "repairMemoRepairs": 0,
+        "repairMemoMaxSlots": 131072,
+        "repairMemoMaxStringChars": 1048576,
+        "repairMemoMaxRepairs": 8192
+      }
+    }
+  ],
+  "inputArchivesVerified": 120,
+  "productPinsVerified": 86,
+  "packagePinsVerified": 173,
+  "baselineGitBytesExact": true,
+  "resultsPrettySHA256": "2e6cd0d6c224b7352a1f3e2cf17a962f6b62123ee41d0d4553b01f0775370d9f",
+  "resultsGzipSHA256": "28daabb7dd3b18802106627b7dad80c8ee9b18662cb33c3f25c2be628504dac9",
+  "supportReceiptSHA256": "3346403b0542bd7bf488f27c94f827c1912c1ed7fcd9d1a629f2b32a13936d17",
+  "noRetry": true,
+  "no1000CDPImagesPublic": true
+}

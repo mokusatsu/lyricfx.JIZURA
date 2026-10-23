@@ -7,6 +7,8 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- memo版の[正常40条件の親レビュー](evidence/AVOID-008/parent-validated-repair-memo-browser01-review.json)を受入。全80fast read・54native frame/観測45件は一致し、旧64,424leafとの差51は追加readによる世代番号+2*iのみ。111入力/173実依存/86製品と実waitpid0/reapを照合。続く[元100診断も親が再計算](evidence/AVOID-008/parent-validated-repair-memo-diagnose01-review.json)し、ONは99.6/50.1ms=1.988倍・描画追加4.90msで未達、OFFは1.657倍/追加1.50ms。120入力/3support/実80record/replay/観測/字体/全100cutを保持し、計画は1点で正式p95ではない。次はCの同一command列/line内のCTM読出をまとめる狭い性能改善を指定sol担当が実装中。通常のtransform/reset/再入・出力oracleを確認し、追加サイバー審査は省略。main採用/正式1000/必要4構図は未完、旧FAILと公開確認禁止は保持。
+
 - 同一payloadの検証手順memo版`3166516`（証拠固定`ccfe825`）を[親がsource/通常pureレビュー](evidence/AVOID-008/parent-validated-repair-memo01-source-review.json)で受入。旧decoder・他83source・通常freeze/signature・key/二度目verify・budget/LRU・描画は維持し、JAEN全84moduleとHTML逆復元を照合。親再実行の165正常ケース/5lifecycle・1full+2fast・全descriptor/alias/freshnessとraw/summaryが一致した。新規サイバー審査は省略。次は同じ40通常browser条件のfast read/描画確認を準備中で、追加helper mutation/巨大budget/security matrixは再実行しない。新速度・正式1000・main製品への採用・必要4構図の人間確認は未完。新runtimeは222/222 currentで、旧215との差を速度改善とは扱わない。
 
 - 最新利用者指示により追加のサイバーセキュリティ審査・攻撃的Proxy/prototype fuzzの安全性調査は省略し、通常機能・幾何・描画・性能の確認に絞って続行する。[運用正本](implementation-review-policy.md)。事前freeze案は採用保留とし、09aの通常freeze/signatureは変えない。現在は同一のimmutable payloadについて、初回の旧decoder検証後にpath/scalar/null-prototype手順を最新1entry・上限付きで再利用し、各hitの出力graphは新規生成する通常性能改善を指定sol担当が実装中。key/dependency・二度目verify・既存budget/LRU・描画/pipeline/基準は維持する。新規安全性matrixの実行や合格は主張せず、通常DAG/alias/freshness/descriptor・保存fixture等の機能oracleを親がレビューする。

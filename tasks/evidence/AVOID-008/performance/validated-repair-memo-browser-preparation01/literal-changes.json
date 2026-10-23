@@ -1,0 +1,88 @@
+[
+  {
+    "before": "'tasks/evidence/AVOID-008/performance/cache01'",
+    "after": "'tasks/evidence/AVOID-008/performance/validated-repair-memo-browser01'"
+  },
+  {
+    "before": "'dev/avoidance/layouts-c-lazy-edge-browser-test.cjs','tasks",
+    "after": "'dev/avoidance/layouts-c-lazy-edge-browser-test.cjs','dev/avoidance/layouts-c-validated-repair-memo-browser.cjs','tasks"
+  },
+  {
+    "globalPathSubstitutions": {
+      "lazy-browser02-parent-gate.json": "validated-repair-memo-browser01-parent-gate.json",
+      "immutable-edge-lazy-runtime01": "validated-repair-memo-runtime01"
+    }
+  },
+  {
+    "before": "for(const p of paths)fs.writeFileSync(out+'/input-'+p.replaceAll('/','__')+'.gz',zlib.gzipSync(fs.readFileSync(root+'/'+p),{mtime:0}));",
+    "after": "const inputArchives=[];for(const p of paths){const bytes=fs.readFileSync(root+'/'+p),prior='tasks/evidence/AVOID-008/performance/lazy-browser02/input-'+p.replaceAll('/','__')+'.gz';if(fs.existsSync(root+'/'+prior)&&sha(zlib.gunzipSync(fs.readFileSync(root+'/'+prior)))===pins[p])inputArchives.push({path:p,sha256:pins[p],bytes:bytes.length,archive:prior,archiveSHA256:sha(fs.readFileSync(root+'/'+prior)),action:'reference-fixed-identical'});else{const archive=path.relative(root,out)+'/input-'+p.replaceAll('/','__')+'.gz',packed=zlib.gzipSync(bytes,{mtime:0});fs.writeFileSync(root+'/'+archive,packed);inputArchives.push({path:p,sha256:pins[p],bytes:bytes.length,archive,archiveSHA256:sha(packed),action:'new-input'});}}"
+  },
+  {
+    "before": "schema=makeRegistrySchemaHTML(normalHTML,fs.existsSync(root+'/'+japaneseSource)?fs.readFileSync(root+'/'+japaneseSource):null)",
+    "after": "schema=makeRegistrySchemaHTML(normalHTML,null)"
+  },
+  {
+    "before": "fs.writeFileSync(out+'/registry-schema.html.gz',zlib.gzipSync(schema.bytes,{mtime:0}));",
+    "after": "// Normal-only run: no omitted-module document or duplicate HTML archive."
+  },
+  {
+    "before": "gate.authorizedMode==='one-full-local-correctness'",
+    "after": "gate.authorizedMode==='one-normal40-repair-memo-correctness'"
+  },
+  {
+    "before": "'3b0c995a2c912cf3edf6583f372c215c310e11f0'",
+    "after": "'ccfe825b2d9df2f507cf55978be47f5183c9c0c9'"
+  },
+  {
+    "before": "'c99e0d913eb6e99e50f036c1ca8e5a6f1fda4b186396cec7b6908ad241124546'",
+    "after": "'957953970183081b330f715015fca0378a2a97edeab820d299487968d8733a8a'"
+  },
+  {
+    "before": "assert.notEqual(process.argv[3],'--raw-only');",
+    "after": "assert.equal(process.argv[3],undefined,'Normal40 scope is fixed; no optional mode');assert.equal(gate.expectedSpecRevision,'222');"
+  },
+  {
+    "before": "const report={runnerPID:process.pid,packagePins,",
+    "after": "const report={runnerPID:process.pid,packagePins,inputArchives,omittedChecks:{helperMutation28:'not rerun; previous lazy-browser02 PASS retained',budgetAndRegistrySchema:'not rerun; prior fixed evidence retained'},"
+  },
+  {
+    "before": "assert(gate.authorizedByParent&&",
+    "after": "assert(gate.previousCorrectnessSHA256===sha(fs.readFileSync(root+'/tasks/evidence/AVOID-008/performance/lazy-browser02/results.json.gz')),'Fixed prior correctness raw changed');assert(gate.authorizedByParent&&"
+  },
+  {
+    "before": "if(['clapper','dictionary','stickyNotes','ema'].includes(spec.layout)&&!spec.control){const render=",
+    "after": "const render="
+  },
+  {
+    "before": "return frames;};row.coldFrames=await render(cold);",
+    "after": "return frames;};if(['clapper','dictionary','stickyNotes','ema'].includes(spec.layout)&&!spec.control){row.coldFrames=await render(cold);"
+  },
+  {
+    "before": "rows.push(row);",
+    "after": "// Append-only checks: all original row/cache/edge/native snapshots above are final.\n   const freshObjects=value=>{const objects=new Set(),walk=v=>{if(!v||typeof v!=='object'||objects.has(v))return;objects.add(v);assert(Object.isFrozen(v),'fast result recursively frozen');for(const k of Object.getOwnPropertyNames(v)){const d=Object.getOwnPropertyDescriptor(v,k);assert(d&&Object.hasOwn(d,'value'),'normal finalized own data');walk(d.value);}};walk(value);return objects;};\n   const descriptorGraph=value=>{const ids=new WeakMap(),nodes=[];const visit=v=>{if(v===undefined)return ['u'];if(v===null||typeof v!=='object')return typeof v==='number'&&Object.is(v,-0)?['negative-zero']:['value',v];if(ids.has(v))return ['ref',ids.get(v)];const id=nodes.length;ids.set(v,id);nodes.push(null);nodes[id]=[Array.isArray(v)?'array':Object.getPrototypeOf(v)===null?'null-prototype':'object',Object.getOwnPropertyNames(v).map(k=>{const d=Object.getOwnPropertyDescriptor(v,k);return [k,d.enumerable,d.configurable,d.writable,visit(d.value)];})];return ['ref',id];};return json({root:visit(value),nodes});};\n   const priorObjects=[freshObjects(cold),freshObjects(warm)],expectedDescriptors=descriptorGraph(cold),fastReads=[];let lastFast;\n   for(let read=2;read<=3;read++){records=0;const p=final(r.plan),planningRecordCalls=records,cache=A.layoutsCFinalCacheStats(),edge=A.layoutsCImmutableEdgeStats();assert(planningRecordCalls===0,'fast read performed planning record');assert(cache.hits===read&&cache.repairMemoFullReads===1&&cache.repairMemoCompiles===1&&cache.repairMemoFastReads===read-1,'exact full/fast memo counts');assert(coldJSON===json(p)&&graph(cold)===graph(p)&&expectedDescriptors===descriptorGraph(p),'fast full JSON/alias/descriptor mismatch '+spec.layout);const objects=freshObjects(p);for(const prior of priorObjects)for(const v of objects)assert(!prior.has(v),'fast read shares output objects');priorObjects.push(objects);assert(before===json(r.plan),'fast source mutated');assertLazyStats(edge,'registered');fastReads.push({read,planningRecordCalls,cache,edgeStats:edge,fullOutputIdentical:true,fullGraphAliasIdentical:true,allDescriptorsIdentical:true,fullyFrozen:true,freshFromAllEarlierReads:true});lastFast=p;}\n   row.fast={reads:fastReads,serializedPlan:json(lastFast),objectGraph:graph(lastFast),descriptorGraphSHA256:await digest(descriptorGraph(lastFast)),fullOutputIdentical:true,fullGraphAliasIdentical:true,allDescriptorsIdentical:true,allOutputsFreshFrozen:true};\n   if(row.coldFrames){row.fast.frames=await render(lastFast);row.fast.afterRenderEdgeStats=A.layoutsCImmutableEdgeStats();assertLazyStats(row.fast.afterRenderEdgeStats,'warm-render');assert(json(row.coldFrames)===json(row.fast.frames),'fast native pixel/trace/error mismatch '+spec.layout);}\n   rows.push(row);"
+  },
+  {
+    "before": "scope:'raw cold/warm plan/alias dump on identical product source; source correctness negatives are in cache09'",
+    "after": "scope:'Normal40 cold/warm plus second/third completed reads; 18 cold +18 warm +18 fast native frames. Helper-mutation28/budget/schema not rerun; fixed prior evidence retained.'"
+  },
+  {
+    "before": "},{fonts,rawOnly:process.argv[3]==='--raw-only'});",
+    "after": "},{fonts,rawOnly:true});"
+  },
+  {
+    "before": "if(process.argv[3]!=='--raw-only'){",
+    "after": "if(false){ // Normal40-only: previous registry contract remains unexecuted."
+  },
+  {
+    "before": "}else report.registrySchema.reason+='; --raw-only skips registration contract';",
+    "after": "}else report.registrySchema.reason='Normal40-only run: schema/budget/helper-mutation suites not executed; source omission0';"
+  },
+  {
+    "before": "reason:'09j absent in this checkout; fresh schema page uses identical HTML'",
+    "after": "reason:'Normal40-only document; all84 source modules retained'"
+  },
+  {
+    "before": "fs.writeFileSync(out+'/results.json',JSON.stringify(report,null,2));",
+    "after": "/* Compressed full raw only: avoid a redundant large pretty JSON on the bounded disk. */"
+  }
+]

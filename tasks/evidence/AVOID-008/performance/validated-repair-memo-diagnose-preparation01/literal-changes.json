@@ -1,0 +1,27 @@
+[
+  {
+    "before": "immutable-edge-lazy-diagnose01",
+    "after": "validated-repair-memo-diagnose01",
+    "operation": "replaceAll"
+  },
+  {
+    "before": "immutable-edge-lazy-runtime02",
+    "after": "validated-repair-memo-runtime01",
+    "operation": "replaceAll"
+  },
+  {
+    "before": "3b0c995a2c912cf3edf6583f372c215c310e11f0",
+    "after": "ccfe825b2d9df2f507cf55978be47f5183c9c0c9",
+    "operation": "replaceAll"
+  },
+  {
+    "before": "lazy-browser02-parent-gate.json",
+    "after": "validated-repair-memo-browser01-parent-gate.json",
+    "operation": "replaceAll"
+  },
+  {
+    "before": "assert.equal(process.argv[2],'--diagnose100');",
+    "after": "assert.equal(e.spec_revision,'222');assert.equal(gate.candidateSHA256,'957953970183081b330f715015fca0378a2a97edeab820d299487968d8733a8a');assert.equal(process.argv[2],'--diagnose100');",
+    "operation": "replaceOnce"
+  }
+]
