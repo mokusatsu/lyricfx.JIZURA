@@ -1,0 +1,15 @@
+# AVOID-008 node-wire encode original100 diagnosis preparation only
+
+Model gpt-6.1-sol medium. Browser evidence64914b5b5d51aa8e6af2d9f9526998ac2417c779 fixes full-field exact comparison success without projection; parent raw review is separate. Candidate product2f3a8375c1f27305b0e25b24db96e67ff975a73a / JA0a33254940b3cf069d91de8ece36fe58510927bcdd83100e22f15172322eed97.
+
+New dev/avoidance/layouts-c-node-wire-encode-perf-gate-support.cjs SHA25691eed56524ea350fce46e1f5deb4db4783288b84955aa845738fd3a161b44a24 derives from accepted6d6cbcb3bc9c54829b423eac4440444e903238622151364827189647a3775f5a using four literal groups/five occurrences only: diagnose namespace, accepted browser-gate path, candidate source and JA SHA. Reverse proof restores every byte. Runtime remains native-local-bounds-runtime02/spec228; parent must freshly qualify current=observed/running/connected before launch. Preload not evaluated.
+
+Original runner6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756, fixture7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471, corpus4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc,2bb baseline,100ON/OFF four sides,3warmups+1planning point,80render/16warm, all timed bodies and2x/+3ms limits remain unchanged. Planning point is not qualified p95. Earlier ON2.221x/OFF+3.5ms failures retained; no formal1000 authorized.
+
+Future command (NOT EXECUTED): JIZURA_BROWSER=/usr/bin/chromium node --require ./dev/avoidance/layouts-c-node-wire-encode-perf-gate-support.cjs dev/avoidance/layouts-c-perf-shadow-native.cjs --diagnose100 tasks/evidence/AVOID-008/performance/node-wire-encode-diagnose01
+
+Requires parent-reviewed evidence and a parent-created node-wire-encode-diagnose01-parent-gate.json, authorizationMode --diagnose100/formal1000false, source/JA/runner/fixture/corpus/baseline/preload pins, accepted node-wire-encode-browser01-parent-gate.json product86/package173, fresh runtime228 and a full-run exclusive lease. Parent supplies actual PID/startTicks/kernel wait/reaped/gone and after-save reserve evidence. Inherited300s/250MiB checks, loopback external abort, proxy/CA/TLS and awaited cleanup unchanged. No gate created here.
+
+112 browser samebytes archive references verified without new input snapshots. Fixed original runner still writes snapshots at startup; post-run identical-gzip hardlinks may be separately receipted while preserving raw/pins. Preparation free277889024bytes; previous original100 output logical11734767bytes leaves only an estimated4010257bytes above250MiB, before later Git storage. This is a planning estimate, not an output bound. Parent should freshly ensure sufficient headroom before execution and measure after results/commit. Large temp remains in/tmp.
+
+node --check and diff check pass. No browser rerun, timing, CDP/profile, additional security/mutation/fuzz, images/video or public verification. No product/main/docs edits or duplicate input HTML/gzip. Stop for parent review; no performance improvement claimed.

@@ -1,0 +1,34 @@
+{
+  "parent": "/root",
+  "date": "2026-10-23T06:02:40.668608+00:00",
+  "source": "2f3a8375c1f27305b0e25b24db96e67ff975a73a",
+  "basis": "65e5e18fa352fba9f087dcf149191551538b32f8",
+  "sourceSHA256": "185f019a521868c975cde3f41361e77d98b7f8adbf1bf4d1545418cb241be79a",
+  "other83SourcesExact": true,
+  "oldGenericCodecByteExact": true,
+  "compiled": [
+    {
+      "path": "index.html",
+      "sha256": "0a33254940b3cf069d91de8ece36fe58510927bcdd83100e22f15172322eed97",
+      "all84ModuleAndHTMLReverseExact": true
+    },
+    {
+      "path": "en/index.html",
+      "sha256": "823bbbf4096c9e3702fd6bbd60d3ddf71b28a58c54136ece16b37f5aa4cead0c",
+      "all84ModuleAndHTMLReverseExact": true
+    }
+  ],
+  "independentNormalRerun": {
+    "exitCode": 0,
+    "cases": 41,
+    "stockGenericCalls": 0,
+    "boundaryBytes": 154,
+    "rawAndSummaryByteExact": true
+  },
+  "review": "Read source diff. Each old node JSON and immediate exact budget check remains. Native path retains serialized node strings and composes fixed wire/root/node order; avoids final graph JSON walk. Existing native guard at entry/exit; nonstock/standalone retains byte-exact old generic algorithm. Full input descriptor walk, aliases, rejection, key bytes, two context verifies and hooks/budgets unchanged. Geometry/record/freeze unchanged. Existing repair165+5 normal tests reviewed.",
+  "reviewHarnessCorrection": "Initial parent inspection used child renamed artifact basenames in /tmp; corrected to actual raw.json.gz/summary.json. Independent test itself passed first run; no product change or test rerun.",
+  "decision": "Source and normal pure accepted; paired browser then separate performance remain required.",
+  "publicRequests": 0,
+  "additionalSecurityAudit": false,
+  "parentImageViews": 0
+}

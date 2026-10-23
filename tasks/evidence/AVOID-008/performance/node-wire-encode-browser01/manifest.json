@@ -1,0 +1,95 @@
+{
+  "task": "AVOID-008",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "helperCommit": "5d19bb359ffcc7ab7c1b95231eef57d5344ff743",
+  "productCommit": "2f3a8375c1f27305b0e25b24db96e67ff975a73a",
+  "rawSHA256": "7e76c9649c70cdd1b9bb3bd9bc8f83c47dba5c85565a259792d4c388dcdc4d79",
+  "rawBytes": 2462087,
+  "comparison": {
+    "deepEqual": true,
+    "orderedJSONExact": true,
+    "canonicalJSONExact": true,
+    "baselineFullResultSHA256": "e0a7404f95a3c7081c42d1e0b82762a41d9e9ead7c75b17acf5cdcab44331993",
+    "candidateFullResultSHA256": "e0a7404f95a3c7081c42d1e0b82762a41d9e9ead7c75b17acf5cdcab44331993",
+    "canonicalSHA256": "78a186beacc2659c1780a4b2bf9af6a3535c5cc5c4965d1cb71f69d9779dd774"
+  },
+  "counts": {
+    "reference": {
+      "normalRows": 40,
+      "targets": 2,
+      "fastReads": 84,
+      "nativeFrames": 72
+    },
+    "candidate": {
+      "normalRows": 40,
+      "targets": 2,
+      "fastReads": 84,
+      "nativeFrames": 72
+    },
+    "nativeFramesTotal": 144
+  },
+  "targetHits": [
+    {
+      "layout": "stampSheet",
+      "cold": 0,
+      "warm": 0,
+      "fastRead2": 96,
+      "fastRead3": 96
+    },
+    {
+      "layout": "newspaper",
+      "cold": 0,
+      "warm": 0,
+      "fastRead2": 31,
+      "fastRead3": 31
+    }
+  ],
+  "allNativeStatsComparedWithoutProjection": true,
+  "errors": [],
+  "changedInputs": [],
+  "changedPackageInputs": [],
+  "baselineArchiveChanged": false,
+  "ownedCleanup": {
+    "browserCloseAwaited": true,
+    "serverCloseAwaited": true,
+    "runnerPID": 386602
+  },
+  "execution": {
+    "runnerPID": 386602,
+    "runnerStartTicks": "11476295",
+    "parentPythonPID": 386597,
+    "kernelExitCode": 0,
+    "reaped": true,
+    "runnerGone": true,
+    "startedUTC": "2026-10-23T06:05:50Z",
+    "finishedUTC": "2026-10-23T06:06:16Z",
+    "diskAvailableBytes": 285126656
+  },
+  "wrapperConcurrency": {
+    "before": {
+      "jobs": 0,
+      "zombies": 1487
+    },
+    "after": {
+      "jobs": 0,
+      "zombies": 1489
+    }
+  },
+  "runnerConcurrency": {
+    "before": {
+      "jobs": 0,
+      "zombies": 1487
+    },
+    "after": {
+      "jobs": 0,
+      "zombies": 1489
+    }
+  },
+  "inputArchives": {
+    "reference": 107,
+    "new": 5
+  },
+  "diskAfterEvidenceBytes": 285102080,
+  "performanceExecuted": false
+}

@@ -1,0 +1,356 @@
+{
+  "task": "AVOID-008",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "preparationCommit": "db326551c888bd12a13a4b90c2738769cb4fb12b",
+  "mode": "--diagnose100",
+  "rawGzipSHA256": "7ff012ba111f26dbd5fda167678c4d4fc1f9caa1501030dbb4febcbf6e4696d2",
+  "rawGzipBytes": 42264,
+  "rawJSONSHA256": "daf5409904ddd314ef6c09034f3a584de01d2861b8b146a522f07e8c4e9da2c9",
+  "flags": {
+    "diagnosticCompleted": true,
+    "countsValid": true,
+    "candidateFullCoverage": true,
+    "actualPipelineValid": true,
+    "pinnedFontCorpusQualified": true,
+    "inputParity": true,
+    "formalExecuted": false,
+    "passed": false,
+    "changedInputs": []
+  },
+  "comparisons": [
+    {
+      "n": 100,
+      "on": true,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 46.29999999701977,
+      "candidatePlanningMs": 116.90000000596046,
+      "planningRatio": 2.5248380132502173,
+      "additionalRenderP95Ms": 3.4000000059604645,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    },
+    {
+      "n": 100,
+      "on": false,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 44.20000000298023,
+      "candidatePlanningMs": 75,
+      "planningRatio": 1.6968325790711096,
+      "additionalRenderP95Ms": 2.0999999940395355,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    }
+  ],
+  "sides": [
+    {
+      "side": "baseline",
+      "on": true,
+      "n": 100,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "planningCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "renderCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "measuredPlanning": [
+        46.29999999701977
+      ],
+      "measuredRenderCount": 64,
+      "renderErrors": [],
+      "frames": 80,
+      "parts": [
+        {
+          "iteration": 0,
+          "warmup": true,
+          "sourceMs": 68.5,
+          "normalizationMs": 2.2999999970197678,
+          "finalizeMs": 0,
+          "totalMs": 68.5,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 1,
+          "warmup": true,
+          "sourceMs": 50.400000005960464,
+          "normalizationMs": 1.4000000059604645,
+          "finalizeMs": 0,
+          "totalMs": 50.400000005960464,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 2,
+          "warmup": true,
+          "sourceMs": 51.79999999701977,
+          "normalizationMs": 1.7000000029802322,
+          "finalizeMs": 0,
+          "totalMs": 51.79999999701977,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 3,
+          "warmup": false,
+          "sourceMs": 46.29999999701977,
+          "normalizationMs": 1.2000000029802322,
+          "finalizeMs": 0,
+          "totalMs": 46.29999999701977,
+          "actualPlanningRecordCalls": 0
+        }
+      ]
+    },
+    {
+      "side": "candidate",
+      "on": true,
+      "n": 100,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 100,
+        "unstaged": 0,
+        "budgetViolations": 0
+      },
+      "planningCalls": {
+        "record": 622,
+        "replay": 0
+      },
+      "renderCalls": {
+        "record": 80,
+        "replay": 80
+      },
+      "measuredPlanning": [
+        116.90000000596046
+      ],
+      "measuredRenderCount": 64,
+      "renderErrors": [],
+      "frames": 80,
+      "parts": [
+        {
+          "iteration": 0,
+          "warmup": true,
+          "sourceMs": 78.79999999701977,
+          "normalizationMs": 2.7000000029802322,
+          "finalizeMs": 5243.5999999940395,
+          "totalMs": 5322.399999991059,
+          "actualPlanningRecordCalls": 622
+        },
+        {
+          "iteration": 1,
+          "warmup": true,
+          "sourceMs": 89.5,
+          "normalizationMs": 1.3999999910593033,
+          "finalizeMs": 74.59999999403954,
+          "totalMs": 164.09999999403954,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 2,
+          "warmup": true,
+          "sourceMs": 54.3999999910593,
+          "normalizationMs": 1.7999999970197678,
+          "finalizeMs": 120.5,
+          "totalMs": 174.8999999910593,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 3,
+          "warmup": false,
+          "sourceMs": 63.400000005960464,
+          "normalizationMs": 1.2000000029802322,
+          "finalizeMs": 53.5,
+          "totalMs": 116.90000000596046,
+          "actualPlanningRecordCalls": 0
+        }
+      ]
+    },
+    {
+      "side": "baseline",
+      "on": false,
+      "n": 100,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "planningCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "renderCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "measuredPlanning": [
+        44.20000000298023
+      ],
+      "measuredRenderCount": 64,
+      "renderErrors": [],
+      "frames": 80,
+      "parts": [
+        {
+          "iteration": 0,
+          "warmup": true,
+          "sourceMs": 65.5,
+          "normalizationMs": 2.7999999970197678,
+          "finalizeMs": 0,
+          "totalMs": 65.5,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 1,
+          "warmup": true,
+          "sourceMs": 50.400000005960464,
+          "normalizationMs": 1.699999988079071,
+          "finalizeMs": 0,
+          "totalMs": 50.400000005960464,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 2,
+          "warmup": true,
+          "sourceMs": 55.69999998807907,
+          "normalizationMs": 1.5,
+          "finalizeMs": 0,
+          "totalMs": 55.69999998807907,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 3,
+          "warmup": false,
+          "sourceMs": 44.20000000298023,
+          "normalizationMs": 1.2000000029802322,
+          "finalizeMs": 0,
+          "totalMs": 44.20000000298023,
+          "actualPlanningRecordCalls": 0
+        }
+      ]
+    },
+    {
+      "side": "candidate",
+      "on": false,
+      "n": 100,
+      "counts": {
+        "requestedCuts": 100,
+        "actualCuts": 100,
+        "regions": 100,
+        "staged": 0,
+        "unstaged": 100,
+        "budgetViolations": 0
+      },
+      "planningCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "renderCalls": {
+        "record": 0,
+        "replay": 0
+      },
+      "measuredPlanning": [
+        75
+      ],
+      "measuredRenderCount": 64,
+      "renderErrors": [],
+      "frames": 80,
+      "parts": [
+        {
+          "iteration": 0,
+          "warmup": true,
+          "sourceMs": 99.70000000298023,
+          "normalizationMs": 3,
+          "finalizeMs": 104.79999999701977,
+          "totalMs": 204.5,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 1,
+          "warmup": true,
+          "sourceMs": 81.09999999403954,
+          "normalizationMs": 1.9000000059604645,
+          "finalizeMs": 31.599999994039536,
+          "totalMs": 112.69999998807907,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 2,
+          "warmup": true,
+          "sourceMs": 53.400000005960464,
+          "normalizationMs": 2.1000000089406967,
+          "finalizeMs": 23.100000008940697,
+          "totalMs": 76.50000001490116,
+          "actualPlanningRecordCalls": 0
+        },
+        {
+          "iteration": 3,
+          "warmup": false,
+          "sourceMs": 53.099999994039536,
+          "normalizationMs": 1.3999999910593033,
+          "finalizeMs": 21.900000005960464,
+          "totalMs": 75,
+          "actualPlanningRecordCalls": 0
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "execution": {
+    "runnerPID": 387146,
+    "runnerStartTicks": "11495910",
+    "parentPythonPID": 387141,
+    "kernelExitCode": 0,
+    "reaped": true,
+    "runnerGone": true,
+    "startedUTC": "2026-10-23T06:09:06Z",
+    "finishedUTC": "2026-10-23T06:09:23Z",
+    "diskAvailableBytes": 310464512
+  },
+  "wrapperConcurrency": {
+    "before": {
+      "jobs": 0,
+      "zombies": 1489
+    },
+    "after": {
+      "jobs": 0,
+      "zombies": 1491
+    }
+  },
+  "support": {
+    "diskBeforeBytes": 322392064,
+    "diskAfterBytes": 310546432,
+    "reserveBytes": 262144000,
+    "violations": [],
+    "changedPackagePins": [],
+    "changedProductPins": [],
+    "changedGateInputs": [],
+    "before": {
+      "jobs": [],
+      "zombieCount": 1489
+    },
+    "after": {
+      "jobs": [],
+      "zombieCount": 1491
+    }
+  },
+  "cleanupEvidence": "Unchanged runner6cc4ef line49 finally awaits browser.close and server.close before post scan/save; completed post phase and Popen.wait kernel0/reaped/gone retained. No ownedCleanup field invented in original raw.",
+  "archiveHardlinkCount": 103,
+  "diskAfterStorageBytes": 317874176,
+  "scopeLimit": "One post-warm planning point; not qualified p95; threshold failures retained; formal1000 not run; no retries."
+}
