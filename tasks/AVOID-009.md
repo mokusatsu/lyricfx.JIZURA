@@ -231,3 +231,5 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 旗は[source計画](evidence/AVOID-009/flag-plan01/PLAN02.md)と[親の設計判断](evidence/AVOID-009/flag-plan01/parent-design01.json)に基づき80f046dから隔離実装を許可。元sourceには負uのpow差分による非有限値、1.2Hの支柱、布の非矩形clipという制約がある。OFFはそのまま保持し、Dのみの有限端点差分・完全primaryの物理支柱/昇降距離・source限定の布clipを実装する。元の文字出現predicate/mi/stagger時計は変えず、実際に存在するentry/furlのはみ出しもglyph全体の円/stage証明に含める。fullrevealでは全guardの布内付着を必要とする。旗の回避成功/性能/視覚承認はまだない。
 
 蛇腹の横/縦2代表のSites公開操作はsucceededを返した。[比較・確認点](reviews/AVOID-009-accordion-selected-20261024-01.md)を今回の未回答queueへ保存。公開結果確認やデプロイpollingは0。縦の左列先行の読み方は人間判断へ残し、承認済みにはしない。
+
+旗のfirst09r草案の親レビューで、再配置用uを出現predicate/miへ流用して元clockが変わる点、glyph半径ledgerを実際の布からのはみ出し証明と混同していた点を指摘。元glyph catalogのuでgate/miを固定する修正を担当へ返した。unfurlは位相別はみ出し証明ができるまでtyped未対応、まずraiseの厳格付着証明を進める。wave候補のsource反映と実際の布幅/高さ候補も完成前提。旗の回避認証はまだない。
