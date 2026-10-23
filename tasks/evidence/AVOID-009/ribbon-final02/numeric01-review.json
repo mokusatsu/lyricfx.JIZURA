@@ -1,0 +1,74 @@
+{
+  "decision": "Ordinary final-source proof and expected reject observations verified; original harness FAIL retained",
+  "source": [
+    {
+      "path": "src/09s_layoutsD_ribbon.js",
+      "sha256": "84874cfdcb4d164737f7fb9d224735b3bcb2fb2b417027ccaebbd76824d508ba"
+    },
+    {
+      "path": "index.html",
+      "sha256": "f84bec328c26bacbda52af4b7d75304417297c2ae8a9242536a4538e097a16ca"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-ribbon-numeric-test.cjs",
+      "sha256": "189a55c354f7c1ca9415fbb15d25357136caff47b483bf8d799476bbde30e83a"
+    }
+  ],
+  "observations": [
+    {
+      "kind": "ordinary",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_D_ADAPTER",
+          "adapter": "ribbon-native-chord-v1",
+          "safety": "certified-bounded-adapter"
+        }
+      ],
+      "safety": "certified-bounded-adapter",
+      "recipe": {
+        "strategy": "local-font-span-bend-and-contiguous-strips",
+        "fontScale": 0.6,
+        "strips": [
+          {
+            "sourceRow": 0,
+            "slots": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ],
+        "spanFactor": 0.7,
+        "amplitudeFactor": 0.65,
+        "bandFactor": 0.9,
+        "rowPitch": 275.7974843963199,
+        "addedTails": 0
+      }
+    },
+    {
+      "kind": "motion2",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "UNSUPPORTED_PARAMETER_RANGE",
+          "safety": "unsupported"
+        }
+      ]
+    },
+    {
+      "kind": "clock901",
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "RIBBON_NUMERICAL_DOMAIN",
+          "details": "Ribbon proof requires stage64..16384/aspect1:16..16:1, contentScale.1..4/motion0..1 and evaluated local clock within599s (render clock600s incl ghost reserve); numerical scope only",
+          "safety": "unsupported"
+        }
+      ]
+    }
+  ],
+  "assertionCorrection": "Generic D input validation rejects motion2 before ribbon dispatch with existing UNSUPPORTED_PARAMETER_RANGE. Both that code and RIBBON_NUMERICAL_DOMAIN are correct unsupported outcomes for their respective layers; no source guard change. Clock901 must be ribbon-specific.",
+  "browserRerun": false
+}

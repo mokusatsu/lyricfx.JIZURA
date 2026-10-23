@@ -251,3 +251,11 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 旗の必要な横縦2例は原寸60fps/4秒/240異なる入力コマのMP4を各前後で生成。親は全480後コマ15,582実polygonの円/stageを独立照合し、画像動画の閲覧は0。独立した文脈なしsolは12静止コマとMP4抜き出しで重大な新規表示不具合なし、布比率/2行/昇降短縮を人間判断へ残した。ラベル誤記と不完全なcontact一覧は修正・除去し、元MP4/個別静止画を保持。[媒体証拠](evidence/AVOID-009/flag-media12/preservation-receipt.json)。Sites初回公開操作は展開後容量269,886,481Bが256MiB上限を超えて失敗し、未公開として記録。既存公開物と動画を保持し、新規旗の計測raw2件だけ静的配信から外す軽量パッケージを準備する。完全rawはmainのnative-frame-raw13.tar.gzへ保存済み。公開結果確認は行わない。
 
 旗の軽量比較2例はSites再試行の公開操作がsucceeded。[未回答の確認項目](reviews/AVOID-009-flag-selected-20261024-01.md)を朝のqueueへ追加した。公開結果確認は0。次のリボンは23a62eeから隔離し、元clock/paint198組、OFF16コマ、root修正後の移動24組を親が照合したが、回避adapterの連続付着証明は未完。元の布より先に文字が見える離散revealを保持し、native material fractionと実65頂点の完全帯への付着を証明する条件を検討中。mainへリボンsourceは未統合、009は実装中を維持。
+
+## リボンの限定受入と正確な統合
+
+親が[連続source証明](evidence/AVOID-009/ribbon-final02/continuous-proof01.md)と[独立raw再計算](evidence/AVOID-009/ribbon-final02/parent-ribbon-review02.json)を受入。実65帯の完全なfont guard、元90弦/nativeFの出現時計を分離して保持する。全位相の完全物理帯への付着を証明し、元の離散revealで現在の描画帯より文字が先行する挙動だけに条件付き例外を適用する。全primaryの円/stageは無条件、常時の可視帯への付着や露出pixel同値は主張しない。source/数値範囲外はtyped未対応とする。
+
+小matrixの通常12条件はsafe5/不足3/付着証明未確定4。2領域を含めsafe7区間、親は77連続証明polygon・432実polygon・80完全文字/1280guard頂点/640辺を独立照合。140時刻/recipe記録の912個別slotで元f/rawMi/visible/IDを一致確認した。維持4条件、表記サイズ維持、auto-area明示倍率1.1の37候補すべてfontScale1、数値域外2例、cacheと旗/蛇腹/円筒3画素・観測組も確認。旧失敗と歴史的pin不足は[復元receipt](evidence/AVOID-009/ribbon-final02/archive-storage02.json)へ明記し、未確認を合格にしない。
+
+[統合receipt](evidence/AVOID-009/ribbon-final02/integration-receipt01.json)の3sourceと再生成JA/ENを固定試験版へ完全一致させ、他91JSと既存dirty pycacheを保持。親のproduct commit待ちで媒体は未生成。次は通常円1280×720「風の先へ」の1比較だけを用意し、字体60%と短い帯の見え方を人間確認へ回す。人間OKではない。限定source受入は8/34 D ID、全リボン/全字体/正式性能/customは未完、009実装中・010以降未着手、公開結果確認0を維持する。
