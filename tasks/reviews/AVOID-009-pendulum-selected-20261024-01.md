@@ -15,3 +15,8 @@
 証拠: ../evidence/AVOID-009/pendulum-media02/。13,450,534Bのraw証拠はmainGit、24個の元動画/原寸画像はcompanion SitesのSOURCE Git42a5181d0cae61a91c787c59aa209420a530b974へ保存済みの分割方式。すべて単一mainリポジトリへ埋込済みとは扱わない。公開結果確認は利用者の永久禁止により実行しない。
 
 初回capture01は計測用のrenderer.drawCut差替えで既存identityガードが作動した実FAILとして保持。capture02は描画関数の差替えを一切せず成功。ガードを弱めた製品変更はない。
+
+
+## 2026-10-24 利用者の動作確認回答
+
+最新回答: HUMAN_APPROVED。Userreviewedallmorningexamples andsaidallotherthanthreeexceptionsOK。朝のまとめをすべて確認し、指定3対象以外はOKとの明示回答。従来の未回答記述は当時の履歴として保持する。新しい版へ承認は自動転用しない。

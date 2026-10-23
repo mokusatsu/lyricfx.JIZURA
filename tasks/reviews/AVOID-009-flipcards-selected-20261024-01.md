@@ -14,3 +14,8 @@
 別コンテキストのgpt-6.1-sol/mediumは8key PNGとMP4から追加抽出した8frameを視覚照合し、形・文字付着・順序・影を限定的に受入。上記の裏カード/星の重なりは人間の審美判断へ残す。実時間再生の承認や全演出の視覚成功には拡張しない。009全体は実装中。
 
 [公開操作の戻り値](../evidence/AVOID-009/flipcards-media03/publication.json)を保存。Sites source commitは316ac3aaed393dc5c40f189c158fe384eb29c15f。公開先への追加アクセス・起動・動画再生・デプロイ状態pollingは0。
+
+
+## 2026-10-24 利用者の動作確認回答
+
+最新回答: REVISION_REQUESTED。Keeporiginalcardfield/nativepositions(oraddnonoverlappingperimetercells); avoidcirclebywhichcardpositionsopen, nottwo-rowfieldrearrangement。朝のまとめをすべて確認し、指定3対象以外はOKとの明示回答。従来の未回答記述は当時の履歴として保持する。新しい版へ承認は自動転用しない。

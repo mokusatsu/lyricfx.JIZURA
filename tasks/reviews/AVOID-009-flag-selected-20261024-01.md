@@ -19,3 +19,8 @@ raiseのみの限定版。unfurlのはみ出し証明、旗全モード、009全
 Sites初回は展開後容量上限で失敗。完全rawはmainのnative-frame-raw13.tar.gzに保存し、新規公開物の計測raw2件のみ静的配信から外した軽量版で公開操作がsucceeded。既存764ファイルと動画/12個別静止画を保持。公開結果確認・デプロイpolling・公開再生は利用者指示により0。
 
 証拠: ../evidence/AVOID-009/flag-wip/parent-final12-review.json、../evidence/AVOID-009/flag-media12/parent-local-review13.json、../evidence/AVOID-009/flag-media12/publication.json。
+
+
+## 2026-10-24 利用者の動作確認回答
+
+最新回答: PARTIAL_APPROVAL_REVISION_REQUESTED。Portraitapproved; landscapemissingwhitepartatflagrootmustrestore。朝のまとめをすべて確認し、指定3対象以外はOKとの明示回答。従来の未回答記述は当時の履歴として保持する。新しい版へ承認は自動転用しない。
