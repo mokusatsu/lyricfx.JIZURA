@@ -1,0 +1,19 @@
+# AVOID-008 lazy edge browser correctness — preparation only
+
+Product owner/source3b0c995a2c912cf3edf6583f372c215c310e11f0 accepted by parent;09g9b060c…,JA c99e0d91…,ENb1701ee6…. This preparation changes no product files.86actualsource+compiled pins match that Git source. Oldimmutable-edge browser driverc2821b52… and oldbrowser02 remain unchanged. New helper dev/avoidance/layouts-c-lazy-edge-browser-test.cjs SHAd860b53ba5743042fb22ec67b8a05ecff3e0481262baccc40a5f040e805e733c. Nine exact replacement operations reverse completely to original driver; both scripts losslessly archived. node --check and diff whitespace check pass. No browser/timing/CDP/image/public execution performed.
+
+All original40cold/warm/fullvalue/alias/mutation/source-original checks,28negative labels/asserts,4nonC,schema20→21failed restore/warm,dual128MiB oversize/LRU,independentadmission/compactbudgetoracle,selected18+18nativeframes/15+15observations and actualplanningrecord instrumentation remain intact. Original row fields are retained; old edgeStats keys remain captured as before, with the9additional source stats returned by the new source. Actualold-row comparison is pending execution; no correctness pass is claimed here.
+
+Additive newsource expectations on normal40pairs:
+- snapshotPointRefs==edges and reservedCoordinateSlots==2*edges;polygons/edges/slots are admitted reservations, not actual edge preparation.
+- upfrontReads+reservedCoordinateSlots==slots;upfrontReads counts actual selected field/index plus genuine snapshotcopy logical work, not withheld coordinate descriptor reads.
+- All9new fields are nonnegative safeintegers. Preparedpolygons/edges are bounded subsets of reservations.
+- Normal before-render and aftercold-planrender:coordinateDescriptorReads/edgeCoordinateReads/preparedPolygons/preparedEdges all0. Coldplan polygons are from the old generation and remain fallback, so rendering cold does not prepare the current warm registry.
+- Afterselectedwarmrender:coordinateDescriptorReads==2*preparedEdges,edgeCoordinateReads==6*preparedEdges,preparedPolygons==validations for normal accepted data. Counts are actual source counters; no inference that all reserved edges were prepared.
+- Normalpairs require rejected/registrationBypasses/preparationBypasses0. Sourcepure already exercises bypass/fault domains; this helper does not replace, rename, or weaken the28old browser negative controls. Otherguard-specific raw remains separately preserved.
+
+Standalone new evidence guard consumes+archives fixed parent gate and runtime immutable-edge-lazy-runtime01{,-raw}.json, selfpins newdriver, requires gateactual86product/173package hashes plus source3b/JA c99e, fullmode output and expectedfreshspecrevision. No raw-only mode accepted by this newgate. Actual Playwright1.62.1 enumeration173retained and compared to parent pins. MainThread-inclusive scan beforelaunch and afterownedbrowser/serverclose, PID/startTicks/zombie records, original300s watchdog/250MiB initial+continuousdiskguard and loopback-only externalabort/source+packagefinally checks retained. Source/runtime/gate files remainfinally rechecked as consumed input pins. Newgate/runtime original files are not overwritten by preparation.
+
+Required future gate path/fields and outputlazy-browser01 are listed in manifest.expectedGate. Parent will supply freshruntime/gate; no execution is currently authorized. The prior ON1003.17×/+5.1msFAIL and alloldFAIL remain unchanged. Only helper/evidence paths are committed, not main/parent rootgate-runtime/product. Stop for parent preparation review.
+
+Parent scan correction: profile token added to Node/MainThread regex so actual immutable-edge-phases-profile.cjs is detected. Lightweight exact-JS regex controls and unchanged source/package pins retained in lazy-browser-scan01. OwnPID exclusion/zombie partition unchanged; no browser/CDP run.

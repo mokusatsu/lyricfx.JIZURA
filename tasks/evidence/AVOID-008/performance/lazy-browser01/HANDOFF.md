@@ -1,0 +1,9 @@
+# AVOID-008 lazy browser01 startup failure — suite not executed
+
+ONE authorized command attempted with network additional permission for loopback; source3b0c995a/driverd860b53 unchanged. It exited1 at the top-level `assert.deepEqual(gate.packagePins,packagePins)` before report initialization/server/browser. Gate array uses a different ordering from actualdriver localeCompare DFS enumeration. The actual173unique path/bytes/hash values match;167array indices differ. This is a gate-table order failure, not a product/browser correctness result. No retry or source/driver/assertion change occurred.
+
+Full gate table was already consumed/archived during the attempt. A separate read-only post-failure exactdriver-algorithm enumeration is saved with qualification in package-order-diagnosis.json; it is not claimed as original in-process raw memory. Both complete tables and167index differences retained. Manual preflight independently verified86product+173package+driver hashes/current215/livejobs0/250MiB before launch; endhashes unchanged.110inputarchives+schema and4manual gate/runtime/recheck archives preserved. MainThread/profile-inclusive postscan0live jobs; no browser/server existed to close, and original driver finally was not reached. RunnerPID was not retained by the exec response/report and is unknown; exit1 was collected by exec.
+
+Tool stdout contained a large assertion diff and was truncated by token budget. startup-error-excerpt.txt explicitly records only the observed excerpt; complete original stdout/stderr cannot be reconstructed. No original full-stdout SHA is invented. Future run, if separately authorized, must redirect stdout/stderr from startup to a unique /tmp logfile. Original gate01 and all FAIL artifacts remain unchanged.
+
+No40pairs/28negative/nativeframes ran, no lazy correctness pass. No browser/timing/CDP/1000/image/public/main changes. Stop pending parent newgate/preparation approval.

@@ -1,0 +1,11 @@
+# Fixed lazy speed-diagnostic evidence import only
+
+Fixed Gitd256228e650382e560ce941310490581837c079d supplied immutable-edge-lazy-diagnose-preparation01 (11files/33,866B) and immutable-edge-lazy-diagnose01 (139files/11,710,989B):150files/11,744,855B. All destinations were absent and every imported file was checked against its GitblobSHA1/SHA256;150read-only immutable hardlinks were safe. Manifest records each path/blob/hash/bytes and donor/main inode. No live donor product/helper was read or applied.
+
+The fixed layouts-c-immutable-edge-lazy-perf-gate-support.cjs helper SHA25653ad80f91ac5b3a74a6f6e7d617c3006a407aec3ce07840af5427f6e39e20db4 is saved only as deterministic losslessgzip under helpers/. Main source/HTML/topdev remains unchanged. Imported results.raw.json.gz independently decompresses to695,952B/SHA256734d42c172b955518ca618e831829969884ddb583019abff47b50b910a1db0ba, matching parent identity. Historical ON2.182times/+5.2msFAIL and postprocess-failure01 remain unchanged; no success relabelling/retry or new timing was performed.
+
+The separately authorized cleanup-candidate check targeted only donor lazy-browser02/results.json. That exact path failed lstat with FileNotFoundError before bytes could be read, so no canonical fullraw equality or cleanup eligibility is claimed. No other path was substituted or inspected as a candidate; nothing was deleted/moved/recreated/chmodded as cleanup. plain-cleanup-candidate.json preserves the unavailable result. Canonical Gitgzip and all oldFAIL/otheruntracked remain untouched.
+
+Importer before/after fullSHA records protect main84source+JAEN2+dirtypyc1, dirtytracked, Gitindex and existing performance/root008flatJSON. Existing75,215untracked paths retain exact inode/mode/size/mtime/ctime/nlink/symlink metadata and equal before/after gzip snapshots; no unrelated fullcontentSHA claim. All writes were new selected evidence/archive/support paths.
+
+No product/topdev application, Gitmutation, tests/browser/timing/media/imageview/public operation or deletion/move occurred. Above250MiB remains free. Inspect preflight/protection-before/manifest/receipt/import.py/rawidentity/supporthash/finalverification. Complete; stopped for parent review.

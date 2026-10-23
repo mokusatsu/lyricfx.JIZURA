@@ -1,0 +1,34 @@
+{
+  "basePath": "dev/avoidance/layouts-c-immutable-edge-perf-gate-support.cjs",
+  "baseSHA256": "1ca6972719933c86f50c01678ebd21461ae3e62e421e273256cdf91b93c541a9",
+  "candidatePath": "dev/avoidance/layouts-c-immutable-edge-lazy-perf-gate-support.cjs",
+  "candidateSHA256": "53ad80f91ac5b3a74a6f6e7d617c3006a407aec3ce07840af5427f6e39e20db4",
+  "operations": [
+    {
+      "before": "names=['immutable-edge-diagnose01-parent-gate.json','immutable-edge-runtime03.json','immutable-edge-runtime03-raw.json']",
+      "after": "names=['immutable-edge-lazy-diagnose01-parent-gate.json','immutable-edge-lazy-runtime02.json','immutable-edge-lazy-runtime02-raw.json']",
+      "replacements": 1
+    },
+    {
+      "before": "base+'immutable-edge-diagnose01'",
+      "after": "base+'immutable-edge-lazy-diagnose01'",
+      "replacements": 1
+    },
+    {
+      "before": "'8ff3dd8487a4fb4193d00ef9caa296372c751b4f'",
+      "after": "'3b0c995a2c912cf3edf6583f372c215c310e11f0'",
+      "replacements": 1
+    },
+    {
+      "before": "base+'immutable-edge-browser02-parent-gate.json'",
+      "after": "base+'lazy-browser02-parent-gate.json'",
+      "replacements": 1
+    },
+    {
+      "before": "(?:test|perf|preview|capture)",
+      "after": "(?:test|perf|preview|capture|profile)",
+      "replacements": 1
+    }
+  ],
+  "reverseExact": true
+}
