@@ -261,3 +261,5 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 [統合receipt](evidence/AVOID-009/ribbon-final02/integration-receipt01.json)の3sourceと再生成JA/ENを固定試験版へ完全一致させ、他91JSと既存dirty pycacheを保持。親のproduct commit待ちで媒体は未生成。次は通常円1280×720「風の先へ」の1比較だけを用意し、字体60%と短い帯の見え方を人間確認へ回す。人間OKではない。限定source受入は8/34 D ID、全リボン/全字体/正式性能/customは未完、009実装中・010以降未着手、公開結果確認0を維持する。
 
 リボン製品は`caddb6a`、可搬raw再計算入口は`5f6e771`へ保存しpush成功。新しい25.68MB完全packetもGit blobのみ/skip-worktreeで保全し、[復元receipt](evidence/AVOID-009/ribbon-final02/archive-storage02.json)から追跡できる。代表横1組のMP4を準備中。次の独立D演出[振り子の設計](evidence/AVOID-009/pendulum-plan01/PLAN01.md)を親が読み、元Ti/表示clock/全支柱所有を保つnative gateを隔離treeで開始した。回避adapterはまだ未承認・未統合、009実装中/010以降未着手を維持。
+
+リボン代表横1組の原寸1280×720/60fps/4秒MP4は前後240時刻で出力。元のblank8コマによるPNG重複を保持し、異なる入力画像は各232枚。親は全sourcePlan一致と後240コマ5,886実polygonの円/stageを独立照合。別文脈solは14画像を照合し新規重大欠陥なし、入退場の細い帯からの共通はみ出しを記録。[人間確認](reviews/AVOID-009-ribbon-selected-20261024-01.md)は未回答queueへ。既存Sites容量を圧迫しない新しい補助Siteへの公開操作はsucceeded、公開結果確認0。次の振り子はnative gateを親受入した段階であり、全物体/支柱/文字の連続回避証明を隔離実装中。009実装中/010以降未着手を維持する。
