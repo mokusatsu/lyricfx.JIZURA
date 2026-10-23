@@ -9,9 +9,11 @@
 
 開始ブランチwork、HEAD 7d3ced6。AVOID-008の必要4構図への最新OKを受領し、依存005/006と前段008の完了記録を確認して順次開始。[全開始状態](evidence/AVOID-009/start-state01.json)。既存pyc変更と全未追跡成果物を保持する。実装はgpt-6.1-sol / mediumのcontextなし子、親がコード・生テスト結果をレビューし、画像照合もcontextなしsolへ分離する。公開結果確認は永久停止、追加サイバー調査は行わない。必要な確認例だけ原寸アニメ部分のMP4/比較HTMLを公開する。旧公開検証必須の条項はAGENTS.mdに従い対象外。
 
+AVOID-008受入・009開始のローカルcommitは6e016f7。pushはproxy:8080への接続失敗（exit128）で未完。[操作記録](evidence/AVOID-009/start-publication-operation01.json)。設定239/観測239・running/currentを取得したがnetwork stateはunknownであり、実通信成功とは扱わない。ローカル実装と親レビューを継続する。
+
 ## 開始前確認
 
-- ブランチ・HEAD・git status: 着手時に記録する（このスレッドで実装は開始していない）。
+- ブランチ・HEAD・git status: 上の実開始記録とstart-state01.jsonを参照。従来の計画文は以下に保持する。
 - 共通解析基準: b7c23bf。スキル導入済みHEAD: 3c79480。着手時に差分を再確認する。
 - 正本: [設計・根拠](avoidance-design.md)、[一覧](task-list.md)、[スキル](../.agents/skills/evidence-driven-task-management/SKILL.md)。
 - 依存タスクの必須条件と証拠を確認する。完了を推測せず、未完条件を引き継ぐ。

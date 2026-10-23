@@ -1,0 +1,33 @@
+{
+  "scope": "Initial source review before D implementation, not acceptance",
+  "baseline": "6e016f7",
+  "findings": [
+    {
+      "boundary": "drawAff/drawAffPlain",
+      "requirement": "Compose parent+camera+item exactly once; include meaningful owned face text outside mainDraw; singular transforms typed unsupported."
+    },
+    {
+      "boundary": "wordSearch",
+      "requirement": "Separate seeded filler rows/earlier decoys from actual find capsule and ordered main glyph path. Do not exempt whole ID."
+    },
+    {
+      "boundary": "contour",
+      "requirement": "Large source grapheme rings and meaningful caption are protected primary; stroke rings must include actual painted width."
+    },
+    {
+      "boundary": "mosaicTiles/maskReveal/halftone",
+      "requirement": "Trace offscreen primary provenance and final visible tiles/clips/patterns; primary glyph mask must not become auxiliary circle mask."
+    },
+    {
+      "boundary": "custom drawing replace/overlay/layout/decor/bg",
+      "requirement": "Cut replace bypasses native renderer; layout uses mainDraw, decor/bg raw text do not. Preserve DSL/manual coordinates; provide consistent typed capabilities/diagnostics."
+    },
+    {
+      "boundary": "refinalization and copying",
+      "requirement": "New D flags/recipes cleaned; options identity, originalCuts lineage, copy fidelity, source renderer registry changes tested."
+    }
+  ],
+  "publicResultChecks": 0,
+  "imageVideoViewsByParent": 0,
+  "implementationAcceptance": false
+}

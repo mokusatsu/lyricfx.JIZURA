@@ -1,0 +1,18 @@
+{
+  "operation": "git -c gc.auto=0 push origin work",
+  "commit": "6e016f7",
+  "exitCode": 128,
+  "stderr": "fatal: unable to access 'https://github.com/mokusatsu/lyricfx.JIZURA.git/': Failed to connect to proxy port 8080 after 0 ms: Could not connect to server",
+  "environmentObservation": {
+    "observations_current": true,
+    "desired_phase": "running",
+    "observed_phase": "running",
+    "spec_revision": "239",
+    "observed_spec_revision": "239",
+    "network_policy": {
+      "mode": "unrestricted",
+      "state": "unknown"
+    }
+  },
+  "conclusion": "Local execution works; remote push did not run successfully. Configured network policy is not observed enforced readiness. No proxy/CA/TLS change or public result verification. Continue local implementation."
+}
