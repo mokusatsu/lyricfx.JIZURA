@@ -1,0 +1,17 @@
+# AVOID-008 node-wire encode paired browser preparation only
+
+Model gpt-6.1-sol medium. Product fixed2f3a8375c1f27305b0e25b24db96e67ff975a73a; JA0a33254940b3cf069d91de8ece36fe58510927bcdd83100e22f15172322eed97. Parent independently accepted source/pure; this checkpoint prepares a future browser helper only.
+
+New dev/avoidance/layouts-c-node-wire-encode-browser.cjs SHA2563390debd2b05f9a510ce8221af27dc8594d396846668ebf14ecf36b6771943e4 derives from original whole-result exact helper b818ef8757a989df7e4cd157b4215bb689cca47305ee3e7cba1ea99c6e3fc87f. Ten literal groups/fourteen occurrences change helper/gate/output namespaces, authorization mode, source/JA pins, spec228/runtime02, baseline archive/SHA and samebytes archive search. Reverse substitutions recover every original byte. Entire exercise body is unchanged, including40 normal rows+2 separate corner targets, cold/warm/fast render body,72native frames per realm/144total, full program/alias/geometry/pixel/observation/error capture and selection.
+
+Baseline is prior product984 full84 JA from existing native-local-bounds-memo-browser01/input-index.html.gz decodedSHA21bfb1f628ff880932e2f7ca51c22cfdfaa014e75d04840e0922b53f67776b76. No HTML or archive duplicated. Both versions have the same13 nativeLocalBounds stats; all fields are compared through full deep/ordered/canonical equality. No projection and no independent diagnostics exclusion. All86 product files equal candidate Git blobs; actual173 package-file pins match accepted prior gate. Fixed pins retain exact baseline compressed SHA and exercise hash.
+
+Archive search now prefers native-local-bounds-memo-browser01 then existing validated-repair/lazy folders; only actually different inputs may create new archives during a future run. No input archives created here. Existing budgetEncoder extraction includes the exact generic encoder fallback and requires no payloadGuard in the standalone accounting oracle.
+
+Original full84 source guard, product86/package173 checks, MainThread-inclusive before/after jobs,300s bound,250MiB reserve, loopback external abort, inherited proxy/CA/TLS, awaited browser/server cleanup and drift checks remain unchanged. Parent must maintain a full-run exclusive lease and capture actual PID/startTicks/kernel wait/reaped/gone/post-save reserve externally. Earlier reserve violation and performance failures remain recorded.
+
+Requires parent-created node-wire-encode-browser01-parent-gate.json plus runtime native-local-bounds-runtime02.json/-raw.json with actual current=observed228/running/connected qualification. Gate must use authorizationMode one-paired-normal40-plus2-node-wire-encode-correctness, candidate source/JA above and this helper SHA, baseline archive pin,86product/173package pins, formal1000Authorizedfalse and output tasks/evidence/AVOID-008/performance/node-wire-encode-browser01. Parent must freshly confirm runtime before launch. No gate is created by preparation.
+
+Future command (NOT EXECUTED): JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-c-node-wire-encode-browser.cjs tasks/evidence/AVOID-008/performance/node-wire-encode-browser01
+
+node --check and git diff --check pass. No browser, timing, CDP/profile, additional security/mutation/fuzz, images/video or public verification. No product/main/docs modification. Parent review and separate one-run authorization are next; no performance benefit claimed.
