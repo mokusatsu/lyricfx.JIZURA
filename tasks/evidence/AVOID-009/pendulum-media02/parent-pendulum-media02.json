@@ -1,0 +1,43 @@
+{
+  "decision": "Source/actual native60fps raw, owner-envelope coverage, stage/circle and ffprobe independently checked. Human aesthetics not accepted.",
+  "counts": {
+    "pairs": 3,
+    "framesEachSide": 720,
+    "afterObservations": 2160,
+    "afterPolygons": 15499,
+    "completeOwnerMatches": 15499
+  },
+  "minCircleGapBeyondMargin": 68.29521389028909,
+  "cases": [
+    {
+      "id": "cradle-four-normal",
+      "distinctPixels": {
+        "before": 240,
+        "after": 240
+      },
+      "polygons": 8205
+    },
+    {
+      "id": "fan-four-high-motion",
+      "distinctPixels": {
+        "before": 240,
+        "after": 240
+      },
+      "polygons": 5336
+    },
+    {
+      "id": "chunks-one-original-run",
+      "distinctPixels": {
+        "before": 240,
+        "after": 240
+      },
+      "polygons": 1958
+    }
+  ],
+  "manifestSHA256": "f1508ee593f32f18f583cda39dee502e34b26ccafa85f4b288cad48d5d515c13",
+  "sourceBeforeAfterEqual": true,
+  "beforeClockProvenance": "Derived from unchanged native source quantizer; not observed callback",
+  "afterClockProvenance": "Existing placementObservation actualmotionTime, no renderer function hooks",
+  "imagesViewed": 0,
+  "publicChecks": 0
+}
