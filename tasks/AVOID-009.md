@@ -1,6 +1,6 @@
 # AVOID-009 拡張Dの34レイアウト・カスタム描画の対応
 
-- 状態: 調査中
+- 状態: 実装中
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -9,7 +9,13 @@
 
 開始ブランチwork、HEAD 7d3ced6。AVOID-008の必要4構図への最新OKを受領し、依存005/006と前段008の完了記録を確認して順次開始。[全開始状態](evidence/AVOID-009/start-state01.json)。既存pyc変更と全未追跡成果物を保持する。実装はgpt-6.1-sol / mediumのcontextなし子、親がコード・生テスト結果をレビューし、画像照合もcontextなしsolへ分離する。公開結果確認は永久停止、追加サイバー調査は行わない。必要な確認例だけ原寸アニメ部分のMP4/比較HTMLを公開する。旧公開検証必須の条項はAGENTS.mdに従い対象外。
 
-AVOID-008受入・009開始のローカルcommitは6e016f7。pushはproxy:8080への接続失敗（exit128）で未完。[操作記録](evidence/AVOID-009/start-publication-operation01.json)。設定239/観測239・running/currentを取得したがnetwork stateはunknownであり、実通信成功とは扱わない。ローカル実装と親レビューを継続する。
+AVOID-008受入・009開始のローカルcommitは6e016f7。pushはproxy:8080への接続失敗（exit128）で未完。[操作記録](evidence/AVOID-009/start-publication-operation01.json)。設定239/観測239・running/currentを取得したがnetwork stateはunknownであり、実通信成功とは扱わない。ローカル実装と親レビューを継続する。その後、実行コマンドに通常のnetwork権限を明示した同じpushは成功（7d3ced6..c40d0f0）。継承proxy・CA・TLSを維持し、公開結果確認は行っていない。初回失敗は消さず保持する。
+
+## 初期境界の親レビュー
+
+[checkpoint01親レビュー](evidence/AVOID-009/parent-boundary-checkpoint01-review.json)で34IDの初期役割表、custom13経路のtyped未対応診断、元座標/描画保持を限定受入。親の独立pure13件は元rawと完全一致。browser03の13経路×3時刻=39描画組、OFF/manual/lock/emphasis4条件、診断roundtrip/idempotence/独立fresh legacyとの再finalize一致をrawから照合。親browser再実行・画像閲覧はこの段階では0。Dの回避幾何もcustomの安全な配置も未実装/未受入であり、タスク完了ではない。
+
+初期レビューでcustom診断の優先順位、円筒の補助扱い、custom FX取りこぼしを指摘し修正した。旧browser01のbg source-preservation期待の誤りは、旧来のcenter adapterがnoDで適用可能なため、独立fresh noDとの一致へ試験を訂正。元失敗rawを保持し成功へ置換しない。旧01/02のrunner原本snapshotは欠けており、その歴史的内容の完全再現は主張しない。今後の実行は開始前snapshotを保存する。次は実D所有単位と全区間証明のadapterを順次実装する。
 
 ## 開始前確認
 
