@@ -1,0 +1,57 @@
+{
+  "task": "AVOID-009",
+  "build": "review03",
+  "reviewType": "independent-local-visual-intent",
+  "manifestSHA256": "351741556bbca484de435deca49fd5fdf82d87128334f77d4966c69099bf37ab",
+  "overall": "FIX_REQUIRED",
+  "cases": [
+    {
+      "id": "d09-fisheye-lens-portrait",
+      "status": "PASS"
+    },
+    {
+      "id": "d09-cube-single-wrap",
+      "status": "PASS"
+    },
+    {
+      "id": "d09-origami-gate-paper",
+      "status": "PASS",
+      "note": "Coherent 4-line reflow and changed paper aspect acceptable; native fold occlusions retained."
+    },
+    {
+      "id": "d09-origami-blintz-paper",
+      "status": "FAIL",
+      "reason": "Persistent approximately4:1 elongated after diamond loses native1:1 square-paper shape and top/bottom fold travel.",
+      "evidenceFrames": [
+        0,
+        15,
+        30,
+        60,
+        90,
+        120,
+        180,
+        228
+      ],
+      "fix": "Preserve rx=ry native diamond aspect; search reflow/local font reduction/uniform size; conflict if unavailable."
+    }
+  ],
+  "inspectedBothSidesFrames": [
+    0,
+    15,
+    30,
+    60,
+    90,
+    120,
+    180,
+    228,
+    239
+  ],
+  "mediaProbes": "8/8:240frames,60/1fps,4seconds,nativeDimensions",
+  "captureClockReceipts": "8/8: ordered n/60,240 entries",
+  "publicChecks": 0,
+  "parentImageReturns": 0,
+  "continuousSafetyAssessed": false,
+  "fullTaskAcceptance": false,
+  "performanceStatus": "1000/cold FAIL retained",
+  "report": "/tmp/avoid009-independent-visual01.md"
+}
