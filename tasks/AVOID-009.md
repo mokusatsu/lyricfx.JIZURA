@@ -227,3 +227,5 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 最終matrix04は81条件中safe49/不足31/文字数範囲外1。親は51safe区間の660証明polygon・396文字付着polygon・20,365実polygonを円余白/stage/連続所有包絡へ独立照合。OFF12条件×6時刻、native再生72組、元clock18条件、独立した移動432組、他C/D18条件72RGBAとcache3例が一致した。正式性能は未評価で、補助的なtimingを性能成功とは扱わない。[固定packetと復元手順](evidence/AVOID-009/accordion-wip/handoff-final01.md)を保存し、初期UNACCEPTED WIPは履歴のまま保持する。
 
 通常円の横代表は全文の字体サイズ106.92pxを保持し、panel137.7×165.24、自然境界で2帯、右へ286.01px。縦代表も字体サイズを保ち、panel145.8×174.96、2帯/4表紙、下へ233.63px。局所MP4で形・折り・読み順を独立solへ確認してから必要な例だけ公開し、人間回答は集約queueへ残す。次の旗は読取設計段階、009全体は未完。
+
+旗は[source計画](evidence/AVOID-009/flag-plan01/PLAN02.md)と[親の設計判断](evidence/AVOID-009/flag-plan01/parent-design01.json)に基づき80f046dから隔離実装を許可。元sourceには負uのpow差分による非有限値、1.2Hの支柱、布の非矩形clipという制約がある。OFFはそのまま保持し、Dのみの有限端点差分・完全primaryの物理支柱/昇降距離・source限定の布clipを実装する。元の文字出現predicate/mi/stagger時計は変えず、実際に存在するentry/furlのはみ出しもglyph全体の円/stage証明に含める。fullrevealでは全guardの布内付着を必要とする。旗の回避成功/性能/視覚承認はまだない。

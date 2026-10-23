@@ -1,0 +1,1044 @@
+{
+  "task": "AVOID-009",
+  "build": "accordion-selected-20261024-01",
+  "scope": "Two selected accordion intent examples only; no full-family/task completion or new performance acceptance claim.",
+  "baselineCommit": "90909a0e9873c703215541b72a55658abd3f2175",
+  "baselineLabel": "変更前（円筒の回避導入前）",
+  "afterLabel": "変更後（回避試作）",
+  "publicChecks": 0,
+  "parentMediaViews": 0,
+  "creatorVisualInspection": false,
+  "sourceSnapshot": "/tmp/avoid009-accordion01",
+  "sourceManifestSHA256": "ff251590a99d73782436709977fcb9f125fa6a6783ecd23ccda46f8a63c9bfbf",
+  "baselineHTMLSHA256": "e6e9c02c4675812317d893fbdb6a7ab8700ccc5805138ae019534375ca46c107",
+  "baselineSemantics": "Whole Git90909a0 product HTML, common fixture/avoidCenter settings and full-stage area null, native renderer without D finalization/placementD flag. Original effect, not unsupported-D excluded selection.",
+  "runnerSHA256": "d5862e50e1b65e8117901a3585d8a4be3970a1b7268f66157c214df4eb2cb80a",
+  "fontManifestSHA256": "946af88de4305e4df4c6f8c0755b67b716eff151e70ee28e7d36dc9d432f7b42",
+  "supplementalPins": {
+    "src/01_util.js": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+    "src/02_fonts.js": "3e687cfd1045349f36eb65f4fa802973ad4303f48b21069cf6dcc68a546c0415",
+    "src/02b_lang.js": "a0464cc32ec396e2198801387f3640ec217ec1d0ea790ee2e88dbafebd7fc770",
+    "src/03_text.js": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+    "src/04_styles.js": "29ecef9319dabebbadea198f3915c50bd76f2c48f1cf34d034c833106aa19ca7",
+    "src/05_anim.js": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+    "src/05b_registry.js": "ecaefd208377658bb23adca79c36e093a7b3fce796f5facdb7d10806f6619cea",
+    "src/06_layouts.js": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+    "src/07_decor.js": "9e0c6edc62ea6e0d220a5f5619e1ba10b35f776a45305fe1cde3288513fe4d24",
+    "src/08_planner.js": "608bf692d183fd5db2b4eecaa469d6278092be57796b5a3353175941bfddba37",
+    "src/08b_omakase.js": "0bcc4a74b12ea70a293cb6e3307c4fe62c8ddf391183bcbaceeb5747847bb870",
+    "src/08c_composition.js": "57edce5653bc5c39af03f528e3315f3d891af43b992d47f5cc493fb83a2855cc",
+    "src/08ca_lyric_avoidance.js": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d",
+    "src/08cb_background_layouts.js": "9122c219b4013391a5cc14dbdb289a7e205daf6088b8e4ed744f00b64aef560e",
+    "src/08d_media.js": "bf175deb61f4a197eb28dc538f8daaae9da55efe6711dbec61adba0c38407ffd",
+    "src/08e_lyric_features.js": "54f4b361f23bf8f78e293cf11a570a3088bc209dd80e6acf52ea7cffdc1f5373",
+    "src/08e_media_effects.js": "eeb89f3b2424ad912ecc16d6f2affb186eb8c608a8b1a290d2b9c3d791b77f40",
+    "src/08eb_lyric_scene.js": "c88e6f489446ffb77eac5856217a5b0c3ff04684c1c11750e29fe3c7fece681a",
+    "src/08f_media_variations.js": "fa6c9db6aabf77de42dcd7dc87ff1f20cd401deaab541eddd5361548e247a38b",
+    "src/08g_media_decor.js": "68c7506146e71de5d89a691fb7738f23e86c847126a2f05fd887cfdcc6b395b6",
+    "src/08g_media_masks.js": "168fee9b91f7b24502daa16b101a5d65cd19a4c44377eb8f25c317812dbcaad8",
+    "src/08g_media_phases.js": "ac91c6ea9e355a11f5734304de7d75dd6427923b431f6162eb29ec0a2322ad6f",
+    "src/08g_media_rhythm.js": "1b7821f7b8e3a760a081ecfcc869b840dcff451a00b3cabac113ecb73201193c",
+    "src/08g_media_scenes.js": "e71facca3a86a25c9404ad35a44494e0bf0781cfcfcf64957f01a3c615fd3414",
+    "src/08h_cut_details.js": "bd8a814c97bb281a596d978478368061f5d596cb2dedcb6a57adb3eee1f07864",
+    "src/08i_effect_clipboard.js": "9f0e7b10c1688312298ce262a78174530cfeec940f66531efa11de8cb6cb405e",
+    "src/08j_cut_mask.js": "556e924f69fe9435d3d3bfe452aa6e9b130f20d316e0f852e2e6b309050eeb6c",
+    "src/08k_detail_search.js": "6472c8ad6013e5d14a0e3abf65fc32e39ee030e213bb8fa05530858df45f2db9",
+    "src/08l_detail_labels.js": "895d35845cd1304502a9c3427ad0d697a024b10cf783d75169f5caa4333b67d8",
+    "src/08m_person_cutout.js": "5559074b5a08786097f273d84b0f652abb21455a0d0023df68692f5269016185",
+    "src/09_render.js": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623",
+    "src/09a_placement.js": "eae453d572e806fd82ddfa60e3e31dfad1de4ccd960f58adeeb47e32ee32a676",
+    "src/09b_basic_placement.js": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+    "src/09c_layoutsA_placement.js": "ff603fe43f54296865ae59ab1268c581cbfbbf7a489d02aafbfda83221b03c36",
+    "src/09d_adaptive_placement.js": "ab3e8c727284eacbf642e4fdb2e71197aa6cfde7a68e1473450710289c05a595",
+    "src/09e_layoutsB_placement.js": "268e8f8132f70a9e9627a703656f56d00e50a7145b8b84b1eef31c2371d249d1",
+    "src/09f_layoutsB_editorial.js": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+    "src/09g_layoutsC_placement.js": "835c2bdfc1300aef1fcc936be1d7c244cc246f3c97555e2c728dd474b056fb4a",
+    "src/09h_layoutsC_editorial.js": "245871a5f7e6ce61b77d6d45173d63fad4d5b225150a15eba135b0d9fc578af2",
+    "src/09i_layoutsC_objects.js": "e247693918674e5c60b67794fd801fe195e23e834b4aa16afae23a6328684111",
+    "src/09j_layoutsC_japanese.js": "628b22ceb18d3ee7f5d4725cf7310d8a15d2f30381dc546ccf4cee318e9bbdc5",
+    "src/09k_layoutsD_placement.js": "821ada85647b45bc4b664fce6c36c734f616286985b3c975e237716449a708c7",
+    "src/09l_layoutsD_fisheye.js": "0eccb7d52162fc44780d4fb2f6063afaeda299f35094f0af575109d86a241fb5",
+    "src/09m_layoutsD_cube.js": "8cdebfef1c2497a34473c2a7d1291e5c338caef7c59dc5ce18240ce8d1a525f9",
+    "src/09n_layoutsD_origami.js": "acebd097b681c2a928c457d132826fb0e68f5343397fcdd5609b143aa3f4d4ca",
+    "src/09o_layoutsD_cylinder.js": "a498ba61132ff4549cdc86f1924386a36a864087c44e033264095d7002fe10c3",
+    "src/09p_layoutsD_flipCards.js": "5dc174a4343b4e3499ce013d68d64b545ed290c16d4bde3162f924e36b47aeb5",
+    "src/09q_layoutsD_accordion.js": "11b028ac954ebdaf3221908b01e361b67305ddd2ab3f79fd7bd194fcd5b96892",
+    "src/10_audio.js": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57",
+    "src/11_export.js": "d05692567f7893a3258500838091fc0e8cf7536b4ae763f20d0b6aa91a59037f",
+    "src/11b_project_file.js": "9659b8d0bce2919830704c25ab230fc5a7faaad4c3d3783205dd9b5bd2630286",
+    "src/11p_bgcamB.js": "baad1dab7a4743b4eab351c9e9dfa76d9af5f4e00b29538ce41837a5628dd644",
+    "src/11p_decor.js": "b533343d8ad5ad114300fed174d4eb0dff092201c778a6697345157595b933a5",
+    "src/11p_decorB.js": "f49747910c456cb829bdfeffa5c0342898305a8e01eebfa8ac18b2cc279bcd62",
+    "src/11p_enter.js": "949b506310fd7f6f23a11f30691e0edc722ff1b953c157517093aec562644638",
+    "src/11p_enterB.js": "7896363367fb5e5d19c4ccd59cd76ac707328bf018a91b24a137562a421819ce",
+    "src/11p_exit.js": "a013c8d40ba71fa69ea1bfa0782d2a55b7a152aa91bc7c0f7d85a9e89dca0b2b",
+    "src/11p_exitB.js": "565ee042f3f3382b05bb1cfdde8cb140231dba21f7ab58001af45e37d1faaf2e",
+    "src/11p_fxB.js": "168dc3c65c197ddbe4252b9fbe013d6c35a5e7758cf95585ee34263b831d3101",
+    "src/11p_horror1.js": "792d6dace596a0503e1055d3bbf9e56d63dc00c7151a1fb350067f2faac9f033",
+    "src/11p_horror2.js": "828ff4c48181e9755c5e2a82be4e30cab491ca0614cc25d711131108af50b7e4",
+    "src/11p_horror3.js": "c99a0d0cef6cf2b246e84586d5a33ebc750d1ef659a1490f211e8316d2727853",
+    "src/11p_kinetic1.js": "012282d5f3d44ef99c1b5fa26dd85210b138c4ecc73f54084f929bc74bd0045e",
+    "src/11p_kinetic2.js": "8c0401cfc265b6fe79d83e6a056e1bed93f42ae60a17890db165058f842ffd45",
+    "src/11p_kinetic3.js": "c1905cb3a5fb7fb7a14e9984b7ee4ce6b435eddeaab89fb71742c0075b7b3393",
+    "src/11p_layoutsA.js": "9d2b6cda27b049e6b2594603c6dee25d930e09ba536274a21a5ace5ddc7bfcd5",
+    "src/11p_layoutsB.js": "6e9730f7647fe5ff0d0f28a9f795efa54475a77659b8975a22711b910cd82064",
+    "src/11p_layoutsC.js": "2229f1cb916d73e730beeef494c3ee77411bfffbb2ea64eb173111cc4d2a4b17",
+    "src/11p_layoutsD.js": "888f9e81ba8361fb75bfa0140e3c26f0dbbac7f61f8577cb863a097dfab3276e",
+    "src/11p_looks.js": "724f124e9b0dfac715bcffb56bbc0342ccc78fdc5f3151481b2c52583470afba",
+    "src/11p_styles.js": "a306862fa099e7fd39b2efe1b63a6d30b8abf0462e141a075cd7b9ec24106922",
+    "src/11p_treattrans.js": "139dadb053110d87439248116d7e2ccf5b8f629cdd72c6412313649fde76ee25",
+    "src/11p_typo1.js": "0a1c61c77ebdd61754120283078a1e79e339a3de5341974e9ac7b5bb5a2878da",
+    "src/11p_typo2.js": "0fefc16f3e3711da71763bf6f874d02532820e3bbf2f8fd9e327af1a107914e6",
+    "src/11p_typo3.js": "bf8f19513f94044faedf74b45601d6cffa467edb79e37542149d34213c03df77",
+    "src/11q_media_cameras.js": "23254987957792ef1acb612d5f2485401f31d5cb0ba50f31cc3de8d6754f8fd8",
+    "src/11q_sets.js": "c7089d50d5a3eeabd9e4b236812201e87e7f55c4fb22b2d6c06f1efb0d02fc76",
+    "src/11r_themes.js": "31fe85b17a3faf6c2ebe6a3e5a2badcd4807bf4de0ddfceac4e0668e24b5577c",
+    "src/11s_color_theme.js": "13221ae70b44a6b7222bbac3d32ee926b30f442427ca33c01ac35f905a847593",
+    "src/11s_decor_details.js": "40014b35c1f53fca227767bc6e758e69831b7c9e80a130b58bee3e5f000b64dc",
+    "src/11t_effect_preview.js": "2169525db51841181d477f84826145a1fe6c3de5a852f99ead95ededb65ee6ba",
+    "src/11u_effect_favorites.js": "bbe922b1edd9b3488163c69f0c6e99b62d98649b0a91e3923c02cdcc348872ae",
+    "src/11u_note_layouts.js": "8bd64c9068384332be36710653ed4bb171373f8ae81ed58f4f7bd0d2f1e1b783",
+    "src/11v_modal_scroll.js": "09e3742f65e7c1076b068aabb8d7fa018723a5377c65f49786a6b382df156ac8",
+    "src/11w_custom_draw.js": "00bc020f5cac3ea8dbe98421bebd35867fde0a83f71fdf656d9ec614747a62ad",
+    "src/11wa_custom_effects.js": "079f75f0117d35d1ebfb48d2a781dd52e7a74adc4811c4077eca9f320c3e0937",
+    "src/11x_favorite_api.js": "c46c2c7d751be5b8372b50e71ce80cdcc72fc9e3623a38173ee7dec57db0e37b",
+    "src/11y_short_export.js": "83589822ac6a2aba57210a185c2b45ccbf4b15599900a71942e6ebe84821b9f7",
+    "src/11z_layoutsC_transport.js": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+    "src/11za_layoutsD_transport.js": "3abd1b35040a83861a5328797fc41f78f6730f2e8a72c4d95348491dbdec67f1",
+    "src/12_ui.js": "a61d2d2142e3535db0f6a5a4e0c423ad1dcff6285e04c1cc0e442d893b91e66d",
+    "src/13_sprite_extractor.js": "07fa6e11b6a02bafd555a0c50299efb993cdbb9e18df648d251bd7bbfa93ee39",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+    "dev/avoidance/layouts-c-editorial-fonts/manifest.json": "946af88de4305e4df4c6f8c0755b67b716eff151e70ee28e7d36dc9d432f7b42",
+    "dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0",
+    "dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86",
+    "dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a",
+    "dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163",
+    "dev/avoidance/layouts-c-editorial-fonts/mono.otf": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7",
+    "dev/avoidance/layouts-c-editorial-fonts/dot.ttf": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1",
+    "dev/avoidance/layouts-c-editorial-fonts/rounded.ttf": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6",
+    "dev/avoidance/layouts-c-editorial-fonts/symbols.ttf": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+  },
+  "fixturePins": {
+    "layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+  },
+  "capture": {
+    "fps": 60,
+    "frames": 240,
+    "duration": 4,
+    "clock": "n/60; frame0 through239; native Canvas intrinsic dimensions; no HUD/post; no frame interpolation",
+    "stillFrames": [
+      15,
+      90,
+      228
+    ],
+    "deviceScaleFactor": 1,
+    "viewport": [
+      1280,
+      1000
+    ],
+    "inputTransform": "Both fixture source plans set fps60 before D finalization; fixture defaults24, which would repeat native24 clocks in a60fps container. No source/params/font changes."
+  },
+  "preflight": [
+    {
+      "case": "d09-accordion-horizontal",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "fold": 26,
+        "orient": "h",
+        "covers": false,
+        "plate": "ink",
+        "breathe": 3,
+        "start": 1
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-accordion-horizontal",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "fold": 26,
+        "orient": "h",
+        "covers": false,
+        "plate": "ink",
+        "breathe": 3,
+        "start": 1
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-accordion-vertical-local",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "fold": 38,
+        "orient": "v",
+        "covers": true,
+        "plate": "ink",
+        "breathe": 7,
+        "start": -1
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-accordion-vertical-local",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "fold": 38,
+        "orient": "v",
+        "covers": true,
+        "plate": "ink",
+        "breathe": 7,
+        "start": -1
+      },
+      "sourceArea": null
+    }
+  ],
+  "cases": [
+    {
+      "id": "d09-accordion-horizontal",
+      "spec": {
+        "id": "d09-accordion-horizontal",
+        "title": "蛇腹（横向き）",
+        "W": 960,
+        "H": 540,
+        "params": {
+          "font": "gothic_black",
+          "fold": 26,
+          "breathe": 3,
+          "start": 1,
+          "orient": "h",
+          "covers": false,
+          "plate": "ink"
+        },
+        "look": "二つの連続した帯に分かれても、折れ目、文字、読む順序が自然か。",
+        "humanReviewIntent": "primary",
+        "layout": "accordion",
+        "text": "風の先へ",
+        "fontMode": "multi",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-accordion-horizontal-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-accordion-horizontal-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-accordion-horizontal-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-accordion-horizontal-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-accordion-horizontal-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-accordion-horizontal-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "345074",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-accordion-selected-20261024-01/review/videos/d09-accordion-horizontal-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "176091",
+              "bit_rate": "352182",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-accordion-horizontal-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-accordion-horizontal-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-accordion-horizontal-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-accordion-horizontal-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-accordion-horizontal-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-accordion-horizontal-after-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "319370",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-accordion-selected-20261024-01/review/videos/d09-accordion-horizontal-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "163287",
+              "bit_rate": "326574",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        }
+      }
+    },
+    {
+      "id": "d09-accordion-vertical-local",
+      "spec": {
+        "id": "d09-accordion-vertical-local",
+        "title": "蛇腹（縦向き・ローカル確認）",
+        "W": 540,
+        "H": 960,
+        "params": {
+          "font": "gothic_black",
+          "fold": 38,
+          "breathe": 7,
+          "start": -1,
+          "orient": "v",
+          "covers": true,
+          "plate": "ink"
+        },
+        "look": "縦向きの折れ目と文字の付着、各帯の端の表紙が自然か。",
+        "humanReviewIntent": "local structural-axis check; publication subject to parent decision",
+        "layout": "accordion",
+        "text": "風の先へ",
+        "fontMode": "multi",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-accordion-vertical-local-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-accordion-vertical-local-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-accordion-vertical-local-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-accordion-vertical-local-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-accordion-vertical-local-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 540,
+              "height": 960
+            }
+          ],
+          "frameReceipt": "d09-accordion-vertical-local-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 540,
+                "height": 960,
+                "coded_width": 540,
+                "coded_height": 960,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "380810",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-accordion-selected-20261024-01/review/videos/d09-accordion-vertical-local-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "193879",
+              "bit_rate": "387758",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-accordion-vertical-local-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-accordion-vertical-local-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-accordion-vertical-local-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-accordion-vertical-local-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-accordion-vertical-local-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 540,
+              "height": 960
+            }
+          ],
+          "frameReceipt": "d09-accordion-vertical-local-after-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 540,
+                "height": 960,
+                "coded_width": 540,
+                "coded_height": 960,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "383652",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-accordion-selected-20261024-01/review/videos/d09-accordion-vertical-local-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "195396",
+              "bit_rate": "390792",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        }
+      }
+    }
+  ],
+  "assets": {
+    "source-manifest.json": {
+      "bytes": 19223,
+      "sha256": "ff251590a99d73782436709977fcb9f125fa6a6783ecd23ccda46f8a63c9bfbf"
+    },
+    "cases.json": {
+      "bytes": 1271,
+      "sha256": "6f25f101b15c5959d8d13d72cce33a811ddc506fd17b40a22ae30c0c58c23642"
+    },
+    "capture.cjs": {
+      "bytes": 14810,
+      "sha256": "d5862e50e1b65e8117901a3585d8a4be3970a1b7268f66157c214df4eb2cb80a"
+    },
+    "d09-accordion-horizontal-before-inputs.json.gz": {
+      "bytes": 2264,
+      "sha256": "d3c94c19d134675ce99ea577b372227c4d0d087abf8ed1b84fdae556c101e974"
+    },
+    "d09-accordion-horizontal-after-inputs.json.gz": {
+      "bytes": 4731,
+      "sha256": "941cf73d5c7a0fbea93fffb095eb5459e64b57d21befbb0aa9ef1389d3595251"
+    },
+    "d09-accordion-vertical-local-before-inputs.json.gz": {
+      "bytes": 2281,
+      "sha256": "82281ca45ae41762cf4356efc58dfed4a2336b2b97a2410edc16dbf550babd58"
+    },
+    "d09-accordion-vertical-local-after-inputs.json.gz": {
+      "bytes": 4878,
+      "sha256": "fd2f3adef3b8595412ccb8d8ead8ef2d7b9ce5072856d981ceed7931040c78d4"
+    },
+    "preflight.json": {
+      "bytes": 1334,
+      "sha256": "30664623528d69cf0838461acd8571d67b88c57f12ae97a34e947b11f40374f0"
+    },
+    "images/d09-accordion-horizontal-before-15.png": {
+      "bytes": 363138,
+      "sha256": "c7ab87ab73d427673f7466a29568238e1c86e56cb513211048c509868073a0b7"
+    },
+    "images/d09-accordion-horizontal-before-90.png": {
+      "bytes": 344742,
+      "sha256": "ec2ddf32ae4dc9ae00756f36397aa8b1f24b757ffb084554774ba6bd2eab9adb"
+    },
+    "images/d09-accordion-horizontal-before-228.png": {
+      "bytes": 369662,
+      "sha256": "4afaf9da3978b868e7ce990df1f72da8ce68533100b065ece4ecaf6af8068a32"
+    },
+    "d09-accordion-horizontal-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "9d07fd65af58052d50354a0b4827f1ac40b16df78610be80d4be9562b05fb327"
+    },
+    "videos/d09-accordion-horizontal-before.mp4": {
+      "bytes": 176091,
+      "sha256": "cfcbf709765adcae902b478c720852c9c2fa74eef6271ba0cd5bdf744739a0aa"
+    },
+    "d09-accordion-horizontal-before-frames.json.gz": {
+      "bytes": 10547,
+      "sha256": "aec88360beb6c206a02554b45edd549b67a208673adb560e6b770621a0ba7579"
+    },
+    "images/d09-accordion-horizontal-after-15.png": {
+      "bytes": 384184,
+      "sha256": "8c13efe15186221e5d2b595a00cf2005b580a3e05518aa28b156a2d3f71f156b"
+    },
+    "images/d09-accordion-horizontal-after-90.png": {
+      "bytes": 379327,
+      "sha256": "3deb9ca9d8f45133d8dbf07267cd186085fc0eb18dbd9f193712cc2809db2d06"
+    },
+    "images/d09-accordion-horizontal-after-228.png": {
+      "bytes": 396566,
+      "sha256": "4cdad053ea23c53f15ff9fb9da35d0d87966879cf244cc96fa72a01c6b35fe64"
+    },
+    "d09-accordion-horizontal-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "61f8e8558121152a0dbefb3f3bf8e57faaaf2f9608baaf00a934a4761cbf319d"
+    },
+    "videos/d09-accordion-horizontal-after.mp4": {
+      "bytes": 163287,
+      "sha256": "19557ca212bb4d634a0d93091015018995d54cb0d4cfccf95594669d59b15a3b"
+    },
+    "d09-accordion-horizontal-after-frames.json.gz": {
+      "bytes": 161898,
+      "sha256": "8e08613d69e4fd45c21b71a4694b4255400e5713d00eefc21ec859d23cc86814"
+    },
+    "images/d09-accordion-vertical-local-before-15.png": {
+      "bytes": 320991,
+      "sha256": "cc9b033c6598df9a911d178de70df4fa2a0e9bb2a47a7a49afada0ec9eede6bd"
+    },
+    "images/d09-accordion-vertical-local-before-90.png": {
+      "bytes": 311590,
+      "sha256": "fd21b9ff200504b5feed4889532a3f1e2e4afc938d6e9275d8738eca5b345f8e"
+    },
+    "images/d09-accordion-vertical-local-before-228.png": {
+      "bytes": 324592,
+      "sha256": "4ec87a4bcdf6e4d96b88418bdefe526d91d33e237718fd89e4fdbd4f2aa166e0"
+    },
+    "d09-accordion-vertical-local-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "828251adf5d08072f2fc273fdd5f8d07e2aef543373a047bf80813f6bc8dc068"
+    },
+    "videos/d09-accordion-vertical-local-before.mp4": {
+      "bytes": 193879,
+      "sha256": "8903892efd1c146621656e92cf13cb84fee26b776ff88fe7fbf9ca948b579c7c"
+    },
+    "d09-accordion-vertical-local-before-frames.json.gz": {
+      "bytes": 10565,
+      "sha256": "c5ecdba26d531ec8e046affacb869b6a07344ad4aa122b1c059a5e06a2bf6b61"
+    },
+    "images/d09-accordion-vertical-local-after-15.png": {
+      "bytes": 328654,
+      "sha256": "60f241b9225c31bb60b5502a0bf8e7775c271c339f9dc82acfffe36f5a591c45"
+    },
+    "images/d09-accordion-vertical-local-after-90.png": {
+      "bytes": 323446,
+      "sha256": "9335256adec8cee8a6d240ac192d41b0ec89cb102b98090878981b868ff3497c"
+    },
+    "images/d09-accordion-vertical-local-after-228.png": {
+      "bytes": 340287,
+      "sha256": "f3ecc4a2ece7af48dc4d078843713b5c29a004c29c5e289e2f0d6bc450a156d9"
+    },
+    "d09-accordion-vertical-local-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "8546e74a72562a862deeb25820df1eafc1e3cda8887c2f37c01c1f4398302187"
+    },
+    "videos/d09-accordion-vertical-local-after.mp4": {
+      "bytes": 195396,
+      "sha256": "69f63c317ed15705ae3f61454242c379e321cd5ae353b34b94acb293dcc7ca71"
+    },
+    "d09-accordion-vertical-local-after-frames.json.gz": {
+      "bytes": 184424,
+      "sha256": "ffda728a1e369083181d83bbc85d5ba9806f00f3ec8eb7c4751eaaebff4cea34"
+    },
+    "index.html": {
+      "bytes": 8044,
+      "sha256": "c1ac9fbd5b93fabf15261cad00b719e4b33d8fa73abe3a0e9847634d6c6e43ef"
+    }
+  },
+  "startedAt": "2026-10-23T15:43:21.924Z",
+  "browser": "154.0.8037.57",
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "completedAt": "2026-10-23T15:43:51.981Z",
+  "status": "Local preflight, native frame guards, source immutability, motion hashes and ffprobe passed; independent visual review pending",
+  "totalAssetBytes": 5457038,
+  "allFrameGuardReceipt": [
+    {
+      "case": "d09-accordion-horizontal",
+      "frames": 240,
+      "allCertifiedSafeObservations": true,
+      "quality": {
+        "sourceSlots": 4,
+        "lyricGlyphs": 4,
+        "rows": 2,
+        "covers": 0,
+        "minPrimaryPx": 106.92,
+        "nativeSize": 106.92,
+        "panelWidth": 137.7,
+        "panelHeight": 165.23999999999998,
+        "fold": 26,
+        "start": 1,
+        "panelAspect": 1.2,
+        "complete": true,
+        "attachmentFailures": []
+      },
+      "recipe": {
+        "strategy": "native-type-contiguous-strip-writing",
+        "columns": 2,
+        "panelScale": 0.85,
+        "fontScale": 1
+      },
+      "offset": [
+        286.0118597294924,
+        0
+      ],
+      "parentPlanMatched": true
+    },
+    {
+      "case": "d09-accordion-vertical-local",
+      "frames": 240,
+      "allCertifiedSafeObservations": true,
+      "quality": {
+        "sourceSlots": 4,
+        "lyricGlyphs": 4,
+        "rows": 2,
+        "covers": 4,
+        "minPrimaryPx": 106.92,
+        "nativeSize": 106.92,
+        "panelWidth": 145.8,
+        "panelHeight": 174.96,
+        "fold": 38,
+        "start": -1,
+        "panelAspect": 1.2,
+        "complete": true,
+        "attachmentFailures": []
+      },
+      "recipe": {
+        "strategy": "native-type-contiguous-strip-writing",
+        "columns": 2,
+        "panelScale": 0.9,
+        "fontScale": 1
+      },
+      "offset": [
+        0,
+        233.63446115475668
+      ],
+      "parentPlanMatched": true
+    }
+  ],
+  "viewerPolish": {
+    "nativeControls": true,
+    "autoplay": false,
+    "circleGuideDefaultOn": true,
+    "circleGuideExternalHTML": true,
+    "perPairRestartPlay": true,
+    "visibleTitlesJapanese": true,
+    "scriptSHA256": "2d3fe1daaf9411eb89a2ba4d7f1802d339493615f96341a85ab33158a3838866"
+  }
+}
