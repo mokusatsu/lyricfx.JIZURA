@@ -139,3 +139,7 @@ line0のeffectsOnlyでなくline=-1/layout=title/bg=noneであることをprobe�
 [Control01 visual review](evidence/AVOID-007/h03-control-visual01-review.md) gives rain observed-scope PASS but bubbles FAIL: after『先』lower white stroke lands on the BG pale-yellow bar, reducing local contrast at f15/f36 despite recognizable source/bubble/read order/phase and numeric circle+FG clearance. Old control01 overallFAIL remains.017 must assess actual background-content readability separately from012 group/FG geometry; no assumption that future group packing repairs arbitrary BG contrast is valid. No media content/bar/clock is deleted or moved to hide this failure.
 
 A rain-only fresh control02 candidate is being prepared, not captured or accepted at this point. Bubbles remains numerically safe but visually unaccepted, credits remains FG-insufficient, and the whole original raw02 three-case visualFAIL remains linked. Final activation gate is still unreleased.
+
+## AVOID-009振り子の段階API除外エラーからの有効化引継ぎ
+
+[009 failure-policy照合](evidence/AVOID-009/pendulum-gate05/failure-policy-readonly01.md)では、現行UIはJ.planを使い、staged finalize/compositionEligibilityを呼ぶ事前除外selectorは未接続である。振り子adapterは実不足segmentに対し、unsafe nativeへ戻したり主歌詞を黙示消去せずPENDULUM_COMPOSITION_EXCLUDEDを明示throwする限定API契約を009親が受入。017で既定有効化する前に、全領域のcompositionEligibilityと未対応/不足を検査し、preview・seek・exportを未捕捉例外で中断させない事前選択/わかりやすい診断が必須。自動のみ許される代替と手動/notation/lock/強調の制御を保持し、不足/未対応を安全成功へ置き換えない。他adapterも含め非eligibleをunsafe native描画へ流さない。有効化コードやUI対応は未実装であり、本追記で017着手/完了とはしない。
