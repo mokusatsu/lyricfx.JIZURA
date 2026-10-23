@@ -265,3 +265,5 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 リボン代表横1組の原寸1280×720/60fps/4秒MP4は前後240時刻で出力。元のblank8コマによるPNG重複を保持し、異なる入力画像は各232枚。親は全sourcePlan一致と後240コマ5,886実polygonの円/stageを独立照合。別文脈solは14画像を照合し新規重大欠陥なし、入退場の細い帯からの共通はみ出しを記録。[人間確認](reviews/AVOID-009-ribbon-selected-20261024-01.md)は未回答queueへ。既存Sites容量を圧迫しない新しい補助Siteへの公開操作はsucceeded、公開結果確認0。次の振り子はnative gateを親受入した段階であり、全物体/支柱/文字の連続回避証明を隔離実装中。009実装中/010以降未着手を維持する。
 
 振り子の物理draftでは、周期の元値と実長を分離し、字体変更後の球/札の実寸、必要な最短糸長、後続物体による文字隠れを親が指摘して修正中。gate04は自動承認審査がlocalhost HTTPを公開HTTP禁止に含めて実行前拒否したため未実施。親は既存ローカル検証許可とloopback限定/外部要求遮断を独立確認し、[操作許可照合](evidence/AVOID-009/pendulum-native01/local-validation-authorization01.md)を保存した。迂回せず固定版後の通常再申請を準備。次のpileは[読み取り専用計画](evidence/AVOID-009/pile-plan01/README.md)のみで実装未許可、009/010の状態は変更しない。
+
+振り子gate05は既存ローカル検証許可とloopback限定コードを親が確認後、同じ通常権限の直接実行が認められexit0。gate04拒否は実行前/未実施の履歴として残す。親は[初期物理gate](evidence/AVOID-009/pendulum-gate05/parent-pendulum-gate05.json)の10証明/291実polygon、完全な球内文字8組、表示後の12ペア分離、元周期192組、実描画とcatalog112組、OFF10コマを独立照合。通常円のfan4文字が成立したが、字体40%等の人間判断とpaper/chunksの証明は未受入、本体未統合。段階APIの不足時は明示typed除外エラーを親受入し、017有効化時のeligibility事前判定/preview-export診断処理を必須引継ぎにする。既存UIが自動除外済みとは主張しない。
