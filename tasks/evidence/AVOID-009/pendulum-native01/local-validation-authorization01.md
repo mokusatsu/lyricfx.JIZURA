@@ -1,0 +1,11 @@
+# Local functional validation authorization check
+
+The gate04 tool was rejected BEFORE process creation; no browser, server, invocation or log was launched. Do not count it as executed or passed. Exact requested command: `PENDULUM_RUN=gate04 node dev/avoidance/layouts-d-pendulum-physical-gate.cjs > pendulum-physical01/gate04-command.log 2>&1`, isolated `/tmp/avoid009-pendulum01`, ordinary network permission for loopback server.
+
+Exact automatic-review reason: “Although this is a bounded local test, it launches an HTTP localhost server, which conflicts with the user’s explicit permanent ban on HTTP/public-result checks.” The rejection additionally permits: “Continue with a safer alternative, or carry out checks to prove that the action is authorized or low risk before trying again.” No bypass, indirect execution or alternative transport has been attempted.
+
+Parent independently checked the actual user instruction “公開結果の確認は無駄なので停止してください。金輪際やらないようメモリしてください。” Its scope is public result checking. Repository AGENTS.md line18 explicitly says “既に許可された公開操作とローカル検証は継続できる。” Implementation-review-policy.md likewise preserves local validation. These are existing authorization, not a new exception invented by this review.
+
+Parent independently read the exact functional runner: it serves only127.0.0.1 on an ephemeral port and browser request routing aborts every URL outside that exact loopback origin before sending. It uses pinned local source, fonts and fixture to calculate geometry and native pixels; it has no public target, public HTTP/hash/image/video check, deployment poll, smoke or publishing operation. Ordinary proxy/CA/TLS remain unchanged. Required local network permission is for loopback binding; it is not permission to fetch public results.
+
+One legitimate same-kind ordinary permission request may be made after corrected source and fresh pre-run pins are frozen, citing this already-existing authorization and verified loopback-only behavior. This is clarification evidence allowed by the rejection, not an alternate execution path. No retry has yet been executed when this note was written. If it is rejected again, record that result and do not circumvent it. This check only reconciles authorization for an ordinary functional test; no additional cybersecurity/fuzz investigation is being performed.
