@@ -1,0 +1,128 @@
+{
+  "scope": "Parent source/raw review of same-finalization proof and post-solver immutable diagnostic records/ordered arrays",
+  "rawSHA256": "69710a9628d5a833ba664248e93ad05d811ac7377e3c3c26e0deaf171494fdfb",
+  "inputPinsVerified": 112,
+  "exactJSONmemoOnOff": true,
+  "nativeFamilies": 6,
+  "nativeClockObservations": 108,
+  "keyVariants": 15,
+  "editedCircleBoundary": {
+    "equal": true,
+    "calls": [
+      {
+        "seed": 704,
+        "circle": {
+          "cx": 480,
+          "cy": 226.79999999999998,
+          "r": 108
+        }
+      },
+      {
+        "seed": 705,
+        "circle": {
+          "cx": 480,
+          "cy": 226.79999999999998,
+          "r": 108
+        }
+      },
+      {
+        "seed": 705,
+        "circle": {
+          "cx": 864,
+          "cy": 486,
+          "r": 10.8
+        }
+      },
+      {
+        "seed": 706,
+        "circle": {
+          "cx": 864,
+          "cy": 486,
+          "r": 10.8
+        }
+      }
+    ],
+    "expectedCalls": 4,
+    "segments": [
+      [
+        {
+          "start": 0,
+          "end": 5,
+          "region": "edited-a",
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 108
+          },
+          "from": [
+            167.630963832641,
+            163.2518133351412
+          ],
+          "status": "safe"
+        }
+      ],
+      [
+        {
+          "start": 0,
+          "end": 5,
+          "region": "edited-a",
+          "circle": {
+            "cx": 480,
+            "cy": 226.79999999999998,
+            "r": 108
+          },
+          "from": [
+            -166.9480894672355,
+            163.2518133351412
+          ],
+          "status": "safe"
+        },
+        {
+          "start": 5,
+          "end": 12,
+          "region": "edited-b",
+          "circle": {
+            "cx": 864,
+            "cy": 486,
+            "r": 10.8
+          },
+          "from": [
+            0,
+            0
+          ],
+          "status": "safe"
+        }
+      ],
+      [
+        {
+          "start": 5,
+          "end": 12,
+          "region": "edited-b",
+          "circle": {
+            "cx": 864,
+            "cy": 486,
+            "r": 10.8
+          },
+          "from": [
+            0,
+            0
+          ],
+          "status": "safe"
+        }
+      ]
+    ],
+    "decisionsChanged": true
+  },
+  "completedCacheWarmGraph": {
+    "graphEqual": true,
+    "detached": true,
+    "hit": true,
+    "solverCalls": 0
+  },
+  "poolBound": "128proofs+128records+128orderedarrays withinshared8MB serialized charge; no env/context/program",
+  "sourceReview": "Each region solver called BEFORE interning diagnostic values; no offsets/circles/times/decisions pooled. Native-none params omitted only for captured unchanged empty helper; full output retains metadata. Source guard fullslot<=16 and32stagger preserves longspaced/late source outcomes.",
+  "acceptance": "Provisional functional acceptance only; not selected visual source, formalperf unverified and cold slow",
+  "parentInspectionNote": "Initial postprocessor assumed nonexistentinputs.tar.gz, stopped before verification. Corrected to actual prelaunch snapshotdirectory; no product/test change.",
+  "publicChecks": 0,
+  "parentMediaViews": 0
+}

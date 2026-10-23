@@ -1,0 +1,1816 @@
+{
+  "task": "AVOID-009",
+  "build": "review05",
+  "scope": "Four partial D intent examples only; no task/full-D/font-repertoire/performance acceptance. Performance1000 and cold remain FAIL.",
+  "baselineCommit": "6e016f7f516f619b5e517fbeeef4bed500d675be",
+  "baselineLabel": "D回避導入前",
+  "afterLabel": "回避試作",
+  "publicChecks": 0,
+  "parentMediaViews": 0,
+  "creatorVisualInspection": false,
+  "sourceSnapshot": "/tmp/avoid009-selected-preview04",
+  "sourceManifestSHA256": "2042464b01b16ef8bc0de800424f57892524464a42257e6fc03ffe045ded54d1",
+  "sourceManifestScope": "Reviewed partial009 preview04: immutable03 plus ONLY approved09n06 continuous octagonal source-envelope certificate and its JAEN embeds. Other130files unchanged. Runtime guard/render/source11p unchanged. Main09lperformance poolWIP excluded; frozenversionperformanceFAIL/009incomplete.",
+  "runnerSHA256": "5a78de55a931302fc91ee40286810282c57c12c0ed567579f5c8ff9c8d995d89",
+  "singleFont": {
+    "file": "../fonts/NotoSansCJK-Regular.ttc",
+    "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a"
+  },
+  "fontManifestSHA256": "946af88de4305e4df4c6f8c0755b67b716eff151e70ee28e7d36dc9d432f7b42",
+  "fixturePins": {
+    "layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+  },
+  "capture": {
+    "fps": 60,
+    "frames": 240,
+    "duration": 4,
+    "clock": "n/60; frame0 through239; native Canvas intrinsic dimensions; no HUD/post; no frame interpolation",
+    "stillFrames": [
+      15,
+      90,
+      228
+    ],
+    "deviceScaleFactor": 1,
+    "viewport": [
+      1280,
+      1000
+    ],
+    "inputTransform": "Both fixture source plans set fps60 before D finalization; fixture defaults24, which would repeat native24 clocks in a60fps container. No source/params/font changes."
+  },
+  "preflight": [
+    {
+      "case": "d09-fisheye-lens-portrait",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "mode": "sweep",
+        "glass": "lens",
+        "amp": 0.9
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-fisheye-lens-portrait",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "mode": "sweep",
+        "glass": "lens",
+        "amp": 0.9
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-cube-single-wrap",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "mode": "single",
+        "chunks": [
+          "風の先へ"
+        ],
+        "font": "gothic_med",
+        "pitch": 25,
+        "dir": 1,
+        "face": "ink",
+        "top": "shade",
+        "sway": 5
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-cube-single-wrap",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "mode": "single",
+        "chunks": [
+          "風の先へ"
+        ],
+        "font": "gothic_med",
+        "pitch": 25,
+        "dir": 1,
+        "face": "ink",
+        "top": "shade",
+        "sway": 5
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-origami-gate-paper",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "mincho_light",
+        "mode": "gate",
+        "col": "accent",
+        "order": 2
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-origami-gate-paper",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "mincho_light",
+        "mode": "gate",
+        "col": "accent",
+        "order": 2
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-origami-blintz-paper",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "mincho_light",
+        "mode": "blintz",
+        "col": "accent",
+        "order": 2
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-origami-blintz-paper",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "mincho_light",
+        "mode": "blintz",
+        "col": "accent",
+        "order": 2
+      },
+      "sourceArea": null
+    }
+  ],
+  "cases": [
+    {
+      "id": "d09-fisheye-lens-portrait",
+      "spec": {
+        "id": "d09-fisheye-lens-portrait",
+        "layout": "fisheye",
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "params": {
+          "glass": "lens",
+          "mode": "sweep",
+          "amp": 0.9
+        },
+        "fontMode": "single",
+        "look": "レンズが動く間も文字の膨らみと読みやすさが保たれるか。",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-fisheye-lens-portrait-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-fisheye-lens-portrait-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-fisheye-lens-portrait-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-fisheye-lens-portrait-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-fisheye-lens-portrait-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 540,
+              "height": 960
+            }
+          ],
+          "frameReceipt": "d09-fisheye-lens-portrait-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 235,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 540,
+                "height": 960,
+                "coded_width": 540,
+                "coded_height": 960,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "707826",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-selected-media02/review03/videos/d09-fisheye-lens-portrait-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "357627",
+              "bit_rate": "715254",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "sourceSnapshot": "/tmp/avoid009-selected-preview02",
+          "sourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+          "carriedExactMediaBytes": true,
+          "newSnapshotKeyCorrespondence": [
+            {
+              "frame": 15,
+              "time": 0.25,
+              "oldAndNewNativePNG_SHA256": "d1822f77affbb5f70dbbb9d66c44037fdd8ad920bbd36572717cfdb0ec95b398"
+            },
+            {
+              "frame": 90,
+              "time": 1.5,
+              "oldAndNewNativePNG_SHA256": "9e409f0a574aba7906c81ec0360765ddcaab81ca37820b52c87c2aed065c0774"
+            },
+            {
+              "frame": 228,
+              "time": 3.8,
+              "oldAndNewNativePNG_SHA256": "7e6fac0de9b2e879fa4c165ae27480b94f1c768cd702160288631cdbb5476afa"
+            }
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-fisheye-lens-portrait-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-fisheye-lens-portrait-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-fisheye-lens-portrait-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-fisheye-lens-portrait-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-fisheye-lens-portrait-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 540,
+              "height": 960
+            }
+          ],
+          "frameReceipt": "d09-fisheye-lens-portrait-after-frames.json.gz",
+          "distinctEncoderInputPNGs": 235,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 540,
+                "height": 960,
+                "coded_width": 540,
+                "coded_height": 960,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "499976",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-selected-media02/review03/videos/d09-fisheye-lens-portrait-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "253726",
+              "bit_rate": "507452",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "sourceSnapshot": "/tmp/avoid009-selected-preview02",
+          "sourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+          "carriedExactMediaBytes": true,
+          "newSnapshotKeyCorrespondence": [
+            {
+              "frame": 15,
+              "time": 0.25,
+              "oldAndNewNativePNG_SHA256": "fda0d84129bd49b0f13be076fcdcf00b96f68f708f49954b262bc51c7417cd7b"
+            },
+            {
+              "frame": 90,
+              "time": 1.5,
+              "oldAndNewNativePNG_SHA256": "52e7a547f31f6bd7364f382edbb1ddd6a7679c85a0866dbbb2d0ef8daf8aa9fc"
+            },
+            {
+              "frame": 228,
+              "time": 3.8,
+              "oldAndNewNativePNG_SHA256": "1a428a3bdfeb0e40856c613f46a534e048c8fd4b80e853dfd75a949313e796f7"
+            }
+          ]
+        }
+      },
+      "sourceScope": {
+        "capturedSourceSnapshot": "/tmp/avoid009-selected-preview02",
+        "capturedSourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+        "integrationTargetSnapshot": "/tmp/avoid009-selected-preview04",
+        "integrationTargetManifestSHA256": "2042464b01b16ef8bc0de800424f57892524464a42257e6fc03ffe045ded54d1",
+        "method": "Exact historical MP4/PNG/receipts carried; same-condition native three-key rendering on corrected integration matches original PNG bytes for both sides. Full source is not claimed identical."
+      }
+    },
+    {
+      "id": "d09-cube-single-wrap",
+      "spec": {
+        "id": "d09-cube-single-wrap",
+        "layout": "cube",
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "params": {
+          "mode": "single",
+          "chunks": [
+            "風の先へ"
+          ],
+          "pitch": 25,
+          "sway": 5,
+          "dir": 1,
+          "font": "gothic_med"
+        },
+        "fontMode": "multi",
+        "look": "立方体の三辺、面と文字の付着、二文字折り返し後の読みやすさ。",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-cube-single-wrap-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-cube-single-wrap-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-cube-single-wrap-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-cube-single-wrap-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-cube-single-wrap-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-cube-single-wrap-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "484634",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-selected-media02/review03/videos/d09-cube-single-wrap-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "245931",
+              "bit_rate": "491862",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "sourceSnapshot": "/tmp/avoid009-selected-preview02",
+          "sourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+          "carriedExactMediaBytes": true,
+          "newSnapshotKeyCorrespondence": [
+            {
+              "frame": 15,
+              "time": 0.25,
+              "oldAndNewNativePNG_SHA256": "ad330a5f497604c83342a7676cbfce0b21fc8c7c052a2f41b618c1f3663d7819"
+            },
+            {
+              "frame": 90,
+              "time": 1.5,
+              "oldAndNewNativePNG_SHA256": "5b125dd1d18f1b24517dc0892cc57ef314a7971728715f3e0d14885cc796363f"
+            },
+            {
+              "frame": 228,
+              "time": 3.8,
+              "oldAndNewNativePNG_SHA256": "f74f7bd3d3911082290c455dd0ab292c6e21f571738155831b94cd897ed93aac"
+            }
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-cube-single-wrap-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-cube-single-wrap-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-cube-single-wrap-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-cube-single-wrap-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-cube-single-wrap-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-cube-single-wrap-after-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "337348",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-selected-media02/review03/videos/d09-cube-single-wrap-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "172276",
+              "bit_rate": "344552",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "sourceSnapshot": "/tmp/avoid009-selected-preview02",
+          "sourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+          "carriedExactMediaBytes": true,
+          "newSnapshotKeyCorrespondence": [
+            {
+              "frame": 15,
+              "time": 0.25,
+              "oldAndNewNativePNG_SHA256": "b1369922dd3eb064eb2104645be6184d6f725edaefb976bee7bb396dffb188ac"
+            },
+            {
+              "frame": 90,
+              "time": 1.5,
+              "oldAndNewNativePNG_SHA256": "fbbb428cc7b3c9e3aa1de6df07428633fb93b249ff4dd7bc7482f1e2b4f0813d"
+            },
+            {
+              "frame": 228,
+              "time": 3.8,
+              "oldAndNewNativePNG_SHA256": "85285c5510ef5bf0eae29baccc8b2f4d9f4996a78e299a7cf8175c1d360f020f"
+            }
+          ]
+        }
+      },
+      "sourceScope": {
+        "capturedSourceSnapshot": "/tmp/avoid009-selected-preview02",
+        "capturedSourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+        "integrationTargetSnapshot": "/tmp/avoid009-selected-preview04",
+        "integrationTargetManifestSHA256": "2042464b01b16ef8bc0de800424f57892524464a42257e6fc03ffe045ded54d1",
+        "method": "Exact historical MP4/PNG/receipts carried; same-condition native three-key rendering on corrected integration matches original PNG bytes for both sides. Full source is not claimed identical."
+      }
+    },
+    {
+      "id": "d09-origami-gate-paper",
+      "spec": {
+        "id": "d09-origami-gate-paper",
+        "layout": "origami",
+        "W": 960,
+        "H": 540,
+        "text": "ひらく紙に言葉を残して",
+        "params": {
+          "mode": "gate",
+          "order": 2
+        },
+        "fontMode": "single",
+        "look": "開閉する紙と長い文字が一緒に動き、紙面の記入域に収まるか。",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-origami-gate-paper-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-origami-gate-paper-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-origami-gate-paper-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-origami-gate-paper-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-origami-gate-paper-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-origami-gate-paper-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "414506",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-selected-media02/review03/videos/d09-origami-gate-paper-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "210815",
+              "bit_rate": "421630",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "sourceSnapshot": "/tmp/avoid009-selected-preview02",
+          "sourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+          "carriedExactMediaBytes": true,
+          "newSnapshotKeyCorrespondence": [
+            {
+              "frame": 15,
+              "time": 0.25,
+              "oldAndNewNativePNG_SHA256": "b5d0478ef0851b2501cefbf3a4794f28c4e83514da6ea497bc4975d643ad078c"
+            },
+            {
+              "frame": 90,
+              "time": 1.5,
+              "oldAndNewNativePNG_SHA256": "10f066da3b3dad337d51b960a33e809be3c4acbc8e81b8fe231db1bb692aa85b"
+            },
+            {
+              "frame": 228,
+              "time": 3.8,
+              "oldAndNewNativePNG_SHA256": "71b4006f364374ea8b5a1160a1fc3e6d87ab1466f59299ce673a7aced3be64c7"
+            }
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-origami-gate-paper-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-origami-gate-paper-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-origami-gate-paper-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-origami-gate-paper-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-origami-gate-paper-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-origami-gate-paper-after-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "271416",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-selected-media02/review03/videos/d09-origami-gate-paper-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "139346",
+              "bit_rate": "278692",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "sourceSnapshot": "/tmp/avoid009-selected-preview02",
+          "sourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+          "carriedExactMediaBytes": true,
+          "newSnapshotKeyCorrespondence": [
+            {
+              "frame": 15,
+              "time": 0.25,
+              "oldAndNewNativePNG_SHA256": "9faafccfa1fb3e048608f90a6ff088cb9c52dc413e2d7639c4239b8d17395329"
+            },
+            {
+              "frame": 90,
+              "time": 1.5,
+              "oldAndNewNativePNG_SHA256": "23099dea9a16568afec929bbc6b3ab481211d604e978d06e863656ba7832fe44"
+            },
+            {
+              "frame": 228,
+              "time": 3.8,
+              "oldAndNewNativePNG_SHA256": "8a9b7abf5e27c3eb2a4a54a284aae1fb1d4ee08f5fb9d4400e7a80c19024d90e"
+            }
+          ]
+        }
+      },
+      "sourceScope": {
+        "capturedSourceSnapshot": "/tmp/avoid009-selected-preview02",
+        "capturedSourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+        "integrationTargetSnapshot": "/tmp/avoid009-selected-preview04",
+        "integrationTargetManifestSHA256": "2042464b01b16ef8bc0de800424f57892524464a42257e6fc03ffe045ded54d1",
+        "method": "Exact historical MP4/PNG/receipts carried; same-condition native three-key rendering on corrected integration matches original PNG bytes for both sides. Full source is not claimed identical."
+      }
+    },
+    {
+      "id": "d09-origami-blintz-paper",
+      "spec": {
+        "id": "d09-origami-blintz-paper",
+        "layout": "origami",
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "params": {
+          "mode": "blintz",
+          "order": 2
+        },
+        "fontMode": "single",
+        "look": "四隅を折る動きと紙面に付いた文字の関係が自然に見えるか。",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-origami-blintz-paper-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-origami-blintz-paper-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-origami-blintz-paper-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-origami-blintz-paper-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-origami-blintz-paper-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-origami-blintz-paper-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "269456",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-selected-media02/review03/videos/d09-origami-blintz-paper-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "138346",
+              "bit_rate": "276692",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "sourceSnapshot": "/tmp/avoid009-selected-preview02",
+          "sourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+          "carriedExactMediaBytes": true,
+          "newSnapshotKeyCorrespondence": [
+            {
+              "frame": 15,
+              "time": 0.25,
+              "oldAndNewNativePNG_SHA256": "300cf90ccb377b7d4bbac659bda6e99f25c8242725e04969b2b26fd5ac9070a7"
+            },
+            {
+              "frame": 90,
+              "time": 1.5,
+              "oldAndNewNativePNG_SHA256": "c3c668994e2ba468e39f1b5576119667177d18dc3021f056a1a7115eecca95cc"
+            },
+            {
+              "frame": 228,
+              "time": 3.8,
+              "oldAndNewNativePNG_SHA256": "d2c4770104bd1fc8b893792c1235c565547e8ac7c96a458f2931bce703662b3e"
+            }
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-origami-blintz-paper-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-origami-blintz-paper-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-origami-blintz-paper-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-origami-blintz-paper-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-origami-blintz-paper-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-origami-blintz-paper-after-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "173182",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-selected-media02/review05/videos/d09-origami-blintz-paper-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "90305",
+              "bit_rate": "180610",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        }
+      },
+      "sourceScope": {
+        "capturedSourceSnapshot": "/tmp/avoid009-selected-preview04",
+        "capturedSourceManifestSHA256": "2042464b01b16ef8bc0de800424f57892524464a42257e6fc03ffe045ded54d1",
+        "baselineCapturedSnapshot": "/tmp/avoid009-selected-preview02",
+        "baselineManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+        "method": "After: new native60fps capture after uniform-square blintz and analytic flap-line-AABB correction. Before: exact original baseline media carried with native-key hash correspondence."
+      }
+    }
+  ],
+  "assets": {
+    "source-manifest.json": {
+      "bytes": 23372,
+      "sha256": "2042464b01b16ef8bc0de800424f57892524464a42257e6fc03ffe045ded54d1"
+    },
+    "source-manifest-preview02.json": {
+      "bytes": 22923,
+      "sha256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276"
+    },
+    "capture.cjs": {
+      "bytes": 16856,
+      "sha256": "5a78de55a931302fc91ee40286810282c57c12c0ed567579f5c8ff9c8d995d89"
+    },
+    "d09-fisheye-lens-portrait-before-inputs.json.gz": {
+      "bytes": 1411,
+      "sha256": "796a9f991b28e2c0be44c1c914d3d48d9b8a1f57fb1205534bb1b4bfdf696509"
+    },
+    "d09-fisheye-lens-portrait-after-inputs.json.gz": {
+      "bytes": 3309,
+      "sha256": "f450cf6507ff76f36a61da984e43bc4bd9cb157642d31c7d74b0a7689d23a039"
+    },
+    "d09-cube-single-wrap-before-inputs.json.gz": {
+      "bytes": 2272,
+      "sha256": "0c09ecdbaa6f1c95431737e9babd86c0ab38008fa578f0d19e67c621acf9d43b"
+    },
+    "d09-cube-single-wrap-after-inputs.json.gz": {
+      "bytes": 4707,
+      "sha256": "42b54775f0af351b0edbff851af5787a6bd5d9c7cbd20772f86393f71522df35"
+    },
+    "d09-origami-gate-paper-before-inputs.json.gz": {
+      "bytes": 1449,
+      "sha256": "74a056993bdb078670a91ee082b5ad1f27e53d6dc033a7189dd57947da51cda7"
+    },
+    "d09-origami-gate-paper-after-inputs.json.gz": {
+      "bytes": 4829,
+      "sha256": "d1c2b25a6c622a584ad7a459adecb529cbe499bacfc964787b975bc5865bd2e9"
+    },
+    "d09-origami-blintz-paper-before-inputs.json.gz": {
+      "bytes": 1410,
+      "sha256": "9f93311a1c2361f297dcc9c8c4831cdaa9aea9d17f008778fd6e896d1ab5c262"
+    },
+    "d09-origami-blintz-paper-after-inputs.json.gz": {
+      "bytes": 3321,
+      "sha256": "1a2fcf2d2b856c01234ecc9694565fbf54568cf7fb74f63466a78a7857986b35"
+    },
+    "preflight.json": {
+      "bytes": 2382,
+      "sha256": "57dc403f7be95ad15a3e408502ab7b9a406b7720f44b71268e375b261949c581"
+    },
+    "videos/d09-fisheye-lens-portrait-before.mp4": {
+      "bytes": 357627,
+      "sha256": "9c6d73b3c8073b5d53292a19c009cec18173e4b5f377ba2474ef648dbf5d5dbe"
+    },
+    "d09-fisheye-lens-portrait-before-frames.json.gz": {
+      "bytes": 10360,
+      "sha256": "658359f02c8fd99d0375ff61a8391c77f29df910e0dab057c083dbcb5c68e05b"
+    },
+    "images/d09-fisheye-lens-portrait-before-15.png": {
+      "bytes": 376609,
+      "sha256": "d1822f77affbb5f70dbbb9d66c44037fdd8ad920bbd36572717cfdb0ec95b398"
+    },
+    "images/d09-fisheye-lens-portrait-before-90.png": {
+      "bytes": 378222,
+      "sha256": "9e409f0a574aba7906c81ec0360765ddcaab81ca37820b52c87c2aed065c0774"
+    },
+    "images/d09-fisheye-lens-portrait-before-228.png": {
+      "bytes": 375605,
+      "sha256": "7e6fac0de9b2e879fa4c165ae27480b94f1c768cd702160288631cdbb5476afa"
+    },
+    "d09-fisheye-lens-portrait-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "668484aadbf36910a8f8071c0fcec40cadf75a90f4d44b349d02b7214f6f3d58"
+    },
+    "videos/d09-fisheye-lens-portrait-after.mp4": {
+      "bytes": 253726,
+      "sha256": "8eee994db6686bbf43ffd37df1a2d981e4d88975fca6b3b37866fa16a1c670be"
+    },
+    "d09-fisheye-lens-portrait-after-frames.json.gz": {
+      "bytes": 1022442,
+      "sha256": "5fd786e7b3c4641c9ac51f90a5b40910bcbc3e323656299a10051cb4be82afd3"
+    },
+    "images/d09-fisheye-lens-portrait-after-15.png": {
+      "bytes": 374396,
+      "sha256": "fda0d84129bd49b0f13be076fcdcf00b96f68f708f49954b262bc51c7417cd7b"
+    },
+    "images/d09-fisheye-lens-portrait-after-90.png": {
+      "bytes": 378563,
+      "sha256": "52e7a547f31f6bd7364f382edbb1ddd6a7679c85a0866dbbb2d0ef8daf8aa9fc"
+    },
+    "images/d09-fisheye-lens-portrait-after-228.png": {
+      "bytes": 374073,
+      "sha256": "1a428a3bdfeb0e40856c613f46a534e048c8fd4b80e853dfd75a949313e796f7"
+    },
+    "d09-fisheye-lens-portrait-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "2065de564c1d4fccf3e9f06828734e36370eac1a54d61da4610b2649a9369cff"
+    },
+    "videos/d09-cube-single-wrap-before.mp4": {
+      "bytes": 245931,
+      "sha256": "f11235f5c34d5ac08e3e7f28dbff0fe82b33a8aaa2cf21513bc0094f6c451beb"
+    },
+    "d09-cube-single-wrap-before-frames.json.gz": {
+      "bytes": 10574,
+      "sha256": "91751e048b2aab2a65c10fda2c9c909c2388213911cf2862abe5792c6662ca39"
+    },
+    "images/d09-cube-single-wrap-before-15.png": {
+      "bytes": 332024,
+      "sha256": "ad330a5f497604c83342a7676cbfce0b21fc8c7c052a2f41b618c1f3663d7819"
+    },
+    "images/d09-cube-single-wrap-before-90.png": {
+      "bytes": 335238,
+      "sha256": "5b125dd1d18f1b24517dc0892cc57ef314a7971728715f3e0d14885cc796363f"
+    },
+    "images/d09-cube-single-wrap-before-228.png": {
+      "bytes": 360062,
+      "sha256": "f74f7bd3d3911082290c455dd0ab292c6e21f571738155831b94cd897ed93aac"
+    },
+    "d09-cube-single-wrap-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "44c641f59b3a5c8565949447244b3cf140ad47421fa8033d9c32e1c977a6ff53"
+    },
+    "videos/d09-cube-single-wrap-after.mp4": {
+      "bytes": 172276,
+      "sha256": "a3e94fc6227d85d48e0ef9391c1c0ae2ccb1cb412d3a43e681ef9ce3a87c4f39"
+    },
+    "d09-cube-single-wrap-after-frames.json.gz": {
+      "bytes": 356874,
+      "sha256": "eae3c4da17701136e0c9bf02a2f2a23cb04b955294a6ee62eed5ab6e7c9659b3"
+    },
+    "images/d09-cube-single-wrap-after-15.png": {
+      "bytes": 397013,
+      "sha256": "b1369922dd3eb064eb2104645be6184d6f725edaefb976bee7bb396dffb188ac"
+    },
+    "images/d09-cube-single-wrap-after-90.png": {
+      "bytes": 399463,
+      "sha256": "fbbb428cc7b3c9e3aa1de6df07428633fb93b249ff4dd7bc7482f1e2b4f0813d"
+    },
+    "images/d09-cube-single-wrap-after-228.png": {
+      "bytes": 409222,
+      "sha256": "85285c5510ef5bf0eae29baccc8b2f4d9f4996a78e299a7cf8175c1d360f020f"
+    },
+    "d09-cube-single-wrap-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "a17f18366882355e89f55ac61a7ac30b9e2019e8bbfd4c3485ce026b68803f7c"
+    },
+    "videos/d09-origami-gate-paper-before.mp4": {
+      "bytes": 210815,
+      "sha256": "e0f1f5351f3334cfec1743de2d48a65e337132e713246ebcf68404d08fba05cc"
+    },
+    "d09-origami-gate-paper-before-frames.json.gz": {
+      "bytes": 10570,
+      "sha256": "4f374d4eccc129723335f20d6838ef43f8b7f0ba0b6a8c0c86e2268d689dcd02"
+    },
+    "images/d09-origami-gate-paper-before-15.png": {
+      "bytes": 195614,
+      "sha256": "b5d0478ef0851b2501cefbf3a4794f28c4e83514da6ea497bc4975d643ad078c"
+    },
+    "images/d09-origami-gate-paper-before-90.png": {
+      "bytes": 221973,
+      "sha256": "10f066da3b3dad337d51b960a33e809be3c4acbc8e81b8fe231db1bb692aa85b"
+    },
+    "images/d09-origami-gate-paper-before-228.png": {
+      "bytes": 236457,
+      "sha256": "71b4006f364374ea8b5a1160a1fc3e6d87ab1466f59299ce673a7aced3be64c7"
+    },
+    "d09-origami-gate-paper-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "bed528033b92235e599125d0748f57899dd1199a2735b8ecdf8b130df5762e7f"
+    },
+    "videos/d09-origami-gate-paper-after.mp4": {
+      "bytes": 139346,
+      "sha256": "5ef0c92d9f708b61b80926965a819257b5891354430e684d0300203ccf42c15a"
+    },
+    "d09-origami-gate-paper-after-frames.json.gz": {
+      "bytes": 305521,
+      "sha256": "6e6c0472eac8fc9446d2c781f56e8a33f0bb08feb486c5701c84bcf79b1e9ed1"
+    },
+    "images/d09-origami-gate-paper-after-15.png": {
+      "bytes": 353041,
+      "sha256": "9faafccfa1fb3e048608f90a6ff088cb9c52dc413e2d7639c4239b8d17395329"
+    },
+    "images/d09-origami-gate-paper-after-90.png": {
+      "bytes": 369359,
+      "sha256": "23099dea9a16568afec929bbc6b3ab481211d604e978d06e863656ba7832fe44"
+    },
+    "images/d09-origami-gate-paper-after-228.png": {
+      "bytes": 366765,
+      "sha256": "8a9b7abf5e27c3eb2a4a54a284aae1fb1d4ee08f5fb9d4400e7a80c19024d90e"
+    },
+    "d09-origami-gate-paper-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "9828254f758048cdb3ed3d493a2d534bffad35bb3e17eafe5e1242e060a80881"
+    },
+    "videos/d09-origami-blintz-paper-before.mp4": {
+      "bytes": 138346,
+      "sha256": "a5712c49102c016c1ef56fd12a14309af625a0f65c7b09872ebaa9b171793403"
+    },
+    "d09-origami-blintz-paper-before-frames.json.gz": {
+      "bytes": 10570,
+      "sha256": "74fe095df63a5b4584c29fad2b1e4575ffdeabd3d3c48f1f011beba637d9a957"
+    },
+    "images/d09-origami-blintz-paper-before-15.png": {
+      "bytes": 350824,
+      "sha256": "300cf90ccb377b7d4bbac659bda6e99f25c8242725e04969b2b26fd5ac9070a7"
+    },
+    "images/d09-origami-blintz-paper-before-90.png": {
+      "bytes": 354009,
+      "sha256": "c3c668994e2ba468e39f1b5576119667177d18dc3021f056a1a7115eecca95cc"
+    },
+    "images/d09-origami-blintz-paper-before-228.png": {
+      "bytes": 368257,
+      "sha256": "d2c4770104bd1fc8b893792c1235c565547e8ac7c96a458f2931bce703662b3e"
+    },
+    "d09-origami-blintz-paper-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "84a0d396a157c2b1256517f143b34edc6ccaf8418e0bb2c594c3f2988b023e97"
+    },
+    "images/d09-origami-blintz-paper-after-15.png": {
+      "bytes": 397050,
+      "sha256": "16050c254aef020b0fe136dc1dd0234f200ce1a615a4511f8961274f4477abf1"
+    },
+    "images/d09-origami-blintz-paper-after-90.png": {
+      "bytes": 401166,
+      "sha256": "490522b79e1262cae1294c545b9a4c19fb5221ef430a1de2bbeb9f115710a1a6"
+    },
+    "images/d09-origami-blintz-paper-after-228.png": {
+      "bytes": 403746,
+      "sha256": "0dd883f19cd4a7a1526f74c3de9d8d9710c9b6a3b5e1dfd7f99bd261232e7dc6"
+    },
+    "d09-origami-blintz-paper-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "cf905ebeffb0eb0d34c77afc92a4e5b203dfdbf14d04a83180eda081d6131655"
+    },
+    "videos/d09-origami-blintz-paper-after.mp4": {
+      "bytes": 90305,
+      "sha256": "44339dccf9b3922c273b0a46334848a570d0cb19cdf6576f29c2ae3d8b327c85"
+    },
+    "d09-origami-blintz-paper-after-frames.json.gz": {
+      "bytes": 296369,
+      "sha256": "0c75e6ecc1ad1dae843dcca4eac815b8f47864806f7208c74e5e11146d29f8f6"
+    },
+    "index.html": {
+      "bytes": 14952,
+      "sha256": "9693ec97f05fdfeccb8cc37a76ba6c43c5323bbea9a54d3604e4944dbc03826e"
+    },
+    "source-carry-audit.json": {
+      "bytes": 5513,
+      "sha256": "8e6cdf2b31cf578d8d6d9de75dd7d5212cbef9f99cc3af1ab70a1d77cab90632"
+    }
+  },
+  "startedAt": "2026-10-23T13:02:36.980Z",
+  "browser": "154.0.8037.57",
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "completedAt": "2026-10-23T13:02:59.951Z",
+  "mixedCaptureSources": true,
+  "sourceScope": "Integration target is preview04; fish/cube/gate media captured from preview02 and carried byte-for-byte with corrected-source native-key correspondence; blintz after recaptured from preview04; baseline carried from preview02. Earlier flat-blintz media excluded.",
+  "status": "Local preflight, native frame guards, source immutability, motion hashes and ffprobe passed; independent visual review pending",
+  "totalAssetBytes": 12478981,
+  "viewerPolish": {
+    "nativeControls": true,
+    "autoplay": false,
+    "circleGuideDefaultOn": true,
+    "circleGuideExternalHTML": true,
+    "perPairRestartPlay": true,
+    "visibleTitlesJapanese": true,
+    "scriptSHA256": "c5ae009ee4d5c67f2f0eb084af3941e29d6146586b47e6904db6537a42a9600d"
+  },
+  "sourceCarryAudit": "source-carry-audit.json"
+}

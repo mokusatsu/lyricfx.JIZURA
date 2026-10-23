@@ -1,0 +1,50 @@
+{
+  "status": "isolated functional checkpoint; parent review/integration/intent pending",
+  "sources": [
+    {
+      "path": "src/09o_layoutsD_cylinder.js",
+      "sha256": "a498ba61132ff4549cdc86f1924386a36a864087c44e033264095d7002fe10c3"
+    },
+    {
+      "path": "src/09a_placement.js",
+      "sha256": "c0668d2c26b6d0f65725310fe38620cb64d01eb3a7873969d9bb3ec66ef71948"
+    },
+    {
+      "path": "src/11p_layoutsD.js",
+      "sha256": "a7a0453037417468e3668fc33f529cda5776f90917f7fb09a3b02d5a7119567d"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-cylinder-test.cjs",
+      "sha256": "42530be82590ac581663a78e6651243479c895436c718dd43180e0e26fd3105d"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-cylinder-parity.cjs",
+      "sha256": "853fbef2a8437d764c69b2031f4e9e731d1f26e6b770270573d7f9406224bde0"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-cylinder-band-bridge.cjs",
+      "sha256": "707a957baefeba928e7fc48809208b9336271cb470b39c9fe166d2ef87542658"
+    }
+  ],
+  "matrix": [
+    "matrix03.json.gz",
+    "band04.json.gz"
+  ],
+  "transport": [
+    "parity03.json",
+    "bridge03.json"
+  ],
+  "counts": {
+    "matrixCases": 175,
+    "certifiedCuts": 66,
+    "insufficientCuts": 108,
+    "explicitUnsupportedUnit80Over72": 1,
+    "safeRegionSegments": 68,
+    "safeEnvelopes": 1231,
+    "independentSafeActualPolygons": 141035
+  },
+  "publicChecks": 0,
+  "mediaCreatedOrViewed": false,
+  "formalPerfClaim": false,
+  "cube08Preserved": true
+}
