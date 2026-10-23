@@ -1,0 +1,80 @@
+{
+  "basis": "dev/avoidance/layouts-c-node-wire-finalization-profile.cjs",
+  "basisSHA256": "cfba7067c4d9aa4eeddd70aa83dd9f9b6309ab4f06f174a765f28698fe097b1d",
+  "helper": "dev/avoidance/layouts-c-own-slot-original-pipeline-profile.cjs",
+  "helperSHA256": "94299390066e01ad62fde727038f13450120e04f09b344fb41af01a775c3da27",
+  "literalChanges": [
+    {
+      "old": "node-wire-finalization-profile01",
+      "new": "own-slot-original-pipeline-profile01",
+      "count": 2
+    },
+    {
+      "old": "node-wire-encode-browser01-parent-gate.json",
+      "new": "own-slot-repair-browser01-parent-gate.json",
+      "count": 1
+    },
+    {
+      "old": "native-local-bounds-runtime02",
+      "new": "native-local-bounds-runtime04",
+      "count": 2
+    },
+    {
+      "old": "node-wire-encode-diagnose01/results.json.gz",
+      "new": "own-slot-repair-formal01/results.json.gz",
+      "count": 1
+    },
+    {
+      "old": "candidate100-onoff-eight-warm-finalization-cpu-profile",
+      "new": "candidate1000-on-original-nine-pipeline-cpu-profile",
+      "count": 1
+    },
+    {
+      "old": "2f3a8375c1f27305b0e25b24db96e67ff975a73a",
+      "new": "1b7048065c75ef3037bd697e1f029089d22a3159",
+      "count": 1
+    },
+    {
+      "old": "0a33254940b3cf069d91de8ece36fe58510927bcdd83100e22f15172322eed97",
+      "new": "b07223aa796f9b89ea169d8ad0ed2a13a9aa64f1f327d475521f742c17e922aa",
+      "count": 1
+    },
+    {
+      "old": "7ff012ba111f26dbd5fda167678c4d4fc1f9caa1501030dbb4febcbf6e4696d2",
+      "new": "7f99fdfe616073370a0571227b5da6492e7dfd3d6a10de02dbd2f012c31e5d94",
+      "count": 1
+    },
+    {
+      "old": "gate.expectedSpecRevision,'228'",
+      "new": "gate.expectedSpecRevision,'230'",
+      "count": 1
+    },
+    {
+      "old": "reference.config.planningSamples,1",
+      "new": "reference.config.planningSamples,6",
+      "count": 1
+    },
+    {
+      "old": "const archiveCandidates=[base+'node-wire-encode-browser01'",
+      "new": "const archiveCandidates=[base+'own-slot-repair-browser01',base+'own-slot-repair-formal01',base+'node-wire-encode-browser01'",
+      "count": 1
+    },
+    {
+      "old": "for(const on of [true,false])",
+      "new": "for(const on of [true])",
+      "count": 1
+    },
+    {
+      "old": "300000",
+      "new": "600000",
+      "count": 1
+    },
+    {
+      "old": "PROFILE_300S_LIMIT",
+      "new": "PROFILE_600S_LIMIT",
+      "count": 1
+    }
+  ],
+  "workloadChange": "original fixture.run1000ON once, named source/final call-through wrappers, unchanged full9iteration pipeline and80render, diagnostic only",
+  "reverseByteExact": true
+}

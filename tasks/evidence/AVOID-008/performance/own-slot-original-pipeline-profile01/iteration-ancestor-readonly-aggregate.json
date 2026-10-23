@@ -1,0 +1,5008 @@
+{
+  "scope": "Read-only original sample-order source\u2192final phase transitions. Outside samples never allocated into source/final phases; iteration increments only when next source follows observed final. No wrapper timestamps or causal outside-GC attribution.",
+  "CPUgzipSHA256": "684397dfbb7865cc1e1bb1aae53ffb831936d1b57e7af870db5d4defc287fd6b",
+  "negativeCount": 5,
+  "negativeSignedSumUs": -67,
+  "absoluteNegativeUncertaintyUs": 67,
+  "dropCount": 0,
+  "clampCount": 0,
+  "negativeAssignments": [
+    {
+      "sampleIndex": 47842,
+      "weight": -1,
+      "classifiedIteration": 0,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 98003,
+      "weight": -2,
+      "classifiedIteration": 0,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 98243,
+      "weight": -61,
+      "classifiedIteration": 0,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 98410,
+      "weight": -2,
+      "classifiedIteration": 0,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 368286,
+      "weight": -1,
+      "classifiedIteration": null,
+      "phase": null
+    }
+  ],
+  "transitions": [
+    {
+      "sampleIndex": 254,
+      "iteration": 0,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 3550,
+      "iteration": 0,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 320094,
+      "iteration": 1,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 324653,
+      "iteration": 1,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 331305,
+      "iteration": 2,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 334236,
+      "iteration": 2,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 337528,
+      "iteration": 3,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 340939,
+      "iteration": 3,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 343219,
+      "iteration": 4,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 345943,
+      "iteration": 4,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 348234,
+      "iteration": 5,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 351010,
+      "iteration": 5,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 353187,
+      "iteration": 6,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 355779,
+      "iteration": 6,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 358106,
+      "iteration": 7,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 360803,
+      "iteration": 7,
+      "phase": "final"
+    },
+    {
+      "sampleIndex": 362979,
+      "iteration": 8,
+      "phase": "source"
+    },
+    {
+      "sampleIndex": 365806,
+      "iteration": 8,
+      "phase": "final"
+    }
+  ],
+  "iterations": [
+    {
+      "iteration": 0,
+      "warmup": true,
+      "phase": "final",
+      "samples": 301486,
+      "signedUs": 54392117,
+      "negativeCount": 4,
+      "negativeSignedUs": -66,
+      "topSelf": [
+        {
+          "functionName": "sourceStageEnvelopes",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12626,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 8701043,
+          "samples": 48421
+        },
+        {
+          "functionName": "A.convexHull",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10588,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 7694477,
+          "samples": 42843
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10588,
+          "columnNumberZeroBased": 55,
+          "selfSignedUs": 5046805,
+          "samples": 28058
+        },
+        {
+          "functionName": "trig",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12629,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 3797803,
+          "samples": 21171
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 3119083,
+          "samples": 17359
+        },
+        {
+          "functionName": "hull",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 11196,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 2394873,
+          "samples": 13271
+        },
+        {
+          "functionName": "cross",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10588,
+          "columnNumberZeroBased": 90,
+          "selfSignedUs": 2155968,
+          "samples": 11958
+        },
+        {
+          "functionName": "sourceCandidate",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12660,
+          "columnNumberZeroBased": 24,
+          "selfSignedUs": 1520623,
+          "samples": 8499
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 11196,
+          "columnNumberZeroBased": 55,
+          "selfSignedUs": 1235395,
+          "samples": 6833
+        },
+        {
+          "functionName": "mul",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12629,
+          "columnNumberZeroBased": 219,
+          "selfSignedUs": 1066386,
+          "samples": 5985
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 1055464,
+          "samples": 5976
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12301,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 910098,
+          "samples": 5188
+        },
+        {
+          "functionName": "utf8",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12295,
+          "columnNumberZeroBased": 109,
+          "selfSignedUs": 796263,
+          "samples": 4401
+        },
+        {
+          "functionName": "solveBasicRaw",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 11003,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 706279,
+          "samples": 3874
+        },
+        {
+          "functionName": "payloadCompact",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12292,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 659994,
+          "samples": 3694
+        },
+        {
+          "functionName": "jsonClone",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10908,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 576441,
+          "samples": 3190
+        },
+        {
+          "functionName": "finite",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10575,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 559071,
+          "samples": 3078
+        },
+        {
+          "functionName": "TextEncoder",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 556771,
+          "samples": 3075
+        },
+        {
+          "functionName": "cameraEnvelope",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 11261,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 543516,
+          "samples": 2954
+        },
+        {
+          "functionName": "cross",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 11196,
+          "columnNumberZeroBased": 90,
+          "selfSignedUs": 507430,
+          "samples": 2830
+        },
+        {
+          "functionName": "A.solveBasic",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 11040,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 434831,
+          "samples": 2372
+        },
+        {
+          "functionName": "A.itemGeometry",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10644,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 409126,
+          "samples": 2261
+        },
+        {
+          "functionName": "push",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10743,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 380423,
+          "samples": 2096
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10587,
+          "columnNumberZeroBased": 284,
+          "selfSignedUs": 343700,
+          "samples": 1903
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12646,
+          "columnNumberZeroBased": 57,
+          "selfSignedUs": 223606,
+          "samples": 1260
+        },
+        {
+          "functionName": "validateTextState",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10643,
+          "columnNumberZeroBased": 24,
+          "selfSignedUs": 218469,
+          "samples": 1215
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12635,
+          "columnNumberZeroBased": 109,
+          "selfSignedUs": 205063,
+          "samples": 1144
+        },
+        {
+          "functionName": "adv",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1822,
+          "columnNumberZeroBased": 5,
+          "selfSignedUs": 195272,
+          "samples": 1072
+        },
+        {
+          "functionName": "mul",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 13066,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 170134,
+          "samples": 934
+        },
+        {
+          "functionName": "arc",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 162778,
+          "samples": 816
+        }
+      ]
+    },
+    {
+      "iteration": 0,
+      "warmup": true,
+      "phase": "source",
+      "samples": 2823,
+      "signedUs": 533935,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 132007,
+          "samples": 702
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 41084,
+          "samples": 225
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 35682,
+          "samples": 183
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 24741,
+          "samples": 133
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 23507,
+          "samples": 129
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 23172,
+          "samples": 118
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 19414,
+          "samples": 107
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 16442,
+          "samples": 85
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 15122,
+          "samples": 75
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 14002,
+          "samples": 77
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 13750,
+          "samples": 73
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 13594,
+          "samples": 78
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 12705,
+          "samples": 72
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 11989,
+          "samples": 47
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 7539,
+          "samples": 42
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 6805,
+          "samples": 41
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 6191,
+          "samples": 34
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 6059,
+          "samples": 27
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 5829,
+          "samples": 33
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 5645,
+          "samples": 27
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 5138,
+          "samples": 27
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 5041,
+          "samples": 28
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 93,
+          "selfSignedUs": 4528,
+          "samples": 15
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 4438,
+          "samples": 23
+        },
+        {
+          "functionName": "J.clamp",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1452,
+          "columnNumberZeroBased": 10,
+          "selfSignedUs": 4086,
+          "samples": 4
+        },
+        {
+          "functionName": "J.finishLyricPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6897,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 3961,
+          "samples": 23
+        },
+        {
+          "functionName": "fontsOf",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 3306,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 3794,
+          "samples": 22
+        },
+        {
+          "functionName": "J.applyCutDetails",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 8758,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 3645,
+          "samples": 20
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 2891,
+          "samples": 16
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 2726,
+          "samples": 17
+        }
+      ]
+    },
+    {
+      "iteration": 1,
+      "warmup": true,
+      "phase": "final",
+      "samples": 6025,
+      "signedUs": 1101712,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "compileRepairMemo",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12352,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 401071,
+          "samples": 2236
+        },
+        {
+          "functionName": "payloadDecode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12315,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 236687,
+          "samples": 1276
+        },
+        {
+          "functionName": "own",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12321,
+          "columnNumberZeroBased": 33,
+          "selfSignedUs": 114904,
+          "samples": 624
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 111992,
+          "samples": 604
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 88460,
+          "samples": 492
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 32849,
+          "samples": 182
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 22306,
+          "samples": 116
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 19247,
+          "samples": 103
+        },
+        {
+          "functionName": "add",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12357,
+          "columnNumberZeroBased": 11,
+          "selfSignedUs": 11911,
+          "samples": 57
+        },
+        {
+          "functionName": "reserve",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12323,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 11386,
+          "samples": 63
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 7418,
+          "samples": 40
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 6273,
+          "samples": 35
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 5400,
+          "samples": 28
+        },
+        {
+          "functionName": "earlier",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12325,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 5308,
+          "samples": 27
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 4030,
+          "samples": 22
+        },
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 4010,
+          "samples": 23
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12321,
+          "columnNumberZeroBased": 335,
+          "selfSignedUs": 3716,
+          "samples": 20
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 2691,
+          "samples": 10
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 2498,
+          "samples": 16
+        },
+        {
+          "functionName": "chargePath",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12356,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 2078,
+          "samples": 10
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 1601,
+          "samples": 9
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 1439,
+          "samples": 8
+        },
+        {
+          "functionName": "cacheDependencies",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12452,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 869,
+          "samples": 4
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 709,
+          "samples": 4
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 556,
+          "samples": 3
+        },
+        {
+          "functionName": "RegExp: ^(0|[1-9]\\d*)$",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 544,
+          "samples": 3
+        },
+        {
+          "functionName": "scalar",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12495,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 372,
+          "samples": 2
+        },
+        {
+          "functionName": "rows",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 362,
+          "samples": 2
+        },
+        {
+          "functionName": "each",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12401,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 342,
+          "samples": 2
+        },
+        {
+          "functionName": "cacheDependencyEncodeCurrent",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12486,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 179,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "iteration": 1,
+      "warmup": true,
+      "phase": "source",
+      "samples": 3933,
+      "signedUs": 755484,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 212713,
+          "samples": 1129
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 52946,
+          "samples": 280
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 43148,
+          "samples": 223
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 35731,
+          "samples": 186
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 32688,
+          "samples": 175
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 31808,
+          "samples": 171
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 31129,
+          "samples": 160
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 26811,
+          "samples": 142
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 22413,
+          "samples": 118
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 17625,
+          "samples": 94
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 17024,
+          "samples": 89
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 14868,
+          "samples": 76
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 13872,
+          "samples": 74
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 11166,
+          "samples": 47
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 10498,
+          "samples": 52
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 9930,
+          "samples": 50
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 8982,
+          "samples": 49
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 8485,
+          "samples": 45
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 8158,
+          "samples": 44
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 7953,
+          "samples": 43
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 7850,
+          "samples": 41
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 7241,
+          "samples": 34
+        },
+        {
+          "functionName": "J.parseLyrics",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4499,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 6632,
+          "samples": 11
+        },
+        {
+          "functionName": "fontsOf",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 3306,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 6431,
+          "samples": 35
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 45,
+          "selfSignedUs": 6426,
+          "samples": 35
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 6040,
+          "samples": 32
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 5092,
+          "samples": 27
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 93,
+          "selfSignedUs": 4766,
+          "samples": 25
+        },
+        {
+          "functionName": "pickCam",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5249,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 4673,
+          "samples": 24
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 36,
+          "selfSignedUs": 4570,
+          "samples": 25
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "warmup": true,
+      "phase": "final",
+      "samples": 2288,
+      "signedUs": 431419,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 157903,
+          "samples": 785
+        },
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 111440,
+          "samples": 626
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 70052,
+          "samples": 364
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 24811,
+          "samples": 139
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12371,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 16455,
+          "samples": 91
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 13837,
+          "samples": 75
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 13497,
+          "samples": 78
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 5353,
+          "samples": 29
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 3958,
+          "samples": 23
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 2894,
+          "samples": 14
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 2792,
+          "samples": 16
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 2460,
+          "samples": 14
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 1198,
+          "samples": 6
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 1081,
+          "samples": 6
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 1012,
+          "samples": 6
+        },
+        {
+          "functionName": "each",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12401,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 598,
+          "samples": 3
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 516,
+          "samples": 3
+        },
+        {
+          "functionName": "fields",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12413,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 471,
+          "samples": 3
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 348,
+          "samples": 2
+        },
+        {
+          "functionName": "scalar",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12495,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 179,
+          "samples": 1
+        },
+        {
+          "functionName": "RegExp: ^(0|[1-9]\\d*)$",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 176,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheDependencies",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12452,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 175,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12455,
+          "columnNumberZeroBased": 72,
+          "selfSignedUs": 107,
+          "samples": 1
+        },
+        {
+          "functionName": "freezeDecodedPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12333,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 106,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "warmup": true,
+      "phase": "source",
+      "samples": 2381,
+      "signedUs": 422614,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 121069,
+          "samples": 669
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 36066,
+          "samples": 209
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 22805,
+          "samples": 127
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 21893,
+          "samples": 123
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 19060,
+          "samples": 110
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 17476,
+          "samples": 100
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 15250,
+          "samples": 90
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 14025,
+          "samples": 81
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 13222,
+          "samples": 76
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 12332,
+          "samples": 61
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 10962,
+          "samples": 63
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 9463,
+          "samples": 54
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 6879,
+          "samples": 40
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 6249,
+          "samples": 34
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 6054,
+          "samples": 36
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 5534,
+          "samples": 33
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 4923,
+          "samples": 28
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 4811,
+          "samples": 28
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 4201,
+          "samples": 24
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5238,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 4125,
+          "samples": 25
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 36,
+          "selfSignedUs": 4062,
+          "samples": 24
+        },
+        {
+          "functionName": "pickCam",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5249,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 4003,
+          "samples": 24
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 3957,
+          "samples": 23
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 3765,
+          "samples": 22
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 3386,
+          "samples": 19
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 3032,
+          "samples": 18
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 2563,
+          "samples": 13
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 2086,
+          "samples": 12
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5246,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 1987,
+          "samples": 12
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 38,
+          "selfSignedUs": 1980,
+          "samples": 12
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "warmup": false,
+      "phase": "final",
+      "samples": 2017,
+      "signedUs": 349206,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 110717,
+          "samples": 642
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 84980,
+          "samples": 491
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 73522,
+          "samples": 426
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 23934,
+          "samples": 138
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 13381,
+          "samples": 76
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 12874,
+          "samples": 75
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12371,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 5556,
+          "samples": 32
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 5057,
+          "samples": 28
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 4000,
+          "samples": 21
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 2965,
+          "samples": 17
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 2740,
+          "samples": 16
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 2666,
+          "samples": 16
+        },
+        {
+          "functionName": "each",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12401,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 1358,
+          "samples": 7
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 1034,
+          "samples": 6
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 1027,
+          "samples": 6
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 688,
+          "samples": 4
+        },
+        {
+          "functionName": "rows",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 373,
+          "samples": 2
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 348,
+          "samples": 2
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 343,
+          "samples": 2
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12416,
+          "columnNumberZeroBased": 123,
+          "selfSignedUs": 191,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12497,
+          "columnNumberZeroBased": 265,
+          "selfSignedUs": 181,
+          "samples": 1
+        },
+        {
+          "functionName": "fields",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12413,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 176,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheID",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12235,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 173,
+          "samples": 1
+        },
+        {
+          "functionName": "scalar",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12495,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 172,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12416,
+          "columnNumberZeroBased": 201,
+          "selfSignedUs": 170,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheDependencies",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12452,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 168,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12463,
+          "columnNumberZeroBased": 288,
+          "selfSignedUs": 168,
+          "samples": 1
+        },
+        {
+          "functionName": "J.finalizePlacementPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10911,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 168,
+          "samples": 1
+        },
+        {
+          "functionName": "values",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 76,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "warmup": false,
+      "phase": "source",
+      "samples": 2742,
+      "signedUs": 510517,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 130911,
+          "samples": 696
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 50389,
+          "samples": 262
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 37222,
+          "samples": 207
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 25692,
+          "samples": 141
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 25227,
+          "samples": 140
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 21687,
+          "samples": 120
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 19352,
+          "samples": 105
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 15243,
+          "samples": 85
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 13457,
+          "samples": 77
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 13012,
+          "samples": 68
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 11442,
+          "samples": 67
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 11412,
+          "samples": 59
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 10333,
+          "samples": 60
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 8693,
+          "samples": 35
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 7454,
+          "samples": 39
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 7254,
+          "samples": 41
+        },
+        {
+          "functionName": "J.parseLyrics",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4499,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 5860,
+          "samples": 6
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 5493,
+          "samples": 32
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 5337,
+          "samples": 30
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 5188,
+          "samples": 27
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 5039,
+          "samples": 27
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 4522,
+          "samples": 26
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 4398,
+          "samples": 23
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5238,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 4104,
+          "samples": 24
+        },
+        {
+          "functionName": "fontsOf",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 3306,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 3699,
+          "samples": 22
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 3482,
+          "samples": 19
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 36,
+          "selfSignedUs": 3383,
+          "samples": 18
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 3287,
+          "samples": 19
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 3186,
+          "samples": 18
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 38,
+          "selfSignedUs": 3072,
+          "samples": 17
+        }
+      ]
+    },
+    {
+      "iteration": 4,
+      "warmup": false,
+      "phase": "final",
+      "samples": 2026,
+      "signedUs": 359629,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 115094,
+          "samples": 645
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 91657,
+          "samples": 502
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 69909,
+          "samples": 405
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 28246,
+          "samples": 159
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 13239,
+          "samples": 77
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 13201,
+          "samples": 73
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12371,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 5966,
+          "samples": 34
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 5793,
+          "samples": 35
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 3605,
+          "samples": 21
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 3139,
+          "samples": 18
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 3087,
+          "samples": 18
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 1758,
+          "samples": 10
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 1011,
+          "samples": 6
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 883,
+          "samples": 5
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 859,
+          "samples": 5
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 513,
+          "samples": 3
+        },
+        {
+          "functionName": "cacheDependencies",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12452,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 359,
+          "samples": 2
+        },
+        {
+          "functionName": "each",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12401,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 210,
+          "samples": 1
+        },
+        {
+          "functionName": "scalar",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12495,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 181,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 175,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheID",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12235,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 172,
+          "samples": 1
+        },
+        {
+          "functionName": "payloadGuard",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12286,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 172,
+          "samples": 1
+        },
+        {
+          "functionName": "fields",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12413,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 171,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheDependencyEncodeCurrent",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12486,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 170,
+          "samples": 1
+        },
+        {
+          "functionName": "edgeRegisterFinal",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12398,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 59,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "iteration": 4,
+      "warmup": false,
+      "phase": "source",
+      "samples": 2203,
+      "signedUs": 400480,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 119771,
+          "samples": 648
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 28799,
+          "samples": 161
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 23395,
+          "samples": 131
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 21196,
+          "samples": 126
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 20160,
+          "samples": 94
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 19787,
+          "samples": 116
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 13194,
+          "samples": 75
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 12937,
+          "samples": 70
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 12919,
+          "samples": 74
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 12433,
+          "samples": 69
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 11811,
+          "samples": 64
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 10011,
+          "samples": 57
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 7859,
+          "samples": 34
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 7061,
+          "samples": 40
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 4329,
+          "samples": 25
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 4075,
+          "samples": 23
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 3661,
+          "samples": 21
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 3649,
+          "samples": 21
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4660,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 3648,
+          "samples": 4
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 3513,
+          "samples": 19
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 3058,
+          "samples": 18
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2907,
+          "samples": 17
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 2892,
+          "samples": 17
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 2743,
+          "samples": 16
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 2718,
+          "samples": 16
+        },
+        {
+          "functionName": "J.finishLyricPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6897,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 2577,
+          "samples": 15
+        },
+        {
+          "functionName": "fontsOf",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 3306,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2467,
+          "samples": 16
+        },
+        {
+          "functionName": "pickCam",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5249,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2436,
+          "samples": 14
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 2360,
+          "samples": 14
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 93,
+          "selfSignedUs": 2354,
+          "samples": 14
+        }
+      ]
+    },
+    {
+      "iteration": 5,
+      "warmup": false,
+      "phase": "final",
+      "samples": 1919,
+      "signedUs": 346567,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 109255,
+          "samples": 627
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 80907,
+          "samples": 450
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 70426,
+          "samples": 394
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 33956,
+          "samples": 150
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 13953,
+          "samples": 79
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 13010,
+          "samples": 76
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12371,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 5245,
+          "samples": 29
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 4248,
+          "samples": 24
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 4039,
+          "samples": 24
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 2746,
+          "samples": 16
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 2505,
+          "samples": 15
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 1573,
+          "samples": 8
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 1033,
+          "samples": 6
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 854,
+          "samples": 5
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 717,
+          "samples": 4
+        },
+        {
+          "functionName": "each",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12401,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 559,
+          "samples": 3
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 343,
+          "samples": 2
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 341,
+          "samples": 2
+        },
+        {
+          "functionName": "rows",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 175,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12455,
+          "columnNumberZeroBased": 72,
+          "selfSignedUs": 172,
+          "samples": 1
+        },
+        {
+          "functionName": "edgeRegisterFinal",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12398,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 172,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheDependencyEncodeCurrent",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12486,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 170,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheID",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12235,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 168,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "iteration": 5,
+      "warmup": false,
+      "phase": "source",
+      "samples": 2327,
+      "signedUs": 417822,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 132360,
+          "samples": 743
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 30640,
+          "samples": 170
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 22932,
+          "samples": 127
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 20197,
+          "samples": 118
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 18046,
+          "samples": 103
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 17782,
+          "samples": 102
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 14088,
+          "samples": 82
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 14047,
+          "samples": 81
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 11869,
+          "samples": 67
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 11598,
+          "samples": 68
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 11596,
+          "samples": 68
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 11402,
+          "samples": 62
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 6983,
+          "samples": 18
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 4864,
+          "samples": 29
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 4465,
+          "samples": 26
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 4364,
+          "samples": 25
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 4013,
+          "samples": 20
+        },
+        {
+          "functionName": "J.finishLyricPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6897,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 3976,
+          "samples": 23
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 3765,
+          "samples": 20
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 36,
+          "selfSignedUs": 3736,
+          "samples": 21
+        },
+        {
+          "functionName": "pickCam",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5249,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 3458,
+          "samples": 20
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 3451,
+          "samples": 20
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 3255,
+          "samples": 19
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 3048,
+          "samples": 18
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 2970,
+          "samples": 17
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5238,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 2879,
+          "samples": 16
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 2827,
+          "samples": 16
+        },
+        {
+          "functionName": "pickTreat",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5235,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 2760,
+          "samples": 14
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 2654,
+          "samples": 13
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 38,
+          "selfSignedUs": 2594,
+          "samples": 15
+        }
+      ]
+    },
+    {
+      "iteration": 6,
+      "warmup": false,
+      "phase": "final",
+      "samples": 2057,
+      "signedUs": 372773,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 121529,
+          "samples": 698
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 84293,
+          "samples": 482
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 76738,
+          "samples": 387
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 26204,
+          "samples": 148
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 17210,
+          "samples": 90
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 12579,
+          "samples": 71
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 8356,
+          "samples": 43
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12371,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 6208,
+          "samples": 34
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 5369,
+          "samples": 28
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 3243,
+          "samples": 18
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 2674,
+          "samples": 11
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 2464,
+          "samples": 14
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 1235,
+          "samples": 7
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 1078,
+          "samples": 6
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 1050,
+          "samples": 6
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 880,
+          "samples": 5
+        },
+        {
+          "functionName": "RegExp: ^(0|[1-9]\\d*)$",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 390,
+          "samples": 2
+        },
+        {
+          "functionName": "each",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12401,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 353,
+          "samples": 2
+        },
+        {
+          "functionName": "J.finalizePlacementPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10911,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 236,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheDependencies",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12452,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 220,
+          "samples": 1
+        },
+        {
+          "functionName": "eligible",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12487,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 199,
+          "samples": 1
+        },
+        {
+          "functionName": "scalar",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12495,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 159,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12416,
+          "columnNumberZeroBased": 123,
+          "selfSignedUs": 106,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "iteration": 6,
+      "warmup": false,
+      "phase": "source",
+      "samples": 2187,
+      "signedUs": 388486,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 116034,
+          "samples": 663
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 24744,
+          "samples": 139
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 23817,
+          "samples": 137
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 21688,
+          "samples": 119
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 19755,
+          "samples": 111
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 18806,
+          "samples": 97
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 18301,
+          "samples": 102
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 13613,
+          "samples": 79
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 12685,
+          "samples": 75
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 10341,
+          "samples": 60
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 9263,
+          "samples": 52
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 8007,
+          "samples": 47
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 7424,
+          "samples": 39
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 5155,
+          "samples": 29
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 4117,
+          "samples": 24
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 3972,
+          "samples": 23
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 3965,
+          "samples": 23
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 36,
+          "selfSignedUs": 3930,
+          "samples": 22
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 3911,
+          "samples": 22
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 3709,
+          "samples": 17
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 3680,
+          "samples": 18
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 3352,
+          "samples": 19
+        },
+        {
+          "functionName": "J.finishLyricPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6897,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 3331,
+          "samples": 19
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 2687,
+          "samples": 16
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2683,
+          "samples": 15
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5238,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 2634,
+          "samples": 15
+        },
+        {
+          "functionName": "fontsOf",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 3306,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2568,
+          "samples": 15
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 2557,
+          "samples": 14
+        },
+        {
+          "functionName": "pickTreat",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5235,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 2167,
+          "samples": 11
+        },
+        {
+          "functionName": "J.applyCutDetails",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 8758,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 1840,
+          "samples": 9
+        }
+      ]
+    },
+    {
+      "iteration": 7,
+      "warmup": false,
+      "phase": "final",
+      "samples": 1993,
+      "signedUs": 352842,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 110086,
+          "samples": 632
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 85858,
+          "samples": 491
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 74720,
+          "samples": 418
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 26546,
+          "samples": 145
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 13811,
+          "samples": 77
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 13385,
+          "samples": 74
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 6045,
+          "samples": 33
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12371,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 5935,
+          "samples": 31
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 5030,
+          "samples": 28
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 2834,
+          "samples": 16
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 2418,
+          "samples": 14
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 1625,
+          "samples": 9
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 1065,
+          "samples": 6
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 1052,
+          "samples": 6
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 701,
+          "samples": 4
+        },
+        {
+          "functionName": "rows",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 381,
+          "samples": 2
+        },
+        {
+          "functionName": "cacheDependencies",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12452,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 334,
+          "samples": 2
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 283,
+          "samples": 1
+        },
+        {
+          "functionName": "RegExp: ^(0|[1-9]\\d*)$",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 220,
+          "samples": 1
+        },
+        {
+          "functionName": "scalar",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12495,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 171,
+          "samples": 1
+        },
+        {
+          "functionName": "edgeEmpty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12396,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 171,
+          "samples": 1
+        },
+        {
+          "functionName": "J.finalizePlacementPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10911,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 171,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "iteration": 7,
+      "warmup": false,
+      "phase": "source",
+      "samples": 2252,
+      "signedUs": 402442,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 121421,
+          "samples": 680
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 29877,
+          "samples": 171
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 22784,
+          "samples": 106
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 22519,
+          "samples": 124
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 19168,
+          "samples": 110
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 19162,
+          "samples": 110
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 14985,
+          "samples": 85
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 14180,
+          "samples": 82
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 14175,
+          "samples": 82
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 13398,
+          "samples": 78
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 12087,
+          "samples": 63
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 10830,
+          "samples": 63
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 7407,
+          "samples": 43
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 5318,
+          "samples": 30
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 4905,
+          "samples": 28
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 3781,
+          "samples": 21
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 3779,
+          "samples": 21
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 3715,
+          "samples": 21
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 3696,
+          "samples": 21
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 3304,
+          "samples": 18
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 3223,
+          "samples": 19
+        },
+        {
+          "functionName": "pickCam",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5249,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2908,
+          "samples": 17
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 2880,
+          "samples": 16
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 36,
+          "selfSignedUs": 2787,
+          "samples": 14
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 2468,
+          "samples": 14
+        },
+        {
+          "functionName": "fontsOf",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 3306,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2421,
+          "samples": 15
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5238,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 2365,
+          "samples": 13
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 38,
+          "selfSignedUs": 2331,
+          "samples": 14
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2210,
+          "samples": 13
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 93,
+          "selfSignedUs": 2113,
+          "samples": 12
+        }
+      ]
+    },
+    {
+      "iteration": 8,
+      "warmup": false,
+      "phase": "final",
+      "samples": 2060,
+      "signedUs": 362122,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 136536,
+          "samples": 779
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 79176,
+          "samples": 440
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 68084,
+          "samples": 391
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 25264,
+          "samples": 145
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 13363,
+          "samples": 77
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 12453,
+          "samples": 72
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 5994,
+          "samples": 35
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12371,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 5805,
+          "samples": 32
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 3905,
+          "samples": 22
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 2786,
+          "samples": 16
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 2610,
+          "samples": 15
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 1371,
+          "samples": 8
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 860,
+          "samples": 5
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 852,
+          "samples": 5
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 697,
+          "samples": 4
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 682,
+          "samples": 4
+        },
+        {
+          "functionName": "each",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12401,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 358,
+          "samples": 2
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12497,
+          "columnNumberZeroBased": 265,
+          "selfSignedUs": 171,
+          "samples": 1
+        },
+        {
+          "functionName": "RegExp: ^(0|[1-9]\\d*)$",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 171,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheDependencies",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12452,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 171,
+          "samples": 1
+        },
+        {
+          "functionName": "edgeEmpty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12396,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 171,
+          "samples": 1
+        },
+        {
+          "functionName": "edgeRegisterFinal",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12398,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 171,
+          "samples": 1
+        },
+        {
+          "functionName": "rows",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 170,
+          "samples": 1
+        },
+        {
+          "functionName": "same",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12491,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 170,
+          "samples": 1
+        },
+        {
+          "functionName": "cacheID",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12235,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 131,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "iteration": 8,
+      "warmup": false,
+      "phase": "source",
+      "samples": 2248,
+      "signedUs": 401294,
+      "negativeCount": 0,
+      "negativeSignedUs": 0,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 114644,
+          "samples": 652
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 35573,
+          "samples": 201
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 22181,
+          "samples": 128
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 22156,
+          "samples": 122
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 19284,
+          "samples": 97
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 18208,
+          "samples": 102
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 14893,
+          "samples": 85
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 14839,
+          "samples": 85
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 14345,
+          "samples": 82
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 12912,
+          "samples": 59
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 10018,
+          "samples": 57
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 8325,
+          "samples": 49
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 6737,
+          "samples": 38
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 5657,
+          "samples": 33
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 4846,
+          "samples": 28
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 4643,
+          "samples": 27
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5238,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 4270,
+          "samples": 25
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 36,
+          "selfSignedUs": 4255,
+          "samples": 23
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 4245,
+          "samples": 25
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 4154,
+          "samples": 23
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 3922,
+          "samples": 21
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 3886,
+          "samples": 22
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 3718,
+          "samples": 22
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 3650,
+          "samples": 21
+        },
+        {
+          "functionName": "J.finishLyricPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6897,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 3046,
+          "samples": 9
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 2372,
+          "samples": 14
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 2328,
+          "samples": 14
+        },
+        {
+          "functionName": "pickCam",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5249,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2294,
+          "samples": 14
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 38,
+          "selfSignedUs": 2146,
+          "samples": 13
+        },
+        {
+          "functionName": "fontsOf",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 3306,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 2070,
+          "samples": 12
+        }
+      ]
+    }
+  ],
+  "measuredIterations3to8": {
+    "source": {
+      "iterations": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "samples": 13959,
+      "signedUs": 2521041,
+      "topSelf": [
+        {
+          "functionName": "J.composeLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5602,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 735141,
+          "samples": 4082
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4842,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 186855,
+          "samples": 1049
+        },
+        {
+          "functionName": "J.segments",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4583,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 163079,
+          "samples": 885
+        },
+        {
+          "functionName": "novelty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5145,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 133993,
+          "samples": 745
+        },
+        {
+          "functionName": "pickEnter",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5174,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 121023,
+          "samples": 661
+        },
+        {
+          "functionName": "wkey",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4673,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 112973,
+          "samples": 645
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5224,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 92867,
+          "samples": 517
+        },
+        {
+          "functionName": "f",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1503,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 86122,
+          "samples": 482
+        },
+        {
+          "functionName": "pickExit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5192,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 82719,
+          "samples": 474
+        },
+        {
+          "functionName": "J.autoLyricArea",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6824,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 69405,
+          "samples": 391
+        },
+        {
+          "functionName": "overlap",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5598,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 68508,
+          "samples": 369
+        },
+        {
+          "functionName": "pickDecor",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5220,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 63270,
+          "samples": 358
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5225,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 41545,
+          "samples": 224
+        },
+        {
+          "functionName": "pickHold",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5207,
+          "columnNumberZeroBased": 17,
+          "selfSignedUs": 29702,
+          "samples": 164
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4657,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 29414,
+          "samples": 132
+        },
+        {
+          "functionName": "f.wpick",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1508,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 28661,
+          "samples": 161
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4783,
+          "columnNumberZeroBased": 23,
+          "selfSignedUs": 27952,
+          "samples": 151
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 80,
+          "selfSignedUs": 26343,
+          "samples": 150
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5272,
+          "columnNumberZeroBased": 35,
+          "selfSignedUs": 24613,
+          "samples": 141
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 124,
+          "selfSignedUs": 20265,
+          "samples": 115
+        },
+        {
+          "functionName": "pickFx",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5267,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 20248,
+          "samples": 114
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5208,
+          "columnNumberZeroBased": 36,
+          "selfSignedUs": 20093,
+          "samples": 110
+        },
+        {
+          "functionName": "makeCut",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5126,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 19571,
+          "samples": 109
+        },
+        {
+          "functionName": "J.rng",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 1501,
+          "columnNumberZeroBased": 8,
+          "selfSignedUs": 19218,
+          "samples": 103
+        },
+        {
+          "functionName": "J.plan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4685,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 19093,
+          "samples": 108
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5238,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 18370,
+          "samples": 105
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5245,
+          "columnNumberZeroBased": 34,
+          "selfSignedUs": 17290,
+          "samples": 100
+        },
+        {
+          "functionName": "J.finishLyricPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 6897,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 16728,
+          "samples": 88
+        },
+        {
+          "functionName": "fontsOf",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 3306,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 15697,
+          "samples": 94
+        },
+        {
+          "functionName": "pickCam",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5249,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 14475,
+          "samples": 84
+        },
+        {
+          "functionName": "pickTreat",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5235,
+          "columnNumberZeroBased": 18,
+          "selfSignedUs": 12809,
+          "samples": 71
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 38,
+          "selfSignedUs": 12389,
+          "samples": 72
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5250,
+          "columnNumberZeroBased": 93,
+          "selfSignedUs": 10906,
+          "samples": 62
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5273,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 10169,
+          "samples": 57
+        },
+        {
+          "functionName": "J.applyCutDetails",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 8758,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 9964,
+          "samples": 55
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4660,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 8557,
+          "samples": 30
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5246,
+          "columnNumberZeroBased": 9,
+          "selfSignedUs": 7912,
+          "samples": 44
+        },
+        {
+          "functionName": "J.parseLyrics",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 4499,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 7498,
+          "samples": 15
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5619,
+          "columnNumberZeroBased": 45,
+          "selfSignedUs": 5868,
+          "samples": 34
+        },
+        {
+          "functionName": "pickBg",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 5242,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 5861,
+          "samples": 34
+        }
+      ]
+    },
+    "final": {
+      "iterations": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "samples": 12072,
+      "signedUs": 2143139,
+      "topSelf": [
+        {
+          "functionName": "readCompletedPayload",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12366,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 703217,
+          "samples": 4023
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12341,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 506871,
+          "samples": 2856
+        },
+        {
+          "functionName": "visit",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12244,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 433399,
+          "samples": 2421
+        },
+        {
+          "functionName": "signature",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 164150,
+          "samples": 885
+        },
+        {
+          "functionName": "encode",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 83583,
+          "samples": 464
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10900,
+          "columnNumberZeroBased": 108,
+          "selfSignedUs": 78876,
+          "samples": 453
+        },
+        {
+          "functionName": "readFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12526,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 35493,
+          "samples": 198
+        },
+        {
+          "functionName": "at",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12371,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 34715,
+          "samples": 192
+        },
+        {
+          "functionName": "verifyCacheContext",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12525,
+          "columnNumberZeroBased": 27,
+          "selfSignedUs": 25948,
+          "samples": 144
+        },
+        {
+          "functionName": "beginFinalCache",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12521,
+          "columnNumberZeroBased": 22,
+          "selfSignedUs": 17414,
+          "samples": 100
+        },
+        {
+          "functionName": "walk",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12456,
+          "columnNumberZeroBased": 40,
+          "selfSignedUs": 16049,
+          "samples": 93
+        },
+        {
+          "functionName": "read",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12400,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 9762,
+          "samples": 56
+        },
+        {
+          "functionName": "dependencyMetadataEqual",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12471,
+          "columnNumberZeroBased": 32,
+          "selfSignedUs": 7342,
+          "samples": 38
+        },
+        {
+          "functionName": "polygon",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12402,
+          "columnNumberZeroBased": 15,
+          "selfSignedUs": 5566,
+          "samples": 31
+        },
+        {
+          "functionName": "cacheEncode",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12240,
+          "columnNumberZeroBased": 20,
+          "selfSignedUs": 5422,
+          "samples": 31
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12251,
+          "columnNumberZeroBased": 73,
+          "selfSignedUs": 3389,
+          "samples": 19
+        },
+        {
+          "functionName": "each",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12401,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 2838,
+          "samples": 15
+        },
+        {
+          "functionName": "cacheDependencies",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12452,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 1252,
+          "samples": 7
+        },
+        {
+          "functionName": "rows",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 12,
+          "selfSignedUs": 1099,
+          "samples": 6
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12496,
+          "columnNumberZeroBased": 29,
+          "selfSignedUs": 864,
+          "samples": 5
+        },
+        {
+          "functionName": "RegExp: ^(0|[1-9]\\d*)$",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 781,
+          "samples": 4
+        },
+        {
+          "functionName": "scalar",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12495,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 683,
+          "samples": 4
+        },
+        {
+          "functionName": "cacheID",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12235,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 644,
+          "samples": 4
+        },
+        {
+          "functionName": "J.finalizePlacementPlan",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 10911,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 575,
+          "samples": 3
+        },
+        {
+          "functionName": "edgeRegisterFinal",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12398,
+          "columnNumberZeroBased": 26,
+          "selfSignedUs": 402,
+          "samples": 3
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12497,
+          "columnNumberZeroBased": 265,
+          "selfSignedUs": 352,
+          "samples": 2
+        },
+        {
+          "functionName": "fields",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12413,
+          "columnNumberZeroBased": 14,
+          "selfSignedUs": 347,
+          "samples": 2
+        },
+        {
+          "functionName": "edgeEmpty",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12396,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 342,
+          "samples": 2
+        },
+        {
+          "functionName": "cacheDependencyEncodeCurrent",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12486,
+          "columnNumberZeroBased": 37,
+          "selfSignedUs": 340,
+          "samples": 2
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12416,
+          "columnNumberZeroBased": 123,
+          "selfSignedUs": 297,
+          "samples": 2
+        },
+        {
+          "functionName": "eligible",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12487,
+          "columnNumberZeroBased": 16,
+          "selfSignedUs": 199,
+          "samples": 1
+        },
+        {
+          "functionName": "payloadGuard",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12286,
+          "columnNumberZeroBased": 21,
+          "selfSignedUs": 172,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12455,
+          "columnNumberZeroBased": 72,
+          "selfSignedUs": 172,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12416,
+          "columnNumberZeroBased": 201,
+          "selfSignedUs": 170,
+          "samples": 1
+        },
+        {
+          "functionName": "same",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12491,
+          "columnNumberZeroBased": 13,
+          "selfSignedUs": 170,
+          "samples": 1
+        },
+        {
+          "functionName": "",
+          "url": "http://127.0.0.1:45433/",
+          "lineNumberZeroBased": 12463,
+          "columnNumberZeroBased": 288,
+          "selfSignedUs": 168,
+          "samples": 1
+        },
+        {
+          "functionName": "values",
+          "url": "",
+          "lineNumberZeroBased": -1,
+          "columnNumberZeroBased": -1,
+          "selfSignedUs": 76,
+          "samples": 1
+        }
+      ]
+    }
+  },
+  "outsideSourceFinalAllIterations": {
+    "outsideSourceFinalControlRenderQualification": {
+      "samples": 9777,
+      "signedUs": 2054860,
+      "negativeCount": 1,
+      "negativeSignedUs": -1
+    },
+    "outsideGC": {
+      "samples": 18856,
+      "signedUs": 4491843,
+      "negativeCount": 0,
+      "negativeSignedUs": 0
+    }
+  },
+  "warmupExcludedOnlyFromMeasuredView": [
+    0,
+    1,
+    2
+  ],
+  "rawAndFullWindowUnchanged": true,
+  "qualification": false
+}

@@ -1,0 +1,93 @@
+{
+  "productCommit": "1b7048065c75ef3037bd697e1f029089d22a3159",
+  "prepCommit": "a44d1b40e9fa1e148df1a77e88d7be82eb271afd",
+  "environmentRevision": "231",
+  "rawGzipSHA256": "002b8fb6b2ba0a9932eccf596ed20795ef9f4bb60e43c6521a3e64e727c4dfc9",
+  "CPU": {
+    "path": "on-original-pipeline.cpuprofile.json.gz",
+    "temporaryRawPath": "/tmp/avoid008-410259-original-pipeline.cpuprofile.json",
+    "rawBytes": 6458117,
+    "rawSHA256": "ca7756fa3fb6e5cd86b7a7864e40f02efcec10701ca079f724926adc1cffab55",
+    "gzipBytes": 946359,
+    "gzipSHA256": "684397dfbb7865cc1e1bb1aae53ffb831936d1b57e7af870db5d4defc287fd6b"
+  },
+  "originalErrors": [
+    {
+      "message": "The expression evaluated to a falsy value:\n\n  assert(Number.isFinite(weight)&&weight>=0)\n",
+      "stack": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(Number.isFinite(weight)&&weight>=0)\n\n    at aggregate (/workspace/avoid008-final-c34/dev/avoidance/layouts-c-own-slot-original-pipeline-profile.cjs:23:77)\n    at stop (/workspace/avoid008-final-c34/dev/avoidance/layouts-c-own-slot-original-pipeline-profile.cjs:36:551)\n    at async /workspace/avoid008-final-c34/dev/avoidance/layouts-c-own-slot-original-pipeline-profile.cjs:39:85"
+    }
+  ],
+  "originalKernelExitCode": 1,
+  "savedPipelineChecks": {
+    "nineSourceFinalCalls": true,
+    "nineParts": true,
+    "threeWarmSixMeasured": true,
+    "nineInputHashes": true,
+    "projectAndNormalizedHash": true,
+    "all34IDs": true,
+    "actual80RecordReplay": true,
+    "actual80Observations": true,
+    "actual80ClocksAnd16Warm": true,
+    "countsAndCoverage": true,
+    "actualPipelineValid": true,
+    "pinnedFontCorpusQualified": true,
+    "wrapperRestored": true
+  },
+  "readOnlyNegativeDeltas": {
+    "negativeCount": 5,
+    "negativeSignedSumUs": -67,
+    "absoluteNegativeUncertaintyUs": 67,
+    "dropCount": 0,
+    "clampCount": 0
+  },
+  "ownedCleanup": {
+    "browserCloseAwaited": true,
+    "serverCloseAwaited": true
+  },
+  "inputArchivesVerified": 112,
+  "changedInputs": [],
+  "changedPackages": [],
+  "execution": {
+    "startedUTC": "2026-10-23T08:31:54Z",
+    "head": "a44d1b40e9fa1e148df1a77e88d7be82eb271afd",
+    "runnerPID": 410259,
+    "runnerStartTicks": "12352712",
+    "command": [
+      "node",
+      "dev/avoidance/layouts-c-own-slot-original-pipeline-profile.cjs",
+      "tasks/evidence/AVOID-008/performance/own-slot-original-pipeline-profile01"
+    ],
+    "parentPythonPID": 410254,
+    "kernelExitCode": 1,
+    "reaped": true,
+    "runnerGone": true,
+    "finishedUTC": "2026-10-23T08:33:07Z",
+    "diskAvailableBytes": 610021376
+  },
+  "liveJobs": {
+    "before": 0,
+    "after": 0
+  },
+  "zombies": {
+    "before": 1526,
+    "after": 1529
+  },
+  "diskAfterEvidenceBytes": 609923072,
+  "formalQualified": false,
+  "crossRevisionCausalComparison": false,
+  "readOnlyAnalysisFiles": [
+    {
+      "path": "signed-readonly-aggregate.json",
+      "sha256": "ae1ada3e9d101d5e813ace04abdbeceec6c76b1b9b1c6482a011259e3c30ac79"
+    },
+    {
+      "path": "iteration-ancestor-readonly-aggregate.json",
+      "sha256": "185b4c0eda04928b489d87b9b592263a39f51391055e818a250669bd371ea82b"
+    },
+    {
+      "path": "post-aggregate-readonly-verification.json",
+      "sha256": "879b24c1008295a1e257833fd238eac2db6354eea601b92ceb1e6e20127f3ecb"
+    }
+  ],
+  "diskAfterFinalEvidenceBytes": 609759232
+}

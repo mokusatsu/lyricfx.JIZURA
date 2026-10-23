@@ -1,0 +1,1289 @@
+{
+  "scope": "Read-only signed sample aggregation of one whole pipeline CPU raw. Raw negative deltas retained exactly; no drop/clamp/retry. Stack ancestry categories are not causal responsibility or exact CPU/wall time. No CPU percentages.",
+  "CPUrawSHA256": "ca7756fa3fb6e5cd86b7a7864e40f02efcec10701ca079f724926adc1cffab55",
+  "CPUgzipSHA256": "684397dfbb7865cc1e1bb1aae53ffb831936d1b57e7af870db5d4defc287fd6b",
+  "samples": 373600,
+  "signedDeltaSumUs": 68848164,
+  "negativeCount": 5,
+  "negativeSignedSumUs": -67,
+  "absoluteNegativeUncertaintyUs": 67,
+  "negativeSamples": [
+    {
+      "index": 47842,
+      "sampleID": 466,
+      "timeDeltaUs": -1
+    },
+    {
+      "index": 98003,
+      "sampleID": 3104,
+      "timeDeltaUs": -2
+    },
+    {
+      "index": 98243,
+      "sampleID": 3150,
+      "timeDeltaUs": -61
+    },
+    {
+      "index": 98410,
+      "sampleID": 3104,
+      "timeDeltaUs": -2
+    },
+    {
+      "index": 368286,
+      "sampleID": 12009,
+      "timeDeltaUs": -1
+    }
+  ],
+  "dropCount": 0,
+  "clampCount": 0,
+  "partitionByAncestor": {
+    "outsideControlIdleBackground": {
+      "samples": 3488,
+      "signedUs": 925242,
+      "negativeSamples": 0,
+      "negativeSignedUs": 0
+    },
+    "fixtureOtherControlOrQualification": {
+      "samples": 4685,
+      "signedUs": 849341,
+      "negativeSamples": 0,
+      "negativeSignedUs": 0
+    },
+    "profileSource": {
+      "samples": 23096,
+      "signedUs": 4233074,
+      "negativeSamples": 0,
+      "negativeSignedUs": 0
+    },
+    "outsideGC": {
+      "samples": 18856,
+      "signedUs": 4491843,
+      "negativeSamples": 0,
+      "negativeSignedUs": 0
+    },
+    "profileFinal": {
+      "samples": 321871,
+      "signedUs": 58068387,
+      "negativeSamples": 4,
+      "negativeSignedUs": -66
+    },
+    "renderFrameWithinFixture": {
+      "samples": 1604,
+      "signedUs": 280277,
+      "negativeSamples": 1,
+      "negativeSignedUs": -1
+    }
+  },
+  "GCByObservedAncestor": {
+    "outsideGC": {
+      "samples": 18856,
+      "signedUs": 4491843
+    }
+  },
+  "GCWarning": "GC samples outside source/final/frame ancestors are kept as outsideGC. Any observed ancestor is stack context only, not a causal memory/GC attribution; normal sampling uncertainty exceeds this explicit67us jitter bound.",
+  "topSelf": [
+    {
+      "functionName": "sourceStageEnvelopes",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12626,
+      "columnNumberZeroBased": 29,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 8701043,
+      "inclusiveSignedUs": 25072909,
+      "selfSamples": 48421
+    },
+    {
+      "functionName": "A.convexHull",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10588,
+      "columnNumberZeroBased": 13,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 7705744,
+      "inclusiveSignedUs": 14916358,
+      "selfSamples": 42910
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10588,
+      "columnNumberZeroBased": 55,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 5064531,
+      "inclusiveSignedUs": 5064531,
+      "selfSamples": 28157
+    },
+    {
+      "functionName": "(garbage collector)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfSignedUs": 4491843,
+      "inclusiveSignedUs": 4491843,
+      "selfSamples": 18856
+    },
+    {
+      "functionName": "trig",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12629,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 3801442,
+      "inclusiveSignedUs": 3801442,
+      "selfSamples": 21192
+    },
+    {
+      "functionName": "encode",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfSignedUs": 3314357,
+      "inclusiveSignedUs": 3314357,
+      "selfSamples": 18442
+    },
+    {
+      "functionName": "hull",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11196,
+      "columnNumberZeroBased": 13,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 2394873,
+      "inclusiveSignedUs": 4137515,
+      "selfSamples": 13271
+    },
+    {
+      "functionName": "cross",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10588,
+      "columnNumberZeroBased": 90,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 2158022,
+      "inclusiveSignedUs": 2158022,
+      "selfSamples": 11970
+    },
+    {
+      "functionName": "visit",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12244,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 1671968,
+      "inclusiveSignedUs": 1726032,
+      "selfSamples": 9371
+    },
+    {
+      "functionName": "sourceCandidate",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12660,
+      "columnNumberZeroBased": 24,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 1520623,
+      "inclusiveSignedUs": 32014812,
+      "selfSamples": 8499
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11196,
+      "columnNumberZeroBased": 55,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 1239218,
+      "inclusiveSignedUs": 1239218,
+      "selfSamples": 6855
+    },
+    {
+      "functionName": "J.composeLyricArea",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 5602,
+      "columnNumberZeroBased": 21,
+      "module": "src/08c_composition.js",
+      "selfSignedUs": 1200930,
+      "inclusiveSignedUs": 1491265,
+      "selfSamples": 6582
+    },
+    {
+      "functionName": "mul",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12629,
+      "columnNumberZeroBased": 219,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 1066554,
+      "inclusiveSignedUs": 1066554,
+      "selfSamples": 5986
+    },
+    {
+      "functionName": "visit",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12301,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 910267,
+      "inclusiveSignedUs": 4461998,
+      "selfSamples": 5189
+    },
+    {
+      "functionName": "readCompletedPayload",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12366,
+      "columnNumberZeroBased": 29,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 818667,
+      "inclusiveSignedUs": 1656898,
+      "selfSamples": 4672
+    },
+    {
+      "functionName": "utf8",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12295,
+      "columnNumberZeroBased": 109,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 796263,
+      "inclusiveSignedUs": 3961182,
+      "selfSamples": 4401
+    },
+    {
+      "functionName": "visit",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12341,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 753234,
+      "inclusiveSignedUs": 753234,
+      "selfSamples": 4133
+    },
+    {
+      "functionName": "(program)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfSignedUs": 735104,
+      "inclusiveSignedUs": 735104,
+      "selfSamples": 2481
+    },
+    {
+      "functionName": "solveBasicRaw",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11003,
+      "columnNumberZeroBased": 20,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 706279,
+      "inclusiveSignedUs": 1105484,
+      "selfSamples": 3874
+    },
+    {
+      "functionName": "payloadCompact",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12292,
+      "columnNumberZeroBased": 23,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 659994,
+      "inclusiveSignedUs": 5750754,
+      "selfSamples": 3694
+    },
+    {
+      "functionName": "jsonClone",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10908,
+      "columnNumberZeroBased": 16,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 587003,
+      "inclusiveSignedUs": 587003,
+      "selfSamples": 3245
+    },
+    {
+      "functionName": "finite",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10575,
+      "columnNumberZeroBased": 15,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 562646,
+      "inclusiveSignedUs": 562646,
+      "selfSamples": 3099
+    },
+    {
+      "functionName": "TextEncoder",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfSignedUs": 556985,
+      "inclusiveSignedUs": 556985,
+      "selfSamples": 3076
+    },
+    {
+      "functionName": "cameraEnvelope",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11261,
+      "columnNumberZeroBased": 23,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 543516,
+      "inclusiveSignedUs": 4682133,
+      "selfSamples": 2954
+    },
+    {
+      "functionName": "cross",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11196,
+      "columnNumberZeroBased": 90,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 507430,
+      "inclusiveSignedUs": 507430,
+      "selfSamples": 2830
+    },
+    {
+      "functionName": "A.solveBasic",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11040,
+      "columnNumberZeroBased": 13,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 434831,
+      "inclusiveSignedUs": 1557678,
+      "selfSamples": 2372
+    },
+    {
+      "functionName": "A.itemGeometry",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10644,
+      "columnNumberZeroBased": 17,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 418006,
+      "inclusiveSignedUs": 1721545,
+      "selfSamples": 2316
+    },
+    {
+      "functionName": "compileRepairMemo",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12352,
+      "columnNumberZeroBased": 26,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 401071,
+      "inclusiveSignedUs": 415060,
+      "selfSamples": 2236
+    },
+    {
+      "functionName": "push",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10743,
+      "columnNumberZeroBased": 13,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 395935,
+      "inclusiveSignedUs": 1246856,
+      "selfSamples": 2178
+    },
+    {
+      "functionName": "J.segments",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 4583,
+      "columnNumberZeroBased": 13,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 364742,
+      "inclusiveSignedUs": 366540,
+      "selfSamples": 1972
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10587,
+      "columnNumberZeroBased": 284,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 346740,
+      "inclusiveSignedUs": 816585,
+      "selfSamples": 1921
+    },
+    {
+      "functionName": "run",
+      "url": "http://127.0.0.1:45433/fixture.js",
+      "lineNumberZeroBased": 19,
+      "columnNumberZeroBased": 19,
+      "module": "dev/avoidance/layouts-c-perf-shadow-native-fixture.js",
+      "selfSignedUs": 330642,
+      "inclusiveSignedUs": 63431079,
+      "selfSamples": 1811
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 4842,
+      "columnNumberZeroBased": 18,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 316951,
+      "inclusiveSignedUs": 2009961,
+      "selfSamples": 1763
+    },
+    {
+      "functionName": "signature",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10900,
+      "columnNumberZeroBased": 16,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 249060,
+      "inclusiveSignedUs": 377545,
+      "selfSamples": 1360
+    },
+    {
+      "functionName": "payloadDecode",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12315,
+      "columnNumberZeroBased": 22,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 236687,
+      "inclusiveSignedUs": 372001,
+      "selfSamples": 1276
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12646,
+      "columnNumberZeroBased": 57,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 223606,
+      "inclusiveSignedUs": 2967704,
+      "selfSamples": 1260
+    },
+    {
+      "functionName": "validateTextState",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10643,
+      "columnNumberZeroBased": 24,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 222864,
+      "inclusiveSignedUs": 317135,
+      "selfSamples": 1242
+    },
+    {
+      "functionName": "novelty",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 5145,
+      "columnNumberZeroBased": 16,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 216358,
+      "inclusiveSignedUs": 216358,
+      "selfSamples": 1187
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12635,
+      "columnNumberZeroBased": 109,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 205754,
+      "inclusiveSignedUs": 205754,
+      "selfSamples": 1148
+    },
+    {
+      "functionName": "adv",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 1822,
+      "columnNumberZeroBased": 5,
+      "module": "src/02_fonts.js",
+      "selfSignedUs": 200504,
+      "inclusiveSignedUs": 221798,
+      "selfSamples": 1102
+    },
+    {
+      "functionName": "pickEnter",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 5174,
+      "columnNumberZeroBased": 18,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 193135,
+      "inclusiveSignedUs": 416408,
+      "selfSamples": 1050
+    },
+    {
+      "functionName": "wkey",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 4673,
+      "columnNumberZeroBased": 13,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 183255,
+      "inclusiveSignedUs": 183255,
+      "selfSamples": 1033
+    },
+    {
+      "functionName": "hash",
+      "url": "http://127.0.0.1:45433/fixture.js",
+      "lineNumberZeroBased": 4,
+      "columnNumberZeroBased": 67,
+      "module": "dev/avoidance/layouts-c-perf-shadow-native-fixture.js",
+      "selfSignedUs": 170845,
+      "inclusiveSignedUs": 269885,
+      "selfSamples": 945
+    },
+    {
+      "functionName": "mul",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13066,
+      "columnNumberZeroBased": 12,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 170134,
+      "inclusiveSignedUs": 170134,
+      "selfSamples": 934
+    },
+    {
+      "functionName": "arc",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfSignedUs": 168415,
+      "inclusiveSignedUs": 168415,
+      "selfSamples": 849
+    },
+    {
+      "functionName": "commandMatrix",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10752,
+      "columnNumberZeroBased": 145,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 167309,
+      "inclusiveSignedUs": 413816,
+      "selfSamples": 916
+    },
+    {
+      "functionName": "sweep",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13068,
+      "columnNumberZeroBased": 14,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 158393,
+      "inclusiveSignedUs": 1197505,
+      "selfSamples": 860
+    },
+    {
+      "functionName": "freeze",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10907,
+      "columnNumberZeroBased": 13,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 155938,
+      "inclusiveSignedUs": 155938,
+      "selfSamples": 875
+    },
+    {
+      "functionName": "recorder.<computed>",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10813,
+      "columnNumberZeroBased": 60,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 155084,
+      "inclusiveSignedUs": 1399531,
+      "selfSamples": 845
+    },
+    {
+      "functionName": "inkMetric",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10637,
+      "columnNumberZeroBased": 18,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 152967,
+      "inclusiveSignedUs": 218539,
+      "selfSamples": 835
+    },
+    {
+      "functionName": "pickExit",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 5192,
+      "columnNumberZeroBased": 17,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 146727,
+      "inclusiveSignedUs": 252574,
+      "selfSamples": 815
+    },
+    {
+      "functionName": "item",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10786,
+      "columnNumberZeroBased": 34,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 141632,
+      "inclusiveSignedUs": 2687253,
+      "selfSamples": 794
+    },
+    {
+      "functionName": "A.record",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10720,
+      "columnNumberZeroBased": 11,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 140686,
+      "inclusiveSignedUs": 7459488,
+      "selfSamples": 738
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 5224,
+      "columnNumberZeroBased": 37,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 138447,
+      "inclusiveSignedUs": 138447,
+      "selfSamples": 773
+    },
+    {
+      "functionName": "range",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12645,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 135187,
+      "inclusiveSignedUs": 149570,
+      "selfSamples": 740
+    },
+    {
+      "functionName": "pose",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13074,
+      "columnNumberZeroBased": 13,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 134006,
+      "inclusiveSignedUs": 156031,
+      "selfSamples": 716
+    },
+    {
+      "functionName": "f",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 1503,
+      "columnNumberZeroBased": 12,
+      "module": "src/01_util.js",
+      "selfSignedUs": 133682,
+      "inclusiveSignedUs": 133682,
+      "selfSamples": 733
+    },
+    {
+      "functionName": "A.finalizeLayoutsC",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12690,
+      "columnNumberZeroBased": 19,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 129824,
+      "inclusiveSignedUs": 46527853,
+      "selfSamples": 716
+    },
+    {
+      "functionName": "J.autoLyricArea",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 6824,
+      "columnNumberZeroBased": 18,
+      "module": "src/08e_lyric_features.js",
+      "selfSignedUs": 129497,
+      "inclusiveSignedUs": 1646603,
+      "selfSamples": 714
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10900,
+      "columnNumberZeroBased": 108,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 128485,
+      "inclusiveSignedUs": 128485,
+      "selfSamples": 726
+    }
+  ],
+  "topInclusive": [
+    {
+      "functionName": "(root)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfSignedUs": 0,
+      "inclusiveSignedUs": 68848164,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "run",
+      "url": "http://127.0.0.1:45433/fixture.js",
+      "lineNumberZeroBased": 19,
+      "columnNumberZeroBased": 19,
+      "module": "dev/avoidance/layouts-c-perf-shadow-native-fixture.js",
+      "selfSignedUs": 330642,
+      "inclusiveSignedUs": 63431079,
+      "selfSamples": 1811
+    },
+    {
+      "functionName": "profileFinal",
+      "url": "",
+      "lineNumberZeroBased": 0,
+      "columnNumberZeroBased": 353,
+      "module": null,
+      "selfSignedUs": 7137,
+      "inclusiveSignedUs": 58068387,
+      "selfSamples": 39
+    },
+    {
+      "functionName": "J.finalizePlacementPlan",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10911,
+      "columnNumberZeroBased": 26,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 27564,
+      "inclusiveSignedUs": 58061072,
+      "selfSamples": 145
+    },
+    {
+      "functionName": "A.finalizeLayoutsC",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12690,
+      "columnNumberZeroBased": 19,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 129824,
+      "inclusiveSignedUs": 46527853,
+      "selfSamples": 716
+    },
+    {
+      "functionName": "sourceCandidate",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12660,
+      "columnNumberZeroBased": 24,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 1520623,
+      "inclusiveSignedUs": 32014812,
+      "selfSamples": 8499
+    },
+    {
+      "functionName": "sourceStageEnvelopes",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12626,
+      "columnNumberZeroBased": 29,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 8701043,
+      "inclusiveSignedUs": 25072909,
+      "selfSamples": 48421
+    },
+    {
+      "functionName": "A.convexHull",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10588,
+      "columnNumberZeroBased": 13,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 7705744,
+      "inclusiveSignedUs": 14916358,
+      "selfSamples": 42910
+    },
+    {
+      "functionName": "J.placement.<computed>",
+      "url": "http://127.0.0.1:45433/fixture.js",
+      "lineNumberZeroBased": 25,
+      "columnNumberZeroBased": 144,
+      "module": "dev/avoidance/layouts-c-perf-shadow-native-fixture.js",
+      "selfSignedUs": 23904,
+      "inclusiveSignedUs": 7538368,
+      "selfSamples": 134
+    },
+    {
+      "functionName": "A.record",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10720,
+      "columnNumberZeroBased": 11,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 140686,
+      "inclusiveSignedUs": 7459488,
+      "selfSamples": 738
+    },
+    {
+      "functionName": "keepFinalCache",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12530,
+      "columnNumberZeroBased": 21,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 116295,
+      "inclusiveSignedUs": 7436263,
+      "selfSamples": 668
+    },
+    {
+      "functionName": "J.Renderer.drawCut",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 45789,
+      "columnNumberZeroBased": 37,
+      "module": "src/11w_custom_draw.js",
+      "selfSignedUs": 4398,
+      "inclusiveSignedUs": 6996795,
+      "selfSamples": 24
+    },
+    {
+      "functionName": "drawCut",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10443,
+      "columnNumberZeroBased": 9,
+      "module": "src/09_render.js",
+      "selfSignedUs": 6255,
+      "inclusiveSignedUs": 6993274,
+      "selfSamples": 38
+    },
+    {
+      "functionName": "def.render",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 33517,
+      "columnNumberZeroBased": 71,
+      "module": "src/11p_layoutsC.js",
+      "selfSignedUs": 99748,
+      "inclusiveSignedUs": 6986294,
+      "selfSamples": 542
+    },
+    {
+      "functionName": "finalize",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13293,
+      "columnNumberZeroBased": 17,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 37476,
+      "inclusiveSignedUs": 6160116,
+      "selfSamples": 209
+    },
+    {
+      "functionName": "payloadCompact",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12292,
+      "columnNumberZeroBased": 23,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 659994,
+      "inclusiveSignedUs": 5750754,
+      "selfSamples": 3694
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10588,
+      "columnNumberZeroBased": 55,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 5064531,
+      "inclusiveSignedUs": 5064531,
+      "selfSamples": 28157
+    },
+    {
+      "functionName": "cameraEnvelope",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11261,
+      "columnNumberZeroBased": 23,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 543516,
+      "inclusiveSignedUs": 4682133,
+      "selfSamples": 2954
+    },
+    {
+      "functionName": "(garbage collector)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfSignedUs": 4491843,
+      "inclusiveSignedUs": 4491843,
+      "selfSamples": 18856
+    },
+    {
+      "functionName": "visit",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12301,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 910267,
+      "inclusiveSignedUs": 4461998,
+      "selfSamples": 5189
+    },
+    {
+      "functionName": "J.plan",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 45930,
+      "columnNumberZeroBased": 25,
+      "module": "src/11wa_custom_effects.js",
+      "selfSignedUs": 181,
+      "inclusiveSignedUs": 4233074,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "profileSource",
+      "url": "",
+      "lineNumberZeroBased": 0,
+      "columnNumberZeroBased": 231,
+      "module": null,
+      "selfSignedUs": 0,
+      "inclusiveSignedUs": 4233074,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "J.plan",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10906,
+      "columnNumberZeroBased": 15,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 2066,
+      "inclusiveSignedUs": 4232893,
+      "selfSamples": 12
+    },
+    {
+      "functionName": "J.plan",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 8814,
+      "columnNumberZeroBased": 17,
+      "module": "src/08h_cut_details.js",
+      "selfSignedUs": 9520,
+      "inclusiveSignedUs": 4227091,
+      "selfSamples": 54
+    },
+    {
+      "functionName": "J.plan",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 4685,
+      "columnNumberZeroBased": 9,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 37983,
+      "inclusiveSignedUs": 4170867,
+      "selfSamples": 206
+    },
+    {
+      "functionName": "hull",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11196,
+      "columnNumberZeroBased": 13,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 2394873,
+      "inclusiveSignedUs": 4137515,
+      "selfSamples": 13271
+    },
+    {
+      "functionName": "utf8",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12295,
+      "columnNumberZeroBased": 109,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 796263,
+      "inclusiveSignedUs": 3961182,
+      "selfSamples": 4401
+    },
+    {
+      "functionName": "trig",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12629,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 3801442,
+      "inclusiveSignedUs": 3801442,
+      "selfSamples": 21192
+    },
+    {
+      "functionName": "childPath",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12299,
+      "columnNumberZeroBased": 73,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 105748,
+      "inclusiveSignedUs": 3386612,
+      "selfSamples": 605
+    },
+    {
+      "functionName": "encode",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfSignedUs": 3314357,
+      "inclusiveSignedUs": 3314357,
+      "selfSamples": 18442
+    },
+    {
+      "functionName": "cameraEnvelope",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12566,
+      "columnNumberZeroBased": 23,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 72672,
+      "inclusiveSignedUs": 3209638,
+      "selfSamples": 400
+    },
+    {
+      "functionName": "finalize",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13023,
+      "columnNumberZeroBased": 17,
+      "module": "src/09h_layoutsC_editorial.js",
+      "selfSignedUs": 23349,
+      "inclusiveSignedUs": 3032339,
+      "selfSamples": 133
+    },
+    {
+      "functionName": "sourceEntryEnvelopes",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12643,
+      "columnNumberZeroBased": 29,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 63254,
+      "inclusiveSignedUs": 3031511,
+      "selfSamples": 323
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12646,
+      "columnNumberZeroBased": 57,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 223606,
+      "inclusiveSignedUs": 2967704,
+      "selfSamples": 1260
+    },
+    {
+      "functionName": "J.drawItem",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 2251,
+      "columnNumberZeroBased": 13,
+      "module": "src/03_text.js",
+      "selfSignedUs": 27049,
+      "inclusiveSignedUs": 2737163,
+      "selfSamples": 154
+    },
+    {
+      "functionName": "item",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10786,
+      "columnNumberZeroBased": 34,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 141632,
+      "inclusiveSignedUs": 2687253,
+      "selfSamples": 794
+    },
+    {
+      "functionName": "finalize",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13575,
+      "columnNumberZeroBased": 17,
+      "module": "src/09j_layoutsC_japanese.js",
+      "selfSignedUs": 20236,
+      "inclusiveSignedUs": 2418425,
+      "selfSamples": 116
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 4783,
+      "columnNumberZeroBased": 23,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 56470,
+      "inclusiveSignedUs": 2248307,
+      "selfSamples": 310
+    },
+    {
+      "functionName": "env.draw",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10385,
+      "columnNumberZeroBased": 15,
+      "module": "src/09_render.js",
+      "selfSignedUs": 10092,
+      "inclusiveSignedUs": 2221896,
+      "selfSamples": 57
+    },
+    {
+      "functionName": "cross",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10588,
+      "columnNumberZeroBased": 90,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 2158022,
+      "inclusiveSignedUs": 2158022,
+      "selfSamples": 11970
+    },
+    {
+      "functionName": "record",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13121,
+      "columnNumberZeroBased": 15,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 2698,
+      "inclusiveSignedUs": 2151850,
+      "selfSamples": 15
+    },
+    {
+      "functionName": "record",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12567,
+      "columnNumberZeroBased": 15,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 3758,
+      "inclusiveSignedUs": 2112157,
+      "selfSamples": 21
+    },
+    {
+      "functionName": "readFinalCache",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12526,
+      "columnNumberZeroBased": 21,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 50886,
+      "inclusiveSignedUs": 2098470,
+      "selfSamples": 282
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 4842,
+      "columnNumberZeroBased": 18,
+      "module": "src/08_planner.js",
+      "selfSignedUs": 316951,
+      "inclusiveSignedUs": 2009961,
+      "selfSamples": 1763
+    },
+    {
+      "functionName": "bodies",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13141,
+      "columnNumberZeroBased": 15,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 60807,
+      "inclusiveSignedUs": 1906727,
+      "selfSamples": 339
+    },
+    {
+      "functionName": "render",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 36769,
+      "columnNumberZeroBased": 8,
+      "module": "src/11p_layoutsC.js",
+      "selfSignedUs": 35964,
+      "inclusiveSignedUs": 1872121,
+      "selfSamples": 169
+    },
+    {
+      "functionName": "prepare",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13014,
+      "columnNumberZeroBased": 16,
+      "module": "src/09h_layoutsC_editorial.js",
+      "selfSignedUs": 15975,
+      "inclusiveSignedUs": 1788932,
+      "selfSamples": 85
+    },
+    {
+      "functionName": "J.finishLyricPlan",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 6897,
+      "columnNumberZeroBased": 20,
+      "module": "src/08e_lyric_features.js",
+      "selfSignedUs": 25966,
+      "inclusiveSignedUs": 1777131,
+      "selfSamples": 141
+    },
+    {
+      "functionName": "cacheEncode",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12240,
+      "columnNumberZeroBased": 20,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 17602,
+      "inclusiveSignedUs": 1742936,
+      "selfSamples": 101
+    },
+    {
+      "functionName": "visit",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12244,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 1671968,
+      "inclusiveSignedUs": 1726032,
+      "selfSamples": 9371
+    },
+    {
+      "functionName": "A.itemGeometry",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 10644,
+      "columnNumberZeroBased": 17,
+      "module": "src/09a_placement.js",
+      "selfSignedUs": 418006,
+      "inclusiveSignedUs": 1721545,
+      "selfSamples": 2316
+    },
+    {
+      "functionName": "record",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12744,
+      "columnNumberZeroBased": 15,
+      "module": "src/09h_layoutsC_editorial.js",
+      "selfSignedUs": 1604,
+      "inclusiveSignedUs": 1664910,
+      "selfSamples": 9
+    },
+    {
+      "functionName": "readCompletedPayload",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 12366,
+      "columnNumberZeroBased": 29,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfSignedUs": 818667,
+      "inclusiveSignedUs": 1656898,
+      "selfSamples": 4672
+    },
+    {
+      "functionName": "J.autoLyricArea",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 6824,
+      "columnNumberZeroBased": 18,
+      "module": "src/08e_lyric_features.js",
+      "selfSignedUs": 129497,
+      "inclusiveSignedUs": 1646603,
+      "selfSamples": 714
+    },
+    {
+      "functionName": "A.solveBasic",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 11040,
+      "columnNumberZeroBased": 13,
+      "module": "src/09b_basic_placement.js",
+      "selfSignedUs": 434831,
+      "inclusiveSignedUs": 1557678,
+      "selfSamples": 2372
+    },
+    {
+      "functionName": "get",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13583,
+      "columnNumberZeroBased": 11,
+      "module": "src/09j_layoutsC_japanese.js",
+      "selfSignedUs": 15684,
+      "inclusiveSignedUs": 1535389,
+      "selfSamples": 85
+    },
+    {
+      "functionName": "offsetDomain",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13261,
+      "columnNumberZeroBased": 21,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 2819,
+      "inclusiveSignedUs": 1529877,
+      "selfSamples": 17
+    },
+    {
+      "functionName": "paperDomain",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13254,
+      "columnNumberZeroBased": 20,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 12354,
+      "inclusiveSignedUs": 1522586,
+      "selfSamples": 69
+    },
+    {
+      "functionName": "paperStages",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13244,
+      "columnNumberZeroBased": 20,
+      "module": "src/09i_layoutsC_objects.js",
+      "selfSignedUs": 36950,
+      "inclusiveSignedUs": 1508449,
+      "selfSamples": 202
+    },
+    {
+      "functionName": "candidate",
+      "url": "http://127.0.0.1:45433/",
+      "lineNumberZeroBased": 13412,
+      "columnNumberZeroBased": 18,
+      "module": "src/09j_layoutsC_japanese.js",
+      "selfSignedUs": 39346,
+      "inclusiveSignedUs": 1503378,
+      "selfSamples": 219
+    }
+  ],
+  "inclusiveWarning": "Overlapping ancestors; do not sum inclusive rows; recursive same-location counts once per sample."
+}
