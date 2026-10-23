@@ -14,5 +14,13 @@
       "state": "unknown"
     }
   },
-  "conclusion": "Local execution works; remote push did not run successfully. Configured network policy is not observed enforced readiness. No proxy/CA/TLS change or public result verification. Continue local implementation."
+  "conclusion": "Local execution works; remote push did not run successfully. Configured network policy is not observed enforced readiness. No proxy/CA/TLS change or public result verification. Continue local implementation.",
+  "followup": {
+    "operation": "git -c gc.auto=0 push origin work",
+    "sandboxPermissions": "with_additional_permissions network.enabled=true",
+    "transport": "Inherited proxy/CA/TLS retained",
+    "exitCode": 0,
+    "output": "To https://github.com/mokusatsu/lyricfx.JIZURA.git\n   7d3ced6..c40d0f0  work -> work",
+    "publicResultChecks": 0
+  }
 }
