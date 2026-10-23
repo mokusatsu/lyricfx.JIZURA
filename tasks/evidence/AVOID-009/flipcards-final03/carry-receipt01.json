@@ -1,0 +1,33 @@
+{
+  "sourceRoot": "/tmp/avoid009-flipcards-canonical01",
+  "sourceFreeze": "flipcards-final-freeze03.json",
+  "scope": "Two ordinary nonflip memo/cache carry regressions only; no formal performance or extra security test expansion. Product source remained frozen.",
+  "runs": [
+    {
+      "kind": "proof",
+      "raw": "/tmp/avoid009-flipcards-carry-proof01.json.gz",
+      "sha256": "c0a1574bb9e287403a5057e99a418a0f6386e348143c87b2c9c285258223fafd",
+      "bytes": 112317,
+      "startupPins": "/tmp/avoid009-flipcards-carry-proof01-snapshot/startup.json",
+      "exitCode": 0,
+      "runner": "dev/avoidance/layouts-d-proof-memo-test.cjs",
+      "testFixture": "Existing parent-provided proof-memo runner",
+      "warnings": []
+    },
+    {
+      "kind": "cache",
+      "raw": "/tmp/avoid009-flipcards-carry-cache01.json.gz",
+      "sha256": "77fb31d3b4751954f67517e6b567dc7c50585573d180713859a1be9900cee7f3",
+      "bytes": 9157,
+      "startupPins": "/tmp/avoid009-flipcards-carry-cache01-snapshot/startup.json",
+      "exitCode": 0,
+      "runner": "dev/avoidance/layouts-d-cache-test.cjs",
+      "testFixture": "Canonical1b0d901 wall registry variant",
+      "warnings": []
+    }
+  ],
+  "commands": [
+    "JIZURA_D_PROOF_REPORT=/tmp/avoid009-flipcards-carry-proof01.json JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-d-proof-memo-test.cjs",
+    "JIZURA_D_CACHE_REPORT=/tmp/avoid009-flipcards-carry-cache01.json JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-d-cache-test.cjs"
+  ]
+}

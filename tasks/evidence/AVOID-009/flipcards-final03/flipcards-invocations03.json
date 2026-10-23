@@ -1,0 +1,24 @@
+{
+  "workdir": "/tmp/avoid009-flipcards-canonical01",
+  "sourceFrozen": true,
+  "sourceChanges": [
+    "src/09a_placement.js",
+    "src/09p_layoutsD_flipCards.js",
+    "src/11p_layoutsD.js"
+  ],
+  "invocations": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 build.py",
+    "JIZURA_D_FLIPCARDS_REPORT=/tmp/avoid009-flipcards-final-focus04.json.gz JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-d-flipcards-focus-test.cjs",
+    "JIZURA_D_FLIPCARDS_MATRIX_REPORT=/tmp/avoid009-flipcards-final-matrix03.json.gz JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-d-flipcards-matrix-test.cjs",
+    "JIZURA_D_FLIPCARDS_EXTENDED_REPORT=/tmp/avoid009-flipcards-final-extended02.json.gz JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-d-flipcards-extended-test.cjs",
+    "JIZURA_D_FLIPCARDS_PARITY_REPORT=/tmp/avoid009-flipcards-final-parity02.json.gz JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-d-flipcards-parity-test.cjs"
+  ],
+  "networkScope": "Local127.0.0.1 only, browser external requests aborted; inherited proxy/CA unchanged",
+  "rawSchema": {
+    "focus": "spec,tr,diagnostics,observations(240frame renderer callbacks),records(216 direct selected entry/exit half\u00b1epsilon),peekRecords(108 literal table half\u00b1epsilon),pending(same exercise without bridge),pins,font. Each record contains finite event geometry/roles/owners/matrices and measurement/render errors.",
+    "matrix": "rows[spec,sourceUnchanged,diagnostics,tr,observations,errors,idempotent,fromOtherEqual,legacyEqual,internalClean],pins,browser,warnings,font. Full candidate attempts and analytic owner envelopes retained.",
+    "extended": "same rows plus controls[],explicit[] with complete trajectories,pixels[] with alpha1/conflict counts.",
+    "parity": "rows[spec,pixels(full-frameOFFSHA),nativeD[pass,t,measurementSupported,diagnostics,offSHA,onSHA,events],counts[measure,fit]],before(original source block same exercise),pins,font."
+  },
+  "historicalFailure": "focus01 native guarded attachment failure is preserved unchanged, pending bridge diagnostics remain in final focus04. Rejected guard-separation edit was never executed; alternative retains original guarded predicate."
+}

@@ -1,0 +1,96 @@
+reg('flipCards', {
+  name: 'カードめくり', tags: ['pop', 'graphic'], w: 0.8, treat: 'safe', ae: 'labels', fits: n => n >= 1 && n <= 14,
+  enterBias: { cut: 3, pop: 0.8, blur: 0.5, slice: 0.2, wipe: 0.2, stretch: 0.3, assemble: 0.2 },
+  plan(rng, cut, st) {
+    return {
+      font: rng.pick(fontsOf(st, ['display', 'serif'])), order: rng.pick(['ltr', 'ltr', 'random']), table: rng.chance(0.55), back: rng.pick(['accent', 'ink']),
+      peek: rng.chance(0.6), idx: rng.chance(0.7),
+    };
+  },
+  render(env) {
+    const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const port = isPort(env);
+    const rowsC = rowsOf(cut.text, port ? 4 : 7);
+    const cards = [];
+    rowsC.forEach((row, r) => row.forEach((ch, j) => { if (ch !== ' ') cards.push({ ch, r, j, cnt: row.length }); }));
+    const n = cards.length;
+    if (!n) return null;
+    const rowsL = rowsC.length, per = Math.max(...rowsC.map(r => r.length));
+    const extra = Pm.table ? 1 : 0;
+    const rows = rowsL + extra * 2, asp = 1.38, gap = 0.16;
+    const k = Math.min(W * 0.86 / (per + (per - 1) * gap), H * (Pm.table ? 0.86 : 0.7) / (rows * asp + (rows - 1) * gap), u * 0.26);
+    const cw = k, chh = k * asp, sx = k * (1 + gap), sy = chh + k * gap;
+    const out = tout(env);
+    const faceC = lightOf(sc), faceT = darkOf(sc);
+    const backC = [...(Pm.back === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.accent]), sc.accent2, sc.sub, darkOf(sc)].find(c => c && J.contrast(c, faceC) >= 1.6 && J.contrast(c, sc.bg) >= 1.25) || J.mix(faceC, darkOf(sc), 0.6);
+    const backL = J.mix(backC, onCol(sc, backC), 0.35);
+    const fd = J.clamp(cut.dur * 0.12, 0.22, 0.36), gapT = J.clamp(cut.dur * 0.34 / n, 0.04, 0.12);
+    const rank = cards.map((c, i) => i);
+    if (Pm.order === 'random') rank.sort((a, b) => J.r(s, a, 31) - J.r(s, b, 31));
+    const ord = new Array(n); rank.forEach((gi, q) => { ord[gi] = q; });
+    const lw = Math.max(1, k * 0.012), rr = k * 0.08;
+    const drawCard = (x, y, p, ch, isFace, key, alpha, lift) => {
+      // p: 0 face-down … 1 face-up; card rotates round its vertical axis
+      const ang = p * Math.PI, c = Math.cos(ang), sn = Math.sin(ang);
+      const w = cw * Math.max(0.02, Math.abs(c)), sc2 = 1 + 0.1 * sn * lift;
+      const hL = chh * sc2 * (1 + 0.1 * sn * (c > 0 ? 1 : -1)), hR = chh * sc2 * (1 - 0.1 * sn * (c > 0 ? 1 : -1));
+      const ws = w * sc2;
+      const pts = [[x - ws / 2, y - hL / 2], [x + ws / 2, y - hR / 2], [x + ws / 2, y + hR / 2], [x - ws / 2, y + hL / 2]];
+      const up = p >= 0.5;
+      // shadow
+      env.poly(pts.map(([a, b]) => [a + k * 0.05 * (1 + sn * 1.5), b + k * 0.07 * (1 + sn * 1.5)]), darkOf(sc), 0.25 * alpha, false);
+      if (up) {
+        env.poly(pts, faceC, alpha, gIn(env));
+        outline(env, pts, J.mix(faceC, faceT, 0.25), lw, alpha);
+      } else {
+        env.poly(pts, backC, alpha, gIn(env));
+        const ins = k * 0.09, iw = Math.max(0, ws - ins * 2 * Math.abs(c));
+        if (iw > 2) {
+          const ih = chh * sc2 - ins * 2;
+          env.rrect(x - iw / 2, y - ih / 2, iw, ih, rr * 0.6, null, alpha, false, backL, lw);
+          const d = Math.min(iw, ih) * 0.28;
+          env.poly([[x, y - d * 1.2], [x + d * Math.abs(c) * 0.9, y], [x, y + d * 1.2], [x - d * Math.abs(c) * 0.9, y]], backL, alpha, false);
+        }
+      }
+      return { up, c, sc2, hs: (hL + hR) / 2 / chh };
+    };
+    let bb = null;
+    // decoy table rows (face-down)
+    if (Pm.table) {
+      const ta = tin(env, 0, 0.4, E.outCubic) * (1 - E.inCubic(J.clamp((env.pOut - 0.4) / 0.6)));
+      for (const rr0 of [-1, rowsL]) {
+        for (let j = 0; j < per; j++) {
+          const x = W / 2 + (j - (per - 1) / 2) * sx, y = H / 2 + (rr0 - (rowsL - 1) / 2) * sy;
+          let p = 0, ch = null;
+          if (Pm.peek) {
+            // one decoy peeks now and then (flips up, shows a random glyph, flips back)
+            const T = 1.3, kk = Math.floor(env.ltb / T), f = env.ltb / T - kk;
+            if (kk >= 1 && J.h(s, kk, 5) % (per * 2) === j + (rr0 < 0 ? 0 : per)) { p = f < 0.25 ? E.inOutCubic(f / 0.25) : f < 0.6 ? 1 : 1 - E.inOutCubic((f - 0.6) / 0.25); ch = J.h(s, kk, 6) % 2 ? '？' : '★'; }
+          }
+          const r = drawCard(x, y, p, ch, false, 0, ta * 0.8, 1);
+          if (r.up && ch) env.draw({ text: ch, font: Pm.font, size: k * 0.46, x, y, sx: Math.abs(r.c) * r.sc2, sy: r.sc2, color: sc.accent === faceC ? faceT : sc.accent, alpha: ta * 0.8, ghost: false });
+        }
+      }
+    }
+    cards.forEach((cd, i) => {
+      const ch = cd.ch;
+      const x = W / 2 + (cd.j - (cd.cnt - 1) / 2) * sx, y = H / 2 + (cd.r - (rowsL - 1) / 2) * sy;
+      const ti = 0.12 + ord[i] * gapT;
+      let p = E.inOutCubic(J.clamp((lt - ti) / fd));
+      const po = J.clamp(env.pOut * 1.5 - ord[i] / Math.max(1, n) * 0.5);
+      if (po > 0) p = Math.min(p, 1 - E.inOutCubic(po));
+      const appear = tin(env, ord[i] * 0.02, 0.25, E.outCubic) * (1 - E.inCubic(J.clamp((env.pOut - 0.55) / 0.45)));
+      const r = drawCard(x, y, p, ch, true, i, appear, 1);
+      if (!r.up) return;
+      const m = [Math.abs(r.c) * r.sc2, 0, 0, r.sc2 * r.hs, x, y];
+      if (Pm.idx && Math.abs(r.c) > 0.3) {
+        const is = k * 0.15;
+        drawAffPlain(env, { text: ch, font: Pm.font, size: is, x: -cw * 0.34, y: -chh * 0.36, color: sc.accent, ghost: false }, m);
+        drawAffPlain(env, { text: ch, font: Pm.font, size: is, x: cw * 0.34, y: chh * 0.36, rot: 180, color: sc.accent, ghost: false }, m);
+      }
+      bb = UB(bb, drawAff(env, { text: ch, font: Pm.font, size: k * 0.6, x: 0, y: 0, color: faceT, noHold: plateHold(env), mi: miAt(env, ti + fd * 0.5) }, m));
+    });
+    const bw = per * sx, bh = rowsL * sy;
+    return bb || box(W / 2 - bw / 2, H / 2 - bh / 2, W / 2 + bw / 2, H / 2 + bh / 2);
+  },
+});

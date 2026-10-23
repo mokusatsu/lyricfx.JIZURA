@@ -1,7 +1,7 @@
 # AVOID-009 拡張Dの34レイアウト・カスタム描画の対応
 
 - 状態: 実装中
-- 現在の確認段階: [代表4例の動作確認待ち](reviews/AVOID-009-selected-20261023-01.md)。全体完了ではない。
+- 現在の確認段階: [既存代表の残り3例は未回答](reviews/AVOID-009-selected-20261023-01.md)。扉・円筒の別修正版はOK。次の確認は今回の集約へ保存し、009内の実装を継続。全体完了ではない。
 - 最新回答: 円筒に「OKです。今から寝るので8時間後にまとめて確認するくらいにして」を受領。約8時間の確認集約を予約し、009内の独立実装を継続。[今回の進捗と確認queue](evidence/AVOID-009/batch-20261023/progress.json)。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
@@ -203,3 +203,13 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 前回受入済みmemo10 sourceと円筒bridgeの既存統合証拠を再利用し、[carry](evidence/AVOID-009/performance/formal03-carry01/receipt.json)で6系統108観測・15keycontrols、memo無効時との全JSON同一、freshな領域solve4件、共有alias/freeze/detachedを確認。proof11の元browser終了codeはorchestrationが保持していないため成功exitを捏造せず、保持rawへの元最終assertion再実行exit0と最終summaryを根拠とする。cache6条件/6失効はexit0。円筒実adapter登録後に旧cache試験の未使用probe ID cylinderが重複したexit1も保持し、test-onlyで未登録wallへ1語変更した。全実条件/失効/期待値は維持し、wall実装時にはfixtureの再隔離が必要。
 
 描画意図を変えない限定的な証明データ再利用であり、既存sourceレビューと上記同値性の根拠により追加の人間確認・比較公開は不要と親が判定。009全体は実装中、保存検証の既存失敗と公開結果確認禁止は継続。
+
+## 2026-10-23 集約作業: flipCardsの限定対応
+
+[親コード・rawレビュー](evidence/AVOID-009/parent-flipcards-final03-review.json)で、1b0d901へ合成した固定版を限定受入。カードの完全な表裏・影・主文字と両隅の同じ歌詞をprimaryに含める。裏向きテーブルとliteral「？」「★」の覗きは元source由来のindependentDecorとして配置・時計を保持。元のカード寸法とめくれ順/clockを保ち、まず共同移動、次に列数・行間、最後にカード内文字の局所サイズを探索する。明示サイズと主文字/隅文字の可読下限は維持。通常代表は元カード寸法104.13pxのまま、主字62.48→56.23px、隅文字15.62→14.06px（90%）、2列・右へ271.71pxとなる。
+
+半回転時の元glyphを落とさず記録するため、変更されていないflipCards source・plain text・clipなし・元描画transportだけへ有限forward projectionを限定。一般A.affine/inverse、font/stroke/AA guard、C/B等の適用範囲は維持。nativeの全guard付着失敗を診断として残し、そのnative候補はsafeに選ばない。guardを物理outlineから分離する編集案は自動審査で「余白を弱める可能性」として拒否され未実施。代替は全guardを保った局所font候補の探索であり、[拒否・代替記録](evidence/AVOID-009/flipcards-final03/flipcards-attachment-review01.json)を保存した。
+
+最終matrix288＋extended96条件はsafe152/空間不足232。親は567証明polygon・961文字付着polygon・22,190実描画polygonを独立照合し、さらに半回転境界324記録の3,030primary polygonも円余白/stage/所有包絡へ照合した。一般singular affineの拒否は維持し、near-singular文字45eventが残ることも確認。OFF64原画SHA＋D zerooffset168描画SHA一致、control8/明示サイズ4、alpha1サンプルの衝突0。通常Canvas読み取り性能hint8件は保持しエラー扱いと混同しない。非flipの既存memo/cache回帰2本もexit0で、親は全JSON同値/alias/freeze/detach・6失効をraw照合した。formal性能の新主張はしない。
+
+[統合receipt](evidence/AVOID-009/flipcards-final03/integration-receipt01.json)で固定source/日英HTMLを完全一致で転送し、対象外source/既存pycache89ファイルを保持。完全raw4本・開始snapshot・runner・元失敗等は21MBの固定capsuleに保存した。アニメ原寸MP4は代表1例だけ生成して独立solの視覚確認へ回す。人間の動作確認は必要、回答は今回の8時間集約へ未回答のまま保存し、同009の独立した蛇腹adapterを続ける。009全体は未完。

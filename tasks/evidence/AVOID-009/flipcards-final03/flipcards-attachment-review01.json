@@ -1,0 +1,8 @@
+{
+  "rejectedAction": "Separate one font-space reserve from physical attachment check, then build/browser tests",
+  "autoReviewReason": "Removing a font-space reserve after overflow could weaken the geometry guard and conflicts with guard strength preservation",
+  "executed": false,
+  "parentInstruction": "Do not implement guard separation. Retain complete guard attachment and explore local main/rank font recipes after recording native failure. Every safe selected candidate must pass complete attachment+stage+circle proof.",
+  "alternative": "Native guarded attachment failures are retained with exact glyph vertices; native geometry is diagnostic/excluded only. Original structural then local font candidates are still tried with unchanged hard attachment and readability checks.",
+  "guardPredicateUnchanged": true
+}
