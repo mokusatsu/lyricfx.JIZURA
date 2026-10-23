@@ -259,3 +259,5 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 小matrixの通常12条件はsafe5/不足3/付着証明未確定4。2領域を含めsafe7区間、親は77連続証明polygon・432実polygon・80完全文字/1280guard頂点/640辺を独立照合。140時刻/recipe記録の912個別slotで元f/rawMi/visible/IDを一致確認した。維持4条件、表記サイズ維持、auto-area明示倍率1.1の37候補すべてfontScale1、数値域外2例、cacheと旗/蛇腹/円筒3画素・観測組も確認。旧失敗と歴史的pin不足は[復元receipt](evidence/AVOID-009/ribbon-final02/archive-storage02.json)へ明記し、未確認を合格にしない。
 
 [統合receipt](evidence/AVOID-009/ribbon-final02/integration-receipt01.json)の3sourceと再生成JA/ENを固定試験版へ完全一致させ、他91JSと既存dirty pycacheを保持。親のproduct commit待ちで媒体は未生成。次は通常円1280×720「風の先へ」の1比較だけを用意し、字体60%と短い帯の見え方を人間確認へ回す。人間OKではない。限定source受入は8/34 D ID、全リボン/全字体/正式性能/customは未完、009実装中・010以降未着手、公開結果確認0を維持する。
+
+リボン製品は`caddb6a`、可搬raw再計算入口は`5f6e771`へ保存しpush成功。新しい25.68MB完全packetもGit blobのみ/skip-worktreeで保全し、[復元receipt](evidence/AVOID-009/ribbon-final02/archive-storage02.json)から追跡できる。代表横1組のMP4を準備中。次の独立D演出[振り子の設計](evidence/AVOID-009/pendulum-plan01/PLAN01.md)を親が読み、元Ti/表示clock/全支柱所有を保つnative gateを隔離treeで開始した。回避adapterはまだ未承認・未統合、009実装中/010以降未着手を維持。
