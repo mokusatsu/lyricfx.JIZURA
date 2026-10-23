@@ -1,0 +1,39 @@
+{
+  "kind": "Local build reconstruction of old consumed HTML; no browser/network/public operations",
+  "rows": [
+    {
+      "run": "native-run02",
+      "output": "index.html",
+      "sha256": "863a8838f4689b08896138662c4319fd872417df86bd1eb007296ab4259589d6",
+      "reconstructedExactly": true,
+      "method": "Exact consumed src snapshots, unchanged pinned build/app/assets/vendor; PYTHONDONTWRITEBYTECODE=1 python3 build.py",
+      "manifest": "/tmp/avoid009-pendulum01/pendulum-native01/pre-run-run02.json"
+    },
+    {
+      "run": "native-run02",
+      "output": "en/index.html",
+      "sha256": "2da122f045173f26a35b19aa5f758da4b97199535e14737cdfff048218d1776e",
+      "reconstructedExactly": true,
+      "method": "Exact consumed src snapshots, unchanged pinned build/app/assets/vendor; PYTHONDONTWRITEBYTECODE=1 python3 build.py",
+      "manifest": "/tmp/avoid009-pendulum01/pendulum-native01/pre-run-run02.json"
+    },
+    {
+      "run": "physical-fail01",
+      "output": "index.html",
+      "sha256": "c55736149f6e17fec57fe17d5b61a86d23b607416d75be2eca3a386dcbfe9a75",
+      "reconstructedExactly": true,
+      "method": "Exact consumed src snapshots, unchanged pinned build/app/assets/vendor; PYTHONDONTWRITEBYTECODE=1 python3 build.py",
+      "manifest": "/tmp/avoid009-pendulum01/pendulum-physical01/pre-run-gate01.json"
+    },
+    {
+      "run": "physical-fail01",
+      "output": "en/index.html",
+      "sha256": "190c35c61492f8601220c955634afdb1f3ac9a00d880456d854c88480dbc7a25",
+      "reconstructedExactly": true,
+      "method": "Exact consumed src snapshots, unchanged pinned build/app/assets/vendor; PYTHONDONTWRITEBYTECODE=1 python3 build.py",
+      "manifest": "/tmp/avoid009-pendulum01/pendulum-physical01/pre-run-gate01.json"
+    }
+  ],
+  "baseGitVerification": "pending parent independent mapping; unchanged current build/app/assets/vendor bytes matched pre-run manifest",
+  "oldHTMLNeedNotDuplicateInThinPacket": true
+}
