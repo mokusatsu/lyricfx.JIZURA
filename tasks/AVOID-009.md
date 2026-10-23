@@ -229,3 +229,5 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 通常円の横代表は全文の字体サイズ106.92pxを保持し、panel137.7×165.24、自然境界で2帯、右へ286.01px。縦代表も字体サイズを保ち、panel145.8×174.96、2帯/4表紙、下へ233.63px。局所MP4で形・折り・読み順を独立solへ確認してから必要な例だけ公開し、人間回答は集約queueへ残す。次の旗は読取設計段階、009全体は未完。
 
 旗は[source計画](evidence/AVOID-009/flag-plan01/PLAN02.md)と[親の設計判断](evidence/AVOID-009/flag-plan01/parent-design01.json)に基づき80f046dから隔離実装を許可。元sourceには負uのpow差分による非有限値、1.2Hの支柱、布の非矩形clipという制約がある。OFFはそのまま保持し、Dのみの有限端点差分・完全primaryの物理支柱/昇降距離・source限定の布clipを実装する。元の文字出現predicate/mi/stagger時計は変えず、実際に存在するentry/furlのはみ出しもglyph全体の円/stage証明に含める。fullrevealでは全guardの布内付着を必要とする。旗の回避成功/性能/視覚承認はまだない。
+
+蛇腹の横/縦2代表のSites公開操作はsucceededを返した。[比較・確認点](reviews/AVOID-009-accordion-selected-20261024-01.md)を今回の未回答queueへ保存。公開結果確認やデプロイpollingは0。縦の左列先行の読み方は人間判断へ残し、承認済みにはしない。
