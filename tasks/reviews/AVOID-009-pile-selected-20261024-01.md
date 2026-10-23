@@ -11,3 +11,8 @@
 親は画像/動画を閲覧せず、全240変更後コマ720観測・35978実polygonの円/stage、32711実heap対応、元時計と字号、ffprobe/入力画像hashを独立照合。変更前は観測wrapperを挟まない元の描画。変更前の時計記録は期待モデルであり実観測とは区別する。最初の撮影用proxyがfillを扱えず停止した失敗も保存した。
 
 [媒体保存と生結果](../evidence/AVOID-009/pile-media02/preservation-receipt02.json)。009全体、全字体/全モード、正式性能、017のUI有効化は未完。AVOID-010以降は未着手。既存12確認例の回答も未受領。
+
+
+## 2026-10-24 利用者の動作確認回答
+
+最新回答: MINOR_REVISION_REQUESTED。Overallpilelooksverygood/accepted exceptinitialmoundvisibilityandlyricfallmuststartoffscreenlikenative。朝のまとめをすべて確認し、指定3対象以外はOKとの明示回答。従来の未回答記述は当時の履歴として保持する。新しい版へ承認は自動転用しない。

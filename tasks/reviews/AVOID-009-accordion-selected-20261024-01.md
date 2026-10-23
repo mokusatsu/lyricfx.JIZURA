@@ -19,3 +19,8 @@
 別コンテキストのgpt-6.1-sol/mediumは12key PNGとMP4から追加抽出した6frameを照合し、折り・文字付着・陰影・表紙を限定受入。実時間再生、全条件の視覚成功、009全体完了や人間の動作確認OKは主張しない。
 
 [公開操作戻り値](../evidence/AVOID-009/accordion-media04/publication.json)を保存。Sites source commitはe844ccac1b3e52dbe2fc5213bfa1511751e92e9a。公開接続・動画再生・デプロイpollingは0。
+
+
+## 2026-10-24 利用者の動作確認回答
+
+最新回答: HUMAN_APPROVED。Userreviewedallmorningexamples andsaidallotherthanthreeexceptionsOK。朝のまとめをすべて確認し、指定3対象以外はOKとの明示回答。従来の未回答記述は当時の履歴として保持する。新しい版へ承認は自動転用しない。
