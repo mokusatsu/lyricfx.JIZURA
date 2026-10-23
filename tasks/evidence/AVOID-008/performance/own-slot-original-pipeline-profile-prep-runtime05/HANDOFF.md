@@ -1,0 +1,3 @@
+# Runtime05 actual231 pin update only
+
+Actualenvironment_status independently retrieved by implementation child:231/231currenttrue/running/connected/unrestrictedenforced. Fulltoolraw plusselectedenvironment saved asruntime05; oldruntime04/prepac1a3f6 retained. Helperchanges exactly2runtimepath occurrences04→05 and1specassert230→231. Reversing3literals reconstructs oldhelperbytes94299390066e01ad62fde727038f13450120e04f09b344fb41af01a775c3da27. No workload/fixture/runner/product/wrapper edits, no newHTML/snapshot copies. Original600s/630s/reserve250MiB/callthrough9+9/80render unchanged. Browser/CDP0; parentnewgate andseparateONEauthorization required. Prior230formalFAILs retained and no causal timing comparison across environmentrevision.
