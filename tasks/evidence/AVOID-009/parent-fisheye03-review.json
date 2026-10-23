@@ -1,0 +1,77 @@
+{
+  "scope": "Fisheye03 independent archived source/raw arithmetic review; geometry support provisional pending raster and representative controls",
+  "rawSHA256": "36c8cb094d0e17aeb19c3eba9bc22e9cecc2cf3584d568440ab9e51323ea5554",
+  "archivePins": [
+    {
+      "path": "src/09a_placement.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/09g_layoutsC_placement.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/09k_layoutsD_placement.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/09l_layoutsD_fisheye.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/11p_layoutsD.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/11za_layoutsD_transport.js",
+      "archiveExact": true
+    },
+    {
+      "path": "index.html",
+      "archiveExact": true
+    },
+    {
+      "path": "en/index.html",
+      "archiveExact": true
+    },
+    {
+      "path": "dev/avoidance/layouts-a-fixture.js",
+      "archiveExact": true
+    },
+    {
+      "path": "dev/avoidance/layouts-d-fisheye-test.cjs",
+      "archiveExact": true
+    }
+  ],
+  "counts": {
+    "rows": 72,
+    "safeRows": 20,
+    "insufficientRows": 52,
+    "observations": 576,
+    "safeCertificatePolygons": 84,
+    "safeSamplePolygons": 696
+  },
+  "testedCenters": [
+    [
+      0.5,
+      0.5
+    ]
+  ],
+  "safeAtRadius02": 8,
+  "issues": [],
+  "sourceReview": {
+    "fixedCSSAndPositiveUniformCanvasScale": true,
+    "maxHintedCSSSizeAssumptionRemoved": true,
+    "VoronoiGaussianUpperEnclosure": "Conservative per-cell lower bound on distance, signed positive prefix/suffix sums; native first-index tie/zero lambda to be made explicit.",
+    "lensShapeDirectionalExtents": "Conservative directional handle/rim rectangle plus camera/raster guards retained."
+  },
+  "limits": [
+    "Contract initialcenter(.5,.42) notyettested; allpositions here(.5,.5).",
+    "No fresh parentbrowser/raster/fontcmap/visual/performancereview yet.",
+    "Onlyfisheye; allother33D proofpending.",
+    "ON fixedCSS model may differ in hinting/AA from old variableCSS and needs visualreview."
+  ],
+  "acceptedForContinuedInternalWork": true,
+  "publicChecks": 0,
+  "parentImageVideoViews": 0
+}
