@@ -233,3 +233,7 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 蛇腹の横/縦2代表のSites公開操作はsucceededを返した。[比較・確認点](reviews/AVOID-009-accordion-selected-20261024-01.md)を今回の未回答queueへ保存。公開結果確認やデプロイpollingは0。縦の左列先行の読み方は人間判断へ残し、承認済みにはしない。
 
 旗のfirst09r草案の親レビューで、再配置用uを出現predicate/miへ流用して元clockが変わる点、glyph半径ledgerを実際の布からのはみ出し証明と混同していた点を指摘。元glyph catalogのuでgate/miを固定する修正を担当へ返した。unfurlは位相別はみ出し証明ができるまでtyped未対応、まずraiseの厳格付着証明を進める。wave候補のsource反映と実際の布幅/高さ候補も完成前提。旗の回避認証はまだない。
+
+## 2026-10-24 03:00日本時間の再開
+
+予約トリガーから再開。work/b1184d2、既存pycache・進捗設定変更・未追跡/skip-worktree証拠を保持。実行中担当0を確認し、同じ隔離旗試作をgpt-6.1-sol/mediumのavoid009_flag_resumeへ引き継いだ。[親の独立raw照合](evidence/AVOID-009/flag-wip/parent-raise-review03.json)は46入力pin、444文字clock、96移動/camera/scale描画組、OFF10コマの画素と計測呼出、有限D参照30描画組を確認。raise7条件中safe4/不足2/unfurl未対応1、証明polygon19/実polygon1150を独立計算した。通常円の4文字は128候補で不足のまま、旗の本体統合・全対応・人間承認はない。凍結sourceの限定32条件matrixを継続し、公開結果確認は0。
