@@ -267,3 +267,7 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 振り子の物理draftでは、周期の元値と実長を分離し、字体変更後の球/札の実寸、必要な最短糸長、後続物体による文字隠れを親が指摘して修正中。gate04は自動承認審査がlocalhost HTTPを公開HTTP禁止に含めて実行前拒否したため未実施。親は既存ローカル検証許可とloopback限定/外部要求遮断を独立確認し、[操作許可照合](evidence/AVOID-009/pendulum-native01/local-validation-authorization01.md)を保存した。迂回せず固定版後の通常再申請を準備。次のpileは[読み取り専用計画](evidence/AVOID-009/pile-plan01/README.md)のみで実装未許可、009/010の状態は変更しない。
 
 振り子gate05は既存ローカル検証許可とloopback限定コードを親が確認後、同じ通常権限の直接実行が認められexit0。gate04拒否は実行前/未実施の履歴として残す。親は[初期物理gate](evidence/AVOID-009/pendulum-gate05/parent-pendulum-gate05.json)の10証明/291実polygon、完全な球内文字8組、表示後の12ペア分離、元周期192組、実描画とcatalog112組、OFF10コマを独立照合。通常円のfan4文字が成立したが、字体40%等の人間判断とpaper/chunksの証明は未受入、本体未統合。段階APIの不足時は明示typed除外エラーを親受入し、017有効化時のeligibility事前判定/preview-export診断処理を必須引継ぎにする。既存UIが自動除外済みとは主張しない。
+
+## 振り子の限定ソース受入
+
+[親レビューと正確な取り込み](evidence/AVOID-009/pendulum-final01/HANDOFF01.md)。cradle/fan/札1個の限定契約を受入、D34中9IDの限定ソース受入であり全体完了ではない。12通常条件は8成立・4不足。親が10safe区間41証明polygon/647実polygon、255実item対応、完全字形・支持体・入場の限定ledgerを独立照合。最終nativeは12OFF/24元描画/24replay成功。limited03の元exit1とrevision正規化の限定範囲、6非影響frame対+1直接probeを保持し、ブラウザ全試験成功とは扱わない。明示サイズ・除外診断・017のUI有効化条件を保持。代表動画と人間確認は未実施。009実装中、010以降未着手。

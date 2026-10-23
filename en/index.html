@@ -14373,6 +14373,97 @@ function render({renderer,env,trajectory}){
 A.registerLayoutsDAdapter('ribbon',{id:'ribbon-native-chord-v1',finalize,render});
 })();
 
+/* Pendulum: complete analytic source supports. Growth/drop intervals and
+   angular extrema cover every real clock; observations never admit a plan. */
+(() => {
+'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],EPS=1e-7,rect=(a,b,c,d)=>[[a,b],[c,b],[c,d],[a,d]],fail=(code,message)=>{throw Object.assign(Error(message),{code});},norm=s=>String(s).replace(/\s/g,'');
+function trig(a,b,lo,hi){const ts=[lo,hi],r=Math.atan2(b,a);for(let k=Math.ceil((lo-r)/Math.PI);k<=Math.floor((hi-r)/Math.PI);k++)ts.push(r+k*Math.PI);const v=ts.map(t=>a*Math.cos(t)+b*Math.sin(t));return [Math.min(...v)-EPS,Math.max(...v)+EPS];}
+const add=(a,b)=>[a[0]+b[0]-EPS,a[1]+b[1]+EPS],times=(a,b)=>{const v=[a[0]*b[0],a[0]*b[1],a[1]*b[0],a[1]*b[1]];return [Math.min(...v)-EPS,Math.max(...v)+EPS];};
+function inventory(renderer,plan,cut){
+ const ctx=A.measurementContext();ctx.reset();const t=cut.start+Math.max(1,cut.dur/2),env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t,realTime:t,lt:t-cut.start,ltb:t-cut.start,step:0,scale:1,allowFilter:false});env.pOut=0;
+ const p=A.record(renderer,env),g=p.nativeDGeometry;if(!p.measurementSupported||g?.kind!=='pendulum'||!g.items?.length)fail('PENDULUM_SOURCE_CATALOG','Complete unchanged source pendulum catalog required: '+JSON.stringify(p.diagnostics));
+ if(g.k<1||g.k>16||g.items.length!==g.k||g.items.some((q,i)=>q.index!==i||q.k!==g.k||q.glyphs.map(v=>v.ch).join('')!==q.text)||norm(g.items.map(q=>q.text).join(''))!==norm(cut.text))fail('PENDULUM_SOURCE_COVERAGE','Original ordered item/glyph catalog must cover every source lyric');
+ if(p.events.some(e=>e.role!=='primary'||!/^pendulum\.(support|bob\.\d+)$/.test(e.owner)))fail('PENDULUM_SOURCE_OWNER','Every support/string/body/spark/glyph must remain primary');
+ return {g,env,program:p};
+}
+function angles(g,q){if(g.mode==='cradle'){const a=g.amp*J.DEG*(.6+.5*g.motion);return q.index===0&&g.n===1?[-a,a]:q.index===0?[-a,0]:q.index===g.n-1?[0,a]:[0,0];}const a=(g.mode==='fan'?7:5)*J.DEG*(.5+.7*g.motion),exit=30*J.DEG*(.5+q.index/g.k);return g.side===1?[-a,a+exit]:[-a-exit,a];}
+function localInk(font,text,size,mode){const geo=A.itemGeometry({text,font,size,x:0,y:0,rot:0,...(mode==='cradle'?{}:{track:.03})},ID,{pass:'main',scale:1});if(!geo.inkPolygons.length)fail('PENDULUM_UNMEASURED_INK','Complete actual source font bounds required');return geo.inkPolygons.flat();}
+function physicalAttachment(g,q,ink,theta,guard){
+ const failures=[],points=ink.flatMap(p=>[[-guard,-guard],[-guard,guard],[guard,-guard],[guard,guard]].map(d=>[p[0]+d[0],p[1]+d[1]]));
+ // The raster square is already enlarged by sqrt2 before this local test:
+ // it encloses every inverse body/camera rotation, at render scale>=.1.
+ if(g.mode!=='chunks'){const r=g.mode==='cradle'?.985*g.r:g.fanRadius,maxR=Math.max(...ink.map(p=>Math.hypot(...p)))+guard;if(maxR>r+EPS)failures.push({kind:'disc-guard',maxRadius:maxR,radius:r});return {complete:!failures.length,radius:r,maxRadius:maxR,guard,ink,theta,failures};}
+ const hw=g.plateW[q.index]/2,hh=g.paperHeights[q.index]/2,rho=2*hh*.14,bx=trig(0,-.06*g.size,...theta),by=trig(.06*g.size,0,...theta),holeY=-hh+2*hh*.12,holeR=Math.max(2,g.size*.06),margins=[];
+ for(const p of points)for(const x of [p[0]+bx[0],p[0]+bx[1]])for(const y of [p[1]+by[0],p[1]+by[1]]){const dx=Math.max(Math.abs(x)-(hw-rho),0),dy=Math.max(Math.abs(y)-(hh-rho),0),margin=rho-Math.hypot(dx,dy);margins.push(margin);if(margin< -EPS)failures.push({kind:'rounded-paper-guard',point:[x,y],margin});if(Math.hypot(x,y-holeY)<=holeR)failures.push({kind:'paper-hole-guard',point:[x,y]});}
+ // A vertical separation proves complete convex glyph interiors avoid the
+ // circular hole; checking vertices outside a hole alone would not prove it.
+ const inkMinY=Math.min(...points.map(p=>p[1]))+by[0],holeGap=inkMinY-(holeY+holeR);if(holeGap<=0)failures.push({kind:'paper-hole-separation',holeGap});
+ return {complete:!failures.length,hw,hh,rho,baselineX:bx,baselineY:by,guard,ink,theta,holeY,holeR,holeGap,minRoundedMargin:Math.min(...margins),failures};
+}
+function proof(renderer,plan,cut,nativeReference=null){
+ const {g}=inventory(renderer,plan,cut),M=Math.min(plan.W,plan.H),guard=20*Math.SQRT2/(cut.contentScale??1),camera=p=>A.cameraEnvelope([p],{...plan,style:cut.effectStyle||plan.style,fx:cut.effectFx||plan.fx},cut,20),units=[],attachments=[],support=[],boxes=new Map();
+ const put=(owner,x,y,pad=0)=>{const b=[x[0]-pad-EPS,y[0]-pad-EPS,x[1]+pad+EPS,y[1]+pad+EPS],old=boxes.get(owner);boxes.set(owner,old?[Math.min(old[0],b[0]),Math.min(old[1],b[1]),Math.max(old[2],b[2]),Math.max(old[3],b[3])]:b);};
+ if(g.mode==='cradle'){
+  const frameLW=Math.max(2,M*.006),footR=g.r*.1,footX0=g.cx-g.fw-g.r*.7,footX1=g.cx+g.fw+g.r*.7,footY1=g.fb+g.r*.28;
+  put('pendulum.support',[g.cx-g.fw,g.cx+g.fw],[g.py,g.fb],frameLW*1.1);put('pendulum.support',[footX0,footX1],[g.fb,footY1],footR*(1/Math.cos(Math.PI/32)-1));
+ }else{const pr=Math.max(3,M*.008);put('pendulum.support',[g.px-pr/Math.cos(Math.PI/64),g.px+pr/Math.cos(Math.PI/64)],[g.py-pr/Math.cos(Math.PI/64),g.py+pr/Math.cos(Math.PI/64)]);put('pendulum.support',[g.px-M*.06,g.px+M*.06],[g.py-Math.max(2,M*.003),g.py-Math.max(2,M*.003)+Math.max(3,M*.005)]);}
+ for(const q of g.items){
+  const owner='pendulum.bob.'+q.index,theta=angles(g,q),travel=g.mode==='cradle'?[0,g.L*(1+4*1.4**3/(27*(1+1.4)**2))]:[0,q.nativeLength*(cut.layoutDRecipe?.lengthScale??1)],sin=trig(0,1,...theta),cos=trig(1,0,...theta),cx=add([q.px,q.px],times(travel,sin)),cy=add([q.py,q.py],times(travel,cos)),ink=localInk(g.font,q.text,q.size,g.mode),attachment=physicalAttachment(g,q,ink,theta,guard);attachments.push({index:q.index,text:q.text,...attachment});
+  const xx=ink.map(p=>trig(p[0],p[1],...theta)),yy=ink.map(p=>trig(p[1],-p[0],...theta));put(owner,add(cx,[Math.min(...xx.map(v=>v[0])),Math.max(...xx.map(v=>v[1]))]),add(add(cy,g.mode==='chunks'?[.06*g.size,.06*g.size]:[0,0]),[Math.min(...yy.map(v=>v[0])),Math.max(...yy.map(v=>v[1]))]));
+  if(g.mode==='cradle'){
+   const r=g.r,round=(.985*r+g.lw/2)/Math.cos(Math.PI/64);put(owner,[cx[0]-round,cx[1]+round],[cy[0]-round,cy[1]+round]);const high=r*.2/Math.cos(Math.PI/64);put(owner,[cx[0]-.35*r-high,cx[1]-.35*r+high],[cy[0]-.38*r-high,cy[1]-.38*r+high]);put(owner,[Math.min(q.px-.85*r,cx[0]),Math.max(q.px+.85*r,cx[1])],[Math.min(g.py,cy[0]),Math.max(g.py,cy[1])],g.lw*1.1);
+   if(q.index===0||q.index===g.n-1){const sign=q.index===0?1:-1,sparkXs=[q.px+sign*r*1.2,q.px+sign*r*1.55];put(owner,[Math.min(...sparkXs),Math.max(...sparkXs)],[cy[0]-.9*r,cy[1]+.9*r],Math.max(1.5,r*.05)*1.1);}
+   const frameMargin=g.fw-Math.abs(q.px-g.cx)-.85*r,frameBottom=g.fb-(g.py+travel[1]+r);support.push({index:q.index,kind:'two-string-cradle',frameMargin,frameBottom,stringEndRadius:0,bobRadius:.985*r,minimumRestLength:1.5*r,restLength:g.L,complete:frameMargin>=0&&frameBottom>=0&&g.L>=1.5*r});
+  }else{
+   const dy=g.stringOffsets[q.index],minimumRestLength=g.mode==='fan'?g.fanRadius+Math.max(3,M*.008)+Math.max(2,g.size*.15):Math.hypot(g.plateW[q.index]/2,g.paperHeights[q.index]/2)+Math.max(3,M*.008)+Math.max(2,g.size*.15),restLength=q.nativeLength*(cut.layoutDRecipe?.lengthScale??1);put(owner,[Math.min(g.px,cx[0]),Math.max(g.px,cx[1])],[Math.min(g.py,cy[0]-dy),Math.max(g.py,cy[1]-dy)],g.lw*1.1);
+   if(g.mode==='fan'){const r=g.fanRadius/Math.cos(Math.PI/64);put(owner,[cx[0]-r,cx[1]+r],[cy[0]-r,cy[1]+r]);support.push({index:q.index,kind:'common-pivot-disc',tipDistance:dy,radius:g.fanRadius,minimumRestLength,restLength,complete:dy<=g.fanRadius&&restLength>=minimumRestLength});}
+   else{const hw=g.plateW[q.index]/2,hh=g.paperHeights[q.index]/2,rho=hh*.28,extra=rho*(1/Math.cos(Math.PI/32)-1),corners=[[-hw-extra,-hh-extra],[hw+extra,-hh-extra],[hw+extra,hh+extra],[-hw-extra,hh+extra]],xs=corners.map(p=>trig(p[0],p[1],...theta)),ys=corners.map(p=>trig(p[1],-p[0],...theta));put(owner,add(cx,[Math.min(...xs.map(v=>v[0])),Math.max(...xs.map(v=>v[1]))]),add(cy,[Math.min(...ys.map(v=>v[0])),Math.max(...ys.map(v=>v[1]))]));
+    const holeR=Math.max(2,g.size*.06)/Math.cos(Math.PI/64),holeY=-hh+hh*.24,hx=trig(0,holeY,...theta),hy=trig(holeY,0,...theta);put(owner,add(cx,[hx[0]-holeR,hx[1]+holeR]),add(cy,[hy[0]-holeR,hy[1]+holeR]));
+    const sx=trig(0,dy,...theta),sy=trig(-dy,0,...theta),tipCorners=[[sx[0],sy[0]],[sx[1],sy[0]],[sx[1],sy[1]],[sx[0],sy[1]]],margins=tipCorners.map(([x,y])=>rho-Math.hypot(Math.max(Math.abs(x)-(hw-rho),0),Math.max(Math.abs(y)-(hh-rho),0)));support.push({index:q.index,kind:'common-pivot-rounded-paper',screenOffset:dy,tipX:sx,tipY:sy,minMargin:Math.min(...margins),minimumRestLength,restLength,complete:margins.every(v=>v>=-EPS)&&restLength>=minimumRestLength});
+   }
+  }
+ }
+ for(const [owner,b]of boxes){if(b.some(v=>!Number.isFinite(v)||Math.abs(v)>1e6))fail('PENDULUM_NUMERICAL_DOMAIN','Finite bounded source support within1e6 pixels required');}for(const [owner,b]of boxes)units.push({owner,sourceBounds:b,envelopes:[camera(rect(...b))]});
+ const native=nativeReference||g,lambda=cut.layoutDRecipe?.lengthScale??1,shapeGuard=10*Math.SQRT2/(cut.contentScale??1),bodyRadius=(v,i)=>v.mode==='cradle'?.985*v.r+v.lw/2+shapeGuard:v.mode==='fan'?v.fanRadius+shapeGuard:Math.hypot(v.plateW[i]/2,v.paperHeights[i]/2)+shapeGuard,glyphRadius=(v,i)=>Math.max(...localInk(v.font,v.items[i].text,v.items[i].size,v.mode).map(p=>Math.hypot(...p)))+(v.mode==='chunks'?.06*v.size:0)+guard,pairs=[];
+ for(let i=0;i<g.k;i++)for(let j=i+1;j<g.k;j++){
+  const glyph=glyphRadius(g,i),laterBody=bodyRadius(g,j),nativeGlyph=glyphRadius(native,i),nativeBody=bodyRadius(native,j),nativePitch=Math.abs(g.items[j].nativeLength-g.items[i].nativeLength),distance=g.mode==='cradle'?(j-i)*g.anchorPitch:lambda*nativePitch,postEntryMargin=distance-glyph-laterBody,entryRelativeMargin=g.mode==='cradle'?postEntryMargin:lambda*(nativeGlyph+nativeBody)-glyph-laterBody;
+  pairs.push({earlier:i,later:j,glyphRadius:glyph,laterBodyRadius:laterBody,nativeGlyphRadius:nativeGlyph,nativeLaterBodyRadius:nativeBody,nativeLengthDifference:nativePitch,postEntryDistance:distance,postEntryMargin,entryRelativeMargin,complete:postEntryMargin>=-EPS&&entryRelativeMargin>=-EPS});
+ }
+ const overlap={complete:pairs.every(p=>p.complete),pairs,postEntry:'For every pair all angles, reverse triangle gives centre separation >= lambda*abs(nativeLength[j]-nativeLength[i]) once both grow=1. Cradle horizontal ordering and outward endpoint swings give separation >=(j-i)*2r at EVERY grow/drop phase.',entry:'Common-pivot candidate centre differences are exactly lambda times original differences for all grow/angle phases because original Ti and source indices are unchanged. The guarded glyph+later-body radial overlap threshold divided by lambda must not exceed its original source threshold. This is a source-relative radial overlap ledger for native entry where original bodies already overlap; it is NOT a claim of zero entry occlusion or identical pixel occlusion.',entryCompleteClearance:false,nativeEntryClockEnd:g.mode==='cradle'?(g.k-1)*.05+.35:(g.k-1)*.04+.4};
+ const quality={complete:attachments.every(q=>q.complete)&&support.every(q=>q.complete)&&overlap.complete,overlap,fontSize:g.mode==='cradle'?g.fontSize:g.mode==='fan'?g.size*.78:g.size,minPrimaryPx:Math.min(...g.items.map(q=>q.size))*(cut.contentScale??1),sourceItems:g.k,sourceGlyphs:g.items.reduce((n,q)=>n+q.glyphs.filter(v=>v.ch.trim()).length,0),attachments,support,guard,guardExplanation:'20 stage-pixel min-render-scale raster square / contentScale, enlarged by sqrt2 before paper-local axis-square containment; contains inverse camera and body rotations. Actual font/stroke/font-space guarded vertices retained.',g};
+ return {g,units,envelopes:units.flatMap(u=>u.envelopes),quality,...(!quality.complete?{error:{code:'PENDULUM_ATTACHMENT_INCONCLUSIVE',details:{attachments:attachments.filter(q=>!q.complete),support:support.filter(q=>!q.complete),overlap}}}:{})};
+}
+function recipes(plan,cut,native,explicitSize){
+ const g=native.g,clockCatalog={mode:g.mode,n:g.n,k:g.k,items:g.items.map(q=>({index:q.index,text:q.text,nativeLength:q.nativeLength,nativePeriod:q.nativePeriod,glyphs:q.glyphs}))},cs=cut.contentScale??1,M=Math.min(plan.W,plan.H),baseSize=g.mode==='cradle'?g.fontSize:g.size,floor=Math.min(native.quality.minPrimaryPx,Math.max(18,.035*M))/native.quality.minPrimaryPx,levels=explicitSize?[1]:[1,.9,.8,.7,.6,.5,.4,floor].filter((v,i,a)=>v>=floor&&a.indexOf(v)===i),out=[null];
+ for(const fontScale of levels){const size=baseSize*fontScale,guard=20*Math.SQRT2/cs,ink=g.items.map(q=>localInk(g.font,q.text,g.mode==='fan'?size*.78:size,g.mode));let body={};
+  if(g.mode!=='chunks'){const needed=Math.max(...ink.flatMap(ps=>ps.map(p=>Math.hypot(...p))))+guard+1;const r=Math.max((g.mode==='cradle'?g.r:g.fanRadius)*fontScale,g.mode==='cradle'?Math.max(needed/.985,(needed+10*Math.SQRT2/cs+g.lw/2)/1.015):needed);body={bobRadius:r,...(g.mode==='cradle'?{anchorPitch:2*r}:{})};}
+  else{const paperHeights=ink.map(ps=>2*(Math.max(...ps.map(p=>Math.abs(p[1])))+guard+.06*size+.15*size)/.72),paperWidths=ink.map((ps,i)=>Math.max(paperHeights[i],2*(Math.max(...ps.map(p=>Math.abs(p[0])))+guard+.06*size+paperHeights[i]*.14+.2*size)));body={paperWidths,paperHeights};}
+  const minimumLengths=g.items.map((q,i)=>g.mode==='cradle'?1.5*body.bobRadius:g.mode==='fan'?body.bobRadius+Math.max(3,M*.008)+Math.max(2,size*.15):Math.hypot(body.paperWidths[i]/2,body.paperHeights[i]/2)+Math.max(3,M*.008)+Math.max(2,size*.15)),derivedRestScale=Math.max(...minimumLengths.map((L,i)=>L/g.items[i].nativeLength)),shapeGuard=10*Math.SQRT2/cs,spacingScales=[];
+  if(g.mode!=='cradle')for(let i=0;i<g.k;i++)for(let j=i+1;j<g.k;j++){const glyph=Math.max(...ink[i].map(p=>Math.hypot(...p)))+(g.mode==='chunks'?.06*size:0)+guard,laterBody=(g.mode==='fan'?body.bobRadius:Math.hypot(body.paperWidths[j]/2,body.paperHeights[j]/2))+shapeGuard;spacingScales.push((glyph+laterBody)/(g.items[j].nativeLength-g.items[i].nativeLength));}
+  const derivedLengthScale=Math.max(derivedRestScale,...spacingScales)+1e-6;
+  for(const lengthScale of (fontScale===1?[1,derivedLengthScale,.7,.55,.4,.3]:[derivedLengthScale,1]))for(const pivotFactor of [null,.3,.55])out.push({strategy:fontScale===1?'native-font-physical-bob-paper-pivot-and-length':'local-font-after-physical-source',clockCatalog,fontScale,lengthScale,...body,...(pivotFactor===null?{}:{pivotY:plan.H*pivotFactor})});
+ }
+ const unique=out.filter((v,i,a)=>a.findIndex(q=>JSON.stringify(q)===JSON.stringify(v))===i);if(unique.length>91)fail('PENDULUM_CANDIDATE_BUDGET','Finite91 prioritized recipes exceeded');return unique;
+}
+function finalize({plan,cut,revision,stepDur,reachTail,explicitSize}){
+ const lo=Math.min(cut.start,cut.renderStart??cut.start)-stepDur-cut.start,hi=Math.max(cut.end,cut.displayEnd??cut.end)+reachTail-cut.start;if(![plan.W,plan.H,cut.dur,lo,hi].every(Number.isFinite)||plan.W<64||plan.H<64||plan.W>16384||plan.H>16384||Math.max(plan.W/plan.H,plan.H/plan.W)>16||cut.dur<.1||cut.dur>120||Math.max(Math.abs(lo),Math.abs(hi))>599)fail('PENDULUM_NUMERICAL_DOMAIN','Finite stage64..16384/aspect1:16..16:1, cut duration.1..120s and evaluated local clock599s plus native ghost reserve required');
+ const p=cut.params,count=[...norm(cut.text)].length,fx=cut.effectFx||plan.fx;if(cut.enter!=='cut'||cut.exit!=='cut'||cut.hold!=='still'||cut.treat!=='none'||(cut.decor||[]).length||cut.drawing||cut.effectsOnly||!['cradle','fan','chunks'].includes(p.mode)||!Number.isFinite(p.period)||p.period<1.05||p.period>1.4||!Number.isFinite(p.amp)||p.amp<22||p.amp>30||![1,-1].includes(p.side)||!Number.isFinite(p.phase)||count<1||count>16||!Number.isFinite(fx.motion)||fx.motion<0||fx.motion>1||(cut.motionScale??1)!==1||!Number.isFinite(cut.contentScale??1)||(cut.contentScale??1)<.1||(cut.contentScale??1)>4)fail('PENDULUM_PARAMETER_DOMAIN','Native1..16 source, period1.05..1.4/amp22..30/side±1/motion0..1, contentScale.1..4 and cut/cut/still/none required');
+ const renderer=Object.create(J.Renderer.prototype),native=proof(renderer,plan,{...cut,layoutDRecipe:null}),schedule=recipes(plan,cut,native,explicitSize),memo=new Map([['null',native]]),segments=[],evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail],floor=Math.min(native.quality.minPrimaryPx,Math.max(18,.035*Math.min(plan.W,plan.H)));
+ for(let i=0;i<plan.lyricAvoidanceIndex.regions.length;i++){const r=plan.lyricAvoidanceIndex.regions[i],end=Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration);if(r.start>=evaluationRange[1]||end<=evaluationRange[0]||end<=r.start)continue;const circle={cx:r.center.x*plan.W,cy:r.center.y*plan.H,r:r.radius*Math.min(plan.W,plan.H)},attempts=[];let chosen=null,first=null;
+  for(const recipe of schedule){const key=JSON.stringify(recipe);let trial=memo.get(key);if(!trial){try{trial=proof(renderer,plan,{...cut,layoutDRecipe:recipe},native.g);if(trial.quality.minPrimaryPx<floor-EPS)fail('PENDULUM_READABILITY_FLOOR','Native readable primary floor required');}catch(e){trial={error:{code:e.code||'DRAW_PROGRAM_ERROR',details:e.message}};}memo.set(key,trial);}if(trial.error){attempts.push({recipe,status:'unsupported',reason:trial.error.code,details:trial.error.details});continue;}first??={trial,recipe};const solution=A.solveBasic(trial.envelopes,circle,plan.W,plan.H,cut.seed,{supportHull:true});attempts.push({recipe,status:solution.status,reason:solution.reason||null,quality:trial.quality});if(solution.status==='safe'){chosen={trial,recipe,solution};break;}}
+  if(!chosen&&!first)fail('PENDULUM_ATTACHMENT_INCONCLUSIVE',JSON.stringify({attempts,limitation:'No complete continuous physical-attachment candidate proved; not geometric impossibility'}));const pick=chosen||first,offset=chosen?.solution.offset||[0,0];segments.push({start:r.start,end,region:r.id,circle,from:offset,to:offset,status:chosen?'safe':'insufficient-space',decision:chosen?'certified':'excluded-during-avoidance',composition:pick.recipe,envelopes:pick.trial.envelopes,unitProofs:pick.trial.units,quality:pick.trial.quality,attempts});
+ }
+ return {kind:'layouts-d-source-native',version:1,revision,evaluationRange,measurementSupported:true,units:[{owner:'pendulum.composition',segments}],sourceProof:{kind:'analytic-source-polar-sector-trig-and-full-growth-interval',ownership:'Every frame/base/pivot/string/disc/paper/hole/highlight/spark/glyph primary',nativeQuality:native.quality,clockCatalog:'Original item ID/count/order, nativeLength/nativePeriod Ti frozen before recipe; native drop/grow/angle/spark/reveal/mi formulas retained; phase stays unused',attachment:'Full actual font/stroke/font-space and conservative rotated min-scale raster guard within real discs or convex rounded paper, complete common/two-string support attachment at every positive grow/drop, exact screen-vertical text baseline and string endpoint',candidateBudget:schedule.length,explicitSizePreserved:explicitSize,reflow:'Not implemented: unchanged original text runs only'},safety:segments.every(s=>s.status==='safe')?'certified-bounded-adapter':'insufficient-space'};
+}
+const contains=(p,q)=>{let pos=false,neg=false;for(let i=0;i<q.length;i++){const a=q[i],b=q[(i+1)%q.length],v=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);pos||=v>1e-5;neg||=v< -1e-5;}return !(pos&&neg);};
+function render({renderer,env,trajectory}){
+ const scale=env.scale??1;if(!Number.isFinite(scale)||scale<.1||scale>4)fail('PENDULUM_RENDER_SCALE','Certified scale.1..4 required');const unit=trajectory.units[0],active=unit.segments.find(s=>s.start<=env.realTime&&env.realTime<s.end);if(active?.status==='insufficient-space')fail('PENDULUM_COMPOSITION_EXCLUDED','No certified pendulum composition in active avoidance region; exclusion is not unsafe native replay');const offset=A.offsetAt(unit,env.realTime);if(active?.composition){const cut={...env.cut,layoutDRecipe:active.composition};env=renderer.makeEnv(env.ctx,env.plan,cut,env.sc,{...env,cut});}
+ const p=A.record(renderer,env);if(!p.measurementSupported)fail('PENDULUM_RECORD',JSON.stringify(p.diagnostics));const events=p.events.map(event=>({event,polygons:event.polygons.map(q=>q.map(v=>[v[0]/scale,v[1]/scale]))})),covered=!active||events.every(({event,polygons})=>{const u=active.unitProofs.find(u=>u.owner===event.owner);return event.role==='primary'&&u&&polygons.every(q=>u.envelopes.some(e=>q.every(v=>contains(v,e))));}),polygons=events.flatMap(e=>e.polygons.map(q=>q.map(v=>[v[0]+offset[0],v[1]+offset[1]]))),region=J.resolveAvoidanceAt(env.plan,env.realTime),circle=region?J.avoidanceCirclePixels(region,env.plan.W,env.plan.H):null,clear=!polygons.length||A.clear(polygons,circle,Math.max(2,.005*Math.min(env.plan.W,env.plan.H))),stageContained=polygons.every(q=>q.every(v=>v[0]>=0&&v[0]<=env.plan.W&&v[1]>=0&&v[1]<=env.plan.H));if(active&&(!covered||!clear||!stageContained))fail('PENDULUM_SOURCE_SAFETY_VIOLATION','Actual full owned pendulum escaped source support/stage/circle');env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,measurementSupported:true,envelopeCovered:covered,stageContained,strictCircleClear:clear,safety:active?'safe':'not-active',polygons,geometry:p.nativeDGeometry,events:p.events.map(e=>({kind:e.kind,owner:e.owner,role:e.role,order:e.order,args:e.args,polygons:e.polygons}))});A.replay(env,p,offset);
+}
+A.registerLayoutsDAdapter('pendulum',{id:'pendulum-physical-source-v1',finalize,render});
+})();
+
 /* ============================================================
    JIZURA — audio: decode, energy envelope, onset, BPM & beat grid
    ============================================================ */
@@ -38867,27 +38958,39 @@ reg('pendulum', {
     let mode = Pm.mode;
     if (mode === 'cradle' && n > (port ? 6 : 9)) mode = 'fan';
     if (mode === 'fan' && n > 13) mode = 'chunks';
+    const nativeD = cut.placementLayoutsD === true;
+    // A recipe changes physical measures only; original item clocks are separate.
+    const recipe = nativeD ? cut.layoutDRecipe : null, clocks = recipe?.clockCatalog;
+    if(clocks&&(clocks.mode!==mode||clocks.n!==n))throw Object.assign(Error('Original pendulum mode/count clock catalog required'),{code:'PENDULUM_CLOCK_CATALOG'});
+    const owned = (owner, fn) => nativeD ? env.withDrawRole('primary', 'pendulum.' + owner, fn) : fn();
+    let currentOwner = 'support';
+    const source = nativeD ? Object.fromEntries(['line', 'rrect', 'circle', 'rect'].map(kind => [kind, (...args) => owned(currentOwner, () => env[kind](...args))])) : env;
+    const glyphCatalog = (text, size, track, index) => Object.freeze([...J.layoutText({text, font:Pm.font, size, track})].map(g => Object.freeze({id:index+':'+g.i, item:index, glyph:g.i, ch:g.ch, x:g.x, y:g.y})));
+    const catalog = nativeD ? {kind:'pendulum',version:1,requestedMode:Pm.mode,mode,n,port,font:Pm.font,period:Pm.period,amp:Pm.amp,side:Pm.side,phaseUnused:Pm.phase,motion:mot,lt,ltb:env.ltb,pOut:env.pOut,out,items:[]} : null;
+    const seal = () => {if(nativeD){Object.freeze(catalog.items);env.placementDGeometry=Object.freeze(catalog);}};
+    const textDraw = (index, item) => {if(!nativeD)return J.mainDraw(env,item);item.placementDSource={kind:'pendulum-text',index,mode,glyphs:catalog.items[index].glyphs};return owned('bob.'+index,()=>J.mainDraw(env,item));};
     const lw = Math.max(1, u * 0.0015);
     const pc = plateCol(sc, [sc.ink, sc.fg]), tc = onCol(sc, pc);
     const fa = tin(env, 0, 0.45, E.outCubic) * out;
     let bb = null;
     if (mode === 'cradle') {
-      const r = Math.min(W * 0.84 / (n * 2.02 + 1.2), H * 0.13, u * 0.12);
-      const L = Math.min(H * 0.42, r * 5.2);
-      const cx = W / 2, x0 = cx - (n - 1) * r;
-      const py = H / 2 - L * 0.62, by = py + L;
+      const nativeR = Math.min(W * 0.84 / (n * 2.02 + 1.2), H * 0.13, u * 0.12), nativeL = Math.min(H * 0.42, nativeR * 5.2);
+      const r = recipe?.bobRadius ?? nativeR, L = nativeL * (recipe?.lengthScale ?? 1), fontSize=nativeR*1.08*(recipe?.fontScale??1), anchorPitch=recipe?.anchorPitch??nativeR*2;
+      const cx = W / 2, x0 = recipe ? cx-(n-1)*anchorPitch/2 : cx-(n-1)*r;
+      const py = recipe?.pivotY ?? H / 2 - L * 0.62, by = py + L;
       // frame
-      const fw = (n - 1) * r + r * 2.6, fb = by + r + H * 0.06;
+      const fw = recipe ? (n-1)*anchorPitch/2+r*2.6 : (n-1)*r+r*2.6, fb = by + r + H * 0.06;
       const fc = sc.sub;
-      env.line([[cx - fw, fb], [cx - fw, py], [cx + fw, py], [cx + fw, fb]], fc, Math.max(2, u * 0.006), fa, false);
-      env.rrect(cx - fw - r * 0.7, fb, fw * 2 + r * 1.4, r * 0.28, r * 0.1, fc, fa, false);
-      const T = Pm.period, w = J.TAU / T, A = Pm.amp * J.DEG * (0.6 + 0.5 * mot);
+      source.line([[cx - fw, fb], [cx - fw, py], [cx + fw, py], [cx + fw, fb]], fc, Math.max(2, u * 0.006), fa, false);
+      source.rrect(cx - fw - r * 0.7, fb, fw * 2 + r * 1.4, r * 0.28, r * 0.1, fc, fa, false);
+      if(nativeD)Object.assign(catalog,{r,L,nativeR,nativeL,fontSize,anchorPitch,cx,x0,py,by,fw,fb,lw,k:n});
+      const T = clocks ? clocks.items[0].nativePeriod : Pm.period, w = J.TAU / T, A = Pm.amp * J.DEG * (0.6 + 0.5 * mot);
       const t0 = 0.75, tau = env.ltb - t0;
       let sAng = tau > 0 ? -Math.cos(w * tau) : -1;
       const lift = tau > 0 ? 1 : E.inOutCubic(J.clamp((lt - 0.25) / 0.45));
       const decay = 1 - 0.25 * J.clamp(tau / 6);
       chs.forEach((ch, i) => {
-        const px = x0 + i * r * 2;
+        const px = recipe ? x0+i*anchorPitch : x0+i*r*2;
         let th = 0;
         if (i === 0) th = A * decay * Math.min(0, sAng) * (tau > 0 ? 1 : lift);
         if (i === n - 1 && n > 1) th = A * decay * Math.max(0, sAng);
@@ -38895,29 +38998,31 @@ reg('pendulum', {
         const drop = E.outBack(J.clamp((lt - i * 0.05) / 0.35), 1.4);
         const Lc = L * drop;
         const bx = px + Math.sin(th) * Lc, byy = py + Math.cos(th) * Lc;
+        if(nativeD){catalog.items.push(Object.freeze({index:i,text:ch,k:n,nativeLength:nativeL,nativePeriod:T,px,py,L:Lc,th,drop,grow:null,visible:drop>0,size:fontSize,mi:miAt(env,.15+i*.05),bx,by:byy,glyphs:glyphCatalog(ch,fontSize,undefined,i)}));currentOwner='bob.'+i;}
         if (drop <= 0) return;
         const d = r * 0.85;
-        env.line([[px - d, py], [bx, byy]], sc.sub, lw, 0.9 * out, false);
-        env.line([[px + d, py], [bx, byy]], sc.sub, lw, 0.9 * out, false);
-        env.circle(bx, byy, r * 0.985, pc, null, 0, out, gIn(env));
-        env.circle(bx - r * 0.35, byy - r * 0.38, r * 0.2, lightOf(sc), null, 0, 0.35 * out, false);
-        env.circle(bx, byy, r * 0.985, null, J.mix(pc, darkOf(sc), 0.4), lw, out, false);
+        source.line([[px - d, py], [bx, byy]], sc.sub, lw, 0.9 * out, false);
+        source.line([[px + d, py], [bx, byy]], sc.sub, lw, 0.9 * out, false);
+        source.circle(bx, byy, r * 0.985, pc, null, 0, out, gIn(env));
+        source.circle(bx - r * 0.35, byy - r * 0.38, r * 0.2, lightOf(sc), null, 0, 0.35 * out, false);
+        source.circle(bx, byy, r * 0.985, null, J.mix(pc, darkOf(sc), 0.4), lw, out, false);
         // impact sparks
         if (tau > 0 && ((i === 0 && n > 1) || i === n - 1)) {
           const ph = ((w * tau) / Math.PI) % 2, near = Math.min(Math.abs(ph - 0.5), Math.abs(ph - 1.5));
           if (near < 0.08 && ((i === 0) === (Math.abs(ph - 0.5) < 0.08)) ) {
             const k = 1 - near / 0.08, sx = px + (i === 0 ? r : -r);
-            for (let q = -1; q <= 1; q++) env.line([[sx + (i === 0 ? r * 0.2 : -r * 0.2), byy + q * r * 0.5], [sx + (i === 0 ? r * 0.55 : -r * 0.55), byy + q * r * 0.9]], sc.accent, Math.max(1.5, r * 0.05), k * out, false);
+            for (let q = -1; q <= 1; q++) source.line([[sx + (i === 0 ? r * 0.2 : -r * 0.2), byy + q * r * 0.5], [sx + (i === 0 ? r * 0.55 : -r * 0.55), byy + q * r * 0.9]], sc.accent, Math.max(1.5, r * 0.05), k * out, false);
           }
         }
-        bb = UB(bb, J.mainDraw(env, { text: ch, font: Pm.font, size: r * 1.08, x: bx, y: byy, rot: -th / J.DEG, color: tc, noHold: plateHold(env), mi: miAt(env, 0.15 + i * 0.05) }));
+        bb = UB(bb, textDraw(i, { text: ch, font: Pm.font, size: fontSize, x: bx, y: byy, rot: -th / J.DEG, color: tc, noHold: plateHold(env), mi: miAt(env, 0.15 + i * 0.05) }));
       });
+      seal();
       return bb;
     }
     // single pivot: several pendulums of different length (a pendulum wave)
     const items = mode === 'fan' ? chs.map(c => ({ t: c })) : (Pm.chunks && Pm.chunks.length ? Pm.chunks : chunksK(cut.text, 3)).map(c => ({ t: flat(c) }));
     const k = items.length;
-    const px = W / 2 + (mode === 'chunks' && !port ? 0 : 0), py = H * 0.06;
+    const px = W / 2 + (mode === 'chunks' && !port ? 0 : 0), py = recipe?.pivotY ?? H * 0.06;
     let size, step, L0, plateW = [];
     if (mode === 'fan') {
       step = Math.min(H * 0.84 / (k + 1.2), W * 0.2);
@@ -38928,37 +39033,46 @@ reg('pendulum', {
       step = size * 1.75; L0 = Math.max(H * 0.9 - step * k, size * 2);
       plateW = items.map(q => J.measure({ text: q.t, font: Pm.font, size, track: 0.03 }).w + size * 0.8);
     }
+    const nativeSize=size, nativeStep=step, nativeL0=L0;
     const Lmax = L0 + step * (k - 1);
+    if(clocks&&(clocks.k!==k||clocks.items.length!==k||clocks.items.some((q,i)=>q.index!==i||q.text!==items[i].t)))throw Object.assign(Error('Original pendulum item IDs/count/text required'),{code:'PENDULUM_CLOCK_CATALOG'});
+    size*=recipe?.fontScale??1;
+    const fanRadius=recipe?.bobRadius??size*.62, paperWidths=recipe?.paperWidths??plateW, paperHeights=recipe?.paperHeights??items.map(()=>size*1.24), stringOffsets=items.map((_,i)=>mode==='fan'?size*.55:recipe?paperHeights[i]/2:size*.62);
+    if(recipe&&mode==='chunks')plateW=paperWidths;
+    if(nativeD)Object.assign(catalog,{k,px,py,size,nativeSize,nativeStep,nativeL0,step,L0,Lmax,fanRadius,plateW:Object.freeze(plateW.slice()),paperHeights:Object.freeze(paperHeights.slice()),stringOffsets:Object.freeze(stringOffsets),lw});
     const A = (mode === 'fan' ? 7 : 5) * J.DEG * (0.5 + 0.7 * mot);
     const rel = E.inOutCubic(J.clamp((lt - 0.1) / 0.6));
-    env.circle(px, py, Math.max(3, u * 0.008), sc.accent, null, 0, fa, false);
-    env.rect(px - u * 0.06 * fa, py - Math.max(2, u * 0.003), u * 0.12 * fa, Math.max(3, u * 0.005), sc.sub, fa, false);
+    source.circle(px, py, Math.max(3, u * 0.008), sc.accent, null, 0, fa, false);
+    source.rect(px - u * 0.06 * fa, py - Math.max(2, u * 0.003), u * 0.12 * fa, Math.max(3, u * 0.005), sc.sub, fa, false);
     const pos = items.map((q, i) => {
       const L = L0 + step * i;
-      const Ti = Pm.period * 1.6 * Math.sqrt(L / Lmax);
+      const Ti = clocks ? clocks.items[i].nativePeriod : Pm.period * 1.6 * Math.sqrt(L / Lmax);
       const tau = Math.max(0, env.ltb - 0.2);
       const th = A * Pm.side * Math.cos(J.TAU * tau / Ti) * rel + E.inCubic(env.pOut) * 30 * J.DEG * Pm.side * (0.5 + i / k);
       const grow = E.outCubic(J.clamp((lt - i * 0.04) / 0.4));
-      return { L: L * grow, th, grow };
+      if(nativeD)catalog.items.push(Object.freeze({index:i,text:q.t,k,nativeLength:L,nativePeriod:Ti,px,py,L:recipe?L*recipe.lengthScale*grow:L*grow,th,grow,drop:null,visible:grow>0,size:mode==='fan'?size*.78:size,mi:miAt(env,.12+i*.05),bx:px+Math.sin(th)*(L*(recipe?.lengthScale??1)*grow),by:py+Math.cos(th)*(L*(recipe?.lengthScale??1)*grow),glyphs:glyphCatalog(q.t,mode==='fan'?size*.78:size,.03,i)}));
+      return { L: recipe ? L*recipe.lengthScale*grow : L*grow, th, grow };
     });
     // strings first, bobs on top so the fan never cuts through a glyph
-    pos.forEach((q, i) => { if (q.grow > 0) env.line([[px, py], [px + Math.sin(q.th) * q.L, py + Math.cos(q.th) * q.L - (mode === 'fan' ? size * 0.55 : size * 0.62)]], sc.sub, lw, 0.75 * out, false); });
+    pos.forEach((q, i) => { if(nativeD)currentOwner='bob.'+i; if (q.grow > 0) source.line([[px, py], [px + Math.sin(q.th) * q.L, py + Math.cos(q.th) * q.L - (recipe ? stringOffsets[i] : mode === 'fan' ? size * 0.55 : size * 0.62)]], sc.sub, lw, 0.75 * out, false); });
     items.forEach((q, i) => {
+      if(nativeD)currentOwner='bob.'+i;
       const p = pos[i];
       if (p.grow <= 0) return;
       const bx = px + Math.sin(p.th) * p.L, byy = py + Math.cos(p.th) * p.L;
       const col = i % 2 && J.contrast(sc.accent, sc.bg) > 1.6 ? sc.accent : pc;
       if (mode === 'fan') {
-        env.circle(bx, byy, size * 0.62, col, null, 0, out, gIn(env));
+        source.circle(bx, byy, fanRadius, col, null, 0, out, gIn(env));
       } else {
-        const w2 = plateW[i], h2 = size * 1.24;
+        const w2 = plateW[i], h2 = recipe ? paperHeights[i] : size*1.24;
         ctx.save(); ctx.translate(bx, byy); ctx.rotate(-p.th);
-        env.rrect(-w2 / 2, -h2 / 2, w2, h2, h2 * 0.14, col, out, gIn(env));
-        env.circle(0, -h2 / 2 + h2 * 0.12, Math.max(2, size * 0.06), sc.bg, null, 0, out, false);
+        source.rrect(-w2 / 2, -h2 / 2, w2, h2, h2 * 0.14, col, out, gIn(env));
+        source.circle(0, -h2 / 2 + h2 * 0.12, Math.max(2, size * 0.06), sc.bg, null, 0, out, false);
         ctx.restore();
       }
-      bb = UB(bb, J.mainDraw(env, { text: q.t, font: Pm.font, size: mode === 'fan' ? size * 0.78 : size, track: 0.03, x: bx, y: byy + (mode === 'fan' ? 0 : size * 0.06), rot: -p.th / J.DEG, color: onCol(sc, col), noHold: plateHold(env), mi: miAt(env, 0.12 + i * 0.05) }));
+      bb = UB(bb, textDraw(i, { text: q.t, font: Pm.font, size: mode === 'fan' ? size * 0.78 : size, track: 0.03, x: bx, y: byy + (mode === 'fan' ? 0 : size * 0.06), rot: -p.th / J.DEG, color: onCol(sc, col), noHold: plateHold(env), mi: miAt(env, 0.12 + i * 0.05) }));
     });
+    seal();
     return bb;
   },
 });

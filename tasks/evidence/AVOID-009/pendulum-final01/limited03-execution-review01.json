@@ -1,0 +1,147 @@
+{
+  "at": "2026-10-23T19:39:25.986383+00:00",
+  "originalLimited03TerminalExitCode": 1,
+  "originalFailuresPreserved": [
+    {
+      "id": "nonimpact-flag",
+      "kind": "nonimpact",
+      "equalPixels": true,
+      "equalFinalJSON": false,
+      "errors": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "nonimpact-accordion",
+      "kind": "nonimpact",
+      "equalPixels": true,
+      "equalFinalJSON": false,
+      "errors": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "nonimpact-ribbon",
+      "kind": "nonimpact",
+      "equalPixels": true,
+      "equalFinalJSON": false,
+      "errors": [
+        [],
+        []
+      ]
+    }
+  ],
+  "pinsChecked": 714,
+  "inputMismatches": [],
+  "executedRunnerExactCASPreserved": true,
+  "executedRunnerSHA256": "36a0c54bbc65c8885308c28a7dc2119257e271efcdbfacf05271285c5d0bcfdc",
+  "rawSHA256": "7c76572904ba894e619f86717077f3cabdc32d61ce7f0192ebc436a199c3e82e",
+  "pureRawComparison": "limited03-nonimpact-normalized02.json",
+  "rawComparator01": "Original script retained; actual run assertion failed on missing ribbon scheduled frame rows; not hidden/reclassified as3 full frame passes",
+  "matrixSummaryOriginal": {
+    "ordinaryCases": 12,
+    "preservedControls": 4,
+    "extras": 3,
+    "nonimpact": 3,
+    "safeCases": 7,
+    "paperCertified": false,
+    "paperCasesPendingParentReview": [
+      {
+        "id": "chunks-latin",
+        "safety": "insufficient-space"
+      },
+      {
+        "id": "chunks-one-original-run",
+        "safety": "certified-bounded-adapter"
+      },
+      {
+        "id": "fan-effective-chunks",
+        "safety": "insufficient-space"
+      }
+    ],
+    "exclusionCases": 5,
+    "failures": 3,
+    "scope": "Limited parent-requested functional proof matrix only; no performance/media/public/visual acceptance"
+  },
+  "cacheChecks": {
+    "equal": true,
+    "frozen": true,
+    "detachedOutputs": true,
+    "detachedFromSource": true,
+    "hitObserved": true,
+    "coldStored": true,
+    "sourceUnchanged": true
+  },
+  "cacheCold": {
+    "hits": 0,
+    "misses": 1,
+    "stores": 1,
+    "entries": 1
+  },
+  "cacheWarm": {
+    "hits": 1,
+    "misses": 1,
+    "stores": 1,
+    "entries": 1
+  },
+  "explicitAutoScale": {
+    "areaMode": "auto",
+    "sourceContentScale": 1.25,
+    "safety": "insufficient-space",
+    "explicitSizePreserved": true,
+    "attemptedFontScales": [
+      1
+    ]
+  },
+  "exclusions": [
+    {
+      "id": "cradle-four-large",
+      "eligibleDuringAvoidance": false,
+      "code": "PENDULUM_COMPOSITION_EXCLUDED",
+      "noPaint": true,
+      "noObservation": true
+    },
+    {
+      "id": "fan-four-large",
+      "eligibleDuringAvoidance": false,
+      "code": "PENDULUM_COMPOSITION_EXCLUDED",
+      "noPaint": true,
+      "noObservation": true
+    },
+    {
+      "id": "chunks-latin",
+      "eligibleDuringAvoidance": false,
+      "code": "PENDULUM_COMPOSITION_EXCLUDED",
+      "noPaint": true,
+      "noObservation": true
+    },
+    {
+      "id": "fan-effective-chunks",
+      "eligibleDuringAvoidance": false,
+      "code": "PENDULUM_COMPOSITION_EXCLUDED",
+      "noPaint": true,
+      "noObservation": true
+    },
+    {
+      "id": "explicit-auto-scale",
+      "eligibleDuringAvoidance": false,
+      "code": "PENDULUM_COMPOSITION_EXCLUDED",
+      "noPaint": true,
+      "noObservation": true
+    }
+  ],
+  "sourceMutation": false,
+  "newReviewRunner": {
+    "path": "dev/avoidance/layouts-d-pendulum-limited-review-only.cjs",
+    "sha256": "78e5d951e49e6a368f1652f160c6b831118da2d34d022c73fb11bcc8d7b874e1",
+    "executed": false,
+    "checks": "Node syntax check only; normalization removes exact2 fields and records generations; future nonimpact probes now require actual3 rendered rows (includes ribbon conflict frames), not empty-array equality"
+  },
+  "paperStatus": "one original source run safe outcome pending independent parent rounded-paper/attachment review; multi-item paper family not accepted",
+  "nativeFinal03Inputs": {
+    "all714StillUnchanged": true,
+    "preparedNotExecutedByChild": true
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "at": "2026-10-23T19:39:25.177474+00:00",
+  "kind": "PURE RAW comparator; original limited03 terminal exit1 and original raw/failures preserved",
+  "source": "/tmp/avoid009-pendulum01/pendulum-physical01/limited03/raw.json",
+  "sourceSHA256": "7c76572904ba894e619f86717077f3cabdc32d61ce7f0192ebc436a199c3e82e",
+  "removedPathsOnly": [
+    [
+      "placementFinalization",
+      "revision"
+    ],
+    [
+      "cuts",
+      0,
+      "placementTrajectory",
+      "revision"
+    ]
+  ],
+  "rationale": "src/02_fonts.js:194 metrics.clear increments per-document generation; src/09a_placement.js:393 reads current J.metrics.revision for final plan and trajectory. Different isolated page histories may have different numbers for identical font bytes. All other plan fields and exact RGBA remain strict. No product fix/counter rewrite.",
+  "rows": [
+    {
+      "id": "nonimpact-flag",
+      "originalFullJSONEqual": false,
+      "originalRGBAEqual": true,
+      "onlyDifferences": [
+        {
+          "path": [
+            "cuts",
+            0,
+            "placementTrajectory",
+            "revision"
+          ],
+          "after": 6,
+          "before": 4
+        },
+        {
+          "path": [
+            "placementFinalization",
+            "revision"
+          ],
+          "after": 6,
+          "before": 4
+        }
+      ],
+      "actualAfterGeneration": 6,
+      "actualBeforeGeneration": 4,
+      "remainingWholeJSONEqual": true,
+      "allRGBAEqual": true,
+      "RGBAFrames": [
+        {
+          "t": 0.2,
+          "hash": "09f8e602211a4cf48a9624418c3d7994f008743b486a4b78727cbb59fed81d19"
+        },
+        {
+          "t": 1.5,
+          "hash": "1b2dfcf57338dcf0dea6a74ec198ba2082881c67692787e391940696ef1ba9aa"
+        },
+        {
+          "t": 3.99,
+          "hash": "0d0f80d49a7c2890f919d3485be8c77f01b2e50c602780e7f96e01028e11314e"
+        }
+      ],
+      "directPaintProbe": null,
+      "missingScheduledFullFrames": 0
+    },
+    {
+      "id": "nonimpact-accordion",
+      "originalFullJSONEqual": false,
+      "originalRGBAEqual": true,
+      "onlyDifferences": [
+        {
+          "path": [
+            "cuts",
+            0,
+            "placementTrajectory",
+            "revision"
+          ],
+          "after": 6,
+          "before": 4
+        },
+        {
+          "path": [
+            "placementFinalization",
+            "revision"
+          ],
+          "after": 6,
+          "before": 4
+        }
+      ],
+      "actualAfterGeneration": 6,
+      "actualBeforeGeneration": 4,
+      "remainingWholeJSONEqual": true,
+      "allRGBAEqual": true,
+      "RGBAFrames": [
+        {
+          "t": 0.2,
+          "hash": "40d7e6b098004d7658de3be7df8eb307cb39edcc621dbf7c8e09420a0bcfb110"
+        },
+        {
+          "t": 1.5,
+          "hash": "cd18f766539f8940602a2b25799ee615a70c1bca13fe9184b404930a8eeeba8d"
+        },
+        {
+          "t": 3.99,
+          "hash": "44d259e226a1a73278976117819094d49f353ffa6979b0ce43b3706b3a34c381"
+        }
+      ],
+      "directPaintProbe": null,
+      "missingScheduledFullFrames": 0
+    },
+    {
+      "id": "nonimpact-ribbon",
+      "originalFullJSONEqual": false,
+      "originalRGBAEqual": true,
+      "onlyDifferences": [
+        {
+          "path": [
+            "cuts",
+            0,
+            "placementTrajectory",
+            "revision"
+          ],
+          "after": 6,
+          "before": 4
+        },
+        {
+          "path": [
+            "placementFinalization",
+            "revision"
+          ],
+          "after": 6,
+          "before": 4
+        }
+      ],
+      "actualAfterGeneration": 6,
+      "actualBeforeGeneration": 4,
+      "remainingWholeJSONEqual": true,
+      "allRGBAEqual": true,
+      "RGBAFrames": [],
+      "directPaintProbe": {
+        "time": 2,
+        "beforeBlankEqual": true,
+        "paintedAfterEqual": true,
+        "beforeBlankSHA256": "788ae0147bdf979a6575938ca2d7d4403788588f7be2010f03776c968fd1ab49",
+        "paintedAfterSHA256": "fc1453cdcc07ba2cc298860b950ce6e21ac048d6e1d15ce25d966c1c6606620a",
+        "scope": "Actual direct source-paint exclusion probe only; scheduled full frame rows absent (insufficient composition); not3 ribbon frame comparisons"
+      },
+      "missingScheduledFullFrames": 3
+    }
+  ],
+  "status": "PASS_FOR_RECORDED_SCOPE_WITH_RIBBON_FULL_FRAME_GAP",
+  "priorRawComparator01": "Failed its meaningful assertion requiring3 full frames per nonimpact case; original script retained, no product/browser rerun",
+  "actualBrowserRerun": false,
+  "originalLimited03ExitCode": 1
+}
