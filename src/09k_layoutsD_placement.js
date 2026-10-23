@@ -11,7 +11,7 @@ const rows=[
  ['flag','cloth','cloth strips and printed glyphs','wave amplitude/path and line pitch; strip shear'],
  ['ribbon','ribbon','ribbon path, edge and printed glyphs','path bend, path measure and text spacing'],
  ['pendulum','pendulum','strings, weights/fan papers and printed text','anchor pitch and string length; angular sweep'],
- ['pile','composition','every falling/settled glyph, mound, seeded heap glyph and impact dust is primary','source-native physical field and contiguous runs; fullphase strict stage/circle bounds'],
+ ['pile','composition','every falling/settled glyph, mound, seeded heap glyph and impact dust is primary','source-native physical field and contiguous runs; allphase strict circle; material/settled stage strict; original falling main TOP entry'],
  ['blocks','block','each block face, edges and printed glyph','block pitch and row arrangement; projected fall'],
  ['balloons','balloon','glyph balloons, highlights and tied strings','balloon pitch and string length; buoyant sweep'],
  ['magnets','magnet','lyric magnets and their actual glyph shadow copies','magnet row pitch; source attraction/rotation'],
