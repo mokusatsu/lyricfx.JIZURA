@@ -187,3 +187,5 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 [統合逆差分検証](evidence/AVOID-009/cylinder-canonical01/verify-integration01.py)を親も実行PASS。09aは承認bridgeだけをmemoWIPへ追加し、11pの円筒ブロックと09oを反映。JAEN開始bytesを元canonicalと既存WIPから再構築し、現在の逆差分が全文一致することを確認。Gitへはレビュー済みcanonical5製品fileを保存し、workingの性能WIPは残す。最新raw/runner/patchは9.18MB capsuleへ保存し、旧40MB archiveは参照指紋・復元方法を残して持ち込まない。
 
 縦横2代表のMP4をローカルで同条件生成し、全4本60fps/240frame/4秒、変更後480frameのstrict guardsが成功。親はhash/ffprobeのみ、画像照合は別contextの指定solが20標本で両方PASS。[証拠](evidence/AVOID-009/cylinder-canonical01/independent-visual01.md)。縦は構成・字体・時系列を維持した平行移動であり追加人間確認不要と親が判断。行組みが変わる[横の1例](reviews/AVOID-009-cylinder-reflow-20261023-01.md)だけを公開対象へ絞り、人間の形・動き・可読性確認を依頼する。人間の回答は未回答、009実装中・010以降未着手を維持。flipCardsと他D/custom・正式性能は引き続き未完。
+
+製品・試験・証拠はworkの`694b289`へ保存しpush成功。横画面1例の[公開操作](evidence/AVOID-009/cylinder-canonical01/publication.json)はsucceeded。既存689 dist files・hosting/home・閲覧対象を保持し、公開結果の接続/再生/画像/起動/pollingは0。mainには引き続き性能WIPと既存pycacheが残り、公開/保存製品は検証済みcanonicalと同一bytes。形式検査は証拠のunified patchにある末尾context空行をwhitespaceとして検出したため、その正本patchのbytesは変更せず保持し、当該patch以外のコード・文書でcheck成功を確認した。機能試験の失敗を合格へ変更したものではない。

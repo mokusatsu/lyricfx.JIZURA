@@ -1,7 +1,8 @@
 # AVOID-009 円筒の横画面での再配置
 
 - 比較URL: https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-009/cylinder-reflow-20261023-01/
-- 状態: 公開操作待ち。人間の動作確認は未回答。
+- 状態: Sites公開操作がsucceededを返した。人間の動作確認は未回答。[公開操作記録](../evidence/AVOID-009/cylinder-canonical01/publication.json)。公開結果確認は実施していない。
+- 製品commit: `694b289`（workへpush成功）。Sites source commit: `f71a64b2f6794536c32ed7d2df3f8002fb7fd641`。
 
 「最初から同時再生」で、変更前後の円筒を比較してください。主歌詞を3行に組み直して円の右側へ配置しています。**円筒として回転する感じが残っているか、3行の主歌詞が読みやすいか**を確認します。円ガイドは初期ONで、切り替え可能です。
 
