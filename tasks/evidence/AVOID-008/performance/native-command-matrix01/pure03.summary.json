@@ -1,0 +1,386 @@
+{
+  "scope": "normal fake Canvas only, no native browser/pixel/timing claim",
+  "cases": [
+    {
+      "name": "C arc fill",
+      "oldReads": 5,
+      "candidateReads": 5,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "C arc stroke",
+      "oldReads": 5,
+      "candidateReads": 5,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "C arcTo",
+      "oldReads": 6,
+      "candidateReads": 5,
+      "saved": 1,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "C curves",
+      "oldReads": 8,
+      "candidateReads": 5,
+      "saved": 3,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "C halftone1161 arcs",
+      "oldReads": 1165,
+      "candidateReads": 5,
+      "saved": 1160,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "C long4096 commands",
+      "oldReads": 4100,
+      "candidateReads": 5,
+      "saved": 4095,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "legacy placementLayoutsB:true",
+      "oldReads": 8,
+      "candidateReads": 8,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "legacy placementLayoutsA:true",
+      "oldReads": 8,
+      "candidateReads": 8,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "legacy generic",
+      "oldReads": 1,
+      "candidateReads": 1,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "Unadapted Canvas operation fill"
+        }
+      ]
+    },
+    {
+      "name": "validationOnly keeps old reads",
+      "oldReads": 7,
+      "candidateReads": 7,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "changed path translate",
+      "oldReads": 4,
+      "candidateReads": 4,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "changed path rotate",
+      "oldReads": 4,
+      "candidateReads": 4,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "changed path scale",
+      "oldReads": 4,
+      "candidateReads": 4,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "changed path transform",
+      "oldReads": 4,
+      "candidateReads": 4,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "changed path setTransform",
+      "oldReads": 5,
+      "candidateReads": 5,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "changed path resetTransform",
+      "oldReads": 5,
+      "candidateReads": 5,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "changed path reset",
+      "oldReads": 4,
+      "candidateReads": 4,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "changed path stored-reset",
+      "oldReads": 4,
+      "candidateReads": 4,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "changed path canvas resize",
+      "oldReads": 4,
+      "candidateReads": 4,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    },
+    {
+      "name": "separate paths translate",
+      "oldReads": 10,
+      "candidateReads": 8,
+      "saved": 2,
+      "events": 2,
+      "diagnostics": []
+    },
+    {
+      "name": "separate paths rotate",
+      "oldReads": 10,
+      "candidateReads": 8,
+      "saved": 2,
+      "events": 2,
+      "diagnostics": []
+    },
+    {
+      "name": "separate paths scale",
+      "oldReads": 10,
+      "candidateReads": 8,
+      "saved": 2,
+      "events": 2,
+      "diagnostics": []
+    },
+    {
+      "name": "separate paths setTransform",
+      "oldReads": 11,
+      "candidateReads": 9,
+      "saved": 2,
+      "events": 2,
+      "diagnostics": []
+    },
+    {
+      "name": "separate paths resetTransform",
+      "oldReads": 11,
+      "candidateReads": 9,
+      "saved": 2,
+      "events": 2,
+      "diagnostics": []
+    },
+    {
+      "name": "separate paths reset",
+      "oldReads": 10,
+      "candidateReads": 8,
+      "saved": 2,
+      "events": 2,
+      "diagnostics": []
+    },
+    {
+      "name": "save restore within same path",
+      "oldReads": 8,
+      "candidateReads": 6,
+      "saved": 2,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "nested save transform restore",
+      "oldReads": 8,
+      "candidateReads": 8,
+      "saved": 0,
+      "events": 2,
+      "diagnostics": []
+    },
+    {
+      "name": "beginPath invalidation",
+      "oldReads": 26,
+      "candidateReads": 14,
+      "saved": 12,
+      "events": 4,
+      "diagnostics": []
+    },
+    {
+      "name": "clip matrix ownership",
+      "oldReads": 10,
+      "candidateReads": 7,
+      "saved": 3,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "unknown native method invalidation",
+      "oldReads": 7,
+      "candidateReads": 6,
+      "saved": 1,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "style mutation boundary",
+      "oldReads": 7,
+      "candidateReads": 6,
+      "saved": 1,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "helper boundaries",
+      "oldReads": 16,
+      "candidateReads": 11,
+      "saved": 5,
+      "events": 3,
+      "diagnostics": []
+    },
+    {
+      "name": "line2 placementLayoutsC:true",
+      "oldReads": 9,
+      "candidateReads": 4,
+      "saved": 5,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "line2 placementLayoutsB:true",
+      "oldReads": 9,
+      "candidateReads": 9,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "line17 placementLayoutsC:true",
+      "oldReads": 24,
+      "candidateReads": 4,
+      "saved": 20,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "line17 placementLayoutsB:true",
+      "oldReads": 24,
+      "candidateReads": 24,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "line stock point fallback",
+      "oldReads": 10,
+      "candidateReads": 10,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "line validationOnly fallback",
+      "oldReads": 10,
+      "candidateReads": 10,
+      "saved": 0,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "reentrant record same CTM",
+      "oldReads": 12,
+      "candidateReads": 11,
+      "saved": 1,
+      "events": 1,
+      "diagnostics": []
+    },
+    {
+      "name": "reentrant record changed CTM",
+      "oldReads": 9,
+      "candidateReads": 9,
+      "saved": 0,
+      "events": 0,
+      "diagnostics": [
+        {
+          "code": "UNSUPPORTED_DRAW_PROGRAM",
+          "message": "B path transform changed inside path"
+        }
+      ]
+    }
+  ],
+  "beforeSHA256": "e22e968e8c6b4619216c2e432805d4af469338366fd78e8a4fd2f0b9771a3ae4",
+  "candidateSHA256": "ba667de1409fd435ce9f5e96f8a5ce8bacb89f1f8c46d67c7cb07511e02e6190",
+  "passed": true,
+  "caseCount": 40,
+  "rawSHA256": "7e2ef780abdfc1073a1df4f01c52cfc3ac4c96e7da8debc15df4b7928201de55",
+  "helperSHA256": "f459be0c06a61b1e789c4736464611e690188f54d97ef2cfc7cfef6298e8ec3d"
+}
