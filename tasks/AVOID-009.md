@@ -17,6 +17,12 @@ AVOID-008受入・009開始のローカルcommitは6e016f7。pushはproxy:8080�
 
 初期レビューでcustom診断の優先順位、円筒の補助扱い、custom FX取りこぼしを指摘し修正した。旧browser01のbg source-preservation期待の誤りは、旧来のcenter adapterがnoDで適用可能なため、独立fresh noDとの一致へ試験を訂正。元失敗rawを保持し成功へ置換しない。旧01/02のrunner原本snapshotは欠けており、その歴史的内容の完全再現は主張しない。今後の実行は開始前snapshotを保存する。次は実D所有単位と全区間証明のadapterを順次実装する。
 
+## D初期試作の進捗（未完）
+
+[34IDの固定ソース監査](evidence/AVOID-009/inventory-audit01.md)と[親照合](evidence/AVOID-009/parent-inventory-audit01-review.json)で全登録ID/行番号を確認。分類と戦略案はadapter完成・視覚承認を意味しない。pileの大量heap、wordSearchの無文字decoy capsule、magnetsのDECOYと主文字shadow、wall/glitch/crowdの実sourceコピーを分離して扱う。
+
+[魚眼01の親raw再計算](evidence/AVOID-009/parent-fisheye01-review.json)は10開始snapshot一致・72条件/576時刻観測・安全2条件の8証明polygon/60実観測polygonで実円距離とstage包含を確認。試験円中心は(.5,.5)であり契約初期位置(.5,.42)ではない。小円2safe・70不足、半径.2ではsafe0。最大CSSサイズ1点のTextMetricsだけでは連続サイズを証明できないため、01の安全性証明は受入保留。固定CSS＋均等Canvas拡大、Gaussian位置関係を使う区間境界、同条件での再検証を指定担当が実装中。[次戦略の読み取り監査](evidence/AVOID-009/fisheye-strategy-audit01.md)は一体行/レンズの再配置を提案しており、実装済みとは扱わない。独立親再計算は各segment.circleの実値を使用。別の親メッセージで契約位置を使った空き高さ計算は実fixtureの失敗原因としない。
+
 ## 開始前確認
 
 - ブランチ・HEAD・git status: 上の実開始記録とstart-state01.jsonを参照。従来の計画文は以下に保持する。

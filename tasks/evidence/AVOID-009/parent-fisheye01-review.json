@@ -1,0 +1,63 @@
+{
+  "scope": "Independent raw arithmetic and archived source review; NOT continuous-font geometry acceptance",
+  "rawSHA256": "e110b93650aebd43bf823ee83a88ac1e7ec98e10c6e242a5f6cd6059d7faa4f4",
+  "archivePins": [
+    {
+      "path": "src/09a_placement.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/09g_layoutsC_placement.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/09k_layoutsD_placement.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/09l_layoutsD_fisheye.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/11p_layoutsD.js",
+      "archiveExact": true
+    },
+    {
+      "path": "src/11za_layoutsD_transport.js",
+      "archiveExact": true
+    },
+    {
+      "path": "index.html",
+      "archiveExact": true
+    },
+    {
+      "path": "en/index.html",
+      "archiveExact": true
+    },
+    {
+      "path": "dev/avoidance/layouts-a-fixture.js",
+      "archiveExact": true
+    },
+    {
+      "path": "dev/avoidance/layouts-d-fisheye-test.cjs",
+      "archiveExact": true
+    }
+  ],
+  "counts": {
+    "rows": 72,
+    "safeRows": 2,
+    "insufficientRows": 70,
+    "observations": 576,
+    "safeSamplePolygons": 60,
+    "safeCertificatePolygons": 8
+  },
+  "issues": [],
+  "warnings": [],
+  "limits": [
+    "Only2small-radius non-lens landscape safe. Tested circle center(.5,.5), radius.2 safe0; contract default center(.5,.42) not yet tested.",
+    "Max-size TextMetrics alone not accepted as proof for all continuous smaller font sizes.",
+    "No raster/font-cmap/OFFperformance/visual acceptance yet."
+  ],
+  "acceptedForContinuedInternalWork": true,
+  "correction": "Parent followup message used contractcy.42 in an illustrative available-height calculation, but rawfixture usescy.5. That message is not measured failure-cause evidence. Independent polygon/circle recheck above used each actual segment.circle correctly."
+}

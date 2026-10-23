@@ -1,0 +1,317 @@
+{
+  "auditVersion": 1,
+  "baselineCommit": "6e016f7f516f619b5e517fbeeef4bed500d675be",
+  "baselinePath": "src/11p_layoutsD.js",
+  "baselineSha256": "563f2e90ca86a4196606c48b0ccd0b4e555e672de64781c1a3125d3fd2922978",
+  "observedInventorySha256": "fb65c2e3a5d4e4dd49b0e1f3d54bfe346bf73ecd45f25d8a28f438ba8922d0da",
+  "scope": "Static source only. No product/test/doc changes; no browser/network/image/video execution. Inventory is not implementation, proof, or visual success.",
+  "rows": [
+    {
+      "id": "cube",
+      "baselineRegistrationLine": 175,
+      "constructionPath": "drawAff→mainDraw; drawAffPlain→env.draw",
+      "primaryAndOwned": "All lyric chunks, altCopy, side numeral and top No.; complete faces, edges and contact shadow owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Face schedule, yaw/pitch/pop extrema; preserve face-local writing fields and pair/turn chronology; adjust cube centers/spacing then face writing measure.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "cylinder",
+      "baselineRegistrationLine": 267,
+      "constructionPath": "drawAff→mainDraw; env.draw charFn rings; direct clipped band",
+      "primaryAndOwned": "Front lyric AND deliberate secondary circular source rings; band/glass geometry owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound ring charFn mirrored back half, cos visibility thresholds, spin/tilt/shear and row pitch; change drum radius/row spacing without turning into center-only layout.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "flipCards",
+      "baselineRegistrationLine": 369,
+      "constructionPath": "drawAff→mainDraw; drawAffPlain→env.draw ranks; env.draw decoy peek",
+      "primaryAndOwned": "Card faces, corner lyric ranks and center glyphs; bodies/shadows owned",
+      "auxiliaryAndIndependent": "Face-down table and literal ?/star peek are independent decor",
+      "requiredStrategyAndBounds": "Bound face-up switch, flip squashes/perspective-height proxy and stagger; reorganize card rows/pitch together.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "accordion",
+      "baselineRegistrationLine": 467,
+      "constructionPath": "drawAff→mainDraw",
+      "primaryAndOwned": "Printed glyphs, fold panels, covers and strip shadow owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound fold cosine, alternating panel heights and vertical axis swap; adjust panel pitch/fold depth, retaining ordered rows.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "flag",
+      "baselineRegistrationLine": 546,
+      "constructionPath": "drawAff→mainDraw; direct cloth shading clip",
+      "primaryAndOwned": "Glyphs with cloth silhouette/trims, pole/rope attachment owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound finite-difference slope, discrete 30-strip accumulation, sampled interpolation and swallowtail domain; change cloth measure/wave/path while retaining pole attachment.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "ribbon",
+      "baselineRegistrationLine": 644,
+      "constructionPath": "mainDraw per path glyph",
+      "primaryAndOwned": "Lyric, twisted ribbon band/back/tails/shadow owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound 90-sample arc-length inverse and 64-segment band, twist and reveal; adjust path measure/bend/rows, keep glyph-band ownership.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "pendulum",
+      "baselineRegistrationLine": 744,
+      "constructionPath": "mainDraw cradle or fan/chunks",
+      "primaryAndOwned": "Glyph bobs/plates, strings and pivot/frame owned",
+      "auxiliaryAndIndependent": "Impact sparks independent decor",
+      "requiredStrategyAndBounds": "Mode-specific angular/length/drop envelopes, string attachments and frame; adjust anchors/pitch/string length rather than detached glyph motion.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "pile",
+      "baselineRegistrationLine": 862,
+      "constructionPath": "mainDraw falling glyph; env.draw charFn heap",
+      "primaryAndOwned": "Falling/settled source glyphs primary; mound supporting scene requires explicit ownership",
+      "auxiliaryAndIndependent": "Seeded heap up to 200 filler glyphs is dense tiledAux candidate; dust independent decor",
+      "requiredStrategyAndBounds": "Bound fall/bounce/settled slope, layer schedule and mound profile; adapt settled row pitch/peak, preserve heap route for 018 after named review.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "blocks",
+      "baselineRegistrationLine": 957,
+      "constructionPath": "drawAff→mainDraw with separate context body transform",
+      "primaryAndOwned": "Lyric blocks, projected top/side faces and supporting blank overhang blocks owned",
+      "auxiliaryAndIndependent": "Outer shape-only toy blocks and floor are independent scene decor unless explicitly coupled",
+      "requiredStrategyAndBounds": "Bound pivoted rotation/squash/fall/hop and oblique faces; change block row/pitch with supports, not just face glyph.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "balloons",
+      "baselineRegistrationLine": 1049,
+      "constructionPath": "mainDraw body; env.draw rim and clipped gloss",
+      "primaryAndOwned": "Every source glyph body, fat rim, clipped gloss, knot and attached strings owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound overshooting outBack size, bob/rotation/fly and tied endpoints; reorganize balloon rows/string length preserving bunch relation.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "magnets",
+      "baselineRegistrationLine": 1118,
+      "constructionPath": "mainDraw lyric; env.draw lyric shadow and decoys",
+      "primaryAndOwned": "Lyric magnets and stroke/shadow copies owned",
+      "auxiliaryAndIndependent": "DECOY literal edge magnets, fridge board/handle independent decor",
+      "requiredStrategyAndBounds": "Bound snap overshoot/lift shadow offsets/rotation; rearrange lyric magnet rows while keeping board writing field constraints.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "tiles",
+      "baselineRegistrationLine": 1198,
+      "constructionPath": "drawAff→mainDraw; env.draw point values and SCORE",
+      "primaryAndOwned": "Tile faces/edges, point values, lyric, rack and total score metadata owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound tile drop/slide/exit/rotation and rack lip occlusion; adapt tile/rack pitch/rows and score placement jointly.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "bulbs",
+      "baselineRegistrationLine": 1293,
+      "constructionPath": "mainDraw; env.draw subtitle",
+      "primaryAndOwned": "Sign board, shadow, bulb rim, complete lyric and altCopy subtitle owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound board outBack scale, arrow tip and bulb halo; alter board writing field and rim pitch preserving subtitle margin.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "ledScroll",
+      "baselineRegistrationLine": 1386,
+      "constructionPath": "mainDraw scroll copies; env.draw info; clip; offscreen dot-pattern tiles",
+      "primaryAndOwned": "Complete scrolling source copies, module housing, LED masks/dots and info strip incl altCopy/time owned",
+      "auxiliaryAndIndependent": "No auxiliary exemption: repeated main text is source scroll",
+      "requiredStrategyAndBounds": "Bound snapped modulo scroll at wrap boundaries and panel clip in same space; adapt display width/lanes/info strip while preserving complete source-scroll schedule.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "billboard",
+      "baselineRegistrationLine": 1465,
+      "constructionPath": "mainDraw; env.draw No./time; direct clipped lighting",
+      "primaryAndOwned": "Board, source lyric, tag/time and attached supporting posts/lamps owned",
+      "auxiliaryAndIndependent": "Ground/horizon scene decor",
+      "requiredStrategyAndBounds": "Bound rise, board writing field, posts and clipped lamp cones; adjust board aspect/post geometry together.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "crowdBubbles",
+      "baselineRegistrationLine": 1544,
+      "constructionPath": "mainDraw hero; env.draw crowd captions",
+      "primaryAndOwned": "Hero bubble/tail/lyric primary; crowd lyric fragments and their bubbles default primary pending named review",
+      "auxiliaryAndIndependent": "Literal REACT captions may be independent decor only when unit provenance identifies them",
+      "requiredStrategyAndBounds": "Bound life-generation slots, pop overshoot/tails and fragment text widths; adapt hero/crowd spacing; no blanket crowd exemption.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "crossword",
+      "baselineRegistrationLine": 1614,
+      "constructionPath": "mainDraw lyric cells; env.draw numbers/pencil/clues",
+      "primaryAndOwned": "Lyric grid cells, paper, numbers, crossing entries and note/romaji clues owned",
+      "auxiliaryAndIndependent": "None; pencil crossings are deliberately selected entries, not dense tiled background",
+      "requiredStrategyAndBounds": "Bound typing clocks/grid growth and clue extent; adapt cell measure/clue arrangement preserving crossings and source order.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "wordSearch",
+      "baselineRegistrationLine": 1723,
+      "constructionPath": "mainDraw path; direct fillText filler or env.draw charFn fallback",
+      "primaryAndOwned": "Path lyric, find capsule and grid writing panel owned",
+      "auxiliaryAndIndependent": "Off-path seeded kana filler is dense tiledAux candidate; earlier decoy capsules independent decor",
+      "requiredStrategyAndBounds": "Bound path/grid dimensions, capsule sweep and both filler branches; change cell pitch/path direction jointly, preserve onPath blanking.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "puzzle",
+      "baselineRegistrationLine": 1828,
+      "constructionPath": "mainDraw repeated under jigsaw clip; direct piece shadow/seams",
+      "primaryAndOwned": "Every clipped lyric portion and piece plate/seam/shadow owned",
+      "auxiliaryAndIndependent": "Landing flash decor follows piece but is not text",
+      "requiredStrategyAndBounds": "Bezier knob extrema, settled compound clip union plus each moving transform/clip and arrival path; change piece grid/paths with complete source coverage.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "shadowPlay",
+      "baselineRegistrationLine": 1919,
+      "constructionPath": "mainDraw solid; drawAff→mainDraw cast copies",
+      "primaryAndOwned": "Solid and cast lyric primary; floor/lamp relation must remain explicit scene ownership",
+      "auxiliaryAndIndependent": "Sun/lamp/floor background fields may stay independent if adapter preserves relation",
+      "requiredStrategyAndBounds": "Bound cast shear/scale/floor clip and finite blur support at alpha threshold; retain light direction, floor baseline and solid/cast relationship.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "kaleido",
+      "baselineRegistrationLine": 1994,
+      "constructionPath": "mainDraw hero; env.draw in mirrored sector clips",
+      "primaryAndOwned": "Complete hero lyric and central disc/band owned primary",
+      "auxiliaryAndIndependent": "6–12 sectors × five radial background captions dense tiledAux candidate; sector lines independent decor",
+      "requiredStrategyAndBounds": "Bound hero pop/disc or full-width band writing domain; adapt hero field/disc radius; defer named radial repetitions to 018; no center-only promotion.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "dominoes",
+      "baselineRegistrationLine": 2055,
+      "constructionPath": "drawAff→mainDraw; context-transformed face/pips",
+      "primaryAndOwned": "Printed glyph, face/side/shadow/pips owned per domino",
+      "auxiliaryAndIndependent": "Floor line independent decor",
+      "requiredStrategyAndBounds": "Bound per-piece fall/stand outBack angle, pivot and side thickness; adapt row pitch while retaining chain direction and phase.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "burst",
+      "baselineRegistrationLine": 2120,
+      "constructionPath": "mainDraw; procedural star polygons",
+      "primaryAndOwned": "Complete lyric with all star plates and plate shadow owned",
+      "auxiliaryAndIndependent": "Shock ring, speed lines and debris independent decor",
+      "requiredStrategyAndBounds": "Bound pop/boil-step vertices/rotation; vary ray proportions/writing field preserving plate text fit.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "fisheye",
+      "baselineRegistrationLine": 2181,
+      "constructionPath": "mainDraw each scaled/reflowed glyph",
+      "primaryAndOwned": "Every lens-scaled lyric glyph primary; lens marker ownership explicit",
+      "auxiliaryAndIndependent": "Grid/lens handle independent decor unless intentionally attached to relocated lens",
+      "requiredStrategyAndBounds": "Bound Gaussian scale, sum-of-width reflow, best-glyph discontinuities and sweep/pingpong; adapt lens path/strength and row pitch together.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "wall",
+      "baselineRegistrationLine": 2249,
+      "constructionPath": "drawAff→mainDraw front; drawAffPlain→env.draw other wall",
+      "primaryAndOwned": "Front lyric/wall primary; other-wall 3/4 rows of repeated line default primary pending named review",
+      "auxiliaryAndIndependent": "Other-wall repetition is an auxiliary candidate requiring unit-level review, never whole wall exemption",
+      "requiredStrategyAndBounds": "Perspective denominator positive over all source domains; numeric Jacobian per-glyph is actual draw matrix, not exact projective text; bound yaw and moving wall length, both face writing fields.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "origami",
+      "baselineRegistrationLine": 2333,
+      "constructionPath": "mainDraw gate/blintz; over/under face painter split",
+      "primaryAndOwned": "Lyric, sheet, shadow, creases and folding flaps owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound flap cosine sign/topology, shrink and diamond writing field; adapt sheet aspect/text measure retaining front/back painter order.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "zipper",
+      "baselineRegistrationLine": 2427,
+      "constructionPath": "mainDraw below opaque cloth; env.poly covers (no Canvas text clip)",
+      "primaryAndOwned": "Complete lyric, cloth halves, teeth/tape/stitch/slider/tab owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Bound moving gap and opaque cover domains/vertical swap; preserve reveal composition while adapting zipper path/tooth pitch/text field; do not misreport as literal ctx.clip.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "sliceStack",
+      "baselineRegistrationLine": 2505,
+      "constructionPath": "mainDraw under clips/context transforms; extrusion copies",
+      "primaryAndOwned": "All source slices, extrusion copies and blind slats/rail/cord owned",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Track stage-space clip established before translations/scales, slice union and culling; bound dx/dy/depth and blind cosine; adapt pitch/depth with complete source coverage.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "glitchGrid",
+      "baselineRegistrationLine": 2592,
+      "constructionPath": "mainDraw clean hero; env.draw clipped full copies and CH./REC labels",
+      "primaryAndOwned": "Clean source AND visible full-source cell fragments default primary; cell plates and labels owned",
+      "auxiliaryAndIndependent": "No named reviewed tiledAux exemption established",
+      "requiredStrategyAndBounds": "Bound seeded finite rate/step states, zoom/offset/slit and per-cell clip; adapt cell field/clean lane; preserve source fragment provenance and painter order.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "mosaicTiles",
+      "baselineRegistrationLine": 2669,
+      "constructionPath": "mosaicSample offscreen fillText/strokeText/getImageData; mainDraw through animated tile clip",
+      "primaryAndOwned": "Offscreen source raster is primary provenance; lit tile union, fat primary ink and bevels owned",
+      "auxiliaryAndIndependent": "Grout floor independent scene decor",
+      "requiredStrategyAndBounds": "Sampler/font revision/D threshold domain separate from stage tile pitch; bound tile overshoot/rotation and clip intersection; adapt tile pitch/writing field with nonempty sample coverage.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "maskReveal",
+      "baselineRegistrationLine": 2753,
+      "constructionPath": "mainDraw withFill/rim; env.draw label; offscreen fillText texture",
+      "primaryAndOwned": "Primary glyph, repeated line texture INSIDE fill, rim and altCopy label owned",
+      "auxiliaryAndIndependent": "None; repeated texture is not stage tiledAux",
+      "requiredStrategyAndBounds": "Bound glyph/rim/label; preserve glyph-local DOMMatrix pattern and fillOf/charFns interaction; adapt writing measure without moving texture as separate scene text.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "contour",
+      "baselineRegistrationLine": 2817,
+      "constructionPath": "direct strokeText/fillText rings; mainDraw full lyric; env.draw metadata",
+      "primaryAndOwned": "Selected first kanji/eligible source glyph, all contour rings/fill, full lyric and metadata primary",
+      "auxiliaryAndIndependent": "None",
+      "requiredStrategyAndBounds": "Actual Canvas text metrics at bs plus maximum half stroke, modulo phase/grow and painter fill; adapt contour radius/spacing and side lyric field, preserve large glyph identity.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "halftoneBig",
+      "baselineRegistrationLine": 2885,
+      "constructionPath": "coverage offscreen fillText/getImageData; mainDraw duo/fallback/screen clip",
+      "primaryAndOwned": "Offscreen alpha source provenance, screened lyric and optional offset duo copy primary",
+      "auxiliaryAndIndependent": "None; screen dots/lines construct lyric",
+      "requiredStrategyAndBounds": "Sampler coverage threshold separate from rotated stage screen; bound dot/line growth, enlarged stroke and duo offset, crop mode and 4000 cap; adapt screen pitch/writing measure preserving construction.",
+      "status": "source-audit-only; adapter-proof-pending"
+    },
+    {
+      "id": "stencil",
+      "baselineRegistrationLine": 2939,
+      "constructionPath": "mainDraw under nozzle then evenodd clips; env.draw metadata; direct mist/drips",
+      "primaryAndOwned": "Bridged primary glyph, spray/drips, marks/metadata owned",
+      "auxiliaryAndIndependent": "Nozzle cloud may be independent transient decor if reviewed",
+      "requiredStrategyAndBounds": "Track pre-tilt nozzle clip, evenodd bridge holes, inverse transform composition and later spray/drip support; adapt stencil field/spray path while retaining bridges and source ink.",
+      "status": "source-audit-only; adapter-proof-pending"
+    }
+  ],
+  "inventoryEvolution": "Initial observed inventory SHA-256 03a06606135e3cfd00575a2b1985dbd2fe42f4f44e5a3eae96d5143b4a54228b lacked pile auxiliary candidate and wordSearch/magnets independent unit entries. Observed final inventory adds these; primary magnets summary still conflates decoys, wordSearch metadata is absent from fixed baseline; wall/crowd/glitch unit decisions remain pending."
+}
