@@ -1,0 +1,47 @@
+{
+  "scope": "literal-only evidence preload preparation; not executed; no browser/timing",
+  "base": "dev/avoidance/layouts-c-perf-gate-support.cjs",
+  "baseSHA256": "deb031e0bc8de43d354f883bf23290aea971c0f78d71304893402d8fa7c1c330",
+  "derivative": "dev/avoidance/layouts-c-immutable-edge-perf-gate-support.cjs",
+  "derivativeSHA256": "1ca6972719933c86f50c01678ebd21461ae3e62e421e273256cdf91b93c541a9",
+  "operations": [
+    {
+      "old": "payload-tree-diagnose01",
+      "new": "immutable-edge-diagnose01",
+      "occurrences": 2
+    },
+    {
+      "old": "payload-tree-runtime02",
+      "new": "immutable-edge-runtime03",
+      "occurrences": 2
+    },
+    {
+      "old": "7bd83c236cb7b631d9e5b4ce8c4ade161271b4b2",
+      "new": "8ff3dd8487a4fb4193d00ef9caa296372c751b4f",
+      "occurrences": 1
+    },
+    {
+      "old": "cache-payload-tree-browser-preparation01/preparation-pins.json",
+      "new": "immutable-edge-browser02-parent-gate.json",
+      "occurrences": 1
+    },
+    {
+      "old": "prep.actualPackagePins",
+      "new": "prep.packagePins",
+      "occurrences": 1
+    }
+  ],
+  "exactReverse": true,
+  "fixedRunnerFixtureCorpus": {
+    "dev/avoidance/layouts-c-perf-shadow-native.cjs": "6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756",
+    "dev/avoidance/layouts-c-perf-shadow-native-fixture.js": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+    "dev/avoidance/layouts-c-perf-normalized-corpus.json": "4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc"
+  },
+  "unchanged": "All executable logic except fixed literal namespace/source and package pin property selection; original MainThread-inclusive scan/resource250MiB/prepost/pin guards retained. No browser helper/timer wrappers or workload changes.",
+  "requiredFutureFiles": [
+    "immutable-edge-diagnose01-parent-gate.json",
+    "immutable-edge-runtime03.json",
+    "immutable-edge-runtime03-raw.json"
+  ],
+  "notExecuted": true
+}

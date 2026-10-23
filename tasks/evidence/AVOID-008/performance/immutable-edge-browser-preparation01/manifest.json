@@ -1,0 +1,42 @@
+{
+  "scope": "preparation only; no browser invocation; exact original assertions/workload retained",
+  "base": "dev/avoidance/layouts-c-payload-tree-browser-test.cjs",
+  "baseSHA256": "598aed462b2dce48543d4322cc4b456e2839aa9904c668a689e8b70c4f5bd866",
+  "derived": "dev/avoidance/layouts-c-immutable-edge-browser-test.cjs",
+  "derivedSHA256": "c2821b5285f90b7c35ca4e3c7f48f57670644b6dfec5f4bb5956e8a5fe2a8504",
+  "operations": [
+    {
+      "old": "'dev/avoidance/layouts-c-payload-tree-browser-test.cjs',",
+      "new": "'dev/avoidance/layouts-c-payload-tree-browser-test.cjs','dev/avoidance/layouts-c-immutable-edge-browser-test.cjs',",
+      "occurrences": 1
+    },
+    {
+      "old": "warmCalls=records;assert(coldJSON",
+      "new": "warmCalls=records,warmEdgeStats=A.layoutsCImmutableEdgeStats();assert(coldJSON",
+      "occurrences": 1
+    },
+    {
+      "old": "const row={spec,coldCalls,warmCalls,cache:",
+      "new": "const row={spec,coldCalls,warmCalls,edgeStats:{afterWarm:warmEdgeStats},cache:",
+      "occurrences": 1
+    },
+    {
+      "old": "row.coldFrames=await render(cold);row.warmFrames=await render(warm);",
+      "new": "row.coldFrames=await render(cold);row.edgeStats.afterColdRender=A.layoutsCImmutableEdgeStats();row.warmFrames=await render(warm);row.edgeStats.afterWarmRender=A.layoutsCImmutableEdgeStats();",
+      "occurrences": 1
+    }
+  ],
+  "exactReverse": true,
+  "addedRawOnly": "rows[*].edgeStats.afterWarm; selected rows also afterColdRender/afterWarmRender",
+  "unchanged": [
+    "40pairs fullvalue/aliases",
+    "28negative labels/assertions",
+    "4nonC",
+    "schema20to21",
+    "dual128budget/oversize",
+    "LRU",
+    "18+18native frames/15+15 observations",
+    "original100 performance runner/fixture/corpus"
+  ],
+  "execution": "not authorized yet"
+}
