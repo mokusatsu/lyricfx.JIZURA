@@ -1,0 +1,9 @@
+# AVOID-008 dependency-string memo paired browser01
+
+One parent-authorized invocation from helper4ef115334941ddb14d6435083e203eb157d1ddc3, unchanged product9bdb23287879ae12f054af7ef71d4ea725a56534/full84 JA0f0989faa968e4e1c165543e8837a16f41e234a909c31cfbc7d438a7af260874 versus prior6b. Model gpt-6.1-sol medium.40normal+2corner targets,84fast reads/72native frames per realm,144total. Full deep/ordered/canonical equality includes every cache/output/program/alias/geometry/pixel/observation/error field with no projection or diagnostics exclusion.
+
+Raw results.json.gz SHA25663c0adeb1923daab761e9b9d28e0a5bc7bb439e04029df060247ac0975a51da9 (2462221bytes). Baseline/candidate full ordered result SHA both e0a7404f95a3c7081c42d1e0b82762a41d9e9ead7c75b17acf5cdcab44331993; canonical78a186beacc2659c1780a4b2bf9af6a3535c5cc5c4965d1cb71f69d9779dd774. All row/target hashes retained. Errors/input/package drift empty; fixed baseline archive unchanged.112input archives reverified by compressed/decoded SHA, samebytes references preferred and only changed inputs newly archived.
+
+Actual node393419/startTicks11766958, Python393414 Popen.wait kernel0/reapedtrue/gonetrue. Awaited browser/server close, before/after livejobs0, Z separately preserved. Full execution.json.gz/stdout.log.gz retained. Prelaunch300965888bytes, wrapper post-results-save293859328bytes free, above250MiB. No monitor violation/retry/source/helper/gate changes.
+
+No timing/original100/formal1000/CDP/security mutation/fuzz/images/video/public verification. Historical performance failures/reserve violation retained; current765/4add formal1000 remains unverified. Original100 helper is prepared but actual timing requires this browser's parent acceptance plus separate gate/authorization. No performance benefit/acceptance claim. Stop after evidence commit for parent raw review.
