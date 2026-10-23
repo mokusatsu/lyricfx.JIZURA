@@ -1,0 +1,94 @@
+{
+  "scope": "Independent arithmetic over saved performance01/02 raw arrays; no rerun or changed samples",
+  "runs": [
+    {
+      "id": "fisheye01",
+      "config": {
+        "sizes": [
+          100,
+          1000
+        ],
+        "warmup": 3,
+        "samples": 6,
+        "stress": true,
+        "runtimeProfile": false
+      },
+      "results": [
+        {
+          "n": 100,
+          "beforeP95": 30.399999999906868,
+          "afterP95": 1250.2999999998137,
+          "ratio": 41.12828947380408,
+          "planningPass": false,
+          "renderDelta": 0.7999999998137355,
+          "renderPass": true,
+          "coldAfter": {
+            "sourceMs": 50.10000000009313,
+            "finalizeMs": 1616.2999999998137,
+            "totalMs": 1666.3999999999069
+          }
+        },
+        {
+          "n": 1000,
+          "beforeP95": 249.70000000018626,
+          "afterP95": 11731.200000000186,
+          "ratio": 46.98117741286117,
+          "planningPass": false,
+          "renderDelta": 0.5,
+          "renderPass": true,
+          "coldAfter": {
+            "sourceMs": 229,
+            "finalizeMs": 10821.100000000093,
+            "totalMs": 11050.100000000093
+          }
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "fisheye02",
+      "config": {
+        "sizes": [
+          100,
+          1000
+        ],
+        "warmup": 3,
+        "samples": 6,
+        "stress": true,
+        "runtimeProfile": false
+      },
+      "results": [
+        {
+          "n": 100,
+          "beforeP95": 38.39999999990687,
+          "afterP95": 62.10000000009313,
+          "ratio": 1.6171875000063476,
+          "planningPass": true,
+          "renderDelta": 0.9999999995343387,
+          "renderPass": true,
+          "coldAfter": {
+            "sourceMs": 50.89999999990687,
+            "finalizeMs": 1969.2999999998137,
+            "totalMs": 2020.1999999997206
+          }
+        },
+        {
+          "n": 1000,
+          "beforeP95": 282.09999999962747,
+          "afterP95": 1647.7999999998137,
+          "ratio": 5.841191067004572,
+          "planningPass": false,
+          "renderDelta": 1.3999999999068677,
+          "renderPass": true,
+          "coldAfter": {
+            "sourceMs": 233.89999999990687,
+            "finalizeMs": 18552.799999999814,
+            "totalMs": 18786.69999999972
+          }
+        }
+      ],
+      "passed": false
+    }
+  ],
+  "publicChecks": 0
+}

@@ -1,0 +1,35 @@
+{
+  "scope": "Parent fresh browser rerun of frozen registry03; schema/routing/zerooffset only, not synthetic geometry safety",
+  "exitCode": 0,
+  "sameAllFieldsExceptTimestamps": true,
+  "sourcePinsAndActualSnapshotsExact": true,
+  "actualInputSnapshotDirectory": "/tmp/avoid009-parent-rerun-inputs",
+  "environmentPreloadClarification": "Preload was installed to remap original hardcoded registry03 directory, but archived runner derives input folder from output basename. Existing output envvar produced own parent-rerun namespace, so remap was not invoked. No assertion/product changes.",
+  "parentVerificationCorrection": "First postprocessing assumed actual-inputs and failed FileNotFound; corrected to runner-generated parent-rerun-inputs, all8 pins matched. Functional browser test itself exited0.",
+  "registrationCases": 4,
+  "returns": 13,
+  "preservationControls": 5,
+  "zeroOffsetCameraPNGEqual": true,
+  "sourceReview": "D clipless replay keeps live root, skips zero shift, translates inverse linear(delta*scale) before recorded local operations; clip/non-D behavior unchanged.",
+  "historicFailures": "registry01/02 zero-offset FAIL retained, no success substitution",
+  "files": {
+    "execution.log": {
+      "sha256": "cf4a4bdc07690e92fe185b6f07fa4e8272a134592a52d063e71d712ba7881072",
+      "bytes": 4791
+    },
+    "start.json": {
+      "sha256": "fdec77cf1cbd93e6751c1c9a27258f3f820ebdefa7dae4567838f7e296a27527",
+      "bytes": 1476
+    },
+    "environment-preload.cjs": {
+      "sha256": "ce4a406aa81afa0a0ed2af84ee7c58112e297f65b0df26af0c194af0518f2702",
+      "bytes": 393
+    },
+    "tasks/evidence/AVOID-009/parent-rerun.json": {
+      "sha256": "9aa77c94c9d402b17b5d3364b98f3a7a5279f9382abb0366ca0f30c8714b2fc9",
+      "bytes": 7313
+    }
+  },
+  "publicChecks": 0,
+  "parentImageVideoViews": 0
+}
