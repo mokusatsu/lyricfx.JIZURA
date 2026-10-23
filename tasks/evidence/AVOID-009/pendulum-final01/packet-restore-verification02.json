@@ -1,0 +1,35 @@
+{
+  "archive": "/tmp/avoid009-pendulum-final-packet02.tar.gz",
+  "bytes": 2635586,
+  "sha256": "d32f78a378299a6fcdff84dab00c8dca45cb000a0ee96c53cb51d8a82cc36e46",
+  "all106ArchiveMembersPinnedAndVerified": true,
+  "canonicalCommit": "bc39ce2b7893a514e6ddd7e053312dde469f8640",
+  "baselineCommit": "5f6e7715cfc27ed89c85847b326b5503ec5a2466",
+  "projectRestoreTests": [
+    {
+      "manifest": "records/pendulum-native01/pre-run-native-final03.json",
+      "projectFiles": 148,
+      "allExact": true,
+      "externalRuntimeFilesChecked": 566,
+      "GitCalls": 0,
+      "browserExecuted": false,
+      "networkUsed": false,
+      "dest": "/tmp/avoid009-pendulum-restored-final03"
+    },
+    {
+      "manifest": "records/pendulum-native01/pre-run-run02.json",
+      "projectFiles": 140,
+      "allExact": true,
+      "externalRuntimeFilesChecked": 566,
+      "GitCalls": 0,
+      "browserExecuted": false,
+      "networkUsed": false,
+      "dest": "/tmp/avoid009-pendulum-restored-native02"
+    }
+  ],
+  "externalRuntimeUniqueSHA256": 342,
+  "externalRuntimeUncompressedBytes": 510430406,
+  "externalRuntimeNotEmbeddedAndNotFullyGitDurable": true,
+  "restoreCommand": "python3 restore-thin-packet.py --manifest records/pendulum-native01/pre-run-native-final03.json --dest NEW_EMPTY_DIRECTORY --repo /workspace/lyricfx.JIZURA --git-cas /tmp/avoid009-pendulum-input-cas01 --check-runtime",
+  "replayRequiresFreshSnapshotAndParentLocalhostPermission": true
+}
