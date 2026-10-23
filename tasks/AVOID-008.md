@@ -1,11 +1,13 @@
 # AVOID-008 拡張Cの34レイアウトの対応
 
-- 状態: ローカル検証済み
+- 状態: 実環境検証待ち
 - 段階: 通常軌道
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
 
 ## 2026-10-23 JST 現在の指示と開始記録
+
+- 最終製品・比較をwork2177f6dへcommit/push済み。Sites source f80cd96e9c8bc5e077da1a201df4108579036b45をmainへpushし、同commitの607files/229530398raw bytesをローカル検証したtar.xzで公開操作。[公開戻り値](evidence/AVOID-008/publication-final01.json)はsucceeded（appgdep_6adb257ec51c8191a47a4923d4e7cb66）。公開URL接続・状態poll・表示・動画/起動確認は0、公開結果確認成功とはしない。[必要4構図のMP4比較](https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-008/local-20261023-01/)への人間動作確認を依頼する段階に到達したため、状態を実環境検証待ちへ同期。待つのは人間4問の回答だけであり、公開検証ではない。4問は未回答、008未完了、009以降未着手。[確認点・親判定](reviews/AVOID-008-local-20261023-01.md)。
 
 - 最終8source+JAENをmainへ統合、[全86製品のGit fdb一致](evidence/AVOID-008/parent-final8-main-integration01-pins.json)と既存pyc保持、実buildを確認。[同条件core22ジョブの親raw照合](evidence/AVOID-008/parent-final8-core-regression01-review.json)は両側8PASS/3既知FAIL・全11ログのpathだけ正規化で一致。保存本体は未到達の既知不一致を維持。[最終4構図の対応・ローカル日英起動・Sitesコピーを親受入](evidence/AVOID-008/parent-final-four-binding01-review.json)：768frame/clock対照、8MP4は原本維持、79assets+manifest/85localrefs、既存Sites528files保持。Swiss adaptedは原engineとの96native+原keys3で対応し、新96encoder実測とは主張しない。ローカル起動の初回loader欠落FAILも保持、参照訂正後日英成功。親の画像閲覧0、公開結果確認0。実装・必要local・親レビューを満たしローカル検証済みへ同期、残る人間4問のため比較local-20261023-01のみ公開操作へ進む。全variantの視覚承認や保存成功ではなく、009以降は未着手。
 
