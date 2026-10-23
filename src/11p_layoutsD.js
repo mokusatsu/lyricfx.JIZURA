@@ -734,13 +734,23 @@ reg('ribbon', {
     const back = shade(sc, pc, -0.42), tc = onCol(sc, pc);
     const mot = env.fx.motion ?? 0.7;
     let bb = null;
-    const x0 = W * 0.09, x1 = W * 0.91, L = x1 - x0;
+    let x0 = W * 0.09, x1 = W * 0.91, L = x1 - x0;
     // common text size so the rows match
     let size = u * 0.16;
     for (const r of rowsT) { let a = 0; for (const ch of r) a += adv(Pm.font, ch) * 1.05; size = Math.min(size, L * 0.58 / Math.max(1, a)); }
     size = Math.min(size, H * 0.62 / (nR * 2.3));
-    const bw = size * 0.72;
-    rowsT.forEach((row, ri) => {
+    const nativeSize=size,nativeX0=x0,nativeL=L;
+    const recipe=cut.placementLayoutsD===true?cut.layoutDRecipe:null;
+    // D-only source catalogue; OFF retains its original measurements and clocks.
+    const nativeD = cut.placementLayoutsD === true;
+    const clockCatalog=nativeD?{size:nativeSize,x0:nativeX0,L:nativeL,rows:rowsT.slice()}:null;
+    const forms=nativeD?[1,2,3].map(k=>rowsT.flatMap((text,sourceRow)=>{
+      const chars=[...text],chunks=k===1?[text]:chunksK(text,k),groups=[];let cursor=0;
+      for(const chunk of chunks){const slots=[];for(const ch of chunk){if(chars[cursor]!==ch)throw Object.assign(Error('Contiguous original ribbon slots required'),{code:'RIBBON_SOURCE_CATALOG'});slots.push(cursor++);}while(chars[cursor]===' ')slots.push(cursor++);if(slots.length)groups.push({sourceRow,slots});}
+      if(cursor!==chars.length)throw Object.assign(Error('Complete original ribbon spaces required'),{code:'RIBBON_SOURCE_CATALOG'});return groups;
+    })).filter((f,i,all)=>all.findIndex(q=>JSON.stringify(q)===JSON.stringify(f))===i):null;
+    const originalClocks=recipe?rowsT.map((row,ri)=>{
+      const size=nativeSize,x0=nativeX0,L=nativeL;
       const cy = H / 2 + (ri - (nR - 1) / 2) * size * 2.35;
       const A = H * Pm.amp * (nR > 1 ? 0.55 : 1) * (1 + 0.12 * Math.sin(env.ltb * 1.1 + ri));
       const ph = Pm.ph + ri * 2.1 + env.ltb * 0.9 * mot * 0.6;
@@ -756,21 +766,50 @@ reg('ribbon', {
       const tau = f => { const d = Math.abs(f - 0.5); return d < 0.33 ? 1 : Math.cos(Math.PI * (d - 0.33) / 0.17); };
       const e = E.inOutCubic(J.clamp((lt - ri * 0.12) / 0.75)) * (1 - E.inCubic(env.pOut));
       const vis = f => (Pm.reveal === 'left' ? f <= e : Math.abs(f - 0.5) <= e / 2);
+      const chars = [...row], ads = chars.map(ch => adv(Pm.font, ch) * size * 1.05), tot = ads.reduce((a, b) => a + b, 0);
+      let s0 = TL / 2 - tot / 2;
+      const slots=chars.map((ch,i)=>{const sc0=s0+ads[i]/2;s0+=ads[i];const f=sc0/TL;return {id:ri+':'+i,row:ri,slot:i,ch,advance:ads[i],sc0,f,visible:vis(f),rawMi:miAt(env, ri * 0.12 + (Pm.reveal === 'left' ? f : Math.abs(f - 0.5) * 2) * 0.6)};});
+      return {row:ri,text:row,TL,slots,pts,acc,e};
+    }):null;
+    if(recipe){if(!Array.isArray(recipe.strips)||!forms.some(f=>JSON.stringify(f)===JSON.stringify(recipe.strips))||![recipe.spanFactor,recipe.amplitudeFactor,recipe.bandFactor,recipe.fontScale,recipe.rowPitch].every(Number.isFinite))throw Object.assign(Error('Finite natural source ribbon recipe required'),{code:'RIBBON_SOURCE_RECIPE'});size=nativeSize*recipe.fontScale;L=nativeL*recipe.spanFactor;x0=W/2-L/2;x1=x0+L;}
+    const bw=size*(recipe?.bandFactor??.72),drawingRows=recipe?recipe.strips.map(strip=>({...strip,text:strip.slots.map(i=>[...rowsT[strip.sourceRow]][i]).join('')})):rowsT.map((text,sourceRow)=>({text,sourceRow,slots:[...text].map((_,i)=>i)}));
+    if (nativeD) env.placementDGeometry = {kind:'ribbon',size,bw,x0,x1,L,nR,rows:[],clockCatalog,forms,spanFactor:recipe?.spanFactor??1,amplitudeFactor:recipe?.amplitudeFactor??1,bandFactor:recipe?.bandFactor??.72,rowPitch:recipe?.rowPitch??size*2.35,addedTails:recipe?2*(drawingRows.length-rowsT.length):0,...(recipe?{originalClocks}: {})};
+    drawingRows.forEach((strip,layoutRow) => {
+      const row=strip.text,ri=strip.sourceRow;
+      const paint = (owner, kind, ...args) => nativeD ? env.withDrawRole('primary', 'ribbon.'+layoutRow+'.'+owner, () => env[kind](...args)) : env[kind](...args);
+      const cy = recipe ? H/2+(layoutRow-(drawingRows.length-1)/2)*recipe.rowPitch : H / 2 + (ri - (nR - 1) / 2) * size * 2.35;
+      const A = H * Pm.amp * (nR > 1 ? 0.55 : 1) * (1 + 0.12 * Math.sin(env.ltb * 1.1 + ri)) * (recipe?.amplitudeFactor??1);
+      const ph = Pm.ph + ri * 2.1 + env.ltb * 0.9 * mot * 0.6;
+      const tl = Math.tan(Pm.tilt * J.DEG) * (ri % 2 ? -1 : 1);
+      const path = x => [x, cy + A * Math.sin(J.TAU * Pm.freq * (x - x0) / L + ph) + (x - W / 2) * tl];
+      // arc-length table
+      const NS = 90, pts = [], acc = [0];
+      for (let i = 0; i <= NS; i++) pts.push(path(x0 + L * i / NS));
+      for (let i = 1; i <= NS; i++) acc.push(acc[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+      const TL = acc[NS];
+      const atS = s => { s = J.clamp(s, 0, TL); let lo = 0, hi = NS; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (acc[m] <= s) lo = m; else hi = m; } const f = (s - acc[lo]) / Math.max(1e-6, acc[hi] - acc[lo]); const p = [J.lerp(pts[lo][0], pts[hi][0], f), J.lerp(pts[lo][1], pts[hi][1], f)]; const ang = Math.atan2(pts[hi][1] - pts[lo][1], pts[hi][0] - pts[lo][0]); return { p, ang }; };
+      // twist: flat front in the middle, ends folded to show the back
+      const tau = f => { const d = Math.abs(f - 0.5); return d < 0.33 ? 1 : Math.cos(Math.PI * (d - 0.33) / 0.17); };
+      const e = E.inOutCubic(J.clamp((lt - ri * 0.12) / 0.75)) * (1 - E.inCubic(env.pOut));
+      const vis = f => (Pm.reveal === 'left' ? f <= e : Math.abs(f - 0.5) <= e / 2);
+      const sourceRow = nativeD ? {row:ri,text:row,cy,A,ph,tl,NS,pts,acc,TL,e,slots:[]} : null;
+      if (nativeD) env.placementDGeometry.rows.push(sourceRow);
       // shadow + band
       const NB = 64, seg = [];
       for (let i = 0; i <= NB; i++) {
         const f = i / NB, q = atS(f * TL), t = tau(f), nx = -Math.sin(q.ang), ny = Math.cos(q.ang);
         seg.push({ f, t, a: [q.p[0] + nx * bw * t, q.p[1] + ny * bw * t], b: [q.p[0] - nx * bw * t, q.p[1] - ny * bw * t], p: q.p, ang: q.ang });
       }
+      if (nativeD) sourceRow.band = seg;
       const sh = size * 0.1, vs = seg.filter(q => vis(q.f));
-      if (vs.length > 1) env.poly(vs.map(q => [q.a[0] + sh, q.a[1] + sh * 1.4]).concat(vs.slice().reverse().map(q => [q.b[0] + sh, q.b[1] + sh * 1.4])), darkOf(sc), 0.22, false);
+      if (vs.length > 1) paint('shadow', 'poly', vs.map(q => [q.a[0] + sh, q.a[1] + sh * 1.4]).concat(vs.slice().reverse().map(q => [q.b[0] + sh, q.b[1] + sh * 1.4])), darkOf(sc), 0.22, false);
       // runs of segments facing the same way → one polygon each; the twist shading is laid over it
       let run = [];
       const flush = () => {
         if (run.length > 1) {
           const t = run[Math.floor(run.length / 2)].t;
-          env.poly(run.map(q => q.a).concat(run.slice().reverse().map(q => q.b)), t >= 0 ? pc : back, 1, gIn(env) && t >= 0);
-          if (t >= 0) env.line(run.filter(q => q.t > 0.6).map(q => q.a), shade(sc, pc, 0.3), Math.max(1, size * 0.02), 0.8, false);
+          paint(t >= 0 ? 'front' : 'back', 'poly', run.map(q => q.a).concat(run.slice().reverse().map(q => q.b)), t >= 0 ? pc : back, 1, gIn(env) && t >= 0);
+          if (t >= 0) paint('highlight', 'line', run.filter(q => q.t > 0.6).map(q => q.a), shade(sc, pc, 0.3), Math.max(1, size * 0.02), 0.8, false);
         }
         run = [];
       };
@@ -786,7 +825,7 @@ reg('ribbon', {
         if (!vis(A0.f) || !vis(B0.f)) continue;
         const t = (A0.t + B0.t) / 2;
         if (Math.abs(t) > 0.97) continue;
-        env.poly([A0.a, B0.a, B0.b, A0.b], darkOf(sc), (1 - Math.abs(t)) * 0.4, false);
+        paint('twist', 'poly', [A0.a, B0.a, B0.b, A0.b], darkOf(sc), (1 - Math.abs(t)) * 0.4, false);
       }
       // notched tails
       for (const end of [0, NB]) {
@@ -795,18 +834,22 @@ reg('ribbon', {
         const dirn = end === 0 ? 1 : -1;
         const ext = [-Math.cos(S0.ang) * bw * 1.3 * dirn, -Math.sin(S0.ang) * bw * 1.3 * dirn];
         const c = shade(sc, back, -0.12);
-        env.poly([S0.a, [S0.a[0] + ext[0], S0.a[1] + ext[1]], [S0.p[0] + ext[0] * 0.45, S0.p[1] + ext[1] * 0.45], [S0.b[0] + ext[0], S0.b[1] + ext[1]], S0.b], c, 1, false);
+        paint(end === 0 ? 'tail.start' : 'tail.end', 'poly', [S0.a, [S0.a[0] + ext[0], S0.a[1] + ext[1]], [S0.p[0] + ext[0] * 0.45, S0.p[1] + ext[1] * 0.45], [S0.b[0] + ext[0], S0.b[1] + ext[1]], S0.b], c, 1, false);
       }
       // lyric along the flat middle
       const chars = [...row], ads = chars.map(ch => adv(Pm.font, ch) * size * 1.05), tot = ads.reduce((a, b) => a + b, 0);
       let s0 = TL / 2 - tot / 2;
       chars.forEach((ch, i) => {
         const sc0 = s0 + ads[i] / 2; s0 += ads[i];
+        const sourceSlot=strip.slots[i],clock=recipe?originalClocks[ri].slots[sourceSlot]:null;
+        if (nativeD) {const placementSc0=clock?clock.f*TL:sc0,f=clock?clock.f:sc0/TL;sourceRow.slots.push({id:ri+':'+sourceSlot,row:ri,slot:sourceSlot,ch,advance:ads[i],sc0:placementSc0,delta:placementSc0-TL/2,f,visible:clock?clock.visible:vis(f),rawMi:clock?clock.rawMi:miAt(env, ri * 0.12 + (Pm.reveal === 'left' ? f : Math.abs(f - 0.5) * 2) * 0.6),space:ch===' ',...(clock?{nativeF:clock.f,nativeSc0:clock.sc0,nativeTL:originalClocks[ri].TL}:{})});}
         if (ch === ' ') return;
-        const f = sc0 / TL;
-        if (!vis(f)) return;
-        const q = atS(sc0);
-        bb = UB(bb, J.mainDraw(env, { text: ch, font: Pm.font, size, x: q.p[0], y: q.p[1], rot: q.ang / J.DEG, sy: tau(f), color: tc, noHold: plateHold(env), mi: miAt(env, ri * 0.12 + (Pm.reveal === 'left' ? f : Math.abs(f - 0.5) * 2) * 0.6) }));
+        const f = clock?clock.f:sc0 / TL;
+        if (!(clock?clock.visible:vis(f))) return;
+        const q = atS(clock?clock.f*TL:sc0);
+        const item = { text: ch, font: Pm.font, size, x: q.p[0], y: q.p[1], rot: q.ang / J.DEG, sy: tau(f), color: tc, noHold: plateHold(env), mi: clock?clock.rawMi:miAt(env, ri * 0.12 + (Pm.reveal === 'left' ? f : Math.abs(f - 0.5) * 2) * 0.6) };
+        if (nativeD) {item.placementDSource={id:ri+':'+sourceSlot,row:ri,slot:sourceSlot,ch,nativeF:clock?clock.f:f,nativeSc0:clock?clock.sc0:sc0,nativeTL:clock?originalClocks[ri].TL:TL};bb=UB(bb,env.withDrawRole('primary','ribbon.'+ri+'.glyph.'+sourceSlot,()=>J.mainDraw(env,item)));}
+        else bb = UB(bb, J.mainDraw(env, item));
       });
     });
     return bb;
