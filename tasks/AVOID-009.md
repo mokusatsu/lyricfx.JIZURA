@@ -297,3 +297,11 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 [親レビュー](evidence/AVOID-009/pile-contact08/parent-source-raw-review08.json)。斜めの文字下辺と山の線分のx-y対応を保つ、判定専用の09wを追加した隔離版。既存97JS/buildは同一。2条件48観測の変更前後pixel/元trial全JSON/旧判定値が一致し、親が56owner・1792cell・25088線分交差点、実際に着地した120owner/1780端点を独立照合。1210実入力hash不変。旧判定の失敗は保持。食い込みの見積もりは精密になったが、間隔の予算未達が残るため、描画・SAFE/回避adapter/接地品質の受入ではない。次は組ごとの小さな共通Y補正の設計のみ。
 
 [1.38MB復元証拠](evidence/AVOID-009/pile-contact08/archive-storage08.json)はGitblobのみで11個目のskip-worktree欠落。親が70artifact、643非runtime入力・65fontターゲットを照合、12過去HTMLを再構築し、保存rawから独立判定を再実行。567runtimeCASは外部。新しいブラウザ・公開・画像の確認はしていない。009実装中/限定D9件、未回答12例、010以降未着手を維持。
+
+## Pile sharedY09: 小さな組共通補正のsource/rawを限定受入
+
+[親レビュー](evidence/AVOID-009/pile-groupY09/parent-source-raw-review09.json)。元の順序・空白・文字サイズ・.34秒の落下を保ち、同じ山の左右2組へ共通Y補正を加えた隔離試作。2条件90観測（変更前72）3975polygon・1347実入力hash照合成功。親が4組7全ownerの有理数による内側範囲、1792相関判定cell、落下/山/heap/砂ぼこりの生座標を独立再計算。補正後の相関予算は4/4・3/3が既定範囲。旧独立XY判定/失敗した基準値は保持。全動作区間の円回避候補3点（2+1）と、補正後18実描画の全要素について円・stage内とlive-rootピクセル一致を照合。入退場の例外は使っていない。
+
+これらは数値/ソースの試作受入で、演出品質・塗りつぶした文字の接地/可読性・Safeadapter・人間確認の受入ではない。Dは9件のまま。次は009内のpileadapter設計（内部physical10、AVOID-010は未着手）。完了planの通常cache hitではsegmentが復元される点を設計レビューで指摘し、依存情報の持ち方とコンパクトな実行用証明を再検討中。
+
+[2.43MB復元証拠](evidence/AVOID-009/pile-groupY09/archive-storage09.json)はGitblobのみ。親が95artifact/780非runtime入力/78fontターゲットを照合、14過去HTMLを再構築し、3つの独立判定を保存rawから再実行。567runtimeCASは外部。親の検証scriptの出力時変数衝突は修正再実行済みで、製品/ブラウザの失敗とは区別して記録。root容量確保のため、以前push済みのnative02/diagnostic04 archiveの冗長な作業コピーのみhash/Git一致・1347入力非参照を確認してskip-worktree化。元11個も保持し、新09を含め欠落flag14個。
