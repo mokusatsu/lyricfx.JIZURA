@@ -1,0 +1,95 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-22T23:42:36.344545+00:00",
+  "source": "7bd83c236cb7b631d9e5b4ce8c4ade161271b4b2",
+  "rawSHA256": "f0450174348844dae3d8eb7031566d5528406e2dfb04c56fed1edbf411d3bbb4",
+  "rawBytes": 695817,
+  "runnerArchiveLivePins": 120,
+  "supportGateRuntimeInputs": 3,
+  "actualPackagePins": 173,
+  "actualLedgerFormulaBoundSnapshots": 46,
+  "allFourSidesInputCutObservationFontCountsExactPriorFd6": true,
+  "runtimeRevision": "214",
+  "errorsInputOrPackageDrift": 0,
+  "rows": [
+    {
+      "side": "baseline",
+      "on": true,
+      "planning": 72.30000001192093,
+      "renderP95": 2.9000000059604645,
+      "cold": 72,
+      "coldActualRecord": 0,
+      "actualRender": {
+        "record": 0,
+        "replay": 0
+      },
+      "observations": 0,
+      "normalizedInput": "f6eef273216bb998c7dc1174901381e54ff833a0cf2d2ed75e34c32ab4a82792"
+    },
+    {
+      "side": "candidate",
+      "on": true,
+      "planning": 108,
+      "renderP95": 8.400000005960464,
+      "cold": 5533.699999988079,
+      "coldActualRecord": 622,
+      "actualRender": {
+        "record": 80,
+        "replay": 80
+      },
+      "observations": 80,
+      "normalizedInput": "f6eef273216bb998c7dc1174901381e54ff833a0cf2d2ed75e34c32ab4a82792"
+    },
+    {
+      "side": "baseline",
+      "on": false,
+      "planning": 51.5,
+      "renderP95": 3.2999999970197678,
+      "cold": 81.80000001192093,
+      "coldActualRecord": 0,
+      "actualRender": {
+        "record": 0,
+        "replay": 0
+      },
+      "observations": 0,
+      "normalizedInput": "11d008d2ca8b392f64da31c89706342ab989d1f05788ecfdd29dd64533b420c4"
+    },
+    {
+      "side": "candidate",
+      "on": false,
+      "planning": 68.6000000089407,
+      "renderP95": 3.5999999940395355,
+      "cold": 179.5,
+      "coldActualRecord": 0,
+      "actualRender": {
+        "record": 0,
+        "replay": 0
+      },
+      "observations": 0,
+      "normalizedInput": "11d008d2ca8b392f64da31c89706342ab989d1f05788ecfdd29dd64533b420c4"
+    }
+  ],
+  "comparisons": [
+    {
+      "on": true,
+      "planningRatio": 1.4937759333636627,
+      "additionalRenderP95": 5.5,
+      "formal": false
+    },
+    {
+      "on": false,
+      "planningRatio": 1.332038835125062,
+      "additionalRenderP95": 0.29999999701976776,
+      "formal": false
+    }
+  ],
+  "outcome": "Planning singlepoint ratio now under2x; ON additionalrender5.5msFAIL. Formal100/1000 not authorized.",
+  "cleanup": "Supportexit0/ownbrowserandserverclosed, runner357488gone reported, beforeafterforeignjobs0; zombies reported separately, no claim OSprocess table is empty.",
+  "reviewNote": "First parent script verified120archive/live pins,3supportarchives and173actualpackage hashes, then incorrectly tested before/after objects rather than their jobs arrays. Corrected locally, no product change.",
+  "limits": [
+    "One postwarm planning point is not p95; no formalqualification.",
+    "Prior fd6ON2.786x/+4.5ms andOFFbaseline230.7ms remain historical; no invented cause or replacement.",
+    "Cache correctness separately accepted.",
+    "No public check or parent image viewing."
+  ]
+}

@@ -1,0 +1,83 @@
+diff --git a/src/09a_placement.js b/src/09a_placement.js
+index 87301a6..333e05b 100644
+--- a/src/09a_placement.js
++++ b/src/09a_placement.js
+@@ -16,6 +16,37 @@ const matrix=ctx=>{const m=ctx.getTransform();return [m.a,m.b,m.c,m.d,m.e,m.f];}
+ const rect=(x,y,w,h)=>[[x,y],[x+w,y],[x+w,y+h],[x,y+h]];
+ A.bounds = polygons => {if(!Array.isArray(polygons)||polygons.some(p=>!Array.isArray(p)||p.length<3||p.some(v=>!Array.isArray(v)||v.length!==2)))fail('UNMEASURED_INK','Invalid polygon');let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity,count=0;polygons.forEach(poly=>poly.forEach(p=>{if(!finite(p))fail('UNMEASURED_INK','Empty/nonfinite ink');count++;x0=Math.min(x0,p[0]);y0=Math.min(y0,p[1]);x1=Math.max(x1,p[0]);y1=Math.max(y1,p[1]);}));if(!count)fail('UNMEASURED_INK','Empty/nonfinite ink');return {x0,y0,x1,y1};};
+ A.convexHull=points=>{const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),out=[];for(let i=0;i<sorted.length;i++){const p=sorted[i];while(out.length>1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();const lowerLength=out.length;for(let i=sorted.length-1;i>=0;i--){const p=sorted[i];while(out.length>lowerLength+1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();return out;};
++// C raw-path local-bounds prototype. A failed provenance check is sticky for
++// this path: a custom push/slice/species hook may retain its private storage.
++// The final world hull and all native commands still use the original path.
++const pathReflect={descriptor:Object.getOwnPropertyDescriptor,keys:Reflect.ownKeys,proto:Object.getPrototypeOf};
++const pathArray=Array,pathArrayProto=Array.prototype,pathObjectProto=Object.prototype,pathMath=Math,pathNumber=Number;
++const pathDescriptors=[];
++for(const [object,keys] of [[A,['bounds','convexHull','point']],[Array,['isArray',Symbol.species]],[Array.prototype,['push','pop','slice','splice','sort','flatMap','map','some','every','forEach','constructor',Symbol.iterator]],[Math,['min','max','abs']],[Number,['isFinite']]])for(const key of keys)pathDescriptors.push([object,key,pathReflect.descriptor(object,key)]);
++const pathIterator=Object.getPrototypeOf([][Symbol.iterator]()),pathIteratorNext=pathReflect.descriptor(pathIterator,'next');
++function pathSameDescriptor(a,b){return !!a&&!!b&&a.value===b.value&&a.get===b.get&&a.set===b.set&&a.writable===b.writable&&a.enumerable===b.enumerable&&a.configurable===b.configurable;}
++function pathStock(){
++ if(Array!==pathArray||Math!==pathMath||Number!==pathNumber||pathReflect.proto(pathArrayProto)!==pathObjectProto||pathReflect.proto(pathObjectProto)!==null)return false;
++ for(let i=0;i<pathDescriptors.length;i++){const d=pathDescriptors[i];if(!pathSameDescriptor(pathReflect.descriptor(d[0],d[1]),d[2]))return false;}
++ if(!pathSameDescriptor(pathReflect.descriptor(pathIterator,'next'),pathIteratorNext))return false;
++ // An inherited numeric setter can retain the receiver even when push itself
++ // is native. Check before each append, not just when the path is painted.
++ for(const proto of [pathArrayProto,pathObjectProto]){const keys=pathReflect.keys(proto);for(let i=0;i<keys.length;i++){const key=keys[i];if(typeof key==='string'&&key.length&&key[0]>='0'&&key[0]<='9')return false;}}
++ return true;
++}
++function pathLocalExtrema(points){
++ let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
++ for(let i=0;i<points.length;i++){
++  const p=points[i],x=p[0],y=p[1];
++  if(typeof x!=='number'||typeof y!=='number'||!Number.isFinite(x)||!Number.isFinite(y)||Math.abs(x)>1e5||Math.abs(y)>1e5)return null;
++  // Keep the exact point +/- 1 operations, including signed-zero min/max.
++  const loX=x-1,hiX=x+1,loY=y-1,hiY=y+1;
++  if(!(loX<x&&x<hiX&&loY<y&&y<hiY))return null;
++  x0=Math.min(x0,loX);y0=Math.min(y0,loY);x1=Math.max(x1,hiX);y1=Math.max(y1,hiY);
++ }
++ if(!(x0<x1&&y0<y1)||x0+(x1-x0)!==x1||y0+(y1-y0)!==y1)return null;
++ return {x0,y0,x1,y1};
++}
+ // Exact old angular samples, privately reused. A changed TAU cannot reuse a
+ // stale table. At most the existing 32/64-point shape tables are retained.
+ let shapeTau;const shapeCircles=new Map();
+@@ -129,7 +160,7 @@ A.record = (renderer,env,options={}) => {
+   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
+   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
+   const nativeC34=env.cut.placementLayoutsC===true,nativeB25=env.cut.placementLayoutsB===true||nativeC34,nativeA26=env.cut.placementLayoutsA===true||nativeB25;let nativeRoot=nativeA26?matrix(c):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
+-  const events=[],diagnostics=[],gradients=new WeakMap();let bCommands=[],bPoints=[],bPathMatrix=null,bCurrent=null;const patterns=new WeakMap();
++  const events=[],diagnostics=[],gradients=new WeakMap();let bCommands=[],bPoints=[],bPathMatrix=null,bCurrent=null,bOwned=false;const patterns=new WeakMap();
+   let recorder,glyphCount=0,clips=[],pathRect=null,pathInvalid=false,pathPoints=[],pathClosed=false,pathMatrix=null;const clipStack=[];
+   const budget=env.placementBudget?(validationOnly?{...env.placementBudget}:env.placementBudget):{events:0,glyphs:0};
+   // Validation-only hole/ticket-shape checks retain scalar/affine/resource validation above
+@@ -141,14 +172,16 @@ A.record = (renderer,env,options={}) => {
+     if(k==='restore')return ()=>{clips=clipStack.pop()||[];const state=nativeA26?nativeStack.pop():null;if(state){nativeRoot=state.root;nativeOps=state.ops;}target.restore();};
+     if(nativeA26&&['translate','rotate','scale','transform'].includes(k))return (...args)=>{if(!finite(args))fail('INVALID_AFFINE','Finite native transform required');target[k](...args);nativeOps.push([k,args]);};
+     if(nativeA26&&['setTransform','resetTransform'].includes(k))return (...args)=>{target[k](...args);nativeRoot=matrix(c);nativeOps=[];};
+-    if(k==='beginPath')return ()=>{bCommands=[];bPoints=[];bPathMatrix=null;bCurrent=null;pathRect=null;pathInvalid=false;pathPoints=[];pathClosed=false;pathMatrix=null;target.beginPath();};
++    if(k==='beginPath')return ()=>{bCommands=[];bPoints=[];bOwned=nativeC34&&!validationOnly&&pathStock();bPathMatrix=null;bCurrent=null;pathRect=null;pathInvalid=false;pathPoints=[];pathClosed=false;pathMatrix=null;target.beginPath();};
+     // B25-only raw-path transport. Keep exact native commands for replay;
+     // conservative control/radius bounds are a separate geometry certificate.
+     if(nativeB25&&['moveTo','lineTo','rect','arc','arcTo','closePath',...(nativeC34?['bezierCurveTo','quadraticCurveTo']:[])].includes(k))return (...args)=>{
++      if(bOwned&&!pathStock())bOwned=false;
+       if(!args.every(v=>typeof v==='boolean'||Number.isFinite(v)))fail('INVALID_GEOMETRY','Finite native B path required');
+       const m=matrix(c);if(!bPathMatrix)bPathMatrix=m;if(m.some((v,i)=>v!==bPathMatrix[i]))fail('UNSUPPORTED_DRAW_PROGRAM','B path transform changed inside path');
++      if(bOwned&&!pathStock())bOwned=false;
+       if(k==='arc'){if(args.length<5||args[2]<0)fail('INVALID_GEOMETRY','Invalid B arc');const [x,y,r]=args;bPoints.push([x-r,y-r],[x+r,y+r]);bCurrent=null;}
+-      else if(k==='arcTo'){if(args.length!==5||args[4]<0||!bCurrent)fail('INVALID_GEOMETRY','Invalid B arcTo');const [x,y,x2,y2,r]=args,ax=bCurrent[0]-x,ay=bCurrent[1]-y,bx=x2-x,by=y2-y,la=Math.hypot(ax,ay),lb=Math.hypot(bx,by);if(!la||!lb||Math.abs(ax*bx+ay*by)>1e-8*la*lb||r>Math.min(la,lb)+1e-8)fail('UNSUPPORTED_DRAW_PROGRAM','Only source right-angle contained B arcTo supported');bPoints.push([x-r,y-r],[x+r,y+r],[x2,y2]);bCurrent=[x+bx/lb*r,y+by/lb*r];}
++      else if(k==='arcTo'){if(args.length!==5||args[4]<0||!bCurrent)fail('INVALID_GEOMETRY','Invalid B arcTo');const [x,y,x2,y2,r]=args,ax=bCurrent[0]-x,ay=bCurrent[1]-y,bx=x2-x,by=y2-y,la=Math.hypot(ax,ay),lb=Math.hypot(bx,by);if(!la||!lb||Math.abs(ax*bx+ay*by)>1e-8*la*lb||r>Math.min(la,lb)+1e-8)fail('UNSUPPORTED_DRAW_PROGRAM','Only source right-angle contained B arcTo supported');if(bOwned&&!pathStock())bOwned=false;bPoints.push([x-r,y-r],[x+r,y+r],[x2,y2]);bCurrent=[x+bx/lb*r,y+by/lb*r];}
+       else if(nativeC34&&['bezierCurveTo','quadraticCurveTo'].includes(k)){if(args.length!==(k==='bezierCurveTo'?6:4)||!bCurrent)fail('INVALID_GEOMETRY','C curve requires finite current point and controls');for(let i=0;i<args.length;i+=2)bPoints.push(args.slice(i,i+2));bCurrent=args.slice(-2);}
+       else if(k==='rect'){if(args.length!==4)fail('INVALID_GEOMETRY','Invalid B rectangle');const [x,y,w,h]=args;bPoints.push([x,y],[x+w,y+h]);bCurrent=null;}
+       else if(k!=='closePath'){if(args.length!==2)fail('INVALID_GEOMETRY','Invalid B point');bPoints.push(args.slice());bCurrent=args.slice();}
+@@ -164,8 +197,11 @@ A.record = (renderer,env,options={}) => {
+     if(nativeB25&&(k==='fill'||nativeC34&&k==='stroke'))return (...args)=>{
+       if(nativeC34&&!args.length&&!bCommands.length)return;
+       if(args.length||!bCommands.length||!bPoints.length||matrix(c).some((v,i)=>v!==bPathMatrix[i])||!(typeof target[k==='stroke'?'strokeStyle':'fillStyle']==='string'||nativeC34&&k==='fill'&&gradients.has(target.fillStyle)))fail('UNSUPPORTED_DRAW_PROGRAM','Finite solid native path paint required');
++      if(bOwned&&!pathStock())bOwned=false;
+       const strokePad=k==='stroke'?target.lineWidth/2*Math.max(1,target.miterLimit)+1:1;if(!Number.isFinite(strokePad)||strokePad<0)fail('INVALID_GEOMETRY','Finite C path stroke required');const guardedPoints=k==='stroke'?bPoints.flatMap(p=>[[p[0]-strokePad,p[1]-strokePad],[p[0]+strokePad,p[1]+strokePad]]):bPoints;
+-      const b=A.bounds([A.convexHull(guardedPoints.flatMap(p=>[[p[0]-1,p[1]-1],[p[0]+1,p[1]-1],[p[0]+1,p[1]+1],[p[0]-1,p[1]+1]]))]),m=bPathMatrix,poly=rect(b.x0,b.y0,b.x1-b.x0,b.y1-b.y0).map(p=>A.point(m,p)),guard=A.convexHull(poly.flatMap(p=>[[p[0]-1,p[1]-1],[p[0]+1,p[1]-1],[p[0]+1,p[1]+1],[p[0]-1,p[1]+1]]));push('nativePath',[bCommands.map(([k,a])=>[k,a.slice()]),target[k==='stroke'?'strokeStyle':'fillStyle'],...(k==='stroke'?[{stroke:true,lineWidth:target.lineWidth}]:[])],[guard]);
++      if(bOwned&&!pathStock())bOwned=false;
++      const localBounds=bOwned?pathLocalExtrema(guardedPoints):null;
++      const b=localBounds||A.bounds([A.convexHull(guardedPoints.flatMap(p=>[[p[0]-1,p[1]-1],[p[0]+1,p[1]-1],[p[0]+1,p[1]+1],[p[0]-1,p[1]+1]]))]),m=bPathMatrix,poly=rect(b.x0,b.y0,b.x1-b.x0,b.y1-b.y0).map(p=>A.point(m,p)),guard=A.convexHull(poly.flatMap(p=>[[p[0]-1,p[1]-1],[p[0]+1,p[1]-1],[p[0]+1,p[1]+1],[p[0]-1,p[1]+1]]));push('nativePath',[bCommands.map(([k,a])=>[k,a.slice()]),target[k==='stroke'?'strokeStyle':'fillStyle'],...(k==='stroke'?[{stroke:true,lineWidth:target.lineWidth}]:[])],[guard]);
+     };
+     if(k==='rect')return (...args)=>{if(args.length!==4||!finite(args))fail('INVALID_GEOMETRY','Finite rectangular clip path required');if(pathRect||pathPoints.length)pathInvalid=true;pathRect={args,matrix:matrix(c),...(nativeA26?{nativeTransform:nativeState()}:{})};target.rect(...args);};
+     if(env.cut.placementLayoutsA&&['moveTo','lineTo','closePath'].includes(k))return (...args)=>{if(k==='closePath')pathClosed=true;else {const m=matrix(c);if(!pathMatrix)pathMatrix=m;if(pathRect||!finite(args)||args.length!==2||k==='moveTo'&&pathPoints.length||m.some((v,i)=>v!==pathMatrix[i]))pathInvalid=true;pathPoints.push(args);}return target[k](...args);};
