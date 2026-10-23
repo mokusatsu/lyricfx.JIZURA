@@ -1,0 +1,96 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-23T04:02:10.614311+00:00",
+  "fixedEvidence": "7a8f13c684ef3ccdfded90852d68e09d9a05d4d0",
+  "rawGzipSHA256": "62a1f2957da4699e6a07299ebf09d3e6478fa82a9607033c9f5d0819fbf6e805",
+  "prettyRawSHA256": "1b6a8a70ce0e400ce77c779fdd8d8f127be1a8083400bdb190fddcd35f18a5ef",
+  "rawEncodingNote": "Gzip holds compact JSON, plain file is pretty JSON; full parsed values equal. Initial parent byte-equality assertion was inappropriate and corrected; both originals remain fixed Git artifacts.",
+  "original100FourSides": [
+    {
+      "side": "baseline",
+      "on": true,
+      "sourceMs": 51.29999999701977,
+      "finalizeMs": 0,
+      "planningPointMs": 51.29999999701977,
+      "renderP95Ms": 2.6000000089406967
+    },
+    {
+      "side": "candidate",
+      "on": true,
+      "sourceMs": 58.69999998807907,
+      "finalizeMs": 54,
+      "planningPointMs": 112.69999998807907,
+      "renderP95Ms": 7
+    },
+    {
+      "side": "baseline",
+      "on": false,
+      "sourceMs": 48.1000000089407,
+      "finalizeMs": 0,
+      "planningPointMs": 48.1000000089407,
+      "renderP95Ms": 2.8999999910593033
+    },
+    {
+      "side": "candidate",
+      "on": false,
+      "sourceMs": 43.099999994039536,
+      "finalizeMs": 22.69999998807907,
+      "planningPointMs": 65.7999999821186,
+      "renderP95Ms": 4.700000002980232
+    }
+  ],
+  "comparisons": [
+    {
+      "on": true,
+      "ratio": 2.196881091513183,
+      "additionalRenderP95Ms": 4.399999991059303,
+      "diagnosticLimitsMet": false
+    },
+    {
+      "on": false,
+      "ratio": 1.3679833673573365,
+      "additionalRenderP95Ms": 1.800000011920929,
+      "diagnosticLimitsMet": true
+    }
+  ],
+  "oldFunctionalFieldsExact": [
+    "cuts",
+    "states",
+    "observations",
+    "fontQualification",
+    "projectSHA256",
+    "normalizedInputSHA256",
+    "allIterationInputSHA256",
+    "regionAudit",
+    "idCounts",
+    "renderIDs",
+    "renderCalls",
+    "planningCalls",
+    "counts"
+  ],
+  "runnerInputArchives": 120,
+  "productPins": 86,
+  "actualPackagePins": 173,
+  "supportInputs": 3,
+  "memoReadPath": "candidate ON and OFF each one full/two fast, exceptions0",
+  "actualExit": {
+    "pid": 377346,
+    "waitpid": 377346,
+    "kernelWaitStatus": 0,
+    "WIFEXITED": true,
+    "exitCode": 0,
+    "WIFSIGNALED": false,
+    "signal": null,
+    "supervisorTimeout": false,
+    "elapsedSeconds": 16.836732625961304,
+    "afterProcStat": null,
+    "reapedByWaitpid": true,
+    "logs": "/tmp/jizura-native-matrix-diagnose01-fz8fsyg_"
+  },
+  "prePostForeignJobs": 0,
+  "wholeRunExclusiveLease": "operational lease, not a claim of continuous mechanical MainThread/profile monitoring",
+  "runtimeRevision": "222",
+  "decision": "Rendering still exceeds +3ms. Diagnostic one planning point only, not formal p95 or1000. Original failure retained. Proceed with bounded exact-input native local-hull result memo design, no new cybersecurity audit. Main product not adopted, four human compositions pending.",
+  "parentImageViews": 0,
+  "publicRequests": 0
+}
