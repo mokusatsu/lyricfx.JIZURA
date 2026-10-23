@@ -137,3 +137,9 @@ AVOID-008受入・009開始のローカルcommitは6e016f7。pushはproxy:8080�
 [親のMP4メタデータ照合](evidence/AVOID-009/parent-media03-review.json)では60assetsのhash、8MP4の実60fps/240frame/4秒・原寸を確認した。撮影条件fps60は前後両方のplanに設定し、24fps素材を60fpsコンテナへ複製した旧試行は失敗として保持。魚眼235/240、他240/240のnative入力frameが異なる。親の画像閲覧と公開先アクセスは0。
 
 [折り紙の空フレーム修正](evidence/AVOID-009/parent-origami04-review.json)は36件の既存UNMEASURED_INKを解消し24非空観測は完全一致、98archive entryを独立hash照合して統合へ受入。ただし上記blintz比率は別の視覚問題であり完了として扱わない。[完全一致キャッシュの親レビュー](evidence/AVOID-009/parent-cache02-review.json)と[同一finalization内の純粋な形状証明再利用](evidence/AVOID-009/parent-proof-memo02-review.json)を限定受入。後者は112入力pin・6family/108native時刻・14key条件を照合したが、実1000区間の診断では再利用0件/性能改善なし。実入力の差異を調べ、再利用の依存条件をソースから確認して継続する。性能成功へ置換しない。
+
+## blintz比率の修正と証拠の保存
+
+[親レビュー05](evidence/AVOID-009/parent-origami05-review.json)で、blintzの独立した横縦半径を1つのwriteRへ変更した1行差分を確認。rx=ry、元の折り角・順序・clockを保持し、文字幅と高さの大きい方から紙面を決める。通常円の代表例は元の字体サイズのまま2行再配置で成立。対象256条件は195安全/61不足、拡張64条件は60安全/4不足、付着48条件は35安全/13不足、OFF2条件は12pixel組と測定回数一致。12live pin・40入力pinと1,184 glyph頂点の紙面・記入域包含を独立照合。旧256条件から12安全→不足・2不足→安全へ変わった結果を保持し、扁平化による成功を残さない。新MP4の独立視覚照合は別途必要。
+
+[折り紙証拠の保管記録](evidence/AVOID-009/origami-history01.json)に旧checkpoint03と修正checkpoint04を格納したarchiveのSHA、全174entry照合、復元コマンドを記録。容量制約のため、この大容量archiveはGitへ保存しskip-worktreeにしており、作業ツリーへのコピーを省略する。既存の無関係なファイルの削除やgcは行っていない。
