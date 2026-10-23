@@ -10726,6 +10726,8 @@ function shadowReplay(env,program,offset,decorOffsets){
 }
 const dAccordionCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='accordion'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('accordion');
 const dBandCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='cylinder'&&cut.params?.band===true&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('cylinder');
+const dFlagCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='flag'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&['unfurl','raise'].includes(cut.params?.mode)&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&A.layoutsDSourceKnown?.('flag');
+A.layoutsDFlagClothClipCapability=()=>Object.freeze({version:1,kind:'flag-source-solid-polygon-clip'});
 A.record = (renderer,env,options={}) => {
   recordMatrixEpoch++;
   if(env.cut.placementLayoutsC===true&&(!A.layoutsCSourceKnown?.(env.cut.layout)||!A.layoutsCTransportKnown?.(renderer)))fail('UNSUPPORTED_DRAW_PROGRAM','C native transport requires unchanged registered source renderer');
@@ -10738,7 +10740,7 @@ A.record = (renderer,env,options={}) => {
   const validationOnly=options.validationOnly===true;let shapeValidationUncertain=false;
   validateTextState(env.ctx);
   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
-  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||dAccordionCut(env.cut)&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
+  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
   const nativeC34=env.cut.placementLayoutsC===true,nativeB25=env.cut.placementLayoutsB===true||nativeC34,nativeD34=env.cut.placementLayoutsD===true,nativeA26=env.cut.placementLayoutsA===true||nativeB25||nativeD34;let nativeRoot=nativeA26?(nativeDOriginalRoot||matrix(c)):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
   // Only stock synchronous C command runs reuse a private actual-Canvas read.
@@ -10746,7 +10748,8 @@ A.record = (renderer,env,options={}) => {
   const reuseCommandMatrix=nativeC34&&!validationOnly;let commandMatrix=null,commandEpoch=recordMatrixEpoch;
   const commandTransform=()=>{if(!commandMatrix||commandEpoch!==recordMatrixEpoch){commandMatrix=matrix(c);commandEpoch=recordMatrixEpoch;}return commandMatrix;};
   const nativeDWorldBand=nativeD34&&dBandCut(env.cut)&&env.pass==='main',nativeDMeasurementRoot=nativeDWorldBand?matrix(c):null;
-  let dProjectionScope=false;
+  let dProjectionScope=false,dFlagClipCount=0;
+  const dFlagMeasurementRoot=dFlagCut(env.cut)?matrix(c):null;
   const events=[],diagnostics=[],gradients=new WeakMap();let bCommands=[],bPoints=[],bPathMatrix=null,bCurrent=null;const patterns=new WeakMap();
   let recorder,glyphCount=0,clips=[],pathRect=null,pathInvalid=false,pathPoints=[],pathClosed=false,pathMatrix=null,pathDNative=null,dBandClipCount=0;const clipStack=[];
   const budget=env.placementBudget?(validationOnly?{...env.placementBudget}:env.placementBudget):{events:0,glyphs:0};
@@ -10756,7 +10759,7 @@ A.record = (renderer,env,options={}) => {
   const push=(kind,args,polygons,knownMatrix,batchValidated=false)=>{commandMatrix=null;if(++budget.events>MAX_EVENTS)fail('GEOMETRY_LIMIT','Frame draw event ceiling exceeded');if(events.length>=MAX_EVENTS)fail('GEOMETRY_LIMIT','Draw event ceiling exceeded');const ownership=recorder.drawOwnership||{role:'primary',owner:'cut:'+env.cut.index};if(clips.some(v=>v.nativeDWorldBand)){
     const clip=clips[0],paint=gradients.get(args[4]),state=nativeState();
     if(!nativeDWorldBand||clips.length!==1||kind!=='rect'||ownership.role!=='primary'||ownership.owner!=='cylinder.band'||args[2]<=0||args[3]<=0||!paint||paint.gradientKind||paint.args.length!==4||!finite(paint.args)||paint.stops.length!==4||paint.stops.some((stop,i)=>stop[0]!==[0,.35,.55,1][i]||typeof stop[1]!=='string')||state.ops.length||!sameMatrix(state.root,clip.nativeTransform.root)||!sameMatrix(matrix(c),nativeDMeasurementRoot)||!sameMatrix(paint.matrix,state.root))fail('UNSUPPORTED_D_BAND_CLIP','Only native root-world cylinder band linear-gradient rectangle paint is admitted');
-  }if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=knownMatrix||matrix(c);if(!batchValidated){if(dProjectionScope){if(kind!=='item'||clips.length)fail('D_PROJECTED_TEXT_SCOPE','Only clipless source projected text items are allowed');finiteDMatrix(m);}else A.affine(m);if(polygons.length)A.bounds(polygons);}if(validationOnly&&!shapeValidationUncertain&&(kind==='rrect'&&recorder.placementRRectBounds==='rect'||env.cut.layout==='ticket'&&kind!=='item'))return;events.push({...(nativeA26?{nativeTransform:nativeState(),nativeSweep:recorder.layoutASweep?jsonClone(recorder.layoutASweep):null}:{}),...(recorder.layoutAMotion?{nativeMotion:recorder.layoutAMotion}:{}),...(nativeB25?{nativeGroup:recorder.placementBGroup||'composition'}:{}),...(nativeC34?{nativeCBody:recorder.placementCBody?jsonClone(recorder.placementCBody):null}:{}),kind,args:args.map(v=>v&&typeof v==='object'&&(gradients.has(v)||patterns.has(v))?(gradients.get(v)||jsonClone(patterns.get(v))):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
+  }if(clips.some(v=>v.nativeDFlagCloth)){const state=nativeState();if(!dFlagCut(env.cut)||env.pass!=='main'||clips.length!==1||kind!=='nativePolygon'||ownership.role!=='primary'||ownership.owner!=='flag.surface'||typeof args[1]!=='string'||!Number.isFinite(c.globalAlpha)||state.ops.length||!sameMatrix(state.root,clips[0].nativeTransform.root)||!sameMatrix(matrix(c),dFlagMeasurementRoot))fail('UNSUPPORTED_D_FLAG_CLIP','Only unchanged source solid flag trim/shading polygon paint is admitted');}if(env.placementEnvelope&&recorder.placementBounds)polygons=[recorder.placementBounds];const m=knownMatrix||matrix(c);if(!batchValidated){if(dProjectionScope){if(kind!=='item'||clips.length)fail('D_PROJECTED_TEXT_SCOPE','Only clipless source projected text items are allowed');finiteDMatrix(m);}else A.affine(m);if(polygons.length)A.bounds(polygons);}if(validationOnly&&!shapeValidationUncertain&&(kind==='rrect'&&recorder.placementRRectBounds==='rect'||env.cut.layout==='ticket'&&kind!=='item'))return;events.push({...(nativeA26?{nativeTransform:nativeState(),nativeSweep:recorder.layoutASweep?jsonClone(recorder.layoutASweep):null}:{}),...(recorder.layoutAMotion?{nativeMotion:recorder.layoutAMotion}:{}),...(nativeB25?{nativeGroup:recorder.placementBGroup||'composition'}:{}),...(nativeC34?{nativeCBody:recorder.placementCBody?jsonClone(recorder.placementCBody):null}:{}),kind,args:args.map(v=>v&&typeof v==='object'&&(gradients.has(v)||patterns.has(v))?(gradients.get(v)||jsonClone(patterns.get(v))):v),clips:clips.map(v=>({...v})),matrix:m,polygons,key:kind==='item'&&args[0].placementRouteKey||ownership.owner,role:ownership.role,owner:ownership.owner,blend:c.globalCompositeOperation,alpha:c.globalAlpha,state:{lineCap:c.lineCap,lineJoin:c.lineJoin,miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset},order:events.length});};
   const proxy=new Proxy(c,{get(target,k){
     if(k==='save')return ()=>{commandMatrix=null;clipStack.push(clips.slice());if(nativeA26)nativeStack.push(nativeState());target.save();};
     if(k==='restore')return ()=>{commandMatrix=null;clips=clipStack.pop()||[];const state=nativeA26?nativeStack.pop():null;if(state){nativeRoot=state.root;nativeOps=state.ops;}target.restore();};
@@ -10818,6 +10821,11 @@ A.record = (renderer,env,options={}) => {
   if(nativeD34&&env.cut.layout==='flipCards')recorder.withDProjectedText=(kind,fn)=>{
     if(env.cut.placementLayoutsA||env.cut.placementLayoutsB||env.cut.placementLayoutsC||kind!==D_PROJECTED_KIND||typeof fn!=='function'||!dProjectedCoreKnown()||!A.layoutsDSourceKnown?.('flipCards')||!A.layoutsDTransportKnown?.(renderer)||env.cut.enter!=='cut'||env.cut.exit!=='cut'||env.cut.hold!=='still'||env.cut.treat!=='none'||env.cut.drawing||clips.length)fail('D_PROJECTED_TEXT_SCOPE','Unchanged native flipCards plain clipless projected text required');
     A.affine(nativeRoot);const previous=dProjectionScope;dProjectionScope=true;try{return fn();}finally{dProjectionScope=previous;}
+  };
+  if(dFlagCut(env.cut))recorder.withDSourcePolygonClip=(kind,points,fn)=>{
+    const state=nativeState(),g=recorder.placementDGeometry,expected=env.cut.params.tail==='swallow'?63:62;
+    if(kind!=='flag-cloth-v1'||env.pass!=='main'||typeof fn!=='function'||!A.layoutsDTransportKnown?.(renderer)||g?.kind!=='flag'||points!==g.silhouette||points.length!==expected||points.some(p=>!Array.isArray(p)||p.length!==2||!finite(p))||clips.length||dFlagClipCount++||state.ops.length||!sameMatrix(matrix(c),dFlagMeasurementRoot))fail('UNSUPPORTED_D_FLAG_CLIP','One exact finite native flag silhouette at unchanged live root required');
+    A.affine(state.root);const clip={points:points.map(p=>p.slice()),matrix:state.root.slice(),nativeTransform:state,nativeDFlagCloth:true};proxy.save();clips.push(clip);try{return fn();}finally{proxy.restore();}
   };
   // Source-owned film holes have no context/state changes between rows.
   // Only the non-certifying prepass batches their common transform checks;
@@ -10896,6 +10904,11 @@ A.replay = (env,program,offset,decorOffsets={}) => {
       const inverse=A.inverse(root);if(moved[0]||moved[1]){const dx=moved[0]*(env.scale||1),dy=moved[1]*(env.scale||1);ctx.translate(inverse[0]*dx+inverse[2]*dy,inverse[1]*dx+inverse[3]*dy);}
       const gradient=ctx.createLinearGradient(...paint.args);for(const stop of paint.stops)gradient.addColorStop(...stop);
       ctx.beginPath();clip.points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.clip();ctx.globalCompositeOperation=e.blend;ctx.globalAlpha=e.alpha;ctx.fillStyle=gradient;ctx.fillRect(...e.args.slice(0,4));continue;
+    }if(e.clips?.some(v=>v.nativeDFlagCloth)){
+      const clip=e.clips[0],root=e.nativeTransform?.root,expected=env.cut.params.tail==='swallow'?63:62;
+      if(!dFlagCut(env.cut)||env.pass!=='main'||e.clips.length!==1||e.kind!=='nativePolygon'||e.role!=='primary'||e.owner!=='flag.surface'||clip.points?.length!==expected||typeof e.args[1]!=='string'||!root||e.nativeTransform.ops.length||clip.nativeTransform?.ops.length||!sameMatrix(root,clip.nativeTransform.root)||!sameMatrix(root,clip.matrix)||!sameMatrix(root,matrix(ctx)))fail('UNSUPPORTED_D_FLAG_REPLAY','Flag solid cloth paint requires exact live camera root, source silhouette and painter operation');
+      const inverse=A.inverse(root);if(moved[0]||moved[1]){const dx=moved[0]*(env.scale||1),dy=moved[1]*(env.scale||1);ctx.translate(inverse[0]*dx+inverse[2]*dy,inverse[1]*dx+inverse[3]*dy);}
+      ctx.beginPath();clip.points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.clip();ctx.globalCompositeOperation=e.blend;ctx.globalAlpha=e.alpha;ctx.fillStyle=e.args[1];ctx.beginPath();e.args[0].forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fill();continue;
     }for(const clip of e.clips||[]){applyNativeTransform(ctx,clip.worldFixed?ID:shift,clip.nativeTransform,clip.matrix);ctx.beginPath();if(clip.commands){for(const [key,args]of clip.commands)ctx[key](...args);}else if(clip.points){clip.points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();}else ctx.rect(...clip.args);ctx.clip();}if(shadowRoot){if(!sameMatrix(matrix(ctx),shadowRoot))fail('SHADOW_OUTPUT_ROOT','Live camera root changed during replay');}else if(env.cut.placementLayoutsD===true&&!e.clips.length&&e.nativeTransform&&sameMatrix(e.nativeTransform.root,matrix(ctx))){/* Keep the original live camera root for clipless D runs. Re-setting its getTransform() value can round affine face pixels. */if(moved[0]||moved[1]){const inverse=A.inverse(e.nativeTransform.root),dx=moved[0]*(env.scale||1),dy=moved[1]*(env.scale||1);ctx.translate(inverse[0]*dx+inverse[2]*dy,inverse[1]*dx+inverse[3]*dy);}for(const [key,args]of e.nativeTransform.ops)ctx[key](...args);}else applyNativeTransform(ctx,shift,e.nativeTransform,e.matrix);const eventArgs=e.args.map(v=>{if(v?.placementPattern){const cv=document.createElement('canvas');cv.width=v.width;cv.height=v.height;cv.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(v.data),v.width,v.height),0,0);const pattern=ctx.createPattern(cv,'repeat');pattern.setTransform(new DOMMatrix(v.transform));return pattern;}if(!v?.placementGradient)return v;ctx.save();if(!shadowRoot)ctx.setTransform(...compose(shift,v.matrix));const gradient=ctx[v.gradientKind||'createLinearGradient'](...v.args);for(const stop of v.stops)gradient.addColorStop(...stop);ctx.restore();return gradient;});ctx.globalCompositeOperation=e.blend;ctx.globalAlpha=e.alpha;ctx.lineCap=e.state.lineCap;ctx.lineJoin=e.state.lineJoin;ctx.miterLimit=e.state.miterLimit;ctx.setLineDash(e.state.dash);ctx.lineDashOffset=e.state.dashOffset;
     if(e.kind==='nativePath'){ctx.fillStyle=eventArgs[1];ctx.beginPath();for(const [key,args]of eventArgs[0])ctx[key](...args);if(eventArgs[2]?.stroke){ctx.strokeStyle=eventArgs[1];ctx.lineWidth=eventArgs[2].lineWidth;ctx.stroke();}else ctx.fill();}
     else if(e.kind==='nativeStrokeRect'){ctx.strokeStyle=eventArgs[4];ctx.lineWidth=eventArgs[5];ctx.strokeRect(...eventArgs.slice(0,4));}
@@ -14171,6 +14184,99 @@ function render({renderer,env,trajectory}){
  if(active?.status==='safe'&&(!covered||!clear||!stageContained))fail('ACCORDION_SOURCE_SAFETY_VIOLATION','Native accordion escaped its complete continuous source owner support');env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,measurementSupported:true,envelopeCovered:covered,stageContained,strictCircleClear:clear,safety:active?.status==='safe'?'safe':'conflict',polygons,events:program.events.map(e=>({kind:e.kind,role:e.role,owner:e.owner,order:e.order}))});A.replay(env,program,offset);
 }
 A.registerLayoutsDAdapter('accordion',{id:'accordion_source_v1',finalize,render});
+})();
+
+/* Flag: source-algebra interval certificate. Native spatial tessellation is
+   bounded continuously in time; no union of sampled animation frames. */
+(() => {
+'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],fail=(code,message)=>{const e=Error(message);e.code=code;throw e;},norm=t=>String(t||'').replace(/\s/g,''),rect=(x0,y0,x1,y1)=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]];
+// Every arithmetic result is enlarged; clamp/ease endpoints retain exact known
+// domains. Finite values only; interval failure never becomes a dummy bound.
+const V=x=>Array.isArray(x)?x:[x,x],R=(a,b=a)=>{if(!Number.isFinite(a)||!Number.isFinite(b)||a>b||Math.max(Math.abs(a),Math.abs(b))>1e9)fail('FLAG_INTERVAL_INCONCLUSIVE','Nonfinite/oversized interval');const e=1e-11*Math.max(1,Math.abs(a),Math.abs(b));return [a-e,b+e];},add=(a,b)=>{a=V(a);b=V(b);return R(a[0]+b[0],a[1]+b[1]);},neg=a=>{a=V(a);return [-a[1],-a[0]];},sub=(a,b)=>add(a,neg(b)),mul=(a,b)=>{a=V(a);b=V(b);const p=[a[0]*b[0],a[0]*b[1],a[1]*b[0],a[1]*b[1]];return R(Math.min(...p),Math.max(...p));},div=(a,b)=>{b=V(b);if(b[0]<=0&&b[1]>=0)fail('FLAG_INTERVAL_INCONCLUSIVE','Interval division crosses zero');return mul(a,[1/b[1],1/b[0]]);},clamp=(a,l=0,h=1)=>{a=V(a);return [Math.max(l,Math.min(h,a[0])),Math.max(l,Math.min(h,a[1]))];},pow=(a,p)=>{a=V(a);return R(Math.pow(Math.max(0,a[0]),p),Math.pow(Math.max(0,a[1]),p));},sq=a=>{a=V(a);return R(a[0]<=0&&a[1]>=0?0:Math.min(a[0]*a[0],a[1]*a[1]),Math.max(a[0]*a[0],a[1]*a[1]));},abs=a=>{a=V(a);return [a[0]<=0&&a[1]>=0?0:Math.min(Math.abs(a[0]),Math.abs(a[1])),Math.max(Math.abs(a[0]),Math.abs(a[1]))];},sin=a=>{a=V(a);if(a[1]-a[0]>=Math.PI*2)return [-1,1];let lo=Math.min(Math.sin(a[0]),Math.sin(a[1])),hi=Math.max(Math.sin(a[0]),Math.sin(a[1]));if(Math.ceil((a[0]-Math.PI/2)/(2*Math.PI))<=Math.floor((a[1]-Math.PI/2)/(2*Math.PI)))hi=1;if(Math.ceil((a[0]+Math.PI/2)/(2*Math.PI))<=Math.floor((a[1]+Math.PI/2)/(2*Math.PI)))lo=-1;return R(lo,hi);},mix=(a,b,t)=>add(a,mul(sub(b,a),t)),join=xs=>[Math.min(...xs.map(x=>x[0])),Math.max(...xs.map(x=>x[1]))],mag=a=>Math.max(...abs(a)),ease=(a,out)=>{a=clamp(a);const f=x=>out?1-Math.pow(1-x,3):x*x*x;return [f(a[0]),f(a[1])];};
+function cell(g,cut,L,lag){
+ const pOut=cut.outDur>0?clamp(div(sub(L,cut.dur-cut.outDur),cut.outDur)):[0,0],unf=g.mode==='unfurl'?ease(div(sub(L,.05),.75),true):[1,1],raise=g.mode==='raise'?ease(div(L,.8),true):[1,1],furl=g.mode==='unfurl'?ease(pOut,false):[0,0],lower=g.mode==='raise'?ease(pOut,false):[0,0],ext=clamp(mul(unf,sub(1,furl)),.001,1),y0=add(g.baseY,add(mul(sub(1,raise),g.riseTravel),mul(lower,g.lowerTravel))),amp=mul(g.Hf*.1*g.wind*(.5+.7*g.motion)*(g.waveScale??1),add(1,mul(sub(1,unf),1.2))),tb=add(L,lag),D=g.Wf*1.3;
+ const z=u=>add(mul(mul(amp,pow(u,.85)),sin(sub(mul(u,Math.PI*2*1.05),mul(tb,3.2*g.wind)))),mul(mul(mul(amp,.35),u),sin(add(sub(mul(u,Math.PI*2*1.3),mul(tb,3.2*g.wind*.7)),1.3))));
+ let x=[g.poleX,g.poleX];const nodes=[];
+ for(let i=0;i<=30;i++){
+  const u=mul(ext,i/30),zz=z(u),dz=div(sub(z(add(u,.01)),z(clamp(sub(u,.01),0,2))),.02*g.Wf),hs=add(1,div(zz,D)),cs=div(1,pow(add(1,sq(dz)),.5)),droop=sub(mul(sq(u),g.Hf*.05),mul(zz,.12));
+  if(i)x=add(x,mul(mul(ext,g.side*g.Wf/30),cs));
+  nodes.push({x,top:sub(add(y0,droop),mul(sub(hs,1),g.Hf/2)),bot:sub(add(add(y0,droop),mul(hs,g.Hf)),mul(sub(hs,1),g.Hf/2)),sl:dz,hs,c0:add(g.Hf/2,droop)});
+ }
+ const at=u=>{const f=mul(clamp(div(u,ext)),30),i0=Math.max(0,Math.min(29,Math.floor(f[0]))),i1=Math.max(0,Math.min(29,Math.floor(f[1]))),rows=[];for(let i=i0;i<=i1;i++){const t=clamp(sub(f,i)),a=nodes[i],b=nodes[i+1],q={};for(const key of ['x','top','bot','sl','hs','c0'])q[key]=mix(a[key],b[key],t);rows.push(q);}return Object.fromEntries(['x','top','bot','sl','hs','c0'].map(k=>[k,join(rows.map(r=>r[k]))]));};
+ const dmax=Math.max(...nodes.map(n=>mag(n.sl))),cmin=1/Math.sqrt(1+dmax*dmax),hs=join(nodes.map(n=>n.hs));if(hs[0]<=0||cmin<=1e-8)fail('FLAG_INTERVAL_INCONCLUSIVE','Positive finite cloth projection not established');
+ return {nodes,ext,y0,amp,at,dmax,cmin,hs,full:g.mode==='raise'||L[0]>=.8&&L[1]<=cut.dur-cut.outDur};
+}
+function inventory(renderer,plan,cut){
+ const ctx=A.measurementContext();ctx.reset();const t=cut.start+cut.dur+2,env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t,realTime:t,lt:t-cut.start,ltb:t-cut.start,step:0,scale:1,allowFilter:false,placementEnvelope:true}),program=A.record(renderer,env),g=program.nativeDGeometry;
+ if(!program.measurementSupported)fail('UNSUPPORTED_MEASUREMENT',JSON.stringify(program.diagnostics));if(g?.kind!=='flag'||g.N!==30||!g.glyphs?.length||![g.Wf,g.Hf,g.size,g.poleLength,g.pw,g.ptop,g.wind,g.motion].every(Number.isFinite))fail('FLAG_SOURCE_GEOMETRY','Finite explicit source flag geometry required');
+ const items=program.events.filter(e=>e.kind==='item'&&e.role==='primary'&&e.owner.startsWith('flag.glyph.'));if(items.length!==g.glyphs.length||norm(items.map(e=>e.args[0].text).join(''))!==norm(cut.text))fail('SOURCE_COVERAGE','Complete original ordered lyric glyphs required');
+ if(program.events.some(e=>e.role!=='primary'||!['flag.surface','flag.pole','flag.rings',...g.glyphs.map(v=>'flag.glyph.'+v.index)].includes(e.owner)))fail('UNMEASURED_OWNER','Every cloth, shading, trim, pole, finial, ring and glyph event must be primary owned');
+ return {g,glyphs:g.glyphs.map((q,i)=>{if(items[i].args[0].placementDSource?.index!==q.index||items[i].args[0].text!==q.ch)fail('SOURCE_COVERAGE','Stable source glyph index required');const ink=A.itemGeometry({...items[i].args[0],x:0,y:0,rot:0},ID,env).inkPolygons.flat();if(!ink.length)fail('UNMEASURED_INK','Complete font/stroke/font-space guard required');return {...q,ink,maxX:Math.max(...ink.map(p=>Math.abs(p[0]))),maxY:Math.max(...ink.map(p=>Math.abs(p[1])))};})};
+}
+function proof(renderer,plan,cut,proofRange){
+ const {g,glyphs}=inventory(renderer,plan,cut),boxes=new Map(),put=(owner,x,y,pad=0)=>{x=V(x);y=V(y);const next=[x[0]-pad,y[0]-pad,x[1]+pad,y[1]+pad],old=boxes.get(owner);boxes.set(owner,old?[Math.min(old[0],next[0]),Math.min(old[1],next[1]),Math.max(old[2],next[2]),Math.max(old[3],next[3])]:next);},ledger=glyphs.map(q=>({index:q.index,ch:q.ch,maxX:0,maxY:0,notchDepth:g.tail==='swallow'?g.Wf*.14:0})),fieldFailures=[],stats={cells:0,fullCells:0,revealCells:0,maxDz:0,minHs:Infinity,minCs:1,minAttachmentMargin:Infinity},physicalAttachment={requiredMargin:Math.max(2,g.pw/2),top:null,bottom:null,sufficientBottomReserve:g.poleLength-(g.Hf*1.3+g.poleDeformation+(g.mode==='raise'?Math.max(g.riseTravel,g.lowerTravel):0))};
+ const start=proofRange[0]-cut.start-1.6/24,end=proofRange[1]-cut.start,breaks=[start,0,.05,.8,cut.dur-cut.outDur,cut.dur,end].filter(t=>t>=start&&t<=end).sort((a,b)=>a-b),domains=[];
+ for(let i=0;i<breaks.length-1;i++){const a=breaks[i],b=breaks[i+1],n=Math.max(1,Math.ceil((b-a)/.05));for(let j=0;j<n;j++)domains.push([a+(b-a)*j/n,a+(b-a)*(j+1)/n]);}
+ if(domains.length*3>512)fail('FLAG_INTERVAL_BUDGET','Declared512 interval/pass cell budget exceeded');
+ intervalLoop:for(const lag of [0,.8/24,1.6/24])for(const L of domains){
+  const c=cell(g,cut,L,lag);stats.cells++;stats.fullCells+=Number(c.full);stats.revealCells+=Number(!c.full);stats.maxDz=Math.max(stats.maxDz,c.dmax);stats.minHs=Math.min(stats.minHs,c.hs[0]);stats.minCs=Math.min(stats.minCs,c.cmin);
+  const surfaceX=join(c.nodes.map(q=>q.x)),surfaceY=join(c.nodes.flatMap(q=>[q.top,q.bot]));put('flag.surface',surfaceX,surfaceY,6);
+  put('flag.pole',[g.poleX-g.pw*1.5,g.poleX+g.pw*1.5],[g.ptop-g.pw*1.5,g.ptop+g.poleLength],2);
+  const ringRad=g.pw*.9+Math.max(1,g.pw*.3)/2+2,ringY=join([add(c.y0,g.Hf*.04),add(c.y0,g.Hf*.96)]);put('flag.rings',g.poleX+g.side*g.pw*.2,ringY,ringRad);
+  const fieldTop=Math.min(surfaceY[0]-6,ringY[0]-ringRad),fieldBottom=Math.max(surfaceY[1]+6,ringY[1]+ringRad),topClearance=fieldTop-g.ptop,bottomClearance=g.ptop+g.poleLength-fieldBottom;
+  for(const [key,clearance,field]of [['top',topClearance,fieldTop],['bottom',bottomClearance,fieldBottom]])if(!physicalAttachment[key]||clearance<physicalAttachment[key].clearance)physicalAttachment[key]={clearance,field,domain:L,lag};
+  for(const [i,q]of glyphs.entries()){
+   if(q.nativeU>c.ext[1]+1e-10)continue;const z=c.at(q.u),a=c.at(q.u+.01),b=c.at(q.u-.01),cs=div(1,pow(add(1,sq(z.sl)),.5)),den=add(abs(sub(a.x,b.x)),.001);const spatialVisible=q.u<=q.nativeU||c.full&&q.u>=0&&q.u<=1;if(spatialVisible)den[0]=Math.max(den[0],g.Wf*c.cmin*Math.min(.01,Math.max(0,q.u))+.001);let slope=div(sub(a.c0,b.c0),den);const u0=q.u-.01-1/30,u1=Math.min(1.01,q.u+.01+1/30);if(u0>0&&spatialVisible){const zd=mag(c.amp)*(.85*Math.pow(u0,-.15)+Math.PI*2*1.05*Math.pow(u1,.85)+.35*(1+Math.PI*2*1.3*u1)),sl=(.1*g.Hf*u1+.12*zd)/(g.Wf*c.cmin);slope=[Math.max(slope[0],-sl),Math.min(slope[1],sl)];if(slope[0]>slope[1])fail('FLAG_INTERVAL_INCONCLUSIVE','Slope interval constraints disagree');}const cy=add(c.y0,add(z.c0,mul(z.hs,(q.v-.5)*g.Hf)));
+   const x=join(q.ink.map(p=>add(z.x,mul(cs,p[0])))),y=join(q.ink.map(p=>add(cy,add(mul(mul(mul(slope,cs),g.side),p[0]),mul(z.hs,p[1])))));put('flag.glyph.'+q.index,x,y,2);
+   const guard=20/(cut.contentScale??1),rx=q.maxX+guard,ry=mag(slope)*q.maxX+Math.max(...q.ink.map(p=>Math.abs((q.v-.5)*g.Hf+p[1])))*Math.max(Math.abs(c.hs[0]),Math.abs(c.hs[1]))+guard;
+   if(!c.full){ledger[i].maxX=Math.max(ledger[i].maxX,rx);ledger[i].maxY=Math.max(ledger[i].maxY,ry);continue;}
+   // A sufficient inner cloth corridor stays left of the real swallow notch.
+   // Lipschitz centreline variation accounts for a glyph's entire x support.
+   const du=rx/(g.Wf*c.cmin),umin=q.u-du-1/30-.01,umax=Math.min(1.01,q.u+du+1/30+.01),bound=umin>0?(g.Hf*.1*g.wind*(.5+.7*g.motion)*(g.waveScale??1))*(.85*Math.pow(umin,-.15)+Math.PI*2*1.05*Math.pow(umax,.85)+.35*(1+Math.PI*2*1.3*umax)):Infinity,Lc=.1*g.Hf*umax+.12*bound,shear=Lc/(g.Wf*c.cmin),ym=Math.max(...q.ink.map(p=>Math.abs((q.v-.5)*g.Hf+p[1])))*c.hs[1]+shear*q.maxX+guard+Lc*du,edge=g.tail==='swallow'?.86:1,margins=[g.Wf*c.cmin*q.u-rx,g.Wf*c.cmin*(edge-q.u)-rx,g.Hf*c.hs[0]/2-ym],margin=Math.min(...margins);
+   stats.minAttachmentMargin=Math.min(stats.minAttachmentMargin,margin);if(margin< -1e-7){fieldFailures.push({index:q.index,ch:q.ch,domain:L,lag,margins,reason:Number.isFinite(margin)?'Full guarded interior corridor not established':'Derivative domain does not establish cloth interior'});break intervalLoop;}
+  }
+ }
+ const camera=ps=>A.cameraEnvelope([ps],{...plan,fx:cut.effectFx||plan.fx,style:cut.effectStyle||plan.style},cut,20),units=[...boxes].map(([owner,b])=>{const q=glyphs.find(q=>owner==='flag.glyph.'+q.index);return {owner,source:q?{index:q.index,ch:q.ch,u:q.u,nativeU:q.nativeU,v:q.v,localFontStrokeFontSpaceGuard:q.ink,font:cut.params.font,size:g.size}:{Wf:g.Wf,Hf:g.Hf,poleX:g.poleX,pw:g.pw,ptop:g.ptop,poleLength:g.poleLength,poleDeformation:g.poleDeformation,riseTravel:g.riseTravel,lowerTravel:g.lowerTravel,waveScale:g.waveScale},envelopes:[camera(rect(...b))]};}),envelopes=units.flatMap(u=>u.envelopes),overhangFailures=[];
+ stats.complete=stats.cells===domains.length*3&&!fieldFailures.length;
+ // Unfurl ledger is not yet a cloth-relative protrusion proof; finalize
+ // rejects that mode rather than treating glyph radii as an exemption.
+ const physicalFailures=[];if(physicalAttachment.sufficientBottomReserve<0||!physicalAttachment.top||!physicalAttachment.bottom||physicalAttachment.top.clearance<physicalAttachment.requiredMargin||physicalAttachment.bottom.clearance<physicalAttachment.requiredMargin)physicalFailures.push({reason:'Pole must span the continuously moving complete guarded cloth and rings with physical clearance',...physicalAttachment});
+ const quality={complete:stats.complete&&physicalFailures.length===0,physicalAttachmentEstablished:physicalFailures.length===0,physicalAttachment,physicalFailures,sourceGlyphs:glyphs.length,minPrimaryPx:g.size*(cut.contentScale??1),fontSize:g.size,fullGuardAttachmentEstablished:!fieldFailures.length,fieldFailures,entryOverhangLedger:{status:'not-applicable-to-raise; unfurl phase ledger pending'},referenceKind:'finite-endpoint D reference at native geometry; never the original NaN source',overhangBoundEstablished:!overhangFailures.length,overhangFailures,interval:stats,poleEndClearance:g.poleLength-(g.Hf*1.3+g.poleDeformation+(g.mode==='raise'?Math.max(g.riseTravel,g.lowerTravel):0))};
+ return {g,units,envelopes,quality,...(fieldFailures.length||overhangFailures.length||physicalFailures.length?{error:{code:'FLAG_ATTACHMENT_INCONCLUSIVE',message:JSON.stringify({fieldFailures,overhangFailures,physicalFailures})}}:{})};
+}
+function makeRecipes(plan,cut,g,explicitSize){
+ const base={physicalPole:true,baseSize:g.size,clockCatalog:g.clockCatalog},floorPx=Math.min(g.size*(cut.contentScale??1),Math.max(18,.035*Math.min(plan.W,plan.H))),floorScale=floorPx/(g.size*(cut.contentScale??1)),levels=explicitSize?[1]:[1,.95,.9,.8,.7,.65,.6,.5,.4,floorScale].map(s=>Math.max(floorScale,s)).filter((v,i,a)=>a.indexOf(v)===i),forms=g.rowForms;
+ if(!Array.isArray(forms)||forms.length<1||forms.length>4)fail('FLAG_SOURCE_ROWS','Native contiguous row catalog required');
+ const out=[null,{...base,strategy:'physical-pole-native-cloth-and-travel-pitch'}];
+ // All native-font writing layouts precede every local font reduction. Natural
+ // row breaks come from the same private brk/chunksK used by the source itself.
+ for(const fontScale of levels)for(const form of forms){
+  const size=g.size*fontScale,m=J.measure({text:form.text,font:cut.params.font,size,track:.04,lead:1.15}),height=m.h/(g.trim==='bands'?.58:.68)+40,width=Math.max(m.w/(g.tail==='swallow'?.66:.78)+40,height*1.2);
+  for(const waveScale of [1,.8,.65])out.push({...base,strategy:fontScale===1?'native-font-cloth-writing-and-physical-pole':'local-font-cloth-writing-and-physical-pole',fontScale,width,height,waveScale,columns:form.columns,writingText:form.text});
+ }
+ const recipes=out.filter((v,i,a)=>a.findIndex(q=>JSON.stringify(q)===JSON.stringify(v))===i);if(recipes.length>122)fail('FLAG_CANDIDATE_BUDGET','Declared122 candidate recipe budget exceeded');return recipes;
+}
+function finalize({plan,cut,revision,stepDur,reachTail,explicitSize}){
+ const P=cut.params;if(cut.enter!=='cut'||cut.exit!=='cut'||cut.hold!=='still'||cut.treat!=='none'||!['unfurl','raise'].includes(P.mode)||!['rect','swallow'].includes(P.tail)||!['none','bands','edge'].includes(P.trim)||!['accent','ink'].includes(P.cloth)||![1,-1].includes(P.side)||!Number.isFinite(P.wind)||P.wind<.7||P.wind>1.15||(cut.motionScale??1)!==1||!Number.isFinite(plan.fx.motion)||plan.fx.motion<0||plan.fx.motion>1.25||cut.dur-cut.outDur<.85)fail('UNSUPPORTED_PARAMETER_RANGE','Native flag cut/cut/still/none, declared finite source parameters and a full-reveal hold required');
+ const count=[...norm(cut.text)].length;if(count<1||count>16)fail('UNSUPPORTED_PARAMETER_RANGE','Native flag1..16 source glyphs required');if(!A.layoutsDSourceKnown?.('flag')||!A.layoutsDTransportKnown?.(Object.create(J.Renderer.prototype))||A.layoutsDFlagClothClipCapability?.().version!==1)fail('D_FLAG_CLOTH_CLIP_PENDING','Exact source and explicit flag cloth clip bridge required');
+ if(P.mode==='unfurl')fail('FLAG_ENTRY_OVERHANG_INCONCLUSIVE','Native-clock unfurl requires a phase-specific cloth-relative protrusion proof; no radius-only waiver is admitted');
+ const renderer=Object.create(J.Renderer.prototype),evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail],native=proof(renderer,plan,cut,evaluationRange),baseSize=native.g.size,clockCatalog=native.g.clockCatalog,recipes=makeRecipes(plan,cut,native.g,explicitSize),memo=new Map([[JSON.stringify(null),native]]),segments=[];
+ for(let i=0;i<plan.lyricAvoidanceIndex.regions.length;i++){
+  const r=plan.lyricAvoidanceIndex.regions[i],end=Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration);if(r.start>=evaluationRange[1]||end<=evaluationRange[0]||end<=r.start)continue;const circle={cx:r.center.x*plan.W,cy:r.center.y*plan.H,r:r.radius*Math.min(plan.W,plan.H)},attempts=[];let chosen=null,firstFinite=null,firstFiniteRecipe=null;
+  for(const recipe of recipes){const key=JSON.stringify(recipe);let trial=memo.get(key);if(!trial){try{trial=proof(renderer,plan,{...cut,layoutDRecipe:recipe},evaluationRange);if(trial.quality.minPrimaryPx<Math.min(native.quality.minPrimaryPx,Math.max(18,.035*Math.min(plan.W,plan.H)))-1e-7)fail('READABILITY_FLOOR','Native readable primary floor required');}catch(e){trial={error:{code:e.code||'DRAW_PROGRAM_ERROR',message:e.message}};}memo.set(key,trial);}
+   if(trial.error){attempts.push({strategy:recipe?.strategy||'native-joint-placement',recipe,status:'unsupported',reason:trial.error.code,details:trial.error.message});continue;}if(!firstFinite){firstFinite=trial;firstFiniteRecipe=recipe;}const solution=A.solveBasic(trial.envelopes,circle,plan.W,plan.H,cut.seed,{supportHull:true});attempts.push({strategy:recipe?.strategy||'native-joint-placement',recipe,status:solution.status,reason:solution.reason||null,quality:trial.quality});if(solution.status==='safe'){chosen={trial,recipe,solution};break;}
+  }
+  if(!chosen&&!firstFinite)fail('FLAG_INTERVAL_INCONCLUSIVE',JSON.stringify({region:r.id,attempts,limitation:'No complete guarded source candidate proved; this is not geometric impossibility'}));const p=chosen?.trial||firstFinite,offset=chosen?.solution.offset||[0,0];segments.push({start:r.start,end,region:r.id,circle,from:offset,to:offset,status:chosen?'safe':'insufficient-space',decision:chosen?'certified':'excluded-during-avoidance',composition:chosen?chosen.recipe:firstFiniteRecipe,envelopes:p.envelopes,unitProofs:p.units,attempts});
+ }
+ return {kind:'layouts-d-source-native',version:1,revision,evaluationRange,measurementSupported:true,units:[{owner:'flag.composition',segments}],sourceProof:{kind:'continuous-source-interval-arithmetic',coverage:native.quality,numericalChange:'D negative-u endpoint finite difference continues at0; physical u>=0, N30, .01span, phases/easing/reveal and mainDraw stagger gates unchanged',sourceReference:'finite-endpoint D reference at native geometry; original NaN/clip/pole failures retained separately',interval:'Outward-enlarged arithmetic/trig/power bounds on every material node, monotone x accumulation, interpolation and finite-difference glyph transform for every time/pass cell; no frame sample union',ownership:'All cloth/shading/trim, complete lyric glyphs, physical pole/finial and rings primary; shared fixed translation',attachment:'Raise: complete font/stroke/font-space guard +20/(contentScale) world pixels fits sufficient interior corridor before concave notch on every interval/pass. Unfurl remains typed unsupported until phase-specific cloth-relative overhang proof exists.',explicitSizePreserved:explicitSize,candidateBudget:memo.size,candidateBudgetLimit:122,candidateRecipes:recipes.length},safety:segments.every(s=>s.status==='safe')?'certified-bounded-adapter':'insufficient-space'};
+}
+const contains=(p,poly)=>{let a=false,b=false;for(let i=0;i<poly.length;i++){const x=poly[i],y=poly[(i+1)%poly.length],v=(y[0]-x[0])*(p[1]-x[1])-(y[1]-x[1])*(p[0]-x[0]);a||=v>1e-5;b||=v< -1e-5;}return !(a&&b);};
+function render({renderer,env,trajectory}){
+ A.validateFinal(env.plan);const scale=env.scale??1;if(!Number.isFinite(scale)||scale<.1||scale>4)fail('UNSUPPORTED_RENDER_SCALE','Flag scales.1..4 required');const unit=trajectory.units[0],active=unit.segments.find(s=>s.start<=env.realTime&&env.realTime<s.end),offset=A.offsetAt(unit,env.realTime);if(active?.composition){const cut={...env.cut,layoutDRecipe:active.composition};env=renderer.makeEnv(env.ctx,env.plan,cut,env.sc,{...env,cut});}
+ const p=A.record(renderer,env);if(!p.measurementSupported)fail('UNSUPPORTED_MEASUREMENT',JSON.stringify(p.diagnostics));const events=p.events.map(event=>({event,polygons:event.polygons.map(q=>q.map(v=>[v[0]/scale,v[1]/scale]))})),covered=!active||events.every(({event,polygons})=>{const u=active.unitProofs.find(u=>u.owner===event.owner);return event.role==='primary'&&u&&polygons.every(q=>u.envelopes.some(e=>q.every(v=>contains(v,e))));});if(!covered)fail('D_ENVELOPE_VIOLATION','Actual owned flag source event escaped continuous interval envelope');const polygons=events.flatMap(e=>e.polygons.map(q=>q.map(v=>[v[0]+offset[0],v[1]+offset[1]]))),region=J.resolveAvoidanceAt(env.plan,env.realTime),circle=region?J.avoidanceCirclePixels(region,env.plan.W,env.plan.H):null,clear=!polygons.length||A.clear(polygons,circle,Math.max(2,.005*Math.min(env.plan.W,env.plan.H))),stageContained=polygons.every(q=>q.every(v=>v[0]>=0&&v[0]<=env.plan.W&&v[1]>=0&&v[1]<=env.plan.H));if(active?.status==='safe'&&(!clear||!stageContained))fail('D_SOURCE_SAFETY_VIOLATION','Actual primary flag escaped stage or circle clearance');env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,measurementSupported:true,envelopeCovered:covered,stageContained,strictCircleClear:clear,safety:active?.status==='insufficient-space'?'conflict':clear?'safe':'conflict',polygons,events:p.events.map(e=>({kind:e.kind,owner:e.owner,role:e.role,order:e.order,polygons:e.polygons}))});A.replay(env,p,offset);
+}
+A.registerLayoutsDAdapter('flag',{id:'flag-source-interval-v1',finalize,render});
 })();
 
 /* ============================================================
@@ -38400,10 +38506,16 @@ reg('flag', {
   render(env) {
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, u = U(env), lt = env.lt;
     const port = isPort(env);
+    const nativeD=cut.placementLayoutsD===true,recipe=nativeD?cut.layoutDRecipe:null;
+    let cloth=env,pole=env,rings=env;
+    if(nativeD){const owned=owner=>Object.fromEntries(['rect','circle','poly'].map(kind=>[kind,(...args)=>env.withDrawRole('primary',owner,()=>env[kind](...args))]));cloth=owned('flag.surface');pole=owned('flag.pole');rings=owned('flag.rings');}
     const side = Pm.side || 1;
     const t0 = flat(cut.text), n = J.glyphCount(t0);
-    const text = brk(t0, port ? 5 : n <= 5 ? 5 : Math.max(4, Math.ceil(n / 2)));
-    const Wf = W * (port ? 0.78 : 0.62), Hf = Math.min(H * (port ? 0.34 : 0.52), Wf * 0.64);
+    const nativeColumns=port?5:n<=5?5:Math.max(4,Math.ceil(n/2)),nativeWf=W*(port?.78:.62),nativeHf=Math.min(H*(port?.34:.52),nativeWf*.64);
+    const text = brk(t0,recipe?.columns || nativeColumns);
+    let clockCatalog=nativeD?recipe?.clockCatalog:null;
+    if(nativeD&&!clockCatalog){const nativeText=brk(t0,nativeColumns),o={track:.04,lead:1.15},nativeSize=Math.min(J.fitSize(nativeText,Pm.font,nativeWf*(Pm.tail==='swallow'?.66:.78),nativeHf*(Pm.trim==='bands'?.58:.68),o),nativeHf*.42),nativeUC=(Pm.tail==='swallow'?.46:.52)+(Pm.trim==='edge'?.03:0),nativeLay=J.layoutText({text:nativeText,font:Pm.font,size:nativeSize,...o});clockCatalog={text:nativeText,font:Pm.font,size:nativeSize,Wf:nativeWf,Hf:nativeHf,glyphs:[...nativeLay].filter(g=>g.ch.trim()).map(g=>({index:g.i,ch:g.ch,u:nativeUC+side*g.x/nativeWf}))};}
+    const Wf = recipe?.width || W * (port ? 0.78 : 0.62), Hf = recipe?.height || Math.min(H * (port ? 0.34 : 0.52), Wf * 0.64);
     const poleX = side > 0 ? W / 2 - Wf / 2 - W * 0.03 : W / 2 + Wf / 2 + W * 0.03;
     const out = tout(env);
     const mot = env.fx.motion ?? 0.7;
@@ -38411,9 +38523,10 @@ reg('flag', {
     const raise = Pm.mode === 'raise' ? E.outCubic(J.clamp(lt / 0.8)) : 1;
     const lower = Pm.mode === 'raise' ? E.inCubic(env.pOut) : 0;
     const furl = Pm.mode === 'unfurl' ? E.inCubic(env.pOut) : 0;
-    const y0 = H / 2 - Hf / 2 - H * 0.03 + (1 - raise) * H * 0.55 + lower * H * 0.6;
+    const riseTravel=recipe?.physicalPole?Hf*(recipe.risePitch??.25):H*.55,lowerTravel=recipe?.physicalPole?Hf*(recipe.lowerPitch??.3):H*.6;
+    const y0 = H / 2 - Hf / 2 - H * 0.03 + (1 - raise) * riseTravel + lower * lowerTravel;
     const ext = Math.max(0.001, unf * (1 - furl));
-    const A = Hf * 0.1 * Pm.wind * (0.5 + 0.7 * mot) * (1 + (1 - unf) * 1.2), D = Wf * 1.3;
+    const A = Hf * 0.1 * Pm.wind * (0.5 + 0.7 * mot) * (1 + (1 - unf) * 1.2)*(recipe?.waveScale??1), D = Wf * 1.3;
     const w = 2.1, om = 3.2 * Pm.wind;
     const tb = env.ltb;
     const zf = x => A * Math.pow(x, 0.85) * Math.sin(J.TAU * w * x * 0.5 - om * tb) + A * 0.35 * x * Math.sin(J.TAU * 1.3 * x - om * 0.7 * tb + 1.3);
@@ -38426,7 +38539,7 @@ reg('flag', {
     let xAcc = 0;
     for (let i = 0; i <= N; i++) {
       const uu = i / N * ext;
-      const z = zf(uu), dz = (zf(uu + 0.01) - zf(uu - 0.01)) / 0.02 / Wf;
+      const z = zf(uu), dz = (zf(uu + 0.01) - zf(nativeD ? Math.max(0,uu - 0.01) : uu - 0.01)) / 0.02 / Wf;
       if (i > 0) xAcc += (Wf * ext / N) / Math.sqrt(1 + dz * dz);
       const hs = 1 + z / D;
       const droop = uu * uu * Hf * 0.05 - z * 0.12;
@@ -38436,8 +38549,11 @@ reg('flag', {
     // pole
     const pa = tin(env, 0, 0.3, E.outCubic) * (Pm.mode === 'raise' ? 1 - E.inCubic(J.clamp((env.pOut - 0.5) / 0.5)) : out);
     const pw = Math.max(3, u * 0.011), ptop = H / 2 - Hf / 2 - H * 0.03 - Hf * 0.3;
-    env.rect(poleX - pw / 2, ptop, pw, H * 1.2, sc.sub, pa, false);
-    env.circle(poleX, ptop, pw * 1.5, sc.accent, null, 0, pa, false);
+    const poleDeformation=nativeD?Hf*.05+Hf*.1*Pm.wind*(.5+.7*mot)*2.2*1.35*Math.abs(Hf/(2*D)-.12):0;
+    const poleLength=recipe?.physicalPole?Hf*1.5+poleDeformation+(Pm.mode==='raise'?Math.max(riseTravel,lowerTravel):0):H*1.2;
+    if(nativeD)env.placementDGeometry={kind:'flag',Wf,Hf,poleX,pw,ptop,poleLength,poleDeformation,riseTravel,lowerTravel,side,mode:Pm.mode,tail:Pm.tail,trim:Pm.trim,wind:Pm.wind,motion:mot,N,baseY:H/2-Hf/2-H*.03,endpointRule:'negative finite-difference u continues at0; physical zf unchanged',waveScale:recipe?.waveScale??1,clockCatalog,rowForms:[nativeColumns,Math.max(1,Math.ceil(n/2)),Math.max(1,Math.ceil(n/3)),32].map(columns=>({columns,text:brk(t0,columns)})).filter((v,i,a)=>a.findIndex(q=>q.text===v.text)===i),nodes:S};
+    pole.rect(poleX - pw / 2, ptop, pw, poleLength, sc.sub, pa, false);
+    pole.circle(poleX, ptop, pw * 1.5, sc.accent, null, 0, pa, false);
     if (unf * out <= 0.001 || y0 > H * 1.2) return null;
     // cloth: one silhouette (with a swallowtail notch), trims and fold shading clipped inside it
     const sw = Pm.tail === 'swallow';
@@ -38445,41 +38561,48 @@ reg('flag', {
     const sil = S.map(q => [q.x, q.top]);
     if (sw) { const q = at0(ext * 0.86); sil.push([q.x, (q.top + q.bot) / 2]); }
     for (let i = N; i >= 0; i--) sil.push([S[i].x, S[i].bot]);
-    env.poly(sil, col, out, false);
+    if(nativeD)env.placementDGeometry.silhouette=sil;
+    cloth.poly(sil, col, out, false);
     if (env.pass === 'main') {
       const ctx = env.ctx;
-      ctx.save(); ctx.beginPath(); sil.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.closePath(); ctx.clip();
-      const band = (v0, v1, c, a) => { const pts = S.map(q => [q.x, J.lerp(q.top, q.bot, v0)]); for (let i = N; i >= 0; i--) pts.push([S[i].x, J.lerp(S[i].top, S[i].bot, v1)]); env.poly(pts, c, a, false); };
+      const paintCloth=()=>{
+      const band = (v0, v1, c, a) => { const pts = S.map(q => [q.x, J.lerp(q.top, q.bot, v0)]); for (let i = N; i >= 0; i--) pts.push([S[i].x, J.lerp(S[i].top, S[i].bot, v1)]); cloth.poly(pts, c, a, false); };
       if (Pm.trim === 'bands') { band(0.08, 0.15, trimC, out); band(0.85, 0.92, trimC, out); }
-      if (Pm.trim === 'edge') { const a = S[0], b = S[Math.min(N, 3)]; env.poly([[a.x - side * 2, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x - side * 2, a.bot + 4]], trimC, out, false); }
+      if (Pm.trim === 'edge') { const a = S[0], b = S[Math.min(N, 3)]; cloth.poly([[a.x - side * 2, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x - side * 2, a.bot + 4]], trimC, out, false); }
       for (let i = 0; i < N; i++) {
         const a = S[i], b = S[i + 1], v = J.clamp(-(a.sl + b.sl) / 2 * side * 0.9, -0.4, 0.2);
         if (Math.abs(v) < 0.02) continue;
-        env.poly([[a.x, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x, a.bot + 4]], v < 0 ? darkOf(sc) : lightOf(sc), Math.abs(v) * 0.8 * out, false);
+        cloth.poly([[a.x, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x, a.bot + 4]], v < 0 ? darkOf(sc) : lightOf(sc), Math.abs(v) * 0.8 * out, false);
       }
-      ctx.restore();
+      };
+      if(nativeD&&env.withDSourcePolygonClip)env.withDSourcePolygonClip('flag-cloth-v1',sil,paintCloth);
+      else {ctx.save();ctx.beginPath();sil.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.clip();paintCloth();ctx.restore();}
     }
     // rope rings
-    env.circle(poleX + side * pw * 0.2, S[0].top + Hf * 0.04, pw * 0.9, null, sc.sub, Math.max(1, pw * 0.3), out, false);
-    env.circle(poleX + side * pw * 0.2, S[0].bot - Hf * 0.04, pw * 0.9, null, sc.sub, Math.max(1, pw * 0.3), out, false);
+    rings.circle(poleX + side * pw * 0.2, S[0].top + Hf * 0.04, pw * 0.9, null, sc.sub, Math.max(1, pw * 0.3), out, false);
+    rings.circle(poleX + side * pw * 0.2, S[0].bot - Hf * 0.04, pw * 0.9, null, sc.sub, Math.max(1, pw * 0.3), out, false);
     // lyric printed on the cloth: glyph centres in flag-local (u, v)
     const o = { track: 0.04, lead: 1.15 };
-    const size = Math.min(J.fitSize(text, Pm.font, Wf * (Pm.tail === 'swallow' ? 0.66 : 0.78), Hf * (Pm.trim === 'bands' ? 0.58 : 0.68), o), Hf * 0.42);
+    const size = recipe?.baseSize ? recipe.baseSize*(recipe.fontScale||1) : nativeD?clockCatalog.size:Math.min(J.fitSize(text, Pm.font, Wf * (Pm.tail === 'swallow' ? 0.66 : 0.78), Hf * (Pm.trim === 'bands' ? 0.58 : 0.68), o), Hf * 0.42);
     const lay = J.layoutText({ text, font: Pm.font, size, track: o.track, lead: o.lead });
     const uC = (Pm.tail === 'swallow' ? 0.46 : 0.52) + (Pm.trim === 'edge' ? 0.03 : 0);
+    if(nativeD){const printed=[...lay].filter(g=>g.ch.trim());if(printed.length!==clockCatalog.glyphs.length||printed.some((g,i)=>g.ch!==clockCatalog.glyphs[i].ch))throw Object.assign(Error('Complete original flag glyph catalog required'),{code:'FLAG_SOURCE_CATALOG'});Object.assign(env.placementDGeometry,{text,size,uC,glyphs:printed.map((g,i)=>({index:clockCatalog.glyphs[i].index,ch:g.ch,u:uC+side*g.x/Wf,nativeU:clockCatalog.glyphs[i].u,v:.5+g.y/Hf}))});}
     let bb = null;
     const at = uu => { const f = J.clamp(uu / ext) * N, i = Math.min(N - 1, Math.floor(f)), t = f - i, a = S[i], b = S[i + 1]; return { x: J.lerp(a.x, b.x, t), top: J.lerp(a.top, b.top, t), bot: J.lerp(a.bot, b.bot, t), sl: J.lerp(a.sl, b.sl, t), hs: J.lerp(a.hs, b.hs, t) }; };
+    let glyphOrdinal=0;
     for (const g of lay) {
       if (g.ch === ' ' || g.ch === '　') continue;
-      const uu = uC + side * g.x / Wf;
-      if (uu > ext) continue;
+      const uu = uC + side * g.x / Wf,clockGlyph=nativeD?clockCatalog.glyphs[glyphOrdinal++]:null,clockU=clockGlyph?.u??uu;
+      if (clockU > ext) continue;
       const q = at(uu);
       const v = 0.5 + g.y / Hf;
       const y = J.lerp(q.top, q.bot, v);
       const cs = 1 / Math.sqrt(1 + q.sl * q.sl);
       const slope = ((at(uu + 0.01).top + at(uu + 0.01).bot) - (at(uu - 0.01).top + at(uu - 0.01).bot)) / 2 / (Math.abs(at(uu + 0.01).x - at(uu - 0.01).x) + 1e-3);
       const m = [cs, slope * cs * side, 0, q.hs, q.x, y];
-      bb = UB(bb, drawAff(env, { text: g.ch, font: Pm.font, size, x: 0, y: 0, color: tc, noHold: plateHold(env), mi: miAt(env, 0.1 + uu * 0.6) }, m));
+      const item={ text:g.ch,font:Pm.font,size,x:0,y:0,color:tc,noHold:plateHold(env),mi:miAt(env,.1+clockU*.6) };
+      if(nativeD){item.placementDSource={index:clockGlyph.index,ch:g.ch,u:uu,nativeU:clockU,v};bb=UB(bb,env.withDrawRole('primary','flag.glyph.'+clockGlyph.index,()=>drawAff(env,item,m)));}
+      else bb=UB(bb,drawAff(env,item,m));
     }
     return bb || box(Math.min(S[0].x, S[N].x), S[0].top, Math.max(S[0].x, S[N].x), S[0].bot);
   },

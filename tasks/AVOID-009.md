@@ -237,3 +237,13 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 ## 2026-10-24 03:00日本時間の再開
 
 予約トリガーから再開。work/b1184d2、既存pycache・進捗設定変更・未追跡/skip-worktree証拠を保持。実行中担当0を確認し、同じ隔離旗試作をgpt-6.1-sol/mediumのavoid009_flag_resumeへ引き継いだ。[親の独立raw照合](evidence/AVOID-009/flag-wip/parent-raise-review03.json)は46入力pin、444文字clock、96移動/camera/scale描画組、OFF10コマの画素と計測呼出、有限D参照30描画組を確認。raise7条件中safe4/不足2/unfurl未対応1、証明polygon19/実polygon1150を独立計算した。通常円の4文字は128候補で不足のまま、旗の本体統合・全対応・人間承認はない。凍結sourceの限定32条件matrixを継続し、公開結果確認は0。
+
+## 再開後の旗raise限定受入
+
+[親コード/raw最終レビュー](evidence/AVOID-009/flag-wip/parent-final12-review.json)でraiseの限定adapterを受入。[統合receipt](evidence/AVOID-009/flag-wip/integration-receipt14.json)の15対象ファイルを固定試験版と完全一致で反映し、対象外90 source/既存pycacheを親も独立照合した。全布・文字・支柱/留め具をprimaryのまま、元時計を分離して保持し、自然な連続行組み・物理的な布/支柱寸法・非ゼロの波・最後に局所文字縮小を最大122候補で探索する。明示サイズと可読下限は維持。
+
+親は支柱が布の昇降範囲より短くても倍率0.5ならsafeになる初稿不具合を発見し、[旧版FAIL](evidence/AVOID-009/flag-wip/parent-matrix06-findings.json)を残した。修正後は連続全区間の布/留め具と支柱上下の物理余裕を必須にし、明示倍率0.5でも文字と倍率を保って実支柱候補へ移る。連続区間演算は31布節点の元補間・三角関数・文字全guardの実布内付着を扱い、時間コマの集合を証明に使わない。
+
+最終37独立条件はsafe31/明示倍率4の不足1/維持4/範囲外motion1.25拒否1。2領域の境界とghostも含み、safe32区間の274証明polygonと11,977実polygonを親が独立照合。文字ID/nativeU/mi888組、OFF10コマの画素・計測呼出が一致。元sourceにある負u差分の非有限性はDのみ有限端点規則で修正し、OFFは元のまま保持。正確なcamera/scale/非ゼロ移動96組と非旗18条件72画素組/cache3例は変更箇所を照合して引継ぐ。正式性能は未評価。
+
+通常円の横4文字は2行/元字号の50%で回避、縦は元字号を保持する。必要な横縦2例のみ原寸MP4/独立sol視覚確認を準備し、人間確認は未回答queueへ保存する。unfurlは実際の布相対の入退場はみ出し証明が未完でtyped未対応。旗全モード・009完了とは扱わない。[完全証拠の復元](evidence/AVOID-009/flag-wip/archive-storage13.json)では27.9MB履歴をGit blobのみ/skip-worktreeに保存し、主アーカイブと合わせ/tmpへ復元できる。公開結果確認は0。
