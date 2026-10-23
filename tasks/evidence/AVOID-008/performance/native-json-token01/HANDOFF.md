@@ -1,0 +1,9 @@
+# Native JSON token strings in stock exact encoder
+
+Only stockcacheEncode changes. visit returns exact encodedJSONtoken strings instead of token arrays. Primitive/key/number strings use captured nativeJSON.stringify; finite/-0/undefined handling and integerrefs preserve old bytes. Each node is known fixedarray/object structure joined from orderedtokens; this avoids primitive/[key,token]/data/node temporary arrays and node re-stringify. Root/nodes wire stays exactcodec. Genericcodec and all following functions byteexact unchanged; entry/exitpayloadGuard and standalonefallback unchanged.
+
+All original input/prototype/descriptor/alias/cycle/regex keys.some validations, WeakMapIDs, DFS order retained. Original per-node exact key.length+1 charge and immediate*2budgetcheck are at same completion point; no approximate lengths/postponed checks/continued walk after budgeterror. No new memo/table/external reference retention. Per-call active/IDs/nodes remain, nodes still serializedstrings. The regex-only idea was superseded before any formal/browser run because existingprofile attributed only11237us/8calls tocallback; existingvisit753101us/8calls provides broader selection rationale, not a speedclaim.
+
+Pure50 compare exactwirebytes and rejection against immutable oldgeneric before-encode.cjs:normalnumbers/escape/Unicode/aliases/nullproto/dense arrays/invalid holes+extra numeric spellings, saved100ON/OFF, historicalold1000, exactbudget below/equal/above, standalonegenericfallback. Stockgenericcalls0. Existingdense22/66reads/6lifecycle passes. No Proxy/fuzz/newsecurity or timing. Historical1000 fixtureprovenance separate from current.
+
+Build and isolatedreversebuild JAEN pass;83other sources exact; sourcepatch preserved. Previousformal1000ON planning2.129767xFAIL remains; no inferred speed success. Browser/performance/CDP0.
