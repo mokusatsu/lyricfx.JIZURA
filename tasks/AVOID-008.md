@@ -1,11 +1,13 @@
 # AVOID-008 拡張Cの34レイアウトの対応
 
-- 状態: 実装中
+- 状態: ローカル検証済み
 - 段階: 通常軌道
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
 
 ## 2026-10-23 JST 現在の指示と開始記録
+
+- 最終8source+JAENをmainへ統合、[全86製品のGit fdb一致](evidence/AVOID-008/parent-final8-main-integration01-pins.json)と既存pyc保持、実buildを確認。[同条件core22ジョブの親raw照合](evidence/AVOID-008/parent-final8-core-regression01-review.json)は両側8PASS/3既知FAIL・全11ログのpathだけ正規化で一致。保存本体は未到達の既知不一致を維持。[最終4構図の対応・ローカル日英起動・Sitesコピーを親受入](evidence/AVOID-008/parent-final-four-binding01-review.json)：768frame/clock対照、8MP4は原本維持、79assets+manifest/85localrefs、既存Sites528files保持。Swiss adaptedは原engineとの96native+原keys3で対応し、新96encoder実測とは主張しない。ローカル起動の初回loader欠落FAILも保持、参照訂正後日英成功。親の画像閲覧0、公開結果確認0。実装・必要local・親レビューを満たしローカル検証済みへ同期、残る人間4問のため比較local-20261023-01のみ公開操作へ進む。全variantの視覚承認や保存成功ではなく、009以降は未着手。
 
 - compose distance score版fdb7916は[親576通常条件/176702全候補/176990乱数/Math等順の独立再実行](evidence/AVOID-008/parent-compose-distance-score01-review.json)、[全field144frame比較](evidence/AVOID-008/parent-compose-distance-score-browser01-review.json)、[元正式100/1000の親raw再計算](evidence/AVOID-008/parent-compose-distance-score-formal01-review.json)を受入。actual231/231、100ON1.806倍/+2.4ms、100OFF0.366倍/−3.3ms、1000ON1.879倍/+2.5ms、1000OFF1.251倍/+0.8msで全4条件2倍/+3ms内。120入力/173依存/86製品/全72sourcehashの固定corpus一致/実kernel0reapclose/reserveを確認。100OFF baselinep95202.1msの変動を保持し、普遍速度保証や旧230との因果比較はしない。旧全FAIL・診断集計例外を保存。指定担当へmain最終8source+JAENの全採用と既存変更保持、同条件core回帰/日英起動/必要4構図mediaの最終source対応を依頼。現段階では4構図は未回答で、009以降未着手。公開結果確認は禁止維持。
 

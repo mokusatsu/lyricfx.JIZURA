@@ -1,0 +1,2 @@
+exec(open('/tmp/avoid008-integration-owned-carry-run.py').read().split('for name,helper,key')[0])
+J=T/'carry-swiss-before';J.mkdir();result=execute_process(['node','dev/avoidance/layouts-c-integration-owned-swiss-before-carry.cjs'],cwd=R,env={**env,'JIZURA_C_PROOFREAD_CARRY':str(D.relative_to(R))+'/swiss-before-carry.json'},folder=J,timeout=300);(T/'swiss-before-execution.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'swissBeforeExit':result['exitCode']}),flush=True)

@@ -4,6 +4,7 @@
 (() => {
 'use strict';
 const E = J.E;
+const shadowOutputFrames=new WeakMap();
 
 const mk = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, w | 0); c.height = Math.max(1, h | 0); return c; };
 
@@ -252,6 +253,7 @@ class Renderer {
         if (X === target) X.globalCompositeOperation = blend;
         // Content units: the display area, moved by the camera; the source mask follows them.
         const contentMatrix = sourceMask ? X.getTransform() : null;
+        if(cut.fullStagePlacement&&cut.placementLayoutsC===true&&cut.layout==='shoji'&&cut.params?.variant==='shadow'){const m=X.getTransform();shadowOutputFrames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,width:cw,height:ch,scale,allowFilter,root:Object.freeze([m.a,m.b,m.c,m.d,m.e,m.f])}));env.placementOutputDomain=J.placement.layoutsCShadowOutputDomain(this,env);}
         if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
         X.restore();
         if (sourceMask) J.applyMaskToCanvas(X.canvas, mask, contentMatrix, contentW, contentH, { cut, t: tp, plan });
@@ -531,4 +533,5 @@ function prevBeat(beats, t) {
   return ans;
 }
 J.Renderer = Renderer;
+Object.defineProperty(J,'layoutsCShadowFrameDescriptor',{value:(renderer,env)=>shadowOutputFrames.get(env)?.renderer===renderer?shadowOutputFrames.get(env):null});
 })();

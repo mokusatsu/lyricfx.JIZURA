@@ -1,0 +1,1 @@
+export function resolve(specifier,context,nextResolve){return nextResolve(specifier==='playwright'?'file:///workspace/lyricfx.JIZURA/scratch/avoid008-regression01/dependencies/playwright/index.mjs':specifier,context);}

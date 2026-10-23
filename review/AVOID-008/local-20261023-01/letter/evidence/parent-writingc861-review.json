@@ -1,0 +1,70 @@
+{
+  "reviewedAtUTC": "2026-10-22T19:24:49.677515+00:00",
+  "commit": "c86146d80e356c79adcbe099b8184a968627d572",
+  "startupRawPins": 315,
+  "actualSourcesEqualGitAndEmbeddedJAEN": true,
+  "other32BlocksHeaderUnchanged257": true,
+  "rawCases": {
+    "matrix14": {
+      "cases": 323,
+      "safe": 103,
+      "insufficient": 216,
+      "unsupported": 4,
+      "controls": 50,
+      "negatives": 6,
+      "failures": []
+    },
+    "writing11": {
+      "cases": 405,
+      "safe": 83,
+      "insufficient": 321,
+      "unsupported": 1,
+      "controls": 10,
+      "negatives": 6,
+      "failures": []
+    },
+    "default-circle04": {
+      "cases": 276,
+      "safe": 62,
+      "insufficient": 210,
+      "unsupported": 4,
+      "controls": 0,
+      "negatives": 6,
+      "failures": []
+    }
+  },
+  "independentPolygonAndPhaseChecks": {
+    "matrix14Phase": 6498,
+    "matrix14Interval": 323,
+    "matrix14StrictActual": 49935,
+    "writing11Phase": 8228,
+    "writing11Interval": 83,
+    "writing11StrictActual": 34152,
+    "default-circle04Phase": 0,
+    "default-circle04Interval": 130
+  },
+  "dedicatedCertifiedSegments": {
+    "letterPaper": 21,
+    "postcard": 1
+  },
+  "actualFontFilesCmaps": 9,
+  "priorQualifiedFont03AssignmentsStillCovered": 3348,
+  "currentSmallAuditPins": 44,
+  "allOwnedRasterFrames": 375,
+  "rulingRasterFrames": 574,
+  "exactHeaderGlyphRuleRasterFrames": 287,
+  "copyScopeFieldRulingAndStageFaults": 21,
+  "genuinePostcardPositiveNativeFrames": 101,
+  "sourceReview": "Finite native move/owned sizes then three paper/font-.7 recipes; exact owner/copy/font/mi with whitespace input rejection; field epsilon1e-6 and actual-ink centering; native top thin+thick headers independently retained; bounded actual-font ruling gaps and noncrossing all copies. Full owned paper interval stage domain uses guaranteed central-paper witness crop plus full reflow text containment; lower MIN fitBounds and independent solver/runtime stage guards. Timestamp remains one item with native arcText charFn.",
+  "visual": "Independent isolated sol writing05 limitedPASS for one letter portrait; writing04 FAIL retained. Postcard reviewedwide-gothic still insufficient/native, carry diagnostic not successful reflow.",
+  "decision": "Approve bounded writingc861 source for later main integration and fresh current-source checks after Contents/proofread gate. Not C34 completion or final paper domain acceptance.",
+  "limitations": [
+    "No genuinely safe folding dedicated example; forced fold stays insufficient/native.",
+    "Dedicated writing accepts whitespace-free source only; ordinary preserving recipes remain available.",
+    "Postcard/calendar normal default remain insufficient; finite search is not physical impossibility.",
+    "Nine transport faces do not certify original production brush/klee/IBM Plex.",
+    "Sampled raster is not all-time sameglyph crop proof; main09g differs and requires revalidation.",
+    "Final performance/regression/human-review decision pending."
+  ],
+  "publicResultVerification": "Stopped/excluded by user instruction."
+}

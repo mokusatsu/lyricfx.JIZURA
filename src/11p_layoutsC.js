@@ -3214,21 +3214,22 @@ reg('shoji', {
     const glow = 0.92 + 0.08 * J.noise1(env.ltb * 0.8, env.cut.seed);
     let bb = null;
     if (p.variant === 'shadow') {
+      const shadowOwned=(feature,fn,panel=null)=>{const previous=env.placementCBody;if(env.cut.placementLayoutsC)env.placementCBody={kind:'shoji-shadow',feature,panel};try{return fn();}finally{env.placementCBody=previous;}};
       // the lyric is a silhouette behind the paper; the lattice sits in front of it
       const a = tin(env, 0, 0.3, E.outCubic) * (1 - J.clamp((env.pOut - 0.5) / 0.5));
       if (a <= 0.01) return null;
-      env.rect(0, 0, W, H, paperC, a * glow, false);
-      if (env.pass === 'main') {
+      shadowOwned('paper',()=>env.rect(0, 0, W, H, paperC, a * glow, false));
+      if (env.pass === 'main') shadowOwned('wash',()=>{
         const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.hypot(W, H) * 0.6);
         g.addColorStop(0, J.rgba(lightest(sc), 0.25)); g.addColorStop(1, J.rgba(darkest(sc), 0.25));
         ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
-      }
+      });
       const fb = fitBlock(t0, p.font, W * 0.8, H * 0.5, { lead: 1.15, track: 0.04 }, port ? 4 : 2);
       const size = Math.min(fb.size, u * 0.26);
       const near = E.outCubic(J.clamp(env.lt / 0.9));
       const shade = J.mix(paperC, darkest(sc), 0.86);
-      bb = J.mainDraw(env, { text: fb.text, font: p.font, size, x: W / 2 + (1 - near) * W * 0.03, y: H / 2, lead: 1.15, track: 0.04, color: shade, blur: env.allowFilter ? J.lerp(size * 0.08, size * 0.012, near) : 0, sx: J.lerp(1.06, 1, near), sy: J.lerp(1.06, 1, near) });
-      for (let i = 0; i < nP; i++) shojiPanel(env, i * pw, 0, pw, ph, null, woodC, a, p.cols, p.rows);
+      bb = shadowOwned('silhouette',()=>J.mainDraw(env, { text: fb.text, font: p.font, size, x: W / 2 + (1 - near) * W * 0.03, y: H / 2, lead: 1.15, track: 0.04, color: shade, blur: env.allowFilter ? J.lerp(size * 0.08, size * 0.012, near) : 0, sx: J.lerp(1.06, 1, near), sy: J.lerp(1.06, 1, near) }));
+      for (let i = 0; i < nP; i++) shadowOwned('lattice',()=>shojiPanel(env, i * pw, 0, pw, ph, null, woodC, a, p.cols, p.rows),i);
       return bb;
     }
     // panels slide open to reveal the lyric; they close again on exit

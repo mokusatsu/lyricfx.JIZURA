@@ -5,6 +5,311 @@
 const A=J.placement,fail=(code,message)=>{const e=new Error(message);e.code=code;throw e;};
 A.layoutsC34=['magazine','headlineDeck','contents','footnote','proofread','numbered','poster','swissGrid','dictionary','ema','ransom','newspaper','vinyl','cassette','bookSpine','polaroid','stampSheet','postcard','letterPaper','calendar','chochin','routeMap','stationSign','noren','tanzaku','omikuji','kakejiku','shoji','clapper','warningLabel','priceTag','nameTag','stickyNotes','karuta'];
 const externalAdapters=new Map();
+// Whole-C-finalization exact reuse. No geometry/quality/search operation changes.
+// One shared input key per finalization, never one whole-plan key per cut.
+const completedPool=new Map(),cacheIDs=new WeakMap();let nextCacheID=1;
+const CACHE_ENTRIES=32,CACHE_BYTES=128*1024*1024,CACHE_HEADER=512;
+let lastAdmissionPayloadBytes=0,lastAdmissionPayloadResidentBytes=0,lastCompactPayloadResidentBytes=0,lastPayloadRejection=null;
+let cacheBytes=0,cacheResidentBytes=0,lastKeyBytes=0,lastKeyResidentBytes=0,lastPayloadBytes=0,cacheCounters={hits:0,misses:0,stores:0,bypasses:0,evictions:0,identityDrifts:0};
+const cacheID=v=>{if(!cacheIDs.has(v))cacheIDs.set(v,nextCacheID++);return cacheIDs.get(v);};
+const dependencyJSONStringify=JSON.stringify,dependencyGlobal=globalThis,dependencyObject=Object,dependencyArray=Array,dependencyJSON=JSON,dependencyNumber=Number,dependencyObjectPrototype=Object.prototype,dependencyArrayPrototype=Array.prototype,dependencyDescriptor=Object.getOwnPropertyDescriptor,dependencyPrototype=Object.getPrototypeOf,dependencyHasOwn=Object.hasOwn,dependencyIs=Object.is,dependencyFinite=Number.isFinite,dependencySpecies=Symbol.species;
+const dependencyMapDescriptor=dependencyDescriptor(dependencyArrayPrototype,'map'),dependencyConstructorDescriptor=dependencyDescriptor(dependencyArrayPrototype,'constructor'),dependencySpeciesDescriptor=dependencyDescriptor(dependencyArray,dependencySpecies);
+// Exact plain data only: undefined/-0/null prototypes/ordered own properties
+// survive. Accessors, symbols, sparse arrays, opaque objects and cycles bypass.
+function cacheEncode(value){
+ // Keep the original generic codec for nonstock seams and standalone consumers.
+ try{payloadGuard();}catch{return cacheEncodeGeneric(value);}
+ const active=new WeakSet(),objectIDs=new WeakMap(),nodes=[];let encodedChars=0;
+ const visit=v=>{
+  if(v===undefined)return ['u'];if(v===null)return ['n'];
+  if(typeof v==='number'){if(!Number.isFinite(v))throw Error('nonfinite cache data');return ['d',Object.is(v,-0)?'-0':v];}
+  if(typeof v==='string'&&v.length*2>CACHE_BYTES)throw Error('oversized cache string');if(typeof v==='string'||typeof v==='boolean')return [typeof v==='string'?'s':'b',v];
+  if(typeof v!=='object'||active.has(v)||Object.getOwnPropertySymbols(v).length)throw Error('opaque cache data');if(objectIDs.has(v))return ['r',objectIDs.get(v)];
+  const objectID=nodes.length;objectIDs.set(v,objectID);nodes.push(null);
+  const array=Array.isArray(v),proto=Object.getPrototypeOf(v),keys=Object.getOwnPropertyNames(v);
+  if(array?(proto!==Array.prototype||keys.length!==v.length+1||keys.some(k=>k!=='length'&&(!/^(0|[1-9]\d*)$/.test(k)||+k>=v.length))):(proto!==Object.prototype&&proto!==null))throw Error('opaque cache prototype');
+  active.add(v);const data=[];for(const k of keys){if(array&&k==='length')continue;const d=Object.getOwnPropertyDescriptor(v,k);if(!d||!Object.hasOwn(d,'value')||!d.enumerable)throw Error('cache accessor');data.push(array?visit(d.value):[k,visit(d.value)]);}active.delete(v);
+  const node=[array?'a':proto===null?'z':'o',data],key=JSON.stringify(node);encodedChars+=key.length+1;if(encodedChars*2>CACHE_BYTES)throw Error('oversized cache encoding');nodes[objectID]=key;return ['r',objectID];
+ };
+ const root=visit(value);let text='{"codec":"C008-exact-graph-v1","root":'+JSON.stringify(root)+',"nodes":[';
+ for(let i=0;i<nodes.length;i++)text+=(i?',':'')+nodes[i];text+=']}';
+ try{payloadGuard();}catch{return cacheEncodeGeneric(value);}return text;
+}
+function cacheEncodeGeneric(value){
+ const active=new WeakSet(),objectIDs=new WeakMap(),nodes=[];let encodedChars=0;
+ const visit=v=>{
+  if(v===undefined)return ['u'];if(v===null)return ['n'];
+  if(typeof v==='number'){if(!Number.isFinite(v))throw Error('nonfinite cache data');return ['d',Object.is(v,-0)?'-0':v];}
+  if(typeof v==='string'&&v.length*2>CACHE_BYTES)throw Error('oversized cache string');if(typeof v==='string'||typeof v==='boolean')return [typeof v==='string'?'s':'b',v];
+  if(typeof v!=='object'||active.has(v)||Object.getOwnPropertySymbols(v).length)throw Error('opaque cache data');if(objectIDs.has(v))return ['r',objectIDs.get(v)];
+  const objectID=nodes.length;objectIDs.set(v,objectID);nodes.push(null);
+  const array=Array.isArray(v),proto=Object.getPrototypeOf(v),keys=Object.getOwnPropertyNames(v);
+  if(array?(proto!==Array.prototype||keys.length!==v.length+1||keys.some(k=>k!=='length'&&(!/^(0|[1-9]\d*)$/.test(k)||+k>=v.length))):(proto!==Object.prototype&&proto!==null))throw Error('opaque cache prototype');
+  active.add(v);const data=[];for(const k of keys){if(array&&k==='length')continue;const d=Object.getOwnPropertyDescriptor(v,k);if(!d||!Object.hasOwn(d,'value')||!d.enumerable)throw Error('cache accessor');data.push(array?visit(d.value):[k,visit(d.value)]);}active.delete(v);
+  const node=[array?'a':proto===null?'z':'o',data],key=JSON.stringify(node);encodedChars+=key.length+1;if(encodedChars*2>CACHE_BYTES)throw Error('oversized cache encoding');nodes[objectID]=node;return ['r',objectID];
+ };
+ const root=visit(value);return JSON.stringify({codec:'C008-exact-graph-v1',root,nodes});
+}
+function cacheDecode(text){
+ const packed=JSON.parse(text);if(packed.codec!=='C008-exact-graph-v1')throw Error('C cache codec');const memo=[];
+ const visit=v=>{switch(v[0]){case'u':return undefined;case'n':return null;case'd':return v[1]==='-0'?-0:v[1];case's':case'b':return v[1];case'r':{
+  if(memo[v[1]])return memo[v[1]];const [kind,data]=packed.nodes[v[1]],out=kind==='a'?data:Object.fromEntries(data);if(kind==='z')Object.setPrototypeOf(out,null);memo[v[1]]=out;
+  // Parsed arrays are fresh dense containers; fromEntries creates own writable
+  // data slots (including __proto__) before assignment can see any prototype.
+  if(kind==='a'){for(let i=0;i<data.length;i++)out[i]=visit(data[i]);}else for(const [key,child]of data)out[key]=visit(child);return out;
+ }default:throw Error('C cache tag');}};
+ return visit(packed.root);
+}
+// Private payload wire only. The unchanged old encoder remains admission authority.
+const payloadParse=JSON.parse,payloadStringify=JSON.stringify,payloadDefine=Object.defineProperty,payloadSetPrototype=Object.setPrototypeOf,payloadNames=Object.getOwnPropertyNames,payloadArray=Array.isArray,payloadInteger=Number.isInteger,payloadEncoder=TextEncoder,payloadEncoderPrototype=TextEncoder.prototype,payloadEncodeDescriptor=dependencyDescriptor(TextEncoder.prototype,'encode');
+function payloadGuard(){
+ const same=(o,k,v)=>{const d=dependencyDescriptor(o,k);return d&&dependencyHasOwn(d,'value')&&d.value===v;};
+ if(!same(dependencyGlobal,'Object',dependencyObject)||!same(dependencyGlobal,'Array',dependencyArray)||!same(dependencyGlobal,'JSON',dependencyJSON)||!same(dependencyGlobal,'Number',dependencyNumber)||!same(dependencyGlobal,'TextEncoder',payloadEncoder)||!same(dependencyJSON,'parse',payloadParse)||!same(dependencyJSON,'stringify',payloadStringify)||!same(dependencyObject,'defineProperty',payloadDefine)||!same(dependencyObject,'setPrototypeOf',payloadSetPrototype)||!same(dependencyObject,'getOwnPropertyNames',payloadNames)||!same(dependencyObject,'getOwnPropertyDescriptor',dependencyDescriptor)||!same(dependencyObject,'getPrototypeOf',dependencyPrototype)||!same(dependencyObject,'hasOwn',dependencyHasOwn)||!same(dependencyArray,'isArray',payloadArray)||!same(dependencyNumber,'isInteger',payloadInteger)||!same(payloadEncoder,'prototype',payloadEncoderPrototype))throw Error('C payload native seam');
+ const d=dependencyDescriptor(payloadEncoderPrototype,'encode');if(!d||!dependencyHasOwn(d,'value')||d.value!==payloadEncodeDescriptor.value||d.get||d.set)throw Error('C payload encoding seam');
+ if(dependencyDescriptor(dependencyObjectPrototype,'toJSON')||dependencyDescriptor(dependencyArrayPrototype,'toJSON'))throw Error('C payload JSON prototype seam');
+}
+function payloadCompact(oldText){
+ payloadGuard();const packed=payloadParse(oldText);if(packed.codec!=='C008-exact-graph-v1')throw Error('C payload admission codec');
+ const paths=[],states=[],aliases=[],scalars=[],nullPrototypes=[];let rootSpecial=packed.root[0]==='u'?'u':packed.root[0]==='d'&&packed.root[1]==='-0'?'-0':null;
+ const wire={codec:'C008-payload-tree-repairs-v2',tree:null,aliases,scalars,nullPrototypes,rootSpecial},utf8=s=>new payloadEncoder().encode(s).length;
+ const inlineChars=oldText.length,inlineBytes=utf8(oldText);let metadataChars=payloadStringify(wire).length-4,metadataBytes=utf8(payloadStringify(wire))-4;
+ const check=()=>{if((inlineChars+metadataChars)*2>CACHE_BYTES||inlineBytes+metadataBytes>CACHE_BYTES)throw Error('C payload repair growth');};check();
+ const charge=(section,chars,bytes)=>{metadataChars+=chars+(section.length?1:0);metadataBytes+=bytes+(section.length?1:0);check();};
+ const rootPath={parent:null,key:null,depth:0,chars:2,bytes:2},childPath=(parent,key)=>{const s=payloadStringify(key),chars=parent.depth?parent.chars+1+s.length:2+s.length,bytes=parent.depth?parent.bytes+1+utf8(s):2+utf8(s);return {parent,key,depth:parent.depth+1,chars,bytes};};
+ const materialize=p=>{const a=new Array(p.depth);for(let i=p.depth-1;i>=0;i--){payloadDefine(a,i,{value:p.key,enumerable:true,writable:true,configurable:true});p=p.parent;}return a;};
+ const visit=(token,path,parent,key)=>{switch(token[0]){
+  case'n':return null;case's':case'b':return token[1];case'd':if(token[1]!=='-0')return token[1];case'u':{
+   const kind=token[0]==='u'?'u':'-0';if(!parent){rootSpecial=kind;}else{const k=payloadStringify(key),t=payloadStringify(kind);charge(scalars,4+t.length+parent.chars+k.length,4+utf8(t)+parent.bytes+utf8(k));scalars[scalars.length]=[kind,materialize(parent),key];}return null;
+  }
+  case'r':{
+   const id=token[1];if(states[id]===1)throw Error('C payload cycle');if(states[id]===2){const target=paths[id],k=payloadStringify(key);charge(aliases,4+parent.chars+k.length+target.chars,4+parent.bytes+utf8(k)+target.bytes);aliases[aliases.length]=[materialize(parent),key,materialize(target)];return null;}
+   states[id]=1;paths[id]=path;const node=packed.nodes[id],kind=node[0],data=node[1],out=kind==='a'?[]:{};
+   if(kind==='z'){charge(nullPrototypes,path.chars,path.bytes);nullPrototypes[nullPrototypes.length]=materialize(path);}
+   for(let i=0;i<data.length;i++){const k=kind==='a'?i:data[i][0],v=visit(kind==='a'?data[i]:data[i][1],childPath(path,k),path,k);payloadDefine(out,k,{value:v,enumerable:true,writable:true,configurable:true});}states[id]=2;return out;
+  }
+  default:throw Error('C payload admission tag');
+ }};
+ wire.tree=visit(packed.root,rootPath,null,null);wire.rootSpecial=rootSpecial;const text=payloadStringify(wire);if(text.length*2>CACHE_BYTES||utf8(text)>CACHE_BYTES)throw Error('C payload compact budget');payloadGuard();return text;
+}
+function payloadDecode(text){
+ // UTF8 is charged before the private immutable wire is stored; avoid a warm copy.
+ payloadGuard();if(text.length*2>CACHE_BYTES)throw Error('C payload wire budget');
+ const p=payloadParse(text),names=payloadNames(p),expected=['codec','tree','aliases','scalars','nullPrototypes','rootSpecial'];if(names.length!==expected.length)throw Error('C payload schema');for(let i=0;i<expected.length;i++)if(!dependencyHasOwn(p,expected[i]))throw Error('C payload schema');
+ if(p.codec!=='C008-payload-tree-repairs-v2'||!payloadArray(p.aliases)||!payloadArray(p.scalars)||!payloadArray(p.nullPrototypes)||p.rootSpecial!==null&&p.rootSpecial!=='u'&&p.rootSpecial!=='-0')throw Error('C payload schema');
+ if(p.rootSpecial!==null){if(p.tree!==null||p.aliases.length||p.scalars.length||p.nullPrototypes.length)throw Error('C payload root marker');payloadGuard();return p.rootSpecial==='u'?undefined:-0;}
+ const pending={},repairs=[],own=(o,k)=>{if(o===pending||!o||typeof o!=='object'||(payloadArray(o)?!payloadInteger(k)||k<0||k>=o.length:typeof k!=='string'))throw Error('C payload own path type');const d=dependencyDescriptor(o,k);if(!d||!dependencyHasOwn(d,'value')||!d.enumerable)throw Error('C payload own path');return d.value;},at=path=>{if(!payloadArray(path))throw Error('C payload path');let value=p.tree;for(let i=0;i<path.length;i++)value=own(value,path[i]);if(value===pending)throw Error('C payload alias path');return value;};
+ for(let i=0;i<p.nullPrototypes.length;i++){const value=at(p.nullPrototypes[i]);if(!value||typeof value!=='object'||payloadArray(value)||dependencyPrototype(value)!==dependencyObjectPrototype)throw Error('C payload null prototype');payloadSetPrototype(value,null);}
+ const reserve=(parentPath,key,value)=>{const parent=at(parentPath);if(own(parent,key)!==null)throw Error('C payload repair placeholder');payloadDefine(parent,key,{value:pending,enumerable:true,writable:true,configurable:true});repairs[repairs.length]=[parent,key,value];};
+ for(let i=0;i<p.scalars.length;i++){const row=p.scalars[i];if(!payloadArray(row)||row.length!==3||row[0]!=='u'&&row[0]!=='-0')throw Error('C payload scalar repair');reserve(row[1],row[2],row[0]==='u'?undefined:-0);}
+ const earlier=(target,parent,key)=>{if(!payloadArray(target)||!payloadArray(parent))throw Error('C payload alias path');let common=p.tree,i=0;const depth=parent.length+1;while(i<target.length&&i<depth&&target[i]===(i<parent.length?parent[i]:key)){common=own(common,target[i]);i++;}if(i===target.length||i===depth)throw Error('C payload cyclic alias');const a=target[i],b=i<parent.length?parent[i]:key;if(payloadArray(common)){if(!payloadInteger(a)||!payloadInteger(b)||a>=b)throw Error('C payload forward alias');}else{const keys=payloadNames(common);let ai=-1,bi=-1;for(let j=0;j<keys.length;j++){if(keys[j]===a)ai=j;if(keys[j]===b)bi=j;}if(ai<0||bi<0||ai>=bi)throw Error('C payload forward alias');}};
+ for(let i=0;i<p.aliases.length;i++){const row=p.aliases[i];if(!payloadArray(row)||row.length!==3)throw Error('C payload alias repair');earlier(row[2],row[0],row[1]);const target=at(row[2]);if(!target||typeof target!=='object')throw Error('C payload alias target');reserve(row[0],row[1],target);}
+ for(let i=0;i<repairs.length;i++){const r=repairs[i];payloadDefine(r[0],r[1],{value:r[2],enumerable:true,writable:true,configurable:true});}payloadGuard();return p.tree;
+}
+// Only the latest privately decoded plan may use dense-array freeze. The hook
+// runs at the original caller location, after signature/source metadata updates.
+const freezeValues=Object.values,freezeIsFrozen=Object.isFrozen,freezeObject=Object.freeze,freezeArray=Array.isArray,freezeForEach=Array.prototype.forEach;
+let pendingFreezeRoot=null;
+function freezeDecodedPlan(value,fallback){
+ const branded=pendingFreezeRoot!==null&&value===pendingFreezeRoot;pendingFreezeRoot=null;
+ if(!branded)return fallback(value);let stock=false;
+ try{
+  payloadGuard();const same=(object,key,fn)=>{const d=dependencyDescriptor(object,key);return d&&dependencyHasOwn(d,'value')&&d.value===fn;};
+  stock=same(dependencyObject,'values',freezeValues)&&same(dependencyObject,'isFrozen',freezeIsFrozen)&&same(dependencyObject,'freeze',freezeObject)&&same(dependencyArray,'isArray',freezeArray)&&same(dependencyArrayPrototype,'forEach',freezeForEach);
+ }catch{}
+ if(!stock)return fallback(value);
+ const visit=v=>{if(v&&typeof v==='object'&&!freezeIsFrozen(v)){if(freezeArray(v)){for(let i=0;i<v.length;i++)visit(v[i]);}else{for(const k in v)if(dependencyHasOwn(v,k))visit(v[k]);}freezeObject(v);}return v;};
+ return visit(value);
+}
+// Latest private completed-entry only: validated instructions retain paths,
+// never output references. Generic payloadDecode remains the authority.
+const repairApply=Reflect.apply,repairBind=Function.prototype.bind,repairCall=Function.prototype.call,repairBrands=new WeakSet();
+const repairBrandHas=repairApply(repairBind,repairCall,[WeakSet.prototype.has]),repairBrandAdd=repairApply(repairBind,repairCall,[WeakSet.prototype.add]);
+const REPAIR_MAX_SLOTS=1048576,REPAIR_MAX_CHARS=8388608,REPAIR_MAX_COUNT=65536,repairCap={};
+const repairSlice=repairApply(repairBind,repairCall,[String.prototype.slice]);
+let repairMemo=null,repairCounters={compiles:0,fullReads:0,fastReads:0,fallbacks:0,capped:0,retired:0};
+function retireRepairMemo(entry){if(repairMemo&&(!entry||repairMemo.entry===entry)){repairMemo=null;repairCounters.retired++;}}
+function compileRepairMemo(entry){
+ if(!repairBrandHas(repairBrands,entry))return;
+ payloadGuard();const p=payloadParse(entry.payload);if(p.rootSpecial!==null)return;
+ let slots=0,chars=0,count=0;const ops=[];
+ const chargePath=path=>{slots+=path.length;for(let i=0;i<path.length;i++)if(typeof path[i]==='string')chars+=path[i].length;};
+ const add=(kind,path,key,target)=>{count++;slots+=5;chargePath(path);if(typeof key==='string')chars+=key.length;if(kind===2)chargePath(target);else if(kind===1)chars+=target.length;if(count>REPAIR_MAX_COUNT||slots>REPAIR_MAX_SLOTS||chars>REPAIR_MAX_CHARS)throw repairCap;payloadDefine(ops,ops.length,{value:[kind,path,key,target],enumerable:true,writable:true,configurable:true});};
+ for(let i=0;i<p.nullPrototypes.length;i++)add(0,p.nullPrototypes[i],null,null);
+ for(let i=0;i<p.scalars.length;i++){const r=p.scalars[i];add(1,r[1],r[2],r[0]);}
+ for(let i=0;i<p.aliases.length;i++){const r=p.aliases[i];add(2,r[0],r[1],r[2]);}
+ // Cold-only canonical boundary proof; retain offsets, never this temporary tree string.
+ let treeStart=-1,treeEnd=-1;const prefix='{"codec":"C008-payload-tree-repairs-v2","tree":',suffix=','+repairSlice(payloadStringify({aliases:p.aliases,scalars:p.scalars,nullPrototypes:p.nullPrototypes,rootSpecial:p.rootSpecial}),1),end=entry.payload.length-suffix.length;
+ if(repairSlice(entry.payload,0,prefix.length)===prefix&&end>prefix.length&&repairSlice(entry.payload,end)===suffix&&repairSlice(entry.payload,prefix.length,end)===payloadStringify(p.tree)){treeStart=prefix.length;treeEnd=end;}
+ payloadGuard();repairMemo={entry,payload:entry.payload,ops,slots,chars,count,treeStart,treeEnd};repairCounters.compiles++;
+}
+function readCompletedPayload(entry){
+ if(repairMemo&&repairMemo.entry!==entry)retireRepairMemo();
+ if(repairMemo&&repairBrandHas(repairBrands,entry)&&repairMemo.payload===entry.payload){
+  try{
+   payloadGuard();const root=repairMemo.treeStart>=0?payloadParse(repairSlice(entry.payload,repairMemo.treeStart,repairMemo.treeEnd)):payloadParse(entry.payload).tree,ops=repairMemo.ops;
+   const at=path=>{let value=root;for(let i=0;i<path.length;i++)value=value[path[i]];return value;};
+   for(let i=0;i<ops.length;i++){const op=ops[i],parent=at(op[1]);if(op[0]===0)payloadSetPrototype(parent,null);else parent[op[2]]=op[0]===2?at(op[3]):op[3]==='u'?undefined:-0;}
+   payloadGuard();repairCounters.fastReads++;return root;
+  }catch{retireRepairMemo(entry);repairCounters.fallbacks++;}
+ }
+ repairCounters.fullReads++;const result=payloadDecode(entry.payload);
+ try{compileRepairMemo(entry);}catch(e){if(e===repairCap)repairCounters.capped++;else repairCounters.fallbacks++;}
+ return result;
+}
+// Only decoded completed-plan arrays can enter this private, latest-generation registry.
+// Bootstrap uses standard natives; later live helper replacements are never invoked.
+const edgeApply=Reflect.apply,edgeCall=Function.prototype.call,edgeBind=Function.prototype.bind,edgeWeakMap=WeakMap;
+const edgeGet=edgeApply(edgeBind,edgeCall,[WeakMap.prototype.get]),edgeSet=edgeApply(edgeBind,edgeCall,[WeakMap.prototype.set]);
+const edgeDescriptor=Object.getOwnPropertyDescriptor,edgePrototype=Object.getPrototypeOf,edgeFrozen=Object.isFrozen,edgeArray=Array.isArray,edgeFinite=Number.isFinite,edgeDefine=Object.defineProperty,edgeArrayPrototype=Array.prototype,edgeHasOwn=Object.hasOwn;
+const edgeGlobal=globalThis,edgeArrayConstructor=Array,edgeObjectPrototype=Object.prototype,edgeSpecies=Symbol.species;
+const edgeSliceDescriptor=edgeDescriptor(edgeArrayPrototype,'slice'),edgeMapDescriptor=edgeDescriptor(edgeArrayPrototype,'map'),edgeConstructorDescriptor=edgeDescriptor(edgeArrayPrototype,'constructor'),edgeSpeciesDescriptor=edgeDescriptor(edgeArrayConstructor,edgeSpecies);
+const edgeSlice=edgeApply(edgeBind,edgeCall,[edgeSliceDescriptor.value]),edgeMap=edgeApply(edgeBind,edgeCall,[edgeMapDescriptor.value]);
+const edgeSameDescriptor=(a,b)=>{if(!a||!b)return false;const av=edgeHasOwn(a,'value'),bv=edgeHasOwn(b,'value');return av===bv&&a.enumerable===b.enumerable&&a.configurable===b.configurable&&(av?a.value===b.value&&a.writable===b.writable:a.get===b.get&&a.set===b.set);};
+// Separate from payloadGuard: native slice/map still consult constructor/species.
+// Decoded arrays and our fresh snapshots have no own constructor or method hooks.
+function edgeArrayGuard(){
+ const global=edgeDescriptor(edgeGlobal,'Array');
+ return !!global&&edgeHasOwn(global,'value')&&global.value===edgeArrayConstructor&&edgePrototype(edgeArrayPrototype)===edgeObjectPrototype&&edgePrototype(edgeObjectPrototype)===null&&edgeSameDescriptor(edgeDescriptor(edgeArrayPrototype,'constructor'),edgeConstructorDescriptor)&&edgeSameDescriptor(edgeDescriptor(edgeArrayConstructor,edgeSpecies),edgeSpeciesDescriptor)&&edgeSameDescriptor(edgeDescriptor(edgeArrayPrototype,'slice'),edgeSliceDescriptor)&&edgeSameDescriptor(edgeDescriptor(edgeArrayPrototype,'map'),edgeMapDescriptor);
+}
+const EDGE_MAX_EDGES=65536,EDGE_MAX_POLYGONS=8192,EDGE_MAX_SLOTS=131072,edgeLimit={};
+const edgeEmpty=()=>({map:new edgeWeakMap(),polygons:0,edges:0,slots:0,duplicates:0,capped:0,validations:0,rejected:0,hits:0,fallbacks:0,upfrontReads:0,snapshotPointRefs:0,reservedCoordinateSlots:0,coordinateDescriptorReads:0,edgeCoordinateReads:0,preparedPolygons:0,preparedEdges:0,registrationBypasses:0,preparationBypasses:0});
+let edgeGeneration=0,edgeState=edgeEmpty();
+function edgeRegisterFinal(result){
+ const state=edgeEmpty();
+ const read=(o,k)=>{if(state.slots>=EDGE_MAX_SLOTS)throw edgeLimit;state.slots++;state.upfrontReads++;if(!o||typeof o!=='object')return undefined;const d=edgeDescriptor(o,k);return d&&edgeHasOwn(d,'value')?d.value:undefined;};
+ const each=(a,fn)=>{if(!edgeArray(a))return;for(let i=0;i<a.length;i++)fn(read(a,i));};
+ const polygon=q=>{
+  if(!edgeArray(q))return;if(edgeGet(state.map,q)){state.duplicates++;return;}
+  if(state.polygons>=EDGE_MAX_POLYGONS||state.edges+q.length>EDGE_MAX_EDGES){state.capped++;return;}
+  if(edgePrototype(q)!==edgeArrayPrototype||edgeDescriptor(q,'constructor')||edgeDescriptor(q,'slice'))return;
+  // Reserve exactly the old q-index + x/y budget, without claiming coordinates
+  // were read. Refuse before copying if even the conservative reservation fails.
+  const reserve=q.length*3;if(state.slots+reserve>EDGE_MAX_SLOTS){state.slots=EDGE_MAX_SLOTS;throw edgeLimit;}
+  state.slots+=reserve;state.reservedCoordinateSlots+=q.length*2;
+  const points=edgeSlice(q);state.upfrontReads+=q.length;state.snapshotPointRefs+=q.length;
+  edgeSet(state.map,q,{points,edges:null,length:q.length,valid:0});state.polygons++;state.edges+=q.length;
+ };
+ const fields=(o,names)=>{for(let i=0;i<names.length;i++)each(read(o,names[i]),polygon);};
+ if(!edgeArrayGuard()){state.registrationBypasses++;edgeGeneration++;edgeState=state;return;}
+ try{
+  each(read(read(result,'plan'),'cuts'),cut=>{const tr=read(cut,'placementTrajectory');if(!tr)return;each(read(tr,'units'),unit=>{fields(unit,['envelopes','stageEnvelopes']);each(read(unit,'segments'),segment=>{fields(segment,['envelopes','stageEnvelopes','entryEnvelopes','exitEnvelopes','badgeEntryEnvelopes']);each(read(segment,'bodies'),body=>{const full=read(body,'full'),hold=read(body,'hold');if(full)polygon(full);if(hold)polygon(hold);});});});});
+ }catch(e){if(e===edgeLimit)state.capped++;else{edgeGeneration++;edgeState=edgeEmpty();return;}}
+ if(!edgeArrayGuard()){edgeGeneration++;edgeState=edgeEmpty();edgeState.registrationBypasses=1;return;}
+ edgeGeneration++;edgeState=state;
+}
+function edgeContains(p,q,epsilon){
+ const state=edgeState,record=edgeGet(state.map,q);if(!record){state.fallbacks++;return null;}
+ if(!record.valid){
+  state.validations++;let ok=edgeArrayGuard();if(!ok)state.preparationBypasses++;
+  const ld=ok?edgeDescriptor(q,'length'):null;ok=ok&&edgePrototype(q)===edgeArrayPrototype&&edgeFrozen(q)&&!!ld&&edgeHasOwn(ld,'value')&&ld.value===record.length&&!ld.writable&&!ld.configurable;
+  for(let i=0;ok&&i<record.length;i++){
+   // Compare to the genuine parse-born original before inspecting any changed
+   // reference. A replacement Proxy receives no descriptor/prototype traps.
+   const d=edgeDescriptor(q,i),point=record.points[i];
+   ok=!!d&&edgeHasOwn(d,'value')&&d.value===point&&!d.writable&&!d.configurable;
+   if(!ok)break;
+   ok=edgeArray(point)&&edgePrototype(point)===edgeArrayPrototype&&edgeFrozen(point)&&point.length===2;
+   if(!ok)break;
+   const x=edgeDescriptor(point,0),y=edgeDescriptor(point,1);state.coordinateDescriptorReads+=2;
+   ok=!!x&&!!y&&edgeHasOwn(x,'value')&&edgeHasOwn(y,'value')&&!x.writable&&!x.configurable&&!y.writable&&!y.configurable&&typeof x.value==='number'&&typeof y.value==='number'&&edgeFinite(x.value)&&edgeFinite(y.value);
+  }
+  if(ok){
+   // Every source coordinate is now frozen own primitive data. Native map uses
+   // CreateDataProperty for its private output; no per-edge defineProperty loop.
+   record.edges=edgeMap(record.points,(a,i)=>{const b=record.points[(i+1)%record.length];return [b[0]-a[0],b[1]-a[1],a[0],a[1]];});
+   state.edgeCoordinateReads+=record.length*6;
+   if(!edgeArrayGuard()){ok=false;state.preparationBypasses++;record.edges=null;}
+  }
+  record.valid=ok?1:-1;if(ok){state.preparedPolygons++;state.preparedEdges+=record.length;}else state.rejected++;
+ }
+ if(record.valid<0){state.fallbacks++;return null;}state.hits++;const edges=record.edges;let pos=false,neg=false;
+ for(let i=0;i<record.length;i++){const e=edges[i],cross=e[0]*(p[1]-e[3])-e[1]*(p[0]-e[2]);if(cross>epsilon)pos=true;if(cross< -epsilon)neg=true;}return !(pos&&neg);
+}
+edgeDefine(A,'layoutsCImmutablePolygonContains',{value:edgeContains,writable:false,enumerable:true,configurable:false});
+edgeDefine(A,'layoutsCImmutableEdgeStats',{value:()=>({generation:edgeGeneration,polygons:edgeState.polygons,edges:edgeState.edges,slots:edgeState.slots,duplicates:edgeState.duplicates,capped:edgeState.capped,validations:edgeState.validations,rejected:edgeState.rejected,hits:edgeState.hits,fallbacks:edgeState.fallbacks,upfrontReads:edgeState.upfrontReads,snapshotPointRefs:edgeState.snapshotPointRefs,reservedCoordinateSlots:edgeState.reservedCoordinateSlots,coordinateDescriptorReads:edgeState.coordinateDescriptorReads,edgeCoordinateReads:edgeState.edgeCoordinateReads,preparedPolygons:edgeState.preparedPolygons,preparedEdges:edgeState.preparedEdges,registrationBypasses:edgeState.registrationBypasses,preparationBypasses:edgeState.preparationBypasses,maxEdges:EDGE_MAX_EDGES,maxPolygons:EDGE_MAX_POLYGONS,maxSlots:EDGE_MAX_SLOTS}),writable:false,enumerable:true,configurable:false});
+
+function cacheDependencies(){
+ payloadGuard();
+ if(typeof document==='undefined'||document.fonts.status!=='loaded')throw Error('C cache fonts not loaded');
+ const faces=Array.from(document.fonts);if(faces.length>128||faces.some(f=>f.status!=='loaded'))throw Error('C cache font domain');
+ const seams=[],seen=new WeakSet(),walk=(obj,path,depth)=>{if(!obj||seen.has(obj))return;seen.add(obj);for(const key of Object.getOwnPropertyNames(obj).sort()){if(['caller','callee','arguments'].includes(key))continue;const d=Object.getOwnPropertyDescriptor(obj,key);if(!d||!Object.hasOwn(d,'value')){seams.push([path+'.'+key,'accessor',d?.get?cacheID(d.get):null,d?.set?cacheID(d.set):null]);continue;}const v=d.value;if(typeof v==='function')seams.push([path+'.'+key,cacheID(v)]);else if(v===null||typeof v!=='object')seams.push([path+'.'+key,'data',v]);else if(depth&&(Object.getPrototypeOf(v)===Object.prototype||Array.isArray(v)))walk(v,path+'.'+key,depth-1);}};
+ // All public placement/editorial/object helpers, easing/metrics/glyph methods
+ // and registered native layouts participate, plus every root J function.
+ walk(J,'J',0);walk(A,'placement',4);walk(J.E,'E',4);walk(J.metrics,'metrics',2);walk(J.glyphs,'glyphs',2);walk(J.Renderer.prototype,'Renderer',2);walk(J.LAYOUTS,'layouts',2);for(const [name,obj]of [['Math',Math],['JSON',JSON],['Object',Object],['Array',Array.prototype],['String',String.prototype],['Number',Number.prototype],['Map',Map.prototype],['Set',Set.prototype],['TextEncoder',TextEncoder.prototype]])walk(obj,'intrinsic.'+name,0);for(const name of ['CanvasRenderingContext2D','TextMetrics','FontFace']){const ctor=globalThis[name];if(typeof ctor==='function'){seams.push(['global.'+name,cacheID(ctor)]);walk(ctor.prototype,name+'.prototype',1);}}
+ const fontGetter=Object.getOwnPropertyDescriptor(document,'fonts')||Object.getOwnPropertyDescriptor(Document.prototype,'fonts');const fontSetAccessor={get:fontGetter?.get?cacheID(fontGetter.get):null,set:fontGetter?.set?cacheID(fontGetter.set):null};
+ const measurement=A.measurementContext(),measurementOwnSeams=[];for(const key of Object.getOwnPropertyNames(measurement).sort()){const d=Object.getOwnPropertyDescriptor(measurement,key);if(typeof d?.value==='function')measurementOwnSeams.push([key,'function',cacheID(d.value)]);else if(d?.get||d?.set)measurementOwnSeams.push([key,'accessor',d.get?cacheID(d.get):null,d.set?cacheID(d.set):null]);}
+ const adapters=Array.from(externalAdapters,([id,a])=>[id,a.id,cacheID(a.finalize),cacheID(a.render)]);
+ const metadata={version:'C008-completed-v1',revision:J.metrics.revision,language:J.lang,fonts:J.FONTS,fontSetIdentity:cacheID(document.fonts),fontSetAccessor,measurementContextIdentity:cacheID(measurement),measurementOwnSeams,devicePixelRatio:globalThis.devicePixelRatio,faces:faces.map(f=>({identity:cacheID(f),family:f.family,style:f.style,weight:f.weight,stretch:f.stretch,unicodeRange:f.unicodeRange,status:f.status,featureSettings:f.featureSettings,variationSettings:f.variationSettings,display:f.display,ascentOverride:f.ascentOverride,descentOverride:f.descentOverride,lineGapOverride:f.lineGapOverride})),seams,adapters};
+ return cacheDependencyEncode(metadata);
+}
+// Only collector-owned dense tables use this representation. Arbitrary fonts
+// retain the old graph codec; nonprimitive metadata can never lose cross-aliases.
+// Latest collector-owned primitive metadata only; never retain input/font objects.
+const DEPENDENCY_MEMO_MAX_SLOTS=32768,DEPENDENCY_MEMO_MAX_CHARS=1048576;
+let dependencyMemo=null;
+function dependencyMetadataEqual(a,b){
+ if(payloadArray(a)){if(!payloadArray(b)||a.length!==b.length)return false;for(let i=0;i<a.length;i++)if(!dependencyMetadataEqual(a[i],b[i]))return false;return true;}
+ return !payloadArray(b)&&dependencyIs(a,b);
+}
+function keepDependencyMemo(metadata,fonts,result){
+ // One memo object plus its five fields; every private array object, own length
+ // and element slot; primitive leaves occupy their parent element slots.
+ let slots=6,chars=fonts.length+result.length;
+ const within=()=>slots<=DEPENDENCY_MEMO_MAX_SLOTS&&chars<=DEPENDENCY_MEMO_MAX_CHARS;
+ const visit=value=>{if(!within())return false;if(payloadArray(value)){slots+=2+value.length;if(!within())return false;for(let i=0;i<value.length;i++)if(!visit(value[i]))return false;}else if(typeof value==='string'){chars+=value.length;if(!within())return false;}return true;};
+ if(within()&&visit(metadata))dependencyMemo={metadata,fonts,result,slots,stringChars:chars};
+}
+function cacheDependencyEncode(m){
+ try{return cacheDependencyEncodeCurrent(m);}catch(e){dependencyMemo=null;throw e;}
+}
+function cacheDependencyEncodeCurrent(m){
+ const eligible=()=>{
+  // Inspect live descriptors with captured natives: accessors are rejected,
+  // never invoked. Native map must retain its dense own-slot/species behavior.
+  const data=(object,key,value)=>{const d=dependencyDescriptor(object,key);return !!d&&dependencyHasOwn(d,'value')&&d.value===value;};
+  const same=(a,b)=>{if(!a||!b)return a===b;const av=dependencyHasOwn(a,'value'),bv=dependencyHasOwn(b,'value');return av===bv&&a.enumerable===b.enumerable&&a.configurable===b.configurable&&(av?a.value===b.value&&a.writable===b.writable:a.get===b.get&&a.set===b.set);};
+  if(!data(dependencyGlobal,'Object',dependencyObject)||!data(dependencyGlobal,'Array',dependencyArray)||!data(dependencyGlobal,'JSON',dependencyJSON)||!data(dependencyGlobal,'Number',dependencyNumber)||!data(dependencyObject,'prototype',dependencyObjectPrototype)||!data(dependencyArray,'prototype',dependencyArrayPrototype)||!data(dependencyObject,'getOwnPropertyDescriptor',dependencyDescriptor)||!data(dependencyObject,'getPrototypeOf',dependencyPrototype)||!data(dependencyObject,'hasOwn',dependencyHasOwn)||!data(dependencyObject,'is',dependencyIs)||!data(dependencyNumber,'isFinite',dependencyFinite)||!data(dependencyJSON,'stringify',dependencyJSONStringify)||!same(dependencyDescriptor(dependencyArrayPrototype,'map'),dependencyMapDescriptor)||!data(dependencyArrayPrototype,'constructor',dependencyArray)||!same(dependencyDescriptor(dependencyArrayPrototype,'constructor'),dependencyConstructorDescriptor)||!same(dependencyDescriptor(dependencyArray,dependencySpecies),dependencySpeciesDescriptor)||dependencyPrototype(dependencyArrayPrototype)!==dependencyObjectPrototype||dependencyPrototype(dependencyObjectPrototype)!==null||dependencyDescriptor(dependencyArrayPrototype,'toJSON')||dependencyDescriptor(dependencyObjectPrototype,'toJSON'))throw Error('C cache dependency JSON seam');
+ };
+ try{eligible();}catch{dependencyMemo=null;return cacheDependencyEncodeGeneric(m);}let upperBytes=1024;
+ const scalar=v=>{let charge;if(v===undefined||v===null){charge=64;}else if(typeof v==='number'){if(!dependencyFinite(v))throw Error('nonfinite dependency metadata');charge=64;}else if(typeof v==='string'){charge=64+12*v.length;}else if(typeof v==='boolean'){charge=64;}else throw Error('nonprimitive dependency metadata');upperBytes+=charge;if(upperBytes>CACHE_BYTES)throw Error('oversized dependency metadata');return v;};
+ const rows=table=>table.map(row=>row.map(scalar)),fields=['identity','family','style','weight','stretch','unicodeRange','status','featureSettings','variationSettings','display','ascentOverride','descentOverride','lineGapOverride'];
+ const metadata=[scalar(m.version),scalar(m.revision),scalar(m.language),scalar(m.fontSetIdentity),[scalar(m.fontSetAccessor.get),scalar(m.fontSetAccessor.set)],scalar(m.measurementContextIdentity),rows(m.measurementOwnSeams),scalar(m.devicePixelRatio),m.faces.map(face=>fields.map(key=>scalar(face[key]))),rows(m.seams),rows(m.adapters)];
+ const fonts=cacheEncode(m.fonts);upperBytes+=64+12*fonts.length;if(upperBytes>CACHE_BYTES)throw Error('oversized dependency metadata');eligible();
+ if(dependencyMemo&&dependencyMemo.fonts===fonts&&dependencyMetadataEqual(metadata,dependencyMemo.metadata)){eligible();return dependencyMemo.result;}
+ dependencyMemo=null;
+ const tokens=value=>payloadArray(value)?value.map(tokens):value===undefined?['u']:value===null?['n']:typeof value==='number'?['d',dependencyIs(value,-0)?'-0':value]:[typeof value==='string'?'s':'b',value];
+ const result=dependencyJSONStringify(['C008-deps-primitive-table-v2',tokens(metadata),fonts]);eligible();keepDependencyMemo(metadata,fonts,result);return result;
+}
+function cacheDependencyEncodeGeneric(m){
+ const eligible=()=>{
+  // Inspect live descriptors with captured natives: accessors are rejected,
+  // never invoked. Native map must retain its dense own-slot/species behavior.
+  const data=(object,key,value)=>{const d=dependencyDescriptor(object,key);return !!d&&dependencyHasOwn(d,'value')&&d.value===value;};
+  const same=(a,b)=>{if(!a||!b)return a===b;const av=dependencyHasOwn(a,'value'),bv=dependencyHasOwn(b,'value');return av===bv&&a.enumerable===b.enumerable&&a.configurable===b.configurable&&(av?a.value===b.value&&a.writable===b.writable:a.get===b.get&&a.set===b.set);};
+  if(!data(dependencyGlobal,'Object',dependencyObject)||!data(dependencyGlobal,'Array',dependencyArray)||!data(dependencyGlobal,'JSON',dependencyJSON)||!data(dependencyGlobal,'Number',dependencyNumber)||!data(dependencyObject,'prototype',dependencyObjectPrototype)||!data(dependencyArray,'prototype',dependencyArrayPrototype)||!data(dependencyObject,'getOwnPropertyDescriptor',dependencyDescriptor)||!data(dependencyObject,'getPrototypeOf',dependencyPrototype)||!data(dependencyObject,'hasOwn',dependencyHasOwn)||!data(dependencyObject,'is',dependencyIs)||!data(dependencyNumber,'isFinite',dependencyFinite)||!data(dependencyJSON,'stringify',dependencyJSONStringify)||!same(dependencyDescriptor(dependencyArrayPrototype,'map'),dependencyMapDescriptor)||!data(dependencyArrayPrototype,'constructor',dependencyArray)||!same(dependencyDescriptor(dependencyArrayPrototype,'constructor'),dependencyConstructorDescriptor)||!same(dependencyDescriptor(dependencyArray,dependencySpecies),dependencySpeciesDescriptor)||dependencyPrototype(dependencyArrayPrototype)!==dependencyObjectPrototype||dependencyPrototype(dependencyObjectPrototype)!==null||dependencyDescriptor(dependencyArrayPrototype,'toJSON')||dependencyDescriptor(dependencyObjectPrototype,'toJSON'))throw Error('C cache dependency JSON seam');
+ };
+ eligible();let upperBytes=1024;
+ const scalar=v=>{let token,charge;if(v===undefined){token=['u'];charge=64;}else if(v===null){token=['n'];charge=64;}else if(typeof v==='number'){if(!dependencyFinite(v))throw Error('nonfinite dependency metadata');token=['d',dependencyIs(v,-0)?'-0':v];charge=64;}else if(typeof v==='string'){token=['s',v];charge=64+12*v.length;}else if(typeof v==='boolean'){token=['b',v];charge=64;}else throw Error('nonprimitive dependency metadata');upperBytes+=charge;if(upperBytes>CACHE_BYTES)throw Error('oversized dependency metadata');return token;};
+ const rows=table=>table.map(row=>row.map(scalar)),fields=['identity','family','style','weight','stretch','unicodeRange','status','featureSettings','variationSettings','display','ascentOverride','descentOverride','lineGapOverride'];
+ const metadata=[scalar(m.version),scalar(m.revision),scalar(m.language),scalar(m.fontSetIdentity),[scalar(m.fontSetAccessor.get),scalar(m.fontSetAccessor.set)],scalar(m.measurementContextIdentity),rows(m.measurementOwnSeams),scalar(m.devicePixelRatio),m.faces.map(face=>fields.map(key=>scalar(face[key]))),rows(m.seams),rows(m.adapters)];
+ const fonts=cacheEncode(m.fonts);upperBytes+=64+12*fonts.length;if(upperBytes>CACHE_BYTES)throw Error('oversized dependency metadata');eligible();
+ const result=dependencyJSONStringify(['C008-deps-primitive-table-v2',metadata,fonts]);eligible();return result;
+}
+A.clearLayoutsCFinalCache=()=>{dependencyMemo=null;pendingFreezeRoot=null;nativeLocalBoundsBridge.clear();retireRepairMemo();repairCounters={compiles:0,fullReads:0,fastReads:0,fallbacks:0,capped:0,retired:0};completedPool.clear();cacheBytes=cacheResidentBytes=lastKeyBytes=lastKeyResidentBytes=lastPayloadBytes=lastAdmissionPayloadBytes=lastAdmissionPayloadResidentBytes=lastCompactPayloadResidentBytes=0;lastPayloadRejection=null;cacheCounters={hits:0,misses:0,stores:0,bypasses:0,evictions:0,identityDrifts:0};};
+A.layoutsCFinalCacheStats=()=>({...cacheCounters,...nativeLocalBoundsBridge.stats(),repairMemoCompiles:repairCounters.compiles,repairMemoFullReads:repairCounters.fullReads,repairMemoFastReads:repairCounters.fastReads,repairMemoFallbacks:repairCounters.fallbacks,repairMemoCapped:repairCounters.capped,repairMemoRetired:repairCounters.retired,repairMemoSlots:repairMemo?.slots||0,repairMemoStringChars:repairMemo?.chars||0,repairMemoRepairs:repairMemo?.count||0,repairMemoMaxSlots:REPAIR_MAX_SLOTS,repairMemoMaxStringChars:REPAIR_MAX_CHARS,repairMemoMaxRepairs:REPAIR_MAX_COUNT,entries:completedPool.size,keySerializedBytes:Array.from(completedPool.values()).reduce((n,e)=>n+e.keyBytes,0),payloadSerializedBytes:Array.from(completedPool.values()).reduce((n,e)=>n+e.payloadBytes,0),managementBytes:completedPool.size*CACHE_HEADER,lastAttemptKeyBytes:lastKeyBytes,lastAttemptKeyResidentBytes:lastKeyResidentBytes,lastAttemptPayloadBytes:lastPayloadBytes,lastAttemptPayloadResidentBytes:lastCompactPayloadResidentBytes,lastAttemptAdmissionPayloadBytes:lastAdmissionPayloadBytes,lastAttemptAdmissionPayloadResidentBytes:lastAdmissionPayloadResidentBytes,lastPayloadRejection,serializedBytes:cacheBytes,residentStringAndHeaderBytes:cacheResidentBytes,maxEntries:CACHE_ENTRIES,maxSerializedBytes:CACHE_BYTES,maxResidentStringAndHeaderBytes:CACHE_BYTES,entryHeaderBytes:CACHE_HEADER,scope:'whole exact C finalization; hits do not reconstruct or claim candidate work'});
+const beginFinalCache=(input,options,lineage)=>{
+ if(options.layoutsC!==true||options.layoutsA===true||options.layoutsB===true)return null;
+ try{const dependencies=cacheDependencies(),inputKey=cacheEncode({input,options,lineage}),key=dependencies+'\n'+inputKey,bytes=new TextEncoder().encode(key).length+CACHE_HEADER,resident=key.length*2+CACHE_HEADER;lastKeyBytes=bytes-CACHE_HEADER;lastKeyResidentBytes=key.length*2;lastPayloadBytes=lastAdmissionPayloadBytes=lastAdmissionPayloadResidentBytes=lastCompactPayloadResidentBytes=0;lastPayloadRejection=null;if(bytes>CACHE_BYTES||resident>CACHE_BYTES)throw Error('C cache oversized key');return {key,dependencies,inputKey,input,options,lineage};}catch{cacheCounters.bypasses++;return null;}
+};
+function verifyCacheContext(context){return cacheDependencies()===context.dependencies&&cacheEncode({input:context.input,options:context.options,lineage:context.lineage})===context.inputKey;}
+const readFinalCache=context=>{
+ pendingFreezeRoot=null;if(!context)return null;const entry=completedPool.get(context.key);if(!entry){cacheCounters.misses++;return null;}
+ try{if(!verifyCacheContext(context))throw Error('C cache dependency drift');const result=readCompletedPayload(entry);edgeRegisterFinal(result);completedPool.delete(context.key);completedPool.set(context.key,entry);cacheCounters.hits++;pendingFreezeRoot=result.plan;return result;}catch{cacheCounters.identityDrifts++;cacheCounters.bypasses++;return null;}
+};
+const keepFinalCache=(context,result)=>{
+ if(!context)return;try{if(!verifyCacheContext(context)){cacheCounters.identityDrifts++;throw Error('C cache dependency drift');}lastPayloadRejection='old-payload-codec';const oldPayload=cacheEncode(result),keyBytes=new TextEncoder().encode(context.key).length;lastAdmissionPayloadBytes=new TextEncoder().encode(oldPayload).length;lastAdmissionPayloadResidentBytes=oldPayload.length*2;lastPayloadRejection='old-entry';if(keyBytes+lastAdmissionPayloadBytes+CACHE_HEADER>CACHE_BYTES||context.key.length*2+lastAdmissionPayloadResidentBytes+CACHE_HEADER>CACHE_BYTES)throw Error('C cache old admission budget');lastPayloadRejection='compact-growth';const payload=payloadCompact(oldPayload),payloadBytes=new TextEncoder().encode(payload).length,bytes=keyBytes+payloadBytes+CACHE_HEADER,resident=(context.key.length+payload.length)*2+CACHE_HEADER;lastKeyBytes=keyBytes;lastPayloadBytes=payloadBytes;lastCompactPayloadResidentBytes=payload.length*2;lastPayloadRejection='compact-entry';if(bytes>CACHE_BYTES||resident>CACHE_BYTES)throw Error('C cache oversized result');lastPayloadRejection=null;const prior=completedPool.get(context.key);if(prior){retireRepairMemo(prior);cacheBytes-=prior.bytes;cacheResidentBytes-=prior.resident;completedPool.delete(context.key);}while(completedPool.size>=CACHE_ENTRIES||cacheBytes+bytes>CACHE_BYTES||cacheResidentBytes+resident>CACHE_BYTES){const [key,old]=completedPool.entries().next().value;retireRepairMemo(old);completedPool.delete(key);cacheBytes-=old.bytes;cacheResidentBytes-=old.resident;cacheCounters.evictions++;}const entry=Object.freeze({payload,keyBytes,payloadBytes,bytes,resident});repairBrandAdd(repairBrands,entry);completedPool.set(context.key,entry);cacheBytes+=bytes;cacheResidentBytes+=resident;cacheCounters.stores++;}catch{cacheCounters.bypasses++;}
+};
+const nativeLocalBoundsBridge=A.installLayoutsCFinalCache(Object.freeze({begin:beginFinalCache,read:readFinalCache,keep:keepFinalCache,freeze:freezeDecodedPlan}))||{stats:()=>({}),clear:()=>{}};
 A.registerLayoutsCAdapter=(layout,adapter)=>{
  if(!A.layoutsC34.includes(layout)||['stickyNotes','nameTag','clapper'].includes(layout)||externalAdapters.has(layout)||!adapter||typeof adapter.id!=='string'||!/^[A-Za-z0-9_-]{3,64}$/.test(adapter.id)||typeof adapter.finalize!=='function'||typeof adapter.render!=='function')fail('INVALID_C_ADAPTER_REGISTRATION','Unique C source ID, stable adapter ID, finalize and render functions required');
  externalAdapters.set(layout,Object.freeze({id:adapter.id,finalize:adapter.finalize,render:adapter.render}));
@@ -12,7 +317,13 @@ A.registerLayoutsCAdapter=(layout,adapter)=>{
 A.layoutsCRegisteredAdapters=()=>Array.from(externalAdapters,([layout,a])=>({layout,id:a.id}));
 const freezeReadOnly=value=>{if(value&&typeof value==='object'&&!Object.isFrozen(value)){Object.values(value).forEach(freezeReadOnly);Object.freeze(value);}return value;};
 function expectedRegions(plan,range){return plan.lyricAvoidanceIndex.regions.map((r,i)=>({...r,end:Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration)})).filter(r=>r.start<range[1]&&r.end>range[0]&&r.end>r.start);}
+// Output-clipped blur support is deliberately incapable of safe certification.
+A.assertLayoutsCShadowConflict=(tr,plan,cut)=>{
+ const d=tr?.sourceProof?.outputDomain,segments=Array.isArray(tr?.units)&&tr.units.length===1?tr.units[0]?.segments:null,zero=p=>Array.isArray(p)&&p.length===2&&p.every(v=>v===0);
+ if(cut.layout!=='shoji'||cut.params?.variant!=='shadow'||tr?.sourceAdapter&&tr.sourceAdapter!=='c-japanese'||tr?.measurementScope!=='clipped-output-conflict-only'||tr?.measurementSupported!==true||tr?.safety!=='insufficient-space'||d?.kind!=='native-output-clip'||d.version!==1||d.neverSafe!==true||d.W!==plan.W||d.H!==plan.H||d.preClipFilterSupport!==false||!Array.isArray(segments)||!segments.length||segments.some(s=>!s||s.status!=='insufficient-space'||s.decision!=='excluded-during-avoidance'||!zero(s.from)||!zero(s.to)||s.composition!=null))fail('SHADOW_OUTPUT_NEVER_SAFE','Native shadow output support only admits typed insufficient-space and zero offsets');
+};
 function validateExternalTrajectory(tr,plan,cut,revision,requiredRange){
+ if(cut.layout==='shoji'&&cut.params?.variant==='shadow'||tr?.measurementScope==='clipped-output-conflict-only')A.assertLayoutsCShadowConflict(tr,plan,cut);
  const bad=message=>fail('INVALID_C_ADAPTER_RESULT',message),finitePair=a=>Array.isArray(a)&&a.length===2&&a.every(Number.isFinite);
  if(!tr||tr.kind!=='layouts-c-source-native'||tr.version!==1||tr.revision!==revision||tr.measurementSupported!==true||!Array.isArray(tr.units)||!tr.units.length||!tr.sourceProof||!['certified-bounded-adapter','certified-hold-adapter','insufficient-space'].includes(tr.safety))bad('Complete typed C source-native trajectory required');
  if(!finitePair(tr.evaluationRange)||tr.evaluationRange[0]>requiredRange[0]||tr.evaluationRange[1]<requiredRange[1])bad('C evaluation range must include source cut/render/display and composed ghost/transition reach');
@@ -154,7 +465,7 @@ function sourceStrategy(cut,explicitSize,plan){
  }
  fail('C_RECIPE_PENDING','C '+cut.layout+' owned-unit interval/recipe verification is pending');
 }
-const contains=(p,poly)=>{let pos=false,neg=false;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],cross=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);if(cross>1e-5)pos=true;if(cross< -1e-5)neg=true;}return !(pos&&neg);};
+const contains=(p,poly)=>{const cached=edgeContains(p,poly,1e-5);if(cached!==null)return cached;let pos=false,neg=false;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],cross=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);if(cross>1e-5)pos=true;if(cross< -1e-5)neg=true;}return !(pos&&neg);};
 A.finalizeLayoutsC=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize=false})=>{
  try{
   const requiredRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail];
@@ -183,7 +494,7 @@ A.finalizeLayoutsC=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,ex
 };
 A.renderLayoutsC=(renderer,env)=>{
  A.validateFinal(env.plan);const scale=env.scale||1;if(scale<.1||scale>4)fail('UNSUPPORTED_RENDER_SCALE','C certified render scale is .1..4');
- const external=externalAdapters.get(env.cut.layout);if(external){if(env.cut.placementTrajectory.sourceAdapter!==external.id||!A.layoutsCSourceKnown?.(env.cut.layout)||!A.layoutsCTransportKnown?.(renderer))fail('STALE_C_ADAPTER','Registered C source/renderer/adapter identity changed');return external.render(Object.freeze({renderer,env,trajectory:env.cut.placementTrajectory}));}
+ const external=externalAdapters.get(env.cut.layout);if(external){if(env.cut.layout==='shoji'&&env.cut.params?.variant==='shadow'||env.cut.placementTrajectory.measurementScope==='clipped-output-conflict-only')A.assertLayoutsCShadowConflict(env.cut.placementTrajectory,env.plan,env.cut);if(env.cut.placementTrajectory.sourceAdapter!==external.id||!A.layoutsCSourceKnown?.(env.cut.layout)||!A.layoutsCTransportKnown?.(renderer))fail('STALE_C_ADAPTER','Registered C source/renderer/adapter identity changed');return external.render(Object.freeze({renderer,env,trajectory:env.cut.placementTrajectory}));}
  const tr=env.cut.placementTrajectory,unit=tr.units[0],active=unit.segments.find(s=>s.start<=env.realTime&&env.realTime<s.end),offset=A.offsetAt(unit,env.realTime);if(active?.composition){const cut={...env.cut,layoutCRecipe:active.composition};env=renderer.makeEnv(env.ctx,env.plan,cut,env.sc,{...env,cut});}const program=A.record(renderer,env);if(!program.measurementSupported)fail('UNSUPPORTED_DRAW_PROGRAM',JSON.stringify(program.diagnostics));
  const inHold=env.t>=tr.holdWindow[0]&&env.t<=tr.holdWindow[1],groups=program.events.filter(e=>e.role==='primary').map(e=>({event:e,strict:e.nativeCBody?.entryEnd!=null?env.t>=e.nativeCBody.entryEnd&&env.t<=e.nativeCBody.exitStart&&!(e.nativeCBody.motionWindows||[]).some(w=>env.t>w[0]&&env.t<w[1]):inHold,polygons:ownedPolygons(e,env.cut).map(p=>p.map(q=>[q[0]/scale,q[1]/scale]))})),polygons=groups.flatMap(g=>g.polygons),covered=groups.filter(g=>g.strict).every(g=>g.polygons.every(p=>(active?.envelopes||unit.envelopes).some(q=>p.every(v=>contains(v,q)))));if(!covered)fail('ENVELOPE_VIOLATION','C '+env.cut.layout+' stationary owned unit escaped its source hold proof');
  const exitProof=active?.exitProof,exitKeys=exitProof?nativeEventKeys(program):[],exitZ=J.E.inCubic(env.pOut),exitProtected=exitProof&&env.t>=tr.holdWindow[0]?groups.map((g,i)=>({g,index:exitProof.keys.indexOf(exitKeys[i])})).filter(({index})=>index>=0&&exitZ<=exitProof.limits[index]+1e-12):[],exitEnvelopeCovered=exitProtected.every(({g,index})=>g.polygons.every(p=>p.every(v=>contains(v,active.exitEnvelopes[index])))),exitStageContained=exitProtected.every(({g})=>g.polygons.every(p=>p.every(v=>v[0]+offset[0]>=0&&v[0]+offset[0]<=env.plan.W&&v[1]+offset[1]>=0&&v[1]+offset[1]<=env.plan.H)));
