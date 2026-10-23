@@ -1,0 +1,110 @@
+{
+  "status": "Local functional candidate frozen; parent source/raw/intent review pending, not family/task completion",
+  "packet": "accordion-functional-final01.tar.xz",
+  "bytes": 2525496,
+  "sha256": "6a3916b7cd4a4836ec5628eb94812795f3074fb3837b077728fb48e73b83a884",
+  "base": "90909a0",
+  "sourcePins": [
+    {
+      "file": "src/09a_placement.js",
+      "sha256": "eae453d572e806fd82ddfa60e3e31dfad1de4ccd960f58adeeb47e32ee32a676"
+    },
+    {
+      "file": "src/09q_layoutsD_accordion.js",
+      "sha256": "11b028ac954ebdaf3221908b01e361b67305ddd2ab3f79fd7bd194fcd5b96892"
+    },
+    {
+      "file": "src/11p_layoutsD.js",
+      "sha256": "888f9e81ba8361fb75bfa0140e3c26f0dbbac7f61f8577cb863a097dfab3276e"
+    },
+    {
+      "file": "index.html",
+      "sha256": "d86af40d8850d7dcfa7ef64f221856ffbda4f3effb08936b969a782f47c6da66"
+    },
+    {
+      "file": "en/index.html",
+      "sha256": "dcd09769b0b7cc28a4efe77a8338801f544b31760c22ca70934a70a204e48d56"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-accordion-nonimpact.cjs",
+      "sha256": "26836bfddcc062a506bb736c3ab4d3f39484d9480167801f4f91b9694491104b"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-accordion-parity.cjs",
+      "sha256": "8e9a2118a052008177ac2ae45e6a4d3ddb9ce7833cb5e77382d276207bd7c29d"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-accordion-root-diagnostic.cjs",
+      "sha256": "e31b95fa67e4c30edaf8651d65354d092cd63518dc13dca2af48b3bb42e1a97b"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-accordion-test.cjs",
+      "sha256": "677bb1af8d9e03fdb101d156fe1b6bb38125a65a310c4ccbb88c566a1092f0fc"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-accordion-transport.cjs",
+      "sha256": "3d8d50239f2bbf0ebdff05faf9772a54f6c0819ea7a83aeb9adf11689d1de885"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-accordion-vertical.cjs",
+      "sha256": "ae2384ace43f9e09585c0567b6bab243e8b3144e94db5398846104ae6f2563c7"
+    }
+  ],
+  "raw": [
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/matrix04.json",
+      "bytes": 13266879,
+      "sha256": "c8f9b33b6cf7a2aa4e99747e2f0c8718bda30c945b6368a269b105109b34ac30",
+      "summary": {
+        "cases": 81,
+        "safe": 49,
+        "insufficient": 31,
+        "unsupported": 1,
+        "failures": []
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/parity04.json",
+      "bytes": 850309,
+      "sha256": "e6ec693f4278caf328a374e9e204c2e50b265270e389ad8d5a2667bfb99f62d0",
+      "summary": {
+        "baselineCases": 12,
+        "transportCases": 72,
+        "chronologyCases": 18,
+        "failures": 0
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/transport03.json",
+      "bytes": 794488,
+      "sha256": "a6eec5105ea190c0a8115452f53f7ee7c123ec8529f5bbfebc47142f8f689dcf",
+      "summary": {
+        "pairs": 432,
+        "zeroOffset": 144,
+        "nonzeroOffset": 288,
+        "failures": 0
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/vertical01.json",
+      "bytes": 277547,
+      "sha256": "ece2f3a0df7f95fcbd8144b6417e630404b9e1c926dae509a3723a19d13d0a9a",
+      "summary": {
+        "cases": 24,
+        "projectedChecks": 192,
+        "failures": 0
+      }
+    },
+    {
+      "file": "tasks/evidence/AVOID-009/accordion01/nonimpact02.json",
+      "bytes": 58806,
+      "sha256": "c99cf23f9a683ad84dd3450619dee22f51527cc885b13aa8d708f0945b3236d2",
+      "summary": {
+        "conditions": 18,
+        "pixelPairs": 72,
+        "cacheCases": 3,
+        "failures": 0
+      }
+    }
+  ]
+}

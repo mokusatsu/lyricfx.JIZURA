@@ -215,3 +215,15 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 [統合receipt](evidence/AVOID-009/flipcards-final03/integration-receipt01.json)で固定source/日英HTMLを完全一致で転送し、対象外source/既存pycache89ファイルを保持。完全raw4本・開始snapshot・runner・元失敗等は21MBの固定capsuleに保存した。アニメ原寸MP4は代表1例だけ生成して独立solの視覚確認へ回す。人間の動作確認は必要、回答は今回の8時間集約へ未回答のまま保存し、同009の独立した蛇腹adapterを続ける。009全体は未完。
 
 カード代表1例のSites公開操作はsucceededを返した。[比較と未回答の確認点](reviews/AVOID-009-flipcards-selected-20261024-01.md)と[操作戻り値](evidence/AVOID-009/flipcards-media03/publication.json)を保存。利用者指示どおり公開結果確認・デプロイpolling・公開動画再生は行っていない。独立solは16静止コマで形/付着を限定受入し、裏カード/星の覗きの一部重なりを人間の判断へ残した。10月24日03:00日本時間の再開トリガーを追加予約し、08:01ごろの確認まとめも維持。
+
+## 集約作業: 蛇腹の連続帯adapterを限定受入
+
+[親コード/rawレビュー](evidence/AVOID-009/parent-accordion-final04-review.json)で90909a0へ合成した蛇腹候補を限定受入。全ての空白panel・歌詞・折り目・表紙・帯の影をprimaryとして扱う。元の開閉・呼吸・退場・向き・折りの奇偶と、元sourceJからの出現q、可視glyph巡回gi/miAtのclockを維持する。全体移動→自然な語/chunk境界での連続帯分割→文字付着を維持する同1.2比panel寸法→局所文字縮小の有限61候補を使い、明示サイズと可読性floorを保持する。演出全体の小矩形化はしない。
+
+fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表し、端点と全導関数ゼロ点から連続包絡を作る。親レビューで縦文字のfontX/fontYを取り違えた計算を発見し、実描画は変えず、fontYが帯方向・fontXが横方向となるよう証明を修正させた。異なる幅の文字4種×3fonts×fold2種の24条件・192実投影で紙面側線との付着を確認。親は元fontBoundsから行列を通す頂点を再計算し、実紙面内を独立照合した。
+
+元のcamera rootを計測Canvasへ移す際の小数丸めによる24/432画素差も検出した。変更されていない蛇腹/元transport・cut/cut/still/none・ABC/drawing/effectsOnly/decorなし・main/A/Bだけで実描画rootを保持し、既存のD再生経路を再利用して解消。一般のaffine/inverse、clipや描画capability、幾何guardは拡張しない。元24失敗と診断22失敗、縦軸修正前のrawは保持する。
+
+最終matrix04は81条件中safe49/不足31/文字数範囲外1。親は51safe区間の660証明polygon・396文字付着polygon・20,365実polygonを円余白/stage/連続所有包絡へ独立照合。OFF12条件×6時刻、native再生72組、元clock18条件、独立した移動432組、他C/D18条件72RGBAとcache3例が一致した。正式性能は未評価で、補助的なtimingを性能成功とは扱わない。[固定packetと復元手順](evidence/AVOID-009/accordion-wip/handoff-final01.md)を保存し、初期UNACCEPTED WIPは履歴のまま保持する。
+
+通常円の横代表は全文の字体サイズ106.92pxを保持し、panel137.7×165.24、自然境界で2帯、右へ286.01px。縦代表も字体サイズを保ち、panel145.8×174.96、2帯/4表紙、下へ233.63px。局所MP4で形・折り・読み順を独立solへ確認してから必要な例だけ公開し、人間回答は集約queueへ残す。次の旗は読取設計段階、009全体は未完。

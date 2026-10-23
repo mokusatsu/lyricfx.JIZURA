@@ -154,6 +154,7 @@ function shadowReplay(env,program,offset,decorOffsets){
  const d=shadowDomain(saved.domain.renderer,env);if(d!==saved.domain||d.token.virtual||!Array.isArray(offset)||offset.length!==2||offset.some(v=>v!==0)||(!decorOffsets||typeof decorOffsets!=='object'||Object.keys(decorOffsets).length))fail('SHADOW_OUTPUT_REPLAY','Real original destination and exactly zero replay offsets required');
  A.validateFinal(env.plan);A.assertLayoutsCShadowConflict(env.cut.placementTrajectory,env.plan,env.cut);shadowProgramRoot(program,d);return d.root;
 }
+const dAccordionCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='accordion'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('accordion');
 const dBandCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='cylinder'&&cut.params?.band===true&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('cylinder');
 A.record = (renderer,env,options={}) => {
   recordMatrixEpoch++;
@@ -167,7 +168,7 @@ A.record = (renderer,env,options={}) => {
   const validationOnly=options.validationOnly===true;let shapeValidationUncertain=false;
   validateTextState(env.ctx);
   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
-  const nativeDOriginalRoot=dBandCut(env.cut)&&env.pass==='main'?matrix(env.ctx):null;
+  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||dAccordionCut(env.cut)&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
   const nativeC34=env.cut.placementLayoutsC===true,nativeB25=env.cut.placementLayoutsB===true||nativeC34,nativeD34=env.cut.placementLayoutsD===true,nativeA26=env.cut.placementLayoutsA===true||nativeB25||nativeD34;let nativeRoot=nativeA26?(nativeDOriginalRoot||matrix(c)):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
   // Only stock synchronous C command runs reuse a private actual-Canvas read.
