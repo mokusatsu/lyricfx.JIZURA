@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-23T22:46:49.726017+00:00",
+  "cause": "Git auto maintenance from authorized commit/push unexpectedly created ~947MB temporarypack and exhaustedroot",
+  "action": "TerminateONLY these exact automaticGitmaintenance/repack children; no manualGitobjectpack deletion or newGC",
+  "processes": [
+    {
+      "pid": 102461,
+      "cmd": "/usr/local/libexec/git-core/git gc --auto --no-quiet --no-detach --skip-foreground-tasks "
+    },
+    {
+      "pid": 102460,
+      "cmd": "/usr/local/libexec/git-core/git maintenance run --auto --no-quiet --detach "
+    }
+  ],
+  "canonicalObjectsUntouchedByParent": true,
+  "actualObservedAfter": "pack-objects/repack already exited before TERM; SIGTERM sent only to remaining gc/maintenance PIDs102461/102460. Newpack-cd27... present. Originalpacks retained, no manualGitobjectdeletion. Root333MB free; noGCprocess active.",
+  "futureGitCommands": "Perinvocation -c gc.auto=0 -c maintenance.auto=false; no repositoryconfig mutation or newGC"
+}
