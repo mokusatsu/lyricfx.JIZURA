@@ -7,6 +7,8 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- C command/lineのCTM読出再利用版`d298d6a`を[親source/正常pureレビュー](evidence/AVOID-008/parent-native-command-matrix01-source-review.json)で受入。通常40ケースの全native program/V8 alias/traceは再実行も一致し、実getTransformだけ1161arcで1160回、4096commandで4095回、2/17点lineで5/20回減。transform/reset/save/restore/canvas/helper/再入を確認し、非C・validationOnly・非stock pointは旧経路。元のgeometry/hull/replay/freeze/signature・他83source・09gを維持し、JAEN全84moduleとHTML逆復元を照合。新sourceのbrowser/速度は未実行で、旧ccfeと新d298の完全HTMLを別realmで同じ40条件＋stampSheet/newspaper2目的例へ通す比較を準備中。追加サイバー審査は省略、旧+4.9ms未達は保持し、main製品採用・正式1000・必要4構図は未完。
+
 - memo版の[正常40条件の親レビュー](evidence/AVOID-008/parent-validated-repair-memo-browser01-review.json)を受入。全80fast read・54native frame/観測45件は一致し、旧64,424leafとの差51は追加readによる世代番号+2*iのみ。111入力/173実依存/86製品と実waitpid0/reapを照合。続く[元100診断も親が再計算](evidence/AVOID-008/parent-validated-repair-memo-diagnose01-review.json)し、ONは99.6/50.1ms=1.988倍・描画追加4.90msで未達、OFFは1.657倍/追加1.50ms。120入力/3support/実80record/replay/観測/字体/全100cutを保持し、計画は1点で正式p95ではない。次はCの同一command列/line内のCTM読出をまとめる狭い性能改善を指定sol担当が実装中。通常のtransform/reset/再入・出力oracleを確認し、追加サイバー審査は省略。main採用/正式1000/必要4構図は未完、旧FAILと公開確認禁止は保持。
 
 - 同一payloadの検証手順memo版`3166516`（証拠固定`ccfe825`）を[親がsource/通常pureレビュー](evidence/AVOID-008/parent-validated-repair-memo01-source-review.json)で受入。旧decoder・他83source・通常freeze/signature・key/二度目verify・budget/LRU・描画は維持し、JAEN全84moduleとHTML逆復元を照合。親再実行の165正常ケース/5lifecycle・1full+2fast・全descriptor/alias/freshnessとraw/summaryが一致した。新規サイバー審査は省略。次は同じ40通常browser条件のfast read/描画確認を準備中で、追加helper mutation/巨大budget/security matrixは再実行しない。新速度・正式1000・main製品への採用・必要4構図の人間確認は未完。新runtimeは222/222 currentで、旧215との差を速度改善とは扱わない。

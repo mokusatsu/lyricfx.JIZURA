@@ -1,0 +1,8 @@
+{
+  "basis": "09a e22e968e8c6b4619216c2e432805d4af469338366fd78e8a4fd2f0b9771a3ae4",
+  "decision": "Implement narrow C-only actual transform read reuse in command runs and stock point lines. Keep original mathematical operations, command data, native snapshots and all80 record/replay/observations. Normal transforms/reset/reentry/output oracles required.",
+  "notSelected": "First-hull slice elision offers only small pointer copy savings; scalar extrema/hull simplification, geometry validation removal and shared event snapshots are not part of this candidate.",
+  "performanceEvidence": "Prior actual100 ON1.988x/render+4.90ms still unmet. No expected time saving claimed for unmeasured transform candidate.",
+  "additionalCybersecurityAudit": "omitted per user",
+  "publicChecks": false
+}
