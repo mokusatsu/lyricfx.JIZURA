@@ -1,0 +1,1173 @@
+{
+  "task": "AVOID-009",
+  "build": "flag-selected-20261024-01",
+  "scope": "Two selected bounded raise flag intent examples only; no full-family/task completion or new performance acceptance claim.",
+  "baselineCommit": "80f046df9cb678dbe7bed0ad1fa070aee000434f",
+  "baselineLabel": "変更前（旗・掲揚／回避導入前）",
+  "afterLabel": "変更後（旗・掲揚／回避試作）",
+  "publicChecks": 0,
+  "parentMediaViews": 0,
+  "creatorVisualInspection": false,
+  "sourceSnapshot": "/tmp/avoid009-flag01",
+  "sourceManifestSHA256": "8db3b95f4a66db1ceaa554d34c428eee81c815902f453a6e8629195074bc338e",
+  "baselineHTMLSHA256": "d86af40d8850d7dcfa7ef64f221856ffbda4f3effb08936b969a782f47c6da66",
+  "baselineSemantics": "Whole Git80f046d product HTML, common fixture/avoidCenter settings and full-stage area null, native renderer without D finalization/placementD flag. Original effect, not unsupported-D excluded selection.",
+  "sourceManifestScope": "Accepted bounded raise final12 only; selected media, not full family/performance acceptance",
+  "runnerSHA256": "62239deebb4cc377d0b31d8e2de0f12691520d4cefc71b510cd2b89e3ef13b42",
+  "fontManifestSHA256": "946af88de4305e4df4c6f8c0755b67b716eff151e70ee28e7d36dc9d432f7b42",
+  "supplementalPins": {
+    "src/01_util.js": "66adb1e96aea93154beed3ffd0c485009315b7ed6ddf39b3cef2cfb9f3755447",
+    "src/02_fonts.js": "3e687cfd1045349f36eb65f4fa802973ad4303f48b21069cf6dcc68a546c0415",
+    "src/02b_lang.js": "a0464cc32ec396e2198801387f3640ec217ec1d0ea790ee2e88dbafebd7fc770",
+    "src/03_text.js": "52963f5f4643711e55d428e95ded297b83fd503deed6ca3604ee165a190bb56c",
+    "src/04_styles.js": "29ecef9319dabebbadea198f3915c50bd76f2c48f1cf34d034c833106aa19ca7",
+    "src/05_anim.js": "51f328609eb5746bf65cfa9d09d3b761cf2fbc6fe2a357cc6dbebb9939d484bc",
+    "src/05b_registry.js": "ecaefd208377658bb23adca79c36e093a7b3fce796f5facdb7d10806f6619cea",
+    "src/06_layouts.js": "2b20c3210e88df7189881ec391211288a22e128b212142b93f87e20fdc4c6fce",
+    "src/07_decor.js": "9e0c6edc62ea6e0d220a5f5619e1ba10b35f776a45305fe1cde3288513fe4d24",
+    "src/08_planner.js": "608bf692d183fd5db2b4eecaa469d6278092be57796b5a3353175941bfddba37",
+    "src/08b_omakase.js": "0bcc4a74b12ea70a293cb6e3307c4fe62c8ddf391183bcbaceeb5747847bb870",
+    "src/08c_composition.js": "57edce5653bc5c39af03f528e3315f3d891af43b992d47f5cc493fb83a2855cc",
+    "src/08ca_lyric_avoidance.js": "fcafeeae6affe51df2c9dbea1f09a440e36343976208069c24efcc3ec0ebea0d",
+    "src/08cb_background_layouts.js": "9122c219b4013391a5cc14dbdb289a7e205daf6088b8e4ed744f00b64aef560e",
+    "src/08d_media.js": "bf175deb61f4a197eb28dc538f8daaae9da55efe6711dbec61adba0c38407ffd",
+    "src/08e_lyric_features.js": "54f4b361f23bf8f78e293cf11a570a3088bc209dd80e6acf52ea7cffdc1f5373",
+    "src/08e_media_effects.js": "eeb89f3b2424ad912ecc16d6f2affb186eb8c608a8b1a290d2b9c3d791b77f40",
+    "src/08eb_lyric_scene.js": "c88e6f489446ffb77eac5856217a5b0c3ff04684c1c11750e29fe3c7fece681a",
+    "src/08f_media_variations.js": "fa6c9db6aabf77de42dcd7dc87ff1f20cd401deaab541eddd5361548e247a38b",
+    "src/08g_media_decor.js": "68c7506146e71de5d89a691fb7738f23e86c847126a2f05fd887cfdcc6b395b6",
+    "src/08g_media_masks.js": "168fee9b91f7b24502daa16b101a5d65cd19a4c44377eb8f25c317812dbcaad8",
+    "src/08g_media_phases.js": "ac91c6ea9e355a11f5734304de7d75dd6427923b431f6162eb29ec0a2322ad6f",
+    "src/08g_media_rhythm.js": "1b7821f7b8e3a760a081ecfcc869b840dcff451a00b3cabac113ecb73201193c",
+    "src/08g_media_scenes.js": "e71facca3a86a25c9404ad35a44494e0bf0781cfcfcf64957f01a3c615fd3414",
+    "src/08h_cut_details.js": "bd8a814c97bb281a596d978478368061f5d596cb2dedcb6a57adb3eee1f07864",
+    "src/08i_effect_clipboard.js": "9f0e7b10c1688312298ce262a78174530cfeec940f66531efa11de8cb6cb405e",
+    "src/08j_cut_mask.js": "556e924f69fe9435d3d3bfe452aa6e9b130f20d316e0f852e2e6b309050eeb6c",
+    "src/08k_detail_search.js": "6472c8ad6013e5d14a0e3abf65fc32e39ee030e213bb8fa05530858df45f2db9",
+    "src/08l_detail_labels.js": "895d35845cd1304502a9c3427ad0d697a024b10cf783d75169f5caa4333b67d8",
+    "src/08m_person_cutout.js": "5559074b5a08786097f273d84b0f652abb21455a0d0023df68692f5269016185",
+    "src/09_render.js": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623",
+    "src/09a_placement.js": "8c16b15acf8c49a46097335460f95a5ba340c99eee3c301866e6394e9cf64149",
+    "src/09b_basic_placement.js": "e971a85d5304683fec040bcb23641be5c02a95922e679c8efb4bf2edb7f58aa8",
+    "src/09c_layoutsA_placement.js": "ff603fe43f54296865ae59ab1268c581cbfbbf7a489d02aafbfda83221b03c36",
+    "src/09d_adaptive_placement.js": "ab3e8c727284eacbf642e4fdb2e71197aa6cfde7a68e1473450710289c05a595",
+    "src/09e_layoutsB_placement.js": "268e8f8132f70a9e9627a703656f56d00e50a7145b8b84b1eef31c2371d249d1",
+    "src/09f_layoutsB_editorial.js": "31108fa9f158043cbe28977e518f43be736b913a588ae3fa259fceb3cb6e7410",
+    "src/09g_layoutsC_placement.js": "835c2bdfc1300aef1fcc936be1d7c244cc246f3c97555e2c728dd474b056fb4a",
+    "src/09h_layoutsC_editorial.js": "245871a5f7e6ce61b77d6d45173d63fad4d5b225150a15eba135b0d9fc578af2",
+    "src/09i_layoutsC_objects.js": "e247693918674e5c60b67794fd801fe195e23e834b4aa16afae23a6328684111",
+    "src/09j_layoutsC_japanese.js": "628b22ceb18d3ee7f5d4725cf7310d8a15d2f30381dc546ccf4cee318e9bbdc5",
+    "src/09k_layoutsD_placement.js": "821ada85647b45bc4b664fce6c36c734f616286985b3c975e237716449a708c7",
+    "src/09l_layoutsD_fisheye.js": "0eccb7d52162fc44780d4fb2f6063afaeda299f35094f0af575109d86a241fb5",
+    "src/09m_layoutsD_cube.js": "8cdebfef1c2497a34473c2a7d1291e5c338caef7c59dc5ce18240ce8d1a525f9",
+    "src/09n_layoutsD_origami.js": "acebd097b681c2a928c457d132826fb0e68f5343397fcdd5609b143aa3f4d4ca",
+    "src/09o_layoutsD_cylinder.js": "a498ba61132ff4549cdc86f1924386a36a864087c44e033264095d7002fe10c3",
+    "src/09p_layoutsD_flipCards.js": "5dc174a4343b4e3499ce013d68d64b545ed290c16d4bde3162f924e36b47aeb5",
+    "src/09q_layoutsD_accordion.js": "11b028ac954ebdaf3221908b01e361b67305ddd2ab3f79fd7bd194fcd5b96892",
+    "src/09r_layoutsD_flag.js": "e6de76bce449b66052aef38096e421c89b205ee29356cd9a062ee4797a3b140e",
+    "src/10_audio.js": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57",
+    "src/11_export.js": "d05692567f7893a3258500838091fc0e8cf7536b4ae763f20d0b6aa91a59037f",
+    "src/11b_project_file.js": "9659b8d0bce2919830704c25ab230fc5a7faaad4c3d3783205dd9b5bd2630286",
+    "src/11p_bgcamB.js": "baad1dab7a4743b4eab351c9e9dfa76d9af5f4e00b29538ce41837a5628dd644",
+    "src/11p_decor.js": "b533343d8ad5ad114300fed174d4eb0dff092201c778a6697345157595b933a5",
+    "src/11p_decorB.js": "f49747910c456cb829bdfeffa5c0342898305a8e01eebfa8ac18b2cc279bcd62",
+    "src/11p_enter.js": "949b506310fd7f6f23a11f30691e0edc722ff1b953c157517093aec562644638",
+    "src/11p_enterB.js": "7896363367fb5e5d19c4ccd59cd76ac707328bf018a91b24a137562a421819ce",
+    "src/11p_exit.js": "a013c8d40ba71fa69ea1bfa0782d2a55b7a152aa91bc7c0f7d85a9e89dca0b2b",
+    "src/11p_exitB.js": "565ee042f3f3382b05bb1cfdde8cb140231dba21f7ab58001af45e37d1faaf2e",
+    "src/11p_fxB.js": "168dc3c65c197ddbe4252b9fbe013d6c35a5e7758cf95585ee34263b831d3101",
+    "src/11p_horror1.js": "792d6dace596a0503e1055d3bbf9e56d63dc00c7151a1fb350067f2faac9f033",
+    "src/11p_horror2.js": "828ff4c48181e9755c5e2a82be4e30cab491ca0614cc25d711131108af50b7e4",
+    "src/11p_horror3.js": "c99a0d0cef6cf2b246e84586d5a33ebc750d1ef659a1490f211e8316d2727853",
+    "src/11p_kinetic1.js": "012282d5f3d44ef99c1b5fa26dd85210b138c4ecc73f54084f929bc74bd0045e",
+    "src/11p_kinetic2.js": "8c0401cfc265b6fe79d83e6a056e1bed93f42ae60a17890db165058f842ffd45",
+    "src/11p_kinetic3.js": "c1905cb3a5fb7fb7a14e9984b7ee4ce6b435eddeaab89fb71742c0075b7b3393",
+    "src/11p_layoutsA.js": "9d2b6cda27b049e6b2594603c6dee25d930e09ba536274a21a5ace5ddc7bfcd5",
+    "src/11p_layoutsB.js": "6e9730f7647fe5ff0d0f28a9f795efa54475a77659b8975a22711b910cd82064",
+    "src/11p_layoutsC.js": "2229f1cb916d73e730beeef494c3ee77411bfffbb2ea64eb173111cc4d2a4b17",
+    "src/11p_layoutsD.js": "1d0cbbdc0e3c5d4489cb23095cd98161ff5185ec31e2a2741658212bc563bf92",
+    "src/11p_looks.js": "724f124e9b0dfac715bcffb56bbc0342ccc78fdc5f3151481b2c52583470afba",
+    "src/11p_styles.js": "a306862fa099e7fd39b2efe1b63a6d30b8abf0462e141a075cd7b9ec24106922",
+    "src/11p_treattrans.js": "139dadb053110d87439248116d7e2ccf5b8f629cdd72c6412313649fde76ee25",
+    "src/11p_typo1.js": "0a1c61c77ebdd61754120283078a1e79e339a3de5341974e9ac7b5bb5a2878da",
+    "src/11p_typo2.js": "0fefc16f3e3711da71763bf6f874d02532820e3bbf2f8fd9e327af1a107914e6",
+    "src/11p_typo3.js": "bf8f19513f94044faedf74b45601d6cffa467edb79e37542149d34213c03df77",
+    "src/11q_media_cameras.js": "23254987957792ef1acb612d5f2485401f31d5cb0ba50f31cc3de8d6754f8fd8",
+    "src/11q_sets.js": "c7089d50d5a3eeabd9e4b236812201e87e7f55c4fb22b2d6c06f1efb0d02fc76",
+    "src/11r_themes.js": "31fe85b17a3faf6c2ebe6a3e5a2badcd4807bf4de0ddfceac4e0668e24b5577c",
+    "src/11s_color_theme.js": "13221ae70b44a6b7222bbac3d32ee926b30f442427ca33c01ac35f905a847593",
+    "src/11s_decor_details.js": "40014b35c1f53fca227767bc6e758e69831b7c9e80a130b58bee3e5f000b64dc",
+    "src/11t_effect_preview.js": "2169525db51841181d477f84826145a1fe6c3de5a852f99ead95ededb65ee6ba",
+    "src/11u_effect_favorites.js": "bbe922b1edd9b3488163c69f0c6e99b62d98649b0a91e3923c02cdcc348872ae",
+    "src/11u_note_layouts.js": "8bd64c9068384332be36710653ed4bb171373f8ae81ed58f4f7bd0d2f1e1b783",
+    "src/11v_modal_scroll.js": "09e3742f65e7c1076b068aabb8d7fa018723a5377c65f49786a6b382df156ac8",
+    "src/11w_custom_draw.js": "00bc020f5cac3ea8dbe98421bebd35867fde0a83f71fdf656d9ec614747a62ad",
+    "src/11wa_custom_effects.js": "079f75f0117d35d1ebfb48d2a781dd52e7a74adc4811c4077eca9f320c3e0937",
+    "src/11x_favorite_api.js": "c46c2c7d751be5b8372b50e71ce80cdcc72fc9e3623a38173ee7dec57db0e37b",
+    "src/11y_short_export.js": "83589822ac6a2aba57210a185c2b45ccbf4b15599900a71942e6ebe84821b9f7",
+    "src/11z_layoutsC_transport.js": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+    "src/11za_layoutsD_transport.js": "3abd1b35040a83861a5328797fc41f78f6730f2e8a72c4d95348491dbdec67f1",
+    "src/12_ui.js": "a61d2d2142e3535db0f6a5a4e0c423ad1dcff6285e04c1cc0e442d893b91e66d",
+    "src/13_sprite_extractor.js": "07fa6e11b6a02bafd555a0c50299efb993cdbb9e18df648d251bd7bbfa93ee39",
+    "dev/avoidance/layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "dev/avoidance/layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da",
+    "dev/avoidance/layouts-c-editorial-fonts/manifest.json": "946af88de4305e4df4c6f8c0755b67b716eff151e70ee28e7d36dc9d432f7b42",
+    "dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0",
+    "dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86",
+    "dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a",
+    "dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163",
+    "dev/avoidance/layouts-c-editorial-fonts/mono.otf": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7",
+    "dev/avoidance/layouts-c-editorial-fonts/dot.ttf": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1",
+    "dev/avoidance/layouts-c-editorial-fonts/rounded.ttf": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6",
+    "dev/avoidance/layouts-c-editorial-fonts/symbols.ttf": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+  },
+  "fixturePins": {
+    "layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524",
+    "layouts-b-fixture.js": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+  },
+  "knownBaselineIssue": "Original native flag negative-u derivative can produce NaN; true before is preserved unchanged, never silently repaired or replaced with finite-endpoint reference.",
+  "capture": {
+    "fps": 60,
+    "frames": 240,
+    "duration": 4,
+    "clock": "n/60; frame0 through239; native Canvas intrinsic dimensions; no HUD/post; no frame interpolation",
+    "stillFrames": [
+      15,
+      90,
+      228
+    ],
+    "deviceScaleFactor": 1,
+    "viewport": [
+      1280,
+      1000
+    ],
+    "inputTransform": "Both fixture source plans set fps60 before D finalization; fixture defaults24, which would repeat native24 clocks in a60fps container. Both sides use native fixture default camera push, native motionScale1 and fixture fx.motion0.65; bundled pinned multi-face fonts identical on both sides. Native before retains existing NaN issue."
+  },
+  "preflight": [
+    {
+      "case": "d09-flag-raise-landscape",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "mode": "raise",
+        "cloth": "accent",
+        "trim": "none",
+        "tail": "rect",
+        "wind": 0.7,
+        "side": 1
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-flag-raise-landscape",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "mode": "raise",
+        "cloth": "accent",
+        "trim": "none",
+        "tail": "rect",
+        "wind": 0.7,
+        "side": 1
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-flag-raise-portrait",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "mode": "raise",
+        "cloth": "accent",
+        "trim": "none",
+        "tail": "rect",
+        "wind": 0.7,
+        "side": 1
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-flag-raise-portrait",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "mode": "raise",
+        "cloth": "accent",
+        "trim": "none",
+        "tail": "rect",
+        "wind": 0.7,
+        "side": 1
+      },
+      "sourceArea": null
+    }
+  ],
+  "cases": [
+    {
+      "id": "d09-flag-raise-landscape",
+      "spec": {
+        "id": "d09-flag-raise-landscape",
+        "title": "旗（横長）",
+        "W": 960,
+        "H": 540,
+        "params": {
+          "mode": "raise",
+          "cloth": "accent",
+          "trim": "none",
+          "tail": "rect",
+          "wind": 0.7,
+          "side": 1
+        },
+        "look": "旗としての形、布の大きさ、文字の読み順と改行、掲揚と降下が自然か。",
+        "humanReviewIntent": "Flag identity, cloth size and reflow intent pending human review",
+        "layout": "flag",
+        "text": "風の先へ",
+        "fontMode": "multi",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60,
+        "camera": "push",
+        "motionScale": 1,
+        "cameraDecision": "Native fixture default push; none unsupported by pinned09a allowlist"
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-flag-raise-landscape-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-flag-raise-landscape-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-flag-raise-landscape-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flag-raise-landscape-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flag-raise-landscape-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-flag-raise-landscape-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "604164",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-flag-selected-20261024-01/review/videos/d09-flag-raise-landscape-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "305732",
+              "bit_rate": "611464",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-flag-raise-landscape-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-flag-raise-landscape-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-flag-raise-landscape-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flag-raise-landscape-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flag-raise-landscape-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": null,
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "369714",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-flag-selected-20261024-01/review/videos/d09-flag-raise-landscape-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "188531",
+              "bit_rate": "377062",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "externalFrameEvidence": {
+            "file": "d09-flag-raise-landscape-after-frames.json.gz",
+            "bytes": 1610204,
+            "sha256": "4ae4daeeafa2b9460a52cf7a7ac5f5d6b6ac3f630ca701d7c8d52575a4241720",
+            "archive": {
+              "repository": "mokusatsu/lyricfx.JIZURA",
+              "branch": "work",
+              "path": "tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.gz",
+              "url": "https://github.com/mokusatsu/lyricfx.JIZURA/blob/work/tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.gz",
+              "sha256": "74caa1ba4ad464b6cb150eac4bdc90f6bc783b113aeb274d7a0c83f293efa7d5",
+              "bytes": 3374177,
+              "receiptPath": "tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.receipt.json"
+            },
+            "member": "d09-flag-raise-landscape-after-frames.json.gz",
+            "scope": "Exact original full240nativeframe receipt; durable work-branch archive. Not hosted as a static file in this publication bundle."
+          }
+        }
+      }
+    },
+    {
+      "id": "d09-flag-raise-portrait",
+      "spec": {
+        "id": "d09-flag-raise-portrait",
+        "title": "旗（縦長）",
+        "W": 540,
+        "H": 960,
+        "params": {
+          "mode": "raise",
+          "cloth": "accent",
+          "trim": "none",
+          "tail": "rect",
+          "wind": 0.7,
+          "side": 1
+        },
+        "look": "旗としての形、布の大きさ、文字の読み順と改行、掲揚と降下が自然か。",
+        "humanReviewIntent": "Flag identity, cloth size and reflow intent pending human review",
+        "layout": "flag",
+        "text": "風の先へ",
+        "fontMode": "multi",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60,
+        "camera": "push",
+        "motionScale": 1,
+        "cameraDecision": "Native fixture default push; none unsupported by pinned09a allowlist"
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-flag-raise-portrait-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-flag-raise-portrait-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-flag-raise-portrait-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-flag-raise-portrait-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-flag-raise-portrait-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 540,
+              "height": 960
+            }
+          ],
+          "frameReceipt": "d09-flag-raise-portrait-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 540,
+                "height": 960,
+                "coded_width": 540,
+                "coded_height": 960,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "526000",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-flag-selected-20261024-01/review/videos/d09-flag-raise-portrait-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "266598",
+              "bit_rate": "533196",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-flag-raise-portrait-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-flag-raise-portrait-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-flag-raise-portrait-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-flag-raise-portrait-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 540,
+              "height": 960
+            },
+            {
+              "file": "images/d09-flag-raise-portrait-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 540,
+              "height": 960
+            }
+          ],
+          "frameReceipt": null,
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 540,
+                "height": 960,
+                "coded_width": 540,
+                "coded_height": 960,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "352738",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-flag-selected-20261024-01/review/videos/d09-flag-raise-portrait-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "180075",
+              "bit_rate": "360150",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ],
+          "externalFrameEvidence": {
+            "file": "d09-flag-raise-portrait-after-frames.json.gz",
+            "bytes": 1723500,
+            "sha256": "7189afe8e888b7e9332b603d22f7ffcc17f316335f4ce5321837e640e3853e48",
+            "archive": {
+              "repository": "mokusatsu/lyricfx.JIZURA",
+              "branch": "work",
+              "path": "tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.gz",
+              "url": "https://github.com/mokusatsu/lyricfx.JIZURA/blob/work/tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.gz",
+              "sha256": "74caa1ba4ad464b6cb150eac4bdc90f6bc783b113aeb274d7a0c83f293efa7d5",
+              "bytes": 3374177,
+              "receiptPath": "tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.receipt.json"
+            },
+            "member": "d09-flag-raise-portrait-after-frames.json.gz",
+            "scope": "Exact original full240nativeframe receipt; durable work-branch archive. Not hosted as a static file in this publication bundle."
+          }
+        }
+      }
+    }
+  ],
+  "assets": {
+    "source-manifest.json": {
+      "bytes": 1603,
+      "sha256": "8db3b95f4a66db1ceaa554d34c428eee81c815902f453a6e8629195074bc338e"
+    },
+    "cases.json": {
+      "bytes": 1531,
+      "sha256": "52e0ac972938aac7cd4d0b113cd39f679ba52e1c4f7050829824cb539625893e"
+    },
+    "capture.cjs": {
+      "bytes": 15376,
+      "sha256": "51c1ebf6681e10776f9ddbc54532ef6ecae4614416271b78aad7a1cbdebc7677"
+    },
+    "d09-flag-raise-landscape-before-inputs.json.gz": {
+      "bytes": 2280,
+      "sha256": "5c01a00b525b3d0f050a73e3908d3f447029fd042254544eec0ef5eeb4dd43d7"
+    },
+    "d09-flag-raise-landscape-after-inputs.json.gz": {
+      "bytes": 19164,
+      "sha256": "c02549d73c3ea150a7ea66ef5e13b2455b9a52c7d3d6f610027feacdda727dc7"
+    },
+    "d09-flag-raise-portrait-before-inputs.json.gz": {
+      "bytes": 2280,
+      "sha256": "7f19d19985bd9506dc31c6f8cca7a4525cedea7b8bed92efc6bcaf15916d2dac"
+    },
+    "d09-flag-raise-portrait-after-inputs.json.gz": {
+      "bytes": 5414,
+      "sha256": "a345e4bea1c6fa03920f1c005b65a90593dcc362662109cf983e5e3c50cef317"
+    },
+    "preflight.json": {
+      "bytes": 1348,
+      "sha256": "b00d423d15c6faf1f70c9d2e22a9849524893096825dd8f85afb43f175ae3924"
+    },
+    "images/d09-flag-raise-landscape-before-15.png": {
+      "bytes": 302860,
+      "sha256": "370760bc92e0c5300912840fa01f2552b94ab2077877eff8009faf42146ff029"
+    },
+    "images/d09-flag-raise-landscape-before-90.png": {
+      "bytes": 304951,
+      "sha256": "fee4101aadf659d7f5a548d49f64072596b65575f5a07b545021ba63ea63ed46"
+    },
+    "images/d09-flag-raise-landscape-before-228.png": {
+      "bytes": 329766,
+      "sha256": "8f7e33e2c4bc132c2564b4ab928202aa6a7e5e3b0cff9ff46988e4d7a5afa4bd"
+    },
+    "d09-flag-raise-landscape-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "16bd7a89837881e6174a6651f4a4fb16ee2f43aed67fb155d44f7e116ecbbc23"
+    },
+    "videos/d09-flag-raise-landscape-before.mp4": {
+      "bytes": 305732,
+      "sha256": "772e11f3ae2cf4c3b5ca6e611f2e294fcf37524fd35f0d1f8a43f17bd7b23b6f"
+    },
+    "d09-flag-raise-landscape-before-frames.json.gz": {
+      "bytes": 10560,
+      "sha256": "26aaa9ea68e5a399ffd557a99aab434f65f9caddca10fe20d23b5266514572eb"
+    },
+    "images/d09-flag-raise-landscape-after-15.png": {
+      "bytes": 380134,
+      "sha256": "77d2e3ef9b9324edee41959f4dc3613aff339d9936998cd62c77ae86957f7042"
+    },
+    "images/d09-flag-raise-landscape-after-90.png": {
+      "bytes": 386515,
+      "sha256": "392c3b5a57c0d2a30b1eae9f4049b9bdfd3e39cb2407febeff812cf0752a60c6"
+    },
+    "images/d09-flag-raise-landscape-after-228.png": {
+      "bytes": 395198,
+      "sha256": "53b314b12d77119dfd7e76db70dedc4d46c41539c883f6a6d9ebf073078108ca"
+    },
+    "d09-flag-raise-landscape-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "c723337edb483bd1a644afd52e25d6aeaaca2386b8bf9323dba50e7dc834e4b4"
+    },
+    "videos/d09-flag-raise-landscape-after.mp4": {
+      "bytes": 188531,
+      "sha256": "c4d4b6c8a56a44b1aa4ce208f0a9c3405c62c38b9335aebe39659b40b89800ff"
+    },
+    "images/d09-flag-raise-portrait-before-15.png": {
+      "bytes": 293931,
+      "sha256": "96af4919de7e9843ba4012ba23e98a42736fe82f008ebb7883a6c8dd23a701aa"
+    },
+    "images/d09-flag-raise-portrait-before-90.png": {
+      "bytes": 284193,
+      "sha256": "36f272d90124cd2ad8ba0cdfc2d4ea6649b42608e2200af846a63142c4a52e2d"
+    },
+    "images/d09-flag-raise-portrait-before-228.png": {
+      "bytes": 299572,
+      "sha256": "05671f07d99610ac33e14a63aeaba3f18d79bb92d256e4ed50e0b4fe3ec2e655"
+    },
+    "d09-flag-raise-portrait-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "b776b4fbaccf4a4430f978db4306746f9265643c4022a176125d62d2b8399d93"
+    },
+    "videos/d09-flag-raise-portrait-before.mp4": {
+      "bytes": 266598,
+      "sha256": "36b4fe0b5a13dc76142c4a09d74bd2e64f030155af84cd5d0eb0b1a9b6b36d25"
+    },
+    "d09-flag-raise-portrait-before-frames.json.gz": {
+      "bytes": 10549,
+      "sha256": "42226789929d686b5ccd6005cc476d32082aa5e30eabbbafd272ae7df4d27568"
+    },
+    "images/d09-flag-raise-portrait-after-15.png": {
+      "bytes": 320353,
+      "sha256": "1f3219c6d340f644f16b0ad136ef7469f6c15d9a38665c4f320f3108e6106b9a"
+    },
+    "images/d09-flag-raise-portrait-after-90.png": {
+      "bytes": 327336,
+      "sha256": "5feb53419a2a6e9d530bb84623ec71a3573123cc7bf18b8d074f11e32309dcc5"
+    },
+    "images/d09-flag-raise-portrait-after-228.png": {
+      "bytes": 337480,
+      "sha256": "7f15f5afa4aa698c054a9b146bcea8bfebb3969fe69978d32394e26e7e735c4e"
+    },
+    "d09-flag-raise-portrait-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "79970f300d322bcef43650162c50d5f1657ce277921ad784949b07470276a54f"
+    },
+    "videos/d09-flag-raise-portrait-after.mp4": {
+      "bytes": 180075,
+      "sha256": "7e33839b31b111ab8544917b14984818afff2989aa93435f442c567960ec51b6"
+    },
+    "index.html": {
+      "bytes": 8876,
+      "sha256": "60df67e0a7bafb4ada55cd73d6b0964fdf1bad4df885084b5e8ebaa1f2cfdd25"
+    },
+    "en.html": {
+      "bytes": 8588,
+      "sha256": "cbc440e9d3e643c4f4b319e28f8d8c172dd78f367e328e3ba2d77a453cc1eb9b"
+    },
+    "geometry-precheck.json": {
+      "bytes": 11989,
+      "sha256": "427267b3d6a2c4926006274b0cf8efa6ce3cca8e6568abb081e0599de4f7279c"
+    },
+    "independent-visual12.md": {
+      "bytes": 5875,
+      "sha256": "3be6e0baa09cfcb16ed4669ec699c086cc6d3bc329ee8dc1d8033abff686a9f1"
+    },
+    "capture04.log": {
+      "bytes": 1438,
+      "sha256": "4207bf58d6b95ade6ae7a60f2d13b6fb46b09c10352bbc5fbdec1ca42a52288b"
+    },
+    "verify02-bilingual.log": {
+      "bytes": 6384,
+      "sha256": "e02328d9f213eaf2c5045c78d54a3c64ceb0b1d2db455ea8ea94933bacc30b53"
+    }
+  },
+  "startedAt": "2026-10-23T18:12:35.908Z",
+  "browser": "154.0.8037.57",
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "completedAt": "2026-10-23T18:13:13.352Z",
+  "status": "Local native capture, strict geometry guards, source/motion/metadata verification passed. Independent sampled visual review found no serious new defect. Human aesthetic intent review pending.",
+  "totalAssetBytes": 5131416,
+  "viewerPolish": {
+    "nativeControls": true,
+    "autoplay": false,
+    "circleGuideDefaultOn": true,
+    "circleGuideExternalHTML": true,
+    "perPairRestartPlay": true,
+    "visibleTitlesJapanese": true,
+    "scriptSHA256": "058493f6f8867817bf192a17792fcf6a73bf5aee0902c1d364954e8bc151153c"
+  },
+  "actualGeometry": "geometry-precheck.json",
+  "localOnly": true,
+  "baselineProvenance": "Parent independently extracted full80f046d:index.html; exact before-80f046d.html SHAd86af40d8850d7dcfa7ef64f221856ffbda4f3effb08936b969a782f47c6da66",
+  "independentVisualReview": {
+    "report": "independent-visual12.md",
+    "outcome": "No serious new visual defect in sampled local stills/decoded frames; human cloth/font/two-row layout/reduced travel judgment remains required",
+    "scope": "Sampled AI visual review; not exhaustive frame review or human playback approval",
+    "circle": "No outline in native media; circle clearance is separate geometry evidence, not a visual conclusion",
+    "metadata13Resolution": "Defective contact removed; copied cylinder label corrected. Original individual12stills/fourMP4 unchanged."
+  },
+  "metadataCorrection13": {
+    "history": "/tmp/avoid009-flag-selected-20261024-01/history-media12-before-metadata13",
+    "labels": "Corrected copied cylinder label to raise flag; made viewer before/after labels explicit",
+    "contactSheet": "Incomplete contact removed from current review and manifest; original preserved in history; all12individual stills unchanged",
+    "captureRunner": "Executed runner remains preserved in history with original runnerSHA256; current capture.cjs differs only in labels, not recaptured",
+    "circleClearance": "Measured region documented outside animation; no baked outline or visual clearance claim",
+    "unchangedVideoAndStillPins": {
+      "images/d09-flag-raise-landscape-before-15.png": {
+        "bytes": 302860,
+        "sha256": "370760bc92e0c5300912840fa01f2552b94ab2077877eff8009faf42146ff029"
+      },
+      "images/d09-flag-raise-landscape-before-90.png": {
+        "bytes": 304951,
+        "sha256": "fee4101aadf659d7f5a548d49f64072596b65575f5a07b545021ba63ea63ed46"
+      },
+      "images/d09-flag-raise-landscape-before-228.png": {
+        "bytes": 329766,
+        "sha256": "8f7e33e2c4bc132c2564b4ab928202aa6a7e5e3b0cff9ff46988e4d7a5afa4bd"
+      },
+      "videos/d09-flag-raise-landscape-before.mp4": {
+        "bytes": 305732,
+        "sha256": "772e11f3ae2cf4c3b5ca6e611f2e294fcf37524fd35f0d1f8a43f17bd7b23b6f"
+      },
+      "images/d09-flag-raise-landscape-after-15.png": {
+        "bytes": 380134,
+        "sha256": "77d2e3ef9b9324edee41959f4dc3613aff339d9936998cd62c77ae86957f7042"
+      },
+      "images/d09-flag-raise-landscape-after-90.png": {
+        "bytes": 386515,
+        "sha256": "392c3b5a57c0d2a30b1eae9f4049b9bdfd3e39cb2407febeff812cf0752a60c6"
+      },
+      "images/d09-flag-raise-landscape-after-228.png": {
+        "bytes": 395198,
+        "sha256": "53b314b12d77119dfd7e76db70dedc4d46c41539c883f6a6d9ebf073078108ca"
+      },
+      "videos/d09-flag-raise-landscape-after.mp4": {
+        "bytes": 188531,
+        "sha256": "c4d4b6c8a56a44b1aa4ce208f0a9c3405c62c38b9335aebe39659b40b89800ff"
+      },
+      "images/d09-flag-raise-portrait-before-15.png": {
+        "bytes": 293931,
+        "sha256": "96af4919de7e9843ba4012ba23e98a42736fe82f008ebb7883a6c8dd23a701aa"
+      },
+      "images/d09-flag-raise-portrait-before-90.png": {
+        "bytes": 284193,
+        "sha256": "36f272d90124cd2ad8ba0cdfc2d4ea6649b42608e2200af846a63142c4a52e2d"
+      },
+      "images/d09-flag-raise-portrait-before-228.png": {
+        "bytes": 299572,
+        "sha256": "05671f07d99610ac33e14a63aeaba3f18d79bb92d256e4ed50e0b4fe3ec2e655"
+      },
+      "videos/d09-flag-raise-portrait-before.mp4": {
+        "bytes": 266598,
+        "sha256": "36b4fe0b5a13dc76142c4a09d74bd2e64f030155af84cd5d0eb0b1a9b6b36d25"
+      },
+      "images/d09-flag-raise-portrait-after-15.png": {
+        "bytes": 320353,
+        "sha256": "1f3219c6d340f644f16b0ad136ef7469f6c15d9a38665c4f320f3108e6106b9a"
+      },
+      "images/d09-flag-raise-portrait-after-90.png": {
+        "bytes": 327336,
+        "sha256": "5feb53419a2a6e9d530bb84623ec71a3573123cc7bf18b8d074f11e32309dcc5"
+      },
+      "images/d09-flag-raise-portrait-after-228.png": {
+        "bytes": 337480,
+        "sha256": "7f15f5afa4aa698c054a9b146bcea8bfebb3969fe69978d32394e26e7e735c4e"
+      },
+      "videos/d09-flag-raise-portrait-after.mp4": {
+        "bytes": 180075,
+        "sha256": "7e33839b31b111ab8544917b14984818afff2989aa93435f442c567960ec51b6"
+      }
+    }
+  },
+  "executedRunnerArchive": {
+    "archive": "old-metadata-history.tar.gz",
+    "member": "history-media12-before-metadata13/capture.cjs",
+    "sha256": "62239deebb4cc377d0b31d8e2de0f12691520d4cefc71b510cd2b89e3ef13b42",
+    "note": "Actual capture04 executed these bytes; current capture.cjs is a metadata-label-only copy and was not rerun"
+  },
+  "currentCaptureCopySHA256": "51c1ebf6681e10776f9ddbc54532ef6ecae4614416271b78aad7a1cbdebc7677",
+  "nativeCaptureEvidence": {
+    "captureLog": "capture04.log",
+    "fullNativeVerificationLog": "verify02-bilingual.log",
+    "nativeVerificationRecordArchive": "old-metadata-history.tar.gz:history-media12-before-metadata13/local-verification.json",
+    "scope": "Original240distinctnativeframes per video and480after strictguards remain unchanged; currentlocal-verification is dependentmetadata-only"
+  },
+  "afterCommit": "23a62ee",
+  "afterCommitProvenance": "Parent supplied accepted canonical integration commit; capture used exact frozenfinal12 pins recorded in source-manifest",
+  "parentCaptureManifestSHA256": "6bd20f30db36f48dc8590d87bc21350bc5c1f03175cdba55d180fd0bffef893e",
+  "publicationPackaging": {
+    "build": "publication17",
+    "scope": "Packaging only; unchanged native media/HTML and original capture proofs. No capture/source-plan/frame-guard checks rerun.",
+    "reason": "Original native deployment rejected expanded269886481bytes greater than256MiB; not a successful deployment.",
+    "excludedAfterFrameReceipts": {
+      "d09-flag-raise-landscape-after-frames.json.gz": {
+        "file": "d09-flag-raise-landscape-after-frames.json.gz",
+        "bytes": 1610204,
+        "sha256": "4ae4daeeafa2b9460a52cf7a7ac5f5d6b6ac3f630ca701d7c8d52575a4241720",
+        "archive": {
+          "repository": "mokusatsu/lyricfx.JIZURA",
+          "branch": "work",
+          "path": "tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.gz",
+          "url": "https://github.com/mokusatsu/lyricfx.JIZURA/blob/work/tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.gz",
+          "sha256": "74caa1ba4ad464b6cb150eac4bdc90f6bc783b113aeb274d7a0c83f293efa7d5",
+          "bytes": 3374177,
+          "receiptPath": "tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.receipt.json"
+        },
+        "member": "d09-flag-raise-landscape-after-frames.json.gz",
+        "scope": "Exact original full240nativeframe receipt; durable work-branch archive. Not hosted as a static file in this publication bundle."
+      },
+      "d09-flag-raise-portrait-after-frames.json.gz": {
+        "file": "d09-flag-raise-portrait-after-frames.json.gz",
+        "bytes": 1723500,
+        "sha256": "7189afe8e888b7e9332b603d22f7ffcc17f316335f4ce5321837e640e3853e48",
+        "archive": {
+          "repository": "mokusatsu/lyricfx.JIZURA",
+          "branch": "work",
+          "path": "tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.gz",
+          "url": "https://github.com/mokusatsu/lyricfx.JIZURA/blob/work/tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.gz",
+          "sha256": "74caa1ba4ad464b6cb150eac4bdc90f6bc783b113aeb274d7a0c83f293efa7d5",
+          "bytes": 3374177,
+          "receiptPath": "tasks/evidence/AVOID-009/flag-media12/native-frame-raw13.tar.receipt.json"
+        },
+        "member": "d09-flag-raise-portrait-after-frames.json.gz",
+        "scope": "Exact original full240nativeframe receipt; durable work-branch archive. Not hosted as a static file in this publication bundle."
+      }
+    },
+    "canonicalReview": "/tmp/avoid009-flag-selected-20261024-01/review",
+    "canonicalManifestSHA256": "6bd20f30db36f48dc8590d87bc21350bc5c1f03175cdba55d180fd0bffef893e",
+    "humanApproval": "unanswered",
+    "publicResultChecks": 0
+  }
+}
