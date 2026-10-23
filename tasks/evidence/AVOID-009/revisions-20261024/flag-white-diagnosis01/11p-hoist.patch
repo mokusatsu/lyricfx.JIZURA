@@ -1,0 +1,18 @@
+--- main/src/11p_layoutsD.js
++++ candidate/src/11p_layoutsD.js
+@@ -675,7 +675,14 @@
+       if (Pm.trim === 'bands') { band(0.08, 0.15, trimC, out); band(0.85, 0.92, trimC, out); }
+       if (Pm.trim === 'edge') { const a = S[0], b = S[Math.min(N, 3)]; cloth.poly([[a.x - side * 2, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x - side * 2, a.bot + 4]], trimC, out, false); }
+       for (let i = 0; i < N; i++) {
+-        const a = S[i], b = S[i + 1], v = J.clamp(-(a.sl + b.sl) / 2 * side * 0.9, -0.4, 0.2);
++        const a = S[i], b = S[i + 1];
++        // Preserve the visible hoist strip explicitly; never depend on the
++        // original negative-u NaN shade/ignored Canvas alpha assignment.
++        if (nativeD && W > H && Pm.mode === 'raise' && i === 0) {
++          cloth.poly([[a.x, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x, a.bot + 4]], lightOf(sc), out, false);
++          continue;
++        }
++        const v = J.clamp(-(a.sl + b.sl) / 2 * side * 0.9, -0.4, 0.2);
+         if (Math.abs(v) < 0.02) continue;
+         cloth.poly([[a.x, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x, a.bot + 4]], v < 0 ? darkOf(sc) : lightOf(sc), Math.abs(v) * 0.8 * out, false);
+       }

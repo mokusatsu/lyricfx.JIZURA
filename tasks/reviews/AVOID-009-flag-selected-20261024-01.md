@@ -24,3 +24,8 @@ Sites初回は展開後容量上限で失敗。完全rawはmainのnative-frame-r
 ## 2026-10-24 利用者の動作確認回答
 
 最新回答: PARTIAL_APPROVAL_REVISION_REQUESTED。Portraitapproved; landscapemissingwhitepartatflagrootmustrestore。朝のまとめをすべて確認し、指定3対象以外はOKとの明示回答。従来の未回答記述は当時の履歴として保持する。新しい版へ承認は自動転用しない。
+
+
+## 2026-10-24 追加回答：白い帯は異常なら復元不要
+
+利用者は「根元の白いのがむしろ異常だと判断される場合はなくていい」と追加回答。元の白い帯は、負u差分に由来するNaNの陰影値とCanvasの無効alpha無視で偶然白くなった最初の布区画と親が判定。意図したtrimでも支柱でもないため、条件付き許可に基づいて復元を取りやめ、現在の有限D描画を維持する。縦旗の既存OKも保持。11例受入・カード/pileの2修正待ちに更新。途中の隔離修正候補はmain未統合・ブラウザ未実行のまま中止し、原因調査とpatchを保存した。[判断記録](https://github.com/mokusatsu/lyricfx.JIZURA/blob/work/tasks/evidence/AVOID-009/revisions-20261024/flag-white-no-restore-decision01.json)。公開結果確認は0。

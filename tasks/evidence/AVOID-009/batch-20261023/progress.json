@@ -13,8 +13,15 @@
       "owner": "flipcards_revision01",
       "model": "gpt-6.1-sol",
       "reasoningEffort": "medium",
-      "scope": "Cardnativefieldpreservation/open-slot reassignment revision",
-      "state": "READONLYdesign/sourcepins; no implementation beforeparentreview"
+      "scope": "Stationarynativecardfield andopeningcellassignment",
+      "state": "MINIMALPLAN02 approved, isolatedsource+focusedrunner preparation; no browserbeforeparentreview"
+    },
+    {
+      "owner": "avoid009_pile_plan/pile_native_gate",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": "medium",
+      "scope": "Pile source-nativeentryopacity/offscreenfall minorfixes",
+      "state": "READONLY DESIGN11 ready; no implementationuntilcardparentreviewcompleted"
     }
   ],
   "humanReviewQueue": [
@@ -73,7 +80,7 @@
         "flag raise landscape",
         "flag raise portrait"
       ],
-      "state": "PARTIAL_APPROVAL_REVISION_REQUESTED",
+      "state": "HUMAN_APPROVED_WITH_ABNORMAL_WHITE_ARTIFACT_OMISSION",
       "review": "tasks/reviews/AVOID-009-flag-selected-20261024-01.md",
       "points": [
         "Landscape half-size two-row typography and squarer cloth",
@@ -82,13 +89,15 @@
       ],
       "url": "https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-009/flag-selected-20261024-01/",
       "humanResponseDateJST": "2026-10-24",
-      "humanApproval": false,
+      "humanApproval": true,
       "caseDecisions": {
-        "flag raise landscape": "revisionrequested:restorewhitebase/rootpart",
+        "flag raise landscape": "Userconditionpermitswhiteomission ifabnormal; parentsourcecausalityconfirmsNaNartifact, restorationomitted",
         "flag raise portrait": "HUMAN_APPROVED"
       },
-      "status": "PARTIAL_APPROVAL_REVISION_REQUESTED",
-      "humanResponse": "Portraitapproved; landscapemissingwhitepartatflagrootmustrestore"
+      "status": "HUMAN_APPROVED_WITH_ABNORMAL_WHITE_ARTIFACT_OMISSION",
+      "humanResponse": "Portraitapproved; landscapemissingwhitepartatflagrootmustrestore",
+      "latestUserSteering": "根元の白いのがむしろ異常だと判断される場合はなくていいです",
+      "approvalBasis": "10othercasesdirectOK plusflaglandscape conditionalomissionpermission satisfiedbyparentdiagnosis"
     },
     {
       "id": "ribbon-selected-20261024-01",
@@ -486,7 +495,7 @@
     "thinEvidence": "tasks/evidence/AVOID-009/pendulum-final01/avoid009-pendulum-final-packet02.tar.gz",
     "thinEvidenceSHA256": "d32f78a378299a6fcdff84dab00c8dca45cb000a0ee96c53cb51d8a82cc36e46"
   },
-  "lastParentSyncUTC": "2026-10-23T23:12:27.211468+00:00",
+  "lastParentSyncUTC": "2026-10-23T23:22:16.810126+00:00",
   "pendulumMedia": {
     "capture": "output02",
     "canonicalManifestSHA256": "f1508ee593f32f18f583cda39dee502e34b26ccafa85f4b288cad48d5d515c13",
@@ -633,13 +642,13 @@
     "media": "Native60fps1pair committed6ee41a86; parent35978polys/freshsol16frames acceptedbounded; Sites4291087 nativeoperationSUCCEEDED, humanunanswered",
     "archivePush": "56ac348 parent82484CLOSEDexit0"
   },
-  "phase": "Humanresponse received:10of13cases approved,3revisiontargets card/flag-landscape/pile;009implementationcontinues,010+unstarted",
+  "phase": "11morningcasesaccepted (flaglandscapewhiteomissionbyusercondition),2revisiontargets card/pile;009stillimplementation",
   "morningReviewDigest": "tasks/evidence/AVOID-009/batch-20261023/morning-review-20261024.md",
   "mainMediaPush": "6ee41a86 parent26021CLOSEDexit0",
   "publicationRecordPush": "eb607c22 parent9962CLOSEDexit0",
   "humanResponse20261024": {
-    "approvedCaseCount": 10,
-    "revisionCaseCount": 3,
+    "approvedCaseCount": 11,
+    "revisionCaseCount": 2,
     "decisions": [
       {
         "comparison": "selected-20261023-01",
@@ -677,6 +686,27 @@
         "detail": "Overallpilelooksverygood/accepted exceptinitialmoundvisibilityandlyricfallmuststartoffscreenlikenative"
       }
     ],
-    "sourceUserMessage": "朝の動作確認まとめ（2026-10-24）をすべて確認、下記以外OK。カード配置は元のまま/周囲追加し開く位置で避ける。横旗の根元の白い部分消失。pileは良好だが最初の山非表示と画面外からの落下を復元。"
-  }
+    "sourceUserMessage": "朝の動作確認まとめ（2026-10-24）をすべて確認、下記以外OK。カード配置は元のまま/周囲追加し開く位置で避ける。横旗の根元の白い部分消失。pileは良好だが最初の山非表示と画面外からの落下を復元。",
+    "flagLatestConditionalDecision": {
+      "dateJST": "2026-10-24",
+      "newUserInstruction": "根元の白いのがむしろ異常だと判断される場合はなくていいです",
+      "parentFinding": "Originalwhitefirstmaterialstrip isunintendedNaN/ignoredCanvasalpha artifact, nottrim/pole: originaltrimnone, sl0/v/alphaNaN butquadfinite, lightOfselected andinvalidalphaignored. FiniteDfix legitimatelyremovesit.",
+      "decision": "OMIT_WHITE_RESTORATION_USER_CONDITION_SATISFIED",
+      "basis": "Userconditionalpermission applied to source/eightlocalimagefindings; not fabricated unconditionaluserstatement",
+      "landscapeFlag": "CurrentfiniteDsourcekept; no furtherflagmodification/test/media needed",
+      "candidate": "Isolatedcandidate abandoned beforebrowser, no mainproductwrites; diagnosis/patch/receipt preserved",
+      "remainingRevisionTargets": [
+        "flipCards",
+        "pile2entrancepoints"
+      ],
+      "humanCasesAccepted": 11,
+      "humanCasesRevisionRequired": 2,
+      "publicChecks": 0,
+      "parentImageViews": 0
+    }
+  },
+  "revisionExecutionOrder": [
+    "flipCards",
+    "pile"
+  ]
 }
