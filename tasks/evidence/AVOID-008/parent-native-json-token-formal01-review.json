@@ -1,0 +1,181 @@
+{
+  "parent": "/root",
+  "rawSHA256": "2ee7ed0e3a7e82f07a0a6b02cc10e097efe75365c1f350fbc59c3eeac0831443",
+  "originalConfig": {
+    "diagnostic": false,
+    "formal": true,
+    "sizes": [
+      100,
+      1000
+    ],
+    "onStates": [
+      true,
+      false
+    ],
+    "planningWarmup": 3,
+    "planningSamples": 6,
+    "renderFrames": 80,
+    "renderWarmup": 16,
+    "stage": [
+      3200,
+      1080
+    ],
+    "canvas": [
+      1600,
+      540
+    ],
+    "renderScale": 0.5,
+    "viewport": [
+      1280,
+      720
+    ],
+    "DPR": 1,
+    "cutStart": 1.25,
+    "cutDuration": 4,
+    "seed": 704,
+    "maxWallMs": 1800000,
+    "limits": {
+      "standard": {
+        "regions": 100,
+        "cuts": 100
+      },
+      "stress": {
+        "regions": 1000,
+        "cuts": 1000
+      },
+      "planningP95MaxBaselineFactor": 2,
+      "additionalRenderP95Ms": 3,
+      "environment": "same browser, local font, viewport and warmup; compare in 004/017",
+      "bufferBudget": "004/018 must measure lifetime and impose max buffers; no per-glyph stage buffer"
+    }
+  },
+  "sides": [
+    {
+      "n": 100,
+      "on": true,
+      "side": "baseline",
+      "planningP95Ms": 45.6000000089407,
+      "renderP95Ms": 2.5,
+      "normalizedInputSHA256": "f6eef273216bb998c7dc1174901381e54ff833a0cf2d2ed75e34c32ab4a82792"
+    },
+    {
+      "n": 100,
+      "on": true,
+      "side": "candidate",
+      "planningP95Ms": 133.90000000596046,
+      "renderP95Ms": 6.5999999940395355,
+      "normalizedInputSHA256": "f6eef273216bb998c7dc1174901381e54ff833a0cf2d2ed75e34c32ab4a82792"
+    },
+    {
+      "n": 100,
+      "on": false,
+      "side": "baseline",
+      "planningP95Ms": 49.599999994039536,
+      "renderP95Ms": 2.6000000089406967,
+      "normalizedInputSHA256": "11d008d2ca8b392f64da31c89706342ab989d1f05788ecfdd29dd64533b420c4"
+    },
+    {
+      "n": 100,
+      "on": false,
+      "side": "candidate",
+      "planningP95Ms": 93.6000000089407,
+      "renderP95Ms": 3.2999999970197678,
+      "normalizedInputSHA256": "11d008d2ca8b392f64da31c89706342ab989d1f05788ecfdd29dd64533b420c4"
+    },
+    {
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "planningP95Ms": 627,
+      "renderP95Ms": 3.0999999940395355,
+      "normalizedInputSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+    },
+    {
+      "n": 1000,
+      "on": true,
+      "side": "candidate",
+      "planningP95Ms": 919,
+      "renderP95Ms": 13.799999997019768,
+      "normalizedInputSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+    },
+    {
+      "n": 1000,
+      "on": false,
+      "side": "baseline",
+      "planningP95Ms": 389.79999999701977,
+      "renderP95Ms": 3.4000000059604645,
+      "normalizedInputSHA256": "d103dcc821f66e8a697912cd7a22d469ea05bc8f2565cb8ef67d8c2a5d0dc9e4"
+    },
+    {
+      "n": 1000,
+      "on": false,
+      "side": "candidate",
+      "planningP95Ms": 982.4000000059605,
+      "renderP95Ms": 4.5,
+      "normalizedInputSHA256": "d103dcc821f66e8a697912cd7a22d469ea05bc8f2565cb8ef67d8c2a5d0dc9e4"
+    }
+  ],
+  "comparisons": [
+    {
+      "n": 100,
+      "on": true,
+      "ratio": 2.936403508326907,
+      "additionalRenderP95Ms": 4.0999999940395355,
+      "met": false
+    },
+    {
+      "n": 100,
+      "on": false,
+      "ratio": 1.887096774600578,
+      "additionalRenderP95Ms": 0.699999988079071,
+      "met": true
+    },
+    {
+      "n": 1000,
+      "on": true,
+      "ratio": 1.4657097288676235,
+      "additionalRenderP95Ms": 10.700000002980232,
+      "met": false
+    },
+    {
+      "n": 1000,
+      "on": false,
+      "ratio": 2.5202668035235285,
+      "additionalRenderP95Ms": 1.0999999940395355,
+      "met": false
+    }
+  ],
+  "runnerInputArchives": 120,
+  "actualPackages": 173,
+  "products": 86,
+  "kernelEvidence": {
+    "pid": 406499,
+    "startTicks": "12241882",
+    "exit": 1,
+    "expectedContractAssertionOnly": true,
+    "reaped": true,
+    "gone": true,
+    "prePostLiveJobs": 0,
+    "awaitedClose": true,
+    "postSaveBytes": 474845184
+  },
+  "runtimeRevision": "230",
+  "actual1000ONRepairMemo": {
+    "repairMemoCompiles": 1,
+    "repairMemoFullReads": 1,
+    "repairMemoFastReads": 7,
+    "repairMemoFallbacks": 0,
+    "repairMemoCapped": 0,
+    "repairMemoRetired": 0,
+    "repairMemoSlots": 624983,
+    "repairMemoStringChars": 2697683,
+    "repairMemoRepairs": 27399,
+    "repairMemoMaxSlots": 1048576,
+    "repairMemoMaxStringChars": 8388608,
+    "repairMemoMaxRepairs": 65536
+  },
+  "decision": "Formal FAIL retained:100ON planning/render,1000ON render,1000OFF planning unmet. Reject stock JSON token allocation strategy for adoption and restore prior stock encoder, then target existing readCompletedPayload hotspot. All raw failures retained; no cross-run causal claim. Main unadopted/four human examples pending.",
+  "publicRequests": 0,
+  "parentImageViews": 0,
+  "at": "2026-10-23T08:16:20.160570+00:00"
+}
