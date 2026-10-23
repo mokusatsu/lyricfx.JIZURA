@@ -2,6 +2,7 @@
 
 - 状態: 実装中
 - 現在の確認段階: [代表4例の動作確認待ち](reviews/AVOID-009-selected-20261023-01.md)。全体完了ではない。
+- 最新回答: 扉は「入りきる場合は横長」を優先する修正版を準備。[新比較・確認点](reviews/AVOID-009-gate-landscape-20261023-01.md)。他3例の回答は未確認。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -162,3 +163,13 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 残件: 円筒は[cylinder-wip01](evidence/AVOID-009/cylinder-wip01/status.json)に独立実装・試験の未親受入packetを保存。flipCardsは未検証/未統合WIP capsuleに隔離。両者ともmain製品へ含めず、人間確認後に親レビューから再開する。他Dとcustomの実回避・正式性能は未完。009は実装中、010以降は未着手を維持する。
 
 製品・試験・記録はworkの`895bde9`へ保存しpush成功。[終了状態](evidence/AVOID-009/delivery-selected01.json)に10製品fileのGit/frozen一致、残存する性能WIP4fileと既存pycacheのhash保持、core軽量capsule153fileの親独立hash照合を記録した。無関係な未追跡ファイルは追加・削除していない。公開結果確認と親の画像閲覧は0。
+
+## 扉の横長優先（利用者フィードバック）
+
+「折り紙（扉）は入りきる場合は横長にして納めるほうが良好な演出に思える」を受領。下側への固定要求ではなく、空き領域に横長の紙面を収められるなら縦型の多行へ変更する前に優先する意図として実装へ返却。[開始記録](evidence/AVOID-009/gate-landscape-start01.json)。元の扉運動と文字の紙面付着、可読性、全区間包絡、明示サイズを維持する。blintzとOFFは変更対象外。指定モデル担当が別treeで修正し、親レビュー後に扉1例だけ新旧MP4比較を用意する。他3例をOKとみなさず、009実装中・010以降未着手を継続する。
+
+修正版は元構成の無変更配置を先頭に保持したうえで、横長（幅≥高さ×1.2）の元行構成/全文1行/7列をfont1→.6で評価し、最後に旧候補へフォールバック。代表は71.32→61.13pxの約14%縮小で全文1行の紙745.81×110.04pxを下へ配置。追加65%候補では完全包絡が不足することを実測し、余白やガードを緩和せず60%を採用した。明示サイズ・可読floorは維持。
+
+[親レビュー](evidence/AVOID-009/parent-gate-landscape01-review.json)で09nだけの差分、102pin、128証明/16,580実polygonを独立照合。前後51例safe33→36・低下0、元構成9例とactualblintz13例不変、OFF24RGBA hash一致。拡張32・保護8・明示サイズ2・alpha1 3時刻も通過。診断のcache誤再利用失敗を保持し、正式同条件seed704で再試験した。親の計算スクリプトはregion非activeのt=4と保護ケースのnull geometryを訂正し、製品やrawは変更しない。
+
+[統合receipt](evidence/AVOID-009/gate-landscape01/integration-receipt01.json)でmainの09nとJAENの該当moduleだけ置換し、逆置換で開始時bytes完全一致を確認。性能WIP09a/09lとpycacheは不変。Gitへは別treeのレビュー済みJAENを格納し、workingの性能WIPは保持する。扉1組のみ生成した60fps MP4は[parent mediaレビュー](evidence/AVOID-009/gate-landscape01/parent-media-review01.json)と[独立視覚](evidence/AVOID-009/gate-landscape01/independent-visual01.md)で限定受入。[新しい動作確認](reviews/AVOID-009-gate-landscape-20261023-01.md)を用意し、人間の回答は未回答。

@@ -1,0 +1,463 @@
+{
+  "task": "AVOID-009",
+  "build": "gate-landscape-20261023-01",
+  "scope": "One gate composition preference revision; previous avoidance prototype versus landscape-priority prototype. No whole-D/full-task/performance acceptance.",
+  "sourceManifestSHA256": "23da3761170208a16031cc10acc4551fef4aebbf24d8abdcd18bc96bef27728e",
+  "sourceSnapshot": "/tmp/avoid009-gate-wide01",
+  "baselineSourceSnapshot": "/tmp/avoid009-selected-preview02",
+  "baselineSourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+  "baselinePackageManifestSHA256": "c4973ad872a264217a5e71c52eb17636c752b4d9dd1ccc6191f297e76aebef1a",
+  "publicChecks": 0,
+  "parentMediaViews": 0,
+  "creatorVisualInspection": false,
+  "conditions": {
+    "id": "d09-origami-gate-paper",
+    "layout": "origami",
+    "W": 960,
+    "H": 540,
+    "text": "ひらく紙に言葉を残して",
+    "params": {
+      "mode": "gate",
+      "order": 2
+    },
+    "fontMode": "single",
+    "look": "開閉する紙と長い文字が一緒に動き、紙面の記入域に収まるか。",
+    "cx": 0.5,
+    "cy": 0.42,
+    "radius": 0.2,
+    "seed": 704,
+    "renderFPS": 60
+  },
+  "capture": {
+    "fps": 60,
+    "frames": 240,
+    "duration": 4,
+    "scale": 1,
+    "clock": "n/60, n0..239; plan.fps60 before D finalization, fx.koma0; native Canvas, no HUD/post/interpolation",
+    "stillFrames": [
+      15,
+      90,
+      228
+    ],
+    "DPR": 1,
+    "viewport": [
+      1280,
+      1000
+    ]
+  },
+  "font": {
+    "file": "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+    "family": "Avoid006Fixture",
+    "actualSourceFontKey": "mincho_light"
+  },
+  "fixture": {
+    "file": "dev/avoidance/layouts-a-fixture.js",
+    "sha256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+  },
+  "assets": {
+    "capture.cjs": {
+      "bytes": 11380,
+      "sha256": "793c1a6c2cbc79882b3f945ccef943a9d56fc7e304edcfb2310323845f6b5b1f"
+    },
+    "source-manifest.json": {
+      "bytes": 16929,
+      "sha256": "23da3761170208a16031cc10acc4551fef4aebbf24d8abdcd18bc96bef27728e"
+    },
+    "videos/before.mp4": {
+      "bytes": 139346,
+      "sha256": "5ef0c92d9f708b61b80926965a819257b5891354430e684d0300203ccf42c15a"
+    },
+    "before-inputs.json.gz": {
+      "bytes": 4829,
+      "sha256": "d1c2b25a6c622a584ad7a459adecb529cbe499bacfc964787b975bc5865bd2e9"
+    },
+    "before-frames.json.gz": {
+      "bytes": 305521,
+      "sha256": "6e6c0472eac8fc9446d2c781f56e8a33f0bb08feb486c5701c84bcf79b1e9ed1"
+    },
+    "images/before-15.png": {
+      "bytes": 353041,
+      "sha256": "9faafccfa1fb3e048608f90a6ff088cb9c52dc413e2d7639c4239b8d17395329"
+    },
+    "images/before-90.png": {
+      "bytes": 369359,
+      "sha256": "23099dea9a16568afec929bbc6b3ab481211d604e978d06e863656ba7832fe44"
+    },
+    "images/before-228.png": {
+      "bytes": 366765,
+      "sha256": "8a9b7abf5e27c3eb2a4a54a284aae1fb1d4ee08f5fb9d4400e7a80c19024d90e"
+    },
+    "after-inputs.json.gz": {
+      "bytes": 6282,
+      "sha256": "393d71f13e05b04925d1ab32fe026679eff69f2aae2967d6354b4ceeaa97060a"
+    },
+    "preflight.json": {
+      "bytes": 1103,
+      "sha256": "f330a0211406c6f9ee5c5fa29eb3f92db0fd1e54ecb7763d5f5cde207977cdf1"
+    },
+    "images/after-15.png": {
+      "bytes": 369483,
+      "sha256": "d9cfffcabf2411e96396c67480a898ce9ee4aa7a1ea06a6f3d5e1e22b7cc24fd"
+    },
+    "images/after-90.png": {
+      "bytes": 381634,
+      "sha256": "bbbf7eb2c5b8f1ef1b706ff87c694275cdcac7605f3c873fe7502132206de0e2"
+    },
+    "images/after-228.png": {
+      "bytes": 379304,
+      "sha256": "9ddeb7d1f7d3b497a74fd8f4f432c77021de5e4f3f41db810fafaec0ae9bf06a"
+    },
+    "videos/after.mp4": {
+      "bytes": 127183,
+      "sha256": "3d37f0ad622ecf03a3ce963deb848a0850e57f90d75165285a3deb34227cbed9"
+    },
+    "after-frames.json.gz": {
+      "bytes": 290486,
+      "sha256": "3cd3e3c0e1e254fb64e233a3b4b97460090ee3b3a46bdb314cc8326ccec66c4d"
+    },
+    "index.html": {
+      "bytes": 4633,
+      "sha256": "e37f8189c7f5427c4f865d70cfa0d9034f086cb7e02aa39a001aac7819c4e90e"
+    }
+  },
+  "sides": {
+    "before": {
+      "label": "変更前（前回の回避試作）",
+      "video": "videos/before.mp4",
+      "actualInputs": "before-inputs.json.gz",
+      "frameReceipt": "before-frames.json.gz",
+      "keys": [
+        {
+          "file": "images/before-15.png",
+          "frame": 15,
+          "time": 0.25,
+          "width": 960,
+          "height": 540
+        },
+        {
+          "file": "images/before-90.png",
+          "frame": 90,
+          "time": 1.5,
+          "width": 960,
+          "height": 540
+        },
+        {
+          "file": "images/before-228.png",
+          "frame": 228,
+          "time": 3.8,
+          "width": 960,
+          "height": 540
+        }
+      ],
+      "sourceSnapshot": "/tmp/avoid009-selected-preview02",
+      "sourceManifestSHA256": "671807b5ef21be39be6485575156e39fd4d1595c2f611ace7f5efeea6b6b6276",
+      "carriedExactBytes": true,
+      "originalVideoSHA256": "5ef0c92d9f708b61b80926965a819257b5891354430e684d0300203ccf42c15a",
+      "originalVideoBytes": 139346,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 540,
+            "coded_width": 960,
+            "coded_height": 540,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 32,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 61440,
+            "duration": "4.000000",
+            "bit_rate": "271416",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "240",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/tmp/avoid009-selected-media02/review03/videos/d09-origami-gate-paper-after.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "139346",
+          "bit_rate": "278692",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "reference": "Initial D-introduction baseline is separate reference, not the before of this revision."
+    },
+    "after": {
+      "label": "変更後（横長を優先する試作）",
+      "video": "videos/after.mp4",
+      "actualInputs": "after-inputs.json.gz",
+      "frameReceipt": "after-frames.json.gz",
+      "keys": [
+        {
+          "file": "images/after-15.png",
+          "frame": 15,
+          "time": 0.25,
+          "width": 960,
+          "height": 540
+        },
+        {
+          "file": "images/after-90.png",
+          "frame": 90,
+          "time": 1.5,
+          "width": 960,
+          "height": 540
+        },
+        {
+          "file": "images/after-228.png",
+          "frame": 228,
+          "time": 3.8,
+          "width": 960,
+          "height": 540
+        }
+      ],
+      "sourceSnapshot": "/tmp/avoid009-gate-wide01",
+      "sourceManifestSHA256": "23da3761170208a16031cc10acc4551fef4aebbf24d8abdcd18bc96bef27728e",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 540,
+            "coded_width": 960,
+            "coded_height": 540,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 32,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 61440,
+            "duration": "4.000000",
+            "bit_rate": "247066",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "240",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/tmp/avoid009-gate-landscape-20261023-01/review/videos/after.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "127183",
+          "bit_rate": "254366",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "encoderArgs": [
+        "-y",
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "png",
+        "-framerate",
+        "60",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-threads",
+        "2",
+        "-preset",
+        "medium",
+        "-crf",
+        "17",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart"
+      ],
+      "distinctEncoderInputPNGs": 240,
+      "movingWindow": {
+        "range": [
+          0.5,
+          3
+        ],
+        "frames": 150,
+        "distinct": 150
+      }
+    }
+  },
+  "startedAt": "2026-10-23T14:00:17.376Z",
+  "browser": "154.0.8037.57",
+  "node": "v24.19.0",
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "preflight": {
+    "safe": true,
+    "sourceInputsMatchPrevious": true,
+    "fontLoaded": true,
+    "fps": 60,
+    "koma": 0,
+    "actualSourceParams": {
+      "font": "mincho_light",
+      "mode": "gate",
+      "col": "accent",
+      "order": 2
+    },
+    "geometry": {
+      "kind": "origami",
+      "mode": "gate",
+      "text": "ひらく紙に言葉を残して",
+      "size": 61.132075471698116,
+      "writing": [
+        696.9050447284052,
+        61.132075471698116
+      ],
+      "sw": 745.8107051057636,
+      "sh": 110.03773584905662,
+      "shadow": [
+        6.48,
+        9.719999999999999
+      ]
+    },
+    "chosenSegments": [
+      [
+        {
+          "start": 0,
+          "end": 4,
+          "from": [
+            0,
+            159.7397981132075
+          ],
+          "composition": {
+            "strategy": "gate-landscape-writing-joint-placement",
+            "sheetWriting": true,
+            "baseSize": 101.88679245283019,
+            "fontScale": 0.6,
+            "columns": 11,
+            "gateLandscape": true
+          }
+        }
+      ]
+    ],
+    "scope": "Geometry ratio/strategy is recorded for parent acceptance; source-size/native-first candidates remain legitimate."
+  },
+  "pageErrors": [],
+  "completedAt": "2026-10-23T14:00:26.599Z",
+  "status": "Local native frames/guards/source pins/MP4 metadata passed; independent visual review pending",
+  "totalAssetBytes": 3127278,
+  "viewer": {
+    "language": "ja",
+    "circleGuideDefaultOn": true,
+    "externalHTMLGuide": true,
+    "nativeControls": true,
+    "autoplay": false,
+    "perPairRestartPlay": true,
+    "historicalDIntroductionReference": "../selected-20261023-01/#d09-origami-gate-paper",
+    "generatorSHA256": "9903180acbef285a9eea08b697509250049607bf270eeed4d233d24e62fecd1f"
+  }
+}
