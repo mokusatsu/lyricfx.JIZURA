@@ -1,0 +1,38 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-23T05:48:24.107827+00:00",
+  "preparationSource": "b6d37a2",
+  "runtimeAdjustmentSource": "715f316bdd86d2cd5693bfe19b15abcedcdf6808",
+  "helperSHA256": "8e5ecf4f9e1a09ce243809d8feae178535e0aa121f2ee22e32a09288552b0047",
+  "imports": [
+    {
+      "path": "tasks/evidence/AVOID-008/performance/native-local-bounds-memo-browser-preparation01/HANDOFF.md",
+      "sha256": "e7929250acb95ffd7fc39fa5d0c0dbd1fd25f54bf366b3402e80b24c28d5a805",
+      "bytes": 3370
+    },
+    {
+      "path": "tasks/evidence/AVOID-008/performance/native-local-bounds-memo-browser-preparation01/helper.patch",
+      "sha256": "e6965119e1118c0d92487e10e29449ccffb0ca888629e26951b89dbf31f93bda",
+      "bytes": 32846
+    },
+    {
+      "path": "tasks/evidence/AVOID-008/performance/native-local-bounds-memo-browser-preparation01/manifest01.json",
+      "sha256": "82eb0223369d65150a3224438fb72c5917bc35bfbf65879cbf8f6f43d3071932",
+      "bytes": 15100
+    },
+    {
+      "path": "tasks/evidence/AVOID-008/performance/native-local-bounds-memo-browser-preparation01/preparation-checks.json",
+      "sha256": "e629fc6bbbdb59e32a1fd3463a2f47fda8f549a9af982ce0656d7504845bd4c3",
+      "bytes": 380
+    },
+    {
+      "path": "tasks/evidence/AVOID-008/performance/native-local-bounds-memo-browser-preparation01/stage-paths.txt",
+      "sha256": "de2ccc000954673d79c4c6793329751500c1c75662cc78c33a543372957143ef",
+      "bytes": 709
+    }
+  ],
+  "review": "Read full helper diff. Independently reversed preparation patch exactly to accepted b818 driver, verified original render body, graph/program capture and40+2 fixture selection byte exact. Only exact13 new numeric memo fields at five cache stat locations are projected; all legacy fields remain. New diagnostic target render deltas are explicitly separate and full candidate values retained. Verified runtime adjustment is only1spec and3runtime path literals. Actual runtime API228/228,current true,connected/running; old224 remains historical. All173 actual package hashes independently checked. Parent gate86 product pins authorizes only one local paired run, no timing or retry.",
+  "additionalSecurityReview": "not performed per user instruction",
+  "publicRequests": 0,
+  "parentImageViews": 0
+}

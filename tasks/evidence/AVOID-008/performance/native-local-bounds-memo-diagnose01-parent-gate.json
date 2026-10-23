@@ -1,0 +1,61 @@
+{
+  "authorizedByParent": true,
+  "authorizedAt": "2026-10-23T05:53:00.578116+00:00",
+  "authorizedMode": "--diagnose100",
+  "formal1000Authorized": false,
+  "candidateSource": "98486720b67bec18571e229301c897b20d3e5188",
+  "candidateSHA256": "21bfb1f628ff880932e2f7ca51c22cfdfaa014e75d04840e0922b53f67776b76",
+  "baselineCommit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+  "runnerSHA256": "6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756",
+  "fixtureSHA256": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+  "normalizedCorpusSHA256": "4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc",
+  "preloadSHA256": "6d6cbcb3bc9c54829b423eac4440444e903238622151364827189647a3775f5a",
+  "expectedSpecRevision": "228",
+  "runtimeIdentityFile": "tasks/evidence/AVOID-008/performance/native-local-bounds-runtime02.json",
+  "correctnessEvidenceCommit": "5046340c5f72986e488d0d4f22d6824f190e5a38",
+  "correctnessRawSHA256": "bedada51e1a2d6015640ef19fb886195d4e5add4df4966bcd331ec0f46e74c34",
+  "correctnessParentReviewSHA256": "a1e08c19952c581b6dfd7e34a54c8723d802b0a977b2868029396c58a7e53b4c",
+  "publicChecks": false,
+  "conditions": "ONE original100 ON/OFF baseline+candidate four sides,3warm+1planning point,80render/16warm,3200x1080 stage/.5 canvas/DPR1. Unchanged runner/fixture/corpus/counts/fonts/2x and+3ms limits. No profiles/CDP/1000/retry/source edits/images/public checks. Retain all prior failures. Run only after every other owner is idle; direct exec PID/startTicks and full prestart stdoutstderr capture; 250MiB/300s/loopback only/owned close.",
+  "exclusiveLease": {
+    "owner": "/root/avoid008_continue_impl",
+    "scope": "Whole invocation through awaited browser/server cleanup and OS waitpid",
+    "parentCommitment": "All other agents remain idle; parent runs no browser/ffmpeg/test/perf/profile during invocation",
+    "limitations": "Original runner during scan misses MainThread/profile-only; preload scans before/after; exclusive operational lease covers whole interval, not a claim of mechanical continuous process detection."
+  },
+  "executionPermission": {
+    "sandbox_permissions": "with_additional_permissions",
+    "additional_permissions": {
+      "network": {
+        "enabled": true
+      }
+    }
+  },
+  "output": "tasks/evidence/AVOID-008/performance/native-local-bounds-memo-diagnose01",
+  "runtimeRecheck": {
+    "capturedUTC": "2026-10-23T05:52:59.817Z",
+    "environment": {
+      "environment_id": "ccarenv_b64_Y2NhcmVudl9iNTNiMjlkNmNlYzA4MTkxYTdlYmM4MDA2N2YwNDczYw",
+      "source_config_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfg_6ad48aa510ac8193888ec17160277acd",
+      "source_config_version_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfgver_6ad4cb133f2081938362cf953cd01341",
+      "spec_revision": "228",
+      "observed_spec_revision": "228",
+      "observations_current": true,
+      "provider": "cloud",
+      "desired_phase": "running",
+      "observed_phase": "running",
+      "failure": null,
+      "connectivity": "connected",
+      "network_policy": {
+        "mode": "unrestricted",
+        "state": "enforced"
+      },
+      "capabilities": [],
+      "secrets": [],
+      "runtime_variables": [],
+      "outbound_identities": [],
+      "network_diagnostics": null
+    }
+  },
+  "scope": "ONE unchanged original100 ON/OFF diagnostic of exact first local hull bounds memo. Normal paired42/144frames accepted; postwrite reserve exception recorded and recovered before this run. Full-run exclusive lease. No security audit/public requests/CDP/retry/1000/threshold/pipeline change."
+}
