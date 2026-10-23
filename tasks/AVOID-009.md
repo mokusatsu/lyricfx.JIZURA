@@ -213,3 +213,5 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 最終matrix288＋extended96条件はsafe152/空間不足232。親は567証明polygon・961文字付着polygon・22,190実描画polygonを独立照合し、さらに半回転境界324記録の3,030primary polygonも円余白/stage/所有包絡へ照合した。一般singular affineの拒否は維持し、near-singular文字45eventが残ることも確認。OFF64原画SHA＋D zerooffset168描画SHA一致、control8/明示サイズ4、alpha1サンプルの衝突0。通常Canvas読み取り性能hint8件は保持しエラー扱いと混同しない。非flipの既存memo/cache回帰2本もexit0で、親は全JSON同値/alias/freeze/detach・6失効をraw照合した。formal性能の新主張はしない。
 
 [統合receipt](evidence/AVOID-009/flipcards-final03/integration-receipt01.json)で固定source/日英HTMLを完全一致で転送し、対象外source/既存pycache89ファイルを保持。完全raw4本・開始snapshot・runner・元失敗等は21MBの固定capsuleに保存した。アニメ原寸MP4は代表1例だけ生成して独立solの視覚確認へ回す。人間の動作確認は必要、回答は今回の8時間集約へ未回答のまま保存し、同009の独立した蛇腹adapterを続ける。009全体は未完。
+
+カード代表1例のSites公開操作はsucceededを返した。[比較と未回答の確認点](reviews/AVOID-009-flipcards-selected-20261024-01.md)と[操作戻り値](evidence/AVOID-009/flipcards-media03/publication.json)を保存。利用者指示どおり公開結果確認・デプロイpolling・公開動画再生は行っていない。独立solは16静止コマで形/付着を限定受入し、裏カード/星の覗きの一部重なりを人間の判断へ残した。10月24日03:00日本時間の再開トリガーを追加予約し、08:01ごろの確認まとめも維持。
