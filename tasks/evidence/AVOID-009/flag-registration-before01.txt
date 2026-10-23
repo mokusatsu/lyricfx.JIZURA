@@ -1,0 +1,97 @@
+reg('flag', {
+  name: 'はためく旗', tags: ['emotional', 'pop', 'graphic'], w: 0.8, treat: 'safe', ae: 'wave', fits: n => n >= 1 && n <= 16,
+  enterBias: { cut: 1.6, blur: 1.2, pop: 0.6, slice: 0.3, wipe: 0.6 },
+  plan(rng, cut, st) {
+    return {
+      font: rng.pick(fontsOf(st, ['display', 'serif'])), mode: rng.pick(['unfurl', 'unfurl', 'raise']), cloth: rng.pick(['accent', 'ink', 'accent']), trim: rng.pick(['none', 'bands', 'edge']),
+      tail: rng.pick(['rect', 'rect', 'swallow']), wind: rng.range(0.7, 1.15), side: rng.pick([1, 1, -1]),
+    };
+  },
+  render(env) {
+    const { W, H, sc } = env, cut = env.cut, Pm = cut.params, u = U(env), lt = env.lt;
+    const port = isPort(env);
+    const side = Pm.side || 1;
+    const t0 = flat(cut.text), n = J.glyphCount(t0);
+    const text = brk(t0, port ? 5 : n <= 5 ? 5 : Math.max(4, Math.ceil(n / 2)));
+    const Wf = W * (port ? 0.78 : 0.62), Hf = Math.min(H * (port ? 0.34 : 0.52), Wf * 0.64);
+    const poleX = side > 0 ? W / 2 - Wf / 2 - W * 0.03 : W / 2 + Wf / 2 + W * 0.03;
+    const out = tout(env);
+    const mot = env.fx.motion ?? 0.7;
+    const unf = Pm.mode === 'unfurl' ? E.outCubic(J.clamp((lt - 0.05) / 0.75)) : 1;
+    const raise = Pm.mode === 'raise' ? E.outCubic(J.clamp(lt / 0.8)) : 1;
+    const lower = Pm.mode === 'raise' ? E.inCubic(env.pOut) : 0;
+    const furl = Pm.mode === 'unfurl' ? E.inCubic(env.pOut) : 0;
+    const y0 = H / 2 - Hf / 2 - H * 0.03 + (1 - raise) * H * 0.55 + lower * H * 0.6;
+    const ext = Math.max(0.001, unf * (1 - furl));
+    const A = Hf * 0.1 * Pm.wind * (0.5 + 0.7 * mot) * (1 + (1 - unf) * 1.2), D = Wf * 1.3;
+    const w = 2.1, om = 3.2 * Pm.wind;
+    const tb = env.ltb;
+    const zf = x => A * Math.pow(x, 0.85) * Math.sin(J.TAU * w * x * 0.5 - om * tb) + A * 0.35 * x * Math.sin(J.TAU * 1.3 * x - om * 0.7 * tb + 1.3);
+    const N = 30;
+    const col = plateCol(sc, Pm.cloth === 'ink' ? [sc.ink, sc.accent] : [sc.accent, sc.ink]);
+    const tc = onCol(sc, col);
+    const trimC = J.contrast(sc.fg, col) > 1.5 ? (col === sc.accent ? onCol(sc, col) : sc.accent) : sc.accent;
+    // sample the cloth
+    const S = [];
+    let xAcc = 0;
+    for (let i = 0; i <= N; i++) {
+      const uu = i / N * ext;
+      const z = zf(uu), dz = (zf(uu + 0.01) - zf(uu - 0.01)) / 0.02 / Wf;
+      if (i > 0) xAcc += (Wf * ext / N) / Math.sqrt(1 + dz * dz);
+      const hs = 1 + z / D;
+      const droop = uu * uu * Hf * 0.05 - z * 0.12;
+      const x = poleX + side * xAcc;
+      S.push({ u: uu, x, top: y0 + droop - (hs - 1) * Hf / 2, bot: y0 + droop + Hf * hs - (hs - 1) * Hf / 2, sl: dz, hs });
+    }
+    // pole
+    const pa = tin(env, 0, 0.3, E.outCubic) * (Pm.mode === 'raise' ? 1 - E.inCubic(J.clamp((env.pOut - 0.5) / 0.5)) : out);
+    const pw = Math.max(3, u * 0.011), ptop = H / 2 - Hf / 2 - H * 0.03 - Hf * 0.3;
+    env.rect(poleX - pw / 2, ptop, pw, H * 1.2, sc.sub, pa, false);
+    env.circle(poleX, ptop, pw * 1.5, sc.accent, null, 0, pa, false);
+    if (unf * out <= 0.001 || y0 > H * 1.2) return null;
+    // cloth: one silhouette (with a swallowtail notch), trims and fold shading clipped inside it
+    const sw = Pm.tail === 'swallow';
+    const at0 = uu => { const f = J.clamp(uu / ext) * N, i = Math.min(N - 1, Math.floor(f)), t = f - i, a = S[i], b = S[i + 1]; return { x: J.lerp(a.x, b.x, t), top: J.lerp(a.top, b.top, t), bot: J.lerp(a.bot, b.bot, t) }; };
+    const sil = S.map(q => [q.x, q.top]);
+    if (sw) { const q = at0(ext * 0.86); sil.push([q.x, (q.top + q.bot) / 2]); }
+    for (let i = N; i >= 0; i--) sil.push([S[i].x, S[i].bot]);
+    env.poly(sil, col, out, false);
+    if (env.pass === 'main') {
+      const ctx = env.ctx;
+      ctx.save(); ctx.beginPath(); sil.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.closePath(); ctx.clip();
+      const band = (v0, v1, c, a) => { const pts = S.map(q => [q.x, J.lerp(q.top, q.bot, v0)]); for (let i = N; i >= 0; i--) pts.push([S[i].x, J.lerp(S[i].top, S[i].bot, v1)]); env.poly(pts, c, a, false); };
+      if (Pm.trim === 'bands') { band(0.08, 0.15, trimC, out); band(0.85, 0.92, trimC, out); }
+      if (Pm.trim === 'edge') { const a = S[0], b = S[Math.min(N, 3)]; env.poly([[a.x - side * 2, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x - side * 2, a.bot + 4]], trimC, out, false); }
+      for (let i = 0; i < N; i++) {
+        const a = S[i], b = S[i + 1], v = J.clamp(-(a.sl + b.sl) / 2 * side * 0.9, -0.4, 0.2);
+        if (Math.abs(v) < 0.02) continue;
+        env.poly([[a.x, a.top - 4], [b.x, b.top - 4], [b.x, b.bot + 4], [a.x, a.bot + 4]], v < 0 ? darkOf(sc) : lightOf(sc), Math.abs(v) * 0.8 * out, false);
+      }
+      ctx.restore();
+    }
+    // rope rings
+    env.circle(poleX + side * pw * 0.2, S[0].top + Hf * 0.04, pw * 0.9, null, sc.sub, Math.max(1, pw * 0.3), out, false);
+    env.circle(poleX + side * pw * 0.2, S[0].bot - Hf * 0.04, pw * 0.9, null, sc.sub, Math.max(1, pw * 0.3), out, false);
+    // lyric printed on the cloth: glyph centres in flag-local (u, v)
+    const o = { track: 0.04, lead: 1.15 };
+    const size = Math.min(J.fitSize(text, Pm.font, Wf * (Pm.tail === 'swallow' ? 0.66 : 0.78), Hf * (Pm.trim === 'bands' ? 0.58 : 0.68), o), Hf * 0.42);
+    const lay = J.layoutText({ text, font: Pm.font, size, track: o.track, lead: o.lead });
+    const uC = (Pm.tail === 'swallow' ? 0.46 : 0.52) + (Pm.trim === 'edge' ? 0.03 : 0);
+    let bb = null;
+    const at = uu => { const f = J.clamp(uu / ext) * N, i = Math.min(N - 1, Math.floor(f)), t = f - i, a = S[i], b = S[i + 1]; return { x: J.lerp(a.x, b.x, t), top: J.lerp(a.top, b.top, t), bot: J.lerp(a.bot, b.bot, t), sl: J.lerp(a.sl, b.sl, t), hs: J.lerp(a.hs, b.hs, t) }; };
+    for (const g of lay) {
+      if (g.ch === ' ' || g.ch === '　') continue;
+      const uu = uC + side * g.x / Wf;
+      if (uu > ext) continue;
+      const q = at(uu);
+      const v = 0.5 + g.y / Hf;
+      const y = J.lerp(q.top, q.bot, v);
+      const cs = 1 / Math.sqrt(1 + q.sl * q.sl);
+      const slope = ((at(uu + 0.01).top + at(uu + 0.01).bot) - (at(uu - 0.01).top + at(uu - 0.01).bot)) / 2 / (Math.abs(at(uu + 0.01).x - at(uu - 0.01).x) + 1e-3);
+      const m = [cs, slope * cs * side, 0, q.hs, q.x, y];
+      bb = UB(bb, drawAff(env, { text: g.ch, font: Pm.font, size, x: 0, y: 0, color: tc, noHold: plateHold(env), mi: miAt(env, 0.1 + uu * 0.6) }, m));
+    }
+    return bb || box(Math.min(S[0].x, S[N].x), S[0].top, Math.max(S[0].x, S[N].x), S[0].bot);
+  },
+});
+
