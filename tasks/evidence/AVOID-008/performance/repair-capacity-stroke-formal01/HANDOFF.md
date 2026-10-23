@@ -1,0 +1,9 @@
+# Combined capacity/stroke original formal100/1000
+
+ONE authorized original--formal run, product87dbf3248f15ec5e75681615f55fc22c2f011799.8sides baseline/candidate ON/OFF100/1000,3warm+6samples,80render16warm, original2x/+3ms and1800000ms unchanged. OverallFAIL retained.100ON1.614285714x/+2.3ms;100OFF1.500927643x/+0.8ms;1000ON2.271727749x/+4.1ms FAIL both thresholds;1000OFF1.415775068x/−0.8ms. Functional counts/fullcoverage/actualpipeline/fontqualification/inputparity true; render errors0. No acceptance/performance-causality claim from comparison to older runs.
+
+Current actual1000ON memo now compiles1/full1/fast7/capped0/fallback0, with27399operations/624983chargedslots/2697683stringchars. These current measured counts supersede historical old-fixture counts only for current applicability, not historical provenance. Current100ON full1/fast7/capped0. OFF full1/fast7 with0repairs. Raw retains every planning source/normalization/finalization sample, cache snapshot, render frame/hash/observation and error.
+
+Raw results.json.gz SHA256606db9efcec96b64ca506495af6be819adb68c34aa561727ce0dcf32a78b1ea2. Actual node399284/startTicks11979603, parentPython and kernel wait receipt retained; kernel1 is original final contract assertion, reapedtrue/gonetrue. Unchanged original runner finally awaits browser and server close; postscan reached with livejobs0 before/after. Wrapper post-save562253824B, support/resource samples and post-storage disk retained above250MiB. Zombies recorded separately.
+
+Only identical compressed and decoded input snapshots are hardlinked post-run to accepted paired-browser references, with original/afterSHA receipts; raw/pins unchanged. Full gate/runtime/preload/support/inputs/execution/stdout retained. No retry/sourceedit/newCDP/security/public/images. Original thresholds and prior formalFAIL remain. Stop for parent raw review and next source direction.

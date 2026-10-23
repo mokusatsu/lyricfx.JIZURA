@@ -1,0 +1,7 @@
+# Lazy stroke guard points
+
+Only09a changes. NativeC34, non-validation local bounds now constructs stroke guardedPoints inside the existing miss compute callback. Hit avoids that discarded array; fill still uses original bPoints. NonC and validation keep the old eager guardedPoints expression and old bounds expression. Finite stroke validation, local hull arithmetic/order/values, world rectangle/AA hull, native commands, record/replay, observations unchanged. No new cache/API/counter. No measured stroke-hit count or speed claim.
+
+Existing normal mockCanvas46 cases pass against the original fixed pre-localbounds source and against immediate previous ea49a6a09a; complete V8 program/aliases/native call trace/matrix reads exact. Direct private localbounds normal stress/caps and actual09g clear bridge pass. The immediate-before oracle run uses unchanged helper except its single immutable old09a SHA literal; old source comes from git ea49a6a, no archive duplication. Reproduce by writing git-show ea49a6a:src/09a_placement.js to /tmp/oracle/before-09a_placement.js and replacing only ba667de... oracle SHA in a /tmp copy of dev/avoidance/layouts-c-native-local-bounds-memo-pure.cjs with25ecebc4e90818aa66c91b2cad0aa6dc6888d0723048c004f597279a98346651, then run Node max-old-space-size384 on that copy and directory.
+
+Build passes; isolated reverse build matches prior JAEN, all83 other sources exact. Browser/performance/CDP not run. Prior formal FAIL including100ON planning/render remains. Parent reviews both source commits before combined browser preparation.
