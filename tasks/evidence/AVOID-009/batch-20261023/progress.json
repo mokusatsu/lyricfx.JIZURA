@@ -1,0 +1,60 @@
+{
+  "request": "OKです。今から寝るので8時間後にまとめて確認するくらいにして",
+  "acceptedComparison": "cylinder-reflow-20261023-01",
+  "baselineHEAD": "291a9a408b061b657a80c9697bec4459cb353a18",
+  "summaryScheduled": true,
+  "summaryScheduledForUTC": "2026-10-23T23:01:09Z",
+  "notificationPolicy": "Batch human motion questions; store unanswered versions, continue independent AVOID-009 parts. No assumed human approval.",
+  "implementationModel": "gpt-6.1-sol",
+  "reasoningEffort": "medium",
+  "visualReviewModel": "gpt-6.1-sol / medium, fresh context",
+  "activeWork": [
+    {
+      "owner": "avoid009_origami_impl",
+      "scope": "flipCards source projection and adapter",
+      "state": "Guard-preserving candidate implemented; focused and matrix local tests running in isolated tree"
+    }
+  ],
+  "humanReviewQueue": [],
+  "completedDuringBatch": [
+    {
+      "scope": "Fisheye proof memoization performance gate",
+      "status": "Parent accepted; commit pending",
+      "evidence": "tasks/evidence/AVOID-009/performance/formal03/parent-review.json",
+      "planning1000Factor": 1.327722063029266,
+      "render1000DeltaMs": 1.699999999254942,
+      "cold1000Ms": 2711.9999999981374,
+      "humanReviewRequired": false
+    }
+  ],
+  "knownFailures": [
+    "Historical formalperformance01/02 FAIL retained; formal03 warm performance PASS. Cold1000 total2712ms remains costly; no cold latency/fullD34 capability claim.",
+    "Core regression prior before/after each8PASS/3FAIL; failures retained",
+    "AVOID-013 initial cut expected0 actual1 blocks savebody; no saving pass"
+  ],
+  "publicResultChecks": "Permanently prohibited, including scheduled tasks and delegation",
+  "publishPolicy": "Only selected necessary human cases; publication operation returns allowed; no public result check",
+  "taskState": "AVOID-009実装中;010以降未着手",
+  "worktreePreservation": [
+    {
+      "path": "src/09a_placement.js",
+      "sha256": "c849565bf47a0100e66c3cf266419729f16d8b93d5b1319ac5bbc16177d68f75"
+    },
+    {
+      "path": "src/09l_layoutsD_fisheye.js",
+      "sha256": "0eccb7d52162fc44780d4fb2f6063afaeda299f35094f0af575109d86a241fb5"
+    },
+    {
+      "path": "index.html",
+      "sha256": "80c8e20a10705bb2ebe4bc737ce81777e07890da97c6d66fc6846118b9c6cf6d"
+    },
+    {
+      "path": "en/index.html",
+      "sha256": "0e9df9e5e9b69f7f14ac58a04e132f81dda9910f07a15c3c8619687b6c96e28f"
+    },
+    {
+      "path": "app/__pycache__/english.cpython-312.pyc",
+      "sha256": "7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898"
+    }
+  ]
+}

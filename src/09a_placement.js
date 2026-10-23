@@ -373,7 +373,7 @@ J.finalizePlacementPlan = (input,options={}) => {
   const plan=jsonClone(input);delete plan.placementFinalization;
   if(lineage.originalCuts)plan.cuts=jsonClone(lineage.originalCuts);
   const originalCuts=jsonClone(plan.cuts);
-  const diagnostics=[],stepDur=J.stepDur(plan.fx,plan.fps),maxSupportedTransDur=.6,maxStep=1;
+  const diagnostics=[],stepDur=J.stepDur(plan.fx,plan.fps),maxSupportedTransDur=.6,maxStep=1,dProofMemo=options.layoutsD===true&&options.layoutsDProofMemo!==false?A.createLayoutsDFisheyeProofMemo?.():null;
   if(options.layoutsD===true&&plan.lyricAvoidanceIndex?.enabled===true&&plan.lyricAvoidanceIndex.regions.length)diagnostics.push(...(A.customGlobalEventCapabilities?.(plan)||[]));
   // All frame passes share the effectCut's style/FX/clock. Reject mixed unsupported state once.
   const unsupportedPlanFX=!(Number.isFinite(stepDur)&&stepDur>0&&stepDur<=maxStep)||plan.cuts.some(c=>c.effectStyle||c.effectFx||c.trans&&c.trans!=='none'&&(c.trans!=='wipe'||!Number.isFinite(c.transDur??.35)||(c.transDur??.35)<0||(c.transDur??.35)>maxSupportedTransDur))||(plan.events||[]).some(e=>!['chroma','shake'].includes(e.type))||plan.style?.glow!==0;
@@ -396,7 +396,7 @@ J.finalizePlacementPlan = (input,options={}) => {
     // These two foundation adapters have no geometry-dependent random fields. Preserve the chosen look.
     cut.params={...fresh,...cut.params};
     Object.assign(cut.params,options.params?.[cut.index]||{});
-    if(options.layoutsD===true&&A.layoutsD34?.includes(cut.layout)){A.finalizeLayoutsD(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize:lineage.explicitSizes?.includes(cut.index)||cut.lyricSize!=null});continue;}
+    if(options.layoutsD===true&&A.layoutsD34?.includes(cut.layout)){A.finalizeLayoutsD(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize:lineage.explicitSizes?.includes(cut.index)||cut.lyricSize!=null,...(cut.layout==='fisheye'?{proofMemo:dProofMemo}:{})});continue;}
     if(options.layoutsC===true&&A.layoutsC34?.includes(cut.layout)){A.finalizeLayoutsC(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize:lineage.explicitSizes?.includes(cut.index)||cut.lyricSize!=null});continue;}
     if(options.layoutsB===true&&A.layoutsB25?.includes(cut.layout)){A.finalizeLayoutsB(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize:lineage.explicitSizes?.includes(cut.index)||cut.lyricSize!=null,cacheInputs:{cut:(lineage.originalCuts||input.cuts).find(c=>c.index===cut.index),style:input.style,fx:input.fx,events:input.events,beats:input.beats}});continue;}
     if(options.layoutsA===true&&A.layoutsA26?.includes(cut.layout)){A.finalizeLayoutsA(plan,cut,original,diagnostics,{revision,stepDur,reachTail,adaptive:options.layoutsAAdaptive===true,explicitSize:lineage.explicitSizes?.includes(cut.index)||cut.lyricSize!=null,selectionOrigin:lineage.layoutOrigins?.[cut.index]?.layout===cut.layout?lineage.layoutOrigins[cut.index].kind:'unknown'});continue;}

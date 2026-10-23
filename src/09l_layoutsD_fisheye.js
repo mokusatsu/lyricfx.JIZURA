@@ -3,8 +3,61 @@
    centre while the lens reflows the row. The actual native renderer is replayed. */
 (() => {
 'use strict';
-const A=J.placement,ID=[1,0,0,1,0,0],fail=(code,message)=>{const e=Error(message);e.code=code;throw e;};
+const A=J.placement,ID=[1,0,0,1,0,0],nativeNoTreatment=J.TREAT.none.apply,fail=(code,message)=>{const e=Error(message);e.code=code;throw e;};
 const rect=(x0,y0,x1,y1)=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]],norm=t=>String(t||'').replace(/\s/g,'');
+const PROOF_ENTRIES=128,ATTEMPT_ENTRIES=128,ATTEMPT_ARRAYS=128,PROOF_BYTES=8*1024*1024;
+let latestProofStats=null;
+A.layoutsDFisheyeProofMemoStats=()=>latestProofStats?{...latestProofStats}:null;
+// A synchronous finalization owns this pool; neither an input plan nor a draw
+// program is retained. Only source-independent finite geometry crosses cuts.
+A.createLayoutsDFisheyeProofMemo=()=>{
+ const pool=new Map(),ids=new WeakMap(),attempts=new WeakMap(),admitted=new WeakSet(),attemptArrays=new Map(),recordIDs=new WeakMap();let nextID=0,nextRecordID=0,bytes=0;
+ const stats={constructed:0,reused:0,bypassed:0,entries:0,attemptRecordsConstructed:0,attemptRecordsReused:0,attemptEntries:0,attemptArraysConstructed:0,attemptArraysReused:0,attemptArrayEntries:0,serializedBytes:0,maxEntries:PROOF_ENTRIES,maxAttemptEntries:ATTEMPT_ENTRIES,maxAttemptArrayEntries:ATTEMPT_ARRAYS,maxSerializedBytes:PROOF_BYTES};latestProofStats=stats;
+ const identity=v=>{if(!ids.has(v))ids.set(v,++nextID);return ids.get(v);};
+ const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
+ const functions=obj=>Object.getOwnPropertyNames(obj).sort().flatMap(key=>{const d=Object.getOwnPropertyDescriptor(obj,key);return typeof d.value==='function'?[[key,identity(d.value)]]:d.get||d.set?[[key,d.get?identity(d.get):null,d.set?identity(d.set):null]]:[];});
+ return Object.freeze({attemptArray(records){
+  // Every entry was freshly obtained after a solver call. Preserve the exact
+  // ordered identity sequence, including repetitions. Contextual error/budget
+  // records were never branded and therefore cannot enter this data pool.
+  if(!records.every(record=>recordIDs.has(record))){stats.attemptArraysConstructed++;return records;}
+  const key=records.map(record=>recordIDs.get(record)).join(',');if(attemptArrays.has(key)){stats.attemptArraysReused++;return attemptArrays.get(key);}
+  stats.attemptArraysConstructed++;const charge=new TextEncoder().encode(key).length+new TextEncoder().encode(JSON.stringify(records)).length;
+  if(attemptArrays.size<ATTEMPT_ARRAYS&&bytes+charge<=PROOF_BYTES){freeze(records);attemptArrays.set(key,records);bytes+=charge;stats.attemptArrayEntries=attemptArrays.size;stats.serializedBytes=bytes;}return records;
+ },attempt(trial,record){
+  // Called only AFTER the fresh solver. This canonicalizes diagnostic data,
+  // never a solution, offset, circle, seed, temporal range or error/details.
+  const key=JSON.stringify([record.strategy,record.status,record.reason]);let table=attempts.get(trial);
+  if(admitted.has(trial)&&table?.has(key)){stats.attemptRecordsReused++;return table.get(key);}
+  stats.attemptRecordsConstructed++;const value=freeze(record),charge=new TextEncoder().encode(key).length+new TextEncoder().encode(JSON.stringify(value)).length;
+  if(admitted.has(trial)&&stats.attemptEntries<ATTEMPT_ENTRIES&&bytes+charge<=PROOF_BYTES){if(!table)attempts.set(trial,table=new Map());table.set(key,value);recordIDs.set(value,++nextRecordID);bytes+=charge;stats.attemptEntries++;stats.serializedBytes=bytes;}return value;
+ },forCut(plan,cut,time,revision,stepDur){
+  // The admitted native cut/still pipeline has no random glyph transform.
+  // Keep every other authored cut field conservatively. Only source
+  // identity/absolute clock fields are removed: owners are row/glyph names,
+  // g.s0/rows do not use time, and cameraEnvelope bounds every camera phase and
+  // all event amplitudes. Actual sampled local clock/lead still participate in
+  // source-presence validation. Region decisions are never stored here.
+  const source={...cut};for(const key of ['index','line','part','seed','start','end','renderStart','displayEnd','slotEnd','leadTime','bg','bgP'])delete source[key];
+  // Planner overrides can retain parameters from a previous treatment. The
+  // sealed native none.apply() is empty and reads none of them. A replacement
+  // helper keeps the exact parameter data instead of acquiring this omission.
+  if(cut.treat==='none'&&J.TREAT.none.apply===nativeNoTreatment)delete source.treatP;
+  // bg/bgP are painted by frame(), outside this drawCut proof. leadTime is
+  // planner metadata; makeEnv reads the actual start-renderStart lead below.
+  // Stagger only hides native cut-enter items before their integer-mi delay.
+  // Conservatively require <=16 raw UTF-16 slots (including spaces/newlines),
+  // which bounds all native flattened slots and rows; mi=3*row+index/2 <32.
+  // Once every delay is past
+  // the measurement clock, stagger cannot change these all-clock ink bounds.
+  // Otherwise retain its exact value and original source-coverage rejection.
+  const stagger=cut.stagger||0;if(String(cut.text).length<=16&&Number.isFinite(stagger)&&time-cut.start>=32*Math.max(0,stagger))source.stagger=0;
+  const faces=Array.from(document.fonts);if(document.fonts.status!=='loaded'||faces.some(f=>f.status!=='loaded'))return (recipe,make)=>{stats.bypassed++;stats.constructed++;return {...make(),recipe};};
+  const seams=[J,A,J.E,J.metrics,J.glyphs,J.Renderer.prototype,J.LAYOUTS[cut.layout],J.ENTER.cut,J.EXIT.cut,J.HOLD.still,J.TREAT.none,CanvasRenderingContext2D.prototype,TextMetrics.prototype,Math].map(functions),registry=(A.layoutsDCacheAdapterDependencies?.()||[]).map(([layout,id,f,r])=>[layout,id,identity(f),identity(r)]);
+  const prefix=JSON.stringify({source,lt:time-cut.start,lead:cut.start-(cut.renderStart??cut.start),revision,stepDur,W:plan.W,H:plan.H,fps:plan.fps,style:plan.style,fx:plan.fx,events:plan.events,beats:plan.beats,customEffects:plan.customEffects,fonts:J.FONTS,language:J.lang,fontSet:identity(document.fonts),faces:faces.map(f=>[identity(f),f.family,f.style,f.weight,f.stretch,f.unicodeRange,f.status,f.featureSettings,f.variationSettings,f.ascentOverride,f.descentOverride,f.lineGapOverride]),seams,registry});
+  return (recipe,make)=>{const key=prefix+'\n'+JSON.stringify(recipe);if(pool.has(key)){stats.reused++;return pool.get(key);}stats.constructed++;const value=freeze({...make(),recipe});const charge=new TextEncoder().encode(key).length+new TextEncoder().encode(JSON.stringify(value)).length;if(pool.size<PROOF_ENTRIES&&bytes+charge<=PROOF_BYTES){pool.set(key,value);admitted.add(value);bytes+=charge;stats.entries=pool.size;stats.serializedBytes=bytes;}else stats.bypassed++;return value;};
+ }});
+};
 function rowIntervals(row,g,W){
  if(!row.base.every(b=>Number.isFinite(b)&&b>=0&&b<=4*g.s0))fail('UNSUPPORTED_PARAMETER_RANGE','Finite nonnegative native advances at most4em required');
  const total=row.base.reduce((a,b)=>a+b,0),center=row.centerX??W/2,rest=[];let prefix=0;for(const b of row.base){rest.push(center-total/2+prefix+b/2);prefix+=b;}
@@ -37,26 +90,26 @@ function proof(renderer,plan,cut,time){
   units.push({owner:'fisheye.row.'+row+'.lens',source:{row,kind:g.glass,role:'owned lens markers'},envelopes:[A.cameraEnvelope([poly],plan,cut,20)]});
  }
  if(program.events.some(e=>e.role!=='primary'||!units.some(u=>u.owner===e.owner)))fail('UNMEASURED_OWNER','Every fisheye glyph and lens event requires a source owner');
- return {program,geometry:g,units,quality:{complete:true,sourceGlyphs:main.length,minPrimaryPx:g.s0*(cut.contentScale??1),nativeRows:g.rows.length,amp:g.amp}};
+ return {geometry:g,units,envelopes:units.flatMap(u=>u.envelopes),quality:{complete:true,sourceGlyphs:main.length,minPrimaryPx:g.s0*(cut.contentScale??1),nativeRows:g.rows.length,amp:g.amp}};
 }
-A.finalizeLayoutsDFisheye=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize})=>{
+A.finalizeLayoutsDFisheye=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize,proofMemo})=>{
  try{
   if(cut.layout!=='fisheye')fail('D_SOURCE_PROOF_PENDING','Dedicated '+cut.layout+' source geometry proof remains pending; see layoutsDInventory');
   if([...norm(cut.text)].length<3||[...norm(cut.text)].length>16)fail('UNSUPPORTED_PARAMETER_RANGE','Native fisheye source requires3..16 glyph slots');
   if(cut.treat!=='none'||!['sweep','pingpong'].includes(cut.params.mode)||!['lens','grid','none'].includes(cut.params.glass)||!Number.isFinite(cut.params.amp)||cut.params.amp<.7||cut.params.amp>1.1)fail('UNSUPPORTED_PARAMETER_RANGE','Unmodified fisheye mode/glass and native amplitude .7..1.1 required');
   if(!A.layoutsDSourceKnown?.(cut.layout))fail('STALE_D_SOURCE','Unchanged registered D source required');
   cut.placementLayoutsD=true;cut.placementUnits=true;
-  const renderer=Object.create(J.Renderer.prototype),time=cut.start+cut.dur/2,native=proof(renderer,plan,cut,time),evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail],regions=plan.lyricAvoidanceIndex.regions,candidates=[null,...[1.2,1.4,1.6].map(rowPitch=>({rowPitch,amp:cut.params.amp,strategy:'native-row-pitch'})),...(explicitSize?[]:[.9,.8,.7].flatMap(ratio=>[1,1.2,1.4].map(rowPitch=>({rowPitch,amp:Math.max(.7,cut.params.amp*ratio),strategy:'source-lens-strength-and-row-pitch'})))),...(explicitSize?[]:[.95,.9,.85,.8,.75,.7].flatMap(fontScale=>[1,1.2,1.4].map(rowPitch=>({fontScale,rowPitch,amp:.7,strategy:'local-type-size-with-native-bulge-and-row-pitch'}))))],memo=new Map(),segments=[];
+  const renderer=Object.create(J.Renderer.prototype),time=cut.start+cut.dur/2,reuse=proofMemo?.forCut(plan,cut,time,revision,stepDur)||( (recipe,make)=>({...make(),recipe}) ),measure=recipe=>reuse(recipe,()=>proof(renderer,plan,recipe?{...cut,layoutDRecipe:recipe}:cut,time)),native=measure(null),evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail],regions=plan.lyricAvoidanceIndex.regions,candidates=[null,...[1.2,1.4,1.6].map(rowPitch=>({rowPitch,amp:cut.params.amp,strategy:'native-row-pitch'})),...(explicitSize?[]:[.9,.8,.7].flatMap(ratio=>[1,1.2,1.4].map(rowPitch=>({rowPitch,amp:Math.max(.7,cut.params.amp*ratio),strategy:'source-lens-strength-and-row-pitch'})))),...(explicitSize?[]:[.95,.9,.85,.8,.75,.7].flatMap(fontScale=>[1,1.2,1.4].map(rowPitch=>({fontScale,rowPitch,amp:.7,strategy:'local-type-size-with-native-bulge-and-row-pitch'}))))],memo=new Map(),segments=[];
   for(let i=0;i<regions.length;i++){
    const r=regions[i],end=Math.min(r.end??regions[i+1]?.start??plan.duration,plan.duration);if(r.start>=evaluationRange[1]||end<=evaluationRange[0]||end<=r.start)continue;
    const circle={cx:r.center.x*plan.W,cy:r.center.y*plan.H,r:r.radius*Math.min(plan.W,plan.H)},attempts=[];let chosen=null;
    const top=(circle.cy-circle.r)/2,bottom=(circle.cy+circle.r+plan.H)/2,k=native.geometry.rows.length,laneCandidates=[{strategy:'source-existing-rows-upper-lane',rowCenters:native.geometry.rows.map((row,i)=>[row.centerX,top+(i-(k-1)/2)*native.geometry.s0*(1.35+native.geometry.amp*.55)])},{strategy:'source-existing-rows-lower-lane',rowCenters:native.geometry.rows.map((row,i)=>[row.centerX,bottom+(i-(k-1)/2)*native.geometry.s0*(1.35+native.geometry.amp*.55)])},...(k===2?[{strategy:'source-existing-rows-opposite-bands',rowCenters:[[plan.W/2,top],[plan.W/2,bottom]]}]:[])],schedule=[candidates[0],...laneCandidates,...candidates.slice(1)];
    for(let j=0;j<schedule.length;j++){
-    const recipe=schedule[j],key=JSON.stringify(recipe);let trial=memo.get(key);if(!trial){if(memo.size>=128){attempts.push({strategy:'candidate-budget',status:'insufficient-space',reason:'CUT_CANDIDATE_BUDGET'});break;}try{trial=recipe?proof(renderer,plan,{...cut,layoutDRecipe:recipe},time):native;if(trial.quality.minPrimaryPx<Math.min(native.quality.minPrimaryPx,Math.max(18,.035*Math.min(plan.W,plan.H)))-1e-8)fail('READABILITY_FLOOR','Source lens candidate reduces native primary below its readable floor');memo.set(key,trial);}catch(e){trial={error:{code:e.code||'DRAW_PROGRAM_ERROR',message:e.message}};memo.set(key,trial);}}
+    const recipe=schedule[j],key=JSON.stringify(recipe);let trial=memo.get(key);if(!trial){if(memo.size>=128){attempts.push({strategy:'candidate-budget',status:'insufficient-space',reason:'CUT_CANDIDATE_BUDGET'});break;}try{trial=recipe?measure(recipe):native;if(trial.quality.minPrimaryPx<Math.min(native.quality.minPrimaryPx,Math.max(18,.035*Math.min(plan.W,plan.H)))-1e-8)fail('READABILITY_FLOOR','Source lens candidate reduces native primary below its readable floor');memo.set(key,trial);}catch(e){trial={error:{code:e.code||'DRAW_PROGRAM_ERROR',message:e.message}};memo.set(key,trial);}}
     if(trial.error){attempts.push({strategy:recipe?.strategy||'native-source-translation',status:'unsupported',reason:trial.error.code,details:trial.error.message});continue;}
-    const envelopes=trial.units.flatMap(u=>u.envelopes),solution=A.solveBasic(envelopes,circle,plan.W,plan.H,cut.seed,{supportHull:true});attempts.push({strategy:recipe?.strategy||'native-source-translation',recipe,status:solution.status,reason:solution.reason||null,quality:trial.quality});if(solution.status==='safe'){chosen={trial,recipe,solution};break;}
+    const solution=A.solveBasic(trial.envelopes,circle,plan.W,plan.H,cut.seed,{supportHull:true}),record={strategy:recipe?.strategy||'native-source-translation',recipe:trial.recipe,status:solution.status,reason:solution.reason||null,quality:trial.quality};attempts.push(proofMemo?proofMemo.attempt(trial,record):record);if(solution.status==='safe'){chosen={trial,recipe:trial.recipe,solution};break;}
    }
-   segments.push({start:r.start,end,region:r.id,circle,from:chosen?.solution.offset||[0,0],to:chosen?.solution.offset||[0,0],status:chosen?'safe':'insufficient-space',decision:chosen?'certified':'excluded-during-avoidance',composition:chosen?.recipe||null,envelopes:(chosen?.trial||native).units.flatMap(u=>u.envelopes),unitProofs:(chosen?.trial||native).units,attempts});
+   segments.push({start:r.start,end,region:r.id,circle,from:chosen?.solution.offset||[0,0],to:chosen?.solution.offset||[0,0],status:chosen?'safe':'insufficient-space',decision:chosen?'certified':'excluded-during-avoidance',composition:chosen?.recipe||null,envelopes:(chosen?.trial||native).envelopes,unitProofs:(chosen?.trial||native).units,attempts:proofMemo?proofMemo.attemptArray(attempts):attempts});
   }
   if(!segments.length){plan.cuts[plan.cuts.indexOf(cut)]=original;diagnostics.push({cut:cut.index,code:'PRESERVED_NO_ACTIVE_REGION',safety:'not-evaluated'});return;}
   cut.placementTrajectory={kind:'layouts-d-source-native',version:1,revision,evaluationRange,measurementSupported:true,units:[{owner:'fisheye.composition',segments}],sourceProof:{kind:'signed-source-width-intervals',glyphCoverage:native.quality,fontProof:'D bulge uses one fixed CSS font at base size and uniform Canvas glyph scale k in[1,1+amp]. Measured fixed outline +1fontpx/+2devicepx; no assumption that TextMetrics scales across changing hinted CSS sizes.',interval:'all cut/render/display/ghost clocks, including continuous hold lens reflow',lensProof:'Nearest-rest-centre Voronoi cells; glass requires lensIn>.01 and native finite0..4em advances. Source midpoint ties choose first; union includes both cells.',candidateBudget:{unique:memo.size,perCutLimit:128,limitPerRegion:34},manualCoordinates:false},safety:segments.every(s=>s.status==='safe')?'certified-bounded-adapter':'insufficient-space'};
