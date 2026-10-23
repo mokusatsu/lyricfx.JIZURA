@@ -7,6 +7,8 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- 第一local hull/boundsの完全一致memo版 `9848672` を[親source/pureレビュー](evidence/AVOID-008/parent-native-local-bounds-memo01-source-review.json)で受入。通常46件を親でも再実行し全program/V8 alias/native traceが一致、上限・clear・衝突・signed zeroも確認。既存installer stubの通常165件/5 lifecycleを保持し、他82 source・全84moduleの日英HTML・2source逆復元・135固定Git pinを照合した。512entry/1048576座標slot/8192点pathの別管理有界memoで、hitもfresh bounds、miss/非C/validation/nonstock/capは元算法。追加サイバー審査は省略し、通常paired browser比較の準備へ進む。新速度は未計測、旧2.197倍/描画+4.40ms未達、main製品未採用、元4構図未確認、AVOID-009以降未着手を保持する。公開結果確認は行わない。
+
 - CTM版の[元100診断を親が独立再計算](evidence/AVOID-008/parent-native-command-matrix-diagnose01-review.json)。ON58.7+54.0=112.7/51.3ms=2.197倍・描画追加4.40msで未達、OFF1.368倍/追加1.80ms。120入力/3support/173実依存/86製品/140manifest、旧全4side機能fields・実80record/replay/観測、exit0/reap/goneを保持。計画は1点で正式p95ではない。次はC nativePathの第一local hull+boundsを、全座標・paint/padの完全一致時だけ私有有界cacheで再利用する実装へ進む。missは元算法・検証、hitは前回の4scalarをfresh objectへ戻し、world変換/第二hull/全80pipelineは維持する。512entry/1048576coord/8192point上限と既存clearへの連動を設け、数式の近似・scalar extrema・検証除外へ置換しない。追加サイバー審査は行わず通常cache衝突/float/alias/lifecycleを確認する。main採用/正式1000/元4構図は未完。
 
 - CTM再利用版d298の[旧新pairedブラウザ照合を親受入](evidence/AVOID-008/parent-native-command-matrix-browser01-review.json)。旧ccfe/新d298の全HTML・同exerciseで各40通常＋別2角小円の経路例を実行し、各84fast/72frame（計144）の全results・program/alias hash・画素・観測が一致。各実program63/観測63、計画cold record427/warm-fast0を確認し、角小円のstamp nativePath144/newspaper line45を通常円成功例へ置換しない。全frameerror0、112input/173実依存/86product/19manifest・実waitpid0/reap/goneも照合。内部の読出再利用に追加の人間確認は不要と親判断したが、元4構図は未回答のまま。旧+4.9ms未達を保持し、次は元100の別診断を準備中で、速度成功/正式1000/main製品採用はまだ主張しない。追加安全性審査と公開結果確認は実施しない。

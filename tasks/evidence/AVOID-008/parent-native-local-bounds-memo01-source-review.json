@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-10-23T04:20:59.571625+00:00",
+  "parent": "/root",
+  "source": "98486720b67bec18571e229301c897b20d3e5188",
+  "basis": "d298d6ab5227f0a6d5d984b05297a988580f53ed",
+  "sourcePins": {
+    "src/09a_placement.js": "eee3fbf400dbf28127e3c674dfbe014593210c7bf2dc50b61ee98b96d39cfd89",
+    "src/09g_layoutsC_placement.js": "c66e11dcdd31ba43dad106ad5f9932f87ae6049c72c0409d31ac33cce75c65f9"
+  },
+  "other82SourcesExact": true,
+  "compiled": [
+    {
+      "path": "index.html",
+      "sha256": "21bfb1f628ff880932e2f7ca51c22cfdfaa014e75d04840e0922b53f67776b76",
+      "all84ModulesExact": true,
+      "reverseToOldHTMLExact": true
+    },
+    {
+      "path": "en/index.html",
+      "sha256": "f04f0ab40939cf2be9d0180d96e733bcd586485b3513f2e3fb5a240991b4e1f6",
+      "all84ModulesExact": true,
+      "reverseToOldHTMLExact": true
+    }
+  ],
+  "normalPureRerun": {
+    "cases": 46,
+    "exitCode": 0,
+    "rawByteExact": true,
+    "rawSHA256": "e96eff0f38f65e1943cc2f30d2ec9237095105ecf036da9f4dea7f2a7b04a7a1",
+    "command": "node dev/avoidance/layouts-c-native-local-bounds-memo-pure.cjs /tmp/avoid008-local-bounds-parent-pure01",
+    "note": "Actual bridge returned in both runs; final added undefined-return fallback leaves this execution unchanged."
+  },
+  "manifestPins": 135,
+  "review": "Read both source diffs. Fingerprint only selects candidate; all coordinates and pad use Object.is, including signed zero. Miss runs original local hull/bounds; hit returns fresh four-scalar object. World transform, second hull, native program and replay untouched. Retains copied numeric coordinates/scalars only; separate 512-entry/1048576-slot/8192-point caps and LRU accounting. Existing clear/stats bridge captures private closures, no new public callable. Existing old standalone installer stub preserved by private fallback. Ordinary nonstock or cap conditions execute original algorithm. Existing final-cache admission, second context verification, keys, codec, budgets, freeze and signature unchanged.",
+  "decision": "Source and normal pure accepted; paired local browser and new performance measurement remain required. No performance pass claimed.",
+  "additionalSecurityAudit": "not performed, per user instruction",
+  "publicRequests": 0,
+  "parentImageViews": 0
+}
