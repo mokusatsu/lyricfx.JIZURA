@@ -249,3 +249,5 @@ fold clamp全域2～88.5度について各source点を定数+a cos+b sinで表�
 通常円の横4文字は2行/元字号の50%で回避、縦は元字号を保持する。必要な横縦2例のみ原寸MP4/独立sol視覚確認を準備し、人間確認は未回答queueへ保存する。unfurlは実際の布相対の入退場はみ出し証明が未完でtyped未対応。旗全モード・009完了とは扱わない。[完全証拠の復元](evidence/AVOID-009/flag-wip/archive-storage13.json)では27.9MB履歴をGit blobのみ/skip-worktreeに保存し、主アーカイブと合わせ/tmpへ復元できる。公開結果確認は0。
 
 旗の必要な横縦2例は原寸60fps/4秒/240異なる入力コマのMP4を各前後で生成。親は全480後コマ15,582実polygonの円/stageを独立照合し、画像動画の閲覧は0。独立した文脈なしsolは12静止コマとMP4抜き出しで重大な新規表示不具合なし、布比率/2行/昇降短縮を人間判断へ残した。ラベル誤記と不完全なcontact一覧は修正・除去し、元MP4/個別静止画を保持。[媒体証拠](evidence/AVOID-009/flag-media12/preservation-receipt.json)。Sites初回公開操作は展開後容量269,886,481Bが256MiB上限を超えて失敗し、未公開として記録。既存公開物と動画を保持し、新規旗の計測raw2件だけ静的配信から外す軽量パッケージを準備する。完全rawはmainのnative-frame-raw13.tar.gzへ保存済み。公開結果確認は行わない。
+
+旗の軽量比較2例はSites再試行の公開操作がsucceeded。[未回答の確認項目](reviews/AVOID-009-flag-selected-20261024-01.md)を朝のqueueへ追加した。公開結果確認は0。次のリボンは23a62eeから隔離し、元clock/paint198組、OFF16コマ、root修正後の移動24組を親が照合したが、回避adapterの連続付着証明は未完。元の布より先に文字が見える離散revealを保持し、native material fractionと実65頂点の完全帯への付着を証明する条件を検討中。mainへリボンsourceは未統合、009は実装中を維持。
