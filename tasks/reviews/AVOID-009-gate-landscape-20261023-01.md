@@ -1,7 +1,8 @@
 # AVOID-009 折り紙（扉）の横長優先
 
 - 比較URL: https://jizura-all-motion-20261021.mokusatsu.chatgpt.site/review/AVOID-009/gate-landscape-20261023-01/
-- 状態: 公開操作待ち。人間の動作確認は未回答。
+- 状態: Sites公開操作がsucceededを返した。人間の動作確認は未回答。[公開操作記録](../evidence/AVOID-009/gate-landscape01/publication.json)。公開結果確認は行っていない。
+- 製品commit: `9f4318b`（workへpush成功）。Sites source commit: `16fa2e93b2e9fdaef42662822bdaa451c7231011`。
 - 変更前は前回公開した回避試作、変更後は横長優先の修正版。D回避導入前は参考リンクとして分ける。
 
 「最初から同時再生」で、右側の縦4行から下側の横長1行になった紙面を比較してください。横長の紙面に収まった文字の読みやすさと、左右の扉が開閉する感じに違和感がないかを確認します。円ガイドは初期ONで、切り替え可能です。確認対象を扉1例に絞っています。

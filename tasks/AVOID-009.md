@@ -173,3 +173,5 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 [親レビュー](evidence/AVOID-009/parent-gate-landscape01-review.json)で09nだけの差分、102pin、128証明/16,580実polygonを独立照合。前後51例safe33→36・低下0、元構成9例とactualblintz13例不変、OFF24RGBA hash一致。拡張32・保護8・明示サイズ2・alpha1 3時刻も通過。診断のcache誤再利用失敗を保持し、正式同条件seed704で再試験した。親の計算スクリプトはregion非activeのt=4と保護ケースのnull geometryを訂正し、製品やrawは変更しない。
 
 [統合receipt](evidence/AVOID-009/gate-landscape01/integration-receipt01.json)でmainの09nとJAENの該当moduleだけ置換し、逆置換で開始時bytes完全一致を確認。性能WIP09a/09lとpycacheは不変。Gitへは別treeのレビュー済みJAENを格納し、workingの性能WIPは保持する。扉1組のみ生成した60fps MP4は[parent mediaレビュー](evidence/AVOID-009/gate-landscape01/parent-media-review01.json)と[独立視覚](evidence/AVOID-009/gate-landscape01/independent-visual01.md)で限定受入。[新しい動作確認](reviews/AVOID-009-gate-landscape-20261023-01.md)を用意し、人間の回答は未回答。
+
+製品・試験・証拠をworkの`9f4318b`へcommit/push。扉1例のSites[公開操作](evidence/AVOID-009/gate-landscape01/publication.json)はsucceededを返した。source commit16fa2e9、既存671 dist filesとhosting/home・閲覧対象を保持。公開先へのアクセスや状態pollingは実施しない。小packetのraw4件とsource/test4件を親が内容hash照合し、診断失敗とcache誤再利用の無効な試行も軽量履歴として保持した。正式性能・他D/custom・保存の未完状態は変えず、扉の形と動きの人間確認へ戻す。
