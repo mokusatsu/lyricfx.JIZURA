@@ -1,0 +1,48 @@
+{
+  "scope": "Origami06 analytic recorder-line support correction; no drawing/runtime-assert changes",
+  "sourcePinsVerified": 13,
+  "immutableInputPinsVerified": 55,
+  "runs": [
+    {
+      "file": "avoid009-origami-octagon-clocks01.json.gz",
+      "sha256": "28edc0878ccbfe046492fd8ad9c5086ba636e8b427a7b61c9ddb89e2daa35a9d",
+      "rows": 240
+    },
+    {
+      "file": "avoid009-origami-octagon-matrix01.json.gz",
+      "sha256": "5adab44940eeaa2f7cb855364c0f20bea9be5e833fd856a584bb16e9464d58fe",
+      "rows": 256
+    },
+    {
+      "file": "avoid009-origami-octagon-extended01.json.gz",
+      "sha256": "a8ea484bdef5fd825995e111dfe6004cce17bc4af21e7513e5540c182e755262",
+      "rows": 64
+    },
+    {
+      "file": "avoid009-origami-octagon-attachment01.json.gz",
+      "sha256": "23c7eecce8368f8b2a3e9c4a58413a784bc4fbe2a3f3e8d5ac5f5e3cdc72bc53",
+      "rows": 48
+    },
+    {
+      "file": "avoid009-origami-octagon-boundary01.json.gz",
+      "sha256": "79279bd8f13bf2dd4c77fe2475d747dbbdb4ef479b5124cff1fa6c41eb2c07e8",
+      "rows": 72
+    }
+  ],
+  "historicalFailure": {
+    "frame": 30,
+    "time": 0.5,
+    "code": "D_ENVELOPE_VIOLATION"
+  },
+  "fixedClocks": 240,
+  "actualPolygonsIndependentlyChecked": 4772,
+  "alpha1Audits": 5,
+  "analyticEndpointAABBCornersChecked": 48,
+  "algebra": "Each hinge apex is affine in cos(theta); AABB extrema are piecewise affine with breakpoint0. Checkingcos=-1,0,1 covers the whole domain; octagon convexity covers uniformshrink. Physicaldiamond/shadow/glyphattachmentremain separate.",
+  "runtimeGuardByteUnchanged": true,
+  "acceptance": "Source/functional approved for integration+blintz-only recapture; visual rerereview pending",
+  "publicChecks": 0,
+  "parentMediaViews": 0,
+  "boundaryAfterErrors": 0,
+  "boundaryBeforeErrors": 37
+}

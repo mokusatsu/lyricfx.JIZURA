@@ -1,6 +1,7 @@
-# AVOID-009 拡張Dの34レイアウト・カスタム描画の対応
+# AVOID-009 拡張Dの34レイアウト・カスタム描画の対応（代表4例確認待ち）
 
 - 状態: 実装中
+- 現在の確認段階: [代表4例の動作確認待ち](reviews/AVOID-009-selected-20261023-01.md)。全体完了ではない。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -143,3 +144,19 @@ AVOID-008受入・009開始のローカルcommitは6e016f7。pushはproxy:8080�
 [親レビュー05](evidence/AVOID-009/parent-origami05-review.json)で、blintzの独立した横縦半径を1つのwriteRへ変更した1行差分を確認。rx=ry、元の折り角・順序・clockを保持し、文字幅と高さの大きい方から紙面を決める。通常円の代表例は元の字体サイズのまま2行再配置で成立。対象256条件は195安全/61不足、拡張64条件は60安全/4不足、付着48条件は35安全/13不足、OFF2条件は12pixel組と測定回数一致。12live pin・40入力pinと1,184 glyph頂点の紙面・記入域包含を独立照合。旧256条件から12安全→不足・2不足→安全へ変わった結果を保持し、扁平化による成功を残さない。新MP4の独立視覚照合は別途必要。
 
 [折り紙証拠の保管記録](evidence/AVOID-009/origami-history01.json)に旧checkpoint03と修正checkpoint04を格納したarchiveのSHA、全174entry照合、復元コマンドを記録。容量制約のため、この大容量archiveはGitへ保存しskip-worktreeにしており、作業ツリーへのコピーを省略する。既存の無関係なファイルの削除やgcは行っていない。
+
+## 代表4例の確認段階（2026-10-23）
+
+四隅折りの比率修正後、実60fpsのframe30で包絡違反を検出。物理的な紙のdiamondではなく、折り線のpolyline記録が持つAABBまで連続的に包含する八角形証明へ修正した。描画・runtime guardの緩和は行わない。[親レビュー06](evidence/AVOID-009/parent-origami06-review.json)で13source/55入力pin、4,772実polygon、48の端点AABB頂点を独立照合。256条件183安全/73不足、拡張64条件48安全/16不足、付着48条件30安全/18不足。旧成功が不足へ変わるものを正しく保持し、境界72件と代表240frame/5alpha1観測が成功。正方形比率・四隅折りは[独立視覚02](evidence/AVOID-009/independent-visual02.md)で限定PASS。
+
+[frozen04親レビュー](evidence/AVOID-009/parent-preview04-review.json)と[stagedソース照合](evidence/AVOID-009/parent-staged-frozen04.json)により、レビュー済み10製品ファイルを保存する。main workingの性能memo差分は上書きせず、[WIP capsule](evidence/AVOID-009/performance-wip-capsule01.json)へ別保管。機能上のmemo10受入と正式な性能合格を混同しない。最新の正式性能02は1000件5.841倍の未達、cold負荷も未解消。診断profile06は正式試験ではない。
+
+最終frozen04で新規実行した[native04](evidence/AVOID-009/native04/scope.json)は全34ID×3時刻=102組の回避OFF RGBAがwhole6e016f7と一致。136native probeの89対応組が一致、47件のtyped未対応を保持。34ID全回避成功とは扱わない。[core04](evidence/AVOID-009/core04/review01.json.gz)は前後各11suite、各8成功/3失敗。JA/独立ENのlyric_area先頭0!==1とcompositing色差は両方の新規rawで一致し、期待値を変更せず失敗として残す。未到達UI/MP4/EN assertions、AVOID-013の保存本体は成功ではない。全22job終了・cleanup・入力pin不変を確認。
+
+[最終回帰の親再計算](evidence/AVOID-009/parent-final-frozen04-regression.json)は99入力pin、全OFF hash/対応PNG hash、22実行のrawログhashと前後の失敗署名を独立照合。[過去の限定受入raw](evidence/AVOID-009/reviewed-functional-raw01.json)は56entryをxz内に保管し、内容hashと復元名を記録。過去の異なるsource版の試験を最終版の再実行とは扱わない。
+
+core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元test bytes・pinを含む153entryを保存（133,239bytes、SHA-256 `8a437fb7db466efe6040ccbecbacb4de3663dc8bf114be06a667e37f8a5de44d`）。[registry05親レビュー](evidence/AVOID-009/parent-registry05-review.json)は既存単体試験をkernel-only fixtureへ保守し、完成したstock adapterとの二重登録と、可変のsynthetic closureに対するcache再利用を解消。元assertionは変更せず4登録拒否/13callback/5保持条件を実行。stock全体の幾何合格には数えない。旧04の失敗rawも保持し、製品APIへ上書き登録などを追加していない。
+
+[代表4例](reviews/AVOID-009-selected-20261023-01.md)だけSitesへ追加し、公開操作succeededを記録した。元の606 distファイル・hosting/homeと既存の閲覧対象を保持。公開結果確認は利用者指示により中止・対象外、接続/画像/動画/起動/状態pollingは0。人間の回答は未回答。形と動きの判断だけを依頼し、人間のコードレビューは求めない。
+
+残件: 円筒は[cylinder-wip01](evidence/AVOID-009/cylinder-wip01/status.json)に独立実装・試験の未親受入packetを保存。flipCardsは未検証/未統合WIP capsuleに隔離。両者ともmain製品へ含めず、人間確認後に親レビューから再開する。他Dとcustomの実回避・正式性能は未完。009は実装中、010以降は未着手を維持する。

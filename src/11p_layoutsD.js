@@ -3,7 +3,9 @@
 'use strict';
 const E = J.E;
 const P = 'layoutsD';
-const reg = (key, def) => J.register('layout', key, def, P);
+const nativeSources=new Map();
+const reg = (key, def) => {nativeSources.set(key,def.render);J.register('layout', key, def, P);};
+J.placement.layoutsDSourceKnown=key=>nativeSources.has(key)&&nativeSources.get(key)===J.LAYOUTS[key]?.render;
 
 /* ------------------------------------------------------------------ helpers */
 const U = env => Math.min(env.W, env.H);
@@ -187,10 +189,14 @@ reg('cube', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, u = U(env), lt = env.lt;
+    const previousOwnership=env.drawOwnership;
+    if(cut.placementLayoutsD)env.drawOwnership={role:'primary',owner:'cube.solid'};
+    try {
     let chunks = Pm.chunks && Pm.chunks.length ? Pm.chunks : [flat(cut.text)];
     const mode = chunks.length < 2 ? 'single' : Pm.mode;
-    const ph = Pm.pitch * J.DEG, dir = Pm.dir || 1;
-    const h = Math.min(W * (mode === 'pair' ? 0.27 : 0.3), H * 0.285, u * 0.36);
+    const recipe=cut.placementLayoutsD?cut.layoutDRecipe||{}:{}, typeScale=recipe.fontScale??1;
+    const ph = (recipe.pitch??Pm.pitch) * J.DEG, dir = Pm.dir || 1;
+    const nativeH = Math.min(W * (mode === 'pair' ? 0.27 : 0.3), H * 0.285, u * 0.36), h=nativeH*(recipe.edgeScale??1);
     const cx = W / 2, cy = H / 2 + h * Math.sin(ph) * 0.55;
     const pc = plateCol(sc, Pm.face === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.fg, sc.accent]);
     const tc = onCol(sc, pc);
@@ -219,6 +225,7 @@ reg('cube', {
     const hs = h * pop;
     if (hs < 1 || out <= 0) return null;
     const faces = cubeFaces(cx, cy, hs, th, ph);
+
     // contact shadow: the (hidden) bottom face pushed down
     const bm = faces[4].m.slice(); bm[5] = cy + hs * Math.cos(ph) + hs * 0.14;
     env.poly(polyPts(bm, [[-hs * 1.04, -hs * 1.04], [hs * 1.04, -hs * 1.04], [hs * 1.04, hs * 1.04], [-hs * 1.04, hs * 1.04]]), darkOf(sc), 0.35 * out, false);
@@ -228,6 +235,23 @@ reg('cube', {
     // which face carries which chunk
     const faceOf = mode === 'turn' ? (f => { const idx = ((dir > 0 ? f : (4 - f) % 4)); return idx < k ? idx : -1; })
       : mode === 'pair' ? (f => (dir > 0 ? (f === 0 ? 0 : f === 1 ? 1 : -1) : (f === 3 ? 0 : f === 0 ? 1 : -1))) : (f => (f === 0 ? 0 : -1));
+    const localItems=[];
+    const content=F=>{
+      let it,main=false,nativeTextForField;
+      if(F.top)it={text:'No.'+lineNo(env),font:monoF(env),size:nativeH*.2,x:0,y:0,track:.2,color:onCol(sc,topC),alpha:out*.9,ghost:false};
+      else {const ci=faceOf(F.f);
+       if(ci>=0&&chunks[ci]){const nativeText=brk(chunks[ci],mode==='single'?(isPort(env)?4:5):4),t=brk(chunks[ci],recipe.wrap??(mode==='single'?(isPort(env)?4:5):4));
+        const size=Math.min(J.fitSize(nativeText,Pm.font,nativeH*1.64,nativeH*1.5,{lead:1.12,track:.02}),nativeH*.9);
+        nativeTextForField=nativeText;
+        const arrive=mode==='turn'?segT[ci]+(ci?.05:.12):.18+ci*.12;
+        it={text:t,font:Pm.font,size,x:0,y:0,lead:1.12,track:.02,color:tc,noHold:plateHold(env),mi:miAt(env,arrive)};main=true;
+       }else if(mode==='single'&&F.f===(dir>0?1:3)){const t=brk(altCopy(env),recipe.wrap?Math.max(6,recipe.wrap):6);const nativeText=brk(altCopy(env),6);const fs=Math.min(J.fitSize(nativeText,bodyF(env),nativeH*1.5,nativeH*1.2,{lead:1.4,track:.08}),nativeH*.2);it={text:t,font:bodyF(env),size:fs,x:0,y:0,lead:1.4,track:.08,color:tc,alpha:.75*out*tin(env,.3,.4),ghost:false};nativeTextForField=nativeText;
+       }else if(mode==='single'&&F.f===(dir>0?3:1))it={text:lineNo(env),font:Pm.font,size:nativeH*1.1,x:0,y:0,fill:false,stroke:Math.max(1.5,nativeH*.012),strokeColor:tc,alpha:.5*out,ghost:false};
+      }
+      if(it){const nativeItem=cut.placementLayoutsD?{...it,text:nativeTextForField??it.text,alpha:1}:null;if(!F.top)it.size*=typeScale;if(cut.placementLayoutsD)localItems.push({face:F.f,main,chunk:main?faceOf(F.f):null,kind:main?'lyric':F.top?'top-label':it.fill===false?'side-numeral':'alternate-copy',item:{...it,alpha:1},nativeItem});}return {it,main};
+    };
+    const contents=cut.placementLayoutsD?faces.map(content):null;
+    if(cut.placementLayoutsD)env.placementDGeometry={kind:'cube',h,nativeH,cx,cy,pitch:ph,mode,chunks:chunks.slice(),dir,items:localItems};
     for (const F of faces) {
       if (F.vis <= 0.004) continue;
       const light = F.top ? 0.28 : (-0.55 * F.nx * dir + 0.55 * F.nz) * 0.35;
@@ -239,27 +263,12 @@ reg('cube', {
       const lm = F.m.slice();
       // content in face-local px (face size 2h, unscaled): compose the pop scale into the matrix
       const s0 = hs / h; lm[0] *= s0; lm[1] *= s0; lm[2] *= s0; lm[3] *= s0;
-      if (F.top) {
-        const lab = 'No.' + lineNo(env);
-        drawAffPlain(env, { text: lab, font: monoF(env), size: h * 0.2, x: 0, y: 0, track: 0.2, color: onCol(sc, topC), alpha: out * 0.9, ghost: false }, lm);
-        continue;
-      }
-      const ci = faceOf(F.f);
-      if (ci >= 0 && chunks[ci]) {
-        const t = brk(chunks[ci], mode === 'single' ? (isPort(env) ? 4 : 5) : 4);
-        const size = Math.min(J.fitSize(t, Pm.font, h * 1.64, h * 1.5, { lead: 1.12, track: 0.02 }), h * 0.9);
-        const arrive = mode === 'turn' ? segT[ci] + (ci ? 0.05 : 0.12) : 0.18 + ci * 0.12;
-        const r = drawAff(env, { text: t, font: Pm.font, size, x: 0, y: 0, lead: 1.12, track: 0.02, color: tc, noHold: plateHold(env), mi: miAt(env, arrive) }, lm);
-        bb = UB(bb, r);
-      } else if (mode === 'single' && F.f === (dir > 0 ? 1 : 3)) {
-        const t = brk(altCopy(env), 6);
-        const fs = Math.min(J.fitSize(t, bodyF(env), h * 1.5, h * 1.2, { lead: 1.4, track: 0.08 }), h * 0.2);
-        drawAffPlain(env, { text: t, font: bodyF(env), size: fs, x: 0, y: 0, lead: 1.4, track: 0.08, color: tc, alpha: 0.75 * out * tin(env, 0.3, 0.4), ghost: false }, lm);
-      } else if (mode === 'single' && F.f === (dir > 0 ? 3 : 1)) {
-        drawAffPlain(env, { text: lineNo(env), font: Pm.font, size: h * 1.1, x: 0, y: 0, fill: false, stroke: Math.max(1.5, h * 0.012), strokeColor: tc, alpha: 0.5 * out, ghost: false }, lm);
-      }
+      const {it,main}=contents?contents[F.f]:content(F);
+      if(it){if(main)bb=UB(bb,drawAff(env,it,lm));else drawAffPlain(env,it,lm);}
+
     }
     return bb || box(cx - hs * 1.4, cy - hs * 1.6, cx + hs * 1.4, cy + hs * 1.2);
+    } finally {if(cut.placementLayoutsD)env.drawOwnership=previousOwnership;}
   },
 });
 
@@ -2190,20 +2199,24 @@ reg('fisheye', {
     const t0 = flat(cut.text), n = J.glyphCount(t0);
     const rowsT = n > (port ? 6 : 10) ? chunksK(t0, port ? Math.ceil(n / 6) : 2) : [t0];
     const nR = rowsT.length;
-    const A = Pm.amp;
+    const recipe=cut.placementLayoutsD===true?cut.layoutDRecipe:null;
+    const A = recipe?.amp??Pm.amp,rowPitch=recipe?.rowPitch??1;
     let s0 = u * 0.16;
     for (const r of rowsT) { let a = 0; for (const ch of r) a += adv(Pm.font, ch); s0 = Math.min(s0, W * 0.84 / (a + A * 1.6)); }
     s0 = Math.min(s0, H * 0.6 / (nR * (1.4 + A * 0.5)));
+    if(recipe?.fontScale!=null)s0 *= recipe.fontScale;
     const sig = s0 * 1.25;
     const out = tout(env);
     // lens position: one pass over all rows (sweep) or back and forth on every row (pingpong)
     const T = J.clamp((lt - 0.2) / Math.max(0.4, cut.dur - 0.5));
     const lensIn = E.outCubic(J.clamp((lt - 0.1) / 0.4)) * (1 - E.inCubic(env.pOut));
     let bb = null, lensPos = null;
+    if(cut.placementLayoutsD===true)env.placementDGeometry={kind:'fisheye',amp:A,s0,glass:Pm.glass,mode:Pm.mode,rows:[]};
     rowsT.forEach((row, ri) => {
       const chars = [...row], base = chars.map(ch => adv(Pm.font, ch) * s0), tot0 = base.reduce((a, b) => a + b, 0);
-      const cy = H / 2 + (ri - (nR - 1) / 2) * s0 * (1.35 + A * 0.55);
-      const xL = W / 2 - tot0 / 2;
+      const centerX=recipe?.rowCenters?.[ri]?.[0]??W/2,cy=recipe?.rowCenters?.[ri]?.[1]??(H / 2 + (ri - (nR - 1) / 2) * s0 * (1.35 + A * 0.55)*rowPitch);
+      if(cut.placementLayoutsD===true)env.placementDGeometry.rows.push({centerX,cy,base:base.slice(),chars:chars.slice()});
+      const xL = centerX - tot0 / 2;
       let lx;
       if (Pm.mode === 'sweep') { const f = T * nR - ri; lx = f < 0 || f > 1 ? null : xL - sig + (tot0 + sig * 2) * E.inOutSine(f); }
       else lx = xL + tot0 * (0.5 - 0.5 * Math.cos(env.ltb * 1.6 + ri * 1.3));
@@ -2211,28 +2224,32 @@ reg('fisheye', {
       let acc = 0;
       const sc0 = base.map((w, i) => { const x = xL + acc + w / 2; acc += w; return lx == null ? 1 : 1 + A * lensIn * Math.exp(-Math.pow((x - lx) / sig, 2)); });
       const widths = base.map((w, i) => w * sc0[i]), tot = widths.reduce((a, b) => a + b, 0);
-      let x = W / 2 - tot / 2;
+      let x = centerX - tot / 2;
       if (lx != null) {
         // keep the lens over the bulge after re-flowing
         let acc2 = 0, best = 0, bw = 0;
         base.forEach((w, i) => { if (sc0[i] > bw) { bw = sc0[i]; best = i; } });
         widths.forEach((w, i) => { if (i < best) acc2 += w; });
-        lensPos = { x: x + acc2 + widths[best] / 2, y: cy, r: s0 * (0.5 + 0.5 * bw) * 0.95, k: bw };
+        lensPos = { row:ri, x: x + acc2 + widths[best] / 2, y: cy, r: s0 * (0.5 + 0.5 * bw) * 0.95, k: bw };
       }
       chars.forEach((ch, i) => {
         const w = widths[i], gx = x + w / 2; x += w;
         if (ch === ' ') return;
         const k = sc0[i];
-        bb = UB(bb, J.mainDraw(env, { text: ch, font: Pm.font, size: s0 * k, x: gx, y: cy, color: k > 1.35 ? sc.accent : sc.fg, mi: ri * 3 + i * 0.5 }));
+        if(cut.placementLayoutsD===true)bb = UB(bb,env.withDrawRole('primary','fisheye.row.'+ri+'.glyph.'+i,()=>J.mainDraw(env, { text: ch, font: Pm.font, size: s0, sx:k,sy:k, x: gx, y: cy, color: k > 1.35 ? sc.accent : sc.fg, mi: ri * 3 + i * 0.5,placementDSource:{row:ri,index:i,text:ch} })));
+        else bb = UB(bb, J.mainDraw(env, { text: ch, font: Pm.font, size: s0 * k, x: gx, y: cy, color: k > 1.35 ? sc.accent : sc.fg, mi: ri * 3 + i * 0.5 }));
       });
       if (Pm.glass === 'grid' && lx != null && env.pass === 'main') {
+        const drawGrid=()=>{
         const g = s0 * 0.5, lw = Math.max(1, u * 0.0012);
         const warp = (px, py) => { const dx = px - lx, dy = py - cy, rr = Math.hypot(dx, dy), f = 1 + 0.9 * A * lensIn * Math.exp(-Math.pow(rr / (sig * 1.4), 2)); return [lx + dx * f, cy + dy * f]; };
         for (let k = -3; k <= 3; k++) { const pts = []; for (let q = -12; q <= 12; q++) pts.push(warp(lx + q * g * 0.5, cy + k * g)); env.line(pts, sc.sub, lw, 0.35 * out * lensIn, false); }
         for (let k = -6; k <= 6; k++) { const pts = []; for (let q = -6; q <= 6; q++) pts.push(warp(lx + k * g, cy + q * g * 0.5)); env.line(pts, sc.sub, lw, 0.35 * out * lensIn, false); }
+        };if(cut.placementLayoutsD===true)env.withDrawRole('primary','fisheye.row.'+ri+'.lens',drawGrid);else drawGrid();
       }
     });
     if (Pm.glass === 'lens' && lensPos && lensIn > 0.01) {
+      const drawLens=()=>{
       const { x, y } = lensPos, R = Math.max(lensPos.r * 1.25, s0 * 1.05);
       const lw = Math.max(2, u * 0.005);
       env.circle(x, y, R, lightOf(sc), null, 0, 0.06 * lensIn, false);
@@ -2240,6 +2257,7 @@ reg('fisheye', {
       env.arc(x, y, R * 0.8, 200, 250, lightOf(sc), lw * 0.8, 0.7 * lensIn, false);
       const a = 50 * J.DEG;
       env.line([[x + Math.cos(a) * R, y + Math.sin(a) * R], [x + Math.cos(a) * R * 1.75, y + Math.sin(a) * R * 1.75]], sc.sub, lw * 2.6, lensIn, false);
+      };if(cut.placementLayoutsD===true)env.withDrawRole('primary','fisheye.row.'+lensPos.row+'.lens',drawLens);else drawLens();
     }
     return bb;
   },
@@ -2340,6 +2358,9 @@ reg('origami', {
   render(env) {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, u = U(env), lt = env.lt;
     const port = isPort(env);
+    const nativeD = cut.placementLayoutsD === true, recipe = nativeD ? cut.layoutDRecipe : null;
+    // OFF uses the original env directly; source ownership closures exist only ON.
+    const source = nativeD ? Object.fromEntries(['rect', 'poly', 'line'].map(kind => [kind, (...args) => env.withDrawRole('primary', 'origami.sheet', () => env[kind](...args))])) : env;
     const out = tout(env);
     const paper0 = lightOf(sc);
     const back = (Pm.col === 'ink' ? [sc.accent2, sc.accent, sc.ink] : [sc.accent, sc.accent2, sc.ink]).find(c => c && J.contrast(c, paper0) >= 1.5 && J.contrast(c, sc.bg) >= 1.3) || darkOf(sc);
@@ -2359,17 +2380,19 @@ reg('origami', {
     let bb = null;
     if (Pm.mode === 'gate' && !port) {
       // a wide sheet with two doors folding open from the middle
-      const text = brk(text0, 9);
+      const text = brk(text0, recipe?.columns || 9);
       const o = { track: 0.04, lead: 1.12 };
-      const size = Math.min(J.fitSize(text, Pm.font, W * 0.66, H * 0.4, o), u * 0.2);
+      const size = (recipe?.baseSize || Math.min(J.fitSize(text, Pm.font, W * 0.66, H * 0.4, o), u * 0.2)) * (recipe?.fontScale || 1);
       const m = J.measure(Object.assign({ text, font: Pm.font, size }, o));
-      const sw = Math.min(W * 0.86, m.w + size * 1.6) * shrink, sh = Math.min(H * 0.72, m.h + size * 1.4) * shrink;
+      const sw0 = Math.min(W * 0.86, m.w + size * (recipe?.sheetWriting ? .8 : 1.6)), sh0 = Math.min(H * 0.72, m.h + size * (recipe?.sheetWriting ? .8 : 1.4));
+      const sw = sw0 * shrink, sh = sh0 * shrink;
+      if (cut.placementLayoutsD === true) env.placementDGeometry = {kind:'origami',mode:'gate',text,size,writing:[m.w,m.h],sw:sw0,sh:sh0,shadow:[u*.012,u*.018]};
       if (sw < 2) return null;
       const x0 = cx - sw / 2, y0 = cy - sh / 2;
-      env.rect(x0 + u * 0.012, y0 + u * 0.018, sw, sh, darkOf(sc), 0.3 * out, false);
-      env.rect(x0, y0, sw, sh, paper, out, gIn(env));
-      env.line([[x0 + sw / 4, y0], [x0 + sw / 4, y0 + sh]], crease, 1, 0.8 * out, false);
-      env.line([[x0 + sw * 3 / 4, y0], [x0 + sw * 3 / 4, y0 + sh]], crease, 1, 0.8 * out, false);
+      source.rect(x0 + u * 0.012, y0 + u * 0.018, sw, sh, darkOf(sc), 0.3 * out, false);
+      source.rect(x0, y0, sw, sh, paper, out, gIn(env));
+      source.line([[x0 + sw / 4, y0], [x0 + sw / 4, y0 + sh]], crease, 1, 0.8 * out, false);
+      source.line([[x0 + sw * 3 / 4, y0], [x0 + sw * 3 / 4, y0 + sh]], crease, 1, 0.8 * out, false);
       const drawGate = under => { for (let k = 0; k < 2; k++) {
         const ph = flapAng(k), c = Math.cos(ph);
         if ((c < 0) !== under) continue;
@@ -2378,30 +2401,39 @@ reg('origami', {
         const skew = Math.sin(ph) * sh * 0.05;
         const pts = [[hx, y0], [ex, y0 - skew], [ex, y0 + sh + skew], [hx, y0 + sh]];
         const col = c > 0 ? shade(sc, back, -0.25 * (1 - c)) : shade(sc, paper, (k ? -0.09 : 0.03) * -c - 0.35 * (1 + c));
-        env.poly(pts, col, out, false);
-        if (c > 0) env.line([[ex, y0 - skew], [ex, y0 + sh + skew]], shade(sc, back, 0.25), 1.5, out, false);
-        else env.line([[hx, y0], [hx, y0 + sh]], crease, 1, out, false);
+        source.poly(pts, col, out, false);
+        if (c > 0) source.line([[ex, y0 - skew], [ex, y0 + sh + skew]], shade(sc, back, 0.25), 1.5, out, false);
+        else source.line([[hx, y0], [hx, y0 + sh]], crease, 1, out, false);
       } };
       drawGate(true);
-      bb = J.mainDraw(env, Object.assign({ text, font: Pm.font, size: size * shrink, x: cx, y: cy, color: tc, noHold: plateHold(env), mi: miAt(env, 0.15) }, o));
+      const item = Object.assign({ text, font: Pm.font, size: size * shrink, x: cx, y: cy, color: tc, noHold: plateHold(env), mi: miAt(env, 0.15) }, o);
+      if (nativeD) { item.size = size; item.sx = shrink; item.sy = shrink; }
+      bb = nativeD ? env.withDrawRole('primary', 'origami.text', () => J.mainDraw(env, item)) : J.mainDraw(env, item);
       drawGate(false);
       return bb || box(x0, y0, x0 + sw, y0 + sh);
     }
     // blintz: a diamond sheet, four corners folded to the centre and opened one by one
-    const S = Math.min(W * 0.84, H * 0.84, u * 0.95) * shrink;          // sheet diagonal
+    const nativeR = Math.min(W * .84, H * .84, u * .95) / 2;
+    const S = nativeR * 2 * shrink;
     if (S < 2) return null;
     const R = S / 2;
-    const C = [[cx, cy - R], [cx + R, cy], [cx, cy + R], [cx - R, cy]];
-    const M = C.map((p, i) => [(p[0] + C[(i + 1) % 4][0]) / 2, (p[1] + C[(i + 1) % 4][1]) / 2]);
-    env.poly(C.map(([x, y]) => [x + u * 0.012, y + u * 0.018]), darkOf(sc), 0.3 * out, false);
-    env.poly(C, paper, out, gIn(env));
-    // creases
-    for (let i = 0; i < 4; i++) env.line([M[i], M[(i + 1) % 4]], crease, 1, 0.8 * out, false);
-    env.line([C[0], C[2]], crease, 1, 0.35 * out, false); env.line([C[1], C[3]], crease, 1, 0.35 * out, false);
-    const text = n <= 4 ? text0 : brk(text0, n <= 9 ? Math.ceil(n / 2) : Math.ceil(n / 3));
+    const text = recipe?.columns ? brk(text0, recipe?.columns) : n <= 4 ? text0 : brk(text0, n <= 9 ? Math.ceil(n / 2) : Math.ceil(n / 3));
     const o = { track: 0.02, lead: 1.08 };
-    const inner = R * 0.94;                                        // side of the inner (axis-aligned) square ≈ R
-    const size = Math.min(J.fitSize(text, Pm.font, inner * 0.84, inner * 0.84, o), u * 0.2);
+    const inner = (nativeD ? nativeR : R) * 0.94;                                        // side of the inner (axis-aligned) square ≈ R
+    const fit = J.fitSize(text, Pm.font, inner * 0.84, inner * 0.84, o);
+    const size = (recipe?.baseSize || Math.min(fit, u * 0.2)) * (recipe?.fontScale || 1);
+    // Native blintz writing fit also contracts with R before the final shrink.
+    // Preserve that piecewise cap exactly with a fixed CSS font and CTM scale.
+    const typeFold = nativeD ? Math.min(fit * shrink, u * .2) / Math.min(fit, u * .2) : 1;
+    const m = nativeD ? J.measure({text,font:Pm.font,size,...o}) : null, writeR = recipe?.sheetWriting ? Math.min(nativeR, Math.max(m.w, m.h) / (.94 * .84) + size * .35) : nativeR, rx0 = writeR, ry0 = writeR, rx = rx0 * shrink, ry = ry0 * shrink;
+    if (cut.placementLayoutsD === true) env.placementDGeometry = {kind:'origami',mode:'blintz',text,size,writing:[m.w,m.h],rx:rx0,ry:ry0,shadow:[u*.012,u*.018]};
+    const C = [[cx, cy - ry], [cx + rx, cy], [cx, cy + ry], [cx - rx, cy]];
+    const M = C.map((p, i) => [(p[0] + C[(i + 1) % 4][0]) / 2, (p[1] + C[(i + 1) % 4][1]) / 2]);
+    source.poly(C.map(([x, y]) => [x + u * 0.012, y + u * 0.018]), darkOf(sc), 0.3 * out, false);
+    source.poly(C, paper, out, gIn(env));
+    // creases
+    for (let i = 0; i < 4; i++) source.line([M[i], M[(i + 1) % 4]], crease, 1, 0.8 * out, false);
+    source.line([C[0], C[2]], crease, 1, 0.35 * out, false); source.line([C[1], C[3]], crease, 1, 0.35 * out, false);
     // flaps (hinge = inner-square edge, apex travels centre → corner); opened flaps lie under the text, closed ones over it
     const drawFlaps = under => { for (let q = 0; q < 4; q++) {
       const k = (q + Pm.order) % 4;
@@ -2412,17 +2444,18 @@ reg('origami', {
       const apex = [hm[0] + (cx - hm[0]) * c, hm[1] + (cy - hm[1]) * c];
       const lk = [0.04, -0.1, -0.05, 0.02][k];
       const col = c > 0 ? shade(sc, back, -0.3 * (1 - c)) : shade(sc, paper, lk * -c - 0.32 * (1 + c));
-      env.poly([a, b, apex], col, out, false);
-      if (c > -0.95) env.line([a, apex, b], c > 0 ? shade(sc, back, 0.2) : crease, 1, out, false);
-      else env.line([a, b], crease, 1, out, false);
+      source.poly([a, b, apex], col, out, false);
+      if (c > -0.95) source.line([a, apex, b], c > 0 ? shade(sc, back, 0.2) : crease, 1, out, false);
+      else source.line([a, b], crease, 1, out, false);
     } };
     drawFlaps(true);
-    bb = J.mainDraw(env, Object.assign({ text, font: Pm.font, size: size * shrink, x: cx, y: cy, color: tc, noHold: plateHold(env), mi: miAt(env, 0.12) }, o));
+    const item = Object.assign({ text, font: Pm.font, size: size * shrink, x: cx, y: cy, color: tc, noHold: plateHold(env), mi: miAt(env, 0.12) }, o);
+    if (nativeD) { item.size = size; item.sx = shrink * typeFold; item.sy = shrink * typeFold; }
+    bb = nativeD ? env.withDrawRole('primary', 'origami.text', () => J.mainDraw(env, item)) : J.mainDraw(env, item);
     drawFlaps(false);
     return bb || box(cx - R, cy - R, cx + R, cy + R);
   },
 });
-
 /* ================================================================== 27 zipper — ジッパー */
 reg('zipper', {
   name: 'ジッパー', tags: ['pop', 'graphic', 'emotional'], w: 0.7, busy: true, ae: 'center', portrait: 1.1, fits: n => n >= 1 && n <= 14,
