@@ -1,0 +1,933 @@
+{
+  "scope": "Entire CDP interval, including possible idle/protocol/UI control-gap samples; not a finalization-only percentage denominator",
+  "units": "microseconds estimated by CPU sample timeDeltas",
+  "sampledUs": 819473,
+  "profileDurationUs": 819842,
+  "samples": 2501,
+  "nodeCount": 95,
+  "topSelf": [
+    {
+      "functionName": "(program)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 383050,
+      "inclusiveUs": 383050,
+      "selfSamples": 70
+    },
+    {
+      "functionName": "readCompletedPayload",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12347,
+      "columnNumberZeroBased": 29,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 106653,
+      "inclusiveUs": 110400,
+      "selfSamples": 618
+    },
+    {
+      "functionName": "freeze",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10907,
+      "columnNumberZeroBased": 13,
+      "module": "src/09a_placement.js",
+      "selfUs": 92355,
+      "inclusiveUs": 92355,
+      "selfSamples": 532
+    },
+    {
+      "functionName": "visit",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12244,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 50863,
+      "inclusiveUs": 51337,
+      "selfSamples": 296
+    },
+    {
+      "functionName": "signature",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10900,
+      "columnNumberZeroBased": 16,
+      "module": "src/09a_placement.js",
+      "selfUs": 37320,
+      "inclusiveUs": 37320,
+      "selfSamples": 214
+    },
+    {
+      "functionName": "(garbage collector)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 31520,
+      "inclusiveUs": 31520,
+      "selfSamples": 97
+    },
+    {
+      "functionName": "cacheDependencyEncode",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12449,
+      "columnNumberZeroBased": 30,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 28546,
+      "inclusiveUs": 34233,
+      "selfSamples": 164
+    },
+    {
+      "functionName": "encode",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 18326,
+      "inclusiveUs": 18326,
+      "selfSamples": 103
+    },
+    {
+      "functionName": "read",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12381,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 11818,
+      "inclusiveUs": 11818,
+      "selfSamples": 67
+    },
+    {
+      "functionName": "walk",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12437,
+      "columnNumberZeroBased": 40,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 11664,
+      "inclusiveUs": 11828,
+      "selfSamples": 67
+    },
+    {
+      "functionName": "cacheDependencies",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12433,
+      "columnNumberZeroBased": 26,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 8937,
+      "inclusiveUs": 55510,
+      "selfSamples": 50
+    },
+    {
+      "functionName": "cacheEncode",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12240,
+      "columnNumberZeroBased": 20,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 8355,
+      "inclusiveUs": 59864,
+      "selfSamples": 48
+    },
+    {
+      "functionName": "polygon",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12383,
+      "columnNumberZeroBased": 15,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 5439,
+      "inclusiveUs": 5439,
+      "selfSamples": 32
+    },
+    {
+      "functionName": "readFinalCache",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12471,
+      "columnNumberZeroBased": 21,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 5117,
+      "inclusiveUs": 197562,
+      "selfSamples": 30
+    },
+    {
+      "functionName": "verifyCacheContext",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12470,
+      "columnNumberZeroBased": 27,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 4561,
+      "inclusiveUs": 61819,
+      "selfSamples": 26
+    },
+    {
+      "functionName": "at",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12352,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 3405,
+      "inclusiveUs": 3405,
+      "selfSamples": 20
+    },
+    {
+      "functionName": "rows",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12459,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 2233,
+      "inclusiveUs": 3805,
+      "selfSamples": 13
+    },
+    {
+      "functionName": "scalar",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12458,
+      "columnNumberZeroBased": 14,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 1744,
+      "inclusiveUs": 1744,
+      "selfSamples": 10
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12397,
+      "columnNumberZeroBased": 201,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 1732,
+      "inclusiveUs": 12816,
+      "selfSamples": 10
+    },
+    {
+      "functionName": "beginFinalCache",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12466,
+      "columnNumberZeroBased": 22,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 1218,
+      "inclusiveUs": 76636,
+      "selfSamples": 7
+    },
+    {
+      "functionName": "payloadGuard",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12286,
+      "columnNumberZeroBased": 21,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 856,
+      "inclusiveUs": 856,
+      "selfSamples": 5
+    },
+    {
+      "functionName": "fields",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12394,
+      "columnNumberZeroBased": 14,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 717,
+      "inclusiveUs": 6200,
+      "selfSamples": 4
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12251,
+      "columnNumberZeroBased": 73,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 474,
+      "inclusiveUs": 474,
+      "selfSamples": 3
+    },
+    {
+      "functionName": "TextEncoder",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 343,
+      "inclusiveUs": 343,
+      "selfSamples": 2
+    },
+    {
+      "functionName": "parseEvaluationResultValue",
+      "url": "",
+      "lineNumberZeroBased": 105,
+      "columnNumberZeroBased": 35,
+      "module": null,
+      "selfUs": 205,
+      "inclusiveUs": 205,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "tick",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 46482,
+      "columnNumberZeroBased": 13,
+      "module": "src/12_ui.js",
+      "selfUs": 186,
+      "inclusiveUs": 186,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "edgeArrayGuard",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12372,
+      "columnNumberZeroBased": 23,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 175,
+      "inclusiveUs": 175,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "edgeEmpty",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12377,
+      "columnNumberZeroBased": 16,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 174,
+      "inclusiveUs": 174,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "A.layoutsAOptionsFinite",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 11434,
+      "columnNumberZeroBased": 24,
+      "module": "src/09c_layoutsA_placement.js",
+      "selfUs": 174,
+      "inclusiveUs": 174,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12444,
+      "columnNumberZeroBased": 288,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 173,
+      "inclusiveUs": 173,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "measurementContext",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10635,
+      "columnNumberZeroBased": 27,
+      "module": "src/09a_placement.js",
+      "selfUs": 173,
+      "inclusiveUs": 173,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "each",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12382,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 171,
+      "inclusiveUs": 19877,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "data",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12453,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 171,
+      "inclusiveUs": 171,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "next",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 166,
+      "inclusiveUs": 166,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "",
+      "url": "",
+      "lineNumberZeroBased": 0,
+      "columnNumberZeroBased": 1,
+      "module": null,
+      "selfUs": 164,
+      "inclusiveUs": 404384,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "cacheID",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12235,
+      "columnNumberZeroBased": 14,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 164,
+      "inclusiveUs": 164,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "evaluate",
+      "url": "",
+      "lineNumberZeroBased": 304,
+      "columnNumberZeroBased": 10,
+      "module": null,
+      "selfUs": 131,
+      "inclusiveUs": 404220,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "(root)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 0,
+      "inclusiveUs": 819473,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "J.finalizePlacementPlan",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10911,
+      "columnNumberZeroBased": 26,
+      "module": "src/09a_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 403884,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "",
+      "url": "",
+      "lineNumberZeroBased": 0,
+      "columnNumberZeroBased": 0,
+      "module": null,
+      "selfUs": 0,
+      "inclusiveUs": 403884,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "edgeRegisterFinal",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12379,
+      "columnNumberZeroBased": 26,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 20226,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12397,
+      "columnNumberZeroBased": 123,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 19705,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12397,
+      "columnNumberZeroBased": 40,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 19877,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12460,
+      "columnNumberZeroBased": 265,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 172,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "A.measurementContext",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10634,
+      "columnNumberZeroBased": 21,
+      "module": "src/09a_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 173,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "eligible",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12450,
+      "columnNumberZeroBased": 16,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 171,
+      "selfSamples": 0
+    }
+  ],
+  "topInclusive": [
+    {
+      "functionName": "(root)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 0,
+      "inclusiveUs": 819473,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "",
+      "url": "",
+      "lineNumberZeroBased": 0,
+      "columnNumberZeroBased": 1,
+      "module": null,
+      "selfUs": 164,
+      "inclusiveUs": 404384,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "evaluate",
+      "url": "",
+      "lineNumberZeroBased": 304,
+      "columnNumberZeroBased": 10,
+      "module": null,
+      "selfUs": 131,
+      "inclusiveUs": 404220,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "J.finalizePlacementPlan",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10911,
+      "columnNumberZeroBased": 26,
+      "module": "src/09a_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 403884,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "",
+      "url": "",
+      "lineNumberZeroBased": 0,
+      "columnNumberZeroBased": 0,
+      "module": null,
+      "selfUs": 0,
+      "inclusiveUs": 403884,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "(program)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 383050,
+      "inclusiveUs": 383050,
+      "selfSamples": 70
+    },
+    {
+      "functionName": "readFinalCache",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12471,
+      "columnNumberZeroBased": 21,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 5117,
+      "inclusiveUs": 197562,
+      "selfSamples": 30
+    },
+    {
+      "functionName": "readCompletedPayload",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12347,
+      "columnNumberZeroBased": 29,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 106653,
+      "inclusiveUs": 110400,
+      "selfSamples": 618
+    },
+    {
+      "functionName": "freeze",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10907,
+      "columnNumberZeroBased": 13,
+      "module": "src/09a_placement.js",
+      "selfUs": 92355,
+      "inclusiveUs": 92355,
+      "selfSamples": 532
+    },
+    {
+      "functionName": "beginFinalCache",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12466,
+      "columnNumberZeroBased": 22,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 1218,
+      "inclusiveUs": 76636,
+      "selfSamples": 7
+    },
+    {
+      "functionName": "verifyCacheContext",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12470,
+      "columnNumberZeroBased": 27,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 4561,
+      "inclusiveUs": 61819,
+      "selfSamples": 26
+    },
+    {
+      "functionName": "cacheEncode",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12240,
+      "columnNumberZeroBased": 20,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 8355,
+      "inclusiveUs": 59864,
+      "selfSamples": 48
+    },
+    {
+      "functionName": "cacheDependencies",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12433,
+      "columnNumberZeroBased": 26,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 8937,
+      "inclusiveUs": 55510,
+      "selfSamples": 50
+    },
+    {
+      "functionName": "visit",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12244,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 50863,
+      "inclusiveUs": 51337,
+      "selfSamples": 296
+    },
+    {
+      "functionName": "signature",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10900,
+      "columnNumberZeroBased": 16,
+      "module": "src/09a_placement.js",
+      "selfUs": 37320,
+      "inclusiveUs": 37320,
+      "selfSamples": 214
+    },
+    {
+      "functionName": "cacheDependencyEncode",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12449,
+      "columnNumberZeroBased": 30,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 28546,
+      "inclusiveUs": 34233,
+      "selfSamples": 164
+    },
+    {
+      "functionName": "(garbage collector)",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 31520,
+      "inclusiveUs": 31520,
+      "selfSamples": 97
+    },
+    {
+      "functionName": "edgeRegisterFinal",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12379,
+      "columnNumberZeroBased": 26,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 20226,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "each",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12382,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 171,
+      "inclusiveUs": 19877,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12397,
+      "columnNumberZeroBased": 40,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 19877,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12397,
+      "columnNumberZeroBased": 123,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 19705,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "encode",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 18326,
+      "inclusiveUs": 18326,
+      "selfSamples": 103
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12397,
+      "columnNumberZeroBased": 201,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 1732,
+      "inclusiveUs": 12816,
+      "selfSamples": 10
+    },
+    {
+      "functionName": "walk",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12437,
+      "columnNumberZeroBased": 40,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 11664,
+      "inclusiveUs": 11828,
+      "selfSamples": 67
+    },
+    {
+      "functionName": "read",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12381,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 11818,
+      "inclusiveUs": 11818,
+      "selfSamples": 67
+    },
+    {
+      "functionName": "fields",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12394,
+      "columnNumberZeroBased": 14,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 717,
+      "inclusiveUs": 6200,
+      "selfSamples": 4
+    },
+    {
+      "functionName": "polygon",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12383,
+      "columnNumberZeroBased": 15,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 5439,
+      "inclusiveUs": 5439,
+      "selfSamples": 32
+    },
+    {
+      "functionName": "rows",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12459,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 2233,
+      "inclusiveUs": 3805,
+      "selfSamples": 13
+    },
+    {
+      "functionName": "at",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12352,
+      "columnNumberZeroBased": 12,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 3405,
+      "inclusiveUs": 3405,
+      "selfSamples": 20
+    },
+    {
+      "functionName": "scalar",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12458,
+      "columnNumberZeroBased": 14,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 1744,
+      "inclusiveUs": 1744,
+      "selfSamples": 10
+    },
+    {
+      "functionName": "payloadGuard",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12286,
+      "columnNumberZeroBased": 21,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 856,
+      "inclusiveUs": 856,
+      "selfSamples": 5
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12251,
+      "columnNumberZeroBased": 73,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 474,
+      "inclusiveUs": 474,
+      "selfSamples": 3
+    },
+    {
+      "functionName": "TextEncoder",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 343,
+      "inclusiveUs": 343,
+      "selfSamples": 2
+    },
+    {
+      "functionName": "parseEvaluationResultValue",
+      "url": "",
+      "lineNumberZeroBased": 105,
+      "columnNumberZeroBased": 35,
+      "module": null,
+      "selfUs": 205,
+      "inclusiveUs": 205,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "tick",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 46482,
+      "columnNumberZeroBased": 13,
+      "module": "src/12_ui.js",
+      "selfUs": 186,
+      "inclusiveUs": 186,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "edgeArrayGuard",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12372,
+      "columnNumberZeroBased": 23,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 175,
+      "inclusiveUs": 175,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "edgeEmpty",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12377,
+      "columnNumberZeroBased": 16,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 174,
+      "inclusiveUs": 174,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "A.layoutsAOptionsFinite",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 11434,
+      "columnNumberZeroBased": 24,
+      "module": "src/09c_layoutsA_placement.js",
+      "selfUs": 174,
+      "inclusiveUs": 174,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12444,
+      "columnNumberZeroBased": 288,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 173,
+      "inclusiveUs": 173,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "measurementContext",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10635,
+      "columnNumberZeroBased": 27,
+      "module": "src/09a_placement.js",
+      "selfUs": 173,
+      "inclusiveUs": 173,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "A.measurementContext",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 10634,
+      "columnNumberZeroBased": 21,
+      "module": "src/09a_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 173,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12460,
+      "columnNumberZeroBased": 265,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 172,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "data",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12453,
+      "columnNumberZeroBased": 13,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 171,
+      "inclusiveUs": 171,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "eligible",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12450,
+      "columnNumberZeroBased": 16,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 0,
+      "inclusiveUs": 171,
+      "selfSamples": 0
+    },
+    {
+      "functionName": "next",
+      "url": "",
+      "lineNumberZeroBased": -1,
+      "columnNumberZeroBased": -1,
+      "module": null,
+      "selfUs": 166,
+      "inclusiveUs": 166,
+      "selfSamples": 1
+    },
+    {
+      "functionName": "cacheID",
+      "url": "http://127.0.0.1:36527/",
+      "lineNumberZeroBased": 12235,
+      "columnNumberZeroBased": 14,
+      "module": "src/09g_layoutsC_placement.js",
+      "selfUs": 164,
+      "inclusiveUs": 164,
+      "selfSamples": 1
+    }
+  ],
+  "inclusiveCaveat": "Ancestors overlap. Do not sum inclusive rows. Recursive occurrences of one function/location count once per sample; self rows partition sampled time."
+}

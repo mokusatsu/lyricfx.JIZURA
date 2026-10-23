@@ -1,0 +1,9 @@
+# AVOID-008 dense decoded freeze paired browser01
+
+One parent-authorized invocation from spec229/runtime03 helper5a37939da4cc28f2399412b8fb6f1f0357d8409f, unchanged product6b9720647402961fb92fe04c544f91d31762d7f3 versus prior2f full84. Model gpt-6.1-sol medium.40normal+2separate corner targets,84fast reads/72native frames per realm,144total. All fields compare exactly with no projection/diagnostic exclusion, including programs/alias/geometry/pixels/observations/errors and all old cache counters.
+
+Raw results.json.gz SHA256c820579dbb6aa6be49d4c5145ad573d03ad971bf50f3b2180444934dc823f772 (2462126bytes). Baseline/candidate full ordered result SHA both e0a7404f95a3c7081c42d1e0b82762a41d9e9ead7c75b17acf5cdcab44331993; canonical78a186beacc2659c1780a4b2bf9af6a3535c5cc5c4965d1cb71f69d9779dd774. Full deep/ordered/canonical true, all row/target SHA retained in raw. Errors/input/package drift empty; fixed baseline archive unchanged.112 input archives verified by compressed and decoded SHA; existing samebytes referenced, only truly changed inputs newly archived.
+
+Actual node390522/startTicks11658582, Python390517 Popen.wait kernel0/reapedtrue/gonetrue. Awaited browser/server close, before/after livejobs0, Z separate. Full execution.json.gz/stdout.log.gz retained. Prelaunch309641216bytes, wrapper post-results-save302501888bytes free, above250MiB; no monitor violations. Product/helper/gate unchanged, no retry.
+
+No timing/performance/CDP/images/video/additional security/mutation/fuzz/public verification. Historical performance failures and prior reserve violation retained. Current765fixture/4addcorpus formal1000 remains unverified, not proven by an older fixture failure. Parent raw review pending; only original100 preparation is separately authorized, timing requires new gate/authorization.
