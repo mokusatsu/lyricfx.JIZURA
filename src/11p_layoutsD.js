@@ -1059,6 +1059,8 @@ reg('pile', {
     const nativeSurf = x => yBase + rise - Hm / (1 + Math.pow((x - cx) / sig, 4)) + bump(x);
     const trial = nativeD && cut.layoutDRecipe ? J.placement.pilePhysicalFrame(env,{cx,sig,Hm,yBase,size,nativeSurf,rows:rowsT}) : null;
     const surf = trial ? trial.surface : nativeSurf;
+    const materialOut = trial?.entranceApplied ? out * trial.materialAlpha : out;
+    if(nativeD&&trial?.entranceApplied)catalog.entrance={kind:'pile-native-entry-v2',materialAlpha:trial.materialAlpha,launchDelta:trial.launchDelta,clock:lt,fadeClock:.5};
     // heap of small glyphs under the surface (one item, glyphs placed by charFn)
     const pool = poolOf(cut), NP = pool.length;
     const cell = J.clamp(u * 0.045, 16, 60);
@@ -1069,7 +1071,7 @@ reg('pile', {
     mound.push([trial?trial.bodyX(W*1.02):W*1.02,trial?trial.floor:H+4],[trial?trial.bodyX(-W*.02):-W*.02,trial?trial.floor:H+4]);
     if(nativeD&&trial)catalog.physicalTrial={kind:'diagnostic-only',recipe:JSON.parse(JSON.stringify(cut.layoutDRecipe)),native:{cx,sig,Hm,yBase}};
     if(nativeD)Object.assign(catalog,{port,t0,n,nR,rows:rowsT.slice(),size,maxTot,cx,sig,yBase,Hm,rise,out,cell,pool:pool.slice(),mound});
-    owned('mound',()=>env.poly(mound, J.mix(sc.bg, sc.sub, 0.14), out, false));
+    owned('mound',()=>env.poly(mound, J.mix(sc.bg, sc.sub, 0.14), materialOut, false));
     const colsN = Math.ceil(W / cell) + 2, depth = Math.max(3, Math.min(5, Math.floor(200 / colsN)));
     if(nativeD)Object.assign(catalog,{colsN,depth,cap:200,heapFont:Pm.hf,heapSize:cell*.8});
     for (let gx = -1; gx < colsN - 1 && heap.length < 200; gx++) {
@@ -1087,7 +1089,7 @@ reg('pile', {
     }
     if(nativeD)freeze(heap); // Saved charFn closes over this immutable frame snapshot.
     if (env.pass === 'main' && heap.length) {
-      const it = { text: heap.map(q => q.ch).join(''), font: Pm.hf, size: cell * 0.8, x: 0, y: 0, color: sc.sub, ghost: false, alpha: out };
+      const it = { text: heap.map(q => q.ch).join(''), font: Pm.hf, size: cell * 0.8, x: 0, y: 0, color: sc.sub, ghost: false, alpha: materialOut };
       it._lay = J.layoutText(it);
       it.charFn = (i, g) => { const q = heap[i]; return q ? { dx: q.x - g.x, dy: q.y - g.y, rot: q.r, a: q.a, color: q.c ? sc.accent : null } : { hide: true }; };
       if(nativeD)it.placementDSource={kind:'pile-heap',glyphs:catalog.heap};
