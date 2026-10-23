@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-23T22:45:29.921484+00:00",
+  "status": "PARENT_INDEPENDENT_ARCHIVE_RESTORE_MATH_VERIFIED",
+  "archive": "tasks/evidence/AVOID-009/pile-adapter10/pile-adapter10-thin.tar.xz",
+  "archiveBytes": 1082600,
+  "archiveSHA256": "7f4645cfb386afb3bd4811f4d51b6a4acdfc95489378aae323ea27971a29d8a3",
+  "GitBlob": "188b8baec649554d382cedd98e8190d53cda1382",
+  "workingCopy": "Intentionallyabsent skip-worktree; canonicalGitblob verified, originaltmp retained",
+  "absentSkipArchiveCount": 17,
+  "existing14Preserved": true,
+  "additionalOwnedWorkingCopiesReleased": "owned-archive-working-storage10.json",
+  "parentArtifactPinsActualVerified": 140,
+  "actualRestoredNonRuntimeInputs": 932,
+  "nativeFontTargets": 91,
+  "actualHistoricalHTMLRebuilt": 16,
+  "capturedEvidenceFiles": 8,
+  "prior09RawFromVerifiedGitBlob": true,
+  "parentMathBothRunsExactlyMatched": {
+    "allMathMatched": true,
+    "runtimeRehashed": false,
+    "results": [
+      {
+        "run": "run01",
+        "independentGeometryExactlyMatchesActualParent": true,
+        "runnerOverallPassed": false,
+        "originalRunnerFailureCount": 2
+      },
+      {
+        "run": "run02",
+        "independentGeometryExactlyMatchesActualParent": true,
+        "runnerOverallPassed": true,
+        "originalRunnerFailureCount": 0
+      }
+    ]
+  },
+  "runtimeCASExternal": 567,
+  "standaloneRuntime": false,
+  "productCommit": "064cd99978bc19e23051352e2bbdca0258d03220",
+  "productPush": "73660CLOSEDexit0 bc331f4..064cd99 work -> work",
+  "parentImages": 0,
+  "publicChecks": 0,
+  "restoreInstructions": "Extractarchive in /tmp. python verify-artifacts.py; python restore-inputs.py --repo /path/to/repo --out /tmp/fresh; python recompute-parent-checks.py --restored-root /tmp/fresh/consumed --out /tmp/freshmath; originals preserved; runtimeCAS external."
+}
