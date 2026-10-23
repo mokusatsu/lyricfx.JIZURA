@@ -1,0 +1,11 @@
+# Original1000ON pipeline CPU diagnostic preparation
+
+Product1b unchanged. One fresh candidate1000ON page, samefontsetup as original6cc runner. Execute unmodified765 CPerfFixture.run(J,{n:1000,on:true,side:candidate,config:fixedformal.config,fonts}) once. This is original3warm6samples80render16warm,diagnosticfalse; configformaltrue is originalworkload metadata, helper formalExecuted/performanceQualified false and no thresholds evaluated. No extra prewarm/GC/source reuse/baseline/100diagnostic.
+
+During CPUwindow only two thin named wrappers profileSource and profileFinal incrementcalls and Reflect.apply original J.plan/finalizer withsame this/args; installed once beforefixture and finallyrestored. Fixture itself controls caches/normalization/recordreplay/80frames/fontqualification unchanged. Require9source/9finalcalls,9savednormalizedhashes,1000cuts/regions/staged,34IDscounts/registration/render,80record80replay80observations/0errors,alloriginalfunctionalflags includingfontqualification. Fullframeclocks/layout/error andeveryholdclockobservation compare to fixedcurrentformal7f99raw. Originalparts/measuredtimes retained diagnostically only.
+
+One100us CPUprofile covers wholeoriginalfixture.run:source/final wrappers,normalize/hash,realframe render,posttimingfontqualification and control. Full84UTF16HTMLlinemap plusfixture.js auxiliarymap andhelperwrapperpin allow ancestorfilter; top60self/inclusive labeled wholewindow withcontrol/GC/idle. Do not sumoverlappinginclusive or infer causalGC/time/memory quantities. CPUraw first/tmp then gzip; HTML usesownslotbrowser/formal samebytesrefs, no newHTMLcopies.
+
+Bound600s helper/630s wrapper with250MiBreserve and post-save disk, realPID/startTicks/Popen.wait/kernel/reap/gone, beforeafterlivejobs/Z separately, awaitedCDP/page/browser/serverclose. PartialCPU/lastprogress/partialwrappercounts saved onfailure, no retry. Proxy/CA/TLS inherited, loopbackonly/externalabort. Parent gate mode candidate1000-on-original-nine-pipeline-cpu-profile,expectedSourceCalls9/expectedFinalCalls9/profiledRenderFrames80/maxWallMs600000/sampling100/runtime04spec230/formal1000Authorizedfalse.
+
+86product/173actualpackages/fixed6cc7654add/runtime04/formalraw pins verified, syntax/reversepatch pass. Browser/CDP0. PreviousformalFAIL inclsource862.4sample remains; no sourcechanges or performancepass.

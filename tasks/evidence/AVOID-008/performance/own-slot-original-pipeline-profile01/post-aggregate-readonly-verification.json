@@ -1,0 +1,29 @@
+{
+  "scope": "Read-only checks of savedpipeline, not claims that original post-aggregate code executed",
+  "rawGzipSHA256": "002b8fb6b2ba0a9932eccf596ed20795ef9f4bb60e43c6521a3e64e727c4dfc9",
+  "referenceGzipSHA256": "7f99fdfe616073370a0571227b5da6492e7dfd3d6a10de02dbd2f012c31e5d94",
+  "checks": {
+    "nineSourceFinalCalls": true,
+    "nineParts": true,
+    "threeWarmSixMeasured": true,
+    "nineInputHashes": true,
+    "projectAndNormalizedHash": true,
+    "all34IDs": true,
+    "actual80RecordReplay": true,
+    "actual80Observations": true,
+    "actual80ClocksAnd16Warm": true,
+    "countsAndCoverage": true,
+    "actualPipelineValid": true,
+    "pinnedFontCorpusQualified": true,
+    "wrapperRestored": true
+  },
+  "allTrue": true,
+  "originalReportErrorsUnchanged": [
+    {
+      "message": "The expression evaluated to a falsy value:\n\n  assert(Number.isFinite(weight)&&weight>=0)\n",
+      "stack": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(Number.isFinite(weight)&&weight>=0)\n\n    at aggregate (/workspace/avoid008-final-c34/dev/avoidance/layouts-c-own-slot-original-pipeline-profile.cjs:23:77)\n    at stop (/workspace/avoid008-final-c34/dev/avoidance/layouts-c-own-slot-original-pipeline-profile.cjs:36:551)\n    at async /workspace/avoid008-final-c34/dev/avoidance/layouts-c-own-slot-original-pipeline-profile.cjs:39:85"
+    }
+  ],
+  "originalKernelExitCode": 1,
+  "formalQualification": false
+}

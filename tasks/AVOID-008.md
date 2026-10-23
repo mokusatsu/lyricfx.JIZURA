@@ -7,6 +7,8 @@
 
 ## 2026-10-23 JST 現在の指示と開始記録
 
+- [元1000ON pipeline CPU診断を親独立照合](evidence/AVOID-008/parent-own-slot-original-pipeline-profile01-review.json)。actual231/231/runtime05（230との因果比較なし）、元9source/9final・全9入力・34IDs・80record/replay/全観測は一致。CPU集計のnegative5delta/−67usで原kernel1・errorは保持、saved結果は別read-only照合成功。全373600samplesをdrop/clampせずsigned集計、source→final祖先で9iterationを分離し、cold支配区間を除くiteration3..8だけはsource2521041us/final2143139us。GC/controlのoutsideは内部へ配賦せず、正式合格や遅延原因とは断定しない。warm source自己時間composeLyricArea735141usを根拠に、候補採点の一時map配列を同じ3/5項算術へ展開する最小修正を指定担当がsource/pureで実装中。main未採用・4構図未回答・009以降未着手、公開結果確認は禁止維持。
+
 - own-slot repair版1b70480は[親23正常/属性/alias/fresh再実行](evidence/AVOID-008/parent-own-slot-repair01-review.json)と[全field144frame比較](evidence/AVOID-008/parent-own-slot-repair-browser01-review.json)に成功。[元正式性能の親再計算](evidence/AVOID-008/parent-own-slot-repair-formal01-review.json)は100ON1.810倍/+2.2ms、100OFF1.934倍/+0.7ms、1000ON3.188倍/+1.8ms、1000OFF1.770倍/−2.6ms。全描画と計画3条件は内だが1000ON計画は未達、source862.4msの1点も原p95へ含めFAIL保持。製品不変で元9iterationの新規J.planを含むcandidate1000ON CPU診断を準備し、旧同一source再利用診断では不明だったsource/復元/GC等を切り分ける。強制GC/予熱追加/fixtureや期待値変更/正式再試行はしない。main未採用、4構図未回答、009以降未着手、公開結果確認は禁止維持。
 
 - JSON token直接構築e3fe0f0は[親50正常byte/rejection oracle](evidence/AVOID-008/parent-native-json-token01-review.json)と[全field144frame比較](evidence/AVOID-008/parent-native-json-token-browser01-review.json)に成功したが、[元正式性能](evidence/AVOID-008/parent-native-json-token-formal01-review.json)で100ON2.936倍/+4.1ms、100OFF1.887倍/+0.7ms、1000ON1.466倍/+10.7ms、1000OFF2.520倍/+1.1msとなり不採用。FAILを保持し、8608b962で製品86ファイルを5eへbyteexact復元済み。prefix resolver案も未実装で見送り、既存profileの復元本体負荷を対象にfresh decodeの検証済own data slot repairで属性オブジェクトの再生成を省く最小案を指定担当がsource/pure実装中。main製品未採用、4構図未回答、009以降未着手。公開結果確認は行わない。
