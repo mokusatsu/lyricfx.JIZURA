@@ -1,0 +1,501 @@
+{
+  "task": "AVOID-009",
+  "build": "flipcards-selected-20261024-01",
+  "scope": "One selected flipCards intent comparison only. No full-family, AVOID-009 completion, or new performance acceptance claim.",
+  "baselineCommit": "1b0d901cb75ce6966484a0bb8d8b51c0ecddf6a3",
+  "baselineLabel": "D回避導入前",
+  "afterLabel": "回避試作",
+  "publicChecks": 0,
+  "parentMediaViews": 0,
+  "creatorVisualInspection": false,
+  "sourceSnapshot": "/tmp/avoid009-flipcards-canonical01",
+  "sourceManifestSHA256": "9c67a70625eb26d9bb3754b9255ddd510c9e649b3e9e329a5922cd04be9848fd",
+  "sourceManifestScope": "Pinned Noto single-face ordinary local functional/geometry tests. Parent code/raw review pending. No media/public result checks. No family/AVOID-009 completion claim.",
+  "runnerSHA256": "e69bcb87f6ed485aad32eb0a52782658c34d35f28378146a73190be773b93abc",
+  "singleFont": {
+    "file": "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a"
+  },
+  "baselineHTMLSHA256": "80c8e20a10705bb2ebe4bc737ce81777e07890da97c6d66fc6846118b9c6cf6d",
+  "baselineSemantics": "Whole Git1b0d901 product HTML, identical fixture conditions and avoidCenter setting, rendered native without D finalization/placementD flag. This shows the original effect rather than the unsupported-D selection exclusion. No baseline source replacement.",
+  "fixturePins": {
+    "layouts-a-fixture.js": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+  },
+  "capture": {
+    "fps": 60,
+    "frames": 240,
+    "duration": 4,
+    "clock": "n/60; frame0 through239; native Canvas intrinsic dimensions; no HUD/post; no frame interpolation",
+    "stillFrames": [
+      15,
+      90,
+      117,
+      228
+    ],
+    "deviceScaleFactor": 1,
+    "viewport": [
+      1280,
+      1000
+    ],
+    "inputTransform": "Both fixture source plans set fps60 before D finalization; fixture defaults24, which would repeat native24 clocks in a60fps container. No source/params/font changes."
+  },
+  "preflight": [
+    {
+      "case": "d09-flipcards-table-ltr",
+      "side": "before",
+      "safety": "D avoidance absent",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "order": "ltr",
+        "table": true,
+        "back": "accent",
+        "peek": true,
+        "idx": true
+      },
+      "sourceArea": null
+    },
+    {
+      "case": "d09-flipcards-table-ltr",
+      "side": "after",
+      "safety": "certified-bounded-adapter",
+      "fontLoaded": true,
+      "params": {
+        "font": "gothic_black",
+        "order": "ltr",
+        "table": true,
+        "back": "accent",
+        "peek": true,
+        "idx": true
+      },
+      "sourceArea": null
+    }
+  ],
+  "cases": [
+    {
+      "id": "d09-flipcards-table-ltr",
+      "spec": {
+        "id": "d09-flipcards-table-ltr",
+        "layout": "flipCards",
+        "W": 960,
+        "H": 540,
+        "text": "風の先へ",
+        "params": {
+          "order": "ltr",
+          "table": true,
+          "back": "accent",
+          "peek": true,
+          "idx": true
+        },
+        "fontMode": "single",
+        "look": "カードの形、二行の主文字、小字、上下の裏向きカードと覗く動きが自然か。",
+        "cx": 0.5,
+        "cy": 0.42,
+        "radius": 0.2,
+        "seed": 704,
+        "renderFPS": 60
+      },
+      "sides": {
+        "before": {
+          "actualInputs": "d09-flipcards-table-ltr-before-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "D avoidance absent",
+          "video": "videos/d09-flipcards-table-ltr-before.mp4",
+          "keys": [
+            {
+              "file": "images/d09-flipcards-table-ltr-before-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flipcards-table-ltr-before-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flipcards-table-ltr-before-117.png",
+              "frame": 117,
+              "time": 1.95,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flipcards-table-ltr-before-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-flipcards-table-ltr-before-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "422046",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-flipcards-selected-20261024-01/review/videos/d09-flipcards-table-ltr-before.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "214561",
+              "bit_rate": "429122",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        },
+        "after": {
+          "actualInputs": "d09-flipcards-table-ltr-after-inputs.json.gz",
+          "pageErrors": [],
+          "preflightSafety": "certified-bounded-adapter",
+          "video": "videos/d09-flipcards-table-ltr-after.mp4",
+          "keys": [
+            {
+              "file": "images/d09-flipcards-table-ltr-after-15.png",
+              "frame": 15,
+              "time": 0.25,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flipcards-table-ltr-after-90.png",
+              "frame": 90,
+              "time": 1.5,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flipcards-table-ltr-after-117.png",
+              "frame": 117,
+              "time": 1.95,
+              "width": 960,
+              "height": 540
+            },
+            {
+              "file": "images/d09-flipcards-table-ltr-after-228.png",
+              "frame": 228,
+              "time": 3.8,
+              "width": 960,
+              "height": 540
+            }
+          ],
+          "frameReceipt": "d09-flipcards-table-ltr-after-frames.json.gz",
+          "distinctEncoderInputPNGs": 240,
+          "probe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "High",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "width": 960,
+                "height": 540,
+                "coded_width": 960,
+                "coded_height": 540,
+                "closed_captions": 0,
+                "film_grain": 0,
+                "has_b_frames": 2,
+                "pix_fmt": "yuv420p",
+                "level": 32,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "60/1",
+                "avg_frame_rate": "60/1",
+                "time_base": "1/15360",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 61440,
+                "duration": "4.000000",
+                "bit_rate": "394092",
+                "bits_per_raw_sample": "8",
+                "nb_frames": "240",
+                "extradata_size": 46,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "vendor_id": "[0][0][0][0]",
+                  "encoder": "Lavc61.19.101 libx264"
+                }
+              }
+            ],
+            "format": {
+              "filename": "/tmp/avoid009-flipcards-selected-20261024-01/review/videos/d09-flipcards-table-ltr-after.mp4",
+              "nb_streams": 1,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "4.000000",
+              "size": "200608",
+              "bit_rate": "401216",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2avc1mp41",
+                "encoder": "Lavf61.7.103"
+              }
+            }
+          },
+          "encoderArgs": [
+            "-y",
+            "-f",
+            "image2pipe",
+            "-vcodec",
+            "png",
+            "-framerate",
+            "60",
+            "-i",
+            "pipe:0",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "medium",
+            "-crf",
+            "17",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart"
+          ]
+        }
+      }
+    }
+  ],
+  "assets": {
+    "source-manifest.json": {
+      "bytes": 26897,
+      "sha256": "9c67a70625eb26d9bb3754b9255ddd510c9e649b3e9e329a5922cd04be9848fd"
+    },
+    "capture.cjs": {
+      "bytes": 14253,
+      "sha256": "e69bcb87f6ed485aad32eb0a52782658c34d35f28378146a73190be773b93abc"
+    },
+    "d09-flipcards-table-ltr-before-inputs.json.gz": {
+      "bytes": 1423,
+      "sha256": "336309cafa332d1b14b534c24d9616cad8d2d383ab34c6d6ee1aae78a5764f93"
+    },
+    "d09-flipcards-table-ltr-after-inputs.json.gz": {
+      "bytes": 3933,
+      "sha256": "566ad7c8e8be7cc9749305d681a5682ec8fe04bbbd318e3a9c37ff655df3272d"
+    },
+    "preflight.json": {
+      "bytes": 630,
+      "sha256": "b336ad445ec7bf1793095f4086cbc9ea91ee120a57e6e946afebee45e2683dd3"
+    },
+    "images/d09-flipcards-table-ltr-before-15.png": {
+      "bytes": 334412,
+      "sha256": "7a2e300c768b5677c55a21101b1de792cc859e1ee70907b0a2590bef4669fad9"
+    },
+    "images/d09-flipcards-table-ltr-before-90.png": {
+      "bytes": 329492,
+      "sha256": "eea22416755ed3675644511413198f506aee906958955047bee69534aca66580"
+    },
+    "images/d09-flipcards-table-ltr-before-117.png": {
+      "bytes": 325801,
+      "sha256": "e06734d27dd63ffe1a756ebd2eca35c7361b1180f3f8a05bd6f550f9ec931eef"
+    },
+    "images/d09-flipcards-table-ltr-before-228.png": {
+      "bytes": 350342,
+      "sha256": "891bcbfd8e2ec40b98d2e9b8edd58636b1bc16d93dac6445e84f9d3effe6f306"
+    },
+    "d09-flipcards-table-ltr-before-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "513971ee90e408932faf897ebcaf6691695e10d1dc02e0c6c5db9f9125722999"
+    },
+    "videos/d09-flipcards-table-ltr-before.mp4": {
+      "bytes": 214561,
+      "sha256": "6d68e1bf83ca03be0f7251e49f47234a99fc0ba0422edec78cf615d5e57fe72b"
+    },
+    "d09-flipcards-table-ltr-before-frames.json.gz": {
+      "bytes": 10569,
+      "sha256": "15d6748d75b52227dc8951932acb3c3dcb5e1a337f3051c0068bc33ad7138fac"
+    },
+    "images/d09-flipcards-table-ltr-after-15.png": {
+      "bytes": 339833,
+      "sha256": "eef18d62cae15100ea52a4718fcfea39b67c9837fffbff7da00d746f2a8201b1"
+    },
+    "images/d09-flipcards-table-ltr-after-90.png": {
+      "bytes": 338172,
+      "sha256": "2a3036d368dd34c2a9611194140a35c967b7bb41c88f7af82faa74264abc3ed0"
+    },
+    "images/d09-flipcards-table-ltr-after-117.png": {
+      "bytes": 334708,
+      "sha256": "1bed078f07d84abe51d40c8adeed897f6c6a2d6f9988b8466092b5fc4173a20d"
+    },
+    "images/d09-flipcards-table-ltr-after-228.png": {
+      "bytes": 353760,
+      "sha256": "5db09e5dc46d674b28f7d6d84fec6de74c4987c743eec4028373ba296c055432"
+    },
+    "d09-flipcards-table-ltr-after-motion-precheck.json": {
+      "bytes": 28734,
+      "sha256": "64bd7137db074d60506d2860b9c9b1886993bbbcfedede1e2b8206158f68f2ed"
+    },
+    "videos/d09-flipcards-table-ltr-after.mp4": {
+      "bytes": 200608,
+      "sha256": "da388ecda2cc53fee08322ff30f079f0824b606380472c5ab9fc521699c81d1d"
+    },
+    "d09-flipcards-table-ltr-after-frames.json.gz": {
+      "bytes": 1145073,
+      "sha256": "80373c60e2658a732ed4af245f3ab38d8527929a36295e6abc7bd593115878a8"
+    },
+    "index.html": {
+      "bytes": 5130,
+      "sha256": "d6fe84d341a4fcd4b21cebfc5ff4bcec12e8789b7aa18637eb5d7a1bc6d65a0d"
+    }
+  },
+  "startedAt": "2026-10-23T15:20:12.029Z",
+  "browser": "154.0.8037.57",
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "completedAt": "2026-10-23T15:20:30.722Z",
+  "status": "Local preflight, native frame guards, source immutability, motion hashes and ffprobe passed; independent visual review pending",
+  "totalAssetBytes": 4387065,
+  "allFrameGuardReceipt": {
+    "frames": 240,
+    "framesWithCertifiedSafeObservations": 240,
+    "allEnvelopeCovered": true,
+    "allStageContained": true,
+    "allStrictCircleClear": true,
+    "frameReceipt": "d09-flipcards-table-ltr-after-frames.json.gz"
+  },
+  "viewerPolish": {
+    "nativeControls": true,
+    "autoplay": false,
+    "circleGuideDefaultOn": true,
+    "circleGuideExternalHTML": true,
+    "perPairRestartPlay": true,
+    "visibleTitlesJapanese": true,
+    "scriptSHA256": "e0c71d16f1c754b262371300ac58117bf6de1b976f772b92ffd3e5a8482025d2"
+  }
+}
