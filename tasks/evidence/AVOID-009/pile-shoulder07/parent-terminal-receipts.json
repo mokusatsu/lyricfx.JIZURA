@@ -1,0 +1,20 @@
+{
+  "kind": "Parent-recorded actual tool terminal returns, not fabricated command logs",
+  "runs": [
+    {
+      "session": 61247,
+      "command": "node physical07/physical-trial-test.cjs",
+      "cwd": "/tmp/avoid009-pile01",
+      "exit": 1,
+      "output": "page.evaluate: Error: Empty/nonfinite ink\n    at fail (http://127.0.0.1:41327/:10575:45)\n    at A.bounds (http://127.0.0.1:41327/:10588:454)\n    at A.clear (http://127.0.0.1:41327/:10936:21)\n    at collect (eval at evaluate (:311:30), <anonymous>:16:696)\n    at async <anonymous>:337:30\n    at /tmp/avoid009-pile01/physical07/physical-trial-test.cjs:28:733 { log: [] }"
+    },
+    {
+      "session": 40848,
+      "command": "node physical07/physical-trial-test-run02.cjs",
+      "cwd": "/tmp/avoid009-pile01",
+      "exit": 0,
+      "output": "{\"cases\":2,\"sourceUnchanged\":true,\"observations\":120,\"polygons\":4515,\"failures\":0,\"errors\":[],\"scope\":\"Physical07 contiguous-shoulder geometry/TRIAL diagnostic only; no adapter, safe outcome, circle clearance, visual acceptance or font reduction\"}"
+    }
+  ],
+  "publicResultChecks": 0
+}
