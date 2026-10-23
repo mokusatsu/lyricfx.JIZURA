@@ -1,0 +1,225 @@
+{
+  "base": "14beefb",
+  "status": "frozen local functional candidate; parent review and visual review pending; no formal performance success",
+  "sourcePins": [
+    {
+      "file": "src/09a_placement.js",
+      "sha256": "c0668d2c26b6d0f65725310fe38620cb64d01eb3a7873969d9bb3ec66ef71948"
+    },
+    {
+      "file": "src/09k_layoutsD_placement.js",
+      "sha256": "821ada85647b45bc4b664fce6c36c734f616286985b3c975e237716449a708c7"
+    },
+    {
+      "file": "src/09l_layoutsD_fisheye.js",
+      "sha256": "b39ebcd2780e60d913e9350b1b14250a5376388ee7dc34d1001467b238dd04f4"
+    },
+    {
+      "file": "src/09m_layoutsD_cube.js",
+      "sha256": "8cdebfef1c2497a34473c2a7d1291e5c338caef7c59dc5ce18240ce8d1a525f9"
+    },
+    {
+      "file": "src/09n_layoutsD_origami.js",
+      "sha256": "acebd097b681c2a928c457d132826fb0e68f5343397fcdd5609b143aa3f4d4ca"
+    },
+    {
+      "file": "src/09o_layoutsD_cylinder.js",
+      "sha256": "a498ba61132ff4549cdc86f1924386a36a864087c44e033264095d7002fe10c3"
+    },
+    {
+      "file": "src/11p_layoutsD.js",
+      "sha256": "e339a129ed1d40199767355ed865771d19b0f1e235e06844979e8a96487ab338"
+    },
+    {
+      "file": "src/11za_layoutsD_transport.js",
+      "sha256": "3abd1b35040a83861a5328797fc41f78f6730f2e8a72c4d95348491dbdec67f1"
+    },
+    {
+      "file": "index.html",
+      "sha256": "5a10430082582cbe1f59e48337e42046c97bdbcfa14ab11639ee1ac7238540a5"
+    },
+    {
+      "file": "en/index.html",
+      "sha256": "f9b8d5d6824c6b74e6b94644b53ce7c72fc7eb2c58d5160919bfd4120d32170b"
+    },
+    {
+      "file": "canonical14beefb.html",
+      "sha256": "f5760acbef12102ba45d56e4389875056ab8f82a5bc4eab0a4a54c1fd2de5fe2"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-test.cjs",
+      "sha256": "42530be82590ac581663a78e6651243479c895436c718dd43180e0e26fd3105d"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-parity.cjs",
+      "sha256": "853fbef2a8437d764c69b2031f4e9e731d1f26e6b770270573d7f9406224bde0"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-band-bridge.cjs",
+      "sha256": "707a957baefeba928e7fc48809208b9336271cb470b39c9fe166d2ef87542658"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-canonical-test.cjs",
+      "sha256": "dba76bb3973bcc7d9aac31846e5a9ca576f4ce27e7814086aba5f761f9841838"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-canonical-parity.cjs",
+      "sha256": "dd2c2125aacb6c12f273be8fda5c90760fa6b358da9a2ab8ba494165c3e907c0"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cylinder-canonical-whole-parity.cjs",
+      "sha256": "b40be8e5060e8c4d9586f06dc33803465411a32eb366522668a242e56a38b3fd"
+    }
+  ],
+  "results": {
+    "canonical-matrix01.json": {
+      "sha256": "84997b17a5e98b56c87a49fd7e0cc0a0e39a50b63ba44fca9ec8c5fc265e6dbd",
+      "summary": {
+        "cases": 22,
+        "safe": 11,
+        "insufficient": 10,
+        "unsupported": 1,
+        "failures": []
+      }
+    },
+    "canonical-band01.json": {
+      "sha256": "665e7f8e96b178dddc380f23fed6225f274f5662ef603ccf165288365205536d",
+      "summary": {
+        "cases": 24,
+        "safe": 11,
+        "insufficient": 13,
+        "unsupported": 0,
+        "failures": []
+      }
+    },
+    "canonical-parity01.json": {
+      "sha256": "1281f64c8b00bcfa6b540934eaeb6e66d00084ca80d5782ba51765fbfc495bb2",
+      "summary": {
+        "baselineCases": 12,
+        "transportCases": 108,
+        "failures": 0
+      }
+    },
+    "canonical-bridge01.json": {
+      "sha256": "52aefe5e2c6c3393bce5fd2b2857a7946488a95f7f7cc4e7b48df57fe976e108",
+      "summary": {
+        "pairs": 324,
+        "zeroOffset": 108,
+        "nonzeroOffset": 216,
+        "failures": 0
+      }
+    },
+    "canonical-nonimpact01.json": {
+      "sha256": "b1be531ceaf9d9dc657f03b20f094e3bdee3928ab503695d58a79fc5f0409264",
+      "summary": {
+        "conditions": 14,
+        "pixelPairs": 56,
+        "failures": 0
+      }
+    },
+    "canonical-nonimpact02.json": {
+      "sha256": "cea0185f4daee1d5a3020139b89bb0cf7dd0d18137df7c007b47a4e354e7329e",
+      "summary": {
+        "conditions": 18,
+        "pixelPairs": 72,
+        "failures": 0
+      }
+    }
+  },
+  "representatives": [
+    {
+      "spec": {
+        "W": 960,
+        "H": 540,
+        "text": "Beyond the blue sky",
+        "radius": 0.2,
+        "params": {
+          "rings": 2,
+          "band": true,
+          "glass": true,
+          "dir": 1
+        }
+      },
+      "safety": "certified-bounded-adapter",
+      "segment": {
+        "start": 0,
+        "end": 4,
+        "region": "fixture",
+        "circle": {
+          "cx": 480,
+          "cy": 226.79999999999998,
+          "r": 108
+        },
+        "from": [
+          282.38955,
+          0
+        ],
+        "to": [
+          282.38955,
+          0
+        ],
+        "status": "safe",
+        "decision": "certified",
+        "composition": {
+          "radiusScale": 0.6,
+          "rowCount": 3,
+          "rowPitch": 1.45,
+          "fontScale": 0.8,
+          "secondaryScale": 0.7,
+          "strategy": "local-main-and-ring-type-after-structure"
+        },
+        "quality": {
+          "mainPx": 63.95000116709547,
+          "secondaryPx": 16.78687530636256,
+          "ringCount": 2,
+          "ringSlots": 56,
+          "minimumSlotGap": 2.5118571632381776
+        }
+      }
+    },
+    {
+      "spec": {
+        "W": 540,
+        "H": 960,
+        "text": "風の先へ",
+        "radius": 0.2,
+        "params": {
+          "rings": 2,
+          "band": true,
+          "glass": true,
+          "dir": 1
+        }
+      },
+      "safety": "certified-bounded-adapter",
+      "segment": {
+        "start": 0,
+        "end": 4,
+        "region": "fixture",
+        "circle": {
+          "cx": 270,
+          "cy": 403.2,
+          "r": 108
+        },
+        "from": [
+          1.689209493895658e-14,
+          275.868845625
+        ],
+        "to": [
+          1.689209493895658e-14,
+          275.868845625
+        ],
+        "status": "safe",
+        "decision": "certified",
+        "composition": null,
+        "quality": {
+          "mainPx": 102.6,
+          "secondaryPx": 30.779999999999998,
+          "ringCount": 2,
+          "ringSlots": 39,
+          "minimumSlotGap": 1.023479801344294
+        }
+      }
+    }
+  ],
+  "baselineComparison": "canonical-parity01 uses canonical11p cylinder before with identical surrounding composite engine; canonical-nonimpact02 uses exact14beefb index.html, including original09a and without09o."
+}

@@ -1,8 +1,8 @@
-# AVOID-009 拡張Dの34レイアウト・カスタム描画の対応（代表4例確認待ち）
+# AVOID-009 拡張Dの34レイアウト・カスタム描画の対応
 
 - 状態: 実装中
 - 現在の確認段階: [代表4例の動作確認待ち](reviews/AVOID-009-selected-20261023-01.md)。全体完了ではない。
-- 最新回答: 扉は「入りきる場合は横長」を優先する修正版を準備。[新比較・確認点](reviews/AVOID-009-gate-landscape-20261023-01.md)。他3例の回答は未確認。
+- 最新回答: 扉の横長優先修正版へ「OKです 続きを順次実装して」を受領。[回答記録](reviews/AVOID-009-gate-landscape-20261023-01.md)。円筒を限定統合・親レビューし、[横画面1例の確認](reviews/AVOID-009-cylinder-reflow-20261023-01.md)を準備。他3例をこの回答だけでOKとみなさない。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -175,3 +175,15 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 [統合receipt](evidence/AVOID-009/gate-landscape01/integration-receipt01.json)でmainの09nとJAENの該当moduleだけ置換し、逆置換で開始時bytes完全一致を確認。性能WIP09a/09lとpycacheは不変。Gitへは別treeのレビュー済みJAENを格納し、workingの性能WIPは保持する。扉1組のみ生成した60fps MP4は[parent mediaレビュー](evidence/AVOID-009/gate-landscape01/parent-media-review01.json)と[独立視覚](evidence/AVOID-009/gate-landscape01/independent-visual01.md)で限定受入。[新しい動作確認](reviews/AVOID-009-gate-landscape-20261023-01.md)を用意し、人間の回答は未回答。
 
 製品・試験・証拠をworkの`9f4318b`へcommit/push。扉1例のSites[公開操作](evidence/AVOID-009/gate-landscape01/publication.json)はsucceededを返した。source commit16fa2e9、既存671 dist filesとhosting/home・閲覧対象を保持。公開先へのアクセスや状態pollingは実施しない。小packetのraw4件とsource/test4件を親が内容hash照合し、診断失敗とcache誤再利用の無効な試行も軽量履歴として保持した。正式性能・他D/custom・保存の未完状態は変えず、扉の形と動きの人間確認へ戻す。
+
+## 扉のOK受領・円筒の限定受入
+
+最新の「OKです 続きを順次実装して」で扉の動作確認OKを受領。[回答](evidence/AVOID-009/gate-landscape01/human-review01.json)。009全体の完了や他3例の回答には拡張せず、円筒へ進んだ。[開始状態](evidence/AVOID-009/cylinder-start01.json)は14beefb、既存性能WIPとpycacheを保持。指定モデル担当が旧円筒checkpoint04を最新canonicalへ別treeで合成し、mainは承認差分だけを反映した。
+
+円筒は主文字と全周回反復・裏面・帯・ガラスをprimaryとして一体配置する。元のslot数・順序・mi・rowphase・回転clockを保持し、物理半径/自然な行組み/pitch→局所字体縮小を検討。帯は元の74点clipとgradientを再現するD cylinder/main限定経路で、回避用maskではなく全preclip矩形を保護する。旧root丸め失敗を保持し、元live camera CTMを維持して正確にreplayする。C/Bのcapabilityや一般のaffine判定を緩和しない。
+
+[旧checkpoint親レビュー](evidence/AVOID-009/parent-cylinder-checkpoint04-review.json)で175条件66安全/108不足/1未対応、1,231証明/141,035実polygonと入力pinを独立照合。[最新canonical親レビュー](evidence/AVOID-009/parent-cylinder-canonical01-review.json)は46条件22安全/23不足/1未対応、435証明/43,616実polygonを独立再計算。OFF72、clipless native108、帯native324組のhash一致。whole14beefbとのC/D/円筒OFF18条件72組も同じ画像とsafety/transport metadataを保持した。親の再計算スクリプトは最新rawの非圧縮JSON形式へパスを訂正して実行し、元テスト/製品の変更はない。
+
+[統合逆差分検証](evidence/AVOID-009/cylinder-canonical01/verify-integration01.py)を親も実行PASS。09aは承認bridgeだけをmemoWIPへ追加し、11pの円筒ブロックと09oを反映。JAEN開始bytesを元canonicalと既存WIPから再構築し、現在の逆差分が全文一致することを確認。Gitへはレビュー済みcanonical5製品fileを保存し、workingの性能WIPは残す。最新raw/runner/patchは9.18MB capsuleへ保存し、旧40MB archiveは参照指紋・復元方法を残して持ち込まない。
+
+縦横2代表のMP4をローカルで同条件生成し、全4本60fps/240frame/4秒、変更後480frameのstrict guardsが成功。親はhash/ffprobeのみ、画像照合は別contextの指定solが20標本で両方PASS。[証拠](evidence/AVOID-009/cylinder-canonical01/independent-visual01.md)。縦は構成・字体・時系列を維持した平行移動であり追加人間確認不要と親が判断。行組みが変わる[横の1例](reviews/AVOID-009-cylinder-reflow-20261023-01.md)だけを公開対象へ絞り、人間の形・動き・可読性確認を依頼する。人間の回答は未回答、009実装中・010以降未着手を維持。flipCardsと他D/custom・正式性能は引き続き未完。

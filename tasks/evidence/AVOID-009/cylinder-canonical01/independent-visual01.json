@@ -1,0 +1,110 @@
+{
+  "task": "AVOID-009",
+  "reviewer": "independent visual agent (requested sol/medium)",
+  "source_root": "/tmp/avoid009-cylinder-selected-20261023-01/review",
+  "manifest_sha256": "86f1ee8058e3d0f71ff4feb89b8b43924796ad005df37f3da7243d3aaf64d3b1",
+  "overall_verdict": "PASS",
+  "cases": [
+    {
+      "case": "d09-cylinder-portrait-native",
+      "verdict": "PASS",
+      "scope": "sampled visual preservation",
+      "evidence": [
+        {
+          "times_seconds": [
+            0.25,
+            0.75,
+            1.5,
+            2.5,
+            3.8
+          ],
+          "finding": "前後とも上下の楕円リム、明るい中央から暗い左右へ落ちる金帯、左右で細くなる周回文字、奥側の薄い逆像が連続した円筒を構成する。afterはその構成のまま画面下へ移っている。"
+        },
+        {
+          "times_seconds": [
+            0.75,
+            1.5,
+            2.5,
+            3.8
+          ],
+          "finding": "afterの主歌詞「風の先へ」は黒字と金帯のコントラストがあり、中央面で読める。上下の帯境界への文字切れや画面端による円筒全体の欠けは観察されない。3.8秒の右端「へ」は側面へ回り込み、beforeにも同様の見え方がある。"
+        },
+        {
+          "times_seconds": [
+            0.25
+          ],
+          "finding": "前後とも主歌詞の先頭「風」の一部が左側面へ回り込む。0.75秒には全文が正面で読めるため、after固有の恒常的な切れとは見なさない。"
+        },
+        {
+          "times_seconds": [
+            0.75,
+            1.5,
+            2.5,
+            3.8
+          ],
+          "finding": "上下周回文字の点と文字群の左右位置が時刻ごとに変わり、薄い奥側文字と細いガラス輪郭を伴った円周回転の意図が見える。静止画列からの判定であり連続再生の滑らかさは未判定。"
+        }
+      ]
+    },
+    {
+      "case": "d09-cylinder-landscape-reflow",
+      "verdict": "PASS",
+      "scope": "sampled visual preservation",
+      "evidence": [
+        {
+          "times_seconds": [
+            0.25,
+            0.75,
+            1.5,
+            2.5,
+            3.8
+          ],
+          "finding": "afterは右側の細身な円筒になるが、上下の楕円リム、金帯の左右陰影、側面で圧縮される上下周回文字、薄い裏面逆像が残る。金帯・ガラス・文字の横位置と曲面境界が揃い、3行の平面カードだけには見えない。"
+        },
+        {
+          "times_seconds": [
+            0.75,
+            1.5,
+            2.5,
+            3.8
+          ],
+          "finding": "afterは「Beyond / the / blue sky」の3行として読める。0.75・1.5・2.5秒は全語が正面に収まり、3.8秒は右端d/yが側面へ寄るが認識可能。上下の行同士の衝突、金帯の上下境界による行切れ、画面右端の欠けは観察されない。"
+        },
+        {
+          "times_seconds": [
+            0.25
+          ],
+          "finding": "afterの第2・第3行は「th」「bl」程度の断片で、全文を読めない。この時刻はbeforeも「Beyond th」「bl」相当の断片であり、0.75秒にはafterの全3行が現れる。初期表示の断片性は残るがafter固有の新しい持続的可読性不良とは判定しない。"
+        },
+        {
+          "times_seconds": [
+            0.75,
+            1.5,
+            2.5,
+            3.8
+          ],
+          "finding": "上下リング文字の点・単語位置が前後とも時刻間で変化する。afterでも左側から前面、右側面へ続く小文字と暗い裏面文字の関係が見え、半径縮小と3行化を経ても円周回転の意図が残る。"
+        }
+      ]
+    }
+  ],
+  "provided_sample_times_seconds": [
+    0.25,
+    1.5,
+    3.8
+  ],
+  "additional_video_sample_times_seconds": [
+    0.75,
+    2.5
+  ],
+  "viewed_png_count": 20,
+  "additional_samples_directory": "/tmp/avoid009-cylinder-visual01-extra",
+  "limitations": [
+    "提供PNG12枚（各動画0.25/1.5/3.8秒）とローカルMP4から抽出した0.75/2.5秒の8枚、合計20枚を画像ツールで目視した。",
+    "リアルタイム動画再生、全フレーム目視、時間方向のちらつき・滑らかさの完全確認は行っていない。PASSはこの標本における視覚意図の保持に限定する。",
+    "HTML overlayの円は画像にないため、円との重なりや厳密な回避余白を視覚判定していない。幾何・strict guards・コード同一性の別判定を本報告の視覚根拠に流用していない。",
+    "公開URL、HTTP、Pages/Sites、起動や状態pollingへのアクセスはしていない。ローカル資料のみ使用し、コード変更・追加matrix試験を行っていない。",
+    "主歌詞の全字が全時刻で同時に読めるとのPASSではない。0.25秒の断片、側面での圧縮、低コントラストの裏面文字は前後に存在する。"
+  ],
+  "media_forwarded_to_parent": false
+}
