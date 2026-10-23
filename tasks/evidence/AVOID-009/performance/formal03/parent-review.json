@@ -1,0 +1,43 @@
+{
+  "scope": "Fisheye-only unchanged formal performance budget; no fullD34/safe-capability/cold-latency qualification",
+  "parentIndependentRawRecompute": true,
+  "checks": [
+    {
+      "n": 100,
+      "beforeP95": 38.500000001862645,
+      "afterP95": 44.69999999925494,
+      "ratio": 1.1610389609634373,
+      "renderDelta": 0.900000000372529,
+      "coldAfter": 352.30000000074506,
+      "outcomes": {
+        "insufficient-space": 298
+      }
+    },
+    {
+      "n": 1000,
+      "beforeP95": 279.2000000011176,
+      "afterP95": 370.69999999925494,
+      "ratio": 1.327722063029266,
+      "renderDelta": 1.699999999254942,
+      "coldAfter": 2711.9999999981374,
+      "outcomes": {
+        "insufficient-space": 2998
+      }
+    }
+  ],
+  "startPins": 101,
+  "endPinsIncludingBrowserDependencies": 274,
+  "reportInputPins": 95,
+  "runnerUnchangedVsPreviouslyReviewedCapsule": true,
+  "memo09lMatchesPreviouslyReviewedCapsule": true,
+  "formalArchiveSHA256": "a32599fa9919620bf337f124c2b97774ab5cd5e6699cc42fcb6972e3b40493db",
+  "priorFailuresRetained": true,
+  "humanReviewRequired": false,
+  "humanReviewReason": "Pure reuse of already reviewed equivalent proof data; no intended rendering change; prior functional review and fresh proof/cache carry support equivalence.",
+  "limitations": [
+    "Cold 1000-cut total remains 2712ms",
+    "All measured after segments are insufficient-space; performance PASS proves no geometric capability",
+    "Proof11 browser structured exit was not retained; original final assertions replayed from raw exit0, do not invent browser exit"
+  ],
+  "reviewProcedure": "Parent recomputed nearest-rank p95 from all planning/render samples, summed source/finalize timings, matched input hashes/counts/outcomes, recomputed ratios and limits; validated start/end invocation and current main source pins, deterministic stress and 39 recipe budget; unchanged archived runner and prior accepted09l bytes. Initial review script had incorrect pin-list shape/count and Git-tracked runner assumption; corrected against actual 101 invocation plus173 dependency pins and archived runner. No test results changed."
+}

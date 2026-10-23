@@ -2,7 +2,7 @@
 
 - 状態: 実装中
 - 現在の確認段階: [代表4例の動作確認待ち](reviews/AVOID-009-selected-20261023-01.md)。全体完了ではない。
-- 最新回答: 扉の横長優先修正版へ「OKです 続きを順次実装して」を受領。[回答記録](reviews/AVOID-009-gate-landscape-20261023-01.md)。円筒を限定統合・親レビューし、[横画面1例の確認](reviews/AVOID-009-cylinder-reflow-20261023-01.md)を準備。他3例をこの回答だけでOKとみなさない。
+- 最新回答: 円筒に「OKです。今から寝るので8時間後にまとめて確認するくらいにして」を受領。約8時間の確認集約を予約し、009内の独立実装を継続。[今回の進捗と確認queue](evidence/AVOID-009/batch-20261023/progress.json)。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -189,3 +189,17 @@ core04/lite-capsule01.tar.gzに22実行の全rawログ・driver/preload・元tes
 縦横2代表のMP4をローカルで同条件生成し、全4本60fps/240frame/4秒、変更後480frameのstrict guardsが成功。親はhash/ffprobeのみ、画像照合は別contextの指定solが20標本で両方PASS。[証拠](evidence/AVOID-009/cylinder-canonical01/independent-visual01.md)。縦は構成・字体・時系列を維持した平行移動であり追加人間確認不要と親が判断。行組みが変わる[横の1例](reviews/AVOID-009-cylinder-reflow-20261023-01.md)だけを公開対象へ絞り、人間の形・動き・可読性確認を依頼する。人間の回答は未回答、009実装中・010以降未着手を維持。flipCardsと他D/custom・正式性能は引き続き未完。
 
 製品・試験・証拠はworkの`694b289`へ保存しpush成功。横画面1例の[公開操作](evidence/AVOID-009/cylinder-canonical01/publication.json)はsucceeded。既存689 dist files・hosting/home・閲覧対象を保持し、公開結果の接続/再生/画像/起動/pollingは0。mainには引き続き性能WIPと既存pycacheが残り、公開/保存製品は検証済みcanonicalと同一bytes。形式検査は証拠のunified patchにある末尾context空行をwhitespaceとして検出したため、その正本patchのbytesは変更せず保持し、当該patch以外のコード・文書でcheck成功を確認した。機能試験の失敗を合格へ変更したものではない。
+
+## 約8時間後への確認集約
+
+円筒の[人間OK](evidence/AVOID-009/cylinder-canonical01/human-review01.json)を記録。最新指示により23:01 UTC目安の一回の進捗まとめを予約した。以後の必要な動作確認は未回答の版・根拠・比較をqueueへ保存し、009内の独立部分を進める。他の未回答をOKへ置換せず、009や依存010の完了条件を保つ。
+
+次は保存された性能memoの正式03測定をCPU/browser排他で実行し、flipCardsは別treeでsource調査・実装を開始。古い失敗captureの稼働しない親子だけをownerが特定して停止し、失敗raw/outputは保持した。性能測定中は他のbrowser/encodeを実行しない。[進捗](evidence/AVOID-009/batch-20261023/progress.json)を正本として更新する。公開結果確認の永久禁止はscheduledまとめにも明示した。
+
+## 2026-10-23 集約作業: 魚眼の証明データ再利用を受入
+
+[formal03親レビュー](evidence/AVOID-009/performance/formal03/parent-review.json)で、元のwarmup3/sample6・100/1000カット・同一入力・同一runnerの性能基準を受入。親はraw全sampleからp95と比率を再計算し、開始/終了pinと現在sourceを照合した。1000カットの計画p95は279.2→370.7ms（1.3277倍、上限2倍）、描画p95差は+1.7ms（上限3ms）。100カットは1.1610倍/+0.9ms。初回1000カットは2712msであり、cold入力編集の高速性は保証しない。測定後segmentは298/2998件ともinsufficient-spaceであり、安全例の増加や全D34演出の性能受入とは扱わない。旧formal01/02の失敗は保持。
+
+前回受入済みmemo10 sourceと円筒bridgeの既存統合証拠を再利用し、[carry](evidence/AVOID-009/performance/formal03-carry01/receipt.json)で6系統108観測・15keycontrols、memo無効時との全JSON同一、freshな領域solve4件、共有alias/freeze/detachedを確認。proof11の元browser終了codeはorchestrationが保持していないため成功exitを捏造せず、保持rawへの元最終assertion再実行exit0と最終summaryを根拠とする。cache6条件/6失効はexit0。円筒実adapter登録後に旧cache試験の未使用probe ID cylinderが重複したexit1も保持し、test-onlyで未登録wallへ1語変更した。全実条件/失効/期待値は維持し、wall実装時にはfixtureの再隔離が必要。
+
+描画意図を変えない限定的な証明データ再利用であり、既存sourceレビューと上記同値性の根拠により追加の人間確認・比較公開は不要と親が判定。009全体は実装中、保存検証の既存失敗と公開結果確認禁止は継続。
