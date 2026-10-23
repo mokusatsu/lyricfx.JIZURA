@@ -1,0 +1,17 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-23T00:54:30.489716+00:00",
+  "fixedSource": "5007c71bfdf099f122a577c4c14578628672ca0e",
+  "reportSHA256": "41f293dd30415fb462fdc1d2d462afa2c021d7eceb2d156d221d47b497596cb0",
+  "declaredSourceHashesIndependentlyChecked": {
+    "dev/avoidance/layouts-c-perf-phases-fixture.js": "e1ef5650d701db6509974a5ef09234d24e69b82430031286bb6b8b5d3631beb7",
+    "dev/avoidance/immutable-edge-phases-profile.cjs": "e55b10826b34797e5549634be4b0a116cc6e735744283b0c00dde7af526b62da",
+    "src/09a_placement.js": "e22e968e8c6b4619216c2e432805d4af469338366fd78e8a4fd2f0b9771a3ae4",
+    "src/09g_layoutsC_placement.js": "3a333a6bab6aa61a71c652fb83b7c647d24939527e8aafb744768e642a8d7072",
+    "src/11p_layoutsC.js": "2229f1cb916d73e730beeef494c3ee77411bfffbb2ea64eb173111cc4d2a4b17",
+    "src/11z_layoutsC_transport.js": "d7dd51dfff9df3410587212e908eee5f87bb08397aa0d13c0309160f30201091",
+    "src/09_render.js": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623"
+  },
+  "review": "Fixed native fixture forwarding labels can avoid transport/native source seals and preserve before-cold dependency identities. Added env reads/calls are diagnostic overhead; arbitrary Proxy transparency not claimed. record/replay labels miss outside adapter checks; single layout label cannot distinguish warm16/measured64 or frame. V8 ancestry visibility unproven.",
+  "decision": "Retain design only. Lazy registration first. No additional profiling/implementation authorized by this report. No public checks."
+}

@@ -1,0 +1,9 @@
+# Fixed lazy source/pure evidence import only
+
+Fixed Git3b0c995a2c912cf3edf6583f372c215c310e11f0 has20trackedfiles/10,130,904B under immutable-edge-lazy01/, plus the requested1purehelper,21selected source/evidence files total. The instruction's21evidence count is distinguished from the actual fixed directory count; no mutable/untracked extra donor file was added to fill a count. All20directory files were checked against GitblobSHA1/SHA256 and safely imported via read-only immutable hardlinks to previously absent main evidence paths.
+
+The purehelper layouts-c-immutable-edge-lazy-pure.cjs is archived only under helpers/ as deterministic losslessgzip, rawSHA256ecec84d8ebd4068e40dc1742280f7db93facfb18fd9fb998b9199756c8db252c, with blob/raw/compressed hash and inode provenance in manifest.json. Main topdev/source/compiled is unchanged; this lazy product remains unadopted in main. Fixed evidence may contain source snapshots as artifacts; none was applied as product. No donor liveproduct/source outside the fixed selected evidence was read.
+
+Parent-supplied pure/source/bundle review is prior evidence scope; this import did not rerun tests or independently reinterpret those results. Main84source+JAEN2+dirtypyc1, all dirty tracked files, Gitindex and existing performance/root008flatJSON have exact fullSHA before/after protection. Existing75,088untracked paths retain exact inode/mode/size/mtime/ctime/nlink/symlink metadata and equal compressed before/after snapshots. No unrelated fullcontentSHA claim is made.
+
+No mainGitstage/commit/push, tests/browser/timing/media/image viewing/public operations or product application occurred. preflight/protection-before/manifest/receipt/import.py/support-hashes/final-verification identify the bounded import. Above250MiB free remains. Complete; stopped for parent review.

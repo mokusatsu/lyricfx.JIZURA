@@ -1,0 +1,92 @@
+diff --git a/src/09g_layoutsC_placement.js b/src/09g_layoutsC_placement.js
+index 00e2433..e333375 100644
+--- a/src/09g_layoutsC_placement.js
++++ b/src/09g_layoutsC_placement.js
+@@ -90,38 +90,73 @@ function payloadDecode(text){
+ // Bootstrap uses standard natives; later live helper replacements are never invoked.
+ const edgeApply=Reflect.apply,edgeCall=Function.prototype.call,edgeBind=Function.prototype.bind,edgeWeakMap=WeakMap;
+ const edgeGet=edgeApply(edgeBind,edgeCall,[WeakMap.prototype.get]),edgeSet=edgeApply(edgeBind,edgeCall,[WeakMap.prototype.set]);
+-const edgeDescriptor=Object.getOwnPropertyDescriptor,edgePrototype=Object.getPrototypeOf,edgeFrozen=Object.isFrozen,edgeArray=Array.isArray,edgeSame=Object.is,edgeFinite=Number.isFinite,edgeDefine=Object.defineProperty,edgeArrayPrototype=Array.prototype,edgeHasOwn=Object.hasOwn;
++const edgeDescriptor=Object.getOwnPropertyDescriptor,edgePrototype=Object.getPrototypeOf,edgeFrozen=Object.isFrozen,edgeArray=Array.isArray,edgeFinite=Number.isFinite,edgeDefine=Object.defineProperty,edgeArrayPrototype=Array.prototype,edgeHasOwn=Object.hasOwn;
++const edgeGlobal=globalThis,edgeArrayConstructor=Array,edgeObjectPrototype=Object.prototype,edgeSpecies=Symbol.species;
++const edgeSliceDescriptor=edgeDescriptor(edgeArrayPrototype,'slice'),edgeMapDescriptor=edgeDescriptor(edgeArrayPrototype,'map'),edgeConstructorDescriptor=edgeDescriptor(edgeArrayPrototype,'constructor'),edgeSpeciesDescriptor=edgeDescriptor(edgeArrayConstructor,edgeSpecies);
++const edgeSlice=edgeApply(edgeBind,edgeCall,[edgeSliceDescriptor.value]),edgeMap=edgeApply(edgeBind,edgeCall,[edgeMapDescriptor.value]);
++const edgeSameDescriptor=(a,b)=>{if(!a||!b)return false;const av=edgeHasOwn(a,'value'),bv=edgeHasOwn(b,'value');return av===bv&&a.enumerable===b.enumerable&&a.configurable===b.configurable&&(av?a.value===b.value&&a.writable===b.writable:a.get===b.get&&a.set===b.set);};
++// Separate from payloadGuard: native slice/map still consult constructor/species.
++// Decoded arrays and our fresh snapshots have no own constructor or method hooks.
++function edgeArrayGuard(){
++ const global=edgeDescriptor(edgeGlobal,'Array');
++ return !!global&&edgeHasOwn(global,'value')&&global.value===edgeArrayConstructor&&edgePrototype(edgeArrayPrototype)===edgeObjectPrototype&&edgePrototype(edgeObjectPrototype)===null&&edgeSameDescriptor(edgeDescriptor(edgeArrayPrototype,'constructor'),edgeConstructorDescriptor)&&edgeSameDescriptor(edgeDescriptor(edgeArrayConstructor,edgeSpecies),edgeSpeciesDescriptor)&&edgeSameDescriptor(edgeDescriptor(edgeArrayPrototype,'slice'),edgeSliceDescriptor)&&edgeSameDescriptor(edgeDescriptor(edgeArrayPrototype,'map'),edgeMapDescriptor);
++}
+ const EDGE_MAX_EDGES=65536,EDGE_MAX_POLYGONS=8192,EDGE_MAX_SLOTS=131072,edgeLimit={};
+-let edgeGeneration=0,edgeState={map:new edgeWeakMap(),polygons:0,edges:0,slots:0,duplicates:0,capped:0,validations:0,rejected:0,hits:0,fallbacks:0};
+-const edgeAppend=(a,v)=>edgeDefine(a,a.length,{value:v,writable:true,enumerable:true,configurable:true});
++const edgeEmpty=()=>({map:new edgeWeakMap(),polygons:0,edges:0,slots:0,duplicates:0,capped:0,validations:0,rejected:0,hits:0,fallbacks:0,upfrontReads:0,snapshotPointRefs:0,reservedCoordinateSlots:0,coordinateDescriptorReads:0,edgeCoordinateReads:0,preparedPolygons:0,preparedEdges:0,registrationBypasses:0,preparationBypasses:0});
++let edgeGeneration=0,edgeState=edgeEmpty();
+ function edgeRegisterFinal(result){
+- const state={map:new edgeWeakMap(),polygons:0,edges:0,slots:0,duplicates:0,capped:0,validations:0,rejected:0,hits:0,fallbacks:0};
+- const read=(o,k)=>{if(state.slots>=EDGE_MAX_SLOTS)throw edgeLimit;state.slots++;if(!o||typeof o!=='object')return undefined;const d=edgeDescriptor(o,k);return d&&edgeHasOwn(d,'value')?d.value:undefined;};
++ const state=edgeEmpty();
++ const read=(o,k)=>{if(state.slots>=EDGE_MAX_SLOTS)throw edgeLimit;state.slots++;state.upfrontReads++;if(!o||typeof o!=='object')return undefined;const d=edgeDescriptor(o,k);return d&&edgeHasOwn(d,'value')?d.value:undefined;};
+  const each=(a,fn)=>{if(!edgeArray(a))return;for(let i=0;i<a.length;i++)fn(read(a,i));};
+  const polygon=q=>{
+   if(!edgeArray(q))return;if(edgeGet(state.map,q)){state.duplicates++;return;}
+   if(state.polygons>=EDGE_MAX_POLYGONS||state.edges+q.length>EDGE_MAX_EDGES){state.capped++;return;}
+-  if(edgePrototype(q)!==edgeArrayPrototype)return;const points=[],coords=[],edges=[];
+-  for(let i=0;i<q.length;i++){const p=read(q,i),x=read(p,0),y=read(p,1);if(!edgeArray(p)||p.length!==2||edgePrototype(p)!==edgeArrayPrototype||typeof x!=='number'||typeof y!=='number'||!edgeFinite(x)||!edgeFinite(y))return;edgeAppend(points,p);edgeAppend(coords,[x,y]);}
+-  for(let i=0;i<q.length;i++){const a=coords[i],b=coords[(i+1)%q.length];edgeAppend(edges,[b[0]-a[0],b[1]-a[1],a[0],a[1]]);}
+-  edgeSet(state.map,q,{points,coords,edges,length:q.length,valid:0});state.polygons++;state.edges+=q.length;
++  if(edgePrototype(q)!==edgeArrayPrototype||edgeDescriptor(q,'constructor')||edgeDescriptor(q,'slice'))return;
++  // Reserve exactly the old q-index + x/y budget, without claiming coordinates
++  // were read. Refuse before copying if even the conservative reservation fails.
++  const reserve=q.length*3;if(state.slots+reserve>EDGE_MAX_SLOTS){state.slots=EDGE_MAX_SLOTS;throw edgeLimit;}
++  state.slots+=reserve;state.reservedCoordinateSlots+=q.length*2;
++  const points=edgeSlice(q);state.upfrontReads+=q.length;state.snapshotPointRefs+=q.length;
++  edgeSet(state.map,q,{points,edges:null,length:q.length,valid:0});state.polygons++;state.edges+=q.length;
+  };
+  const fields=(o,names)=>{for(let i=0;i<names.length;i++)each(read(o,names[i]),polygon);};
+- try{each(read(read(result,'plan'),'cuts'),cut=>{const tr=read(cut,'placementTrajectory');if(!tr)return;each(read(tr,'units'),unit=>{fields(unit,['envelopes','stageEnvelopes']);each(read(unit,'segments'),segment=>{fields(segment,['envelopes','stageEnvelopes','entryEnvelopes','exitEnvelopes','badgeEntryEnvelopes']);each(read(segment,'bodies'),body=>{const full=read(body,'full'),hold=read(body,'hold');if(full)polygon(full);if(hold)polygon(hold);});});});});}catch(e){if(e===edgeLimit)state.capped++;else{edgeState={map:new edgeWeakMap(),polygons:0,edges:0,slots:0,duplicates:0,capped:0,validations:0,rejected:0,hits:0,fallbacks:0};return;}}
++ if(!edgeArrayGuard()){state.registrationBypasses++;edgeGeneration++;edgeState=state;return;}
++ try{
++  each(read(read(result,'plan'),'cuts'),cut=>{const tr=read(cut,'placementTrajectory');if(!tr)return;each(read(tr,'units'),unit=>{fields(unit,['envelopes','stageEnvelopes']);each(read(unit,'segments'),segment=>{fields(segment,['envelopes','stageEnvelopes','entryEnvelopes','exitEnvelopes','badgeEntryEnvelopes']);each(read(segment,'bodies'),body=>{const full=read(body,'full'),hold=read(body,'hold');if(full)polygon(full);if(hold)polygon(hold);});});});});
++ }catch(e){if(e===edgeLimit)state.capped++;else{edgeGeneration++;edgeState=edgeEmpty();return;}}
++ if(!edgeArrayGuard()){edgeGeneration++;edgeState=edgeEmpty();edgeState.registrationBypasses=1;return;}
+  edgeGeneration++;edgeState=state;
+ }
+ function edgeContains(p,q,epsilon){
+  const state=edgeState,record=edgeGet(state.map,q);if(!record){state.fallbacks++;return null;}
+  if(!record.valid){
+-  state.validations++;let ok=edgePrototype(q)===edgeArrayPrototype&&edgeFrozen(q);const ld=edgeDescriptor(q,'length');ok=ok&&!!ld&&edgeHasOwn(ld,'value')&&ld.value===record.length&&!ld.writable&&!ld.configurable;
+-  for(let i=0;ok&&i<record.length;i++){const d=edgeDescriptor(q,i),point=record.points[i],x=edgeDescriptor(point,0),y=edgeDescriptor(point,1);ok=!!d&&edgeHasOwn(d,'value')&&d.value===point&&!d.writable&&!d.configurable&&edgePrototype(point)===edgeArrayPrototype&&edgeFrozen(point)&&point.length===2&&!!x&&!!y&&edgeHasOwn(x,'value')&&edgeHasOwn(y,'value')&&!x.writable&&!x.configurable&&!y.writable&&!y.configurable&&edgeSame(x.value,record.coords[i][0])&&edgeSame(y.value,record.coords[i][1]);}
+-  record.valid=ok?1:-1;if(!ok)state.rejected++;
++  state.validations++;let ok=edgeArrayGuard();if(!ok)state.preparationBypasses++;
++  const ld=ok?edgeDescriptor(q,'length'):null;ok=ok&&edgePrototype(q)===edgeArrayPrototype&&edgeFrozen(q)&&!!ld&&edgeHasOwn(ld,'value')&&ld.value===record.length&&!ld.writable&&!ld.configurable;
++  for(let i=0;ok&&i<record.length;i++){
++   // Compare to the genuine parse-born original before inspecting any changed
++   // reference. A replacement Proxy receives no descriptor/prototype traps.
++   const d=edgeDescriptor(q,i),point=record.points[i];
++   ok=!!d&&edgeHasOwn(d,'value')&&d.value===point&&!d.writable&&!d.configurable;
++   if(!ok)break;
++   ok=edgeArray(point)&&edgePrototype(point)===edgeArrayPrototype&&edgeFrozen(point)&&point.length===2;
++   if(!ok)break;
++   const x=edgeDescriptor(point,0),y=edgeDescriptor(point,1);state.coordinateDescriptorReads+=2;
++   ok=!!x&&!!y&&edgeHasOwn(x,'value')&&edgeHasOwn(y,'value')&&!x.writable&&!x.configurable&&!y.writable&&!y.configurable&&typeof x.value==='number'&&typeof y.value==='number'&&edgeFinite(x.value)&&edgeFinite(y.value);
++  }
++  if(ok){
++   // Every source coordinate is now frozen own primitive data. Native map uses
++   // CreateDataProperty for its private output; no per-edge defineProperty loop.
++   record.edges=edgeMap(record.points,(a,i)=>{const b=record.points[(i+1)%record.length];return [b[0]-a[0],b[1]-a[1],a[0],a[1]];});
++   state.edgeCoordinateReads+=record.length*6;
++   if(!edgeArrayGuard()){ok=false;state.preparationBypasses++;record.edges=null;}
++  }
++  record.valid=ok?1:-1;if(ok){state.preparedPolygons++;state.preparedEdges+=record.length;}else state.rejected++;
+  }
+  if(record.valid<0){state.fallbacks++;return null;}state.hits++;const edges=record.edges;let pos=false,neg=false;
+  for(let i=0;i<record.length;i++){const e=edges[i],cross=e[0]*(p[1]-e[3])-e[1]*(p[0]-e[2]);if(cross>epsilon)pos=true;if(cross< -epsilon)neg=true;}return !(pos&&neg);
+ }
+ edgeDefine(A,'layoutsCImmutablePolygonContains',{value:edgeContains,writable:false,enumerable:true,configurable:false});
+-edgeDefine(A,'layoutsCImmutableEdgeStats',{value:()=>({generation:edgeGeneration,polygons:edgeState.polygons,edges:edgeState.edges,slots:edgeState.slots,duplicates:edgeState.duplicates,capped:edgeState.capped,validations:edgeState.validations,rejected:edgeState.rejected,hits:edgeState.hits,fallbacks:edgeState.fallbacks,maxEdges:EDGE_MAX_EDGES,maxPolygons:EDGE_MAX_POLYGONS,maxSlots:EDGE_MAX_SLOTS}),writable:false,enumerable:true,configurable:false});
++edgeDefine(A,'layoutsCImmutableEdgeStats',{value:()=>({generation:edgeGeneration,polygons:edgeState.polygons,edges:edgeState.edges,slots:edgeState.slots,duplicates:edgeState.duplicates,capped:edgeState.capped,validations:edgeState.validations,rejected:edgeState.rejected,hits:edgeState.hits,fallbacks:edgeState.fallbacks,upfrontReads:edgeState.upfrontReads,snapshotPointRefs:edgeState.snapshotPointRefs,reservedCoordinateSlots:edgeState.reservedCoordinateSlots,coordinateDescriptorReads:edgeState.coordinateDescriptorReads,edgeCoordinateReads:edgeState.edgeCoordinateReads,preparedPolygons:edgeState.preparedPolygons,preparedEdges:edgeState.preparedEdges,registrationBypasses:edgeState.registrationBypasses,preparationBypasses:edgeState.preparationBypasses,maxEdges:EDGE_MAX_EDGES,maxPolygons:EDGE_MAX_POLYGONS,maxSlots:EDGE_MAX_SLOTS}),writable:false,enumerable:true,configurable:false});
+ 
+ function cacheDependencies(){
+  payloadGuard();
