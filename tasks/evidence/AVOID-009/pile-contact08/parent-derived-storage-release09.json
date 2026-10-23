@@ -1,0 +1,52 @@
+{
+  "status": "RELEASED_OWN_DERIVED_COPIES_ONLY",
+  "canonicalCommit": "b1d7c14",
+  "canonicalPush": "session56268 CLOSEDexit0",
+  "directories": [
+    {
+      "path": "/tmp/parent-pile07-restore01",
+      "files": 70,
+      "bytes": 51051213,
+      "manifestSHA256": "ea1c531203b62735d1be7f75bc8c3e456f34edd70fb3f186579526e7ec4f9e10",
+      "reproducibleFromPushedGitCapsule": "tasks/evidence/AVOID-009/pile-shoulder07/pile-physical07-thin.tar.xz",
+      "pinExclusion": "Not referenced by any1210sealed08consumedinput; allpriorsealedinputs covered",
+      "purpose": "Owned parent offline extraction/restoration test copy ONLY; canonical childsource/raw/frozenCAS/mainreceipts untouched"
+    },
+    {
+      "path": "/tmp/parent-pile07-inputs01",
+      "files": 1048,
+      "bytes": 204738525,
+      "manifestSHA256": "1fcb24f7ebcd88a86fcfee6d32427c7f2ac6e56722ece5651402d0dae63af5ca",
+      "reproducibleFromPushedGitCapsule": "tasks/evidence/AVOID-009/pile-shoulder07/pile-physical07-thin.tar.xz",
+      "pinExclusion": "Not referenced by any1210sealed08consumedinput; allpriorsealedinputs covered",
+      "purpose": "Owned parent offline extraction/restoration test copy ONLY; canonical childsource/raw/frozenCAS/mainreceipts untouched"
+    },
+    {
+      "path": "/tmp/parent-pile08-restore01",
+      "files": 71,
+      "bytes": 83720973,
+      "manifestSHA256": "f676c748fe4f78ee3165df55a30995e8d353bccf1a0f1d6e3e2a7be3ae0c3fbe",
+      "reproducibleFromPushedGitCapsule": "tasks/evidence/AVOID-009/pile-contact08/pile-contact08-thin.tar.xz",
+      "pinExclusion": "Not referenced by any1210sealed08consumedinput; allpriorsealedinputs covered",
+      "purpose": "Owned parent offline extraction/restoration test copy ONLY; canonical childsource/raw/frozenCAS/mainreceipts untouched"
+    },
+    {
+      "path": "/tmp/parent-pile08-inputs01",
+      "files": 1283,
+      "bytes": 272613301,
+      "manifestSHA256": "5f3b3caa353628767bbab1ba96485f58be0fd53465f1c59c3bd8cd22b65dcde0",
+      "reproducibleFromPushedGitCapsule": "tasks/evidence/AVOID-009/pile-contact08/pile-contact08-thin.tar.xz",
+      "pinExclusion": "Not referenced by any1210sealed08consumedinput; allpriorsealedinputs covered",
+      "purpose": "Owned parent offline extraction/restoration test copy ONLY; canonical childsource/raw/frozenCAS/mainreceipts untouched"
+    }
+  ],
+  "freedLogicalBytes": 612124012,
+  "preserved": [
+    "All/tmp/avoid009-pile01 actualsource/raw/prepins/CAS",
+    "Alloriginalparentanalyzers/results and/tmp/parent-pile07-math01,/tmp/parent-pile08-math01",
+    "Eleven intentionallyabsent skip-worktree Gitarchives",
+    "Dirty pycache/unrelateduntracked/mainproductbc39"
+  ],
+  "restoration": "git show HEAD:<capsule> into fresh/tmp; verify-artifacts.py thenrestore-inputs.py; exactoperations inarchiveREADME",
+  "publicResultChecks": 0
+}
