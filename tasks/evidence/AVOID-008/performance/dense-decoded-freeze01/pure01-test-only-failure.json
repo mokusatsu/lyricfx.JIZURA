@@ -1,0 +1,7 @@
+{
+  "passed": false,
+  "stage": "test harness setup",
+  "error": "ReferenceError: Cannot access 'freeze' before initialization",
+  "cause": "Test wrapper shadowed outer freeze in the same const binding list; corrected to capture legacyFreeze outside wrapper. No product failure or workload run.",
+  "authoritativeRun": "pure02.raw.json.gz"
+}

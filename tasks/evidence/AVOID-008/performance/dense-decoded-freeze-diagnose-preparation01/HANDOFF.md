@@ -1,0 +1,15 @@
+# AVOID-008 dense decoded freeze original100 diagnosis preparation only
+
+Model gpt-6.1-sol medium. Browser evidence4c374320cd43123d0e6afbb318e21547e3ea817d fixes full-field equality without projection for product6b9720647402961fb92fe04c544f91d31762d7f3 / JAcd6e8d459657751ec1d08e9b69d48dc1efb4d13f74c7e30df4a2604fe3e4e1c9; parent independent review is separate.
+
+New dev/avoidance/layouts-c-dense-decoded-freeze-perf-gate-support.cjs SHA2561022a5cd13dca75ead3714291bf3d0ec3948220fbf87cb1f493ddb5e46609363 derives from accepted node-wire support91eed56524ea350fce46e1f5deb4db4783288b84955aa845738fd3a161b44a24. Six literal groups/eight occurrences only: diagnose namespace, accepted browser gate, source/JA, runtime02→03 and spec228→229. Reverse substitution byte-exact. Syntax check passes; preload not evaluated.
+
+Original runner6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756, fixture7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471, corpus4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc,2bb baseline,100ON/OFF four sides,3warmups+1point,80render/16warm, actual record/replay/observation and2x/+3ms thresholds unchanged. Single planning point is not qualified p95. Prior failures retained. Current fixture/corpus formal1000 remains unverified; older-fixture failure does not establish current failure. Formal1000 not authorized here.
+
+Future command (NOT EXECUTED): JIZURA_BROWSER=/usr/bin/chromium node --require ./dev/avoidance/layouts-c-dense-decoded-freeze-perf-gate-support.cjs dev/avoidance/layouts-c-perf-shadow-native.cjs --diagnose100 tasks/evidence/AVOID-008/performance/dense-decoded-freeze-diagnose01
+
+Requires parent-created dense-decoded-freeze-diagnose01-parent-gate.json with authorizedMode --diagnose100/formal1000false, fixed source/JA/runner/fixture/corpus/baseline/preload pins, accepted dense-decoded-freeze-browser01-parent-gate.json product86/package173, native-local-bounds-runtime03.json/-raw.json actual fresh current=observed229/running/connected, and full-run exclusive lease. Parent external wrapper supplies actual PID/startTicks/kernel wait/reaped/gone and post-save reserve evidence.300s/250MiB checks, loopback/external abort, proxy/CA/TLS and awaited cleanup inherited unchanged. No gate created here.
+
+112samebytes browser archive references verified; no input snapshots/HTML/gzip duplicated. Fixed original runner writes own snapshots, then only separately recorded post-run exact-gzip hardlink may save storage without changing raw/pins. Preparation free295231488bytes, prior original100 total logical11734052bytes leaves estimated21353436bytes above250MiB before further Git storage. Estimate is not a bound; freshly verify before run and after results/commit. Large temp/tmp.
+
+No product/main/docs edits. No browser rerun, timing, CDP/profile, additional security/mutation/fuzz, images/video or public verification. Prior reserve violation retained. Stop for parent review/new gate; no performance improvement claimed.

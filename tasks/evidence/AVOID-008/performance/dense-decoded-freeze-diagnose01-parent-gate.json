@@ -1,0 +1,61 @@
+{
+  "authorizedByParent": true,
+  "authorizedAt": "2026-10-23T06:43:01.122819+00:00",
+  "authorizedMode": "--diagnose100",
+  "formal1000Authorized": false,
+  "candidateSource": "6b9720647402961fb92fe04c544f91d31762d7f3",
+  "candidateSHA256": "cd6e8d459657751ec1d08e9b69d48dc1efb4d13f74c7e30df4a2604fe3e4e1c9",
+  "baselineCommit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+  "runnerSHA256": "6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756",
+  "fixtureSHA256": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+  "normalizedCorpusSHA256": "4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc",
+  "preloadSHA256": "1022a5cd13dca75ead3714291bf3d0ec3948220fbf87cb1f493ddb5e46609363",
+  "expectedSpecRevision": "229",
+  "runtimeIdentityFile": "tasks/evidence/AVOID-008/performance/native-local-bounds-runtime03.json",
+  "correctnessEvidenceCommit": "4c374320cd43123d0e6afbb318e21547e3ea817d",
+  "correctnessRawSHA256": "c820579dbb6aa6be49d4c5145ad573d03ad971bf50f3b2180444934dc823f772",
+  "correctnessParentReviewSHA256": "380527b02504bfd62d0b352adf493d725c93bed08fb9744955014dba378f5f60",
+  "publicChecks": false,
+  "conditions": "ONE original100 ON/OFF baseline+candidate four sides,3warm+1planning point,80render/16warm,3200x1080 stage/.5 canvas/DPR1. Unchanged runner/fixture/corpus/counts/fonts/2x and+3ms limits. No profiles/CDP/1000/retry/source edits/images/public checks. Retain all prior failures. Run only after every other owner is idle; direct exec PID/startTicks and full prestart stdoutstderr capture; 250MiB/300s/loopback only/owned close.",
+  "exclusiveLease": {
+    "owner": "/root/avoid008_continue_impl",
+    "scope": "Whole invocation through awaited browser/server cleanup and OS waitpid",
+    "parentCommitment": "All other agents remain idle; parent runs no browser/ffmpeg/test/perf/profile during invocation",
+    "limitations": "Original runner during scan misses MainThread/profile-only; preload scans before/after; exclusive operational lease covers whole interval, not a claim of mechanical continuous process detection."
+  },
+  "executionPermission": {
+    "sandbox_permissions": "with_additional_permissions",
+    "additional_permissions": {
+      "network": {
+        "enabled": true
+      }
+    }
+  },
+  "output": "tasks/evidence/AVOID-008/performance/dense-decoded-freeze-diagnose01",
+  "scope": "ONE original unchanged100 diagnostic of dense decoded freeze. Full-field paired42/144frames independently accepted. No performance pass inferred; no retry/security/public/CDP/1000/pipeline or threshold change. Whole-run exclusive operational lease.",
+  "runtimeRecheck": {
+    "capturedUTC": "2026-10-23T06:43:05.739Z",
+    "environment": {
+      "environment_id": "ccarenv_b64_Y2NhcmVudl9iNTNiMjlkNmNlYzA4MTkxYTdlYmM4MDA2N2YwNDczYw",
+      "source_config_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfg_6ad48aa510ac8193888ec17160277acd",
+      "source_config_version_id": "ca70e16f-b09f-4783-984c-b120e67d5a46~cecfgver_6ad4cb133f2081938362cf953cd01341",
+      "spec_revision": "229",
+      "observed_spec_revision": "229",
+      "observations_current": true,
+      "provider": "cloud",
+      "desired_phase": "running",
+      "observed_phase": "running",
+      "failure": null,
+      "connectivity": "connected",
+      "network_policy": {
+        "mode": "unrestricted",
+        "state": "enforced"
+      },
+      "capabilities": [],
+      "secrets": [],
+      "runtime_variables": [],
+      "outbound_identities": [],
+      "network_diagnostics": null
+    }
+  }
+}

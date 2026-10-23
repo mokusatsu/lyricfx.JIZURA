@@ -1,0 +1,15 @@
+# AVOID-008 dense decoded freeze paired browser preparation only
+
+Model gpt-6.1-sol medium. Product fixed6b9720647402961fb92fe04c544f91d31762d7f3 / JAcd6e8d459657751ec1d08e9b69d48dc1efb4d13f74c7e30df4a2604fe3e4e1c9 after parent source/pure acceptance. No product/main/docs changes in preparation.
+
+New dev/avoidance/layouts-c-dense-decoded-freeze-browser.cjs SHA256627b3f1dfafe81f71e897cff84b7683a0dd2346a971f3c873da9b628702dabe6 derives from accepted node-wire full-field helper3390debd2b05f9a510ce8221af27dc8594d396846668ebf14ecf36b6771943e4. Eight literal groups/ten occurrences only: helper/output/gate names, authorized mode, candidate source/JA, baseline archive/decoded SHA, and archive search prefix. Lossless helper.patch.gz reverse-applies to exact original bytes. Exercise body byte-exact, including40normal rows+2separate corner targets, cold/warm/fast and144total native frames, full program/alias/geometry/pixel/observation/error comparison. Full deep/ordered/canonical equality; no projection or diagnostic exclusions.
+
+Baseline prior2f full84 JA is referenced from existing node-wire-encode-browser01/input-index.html.gz decoded0a33254940b3cf069d91de8ece36fe58510927bcdd83100e22f15172322eed97. Candidate full84 product86 equals fixed Git blobs; actual173 package files match accepted gate. No HTML/gzip archive created. Search prefers node-wire-encode-browser01, then existing native-local-bounds/validated-repair/lazy archives, creating only genuinely different inputs at future authorized run.
+
+Runtime remains native-local-bounds-runtime02.json/-raw.json spec228, to be freshly qualified by parent current=observed/running/connected before launch. Requires parent-created dense-decoded-freeze-browser01-parent-gate.json, authorizedMode one-paired-normal40-plus2-dense-decoded-freeze-correctness, candidate source/JA/helper/baseline archive pins, product86/package173, output tasks/evidence/AVOID-008/performance/dense-decoded-freeze-browser01 and formal1000Authorizedfalse. Preparation creates no gate. Parent must hold exclusive full-run lease and retain actual PID/startTicks/kernel wait/reaped/gone and post-save reserve evidence.
+
+Original full84 source guard, product/package pin checks, before/after MainThread-inclusive livejob/Z scans,300s/250MiB bound, inherited proxy/CA/TLS, loopback-only external abort, awaited browser/server close and input drift checks remain unchanged. Standalone budgetEncoder retains original generic fallback.
+
+Future command (NOT EXECUTED): JIZURA_BROWSER=/usr/bin/chromium node dev/avoidance/layouts-c-dense-decoded-freeze-browser.cjs tasks/evidence/AVOID-008/performance/dense-decoded-freeze-browser01
+
+node --check and git diff --check pass. Browser/performance/CDP/images/video/additional security/mutation/fuzz/public verification0. Old performance failures remain historical evidence; current formal1000 on unchanged765fixture/4addcorpus is unverified, not established by an older fixture failure. No performance acceptance or benefit claimed. Stop for parent review and separate one-run gate.
