@@ -1,0 +1,42 @@
+{
+  "authorizedByParent": true,
+  "authorizedAt": "2026-10-23T07:54:14.671047+00:00",
+  "authorizedMode": "--formal",
+  "formal1000Authorized": true,
+  "candidateSource": "4d2b91cc1d55152087f6fa6d8f76c1de83b4f072",
+  "candidateSHA256": "d4742a6360ab153805db82204f5bb7268d1c641530fbee06362ee929d2b2f297",
+  "baselineCommit": "2bb3f864b5d40361961d8ad2aabeec24bfb5d1cb",
+  "runnerSHA256": "6cc4efdf4884dd84f80c3454218108f73bf702a40487a0e62400948fa48d6756",
+  "fixtureSHA256": "7650c0e2015ef6393334c7d05e121b5ee3de7202790e4f41bbfe01b76445a471",
+  "normalizedCorpusSHA256": "4add5fb9e1e7616b02a45aa6b72c3eb76f1acbbfe42a09e42ec3976dde204afc",
+  "preloadSHA256": "f4638d5c5e9eadcacc97c0a857833302bee6df373bf54079da7f3fcfc026b335",
+  "expectedSpecRevision": "230",
+  "runtimeIdentityFile": "tasks/evidence/AVOID-008/performance/native-local-bounds-runtime04.json",
+  "correctnessEvidenceCommit": "4001ae3",
+  "correctnessRawSHA256": "aa223e26fcb7793299f188c567f4a73ba5624f1de573d4dae4685a577a766f3c",
+  "correctnessParentReviewSHA256": "81a7931c3c485ba2fba1c290ed371520fc7b5e6c073449473a8cab61b0326d5a",
+  "publicChecks": false,
+  "conditions": "ONE unchanged original formal100/1000, ON/OFF baseline/candidate eight sides. 3warm/6samples,80render16warm, original1800000ms wall,250MiB including saved results. Preserve2x/+3ms and actual native record/replay/observations. No diagnostic retry/security/CDP/public/images or source edits. Exclusive whole-run lease; actual PID/startTicks/waitpid0/reaped/gone/awaitclose and raw failures retained.",
+  "exclusiveLease": {
+    "owner": "/root/avoid008_continue_impl",
+    "scope": "Whole invocation through awaited browser/server cleanup and OS waitpid",
+    "parentCommitment": "All other agents remain idle; parent runs no browser/ffmpeg/test/perf/profile during invocation",
+    "limitations": "Original runner during scan misses MainThread/profile-only; preload scans before/after; exclusive operational lease covers whole interval, not a claim of mechanical continuous process detection."
+  },
+  "executionPermission": {
+    "sandbox_permissions": "with_additional_permissions",
+    "additional_permissions": {
+      "network": {
+        "enabled": true
+      }
+    }
+  },
+  "output": "tasks/evidence/AVOID-008/performance/tree-only-repair-formal01",
+  "scope": "ONE original formal100/1000 after parent accepted tree-only source/pure and strict full-field paired; no diagnostic retry, no public verification; prior failures retained.",
+  "allC34Stable": true,
+  "allC34StableMeaning": "Source stable and full native34/pipeline/normal paired correctness accepted; does not mean all circular conditions safe or human aesthetic approval.",
+  "fontManifestSHA256": "186435e6c7c29be5dd899c7b0bfc564828d27e6d2726d29a8da6769d0eca24d2",
+  "outerWrapperSHA256": "8e01c8cc20e27fc0b03e6ffe94785e8f79bc284df30356c8e3fa7abd89ac7870",
+  "outerTimeoutSeconds": 1830,
+  "parentPreparationReview": "Parent reconstructed helper from c262 four literal groups byteexact; wrapper namespace/helper substitutions only. Original runner/fixture/corpus/threshold/count/timeouts unchanged."
+}

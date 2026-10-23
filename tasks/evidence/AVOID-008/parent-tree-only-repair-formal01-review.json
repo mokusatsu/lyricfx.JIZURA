@@ -1,0 +1,181 @@
+{
+  "parent": "/root",
+  "rawSHA256": "b788ee294e437767e731264e91bd078e21a78b804370fbcca8928d8ce8f4819d",
+  "originalConfig": {
+    "diagnostic": false,
+    "formal": true,
+    "sizes": [
+      100,
+      1000
+    ],
+    "onStates": [
+      true,
+      false
+    ],
+    "planningWarmup": 3,
+    "planningSamples": 6,
+    "renderFrames": 80,
+    "renderWarmup": 16,
+    "stage": [
+      3200,
+      1080
+    ],
+    "canvas": [
+      1600,
+      540
+    ],
+    "renderScale": 0.5,
+    "viewport": [
+      1280,
+      720
+    ],
+    "DPR": 1,
+    "cutStart": 1.25,
+    "cutDuration": 4,
+    "seed": 704,
+    "maxWallMs": 1800000,
+    "limits": {
+      "standard": {
+        "regions": 100,
+        "cuts": 100
+      },
+      "stress": {
+        "regions": 1000,
+        "cuts": 1000
+      },
+      "planningP95MaxBaselineFactor": 2,
+      "additionalRenderP95Ms": 3,
+      "environment": "same browser, local font, viewport and warmup; compare in 004/017",
+      "bufferBudget": "004/018 must measure lifetime and impose max buffers; no per-glyph stage buffer"
+    }
+  },
+  "sides": [
+    {
+      "n": 100,
+      "on": true,
+      "side": "baseline",
+      "planningP95Ms": 66.5,
+      "renderP95Ms": 2.9000000059604645,
+      "normalizedInputSHA256": "f6eef273216bb998c7dc1174901381e54ff833a0cf2d2ed75e34c32ab4a82792"
+    },
+    {
+      "n": 100,
+      "on": true,
+      "side": "candidate",
+      "planningP95Ms": 107.79999999701977,
+      "renderP95Ms": 5.5,
+      "normalizedInputSHA256": "f6eef273216bb998c7dc1174901381e54ff833a0cf2d2ed75e34c32ab4a82792"
+    },
+    {
+      "n": 100,
+      "on": false,
+      "side": "baseline",
+      "planningP95Ms": 57.70000000298023,
+      "renderP95Ms": 2.4000000059604645,
+      "normalizedInputSHA256": "11d008d2ca8b392f64da31c89706342ab989d1f05788ecfdd29dd64533b420c4"
+    },
+    {
+      "n": 100,
+      "on": false,
+      "side": "candidate",
+      "planningP95Ms": 87.50000001490116,
+      "renderP95Ms": 5.100000008940697,
+      "normalizedInputSHA256": "11d008d2ca8b392f64da31c89706342ab989d1f05788ecfdd29dd64533b420c4"
+    },
+    {
+      "n": 1000,
+      "on": true,
+      "side": "baseline",
+      "planningP95Ms": 455.20000000298023,
+      "renderP95Ms": 5.0999999940395355,
+      "normalizedInputSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+    },
+    {
+      "n": 1000,
+      "on": true,
+      "side": "candidate",
+      "planningP95Ms": 1006,
+      "renderP95Ms": 8.200000002980232,
+      "normalizedInputSHA256": "943704c839404b181763398b47d5e08c3356a2ad3d6a6b50238e138fad635eaa"
+    },
+    {
+      "n": 1000,
+      "on": false,
+      "side": "baseline",
+      "planningP95Ms": 472.70000000298023,
+      "renderP95Ms": 3.0999999940395355,
+      "normalizedInputSHA256": "d103dcc821f66e8a697912cd7a22d469ea05bc8f2565cb8ef67d8c2a5d0dc9e4"
+    },
+    {
+      "n": 1000,
+      "on": false,
+      "side": "candidate",
+      "planningP95Ms": 602.8999999910593,
+      "renderP95Ms": 2.5,
+      "normalizedInputSHA256": "d103dcc821f66e8a697912cd7a22d469ea05bc8f2565cb8ef67d8c2a5d0dc9e4"
+    }
+  ],
+  "comparisons": [
+    {
+      "n": 100,
+      "on": true,
+      "ratio": 1.6210526315341318,
+      "additionalRenderP95Ms": 2.5999999940395355,
+      "met": true
+    },
+    {
+      "n": 100,
+      "on": false,
+      "ratio": 1.516464471583739,
+      "additionalRenderP95Ms": 2.7000000029802322,
+      "met": true
+    },
+    {
+      "n": 1000,
+      "on": true,
+      "ratio": 2.2100175746779738,
+      "additionalRenderP95Ms": 3.1000000089406967,
+      "met": false
+    },
+    {
+      "n": 1000,
+      "on": false,
+      "ratio": 1.2754389676057927,
+      "additionalRenderP95Ms": -0.5999999940395355,
+      "met": true
+    }
+  ],
+  "runnerInputArchives": 120,
+  "actualPackages": 173,
+  "products": 86,
+  "kernelEvidence": {
+    "pid": 402446,
+    "startTicks": "12128623",
+    "exit": 1,
+    "expectedContractAssertionOnly": true,
+    "reaped": true,
+    "gone": true,
+    "prePostLiveJobs": 0,
+    "awaitedClose": true,
+    "postSaveBytes": 532279296
+  },
+  "runtimeRevision": "230",
+  "actual1000ONRepairMemo": {
+    "repairMemoCompiles": 1,
+    "repairMemoFullReads": 1,
+    "repairMemoFastReads": 7,
+    "repairMemoFallbacks": 0,
+    "repairMemoCapped": 0,
+    "repairMemoRetired": 0,
+    "repairMemoSlots": 624983,
+    "repairMemoStringChars": 2697683,
+    "repairMemoRepairs": 27399,
+    "repairMemoMaxSlots": 1048576,
+    "repairMemoMaxStringChars": 8388608,
+    "repairMemoMaxRepairs": 65536
+  },
+  "decision": "Formal FAIL retained:100ON/OFF and1000OFF meet both limits;1000ON planning2.210x/render+3.1ms remain unmet. Current1000 repair full1/fast7/compiles1/capped0/fallback0, actual27399ops/624983slots/2697683chars, so capacity repair works. Next targeted equal-behavior optimization based on already accepted profile; no unchanged diagnostic rerun. Main product unadopted and four human examples pending.",
+  "publicRequests": 0,
+  "parentImageViews": 0,
+  "at": "2026-10-23T07:57:13.465794+00:00"
+}
