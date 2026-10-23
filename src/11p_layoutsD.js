@@ -514,6 +514,9 @@ reg('accordion', {
   },
   render(env) {
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, u = U(env), lt = env.lt;
+    const previousOwnership=env.drawOwnership, nativeD=cut.placementLayoutsD===true, recipe=nativeD?cut.layoutDRecipe||{}:{};
+    const owned=(owner,fn)=>nativeD?env.withDrawRole('primary','accordion.'+owner,fn):fn();
+    try {
     const n = J.glyphCount(cut.text);
     if (!n) return null;
     const port = isPort(env);
@@ -524,12 +527,24 @@ reg('accordion', {
     let alpha = Pm.fold + (1 - open) * (86 - Pm.fold) + Math.sin(env.ltb * 2.1) * Pm.breathe * mot * J.clamp(lt / 0.8) + E.inCubic(env.pOut) * (88 - Pm.fold);
     alpha = J.clamp(alpha, 2, 88.5) * J.DEG;
     const ca = Math.cos(alpha), sa = Math.sin(alpha);
-    const rowsA = rowsOf(cut.text, vert ? 10 : port ? 5 : 9);
-    const rows = rowsA.length, per = Math.max(...rowsA.map(r => r.length));
+    const nativeRows=rowsOf(cut.text, vert ? 10 : port ? 5 : 9);
+    let sourceIndex=0;
+    const sourceRows=nativeD?nativeRows.map((row,r)=>row.map((ch,j)=>({ch,source:sourceIndex++,sourceRow:r,sourceJ:j}))):null;
+    const groups=[];
+    if(nativeD)for(const row of sourceRows){
+      const limit=recipe.columns||row.length;
+      const text=row.map(s=>s.ch).join(''), natural=new Set([row.length]);
+      if(hasLatin(text)){for(let k=0;k<row.length;k++)if(row[k].ch===' ')natural.add(k+1);}
+      else {let off=0;for(const chunk of J.chunkText(text)){off += [...chunk].length;natural.add(off);}}
+      let start=0;while(start<row.length){const ends=[...natural].filter(k=>k>start),fits=ends.filter(k=>k-start<=limit),end=fits.length?Math.max(...fits):Math.min(...ends);groups.push(row.slice(start,end));start=end;}
+    }
+    const rowsA=nativeD?groups.map(row=>row.map(s=>s.ch)):nativeRows;
+    const rows = rowsA.length, per = Math.max(...nativeRows.map(r => r.length));
     const cA = Math.cos(Pm.fold * J.DEG);
     // unfolded panel size from the rest angle
-    const Pw = Math.min((vert ? H * 0.82 : W * 0.86) / (per * cA + 0.5), (vert ? W * 0.5 : H * 0.62 / rows) / 1.25, u * 0.3);
-    const Ph = Pw * 1.2;
+    const nativePw = Math.min((vert ? H * 0.82 : W * 0.86) / (per * cA + 0.5), (vert ? W * 0.5 : H * 0.62 / nativeRows.length) / 1.25, u * 0.3);
+    const Pw=nativePw*(recipe.panelScale||1),Ph = Pw * 1.2, nativeSize=Math.min(nativePw*.66,nativePw*1.2*.62), size=nativeSize*(recipe.fontScale||1);
+    if(nativeD)env.placementDGeometry={kind:'accordion',vert,Pw,Ph,nativePw,nativeSize,size,kap:.13,alpha,fold:Pm.fold,start:Pm.start,covers:Pm.covers,nativeRows:sourceRows,rows:groups.map((row,r)=>({row:r,phase:row[0].sourceJ%2,slots:row.map(s=>({...s})),cy:(vert?W:H)/2+(r-(groups.length-1)/2)*Ph*1.3})),chronology:[]};
     const pc = plateCol(sc, Pm.plate === 'accent' ? [sc.accent, sc.ink] : Pm.plate === 'fg' ? [sc.fg, sc.ink] : [sc.ink, sc.fg]);
     const tc = onCol(sc, pc), lit = shade(sc, pc, 0.1), dim = shade(sc, pc, -0.32);
     const covC = plateCol(sc, [sc.accent, sc.ink, sc.fg]) === pc ? shade(sc, pc, -0.45) : plateCol(sc, [sc.accent, sc.ink, sc.fg]);
@@ -542,41 +557,44 @@ reg('accordion', {
       const pw = Pw * ca, tot = cnt * pw;
       const cy = (vert ? W : H) / 2 + (r - (rows - 1) / 2) * Ph * 1.3;
       const c0 = (vert ? H : W) / 2 - tot / 2;
-      const edgeH = j => Ph * (1 + kap * sa * ((j + (Pm.start > 0 ? 0 : 1)) % 2 ? -1 : 1));
+      const phase=nativeD?groups[r][0].sourceJ%2:0;
+      const edgeH = j => Ph * (1 + kap * sa * ((j + phase + (Pm.start > 0 ? 0 : 1)) % 2 ? -1 : 1));
       // map (along, across) → screen
       const P2 = (a, b) => (vert ? [b, a] : [a, b]);
       // shadow under the strip
       const sh = [];
       for (let j = 0; j <= cnt; j++) sh.push(P2(c0 + j * pw + Ph * 0.06, cy + edgeH(j) / 2 + Ph * 0.07));
       for (let j = cnt; j >= 0; j--) sh.push(P2(c0 + j * pw + Ph * 0.06, cy + edgeH(j) / 2 + Ph * 0.02));
-      env.poly(sh, darkOf(sc), 0.3 * out, false);
+      owned('shadow.'+r,()=>env.poly(sh, darkOf(sc), 0.3 * out, false));
       for (let j = 0; j < cnt; j++) {
         const a0 = c0 + j * pw, a1 = a0 + pw, h0 = edgeH(j), h1 = edgeH(j + 1);
-        const q = J.clamp((lt - j * 0.03) / 0.2) * out;
+        const source=nativeD?groups[r][j]:null, q = J.clamp((lt - (source?source.sourceJ:j) * 0.03) / 0.2) * out;
         if (q <= 0) continue;
         const facing = h1 > h0 ? 1 : -1;               // panel turning towards / away from the light
         const col = facing > 0 ? dim : lit;
         const pts = [P2(a0, cy - h0 / 2), P2(a1, cy - h1 / 2), P2(a1, cy + h1 / 2), P2(a0, cy + h0 / 2)];
-        env.poly(pts, col, q, gIn(env));
-        env.line([P2(a0, cy - h0 / 2), P2(a0, cy + h0 / 2)], J.mix(col, darkOf(sc), 0.4), lw, q, false);
+        owned('panel.'+(source?.source??j),()=>env.poly(pts, col, q, gIn(env)));
+        owned('panel.'+(source?.source??j),()=>env.line([P2(a0, cy - h0 / 2), P2(a0, cy + h0 / 2)], J.mix(col, darkOf(sc), 0.4), lw, q, false));
         const ch = row[j];
         if (ch === ' ') continue;
         const mid = P2((a0 + a1) / 2, cy);
         const hs = (h0 + h1) / 2 / Ph;
         const m = vert ? [hs, 0, 0, ca, mid[0], mid[1]] : [ca, 0, 0, hs, mid[0], mid[1]];
-        const size = Math.min(Pw * 0.66, Ph * 0.62);
-        bb = UB(bb, drawAff(env, { text: ch, font: Pm.font, size, x: 0, y: 0, color: tc, noHold: plateHold(env), mi: miAt(env, 0.12 + (gi++) * 0.035) }, m));
+        const fontSize=nativeD?size:Math.min(Pw * 0.66, Ph * 0.62), ordinal=gi++, mi=miAt(env,.12+ordinal*.035);
+        if(nativeD)env.placementDGeometry.chronology.push({source:source.source,sourceJ:source.sourceJ,q,ordinal,mi});
+        bb = UB(bb, owned('panel.'+(source?.source??j),()=>drawAff(env, { text: ch, font: Pm.font, size:fontSize, x: 0, y: 0, color: tc, noHold: plateHold(env), mi }, m)));
       }
       if (Pm.covers) {
         const cq = tin(env, 0, 0.3, E.outCubic) * out;
         const cw2 = Ph * 0.09, chh = Ph * 1.16;
-        for (const [a, hh] of [[c0 - cw2, edgeH(0)], [c0 + tot, edgeH(cnt)]]) {
+        for (const [side, [a, hh]] of [[c0 - cw2, edgeH(0)], [c0 + tot, edgeH(cnt)]].entries()) {
           const pts = [P2(a, cy - chh / 2 * hh / Ph), P2(a + cw2, cy - chh / 2 * hh / Ph), P2(a + cw2, cy + chh / 2 * hh / Ph), P2(a, cy + chh / 2 * hh / Ph)];
-          env.poly(pts, covC, cq, gIn(env));
+          owned('cover.'+r+'.'+side,()=>env.poly(pts, covC, cq, gIn(env)));
         }
       }
     }
     return bb;
+    }finally{if(nativeD)env.drawOwnership=previousOwnership;}
   },
 });
 
