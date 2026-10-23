@@ -1,0 +1,103 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-23T00:28:12.134818+00:00",
+  "source": "8ff3dd8487a4fb4193d00ef9caa296372c751b4f",
+  "sealedEvidence": "ffc1da2",
+  "rawSHA256": "8801cc5b128d806fc08fecd24f5b04ca68f368c1a9f5251b74699fd4be2e69e6",
+  "rawBytes": 695871,
+  "actualInputArchives": 120,
+  "actualGateRuntimeArchives": 3,
+  "actualPackageFiles": 173,
+  "productPins": 86,
+  "fullPoolStatsOccurrences": 46,
+  "all4SidesFunctionalFieldsExact": [
+    "n",
+    "on",
+    "side",
+    "fontQualification",
+    "projectSHA256",
+    "normalizedInputSHA256",
+    "allIterationInputSHA256",
+    "normalization",
+    "regionAudit",
+    "cuts",
+    "idCounts",
+    "renderIDs",
+    "states",
+    "planningCalls",
+    "renderCalls",
+    "observations",
+    "renderErrors",
+    "registeredAdapters",
+    "candidateCAPI",
+    "candidateBudgetInterpretation",
+    "counts",
+    "cacheCondition"
+  ],
+  "fontAuditOnlyDifferences": "36 loopback ephemeral-port changes, all font paths/other fields exact",
+  "fontURLPortChanges": 36,
+  "comparisons": [
+    {
+      "n": 100,
+      "on": true,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 48,
+      "candidatePlanningMs": 152.20000000298023,
+      "planningRatio": 3.1708333333954215,
+      "additionalRenderP95Ms": 5.100000008940697,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    },
+    {
+      "n": 100,
+      "on": false,
+      "projectIdentical": true,
+      "normalizedInputIdentical": true,
+      "planningStatistic": "one post-warm full-plan point; NOT qualified p95",
+      "baselinePlanningMs": 51.30000001192093,
+      "candidatePlanningMs": 76.70000000298023,
+      "planningRatio": 1.495126705363683,
+      "additionalRenderP95Ms": 2.0999999940395355,
+      "planningLimit": 2,
+      "renderLimitMs": 3,
+      "formalThresholdsEvaluable": false
+    }
+  ],
+  "details": [
+    {
+      "on": true,
+      "coldMs": 6204.200000017881,
+      "actualColdRecord": 622,
+      "sourceMs": 49.5,
+      "finalizeMs": 102.70000000298023
+    },
+    {
+      "on": false,
+      "coldMs": 181,
+      "actualColdRecord": 0,
+      "sourceMs": 52.29999999701977,
+      "finalizeMs": 24.400000005960464
+    }
+  ],
+  "actualONRecordReplayObservations": [
+    80,
+    80,
+    80
+  ],
+  "all100Staged": true,
+  "preloadBeforeAfterLiveJobs": [
+    0,
+    0
+  ],
+  "resourceViolations": 0,
+  "ownedRunnerGone": 362161,
+  "edgeHitCountThisTiming": null,
+  "scope": "One original post-warm planning point, not formal p95;64 measured render timers. Warm finalization cost increase observed, causal allocation attribution not measured. Browser correctness hit counts are not timing-run hit counts.",
+  "decision": "Performance remains unqualified; formal1000/repeated timing not authorized. Preserve previous and current failures.",
+  "parentHarnessNote": "Initial comparison required literal fontAudit URL equality; actual difference is only localhost ephemeral port. Narrow path/host/schema equality verified, no product/test expectation changed.",
+  "publicChecks": 0,
+  "imagesViewed": 0
+}
