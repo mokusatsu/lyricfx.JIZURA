@@ -1,0 +1,103 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-22T23:34:59.061950+00:00",
+  "candidate": "7bd83c236cb7b631d9e5b4ce8c4ade161271b4b2",
+  "priorExecutedSource": "fd6ae6631654fc2d50cb703707db15df6ee782bd",
+  "priorActualCore": "parent-core-fd6-review01.json",
+  "freshBrowserCorrectness": "parent-payload-tree-browser01-review.json",
+  "sourceByteProof": "parent-payload-tree-source01-review.json",
+  "frozenCoreTestInputs": [
+    {
+      "path": "dev/lyric_test.js",
+      "sha256": "c2488b96527cd126864a63c5e63776d872031f0816814bb3b489b01054735f85",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/drawing_frames_test.cjs",
+      "sha256": "23d203c109eae5610a9db38413668c24aac6097cad61eda4861b9bd00547b5f7",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/palette_stability_test.cjs",
+      "sha256": "06db7f1a1f742d46581acda11f2711596d8a4bbc036d027edb1ea072f6bd05e3",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/cut_detail_audit_test.cjs",
+      "sha256": "43215481a1ce1208b03dd82da15baa05ee1fb8d6e37567acf4222eb1bd9a51c7",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/effect_copy_fidelity_test.cjs",
+      "sha256": "723e83427ae58db05d371edf150e5c1d7492246755f0141f067369a358be7d8e",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/lyric_area_effects_test.cjs",
+      "sha256": "77327af435cffe8e0e16e32bdfcfb1b61613812feaafee460f16e8937420f317",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/lyric_compositing_test.cjs",
+      "sha256": "bd3f6f8dda54c009cdc70bbc94e1380ae7ec7e684360d3078d2dcd5deccaee6e",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/lyric_placement_stability_test.cjs",
+      "sha256": "abb3526352c303233a42614455c2a529f44ae2db55a43492af88186231639acf",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/lyric_avoid_center_test.cjs",
+      "sha256": "a4391f922b76b5cb15578bed6d8649b145d244c3ec116d1dbab069355e133d6c",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/lyric_group_avoidance_test.cjs",
+      "sha256": "df9a50ab079b03d8093d5765edd0569665fdcd6ae3ceefac2198f4d6620b324b",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/browser.cjs",
+      "sha256": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/ui_helpers.cjs",
+      "sha256": "1041a980c4950579b713abf42b6f9fc82e72107dfbeefa682780aa6fbab43b02",
+      "explicitLayoutsCOptIn": false
+    },
+    {
+      "path": "dev/lyric_area_effects_en_only.cjs",
+      "sha256": "970c6764495095879af3d40da5424029256a4aba7e94c4d66d8b9fec5d65ba52",
+      "explicitLayoutsCOptIn": false
+    }
+  ],
+  "basis": [
+    "Only09g private cache prefix/stats changed; remaining83source and09g adapter/render suffix exactfd6.",
+    "Core helpers never opt into layoutsC and actual UI has no layoutsC activation. Unchanged begin gate returnsnull before every new codec/dependency operation; read/keep null guards return before new operations.",
+    "New module-load native descriptor captures only read native properties. Actual full newbrowser startup completed successfully in same Node/Chromium dependency environment.",
+    "Four actual nonC controls exercised default/A/B/mixedexcluded gates with zero cache hit/miss/store changes.",
+    "Lyric-only Node suite loads just01util/08planner, both byteexactfd6."
+  ],
+  "carriedResult": {
+    "baseline": {
+      "PASS": 8,
+      "FAIL": 3
+    },
+    "candidate": {
+      "PASS": 8,
+      "FAIL": 3
+    },
+    "newCandidateOnlyFailuresObservedInPriorActualRun": 0
+  },
+  "freshCore22Rerun": false,
+  "decision": "Limited source-based carry of the previously reached nonC regression assertions accepted; not a claim of a fresh22run or any unexecuted body success.",
+  "limits": [
+    "Three inherited failing suites remainFAIL on each side; later UI/save/EN/compositing/export assertions remain unexecuted.",
+    "Does not cover newC codec: separately fresh40/28 browser accepted.",
+    "Only current private-codec source accepted; any subsequent shared renderer/geometry/default activation change requires reassessment.",
+    "Performance and1000 not accepted, human4composition answers pending.",
+    "Public checks prohibited, not performed."
+  ]
+}

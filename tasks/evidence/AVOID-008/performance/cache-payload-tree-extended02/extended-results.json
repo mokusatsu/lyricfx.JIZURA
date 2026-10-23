@@ -1,0 +1,582 @@
+{
+  "passed": true,
+  "specialRootAndHostileGraphCases": [
+    {
+      "wire": {
+        "codec": "C008-payload-tree-repairs-v2",
+        "tree": null,
+        "aliases": [],
+        "scalars": [],
+        "nullPrototypes": [],
+        "rootSpecial": "u"
+      },
+      "oldGraphExact": true
+    },
+    {
+      "wire": {
+        "codec": "C008-payload-tree-repairs-v2",
+        "tree": null,
+        "aliases": [],
+        "scalars": [],
+        "nullPrototypes": [],
+        "rootSpecial": "-0"
+      },
+      "oldGraphExact": true
+    },
+    {
+      "wire": {
+        "codec": "C008-payload-tree-repairs-v2",
+        "tree": null,
+        "aliases": [],
+        "scalars": [],
+        "nullPrototypes": [],
+        "rootSpecial": null
+      },
+      "oldGraphExact": true
+    },
+    {
+      "wire": {
+        "codec": "C008-payload-tree-repairs-v2",
+        "tree": 0,
+        "aliases": [],
+        "scalars": [],
+        "nullPrototypes": [],
+        "rootSpecial": null
+      },
+      "oldGraphExact": true
+    },
+    {
+      "wire": {
+        "codec": "C008-payload-tree-repairs-v2",
+        "tree": [],
+        "aliases": [],
+        "scalars": [],
+        "nullPrototypes": [],
+        "rootSpecial": null
+      },
+      "oldGraphExact": true
+    },
+    {
+      "wire": {
+        "codec": "C008-payload-tree-repairs-v2",
+        "tree": {},
+        "aliases": [],
+        "scalars": [],
+        "nullPrototypes": [],
+        "rootSpecial": null
+      },
+      "oldGraphExact": true
+    },
+    {
+      "wire": {
+        "codec": "C008-payload-tree-repairs-v2",
+        "tree": {},
+        "aliases": [],
+        "scalars": [],
+        "nullPrototypes": [
+          []
+        ],
+        "rootSpecial": null
+      },
+      "oldGraphExact": true
+    },
+    {
+      "wire": {
+        "codec": "C008-payload-tree-repairs-v2",
+        "tree": {
+          "a": {
+            "0": {
+              "inside": [
+                null,
+                null
+              ]
+            },
+            "__proto__": null,
+            "constructor": null,
+            "toString": null,
+            "01": null,
+            "4294967295": null
+          },
+          "again": null,
+          "array": [
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "aliases": [
+          [
+            [
+              "a"
+            ],
+            "__proto__",
+            [
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              "a"
+            ],
+            "constructor",
+            [
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              "a"
+            ],
+            "toString",
+            [
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              "a"
+            ],
+            "01",
+            [
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              "a"
+            ],
+            "4294967295",
+            [
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [],
+            "again",
+            [
+              "a"
+            ]
+          ],
+          [
+            [
+              "array"
+            ],
+            0,
+            [
+              "a"
+            ]
+          ],
+          [
+            [
+              "array"
+            ],
+            1,
+            [
+              "a",
+              "0"
+            ]
+          ]
+        ],
+        "scalars": [
+          [
+            "u",
+            [
+              "a",
+              "0",
+              "inside"
+            ],
+            0
+          ],
+          [
+            "-0",
+            [
+              "a",
+              "0",
+              "inside"
+            ],
+            1
+          ],
+          [
+            "u",
+            [
+              "array"
+            ],
+            2
+          ],
+          [
+            "-0",
+            [
+              "array"
+            ],
+            3
+          ]
+        ],
+        "nullPrototypes": [
+          [
+            "a"
+          ]
+        ],
+        "rootSpecial": null
+      },
+      "oldGraphExact": true
+    }
+  ],
+  "planOnlyFrozenReachability": [
+    {
+      "sharedCuts": false,
+      "status": [
+        false,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "sharedCuts": true,
+      "status": [
+        false,
+        true,
+        true,
+        false,
+        true
+      ]
+    }
+  ],
+  "corruptMetadata": [
+    {
+      "label": "namespace",
+      "rejected": true,
+      "message": "C payload schema"
+    },
+    {
+      "label": "extra schema",
+      "rejected": true,
+      "message": "C payload schema"
+    },
+    {
+      "label": "missing schema",
+      "rejected": true,
+      "message": "C payload schema"
+    },
+    {
+      "label": "aliases not array",
+      "rejected": true,
+      "message": "C payload schema"
+    },
+    {
+      "label": "scalar tag",
+      "rejected": true,
+      "message": "C payload scalar repair"
+    },
+    {
+      "label": "scalar row length",
+      "rejected": true,
+      "message": "C payload scalar repair"
+    },
+    {
+      "label": "missing own path",
+      "rejected": true,
+      "message": "C payload own path"
+    },
+    {
+      "label": "inherited path",
+      "rejected": true,
+      "message": "C payload own path"
+    },
+    {
+      "label": "wrong array key type",
+      "rejected": true,
+      "message": "C payload own path type"
+    },
+    {
+      "label": "out of range",
+      "rejected": true,
+      "message": "C payload own path type"
+    },
+    {
+      "label": "bad path type",
+      "rejected": true,
+      "message": "C payload alias path"
+    },
+    {
+      "label": "target primitive",
+      "rejected": true,
+      "message": "C payload alias target"
+    },
+    {
+      "label": "target root cycle",
+      "rejected": true,
+      "message": "C payload cyclic alias"
+    },
+    {
+      "label": "target itself",
+      "rejected": true,
+      "message": "C payload cyclic alias"
+    },
+    {
+      "label": "forward target",
+      "rejected": true,
+      "message": "C payload forward alias"
+    },
+    {
+      "label": "duplicate alias slot",
+      "rejected": true,
+      "message": "C payload repair placeholder"
+    },
+    {
+      "label": "alias through alias placeholder",
+      "rejected": true,
+      "message": "C payload forward alias"
+    },
+    {
+      "label": "duplicate scalar slot",
+      "rejected": true,
+      "message": "C payload repair placeholder"
+    },
+    {
+      "label": "null proto array",
+      "rejected": true,
+      "message": "C payload null prototype"
+    },
+    {
+      "label": "duplicate null proto",
+      "rejected": true,
+      "message": "C payload null prototype"
+    },
+    {
+      "label": "root special inconsistent",
+      "rejected": true,
+      "message": "C payload root marker"
+    },
+    {
+      "label": "root tag",
+      "rejected": true,
+      "message": "C payload schema"
+    },
+    {
+      "label": "alias nonplaceholder",
+      "rejected": true,
+      "message": "C payload cyclic alias"
+    },
+    {
+      "label": "negative index",
+      "rejected": true,
+      "message": "C payload own path type"
+    },
+    {
+      "label": "fraction index",
+      "rejected": true,
+      "message": "C payload own path type"
+    }
+  ],
+  "nativeGuards": [
+    {
+      "i": 0,
+      "key": "parse",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 0,
+      "key": "parse",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 1,
+      "key": "stringify",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 1,
+      "key": "stringify",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 2,
+      "key": "defineProperty",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 2,
+      "key": "defineProperty",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 3,
+      "key": "setPrototypeOf",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 3,
+      "key": "setPrototypeOf",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 4,
+      "key": "getOwnPropertyNames",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 4,
+      "key": "getOwnPropertyNames",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 5,
+      "key": "getOwnPropertyDescriptor",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 5,
+      "key": "getOwnPropertyDescriptor",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 6,
+      "key": "getPrototypeOf",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 6,
+      "key": "getPrototypeOf",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 7,
+      "key": "hasOwn",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 7,
+      "key": "hasOwn",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 8,
+      "key": "isArray",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 8,
+      "key": "isArray",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 9,
+      "key": "isInteger",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 9,
+      "key": "isInteger",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 10,
+      "key": "encode",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 10,
+      "key": "encode",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 11,
+      "key": "TextEncoder",
+      "getter": false,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    },
+    {
+      "i": 11,
+      "key": "TextEncoder",
+      "getter": true,
+      "compactRejected": true,
+      "decodeRejected": true,
+      "invoked": 0
+    }
+  ],
+  "deepGrowth": {
+    "oldUTF8": 1952,
+    "oldUTF16": 3904,
+    "cap": 8192,
+    "rejected": true,
+    "message": "C payload repair growth"
+  },
+  "sourceSHA256": "7a94759fcb2c578cac437ae4b554e8fe27773c2c13286293ec94b6201d871999",
+  "browserRuns": 0
+}

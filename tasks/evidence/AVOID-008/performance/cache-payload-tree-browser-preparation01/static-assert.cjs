@@ -1,0 +1,4 @@
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const base='tasks/evidence/AVOID-008/performance/cache-payload-tree-browser-preparation01/',m=JSON.parse(fs.readFileSync(base+'transform-manifest.json')),sha=s=>crypto.createHash('sha256').update(s).digest('hex'),original=fs.readFileSync(m.original,'utf8');let derived=fs.readFileSync(m.derived,'utf8');assert.equal(sha(original),m.originalSHA256);assert.equal(sha(derived),m.derivedSHA256);
+for(const x of m.changes.slice().reverse()){assert.equal(derived.split(x.after).length-1,1);derived=derived.replace(x.after,x.before);}assert.equal(derived,original);assert.equal(m.originalNegativeCasesRetained,25);assert.equal(m.additionalNegativeCases,3);assert.equal(m.normalCasesRetained,40);assert.deepEqual(m.schemaCountsUnchanged,[20,21]);console.log('PASS 11 exact transforms reverse whole original driver; original25/40/native/schema/LRU/budget checks retained');

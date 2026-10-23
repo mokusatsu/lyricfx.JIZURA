@@ -1,0 +1,22 @@
+{
+  "parent": "/root",
+  "timestamp": "2026-10-22T23:26:33.251Z",
+  "sourceSHA256": "4d22199510280c8830b8819a23c5a0be96c0c9e2b12045e088363d5bc6e665c0",
+  "checks": {
+    "cases": 1000,
+    "independentSeed": "0x7e571841",
+    "objectOccurrences": 8819,
+    "inheritedGetterSetterGuards": 200,
+    "guardCallbacks": 0,
+    "oldFullWireExact": true,
+    "descriptorsAndFreshDisjointReads": true
+  },
+  "browserRuns": 0,
+  "performanceQualified": false,
+  "notes": [
+    "Independent bottom-up DAG generator uses earlier completed nodes only.",
+    "Old v1 encoder remains independent graph/value/order/prototype/alias oracle.",
+    "Initial parent harness incorrectly required configurable array length; corrected to standard own length descriptor. No product change.",
+    "Normal browser cache dependency/secondverify and actual resource budgets remain separate required gates."
+  ]
+}

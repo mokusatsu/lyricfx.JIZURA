@@ -1,0 +1,64 @@
+{
+  "original": "dev/avoidance/layouts-c-final-cache-test.cjs",
+  "originalSHA256": "5513e85d767d5509dd0d5a70d40e7f10b7f8d41812c14f4fb919d68555e6ce8c",
+  "derived": "dev/avoidance/layouts-c-payload-tree-browser-test.cjs",
+  "derivedSHA256": "598aed462b2dce48543d4322cc4b456e2839aa9904c668a689e8b70c4f5bd866",
+  "exactReverse": true,
+  "changes": [
+    {
+      "before": "'dev/avoidance/layouts-c-final-cache-test.cjs','dev/avoidance/layouts-b-fixture.js'",
+      "after": "'dev/avoidance/layouts-c-final-cache-test.cjs','dev/avoidance/layouts-c-payload-tree-browser-test.cjs','dev/avoidance/layouts-b-fixture.js'"
+    },
+    {
+      "before": "const report={kind:",
+      "after": "// Evidence-only dependency/resource pins; no workload or expected geometry changes.\nconst packagePins=[];for(const name of ['playwright','playwright-core']){const base=path.dirname(require.resolve(name+'/package.json'));assert.equal(JSON.parse(fs.readFileSync(base+'/package.json')).version,'1.62.1');const walk=dir=>{for(const e of fs.readdirSync(dir,{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name))){const p=dir+'/'+e.name;if(e.isDirectory())walk(p);else if(e.isFile()){const b=fs.readFileSync(p);packagePins.push({path:p,bytes:b.length,sha256:sha(b)});}}};walk(base);}assert.equal(packagePins.length,173,'Actual fixed Playwright package-file count changed');\nconst report={runnerPID:process.pid,packagePins,kind:"
+    },
+    {
+      "before": "(async()=>{let browser,server;try{server=",
+      "after": "(async()=>{let browser,server,watchdog,diskMonitor;try{assert(fs.statfsSync(root).bavail*fs.statfsSync(root).bsize>=250*1024*1024,'250MiB disk reserve required');server="
+    },
+    {
+      "before": "browser=await require('../browser.cjs').launch();const page=",
+      "after": "browser=await require('../browser.cjs').launch();watchdog=setTimeout(()=>{report.errors.push({code:'CORRECTNESS_300S_WALL_LIMIT'});process.exitCode=1;browser?.close().catch(()=>{});},300000);diskMonitor=setInterval(()=>{if(fs.statfsSync(root).bavail*fs.statfsSync(root).bsize<250*1024*1024){report.errors.push({code:'CORRECTNESS_DISK_RESERVE'});process.exitCode=1;browser?.close().catch(()=>{});}},1000);const page="
+    },
+    {
+      "before": "  async function pair(spec){",
+      "after": "  // Independent direct traversal of finalized values, not product payloadCompact.\n  const compactOracle=value=>{const first=new WeakMap(),active=new WeakSet(),aliases=[],scalars=[],nullPrototypes=[];let rootSpecial=null;\n   const visit=(v,current,parent,key)=>{if(v===undefined||typeof v==='number'&&Object.is(v,-0)){const kind=v===undefined?'u':'-0';if(parent===null)rootSpecial=kind;else scalars.push([kind,parent,key]);return null;}if(v===null||typeof v!=='object')return v;if(active.has(v))throw Error('oracle cycle');if(first.has(v)){aliases.push([parent,key,first.get(v)]);return null;}first.set(v,current);active.add(v);const array=Array.isArray(v),proto=Object.getPrototypeOf(v);assert(array?proto===Array.prototype:proto===Object.prototype||proto===null,'oracle plain container');if(proto===null)nullPrototypes.push(current);const out=array?[]:{};for(const k of Object.getOwnPropertyNames(v)){if(array&&k==='length')continue;const d=Object.getOwnPropertyDescriptor(v,k);assert(d&&Object.hasOwn(d,'value')&&d.enumerable,'oracle own data');const key=array?Number(k):k;Object.defineProperty(out,key,{value:visit(d.value,[...current,key],current,key),enumerable:true,writable:true,configurable:true});}active.delete(v);return out;};\n   const tree=visit(value,[],null,null);return JSON.stringify({codec:'C008-payload-tree-repairs-v2',tree,aliases,scalars,nullPrototypes,rootSpecial});};\n  const digest=async text=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))).map(x=>x.toString(16).padStart(2,'0')).join('');\n  async function pair(spec){"
+    },
+    {
+      "before": "coldJSON=json(cold);records=0;",
+      "after": "coldJSON=json(cold),coldCache=A.layoutsCFinalCacheStats();records=0;"
+    },
+    {
+      "before": "   if(['clapper','dictionary','stickyNotes','ema'].includes(spec.layout)",
+      "after": "   const payloadValue={plan:cold,originalCuts:JSON.parse(json(r.plan.cuts))},oldAdmission=CCacheBudgetEncode(payloadValue),compact=compactOracle(payloadValue),oldUTF8=new TextEncoder().encode(oldAdmission).length,oldUTF16=oldAdmission.length*2,compactUTF8=new TextEncoder().encode(compact).length,compactUTF16=compact.length*2,warmCache=A.layoutsCFinalCacheStats();\n   assert(coldCache.lastPayloadRejection===null&&coldCache.lastAttemptAdmissionPayloadBytes===oldUTF8&&coldCache.lastAttemptAdmissionPayloadResidentBytes===oldUTF16,'normal old admission ledger');assert(coldCache.lastAttemptPayloadBytes===compactUTF8&&coldCache.lastAttemptPayloadResidentBytes===compactUTF16&&coldCache.payloadSerializedBytes===compactUTF8,'normal actual compact ledger');assert(coldCache.entries===1&&coldCache.serializedBytes===coldCache.keySerializedBytes+compactUTF8+coldCache.entryHeaderBytes&&coldCache.residentStringAndHeaderBytes===coldCache.lastAttemptKeyResidentBytes+compactUTF16+coldCache.entryHeaderBytes,'normal actual compact pool charges');assert(warmCache.payloadSerializedBytes===compactUTF8&&warmCache.serializedBytes===coldCache.serializedBytes&&warmCache.residentStringAndHeaderBytes===coldCache.residentStringAndHeaderBytes&&warmCache.lastAttemptPayloadBytes===0&&warmCache.lastAttemptAdmissionPayloadBytes===0,'warm hit stores no newly generated wire');row.payloadAccounting={oracle:'independent live own-data DAG traversal; product derives only from admitted old snapshot',oldAdmission:{UTF8:oldUTF8,UTF16:oldUTF16,SHA256:await digest(oldAdmission)},actualCompact:{UTF8:compactUTF8,UTF16:compactUTF16,SHA256:await digest(compact)},coldCache,warmCache};\n   if(['clapper','dictionary','stickyNotes','ema'].includes(spec.layout)"
+    },
+    {
+      "before": "  const controls=[];",
+      "after": "  // Added payload helper controls; all original25 dependency cases remain above.\n  for(const [object,key]of [[JSON,'parse'],[Array,'isArray'],[Number,'isInteger']]){const original=object[key];await miss('payload-only helper '+(object===JSON?'JSON':object===Array?'Array':'Number')+'.'+key,()=>{object[key]=function(...args){return original(...args);};},()=>{object[key]=original;});}\n  const controls=[];"
+    },
+    {
+      "before": "assert(first.lastAttemptKeyBytes===second.lastAttemptKeyBytes&&first.lastAttemptPayloadBytes===payloadUTF8&&second.lastAttemptPayloadBytes===payloadUTF8,'actual oversize payload accounting');",
+      "after": "assert(first.lastAttemptKeyBytes===second.lastAttemptKeyBytes&&first.lastAttemptAdmissionPayloadBytes===payloadUTF8&&second.lastAttemptAdmissionPayloadBytes===payloadUTF8&&first.lastAttemptAdmissionPayloadResidentBytes===payloadUTF16&&second.lastAttemptAdmissionPayloadResidentBytes===payloadUTF16,'actual oversize independent old v1 admission accounting');assert(first.lastAttemptPayloadBytes===0&&second.lastAttemptPayloadBytes===0&&first.lastAttemptPayloadResidentBytes===0&&second.lastAttemptPayloadResidentBytes===0&&first.lastPayloadRejection==='old-entry'&&second.lastPayloadRejection==='old-entry','oversize old-entry rejection precedes compact generation');"
+    },
+    {
+      "before": "charges,actualRecordCalls,fullValueAndAliasIdentical:true",
+      "after": "charges,chargesScope:'old-v1-admission; not stored compact resident',actualCompact:{firstUTF8:first.lastAttemptPayloadBytes,secondUTF8:second.lastAttemptPayloadBytes,firstUTF16:first.lastAttemptPayloadResidentBytes,secondUTF16:second.lastAttemptPayloadResidentBytes,rejection:first.lastPayloadRejection},actualRecordCalls,fullValueAndAliasIdentical:true"
+    },
+    {
+      "before": "finally{await browser?.close();if(server)await new Promise(r=>server.close(r));report.changedInputs=",
+      "after": "finally{clearTimeout(watchdog);clearInterval(diskMonitor);await browser?.close();if(server)await new Promise(r=>server.close(r));report.ownedCleanup={browserCloseAwaited:true,serverCloseAwaited:true,runnerPID:process.pid};report.changedPackageInputs=packagePins.filter(p=>sha(fs.readFileSync(p.path))!==p.sha256);if(report.changedPackageInputs.length)process.exitCode=1;report.changedInputs="
+    }
+  ],
+  "originalNegativeCasesRetained": 25,
+  "additionalNegativeCases": 3,
+  "expectedTotalNegativeCases": 28,
+  "normalCasesRetained": 40,
+  "selectedNativeFramesRetainedEachSide": 18,
+  "selectedObservationsHistoricalEachSide": 15,
+  "schemaCountsUnchanged": [
+    20,
+    21
+  ],
+  "browserExecuted": false
+}
