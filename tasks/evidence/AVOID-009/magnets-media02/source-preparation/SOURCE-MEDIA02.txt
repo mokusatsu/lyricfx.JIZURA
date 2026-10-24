@@ -1,0 +1,22 @@
+SOURCE ONLY — parent review before seal/execution.
+
+Confirmed actual canonical source:
+src/09k_layoutsD_placement.js: validate compares tr.revision to supplied
+metrics revision, and finalizeLayoutsD adds sourceAdapter:adapter.id.
+src/11p_layoutsEb_magnets_adapter29.js: REV is magnets-native-two-group-v1;
+registration uses id:REV; certificate.revision is REV; trajectory.revision
+is the generic revision argument. Therefore old media hook compared the wrong
+API field. New guard requires sourceAdapter===expectedRevision AND
+certificate.revision===expectedRevision AND safety===certified-bounded-adapter.
+Rejection now includes expected/type, actual generic revision/type, adapter,
+certificate revision and safety. No product source or API guard was changed.
+
+All prep01 files and failedMEDIA01 outputs are untouched. New prep02 contains
+byte-identical capture, JA/EN controls+guide, projection and reuse source files.
+Only browser-hook guard changed; pending seal points to new prep02 files.
+All original source-generation/identity/font/clock/immutability/actual-geometry
+checks remain. Original hook and prior receipt copied in prep02/originals.
+Parent reported product work3b670587 and canonical33 raw accepted; parent alone
+will freeze accepted inputs and choose a fresh MEDIA02 output in keeper8802.
+No browser/encoder/media/public/image/Git/ROOT work performed by preparer.
+Only node --check is authorized here.

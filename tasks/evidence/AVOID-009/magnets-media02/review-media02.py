@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,gzip,hashlib,shutil,struct
+b=Path('/dev/shm/avoid009-evening-20261024');d=b/'magnets-media02';r=Path('/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/magnets-media02');m=json.load(open(d/'manifest.json'));native=json.load(gzip.open(b/'adapter32.raw.json.gz','rt'))['results'][0]['result'];sha=lambda x:hashlib.sha256(x).hexdigest();images=[]
+for side in ['before','after']:
+ s=m['sides'][side];video=d/'public'/s['video'];assert sha(video.read_bytes())==s['videoSHA256'];raw=d/s['raw'];assert sha(raw.read_bytes())==s['rawSHA256'];x=json.load(gzip.open(raw,'rt'));assert len(x['frames'])==249 and not x['tail']['observations'] and not x['pageErrors'];v=s['probe']['streams'][0];assert v['codec_name']=='h264'and v['width']==960 and v['height']==540 and v['avg_frame_rate']==v['r_frame_rate']=='60/1'and int(v['nb_read_frames'])==249 and v['sample_aspect_ratio']=='1:1'
+ for i,f in enumerate(x['frames']):assert f['frame']==i and f['time']==i/60 and f['pixelHash']==native['frames'][i][side+'SHA256'] and not f['warnings']
+ for i in m['capture']['keys']:
+  p=d/f'evidence/images/{side}-{i:03d}.png';data=p.read_bytes();assert sha(data)==x['frames'][i]['nativePNGHash'];assert struct.unpack('>II',data[16:24])==(960,540);dest=r/'local-proof/images'/p.name;dest.parent.mkdir(parents=True,exist_ok=True);assert not dest.exists();shutil.copy2(p,dest);images.append({'path':str(dest),'bytes':len(data),'sha256':sha(data),'frame':i,'side':side})
+ if side=='before':beforeSource=x['initial']['sourcePlan']
+ else:assert x['initial']['sourcePlan']==beforeSource
+out={'status':'PARENT_ACCEPTED_NATIVE_MP4_RAW_ONLY','manifestSHA256':sha((d/'manifest.json').read_bytes()),'productCommit':m['sourceProduct'],'fps':60,'framesPerSide':249,'size':[960,540],'all498NativeFrameRGBHashesMatchAccepted32':True,'sourceInputsExactBothSides':True,'sameCutDuration4':True,'encodedDuration':4.15,'proofImages':images,'proofImageCount':len(images),'proofImagesTotalBytes':sum(x['bytes']for x in images),'visualHuman':'pending','publicChecks':0,'parentImagesViewed':0};(r/'parent-media02-review.json').write_text(json.dumps(out,indent=2)+'\n');shutil.copy2(d/'manifest.json',r/'capture-manifest.full.json');print(json.dumps({k:v for k,v in out.items()if k!='proofImages'}))

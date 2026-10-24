@@ -1,0 +1,21 @@
+{
+  "kind": "SOURCE35-exact-tiles-original-root-two-edit-source-recipe",
+  "sourcePath": "src/09a_placement.js",
+  "originalSHA256": "abd7f5848a0e04c3d0c508edc42d0c7f079d4c02bdeb4375fb7c4006c1060378",
+  "modifiedSHA256": "eb9fb813103c1d529614364a77c97040fa8c5b5b4e25dde1dc7c48020ebdc387",
+  "modifiedUTF8Bytes": 88329,
+  "edits": [
+    {
+      "find": "const dMagnetsCut=cut=>",
+      "replace": "// Tiles native catalog: preserve original live root only for the stock D source.\nconst dTilesCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='tiles'&&cut.cam==='push'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('tiles');\nconst dMagnetsCut=cut=>",
+      "count": 1
+    },
+    {
+      "find": "dBalloonsCut(env.cut)||dMagnetsCut(env.cut))",
+      "replace": "dBalloonsCut(env.cut)||dMagnetsCut(env.cut)||dTilesCut(env.cut))",
+      "count": 1
+    }
+  ],
+  "storageReason": "Only unsealed35 reproducible fullsource duplicate removed after exact recipe equality; historical sources/seals/raw untouched",
+  "proofExecuted": false
+}

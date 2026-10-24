@@ -1,0 +1,83 @@
+{
+  "build": "MEDIA02-source-prep",
+  "status": "GUARD_FIELD_CORRECTION_PENDING_PARENT_GATE",
+  "previousHooksSHA256": "4caef0c3f24138ba0c44c1270578b12a27f68db3b224efc04cd0b6690b74967c",
+  "priorPreparationUntouched": true,
+  "failedMedia01Untouched": true,
+  "productChanged": false,
+  "checks": [
+    "node --check browser-hooks.js passed",
+    "node --check capture.cjs passed"
+  ],
+  "mediaExecution": false,
+  "imagesViewed": 0,
+  "publicChecks": 0,
+  "sourceAPIConfirmed": [
+    {
+      "path": "/workspace/lyricfx.JIZURA/src/09k_layoutsD_placement.js",
+      "sha256": "e2f09b487b8ead359b6d0c50d0fb914aa23057185b6997351f63fe8507731b30"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/src/11p_layoutsEb_magnets_adapter29.js",
+      "sha256": "98e7544e662c8925673af65db445c96b43c196826170cdc11776eb54cef49cdf"
+    }
+  ],
+  "files": [
+    {
+      "file": "capture.cjs",
+      "bytes": 8884,
+      "sha256": "64148e5117ed2b349e3a920f24ceb059e1b66c2eee0b984c55f7a6415e651a34"
+    },
+    {
+      "file": "browser-hooks.js",
+      "bytes": 3736,
+      "sha256": "b8a5c2082a924246092944cb602163693d9996429d9897d66f4b1dca8d83dde0"
+    },
+    {
+      "file": "index.html",
+      "bytes": 3371,
+      "sha256": "c5e20ef44f081e99cdfa7accbdd50f4e6ef676db9be7ab9b181cde24a38d7195"
+    },
+    {
+      "file": "en.html",
+      "bytes": 3307,
+      "sha256": "0909a2a8945e0402f90f1f48a9bd964589a3577329d12aec1da3ec83ee978fde"
+    },
+    {
+      "file": "seal.pending.json",
+      "bytes": 3891,
+      "sha256": "d5d0275255b9a17bb999b25d4f9a1ec19ed9dadfc784af5b3554213b12a45753"
+    },
+    {
+      "file": "reuse-sources.json",
+      "bytes": 1518,
+      "sha256": "dc0eaf5117f79ba87b89beac70f3780b25fb76ea515f10f779e69cb65a79878b"
+    },
+    {
+      "file": "README.txt",
+      "bytes": 5268,
+      "sha256": "d359417cd24ab0cbcabc1270f0ddbf7b18934db3671210bf61a103f0007f2e40"
+    },
+    {
+      "file": "public-manifest-projection.cjs",
+      "bytes": 1837,
+      "sha256": "305b7e2b4dffca1cb237bb46dfceb27bed0be049308051263c5e0de72f641bd8"
+    },
+    {
+      "file": "SOURCE-MEDIA02.txt",
+      "bytes": 1421,
+      "sha256": "22d970f29cc2500d38ae3abe151cf12d6468271f66cf8e226b0a0ddcf7c1e984"
+    },
+    {
+      "file": "guard-fix.patch",
+      "bytes": 1755,
+      "sha256": "eba380a2dfb7fb12da16fa9b58a4a16a7c29e78b3a29efa4e827c634461d2985"
+    }
+  ],
+  "unchangedFromPrep01": {
+    "capture.cjs": true,
+    "index.html": true,
+    "en.html": true,
+    "public-manifest-projection.cjs": true
+  }
+}

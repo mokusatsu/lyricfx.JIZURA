@@ -1,0 +1,35 @@
+--- publication03/stage_publication03.py
++++ publication04/stage_publication04.py
+@@ -43,17 +43,17 @@
+  a=ap.parse_args()
+  need(re.fullmatch('[0-9a-f]{40}',a.expected_head),'Full expected Source HEAD required')
+  for value in [a.open_receipt_sha256,a.media_manifest_sha256,a.parent_gate_sha256]:need(re.fullmatch('[0-9a-f]{64}',value),'Full SHA256 required')
+- need(os.environ.get('MAGNETS_PUBLICATION03_RELEASE')=='PARENT_REVIEWED_LOCAL_SOURCE_STAGE_COMMIT','Explicit parent release required')
++ need(os.environ.get('MAGNETS_PUBLICATION04_RELEASE')=='PARENT_REVIEWED_LOCAL_SOURCE_STAGE_COMMIT','Explicit parent release required')
+  safe(BASE);safe(SOURCE);safe(MEDIA);need((SOURCE/'.git').is_dir() and not (SOURCE/'.git').is_symlink(),'Owned Source checkout required')
+- safe(BASE/'magnets-publication03-local-receipt.json');need(not (BASE/'magnets-publication03-local-receipt.json').exists(),'Fresh local publication receipt required')
+- gate_bytes=regular(BASE/'magnets-publication03-parent-gate.json');need(sha(gate_bytes)==a.parent_gate_sha256,'Parent gate SHA differs');gate=json.loads(gate_bytes)
++ safe(BASE/'magnets-publication04-local-receipt.json');need(not (BASE/'magnets-publication04-local-receipt.json').exists(),'Fresh local publication receipt required')
++ gate_bytes=regular(BASE/'magnets-publication04-parent-gate.json');need(sha(gate_bytes)==a.parent_gate_sha256,'Parent gate SHA differs');gate=json.loads(gate_bytes)
+  need(gate.get('sourceRawAccepted') is True and gate.get('media498Accepted') is True and gate.get('freshVisual14Accepted') is True,'Prior acceptance gates required')
+  need(gate.get('humanMotionReview')=='PENDING','Human motion acceptance must remain pending')
+  need(gate.get('expectedSourceHEAD')==a.expected_head and gate.get('mediaManifestSHA256')==a.media_manifest_sha256 and gate.get('openReceiptSHA256')==a.open_receipt_sha256,'Parent gate bindings differ')
+  need(gate.get('stageScriptSHA256')==sha(regular(P(__file__).resolve())),'Parent must bind exact stage script')
+  receipt_bytes=regular(BASE/'source-open-evening03.json');need(sha(receipt_bytes)==a.open_receipt_sha256,'Source-open03 receipt SHA differs');r=json.loads(receipt_bytes)
+  need(r['state']=='OPENED_ONLY' and r['project_id']==PROJECT and r['remote']==REMOTE and r['branch']=='main','Wrong Source-open receipt')
+- protected=r['protectedTree'];need(sum(p.startswith('dist/') for p in protected)==101,'Expected original 101 dist files')
++ protected=r['protectedTree'];need(len(protected)==101 and sum(p.startswith('dist/') for p in protected)==100 and sum(p.startswith('.openai/') for p in protected)==1,'Expected protected tree total101 = dist100 + .openai1')
+  need(tree()==protected,'Existing dist/.openai bytes differ from source-open03')
+  hosting=json.loads(regular(SOURCE/'.openai/hosting.json'));need(hosting['project_id']==PROJECT and hosting['static']['directory']=='dist','Hosting config differs')
+  env=os.environ.copy()
+@@ -85,8 +85,8 @@
+  git(['commit','--no-gpg-sign','-m','Add native magnets motion comparison for review'])
+  head=git(['rev-parse','HEAD']).decode().strip();need(git(['rev-parse','HEAD^']).decode().strip()==a.expected_head,'Commit parent differs');clean();need(tree()=={**protected,**expected},'Final protected tree differs')
+  need(sha(regular(MEDIA/'manifest.json'))==a.media_manifest_sha256 and regular(MEDIA/'public/manifest.json')==mb,'Original full media manifests changed')
+- result={'state':'LOCAL_SOURCE_FIVE_FILE_COMMIT_ONLY','project_id':PROJECT,'priorHEAD':a.expected_head,'head':head,'openReceiptSHA256':a.open_receipt_sha256,'mediaManifestSHA256':a.media_manifest_sha256,'fiveFiles':expected,'originalDist101AndOpenaiByteExact':True,'visualReview':'PASS14','humanMotionReview':'PENDING','push':False,'publish':False,'publicChecks':0}
+- with (BASE/'magnets-publication03-local-receipt.json').open('x') as f:json.dump(result,f,indent=2);f.write('\n');f.flush();os.fsync(f.fileno())
++ result={'state':'LOCAL_SOURCE_FIVE_FILE_COMMIT_ONLY','project_id':PROJECT,'priorHEAD':a.expected_head,'head':head,'openReceiptSHA256':a.open_receipt_sha256,'mediaManifestSHA256':a.media_manifest_sha256,'fiveFiles':expected,'originalProtected101Dist100Openai1ByteExact':True,'visualReview':'PASS14','humanMotionReview':'PENDING','push':False,'publish':False,'publicChecks':0}
++ with (BASE/'magnets-publication04-local-receipt.json').open('x') as f:json.dump(result,f,indent=2);f.write('\n');f.flush();os.fsync(f.fileno())
+  print(json.dumps(result),flush=True)
+ if __name__=='__main__':
+  try:main()

@@ -1,0 +1,1235 @@
+{
+  "kind": "READONLY-tiles34-native-catalog-vs-transport-diagnosis",
+  "at": "2026-10-24T12:10:26.368187+00:00",
+  "rawRef": {
+    "path": "/tmp/avoid009-tiles-native34/native34.raw.json.gz",
+    "bytes": 618158,
+    "sha256": "cc5902485d1e1151b126e0db7f485ed43fbddb9916db2cfd9ddc29d8a38c09e5"
+  },
+  "counts": {
+    "fixtures": 4,
+    "independentOriginalVsOffNativePairs": 144,
+    "independentOriginalVsOnNativePairs": 144,
+    "offVsOnNativePairs": 144,
+    "catalogsFrozenCompleteCheckedAtRuntime": 144,
+    "wholeFramePixelPairs": 32,
+    "transportProbes": 20,
+    "transportPixelsEqual": 17,
+    "transportPixelsMismatched": 3,
+    "recordedEvents": 452,
+    "nestedTransformEvents": 362,
+    "catalogSourceCalls": 3777,
+    "catalogTileRecords": 1008
+  },
+  "actualFailureRows": [
+    {
+      "spec": "wide-right-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001750946044922
+      ],
+      "events": 26,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001751184463501
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        2.384185791015625e-07
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false,
+      "expectedNativePixelSHA256": "c183998ea45c273bea51ec192915c5545c90a12021be9eb7ba86c34be6036962",
+      "replayPixelSHA256": "52c9575d7ea847d745f2828c498f46d746fdd46e1a477728e3b9f15f9c7a35fd"
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001750946044922
+      ],
+      "events": 24,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001751184463501
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        2.384185791015625e-07
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false,
+      "expectedNativePixelSHA256": "b3de6cc87576210a57c1d264a00469dba43568c005cec8f73f2c86dd41f4c529",
+      "replayPixelSHA256": "17cc0f9600576108e1b9d1605bddebfbf2dae198fae932e287fe40837c9f2e57"
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001750946044922,
+        -8.89200210571289
+      ],
+      "events": 62,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001751184463501,
+        -8.89200210571289
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        2.384185791015625e-07,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false,
+      "expectedNativePixelSHA256": "f0a92abf2a38af145e5e9f3d6fdd192e6c999d2e80405dc0f2908a67f48c4425",
+      "replayPixelSHA256": "059c9c0d03adb195939c908870de65be79587f357a40c434425dc6e2a17101b5"
+    }
+  ],
+  "all12DirectlyComparableNormalRootProbes": [
+    {
+      "spec": "wide-right-score",
+      "lt": 0.25,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.58502197265625,
+        -0.3290748596191406
+      ],
+      "events": 16,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.58502197265625,
+        -0.3290748596191406
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "wide-right-score",
+      "lt": 1.5,
+      "pass": "A",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -3.2700271606445312,
+        -1.8318982124328613
+      ],
+      "events": 4,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 1,
+      "directLiveRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -3.2700271606445312,
+        -1.8318982124328613
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "wide-right-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001750946044922
+      ],
+      "events": 26,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001751184463501
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        2.384185791015625e-07
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 0.25,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.58502197265625,
+        -0.3290748596191406
+      ],
+      "events": 14,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.58502197265625,
+        -0.3290748596191406
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 1.5,
+      "pass": "A",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -3.2700271606445312,
+        -1.8318982124328613
+      ],
+      "events": 4,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 1,
+      "directLiveRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -3.2700271606445312,
+        -1.8318982124328613
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001750946044922
+      ],
+      "events": 24,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001751184463501
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        2.384185791015625e-07
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 0.25,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.3290748596191406,
+        -0.58502197265625
+      ],
+      "events": 18,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.3290748596191406,
+        -0.58502197265625
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 1.5,
+      "pass": "A",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -1.5477185249328613,
+        -3.2566909790039062
+      ],
+      "events": 11,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 1,
+      "directLiveRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -1.5477185249328613,
+        -3.2566909790039062
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001750946044922,
+        -8.89200210571289
+      ],
+      "events": 62,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001751184463501,
+        -8.89200210571289
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        2.384185791015625e-07,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false
+    },
+    {
+      "spec": "tall-drop-score",
+      "lt": 0.25,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.3290748596191406,
+        -0.58502197265625
+      ],
+      "events": 20,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.3290748596191406,
+        -0.58502197265625
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "tall-drop-score",
+      "lt": 1.5,
+      "pass": "A",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -1.5477185249328613,
+        -3.2566909790039062
+      ],
+      "events": 9,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 1,
+      "directLiveRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -1.5477185249328613,
+        -3.2566909790039062
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "tall-drop-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001750946044922,
+        -8.89200210571289
+      ],
+      "events": 55,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001751184463501,
+        -8.89200210571289
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        2.384185791015625e-07,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false
+    }
+  ],
+  "all20TransportOpsAudits": [
+    {
+      "spec": "wide-right-score",
+      "lt": 0.25,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.58502197265625,
+        -0.3290748596191406
+      ],
+      "events": 16,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.58502197265625,
+        -0.3290748596191406
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "wide-right-score",
+      "lt": 1.5,
+      "pass": "A",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -3.2700271606445312,
+        -1.8318982124328613
+      ],
+      "events": 4,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 1,
+      "directLiveRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -3.2700271606445312,
+        -1.8318982124328613
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "wide-right-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001750946044922
+      ],
+      "events": 26,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001751184463501
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        2.384185791015625e-07
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false
+    },
+    {
+      "spec": "wide-right-score",
+      "lt": 1.5,
+      "pass": "main",
+      "scale": 0.5,
+      "fractional": true,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        0.5101606845855713,
+        0.0066324626095592976,
+        -0.0066324626095592976,
+        0.5101606845855713,
+        -1.6860077381134033,
+        -0.8456649780273438
+      ],
+      "events": 26,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2
+    },
+    {
+      "spec": "wide-right-score",
+      "lt": 0.25,
+      "pass": "B",
+      "scale": 2,
+      "fractional": true,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        2.0282979011535645,
+        0.026369357481598854,
+        -0.026369357481598854,
+        2.0282979011535645,
+        -1.4057197570800781,
+        -0.2904720902442932
+      ],
+      "events": 5,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 0.25,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.58502197265625,
+        -0.3290748596191406
+      ],
+      "events": 14,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.58502197265625,
+        -0.3290748596191406
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 1.5,
+      "pass": "A",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -3.2700271606445312,
+        -1.8318982124328613
+      ],
+      "events": 4,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 1,
+      "directLiveRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -3.2700271606445312,
+        -1.8318982124328613
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001750946044922
+      ],
+      "events": 24,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001751184463501
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        2.384185791015625e-07
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 1.5,
+      "pass": "main",
+      "scale": 0.5,
+      "fractional": true,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        0.5101606845855713,
+        0.0066324626095592976,
+        -0.0066324626095592976,
+        0.5101606845855713,
+        -1.6860077381134033,
+        -0.8456649780273438
+      ],
+      "events": 24,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2
+    },
+    {
+      "spec": "wide-drop-no-score",
+      "lt": 0.25,
+      "pass": "B",
+      "scale": 2,
+      "fractional": true,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        2.0282979011535645,
+        0.026369357481598854,
+        -0.026369357481598854,
+        2.0282979011535645,
+        -1.4057197570800781,
+        -0.2904720902442932
+      ],
+      "events": 5,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 0.25,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.3290748596191406,
+        -0.58502197265625
+      ],
+      "events": 18,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.3290748596191406,
+        -0.58502197265625
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 1.5,
+      "pass": "A",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -1.5477185249328613,
+        -3.2566909790039062
+      ],
+      "events": 11,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 1,
+      "directLiveRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -1.5477185249328613,
+        -3.2566909790039062
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": false,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001750946044922,
+        -8.89200210571289
+      ],
+      "events": 62,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001751184463501,
+        -8.89200210571289
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        2.384185791015625e-07,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 1.5,
+      "pass": "main",
+      "scale": 0.5,
+      "fractional": true,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        0.5101606845855713,
+        0.0066324626095592976,
+        -0.0066324626095592976,
+        0.5101606845855713,
+        -0.9181914925575256,
+        -1.6134812831878662
+      ],
+      "events": 62,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2
+    },
+    {
+      "spec": "tall-right-latin-no-score",
+      "lt": 0.25,
+      "pass": "B",
+      "scale": 2,
+      "fractional": true,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        2.0282979011535645,
+        0.026369357481598854,
+        -0.026369357481598854,
+        2.0282979011535645,
+        -1.2904930114746094,
+        -0.954038679599762
+      ],
+      "events": 6,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2
+    },
+    {
+      "spec": "tall-drop-score",
+      "lt": 0.25,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.3290748596191406,
+        -0.58502197265625
+      ],
+      "events": 20,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0012187957763672,
+        0,
+        0,
+        1.0012187957763672,
+        -0.3290748596191406,
+        -0.58502197265625
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "tall-drop-score",
+      "lt": 1.5,
+      "pass": "A",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -1.5477185249328613,
+        -3.2566909790039062
+      ],
+      "events": 9,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 1,
+      "directLiveRoot": [
+        1.007312536239624,
+        0,
+        0,
+        1.007312536239624,
+        -1.5477185249328613,
+        -3.2566909790039062
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": true
+    },
+    {
+      "spec": "tall-drop-score",
+      "lt": 3.8,
+      "pass": "main",
+      "scale": 1,
+      "fractional": false,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001750946044922,
+        -8.89200210571289
+      ],
+      "events": 55,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2,
+      "directLiveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001751184463501,
+        -8.89200210571289
+      ],
+      "rootDeltaRecordedMinusLive": [
+        0.0,
+        0,
+        0,
+        0.0,
+        2.384185791015625e-07,
+        0.0
+      ],
+      "allNonMatrixCatalogFieldsExact": true,
+      "rootNumericallyIdentical": false
+    },
+    {
+      "spec": "tall-drop-score",
+      "lt": 1.5,
+      "pass": "main",
+      "scale": 0.5,
+      "fractional": true,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        0.5101606845855713,
+        0.0066324626095592976,
+        -0.0066324626095592976,
+        0.5101606845855713,
+        -0.9181914925575256,
+        -1.6134812831878662
+      ],
+      "events": 55,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2
+    },
+    {
+      "spec": "tall-drop-score",
+      "lt": 0.25,
+      "pass": "B",
+      "scale": 2,
+      "fractional": true,
+      "pixelsEqual": true,
+      "recordedRoot": [
+        2.0282979011535645,
+        0.026369357481598854,
+        -0.026369357481598854,
+        2.0282979011535645,
+        -1.2904930114746094,
+        -0.954038679599762
+      ],
+      "events": 6,
+      "allRecordedRolesPrimary": true,
+      "allLocalNativeOpsExactlySourceCatalog": true,
+      "maxNativeOps": 2
+    }
+  ],
+  "matrixFieldsExcludedOnlyForSeparateStaticCatalogScalarCheck": [
+    "matrixBeforeCall",
+    "root",
+    "rootBeforeGlyph",
+    "shapeActualMatrix",
+    "sourceRoot",
+    "sourceRootBeforeTile"
+  ],
+  "productChanged": false,
+  "browserExecuted": false,
+  "newProbeExecuted": false,
+  "certificate": false,
+  "publicChecks": 0
+}

@@ -1,0 +1,91 @@
+{
+  "status": "NATIVE_CATALOG_PARITY_ACCEPTED_TRANSPORT_FAILED_PRESERVED",
+  "rawSHA256": "cc5902485d1e1151b126e0db7f485ed43fbddb9916db2cfd9ddc29d8a38c09e5",
+  "counts": {
+    "fixture": 4,
+    "nativePairs": 288,
+    "wholeFramePairs": 32,
+    "tileRecords": 1008,
+    "sourceCalls": 3777,
+    "transportExact": 17,
+    "transportFailed": 3
+  },
+  "failures": [
+    {
+      "fixture": "wide-right-score",
+      "lt": 3.8,
+      "pass": "main",
+      "liveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001751184463501
+      ],
+      "recordedRoots": [
+        [
+          1.0185250043869019,
+          0,
+          0,
+          1.0185250043869019,
+          -8.89200210571289,
+          -5.001750946044922
+        ]
+      ],
+      "maxRootImportDifference": 2.384185791015625e-07
+    },
+    {
+      "fixture": "wide-drop-no-score",
+      "lt": 3.8,
+      "pass": "main",
+      "liveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -8.89200210571289,
+        -5.001751184463501
+      ],
+      "recordedRoots": [
+        [
+          1.0185250043869019,
+          0,
+          0,
+          1.0185250043869019,
+          -8.89200210571289,
+          -5.001750946044922
+        ]
+      ],
+      "maxRootImportDifference": 2.384185791015625e-07
+    },
+    {
+      "fixture": "tall-right-latin-no-score",
+      "lt": 3.8,
+      "pass": "main",
+      "liveRoot": [
+        1.0185250043869019,
+        0,
+        0,
+        1.0185250043869019,
+        -5.001751184463501,
+        -8.89200210571289
+      ],
+      "recordedRoots": [
+        [
+          1.0185250043869019,
+          0,
+          0,
+          1.0185250043869019,
+          -5.001750946044922,
+          -8.89200210571289
+        ]
+      ],
+      "maxRootImportDifference": 2.384185791015625e-07
+    }
+  ],
+  "parentReviewAttempt1": "TypeError due baseline on=None; no product/test changes; corrected parent comparison uses independent baseline off for both instrumented off/on, as runner specifies.",
+  "publicChecks": 0,
+  "parentImagesViewed": 0,
+  "adapterAccepted": false
+}
