@@ -1,0 +1,51 @@
+{
+  "registry": "src/09k_layoutsD_placement.js:16 source-proof pending; next after blocks; metadata is not an adapter",
+  "inventory184": {
+    "id": "balloons",
+    "name": "文字風船",
+    "source": "src/11p_layoutsD.js",
+    "line": "1049",
+    "task": "AVOID-009",
+    "direct_mainDraw": "True",
+    "env_draw": "True",
+    "direct_canvas_text": "False",
+    "sourceSHA256": "563f2e90ca86a4196606c48b0ccd0b4e555e672de64781c1a3125d3fd2922978",
+    "renderSHA256": "a8cbeef5f0e59c37e85a7b9444324703fce610d9d9480ac994c0ea00a5ac5954",
+    "role": "primary (all lyric-bearing units, conservative)",
+    "auxiliary": "none exempted; additional auxiliary discovery remains assigned to adapter owner",
+    "attachedPlates": "follow owning primary or named tiledAux; never independent by default",
+    "independentDecor": "non-lyric visual decoration only; no exemption for semantic annotation",
+    "camera": "stage transform composed once; adapter owner verifies bounds",
+    "policy": "full-stage primary trajectory",
+    "status": "registration/source hash checked; conservative primary policy assigned; individual unit audit and visual verification pending: AVOID-009"
+  },
+  "allPrimary": [
+    "each original main lyric body",
+    "dark thick puffy rim copy",
+    "source clipped gloss text copy",
+    "small highlight circle",
+    "each11-point attached string",
+    "each triangular tie/knot",
+    "shared bunch anchor circle"
+  ],
+  "noneExempted": true,
+  "floor": "No floor paint exists in this balloons source; bunch anchor is not a floor or independent decor",
+  "sourceBodySize": {
+    "outBackS": 2.2,
+    "qMaximum": 1.154050925925926,
+    "maxSzToNativeSize": 1.1078356481481482,
+    "maxAtE": 0.5416666666666667
+  },
+  "mainDrawOnlyWouldMiss": "direct env.draw rim/gloss plus lines/knots/highlight; main glyph mi delay differs from e>0 source membership",
+  "existingMeasurement": "A.itemGeometry honors charFn.s=.93 but ignores clipY; complete unclipped .93-font support conservatively bounds source gloss. snapshotItem retains original live charFn for in-memory replay; JSON cloning would lose it and requires a reviewed serialization/provenance strategy, not a generic bridge change.",
+  "historicalInventoryRowOnly": true,
+  "currentAuthority": "source-pins.json main11p SHA and native-balloons.js exact4432B SHA",
+  "futureSerializableGlossDescriptor": {
+    "scale": 0.93,
+    "clipY": [
+      -0.75,
+      -0.22
+    ],
+    "source": "original live drawItem charFn remains unchanged; semantic descriptor only in native catalog"
+  }
+}
