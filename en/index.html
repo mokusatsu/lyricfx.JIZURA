@@ -10727,6 +10727,8 @@ function shadowReplay(env,program,offset,decorOffsets){
 const dAccordionCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='accordion'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('accordion');
 // Pile native replay keeps the exact original camera root; no safe adapter is declared.
 const dPileCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='pile'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('pile');
+// Blocks native-catalog replay retains the exact original camera root; no safety adapter.
+const dBlocksCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='blocks'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('blocks');
 const dRibbonCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='ribbon'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('ribbon');
 const dBandCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='cylinder'&&cut.params?.band===true&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('cylinder');
 const dFlagCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='flag'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&['unfurl','raise'].includes(cut.params?.mode)&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&A.layoutsDSourceKnown?.('flag');
@@ -10743,7 +10745,7 @@ A.record = (renderer,env,options={}) => {
   const validationOnly=options.validationOnly===true;let shapeValidationUncertain=false;
   validateTextState(env.ctx);
   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
-  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut)||dRibbonCut(env.cut)||dPileCut(env.cut))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
+  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut)||dRibbonCut(env.cut)||dPileCut(env.cut)||dBlocksCut(env.cut))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
   const nativeC34=env.cut.placementLayoutsC===true,nativeB25=env.cut.placementLayoutsB===true||nativeC34,nativeD34=env.cut.placementLayoutsD===true,nativeA26=env.cut.placementLayoutsA===true||nativeB25||nativeD34;let nativeRoot=nativeA26?(nativeDOriginalRoot||matrix(c)):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
   // Only stock synchronous C command runs reuse a private actual-Canvas read.
@@ -39629,6 +39631,10 @@ reg('blocks', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    // Native-catalog gate only: no placement recipe or motion adaptation.
+    const nativeD = cut.placementLayoutsD === true;
+    const owned = (owner, fn) => nativeD ? env.withDrawRole('primary', 'blocks.' + owner, fn) : fn();
+    const sourceSlots = nativeD ? new Map() : null;
     const n = J.glyphCount(cut.text);
     if (!n) return null;
     const port = isPort(env);
@@ -39643,7 +39649,7 @@ reg('blocks', {
     const out = tout(env);
     const cols = objCols(sc);
     const lw = Math.max(1, k * 0.012);
-    env.line([[W * 0.08, floorY], [W * 0.92, floorY]], sc.sub, Math.max(1, u * 0.002), 0.6 * tin(env, 0, 0.4) * out, false);
+    owned('floor', () => env.line([[W * 0.08, floorY], [W * 0.92, floorY]], sc.sub, Math.max(1, u * 0.002), 0.6 * tin(env, 0, 0.4) * out, false));
     const blk = [];
     // lyric blocks: bottom row first so the upper rows land on them
     let gi = 0;
@@ -39652,12 +39658,14 @@ reg('blocks', {
       if (ch === ' ') return;
       const x = W / 2 + (j - (row.length - 1) / 2) * k * gk - dx / 2;
       const b0 = { ch, x, y: floorY - (rows - r - 0.5) * k * 1.02, r, order: (rows - 1 - r) * per + j, col: cols[(gi++ + Pm.colOff) % cols.length] };
+      if (nativeD) sourceSlots.set(b0, { kind: 'lyric', row: r, slot: j });
       blk.push(b0); byRow[r].push(b0);
     }));
     // blank blocks under any overhang so the upper rows always rest on something
     for (let r = 0; r < rows - 1; r++) for (const b0 of byRow[r]) {
       if (byRow[r + 1].some(q => Math.abs(q.x - b0.x) < k * 0.6)) continue;
       const f = { ch: null, shape: 3, x: b0.x, y: floorY - (rows - r - 1.5) * k * 1.02, r: r + 1, order: (rows - 2 - r) * per - 1, col: J.mix(b0.col, sc.bg, 0.35) };
+      if (nativeD) sourceSlots.set(f, { kind: 'support', row: r + 1, parent: blk.indexOf(b0) });
       blk.push(f); byRow[r + 1].push(f);
     }
     if (deco) {
@@ -39676,10 +39684,26 @@ reg('blocks', {
       else { const P0 = 0.65, kk = Math.floor(env.ltb / P0); hopI = J.h(s, kk, 4) % n; hopF = (env.ltb - kk * P0) / 0.32; }
     }
     const sorted = blk.slice().sort((a, b) => (b.y - a.y) || (Pm.side > 0 ? a.x - b.x : b.x - a.x));
+    const catalog = nativeD ? {
+      kind: 'blocks-native-catalog', version: 1, nativeOnly: true,
+      stage: [W, H], pass: env.pass, clock: { t: env.t, realTime: env.realTime, lt, ltb: env.ltb, pOut: env.pOut },
+      params: { font: Pm.font, deco: Pm.deco, tilt: Pm.tilt, hop: Pm.hop, side: Pm.side, colOff: Pm.colOff },
+      n, port, rows: rowsB.map(row => row.slice()), per, k, dk, gk, dx, dy, floorY, lw, gap, fd, deco,
+      floor: { owner: 'blocks.floor', endpoints: [[W * 0.08, floorY], [W * 0.92, floorY]] },
+      hop: { index: hopI, fraction: hopF, beat: env.beat ? { len: env.beat.len, index: env.beat.index, since: env.beat.since } : null },
+      blocks: blk.map((b, index) => ({
+        id: 'block.' + index, sourceIndex: index, painterIndex: sorted.indexOf(b),
+        source: { ...(sourceSlots.get(b) || { kind: 'toy', shape: b.shape }) },
+        ch: b.ch, shape: b.shape ?? null, x: b.x, y: b.y, r: b.r ?? null,
+        order: b.order, col: b.col, sz: b.sz || 1,
+      })),
+    } : null;
+    if (nativeD) env.placementDGeometry = catalog;
     for (const b of sorted) {
       const kz = k * (b.sz || 1);
       const t1 = 0.06 + (b.order + 1) * gap;
       const f = (lt - t1) / fd;
+      if (nativeD) Object.assign(catalog.blocks[blk.indexOf(b)], { t1, f, emitted: f >= 0 });
       if (f < 0) continue;
       let y = b.y, sq = 1;
       if (f < 1) y = J.lerp(-kz * 2 - (H - b.y) * 0.2, b.y, E.inQuad(f));
@@ -39688,24 +39712,30 @@ reg('blocks', {
       if (bi === hopI && hopF < 1) y -= kz * 0.16 * Math.sin(Math.PI * J.clamp(hopF));
       y += E.inQuad(J.clamp(env.pOut * 1.4 - (b.order + 1) / (n + 3) * 0.4)) * H * 0.7;
       const rot = Pm.tilt && b.r === 0 && rows > 1 ? J.rs(s, bi, 3) * 3 : 0;
+      if (nativeD) Object.assign(catalog.blocks[bi], { kz, yNow: y, sq, rot, font: Pm.font, fontSize: kz * 0.6 });
       ctx.save(); ctx.translate(b.x, y + kz / 2); ctx.rotate(rot * J.DEG); ctx.scale(1, sq); ctx.translate(0, -kz / 2);
       const hk = kz / 2, ddx = dx * (b.sz || 1), ddy = dy * (b.sz || 1);
       const top = shade(sc, b.col, 0.28), side = shade(sc, b.col, -0.3);
-      env.poly([[-hk, -hk], [hk, -hk], [hk + ddx, -hk + ddy], [-hk + ddx, -hk + ddy]].map(p => Pm.side > 0 ? p : p), top, out, false);
-      env.poly(Pm.side > 0 ? [[hk, -hk], [hk + ddx, -hk + ddy], [hk + ddx, hk + ddy], [hk, hk]] : [[-hk, -hk], [-hk + ddx, -hk + ddy], [-hk + ddx, hk + ddy], [-hk, hk]], side, out, false);
-      env.rect(-hk, -hk, kz, kz, b.col, out, gIn(env));
-      env.rrect(-hk + kz * 0.08, -hk + kz * 0.08, kz * 0.84, kz * 0.84, kz * 0.06, null, out, false, J.mix(b.col, onCol(sc, b.col), 0.35), lw * 1.5);
+      owned('block.' + bi + '.top', () => env.poly([[-hk, -hk], [hk, -hk], [hk + ddx, -hk + ddy], [-hk + ddx, -hk + ddy]].map(p => Pm.side > 0 ? p : p), top, out, false));
+      owned('block.' + bi + '.side', () => env.poly(Pm.side > 0 ? [[hk, -hk], [hk + ddx, -hk + ddy], [hk + ddx, hk + ddy], [hk, hk]] : [[-hk, -hk], [-hk + ddx, -hk + ddy], [-hk + ddx, hk + ddy], [-hk, hk]], side, out, false));
+      owned('block.' + bi + '.front', () => env.rect(-hk, -hk, kz, kz, b.col, out, gIn(env)));
+      owned('block.' + bi + '.rim', () => env.rrect(-hk + kz * 0.08, -hk + kz * 0.08, kz * 0.84, kz * 0.84, kz * 0.06, null, out, false, J.mix(b.col, onCol(sc, b.col), 0.35), lw * 1.5));
       if (b.ch == null) {
         const tcol = J.mix(b.col, onCol(sc, b.col), 0.8), q = kz * 0.26;
         if (b.shape === 3) { /* plain support block */ }
-        else if (b.shape === 0) env.circle(0, 0, q, tcol, null, 0, out, false);
-        else if (b.shape === 1) env.poly([[0, -q * 1.1], [q * 1.05, q * 0.8], [-q * 1.05, q * 0.8]], tcol, out, false);
-        else env.poly([[0, -q], [q, 0], [0, q], [-q, 0]], tcol, out, false);
+        else if (b.shape === 0) owned('block.' + bi + '.mark', () => env.circle(0, 0, q, tcol, null, 0, out, false));
+        else if (b.shape === 1) owned('block.' + bi + '.mark', () => env.poly([[0, -q * 1.1], [q * 1.05, q * 0.8], [-q * 1.05, q * 0.8]], tcol, out, false));
+        else owned('block.' + bi + '.mark', () => env.poly([[0, -q], [q, 0], [0, q], [-q, 0]], tcol, out, false));
       }
       ctx.restore();
       if (b.ch != null) {
         const m = [Math.cos(rot * J.DEG), Math.sin(rot * J.DEG), -Math.sin(rot * J.DEG) * sq, Math.cos(rot * J.DEG) * sq, b.x, y + kz / 2];
-        bb = UB(bb, drawAff(env, { text: b.ch, font: Pm.font, size: kz * 0.6, x: 0, y: -kz / 2, color: onCol(sc, b.col), noHold: plateHold(env), mi: miAt(env, t1) }, m));
+        if (nativeD) catalog.blocks[bi].glyphMatrix = m.slice();
+        bb = UB(bb, owned('block.' + bi + '.glyph', () => {
+          const item = { text: b.ch, font: Pm.font, size: kz * 0.6, x: 0, y: -kz / 2, color: onCol(sc, b.col), noHold: plateHold(env), mi: miAt(env, t1) };
+          if (nativeD) catalog.blocks[bi].mi = item.mi;
+          return drawAff(env, item, m);
+        }));
       }
     }
     return bb;

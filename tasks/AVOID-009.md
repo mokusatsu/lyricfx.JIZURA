@@ -1,7 +1,7 @@
 # AVOID-009 拡張Dの34レイアウト・カスタム描画の対応
 
 - 状態: 実装中
-- 現在の確認段階: 全面カードfullscreen-card-20261024-01へ利用者OKを受領。山の退場速度・残像差の回復をsource/raw親レビューで限定受入し統合中。山の新しい動作承認は未実施。009全体は未完。
+- 現在の確認段階: 全面カードfullscreen-card-20261024-01は利用者OK。山exit13の原寸60fps比較を固定し動作確認未回答。blocks native catalogの元描画・運動保持を親限定受入し、main統合と後続bounded設計を進める。009全体は未完。
 - 最新回答: 「カードはOKです 順次実装を進めて」、続けて「1時まで順次実装を進めてください」を受領。利用者の「本日13:00」回答により、本日2026-10-24 13:00日本時間まで続行する。必要な人間確認は固定版queueへ保存し009内の独立作業を順次継続。公開結果確認の永久禁止は維持する。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
@@ -380,3 +380,5 @@ Product2c606bdbをworkへpush。最初のpushはHTTP503で失敗し、同じ通�
 山exit13はwork687c51c6 push済み、原寸60fps代表1比較と独立sol14PNGを親受入。SOURCE8ef184fdの公開操作call141元返値はsucceeded。[固定比較と確認点](reviews/AVOID-009-pile-exit-20261024-01.md)を人間未回答queueへ保存。公開結果確認0を維持し、009内のblocks native catalogゲートを順次続行。
 
 blocks native catalogは隔離SOURCEゲートで元運動/paintの逆置換完全一致を親確認。run01は3TTF配信漏れでfixture未到達、runner修正後run02は7条件147描画でOFF/元paint一致、fractional rootの記録再生32画素hash不一致を検出。失敗rawは[親記録](evidence/AVOID-009/blocks-native01/parent-run02-failure.json)に保存し、blocks限定root保持を指定担当へ返す。main製品や安全なadapterは未受入。
+
+blocks native03の最小root保持を親source/rawで限定受入。7条件147描画・588画素組、1283sourceblocks/2230primaryevents/24757頂点、元運動式/hop/seedの独立再計算と他D3対照が成功。見た目・運動不変の根拠により内部native準備段階の人間確認は不要と親判断。旧font01/root02失敗を保持し、main2source統合を許可。これは回避adapter完成ではなく、限定10/34の数は増えない。後続のbounded blocksは読み取り設計から進める。

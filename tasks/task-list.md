@@ -112,3 +112,5 @@
 - 全面カードfullscreen-card-20261024-01に利用者OKを受領。009内の山の退場速度/残像回復を次に進め、指定時刻まで未承認版を固定保存し独立作業を継続する。009全体は未完、010以降への無条件進行はしない。
 
 2026-10-24続行: 山exit13（work687c51c6）を親source/raw/原寸60fps/独立sol14PNGで限定受入、[退出の1比較](reviews/AVOID-009-pile-exit-20261024-01.md)だけ未回答queueへ固定。公開操作元返値succeeded/公開結果確認0。blocks native catalog/fidelityを隔離実装中、009未完・010以降未着手。本日13:00JSTまで順次続行は利用者確認済み。
+
+blocks native03の内部fidelity段階を親受入。147描画588画素組の元運動・描画一致により人間確認不要、main2source/日英buildを統合。円回避adapterは未実装で009対応済み数は増えず、次はnative形状・運動を保つbounded設計。[内部レビュー](reviews/AVOID-009-blocks-native03.md)。
