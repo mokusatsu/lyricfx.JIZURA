@@ -8,20 +8,7 @@
   "implementationModel": "gpt-6.1-sol",
   "reasoningEffort": "medium",
   "visualReviewModel": "gpt-6.1-sol / medium, fresh context",
-  "activeWork": [
-    {
-      "agent": "card_fullscreen_field01",
-      "model": "gpt-6.1-sol",
-      "effort": "medium",
-      "state": "Isolated source and actual11cases raw accepted; independent66OFF/81fieldrecords/2184polys/396glyph nonocclusion PASS. Exact main2source/offlineJAEN and ONE native60 media source preparation authorized; no media/browser before review"
-    },
-    {
-      "agent": "pile_speed_diagnosis01",
-      "model": "gpt-6.1-sol",
-      "effort": "medium",
-      "state": "Read-only source/numeric diagnosis complete: exit amplitude and velocity1/4; not equivalent physics; no pile product changes"
-    }
-  ],
+  "activeWork": [],
   "humanReviewQueue": [
     {
       "comparison": "selected-20261023-01",
@@ -165,7 +152,7 @@
       "cases": [
         "flipCards stationary native12 plus perimeter4"
       ],
-      "state": "FULL_VIEWPORT_FIELD_REVISION_REQUESTED",
+      "state": "REVISION_REQUESTED_SUPERSEDED_BY_FULLSCREEN_CARD",
       "humanApproval": false,
       "review": "tasks/reviews/AVOID-009-flipcards-field-20261024-01.md",
       "url": "https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/flipcards-field-20261024-01/",
@@ -178,14 +165,15 @@
       ],
       "publicationOperation": "tasks/evidence/AVOID-009/revisions-20261024/flipcards-field02/publication-operation01.json",
       "publicResultChecks": 0,
-      "newUserFeedback": "Fill viewport with cards and choose opening cards from field"
+      "newUserFeedback": "Fill viewport with cards and choose opening cards from field",
+      "replacement": "fullscreen-card-20261024-01"
     },
     {
       "comparison": "pile-entry-20261024-01",
       "cases": [
         "pile initial invisibility and native offscreen glyph entry"
       ],
-      "state": "SPEED_AND_GHOST_DISPLACEMENT_DIAGNOSIS_REQUESTED",
+      "state": "PHYSICS_DIFFERENCE_CONFIRMED_NOT_APPROVED",
       "humanApproval": false,
       "review": "tasks/reviews/AVOID-009-pile-entry-20261024-01.md",
       "url": "https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/pile-entry-20261024-01/",
@@ -198,7 +186,23 @@
       ],
       "publicationOperation": "tasks/evidence/AVOID-009/revisions-20261024/pile-entry12/publication-operation01.json",
       "publicResultChecks": 0,
-      "newUserFeedback": "Check motion physics; final-frame ghost displacement visibly smaller; conditional acceptance only if physics same"
+      "newUserFeedback": "Check motion physics; final-frame ghost displacement visibly smaller; conditional acceptance only if physics same",
+      "diagnosis": "Native exit amplitude132.12 vs33.03; time-lag ghost displacement~1/4. No pile product change in this phase.",
+      "diagnosisReport": "tasks/evidence/AVOID-009/revisions-20261024/fullscreen-and-motion01/pile-speed01/report.md"
+    },
+    {
+      "comparison": "fullscreen-card-20261024-01",
+      "cases": [
+        "fullscreen regular field and opening cells avoid circle"
+      ],
+      "state": "HUMAN_CONFIRMATION_PENDING",
+      "humanApproval": false,
+      "url": "https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/fullscreen-card-20261024-01/",
+      "review": "tasks/reviews/AVOID-009-fullscreen-card-20261024-01.md",
+      "sourceCommit": "2c606bdb",
+      "SitesSourceCommit": "794e6c45d869a370234828a11010e1c6cc4ed839",
+      "manifestSHA256": "653d32ed0fe2ad4cd962cb4478eeda74b711c40c6cbc81c7768773f7241ccbc2",
+      "publicResultChecks": 0
     }
   ],
   "completedDuringBatch": [
@@ -331,7 +335,7 @@
       "sha256": "7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898"
     }
   ],
-  "latestProductCommit": "ee5a2788",
+  "latestProductCommit": "2c606bdb",
   "publication": "Latestproductbc39ce2 pushed; pendulum companion SOURCE42a5181 native publication terminalSUCCEEDED. No publicresultchecks.",
   "resumeTrigger": {
     "userRequest": "トークン制限復活の可能性に備え3時ごろに再開をトリガー",
@@ -680,7 +684,7 @@
     "media": "Native60fps1pair committed6ee41a86; parent35978polys/freshsol16frames acceptedbounded; Sites4291087 nativeoperationSUCCEEDED, humanunanswered",
     "archivePush": "56ac348 parent82484CLOSEDexit0"
   },
-  "phase": "CARD_FULL_VIEWPORT_FIELD_DESIGN_AND_PILE_SPEED_READONLY_DIAGNOSIS",
+  "phase": "HUMAN_CONFIRMATION_PENDING_FULLSCREEN_CARD_PILE_CAUSE_REPORTED",
   "morningReviewDigest": "tasks/evidence/AVOID-009/batch-20261023/morning-review-20261024.md",
   "mainMediaPush": "6ee41a86 parent26021CLOSEDexit0",
   "publicationRecordPush": "eb607c22 parent9962CLOSEDexit0",
@@ -751,5 +755,6 @@
   "revisionPublications20261024": {
     "flipCards": "tasks/evidence/AVOID-009/revisions-20261024/flipcards-field02/publication-operation01.json",
     "pile": "tasks/evidence/AVOID-009/revisions-20261024/pile-entry12/publication-operation01.json"
-  }
+  },
+  "fullscreenCardPublication": "tasks/evidence/AVOID-009/revisions-20261024/fullscreen-and-motion01/card-fullscreen02/publication-operation01.json"
 }
