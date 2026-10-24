@@ -1,3 +1,17 @@
+# Latest continuation checkpoint — 2026-10-24 11:05 JST以降
+
+利用者は「本日13:00」まで順次続行を確認。カードfullscreen-card-20261024-01は明示OK済み。山exit13は製品687c51c6をworkへpush済み、source/raw/main/原寸60fpsMP4/独立sol14PNGを限定受入し、新しいpile-exit-20261024-01を人間未回答queueへ固定。公開SOURCE8ef184fdの元native call141はsucceeded返値（appgdep_6adc1226f574819192f3c2a1db641229）；公開結果確認は0、今後も一切禁止。正本はprogress.jsonとtasks/reviews/AVOID-009-pile-exit-20261024-01.md。
+
+山修正は退場不足99.09pxを各元pass clockへsourceYとして追加、入口/hold/旧配置/文字サイズを保持。親raw3007polys+446proofowners、媒体35977polys/308798vertices、217nonexitと171settledPNGhash一致。最終残像Y差約-28/-52px、完全nativephysics/正式性能/全009完了は未認定。t=4の元A/B残留はinactive診断で012へ引継ぎ、保存bodyは既存cut期待0/実際1のまま013未到達。
+
+次の唯一sourceowner blocks_readonly_plan01 (gpt-6.1-sol/medium) は work/avoid009-blocks-native01 でnative catalog/ownership/fidelityだけを隔離実装、adapter/shape/travel縮小/09a/main変更未許可。親SOURCEゲート112canon+466runtime受入、run01=32828はfont3TTF未配信でfixture未到達/exit1、raw保持。runner02は全8fontの元SHAをpin/serveする修正を親が115canon+466runtimeで受入、親run02=19848は147rows/32replaypixel失敗・exit1。原/新OFF・nativeD directは一致。main fractionalrootのget/set丸め差を実測し、blocksだけのnativeOriginalRoot predicate追加を同担当へSOURCE限定依頼。再実行/main統合は未許可。未回答山を承認にせず、009内の独立作業は続行。010+は未着手。
+
+親は画像動画を閲覧しない。画像はfresh-context sol、実装修正は指定モデル子。公開URL/HTTP/hash/画像動画/起動/smoke/deploystatus polling/自動再確認/子への委任は永久禁止。追加cyber/proxy/prototypefuzzも禁止。work commit/push/必要比較の公開操作は許可済み。原寸アニメだけnative60fpsMP4、必要例のみ。
+
+既存pycache7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898、22 absent skip-worktreeと無関係untrackedを保持。全mutating Gitは -c gc.auto=0 -c maintenance.auto=false。cleanup/古いarchive削除なし。空きはTMP約39MB/root約98MB（証拠commitで減る）。Sites sourceclone/tmp/avoid009-motion2-sites-synced01 at8ef184fd、project appgprj_6adbafe9f07c8191ab0b404c53caab16 owner-private。新archiveは/workspace/pile-exit13-sites-pack01、in-memory packでextracted treeを作らず33,432,884B。過去archive全保持。
+
+以下は過去のcheckpoint履歴であり、上の最新状態を巻き戻す根拠にしない。
+
 # Scheduled recovery checkpoint
 
 03:00 on 2026-10-24 Asia/Tokyo: resume trigger is created/enabled. Original eight-hour human summary is still scheduled for about08:01 JST. Read latest conversation, AGENTS and progress.json first; this file is a checkpoint, not permission to undo newer work. If an owner is already working, join rather than duplicate. Runtime/model/token availability is not guaranteed.

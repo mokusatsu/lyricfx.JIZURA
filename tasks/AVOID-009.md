@@ -2,7 +2,7 @@
 
 - 状態: 実装中
 - 現在の確認段階: 全面カードfullscreen-card-20261024-01へ利用者OKを受領。山の退場速度・残像差の回復をsource/raw親レビューで限定受入し統合中。山の新しい動作承認は未実施。009全体は未完。
-- 最新回答: 「カードはOKです 順次実装を進めて」、続けて「1時まで順次実装を進めてください」を受領。本日13:00日本時間を目安に続行（翌午前1時なら修正するoptional確認中）。必要な人間確認は固定版queueへ保存し009内の独立作業を順次継続。公開結果確認の永久禁止は維持する。
+- 最新回答: 「カードはOKです 順次実装を進めて」、続けて「1時まで順次実装を進めてください」を受領。利用者の「本日13:00」回答により、本日2026-10-24 13:00日本時間まで続行する。必要な人間確認は固定版queueへ保存し009内の独立作業を順次継続。公開結果確認の永久禁止は維持する。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -376,3 +376,7 @@ Product2c606bdbをworkへpush。最初のpushはHTTP503で失敗し、同じ通�
 ## 山の退出振幅・残像修正13（2026-10-24）
 
 [親独立照合](evidence/AVOID-009/revisions-20261024/pile-exit13/parent-pile-exit13.json)で2条件・28時刻・108直接プローブ、446証明owner、3007実polygon/25592頂点を照合。退出前16組の画素、元の配置・入口・所有単位・時計を保持。退出だけ不足していた99.09pxを各pass固有の元pOutで加え、最終残像Y差はA -28.06583/B -51.72380pxへ回復。全物理の一致・正式性能・人間承認とは扱わない。source/raw限定受入でmain統合・比較準備は続行中。実時刻4秒のmain終了後にA/Bが残る既存区間境界はinactiveで安全認定せず、AVOID-012の残留/境界統合へ引継ぐ。公開確認0。
+
+山exit13はwork687c51c6 push済み、原寸60fps代表1比較と独立sol14PNGを親受入。SOURCE8ef184fdの公開操作call141元返値はsucceeded。[固定比較と確認点](reviews/AVOID-009-pile-exit-20261024-01.md)を人間未回答queueへ保存。公開結果確認0を維持し、009内のblocks native catalogゲートを順次続行。
+
+blocks native catalogは隔離SOURCEゲートで元運動/paintの逆置換完全一致を親確認。run01は3TTF配信漏れでfixture未到達、runner修正後run02は7条件147描画でOFF/元paint一致、fractional rootの記録再生32画素hash不一致を検出。失敗rawは[親記録](evidence/AVOID-009/blocks-native01/parent-run02-failure.json)に保存し、blocks限定root保持を指定担当へ返す。main製品や安全なadapterは未受入。
