@@ -1,3 +1,15 @@
+## 午後native基盤受入・continuous診断SOURCE待ち（2026-10-24 14:25JST）
+
+ユーザー山exit13/blocks両方OK、本日17時まで続行。最新製品ec594e6f push45884exit0、証拠fef2d2d4 push88813exit0。balloons native01は124assert失敗（old/OFF/directは一致、42motion1 fractionalroot pixels＋52motion.5 pixels/30catalog差）、02 strictballoonsroot/effectiveFXbindingだけを修正し8conditions222calls/888pixels/2116events31858vertices/252livegloss＋3otherDcontrolを親source/raw数式で受入。main09a/11p+JAENexact統合、other99source/PYC保持。回避adapter加算0で限定sourceID11据置、内部nativefidelityは見た目不変の根拠で追加人間確認不要。broaderdoublemotion既存問題は019handoff（他layout修正済みではない）。
+
+sole source owner balloons_native_impl01 (gpt6.1sol/medium) は新 /workspace/lyricfx.JIZURA/work/avoid009-balloons-translation03 でcontinuousCSSbins/nativecommontranslation診断のSOURCE/runner/sealのみ準備。元glyph/size/速度/reflowなし、fullcirclefirst/entry-exit selective候補別、owner/part/copyごとのphase/strictHold>=.04/source expiry/offset0 tail別、metric150k/cut300ktotal/cell4096/depth16、候補81〜128程度。gloss same nominalCSS＋Canvas.93、stringmiter、root/AAguard。rawは固定TMP /tmp/avoid009-balloons-diagnostic03/evidence の新出力へ、上書き禁止。次source/math親gateまでJS/browser/module/main/adapter/Git/mediaは未許可。Puretranslation不足時のcoherent rest/bunch定数移動はREADONLY式まで、別gate必要。
+
+重要camera読取訂正: P.off生成188にはmotionがないが、Renderer.frame249の最終translation全体にcut.motionScaleが掛かる。親初期見落しを子が指摘し親確認・撤回済み。source通りP.off*motion、cam.s/effectiveFX/CSlerpの元dampingを保持（新修正しない）。camera-only envelope＋実pass shiftを別監査する。
+
+容量root約8MB/TMP33MB。成功済みblocksupload33833708Bだけ96Gitblob＋RAM byte一致を再証明後解放しTMP6→38MB（storage/archive_guard.py;verify32014/release49659exit0）。old3uploads完全保持。native01/02 raw合計5216502BはpushedGitfef2とTMP /tmp/avoid009-balloons-raw-storage01にexact保存後、元work/rawpathをsymlinkで保持、canonical追加2skipでabsent計24(old22不変)。raw-storage02.jsonにrestore refs/hashes。NoGC/broadcleanup。pycache7390411f8a74499a4ef117d443f4c04f3814039cbb64343cb50c043cc580f898不変。
+
+公開結果確認永久禁止/親画像0/freshcontextsol/指定モデルは継続。新しい人間確認候補は未承認で17時集約。009全体/34D/custom/正式性能/010+は未完、保存bodycut期待0実際1の未到達は013、fisheye1000cut2712ms制限/山t4残像012は保持。人間にコードレビュー依頼なし。
+
 ## 午後再開 — 山/積み木OK、本日17:00JSTまで
 
 利用者の両方OKと17時続行を記録。startHEAD0d5977df/work、dirty既存pycacheのみ、live担当なし。次balloons native catalog SOURCE、指定gpt6.1sol/medium子・親source/raw・画像freshsol。root22MB/TMP6MBで前回成功したSource854df upload archive33.8MBはexactRAM再生成照合→限定解放の検討が必要。旧3archive/22absent/raw無関係は保持。公開確認0・永久禁止。新動作確認は未承認で17時集約、009全体と正式性能は未完。
@@ -353,3 +365,7 @@ Sites SOURCE794e6c45d869a370234828a11010e1c6cc4ed839 push26792CLOSED0;81oldDistf
 Pile requestwasdiagnosis; verifiedexitAout132.12→33.03/downwardv910→227px/s(1/4), sameghostlag butframe239windA28.15→6.82/B51.89→12.92px (native source reconstruction, after observedraw). Entryee5terminal6–9%fasterthanoriginal, notsamephysicalmodel despite.34clock. No pile product/mediachange inthisphase, no conditionalapprovalconversion. Minimalexitrestoration proposalread-only/needsbottomexitpolicy/unimplemented, do notclaimrestored. Userinformedincurrentcommentary/finalreport.
 
 Noactiveimplementation/browser/encoder/Git/sourcepublication atthischeckpoint exceptparentfinalrecordcommit/pushnext. 009ACTIVE/010+UNSTARTED/10boundedDnot34complete/savecut0vs1AVOID013bodyuntestedunchanged. No cleanup performedthisphase. Original22absentarchiveflags/7390dirtypycache/unrelateduntrackedpreserve. AllfutureGit -cgc.auto=0 -cmaintenance.auto=false.
+
+
+## Afternoon diagnostic03 reviewed; SOURCE04 in progress
+Parent run92843exit0/3originalcases/115599CSS metric bins. Independent Python recomputed295gapfree Float64 ranges,20750ledger bounds/time ranges,243candidate outcomes,216source probes1884events2310physicalsegments83784activevertices. Single804 has36full-circle and1selective candidate;808/807all81inconclusive each. ALL3original4sec retention tails unsupported: no new adapter/SAFE/count/humanapproval. SOURCE04 isolated stage-coordinate two-group/native4glyph and4.150001observation horizon in progress, no main/browser before gate. Raw03 preservedTMP plus newGitblob-only canonical entry (25absent total); original24/PYC untouched. Publicchecks0,parentimages0.17JSTdeadline continues.

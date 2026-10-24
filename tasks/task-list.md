@@ -122,3 +122,5 @@ blocks native03の内部fidelity段階を親受入。147描画588画素組の元
 2026-10-24午後: 利用者が山exit13・積み木nativeの両固定比較へOKを回答、本日17:00JSTまで順次実装し必要動作確認を集約するよう依頼。両版を承認済みに更新し、balloonsのnative catalog SOURCE gateから再開。009実装中/全D-customと正式性能未完/010以降未着手、公開結果確認永久禁止を保持。
 
 2026-10-24午後続行: balloonsの元描画・計測と記録再生の一致を親が888画素組等で確認し、内部段階を追加人間確認不要でworkec594e6fへ統合/push。回避adapterはまだなく限定11D据置、連続CSSbin/糸と所有コピーの回避proofを次に設計。[内部review](reviews/AVOID-009-balloons-native02.md)。009実装中/019共通motionScale問題引継ぎ/公開確認0。
+
+2026-10-24午後: 009のballoons連続支持診断03を親が独立照合。元4秒の残留条件は未達で回避adapter加算0、観測範囲拡張・元の並びを保つ二群移動の隔離SOURCE04へ続行。009実装中/限定11D据置/010以降未着手/公開確認0。
