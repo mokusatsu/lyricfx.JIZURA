@@ -10729,6 +10729,8 @@ const dAccordionCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&
 const dPileCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='pile'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('pile');
 // Blocks native-catalog replay retains the exact original camera root; no safety adapter.
 const dBlocksCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='blocks'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('blocks');
+// Balloons native parity: stock source only, no placement adaptation.
+const dBalloonsCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='balloons'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('balloons');
 const dRibbonCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='ribbon'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('ribbon');
 const dBandCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='cylinder'&&cut.params?.band===true&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('cylinder');
 const dFlagCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='flag'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&['unfurl','raise'].includes(cut.params?.mode)&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&A.layoutsDSourceKnown?.('flag');
@@ -10745,7 +10747,7 @@ A.record = (renderer,env,options={}) => {
   const validationOnly=options.validationOnly===true;let shapeValidationUncertain=false;
   validateTextState(env.ctx);
   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
-  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut)||dRibbonCut(env.cut)||dPileCut(env.cut)||dBlocksCut(env.cut))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
+  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut)||dRibbonCut(env.cut)||dPileCut(env.cut)||dBlocksCut(env.cut)||dBalloonsCut(env.cut))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
   const nativeC34=env.cut.placementLayoutsC===true,nativeB25=env.cut.placementLayoutsB===true||nativeC34,nativeD34=env.cut.placementLayoutsD===true,nativeA26=env.cut.placementLayoutsA===true||nativeB25||nativeD34;let nativeRoot=nativeA26?(nativeDOriginalRoot||matrix(c)):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
   // Only stock synchronous C command runs reuse a private actual-Canvas read.
@@ -10816,6 +10818,8 @@ A.record = (renderer,env,options={}) => {
     if(k==='createLinearGradient'||nativeC34&&['createConicGradient','createRadialGradient'].includes(k))return (...args)=>{commandMatrix=null;const paint=target[k](...args),stops=[],entry={placementGradient:true,...(k!=='createLinearGradient'?{gradientKind:k}:{}),args,matrix:nativeDWorldBand&&k==='createLinearGradient'&&nativeState().ops.length===0&&sameMatrix(matrix(c),nativeDMeasurementRoot)?nativeState().root:matrix(c),stops};gradients.set(paint,entry);const add=paint.addColorStop.bind(paint);paint.addColorStop=(...stop)=>{stops.push(stop);add(...stop);};return paint;};
     if(k==='fillRect')return (x,y,w,h)=>{commandMatrix=null;if(!finite([x,y,w,h]))fail('INVALID_GEOMETRY','Finite rectangle required');if(!w||!h)return;const m=matrix(c),inv=A.inverse(m),aaX=Math.abs(inv[0])+Math.abs(inv[2]),aaY=Math.abs(inv[1])+Math.abs(inv[3]);push('rect',[x,y,w,h,target.fillStyle],[rect(Math.min(x,x+w)-aaX,Math.min(y,y+h)-aaY,Math.abs(w)+2*aaX,Math.abs(h)+2*aaY).map(p=>A.point(m,p))]);};if(['fill','stroke','fillText','strokeText','drawImage','putImageData','clearRect'].includes(k))return ()=>fail('UNSUPPORTED_DRAW_PROGRAM','Unadapted Canvas operation '+k);if(reuseCommandMatrix)commandMatrix=null;const v=target[k];if(reuseCommandMatrix&&typeof v==='function'){const bound=v.bind(target);return (...args)=>{commandMatrix=null;return bound(...args);};}return typeof v==='function'?v.bind(target):v;},set(target,k,v){commandMatrix=null;if(textDefaults[k]&&!defaultTextValue(k,v)&&!((env.cut.placementLayoutsA||nativeC34)&&k==='letterSpacing'&&/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)px$/.test(String(v))&&Number.isFinite(parseFloat(v))))fail('UNSUPPORTED_TEXT_STATE','Default '+k+' required');if((['shadowBlur','shadowOffsetX','shadowOffsetY'].includes(k)&&v!==0)||(k==='shadowColor'&&!['rgba(0, 0, 0, 0)','transparent'].includes(v)))fail('UNSUPPORTED_DRAW_PROGRAM','Unbounded shape shadow');if(k==='filter'&&v!=='none')fail('UNSUPPORTED_DRAW_PROGRAM','Spatial filter');target[k]=v;return true;}});
   recorder=renderer.makeEnv(proxy,env.plan,env.cut,env.sc,{...env,ctx:proxy,placementRecording:true});
+  // The caller already has effective motionScale. Stock balloons must record it once.
+  if(dBalloonsCut(env.cut)&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))recorder.fx=env.fx;
   if(env.placementEnvelope){recorder.pIn=1;recorder.pOut=0;}
   recorder.placementRecorder={item(it){commandMatrix=null;const count=[...String(it.text||'')].length;glyphCount+=count;budget.glyphs+=count;if(budget.glyphs>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Frame glyph ceiling exceeded');if(glyphCount>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Program glyph ceiling exceeded');if(env.pass!=='main'&&it.ghost===false)return null;if(env.cut.placementUnits&&recorder.drawOwnership?.role==='tiledAux'&&!it.charFn){for(const key of ['pieceFn','blur','shadow','extrude','pattern'])if(it[key])fail('UNSUPPORTED_ITEM',key+' requires a bounded adapter');if(!finite([it.x,it.y,it.size,it.sx??1,it.sy??1,it.rot??0,it.skew??0,it.track??0,it.lead??1.3]))fail('UNMEASURED_INK','Finite auxiliary text geometry required');push('item',[snapshotItem(it)],[]);return recordedItemBounds(it);}let ink,shadowItem;if(outputDomain){
  shadowItem=shadowSnapshot(it);
@@ -40014,6 +40018,11 @@ reg('balloons', {
   },
   render(env) {
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    // Native catalog only: original geometry, clocks and live draw callbacks remain native.
+    const nativeD = cut.placementLayoutsD === true;
+    const owned = (owner, fn) => nativeD ? env.withDrawRole('primary', 'balloons.' + owner, fn) : fn();
+    const freeze = v => { if (v && typeof v === 'object' && !Object.isFrozen(v)) { Object.values(v).forEach(freeze); Object.freeze(v); } return v; };
+    const sourceRows = nativeD ? [] : null, sourceGlyphs = nativeD ? [] : null;
     const port = isPort(env);
     const t0 = flat(cut.text), n = J.glyphCount(t0);
     if (!n) return null;
@@ -40028,6 +40037,7 @@ reg('balloons', {
     const glyphs = [];
     rowsT.forEach((row, ri) => {
       const chars = [...row], ads = chars.map(ch => adv(Pm.font, ch) * size * 1.2), tot = ads.reduce((a, b) => a + b, 0);
+      if (nativeD) sourceRows.push({ row: ri, text: row, chars: chars.slice(), advances: ads.slice(), totalAdvance: tot });
       let x = W / 2 - tot / 2;
       const yRow = H * (nR > 1 ? 0.4 : 0.4) + (ri - (nR - 1) / 2) * size * 1.3;
       chars.forEach((ch, i) => {
@@ -40041,11 +40051,25 @@ reg('balloons', {
         const bob = Math.sin(env.ltb * 1.4 + ph) * size * 0.05 * (0.4 + mot);
         const y = yRow - Pm.arc * H * (1 - u0 * u0) + bob + (1 - E.outCubic(e)) * H * 0.35 - fly * (0.8 + 0.4 * J.r(s, q, 2));
         glyphs.push({ ch, x: cxp + Math.sin(env.ltb * 0.9 + ph) * size * 0.03, y, rot: Math.sin(env.ltb * 0.8 + ph * 1.3) * 5 * (0.4 + mot) + J.rs(s, q, 3) * 4, e, t1, col: Pm.mono ? cols[Pm.colOff % cols.length] : cols[(q + Pm.colOff) % cols.length], q });
+        if (nativeD) sourceGlyphs.push({ id: 'balloon.' + q, q, row: ri, slot: i, ch, restX: cxp, yRow, phase: ph, u0, bob, ...glyphs[q] });
       });
     });
     // strings (behind the balloons)
     const lw = Math.max(1, u * 0.0016);
+    const catalog = nativeD ? {
+      kind: 'balloons-native-catalog', version: 1, nativeOnly: true,
+      stage: [W, H], pass: env.pass, clock: { t: env.t, realTime: env.realTime, lt, ltb: env.ltb, pOut: env.pOut },
+      params: { font: Pm.font, tie: Pm.tie, arc: Pm.arc, colOff: Pm.colOff, mono: Pm.mono },
+      seed: s, port, text: t0, n, nR, nativeSize: size, out, motion: mot, colors: cols.slice(),
+      rows: sourceRows, glyphs: sourceGlyphs, lw, fly,
+      gloss: { s: 0.93, clipY: [-0.75, -0.22], source: 'native-live-charFn' },
+      painterOrder: 'all-strings-and-knots,shared-anchor,each-rim-body-gloss-highlight',
+      primaryOwners: glyphs.flatMap(g => ['string', 'knot', 'rim', 'body', 'gloss', 'highlight'].map(part => 'balloons.balloon.' + g.q + '.' + part)),
+      sharedAnchor: Pm.tie === 'bunch' ? { owner: 'balloons.anchor', x: gx, y: gy - fly, radius: size * 0.05 } : null,
+    } : null;
+    if (nativeD) { if (catalog.sharedAnchor) catalog.primaryOwners.push('balloons.anchor'); env.placementDGeometry = catalog; }
     for (const g of glyphs) {
+      if (nativeD) sourceGlyphs[g.q].emitted = g.e > 0;
       if (g.e <= 0) continue;
       const bx = g.x - Math.sin(g.rot * J.DEG) * size * 0.58, by = g.y + Math.cos(g.rot * J.DEG) * size * 0.58;
       const pts = [];
@@ -40054,21 +40078,43 @@ reg('balloons', {
         const f = k / 10, wig = Math.sin(f * 7 + env.ltb * 2 + g.q) * size * 0.05 * f * (1 - f) * 4;
         pts.push([J.lerp(bx, ex, f) + wig, J.lerp(by, ey, f) + Math.sin(f * Math.PI) * size * 0.25]);
       }
-      env.line(pts, sc.sub, lw, 0.85 * out * g.e, false);
-      env.poly([[bx - size * 0.05, by + size * 0.07], [bx + size * 0.05, by + size * 0.07], [bx, by - size * 0.02]], shade(sc, g.col, -0.35), out * g.e, false);
+      if (nativeD) Object.assign(sourceGlyphs[g.q], { neck: [bx, by], endpoint: [ex, ey], stringPoints: pts.map(p => p.slice()) });
+      if (nativeD) sourceGlyphs[g.q].stringStyle = { color: sc.sub, width: lw, alpha: 0.85 * out * g.e, ghost: false };
+      owned('balloon.' + g.q + '.string', () => env.line(pts, sc.sub, lw, 0.85 * out * g.e, false));
+      const knot = [[bx - size * 0.05, by + size * 0.07], [bx + size * 0.05, by + size * 0.07], [bx, by - size * 0.02]];
+      if (nativeD) sourceGlyphs[g.q].knotPoints = knot.map(p => p.slice());
+      const knotColor = shade(sc, g.col, -0.35);
+      if (nativeD) sourceGlyphs[g.q].knotStyle = { color: knotColor, alpha: out * g.e, ghost: false };
+      owned('balloon.' + g.q + '.knot', () => env.poly(knot, knotColor, out * g.e, false));
     }
-    if (Pm.tie === 'bunch') env.circle(gx, gy - fly, size * 0.05, sc.sub, null, 0, out * tin(env, 0.2, 0.3), false);
+    if (Pm.tie === 'bunch') owned('anchor', () => {
+      const alpha = out * tin(env, 0.2, 0.3);
+      if (nativeD) Object.assign(catalog.sharedAnchor, { color: sc.sub, alpha, ghost: false });
+      return env.circle(gx, gy - fly, size * 0.05, sc.sub, null, 0, alpha, false);
+    });
     let bb = null;
     for (const g of glyphs) {
       if (g.e <= 0) continue;
       const q = E.outBack(g.e, 2.2), sz = size * (0.3 + 0.7 * q);
       const dark = shade(sc, g.col, -0.38);
+      if (nativeD) Object.assign(sourceGlyphs[g.q], { growth: q, size: sz, dark });
       // puffy rim, body, gloss
-      env.draw({ text: g.ch, font: Pm.font, size: sz, x: g.x, y: g.y, rot: g.rot, color: dark, stroke: sz * 0.13, strokeColor: dark, strokeUnder: true, alpha: out, ghost: false });
-      bb = UB(bb, J.mainDraw(env, { text: g.ch, font: Pm.font, size: sz, x: g.x, y: g.y, rot: g.rot, color: g.col, stroke: sz * 0.065, strokeColor: g.col, strokeUnder: true, plain: true, mi: miAt(env, g.t1) }));
-      env.draw({ text: g.ch, font: Pm.font, size: sz, x: g.x - sz * 0.02, y: g.y - sz * 0.03, rot: g.rot, color: lightOf(sc), alpha: 0.3 * out * Math.min(1, g.e * 2), ghost: false, charFn: () => ({ clipY: [-0.75, -0.22], s: 0.93 }) });
-      env.circle(g.x - sz * 0.22, g.y - sz * 0.26, sz * 0.045, lightOf(sc), null, 0, 0.7 * out * g.e, false);
+      const rimItem = { text: g.ch, font: Pm.font, size: sz, x: g.x, y: g.y, rot: g.rot, color: dark, stroke: sz * 0.13, strokeColor: dark, strokeUnder: true, alpha: out, ghost: false };
+      if (nativeD) { sourceGlyphs[g.q].rimItem = { ...rimItem }; }
+      owned('balloon.' + g.q + '.rim', () => env.draw(rimItem));
+      bb = UB(bb, owned('balloon.' + g.q + '.body', () => {
+        const item = { text: g.ch, font: Pm.font, size: sz, x: g.x, y: g.y, rot: g.rot, color: g.col, stroke: sz * 0.065, strokeColor: g.col, strokeUnder: true, plain: true, mi: miAt(env, g.t1) };
+        if (nativeD) { sourceGlyphs[g.q].mi = item.mi; sourceGlyphs[g.q].bodyItem = { ...item }; }
+        return J.mainDraw(env, item);
+      }));
+      const glossItem = { text: g.ch, font: Pm.font, size: sz, x: g.x - sz * 0.02, y: g.y - sz * 0.03, rot: g.rot, color: lightOf(sc), alpha: 0.3 * out * Math.min(1, g.e * 2), ghost: false, charFn: () => ({ clipY: [-0.75, -0.22], s: 0.93 }) };
+      if (nativeD) { const { charFn, ...glossData } = glossItem; sourceGlyphs[g.q].glossItem = glossData; }
+      owned('balloon.' + g.q + '.gloss', () => env.draw(glossItem));
+      const highlightColor = lightOf(sc);
+      if (nativeD) sourceGlyphs[g.q].highlight = { x: g.x - sz * 0.22, y: g.y - sz * 0.26, radius: sz * 0.045, color: highlightColor, alpha: 0.7 * out * g.e, ghost: false };
+      owned('balloon.' + g.q + '.highlight', () => env.circle(g.x - sz * 0.22, g.y - sz * 0.26, sz * 0.045, highlightColor, null, 0, 0.7 * out * g.e, false));
     }
+    if (nativeD) freeze(catalog);
     return bb;
   },
 });
