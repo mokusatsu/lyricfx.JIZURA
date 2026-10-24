@@ -1,0 +1,46 @@
+{
+  "review_type": "fresh_context_local_still_image_comparison",
+  "actual_view_count": 14,
+  "dimensions": [960, 540],
+  "frames": [6, 24, 60, 120, 216, 231, 244],
+  "times_seconds": [0.1, 0.4, 1, 2, 3.6, 3.85, 4.0666666667],
+  "viewed_files": ["before-006.png", "after-006.png", "before-024.png", "after-024.png", "before-060.png", "after-060.png", "before-120.png", "after-120.png", "before-216.png", "after-216.png", "before-231.png", "after-231.png", "before-244.png", "after-244.png"],
+  "result": "sampled_still_visuals_no_new_obvious_glyph_defect; human_motion_pending",
+  "preserved_in_samples": [
+    "024/060/120/216/231では『風の先へ』の文字順、黄・白・水色・淡灰色の各字色、輪郭、字形、見かけの大きさが前後で対応する。",
+    "風の矩形光沢と丸い白ハイライト、先の上部光沢、への左上の光が各対応frameで保たれて見える。字の厚み・ふくらみの印象に明白な新しい変形は見つからない。",
+    "006の小さい風と桃色残像、024の桃色/水色の下側残像、060/120/216の残像がない姿、231の大きな桃色/水色残像が前後で対応する。",
+    "024/060/120/216では4本の糸が下中央の丸いanchorへ向かい、各上端の三角の結び目も対応する。糸の途中に新規の明瞭な途切れは見つからない。",
+    "231は先が画面上端で切れるが、元画像にも同じ上方clipがある。244は前後とも文字・糸・anchorが見えない。"
+  ],
+  "observed_differences": [
+    "変更後は風・のが左、先・へが右へ移り、2文字ずつの2groupと広い中央空間を作る。これは指定された配置差。",
+    "006では出現中の風が左へ移る。024以降は各字と三角の結び目の横位置が移り、中央anchorへ向かう糸の曲線が左右へ広がる。",
+    "024/060/120/216では下中央anchorの位置は前後同じに見える。231では前後ともanchorがそれ以前より上にある。全時間でのanchor座標固定は静止画から断定しない。",
+    "字の本体と三角の結び目の間の暗い空間は元画像にもある。変更後だけに明らかな新規欠損・読みにくさは見つからないが、画素単位の糸/anchor接続はこの目視で証明しない。"
+  ],
+  "per_pair": [
+    {"frame": 6, "observation": "小さい風・光沢・桃色残像・結び目が左へ移動。糸は画面下側へ伸び、中央anchorの丸はこのframeでは見えない。"},
+    {"frame": 24, "observation": "全4文字の色・字形・残像と順序が対応。変更後は左右2group、糸は中央下の同じ丸へ広がって集まる。"},
+    {"frame": 60, "observation": "残像なしの風船の光沢・大きさが対応。各結び目から中央anchorへ向かう4本の糸が見える。"},
+    {"frame": 120, "observation": "各文字の傾きと光沢が対応。左右移動で糸の張り方が変わるが、明瞭な新規途中切れは見つからない。"},
+    {"frame": 216, "observation": "風の姿勢、の/先/への輪郭とハイライトが対応。2groupの中の字が重なって読めなくなる状態は見えない。"},
+    {"frame": 231, "observation": "上昇中の字と桃色/水色残像が対応し、先の上端clipも前後共通。糸とanchorも上昇した位置で前後対応。"},
+    {"frame": 244, "observation": "前後とも暗い背景のみ。4秒cut後のこの1標本では描画が残っていない。"}
+  ],
+  "required_followup": [
+    "親が生データで円との厳密clearance、固定anchor座標、glyph/bob/growth/exit/seed/clocksの保存を検証する。円は本PNGには焼き込まれていないため回避成功を画像から判定しない。",
+    "人間による固定版の連続動作確認が必要。入口の成長、揺れ、糸の追従、退場速度、全動画の読みやすさ、圧縮MP4再生は静止画から保証しない。",
+    "4.15秒は観測枠の情報として受領したが、指定7組の最終frame244は4.0667秒。4.15秒そのものの画像・動画は閲覧していない。"
+  ],
+  "scope_limits": {
+    "motion_approval": "pending_human",
+    "circle_clearance": "not_assessed_from_images",
+    "public_result_checks": "not_performed_user_permanent_prohibition",
+    "video_viewing": false,
+    "network_access": false,
+    "source_changes": false,
+    "git_operations": false,
+    "prior_reviews_or_other_pngs_consulted": false
+  }
+}

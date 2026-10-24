@@ -408,3 +408,9 @@ balloons診断03は親run92843exit0、3条件115599CSSbin、親が295連続Float
 balloons stage04は親run45463exit0、102114CSSbin、親が300native候補+81二群候補・63336実頂点/27834代数移動頂点を独立照合。元cut4は不変、観測region4.150001で全selector失効。4文字bunch804は左右二群・anchor固定で1selective-moving候補（退場時53支持のみ円通過、held/stageは失敗0）。free704はunsupportedのまま。新replay/画素/adapterは未実装・未受入、次は最小同期proofとstage補正の読み取り設計。[証拠](evidence/AVOID-009/balloons-stage04/evidence/parent-independent-raw04.json)。009実装中/限定11D/010以降未着手/公開確認0。
 
 balloons adapter05隔離試験を親source/rawで限定受入。123元参照frame画素組＋72zero＋2原描画(module差のみ)、7768連続支持と150実補正糸segmentを独立照合、旧cache復号/フォント変更再計算等も成功。元4文字bunch/60fpsはstage二群移動・safe-hold（53は移動中の保守支持交差で実画素衝突件数ではない）。初回finalize約1743.6/3762.3ms、正式性能未合格。通常build内の読込順序の追加試験前でmain/媒体/人間未確認、11D据置。[生データと親照合](evidence/AVOID-009/balloons-adapter05/evidence/parent-independent-raw05.json)。
+
+balloons通常build順序ordered06は2certificate/123frame画素が05と完全一致、親独立幾何再確認も成功。受入2新moduleをwork43e7579bへ統合/push99239exit0。既存101source不変、JAはorderedRAMと完全一致、ENはenglish.py正本から独立localize一致、PYC/45absent保持。原寸60fps249frame/MP4・独立sol画像・人間motionは未実施のため既存限定11Dの受入数は据置、009全体未完。
+
+2026-10-24午後最終風船: 糸端を元時刻へ保つstage-v2とpositive-zero修正をwork a046e71fへ統合/push。全249frame498画素組・9170糸segment/170450頂点・20086変位を親が照合、文脈なしsol14PNGで新たな明瞭な欠損なし。限定source対応12/34D、人間動作・正式性能・全領域は未完。必要な1比較/5ファイルだけ公開操作し元返値pending、statuspolling/公開結果確認0。旧07と失敗09も配信対象外SourceGitへ保存。[固定版と確認点](reviews/AVOID-009-balloons-stage11.md)。次magnetsは隔離native catalog SOURCE検証のみ、009全体実装中/010以降未着手。
+
+マグネットnative13の隔離内部段階を親が237元画素/BB/getter/全paint組・1106seeded状態等で独立受入。native12のwrapper想定違い6失敗を保持し、同じ描画sourceの13はexit0。main literalgradientはtyped unsupportedのままでtransport/replay/回避成功ではなく加算0。新見た目のない内部fidelityなので追加人間確認不要、次はD-magnets限定transportのSOURCE14。[親レビュー](reviews/AVOID-009-magnets-native13.md)。009全体実装中/010以降未着手/公開確認0。

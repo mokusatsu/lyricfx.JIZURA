@@ -1,0 +1,9 @@
+# SOURCE10 canonical endpoint zero — unexecuted
+
+Parent-authorized sole adapter change: family vertexDelta returns literal [0,0] when f===1, after unchanged commontranslation branch. Otherwise (1-f)*dg unchanged. Native proof faaa1fea unchanged and read from current main. Original source/native size/clocks/shape/geometry untouched; revisionv2/certificateversion2 unchanged as same de0 policy. Oldv1 rejection unchanged.
+
+IEEE multiplication 0 * negative dg previously gave -0 at the original native endpoint. Both signed zeros produce equal world geometry and prior08 independent residual0. The literal endpoint zero now matches the proof's canonical endpoint policy and strict media09 deepEqual expectation; that expectation is NOT weakened. This additionally prevents negative zero in actual emitted endpoint witnesses. For f!==1 the exact prior math remains; no candidate/delta hardcoding. Certificate rebuild still complete, signatures include changed source function identity, no old cached certificate bypass.
+
+Normal ordered RAM test reads actual3a main JA, removes two exact live v2 modules for native101 baseline, replaces adapter only with new source (proof same). Exact08 independent source reference and all123 framepairs/72zero/native-noadapter2/cache/decoded/freshfont/stale/negative/oldv1 controls retained. Every actual emitted family endpoint witness additionally rejects Object.is(stage coordinate,-0). Original world endpoint/anchor exact0residual remains mandatory. Raw exclusive /tmp/avoid009-balloons-zero10/evidence/zero10.raw.json.gz (~1.1MB), no overwrite/cleanup. Parent runs only after source review; child no browser/main/Git/media.
+
+Failed09 partials/seal/source/old07 remain immutable private, never published. Future media11 needs actual normalized main and de0 reference, fresh build ...-03 and new SHM/TMP output. Current119inputs/466browser/45absent/PYC rehashed held. No formalperf/human/overall009 acceptance claimed.
