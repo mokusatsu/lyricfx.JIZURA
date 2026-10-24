@@ -396,3 +396,5 @@ blocks代表1例のnative960x540/60fps240frames4s媒体を受入。全240frame+2
 積み木の必要な1比較だけをSOURCE854df47/5ファイル419773Bで既存owner-private Sitesへ公開操作。元call323の返値succeeded、公開結果確認0、人間未回答queueを維持。[昼の2件だけの動作確認](evidence/AVOID-009/batch-20261023/midday-review-20261024.md)。本日13時までの残りは次balloonsの読み取り準備・再開点整理のみ、009完了や010進行へ拡張しない。
 
 次balloonsは[読み取り設計](evidence/AVOID-009/balloons-plan01/PLAN01.md)を親が全文確認し21入力/現native抜粋の実hashを照合。縁/本体/光沢/ハイライト/糸/結び目/共通anchor全primary、元のふくらみovershoot・mi・CSS0.01px fontbin/clipY.live callbackの検証課題を記録。新しいcatalog/adapter/main/runtime実装はしていない。13時区切り後は最新HEAD再pin→指定担当へnative catalog SOURCEのみの新gateから再開する。
+
+2026-10-24午後: 利用者が山exit13・積み木nativeの両固定比較へOKを回答、本日17:00JSTまで順次実装し必要動作確認を集約するよう依頼。両版を承認済みに更新し、balloonsのnative catalog SOURCE gateから再開。009実装中/全D-customと正式性能未完/010以降未着手、公開結果確認永久禁止を保持。
