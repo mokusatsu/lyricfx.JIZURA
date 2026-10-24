@@ -1,0 +1,46 @@
+{
+  "state": "PARENT_FAILED61_SOURCE_CAUSE_AND_PRESERVATION",
+  "failure": [
+    {
+      "name": "Error",
+      "message": "page.evaluate: Error: SOURCE61_FONT_REVISION_DRIFT\n    at need (<anonymous>:3:48)\n    at stable (<anonymous>:7:297)\n    at window.wholeBillboard61 (<anonymous>:10:463)\n    at async <anonymous>:337:30",
+      "stack": "page.evaluate: Error: SOURCE61_FONT_REVISION_DRIFT\n    at need (<anonymous>:3:48)\n    at stable (<anonymous>:7:297)\n    at window.wholeBillboard61 (<anonymous>:10:463)\n    at async <anonymous>:337:30\n    at /workspace/lyricfx.JIZURA/work/avoid009-billboard61-native/runner/runner61.cjs:10:99"
+    }
+  ],
+  "completedPrefix": {
+    "fixtures": 3,
+    "nativeTriples": 429,
+    "wholeFramePairs": 24,
+    "partialControls": 2,
+    "contextTriples": 8,
+    "otherD": 0
+  },
+  "rawPlanLanguages": [
+    {
+      "record": "wide-four-L3-light-tag.init",
+      "beforePlanLang": "ja",
+      "afterPlanLang": "ja"
+    },
+    {
+      "record": "wide-one-L4-accent-bright.init",
+      "beforePlanLang": "ja",
+      "afterPlanLang": "ja"
+    },
+    {
+      "record": "portrait-six-L4-light-tag.init",
+      "beforePlanLang": "ja",
+      "afterPlanLang": "ja"
+    },
+    {
+      "record": "square-Latin-source-time-line100.init",
+      "beforePlanLang": "en",
+      "afterPlanLang": "en"
+    }
+  ],
+  "sourceCause": "initBillboard61 unconditionally setLang ja; Renderer.frame sets plan.lang. Fourth native Latin fixture is en and changes metrics revision; strict guard correctly fails. No predicate relaxed.",
+  "nextFix": "prepare separate62 honoring original plan.lang before metrics snapshot; preserve61 failure",
+  "fullStageAccepted": false,
+  "sourceProductUnchanged": true,
+  "publicChecks": 0,
+  "parentImages": 0
+}

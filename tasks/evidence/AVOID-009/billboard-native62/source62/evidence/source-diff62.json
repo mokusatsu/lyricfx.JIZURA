@@ -1,0 +1,132 @@
+{
+  "kind": "SOURCE61-only-billboard-native-metadata-diff",
+  "originalBlockSHA256": "b93c286ee85e094096fe1df64e1b5f3905241b68bd9878a457f4f6ada0574962",
+  "canonicalDSHA256": "9650acc45b91e6ef5e213eaa27a20fa6f91a547fa48812714dfa054f6c03fbd9",
+  "changes": [
+    {
+      "before": "    const port = isPort(env);",
+      "after": "    const nativeD=cut.placementLayoutsD===true,matrixNow=()=>{const m=ctx.getTransform();return[m.a,m.b,m.c,m.d,m.e,m.f];};\n    const clone=v=>Array.isArray(v)?v.map(clone):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,clone(x)])):typeof v==='function'?{nativeFunctionSource:String(v),notExecutableSerialization:true}:v;\n    const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};\n    const textBudget=nativeD&&typeof cut.text==='string'&&cut.text.length<=4096&&[...cut.text].length<=512,paramScope=nativeD&&Number.isInteger(Pm.lamps)&&Pm.lamps>=3&&Pm.lamps<=4&&Number.isFinite(Pm.sweep)&&typeof Pm.font==='string',captureD=nativeD&&textBudget&&paramScope;\n    const catalog=nativeD?{kind:'billboard-native-catalog',version:1,nativeOnly:true,complete:false,bounded:captureD,status:captureD?'collecting':textBudget?'partial-scope':'partial-budget',unsupported:captureD?null:textBudget?'catalog-scope:stockL3or4/finiteSweep/fontString':'catalog-budget:4096UTF16/512codepoints',limits:{textUTF16:4096,textCodepoints:512,calls:1024},role:'primary',stage:[env.plan?.W??W,env.plan?.H??H],environmentSize:[W,H],root:matrixNow(),pass:env.pass,clock:{t:env.t,realTime:env.realTime,lt,ltb:env.ltb,step:env.step,pIn:env.pIn,pOut:env.pOut,beat:clone(env.beat),beatPulse:env.beatPulse},seed:s,params:clone(Pm),sourceInputs:{text:textBudget?cut.text:null,lineText:textBudget?cut.lineText:null,line:cut.line,start:cut.start,end:cut.end,dur:cut.dur,inDur:cut.inDur,outDur:cut.outDur,stagger:cut.stagger,enter:cut.enter,hold:cut.hold,exit:cut.exit,treat:cut.treat,motionScale:cut.motionScale},effectiveFX:clone(env.fx),sourceCalls:[],primaryOwners:[],independentDecorOwners:[],lampStates:[],ownerCatalog:[],painterOrder:'posts,braces,deck,11uprights,rail,ground,frame,face; clippedcones,illumination; eacharm/body/lens; mainDraw; No,sourceTime',motionUnchanged:true}:null;\n    if(nativeD)env.placementDGeometry=catalog;\n    let currentCall=null,finished=false;\n    const owned=(owner,kind,fn)=>{if(!nativeD)return fn();const id='billboard.'+owner;let call=null;if(captureD&&catalog.sourceCalls.length<1024){call={ordinal:catalog.sourceCalls.length,owner:id,role:'primary',kind,matrixBeforeCall:matrixNow(),globalAlphaBefore:ctx.globalAlpha};catalog.sourceCalls.push(call);if(!catalog.primaryOwners.includes(id))catalog.primaryOwners.push(id);}else if(captureD){catalog.bounded=false;catalog.status='partial-budget';catalog.unsupported='catalog-budget:1024calls';}const previous=currentCall;currentCall=call;try{return env.withDrawRole('primary',id,fn);}finally{if(call){call.matrixAfterCall=matrixNow();call.globalAlphaAfter=ctx.globalAlpha;}currentCall=previous;}};\n    const args=v=>{if(currentCall)currentCall.arguments=clone(v);return v;};\n    const item=v=>{if(currentCall)currentCall.arguments=[clone(v)];return v;};\n    const gradientArgs=v=>{if(currentCall)currentCall.gradient={kind:'radial',arguments:clone(v),creationMatrix:matrixNow(),stops:[]};return v;};\n    const stopArgs=v=>{if(currentCall)currentCall.gradient.stops.push(clone(v));return v;};\n    const pathArgs=(kind,v)=>{if(currentCall){currentCall.path??=[];currentCall.path.push({kind,arguments:clone(v),matrix:matrixNow()});}return v;};\n    try {\n    const port = isPort(env);"
+    },
+    {
+      "before": "    const tc = onCol(sc, faceC);",
+      "after": "    const tc = onCol(sc, faceC);\n    if(captureD)Object.assign(catalog,{port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc});"
+    },
+    {
+      "before": "    for (const px of [bx + bw * 0.22, bx + bw * 0.78]) env.rect(px - pw / 2, y0 + bh, pw, groundY - y0 - bh, steel, a0, false);",
+      "after": "    let postIndex=0;for (const px of [bx + bw * 0.22, bx + bw * 0.78]) {const i=postIndex++;owned('structure.post.'+i,'rect',()=>env.rect(...args([px - pw / 2, y0 + bh, pw, groundY - y0 - bh, steel, a0, false])));}"
+    },
+    {
+      "before": "env.line([[x1, yb], [x2, yb2]], steel, lw, a0, false);",
+      "after": "owned('structure.brace.0','line',()=>env.line(...args([[[x1, yb], [x2, yb2]], steel, lw, a0, false])));"
+    },
+    {
+      "before": "env.line([[x2, yb], [x1, yb2]], steel, lw, a0, false);",
+      "after": "owned('structure.brace.1','line',()=>env.line(...args([[[x2, yb], [x1, yb2]], steel, lw, a0, false])));"
+    },
+    {
+      "before": "env.rect(bx + bw * 0.04, cwY, bw * 0.92, bh * 0.025, steel, a0, false);",
+      "after": "owned('catwalk.deck','rect',()=>env.rect(...args([bx + bw * 0.04, cwY, bw * 0.92, bh * 0.025, steel, a0, false])));"
+    },
+    {
+      "before": "env.rect(bx + bw * (0.04 + 0.92 * i / 10) - lw / 2, cwY - bh * 0.07, lw, bh * 0.07, steel, a0 * 0.8, false);",
+      "after": "owned('catwalk.upright.'+i,'rect',()=>env.rect(...args([bx + bw * (0.04 + 0.92 * i / 10) - lw / 2, cwY - bh * 0.07, lw, bh * 0.07, steel, a0 * 0.8, false])));"
+    },
+    {
+      "before": "env.line([[bx + bw * 0.04, cwY - bh * 0.07], [bx + bw * 0.96, cwY - bh * 0.07]], steel, lw, a0 * 0.8, false);",
+      "after": "owned('catwalk.rail','line',()=>env.line(...args([[[bx + bw * 0.04, cwY - bh * 0.07], [bx + bw * 0.96, cwY - bh * 0.07]], steel, lw, a0 * 0.8, false])));"
+    },
+    {
+      "before": "env.line([[W * 0.03, groundY], [W * 0.97, groundY]], sc.sub, lw, 0.5 * a0, false);",
+      "after": "owned('ground.line','line',()=>env.line(...args([[[W * 0.03, groundY], [W * 0.97, groundY]], sc.sub, lw, 0.5 * a0, false])));"
+    },
+    {
+      "before": "env.rect(bx - bw * 0.015, y0 - bw * 0.015, bw * 1.03, bh + bw * 0.03, steel, a0, false);",
+      "after": "owned('board.frame','rect',()=>env.rect(...args([bx - bw * 0.015, y0 - bw * 0.015, bw * 1.03, bh + bw * 0.03, steel, a0, false])));"
+    },
+    {
+      "before": "env.rect(bx, y0, bw, bh, J.mix(faceC, darkOf(sc), 0.28), a0, gIn(env));",
+      "after": "owned('board.face','rect',()=>env.rect(...args([bx, y0, bw, bh, J.mix(faceC, darkOf(sc), 0.28), a0, gIn(env)])));"
+    },
+    {
+      "before": "env.line([[lx, cwY], [lx, ly + bh * 0.02]], steel, lw * 1.5, a0, false);",
+      "after": "owned('lamp.'+i+'.arm','line',()=>env.line(...args([[[lx, cwY], [lx, ly + bh * 0.02]], steel, lw * 1.5, a0, false])));"
+    },
+    {
+      "before": "env.poly([[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false);",
+      "after": "owned('lamp.'+i+'.body','poly',()=>env.poly(...args([[[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false])));"
+    },
+    {
+      "before": "env.circle(lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false);",
+      "after": "owned('lamp.'+i+'.lens','circle',()=>env.circle(...args([lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false])));"
+    },
+    {
+      "before": "      lampOn.push(on);",
+      "after": "      lampOn.push(on);\n      if(captureD)catalog.lampStates.push({i,t1,on,lt,ltb:env.ltb,step:env.step,sourceConeThresholdMet:on>0.01,sourceLensThresholdMet:on>0.5});"
+    },
+    {
+      "before": "    if (env.pass === 'main') {",
+      "after": "    if(captureD)Object.assign(catalog,{pw,lw,x1,x2,yb,yb2,cwY,L,lampOn:lampOn.slice(),sourceOwnClip:env.pass==='main'?{rectangle:[bx,y0,bw,bh],matrix:matrixNow(),scope:'main cones+illumination only; original source clip, not new mask'}:null});\n    if (env.pass === 'main') {"
+    },
+    {
+      "before": "        const lx = bx + bw * (i + 0.5) / L, ly = y0 + bh + bh * 0.06;",
+      "after": "        owned('lamp.'+i+'.cone','source-clipped-radial-path',()=>{\n        const lx = bx + bw * (i + 0.5) / L, ly = y0 + bh + bh * 0.06;"
+    },
+    {
+      "before": "ctx.createRadialGradient(lx, ly, 0, lx, ly, bh * 1.2)",
+      "after": "ctx.createRadialGradient(...gradientArgs([lx, ly, 0, lx, ly, bh * 1.2]))"
+    },
+    {
+      "before": "g.addColorStop(0, J.rgba(faceC, 0.95 * lampOn[i]))",
+      "after": "g.addColorStop(...stopArgs([0, J.rgba(faceC, 0.95 * lampOn[i])]))"
+    },
+    {
+      "before": "g.addColorStop(0.6, J.rgba(faceC, 0.6 * lampOn[i]))",
+      "after": "g.addColorStop(...stopArgs([0.6, J.rgba(faceC, 0.6 * lampOn[i])]))"
+    },
+    {
+      "before": "g.addColorStop(1, J.rgba(faceC, 0))",
+      "after": "g.addColorStop(...stopArgs([1, J.rgba(faceC, 0)]))"
+    },
+    {
+      "before": "ctx.moveTo(lx - bw * 0.02, ly)",
+      "after": "ctx.moveTo(...pathArgs('moveTo',[lx - bw * 0.02, ly]))"
+    },
+    {
+      "before": "ctx.lineTo(tx - spread, ty)",
+      "after": "ctx.lineTo(...pathArgs('lineTo',[tx - spread, ty]))"
+    },
+    {
+      "before": "ctx.lineTo(tx + spread, ty)",
+      "after": "ctx.lineTo(...pathArgs('lineTo',[tx + spread, ty]))"
+    },
+    {
+      "before": "ctx.lineTo(lx + bw * 0.02, ly)",
+      "after": "ctx.lineTo(...pathArgs('lineTo',[lx + bw * 0.02, ly]))"
+    },
+    {
+      "before": "ctx.closePath(); ctx.fill();",
+      "after": "ctx.closePath();if(currentCall){currentCall.alphaAtFill=ctx.globalAlpha;currentCall.fillMatrix=matrixNow();currentCall.clipScope='sourceOwnClip';currentCall.path.push({kind:'closePath',arguments:[],matrix:matrixNow()});} ctx.fill();\n        });"
+    },
+    {
+      "before": "      ctx.globalAlpha = 0.55 * lit * a0; ctx.fillStyle = faceC; ctx.fillRect(bx, y0, bw, bh);",
+      "after": "      owned('board.illumination','source-clipped-fillRect',()=>{ctx.globalAlpha = 0.55 * lit * a0; ctx.fillStyle = faceC;if(currentCall){currentCall.alphaAtFill=ctx.globalAlpha;currentCall.clipScope='sourceOwnClip';}ctx.fillRect(...args([bx,y0,bw,bh]));});"
+    },
+    {
+      "before": "J.mainDraw(env, { text, font: Pm.font, size, x: W / 2, y: y0 + bh / 2 + (Pm.tag ? bh * 0.03 : 0), track: 0.04, lead: 1.1, color: tc, noHold: plateHold(env), mi: miAt(env, 0.3) })",
+      "after": "owned('lyric.main','mainDraw',()=>J.mainDraw(env,item({ text, font: Pm.font, size, x: W / 2, y: y0 + bh / 2 + (Pm.tag ? bh * 0.03 : 0), track: 0.04, lead: 1.1, color: tc, noHold: plateHold(env), mi: miAt(env, 0.3) })))"
+    },
+    {
+      "before": "env.draw({ text: 'No.' + lineNo(env), font: monoF(env), size: fs, align: 'left', track: 0.2, x: bx + bw * 0.025, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false });",
+      "after": "owned('tag.number','item',()=>env.draw(item({ text: 'No.' + lineNo(env), font: monoF(env), size: fs, align: 'left', track: 0.2, x: bx + bw * 0.025, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false })));"
+    },
+    {
+      "before": "env.draw({ text: J.fmtTime(cut.start), font: monoF(env), size: fs, align: 'right', track: 0.2, x: bx + bw * 0.975, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false });",
+      "after": "owned('tag.time','item',()=>env.draw(item({ text: J.fmtTime(cut.start), font: monoF(env), size: fs, align: 'right', track: 0.2, x: bx + bw * 0.975, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false })));"
+    },
+    {
+      "before": "    return bb || box(bx, y0, bx + bw, y0 + bh);",
+      "after": "    if(captureD){catalog.mainReturnedBB=clone(bb);catalog.mainSize=size;const owners=['structure.post.0','structure.post.1','structure.brace.0','structure.brace.1','catwalk.deck',...Array.from({length:11},(_,i)=>'catwalk.upright.'+i),'catwalk.rail','ground.line','board.frame','board.face',...Array.from({length:L},(_,i)=>'lamp.'+i+'.cone'),'board.illumination',...Array.from({length:L},(_,i)=>['lamp.'+i+'.arm','lamp.'+i+'.body','lamp.'+i+'.lens']).flat(),'lyric.main','tag.number','tag.time'];catalog.ownerCatalog=owners.map(owner=>({owner:'billboard.'+owner,role:'primary',sourceConditional:owner==='board.illumination'||owner.includes('.cone')||owner.includes('.lens')||owner.startsWith('tag.')}));}\n    finished=true;return bb || box(bx, y0, bx + bw, y0 + bh);\n    } finally {if(nativeD){catalog.complete=finished&&catalog.bounded;catalog.status=catalog.complete?'complete':finished?catalog.status:'native-threw';freeze(catalog);}}"
+    }
+  ],
+  "noPaintingPhysicsClockSizeChanges": true
+}
