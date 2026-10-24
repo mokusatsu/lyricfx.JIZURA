@@ -1,0 +1,76 @@
+--- accepted-push02
++++ bulbs-push03
+@@ -4,11 +4,11 @@
+ P=pathlib.Path;BASE=P('/dev/shm/avoid009-evening-20261024');SOURCE=BASE/'source'
+ PROJECT='appgprj_6adbafe9f07c8191ab0b404c53caab16'
+ REMOTE='https://git.chatgpt-team.site/ca6227f0-be34-40d7-9800-d5b531e94bab/'+PROJECT+'.git'
+-OLD='92c93064cc8b4fe026c683566407711624fdbd38'
+-REL='dist/review/AVOID-009/tiles-native-20261025-01/'
+-NAMES=['index.html','en.html','manifest.json','videos/before.mp4','videos/after.mp4']
+-OPEN=BASE/'tiles-publication01-source-open.json';LOCAL=BASE/'tiles-publication01-local-receipt.json'
+-GATE=BASE/'tiles-publication02-push-parent-gate.json';OUT=BASE/'tiles-publication02-push-receipt.json'
++# Old Source HEAD is supplied only by a fresh parent-reviewed source-open receipt.
++REL='dist/review/AVOID-009/bulbs-native-reflow-20261025-01/'
++NAMES=['index.html','before.mp4','after.mp4','before.png','after.png']
++OPEN=BASE/'bulbs-publication60-source-open.json';LOCAL=BASE/'bulbs-publication60-local-receipt.json'
++GATE=BASE/'bulbs-publication60-push03-parent-gate.json';OUT=BASE/'bulbs-publication60-push03-receipt.json'
+ def need(x):
+  if not x:raise RuntimeError('precondition')
+ def sha(b):return hashlib.sha256(b).hexdigest()
+@@ -26,30 +26,38 @@
+  return result
+ def main():
+  ap=argparse.ArgumentParser(description=__doc__)
+- for n in ['expected-head','local-receipt-sha256','open-receipt-sha256','parent-gate-sha256']:ap.add_argument('--'+n,required=True)
+- a=ap.parse_args();need(re.fullmatch('[0-9a-f]{40}',a.expected_head))
++ for n in ['expected-old-head','expected-head','local-receipt-sha256','open-receipt-sha256','parent-gate-sha256']:ap.add_argument('--'+n,required=True)
++ a=ap.parse_args();OLD=a.expected_old_head;need(re.fullmatch('[0-9a-f]{40}',OLD) and re.fullmatch('[0-9a-f]{40}',a.expected_head))
+  for h in [a.local_receipt_sha256,a.open_receipt_sha256,a.parent_gate_sha256]:need(re.fullmatch('[0-9a-f]{64}',h))
+- need(os.environ.get('TILES_PUBLICATION02_PUSH_RELEASE')=='PARENT_REVIEWED_EXACT_FIVE_SOURCE_PUSH')
++ need(os.environ.get('BULBS_PUBLICATION60_PUSH03_RELEASE')=='PARENT_REVIEWED_EXACT_FIVE_SOURCE_PUSH')
+  need(sys.stdin.isatty());safe(BASE);safe(SOURCE);safe(OUT);need(BASE.is_dir() and (SOURCE/'.git').is_dir() and not (SOURCE/'.git').is_symlink() and not OUT.exists())
+  phase='GATE_PRECHECK';result=None;push_returned=False;safe_error=None;fetched_head=None;fd=sys.stdin.fileno();original=termios.tcgetattr(fd);hidden=termios.tcgetattr(fd);hidden[3]&=~termios.ECHO
+  try:
+   gb=read(GATE);need(sha(gb)==a.parent_gate_sha256);g=json.loads(gb)
+   need(g.get('pushExactFiveAccepted') is True and g.get('humanMotionReview')=='PENDING')
++  need(all(g.get(k) is True for k in ['sourceRawAccepted','nativeMediaAccepted','freshVisualAccepted','assetTarVerified']))
+   need(g.get('pushScriptSHA256')==sha(read(P(__file__).resolve())))
+-  need(g.get('errorClassifierSHA256')==sha(read(P(__file__).resolve().parent/'safe_error02.py')))
++  need(g.get('errorClassifierSHA256')==sha(read(P(__file__).resolve().parent/'safe_error03.py')))
+   sys.dont_write_bytecode=True
+-  from safe_error02 import classify
++  from safe_error03 import classify
+   need(g.get('expectedSourceOldHEAD')==OLD and g.get('expectedSourceNewHEAD')==a.expected_head)
+   need(g.get('localReceiptSHA256')==a.local_receipt_sha256 and g.get('openReceiptSHA256')==a.open_receipt_sha256)
+-  lb=read(LOCAL);ob=read(OPEN);need(sha(lb)==a.local_receipt_sha256 and sha(ob)==a.open_receipt_sha256=='9cdc14383c319f27116857042930c0b0f4061b6ea15a902ae62d1f950a5f2fd8')
++  lb=read(LOCAL);ob=read(OPEN);need(sha(lb)==a.local_receipt_sha256 and sha(ob)==a.open_receipt_sha256)
+   local=json.loads(lb);opened=json.loads(ob)
+   need(local['state']=='LOCAL_SOURCE_FIVE_FILE_COMMIT_ONLY' and local['project_id']==PROJECT and local['priorHEAD']==OLD and local['head']==a.expected_head)
+   need(re.fullmatch('[0-9a-f]{64}',g.get('stageScriptSHA256','')) and local.get('stageScriptSHA256')==g['stageScriptSHA256'])
+-  need(local['humanMotionReview']=='PENDING' and local['visualReview']=='PASS14-static-only' and local['push'] is False and local['publish'] is False)
++  need(local['humanMotionReview']=='PENDING' and local['visualReview']=='PASS-static-only' and local['push'] is False and local['publish'] is False)
+   need(opened['state']=='OPENED_ONLY_SOURCE_MANAGEMENT_NO_PUBLIC_CHECK' and opened['project_id']==PROJECT and opened['remote']==REMOTE and opened['branch']=='main' and opened['head']==OLD)
+   oldtree=opened['protectedTree'];added=local['fiveFiles'];need(set(added)=={REL+n for n in NAMES})
+-  need(len(oldtree)==opened['protectedTotal']==106 and sum(k.startswith('dist/') for k in oldtree)==opened['protectedDist']==105)
+-  expected={**oldtree,**added};need(len(expected)==111 and local['expectedProtectedTree']==expected and tree()==expected)
++  need(len(oldtree)==opened['protectedTotal'] and sum(k.startswith('dist/') for k in oldtree)==opened['protectedDist'])
++  # Protect original106 plus tiles5 from the saved exact old local-stage receipt.
++  priorpath=P(g['priorTilesLocalReceiptPath']);need(priorpath.is_absolute())
++  priorbytes=read(priorpath);need(sha(priorbytes)==g['priorTilesLocalReceiptSHA256']=='c7c695069e9ca7aa24065ce30b7ba69417d8533f6e8f56689b99c05103e33817')
++  prior=json.loads(priorbytes)['expectedProtectedTree'];need(len(prior)==111 and all(oldtree.get(k)==v for k,v in prior.items()))
++  need(not set(oldtree)&set(added) and g['finalFiveFiles']==added)
++  for k,v in added.items():need(set(v)=={'bytes','sha256'} and isinstance(v['bytes'],int) and v['bytes']>0 and re.fullmatch('[0-9a-f]{64}',v['sha256']))
++  assetpath=P(g['assetManifestPath']);need(assetpath.is_absolute() and assetpath.is_relative_to(BASE));need(sha(read(assetpath))==g['assetManifestSHA256']==local['assetManifestSHA256'])
++  expected={**oldtree,**added};need(len(expected)==len(oldtree)+5 and local['expectedProtectedTree']==expected and tree()==expected)
+   e=os.environ.copy()
+   for k in list(e):
+    if k.startswith('GIT_TRACE') or k in ['GIT_CURL_VERBOSE','GIT_DIR','GIT_WORK_TREE','GIT_INDEX_FILE','GIT_COMMON_DIR','GIT_OBJECT_DIRECTORY','GIT_ALTERNATE_OBJECT_DIRECTORIES']:e.pop(k,None)
+@@ -104,7 +112,7 @@
+   phase='PUSH_SOURCE_MAIN';git(['push','--no-recurse-submodules',REMOTE,a.expected_head+':refs/heads/main']);push_returned=True
+   # Record command return only; no remote result queries or public verification.
+   phase='LOCAL_POST_PUSH';invariant()
+-  result={'state':'SOURCE_EXACT_FIVE_PUSH_COMMAND_SUCCEEDED','project_id':PROJECT,'priorRemoteHEAD':OLD,'head':a.expected_head,'localReceiptSHA256':a.local_receipt_sha256,'openReceiptSHA256':a.open_receipt_sha256,'parentGateSHA256':a.parent_gate_sha256,'fiveFiles':added,'protectedFiles':111,'fullTrackedPrivateTreePreserved':True,'force':False,'humanMotionReview':'PENDING','publicChecks':0,'publish':False,'publishOnPushAccepted':False}
++  result={'state':'SOURCE_EXACT_FIVE_PUSH_COMMAND_SUCCEEDED','project_id':PROJECT,'priorRemoteHEAD':OLD,'head':a.expected_head,'localReceiptSHA256':a.local_receipt_sha256,'openReceiptSHA256':a.open_receipt_sha256,'parentGateSHA256':a.parent_gate_sha256,'fiveFiles':added,'assetManifestSHA256':g['assetManifestSHA256'],'protectedFiles':len(expected),'fullTrackedPrivateTreePreserved':True,'force':False,'humanMotionReview':'PENDING','publicChecks':0,'publish':False,'publishOnPushAccepted':False}
+  except BaseException:
+   result={'fetchHEAD':fetched_head,'safeGitError':safe_error,'state':'SOURCE_EXACT_FIVE_PUSH_STOPPED','safeReason':phase,'pushCommandReturnedSuccess':push_returned,'expectedHEAD':a.expected_head,'automaticRetry':False,'publicChecks':0,'publish':False}
+  finally:
