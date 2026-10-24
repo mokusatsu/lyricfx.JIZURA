@@ -490,3 +490,8 @@ atlas2,158,024B、serializedworking3,394,385B。cold2,358.4ms/warm11.7msは単�
 受入48の09 rendererと2新moduleだけを正本へ組込み、未変更の通常build.pyとenglish.py正本から日英を生成。親が全HTMLの逆変換をdc9のGitblobと独立照合、旧104JS/7PYC/57保護証拠は保持。実際の日英HTMLを変更前の各言語版と比較し、各250全画面zero/moved組と727描画pass、9638paint・支持・policy・clockが48の親独立証拠と完全一致。日英各42controls/19atomic拒否/他D3例も受入。既存style名/説明の翻訳差を含む親照合の初稿2失敗はソース・差分を保存し、言語ごとの元planとの一致と全描画値を検査するよう親照合だけ修正。製品の失敗や修正ではない。
 
 既存の同一6テストを組込み後に実行して全件成功、保存本体と正式性能は未検査/未合格のまま。[source/raw/親照合](evidence/AVOID-009/tiles-canonical49/parent-review49.json)。通常UI/export一般への対応を拡張したものではなく、固定条件で明示的に使用するadapterのみ。新しい見え方は原寸60fps代表MP4の準備段階、人間未承認。必要な比較だけ朝8時queueへ集約し、009全体未完/010以降未着手/公開結果確認0を維持。
+
+
+タイル48/49の製品と全raw証拠をwork e04537deへpush成功。MP4用ソースの親レビューで174MB rawに対する読込上限不足を実行前に発見・差戻しし、256MiB上限/厳密長/元plan同一/正確なj/60照合を受入。まだ媒体生成・画像・人間確認は未実施。[媒体ソース判定](evidence/AVOID-009/tiles-media01/parent-source-preparation-review01.json)。
+
+容量08: 過去card-fullscreen02媒体archive1件の現HEAD全Gitblobと28memberを照合後、Gitblob-onlyへ退避し8,876,032Bを回復。旧57証拠/PYC7を保ち現在58absent。復元・93外部依存の制限・新STRICT58 index手順は[storage-capacity-card08](evidence/AVOID-009/evening-20261024/storage-capacity-card08/source08/README.txt)。これは資料内容の削除や再検証合格ではない。次の独立部分bulbs50は元描画catalogのソース準備のみ、本体未変更。
