@@ -11,13 +11,13 @@
   "activeWork": [
     {
       "owner": "parent",
-      "state": "57frozenallsourcepreserved/dataonly90kentriesproof; checkpointnext; keeperIDLE"
+      "state": "58parentraw02accepted;62R3checkpointnext;keeperIDLE"
     },
     {
       "owner": "magnets_clock27_resume",
       "model": "gpt-6.1-sol",
       "effort": "medium",
-      "state": "SOURCE58preparing/rootbindingstoragefixonly;57APP0"
+      "state": "59twofieldSOURCEPREPARING/noactual/finalpinswaitcheckpoint"
     }
   ],
   "humanReviewQueue": [
@@ -656,7 +656,7 @@
     "thinEvidence": "tasks/evidence/AVOID-009/pendulum-final01/avoid009-pendulum-final-packet02.tar.gz",
     "thinEvidenceSHA256": "d32f78a378299a6fcdff84dab00c8dca45cb000a0ee96c53cb51d8a82cc36e46"
   },
-  "lastParentSyncUTC": "2026-10-24T19:47:49.548442+00:00",
+  "lastParentSyncUTC": "2026-10-24T20:33:31.598697+00:00",
   "pendulumMedia": {
     "capture": "output02",
     "canonicalManifestSHA256": "f1508ee593f32f18f583cda39dee502e34b26ccafa85f4b288cad48d5d515c13",
@@ -803,7 +803,7 @@
     "media": "Native60fps1pair committed6ee41a86; parent35978polys/freshsol16frames acceptedbounded; Sites4291087 nativeoperationSUCCEEDED, humanunanswered",
     "archivePush": "56ac348 parent82484CLOSEDexit0"
   },
-  "phase": "NIGHT_BULBS_RESHAPE_SOURCE_PREPARATION",
+  "phase": "NIGHT_BULBS_FOCUSED59_SOURCE_PREPARATION_WITH58_RAW_REVIEW",
   "morningReviewDigest": "tasks/evidence/AVOID-009/batch-20261023/morning-review-20261024.md",
   "mainMediaPush": "6ee41a86 parent26021CLOSEDexit0",
   "publicationRecordPush": "eb607c22 parent9962CLOSEDexit0",
@@ -2205,15 +2205,15 @@
     "round1": "INSTALLED_PUSHED_6206"
   },
   "latestNightCheckpoint": {
-    "head": "15a8e70d2dce8d977d893919162bba423bc061df",
+    "head": "db625a8a127511d5e4a43ec47c3a8ec9de56c492",
     "productHead": "e891de1a778f26c79fb978678bb8a9a7b76b1c93",
     "pushExitCode": 0,
-    "indexSHA256": "a986c6ad19fa06b1e9578081cd10ceb1a5dafc2c3481821b474c578592220a76",
-    "indexBytes": 5766833,
-    "receiptSHA256": "5b5df46205d6c751021da6973694b8625946a0a2c0573fbf556253aa9cd8b83f",
+    "indexSHA256": "c3d237ff06cc774197ae02cebc08b5791988acd909bdac73094b578d61ce7963",
+    "indexBytes": 5771112,
+    "receiptSHA256": "61a9e9c1eeea8676c91f403a81e46e109eb7e06cd6751d7db2aa67ea69aedcff",
     "strictHelper": "work/avoid009-capacity-objects13/private_index_resume13.py",
-    "round1": "INSTALLED_NEVER_REUSE",
-    "round2": "NOT_PREPARED",
+    "round2": "INSTALLED_NEVER_REUSE",
+    "round3": "NOT_PREPARED",
     "keeper": 8802
   },
   "bulbsTransport51": {
@@ -2418,12 +2418,58 @@
     "actualGuardHit": false
   },
   "bulbsReshape58": {
-    "state": "SOURCE_PREPARING_SAME_GEOMETRY_ROOT_BINDING_STORAGE_FIX",
+    "state": "PARENT_NATIVE_AND_PARTIAL_SCREEN_RAW_ACCEPTED_PENDING_CHECKPOINT",
     "owner": "magnets_clock27_resume",
     "model": "gpt-6.1-sol",
     "effort": "medium",
     "source57Preserved": true,
+    "actualRuns": 1,
+    "finalFreezeWaitCheckpoint": true,
+    "sealSHA256": "a5f9e99d00557c4652c9550b22adf1fbed4211b93c62345c5a84d30b99c51abc",
+    "receiptID": "bulbs58-reshape-actual01",
+    "sourceArchive": "tasks/evidence/AVOID-009/bulbs-reshape58/source58",
+    "output": "/dev/shm/avoid009-evening-20261024/bulbs58.raw01",
+    "actualResult": "DONE0",
+    "manifestSHA256": "92cd06fd28bce80ae30c1c6d628c5895a7d0556e5443e8ff04701b3e60363328",
+    "completed": {
+      "nativeStates": 250,
+      "nativePasses": 727,
+      "screens": 54,
+      "fullGeometryAcquisitions": 0,
+      "destinationMaterializations": 0
+    },
+    "storage": "tasks/evidence/AVOID-009/bulbs-reshape58/storage58.json",
+    "all612LiteralFilesRetained": true,
+    "screenFacts": "tasks/evidence/AVOID-009/bulbs-reshape58/parent-screen-facts58.json",
+    "parentReview01": "UTILITY_SIGNATURE_FAILURE_PRESERVED_NOT_PRODUCT",
+    "parentReview02": "DONE0",
+    "newLayoutQualified": false,
+    "parentReview": "tasks/evidence/AVOID-009/bulbs-reshape58/parent-raw-review58.json",
+    "native250FullValuesAndPixelsEqual56": true,
+    "independentScreenSupports": 6912,
+    "independentScreenVertices": 29808,
+    "independentNeighborPairs": 3456
+  },
+  "bulbsFocused59": {
+    "state": "TWO_FIELD_DESIGN_APPROVED_SOURCE_PREPARING",
+    "spec": "tasks/evidence/AVOID-009/bulbs-focused59-design/SPEC59.md",
+    "owner": "magnets_clock27_resume",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
     "actualRuns": 0,
-    "finalFreezeWaitCheckpoint": true
+    "field": "recipe43 writing/font.95/pad.22,.25",
+    "A": {
+      "radiusScale": 0.8,
+      "hardLogicalNeighborGap": 3,
+      "preferredSoftGap": 4.86
+    },
+    "B": {
+      "radiusScale": 0.7,
+      "hardLogicalNeighborGap": 4.86
+    },
+    "functionalCircleStageUnchanged": true,
+    "no58FailureRewrite": true,
+    "oracleProductMediaHumanGatesStillOpen": true,
+    "designGate": "tasks/evidence/AVOID-009/bulbs-focused59-design/parent-design-gate59.json"
   }
 }
