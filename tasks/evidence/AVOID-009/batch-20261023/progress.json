@@ -8,7 +8,20 @@
   "implementationModel": "gpt-6.1-sol",
   "reasoningEffort": "medium",
   "visualReviewModel": "gpt-6.1-sol / medium, fresh context",
-  "activeWork": [],
+  "activeWork": [
+    {
+      "owner": "pile_speed_diagnosis01",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "state": "Qualified integrated pile13: capsule/media preparation, no further main source edits"
+    },
+    {
+      "owner": "blocks_readonly_plan01",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "state": "Next source owner, isolated native-only catalog/source fidelity first gate; no adapter/main/browser yet"
+    }
+  ],
   "humanReviewQueue": [
     {
       "comparison": "selected-20261023-01",
@@ -195,14 +208,16 @@
       "cases": [
         "fullscreen regular field and opening cells avoid circle"
       ],
-      "state": "HUMAN_CONFIRMATION_PENDING",
-      "humanApproval": false,
+      "state": "HUMAN_APPROVED",
+      "humanApproval": true,
       "url": "https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/fullscreen-card-20261024-01/",
       "review": "tasks/reviews/AVOID-009-fullscreen-card-20261024-01.md",
       "sourceCommit": "2c606bdb",
       "SitesSourceCommit": "794e6c45d869a370234828a11010e1c6cc4ed839",
       "manifestSHA256": "653d32ed0fe2ad4cd962cb4478eeda74b711c40c6cbc81c7768773f7241ccbc2",
-      "publicResultChecks": 0
+      "publicResultChecks": 0,
+      "humanResponse": "カードはOKです 順次実装を進めて",
+      "humanResponseDateJST": "2026-10-24"
     }
   ],
   "completedDuringBatch": [
@@ -684,7 +699,7 @@
     "media": "Native60fps1pair committed6ee41a86; parent35978polys/freshsol16frames acceptedbounded; Sites4291087 nativeoperationSUCCEEDED, humanunanswered",
     "archivePush": "56ac348 parent82484CLOSEDexit0"
   },
-  "phase": "HUMAN_CONFIRMATION_PENDING_FULLSCREEN_CARD_PILE_CAUSE_REPORTED",
+  "phase": "PILE_EXIT13_SOURCE_RAW_PARENT_ACCEPTED_INTEGRATING",
   "morningReviewDigest": "tasks/evidence/AVOID-009/batch-20261023/morning-review-20261024.md",
   "mainMediaPush": "6ee41a86 parent26021CLOSEDexit0",
   "publicationRecordPush": "eb607c22 parent9962CLOSEDexit0",
@@ -756,5 +771,25 @@
     "flipCards": "tasks/evidence/AVOID-009/revisions-20261024/flipcards-field02/publication-operation01.json",
     "pile": "tasks/evidence/AVOID-009/revisions-20261024/pile-entry12/publication-operation01.json"
   },
-  "fullscreenCardPublication": "tasks/evidence/AVOID-009/revisions-20261024/fullscreen-and-motion01/card-fullscreen02/publication-operation01.json"
+  "fullscreenCardPublication": "tasks/evidence/AVOID-009/revisions-20261024/fullscreen-and-motion01/card-fullscreen02/publication-operation01.json",
+  "continueUntil": {
+    "userInstruction": "1時まで順次実装を進めてください",
+    "assumedLocalDateTime": "2026-10-24T13:00:00+09:00",
+    "timezone": "Asia/Tokyo",
+    "optionalClarificationPending": true,
+    "humanReviewPolicy": "Pin unanswered versions; continue independent AVOID009 implementations, no assumed human approval or unconditional010 progression"
+  },
+  "pileExit13": {
+    "status": "MAIN_EXACT_INTEGRATION_PARENT_ACCEPTED_MEDIA_PENDING",
+    "evidence": "tasks/evidence/AVOID-009/revisions-20261024/pile-exit13",
+    "sourceBase": "5d110265",
+    "parentSession": 96896,
+    "rawSHA256": "a1e0ffd9efa3263f77623efd34313b682b2c3c1eb93bff531afb2ea60f43a574",
+    "actualPolygons": 3007,
+    "actualVertices": 25592,
+    "proofOwners": 446,
+    "humanApproval": false,
+    "publicChecks": 0,
+    "codeIntegrated": true
+  }
 }

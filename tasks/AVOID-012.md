@@ -119,3 +119,7 @@
 ### Distinct control01 visual outcome: keep the integration boundary precise
 
 [H03 control01 independent review](evidence/AVOID-007/h03-control-visual01-review.md) examined all384frames/16keys/24crops of the separate single-owner control. Rain has an observed-scope PASS with white-frame contact noted. Bubbles has a new **background pale-bar local contrast** FAIL for the lower stroke of『先』, while source/owned bubble/phase/read order/media positions remain present. This background-content contrast finding belongs to017's final visual quality gate;012 group/FG packing does not automatically solve arbitrary BG contrast. Credits' separate control-focused primary/FG support conflict remains an012 integration diagnostic, and old eight-cut raw02 cross-owner/FG FAILs remain unchanged. No012 implementation has begun.
+
+## AVOID-009 山exit13の残留境界引継ぎ
+
+2026-10-24の[親raw照合](evidence/AVOID-009/revisions-20261024/pile-exit13/parent-pile-exit13.json)では、通常Renderer.frame実時刻4秒にmainのカット選択は終了する一方、Bのsource lt3.933333/A3.966667が元選択規則で残る。最後の回避区間[0,4)はrealTimeでinactive。これは旧/新双方の挙動であり、009の退出修正でsafeに認定せずDIAGNOSTIC_NOT_SAFE_ACCEPTANCEとして実polygonを保持。012で残留カットと回避区間/優先順位の契約を統合すること。直接drawCut lt>=durも強制呼出しでpaintし得るが域内安全保証に含めない。既存描画を削除して合格化していない。

@@ -1,3 +1,5 @@
+> 2026-10-24利用者回答「カードはOKです 順次実装を進めて」: この固定版の動作を承認。以下は確認依頼時の記録。全D/customや009全体の完了とは扱わない。
+
 # 全面に敷いたカードから開く位置を選ぶ — 動作確認待ち
 
 [原寸960×540・60fps・4秒のMP4比較](https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/fullscreen-card-20261024-01/)
