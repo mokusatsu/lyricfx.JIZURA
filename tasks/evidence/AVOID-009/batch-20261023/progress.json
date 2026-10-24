@@ -2205,15 +2205,15 @@
     "round1": "INSTALLED_PUSHED_6206"
   },
   "latestNightCheckpoint": {
-    "head": "db625a8a127511d5e4a43ec47c3a8ec9de56c492",
+    "head": "7df6336fee494636b0c3ef7af2ff5f93227246d2",
     "productHead": "e891de1a778f26c79fb978678bb8a9a7b76b1c93",
     "pushExitCode": 0,
-    "indexSHA256": "c3d237ff06cc774197ae02cebc08b5791988acd909bdac73094b578d61ce7963",
-    "indexBytes": 5771112,
-    "receiptSHA256": "61a9e9c1eeea8676c91f403a81e46e109eb7e06cd6751d7db2aa67ea69aedcff",
+    "indexSHA256": "2dfa365920e0762e47f77c9faa19373f4787c1c20146716b06a4e51da1c02375",
+    "indexBytes": 5778515,
+    "receiptSHA256": "72f5cbf547f408e4ba5b57ee8d522d58bcf72768e5c1f39cef32d17a511faef2",
     "strictHelper": "work/avoid009-capacity-objects13/private_index_resume13.py",
-    "round2": "INSTALLED_NEVER_REUSE",
-    "round3": "NOT_PREPARED",
+    "round3": "INSTALLED_NEVER_REUSE",
+    "round4": "NOT_PREPARED",
     "keeper": 8802
   },
   "bulbsTransport51": {
@@ -2418,13 +2418,13 @@
     "actualGuardHit": false
   },
   "bulbsReshape58": {
-    "state": "PARENT_NATIVE_AND_PARTIAL_SCREEN_RAW_ACCEPTED_PENDING_CHECKPOINT",
+    "state": "PARENT_NATIVE_AND_PARTIAL_SCREEN_RAW_ACCEPTED_COMMITTED_PUSHED_LIMITED",
     "owner": "magnets_clock27_resume",
     "model": "gpt-6.1-sol",
     "effort": "medium",
     "source57Preserved": true,
     "actualRuns": 1,
-    "finalFreezeWaitCheckpoint": true,
+    "finalFreezeWaitCheckpoint": false,
     "sealSHA256": "a5f9e99d00557c4652c9550b22adf1fbed4211b93c62345c5a84d30b99c51abc",
     "receiptID": "bulbs58-reshape-actual01",
     "sourceArchive": "tasks/evidence/AVOID-009/bulbs-reshape58/source58",
@@ -2448,28 +2448,62 @@
     "native250FullValuesAndPixelsEqual56": true,
     "independentScreenSupports": 6912,
     "independentScreenVertices": 29808,
-    "independentNeighborPairs": 3456
+    "independentNeighborPairs": 3456,
+    "evidenceCommit": "7df6336fee494636b0c3ef7af2ff5f93227246d2"
   },
   "bulbsFocused59": {
-    "state": "TWO_FIELD_DESIGN_APPROVED_SOURCE_PREPARING",
-    "spec": "tasks/evidence/AVOID-009/bulbs-focused59-design/SPEC59.md",
-    "owner": "magnets_clock27_resume",
-    "model": "gpt-6.1-sol",
-    "effort": "medium",
-    "actualRuns": 0,
-    "field": "recipe43 writing/font.95/pad.22,.25",
-    "A": {
-      "radiusScale": 0.8,
-      "hardLogicalNeighborGap": 3,
-      "preferredSoftGap": 4.86
+    "state": "PARENT_FULL_RAW_ACCEPTED_CONDITIONAL_TWO_FIELDS_PENDING_CHECKPOINT",
+    "sourceSealSHA256": "3110c882003a36c8ff48644417ea541b77d0e66e562e6fe4a3bf2e85bbc01e71",
+    "parentSourceGate": "tasks/evidence/AVOID-009/bulbs-focused59/parent-source-gate59.json",
+    "actualReceipt": "bulbs59-focused-actual01",
+    "output": "/dev/shm/avoid009-evening-20261024/bulbs59.raw01",
+    "both250UntranslatedFieldsBeforeAnyDelta": true,
+    "independentOraclePending": true,
+    "productAdapterAdded": false,
+    "publicChecks": 0,
+    "actualResult": "DONE0",
+    "manifestSHA256": "9c228e33ddea86851c4cf6cae5ffe61bc7debfddb0ca1b30121a2760844976b1",
+    "completed": {
+      "nativeStates": 250,
+      "nativePasses": 727,
+      "untranslatedFields": 2,
+      "untranslatedStates": 500,
+      "untranslatedPasses": 1454,
+      "modelFamilies": 2,
+      "destinationFields": 2,
+      "destinationStates": 500,
+      "destinationPasses": 1454
     },
-    "B": {
-      "radiusScale": 0.7,
-      "hardLogicalNeighborGap": 4.86
-    },
-    "functionalCircleStageUnchanged": true,
-    "no58FailureRewrite": true,
-    "oracleProductMediaHumanGatesStillOpen": true,
-    "designGate": "tasks/evidence/AVOID-009/bulbs-focused59-design/parent-design-gate59.json"
+    "storage": "tasks/evidence/AVOID-009/bulbs-focused59/storage59.json",
+    "archiveSHA256": "fc527532ff3c8cd7d497bcbe1a74253dc2b77f0ced1f00a8ea25d5862cb5a1c3",
+    "literalProducerFiles": 2495,
+    "parentRawReview": "tasks/evidence/AVOID-009/bulbs-focused59/parent-raw-review59.json",
+    "parentRawReviewResult": "DONE0",
+    "independentPaintSupports": 115360,
+    "independentVertices": 505280,
+    "neighborPairs": 50176,
+    "selectedComparisonCandidate": "fieldA",
+    "selectionGate": "tasks/evidence/AVOID-009/bulbs-focused59/parent-selection60.json",
+    "archiver01ReportOnlyStaleFilenameFailurePreserved": true,
+    "storageRecovery02": "DONE0 existingarchiveALLliteralbytesrechecked,no product/browser rerun"
+  },
+  "capacityObjects14": {
+    "state": "RELEASED_GITBLOB_ONLY_PARENT_REVIEWED_PENDING_CHECKPOINT",
+    "sourceSealSHA256": "76c537ba1fcb6c6190918d5fca0e2348731bae19138199de6c6ef373e2da5f8c",
+    "target": "tasks/evidence/AVOID-008/objects859-main01/matrix01.json.gz",
+    "blob": "7e5aa4790765a199fd9a2d0822a2586c2dc79cd2",
+    "freedAllocatedBytes": 32489472,
+    "retainedSnapshotReferences": 322,
+    "old62PYC7Preserved": true,
+    "currentProtectedCount": 63,
+    "releaseReceiptSHA256": "103855729fc276f9440016c9fa0b405b6be0147a38553c92c5c25acab6c1e39f",
+    "rootIndexSHA256": "4699394b48504bc07f9f35d191d512adef0c36ffa8e81e2e1adba6d4d0cf2517",
+    "newHelper": "work/avoid009-capacity-objects14/private_index_resume14.py",
+    "newHelperSHA256": "6bd597a92f59f6551dd07c368a5b99172f6d7ffb3a40b3bc14f1dfc463bc20c7",
+    "round1": "PREPARED_NOT_INSTALLED",
+    "old62HelperDead": true,
+    "workingCopyOnlyFullEvidenceGitRetained": true,
+    "parentInventory": "tasks/evidence/AVOID-009/evening-20261024/storage-capacity-objects14/parent-inventory-review01.json",
+    "publicChecks": 0
   }
 }
