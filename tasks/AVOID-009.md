@@ -398,3 +398,7 @@ blocks代表1例のnative960x540/60fps240frames4s媒体を受入。全240frame+2
 次balloonsは[読み取り設計](evidence/AVOID-009/balloons-plan01/PLAN01.md)を親が全文確認し21入力/現native抜粋の実hashを照合。縁/本体/光沢/ハイライト/糸/結び目/共通anchor全primary、元のふくらみovershoot・mi・CSS0.01px fontbin/clipY.live callbackの検証課題を記録。新しいcatalog/adapter/main/runtime実装はしていない。13時区切り後は最新HEAD再pin→指定担当へnative catalog SOURCEのみの新gateから再開する。
 
 2026-10-24午後: 利用者が山exit13・積み木nativeの両固定比較へOKを回答、本日17:00JSTまで順次実装し必要動作確認を集約するよう依頼。両版を承認済みに更新し、balloonsのnative catalog SOURCE gateから再開。009実装中/全D-customと正式性能未完/010以降未着手、公開結果確認永久禁止を保持。
+
+午後balloons native01は親run57194/8条件222callsで元OFF/directの画素/paint/BB/getter/所有状態を維持したが、再生94画素組とmotionScale.5の30catalog比較で失敗。原raw保持・main未統合。後者はA.recordが有効fx.motion.325をmakeEnvで更に.5倍し.1625へ変える既存二重適用。strict balloonsの元root保持/元effectivefxのbindingだけをSOURCE02で修正依頼、期待値を変えず他DやgenericmakeEnvへ拡張しない。[失敗記録](evidence/AVOID-009/balloons-native01/parent-native01-failure.json)。公開確認0。
+
+balloons native02を[親source/raw/main照合](reviews/AVOID-009-balloons-native02.md)で限定受入。run89887同8条件222calls+他D3controls exit0、888画素組/2116primaryevents31858頂点/252livegloss、元seed/運動/糸/shapeの独立再計算最大残差1.14e-13。strictballoonsの元root/effectiveFX保持のみでgeneric/他Dを変えず、main2source/JAEN exact、旧99source/PYC/22absent保持。productec594e6f workpush45884exit0。新見た目不在の内部fidelityのみ追加人間確認不要、回避adapter加算0/限定11D据置。次continuousCSSbin/native共通移動は読み取り設計だけで、circle/stage/adapter/正式性能は未実施、公開確認0。

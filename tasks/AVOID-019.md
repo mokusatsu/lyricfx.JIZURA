@@ -27,3 +27,7 @@
 ## 停止条件・引継ぎ
 
 宣言した保持条件を破る候補は不採用にする。必要な大規模設計変更やユーザー変更との競合は親へ戻す。012の複数カット統合へ候補/診断/除外APIを引き継ぐ。実装未着手で、現在の進行タスクは006のみ。
+
+## 009からの既存共通record問題の引継ぎ（2026-10-24午後）
+
+balloons native01 rawでmotionScale.5の元実env.fx.motion.325に対し、A.record→renderer.makeEnv(...env)が再度motionScaleを掛け.1625になりbob/rotが変わると親確認。009ではstrictballoons/source/transport条件で記録に元effectiveFXを保持する限定修正を検討し、他D/通常レイアウトを横断的に修正・合格扱いしない。019の共通motionScale<1横断検証でこの既存問題を追跡する。証拠[009の失敗](evidence/AVOID-009/balloons-native01/parent-native01-failure.json)。019実装開始ではない。
