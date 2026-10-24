@@ -11,13 +11,13 @@
   "activeWork": [
     {
       "owner": "parent",
-      "state": "13released62/preservedall; STRICT62resume13R1PREPARED; checkpointcommitnext"
+      "state": "57frozenallsourcepreserved/dataonly90kentriesproof; checkpointnext; keeperIDLE"
     },
     {
       "owner": "magnets_clock27_resume",
       "model": "gpt-6.1-sol",
       "effort": "medium",
-      "state": "57SOURCEPREPARINGisolatedsourceonly; finalpinswait62checkpoint"
+      "state": "SOURCE58preparing/rootbindingstoragefixonly;57APP0"
     }
   ],
   "humanReviewQueue": [
@@ -656,7 +656,7 @@
     "thinEvidence": "tasks/evidence/AVOID-009/pendulum-final01/avoid009-pendulum-final-packet02.tar.gz",
     "thinEvidenceSHA256": "d32f78a378299a6fcdff84dab00c8dca45cb000a0ee96c53cb51d8a82cc36e46"
   },
-  "lastParentSyncUTC": "2026-10-24T19:45:41.498566+00:00",
+  "lastParentSyncUTC": "2026-10-24T19:47:49.548442+00:00",
   "pendulumMedia": {
     "capture": "output02",
     "canonicalManifestSHA256": "f1508ee593f32f18f583cda39dee502e34b26ccafa85f4b288cad48d5d515c13",
@@ -2205,15 +2205,15 @@
     "round1": "INSTALLED_PUSHED_6206"
   },
   "latestNightCheckpoint": {
-    "head": "6d6349e56c3a4bbce26b2e77e4fd25ef1c976c2d",
+    "head": "15a8e70d2dce8d977d893919162bba423bc061df",
     "productHead": "e891de1a778f26c79fb978678bb8a9a7b76b1c93",
     "pushExitCode": 0,
-    "indexSHA256": "340588499f2f9ada708fcb2208c33edb857e93218bdd5fd34b27664fa31dc2ba",
-    "indexBytes": 5762062,
-    "receiptSHA256": "d61125c482b733a8faaf4575c72007aecad7d98b2a8541f3574bb66ad90e62c4",
-    "strictHelper": "work/avoid009-capacity-writing12/private_index_resume12.py",
-    "round2": "INSTALLED_NEVER_REUSE",
-    "round3": "NOT_PREPARED",
+    "indexSHA256": "a986c6ad19fa06b1e9578081cd10ceb1a5dafc2c3481821b474c578592220a76",
+    "indexBytes": 5766833,
+    "receiptSHA256": "5b5df46205d6c751021da6973694b8625946a0a2c0573fbf556253aa9cd8b83f",
+    "strictHelper": "work/avoid009-capacity-objects13/private_index_resume13.py",
+    "round1": "INSTALLED_NEVER_REUSE",
+    "round2": "NOT_PREPARED",
     "keeper": 8802
   },
   "bulbsTransport51": {
@@ -2389,15 +2389,16 @@
     "response": "prepareoneverifiedoldrawGitblob-onlycapacity13; no data or current feature cleanup"
   },
   "capacityObjects13": {
-    "state": "RELEASED_PARENT_VERIFIED_PENDING_CHECKPOINT",
+    "state": "RELEASED_PARENT_VERIFIED_COMMITTED_PUSHED",
     "protectedAbsent": 62,
     "receipt": "tasks/evidence/AVOID-009/evening-20261024/storage-capacity-objects13/capacity-objects13-receipt.json",
     "freedAllocatedBytes": 32489472,
     "all247SnapshotsRetained": true,
-    "RAW51BaseAndRAW53CodecAndRAW55AndRAW56Retained": true
+    "RAW51BaseAndRAW53CodecAndRAW55AndRAW56Retained": true,
+    "checkpointCommit": "15a8e70d2dce8d977d893919162bba423bc061df"
   },
   "bulbsReshape57": {
-    "state": "REVISED_DESIGN_PARENT_ACCEPTED_SOURCE_PREPARING",
+    "state": "FROZEN_PREEXECUTION_STORAGE_HOLD_NOT_APP_FAILURE",
     "design": "tasks/evidence/AVOID-009/bulbs-next57/RESHAPE57.md",
     "parentDesignGate": "tasks/evidence/AVOID-009/bulbs-next57/parent-design-gate57.json",
     "codeOwner": "magnets_clock27_resume",
@@ -2408,6 +2409,21 @@
     "maxFullStateMaterializations": 6,
     "preflightScreenNotQualification": true,
     "numericalFoundationConditional": true,
-    "productAccepted": false
+    "productAccepted": false,
+    "sourceSealSHA256": "35e9696329ace4e9ec29eed6400728cd160e4f2f6fbeb77cfa93d1abc8242ce2",
+    "sourceArchive": "tasks/evidence/AVOID-009/bulbs-reshape57-unexecuted/source57",
+    "metadataOnlyDryrun": "tasks/evidence/AVOID-009/bulbs-next57/parent-capacity-dryrun57.json",
+    "nativeOnlyCatalogEntries": 90426,
+    "entryLimit": 100000,
+    "actualGuardHit": false
+  },
+  "bulbsReshape58": {
+    "state": "SOURCE_PREPARING_SAME_GEOMETRY_ROOT_BINDING_STORAGE_FIX",
+    "owner": "magnets_clock27_resume",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "source57Preserved": true,
+    "actualRuns": 0,
+    "finalFreezeWaitCheckpoint": true
   }
 }
