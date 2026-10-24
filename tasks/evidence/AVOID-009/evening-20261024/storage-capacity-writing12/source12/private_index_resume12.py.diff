@@ -1,0 +1,29 @@
+--- frozen11/private_index_resume11.py
++++ source12/private_index_resume12.py
+@@ -3,7 +3,7 @@
+ import argparse,hashlib,json,os,pathlib,stat,subprocess
+ P=pathlib.Path;ROOT=P('/workspace/lyricfx.JIZURA');INDEX=ROOT/'.git/index'
+ BASE=P('/dev/shm/avoid009-evening-20261024')
+-SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-writing11/continuation61-snapshot.json')
++SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-writing12/continuation61-snapshot.json')
+ def need(ok,msg):
+  if not ok:raise RuntimeError(msg)
+ def sha(b):return hashlib.sha256(b).hexdigest()
+@@ -15,7 +15,7 @@
+  with p.open('x') as f:json.dump(data,f,indent=2);f.write('\n');f.flush();os.fsync(f.fileno())
+ def paths(n):
+  need(n>=1,'positive round required')
+- stem=BASE/('evening-resume11-index-round-'+str(n))
++ stem=BASE/('evening-resume12-index-round-'+str(n))
+  return stem,stem.with_name(stem.name+'-state.json'),stem.with_name(stem.name+'-receipt.json')
+ def env(private):
+  e=os.environ.copy();e.pop('GIT_INDEX_FILE',None);e['GIT_TERMINAL_PROMPT']='0';e['GIT_OPTIONAL_LOCKS']='0'
+@@ -52,7 +52,7 @@
+   need(prior_sha and sha(raw)==prior_sha,'parent exact durable release receipt SHA required')
+   r=json.loads(raw)
+   need(r['state']=='RELEASED_GITBLOB_ONLY' and r['sameInode'] is True and r['skipCount']==61 and r['old60AndPYC7Preserved'] is True,'release receipt protections differ')
+-  need(r['parent53After6PostpinsReviewed'] is True and r['oldRound2Disposition']=='ABANDONED_BEFORE_STAGE','release parent runtime/abandonment gate differs')
++  need(r['source55Result']=='FAILED_INTERN_KEY_BYTE_BUDGET' and r['source55Passed'] is False and r['source55FailedPostpinsReviewed'] is True and r['product53SourceRawAfter6Accepted'] is True,'release parent failed55/accepted53 gates differ')
+   need(r['releaseOnlyPath']=='tasks/evidence/AVOID-008/objects/writing11.json.gz','release path differs')
+   need(r['blob']=='f418dfac3f23016d416139995aeb4fd6ab65c92f' and r['rawSHA256']=='e3c6026aecd52f81ced13aef12652b1b1e0ea54968f53f4d938fc144775c2ee5' and r['rawBytes']==37583984,'release target identity differs')
+   need(r['oldSHA256']==m['indexSHA256'] and r['newSHA256']==sha(data) and r['newBytes']==len(data),'release index chain differs')

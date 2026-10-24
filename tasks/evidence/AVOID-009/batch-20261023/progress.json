@@ -11,19 +11,13 @@
   "activeWork": [
     {
       "owner": "parent",
-      "state": "strict60resume10round2 stage/commit/INSTALLpush canonical53+fullbyteverifiedraw; keeper8802IDLE"
+      "state": "e89153product+rawcommitted/installed/pushed; final55sourcegate next; keeper8802IDLE"
     },
     {
       "owner": "magnets_clock27_resume",
       "model": "gpt-6.1-sol",
       "effort": "medium",
-      "state": "SOURCE55isolateddiagnosticpreparationONLY; wait53checkpointfreshHEAD/indexbeforefreeze"
-    },
-    {
-      "owner": "capacity_card08_guard",
-      "model": "gpt-6.1-sol",
-      "effort": "medium",
-      "state": "53codecactualaccepted; source11PREPARED_NOT_EXECUTED remains60; noR2abandonment"
+      "state": "SOURCE55fresh108JS/124pins/e891/3ca/60 freezeONLY, noapplicationyet"
     }
   ],
   "humanReviewQueue": [
@@ -2212,13 +2206,14 @@
     "round1": "INSTALLED_PUSHED_6206"
   },
   "latestNightCheckpoint": {
-    "head": "afa3d3b5704f8445eb593f43abcdf76a0b7401e8",
-    "productHead": "e04537deb978de4c27422edaf346ea0715643bfa",
+    "head": "e891de1a778f26c79fb978678bb8a9a7b76b1c93",
+    "productHead": "e891de1a778f26c79fb978678bb8a9a7b76b1c93",
     "pushExitCode": 0,
-    "indexSHA256": "bac042411103ef0d8460d79df08c0a347777891b344008dd6a09b6b7cd87193a",
-    "indexBytes": 5729912,
-    "receiptSHA256": "7a75044f1cd81702bacaa7e6a0a63d39f80be759b09d5abc87a3f07a4528b6b5",
-    "round1": "INSTALLED_NEVER_REUSE",
+    "indexSHA256": "3ca0c335a56e912af19aa00c0333e53d4b0be66facac446f3fa2226bc7de32ec",
+    "indexBytes": 5748239,
+    "receiptSHA256": "2bc5a9e43177985331e557c152e62e94b5cb3f752577a870d24a61dd05230d3d",
+    "round2": "INSTALLED_NEVER_REUSE",
+    "round3": "NOT_PREPARED",
     "keeper": 8802
   },
   "bulbsTransport51": {
@@ -2254,7 +2249,7 @@
     "round1": "INSTALLED_PUSHED_AFA3"
   },
   "bulbsCanonical53": {
-    "state": "ALL_PARENT_SOURCE_RAW_AFTER6_STORAGE_ACCEPTED_COMMIT_PENDING",
+    "state": "PARENT_ACCEPTED_COMMITTED_PUSHED_NATIVE_ONLY_NO_ADAPTER",
     "sourceSealSHA256": "f02cd69572aa30e8449f5a4cea54a8fb15bb5f7e117a27a49a068c1d22113687",
     "applyReceipt": "bulbs53-apply01",
     "actualReceipt": "bulbs53-canonical-actual01",
@@ -2273,7 +2268,9 @@
     "humanMotionReviewRequired": false,
     "parentReview": "tasks/evidence/AVOID-009/bulbs-canonical53/parent-integration-review53.json",
     "storage": "tasks/evidence/AVOID-009/bulbs-canonical53/storage53.json",
-    "rawPayloadSHA256": "b4b7d9dc6ecfbc0805a150e9d081e3995177af17b4e74cc0fde39b9a30726bf8"
+    "rawPayloadSHA256": "b4b7d9dc6ecfbc0805a150e9d081e3995177af17b4e74cc0fde39b9a30726bf8",
+    "productCommit": "e891de1a778f26c79fb978678bb8a9a7b76b1c93",
+    "workPushExitCode": 0
   },
   "bulbsDesign54": {
     "state": "READONLY_DESIGN_ACCEPTED_CONDITIONAL_NUMERIC_MODEL",
@@ -2290,5 +2287,19 @@
     "records": 1140,
     "packageBytes": 493191,
     "actualCapacity11Executed": false
+  },
+  "capacity11SourceOnly": {
+    "state": "PREPARED_NOT_EXECUTED_OLD_AFA_PINS_STALE_AFTER53_COMMIT",
+    "record": "tasks/evidence/AVOID-009/evening-20261024/storage-capacity-writing11/parent-source-review11.json",
+    "new61FlagAdded": false
+  },
+  "latestContinuation61": {
+    "state": "FAILED55_PRESERVED_CAPACITY12_RELEASED_56_SOURCE_ONLY",
+    "head": "e891de1a778f26c79fb978678bb8a9a7b76b1c93",
+    "indexSHA256": "ef247c47f5a16c116fb7fce2c95b64fc728dd84b7e20fedd9996d2be7c1a3159",
+    "skipCount": 61,
+    "source55Passed": false,
+    "pendingMotion": "tiles-native-20261025-01",
+    "publicChecks": 0
   }
 }
