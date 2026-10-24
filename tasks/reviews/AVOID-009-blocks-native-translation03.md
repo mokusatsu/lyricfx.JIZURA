@@ -21,3 +21,5 @@ Product f9f6c074、work push33022 exit0。Ca/Cbの2sourceは試験済みbytes/�
 ## native60fps媒体の限定受入
 
 [親の全frame数値照合](../evidence/AVOID-009/blocks-media03/evidence/parent-media03-review.json)は960x540/native60fps/240frames/4sの実Renderer.frameと2endpoint診断724観測、9769event102860頂点、offset0残留16eventを通過。MP4は209128/199996B、元描画PNGを直接encoderへ流し、表示用コマ送りではない。前後240PNGhashは各固有。[文脈なしsol](../evidence/AVOID-009/blocks-media03/independent-sol-visual03.json)は14静止画で積み木の構成・支持・立体感・4glyph可読を確認し、標本の重大な欠けを未検出。親画像0、連続動画目視・人間承認とは区別。日英Responsive比較は5ファイルだけで、円は別SVG。公開結果確認0を維持し、既存owner-private Sitesへの公開操作を準備する。
+
+動作確認用固定版: [積み木native](https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/blocks-native-20261024-01/)。SOURCE854df47、5ファイル419773B追加で既存90distを保持。元公開操作call323がsucceeded（appgdep_6adc2b97f2688191b3c421384748e90a/version appgprj_6adbafe9f07c8191ab0b404c53caab16~appgver_371e7feee7108191a2a8f588e1f54fc2）を返した。公開結果確認0、人間未回答queueへ固定。
