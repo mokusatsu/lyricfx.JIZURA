@@ -1,3 +1,17 @@
+## Latest diagnostic01 raw and branch02 source gate — 2026-10-24 12時前後
+
+親run25520exit0/8fixtures/errors0、raw SHA4ee316d2867e880f190dc3163792462f225b6a5b6a3620d9e058839b3d68d056。親139baseline+117forcednative+49nativefont+9090atoms、10895events117208verticesはone-exact-time-cell全event包含でPASS。candidate78stageinconclusive/31hold不足でsafe0。source helper01はmain未統合/adapterなし。
+
+blocks_readonly_plan01 (gpt6.1sol/medium)へbranch-resolved helper rev2 SOURCE/runner準備だけを依頼済み。entry/settledとq0/moving/q1をsource exact predicateごとに独立supportへ分ける。元01source/runner/seal/rawすべて固定、新版別名。main/adapter登録/JSmodule/browser/Git/capsule生成は次の親gateまで未許可。次rawには正確なsourceCut時計値を保存（親のoutDur逆算ulp誤りを避ける）。
+
+raw01はtasks/evidence/AVOID-009/blocks-bounded01/raw01へhardlink保存、元workpath同inode保持、削除や6MB複製なし。公開済みpile13のこのturn生成upload archive33,432,884Bだけを元SOURCE8efからRAM再生成SHA一致後に解放しroot空き約67MBへ。restore-publication-archive13.py と derived-upload-storage-release13.jsonを読む。旧3/tmp公開archive・全source/raw/media/失敗・22flagsは保持。公開結果確認はしていない。13:00JST（04:00UTC）に区切る期限は確定。
+
+## Current next gate — blocks native proof helper SOURCE only
+
+Native foundation product/evidencee00fa681 workpush29340 exit0。親の統合/全36tar entries/115canonical+466runtime実解決受入済み。新しい work/avoid009-blocks-bounded01 を指定担当blocks_readonly_plan01(gpt6.1-sol/medium)がSOURCE onlyで準備中。採用parent policyは tasks/evidence/AVOID-009/blocks-bounded01/parent-design-policy01.json を読む。native形状/font/運動/commontranslationのみ、primary全保持、phase別circle/stage別々・q1完全退出条件・region内hold>=.04。まず新proof diagnostic helperとrunner/sealだけで、adapter登録/main/build/module/browser/Git/mediaは親の次gateまで未許可。
+
+本日13:00JST期限確定、現在11時台。山exit13だけ新たな動作確認未回答、カードfullscreenはOK済み。ユーザーには必要比較だけを13時頃まとめる。公開結果確認永久禁止は継続。root空き約41MB/TMP39MBのため新素材は小さく、HTMLmemory、runtime/fonts外部reuse、旧archive/raw/22flags保持。新しいpile13公開用derived archive33MBは/workspace/pile-exit13-sites-pack01に残る。今のところ何もcleanupしていない。過去3つの/tmp公開archiveも保持。
+
 ## Latest native03 update — 2026-10-24 11:13 JSTごろ
 
 run03=63389 exit0を親独立レビューで受入。147rows/588pixelpairs/1283sourceblocks/2230primaryevents/24757vertices、2230exactliveRoots、3otherDcontrols。元の運動・画素不変でnative内部段階は人間確認不要。main09a/11p2source統合とoffline日英build/小thin保存を同担当へ許可し、boundedadapterはREADONLY DESIGNのみ（新source/browser不可）。回避完成ID数は増やさない。山のevidence2a2c3226と2本MP4追加37bf5d98もwork push成功、未回答queue保持。以下の古いrun02失敗記述は履歴として保持。

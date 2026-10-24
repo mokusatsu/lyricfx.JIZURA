@@ -382,3 +382,7 @@ Product2c606bdbをworkへpush。最初のpushはHTTP503で失敗し、同じ通�
 blocks native catalogは隔離SOURCEゲートで元運動/paintの逆置換完全一致を親確認。run01は3TTF配信漏れでfixture未到達、runner修正後run02は7条件147描画でOFF/元paint一致、fractional rootの記録再生32画素hash不一致を検出。失敗rawは[親記録](evidence/AVOID-009/blocks-native01/parent-run02-failure.json)に保存し、blocks限定root保持を指定担当へ返す。main製品や安全なadapterは未受入。
 
 blocks native03の最小root保持を親source/rawで限定受入。7条件147描画・588画素組、1283sourceblocks/2230primaryevents/24757頂点、元運動式/hop/seedの独立再計算と他D3対照が成功。見た目・運動不変の根拠により内部native準備段階の人間確認は不要と親判断。旧font01/root02失敗を保持し、main2source統合を許可。これは回避adapter完成ではなく、限定10/34の数は増えない。後続のbounded blocksは読み取り設計から進める。
+
+blocks native-firstの[読み取り設計と段階的policy](evidence/AVOID-009/blocks-bounded01/parent-design-policy01.json)を親確認。native形状/font/運動＋共通translationの診断proof helperを次の隔離SOURCEゲートとして依頼。circle緩和は元の動くowner/passだけ、holdは区間内>=.04秒、stageの元TOP入口/BOTTOM出口・完全退出tailは別の厳密条件を採用し、実装数や安全成功へは未計上。新しいruntime/adapter/main統合は次の親レビューまで未許可。
+
+blocks診断01は8条件errors0、親が139元画素/命令組、117強制source時刻組、49実font、9090境界atomと10895実event/117208頂点を独立照合。actualevent全体が一つのexact-time支持cellに入る強条件でも成功。候補は78stage不確定/31hold不足で安全成功0。混在した入場/着地・動く退出/q1tailを一つのstrict hullへまとめた保守性を解消するbranch別supportsのSOURCE rev2を同担当へ依頼。診断はmain未統合、adapter数は増えない。rawは[証拠](evidence/AVOID-009/blocks-bounded01/parent-diagnostic01-review.json)へ保存、旧01は固定。
