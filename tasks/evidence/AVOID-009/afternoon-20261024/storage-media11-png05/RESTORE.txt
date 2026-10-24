@@ -1,0 +1,9 @@
+SOURCE ONLY; no guard has been executed. Run only inside manager40524, where official SHM source Git is visible.
+
+Parent sequence: review storage.py+frozen manifest.json, RUN python -B storage.py VERIFY, read verifiedManifestSHA256 from the exclusive verify-receipt.json, then RUN RELEASE with both --reviewed-source-sha256 EXACT_REVIEWED_SCRIPT_SHA and --verified-manifest-sha256 EXACT_VERIFY_PROOF_SHA. No Git flags change; original49 remain49.
+
+Fixed release list ONLY: /tmp/avoid009-balloons-media11-view/evidence/images/{before,after}-{006,024,060,120,216,231,244}.png (14 explicit combinations). Five public mirror files remain untouched. Physical recovery:6,082,560 bytes (5.801MiB).
+
+Restore from exact pushed source commit 1de32441c1d00faac094f7b98d58e8fb4d11e30e: for each explicit frozen manifest relative, stream git -C /dev/shm/avoid009-afternoon-20261024/source cat-file blob COMMIT:private-evidence/AVOID-009/balloons-media11/RELATIVE to an exclusive-create regular file at /tmp/avoid009-balloons-media11-view/RELATIVE. Check exact size/SHA256 from frozen manifest; verified receipt additionally records each exact blob ID. No flag changes are needed. If namespace has ended, recover an authenticated owner-private source Git checkout first using the normal reviewed flow. Do not use public endpoints or SHM aliases.
+
+This storage release preserves evidence bytes durably; it confers no visual/human approval or public verification.
