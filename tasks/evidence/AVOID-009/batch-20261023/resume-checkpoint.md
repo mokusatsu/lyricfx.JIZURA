@@ -1,3 +1,9 @@
+## 最新指示：2026-10-24 23:00日本時間まで続行
+
+利用者提供のtiles・bulbs・billboard設計報告を受領。設計入力としてソース照合し、実装・幾何/描画検証・人間承認とは分ける。現在のmagnets SOURCE27時計証明を指定sol/mediumが引継ぎ、親source/rawレビューで順次続行。添付以外の009内独立作業も本日23:00JST/14:00UTCまで実施する。公開結果確認の永久禁止は継続。旧keeper64166は再接続不可、保存済みROOTindex receiptから新手順を準備中。旧記録の22時期限はこの指示で更新。
+
+現HEAD work e44551ae。旧64166 unknown processで復活扱いしない。ROOTindex round1 receipt durableあり、次のGit操作は新sourceレビュー後。既存52skip/7PYC/無関係untracked保持。
+
 ## 午後native基盤受入・continuous診断SOURCE待ち（2026-10-24 14:25JST）
 
 ユーザー山exit13/blocks両方OK、本日17時まで続行。最新製品ec594e6f push45884exit0、証拠fef2d2d4 push88813exit0。balloons native01は124assert失敗（old/OFF/directは一致、42motion1 fractionalroot pixels＋52motion.5 pixels/30catalog差）、02 strictballoonsroot/effectiveFXbindingだけを修正し8conditions222calls/888pixels/2116events31858vertices/252livegloss＋3otherDcontrolを親source/raw数式で受入。main09a/11p+JAENexact統合、other99source/PYC保持。回避adapter加算0で限定sourceID11据置、内部nativefidelityは見た目不変の根拠で追加人間確認不要。broaderdoublemotion既存問題は019handoff（他layout修正済みではない）。

@@ -1,3 +1,5 @@
+最新続行（2026-10-24）：利用者が設計報告を提供し23:00JSTまでの順次作業を指示。AVOID-009実装中を維持、外部設計は調査入力として照合中。詳細は[AVOID-009](AVOID-009.md)。公開結果確認永久禁止。
+
 # Task List
 
 タスク一覧の正本。詳細・完了条件・証拠は個別記録に置く。[設計と現行解析](avoidance-design.md) ／ [Pagesでの人間確認](pages-human-review.md) ／ [前後画像・比較HTML](visual-review-comparison.md) ／ [スキル](../.agents/skills/evidence-driven-task-management/SKILL.md)。
