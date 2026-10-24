@@ -1,0 +1,75 @@
+--- accepted09/capacity_writing09.py
++++ source10/capacity_writing10.py
+@@ -2,10 +2,10 @@
+ """Parent-reviewed, single-file Gitblob-only capacity transaction. Abrupt-death NONATOMIC."""
+ import argparse,gzip,hashlib,io,json,os,pathlib,stat,subprocess
+ P=pathlib.Path;ROOT=P('/workspace/lyricfx.JIZURA');INDEX=ROOT/'.git/index'
+-BASE=P('/dev/shm/avoid009-evening-20261024');SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-writing09/snapshot.json')
+-REL='tasks/evidence/AVOID-008/writingC861-main01/writing02.json.gz'
+-BLOB='bdc130611396e8cc1e63e7b93453b0a026703fb2';RAW_SHA='a78dbd934d8d0b9aa91d861eb1c90406c0d8edeb33c51e864410bc50f12476c6';RAW_BYTES=37584077
+-PROOF=BASE/'capacity-writing09-proof.json';RECEIPT=BASE/'capacity-writing09-receipt.json';START=BASE/'capacity-writing09-started.json';INTENT=BASE/'capacity-writing09-unlink-intent.json';PRIVATE=BASE/'capacity-writing09-index'
++BASE=P('/dev/shm/avoid009-evening-20261024');SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-writing10/snapshot.json')
++REL='tasks/evidence/AVOID-008/writingC861-main01/writing01.json.gz'
++BLOB='14691f2ddb34d3bae37bf29330a5482b285570c8';RAW_SHA='628b4ebf161c81f1d699d2ab298fb5dce43e14bb8704af2d22839e40a1ad648b';RAW_BYTES=37584035
++PROOF=BASE/'capacity-writing10-proof.json';RECEIPT=BASE/'capacity-writing10-receipt.json';START=BASE/'capacity-writing10-started.json';INTENT=BASE/'capacity-writing10-unlink-intent.json';PRIVATE=BASE/'capacity-writing10-index'
+ def need(x,m):
+  if not x:raise RuntimeError(m)
+ def sha(b):return hashlib.sha256(b).hexdigest()
+@@ -29,7 +29,7 @@
+ def protect(m,new=False):
+  expected=m['skip']+([REL] if new else [])
+  need(len(m['pycs'])==7 and len({x['path'] for x in m['pycs']})==7,'exact7PYC required')
+- need(len(m['skip'])==58 and len(set(expected))==len(expected),'exact old58 plus optional one')
++ need(len(m['skip'])==59 and len(set(expected))==len(expected),'exact old59 plus optional one')
+  for rel in expected:need(not os.path.lexists(ROOT/rel),'protected absent path appeared')
+  for x in m['pycs']:
+   p=ROOT/x['path'];regular(p);b=p.read_bytes();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'PYC changed')
+@@ -40,10 +40,10 @@
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'ROOT identity/mode changed')
+  need(len(b)==m['indexBytes'] and sha(b)==m['indexSHA256'],'ROOT index changed')
+  need(head()==m['head']==ARGS.expected_head,'explicit baseline HEAD differs')
+- need(skips()==m['skip'] and special()==m['specialFlags'],'old58/fullspecial changed')
++ need(skips()==m['skip'] and special()==m['specialFlags'],'old59/fullspecial changed')
+  need(sha(flags())==m['flagsSHA256'] and sha(git(['ls-files','--stage','-z']))==m['stageSHA256'],'full stage/flags changed');protect(m)
+  regular(P(m['bootstrapReceiptPath']));receipt=P(m['bootstrapReceiptPath']).read_bytes();need(sha(receipt)==m['bootstrapReceiptSHA256'],'installed receipt changed')
+- r=json.loads(receipt);need(r['round']==1 and r['sameInode'] is True and r['skipCount']==58 and r['PYCAndProtected58Preserved'] is True and r['newSHA256']==sha(b) and r['head']==head(),'installed receipt mismatch')
++ r=json.loads(receipt);need(r['round']==1 and r['sameInode'] is True and r['skipCount']==59 and r['PYCAndProtected59Preserved'] is True and r['newSHA256']==sha(b) and r['head']==head(),'installed receipt mismatch')
+  return b
+ def decodedcheck(data):
+  digest=hashlib.sha256();count=0
+@@ -52,7 +52,7 @@
+    chunk=stream.read(1048576)
+    if not chunk:break
+    digest.update(chunk);count+=len(chunk)
+- need(count==248230831 and digest.hexdigest()=='51f4d394ad7156e494e857b92225a9736f22889f73c581390b511cdd43b3ff43','gzip decoded full stream size/hash/CRC differs')
++ need(count==248230777 and digest.hexdigest()=='e3b5d1f631ba834afb4c04c3ddbfa140cd96406a13ba8f859f4918e56b908a6d','gzip decoded full stream size/hash/CRC differs')
+ def raw(m):
+  p=ROOT/REL;s=regular(p);need(s.st_nlink==m['targetNlink']==1,'target nlink changed');need(s.st_blocks*512==m['targetAllocated'],'target allocated bytes changed');b=p.read_bytes()
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['targetDevice'],m['targetInode'],m['targetMode']),'target identity/mode changed')
+@@ -67,7 +67,7 @@
+ def source_sha():return sha(P(__file__).read_bytes())
+ def verify(m):
+  official();need(all(not os.path.lexists(x) for x in [PROOF,PRIVATE,START,INTENT,RECEIPT]),'fresh transaction required');b=baseline(m);data=raw(m)
+- writejson(PROOF,{'state':'VERIFIED_NOT_RELEASED','sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'head':head(),'rootSHA256':sha(b),'rawSHA256':sha(data),'rawBytes':len(data),'rawAllocated':(ROOT/REL).stat().st_blocks*512,'releaseOnlyPath':REL,'old58Preserved':True,'PYC7Preserved':True})
++ writejson(PROOF,{'state':'VERIFIED_NOT_RELEASED','sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'head':head(),'rootSHA256':sha(b),'rawSHA256':sha(data),'rawBytes':len(data),'rawAllocated':(ROOT/REL).stat().st_blocks*512,'releaseOnlyPath':REL,'old59Preserved':True,'PYC7Preserved':True})
+  print(PROOF.read_text())
+ def put(fd,b):
+  off=0
+@@ -77,7 +77,7 @@
+ def finalcheck(m,final,new):
+  need(INDEX.read_bytes()==final,'installed ROOT bytes differ');s=regular(INDEX);need(s.st_nlink==m['indexNlink']==1,'installed ROOT nlink changed')
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'installed identity/mode differs')
+- need(skips()==sorted(m['skip']+[REL]),'expected exact59 skips');need(special()==sorted(m['specialFlags']+['S '+REL]),'special flags differ')
++ need(skips()==sorted(m['skip']+[REL]),'expected exact60 skips');need(special()==sorted(m['specialFlags']+['S '+REL]),'special flags differ')
+  need(git(['ls-files','--stage','-z'])==git(['ls-files','--stage','-z'],PRIVATE),'installed stage mismatch');protect(m,new);need(head()==m['head'],'HEAD changed')
+ def release(m):
+  official();regular(PROOF);pb=PROOF.read_bytes();proof=json.loads(pb)
+@@ -105,7 +105,7 @@
+    try:os.fsync(directory)
+    finally:os.close(directory)
+    finalcheck(m,final,True)
+-   writejson(RECEIPT,{'state':'RELEASED_GITBLOB_ONLY','releaseOnlyPath':REL,'blob':BLOB,'rawSHA256':sha(data),'rawBytes':len(data),'freedAllocatedBytes':proof['rawAllocated'],'head':head(),'oldSHA256':sha(old),'newSHA256':sha(final),'newBytes':len(final),'sameInode':True,'skipCount':59,'old58AndPYC7Preserved':True,'proofSHA256':sha(pb),'sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'unlinkIntentSHA256':sha(INTENT.read_bytes())})
++   writejson(RECEIPT,{'state':'RELEASED_GITBLOB_ONLY','releaseOnlyPath':REL,'blob':BLOB,'rawSHA256':sha(data),'rawBytes':len(data),'freedAllocatedBytes':proof['rawAllocated'],'head':head(),'oldSHA256':sha(old),'newSHA256':sha(final),'newBytes':len(final),'sameInode':True,'skipCount':60,'old59AndPYC7Preserved':True,'proofSHA256':sha(pb),'sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'unlinkIntentSHA256':sha(INTENT.read_bytes())})
+   except BaseException:
+    try:
+     if removed:

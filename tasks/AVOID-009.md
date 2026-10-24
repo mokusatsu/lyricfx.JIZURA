@@ -504,3 +504,9 @@ atlas2,158,024B、serializedworking3,394,385B。cold2,358.4ms/warm11.7msは単�
 [電球native50](reviews/AVOID-009-bulbs-native50.md)は元描画1890組/120全画面/45他Dと58,796サンプル点を親が独立照合して受入。観測N4〜136、15部分予算は不完全状態を明示。元表示の変更なし・隔離metadataのみのため人間確認不要と親が判定。正本未組込み、transport/adapterはまだ追加していない。次51は元root/effectiveFXの同期record→replayのみを検証する隔離ソース準備。stock still/jitter/breatheに絞り、cache/serialized/post-record driftや将来のvisible-frame preflightの保証は別である。
 
 容量09は古い008 writing02 raw1件の全Gitblob・gzip CRC/decoded SHA・107歴史ソースsnapshotを照合し、Gitblob-onlyへ退避して37,584,896B回復。旧58/PYC7を保持し現在59absent。[復元/外部依存/厳密index手順](evidence/AVOID-009/evening-20261024/storage-capacity-writing09/source09/README.txt)。古い008検証の再実行・合格ではない。正式性能/保存本体/009全体未完、010以降未着手、親画像閲覧/公開結果確認0を維持。
+
+
+電球サイン隔離transport51を親source/raw受入。450指定env転送、90native全画面、270typed拒否は一致。本体/adapter/通常時計全網羅/正式性能を意味しない。[親レビュー](reviews/AVOID-009-bulbs-transport51.md)。009実装中、追加人間確認不要の内部段階、公開結果確認0。
+
+
+容量10: 古い008 writing01 rawは元のcandidate01失敗を保持したまま全Gitblob/CRC/decodedSHA/107source snapshot/315legacy pinを照合し、Gitblob-onlyへ退避。37,584,896B回復、旧59/PYC7維持で60保護absent。14枚の所有untracked PNG複製も全16assetのpushed TARとの全byte一致後に作業複製だけ解放（8,040,448B）。TARと復元mapは保持、PNGにskipは追加していない。新STRICT60の手順はstorage-capacity-writing10/source10/README.txt参照。正式性能/保存本体/009全体未完。
