@@ -1,0 +1,29 @@
+{
+  "qualification": false,
+  "scope": "same ordinary correctness run, not performance protocol",
+  "observations": [
+    {
+      "case": "native60-original-push",
+      "preparationMs": {
+        "before": 1035.6999999955297,
+        "after": 1240.3000000044703
+      },
+      "maximumFrameMs": {
+        "before": 28.399999998509884,
+        "after": 28.799999997019768
+      }
+    },
+    {
+      "case": "native60-gap-unicode-push",
+      "preparationMs": {
+        "before": 762.1999999955297,
+        "after": 866.8000000044703
+      },
+      "maximumFrameMs": {
+        "before": 23.299999997019768,
+        "after": 22.100000001490116
+      }
+    }
+  ],
+  "limitation": "Representative cold prep1240ms observed; no formal performance or realtime60fps claim; follow later dedicated performance stage."
+}

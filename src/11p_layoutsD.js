@@ -1058,6 +1058,7 @@ reg('pile', {
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
     // Native-only ownership/catalog checkpoint. This declares no safe adapter.
     const nativeD = cut.placementLayoutsD === true;
+    let exitSaved = false;
     const owned = (owner, fn) => nativeD ? env.withDrawRole('primary', 'pile.' + owner, fn) : fn();
     const freeze = v => {if(v && typeof v === 'object' && !Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
     const catalog = nativeD ? {kind:'pile',version:1,ownership:'all-primary-none-exempted',W,H,seed:s,lt,pOut:env.pOut,pass:env.pass,params:JSON.parse(JSON.stringify(Pm)),slots:[],heap:[],heapDecisions:[],dust:[]} : null;
@@ -1078,6 +1079,7 @@ reg('pile', {
     const bump = x => Math.sin(x / W * 17 + s % 7) * H * 0.006 + Math.sin(x / W * 31 + (s % 5)) * H * 0.004;
     const nativeSurf = x => yBase + rise - Hm / (1 + Math.pow((x - cx) / sig, 4)) + bump(x);
     const trial = nativeD && cut.layoutDRecipe ? J.placement.pilePhysicalFrame(env,{cx,sig,Hm,yBase,size,nativeSurf,rows:rowsT}) : null;
+    if(trial?.exitTransport){catalog.exitTransport=trial.exitTransport;if(trial.exitTransport.sourceDeltaY!==0){env.ctx.save();exitSaved=true;env.ctx.translate(0,trial.exitTransport.sourceDeltaY);}}
     const surf = trial ? trial.surface : nativeSurf;
     const materialOut = trial?.entranceApplied ? out * trial.materialAlpha : out;
     if(nativeD&&trial?.entranceApplied)catalog.entrance={kind:'pile-native-entry-v2',materialAlpha:trial.materialAlpha,launchDelta:trial.launchDelta,clock:lt,fadeClock:.5};
@@ -1167,7 +1169,7 @@ reg('pile', {
       });
     });
     return bb;
-    } finally {if(nativeD)env.placementDGeometry=freeze(catalog);}
+    } finally {if(exitSaved)env.ctx.restore();if(nativeD)env.placementDGeometry=freeze(catalog);}
   },
 });
 
