@@ -13,7 +13,7 @@
       "owner": "blocks_readonly_plan01",
       "model": "gpt-6.1-sol",
       "effort": "medium",
-      "state": "New branch-resolved diagnostic helper rev2 source/runner prep only; preserve01 sealedinputs/raw, no adapter/main/browser/Git yet"
+      "state": "Diagnostic02 source/raw independently accepted; preparing isolated minimal native adapter03 SOURCE only, no main/browser/Git until parent gate"
     }
   ],
   "humanReviewQueue": [
@@ -565,7 +565,7 @@
     "thinEvidence": "tasks/evidence/AVOID-009/pendulum-final01/avoid009-pendulum-final-packet02.tar.gz",
     "thinEvidenceSHA256": "d32f78a378299a6fcdff84dab00c8dca45cb000a0ee96c53cb51d8a82cc36e46"
   },
-  "lastParentSyncUTC": "2026-10-23T23:22:16.810126+00:00",
+  "lastParentSyncUTC": "2026-10-24T03:29:00Z",
   "pendulumMedia": {
     "capture": "output02",
     "canonicalManifestSHA256": "f1508ee593f32f18f583cda39dee502e34b26ccafa85f4b288cad48d5d515c13",
@@ -712,7 +712,7 @@
     "media": "Native60fps1pair committed6ee41a86; parent35978polys/freshsol16frames acceptedbounded; Sites4291087 nativeoperationSUCCEEDED, humanunanswered",
     "archivePush": "56ac348 parent82484CLOSEDexit0"
   },
-  "phase": "BLOCKS_DIAGNOSTIC01_PARENT_ACCEPTED_BRANCH02_SOURCE_ONLY",
+  "phase": "BLOCKS_DIAGNOSTIC02_ACCEPTED_MINIMAL_ADAPTER_SOURCE_ONLY",
   "morningReviewDigest": "tasks/evidence/AVOID-009/batch-20261023/morning-review-20261024.md",
   "mainMediaPush": "6ee41a86 parent26021CLOSEDexit0",
   "publicationRecordPush": "eb607c22 parent9962CLOSEDexit0",
@@ -873,6 +873,50 @@
     "actualVertices": 117208,
     "stagePolicyInconclusiveTrials": 78,
     "holdInsufficientTrials": 31,
-    "safeCandidatesAccepted": 0
+    "safeCandidatesAccepted": 0,
+    "run02": {
+      "status": "SOURCE_RAW_PARENT_ACCEPTED_DIAGNOSTIC_ONLY_NOT_ADAPTER",
+      "parentSession": 33837,
+      "sourceSHA256": "bb0339e6918c766bc4f26584c6b8d64779892765305296f14eb1753910817278",
+      "sealSHA256": "c0d3dcc07292b89b734f7ab306964af7b1bfe49bb6103f95f43d46cd84bcad65",
+      "canonicalPinsParentVerified": 115,
+      "runtimePinsParentVerified": 466,
+      "exit": 0,
+      "rawSHA256": "0536b146e2aa9166159335753816090c552519044998e0a64bbe138f7657a4f5",
+      "evidence": "tasks/evidence/AVOID-009/blocks-bounded01/parent-diagnostic02-review.json",
+      "counts": {
+        "fixtures": 8,
+        "nativeBaselinePixelEventPairs": 139,
+        "forcedNativePairs": 249,
+        "allObservationRows": 583,
+        "exactFirstTrueOrAbsentPredicates": 340,
+        "predicateBranchRanges": 266,
+        "exactNativeFontMetrics": 49,
+        "activeGeometryObservations": 540,
+        "selectedBranchWholeEvents": 10895,
+        "selectedBranchVertices": 117208,
+        "nonProofExpiredObservations": 36,
+        "conditionalCandidateBranchPolygons": 21217,
+        "inLifetimeForcedSourceRows": 249,
+        "forcedSelectedBranchEvents": 5687,
+        "forcedSelectedBranchVertices": 60458,
+        "typedUnsupportedControls": 1
+      },
+      "outcomes": {
+        "stage-policy-inconclusive": 59,
+        "native-translation-selective-moving-diagnostic-candidate": 16,
+        "circle-support-insufficient": 3,
+        "hold-intersection-insufficient": 31
+      },
+      "conditionalCandidates": 16,
+      "safeAdapterAccepted": false,
+      "codeIntegrated": false
+    },
+    "nextGate": {
+      "status": "MINIMAL_ADAPTER_SOURCE_ONLY_AUTHORIZED",
+      "owner": "blocks_readonly_plan01",
+      "deadlineJapan": "2026-10-24 13:00",
+      "scope": "single cut whole-cut region; native motion/font/shape common translation; worst-AA.5; original offset0 entire residual tail proof; exact decoded/dependency checks; no main/browser/Git before parent review"
+    }
   }
 }

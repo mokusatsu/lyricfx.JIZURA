@@ -386,3 +386,5 @@ blocks native03の最小root保持を親source/rawで限定受入。7条件147�
 blocks native-firstの[読み取り設計と段階的policy](evidence/AVOID-009/blocks-bounded01/parent-design-policy01.json)を親確認。native形状/font/運動＋共通translationの診断proof helperを次の隔離SOURCEゲートとして依頼。circle緩和は元の動くowner/passだけ、holdは区間内>=.04秒、stageの元TOP入口/BOTTOM出口・完全退出tailは別の厳密条件を採用し、実装数や安全成功へは未計上。新しいruntime/adapter/main統合は次の親レビューまで未許可。
 
 blocks診断01は8条件errors0、親が139元画素/命令組、117強制source時刻組、49実font、9090境界atomと10895実event/117208頂点を独立照合。actualevent全体が一つのexact-time支持cellに入る強条件でも成功。候補は78stage不確定/31hold不足で安全成功0。混在した入場/着地・動く退出/q1tailを一つのstrict hullへまとめた保守性を解消するbranch別supportsのSOURCE rev2を同担当へ依頼。診断はmain未統合、adapter数は増えない。rawは[証拠](evidence/AVOID-009/blocks-bounded01/parent-diagnostic01-review.json)へ保存、旧01は固定。
+
+blocks診断02は親run33837exit0/8条件。340個の元Float64 firstTrue/不存在と266branch範囲、139元画素組/249強制native時刻、10895実event117208頂点、5687強制event60458頂点を独立照合。条件付きtranslation候補16、stage不確定59/circle不足3/hold不足31であり、安全adapter成功は0。[親照合](evidence/AVOID-009/blocks-bounded01/parent-diagnostic02-review.json)。raw02とsealedsource02を保存し、singlecut/1wholecutregion・worstAA・offset0残留全tail・依存/decoded検査を条件に最小adapterの隔離SOURCEだけ依頼。13時期限で未完成をmainへ急いで統合しない。009実装中/010以降未着手・公開確認0は維持。
