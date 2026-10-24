@@ -1,0 +1,69 @@
+--- accepted12/private_index_resume12.py
++++ source13/private_index_resume13.py
+@@ -3,7 +3,7 @@
+ import argparse,hashlib,json,os,pathlib,stat,subprocess
+ P=pathlib.Path;ROOT=P('/workspace/lyricfx.JIZURA');INDEX=ROOT/'.git/index'
+ BASE=P('/dev/shm/avoid009-evening-20261024')
+-SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-writing12/continuation61-snapshot.json')
++SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-objects13/continuation62-snapshot.json')
+ def need(ok,msg):
+  if not ok:raise RuntimeError(msg)
+ def sha(b):return hashlib.sha256(b).hexdigest()
+@@ -15,7 +15,7 @@
+  with p.open('x') as f:json.dump(data,f,indent=2);f.write('\n');f.flush();os.fsync(f.fileno())
+ def paths(n):
+  need(n>=1,'positive round required')
+- stem=BASE/('evening-resume12-index-round-'+str(n))
++ stem=BASE/('evening-resume13-index-round-'+str(n))
+  return stem,stem.with_name(stem.name+'-state.json'),stem.with_name(stem.name+'-receipt.json')
+ def env(private):
+  e=os.environ.copy();e.pop('GIT_INDEX_FILE',None);e['GIT_TERMINAL_PROMPT']='0';e['GIT_OPTIONAL_LOCKS']='0'
+@@ -31,9 +31,9 @@
+ def flags(private=None):
+  return [x.decode() for x in git(['ls-files','-v','-z'],private).split(b'\0') if x and not x.startswith(b'H ')]
+ def protected(m):
+- need(len(m['skip'])==61 and len(set(m['skip']))==61,'expected61')
++ need(len(m['skip'])==62 and len(set(m['skip']))==62,'expected62')
+  need(len(m['pycs'])==7 and len({x['path'] for x in m['pycs']})==7,'exact7PYC required')
+- for rel in m['skip']:need(not os.path.lexists(ROOT/rel),'61 absent path changed')
++ for rel in m['skip']:need(not os.path.lexists(ROOT/rel),'62 absent path changed')
+  for x in m['pycs']:
+   p=ROOT/x['path'];regular(p);b=p.read_bytes();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'PYC changed')
+ def model(expected_sha):
+@@ -51,10 +51,10 @@
+   durable=P(m['releaseReceiptPath']);regular(durable);raw=durable.read_bytes()
+   need(prior_sha and sha(raw)==prior_sha,'parent exact durable release receipt SHA required')
+   r=json.loads(raw)
+-  need(r['state']=='RELEASED_GITBLOB_ONLY' and r['sameInode'] is True and r['skipCount']==61 and r['old60AndPYC7Preserved'] is True,'release receipt protections differ')
+-  need(r['source55Result']=='FAILED_INTERN_KEY_BYTE_BUDGET' and r['source55Passed'] is False and r['source55FailedPostpinsReviewed'] is True and r['product53SourceRawAfter6Accepted'] is True,'release parent failed55/accepted53 gates differ')
+-  need(r['releaseOnlyPath']=='tasks/evidence/AVOID-008/objects/writing11.json.gz','release path differs')
+-  need(r['blob']=='f418dfac3f23016d416139995aeb4fd6ab65c92f' and r['rawSHA256']=='e3c6026aecd52f81ced13aef12652b1b1e0ea54968f53f4d938fc144775c2ee5' and r['rawBytes']==37583984,'release target identity differs')
++  need(r['state']=='RELEASED_GITBLOB_ONLY' and r['sameInode'] is True and r['skipCount']==62 and r['old61AndPYC7Preserved'] is True,'release receipt protections differ')
++  need(r['source56Result']=='CONDITIONAL_RAW_REVIEW02_ACCEPTED_NOT_ADAPTER_OR_PERFORMANCE' and r['source56Completed'] is True and r['source56ConditionalPostpinsReviewed'] is True and r['source56AdapterAccepted'] is False and r['source56PerformanceAccepted'] is False and r['source55Result']=='FAILED_INTERN_KEY_BYTE_BUDGET' and r['source55Passed'] is False and r['source55FailurePreserved'] is True,'release conditional56/failed55 truth gates differ')
++  need(r['releaseOnlyPath']=='tasks/evidence/AVOID-008/objects/integrated01/matrix01.json.gz','release path differs')
++  need(r['blob']=='0fa23b43f765a75341c77d3705354b237f7f49e6' and r['rawSHA256']=='1cecddb3bae348f51bb6d9edb86bce060277f3deb22a7a4abccdf321ad1d0db1' and r['rawBytes']==32488013,'release target identity differs')
+   need(r['oldSHA256']==m['indexSHA256'] and r['newSHA256']==sha(data) and r['newBytes']==len(data),'release index chain differs')
+   need(head()==m['head']==r['head'],'release HEAD changed')
+   need((info.st_dev,info.st_ino,stat.S_IMODE(info.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'release ROOT identity/mode differs')
+@@ -63,7 +63,7 @@
+   prev,_,prevreceipt=paths(n-1);regular(prevreceipt);raw=prevreceipt.read_bytes()
+   need(prior_sha and sha(raw)==prior_sha,'prior receipt seal required')
+   r=json.loads(raw);regular(prev)
+-  need(r['round']==n-1 and r['sameInode'] is True and r['skipCount']==61 and r['PYCAndProtected61Preserved'] is True,'prior receipt differs')
++  need(r['round']==n-1 and r['sameInode'] is True and r['skipCount']==62 and r['PYCAndProtected62Preserved'] is True,'prior receipt differs')
+   need(sha(data)==r['newSHA256']==sha(prev.read_bytes()) and head()==r['head'],'prior ROOT/private/HEAD differ')
+  need(sha(data)==ARGS.root_index_sha256,'explicit current ROOT index seal required')
+  s={'round':n,'manifestSHA256':manifest_sha,'priorReceiptSHA256':prior_sha,'rootSHA256':sha(data),'rootBytes':len(data),'device':info.st_dev,'inode':info.st_ino,'mode':stat.S_IMODE(info.st_mode),'prepareHead':head()}
+@@ -120,10 +120,10 @@
+    need(skips()==m['skip'] and flags()==m['specialFlags'],'installed flags differ');protected(m)
+    installed_info=regular(INDEX);need(installed_info.st_nlink==m['indexNlink']==1,'installed nlink differs');need((installed_info.st_dev,installed_info.st_ino,stat.S_IMODE(installed_info.st_mode))==(s['device'],s['inode'],s['mode']),'installed inode/mode differs')
+    need(head()==ARGS.expected_head,'HEAD changed during install')
+-   writejson(receipt,{'round':n,'oldSHA256':sha(old),'newSHA256':sha(final),'oldBytes':len(old),'newBytes':len(final),'sameInode':True,'skipCount':61,'PYCAndProtected61Preserved':True,'head':head()})
++   writejson(receipt,{'round':n,'oldSHA256':sha(old),'newSHA256':sha(final),'oldBytes':len(old),'newBytes':len(final),'sameInode':True,'skipCount':62,'PYCAndProtected62Preserved':True,'head':head()})
+   except BaseException:
+    put(fd,old);need(INDEX.read_bytes()==old,'RAM rollback verification failed');raise
+-  print(json.dumps({'installed':True,'round':n,'receipt':str(receipt),'sameInode':True,'skipCount':61}))
++  print(json.dumps({'installed':True,'round':n,'receipt':str(receipt),'sameInode':True,'skipCount':62}))
+  finally:
+   if fd is not None:os.close(fd)
+   need(regular(lock).st_ino==os.fstat(lockfd).st_ino and regular(lock).st_size==0,'owned zero-byte lock replaced');os.close(lockfd);lock.unlink()

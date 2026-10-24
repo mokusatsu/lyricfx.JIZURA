@@ -1,0 +1,90 @@
+--- accepted12/capacity_writing12.py
++++ source13/capacity_objects13.py
+@@ -2,10 +2,10 @@
+ """Parent-reviewed, single-file Gitblob-only capacity transaction. Abrupt-death NONATOMIC."""
+ import argparse,gzip,hashlib,io,json,os,pathlib,stat,subprocess
+ P=pathlib.Path;ROOT=P('/workspace/lyricfx.JIZURA');INDEX=ROOT/'.git/index'
+-BASE=P('/dev/shm/avoid009-evening-20261024');SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-writing12/snapshot.json')
+-REL='tasks/evidence/AVOID-008/objects/writing11.json.gz'
+-BLOB='f418dfac3f23016d416139995aeb4fd6ab65c92f';RAW_SHA='e3c6026aecd52f81ced13aef12652b1b1e0ea54968f53f4d938fc144775c2ee5';RAW_BYTES=37583984
+-PROOF=BASE/'capacity-writing12-proof.json';RECEIPT=BASE/'capacity-writing12-receipt.json';START=BASE/'capacity-writing12-started.json';INTENT=BASE/'capacity-writing12-unlink-intent.json';PRIVATE=BASE/'capacity-writing12-index'
++BASE=P('/dev/shm/avoid009-evening-20261024');SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-objects13/snapshot.json')
++REL='tasks/evidence/AVOID-008/objects/integrated01/matrix01.json.gz'
++BLOB='0fa23b43f765a75341c77d3705354b237f7f49e6';RAW_SHA='1cecddb3bae348f51bb6d9edb86bce060277f3deb22a7a4abccdf321ad1d0db1';RAW_BYTES=32488013
++PROOF=BASE/'capacity-objects13-proof.json';RECEIPT=BASE/'capacity-objects13-receipt.json';START=BASE/'capacity-objects13-started.json';INTENT=BASE/'capacity-objects13-unlink-intent.json';PRIVATE=BASE/'capacity-objects13-index'
+ def need(x,m):
+  if not x:raise RuntimeError(m)
+ def sha(b):return hashlib.sha256(b).hexdigest()
+@@ -29,24 +29,24 @@
+ def protect(m,new=False):
+  expected=m['skip']+([REL] if new else [])
+  need(len(m['pycs'])==7 and len({x['path'] for x in m['pycs']})==7,'exact7PYC required')
+- need(len(m['skip'])==60 and len(set(expected))==len(expected),'exact old60 plus optional one')
++ need(len(m['skip'])==61 and len(set(expected))==len(expected),'exact old61 plus optional one')
+  for rel in expected:need(not os.path.lexists(ROOT/rel),'protected absent path appeared')
+  for x in m['pycs']:
+   p=ROOT/x['path'];regular(p);b=p.read_bytes();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'PYC changed')
+ def model():
+  regular(SNAP);b=SNAP.read_bytes();need(ARGS.snapshot_sha256 and sha(b)==ARGS.snapshot_sha256,'snapshot seal required');return json.loads(b)
+ def parent_gates():
+- need(ARGS.source55_failed_postpins_reviewed and ARGS.product53_source_raw_after6_accepted,'parent55FAILED postpins and accepted53source/raw/AFTER6 gates required; never55pass')
++ need(ARGS.source56_conditional_postpins_reviewed and ARGS.source55_failure_preserved,'parent56conditional raw/postpins review and55failurepreservation required; notadapter/perf/55pass')
+ def baseline(m):
+  parent_gates()
+  s=regular(INDEX);need(s.st_nlink==m['indexNlink']==1,'ROOT nlink changed');b=INDEX.read_bytes()
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'ROOT identity/mode changed')
+  need(len(b)==m['indexBytes'] and sha(b)==m['indexSHA256'],'ROOT index changed')
+  need(head()==m['head']==ARGS.expected_head,'explicit baseline HEAD differs')
+- need(skips()==m['skip'] and special()==m['specialFlags'],'old60/fullspecial changed')
++ need(skips()==m['skip'] and special()==m['specialFlags'],'old61/fullspecial changed')
+  need(sha(flags())==m['flagsSHA256'] and sha(git(['ls-files','--stage','-z']))==m['stageSHA256'],'full stage/flags changed');protect(m)
+  regular(P(m['bootstrapReceiptPath']));receipt=P(m['bootstrapReceiptPath']).read_bytes();need(sha(receipt)==m['bootstrapReceiptSHA256'],'installed receipt changed')
+- r=json.loads(receipt);need(r['round']==2 and r['sameInode'] is True and r['skipCount']==60 and r['PYCAndProtected60Preserved'] is True and r['newSHA256']==sha(b) and r['head']==head(),'installed receipt mismatch')
++ r=json.loads(receipt);need(r['round']==2 and r['sameInode'] is True and r['skipCount']==61 and r['PYCAndProtected61Preserved'] is True and r['newSHA256']==sha(b) and r['head']==head(),'installed receipt mismatch')
+  return b
+ def decodedcheck(data):
+  digest=hashlib.sha256();count=0
+@@ -55,7 +55,7 @@
+    chunk=stream.read(1048576)
+    if not chunk:break
+    digest.update(chunk);count+=len(chunk)
+- need(count==248229761 and digest.hexdigest()=='4f368ae2b79ce6df777946237e32528a4742d3aa18be43eec00c93197cb66730','gzip decoded full stream size/hash/CRC differs')
++ need(count==244873234 and digest.hexdigest()=='308f5e7608a76abc03392397a180abdc3a5a176343f0353a7589b3d9ae421610','gzip decoded full stream size/hash/CRC differs')
+ def raw(m):
+  p=ROOT/REL;s=regular(p);need(s.st_nlink==m['targetNlink']==1,'target nlink changed');need(s.st_blocks*512==m['targetAllocated'],'target allocated bytes changed');b=p.read_bytes()
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['targetDevice'],m['targetInode'],m['targetMode']),'target identity/mode changed')
+@@ -70,7 +70,7 @@
+ def source_sha():return sha(P(__file__).read_bytes())
+ def verify(m):
+  official();need(all(not os.path.lexists(x) for x in [PROOF,PRIVATE,START,INTENT,RECEIPT]),'fresh transaction required');b=baseline(m);data=raw(m)
+- writejson(PROOF,{'state':'VERIFIED_NOT_RELEASED','sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'head':head(),'rootSHA256':sha(b),'rawSHA256':sha(data),'rawBytes':len(data),'rawAllocated':(ROOT/REL).stat().st_blocks*512,'releaseOnlyPath':REL,'old60Preserved':True,'PYC7Preserved':True,'source55Result':'FAILED_INTERN_KEY_BYTE_BUDGET','source55Passed':False,'source55FailedPostpinsReviewed':True,'product53SourceRawAfter6Accepted':True})
++ writejson(PROOF,{'state':'VERIFIED_NOT_RELEASED','sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'head':head(),'rootSHA256':sha(b),'rawSHA256':sha(data),'rawBytes':len(data),'rawAllocated':(ROOT/REL).stat().st_blocks*512,'releaseOnlyPath':REL,'old61Preserved':True,'PYC7Preserved':True,'source56Result':'CONDITIONAL_RAW_REVIEW02_ACCEPTED_NOT_ADAPTER_OR_PERFORMANCE','source56Completed':True,'source56ConditionalPostpinsReviewed':True,'source56AdapterAccepted':False,'source56PerformanceAccepted':False,'source55Result':'FAILED_INTERN_KEY_BYTE_BUDGET','source55Passed':False,'source55FailurePreserved':True})
+  print(PROOF.read_text())
+ def put(fd,b):
+  off=0
+@@ -80,7 +80,7 @@
+ def finalcheck(m,final,new):
+  need(INDEX.read_bytes()==final,'installed ROOT bytes differ');s=regular(INDEX);need(s.st_nlink==m['indexNlink']==1,'installed ROOT nlink changed')
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'installed identity/mode differs')
+- need(skips()==sorted(m['skip']+[REL]),'expected exact61 skips');need(special()==sorted(m['specialFlags']+['S '+REL]),'special flags differ')
++ need(skips()==sorted(m['skip']+[REL]),'expected exact62 skips');need(special()==sorted(m['specialFlags']+['S '+REL]),'special flags differ')
+  need(git(['ls-files','--stage','-z'])==git(['ls-files','--stage','-z'],PRIVATE),'installed stage mismatch');protect(m,new);need(head()==m['head'],'HEAD changed')
+ def release(m):
+  official();regular(PROOF);pb=PROOF.read_bytes();proof=json.loads(pb)
+@@ -108,7 +108,7 @@
+    try:os.fsync(directory)
+    finally:os.close(directory)
+    finalcheck(m,final,True)
+-   writejson(RECEIPT,{'state':'RELEASED_GITBLOB_ONLY','releaseOnlyPath':REL,'blob':BLOB,'rawSHA256':sha(data),'rawBytes':len(data),'freedAllocatedBytes':proof['rawAllocated'],'head':head(),'oldSHA256':sha(old),'newSHA256':sha(final),'newBytes':len(final),'sameInode':True,'skipCount':61,'old60AndPYC7Preserved':True,'proofSHA256':sha(pb),'sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'unlinkIntentSHA256':sha(INTENT.read_bytes()),'source55Result':'FAILED_INTERN_KEY_BYTE_BUDGET','source55Passed':False,'source55FailedPostpinsReviewed':True,'product53SourceRawAfter6Accepted':True})
++   writejson(RECEIPT,{'state':'RELEASED_GITBLOB_ONLY','releaseOnlyPath':REL,'blob':BLOB,'rawSHA256':sha(data),'rawBytes':len(data),'freedAllocatedBytes':proof['rawAllocated'],'head':head(),'oldSHA256':sha(old),'newSHA256':sha(final),'newBytes':len(final),'sameInode':True,'skipCount':62,'old61AndPYC7Preserved':True,'proofSHA256':sha(pb),'sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'unlinkIntentSHA256':sha(INTENT.read_bytes()),'source56Result':'CONDITIONAL_RAW_REVIEW02_ACCEPTED_NOT_ADAPTER_OR_PERFORMANCE','source56Completed':True,'source56ConditionalPostpinsReviewed':True,'source56AdapterAccepted':False,'source56PerformanceAccepted':False,'source55Result':'FAILED_INTERN_KEY_BYTE_BUDGET','source55Passed':False,'source55FailurePreserved':True})
+   except BaseException:
+    try:
+     if removed:
+@@ -122,6 +122,6 @@
+   if fd is not None:os.close(fd)
+   need(regular(lock).st_ino==os.fstat(lfd).st_ino and regular(lock).st_size==0,'owned zero-byte lock replaced');os.close(lfd);lock.unlink()
+ if __name__=='__main__':
+- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('action',choices=['VERIFY','RELEASE']);ap.add_argument('--snapshot-sha256',required=True);ap.add_argument('--expected-head',required=True);ap.add_argument('--proof-sha256');ap.add_argument('--source55-failed-postpins-reviewed',action='store_true',required=True);ap.add_argument('--product53-source-raw-after6-accepted',action='store_true',required=True);ARGS=ap.parse_args();m=model()
++ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('action',choices=['VERIFY','RELEASE']);ap.add_argument('--snapshot-sha256',required=True);ap.add_argument('--expected-head',required=True);ap.add_argument('--proof-sha256');ap.add_argument('--source56-conditional-postpins-reviewed',action='store_true',required=True);ap.add_argument('--source55-failure-preserved',action='store_true',required=True);ARGS=ap.parse_args();m=model()
+  if ARGS.action=='VERIFY':verify(m)
+  else:release(m)
