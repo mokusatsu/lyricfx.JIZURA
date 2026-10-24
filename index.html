@@ -10745,6 +10745,7 @@ const dBlocksCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cu
 const dBalloonsCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='balloons'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('balloons');
 // Exact native magnets literal board material only; no generic path capability.
 // Tiles native catalog: preserve original live root only for the stock D source.
+const dBulbsCut=(renderer,env)=>env.cut?.placementLayoutsD===true&&!env.cut.placementLayoutsA&&!env.cut.placementLayoutsB&&!env.cut.placementLayoutsC&&env.cut.layout==='bulbs'&&!env.placementEnvelope&&!env.cut.placementUnits&&env.cut.enter==='cut'&&env.cut.exit==='cut'&&['still','jitter','breathe'].includes(env.cut.hold)&&env.cut.treat==='none'&&!env.cut.drawing&&!env.cut.effectsOnly&&!(env.cut.decor||[]).length&&['main','A','B'].includes(env.pass)&&Number.isFinite(env.fx?.motion)&&[env.t,env.lt,env.ltb,env.step,env.pIn,env.pOut].every(Number.isFinite)&&A.layoutsDSourceKnown?.('bulbs')&&A.layoutsDTransportKnown?.(renderer)&&A.bulbsTransport51Known?.(renderer)===true;
 const dTilesCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='tiles'&&cut.cam==='push'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('tiles');
 const dMagnetsCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='magnets'&&cut.cam==='push'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('magnets');
 const magnetsGradientCommands=(g,W,H)=>{const p=g?.path;if(g?.kind!=='literal-linear-gradient-rounded-path'||!p||![W,H,p.x,p.y,p.w,p.h,p.r].every(Number.isFinite)||W<=0||H<=0||Math.max(W,H)>1e5||p.w!==W-W*.04*2||p.h!==H-H*.05*2||p.x!==W*.04||p.r!==Math.min(W,H)*.03||p.y<H*.05-1e-9||p.y>H*.09+1e-9||g.from?.[0]!==W*.04||g.from?.[1]!==H*.05||g.to?.[0]!==W*.04+p.w||g.to?.[1]!==H*.05+p.h||g.stops?.length!==4||g.stops.some((s,i)=>s.offset!==[0,.45,.5,1][i]||typeof s.color!=='string'))fail('UNSUPPORTED_D_MAGNETS_GRADIENT','Exact source magnets board geometry and four literal stops required');const {x,y,w,h}=p,r=Math.max(0,Math.min(p.r,w/2,h/2));return [['moveTo',[x+r,y]],['arcTo',[x+w,y,x+w,y+h,r]],['arcTo',[x+w,y+h,x,y+h,r]],['arcTo',[x,y+h,x,y,r]],['arcTo',[x,y,x+w,y,r]],['closePath',[]]];};
@@ -10754,6 +10755,8 @@ const dFlagCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.
 A.layoutsDFlagClothClipCapability=()=>Object.freeze({version:1,kind:'flag-source-solid-polygon-clip'});
 A.record = (renderer,env,options={}) => {
   recordMatrixEpoch++;
+  const nativeBulbs51=env.cut?.placementLayoutsD===true&&env.cut.layout==='bulbs';
+  if(nativeBulbs51&&!dBulbsCut(renderer,env))fail('UNSUPPORTED_D_BULBS_TRANSPORT','Stock bulbs cut/cut/none with still/jitter/breathe, unchanged native helpers/renderer and finite effective motion required');
   if(env.cut.placementLayoutsC===true&&(!A.layoutsCSourceKnown?.(env.cut.layout)||!A.layoutsCTransportKnown?.(renderer)))fail('UNSUPPORTED_DRAW_PROGRAM','C native transport requires unchanged registered source renderer');
 
   if(env.cut.placementLayoutsD===true&&(!A.layoutsDSourceKnown?.(env.cut.layout)||!A.layoutsDTransportKnown?.(renderer)))fail('UNSUPPORTED_DRAW_PROGRAM','D native transport requires unchanged registered source renderer');
@@ -10764,7 +10767,7 @@ A.record = (renderer,env,options={}) => {
   const validationOnly=options.validationOnly===true;let shapeValidationUncertain=false;
   validateTextState(env.ctx);
   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
-  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut)||dRibbonCut(env.cut)||dPileCut(env.cut)||dBlocksCut(env.cut)||dBalloonsCut(env.cut)||dMagnetsCut(env.cut)||dTilesCut(env.cut))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
+  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut)||dRibbonCut(env.cut)||dPileCut(env.cut)||dBlocksCut(env.cut)||dBalloonsCut(env.cut)||dMagnetsCut(env.cut)||dTilesCut(env.cut)||dBulbsCut(renderer,env))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
   const nativeC34=env.cut.placementLayoutsC===true,nativeB25=env.cut.placementLayoutsB===true||nativeC34,nativeD34=env.cut.placementLayoutsD===true,nativeA26=env.cut.placementLayoutsA===true||nativeB25||nativeD34;let nativeRoot=nativeA26?(nativeDOriginalRoot||matrix(c)):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
   // Only stock synchronous C command runs reuse a private actual-Canvas read.
@@ -10840,6 +10843,8 @@ A.record = (renderer,env,options={}) => {
   recorder=renderer.makeEnv(proxy,env.plan,env.cut,env.sc,{...env,ctx:proxy,placementRecording:true});
   // The caller already has effective motionScale. Stock balloons must record it once.
   if(dBalloonsCut(env.cut)&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))recorder.fx=env.fx;
+  // Bulbs mainDraw consumes the already-effective source FX exactly once.
+  if(nativeBulbs51)recorder.fx=env.fx;
   if(env.placementEnvelope){recorder.pIn=1;recorder.pOut=0;}
   recorder.placementRecorder={item(it){commandMatrix=null;const count=[...String(it.text||'')].length;glyphCount+=count;budget.glyphs+=count;if(budget.glyphs>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Frame glyph ceiling exceeded');if(glyphCount>MAX_GLYPHS)fail('GEOMETRY_LIMIT','Program glyph ceiling exceeded');if(env.pass!=='main'&&it.ghost===false)return null;if(env.cut.placementUnits&&recorder.drawOwnership?.role==='tiledAux'&&!it.charFn){for(const key of ['pieceFn','blur','shadow','extrude','pattern'])if(it[key])fail('UNSUPPORTED_ITEM',key+' requires a bounded adapter');if(!finite([it.x,it.y,it.size,it.sx??1,it.sy??1,it.rot??0,it.skew??0,it.track??0,it.lead??1.3]))fail('UNMEASURED_INK','Finite auxiliary text geometry required');push('item',[snapshotItem(it)],[]);return recordedItemBounds(it);}let ink,shadowItem;if(outputDomain){
  shadowItem=shadowSnapshot(it);
@@ -10920,7 +10925,8 @@ A.record = (renderer,env,options={}) => {
   if(nativeA26)recorder.blob=(pts,color,alpha=1,ghost=true)=>{commandMatrix=null;if(alpha<=0||env.pass!=='main'&&!ghost)return;if(pts.length<3)fail('INVALID_GEOMETRY','Native blob requires three control points');const m=matrix(c),polygon=A.convexHull(pts.flatMap(p=>{const q=A.point(m,p);return [[q[0]-1,q[1]-1],[q[0]+1,q[1]-1],[q[0]+1,q[1]+1],[q[0]-1,q[1]+1]];}));push('blob',[pts,color,alpha,ghost],[polygon]);};
   recorder.line=(pts,color,lw=1,alpha=1,ghost=true)=>{commandMatrix=null;if(env.pass!=='main'){if(!ghost)return;color=env.passColor;}if(!color||alpha<=0||pts.length<2)return;const lineMatrix=nativeC34&&!validationOnly&&A.point===stockPlacementPoint?matrix(c):null,ps=pts.map(p=>A.point(lineMatrix||matrix(c),p)),pad=lw*(lineMatrix?Math.hypot(lineMatrix[0],lineMatrix[1],lineMatrix[2],lineMatrix[3]):Math.hypot(c.getTransform().a,c.getTransform().b,c.getTransform().c,c.getTransform().d))/2*(nativeA26?Math.max(1,...pts.slice(1,-1).map((p,i)=>{const a=pts[i],b=pts[i+2],ax=a[0]-p[0],ay=a[1]-p[1],bx=b[0]-p[0],by=b[1]-p[1],len=Math.hypot(ax,ay)*Math.hypot(bx,by);if(!len)return 1;const ratio=1/Math.sqrt(Math.max(1e-12,(1-(ax*bx+ay*by)/len)/2));return ratio>c.miterLimit?1:ratio;})):(pts.length>2?c.miterLimit:1))+1;const b={x0:Math.min(...ps.map(p=>p[0])),y0:Math.min(...ps.map(p=>p[1])),x1:Math.max(...ps.map(p=>p[0])),y1:Math.max(...ps.map(p=>p[1]))};c.globalAlpha=alpha;c.strokeStyle=color;c.lineWidth=lw;c.lineJoin='miter';c.lineCap='butt';push('line',[pts,color,lw,alpha,{miterLimit:c.miterLimit,dash:c.getLineDash(),dashOffset:c.lineDashOffset}],[rect(b.x0-pad,b.y0-pad,b.x1-b.x0+pad*2,b.y1-b.y0+pad*2)]);c.globalAlpha=1;};
   try{renderer.drawCut(recorder);}catch(e){diagnostics.push({code:e.code||'DRAW_PROGRAM_ERROR',message:e.message});}
-  const program={events,diagnostics,...(nativeD34?{nativeDGeometry:recorder.placementDGeometry||null}:{}),...(nativeB25?{nativeGeometry:recorder.placementBGeometry||null}:{}),measurementSupported:!validationOnly&&diagnostics.length===0,...(validationOnly?{validationOnly:true,validationSupported:diagnostics.length===0&&!shapeValidationUncertain}:{})};
+  if(nativeBulbs51&&recorder.placementDGeometry?.complete!==true)diagnostics.push({code:'UNSUPPORTED_D_BULBS_CATALOG',message:'Complete bounded source50 bulbs catalog required for this transport pilot'});
+  const program={events,diagnostics,...(nativeBulbs51?{nativeBulbsTransport51:{kind:'bulbs-original-live-root-effective-fx',effectiveFXIdentityPreserved:recorder.fx===env.fx,inputEffectiveFX:jsonClone(env.fx),recordedEffectiveFX:jsonClone(recorder.fx),actualRoot:nativeDOriginalRoot.slice(),pilotHolds:['still','jitter','breathe'],safetyCertificate:false}}:{}),...(nativeD34?{nativeDGeometry:recorder.placementDGeometry||null}:{}),...(nativeB25?{nativeGeometry:recorder.placementBGeometry||null}:{}),measurementSupported:!validationOnly&&diagnostics.length===0,...(validationOnly?{validationOnly:true,validationSupported:diagnostics.length===0&&!shapeValidationUncertain}:{})};
   if(outputDomain){program.measurementScope=SHADOW_OUTPUT_SCOPE;program.outputDomain={width:outputDomain.token.width,height:outputDomain.token.height,scale:outputDomain.token.scale,virtual:outputDomain.token.virtual,coordinates:'post-camera-device-pixels',preClipFilterSupport:false};shadowProgramRoot(program,outputDomain);const frozen=shadowSnapshot(program);shadowPrograms.set(frozen,{domain:outputDomain});return frozen;}return program;
 };
 const applyNativeTransform=(ctx,shift,state,fallback)=>{ctx.setTransform(...compose(shift,state?.root||fallback));if(state)for(const [key,args]of state.ops)ctx[key](...args);};
@@ -40369,6 +40375,16 @@ reg('bulbs', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const nativeD = cut.placementLayoutsD === true;
+    const matrixNow = () => {const v=ctx.getTransform();return [v.a,v.b,v.c,v.d,v.e,v.f];};
+    const clone = v => Array.isArray(v)?v.map(clone):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,clone(x)])):v;
+    const freeze = v => {if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
+    const captureD = nativeD && typeof cut.text==='string' && cut.text.length<=4096 && [...cut.text].length<=512;
+    const catalog = nativeD?{kind:'bulbs-native-catalog',version:1,nativeOnly:true,complete:false,bounded:captureD,status:captureD?'collecting':'partial-budget',unsupported:captureD?null:'catalog-budget:max4096UTF16/512codepoints/1024calls',limits:{textUTF16:4096,textCodepoints:512,calls:1024},owner:'bulbs.sign',role:'primary',stage:[env.plan?.W??W,env.plan?.H??H],environmentSize:[W,H],root:matrixNow(),pass:env.pass,clock:{t:env.t,realTime:env.realTime,lt,ltb:env.ltb,step:env.step,pIn:env.pIn,pOut:env.pOut,beat:clone(env.beat),beatPulse:env.beatPulse},seed:s,params:clone(Pm),effectiveFX:clone(env.fx),sourceInputs:{text:captureD?cut.text:null,lineText:captureD?cut.lineText:null,line:cut.line,inDur:cut.inDur,outDur:cut.outDur,dur:cut.dur,start:cut.start,end:cut.end,stagger:cut.stagger,enter:cut.enter,hold:cut.hold,exit:cut.exit,treat:cut.treat,motionScale:cut.motionScale},sourceCalls:[],primaryOwners:[],independentDecorOwners:[],rings:[],motionUnchanged:true,painterOrder:'shadow,face,outline; each ring each light halo,bulb,glint; full mainDraw; subtitle'}:null;
+    if(nativeD)env.placementDGeometry=catalog;
+    let finished=false;
+    const owned=(owner,kind,fn)=>{if(!nativeD)return fn();const id='bulbs.sign.'+owner;let call=null;if(captureD&&catalog.sourceCalls.length<1024){call={ordinal:catalog.sourceCalls.length,owner:id,role:'primary',kind,matrixBeforeCall:matrixNow()};catalog.sourceCalls.push(call);if(!catalog.primaryOwners.includes(id))catalog.primaryOwners.push(id);}else if(captureD){catalog.bounded=false;catalog.status='partial-budget';catalog.unsupported='catalog-budget:1024calls';}try{return env.withDrawRole('primary',id,fn);}finally{if(call)call.matrixAfterCall=matrixNow();}};
+    try {
     const port = isPort(env);
     const text = brk(cut.text, port ? 5 : 8);
     const o = { track: 0.06, lead: 1.12 };
@@ -40398,44 +40414,55 @@ reg('bulbs', {
         : [[x0 + bw, y0], [x0, y0], [x0, y0 - bh * 0.12], tip, [x0, y0 + bh * 1.12], [x0, y0 + bh], [x0 + bw, y0 + bh]];
     } else shape = rrPts(x0, y0, bw, bh, size * 0.3);
     const sp = shape.map(([x, y]) => [cx + (x - cx) * q, cy + (y - cy) * q]);
-    if (q <= 0.01 || out <= 0) return null;
-    env.poly(sp.map(([x, y]) => [x + u * 0.012, y + u * 0.016]), darkOf(sc), 0.3 * out, false);
-    env.poly(sp, board, out, gIn(env));
-    outline(env, sp, J.mix(board, bulbC, 0.35), Math.max(1.5, u * 0.003), out);
+    if(captureD)Object.assign(catalog,{port,text,m100:clone(m100),subT,size,m:clone(m),ss,padX,padY,bw,bh,ax,cx,cy,x0,y0,arrow,maxW,maxH,out,q,dark,board,bulbC,textC,shape:clone(shape),sp:clone(sp),culled:q<=0.01||out<=0,cullReason:q<=0.01?'q<=.01':out<=0?'out<=0':null});
+    if (q <= 0.01 || out <= 0) {finished=true;return null;}
+    owned('shadow','poly',()=>env.poly(sp.map(([x, y]) => [x + u * 0.012, y + u * 0.016]), darkOf(sc), 0.3 * out, false));
+    owned('face','poly',()=>env.poly(sp, board, out, gIn(env)));
+    owned('outline','outline',()=>outline(env, sp, J.mix(board, bulbC, 0.35), Math.max(1.5, u * 0.003), out));
     // bulbs round the rim (and an inner ring for 'double')
     const r = J.clamp(size * 0.075, 4, u * 0.022);
     const inset = (k) => { if (arrow) return sp.map(([x, y]) => [cx + (x - cx) * k, cy + (y - cy) * k]); const d = size * 0.3 * (1 - k); return rrPts(x0 + d, y0 + d * (bh / bw), bw - d * 2, bh - d * 2 * (bh / bw), size * 0.3 * k).map(([x, y]) => [cx + (x - cx) * q, cy + (y - cy) * q]); };
     const rings = Pm.shape === 'double' && !arrow ? [0.95, 0.86] : [arrow ? 0.93 : 0.95];
     const beatFlash = env.beat && env.beat.since < 0.12 ? 1 : 0;
     const step = Math.floor(env.ltb * 9);
+    if(captureD)Object.assign(catalog,{r,ringInsets:rings.slice(),beatFlash,step,ghostFace:gIn(env),outlineWidth:Math.max(1.5,u*.003),shadowOffset:[u*.012,u*.016]});
     rings.forEach((k, ri) => {
-      const pts = resample(inset(k), r * 3.3, 140);
+      const insetPoints = inset(k);
+      const pts = resample(insetPoints, r * 3.3, 140);
       const N = pts.length;
+      let ring=null;if(captureD){const segments=insetPoints.map((a,i)=>{const b=insetPoints[(i+1)%insetPoints.length];return Math.hypot(b[0]-a[0],b[1]-a[1]);});ring={ri,k,insetPoints:clone(insetPoints),points:clone(pts),N,spacing:r*3.3,maxN:140,segmentsRecomputedMetadata:segments,totalLengthRecomputedMetadata:segments.reduce((a,b)=>a+b,0),derivation:'inset evaluated once; original resample result; segment lengths separately recomputed metadata only',lights:[]};catalog.rings.push(ring);}
       pts.forEach((p, i) => {
         const on0 = (i / N) < E.inOutCubic(J.clamp((lt - 0.1 - ri * 0.1) / 0.6)) && (i / N) >= E.inCubic(env.pOut);
         let lit = 0;
         if (on0) {
           const j = (i * Pm.dir + N * 4) % N;
+          if(ring)ring.pendingJ=j;
           if (Pm.chase === 'chase') lit = ((j + (ri ? 0 : 1) - step + 300 * 3) % 3) === 0 ? 1 : 0.18;
           else if (Pm.chase === 'alt') lit = ((i + Math.floor(env.ltb * 3) + ri) % 2) ? 1 : 0.2;
           else lit = 0.2 + 0.8 * Math.pow(0.5 + 0.5 * Math.sin(i / N * J.TAU * 3 - env.ltb * 5 * Pm.dir + ri), 2);
           lit = Math.max(lit, beatFlash);
         }
         const col = ri ? (J.contrast(sc.accent2 || bulbC, board) > 2 ? (sc.accent2 || bulbC) : bulbC) : bulbC;
-        if (lit > 0.5) env.circle(p[0], p[1], r * 2.1, col, null, 0, 0.16 * lit * out, false);
-        env.circle(p[0], p[1], r, lit > 0 ? J.mix(J.mix(board, col, 0.3), col, lit) : J.mix(board, col, 0.22), null, 0, out, false);
-        if (lit > 0.5) env.circle(p[0] - r * 0.25, p[1] - r * 0.3, r * 0.35, '#FFFFFF', null, 0, 0.7 * lit * out, false);
+        const owner='ring.'+ri+'.state.'+N+'.'+i;
+        if(ring){ring.lights.push({i,N,fraction:i/N,p:clone(p),on0,j:on0?ring.pendingJ:null,lit,col,halo:lit>.5,glint:lit>.5,out,r});delete ring.pendingJ;}
+        if (lit > 0.5) owned(owner+'.halo','circle',()=>env.circle(p[0], p[1], r * 2.1, col, null, 0, 0.16 * lit * out, false));
+        owned(owner+'.bulb','circle',()=>env.circle(p[0], p[1], r, lit > 0 ? J.mix(J.mix(board, col, 0.3), col, lit) : J.mix(board, col, 0.22), null, 0, out, false));
+        if (lit > 0.5) owned(owner+'.glint','circle',()=>env.circle(p[0] - r * 0.25, p[1] - r * 0.3, r * 0.35, '#FFFFFF', null, 0, 0.7 * lit * out, false));
       });
     });
     const ty = cy - (subT ? ss * 0.9 : 0);
-    const bb = J.mainDraw(env, Object.assign({ text, font: Pm.font, size: size * Math.min(1, q), x: cx, y: ty, color: textC, noHold: plateHold(env) }, o));
+    if(captureD)catalog.lyric={owner:'bulbs.sign.lyric',text,font:Pm.font,size:size*Math.min(1,q),x:cx,y:ty,track:o.track,lead:o.lead};
+    const bb = owned('lyric','mainDraw',()=>J.mainDraw(env, Object.assign({ text, font: Pm.font, size: size * Math.min(1, q), x: cx, y: ty, color: textC, noHold: plateHold(env) }, o)));
     if (subT) {
       const fs = ss * Math.min(1, q);
       const t = subT.length > 28 ? subT.slice(0, 27) + '…' : subT;
       const sz = Math.min(fs, J.fitSize(t, bodyF(env), bw - padX, ss * 1.2, { track: 0.18 }));
-      env.draw({ text: t, font: bodyF(env), size: sz, x: cx, y: cy + m.h / 2 + padY * 0.1, track: 0.18, color: bulbC, alpha: tin(env, 0.3, 0.3) * out, ghost: false });
+      if(captureD)catalog.subtitle={owner:'bulbs.sign.subtitle',original:subT,text:t,UTF16Length:subT.length,truncated:subT.length>28,fs,size:sz,x:cx,y:cy+m.h/2+padY*.1};
+      owned('subtitle','draw',()=>env.draw({ text: t, font: bodyF(env), size: sz, x: cx, y: cy + m.h / 2 + padY * 0.1, track: 0.18, color: bulbC, alpha: tin(env, 0.3, 0.3) * out, ghost: false }));
     }
-    return bb;
+    if(captureD)catalog.bb=clone(bb);
+    finished=true;return bb;
+    } finally {if(nativeD){catalog.complete=finished&&catalog.bounded;catalog.status=catalog.complete?'complete':finished?'partial-budget':'native-threw';freeze(catalog);}}
   },
 });
 
@@ -48518,6 +48545,14 @@ J.placement.layoutsDTransportKnown=renderer=>renderer.drawCut===drawCut&&rendere
 // Late stock camera identity lookup for pile source diagnostics and the strict adapter guard.
 const pileCameras=new Map(['push','panL','panR','dutch'].map(id=>[id,J.CAMERA[id]?.get]));
 Object.defineProperty(J.placement,'pileNativeCameraKnown',{value:id=>pileCameras.has(id)&&typeof pileCameras.get(id)==='function'&&pileCameras.get(id)===J.CAMERA[id]?.get});
+})();
+
+/* Bulbs-only late stock witness. No placement adapter or C capability. */
+(()=>{'use strict';
+ const A=J.placement,source=J.LAYOUTS.bulbs.render,drawCut=J.Renderer.prototype.drawCut,makeEnv=J.Renderer.prototype.makeEnv;
+ const keys=['mainDraw','drawFx','drawItem','layoutText','fontCSS','measure','fitSize','clamp','lerp','h','r','rs','combineChar','combinePiece'],core=keys.map(k=>[k,J[k]]),holds=['still','jitter','breathe'].map(k=>[k,J.HOLD[k],J.HOLD[k].apply]),enter=J.ENTER.cut,exit=J.EXIT.cut,enterApply=enter.apply,exitApply=exit.apply,E=J.E,eases=['outBack','inCubic','inOutCubic','outExpo'].map(k=>[k,E[k]]),degree=J.DEG,tau=J.TAU,PID=J.PID,imul=Math.imul;
+ const known=renderer=>J.LAYOUTS.bulbs.render===source&&renderer.drawCut===drawCut&&renderer.makeEnv===makeEnv&&core.every(([k,v])=>J[k]===v)&&holds.every(([k,v,fn])=>J.HOLD[k]===v&&v.apply===fn)&&J.ENTER.cut===enter&&enter.apply===enterApply&&J.EXIT.cut===exit&&exit.apply===exitApply&&J.E===E&&eases.every(([k,v])=>E[k]===v)&&J.DEG===degree&&J.TAU===tau&&J.PID===PID&&Math.imul===imul;
+ Object.defineProperty(A,'bulbsTransport51Known',{value:Object.freeze(known),enumerable:true,writable:false,configurable:false});
 })();
 
 /* ============================================================

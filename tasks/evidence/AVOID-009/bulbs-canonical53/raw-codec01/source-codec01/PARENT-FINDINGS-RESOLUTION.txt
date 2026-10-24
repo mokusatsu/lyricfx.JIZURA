@@ -1,0 +1,22 @@
+SOURCE ONLY; actual codec/base rebuild/restore/directory verification all0.
+Full pre-findings draft/source-seal retained unmodified in pre-parent-findings01.
+Original seal e1d80507527361b4d38af65ab553b0234b32d79a847519283cbeef56eb249820.
+
+1. Final verifier now requires canonical stringify exact only for delta-tagged rows.
+Literal completeJSON rows qualify through fullraw+everygzipbyte equality, retaining
+canonicalJSONStringifyOriginalExact boolean (false allowed) and representation tag.
+No original JSON normalized; fullvalues/bytes retained.
+2. Added explicit rebuild-base51.py: pinned51wholearchive/storage/manifest/Gitblob,
+all755streamedmembers verified in NEWofficialSHMbase, THEN exact oldreference53receipt
+literal seeded from payload; separate timestamped DERIVED-input report, no originals
+overwrite/new observations. Restore can use that rebuiltbase. Restorer's oldreceipt
+byte equality against independently refreshedinputreceipt had already been removed
+before preserved draftfreeze; new builder removes any ambiguity after keeperloss.
+3. Added bounded storage accounting/caps:8MiBdecodedrecord and encodedentry,
+16MiBtotalpayloadJSON includingheader and incrementalentries,2MiBcompressedpackage.
+Package decode16MiB/2MiB bounded in Node restore/verifier and Python builder. Oversize
+fails before output creation and retains all originals; no fielddropping to meetcap.
+Caps are not measured heap/performance/productserialization acceptance.
+
+Parent now accepted actual53+sixAFTER postpins without findings. Revised SOURCE
+still needs final parent fullreview/gate; no runtime storage success inferred.

@@ -1,0 +1,59 @@
+{
+  "state": "SOURCE_STRUCTURE_ONLY_PASS_NO_CODEC_IMPORT_OR_EXECUTION",
+  "NodeParserChecks": "all4 separately passed node --check; parser only",
+  "files": [
+    {
+      "path": "common53.cjs",
+      "bytes": 8200,
+      "sha256": "ff71cfe15493f04b4e6f7ac44260b8ce12956eefebecd58e6dc2cd4ffbf89d5f"
+    },
+    {
+      "path": "encode53.cjs",
+      "bytes": 6983,
+      "sha256": "96f62e01f6f515dd64da46e49124b0f5c4055b7a7dacfaf22f9ba13dbb44a376"
+    },
+    {
+      "path": "restore53.cjs",
+      "bytes": 5847,
+      "sha256": "06cc34fcf4e9d040f2a6a071cf4acbb1bbeed7c37185f71c03fda9dc736252ec"
+    },
+    {
+      "path": "verify-directory53.cjs",
+      "bytes": 3943,
+      "sha256": "126bdf659f6a9881c345c17d536e327ff6b7c74be3ab54d054e50272f842ef5d"
+    }
+  ],
+  "CLIContracts": {
+    "encode53.cjs": [
+      "--base-pins-sha256",
+      "--base51",
+      "--manifest53-sha256",
+      "--out",
+      "--parent53-and-after6-reviewed",
+      "--raw53"
+    ],
+    "restore53.cjs": [
+      "--base-pins-sha256",
+      "--base51",
+      "--out",
+      "--package",
+      "--package-sha256"
+    ],
+    "verify-directory53.cjs": [
+      "--original53",
+      "--package",
+      "--package-sha256",
+      "--report",
+      "--restored53"
+    ]
+  },
+  "applicationImportsAbsent": true,
+  "originalDeletionSourceAbsent": true,
+  "immutableBaseRequired": true,
+  "literalFallbackPresent": true,
+  "independentDecoderAndFinalVerifierPresent": true,
+  "actualCodecRuns": 0,
+  "actualRestores": 0,
+  "actualDirectoryVerifications": 0,
+  "ratioOrStorageAcceptanceClaimed": false
+}
