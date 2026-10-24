@@ -1,3 +1,7 @@
+2026-10-24 12:14UTC最新：マグネット代表1例のnative60fps MP4を親raw498/文脈なしsol14PNGで限定受入し固定HUMAN_PENDINGへ保存。必要5ファイルだけSource92c93064へpush、公開操作元返値pending（公開確認/polling0）。tiles34は288native比較/32全画面一致、転送3不一致は保存しtiles限定SOURCE35修正中。資料86ファイル約15MBの非公開Source保存は利用者が明示許可、1bbb2fb7へpush済み。009全体/正式性能/保存本体未完、23JSTまで続行。
+
+最新容量（54absent）：pushed3bのpile-exit13-thin.tar.gz 1件を全byte/Gitblob dd5a677d…/SHA23fbf979…確認後、guard04でGitblob-onlyへ退避、12,103,680B回復。旧53/PYC7/旧3upload/無関係untracked保持。ROOTindex3d38d79c…、helperはstorage-capacity-pile04/private_index_resume04.pyのみ（oldresume03再使用不可）。keeper8802継続、復元は同README。マグネットMEDIA02原寸60fps249x2と文脈なしsol14PNG限定PASS、人間動作未承認、公開結果確認0。
+
 最新実行基盤：keeper8802（official network-enabled）へ切替済み。旧86381は127.0.0.1待受EPERMで29テスト未到達。ROOTindex7aa071e6…/53flags/PYCを変えず、resume03round1 privateindex/state/receiptを全byte確認して8802の同official BASEへ転送後、86381はEXIT終了。次Gitは同reviewed resume03 helper round2、receipt c3876cf1…使用。29テスト実行中はRUN_DONEまで別RUNを送らない。公開確認0。
 
 最新容量状態（2026-10-24夜）：keeper86381、新reviewed private_index_resume03.py（storage-capacity-pile03）経由のみ。pushed既存pile-exit13 after-frames raw1件をGitblobと全byte照合後、原本をGitblob-onlyへ退避して8,237,056B回復。旧52を完全維持して1skip追加、現在53absent/PYC7保持。新index c6dea1ee…、release receipt2020d04a…をcanonical保存済み。旧52用resume02 helperや旧roundは再使用しない。復元は同ディレクトリREADME、旧guard再実行なし。

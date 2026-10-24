@@ -1,0 +1,15 @@
+--- media-prep01/browser-hooks.js
++++ media-prep02/browser-hooks.js
+@@ -10,7 +10,11 @@
+   const sourceActual=r.plan,sourcePlan=clean(r.plan),sourceJSON=JSON.stringify(r.plan),cut=sourcePlan.cuts[0];
+   if(cut.start!==0||cut.end!==4||cut.dur!==4||cut.displayEnd!==4||cut.seed!==1205||cut.text!=='風の先へ')throw Error('Exact raw21 source fixture required');
+   if(after){J.placement.clearLayoutsCFinalCache();r.plan=J.finalizePlacementPlan(r.plan,{layoutsD:true});
+-   const tr=r.plan.cuts[0].placementTrajectory;if(tr?.revision!==expectedRevision||tr.safety!=='certified-bounded-adapter')throw Error('Accepted SOURCE29 bounded trajectory required');
++   const tr=r.plan.cuts[0].placementTrajectory;
++   if(tr?.sourceAdapter!==expectedRevision||tr?.certificate?.revision!==expectedRevision||tr?.safety!=='certified-bounded-adapter'){
++    const details={expectedRevision,expectedRevisionType:typeof expectedRevision,actualTrajectoryRevision:tr?.revision??null,actualTrajectoryRevisionType:typeof tr?.revision,actualSourceAdapter:tr?.sourceAdapter??null,actualCertificateRevision:tr?.certificate?.revision??null,actualSafety:tr?.safety??null};
++    throw Object.assign(Error('Accepted SOURCE29 bounded trajectory required: '+JSON.stringify(details)),{code:'MEDIA_SOURCE29_TRAJECTORY_GUARD',details});
++   }
+   }else{r.plan=structuredClone(r.plan);Object.assign(r.plan.cuts[0],{area:null,fullStagePlacement:false,placementLayoutsD:true});}
+   const state={r,after,sourceActual,sourcePlan,sourceJSON,sourceOriginal:sourceJSON,renderJSON:JSON.stringify(r.plan),observations:[],warnings:[]};window.media29State=state;
+   const warn=console.warn.bind(console);console.warn=(...args)=>{state.warnings.push(args.map(v=>v?.message||String(v)));warn(...args);};

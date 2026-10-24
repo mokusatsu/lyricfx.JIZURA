@@ -1,0 +1,61 @@
+{
+  "revision": 3,
+  "status": "SOURCE_ONLY_SETUP_CORRECTION_PARENT_REREVIEW_REQUIRED",
+  "previousReceipt": {
+    "file": "originals/revision02/revision02-receipt.json",
+    "sha256": "e0c7e308538baa323a18b92fda3136732706e26821088e1ecaed04422a9e6066"
+  },
+  "originalHooks": {
+    "file": "originals/revision02/browser-hooks.js",
+    "sha256": "0838d75e8965f01de7d20d0ccdd391e63933d16d9cfe052a4319da7cae6ef388"
+  },
+  "changes": [
+    "After calls J.finalizePlacementPlan on actual composed r.plan after enabled-only toggle; comparison snapshot remains clone",
+    "Keep sourceActual reference to assert actual composed input remains unchanged throughout rendering",
+    "Before direct-native clone remains unfinalized; existing J.plan identity guard untouched",
+    "README/pending seal updated for official keeper8802 and canonical runtime pins; no keeper access"
+  ],
+  "syntaxCheck": "node --check browser-hooks.js passed",
+  "freezePerformed": false,
+  "browserRuns": 0,
+  "encoderRuns": 0,
+  "imagesViewed": 0,
+  "publicChecks": 0,
+  "files": [
+    {
+      "file": "capture.cjs",
+      "bytes": 8884,
+      "sha256": "64148e5117ed2b349e3a920f24ceb059e1b66c2eee0b984c55f7a6415e651a34"
+    },
+    {
+      "file": "browser-hooks.js",
+      "bytes": 3271,
+      "sha256": "4caef0c3f24138ba0c44c1270578b12a27f68db3b224efc04cd0b6690b74967c"
+    },
+    {
+      "file": "index.html",
+      "bytes": 3371,
+      "sha256": "c5e20ef44f081e99cdfa7accbdd50f4e6ef676db9be7ab9b181cde24a38d7195"
+    },
+    {
+      "file": "en.html",
+      "bytes": 3307,
+      "sha256": "0909a2a8945e0402f90f1f48a9bd964589a3577329d12aec1da3ec83ee978fde"
+    },
+    {
+      "file": "seal.pending.json",
+      "bytes": 3517,
+      "sha256": "dcb643845aa2fdd4b00c1de8ff483057e67bbd49dff84248f37698a62757d14d"
+    },
+    {
+      "file": "README.txt",
+      "bytes": 5268,
+      "sha256": "d359417cd24ab0cbcabc1270f0ddbf7b18934db3671210bf61a103f0007f2e40"
+    },
+    {
+      "file": "public-manifest-projection.cjs",
+      "bytes": 1837,
+      "sha256": "305b7e2b4dffca1cb237bb46dfceb27bed0be049308051263c5e0de72f641bd8"
+    }
+  ]
+}

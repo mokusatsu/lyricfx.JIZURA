@@ -1,0 +1,86 @@
+{
+  "status": "PENDING_SOURCE29_AND_PARENT_MEDIA_GATE_NOT_FROZEN",
+  "build": "magnets-native-20261024-PENDING",
+  "sourceProduct": "c595bbe5-PENDING_FINAL_PIN",
+  "sourceFixture": "raw21-native4-1205",
+  "adapterRevision": "magnets-native-two-group-v1",
+  "afterOverlays": [
+    "proof29",
+    "adapter29"
+  ],
+  "files": [
+    {
+      "key": "runner",
+      "path": "/tmp/avoid009-magnets-media-prep01/capture.cjs",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "hooks",
+      "path": "/tmp/avoid009-magnets-media-prep01/browser-hooks.js",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "html-ja",
+      "path": "/tmp/avoid009-magnets-media-prep01/index.html",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "html-en",
+      "path": "/tmp/avoid009-magnets-media-prep01/en.html",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "rootHTML",
+      "path": "/workspace/lyricfx.JIZURA/index.html",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "proof29",
+      "path": "/tmp/avoid009-evening-magnets29/src/11p_layoutsEa_magnets_proof29.js",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "adapter29",
+      "path": "/tmp/avoid009-evening-magnets29/src/11p_layoutsEb_magnets_adapter29.js",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "fixture",
+      "path": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-fixture.js",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "fontManifest",
+      "path": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-c-editorial-fonts/manifest.json",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "browserLauncher",
+      "path": "/workspace/lyricfx.JIZURA/dev/browser.cjs",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "chromium",
+      "path": "/usr/bin/chromium",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "ffmpeg",
+      "path": "/usr/bin/ffmpeg",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    },
+    {
+      "key": "ffprobe",
+      "path": "/usr/bin/ffprobe",
+      "sha256": "PENDING_PARENT_ACCEPTED_SOURCE_FREEZE"
+    }
+  ],
+  "localAssets": [],
+  "pending": [
+    "Freeze only after parent accepts SOURCE29 source/math/tests",
+    "Add all8 font bytes localAssets URL/key pairs and file pins plus complete browser/encoder external runtime pins",
+    "Verify rootHTML is native c595 base without SOURCE29 modules; overlays must be installed exactly once",
+    "Reconfirm hooks observation fields and revision against accepted modules",
+    "Create separate parent gate record with source29Accepted/mediaRunnerAccepted=true and final seal SHA; hash gate passed as CLI argument"
+  ]
+}
