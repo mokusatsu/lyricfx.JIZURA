@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/workspace/lyricfx.JIZURA/work/avoid009-capacity-pilethin07/private_index_resume07.py", line 130, in <module>
+    elif ARGS.action=='RUN':run(ARGS.round,json.loads(ARGS.argv_json))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/lyricfx.JIZURA/work/avoid009-capacity-pilethin07/private_index_resume07.py", line 97, in run
+    out=git(args,private);unchanged(s,m);need(skips(private)==m['skip'] and flags(private)==m['specialFlags'],'private flags changed')
+        ^^^^^^^^^^^^^^^^^
+  File "/workspace/lyricfx.JIZURA/work/avoid009-capacity-pilethin07/private_index_resume07.py", line 27, in git
+    def git(a,private=None):return subprocess.run(['git','-C',str(ROOT),*a],env=env(private),check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', '-C', '/workspace/lyricfx.JIZURA', 'diff', '--cached', '--check']' returned non-zero exit status 2.
