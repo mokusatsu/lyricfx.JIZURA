@@ -400,7 +400,7 @@ reg('flipCards', {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
     const port = isPort(env);
     const nativeD = cut.placementLayoutsD === true, recipe = nativeD ? cut.layoutDRecipe : null;
-    const fieldRecipe = recipe?.strategy === 'stationary-field-opening-cells-v2';
+    const fieldRecipe = recipe?.strategy === 'fullscreen-stationary-field-v3';
     const nativeRowsC = rowsOf(cut.text, port ? 4 : 7), rowsC = recipe?.columns ? rowsOf(cut.text, recipe.columns) : nativeRowsC;
     const cards = [];
     rowsC.forEach((row, r) => row.forEach((ch, j) => { if (ch !== ' ') cards.push({ ch, r, j, cnt: row.length }); }));
@@ -421,25 +421,28 @@ reg('flipCards', {
     if (Pm.order === 'random') rank.sort((a, b) => J.r(s, a, 31) - J.r(s, b, 31));
     const ord = new Array(n); rank.forEach((gi, q) => { ord[gi] = q; });
     const lw = Math.max(1, k * 0.012), rr = k * 0.08;
-    // ON-only stationary field: every native physical slot remains in place.
-    // A selected slot owns one lyric surface; unused middle slots are literal
-    // blank backs, without latent lyric/rank/reveal content. OFF stays native.
-    const fieldCells = [], selectedCells = new Map();
+    // ON-only full viewport lattice. No source lyric is stored in blank cells.
+    // The whole field shares native paper dimensions/pitch and one fixed phase.
+    const fieldCells = [], selectedCells = new Map(), glyphPass = [];
     const fieldFail = message => { const e = Error(message); e.code = 'FLIPCARDS_FIELD_RECIPE'; throw e; };
     if (fieldRecipe) {
-      if (!Array.isArray(recipe.assignments) || recipe.assignments.length !== n || !Array.isArray(recipe.extraCells) || recipe.extraCells.length > 4 || ![1,.95,.9,.85,.8,.75].includes(recipe.fontScale)) fieldFail('Bounded source field assignments and accepted font level required');
-      for (const cd of cards) fieldCells.push({id:'middle.'+cd.r+'.'+cd.j,origin:'native-middle',row:cd.r,column:cd.j,x:W/2+(cd.j-(cd.cnt-1)/2)*sx,y:H/2+(cd.r-(nativeRowsL-1)/2)*sy,appearanceOrdinal:ord[fieldCells.length]});
-      if (Pm.table) for (const row of [-1,nativeRowsL]) for (let j=0;j<nativePer;j++) fieldCells.push({id:'table.'+row+'.'+j,origin:'native-table',row,column:j,x:W/2+(j-(nativePer-1)/2)*sx,y:H/2+(row-(nativeRowsL-1)/2)*sy});
-      recipe.extraCells.forEach((cell,i)=>{ if (!cell || cell.id !== 'extra.'+i || ![cell.x,cell.y].every(Number.isFinite) || cell.x<0 || cell.x>W || cell.y<0 || cell.y>H) fieldFail('Finite stage-bounded extra cells with canonical IDs required'); fieldCells.push({id:cell.id,origin:'added-perimeter',x:cell.x,y:cell.y}); });
-      if (fieldCells.length > 46 || new Set(fieldCells.map(c=>c.x+','+c.y)).size !== fieldCells.length || new Set(recipe.assignments).size !== n) fieldFail('Unique selected cells and maximum46 field cells required');
-      recipe.assignments.forEach((id,i)=>{const cell=fieldCells.find(c=>c.id===id);if(!cell)fieldFail('Every source lyric needs a declared field cell');selectedCells.set(id,i);cell.assignedLyricIndex=i;});
-      if (recipe.extraCells.some(c=>!selectedCells.has(c.id))) fieldFail('No unused extra cells');
+      if (!Array.isArray(recipe.assignments) || recipe.assignments.length !== n || !recipe.grid || ![recipe.grid.x,recipe.grid.y].every(Number.isFinite) || ![1,.95,.9,.85,.8,.75].includes(recipe.fontScale)) fieldFail('Finite full field phase, source assignments and accepted font level required');
+      const {x:gx,y:gy}=recipe.grid;
+      const c0=Math.floor((cw/2-gx)/sx),c1=Math.ceil((W-cw/2-gx)/sx),r0=Math.floor((chh/2-gy)/sy),r1=Math.ceil((H-chh/2-gy)/sy);
+      const nc=c1-c0+1,nr=r1-r0+1;
+      if (![c0,c1,r0,r1,nc,nr].every(Number.isSafeInteger) || nc<1 || nr<1 || nc>512 || nr>512 || nc*nr>512) fieldFail('Full field cell ceiling512 before allocation');
+      for(let row=r0;row<=r1;row++)for(let column=c0;column<=c1;column++){
+        const nativeIndex=cards.findIndex(cd=>cd.r===row&&cd.j===column),peek=Pm.table&&[-1,nativeRowsL].includes(row)&&column>=0&&column<nativePer;
+        fieldCells.push({id:'field.'+row+'.'+column,origin:peek?'native-table':'literal-field',row,column,x:gx+column*sx,y:gy+row*sy,appearanceOrdinal:nativeIndex<0?null:ord[nativeIndex],owner:peek?'flipCards.table.'+row+'.'+column:'flipCards.blank.'+row+'.'+column});
+      }
+      if (new Set(recipe.assignments).size!==n) fieldFail('One unique field cell per source lyric required');
+      recipe.assignments.forEach((id,i)=>{const cell=fieldCells.find(c=>c.id===id);if(!cell)fieldFail('Every lyric needs an existing full field cell');selectedCells.set(id,i);cell.assignedLyricIndex=i;cell.owner='flipCards.card.'+i;});
       const reading=recipe.assignments.map(id=>fieldCells.find(c=>c.id===id));
-      if (reading.some((c,i)=>i && (c.y<reading[i-1].y-1e-7 || Math.abs(c.y-reading[i-1].y)<1e-7 && c.x<=reading[i-1].x))) fieldFail('Stable field row-major reading order required');
-      for (const cell of fieldCells) cell.contentKind=selectedCells.has(cell.id)?'source-lyric':cell.origin==='native-middle'?'literal-blank-back':'literal-native-peek';
-    } else if (recipe) fieldFail('Only stationary field opening recipes are supported');
+      if(reading.some((c,i)=>i&&(c.row<reading[i-1].row||c.row===reading[i-1].row&&c.column<=reading[i-1].column)))fieldFail('Stable row-major source reading order required');
+      for(const cell of fieldCells)cell.contentKind=selectedCells.has(cell.id)?'source-lyric':cell.origin==='native-table'?'literal-native-peek':'literal-blank-back';
+    } else if (recipe) fieldFail('Only full viewport stationary field recipes are supported');
     const primaryCell = i => fieldRecipe ? fieldCells.find(c=>c.id===recipe.assignments[i]) : null;
-    if (nativeD) env.placementDGeometry = {kind:'flipCards',k,cw,chh,lw,rows:rowsL,idx:Pm.idx,table:Pm.table,peek:Pm.peek,fd,gapT,fieldCells,fieldDraws:[],cardClocks:[],fieldRecipe:fieldRecipe?{assignments:recipe.assignments,extraCells:recipe.extraCells}:null,cards:cards.map((cd,i)=>({...cd,index:i,ord:ord[i],x:primaryCell(i)?.x??(W/2+(cd.j-(cd.cnt-1)/2)*primarySX),y:primaryCell(i)?.y??(H/2+(cd.r-(rowsL-1)/2)*primarySY)})),fontScale:recipe?.fontScale || 1};
+    if (nativeD) env.placementDGeometry = {kind:'flipCards',k,cw,chh,lw,rows:rowsL,idx:Pm.idx,table:Pm.table,peek:Pm.peek,fd,gapT,fieldCells,fieldDraws:[],cardClocks:[],fieldRecipe:fieldRecipe?{assignments:recipe.assignments,grid:recipe.grid,paintOrder:'all-paper-then-source-glyphs-v1'}:null,cards:cards.map((cd,i)=>({...cd,index:i,ord:ord[i],x:primaryCell(i)?.x??(W/2+(cd.j-(cd.cnt-1)/2)*primarySX),y:primaryCell(i)?.y??(H/2+(cd.r-(rowsL-1)/2)*primarySY)})),fontScale:recipe?.fontScale || 1};
     const drawCard = (x, y, p, ch, isFace, key, alpha, lift) => {
       if (fieldRecipe) {const cell=fieldCells.find(c=>c.x===x&&c.y===y);if(!cell)fieldFail('Physical draw must match one declared field cell');env.placementDGeometry.fieldDraws.push(cell.id);}
       // p: 0 face-down … 1 face-up; card rotates round its vertical axis
@@ -468,12 +471,11 @@ reg('flipCards', {
     };
     let bb = null;
     // decoy table rows (face-down)
-    if (Pm.table) {
+    if (Pm.table && !fieldRecipe) {
       const ta = tin(env, 0, 0.4, E.outCubic) * (1 - E.inCubic(J.clamp((env.pOut - 0.4) / 0.6)));
       for (const rr0 of [-1, nativeRowsL]) {
         for (let j = 0; j < nativePer; j++) {
           const x = W / 2 + (j - (nativePer - 1) / 2) * sx, y = H / 2 + (rr0 - (nativeRowsL - 1) / 2) * sy;
-          if (fieldRecipe && selectedCells.has('table.'+rr0+'.'+j)) continue; // one selected surface replaces this literal peek
           const prior = env.drawOwnership;
           if (nativeD) env.drawOwnership = {role:'independentDecor',owner:'flipCards.table.'+rr0+'.'+j};
           try {
@@ -492,12 +494,22 @@ reg('flipCards', {
         }
       }
     }
-    if (fieldRecipe) for (const cell of fieldCells) if (cell.contentKind === 'literal-blank-back') {
+    if (fieldRecipe) for (const cell of fieldCells) if (cell.assignedLyricIndex == null) {
       const prior=env.drawOwnership;
-      env.drawOwnership={role:'independentDecor',owner:'flipCards.blank.'+cell.row+'.'+cell.column};
+      env.drawOwnership={role:'independentDecor',owner:cell.owner};
       try {
-        const appear=tin(env,cell.appearanceOrdinal*.02,.25,E.outCubic)*(1-E.inCubic(J.clamp((env.pOut-.55)/.45)));
-        drawCard(cell.x,cell.y,0,null,false,0,appear,1);
+        const ta=tin(env,0,.4,E.outCubic)*(1-E.inCubic(J.clamp((env.pOut-.4)/.6)));
+        if(cell.contentKind==='literal-native-peek'){
+          let p=0,ch=null;
+          if(Pm.peek){const T=1.3,kk=Math.floor(env.ltb/T),f=env.ltb/T-kk;
+            if(kk>=1&&J.h(s,kk,5)%(nativePer*2)===cell.column+(cell.row<0?0:nativePer)){p=f<.25?E.inOutCubic(f/.25):f<.6?1:1-E.inOutCubic((f-.6)/.25);ch=J.h(s,kk,6)%2?'？':'★';}}
+          const r=drawCard(cell.x,cell.y,p,ch,false,0,ta*.8,1);
+          if(r.up&&ch){const item={text:ch,font:Pm.font,size:k*.46,x:cell.x,y:cell.y,sx:Math.abs(r.c)*r.sc2,sy:r.sc2,color:sc.accent===faceC?faceT:sc.accent,alpha:ta*.8,ghost:false};
+            if(env.withDProjectedText)env.withDProjectedText('flipCards-face',()=>env.draw(item));else env.draw(item);}
+        }else{
+          const appear=cell.appearanceOrdinal==null?ta:tin(env,cell.appearanceOrdinal*.02,.25,E.outCubic)*(1-E.inCubic(J.clamp((env.pOut-.55)/.45)));
+          drawCard(cell.x,cell.y,0,null,false,0,appear,1);
+        }
       } finally {env.drawOwnership=prior;}
     }
     cards.forEach((cd, i) => {
@@ -514,6 +526,10 @@ reg('flipCards', {
       if (nativeD) env.placementDGeometry.cardClocks.push({index:i,ord:ord[i],ti,fd,gapT,p,po,appear,mi:miAt(env,ti+fd*.5)});
       const r = drawCard(x, y, p, ch, true, i, appear, 1);
       if (!r.up) return;
+      const drawGlyphs=()=>{
+        const priorGlyphOwnership=env.drawOwnership;
+        if(nativeD)env.drawOwnership={role:'primary',owner:'flipCards.card.'+i};
+        try {
       const m = [Math.abs(r.c) * r.sc2, 0, 0, r.sc2 * r.hs, x, y];
       if (Pm.idx && Math.abs(r.c) > 0.3) {
         const is = k * 0.15 * (recipe?.fontScale || 1);
@@ -524,8 +540,12 @@ reg('flipCards', {
       const item = { text: ch, font: Pm.font, size: k * 0.6 * (recipe?.fontScale || 1), x: 0, y: 0, color: faceT, noHold: plateHold(env), mi: miAt(env, ti + fd * 0.5) };
       if (nativeD) item.placementDSource = {kind:'main',index:i,text:ch};
       bb = UB(bb, nativeD && env.withDProjectedText ? env.withDProjectedText('flipCards-face', () => drawAff(env, item, m)) : drawAff(env, item, m));
+        } finally {if(nativeD)env.drawOwnership=priorGlyphOwnership;}
+      };
+      if(fieldRecipe)glyphPass.push(drawGlyphs);else drawGlyphs();
       } finally { if (nativeD) env.drawOwnership = prior; }
     });
+    for(const drawGlyphs of glyphPass)drawGlyphs();
     const bw = per * sx, bh = rowsL * sy;
     return bb || box(W / 2 - bw / 2, H / 2 - bh / 2, W / 2 + bw / 2, H / 2 + bh / 2);
   },

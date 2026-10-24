@@ -1,0 +1,93 @@
+===== /workspace/lyricfx.JIZURA/src/11p_layoutsD.js =====
+1051:     let size = Math.min(u * 0.2, H * 0.5 / (nR + 0.6));
+1052:     for (const r of rowsT) { let a = 0; for (const ch of r) a += adv(Pm.font, ch) * 1.02; size = Math.min(size, W * (port ? 0.86 : 0.74) / Math.max(1, a)); }
+1053:     let maxTot = 0; for (const r of rowsT) { let a = 0; for (const ch of r) a += adv(Pm.font, ch) * 1.02 * size; maxTot = Math.max(maxTot, a); }
+1054:     const cx = J.clamp(W * (0.5 + Pm.peak * (port ? 0.2 : 0.6)), W * 0.06 + maxTot / 2, W * 0.94 - maxTot / 2), sig = Math.max(W * 0.26, maxTot * 0.68);
+1055:     const yBase = H * 1.04;
+1056:     const Hm = yBase - (H * (0.5 + Pm.hgt * 0.25) + nR * size * 0.49);
+1057:     const rise = (1 - E.outCubic(J.clamp(lt / 0.5))) * Hm * 1.1 + E.inCubic(env.pOut) * Hm * 0.5;
+1058:     const bump = x => Math.sin(x / W * 17 + s % 7) * H * 0.006 + Math.sin(x / W * 31 + (s % 5)) * H * 0.004;
+1059:     const nativeSurf = x => yBase + rise - Hm / (1 + Math.pow((x - cx) / sig, 4)) + bump(x);
+1060:     const trial = nativeD && cut.layoutDRecipe ? J.placement.pilePhysicalFrame(env,{cx,sig,Hm,yBase,size,nativeSurf,rows:rowsT}) : null;
+1061:     const surf = trial ? trial.surface : nativeSurf;
+1062:     const materialOut = trial?.entranceApplied ? out * trial.materialAlpha : out;
+1063:     if(nativeD&&trial?.entranceApplied)catalog.entrance={kind:'pile-native-entry-v2',materialAlpha:trial.materialAlpha,launchDelta:trial.launchDelta,clock:lt,fadeClock:.5};
+===== /workspace/lyricfx.JIZURA/src/11p_layoutsD.js =====
+1100:     let bb = null, idx = 0;
+1101:     const order = [];
+1102:     for (let ri = nR - 1; ri >= 0; ri--) {                  // lower layers land first
+1103:       const chars = [...rowsT[ri]];
+1104:       const ord = chars.map((c, i) => i);
+1105:       if (Pm.order === 'random') ord.sort((a, b) => J.r(s, ri, a, 21) - J.r(s, ri, b, 21));
+1106:       ord.forEach(i => order.push([ri, i]));
+1107:     }
+1108:     const when = new Map(); order.forEach(([ri, i], q) => when.set(ri * 100 + i, 0.08 + q * gap));
+1109:     if(nativeD)Object.assign(catalog,{fd,gap,stagger:cut.stagger||.04,order:order.map(([row,slot],ordinal)=>({row,slot,ordinal,when:when.get(row*100+slot)}))});
+1110:     let sourceOrdinal=0;
+1111:     rowsT.forEach((row, ri) => {
+1112:       const layer = nR - 1 - ri;
+1113:       const chars = [...row], ads = chars.map(ch => adv(Pm.font, ch) * size * 1.02), tot = ads.reduce((a, b) => a + b, 0);
+1114:       let x = cx - tot / 2;
+1115:       chars.forEach((ch, i) => {
+1116:         const nativeGxp = x + ads[i] / 2, gxp = trial?trial.mainX(nativeGxp,ri,i):nativeGxp; x += ads[i];
+1117:         const source = nativeD ? {id:'pile.glyph.'+ri+'.'+i,owner:'pile.glyph.'+ri+'.'+i,role:'primary',row:ri,slot:i,sourceOrdinal:sourceOrdinal++,nativeGxp,layer,ch,gap:ch===' ',advance:ads[i],gxp,when:when.get(ri*100+i),mi:miAt(env,when.get(ri*100+i)),f:(lt-when.get(ri*100+i))/fd} : null;
+1118:         if(nativeD){const sharedY=cut.layoutDRecipe?.rowReflow?.sharedY;if(sharedY){const run=cut.layoutDRecipe.rowReflow.slots[i].run;source.sharedRunY={run,dy:sharedY.runs[run].dy};}catalog.slots.push(source);}
+1119:         if (ch === ' ') return;
+1120:         const ys = surf(gxp);
+1121:         const slope = Math.atan2(surf(gxp + size * 0.5) - surf(gxp - size * 0.5), size);
+1122:         const tilt = slope / J.DEG * 0.7 + J.rs(s, ri, i, 9) * 6;
+1123:         const baseRestY = ys - size * (0.47 + layer * 0.98), restY = trial?trial.restY(baseRestY,ri,i):baseRestY;
+1124:         if(nativeD&&source.sharedRunY)source.sharedRunY.baseRestY=baseRestY;
+1125:         const t1 = when.get(ri * 100 + i);
+1126:         const f = (lt - t1) / fd;
+1127:         if(nativeD)Object.assign(source,{launchY:trial?trial.launch(-size*1.2-J.r(s,ri,i,10)*H*.2):-size*1.2-J.r(s,ri,i,10)*H*.2,originalLaunchY:-size*1.2-J.r(s,ri,i,10)*H*.2,launchRot:J.rs(s,ri,i,11)*50,tiltSeed:J.rs(s,ri,i,9)*6,colorSeed:J.r(s,ri,i,12),ys,slope,tilt,restY,t1,f,tau:f>=1?(f-1)*fd:null,phase:f<0?'not-started':f<1?'falling':'settled'});
+1128:         if (f < 0) return;
+1129:         let y, rot, sy = 1;
+1130:         if (f < 1) { const e = E.inQuad(f); const nativeLaunch=-size*1.2-J.r(s,ri,i,10)*H*.2; y = J.lerp(trial?trial.launch(nativeLaunch):nativeLaunch, restY, e); rot = J.lerp(J.rs(s, ri, i, 11) * 50, tilt, e); }
+1131:         else {
+1132:           const tau = (f - 1) * fd;
+1133:           y = restY - size * 0.14 * Math.abs(Math.sin(tau * 16)) * Math.exp(-tau / 0.09); rot = tilt; sy = 1 - 0.16 * Math.exp(-tau / 0.05);
+1134:           if (Pm.dust && tau < 0.35 && env.pass === 'main') {
+1135:             for (let q = 0; q < 4; q++) {
+1136:               const dir = q < 2 ? -1 : 1, sp = J.rr(0.6, 1.2, s, ri, i, q);
+1137:               const paintDust=()=>env.circle(gxp + dir * (size * 0.35 + tau * size * 1.6 * sp), restY + size * 0.45 - tau * size * (0.9 - tau * 2.2) * sp, size * 0.035 * (1 - tau / 0.35), sc.sub, null, 0, (1 - tau / 0.35) * out, false);
+1138:               if(nativeD)catalog.dust.push({id:source.id+'.dust.'+q,owner:source.id+'.dust.'+q,role:'primary',row:ri,slot:i,q,dir,sp,tau,gxp,restY,size});
+1139:               owned('glyph.'+ri+'.'+i+'.dust.'+q,paintDust);
+1140:             }
+===== /workspace/lyricfx.JIZURA/src/09v_layoutsD_pile_trial.js =====
+72: A.pilePhysicalFrame=function(env,n){const r=env.cut.layoutDRecipe;if(!r||r.kind!=='pile-physical-trial-v1'||r.signature!==sig(env.plan,env.cut))fail('PILE_TRIAL_SOURCE','Exact reviewed physical-trial source signature required');const entry=r.entrance;if(entry&&(entry.kind!=='pile-native-entry-v2'||!Number.isFinite(entry.launchDelta)||entry.launchDelta<0||entry.launchDelta>65536||entry.materialFadeClock!==.5))fail('PILE_ENTRY_SOURCE','Exact owned bounded native-clock entrance required');const shifted=y=>entry?y-entry.launchDelta:y,entryProps=entry?{entranceApplied:true,materialAlpha:J.E.outCubic(J.clamp(env.lt/.5)),launchDelta:entry.launchDelta}:{};if(r.mode==='native-equivalent')return {nativeEquivalent:true,surface:n.nativeSurf,bodyX:x=>x,mainX:x=>x,restY:base=>base,floor:env.H+4,launch:shifted,...entryProps};
+73:  if(r.mode!=='physical'||![.96,.9,.84,.78].includes(r.a)||![1,.65,.4,.25].includes(r.beta)||![1,.6].includes(r.kLaunch)||![.25,.1].includes(r.riseRatio)||r.Hm!==n.Hm*r.beta||r.sigma!==n.sig*r.a||r.Ain!==1.1*r.Hm*r.riseRatio||r.Aout!==.5*r.Hm||r.B!==0||r.c!==n.cx||r.c0!==n.cx||[r.c,r.c0,r.sigma,r.Hm,r.B,r.Ain,r.Aout,r.floor,r.Lcenter,r.Lreference].some(v=>!Number.isFinite(v))||r.sigma<=0||r.Hm<=0||r.Ain<=0||r.Aout<=0)fail('PILE_TRIAL_RECIPE','Finite nativefont physical-trial geometry required');
+74:  if(r.rowReflow){const f=r.rowReflow;if(f.kind!=='one-original-row-two-contiguous-runs'||n.rows.length!==1||[...n.rows[0]].filter(ch=>ch!==' ').length<2||r.a!==.84||r.beta!==.25||r.riseRatio!==.1||r.kLaunch!==1||![.9,1.1].includes(f.rho)||f.runs.length!==2||f.slots.length!==[...n.rows[0]].length||f.runs.some((q,i)=>q.run!==i||q.nongapCount<1||q.targetCenter!==r.c+(i?1:-1)*f.rho*r.sigma||q.offset!==q.targetCenter-q.sourceCenter)||f.slots.some((q,i)=>q.slot!==i||q.row!==0||q.ch!==[...n.rows[0]][i]||q.run!==(i<f.boundary?0:1)||q.offset!==f.runs[q.run].offset||!Number.isFinite(q.offset)))fail('PILE_TRIAL_REFLOW_DOMAIN','Exact owned one-row two-run recipe required');}
+75:  if(r.rowReflow?.sharedY){const f=r.rowReflow,y=f.sharedY;if(y.kind!=='correlated-inner-run-y-v1'||y.cap!==.04*n.size||y.runs.length!==2||y.runs.some((q,i)=>q.run!==i||JSON.stringify(q.sourceIDs)!==JSON.stringify(f.runs[i].sourceIDs)||JSON.stringify(q.nongapIDs)!==JSON.stringify(f.slots.filter(v=>v.run===i&&!v.gap).map(v=>v.id))||!Number.isFinite(q.dy)||Math.abs(q.dy)>y.cap||q.inner.length!==2||!q.inner.every(Number.isFinite)||q.inner[0]>q.dy||q.inner[1]<q.dy))fail('PILE_SHARED_Y_DOMAIN','Exact owned bounded shared-run correction required');}
+76:  const g={W:env.W,H:env.H,seed:env.cut.seed},m={g,c0:r.c0,c:r.c,a:r.a,beta:r.beta,Hm:r.Hm,sigma:r.sigma,B:r.B},rise=r.Ain*(1-J.E.outCubic(J.clamp(env.lt/.5)))+r.Aout*J.E.inCubic(env.pOut),surface=x=>r.B+rise-r.Hm/(1+Math.pow((x-r.c)/r.sigma,4))+r.beta*bump(r.c0+(x-r.c)/r.a,g);
+77:  return {nativeEquivalent:false,surface,bodyX:x=>r.c+r.a*(x-r.c0),mainX:(x,row,slot)=>{if(!r.rowReflow)return r.c+(x-r.c0);if(row!==0||!Number.isInteger(slot)||!r.rowReflow.slots[slot])fail('PILE_TRIAL_REFLOW_DOMAIN','Original row/slot required');return r.c+(x-r.c0)+r.rowReflow.slots[slot].offset;},restY:(base,row,slot)=>{const f=r.rowReflow;if(!f?.sharedY)return base;if(row!==0||!Number.isInteger(slot)||!f.slots[slot])fail('PILE_SHARED_Y_DOMAIN','Original row/slot required');const dy=f.sharedY.runs[f.slots[slot].run].dy;return dy===0?base:base+dy;},floor:r.floor,launch:y=>shifted(r.Lcenter+r.kLaunch*(y-r.Lreference)),...entryProps,heap:(gx,gy,nx,jx,jy,cell)=>{const bx=r.c+r.a*(nx-r.c0);return [bx+jx,surface(bx)+(gy+.5)*cell*.82+jy];}};
+===== /workspace/lyricfx.JIZURA/src/09_render.js =====
+173:     const chroma = (fx.chroma ?? 0.7) * (st.ghost ?? 1) * (1 + spike + beatPulse);
+174:     const step = Math.floor(tq / clock + 1e-6);
+175:     const beatInfo = plan.beats && plan.beats.length ? beatAt(plan.beats, tq) : null;
+176:     const energy = plan.energy ? plan.energy[Math.min(plan.energy.length - 1, Math.max(0, Math.floor(t * plan.energyRate)))] : null;
+177:     // ---------- background graphic (per line) ----------
+178:     if (hidden.lyrics!==false && hidden.media!==false && (opt.copyLyrics || plan.media?.applyLyricBackground !== false && !opt.transparent) && !key && mainCut && mainCut.bg && mainCut.bg !== 'none' && J.BG[mainCut.bg]) {
+179:       const env = this.makeEnv(ctx, plan, mainCut, sc, { pass: 'main', t: tq, lt: tq - mainCut.start, ltb: tq - mainCut.start, step, scale, allowFilter, energy, beat: beatInfo, bgOnly: true });
+180:       ctx.save();
+181:       try { J.BG[mainCut.bg].draw(env, mainCut.bgP || {}); } catch (e) { console.warn('bg', mainCut.bg, e); }
+182:       ctx.restore();
+183:       ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none';
+184:     }
+185:     const shx = J.rs(step, 71) * shake * 16 * u, shy = J.rs(step, 72) * shake * 11 * u;
+186:     // ---------- content passes ----------
+187:     const passes = [
+188:       { pass: 'B', lag: 1.6 / 24, off: [-3.4 * chroma * u, -1.3 * chroma * u] },
+189:       { pass: 'A', lag: 0.8 / 24, off: [3.2 * chroma * u, 1.9 * chroma * u] },
+190:       { pass: 'main', lag: 0, off: [0, 0] },
+191:     ];
+192:     const ghostOn = (fx.chroma ?? 0.7) > 0.02 && (st.ghost ?? 1) > 0.02 && !opt.noGhost;
+193:     const contentPasses = (opt.noLyrics ? [] : passes).filter(P => P.pass === 'main' || ghostOn).map(P => {
+194:       const tp = Math.max(0, tq - P.lag);
+195:       return { ...P, tp, cuts: new Map(activeCuts(tp).map(cut => [cut.index, cut])) };
+===== /workspace/lyricfx.JIZURA/src/05b_registry.js =====
+28: J.CAMERA = {
+29:   push: { name: 'ゆっくり寄る', tags: ['calm', 'editorial', 'emotional', 'graphic', 'pop', 'glitch'], w: 5,
+30:     get: (env) => ({ s: 1 + 0.03 * (env.fx.motion ?? 0.7) * J.clamp(env.lt / Math.max(0.3, env.cut.dur)) }) },
+31: };
+32: J.CAMERA_ORDER = ['push'];
