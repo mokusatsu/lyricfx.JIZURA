@@ -42255,7 +42255,7 @@ function firstUse(cert,plan,cut){
 }
 const pointIn=(p,poly)=>{let pos=false,neg=false;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],c=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);pos||=c>1e-7;neg||=c< -1e-7;}return !(pos&&neg);};
 const groupDelta=(recipe,q)=>recipe.kind==='translation'?recipe.offset:q==null?[0,0]:q<2?recipe.left:recipe.right;
-const vertexDelta=(recipe,q,f)=>{const dg=groupDelta(recipe,q);if(recipe.kind==='translation')return dg;return [(1-f)*dg[0],(1-f)*dg[1]];};
+const vertexDelta=(recipe,q,f)=>{const dg=groupDelta(recipe,q);if(recipe.kind==='translation')return dg;if(f===1)return [0,0];return [(1-f)*dg[0],(1-f)*dg[1]];};
 const shift=(poly,d)=>poly.map(p=>[p[0]+d[0],p[1]+d[1]]);
 function movedSupport(e,recipe){if(e.endpointPolygons)return A.convexHull(e.endpointPolygons.flatMap((p,i)=>shift(p,vertexDelta(recipe,e.q,e.fractions[i]))));return shift(e.polygon,groupDelta(recipe,e.q));}
 function transport(env,program,recipe){
