@@ -1,0 +1,36 @@
+Expanded read-only capacity plan; no release/helper execution performed.
+
+capacity-expanded-plan.json has32 untracked working duplicates4554752 allocated
+bytes, plus33 TRACKED alternatives19562496 allocated bytes. TRACKED alternatives
+are NOT selected. capacity-additional-plan.json adds12 untracked working copies
+2084864 allocated bytes. Combined selected44 untracked copies6639616 allocated
+bytes (~6.33MiB). All are related AVOID009 blocks/balloons/magnets working text or
+source snapshots, exactfullbyte equal to canonical pushed8a13 Git blobs. Archives,
+videos, symlinks, PYC, original52 absents and unrelated untracked are excluded.
+
+Each mapping records exact path, canonical Git proof path, blobOID, fullSHA256,
+bytecount, allocatedbytes, device/inode/mode. Pushed8a13 provenance is parent's
+successful push32014 exit0; no remote verification/network was performed.
+
+Only entries with tracked:false are proposed. No new skip flags are needed.
+Before any release, parent must review all44 paths against active SOURCE24 pins
+and preserve live inputs. A later reviewed guard must verify exact current path,
+inode/device/mode/fullbytesSHA/blob equality and absence from Git tracked entries
+again; protect52/PYC and HEAD/index SHA before/after. No such guard is provided or
+executed in this read-only phase. Parent may select a smaller reviewed subset.
+
+To restore any released UNTRACKED working copy, obtain bytes with
+git cat-file blob <blobOID> from the pinned local pushed8a13 object database.
+Create the recorded original path exclusively (never overwrite a newer file),
+write/fsync bytes, restore recorded mode, and verify bytecount/fullSHA256 against
+the frozen plan. Canonical Git path remains intact. No skip flag changes are
+needed for these44 untracked copies; original52 remain unchanged. A future rerun
+of old diagnostic runners may require restoring referenced original workpaths.
+
+Do not release the33 tracked alternatives through this plan. Their removal would
+require parent review and a new explicit enlarged flags/absents model, new seals,
+SOURCE pins coordination and a separate private-index implementation/review.
+
+capacity-seal.json seals these two new plan files separately, leaving earlier
+approved keeper/index/snapshot/seal sources untouched. Entire package remains
+under100KB. Public checks0; Git mutations0; old-file deletions0.

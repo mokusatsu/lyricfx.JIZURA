@@ -1,3 +1,13 @@
+# 最新続行：2026-10-24 22:00日本時間まで
+
+利用者が「風船はOKです。次は22時まで順次作業を続けてください。」と回答。balloons-native-stage-20261024-03（manifest b9ed00b6…）だけを動作承認済みへ更新。本日22:00JST/13:00UTCまで009内を順次続行し、新しい必要動作確認は固定版の未承認queueへまとめる。009全体・正式性能・保存本体・010以降の完了ではない。
+
+開始HEAD work8a13b3c1、product c595bbe5。指定gpt-6.1-sol/medium担当magnets_evening24がマグネットのSOURCE24以降を実装、親がsource/raw、画像は文脈なしsol。並列の別担当へ渡すtiles調査プロンプトを利用者へ提示済み（こちらでtiles実装は開始しない）。公開結果確認・status polling永久禁止、追加サイバー/Proxy/prototype fuzzなし。
+
+旧keeper40524は終了済み。新officialSHM keeper64166、BASE=/dev/shm/avoid009-evening-20261024。RUNはaction/argv/cwd/envUpdatesの4キー必須、1件ずつRUN_DONEを待つ。今夜のreviewed private_index.pyでroundごとにROOTindexをSHMへ複製し、add/commit後に同一inodeへINSTALL・52flags/PYCを検証する。完了済みの旧helperやroundを再実行せず、通常ROOT index.lock(約5.5MB)作成やGCをしない。全証拠durable保存・index INSTALL前にkeeperを終了しない。
+
+ROOT0対処：work/avoid009-*内の44未追跡作業コピーをpushed8a13のcanonical Gitblobへ全byte照合後、reviewed guardでworkingコピーだけ解放6,639,616B。新skip追加なし、既存52/PYC/無関係untracked/旧3upload保持。復元はtasks/evidence/AVOID-009/evening-20261024/storage01/CAPACITY-RESTORE.txt。以下の旧17時以前の記載は履歴。
+
 > 午後の更新: 既存22absentを維持したうえで、午後に生成したballoons native01/02 rawの2ファイルだけfef2d2d4のGitblobとTMP実SHAコピーへ退避し、元workpathはsymlinkで読取可能。canonical側は追加skipで計24absent。raw-storage02.json参照。既存rawや旧3uploadは変更していない。
 
 # 最新の続行指示（2026-10-24 午後）
@@ -55,3 +65,5 @@
 最新 product c595bbe5 push済み: magnets元描画/transportのみ内部受入、adapter加算0。次SOURCE18は/tmp/avoid009-magnets-diagnostic18準備中。ROOT容量のためold49を保つprivateSHM Gitindexに3flag追加中（ROOT49/private52、文書commitとINSTALL後に52確定）。ROOT通常Gitindex.lockは5.5MBで容量不足、reviewed private_index.py経由のみ。manager40524をINSTALL/同一index検証前に停止しない。3raw Git303d63ad保存/復元資料はstorage-ordered-magnets04とstorage-root-emergency-index06。公開確認0。
 
 最新52absent ROOTindexへのINSTALL検証済み（old49+ordered06/rawnative12/rawnative13の3、Git303d63ad保存）。product c595bbe5 push済み、evidence fbc235a5 push済み。RAW21はprivateSource b8843f2a937266a688059c4f5db1a120839f1b5a保存。SOURCE19/21/22/23の診断は実行/親照合済み・成立候補0/adapter加算0。17時動作確認は風船固定03だけ未承認。新Git操作はreviewed private_index2.pyの第2roundでdocscommit→INSTALL予定、manager40524を終了前に必ずINSTALL/receipt確認する。通常ROOTindex.lock(約5.5MB)は空き不足、独断でindex削除・GC・無関係ファイル削除をしない。
+
+POST-COMMIT最終状態: work8a13b3c1 push32014exit0。第2ROOTindexINSTALLも52skip/7PYC/同一inode検証済み、manager40524は07:59UTCに終了（再開不可）。全rawはprivateSource1de/b884およびGitHub8a13へ保存済み。progress/checkpointとreceipt2のpostcommitローカル追記は保持する。次回は最新HEAD・worktree・52absentを再確認し、空き不足なら新しいofficialSHM/privateindexroundを指定sol/mediumで準備する。既存の完了済みhelperを再実行しない。next24は読み取り設計のみ/未実装、風船03未承認、公開確認永久禁止。

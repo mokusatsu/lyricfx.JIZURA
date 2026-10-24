@@ -1,0 +1,48 @@
+SOURCE-ONLY parent review gate. release44.py was AST parsed, never imported/run.
+Source SHA3bb17586f3b734e4622ab07898ed31d91433f8b3a8f2c69ffa326eb07fee172d.
+
+Fixed explicit44-path whitelist, frozen2planSHA, frozen initial52/PYC snapshot.
+No dynamic candidate discovery. Only44 untracked work copies6639616 allocated B.
+Canonical proof uses pinned pushed8a13:<canonicalPath>, exactOID and fullbytes.
+HEAD must be explicit current HEAD and descend from8a13. ROOT index explicit SHA
+must match, no index.lock, exact52 special flags and absents/7PYC preserved.
+Candidates must be absent from ROOT index and HEAD, regular/no symlink ancestors,
+single link, exact original inode/device/mode/size/allocated/fullSHA256.
+Parent checked44 against activeSOURCE24p119: no intersection. Run24 before RELEASE.
+
+After full source review, parent explicitly invokes:
+python -B /tmp/avoid009-evening-storage01/release44.py VERIFY
+ --reviewed-source-sha256 <sourceSHA>
+ --root-index-sha256 <actual current ROOT indexSHA>
+ --expected-head <actual current HEAD>
+It exclusively creates release44-proof.json, returns proof SHA, removes nothing.
+Parent reads proof, reviews exact44 mapping/protected state and then invokes:
+python -B /tmp/avoid009-evening-storage01/release44.py RELEASE
+ --reviewed-source-sha256 <same sourceSHA>
+ --root-index-sha256 <same actual ROOT indexSHA>
+ --expected-head <same HEAD> --proof-sha256 <reviewed proofSHA>
+RELEASE repeats every proof/fullbyte check, requires equal frozen proof, reserves
+exclusive receipt before unlink, repeats protected52/PYC/index/head checks before
+and after. Exact current file bytes/identity checked again immediately before each
+unlink. No Git writes, skip flags, directory deletions or canonical mutations.
+Parent must serialize all Git/filesystem work during release (no global lock).
+
+Caught release failure restores only this invocation's removed paths from exact
+RAM bytes with exclusive creation, fullbytes check, original mode/fsync. Restored
+inodes differ, so original proof is stale; receipt blocks blind reruns. If caught
+rollback itself fails, receipt may remain RELEASING: stop and recover manually.
+Abrupt process death can leave a partial release; no RAM rollback survives that.
+All44 exact bytes remain durable in pushed8a13 Git; canonical paths are untouched.
+Original52/PYC and old3uploads/unrelated untracked/product are outside whitelist.
+
+For each missing released work path, lookup its record in the sealed plans, obtain
+git cat-file blob <blobOID> bytes (OID also proved8a13:<canonical>), exclusively
+create the recorded original path, write/fsync, apply recorded mode, verify full
+SHA256/length. Never overwrite a newer existing file. No flag changes required.
+All44 per-path canonical mappings and hashes are frozen in two plans; the guard
+proof embeds them too. Verify restoration independently before using old runners.
+Do not use receipt existence as success: require state RELEASED and parent review
+of complete protectedBeforeAfter fields. Any partial receipt/failure needs review.
+
+Source/drafts/restore plans are<150KB. No helper execution or release performed by
+this child; public/network checks0, ROOT/Git/flags/old-files unchanged.
