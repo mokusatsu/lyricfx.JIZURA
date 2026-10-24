@@ -10731,6 +10731,9 @@ const dPileCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.
 const dBlocksCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='blocks'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('blocks');
 // Balloons native parity: stock source only, no placement adaptation.
 const dBalloonsCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='balloons'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('balloons');
+// Exact native magnets literal board material only; no generic path capability.
+const dMagnetsCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='magnets'&&cut.cam==='push'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('magnets');
+const magnetsGradientCommands=(g,W,H)=>{const p=g?.path;if(g?.kind!=='literal-linear-gradient-rounded-path'||!p||![W,H,p.x,p.y,p.w,p.h,p.r].every(Number.isFinite)||W<=0||H<=0||Math.max(W,H)>1e5||p.w!==W-W*.04*2||p.h!==H-H*.05*2||p.x!==W*.04||p.r!==Math.min(W,H)*.03||p.y<H*.05-1e-9||p.y>H*.09+1e-9||g.from?.[0]!==W*.04||g.from?.[1]!==H*.05||g.to?.[0]!==W*.04+p.w||g.to?.[1]!==H*.05+p.h||g.stops?.length!==4||g.stops.some((s,i)=>s.offset!==[0,.45,.5,1][i]||typeof s.color!=='string'))fail('UNSUPPORTED_D_MAGNETS_GRADIENT','Exact source magnets board geometry and four literal stops required');const {x,y,w,h}=p,r=Math.max(0,Math.min(p.r,w/2,h/2));return [['moveTo',[x+r,y]],['arcTo',[x+w,y,x+w,y+h,r]],['arcTo',[x+w,y+h,x,y+h,r]],['arcTo',[x,y+h,x,y,r]],['arcTo',[x,y,x+w,y,r]],['closePath',[]]];};
 const dRibbonCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='ribbon'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('ribbon');
 const dBandCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='cylinder'&&cut.params?.band===true&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('cylinder');
 const dFlagCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='flag'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&['unfurl','raise'].includes(cut.params?.mode)&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&A.layoutsDSourceKnown?.('flag');
@@ -10747,7 +10750,7 @@ A.record = (renderer,env,options={}) => {
   const validationOnly=options.validationOnly===true;let shapeValidationUncertain=false;
   validateTextState(env.ctx);
   if(env.ctx.filter!=='none'||env.ctx.shadowBlur||env.ctx.shadowOffsetX||env.ctx.shadowOffsetY||!['rgba(0, 0, 0, 0)','transparent'].includes(env.ctx.shadowColor))fail('UNSUPPORTED_DRAW_PROGRAM','Initial filter/shadow state requires a bounded adapter');
-  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut)||dRibbonCut(env.cut)||dPileCut(env.cut)||dBlocksCut(env.cut)||dBalloonsCut(env.cut))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
+  const nativeDOriginalRoot=(dBandCut(env.cut)&&env.pass==='main'||(dAccordionCut(env.cut)||dFlagCut(env.cut)||dRibbonCut(env.cut)||dPileCut(env.cut)||dBlocksCut(env.cut)||dBalloonsCut(env.cut)||dMagnetsCut(env.cut))&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))?matrix(env.ctx):null;
   const c=measurementContext();c.reset();c.setTransform(...matrix(env.ctx));c.globalCompositeOperation=env.ctx.globalCompositeOperation;c.globalAlpha=env.ctx.globalAlpha;c.miterLimit=env.ctx.miterLimit;c.setLineDash(env.ctx.getLineDash());c.lineDashOffset=env.ctx.lineDashOffset;c.lineCap=env.ctx.lineCap;c.lineJoin=env.ctx.lineJoin;
   const nativeC34=env.cut.placementLayoutsC===true,nativeB25=env.cut.placementLayoutsB===true||nativeC34,nativeD34=env.cut.placementLayoutsD===true,nativeA26=env.cut.placementLayoutsA===true||nativeB25||nativeD34;let nativeRoot=nativeA26?(nativeDOriginalRoot||matrix(c)):null,nativeOps=[];const nativeStack=[],nativeState=()=>({root:nativeRoot.slice(),ops:nativeOps.map(([k,v])=>[k,v.slice()])});
   // Only stock synchronous C command runs reuse a private actual-Canvas read.
@@ -10755,6 +10758,7 @@ A.record = (renderer,env,options={}) => {
   const reuseCommandMatrix=nativeC34&&!validationOnly;let commandMatrix=null,commandEpoch=recordMatrixEpoch;
   const commandTransform=()=>{if(!commandMatrix||commandEpoch!==recordMatrixEpoch){commandMatrix=matrix(c);commandEpoch=recordMatrixEpoch;}return commandMatrix;};
   const nativeDWorldBand=nativeD34&&dBandCut(env.cut)&&env.pass==='main',nativeDMeasurementRoot=nativeDWorldBand?matrix(c):null;
+  const nativeDMagnets=dMagnetsCut(env.cut)&&env.pass==='main'&&A.layoutsDTransportKnown?.(renderer),magnetsOriginalRoot=nativeDMagnets?matrix(env.ctx):null,magnetsMeasurementRoot=nativeDMagnets?matrix(c):null;let magnetsCommands=[],magnetsPathMatrix=null,magnetsGradientCount=0;
   let dProjectionScope=false,dFlagClipCount=0;
   const dFlagMeasurementRoot=dFlagCut(env.cut)?matrix(c):null;
   const events=[],diagnostics=[],gradients=new WeakMap();let bCommands=[],bPoints=[],bPathMatrix=null,bCurrent=null;const patterns=new WeakMap();
@@ -10772,7 +10776,9 @@ A.record = (renderer,env,options={}) => {
     if(k==='restore')return ()=>{commandMatrix=null;clips=clipStack.pop()||[];const state=nativeA26?nativeStack.pop():null;if(state){nativeRoot=state.root;nativeOps=state.ops;}target.restore();};
     if(nativeA26&&['translate','rotate','scale','transform'].includes(k))return (...args)=>{commandMatrix=null;if(!finite(args))fail('INVALID_AFFINE','Finite native transform required');target[k](...args);nativeOps.push([k,args]);};
     if(nativeA26&&['setTransform','resetTransform'].includes(k))return (...args)=>{commandMatrix=null;target[k](...args);nativeRoot=matrix(c);nativeOps=[];};
-    if(k==='beginPath')return ()=>{commandMatrix=null;bCommands=[];bPoints=[];bPathMatrix=null;bCurrent=null;pathRect=null;pathInvalid=false;pathPoints=[];pathClosed=false;pathMatrix=null;pathDNative=null;target.beginPath();};
+    if(k==='beginPath')return ()=>{commandMatrix=null;magnetsCommands=[];magnetsPathMatrix=null;bCommands=[];bPoints=[];bPathMatrix=null;bCurrent=null;pathRect=null;pathInvalid=false;pathPoints=[];pathClosed=false;pathMatrix=null;pathDNative=null;target.beginPath();};
+    if(nativeDMagnets&&['moveTo','arcTo','closePath'].includes(k))return (...args)=>{const m=matrix(c);if(!magnetsPathMatrix)magnetsPathMatrix=m;if(!finite(args)||magnetsCommands.length>=6||!sameMatrix(m,magnetsPathMatrix)||nativeState().ops.length||clips.length)fail('UNSUPPORTED_D_MAGNETS_GRADIENT','One clipless unchanged-root source rounded path required');magnetsCommands.push([k,args.slice()]);return target[k](...args);};
+    if(nativeDMagnets&&k==='fill')return (...args)=>{const g=recorder.placementDGeometry?.scene?.gradient,expected=magnetsGradientCommands(g,env.W,env.H),paint=gradients.get(target.fillStyle),owner=recorder.drawOwnership,m=matrix(c);if(args.length||magnetsGradientCount++||!sameMatrix(m,magnetsMeasurementRoot)||!sameMatrix(m,magnetsPathMatrix)||nativeState().ops.length||clips.length||owner?.role!=='independentDecor'||owner.owner!=='magnets.scene.gradient'||JSON.stringify(magnetsCommands)!==JSON.stringify(expected)||!paint||paint.gradientKind||paint.args.length!==4||JSON.stringify(paint.args)!==JSON.stringify([...g.from,...g.to])||!sameMatrix(paint.matrix,magnetsMeasurementRoot)||paint.stops.length!==4||paint.stops.some((s,i)=>s[0]!==g.stops[i].offset||s[1]!==g.stops[i].color)||target.globalAlpha!==g.alpha)fail('UNSUPPORTED_D_MAGNETS_GRADIENT','Exact native magnets gradient owner, path, alpha, stops and root required');const p=g.path,poly=rect(p.x,p.y,p.w,p.h).map(q=>A.point(magnetsOriginalRoot,q)),guard=A.convexHull(poly.flatMap(q=>[[q[0]-1,q[1]-1],[q[0]+1,q[1]-1],[q[0]+1,q[1]+1],[q[0]-1,q[1]+1]]));push('nativeMagnetsRoundedGradient',[magnetsCommands.map(([k,v])=>[k,v.slice()]),target.fillStyle],[guard],magnetsOriginalRoot);const e=events.at(-1);e.nativeTransform={root:magnetsOriginalRoot.slice(),ops:[]};e.args[1]={...e.args[1],matrix:magnetsOriginalRoot.slice(),args:paint.args.slice(),stops:paint.stops.map(s=>s.slice())};};
     // B25-only raw-path transport. Keep exact native commands for replay;
     // conservative control/radius bounds are a separate geometry certificate.
     if(nativeB25&&['moveTo','lineTo','rect','arc','arcTo','closePath',...(nativeC34?['bezierCurveTo','quadraticCurveTo']:[])].includes(k))return (...args)=>{
@@ -10907,7 +10913,8 @@ const applyNativeTransform=(ctx,shift,state,fallback)=>{ctx.setTransform(...comp
 A.replay = (env,program,offset,decorOffsets={}) => {
   if(program.validationOnly||!program.measurementSupported)fail('UNSUPPORTED_DRAW_PROGRAM','Refusing incomplete draw program');
   let shadowRoot=null;if((shadowCut(env.cut)&&env.cut.placementLayoutsC===true)||shadowPrograms.has(program)||program.measurementScope===SHADOW_OUTPUT_SCOPE)shadowRoot=shadowReplay(env,program,offset,decorOffsets);
-  for(const e of program.events){const moved=e.role==='primary'?(Array.isArray(offset)?offset:offset[e.key??e.owner]||[0,0]):decorOffsets[e.key??e.owner]||[0,0];const ctx=env.ctx;ctx.save();try{const shift=trans(moved[0]*(env.scale||1),moved[1]*(env.scale||1));if(e.clips?.some(v=>v.nativeDWorldBand)){
+  for(const e of program.events){const moved=e.role==='primary'?(Array.isArray(offset)?offset:offset[e.key??e.owner]||[0,0]):decorOffsets[e.key??e.owner]||[0,0];const ctx=env.ctx;ctx.save();try{const shift=trans(moved[0]*(env.scale||1),moved[1]*(env.scale||1));if(e.kind==='nativeMagnetsRoundedGradient'){const g=program.nativeDGeometry?.scene?.gradient,expected=magnetsGradientCommands(g,env.W,env.H),paint=e.args[1],live=matrix(ctx),root=e.nativeTransform?.root;if(!dMagnetsCut(env.cut)||env.pass!=='main'||e.role!=='independentDecor'||e.owner!=='magnets.scene.gradient'||moved.some(v=>v!==0)||e.clips.length||!root||e.nativeTransform.ops.length||!sameMatrix(root,live)||!sameMatrix(e.matrix,root)||!paint?.placementGradient||paint.gradientKind||!sameMatrix(paint.matrix,root)||JSON.stringify(e.args[0])!==JSON.stringify(expected)||JSON.stringify(paint.args)!==JSON.stringify([...g.from,...g.to])||paint.stops?.length!==4||paint.stops.some((s,i)=>s[0]!==g.stops[i].offset||s[1]!==g.stops[i].color)||e.alpha!==g.alpha)fail('UNSUPPORTED_D_MAGNETS_REPLAY','Original live-root source magnets material must remain fixed');const gradient=ctx.createLinearGradient(...paint.args);for(const stop of paint.stops)gradient.addColorStop(...stop);ctx.globalCompositeOperation=e.blend;ctx.globalAlpha=e.alpha;ctx.fillStyle=gradient;ctx.beginPath();for(const [key,args]of e.args[0])ctx[key](...args);ctx.fill();continue;
+    }if(e.clips?.some(v=>v.nativeDWorldBand)){
       const clip=e.clips[0],paint=e.args[4],root=e.nativeTransform?.root;
       if(!dBandCut(env.cut)||e.clips.length!==1||e.kind!=='rect'||e.role!=='primary'||e.owner!=='cylinder.band'||clip.points?.length!==74||!paint?.placementGradient||paint.gradientKind||paint.args?.length!==4||!finite(paint.args)||paint.stops?.length!==4||paint.stops.some((stop,i)=>stop[0]!==[0,.35,.55,1][i]||typeof stop[1]!=='string')||!root||e.nativeTransform.ops.length||clip.nativeTransform?.ops.length||!sameMatrix(clip.nativeTransform.root,root)||!sameMatrix(clip.matrix,root)||!sameMatrix(paint.matrix,root)||!sameMatrix(matrix(ctx),root))fail('UNSUPPORTED_D_BAND_REPLAY','Native cylinder band requires unchanged live camera root, clip and gradient coordinates');
       const inverse=A.inverse(root);if(moved[0]||moved[1]){const dx=moved[0]*(env.scale||1),dy=moved[1]*(env.scale||1);ctx.translate(inverse[0]*dx+inverse[2]*dy,inverse[1]*dx+inverse[3]*dy);}
@@ -40129,22 +40136,34 @@ reg('magnets', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const nativeD = cut.placementLayoutsD === true;
+    const owned = (role, owner, fn) => nativeD ? env.withDrawRole(role, 'magnets.' + owner, fn) : fn();
+    const freeze = v => { if (v && typeof v === 'object' && !Object.isFrozen(v)) { Object.values(v).forEach(freeze); Object.freeze(v); } return v; };
     const port = isPort(env);
     const chs = slotsOf(cut.text), n = chs.filter(c => c !== ' ').length;
     if (!n) return null;
+    const catalog = nativeD ? {kind:'magnets-native-catalog',version:1,nativeOnly:true,stage:[W,H],pass:env.pass,clock:{t:env.t,realTime:env.realTime,lt,ltb:env.ltb,pOut:env.pOut},seed:s,port,n,params:{font:Pm.font,df:Pm.df,decoys:Pm.decoys,handle:Pm.handle,colOff:Pm.colOff,tilt:Pm.tilt},scene:{classification:'independentDecor-source-inventory39',board:null,gradient:null,handle:null},rows:[],glyphs:[],decoys:[],primaryOwners:[],independentDecorOwners:['magnets.scene.board','magnets.scene.gradient','magnets.scene.handle'],painterOrder:'board,main-only-gradient,handle,main-only-each-decoy-depth-body,each-lyric-depth-body'} : null;
+    if(nativeD)env.placementDGeometry=catalog;
+    try {
     const out = tout(env);
     const ba = tin(env, 0, 0.45, E.outCubic) * out;
     // the board (fridge door)
     const mx = W * 0.04, my = H * 0.05, bw = W - mx * 2, bh = H - my * 2, rr = u * 0.03;
     const board = J.mix(sc.bg, sc.fg, J.lum(sc.bg) < 0.5 ? 0.07 : 0.06);
-    env.rrect(mx, my + (1 - ba) * H * 0.04, bw, bh, rr, board, ba, false, J.mix(sc.bg, sc.fg, 0.16), Math.max(1, u * 0.002));
+    const boardStroke=J.mix(sc.bg, sc.fg, 0.16),boardLW=Math.max(1, u * 0.002);
+    if(nativeD){catalog.out=out;catalog.ba=ba;catalog.scene.board={owner:'magnets.scene.board',x:mx,y:my+(1-ba)*H*.04,w:bw,h:bh,r:rr,color:board,alpha:ba,ghost:false,stroke:boardStroke,lineWidth:boardLW};}
+    owned('independentDecor','scene.board',()=>env.rrect(mx, my + (1 - ba) * H * 0.04, bw, bh, rr, board, ba, false, boardStroke, boardLW));
     if (env.pass === 'main' && ba > 0) {
       const g = ctx.createLinearGradient(mx, my, mx + bw, my + bh);
-      g.addColorStop(0, J.rgba(lightOf(sc), 0.06)); g.addColorStop(0.45, J.rgba(lightOf(sc), 0)); g.addColorStop(0.5, J.rgba(lightOf(sc), 0.04)); g.addColorStop(1, J.rgba(lightOf(sc), 0));
-      ctx.save(); ctx.globalAlpha = ba; ctx.fillStyle = g; ctx.beginPath(); rrPath(ctx, mx, my + (1 - ba) * H * 0.04, bw, bh, rr); ctx.fill(); ctx.restore();
+      if(nativeD)catalog.scene.gradient={owner:'magnets.scene.gradient',kind:'literal-linear-gradient-rounded-path',from:[mx,my],to:[mx+bw,my+bh],stops:[],path:{x:mx,y:my+(1-ba)*H*.04,w:bw,h:bh,r:rr},alpha:ba};
+      const stop=(offset,color)=>{if(nativeD)catalog.scene.gradient.stops.push({offset,color});g.addColorStop(offset,color);};
+      stop(0, J.rgba(lightOf(sc), 0.06)); stop(0.45, J.rgba(lightOf(sc), 0)); stop(0.5, J.rgba(lightOf(sc), 0.04)); stop(1, J.rgba(lightOf(sc), 0));
+      owned('independentDecor','scene.gradient',()=>{ctx.save(); ctx.globalAlpha = ba; ctx.fillStyle = g; ctx.beginPath(); rrPath(ctx, mx, my + (1 - ba) * H * 0.04, bw, bh, rr); ctx.fill(); ctx.restore();});
     }
     const hx = Pm.handle > 0 ? mx + bw - u * 0.05 : mx + u * 0.035, hh = bh * 0.34;
-    env.rrect(hx, H / 2 - hh / 2, u * 0.016, hh, u * 0.008, J.mix(board, sc.fg, 0.2), ba, false);
+    const handleColor=J.mix(board, sc.fg, 0.2);
+    if(nativeD)catalog.scene.handle={owner:'magnets.scene.handle',x:hx,y:H/2-hh/2,w:u*.016,h:hh,r:u*.008,color:handleColor,alpha:ba,ghost:false};
+    owned('independentDecor','scene.handle',()=>env.rrect(hx, H / 2 - hh / 2, u * 0.016, hh, u * 0.008, handleColor, ba, false));
     // lyric layout in rows
     const per = port ? 4 : 8;
     const rowsT = n > per ? chunksK(flat(cut.text), Math.ceil(n / per)) : [flat(cut.text)];
@@ -40157,6 +40176,7 @@ reg('magnets', {
       const chars = [...row];
       const ks = chars.map(ch => (J.isKanji(ch) ? 1 : J.isPunct(ch) ? 0.6 : J.isSmallKana(ch) ? 0.7 : 0.86));
       const ads = chars.map((ch, i) => adv(Pm.font, ch) * base * ks[i] * 1.1), tot = ads.reduce((a, b) => a + b, 0);
+      if(nativeD)catalog.rows.push({row:ri,text:row,chars:chars.slice(),ks:ks.slice(),advances:ads.slice(),totalAdvance:tot});
       let x = W / 2 - tot / 2;
       const y = H / 2 + (ri - (nR - 1) / 2) * base * 1.14;
       chars.forEach((ch, i) => {
@@ -40166,11 +40186,14 @@ reg('magnets', {
         items.push({ ch, x: cx + J.rs(s, q, 1) * base * 0.04, y: y + J.rs(s, q, 2) * base * 0.08 + base * ks[i] * 0 , size: base * ks[i], rot: J.rs(s, q, 3) * Pm.tilt, col: cols[(q * 7 + Pm.colOff) % cols.length], q });
       });
     });
+    if(nativeD){catalog.per=per;catalog.nR=nR;catalog.base=base;catalog.colors=cols.slice();catalog.glyphs=items.map(m=>({...m,font:Pm.font,emitted:false}));catalog.primaryOwners=items.flatMap(m=>['depth','body'].map(part=>'magnets.glyph.'+m.q+'.'+part));}
     // decoy magnets around the edges (never over the lyric band)
     const bandY0 = H / 2 - nR * base * 0.62, bandY1 = H / 2 + nR * base * 0.62;
+    if(nativeD)catalog.band={y0:bandY0,y1:bandY1};
     if (env.pass === 'main') {
       for (let d = 0; d < Pm.decoys; d++) {
         const ta = 0.05 + d * 0.04, e = J.clamp((lt - ta) / 0.2);
+        if(nativeD)catalog.decoys.push({d,ta,e,emitted:e>0});
         if (e <= 0) continue;
         const top = d % 2 === 0, half = Math.ceil(Pm.decoys / 2), slot = Math.floor(d / 2);
         const sz = Math.min(base * J.rr(0.36, 0.58, s, d, 14), u * 0.09);
@@ -40178,23 +40201,29 @@ reg('magnets', {
         const x = mx + bw * (0.1 + 0.8 * (slot + 0.2 + 0.6 * J.r(s, d, 12)) / half);
         const ch = DECOY[J.h(s, d, 13) % DECOY.length], rot = J.rs(s, d, 15) * 25, col = cols[(d + 2 + Pm.colOff) % cols.length];
         const k = 1 + 0.25 * (1 - E.outCubic(e));
-        env.draw({ text: ch, font: Pm.df, size: sz * k, x: x + sz * 0.05, y: y + sz * 0.07, rot, color: darkOf(sc), stroke: sz * 0.08, strokeColor: darkOf(sc), strokeUnder: true, alpha: 0.28 * out * e, ghost: false });
-        env.draw({ text: ch, font: Pm.df, size: sz * k, x, y, rot, color: col, stroke: sz * 0.08, strokeColor: col, strokeUnder: true, alpha: 0.85 * out * e, ghost: false });
+        if(nativeD){Object.assign(catalog.decoys[d],{ch,font:Pm.df,top,half,slot,size:sz,k,animatedSize:sz*k,x,y,rot,col,depth:{x:x+sz*.05,y:y+sz*.07,alpha:.28*out*e},body:{alpha:.85*out*e},stroke:sz*.08});catalog.independentDecorOwners.push('magnets.decoy.'+d+'.depth','magnets.decoy.'+d+'.body');}
+        owned('independentDecor','decoy.'+d+'.depth',()=>env.draw({ text: ch, font: Pm.df, size: sz * k, x: x + sz * 0.05, y: y + sz * 0.07, rot, color: darkOf(sc), stroke: sz * 0.08, strokeColor: darkOf(sc), strokeUnder: true, alpha: 0.28 * out * e, ghost: false }));
+        owned('independentDecor','decoy.'+d+'.body',()=>env.draw({ text: ch, font: Pm.df, size: sz * k, x, y, rot, color: col, stroke: sz * 0.08, strokeColor: col, strokeUnder: true, alpha: 0.85 * out * e, ghost: false }));
       }
     }
     let bb = null;
     const gap = J.clamp(cut.dur * 0.32 / n, 0.04, 0.1);
+    if(nativeD)catalog.gap=gap;
     for (const m of items) {
       const t1 = 0.18 + m.q * gap;
       const f = (lt - t1) / 0.16;
+      if(nativeD)Object.assign(catalog.glyphs[m.q],{t1,f,emitted:f>=0});
       if (f < 0) continue;
       const snap = f < 1 ? 1.28 - 0.28 * E.inQuad(f) : 1 - 0.05 * Math.exp(-(f - 1) * 0.16 / 0.05) * Math.cos((f - 1) * 3);
       const lift = f < 1 ? 1 - f : 0;
       const sz = m.size * snap;
-      env.draw({ text: m.ch, font: Pm.font, size: sz, x: m.x + m.size * (0.04 + lift * 0.12), y: m.y + m.size * (0.06 + lift * 0.18), rot: m.rot, color: darkOf(sc), stroke: sz * 0.08, strokeColor: darkOf(sc), strokeUnder: true, alpha: (0.3 - lift * 0.15) * out, ghost: false });
-      bb = UB(bb, J.mainDraw(env, { text: m.ch, font: Pm.font, size: sz, x: m.x, y: m.y, rot: m.rot, color: m.col, stroke: sz * 0.08, strokeColor: m.col, strokeUnder: true, plain: true, mi: miAt(env, t1) }));
+      if(nativeD)Object.assign(catalog.glyphs[m.q],{snap,lift,animatedSize:sz,stroke:sz*.08,depth:{x:m.x+m.size*(.04+lift*.12),y:m.y+m.size*(.06+lift*.18),alpha:(.3-lift*.15)*out}});
+      owned('primary','glyph.'+m.q+'.depth',()=>env.draw({ text: m.ch, font: Pm.font, size: sz, x: m.x + m.size * (0.04 + lift * 0.12), y: m.y + m.size * (0.06 + lift * 0.18), rot: m.rot, color: darkOf(sc), stroke: sz * 0.08, strokeColor: darkOf(sc), strokeUnder: true, alpha: (0.3 - lift * 0.15) * out, ghost: false }));
+      const mi=miAt(env,t1);if(nativeD)catalog.glyphs[m.q].mi=mi;
+      bb = UB(bb, owned('primary','glyph.'+m.q+'.body',()=>J.mainDraw(env, { text: m.ch, font: Pm.font, size: sz, x: m.x, y: m.y, rot: m.rot, color: m.col, stroke: sz * 0.08, strokeColor: m.col, strokeUnder: true, plain: true, mi })));
     }
     return bb;
+    } finally {if(nativeD)freeze(catalog);}
   },
 });
 
