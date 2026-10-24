@@ -1,0 +1,58 @@
+[
+  {
+    "key": "stepClockQuantizer",
+    "path": "src/09_render.js",
+    "lineStart": 101,
+    "lineEnd": 103,
+    "text": "    const stepDur = J.stepDur(fx, fps);\n    const clock = J.komaOf(fx) > 0 ? stepDur : 1 / 24;\n    const tq = Math.floor(t / stepDur + 1e-6) * stepDur;",
+    "sha256": "2d874e2fd817675d8ac3cacd0da7f7ca53d991d7e49efeee74228d14d500df80"
+  },
+  {
+    "key": "heightUnit",
+    "path": "src/09_render.js",
+    "lineStart": 160,
+    "lineEnd": 160,
+    "text": "    const u = H / 1080;",
+    "sha256": "509209c416d7f9851fc471644e3a5854bce4fb2ec25fdc118c511c08a3cdc3be"
+  },
+  {
+    "key": "zeroEventBeatProof",
+    "path": "src/09_render.js",
+    "lineStart": 161,
+    "lineEnd": 173,
+    "text": "    const events = plan.events;\n    let spike = 0, shake = 0, beatPulse = 0;\n    for (let i = 0; i < events.length; i++) {\n      const ev = events[i]; if (ev.t > t) break; const dt = (t - ev.t) * 24;\n      if (dt > 14) continue;\n      if (ev.type === 'chroma') spike += ev.amp * Math.pow(0.55, dt);\n      else if (ev.type === 'shake') shake += ev.amp * Math.pow(0.62, dt);\n    }\n    if (plan.beats && plan.beats.length) {\n      const b = prevBeat(plan.beats, t);\n      if (b != null && t - b < 0.25) beatPulse = 0.9 * Math.exp(-(t - b) * 16);\n    }\n    const chroma = (fx.chroma ?? 0.7) * (st.ghost ?? 1) * (1 + spike + beatPulse);",
+    "sha256": "00695ef4c632c2ebb6daa7eb8b55e3b1c68fda090a1a0886e63afbc1d00730d2"
+  },
+  {
+    "key": "chromaStep",
+    "path": "src/09_render.js",
+    "lineStart": 173,
+    "lineEnd": 174,
+    "text": "    const chroma = (fx.chroma ?? 0.7) * (st.ghost ?? 1) * (1 + spike + beatPulse);\n    const step = Math.floor(tq / clock + 1e-6);",
+    "sha256": "3b5dbad4fbedbb180b4edc32cb60731d3b81b1a04201cb60942d929c2f7d5601"
+  },
+  {
+    "key": "shake",
+    "path": "src/09_render.js",
+    "lineStart": 185,
+    "lineEnd": 185,
+    "text": "    const shx = J.rs(step, 71) * shake * 16 * u, shy = J.rs(step, 72) * shake * 11 * u;",
+    "sha256": "5ab5cb925961ab8fd543ba98aeb3c58572ded1075000b2af6f10f3e7f6e60ee0"
+  },
+  {
+    "key": "passes",
+    "path": "src/09_render.js",
+    "lineStart": 187,
+    "lineEnd": 191,
+    "text": "    const passes = [\n      { pass: 'B', lag: 1.6 / 24, off: [-3.4 * chroma * u, -1.3 * chroma * u] },\n      { pass: 'A', lag: 0.8 / 24, off: [3.2 * chroma * u, 1.9 * chroma * u] },\n      { pass: 'main', lag: 0, off: [0, 0] },\n    ];",
+    "sha256": "a6cb8142c0ae63f4897d4ad788ce2a2ef29d13aa2389d0bfcb81edcc348f02a9"
+  },
+  {
+    "key": "rootOperations",
+    "path": "src/09_render.js",
+    "lineStart": 248,
+    "lineEnd": 252,
+    "text": "        const cs = J.lerp(1, cam.s ?? 1, motion) * (cut.contentScale ?? 1);\n        X.translate(areaX + contentW / 2 + (shx + P.off[0] + (cam.x || 0)) * motion, areaY + contentH / 2 + (shy + P.off[1] + (cam.y || 0)) * motion);\n        if (cam.rot) X.rotate(cam.rot * J.DEG * motion);\n        if (cam.skx) X.transform(1, 0, Math.tan(cam.skx * J.DEG * motion), 1, 0, 0);\n        X.scale(cs * J.lerp(1, cam.sx ?? 1, motion), cs * J.lerp(1, cam.sy ?? 1, motion)); X.translate(-contentW / 2, -contentH / 2);",
+    "sha256": "d8945c121b79efd611dc72d04085a768845fe6beee1cf35cdbc1d372af33923d"
+  }
+]

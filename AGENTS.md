@@ -1,3 +1,5 @@
+最新実行基盤：keeper8802（official network-enabled）へ切替済み。旧86381は127.0.0.1待受EPERMで29テスト未到達。ROOTindex7aa071e6…/53flags/PYCを変えず、resume03round1 privateindex/state/receiptを全byte確認して8802の同official BASEへ転送後、86381はEXIT終了。次Gitは同reviewed resume03 helper round2、receipt c3876cf1…使用。29テスト実行中はRUN_DONEまで別RUNを送らない。公開確認0。
+
 最新容量状態（2026-10-24夜）：keeper86381、新reviewed private_index_resume03.py（storage-capacity-pile03）経由のみ。pushed既存pile-exit13 after-frames raw1件をGitblobと全byte照合後、原本をGitblob-onlyへ退避して8,237,056B回復。旧52を完全維持して1skip追加、現在53absent/PYC7保持。新index c6dea1ee…、release receipt2020d04a…をcanonical保存済み。旧52用resume02 helperや旧roundは再使用しない。復元は同ディレクトリREADME、旧guard再実行なし。
 
 ## 最新指示：2026-10-24 23:00日本時間まで続行

@@ -1,0 +1,104 @@
+{
+  "status": "PARENT_DIAGNOSED_TEST_REFERENCE_ROOT_IMPORT_ROUNDING",
+  "actualRunFailed": true,
+  "rawSHA256": "079103ee4c5c878bb8c90add8931a43b347215a0712753d8166c1319235d1b10",
+  "completedFrames": 184,
+  "completedZeroPasses": 553,
+  "context": {
+    "index": 184,
+    "time": 3.066666666666667,
+    "pass": "B",
+    "lt": 2.9999999999999996,
+    "ltb": 3.0666666666666664,
+    "scale": 1,
+    "actualRoot": [
+      1.0146249532699585,
+      0,
+      0,
+      1.0146249532699585,
+      -7.274982452392578,
+      -4.046241044998169
+    ],
+    "nativePixelSHA256": "59e91ff8cf73c35bbf59e04d536fe801b745796a91f0b985d271200b1de9ae0b",
+    "zeroReplayPixelSHA256": "59e91ff8cf73c35bbf59e04d536fe801b745796a91f0b985d271200b1de9ae0b"
+  },
+  "actualLiveNativeRoot": [
+    1.0146249532699585,
+    0,
+    0,
+    1.0146249532699585,
+    -7.274982452392578,
+    -4.046241044998169
+  ],
+  "referenceCanvasImportedRoot": [
+    1.0146249532699585,
+    0,
+    0,
+    1.0146249532699585,
+    -7.274982452392578,
+    -4.04624080657959
+  ],
+  "observedReferenceEqualsFloat32RoundOfLive": true,
+  "maxRootDifference": 2.384185791015625e-07,
+  "fieldDifferences": [
+    {
+      "path": "$[0].nativeTransform.root[5]",
+      "expected": -4.04624080657959,
+      "actual": -4.046241044998169
+    },
+    {
+      "path": "$[1].nativeTransform.root[5]",
+      "expected": -4.04624080657959,
+      "actual": -4.046241044998169
+    },
+    {
+      "path": "$[2].nativeTransform.root[5]",
+      "expected": -4.04624080657959,
+      "actual": -4.046241044998169
+    },
+    {
+      "path": "$[3].nativeTransform.root[5]",
+      "expected": -4.04624080657959,
+      "actual": -4.046241044998169
+    }
+  ],
+  "keyOrderDifference": false,
+  "pixelHashesEqualAtMismatch": true,
+  "selectedRecipe": {
+    "kind": "two-group-stage",
+    "left": [
+      -144,
+      27
+    ],
+    "right": [
+      144,
+      27
+    ],
+    "qGroups": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ]
+  },
+  "selectedCounts": {
+    "circle": 0,
+    "globalStage": 0,
+    "board": 0,
+    "handle": 12,
+    "decoys": 2,
+    "entryHandle": 12,
+    "entryDecoys": 2,
+    "heldHandle": 0,
+    "heldDecoys": 0,
+    "sourceBandPolicyOnly": 1105
+  },
+  "measuredSingleFinalizeMilliseconds": 2036.8999999910593,
+  "formalPerformanceAccepted": false,
+  "fixScope": "Rebuild reference root by exact original Renderer operations and arithmetic order; assert exact root equality, preserve strict metadata/pixel predicates and product29 code. Do not add tolerance/drop root fields.",
+  "publicChecks": 0
+}

@@ -1,7 +1,7 @@
 # AVOID-009 拡張Dの34レイアウト・カスタム描画の対応
 
 - 状態: 実装中
-- 現在の確認段階: 風船balloons-native-stage-20261024-03へ利用者OKを受領。限定12Dの受入範囲を保持し、マグネットの元描画/transportに続く配置診断を順次実装。009全体・全D/custom・正式性能・保存本体は未完。
+- 現在の確認段階: 風船固定03は利用者OK済み。マグネットは標準円・元の4文字/seed1205等の限定条件でsource/raw・日英組込みを親受入し、MP4/独立sol画像/人間動作確認を準備中。従来12Dの受入範囲は保持、文字タイルは元描画catalogの隔離実装から着手。009全体・全D/custom・正式性能・保存本体は未完。
 - 最新回答: 「風船はOKです。次は22時まで順次作業を続けてください。」に従い、最新指示により本日2026-10-24 23:00日本時間まで続行。必要な新しい動作確認は版を固定して未承認queueへまとめる。実装は指定sol/medium、親source/rawレビュー・画像は文脈なしsol、公開結果確認の永久禁止を維持する。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
@@ -437,3 +437,15 @@ SOURCE27は実行exit0、250状態・全Number入力の量子化区間・279時�
 SOURCE28は250main状態・4250 owner/state・279関係・1324支持・486候補を実行、成立0。親は16032頂点のexact subsetと全候補/selector/e枝/関係を独立照合し診断限定受入。5088既存実描画障害物頂点の包含も成功。[親照合](evidence/AVOID-009/magnets-evening28/parent-obstacle28-review.json)。全区間の円/画面/盤面を満たす5候補はあるが、従来の装飾との全区間非重複条件では不成立。SOURCE29では独立装飾とのsource-tagged entryのみの重なりを明示的な視覚品質判断として扱う設計を検討、旧失敗を成功に置換しない。
 
 容量対処は[storage-capacity-pile03](evidence/AVOID-009/evening-20261024/storage-capacity-pile03/README.txt)。既存pile rawはGitblob保持・原本1件のみ解放、旧52保持+1=53absent、7PYC保持。
+
+SOURCE29製品候補は未統合。初回実行は複製プランをfinalizeへ渡す試験手順で既存ガードが拒否。SOURCE30は手順だけを直して再実行し、証明書作成後のnative描画命令比較で不一致。最初に遭遇したゼロ移動画素比較は通過したが全件成功ではない。raw/ソースは[magnets-evening29-failed](evidence/AVOID-009/magnets-evening29-failed/parent-failure-review.json)と[30-failed](evidence/AVOID-009/magnets-evening30-failed/parent-failure-review.json)へ保存。次31は差分根拠の追加から、未合格を動作確認へ回さない。
+
+## マグネット限定native配置のsource/raw受入（2026-10-24 夜）
+
+[source32親レビュー](evidence/AVOID-009/magnets-evening32/parent-native32-review.json)で250時刻・727実pass・3524主描画・28192頂点を独立照合。727ゼロ移動画素組、41独立native移動画素組、1536原ソース順root、26境界scale、20OFF/manual/lock/emphasis、6enabled-index比較を受入。連続1324支持/7226頂点の独立幾何も受入。元4文字/元seed1205/960×540/60fps/単区間等の限定scopeで、他の文字・パラメータ全対応には拡張しない。
+
+元サイズ・元運動・元の全paintを保ち、q0/1を[-144,27]、q2/3を[144,27]へ固定stage移動。円/画面/盤面を全相で厳密回避し、保持中の独立装飾との重なりも0。真の登場運動f<1だけの装飾との保守包絡重なりhandle12/decoy2は明示品質診断として残し、従来の全区間装飾非重複判定の不成立を成功に置換しない。外観/動作は未承認。
+
+[source33日英親レビュー](evidence/AVOID-009/magnets-evening33/parent-canonical33-review.json)で通常sorted buildのJA/ENそれぞれ代表18時刻・41ゼロ/41独立移動・26境界scaleを受入し、同じ量子化時刻の32画素/連続証明と完全一致。旧103JS・7PYC・53absent保持、追加2JSとJAEN buildだけ。生raw/capsule/親コードはprivate SourceGit33de9dfdへpush保存済み（dist外・公開操作/公開確認なし）、正本のraw-private-backup.jsonから復元可能。1回のcold1433msは正式性能合格ではない。
+
+次は代表1例だけの原寸native60fps MP4と文脈なしsol14PNG照合、必要動作確認を23時queueへ。文字タイルは外部設計を参考に元描画catalogのみ隔離着手し、回避adapter完成や全184対応の証拠とはしない。
