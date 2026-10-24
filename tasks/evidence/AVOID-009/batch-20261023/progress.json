@@ -8,7 +8,14 @@
   "implementationModel": "gpt-6.1-sol",
   "reasoningEffort": "medium",
   "visualReviewModel": "gpt-6.1-sol / medium, fresh context",
-  "activeWork": [],
+  "activeWork": [
+    {
+      "owner": "balloons_native_impl01",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "state": "Storage exact-derived-upload regeneration SOURCE prerequisite; then balloons native catalog/runner SOURCE only; parent runtime/main gate required"
+    }
+  ],
   "humanReviewQueue": [
     {
       "comparison": "selected-20261023-01",
@@ -211,8 +218,8 @@
       "cases": [
         "pile landscape usual circle, restored exit displacement/ghost separation"
       ],
-      "state": "HUMAN_REVIEW_UNANSWERED",
-      "status": "HUMAN_REVIEW_UNANSWERED",
+      "state": "HUMAN_APPROVED",
+      "status": "HUMAN_APPROVED",
       "review": "tasks/reviews/AVOID-009-pile-exit-20261024-01.md",
       "productCommit": "687c51c6",
       "sourceCommit": "8ef184fd3f60ee61ae4940425d3906f88ec8a1f3",
@@ -220,18 +227,20 @@
         "退出する速さと色残像の離れ方が元の動きに近いか",
         "既存の入口・左右配置・山の形が維持されているか"
       ],
-      "humanApproval": false,
+      "humanApproval": true,
       "publicChecks": 0,
       "url": "https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/pile-exit-20261024-01/",
-      "publicationOperationStatus": "succeeded"
+      "publicationOperationStatus": "succeeded",
+      "humanResponse": "両方OKです。今度は午後5時に確認するのでそれまで実装を進めておいてください。",
+      "humanResponseRecordedUTC": "2026-10-24T04:57:16.624106+00:00"
     },
     {
       "comparison": "blocks-native-20261024-01",
       "cases": [
         "native blocks shape/font/motion preserved with common translation"
       ],
-      "state": "HUMAN_REVIEW_UNANSWERED",
-      "humanApproval": false,
+      "state": "HUMAN_APPROVED",
+      "humanApproval": true,
       "productCommit": "f9f6c074",
       "review": "tasks/reviews/AVOID-009-blocks-native-translation03.md",
       "url": "https://jizura-motion-review-20261024.mokusatsu.chatgpt.site/review/AVOID-009/blocks-native-20261024-01/",
@@ -242,7 +251,9 @@
         "積み木の構成・立体感とまとまりが保たれているか",
         "元の落下・着地・退出の動きとして違和感がないか"
       ],
-      "publicChecks": 0
+      "publicChecks": 0,
+      "humanResponse": "両方OKです。今度は午後5時に確認するのでそれまで実装を進めておいてください。",
+      "humanResponseRecordedUTC": "2026-10-24T04:57:16.624106+00:00"
     }
   ],
   "completedDuringBatch": [
@@ -578,7 +589,7 @@
     "thinEvidence": "tasks/evidence/AVOID-009/pendulum-final01/avoid009-pendulum-final-packet02.tar.gz",
     "thinEvidenceSHA256": "d32f78a378299a6fcdff84dab00c8dca45cb000a0ee96c53cb51d8a82cc36e46"
   },
-  "lastParentSyncUTC": "2026-10-24T03:54:00Z",
+  "lastParentSyncUTC": "2026-10-24T04:57:16.624106+00:00",
   "pendulumMedia": {
     "capture": "output02",
     "canonicalManifestSHA256": "f1508ee593f32f18f583cda39dee502e34b26ccafa85f4b288cad48d5d515c13",
@@ -725,7 +736,7 @@
     "media": "Native60fps1pair committed6ee41a86; parent35978polys/freshsol16frames acceptedbounded; Sites4291087 nativeoperationSUCCEEDED, humanunanswered",
     "archivePush": "56ac348 parent82484CLOSEDexit0"
   },
-  "phase": "CUTOFF_HANDOFF_READY_TWO_HUMAN_MOTION_COMPARISONS_UNANSWERED",
+  "phase": "AFTERNOON_RESUMED_BALLOONS_NATIVE_SOURCE_GATE",
   "morningReviewDigest": "tasks/evidence/AVOID-009/batch-20261023/morning-review-20261024.md",
   "mainMediaPush": "6ee41a86 parent26021CLOSEDexit0",
   "publicationRecordPush": "eb607c22 parent9962CLOSEDexit0",
@@ -799,13 +810,10 @@
   },
   "fullscreenCardPublication": "tasks/evidence/AVOID-009/revisions-20261024/fullscreen-and-motion01/card-fullscreen02/publication-operation01.json",
   "continueUntil": {
-    "userInstruction": "1時まで順次実装を進めてください",
-    "assumedLocalDateTime": "2026-10-24T13:00:00+09:00",
+    "userInstruction": "両方OKです。今度は午後5時に確認するのでそれまで実装を進めておいてください。",
+    "confirmedLocalDateTime": "2026-10-24T17:00:00+09:00",
     "timezone": "Asia/Tokyo",
-    "optionalClarificationPending": false,
-    "humanReviewPolicy": "Pin unanswered versions; continue independent AVOID009 implementations, no assumed human approval or unconditional010 progression",
-    "confirmedLocalDateTime": "2026-10-24T13:00:00+09:00",
-    "userConfirmation": "本日13:00"
+    "humanReviewPolicy": "Pin new necessary motion comparisons unapproved; collect for17JST, continue independent009 in dependency order; public result checks permanently banned"
   },
   "pileExit13": {
     "status": "PUSHED_PUBLISHED_OPERATION_SUCCEEDED_HUMAN_UNANSWERED",
@@ -841,7 +849,8 @@
     "selectedMP4Push": {
       "session": 31676,
       "exit": 0
-    }
+    },
+    "humanMotionAccepted": true
   },
   "blocksNative01": {
     "status": "NATIVE_MAIN_PARENT_ACCEPTED_NOT_BOUNDED_ADAPTER",
@@ -929,9 +938,8 @@
       "evidencePushExit": 0
     },
     "nextGate": {
-      "status": "HUMAN_MOTION_UNANSWERED_FIXED_VERSION",
-      "comparison": "blocks-native-20261024-01",
-      "noAssumedApproval": true
+      "status": "HUMAN_APPROVED_BOUNDED_VERSION",
+      "comparison": "blocks-native-20261024-01"
     },
     "source03ParentFindings": [
       {
@@ -967,7 +975,7 @@
       },
       "codeIntegrated": true,
       "formalPerformanceAccepted": false,
-      "humanMotionAccepted": false,
+      "humanMotionAccepted": true,
       "productCommit": "f9f6c074",
       "productPushSession": 33022,
       "productPushExit": 0,
@@ -993,7 +1001,7 @@
       "visualFrames": 14,
       "parentImages": 0,
       "evidence": "tasks/evidence/AVOID-009/blocks-media03/evidence/parent-media03-review.json",
-      "humanApproval": false,
+      "humanApproval": true,
       "publicChecks": 0,
       "evidenceCommit": "082d69f0",
       "evidencePushSession": 99879,
@@ -1028,6 +1036,27 @@
       "pile-exit-20261024-01",
       "blocks-native-20261024-01"
     ],
-    "automaticResumeCreated": false
-  }
+    "automaticResumeCreated": false,
+    "supersededBy": "Explicit user restart until17JST"
+  },
+  "afternoonApproval20261024": {
+    "quote": "両方OKです。今度は午後5時に確認するのでそれまで実装を進めておいてください。",
+    "comparisons": [
+      "pile-exit-20261024-01",
+      "blocks-native-20261024-01"
+    ],
+    "recordedUTC": "2026-10-24T04:57:16.624106+00:00",
+    "doesNotExpandTo": "Unimplemented domains, formal performance,009completion or010+"
+  },
+  "continueUntilHistory": [
+    {
+      "userInstruction": "1時まで順次実装を進めてください",
+      "assumedLocalDateTime": "2026-10-24T13:00:00+09:00",
+      "timezone": "Asia/Tokyo",
+      "optionalClarificationPending": false,
+      "humanReviewPolicy": "Pin unanswered versions; continue independent AVOID009 implementations, no assumed human approval or unconditional010 progression",
+      "confirmedLocalDateTime": "2026-10-24T13:00:00+09:00",
+      "userConfirmation": "本日13:00"
+    }
+  ]
 }
