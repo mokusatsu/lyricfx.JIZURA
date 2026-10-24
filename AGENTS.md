@@ -46,4 +46,8 @@
 
 最新保存状態: current blocksのraw/PNGの42work/canonical重複pathをpushed082d69f0全byte照合後にworking領域だけ解放。23proof files、19新canonical skip、旧25不変で計44absent。証拠contentsはGitに完全保持、復元はtasks/evidence/AVOID-009/afternoon-20261024/storage-blocks01/PLAN.txt。source/main/PYC/旧3upload/無関係untracked不変。
 
-最新absentは45: stage04新rawをGitblob-only保存、旧44不変、TMP原本保持。tasks/evidence/AVOID-009/balloons-stage04/raw-storage04.json。stage04候補は代数診断で新replay/adapter未実装・加算0。
+直前absentは45: stage04新rawをGitblob-only保存、旧44不変、TMP原本保持。tasks/evidence/AVOID-009/balloons-stage04/raw-storage04.json。stage04候補は代数診断で新replay/adapter未実装・加算0。
+
+最新実行点: balloons固定終端v2/positive-zero main a046e71f push済み。MEDIA07はvisual軽微gapで保留、09はsignedzero assertion失敗のまま保存、11は全249frame親raw・文脈なしsol14PNG限定受入/人間未承認。全raw/PNGはSOURCE1de32441 private-evidence（dist外）へdurablepush済み。公開操作元返値pending、statuspolling/公開確認永久禁止。長寿命ownedPTY40524のSHMは別execから見えず、次magnets検証のTMPDIRとして使用中。protocolはprogress.json activeMemoryNamespace/最新checkpoint参照。親画像0、49absent/PYC保持、17JSTまで続行。
+
+最新absentは49: blocks-native01のnative01/02/03 rawとnative03-thinのcanonical4ファイルをpushed082d69f0 Gitblobへ全byte照合後、親レビュー済みguardで解放。旧45absent/skipと7PYC不変、4skipのみ追加。5,890,048bytes回復。正本証拠・4path/SHA/blob復元手順はtasks/evidence/AVOID-009/afternoon-20261024/storage-native03/（manifest.json、parent-release.json、RESTORE.txt）。復元は4blobをcanonicalへ排他的作成・SHA/bytes照合後、この4skipだけ解除し旧45を保持する。既に解放済みのguard再実行はしない。旧3upload・無関係untracked・公開確認0を維持。

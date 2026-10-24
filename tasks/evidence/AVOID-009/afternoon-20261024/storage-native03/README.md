@@ -1,0 +1,5 @@
+Parent reviewed and executed the archived guard. `parent-verify.json` and `parent-release.json` preserve the operation results. The four canonical blocks-native raw/capsule files are now intentionally absent locally; their exact bytes remain in pushed commit `082d69f0738e05c10aeee1af54c9d5e9efad91b3`. The prior 45 skip flags and absent paths were retained, yielding 49. All seven pinned PYC files were preserved by the guard. Recovery was 5,890,048 allocated bytes.
+
+`manifest.json` contains the exact paths, blob IDs, byte counts, SHA256 values, previous 45 skip paths and seven PYC pins. `RESTORE.txt` describes restoration: stream each of the four exact blobs into its canonical path using exclusive creation, verify byte count and SHA256, then clear only those four added skip flags. Keep the original 45 unchanged. The helper is historical evidence and must not be rerun against the released files.
+
+No public result checks were performed. This storage operation changes no capture, visual, or human approval status.

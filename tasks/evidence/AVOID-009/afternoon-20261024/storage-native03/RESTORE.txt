@@ -1,0 +1,12 @@
+SOURCE ONLY: guard not executed. Parent reviews source and immutable manifest, runs VERIFY, appends exactly4 skip flags (45→49), then RELEASE with reviewed-source-sha256.
+Recovery:5,890,048 allocated bytes =5.617MiB. No TMP raw copies needed; exact pushed082d69f0 Git blobs remain durable.
+Restore when space allows: for each exact path below, stream git cat-file blob BLOB to an exclusive-create regular file at the canonical path, then verify exact bytes/SHA256. After all4restore successfully, clear ONLY these4 added skip flags; preserve original45. Work paths remain absent; no requirement to restore released duplicate copies.
+
+tasks/evidence/AVOID-009/blocks-native01/native01.raw.json.gz
+  gitblob 9a51d6a58d55c168c397cfb5dd02ed41af81e448; bytes27136; SHA2568dad17df89837a6e835fb86a519f48545c8384e86f03c49aeb219cbdd194d95b; allocated28672
+tasks/evidence/AVOID-009/blocks-native01/native02.raw.json.gz
+  gitblob ec25ee63c9f599df3d71e472821978f770dd0074; bytes1369163; SHA256ae831d1cdaba45298c101024a81d177f2baff2b76bff26ac48fa547855fd2983; allocated1372160
+tasks/evidence/AVOID-009/blocks-native01/native03.raw.json.gz
+  gitblob 2a4fb3e4f94f1f8537937424bf1a2d1d7ce7083b; bytes1366897; SHA2566fdf1af1170f93d3909c40e87bec7a055ee6a691ca2f60f974bbf34ca3820b61; allocated1368064
+tasks/evidence/AVOID-009/blocks-native01/native03-thin.tar.gz
+  gitblob a7b8d3d0cd82e600eca06fc279f68b4832b19019; bytes3119402; SHA2561eca4f05dadb156dd3dc2a5ed4dc372c9a0d522ff719e9ca0b732c301c26901f; allocated3121152
