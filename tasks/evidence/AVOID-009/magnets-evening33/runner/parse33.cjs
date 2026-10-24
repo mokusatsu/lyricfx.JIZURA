@@ -1,0 +1,4 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),crypto=require('crypto'),assert=require('assert/strict'),root='/workspace/lyricfx.JIZURA',out='/tmp/avoid009-evening-magnets33/evidence/parse33.json',rows=[];
+for(const name of ['index.html','en/index.html']){const text=fs.readFileSync(root+'/'+name,'utf8'),scripts=[...text.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi)];assert(scripts.length>=2);for(const [i,s]of scripts.entries())new vm.Script(s[1],{filename:name+'#script'+i});rows.push({path:name,scriptCount:scripts.length,scriptSHA256:scripts.map(s=>crypto.createHash('sha256').update(s[1]).digest('hex')),syntax:'PASS_NOT_EVALUATED',edition:name.startsWith('en/')?'en':'ja'});}
+fs.writeFileSync(out,JSON.stringify({kind:'canonical33-script-parse-only',rows,browserExecuted:false,productJSEvaluated:false},null,2),{flag:'wx'});process.stdout.write(JSON.stringify(rows));

@@ -1,0 +1,26 @@
+# SOURCE32 — original renderer-operation root setup only; UNEXECUTED
+
+Parent31 failure is preserved: ROOT tasks/evidence/AVOID-009/magnets-evening31-failed/adapter31.raw.json.gz,85876B SHA079103ee4c5c878bb8c90add8931a43b347215a0712753d8166c1319235d1b10. Partial184 completed frames/553 successful zero pixel comparisons, first mismatch frame184,time3.066666666666667,passB,ownlt2.9999999999999996. Only4 nativeTransform.root[5] values differed: reconstructed reference -4.04624080657959 versus actual live Canvas -4.046241044998169 (delta2.384185791015625e-7); no key-order differences; all other fields/polygons/matrix/paint args identical. Native/zero pixel hashes both59e91ff8cf73c35bbf59e04d536fe801b745796a91f0b985d271200b1de9ae0b. This is evidence of a reference-canvas setup error, not a reason to relax fields or product root behavior. No all-frame success claimed for31.
+
+Cause: importing a live getTransform DOMMatrix through setTransform(M) does not preserve the original Canvas internal transform low bits. Source15 retains the actual original root, so the native-reference initial canvas must reproduce the original source operations instead of importing its measured matrix. Parent authorized only this test setup correction. Both29 product modules remain byte-exact; all geometry/quality/candidate/identity guards and every native pixel/metadata assertion are unchanged.
+
+`rebuiltRoot` now applies ORIGINAL09_render source operation order to each reference canvas, starting from setTransform(scale,0,0,scale,0,0). It makes the original native environment for exact ownlt/sourcecut and calls actual J.CAMERA.push.get(env,cut.camP). It uses literal captured source:
+
+* stepDur/clock/tq statements101-103; realTime remains actual frame time.
+* u=H/1080 at160. Fixed scope asserts no events/beats/energy/area/effect overrides; therefore source spike/shake/beatPulse remain0. Original empty-event/beat source161-173 is captured as proof of this reduction.
+* chroma=(fx.chroma??.7)*(st.ghost??1)*(1+spike+beatPulse), step, and exact shx/shy statement185. No algebraic regrouping such as coefficient*chroma*H/1080 substitutes for coefficient*chroma*u.
+* literal pass definitions187-191 preserve each multiplication and B/A/main offset/lag order.
+* literal248-252 CS=J.lerp(...)*contentScale, native center+camera/pass translation, optional camera rotate/skew statements (fixed push has neither), source scale with cam.sx/sy lerp, then negative half-stage translation. No ideal coefficient/root formula replaces Canvas operations.
+
+Captured text/line coordinates/per-snippet SHA are in evidence/source-snippets32.json. Runner checks text hashes, exact current source line spans, and literal inclusion of operative snippets in exercise32 before/after execution. All119 source pins additionally bind these exact files. Env style/FX are actual makeEnv outputs; cut overrides absent by declared scope; fonts/params/clocks remain native.
+
+After EACH initial root reconstruction for zero native, zero replay, moved native and moved adapter, getTransform's6 components must exactly equal the live observed root BEFORE any metadata comparison. No tolerance, quantization or field omission is introduced. Counter/last-context diagnostics retain exact expected/rebuilt matrices if equality fails. Independent MOVED reference still wraps only local primary withDrawRole in setTransform(originalRoot with stage device delta added), because that prefix intentionally matches actual replay. Independent decor retains reconstructed live root; no global function identity replacement.
+
+Known frame184/passB is an explicit negative control: a separate unused canvas imports the observed DOMMatrix exactly as31 did. Its root[5] must differ from live root[5], while source-operation reconstruction already matched all6 components exactly. Record both matrices and per-component deltas. This imported canvas is never used for expected paint or metadata. Failure to reproduce the pinned backend negative control aborts with evidence. Exact observed31 matrices remain historical input, never rewritten.
+
+Full literal native paint-record assertion stays unchanged. SOURCE31 partial failure provenance wrapper remains, including full cert/selected counts, completed counts, exact frame/pass/root context, full records and first20 value/key-order differences. A failure remains errors+exit1, not success. All60fps frames, boundary scales, zero pixels, independent moved pixels, original source-input/control/cache/stale tests remain prepared and unexecuted here.
+
+Source31 certificate's observed recipe was left(-144,27)/right(144,27), all hard circle/stage/board0, entryhandle12/decoy2, held0;2036.9ms was limited cold measurement, not formal performance acceptance.32 does not alter or force these values. No product/main/Git/public change, no browser/autotest/proof execution, no parent keeper access.119 pins/53 absent/7PYC preserved; all31 historical seal files intact.
+
+Parent must review SOURCE32 source/math/runner before execution. Command:
+MAGNETS_ADAPTER32_RELEASE=PARENT_REVIEWED_SOURCE_MATH_RUNNER MAGNETS_ADAPTER32_OUTPUT=/absolute/parent-owned-SHM/adapter32.raw.json.gz <pinnedNode> /tmp/avoid009-evening-magnets32/runner/runner32.cjs
