@@ -1,0 +1,11 @@
+# SOURCE25 failure diagnosis — sealed25 unchanged
+
+Parent run78153 exited1 before final raw, first NEW_HULL_NOT_SUBSET_OLD at magnets.glyph.0.body/B/[.18,.22459612255101086]. The supplied parent report is preserved separately; original stderr bytes remain with parent. No failure was overwritten or called success.
+
+Cause is structural: SOURCE25 mapped an entire S interval into independent x/y interval rectangles per local vertex. At a diagonal old-hull edge, x and y extrema choose different S endpoints. Convex hull of these rectangles contains nonphysical combinations that need not lie in the original correlated full-camera hull, even when the narrower S interval lies strictly inside old range.
+
+Independent diagnosis reconstructed the first cell without importing or running SOURCE25. Every orientation and normalized squared edge distance is calculated with exact Float64-as-rational Fraction arithmetic. New interval-box hull has2vertices outside stored old hull, maximum distance0.013253074632142627px. Removing all operation-rounding uncertainty and using exact rational interval boxes still escapes exact rational ideal whole-camera hull by0.013253074631832082px. Stored old Float64 hull versus exact ideal discrepancy is only2.4238119758124383e-14px. Therefore outward Float64 rounding is not the principal cause.
+
+Exact ideal cell hull constructed with SAME S for both coordinates at each endpoint lies entirely inside exact ideal old hull. A future correlation-preserving endpoint-hull design would need fresh continuous proof and directed endpoint-coordinate enclosure, followed by the same8736vertex/54root checks; tiny rounding escapes still require explicit handling. Parent-proposed accepted21 per-cell fallback remains a legitimate possible design, but has NOT been implemented or authorized here. No slack change, AA reduction, clipping, or new source25 model was performed.
+
+Full offending points/old edges/signed rational cross products/edge lengths/normalized distance² and exact ideal comparisons are in diagnosis25.json. diagnosis25.py is a separate independent offline arithmetic analysis. Every sealed25 file was SHA-checked before diagnosis, seal bytes unchanged afterward. Input21 rawSHA fixed. Product/main/root/Git/browser/network/images untouched.

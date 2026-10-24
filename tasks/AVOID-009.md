@@ -2,7 +2,7 @@
 
 - 状態: 実装中
 - 現在の確認段階: 風船balloons-native-stage-20261024-03へ利用者OKを受領。限定12Dの受入範囲を保持し、マグネットの元描画/transportに続く配置診断を順次実装。009全体・全D/custom・正式性能・保存本体は未完。
-- 最新回答: 「風船はOKです。次は22時まで順次作業を続けてください。」に従い、本日2026-10-24 22:00日本時間まで続行。必要な新しい動作確認は版を固定して未承認queueへまとめる。実装は指定sol/medium、親source/rawレビュー・画像は文脈なしsol、公開結果確認の永久禁止を維持する。
+- 最新回答: 「風船はOKです。次は22時まで順次作業を続けてください。」に従い、最新指示により本日2026-10-24 23:00日本時間まで続行。必要な新しい動作確認は版を固定して未承認queueへまとめる。実装は指定sol/medium、親source/rawレビュー・画像は文脈なしsol、公開結果確認の永久禁止を維持する。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
 - 事業優先度: 未指定。記載順は技術上の推奨順。
@@ -424,3 +424,12 @@ balloons通常build順序ordered06は2certificate/123frame画素が05と完全�
 風船固定03（manifest b9ed00b6…）への利用者OKを[回答記録](evidence/AVOID-009/evening-20261024/approval-balloon03.json)へ保存。新規確認待ちはいったん0件。本日22:00JSTまで009内の指定モデル実装・親レビューを順次進める。
 
 SOURCE24は元の盤面の丸角・上下移動の共通領域を正確に扱う診断だけを実装。親run51611 exit0、元81/486候補を完全再現後、別Fraction oracleで486候補・643464支持・3,511,836頂点・9境界例を照合。保守的な盤面判定17334件が解消したが候補成立0、最良近傍は円/画面/盤面0で取っ手12・飾り2が残る。実画素衝突・不可能性・安全adapter成功ではない。次SOURCE25は主文字のcamera包絡だけを時間区間へ限定する準備。[独立親照合](evidence/AVOID-009/magnets-evening24/parent-board24-review.json)。公開確認0/親画像0、017の新方式有効化や013保存本体未検査を成功扱いしない。
+
+## 2026-10-24 23時までの続行と外部設計報告
+
+利用者提供のtiles・bulbs・billboard設計報告を受領。設計入力としてソース照合し、実装・幾何/描画検証・人間承認とは分ける。現在のmagnets SOURCE27時計証明を指定sol/mediumが引継ぎ、親source/rawレビューで順次続行。添付以外の009内独立作業も本日23:00JST/14:00UTCまで実施する。公開結果確認の永久禁止は継続。旧keeper64166は再接続不可、保存済みROOTindex receiptから新手順を準備中。旧記録の22時期限はこの指示で更新。
+
+
+報告原文・受領SHAは[evidence/external-design](evidence/AVOID-009/external-design-20261024/receipt.json)。SOURCE25失敗は保持、SOURCE26は359精密化/965保守fallback・486候補成立0の診断限定受入。SOURCE27未実行・候補/adapter加算0。実装12D限定・正式性能/保存本体/009全体未完。
+
+SOURCE27は実行exit0、250状態・全Number入力の量子化区間・279時刻関係・1324支持対応を検査。親は11703境界照会を独立再計算し54実描画時計との一致を確認。全連続primary制約を残し、障害物形状/候補の評価/adapter追加は0。[時計限定親レビュー](evidence/AVOID-009/magnets-evening27/parent-clock27-review.json)。次SOURCE28は同一実時刻のmain障害物だけを精密化する準備。外部設計は全21src/契約等5件一致、更新中のAGENTS/009だけ差分あり。[設計照合](evidence/AVOID-009/external-design-20261024/parent-source-review.json)。

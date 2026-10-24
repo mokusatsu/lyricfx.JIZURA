@@ -1,0 +1,164 @@
+[
+  {
+    "key": "clamp",
+    "path": "src/01_util.js",
+    "lineStart": 7,
+    "lineEnd": 7,
+    "kind": "definition",
+    "text": "J.clamp = (x, a = 0, b = 1) => (x < a ? a : x > b ? b : x);",
+    "sha256": "7de393b7c51641875df0f1590125207a5802f53ec4ae7c2022ed696c3b31ed23"
+  },
+  {
+    "key": "lerp",
+    "path": "src/01_util.js",
+    "lineStart": 8,
+    "lineEnd": 8,
+    "kind": "definition",
+    "text": "J.lerp = (a, b, t) => a + (b - a) * t;",
+    "sha256": "ba3ca41cd7df256725ec89ee18dc51a4d9d2049275ffd9cec46614bb93cb1cc4"
+  },
+  {
+    "key": "komaOf",
+    "path": "src/08_planner.js",
+    "lineStart": 66,
+    "lineEnd": 66,
+    "kind": "definition",
+    "text": "J.komaOf = fx => (fx.koma != null ? +fx.koma : (fx.onTwos === false ? 0 : 12));",
+    "sha256": "8a98f209206a64f3db6c7134f6027ff8c1aec00a55a6b56e74ef895f3c9c5aed"
+  },
+  {
+    "key": "stepDur",
+    "path": "src/08_planner.js",
+    "lineStart": 67,
+    "lineEnd": 67,
+    "kind": "definition",
+    "text": "J.stepDur = (fx, fps) => { const k = J.komaOf(fx); return k > 0 ? 1 / k : 1 / (fps || 24); };",
+    "sha256": "cbd26625d348cb49c67b144b5474ea5df09d70a1f8e23b7bf7d5ef6a49848669"
+  },
+  {
+    "key": "cutAt",
+    "path": "src/09_render.js",
+    "lineStart": 12,
+    "lineEnd": 24,
+    "kind": "definition",
+    "text": "J.cutAt = (plan, t) => {\n  const cs = plan.cuts; let lo = 0, hi = cs.length - 1, ans = -1;\n  while (lo <= hi) {\n    const m = (lo + hi) >> 1;\n    const s = cs[m].renderStart ?? cs[m].start;\n    if (s <= t) { ans = m; lo = m + 1; } else hi = m - 1;\n  }\n  for (let i = ans; i >= 0; i--) {\n    const s = cs[i].renderStart ?? cs[i].start;\n    if (t >= s && t < (cs[i].displayEnd ?? cs[i].end)) return cs[i];\n  }\n  return null;\n};",
+    "sha256": "2f4e4af60ba5a00f325274d604bf56bc1b29efad1ecdd669021ad40d623b775f"
+  },
+  {
+    "key": "lyricCutsAt",
+    "path": "src/08e_lyric_features.js",
+    "lineStart": 429,
+    "lineEnd": 433,
+    "kind": "definition",
+    "text": "J.lyricCutsAt = (plan, t) => {\n  const inserted=plan.cuts.find(c=>c.insertedAtPlayhead && t>=c.start && t<c.end);\n  if(inserted)return [inserted];\n  return plan.cuts.filter(c => !c.blank && (c.renderStart ?? c.start) <= t && t < (c.displayEnd ?? c.end)).sort((a, b) => a.index - b.index);\n};",
+    "sha256": "ff71956fa6b60758f2031791d4b95e6d144778befa641b81e3aa472014e0807e"
+  },
+  {
+    "key": "lyricRenderCut",
+    "path": "src/08e_lyric_features.js",
+    "lineStart": 434,
+    "lineEnd": 437,
+    "kind": "definition",
+    "text": "J.lyricRenderCut = cut => cut.displayEnd != null ? Object.assign({}, cut, {\n  end: cut.displayEnd, dur: cut.displayEnd - cut.start,\n  exit: cut.groupExit ?? cut.exit, outDur: cut.groupOutDur ?? cut.outDur,\n}) : cut;",
+    "sha256": "9fa4d026f48825956dcbf55b9acb2d520c8381916f6ad36f6a420d657bac78fa"
+  },
+  {
+    "key": "quantizerStatement",
+    "path": "src/09_render.js",
+    "lineStart": 103,
+    "lineEnd": 103,
+    "kind": "statement",
+    "text": "const tq = Math.floor(t / stepDur + 1e-6) * stepDur;",
+    "sha256": "b6375dd1b0b735fd22bca4be634a9bdbc14593531b5b89952b7dca82a1c1463b"
+  },
+  {
+    "key": "passClockStatement",
+    "path": "src/09_render.js",
+    "lineStart": 194,
+    "lineEnd": 194,
+    "kind": "statement",
+    "text": "const tp = Math.max(0, tq - P.lag);",
+    "sha256": "eb8772c095031b48f43d1bdf4ffb7e132c3df05f7fa013156d2cfa7deb4b75a6"
+  },
+  {
+    "key": "ownClockStatement",
+    "path": "src/09_render.js",
+    "lineStart": 218,
+    "lineEnd": 218,
+    "kind": "statement",
+    "text": "const lt = tp - cut.start, motion = cut.motionScale ?? 1;",
+    "sha256": "62fffda368f27210421de191b7baf69dd2845641362b902018281b6fd1c6337a"
+  },
+  {
+    "key": "envClockFields",
+    "path": "src/09_render.js",
+    "lineStart": 221,
+    "lineEnd": 221,
+    "kind": "fragment",
+    "text": "t: tp, realTime: opt.avoidanceRealTime, placementObservation: opt.placementObservation, placementBudget: opt.placementBudget, lt, ltb: lt + P.lag, step: Math.floor(tp / clock + 1e-6), scale, allowFilter, energy, beat: beatInfo, beatPulse,",
+    "sha256": "45d4aad996f929638397d4dc0af87150d34119c7c9eaf29706a45ab121ab29c7"
+  },
+  {
+    "key": "pushDefinition",
+    "path": "src/05b_registry.js",
+    "lineStart": 29,
+    "lineEnd": 30,
+    "kind": "fragment",
+    "text": "  push: { name: 'ゆっくり寄る', tags: ['calm', 'editorial', 'emotional', 'graphic', 'pop', 'glitch'], w: 5,\n    get: (env) => ({ s: 1 + 0.03 * (env.fx.motion ?? 0.7) * J.clamp(env.lt / Math.max(0.3, env.cut.dur)) }) },",
+    "sha256": "e0dafa026588435405f1ec41d5a206c188d7dad0cc181fd96a12f3e0b6e3e13e"
+  },
+  {
+    "key": "cameraScaleStatement",
+    "path": "src/09_render.js",
+    "lineStart": 248,
+    "lineEnd": 248,
+    "kind": "statement",
+    "text": "const cs = J.lerp(1, cam.s ?? 1, motion) * (cut.contentScale ?? 1);",
+    "sha256": "ab62f281cb254ad09e94b783c183a8cc8532ac86fe51c6847d7b1f53ffd830c3"
+  },
+  {
+    "key": "passDefinitions",
+    "path": "src/09_render.js",
+    "lineStart": 187,
+    "lineEnd": 191,
+    "kind": "fragment",
+    "text": "const passes = [\n      { pass: 'B', lag: 1.6 / 24, off: [-3.4 * chroma * u, -1.3 * chroma * u] },\n      { pass: 'A', lag: 0.8 / 24, off: [3.2 * chroma * u, 1.9 * chroma * u] },\n      { pass: 'main', lag: 0, off: [0, 0] },\n    ];",
+    "sha256": "fc3b15163f482f7054d305ce52a21c9c1d65872fa92b72045fa8553d71ad77cf"
+  },
+  {
+    "key": "effectFXSelection",
+    "path": "src/09_render.js",
+    "lineStart": 99,
+    "lineEnd": 99,
+    "kind": "fragment",
+    "text": "const fx = effectCut?.effectFx || plan.fx, st = effectCut?.effectStyle || plan.style, fps = plan.fps;",
+    "sha256": "bb4047bcea04c2a7b7ab38c057b5a4aeed6d96949a9aef7f24e4963624f983cf"
+  },
+  {
+    "key": "makeEnvEffectiveFX",
+    "path": "src/09_render.js",
+    "lineStart": 335,
+    "lineEnd": 336,
+    "kind": "fragment",
+    "text": "const env = Object.assign({ ctx, W, H, sc: cut?.palette || sc, st: {...(cut?.effectStyle || plan.style),...(cut?.fonts ? {fonts:cut.fonts} : {})}, fx: cut?.effectFx || plan.fx, fps: plan.fps, cut, plan }, o);\n    if (cut && cut.motionScale < 1) env.fx = Object.assign({}, env.fx, { motion: env.fx.motion * cut.motionScale });",
+    "sha256": "db2632c11f2d36ee633ce38d441490a7d75d8a5cb38fde73e6b23cc47dff40d0"
+  },
+  {
+    "key": "ghostEnablement",
+    "path": "src/09_render.js",
+    "lineStart": 192,
+    "lineEnd": 192,
+    "kind": "fragment",
+    "text": "const ghostOn = (fx.chroma ?? 0.7) > 0.02 && (st.ghost ?? 1) > 0.02 && !opt.noGhost;",
+    "sha256": "2d077339b89360c3a71117d3a7a7aa1dac861a33026385b3a3c330e00ef34a12"
+  },
+  {
+    "key": "selectorVisibility",
+    "path": "src/09_render.js",
+    "lineStart": 105,
+    "lineEnd": 105,
+    "kind": "fragment",
+    "text": "const visible = cut => !opt.noLyrics && (opt.lyricLayer === 'above' ? cut.frontmost : opt.lyricLayer === 'below' ? !cut.frontmost : true);",
+    "sha256": "af9c8ae76befb16326e08c5ef17bc3de68e9d6783d0ae724f13203eeba07eea1"
+  }
+]
