@@ -5,6 +5,14 @@
 'use strict';
 const E = J.E;
 const shadowOutputFrames=new WeakMap();
+// SOURCE48 candidate: private issuer, no caller-forgeable env capability.
+const tiles48Frames=new WeakMap();let tiles48Hooks=null;
+Object.defineProperty(J,'installTilesFrame48',{configurable:true,value:hooks=>{
+ if(tiles48Hooks||!hooks||!['needs','prepare','finish'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_TILES48_FRAME_HOOKS');
+ tiles48Hooks=Object.freeze({needs:hooks.needs,prepare:hooks.prepare,finish:hooks.finish});
+ delete J.installTilesFrame48;
+ return Object.freeze({take:(renderer,env)=>{const rec=tiles48Frames.get(env);if(!rec||rec.renderer!==renderer||rec.ctx!==env.ctx||rec.plan!==env.plan||rec.cut!==env.cut)throw Error('TILES48_FRAME_ISSUER_REQUIRED');tiles48Frames.delete(env);return rec;}});
+}});
 
 const mk = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, w | 0); c.height = Math.max(1, h | 0); return c; };
 
@@ -70,6 +78,8 @@ class Renderer {
     opt={...opt,noForeground:opt.noForeground || hidden.foreground===false,noMedia:opt.noMedia || hidden.media===false,noLyrics:opt.noLyrics || hidden.lyrics===false,noHud:opt.noHud || hidden.lyrics===false,noPost:opt.noPost || hidden.lyrics===false};
     const W = plan.W, H = plan.H, scale = opt.scale || 1;
     const cw = ctx.canvas.width, ch = ctx.canvas.height;
+    // All pilot B/A/main proofs finish before clearRect, background, or ANY bitmap write.
+    const tiles48Frame=tiles48Hooks?.needs(plan)?tiles48Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
     const foregroundCut = plan.foreground && J.mediaAt(plan, t, 'foreground');
     if (!opt.noForeground && foregroundCut && J.mediaCutsAt(plan, t, 'foreground').some(c => J.mediaAssets.has(c.itemId))) {
       const step = J.stepDur(plan.fx, plan.fps);
@@ -254,6 +264,7 @@ class Renderer {
         // Content units: the display area, moved by the camera; the source mask follows them.
         const contentMatrix = sourceMask ? X.getTransform() : null;
         if(cut.fullStagePlacement&&cut.placementLayoutsC===true&&cut.layout==='shoji'&&cut.params?.variant==='shadow'){const m=X.getTransform();shadowOutputFrames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,width:cw,height:ch,scale,allowFilter,root:Object.freeze([m.a,m.b,m.c,m.d,m.e,m.f])}));env.placementOutputDomain=J.placement.layoutsCShadowOutputDomain(this,env);}
+        if(tiles48Frame)tiles48Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:tiles48Frame,pass:P.pass}));
         if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
         X.restore();
         if (sourceMask) J.applyMaskToCanvas(X.canvas, mask, contentMatrix, contentW, contentH, { cut, t: tp, plan });
@@ -301,6 +312,7 @@ class Renderer {
     // ---------- post ----------
     if (!opt.noPost && !backgroundMedia) this.post(ctx, plan, t, tq, step, sc, scale, opt, allowFilter);
     if (key && !opt.noPost && !backgroundMedia) this.keyFinish(ctx, key, opt);
+    if(tiles48Frame)tiles48Hooks.finish(tiles48Frame);
   }
 
   /* 合成用の背景: make the finished frame monochrome (white text + effects only) and put it on the key colour.
