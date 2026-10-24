@@ -1,3 +1,5 @@
+> 午後の更新: 既存22absentを維持したうえで、午後に生成したballoons native01/02 rawの2ファイルだけfef2d2d4のGitblobとTMP実SHAコピーへ退避し、元workpathはsymlinkで読取可能。canonical側は追加skipで計24absent。raw-storage02.json参照。既存rawや旧3uploadは変更していない。
+
 # 最新の続行指示（2026-10-24 午後）
 
 利用者は昼の山exit13・積み木nativeの両比較に「両方OKです」と明示回答し、本日17:00JSTまで順次実装して確認をまとめるよう依頼。両固定版の動作承認を記録済み。13時停止はこの新しい続行で更新された。次はballoons native catalog SOURCE gateから指定gpt-6.1-sol/medium子が実装、親source/rawレビュー、画像はcontextなしsol。新しい人間確認候補は固定版の未承認queueへ保存し17時に集約、009内独立部分を順次続行。009全体/全D/custom/正式性能/010+の完了を意味しない。公開結果確認永久禁止・proxy/CA/TLS維持・既存pycache/22absent/無関係untracked保持は継続。
@@ -39,3 +41,5 @@
 - 未実施・中止を成功と記録しない。既存の失敗記録は保持し、以後は「利用者指示により公開結果確認は中止・対象外」と記録する。
 
 実装担当と親レビューなど、その他の運用は [tasks/implementation-review-policy.md](tasks/implementation-review-policy.md) に従う。
+
+2026-10-24午後balloons診断03 rawを新規Gitblob-only canonicalへ保存し25absent（旧24不変）。TMP原本保持・raw-storage03.json参照。診断03は全3tail未対応でadapter加算0、SOURCE04隔離実装中。17JSTまで順次続行、公開確認0。
