@@ -453,3 +453,12 @@ Final deadline closeout 2026-10-24T13:59:41.289247+00:00: finite44b still runnin
 ## タイル有限診断44の回収・親レビュー
 
 完了出力の引継ぎ欠落により「実行中」と誤記した。keeperの空行応答COMMAND_REFUSEDで待受中を確認し、保存RUN0で既に完了済みのrawを回収。長時間ハングや所要18分の実測とは扱わない。727描画のzero/moved各一致、11,703時計照合・250状態の全Float64範囲連続性、9,638paint・77,104有理数頂点を親照合。入退場の円包絡交差81件はユーザー緩和条件、保持/strict交差0・画面条件違反0。固定条件・既存font/AAガードの診断受入であり、製品adapter適用や全般的証明ではない。次はREADONLY46製品受入設計。全raw・失敗・親照合はtiles-finite44へ保存。
+
+LATEST NIGHT POSTCOMMIT: work6f6786d09f37dc2a572630934019b834e05cee30 pushDONE0. Product66c95cd5 unchanged. Full40/41/42/44raw/source/parentreviews/baseline6before+6after/magnetsOK/03JSTschedule nowGitdurable. ROOTindexf4deb471f495dad33321229fbc79493e9e9e3dbdfe7d15b5e12ab17cc2a52dbd bytes5648320 sameinode554090/56skip/PYC7 verified. resume06round2receiptSHA d880ec7c4c4873f076c18509c6d223fa55ddef4df7a2b8f60cb6201dd7ed059b durableROOTstorage-capacity-pilemedia06; round3PREPARED/notstaged. Keeper8802 IDLE. Only strict56 work/avoid009-capacity-pilemedia06/private_index_resume06.py. READONLY46 tilesboundedproductadmission beingprepared, no adapter yet.44bactuallyexisted13:50:23, priorstillrunning waslostcompletionoutput, corrected. Continueuntil2026-10-25 08JST;03JSTresumercreated. Publicverification0/permanentban.
+
+
+## 夜間実行47と保存状態57（2026-10-25JST）
+
+隔離SOURCE47は親全ソースレビュー後に実行したが、atlas保持量8MiB上限で初期受入に失敗（CANDIDATE_NOT_ADMITTED/TILES47_ATLAS_MEMORY_BUDGET）。描画検証0件・製品適用0。全失敗rawとソースをtiles-adapter47へ保持、指定sol/mediumへSOURCE48の損失なし圧縮を差戻し。上限を単に上げて通さない。実行後121source/7PYC/旧56/index不変を親照合。
+
+その後、追跡済みpile-entry12-thin.tar.xzを現HEAD全blobと全byte照合しGitblob-onlyへ退避、10,579,968B回復。内容はGitblob6b96dd58.../SHA3fce8ee5...へ完全保持、旧56/PYC7/無関係untracked不変、現在57absent。STRICT57 resume07以外を使用しない。旧UNSTAGED56round3は監査後ABANDONED_BEFORE_STAGE、SHM原本を保持・再使用禁止。cap07初稿のSHA257/引数誤記は実行前に拒否し修正版構造監査後だけ実行、元失敗ソース保持。公開確認0。
