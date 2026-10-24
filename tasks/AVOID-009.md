@@ -406,3 +406,5 @@ balloons native02を[親source/raw/main照合](reviews/AVOID-009-balloons-native
 balloons診断03は親run92843exit0、3条件115599CSSbin、親が295連続Float64範囲・20750支持・243候補判定・83784実頂点を独立照合。single804にfull-circle36候補等があるが、3条件とも元4秒planの残留tail未対応で安全adapter成功0。次は観測範囲拡張と4文字の元運動を保つstage-space二群移動を隔離SOURCE04で実装中。[証拠](evidence/AVOID-009/balloons-diagnostic03/evidence/parent-independent-raw03.json)。009実装中/限定11D据置/010以降未着手/公開確認0。
 
 balloons stage04は親run45463exit0、102114CSSbin、親が300native候補+81二群候補・63336実頂点/27834代数移動頂点を独立照合。元cut4は不変、観測region4.150001で全selector失効。4文字bunch804は左右二群・anchor固定で1selective-moving候補（退場時53支持のみ円通過、held/stageは失敗0）。free704はunsupportedのまま。新replay/画素/adapterは未実装・未受入、次は最小同期proofとstage補正の読み取り設計。[証拠](evidence/AVOID-009/balloons-stage04/evidence/parent-independent-raw04.json)。009実装中/限定11D/010以降未着手/公開確認0。
+
+balloons adapter05隔離試験を親source/rawで限定受入。123元参照frame画素組＋72zero＋2原描画(module差のみ)、7768連続支持と150実補正糸segmentを独立照合、旧cache復号/フォント変更再計算等も成功。元4文字bunch/60fpsはstage二群移動・safe-hold（53は移動中の保守支持交差で実画素衝突件数ではない）。初回finalize約1743.6/3762.3ms、正式性能未合格。通常build内の読込順序の追加試験前でmain/媒体/人間未確認、11D据置。[生データと親照合](evidence/AVOID-009/balloons-adapter05/evidence/parent-independent-raw05.json)。

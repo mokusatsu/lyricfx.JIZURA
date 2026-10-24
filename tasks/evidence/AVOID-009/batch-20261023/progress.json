@@ -13,7 +13,7 @@
       "owner": "balloons_native_impl01",
       "model": "gpt-6.1-sol",
       "effort": "medium",
-      "state": "READONLY minimaladapter05 design after parent source/raw04 review; synchronousproof and originalroot stage reflow, no new adapter/main yet"
+      "state": "SOURCE06 orderedRAM normal-build-position runner, sealed05sources unchanged; parent gate before execution/main"
     }
   ],
   "humanReviewQueue": [
@@ -589,7 +589,7 @@
     "thinEvidence": "tasks/evidence/AVOID-009/pendulum-final01/avoid009-pendulum-final-packet02.tar.gz",
     "thinEvidenceSHA256": "d32f78a378299a6fcdff84dab00c8dca45cb000a0ee96c53cb51d8a82cc36e46"
   },
-  "lastParentSyncUTC": "2026-10-24T05:51:24.127542+00:00",
+  "lastParentSyncUTC": "2026-10-24T06:19:13.104980+00:00",
   "pendulumMedia": {
     "capture": "output02",
     "canonicalManifestSHA256": "f1508ee593f32f18f583cda39dee502e34b26ccafa85f4b288cad48d5d515c13",
@@ -1115,7 +1115,7 @@
     "rawStorage": "tasks/evidence/AVOID-009/balloons-native01/raw-storage02.json",
     "legacyAbsentFlags": 22,
     "newRawAbsentFlags": 2,
-    "totalAbsentFlags": 44,
+    "totalAbsentFlags": 45,
     "workRawPathsRemainReadable": true,
     "newDiagnosticRawAbsentFlags": 1
   },
@@ -1175,6 +1175,92 @@
     "adapterAccepted": false,
     "formalPerformanceAccepted": false,
     "publicChecks": 0,
-    "parentImages": 0
+    "parentImages": 0,
+    "evidenceCommit": "4983fcbf",
+    "pushSession": 34124,
+    "pushExit": 0
+  },
+  "balloonsAdapter05": {
+    "kind": "parent-independent-adapter05-review",
+    "rawSHA256": "885e9d507f3e99e977004154e2ce3a498838deb8fb925b031bda1f9ca6f3064d",
+    "parentRun": 30657,
+    "exit": 0,
+    "counts": {
+      "cases": 2,
+      "metricKeys": 56730,
+      "framePixelPairs": 123,
+      "testedSourcePasses": 309,
+      "testedPhysicalPieces": 4586,
+      "detailedPasses": 22,
+      "nativeGlyphStates": 55,
+      "nativeStringPoints": 605,
+      "sourcePaintEvents": 136,
+      "actualPieceVertices": 3014,
+      "actualPieces": 271,
+      "independentPhysicalStringSegments": 150,
+      "zeroPixelPairs": 72,
+      "correctedStringPoints": 132,
+      "nativeNoAdapterPixelPairs": 2
+    },
+    "maximumNumericResidual": 1.1368683772161603e-13,
+    "results": [
+      {
+        "fixture": "single804",
+        "recipe": {
+          "kind": "translation",
+          "offset": [
+            -284.4961755091804,
+            0
+          ],
+          "circleMode": "full"
+        },
+        "continuousSupports": 1604,
+        "fullCircleSupportIntersections": 0,
+        "sourceMovingOnlySupportIntersections": 0,
+        "metricScanMilliseconds": 1055,
+        "coldFinalizeMilliseconds": 1743.6000000089407,
+        "formalPerformanceAccepted": false
+      },
+      {
+        "fixture": "native4bunch804-fps60",
+        "recipe": {
+          "kind": "two-group-stage",
+          "left": [
+            -121.31517246798435,
+            0
+          ],
+          "right": [
+            124.49606661129076,
+            0
+          ],
+          "anchor": [
+            0,
+            0
+          ],
+          "circleMode": "selective-moving"
+        },
+        "continuousSupports": 6164,
+        "fullCircleSupportIntersections": 53,
+        "sourceMovingOnlySupportIntersections": 53,
+        "metricScanMilliseconds": 1333.4000000059605,
+        "coldFinalizeMilliseconds": 3762.2999999970198,
+        "formalPerformanceAccepted": false
+      }
+    ],
+    "negativeControls": 4,
+    "limits": [
+      "Bounded1cut/onewholeextendedregion/nativebunch1or4 only; originalfree4 unsupported.",
+      "Declared128binary32 numerical model, not universal Canvas theorem.",
+      "No fullmetric digest; allbins rebuild and freshsupport equality exercised in reviewed runner.",
+      "Detailed raw contains selected frames; alltested123frame pixels compare independent nativepaint; all249mediaframes pending.",
+      "Formalperformance/savebody/humanmotion/mainintegration not accepted."
+    ],
+    "publicChecks": 0,
+    "parentImages": 0,
+    "sourceAccepted": "Bounded isolated source/raw accepted; ordered normal-build module load still pending before main",
+    "mainIntegrated": false,
+    "humanMotionApproved": false,
+    "adapterCountIncrement": 0,
+    "evidenceRoot": "tasks/evidence/AVOID-009/balloons-adapter05"
   }
 }
