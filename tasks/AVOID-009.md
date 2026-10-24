@@ -414,3 +414,5 @@ balloons通常build順序ordered06は2certificate/123frame画素が05と完全�
 2026-10-24午後最終風船: 糸端を元時刻へ保つstage-v2とpositive-zero修正をwork a046e71fへ統合/push。全249frame498画素組・9170糸segment/170450頂点・20086変位を親が照合、文脈なしsol14PNGで新たな明瞭な欠損なし。限定source対応12/34D、人間動作・正式性能・全領域は未完。必要な1比較/5ファイルだけ公開操作し元返値pending、statuspolling/公開結果確認0。旧07と失敗09も配信対象外SourceGitへ保存。[固定版と確認点](reviews/AVOID-009-balloons-stage11.md)。次magnetsは隔離native catalog SOURCE検証のみ、009全体実装中/010以降未着手。
 
 マグネットnative13の隔離内部段階を親が237元画素/BB/getter/全paint組・1106seeded状態等で独立受入。native12のwrapper想定違い6失敗を保持し、同じ描画sourceの13はexit0。main literalgradientはtyped unsupportedのままでtransport/replay/回避成功ではなく加算0。新見た目のない内部fidelityなので追加人間確認不要、次はD-magnets限定transportのSOURCE14。[親レビュー](reviews/AVOID-009-magnets-native13.md)。009全体実装中/010以降未着手/公開確認0。
+
+マグネットnative transport15/通常build16を親が受入、work c595bbe5 push11098exit0。元/OFF237・zero237・主文字のみ移動237画素組、69丸角gradient/2187元root eventを独立照合、他D3controls不変。失敗14の34画素assertを残し、元座標精度だけを限定修正、FX不変。新配置ではない内部段階のため追加人間確認不要・回避adapter加算0/限定12D据置。次は原全描画を保つ共通移動のSOURCE18診断。正式性能/保存本体/009全体未完/公開確認0。[親レビュー](reviews/AVOID-009-magnets-transport15.md)。
