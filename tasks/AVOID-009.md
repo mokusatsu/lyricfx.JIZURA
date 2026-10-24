@@ -455,3 +455,6 @@ SOURCE29製品候補は未統合。初回実行は複製プランをfinalizeへ�
 
 
 12:24UTC tiles35 isolated native source/raw親受入：288native/32whole/252zero転送・全originalroot/16identitynegative/3他D一致。旧34の3失敗保持。配置/サイズ/フォント/時計を変更しない内部段階なので人間確認不要、次はcanonical36日英組込み検査（未実施）。009回避adapter完成ではない。
+
+
+12:31UTC tiles native canonical36親受入：JAEN実ビルドで576native/64全画面/504zero転送・全originalroot/32identitynegative/各3他D一致。旧34の失敗保持。2src+JAENだけ変更し他103JS/PYC7/54absent保持。内部描画一致段階のため人間確認不要。FullrawJSONはlosslessXZ 1,278,168B SHA4076dcad…、元gzipの厳密再生成も実照合済み。tiles回避adapter加算なし、次37は原寸共同移動のREADONLY設計のみ。マグネット1固定比較HUMAN_PENDING、公開元返値pendingから再確認0。

@@ -1,3 +1,5 @@
+12:31UTC tiles native canonical36親受入：JAEN実ビルドで576native/64全画面/504zero転送・全originalroot/32identitynegative/各3他D一致。旧34の失敗保持。2src+JAENだけ変更し他103JS/PYC7/54absent保持。内部描画一致段階のため人間確認不要。FullrawJSONはlosslessXZ 1,278,168B SHA4076dcad…、元gzipの厳密再生成も実照合済み。tiles回避adapter加算なし、次37は原寸共同移動のREADONLY設計のみ。マグネット1固定比較HUMAN_PENDING、公開元返値pendingから再確認0。
+
 2026-10-24 12:14UTC最新：マグネット代表1例のnative60fps MP4を親raw498/文脈なしsol14PNGで限定受入し固定HUMAN_PENDINGへ保存。必要5ファイルだけSource92c93064へpush、公開操作元返値pending（公開確認/polling0）。tiles34は288native比較/32全画面一致、転送3不一致は保存しtiles限定SOURCE35修正中。資料86ファイル約15MBの非公開Source保存は利用者が明示許可、1bbb2fb7へpush済み。009全体/正式性能/保存本体未完、23JSTまで続行。
 
 最新容量（54absent）：pushed3bのpile-exit13-thin.tar.gz 1件を全byte/Gitblob dd5a677d…/SHA23fbf979…確認後、guard04でGitblob-onlyへ退避、12,103,680B回復。旧53/PYC7/旧3upload/無関係untracked保持。ROOTindex3d38d79c…、helperはstorage-capacity-pile04/private_index_resume04.pyのみ（oldresume03再使用不可）。keeper8802継続、復元は同README。マグネットMEDIA02原寸60fps249x2と文脈なしsol14PNG限定PASS、人間動作未承認、公開結果確認0。

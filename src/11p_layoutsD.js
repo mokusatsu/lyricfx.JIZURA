@@ -1515,12 +1515,20 @@ reg('tiles', {
   },
   render(env) {
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const nativeD = cut.placementLayoutsD === true;
+    const matrixNow = () => { const m=env.ctx.getTransform();return [m.a,m.b,m.c,m.d,m.e,m.f]; };
+    const freeze = v => { if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v; };
+    let catalog = null, captureD = false;
+    const owned = (owner, kind, ghostRule, fn) => { if(!nativeD)return fn();const id='tiles.'+owner;if(captureD)catalog.sourceCalls.push({ordinal:catalog.sourceCalls.length,role:'primary',owner:id,kind,ghostRule,matrixBeforeCall:matrixNow()});return env.withDrawRole('primary',id,fn); };
     const n = J.glyphCount(cut.text);
     if (!n) return null;
     const port = isPort(env);
     const rowsT = rowsOf(cut.text, port ? 5 : 9);
     const rows = rowsT.length, per = Math.max(...rowsT.map(r => r.length));
     const k = Math.min(W * 0.84 / (per * 1.08 + 0.6), H * 0.62 / (rows * 1.75), u * 0.2);
+    captureD = nativeD && cut.text.length<=4096 && n<=64 && rows<=64 && rowsT.every(row=>row.length<=128);
+    if(nativeD){catalog={kind:'tiles-native-catalog',version:1,nativeOnly:true,complete:false,bounded:captureD,unsupported:captureD?null:'catalog-budget: max4096text/64glyphs/64rows/128slots',stage:[W,H],pass:env.pass,clock:{t:env.t,realTime:env.realTime,lt,ltb:env.ltb,pOut:env.pOut},seed:s,params:{font:Pm.font,from:Pm.from,rack:Pm.rack,score:Pm.score},text:captureD?cut.text:null,n,port,rowsT:captureD?rowsT.map(row=>row.slice()):[],rows,per,k,root:matrixNow(),rowRecords:[],tiles:[],sourceCalls:[],primaryOwners:[],independentDecorOwners:[],tiledAuxOwners:[],painterOrder:'per-row rack-shadow,slot; each tile thickness,face,highlight,points,glyph; rack-lip,edge; global SCORE-label,value',motionUnchanged:true};env.placementDGeometry=catalog;}
+    try {
     const out = tout(env);
     const tileC = J.mix(lightOf(sc), sc.accent, 0.1), tileT = darkOf(sc);
     const edge = J.mix(tileC, darkOf(sc), 0.3), hi = J.mix(tileC, '#FFFFFF', 0.35);
@@ -1528,6 +1536,7 @@ reg('tiles', {
     const gap = J.clamp(cut.dur * 0.36 / n, 0.05, 0.12), fd = 0.28;
     let bb = null, score = 0, total = 0;
     const ra = tin(env, 0, 0.4, E.outCubic) * out;
+    if(captureD){catalog.out=out;catalog.ra=ra;catalog.gap=gap;catalog.fd=fd;catalog.fonts={glyph:Pm.font,points:monoF(env),score:monoF(env)};catalog.colors={tileC,tileT,edge,hi,rackC};}
     let gi = 0;
     for (let r = 0; r < rows; r++) {
       const row = rowsT[r], cnt = row.length;
@@ -1536,8 +1545,10 @@ reg('tiles', {
       // rack: back slot + slanted front lip + shadow
       const ry = rowY + k * 0.42;
       const rw2 = rw * (0.3 + 0.7 * ra);
-      env.poly([[W / 2 - rw2 / 2 + k * 0.06, ry + k * 0.34], [W / 2 + rw2 / 2 + k * 0.06, ry + k * 0.34], [W / 2 + rw2 / 2 + k * 0.2, ry + k * 0.42], [W / 2 - rw2 / 2 + k * 0.2, ry + k * 0.42]], darkOf(sc), 0.25 * ra, false);
-      env.rect(W / 2 - rw2 / 2, ry - k * 0.12, rw2, k * 0.14, shade(sc, rackC, -0.3), ra, false);
+      if(captureD){catalog.rowRecords.push({r,text:row.join(''),slots:row.slice(),cnt,rowY,rw,ry,rw2,sourceRoot:matrixNow()});catalog.primaryOwners.push(...['shadow','slot','lip','edge'].map(part=>'tiles.row.'+r+'.rack.'+part));}
+
+      owned('row.'+r+'.rack.shadow','poly','main-only',()=>env.poly([[W / 2 - rw2 / 2 + k * 0.06, ry + k * 0.34], [W / 2 + rw2 / 2 + k * 0.06, ry + k * 0.34], [W / 2 + rw2 / 2 + k * 0.2, ry + k * 0.42], [W / 2 - rw2 / 2 + k * 0.2, ry + k * 0.42]], darkOf(sc), 0.25 * ra, false));
+      owned('row.'+r+'.rack.slot','rect','main-only',()=>env.rect(W / 2 - rw2 / 2, ry - k * 0.12, rw2, k * 0.14, shade(sc, rackC, -0.3), ra, false));
       for (let j = 0; j < cnt; j++) {
         const ch = row[j];
         if (ch === ' ') continue;
@@ -1546,6 +1557,9 @@ reg('tiles', {
         const x = W / 2 + (j - (cnt - 1) / 2) * k * 1.08, y = rowY;
         const t1 = 0.12 + i * gap;
         const f = J.clamp((lt - t1) / fd);
+        const sourceTile=captureD?{i,j,cnt,sourceRow:r,ch,pts,scoreFlag:Pm.score,x,y,t1,f,rawF:(lt-t1)/fd,emitted:f>0,mi:miAt(env,t1),delay:(miAt(env,t1)|0)*(cut.stagger||0),mainDrawOwnClock:lt-(miAt(env,t1)|0)*(cut.stagger||0),exitSourceJ:j,exitDenominator:Math.max(1,cnt),sourceRootBeforeTile:matrixNow()}:null;
+        if(captureD){catalog.tiles.push(sourceTile);catalog.primaryOwners.push(...['depth','face','highlight','points','glyph'].map(part=>'tiles.tile.'+i+'.'+part));}
+
         if (f <= 0) continue;
         if (f >= 1) score += pts;
         const e = E.outCubic(f);
@@ -1554,29 +1568,37 @@ reg('tiles', {
         else { tx = J.lerp(W + k, x, e); rot = (1 - e) * 10 + (f < 1 ? 0 : 0); ty = y - Math.sin(Math.PI * f) * k * 0.15; }
         // exit: slide out to the left, staggered
         const po = E.inCubic(J.clamp(env.pOut * 1.4 - j / Math.max(1, cnt) * 0.4));
+        if(captureD)sourceTile.beforeExit={tx,ty,rot};
         tx -= po * (x + k * 2 - (-k)) ;
         const lean = -k * 0.05;
+        if(captureD)Object.assign(sourceTile,{e,tx,ty,rot,po,lean,bounceClock:lt-t1-fd,bounceBranch:Pm.from==='drop'&&f>=1,shapeLocalOffsets:{depth:[-k/2+k*.03,-k/2+k*.06+lean],face:[-k/2,-k/2+lean],points:[k*.35,k*.33+lean]},nativeFaceGhost:gIn(env),glyphNoHold:plateHold(env)});
+
         const ctx = env.ctx;
         ctx.save(); ctx.translate(tx, ty); ctx.rotate(rot * J.DEG);
-        env.rrect(-k / 2 + k * 0.03, -k / 2 + k * 0.06 + lean, k, k, k * 0.1, edge, out, false);
-        env.rrect(-k / 2, -k / 2 + lean, k, k, k * 0.1, tileC, out, gIn(env));
-        env.line([[-k / 2 + k * 0.12, -k / 2 + k * 0.05 + lean], [k / 2 - k * 0.12, -k / 2 + k * 0.05 + lean]], hi, Math.max(1, k * 0.025), 0.7 * out, false);
-        if (pts > 0) env.draw({ text: String(pts), font: monoF(env), size: k * 0.17, x: k * 0.35, y: k * 0.33 + lean, color: tileT, alpha: 0.85 * out, ghost: false });
+        if(captureD)sourceTile.shapeActualMatrix=matrixNow();
+        owned('tile.'+i+'.depth','rrect','main-only',()=>env.rrect(-k / 2 + k * 0.03, -k / 2 + k * 0.06 + lean, k, k, k * 0.1, edge, out, false));
+        owned('tile.'+i+'.face','rrect','original-gIn',()=>env.rrect(-k / 2, -k / 2 + lean, k, k, k * 0.1, tileC, out, gIn(env)));
+        owned('tile.'+i+'.highlight','line','main-only',()=>env.line([[-k / 2 + k * 0.12, -k / 2 + k * 0.05 + lean], [k / 2 - k * 0.12, -k / 2 + k * 0.05 + lean]], hi, Math.max(1, k * 0.025), 0.7 * out, false));
+        if (pts > 0) owned('tile.'+i+'.points','item','main-only-pts-positive',()=>env.draw({ text: String(pts), font: monoF(env), size: k * 0.17, x: k * 0.35, y: k * 0.33 + lean, color: tileT, alpha: 0.85 * out, ghost: false }));
         ctx.restore();
         const m = [Math.cos(rot * J.DEG), Math.sin(rot * J.DEG), -Math.sin(rot * J.DEG), Math.cos(rot * J.DEG), tx, ty + lean];
-        bb = UB(bb, drawAff(env, { text: ch, font: Pm.font, size: k * 0.6, x: -k * 0.06, y: -k * 0.05, color: tileT, noHold: plateHold(env), mi: miAt(env, t1) }, m));
+        if(captureD){sourceTile.glyphAffine=m.slice();sourceTile.rootBeforeGlyph=matrixNow();}
+        bb = UB(bb, owned('tile.'+i+'.glyph','drawAff-mainDraw','all-native-passes',()=>drawAff(env, { text: ch, font: Pm.font, size: k * 0.6, x: -k * 0.06, y: -k * 0.05, color: tileT, noHold: plateHold(env), mi: miAt(env, t1) }, m)));
       }
-      env.poly([[W / 2 - rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2 - k * 0.06, ry + k * 0.34], [W / 2 - rw2 / 2 + k * 0.06, ry + k * 0.34]], rackC, ra, gIn(env));
-      env.line([[W / 2 - rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2, ry + k * 0.02]], shade(sc, rackC, 0.3), Math.max(1, k * 0.02), ra, false);
+      owned('row.'+r+'.rack.lip','poly','original-gIn',()=>env.poly([[W / 2 - rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2 - k * 0.06, ry + k * 0.34], [W / 2 - rw2 / 2 + k * 0.06, ry + k * 0.34]], rackC, ra, gIn(env)));
+      owned('row.'+r+'.rack.edge','line','main-only',()=>env.line([[W / 2 - rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2, ry + k * 0.02]], shade(sc, rackC, 0.3), Math.max(1, k * 0.02), ra, false));
     }
     if (Pm.score && env.pass === 'main') {
       const fs = Math.max(smallSize(env), k * 0.16);
       const lastY = H / 2 + ((rows - 1) - (rows - 1) / 2) * k * 1.75 + k * 0.42 + k * 0.34;
       const a = tin(env, 0.2, 0.3, E.outCubic) * out;
-      env.draw({ text: 'SCORE', font: monoF(env), size: fs, track: 0.3, align: 'left', x: W / 2 - Math.min(per, n) * k * 0.54 - k * 0.25, y: lastY + fs * 1.6, color: sc.sub, alpha: a, ghost: false });
-      env.draw({ text: String(score).padStart(3, '0'), font: monoF(env), size: fs * 1.5, track: 0.1, align: 'right', x: W / 2 + Math.min(per, n) * k * 0.54 + k * 0.25, y: lastY + fs * 1.6, color: score >= total && total > 0 ? sc.accent : sc.fg, alpha: a, ghost: false });
+      if(captureD){catalog.scoreRecord={enabled:Pm.score,pass:env.pass,score,total,value:String(score).padStart(3,'0'),fs,lastY,alpha:a};catalog.primaryOwners.push('tiles.score.label','tiles.score.value');}
+      owned('score.label','item','main-only-score-flag',()=>env.draw({ text: 'SCORE', font: monoF(env), size: fs, track: 0.3, align: 'left', x: W / 2 - Math.min(per, n) * k * 0.54 - k * 0.25, y: lastY + fs * 1.6, color: sc.sub, alpha: a, ghost: false }));
+      owned('score.value','item','main-only-score-flag',()=>env.draw({ text: String(score).padStart(3, '0'), font: monoF(env), size: fs * 1.5, track: 0.1, align: 'right', x: W / 2 + Math.min(per, n) * k * 0.54 + k * 0.25, y: lastY + fs * 1.6, color: score >= total && total > 0 ? sc.accent : sc.fg, alpha: a, ghost: false }));
     }
+    if(captureD){catalog.score=score;catalog.total=total;catalog.gi=gi;catalog.complete=true;}
     return bb;
+    } finally {if(nativeD)freeze(catalog);}
   },
 });
 
