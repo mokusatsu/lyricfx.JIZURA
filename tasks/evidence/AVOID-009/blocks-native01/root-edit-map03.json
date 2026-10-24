@@ -1,0 +1,7 @@
+{
+  "insertionAfter": "const dPileCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='pile'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('pile');",
+  "added": "// Blocks native-catalog replay retains the exact original camera root; no safety adapter.\nconst dBlocksCut=cut=>cut?.placementLayoutsD===true&&!cut.placementLayoutsA&&!cut.placementLayoutsB&&!cut.placementLayoutsC&&cut.layout==='blocks'&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&!cut.drawing&&!cut.effectsOnly&&!(cut.decor||[]).length&&A.layoutsDSourceKnown?.('blocks');\n",
+  "before": "dRibbonCut(env.cut)||dPileCut(env.cut))",
+  "after": "dRibbonCut(env.cut)||dPileCut(env.cut)||dBlocksCut(env.cut))",
+  "inverseRestoresWhole09a": true
+}
