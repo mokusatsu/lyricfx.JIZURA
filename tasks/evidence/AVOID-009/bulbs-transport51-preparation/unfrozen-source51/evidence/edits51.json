@@ -1,0 +1,22 @@
+[
+  {
+    "before": "const dTilesCut=cut=>",
+    "after": "const dBulbsCut=(renderer,env)=>env.cut?.placementLayoutsD===true&&!env.cut.placementLayoutsA&&!env.cut.placementLayoutsB&&!env.cut.placementLayoutsC&&env.cut.layout==='bulbs'&&!env.placementEnvelope&&!env.cut.placementUnits&&env.cut.enter==='cut'&&env.cut.exit==='cut'&&['still','jitter','breathe'].includes(env.cut.hold)&&env.cut.treat==='none'&&!env.cut.drawing&&!env.cut.effectsOnly&&!(env.cut.decor||[]).length&&['main','A','B'].includes(env.pass)&&Number.isFinite(env.fx?.motion)&&[env.t,env.lt,env.ltb,env.step,env.pIn,env.pOut].every(Number.isFinite)&&A.layoutsDSourceKnown?.('bulbs')&&A.layoutsDTransportKnown?.(renderer)&&A.bulbsTransport51Known?.(renderer)===true;\nconst dTilesCut=cut=>"
+  },
+  {
+    "before": "  recordMatrixEpoch++;",
+    "after": "  recordMatrixEpoch++;\n  const nativeBulbs51=env.cut?.placementLayoutsD===true&&env.cut.layout==='bulbs';\n  if(nativeBulbs51&&!dBulbsCut(renderer,env))fail('UNSUPPORTED_D_BULBS_TRANSPORT','Stock bulbs cut/cut/none with still/jitter/breathe, unchanged native helpers/renderer and finite effective motion required');"
+  },
+  {
+    "before": "dMagnetsCut(env.cut)||dTilesCut(env.cut))",
+    "after": "dMagnetsCut(env.cut)||dTilesCut(env.cut)||dBulbsCut(renderer,env))"
+  },
+  {
+    "before": "  if(dBalloonsCut(env.cut)&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))recorder.fx=env.fx;",
+    "after": "  if(dBalloonsCut(env.cut)&&['main','A','B'].includes(env.pass)&&A.layoutsDTransportKnown?.(renderer))recorder.fx=env.fx;\n  // Bulbs mainDraw consumes the already-effective source FX exactly once.\n  if(nativeBulbs51)recorder.fx=env.fx;"
+  },
+  {
+    "before": "  const program={events,diagnostics,",
+    "after": "  if(nativeBulbs51&&recorder.placementDGeometry?.complete!==true)diagnostics.push({code:'UNSUPPORTED_D_BULBS_CATALOG',message:'Complete bounded source50 bulbs catalog required for this transport pilot'});\n  const program={events,diagnostics,...(nativeBulbs51?{nativeBulbsTransport51:{kind:'bulbs-original-live-root-effective-fx',effectiveFXIdentityPreserved:recorder.fx===env.fx,inputEffectiveFX:jsonClone(env.fx),recordedEffectiveFX:jsonClone(recorder.fx),actualRoot:nativeDOriginalRoot.slice(),pilotHolds:['still','jitter','breathe'],safetyCertificate:false}}:{}),"
+  }
+]

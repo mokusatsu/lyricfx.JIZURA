@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "build": "tiles-native-20261025-01",
+  "sourceProduct": "abc6ad3cfc6af101f16a5ec6735208e494488228",
+  "sourceSealSHA256": "53acd064c4ea0e0502d958eb111635dd798417da0eb0ee17f1d989232322757a",
+  "sourceGateSHA256": "6fa0f65a01d6912840a5c52338d20699f4dfceb9b8c37b0ae1a0a1dca5798d62",
+  "fixture": {
+    "layout": "tiles",
+    "text": "風の先へ",
+    "seed": 1205,
+    "width": 960,
+    "height": 540,
+    "sourceCutStart": 0,
+    "sourceCutEnd": 4,
+    "sourceCutDuration": 4,
+    "fps": 60,
+    "koma": 0,
+    "observationHorizon": 4.150001,
+    "baseline": "Original native rendering; identical enabled source input; no placement finalization"
+  },
+  "capture": {
+    "frames": 249,
+    "encodedDuration": 4.15,
+    "clock": "j/60 for j=0..248",
+    "noHud": true,
+    "noPost": true,
+    "scale": 1,
+    "circleBurnedIn": false,
+    "guide": {
+      "htmlOverlayOnly": true,
+      "cx": 480,
+      "cy": 226.8,
+      "r": 108
+    },
+    "proofFrameIndices": [
+      6,
+      24,
+      60,
+      120,
+      216,
+      231,
+      244
+    ]
+  },
+  "quality": {
+    "policy": "tiles-source-moving-entry-exit-only-v1",
+    "entryExitTileAndOwnedPointsCircleRelaxation": true,
+    "rackScoreAndHeldStrict": true,
+    "humanMotionApproval": false
+  },
+  "sides": {
+    "before": {
+      "video": "videos/before.mp4",
+      "sha256": "21286a2e01284c3e4ffedb6c98f66c740c296c9f04256a34552e354c9a553fd1",
+      "width": 960,
+      "height": 540,
+      "codec": "h264",
+      "fps": "60/1",
+      "frames": 249,
+      "duration": 4.15,
+      "sampleAspectRatio": "1:1"
+    },
+    "after": {
+      "video": "videos/after.mp4",
+      "sha256": "4d2e6d226a81855732723034da9e017a69c07702b3c49ed49011882f05161984",
+      "width": 960,
+      "height": 540,
+      "codec": "h264",
+      "fps": "60/1",
+      "frames": 249,
+      "duration": 4.15,
+      "sampleAspectRatio": "1:1"
+    }
+  },
+  "publicFiles": [
+    "index.html",
+    "en.html",
+    "manifest.json",
+    "videos/before.mp4",
+    "videos/after.mp4"
+  ],
+  "humanMotionReview": "PENDING",
+  "visualReview": "PASS14-static-only",
+  "formalPerformanceAccepted": false,
+  "publicChecks": 0
+}

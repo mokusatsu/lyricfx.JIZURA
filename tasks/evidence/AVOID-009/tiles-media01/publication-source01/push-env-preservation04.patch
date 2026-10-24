@@ -1,0 +1,20 @@
+--- push-publication01-before04
++++ push-publication01-after04
+@@ -49,13 +49,14 @@
+   expected={**oldtree,**added};need(len(expected)==111 and local['expectedProtectedTree']==expected and tree()==expected)
+   e=os.environ.copy()
+   for k in list(e):
+-   if k.startswith('GIT_TRACE') or k.startswith('GIT_CONFIG_') or k in ['GIT_CURL_VERBOSE','GIT_DIR','GIT_WORK_TREE','GIT_INDEX_FILE','GIT_COMMON_DIR','GIT_OBJECT_DIRECTORY','GIT_ALTERNATE_OBJECT_DIRECTORIES']:e.pop(k,None)
++   if k.startswith('GIT_TRACE') or k in ['GIT_CURL_VERBOSE','GIT_DIR','GIT_WORK_TREE','GIT_INDEX_FILE','GIT_COMMON_DIR','GIT_OBJECT_DIRECTORY','GIT_ALTERNATE_OBJECT_DIRECTORIES']:e.pop(k,None)
+   e['GIT_TERMINAL_PROMPT']='0';e['GIT_OPTIONAL_LOCKS']='0'
++  base_count=int(e.get('GIT_CONFIG_COUNT','0'));need(base_count>=0)
+   # Proxy/CA/TLS environment remains inherited and unchanged; no secret files.
+   settings=[('gc.auto','0'),('maintenance.auto','false'),('credential.helper',''),('core.hooksPath','/dev/null'),('http.followRedirects','false'),('fetch.recurseSubmodules','false')]
+   def install_settings():
+-   e['GIT_CONFIG_COUNT']=str(len(settings))
+-   for i,(k,v) in enumerate(settings):e['GIT_CONFIG_KEY_'+str(i)]=k;e['GIT_CONFIG_VALUE_'+str(i)]=v
++   e['GIT_CONFIG_COUNT']=str(base_count+len(settings))
++   for i,(k,v) in enumerate(settings):e['GIT_CONFIG_KEY_'+str(base_count+i)]=k;e['GIT_CONFIG_VALUE_'+str(base_count+i)]=v
+   install_settings()
+   def git(args):return subprocess.run(['git',*args],cwd=SOURCE,env=e,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout
+   def config():

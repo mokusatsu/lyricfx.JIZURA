@@ -1,0 +1,9 @@
+Pre-execution revision03: parent push gate additionally requires stageScriptSHA256
+matching the corrected local stage receipt's stageScriptSHA256. This dynamically
+binds push to the corrected reviewed stage source, without a hardcoded old digest.
+Current corrected stage SHA343ffc985c290b1e01eaad8f3ba4ada325cc3b49582f350d68c2464329f04684.
+Correct known byte sizes: BEFORE570488B, AFTER578834B; stage additionally requires
+actual payload length == fixed side size == fullmanifest side probe.format.size.
+Initial stage/README/prep01 preserved under pre-parent-review01/; original prep01
+and prep02 receipts remain unchanged. Finding was pre-execution source review,
+not an actual run failure. No Source/Git/network/public execution by preparer.
