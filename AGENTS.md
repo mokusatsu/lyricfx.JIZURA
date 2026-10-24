@@ -1,3 +1,5 @@
+最新容量状態（2026-10-24夜）：keeper86381、新reviewed private_index_resume03.py（storage-capacity-pile03）経由のみ。pushed既存pile-exit13 after-frames raw1件をGitblobと全byte照合後、原本をGitblob-onlyへ退避して8,237,056B回復。旧52を完全維持して1skip追加、現在53absent/PYC7保持。新index c6dea1ee…、release receipt2020d04a…をcanonical保存済み。旧52用resume02 helperや旧roundは再使用しない。復元は同ディレクトリREADME、旧guard再実行なし。
+
 ## 最新指示：2026-10-24 23:00日本時間まで続行
 
 利用者提供のtiles・bulbs・billboard設計報告を受領。設計入力としてソース照合し、実装・幾何/描画検証・人間承認とは分ける。現在のmagnets SOURCE27時計証明を指定sol/mediumが引継ぎ、親source/rawレビューで順次続行。添付以外の009内独立作業も本日23:00JST/14:00UTCまで実施する。公開結果確認の永久禁止は継続。旧keeper64166は再接続不可、保存済みROOTindex receiptから新手順を準備中。旧記録の22時期限はこの指示で更新。
