@@ -1,7 +1,7 @@
 # AVOID-009 拡張Dの34レイアウト・カスタム描画の対応
 
 - 状態: 実装中
-- 現在の確認段階: 風船固定03は利用者OK済み。マグネット固定native比較01は親source/raw・原寸60fps・文脈なしsol14PNG受入、公開操作元返値pending・公開結果確認なしのまま利用者が動作OK回答済み。文字タイルは元描画catalog/原root転送を製品66c95cd5へ組込み、日英576native/504転送と基本6テスト前後各全件を親受入。原寸共同移動4条件の診断42は仮定付きモデルのみ受入、回避製品適用は未実施。実描画時刻/行列を全列挙する限定診断44も親受入、設計46に基づく隔離47は保持量上限で失敗、損失なし圧縮48は隔離実行・親rawレビューを限定受入。本体組込み49は日英の実描画と基本6テストを親受入、代表MP4準備中。従来12Dの受入範囲は保持、009全体・全D/custom・正式性能・保存本体は未完。
+- 現在の確認段階: 風船固定03は利用者OK済み。マグネット固定native比較01は親source/raw・原寸60fps・文脈なしsol14PNG受入、公開操作元返値pending・公開結果確認なしのまま利用者が動作OK回答済み。文字タイルは元描画catalog/原root転送を製品66c95cd5へ組込み、日英576native/504転送と基本6テスト前後各全件を親受入。原寸共同移動4条件の診断42は仮定付きモデルのみ受入、回避製品適用は未実施。実描画時刻/行列を全列挙する限定診断44も親受入、設計46に基づく隔離47は保持量上限で失敗、損失なし圧縮48は隔離実行・親rawレビューを限定受入。本体組込み49は日英の実描画と基本6テストを親受入、代表MP4と独立静止比較を受入して公開操作元返値pendingで動作確認待ち。電球native50は内部受入、移送51はソース準備中。従来12Dの受入範囲は保持、009全体・全D/custom・正式性能・保存本体は未完。
 - 最新回答: マグネット固定native01に「OKです」、2026-10-25 08:00日本時間までの順次実装と同日03:00の再開予約を明示依頼。予約作成成功はnight-20261024-schedule.jsonへ保存。限定例の動作承認であり、他条件・009全体・正式性能の承認には拡張しない。公開結果確認の永久禁止を維持。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
@@ -495,3 +495,12 @@ atlas2,158,024B、serializedworking3,394,385B。cold2,358.4ms/warm11.7msは単�
 タイル48/49の製品と全raw証拠をwork e04537deへpush成功。MP4用ソースの親レビューで174MB rawに対する読込上限不足を実行前に発見・差戻しし、256MiB上限/厳密長/元plan同一/正確なj/60照合を受入。まだ媒体生成・画像・人間確認は未実施。[媒体ソース判定](evidence/AVOID-009/tiles-media01/parent-source-preparation-review01.json)。
 
 容量08: 過去card-fullscreen02媒体archive1件の現HEAD全Gitblobと28memberを照合後、Gitblob-onlyへ退避し8,876,032Bを回復。旧57証拠/PYC7を保ち現在58absent。復元・93外部依存の制限・新STRICT58 index手順は[storage-capacity-card08](evidence/AVOID-009/evening-20261024/storage-capacity-card08/source08/README.txt)。これは資料内容の削除や再検証合格ではない。次の独立部分bulbs50は元描画catalogのソース準備のみ、本体未変更。
+
+
+## タイル代表比較と電球サインnative50（2026-10-25 JST）
+
+[タイル固定比較](reviews/AVOID-009-tiles-native-20261025-01.md)は親が全498frameの元RGBA、正確なj/60対応、727pass/9638paint、MP4の249frame/60HzPTS/4.15秒を受入。文脈なしsolが14PNG原寸実見、背景の細線差という初期保留は7対×2ROIのRGBA完全一致で見落としと訂正。Source28e07035へ必要5ファイルだけpush成功、元公開操作返値pending/url:null。公開結果確認0のまま、朝8時の固定HUMAN_PENDINGへ追加（連続した登場・着地・退場とSCORE下端余白のみ確認を依頼）。Source最初のfetch失敗も保存し、同条件で認証更新後にfetch/push成功したが失敗原因の詳細/期限切れは直接観測していない。
+
+[電球native50](reviews/AVOID-009-bulbs-native50.md)は元描画1890組/120全画面/45他Dと58,796サンプル点を親が独立照合して受入。観測N4〜136、15部分予算は不完全状態を明示。元表示の変更なし・隔離metadataのみのため人間確認不要と親が判定。正本未組込み、transport/adapterはまだ追加していない。次51は元root/effectiveFXの同期record→replayのみを検証する隔離ソース準備。stock still/jitter/breatheに絞り、cache/serialized/post-record driftや将来のvisible-frame preflightの保証は別である。
+
+容量09は古い008 writing02 raw1件の全Gitblob・gzip CRC/decoded SHA・107歴史ソースsnapshotを照合し、Gitblob-onlyへ退避して37,584,896B回復。旧58/PYC7を保持し現在59absent。[復元/外部依存/厳密index手順](evidence/AVOID-009/evening-20261024/storage-capacity-writing09/source09/README.txt)。古い008検証の再実行・合格ではない。正式性能/保存本体/009全体未完、010以降未着手、親画像閲覧/公開結果確認0を維持。
