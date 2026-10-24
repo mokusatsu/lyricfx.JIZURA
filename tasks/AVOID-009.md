@@ -416,3 +416,5 @@ balloons通常build順序ordered06は2certificate/123frame画素が05と完全�
 マグネットnative13の隔離内部段階を親が237元画素/BB/getter/全paint組・1106seeded状態等で独立受入。native12のwrapper想定違い6失敗を保持し、同じ描画sourceの13はexit0。main literalgradientはtyped unsupportedのままでtransport/replay/回避成功ではなく加算0。新見た目のない内部fidelityなので追加人間確認不要、次はD-magnets限定transportのSOURCE14。[親レビュー](reviews/AVOID-009-magnets-native13.md)。009全体実装中/010以降未着手/公開確認0。
 
 マグネットnative transport15/通常build16を親が受入、work c595bbe5 push11098exit0。元/OFF237・zero237・主文字のみ移動237画素組、69丸角gradient/2187元root eventを独立照合、他D3controls不変。失敗14の34画素assertを残し、元座標精度だけを限定修正、FX不変。新配置ではない内部段階のため追加人間確認不要・回避adapter加算0/限定12D据置。次は原全描画を保つ共通移動のSOURCE18診断。正式性能/保存本体/009全体未完/公開確認0。[親レビュー](reviews/AVOID-009-magnets-transport15.md)。
+
+マグネット配置診断21〜23は全23,062CSS bin・1324支持・17障害物を親が独立再構成（残差0）、元の全体移動81→左右2組81→共通Yを加えた486候補を独立照合。現保守モデルで成立0、演出の不可能性や実画素衝突を意味せず、回避adapter加算0/12D据置。次は丸角盤面・時間別camera/障害物の保守性を精査する読み取り案のみ。[診断レビュー](reviews/AVOID-009-magnets-diagnostic21-23.md)。17時の新規確認は風船1件、公開操作元返値pendingのまま/公開確認0。
