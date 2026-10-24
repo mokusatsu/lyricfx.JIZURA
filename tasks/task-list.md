@@ -124,3 +124,5 @@ blocks native03の内部fidelity段階を親受入。147描画588画素組の元
 2026-10-24午後続行: balloonsの元描画・計測と記録再生の一致を親が888画素組等で確認し、内部段階を追加人間確認不要でworkec594e6fへ統合/push。回避adapterはまだなく限定11D据置、連続CSSbin/糸と所有コピーの回避proofを次に設計。[内部review](reviews/AVOID-009-balloons-native02.md)。009実装中/019共通motionScale問題引継ぎ/公開確認0。
 
 2026-10-24午後: 009のballoons連続支持診断03を親が独立照合。元4秒の残留条件は未達で回避adapter加算0、観測範囲拡張・元の並びを保つ二群移動の隔離SOURCE04へ続行。009実装中/限定11D据置/010以降未着手/公開確認0。
+
+009午後stage04: 元4秒の風船を延長観測し全残像selector失効、束4文字の元運動を保つ二群stage移動候補を診断。実replay/adapterは未実装のため11D据置・全体未完。親raw照合は[個別記録](AVOID-009.md)参照。
