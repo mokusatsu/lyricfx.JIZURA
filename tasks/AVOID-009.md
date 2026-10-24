@@ -433,3 +433,7 @@ SOURCE24は元の盤面の丸角・上下移動の共通領域を正確に扱う
 報告原文・受領SHAは[evidence/external-design](evidence/AVOID-009/external-design-20261024/receipt.json)。SOURCE25失敗は保持、SOURCE26は359精密化/965保守fallback・486候補成立0の診断限定受入。SOURCE27未実行・候補/adapter加算0。実装12D限定・正式性能/保存本体/009全体未完。
 
 SOURCE27は実行exit0、250状態・全Number入力の量子化区間・279時刻関係・1324支持対応を検査。親は11703境界照会を独立再計算し54実描画時計との一致を確認。全連続primary制約を残し、障害物形状/候補の評価/adapter追加は0。[時計限定親レビュー](evidence/AVOID-009/magnets-evening27/parent-clock27-review.json)。次SOURCE28は同一実時刻のmain障害物だけを精密化する準備。外部設計は全21src/契約等5件一致、更新中のAGENTS/009だけ差分あり。[設計照合](evidence/AVOID-009/external-design-20261024/parent-source-review.json)。
+
+SOURCE28は250main状態・4250 owner/state・279関係・1324支持・486候補を実行、成立0。親は16032頂点のexact subsetと全候補/selector/e枝/関係を独立照合し診断限定受入。5088既存実描画障害物頂点の包含も成功。[親照合](evidence/AVOID-009/magnets-evening28/parent-obstacle28-review.json)。全区間の円/画面/盤面を満たす5候補はあるが、従来の装飾との全区間非重複条件では不成立。SOURCE29では独立装飾とのsource-tagged entryのみの重なりを明示的な視覚品質判断として扱う設計を検討、旧失敗を成功に置換しない。
+
+容量対処は[storage-capacity-pile03](evidence/AVOID-009/evening-20261024/storage-capacity-pile03/README.txt)。既存pile rawはGitblob保持・原本1件のみ解放、旧52保持+1=53absent、7PYC保持。
