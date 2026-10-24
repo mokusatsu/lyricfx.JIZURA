@@ -45,3 +45,5 @@
 2026-10-24午後balloons診断03 rawを新規Gitblob-only canonicalへ保存し25absent（旧24不変）。TMP原本保持・raw-storage03.json参照。診断03は全3tail未対応でadapter加算0、SOURCE04隔離実装中。17JSTまで順次続行、公開確認0。
 
 最新保存状態: current blocksのraw/PNGの42work/canonical重複pathをpushed082d69f0全byte照合後にworking領域だけ解放。23proof files、19新canonical skip、旧25不変で計44absent。証拠contentsはGitに完全保持、復元はtasks/evidence/AVOID-009/afternoon-20261024/storage-blocks01/PLAN.txt。source/main/PYC/旧3upload/無関係untracked不変。
+
+最新absentは45: stage04新rawをGitblob-only保存、旧44不変、TMP原本保持。tasks/evidence/AVOID-009/balloons-stage04/raw-storage04.json。stage04候補は代数診断で新replay/adapter未実装・加算0。
