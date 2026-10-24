@@ -1,0 +1,65 @@
+{
+  "review_type": "独立local PNG画像照合・実装修正なし",
+  "source_directory": "/workspace/lyricfx.JIZURA/work/avoid009-blocks-media03/evidence/images",
+  "view_method": "全14 PNGをview_image original detailで直接閲覧",
+  "frames_reviewed": [
+    0,
+    1,
+    24,
+    60,
+    120,
+    216,
+    239
+  ],
+  "scope": "指定7時点のbefore/after比較のみ。コード、動画metadata、公開URL、HTTP、hash、起動、deploypoll、Gitは確認・操作していない。",
+  "verdict": "標本内に重大な見た目の劣化は見当たらない。静止保持標本120/216は円回避と画面内保持に整合。全動画成功・連続運動の保証・人間承認ではない。",
+  "observations": [
+    {
+      "frames": [
+        0,
+        1
+      ],
+      "finding": "frame0は双方背景のみ。frame1は基線のみで、afterでは下方へ移動している。文字未出現を欠落と判定する根拠はない。"
+    },
+    {
+      "frames": [
+        24
+      ],
+      "finding": "入場中のブロック群。beforeの黄色「風」と水色の丸ブロックがafterでも同じ形・陰影・枠・glyphで見える。afterでは画面上端に次の白色「の」の一部も見える。画面上端の切れは入場局面と整合し、欠陥扱いしない。"
+    },
+    {
+      "frames": [
+        60
+      ],
+      "finding": "「風の先へ」の4文字と丸・三角の下段、上方に移動中の菱形ブロックが双方にある。afterも文字の形と字号、積み木の奥行き・上面と側面の陰影、ブロック間のまとまりが保持されている。"
+    },
+    {
+      "frames": [
+        120,
+        216
+      ],
+      "finding": "完成した下段と、右端の三角ブロックに載る菱形ブロックがafterでも明瞭。玩具らしい構成・支持関係・立体感が残る。4文字すべて可読。下端は約513pxで余白があり、下側clipなし。主列上端は約360px。右端菱形は円から十分右にあるため、指定円(cx480,cy226.8,r108)との静止保持時の重なりは見えない。"
+    },
+    {
+      "frames": [
+        239
+      ],
+      "finding": "beforeでは最下部に退場中ブロックの断片があり、afterでは見えない。基線は双方に薄く残る。下方への共通移動を加えた退場の結果と整合し、文字欠落やclipの欠陥とは扱わない。"
+    }
+  ],
+  "preservation_checks": {
+    "block_composition": "保持されて見える",
+    "support_and_toy_character": "保持されて見える",
+    "depth_and_shading": "保持されて見える",
+    "glyph_legibility": "完成標本で風・の・先・へがすべて明瞭",
+    "large_unintended_clip": "静止保持標本では見当たらない",
+    "individual_scattering_or_shape_change": "標本の対応関係では見当たらない",
+    "shared_translation": "対応する各ブロックと基線が概ね右12px・下168pxへ一緒に移動した見え方に整合。ただし画素差分等による厳密証明は本画像鑑定の範囲外。",
+    "continuous_motion": "静止画標本のみでは不明。フレーム間の不連続や未標本時点の円接触は判断できない。"
+  },
+  "limitations": [
+    "円overlayはPNGに未描画のため、与えられた円座標を参照した視認判断。",
+    "MP4の追加抽出は実施していない。",
+    "7標本の間の挙動、native fps・duration・codec等は未確認。"
+  ]
+}
