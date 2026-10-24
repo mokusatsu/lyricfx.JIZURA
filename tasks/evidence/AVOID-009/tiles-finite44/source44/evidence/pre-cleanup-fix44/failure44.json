@@ -1,0 +1,11 @@
+{
+  "kind": "ACTUAL44-failed-before-cleanup-correction",
+  "rawBytes": 111159,
+  "rawSHA256": "add481f9e1c5e3d6316180f23c388266091ff1e5179d24201f1363bd74921217",
+  "rawLocation": "parent official keeper BASE/finite44.raw.json.gz",
+  "error": "ReferenceError Cannot access env before initialization",
+  "cause": "for(const env of[env,zero,moved,direct]) introduces TDZ binding on RHS",
+  "fix": "rename cleanup loop binding viewEnv only",
+  "passClaim": false,
+  "newOutputMustDiffer": "finite44b"
+}
