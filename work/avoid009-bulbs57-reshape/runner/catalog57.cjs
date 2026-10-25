@@ -1,0 +1,7 @@
+'use strict';
+const assert=require('assert/strict'),K=require('./kernel57.cjs');
+// Only this diagnostic's plain full-value catalog. No cached executable object or universal serializer.
+function pack(value,t){if(value===null||typeof value!=='object'){assert(value===undefined||value===null||typeof value==='boolean'||typeof value==='string'||typeof value==='number'&&Number.isFinite(value),'CATALOG57_PLAIN_SCALAR_DOMAIN');return{scalar:K.encode(value)};}assert(Array.isArray(value)||Object.getPrototypeOf(value)===Object.prototype||Object.getPrototypeOf(value)===null,'CATALOG57_PLAIN_CONTAINER_DOMAIN');if(Array.isArray(value))for(let i=0;i<value.length;i++)assert(Object.hasOwn(value,i),'CATALOG57_DENSE_ARRAY_DOMAIN');const body=Array.isArray(value)?{array:value.map(x=>pack(x,t))}:{object:Object.entries(value).map(([k,v])=>[k,pack(v,t)])};return{ref:t.add(body)};}
+function unpack(binding,t){if(Object.hasOwn(binding,'scalar'))return K.decode(binding.scalar);assert(Number.isInteger(binding.ref)&&binding.ref>=0&&binding.ref<t.table.length);const b=K.decode(t.table[binding.ref].value);if(Object.hasOwn(b,'array'))return b.array.map(x=>unpack(x,t));assert(Array.isArray(b.object));return Object.fromEntries(b.object.map(([k,v])=>[k,unpack(v,t)]));}
+function factor(cat,tables){const ref=pack(cat,tables.catalog);assert.deepEqual(unpack(ref,tables.catalog),cat,'FULL_NESTED_CATALOG_VALUE_ROUNDTRIP');return ref;}
+module.exports={pack,unpack,factor};

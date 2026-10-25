@@ -1,0 +1,62 @@
+[
+  {
+    "before": "    const n = J.glyphCount(cut.text);",
+    "after": "    // Native-catalog gate only: no placement recipe or motion adaptation.\n    const nativeD = cut.placementLayoutsD === true;\n    const owned = (owner, fn) => nativeD ? env.withDrawRole('primary', 'blocks.' + owner, fn) : fn();\n    const sourceSlots = nativeD ? new Map() : null;\n    const n = J.glyphCount(cut.text);"
+  },
+  {
+    "before": "    env.line([[W * 0.08, floorY], [W * 0.92, floorY]], sc.sub, Math.max(1, u * 0.002), 0.6 * tin(env, 0, 0.4) * out, false);",
+    "after": "    owned('floor', () => env.line([[W * 0.08, floorY], [W * 0.92, floorY]], sc.sub, Math.max(1, u * 0.002), 0.6 * tin(env, 0, 0.4) * out, false));"
+  },
+  {
+    "before": "      blk.push(b0); byRow[r].push(b0);",
+    "after": "      if (nativeD) sourceSlots.set(b0, { kind: 'lyric', row: r, slot: j });\n      blk.push(b0); byRow[r].push(b0);"
+  },
+  {
+    "before": "      blk.push(f); byRow[r + 1].push(f);",
+    "after": "      if (nativeD) sourceSlots.set(f, { kind: 'support', row: r + 1, parent: blk.indexOf(b0) });\n      blk.push(f); byRow[r + 1].push(f);"
+  },
+  {
+    "before": "    for (const b of sorted) {",
+    "after": "    const catalog = nativeD ? {\n      kind: 'blocks-native-catalog', version: 1, nativeOnly: true,\n      stage: [W, H], pass: env.pass, clock: { t: env.t, realTime: env.realTime, lt, ltb: env.ltb, pOut: env.pOut },\n      params: { font: Pm.font, deco: Pm.deco, tilt: Pm.tilt, hop: Pm.hop, side: Pm.side, colOff: Pm.colOff },\n      n, port, rows: rowsB.map(row => row.slice()), per, k, dk, gk, dx, dy, floorY, lw, gap, fd, deco,\n      floor: { owner: 'blocks.floor', endpoints: [[W * 0.08, floorY], [W * 0.92, floorY]] },\n      hop: { index: hopI, fraction: hopF, beat: env.beat ? { len: env.beat.len, index: env.beat.index, since: env.beat.since } : null },\n      blocks: blk.map((b, index) => ({\n        id: 'block.' + index, sourceIndex: index, painterIndex: sorted.indexOf(b),\n        source: { ...(sourceSlots.get(b) || { kind: 'toy', shape: b.shape }) },\n        ch: b.ch, shape: b.shape ?? null, x: b.x, y: b.y, r: b.r ?? null,\n        order: b.order, col: b.col, sz: b.sz || 1,\n      })),\n    } : null;\n    if (nativeD) env.placementDGeometry = catalog;\n    for (const b of sorted) {"
+  },
+  {
+    "before": "      if (f < 0) continue;",
+    "after": "      if (nativeD) Object.assign(catalog.blocks[blk.indexOf(b)], { t1, f, emitted: f >= 0 });\n      if (f < 0) continue;"
+  },
+  {
+    "before": "      ctx.save(); ctx.translate(b.x, y + kz / 2); ctx.rotate(rot * J.DEG); ctx.scale(1, sq); ctx.translate(0, -kz / 2);",
+    "after": "      if (nativeD) Object.assign(catalog.blocks[bi], { kz, yNow: y, sq, rot, font: Pm.font, fontSize: kz * 0.6 });\n      ctx.save(); ctx.translate(b.x, y + kz / 2); ctx.rotate(rot * J.DEG); ctx.scale(1, sq); ctx.translate(0, -kz / 2);"
+  },
+  {
+    "before": "      env.poly([[-hk, -hk], [hk, -hk], [hk + ddx, -hk + ddy], [-hk + ddx, -hk + ddy]].map(p => Pm.side > 0 ? p : p), top, out, false);",
+    "after": "      owned('block.' + bi + '.top', () => env.poly([[-hk, -hk], [hk, -hk], [hk + ddx, -hk + ddy], [-hk + ddx, -hk + ddy]].map(p => Pm.side > 0 ? p : p), top, out, false));"
+  },
+  {
+    "before": "      env.poly(Pm.side > 0 ? [[hk, -hk], [hk + ddx, -hk + ddy], [hk + ddx, hk + ddy], [hk, hk]] : [[-hk, -hk], [-hk + ddx, -hk + ddy], [-hk + ddx, hk + ddy], [-hk, hk]], side, out, false);",
+    "after": "      owned('block.' + bi + '.side', () => env.poly(Pm.side > 0 ? [[hk, -hk], [hk + ddx, -hk + ddy], [hk + ddx, hk + ddy], [hk, hk]] : [[-hk, -hk], [-hk + ddx, -hk + ddy], [-hk + ddx, hk + ddy], [-hk, hk]], side, out, false));"
+  },
+  {
+    "before": "      env.rect(-hk, -hk, kz, kz, b.col, out, gIn(env));",
+    "after": "      owned('block.' + bi + '.front', () => env.rect(-hk, -hk, kz, kz, b.col, out, gIn(env)));"
+  },
+  {
+    "before": "      env.rrect(-hk + kz * 0.08, -hk + kz * 0.08, kz * 0.84, kz * 0.84, kz * 0.06, null, out, false, J.mix(b.col, onCol(sc, b.col), 0.35), lw * 1.5);",
+    "after": "      owned('block.' + bi + '.rim', () => env.rrect(-hk + kz * 0.08, -hk + kz * 0.08, kz * 0.84, kz * 0.84, kz * 0.06, null, out, false, J.mix(b.col, onCol(sc, b.col), 0.35), lw * 1.5));"
+  },
+  {
+    "before": "env.circle(0, 0, q, tcol, null, 0, out, false);",
+    "after": "owned('block.' + bi + '.mark', () => env.circle(0, 0, q, tcol, null, 0, out, false));"
+  },
+  {
+    "before": "env.poly([[0, -q * 1.1], [q * 1.05, q * 0.8], [-q * 1.05, q * 0.8]], tcol, out, false);",
+    "after": "owned('block.' + bi + '.mark', () => env.poly([[0, -q * 1.1], [q * 1.05, q * 0.8], [-q * 1.05, q * 0.8]], tcol, out, false));"
+  },
+  {
+    "before": "env.poly([[0, -q], [q, 0], [0, q], [-q, 0]], tcol, out, false);",
+    "after": "owned('block.' + bi + '.mark', () => env.poly([[0, -q], [q, 0], [0, q], [-q, 0]], tcol, out, false));"
+  },
+  {
+    "before": "        bb = UB(bb, drawAff(env, { text: b.ch, font: Pm.font, size: kz * 0.6, x: 0, y: -kz / 2, color: onCol(sc, b.col), noHold: plateHold(env), mi: miAt(env, t1) }, m));",
+    "after": "        if (nativeD) catalog.blocks[bi].glyphMatrix = m.slice();\n        bb = UB(bb, owned('block.' + bi + '.glyph', () => {\n          const item = { text: b.ch, font: Pm.font, size: kz * 0.6, x: 0, y: -kz / 2, color: onCol(sc, b.col), noHold: plateHold(env), mi: miAt(env, t1) };\n          if (nativeD) catalog.blocks[bi].mi = item.mi;\n          return drawAff(env, item, m);\n        }));"
+  }
+]

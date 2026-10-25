@@ -1,0 +1,5 @@
+from pathlib import Path
+import hashlib,json,subprocess,os
+R=Path('/workspace/lyricfx.JIZURA');H=R/'work/avoid009-capacity-writing10/private_index_resume10.py';assert hashlib.sha256(H.read_bytes()).hexdigest()=='b6a732b30bc799ccfe44d821743a5095bfa8c3b453631872cc65913ca56c5b5b';p='tasks/evidence/AVOID-009/evening-20261024/storage-capacity-writing10/staged-review02.json';v=json.loads((R/p).read_bytes());assert v['exactAllowlistAndBytes'] and v['diffCheckReturnCode']==0 and not v['diffCheck'];head='6206fe660544cd361fb8be5fb1862b1d698734cd'
+def h(args):subprocess.run(['python','-B',str(H),'RUN','--round','1','--expected-head',head,'--argv-json',json.dumps(args)],cwd=R,check=True)
+h(['add','--',p]);e=os.environ.copy();e['GIT_INDEX_FILE']='/dev/shm/avoid009-evening-20261024/evening-resume10-index-round-1';assert subprocess.check_output(['git','-c','gc.auto=0','show',':'+p],cwd=R,env=e)==(R/p).read_bytes();h(['commit','-m','AVOID-009 preserve bulbs native transport evidence and next placement design'])

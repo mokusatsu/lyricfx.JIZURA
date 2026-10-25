@@ -1,0 +1,8 @@
+{
+  "kind": "STATIC_ONLY_sourceaudit_failure",
+  "applicationExecuted": false,
+  "message": "MISSING_DIR_LOAD candidate directory: dir+slash+p.path is a dynamic prefix, not a complete literalfile",
+  "fix": "skip slash prefix, verify all dynamic seal.files paths explicitly; no productcode change",
+  "secondStaticOnlyMessage": "MISSING_ROOT_LOAD candidate dir: root+candidateDir is directory variable assignment, not fileload",
+  "secondFix": "Validate declared candidate directory as directory; fileload assertions remain strict"
+}

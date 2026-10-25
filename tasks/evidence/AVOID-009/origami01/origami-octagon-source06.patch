@@ -1,0 +1,28 @@
+--- source05/src/09n_layoutsD_origami.js
++++ source06/src/09n_layoutsD_origami.js
+@@ -24,11 +24,15 @@
+  const attached=attachment(g,text[0].polygons,plan,nativeAllowance);
+  const cx=plan.W/2,cy=plan.H/2,points=g.mode==='gate'?rect(cx-g.sw/2,cy-g.sh*.55,cx+g.sw/2,cy+g.sh*.55):[[cx,cy-g.ry],[cx+g.rx,cy],[cx,cy+g.ry],[cx-g.rx,cy]],shadow=points.map(p=>[p[0]+g.shadow[0],p[1]+g.shadow[1]]);
+  if(!points.flat().every(Number.isFinite))fail('ORIGAMI_SOURCE_GEOMETRY','Finite source extrema required');
++ // The recorder bounds each joined flap line [a,apex,b] by its full
++ // axis-aligned box. Across the four hinges those boxes fill this octagon;
++ // the physical diamond alone would omit conservative recorded corners.
++ const lineInterval=g.mode==='blintz'?[[cx-g.rx,cy-g.ry/2],[cx-g.rx/2,cy-g.ry],[cx+g.rx/2,cy-g.ry],[cx+g.rx,cy-g.ry/2],[cx+g.rx,cy+g.ry/2],[cx+g.rx/2,cy+g.ry],[cx-g.rx/2,cy+g.ry],[cx-g.rx,cy+g.ry/2]]:[];
+  // Gate ex lies between hinge ±sw/4 and |skew|<=sh*.05. Blintz
+  // apex=hm+(centre-hm)*cos(theta) is a convex segment inside the diamond.
+  // shrink∈[0,1] contracts all sheet coordinates about centre. Shadow offset
+  // stays fixed. All hidden faces and both painter branches are included.
+- const sheet=A.convexHull([...points,...shadow,[cx,cy]].flatMap(p=>rect(p[0]-10,p[1]-10,p[0]+10,p[1]+10))),ink=text[0].polygons.flat(),textSweep=A.convexHull([[cx,cy],...ink]),camera=ps=>A.cameraEnvelope([ps],{...plan,fx:cut.effectFx||plan.fx,style:cut.effectStyle||plan.style},cut,20);
++ const sheet=A.convexHull([...points,...shadow,...lineInterval,[cx,cy]].flatMap(p=>rect(p[0]-10,p[1]-10,p[0]+10,p[1]+10))),ink=text[0].polygons.flat(),textSweep=A.convexHull([[cx,cy],...ink]),camera=ps=>A.cameraEnvelope([ps],{...plan,fx:cut.effectFx||plan.fx,style:cut.effectStyle||plan.style},cut,20);
+  return {g,envelopes:[camera(sheet),camera(textSweep)],unitProofs:[{owner:'origami.sheet',envelopes:[camera(sheet)]},{owner:'origami.text',envelopes:[camera(textSweep)]}],quality:{complete:true,sourceGlyphs:[...norm(g.text)].length,minPrimaryPx:g.size*(cut.contentScale??1),fontSize:g.size,requestedMode:cut.params.mode,sourceMode:g.mode,attachment:attached}};
+ }
+ function finalize({plan,cut,revision,stepDur,reachTail,explicitSize}){
+@@ -45,7 +49,7 @@
+   }
+   const p=chosen?.trial||native,offset=chosen?.solution.offset||[0,0];segments.push({start:r.start,end,region:r.id,circle,from:offset,to:offset,status:chosen?'safe':'insufficient-space',decision:chosen?'certified':'excluded-during-avoidance',composition:chosen?.recipe||null,envelopes:p.envelopes,unitProofs:p.unitProofs,attempts});
+  }
+- return {kind:'layouts-d-source-native',version:1,revision,evaluationRange,measurementSupported:true,units:[{owner:'origami.composition',segments}],sourceProof:{kind:'analytic-sheet-hinge-extrema',coverage:native.quality,interval:'All source fold clocks and shrink0..1; gate cos[-1,1]/sin[-1,1]; blintz apex convex hinge-centre-corner segment; all hidden faces and both under/over branches',font:'ON uses fixed native CSS size and continuous Canvas sx/sy shrink; measured source outline plus font/device guards. OFF retains original CSS-size shrink.',ownership:'Lyric, sheet, shadow, creases and all folding flaps; original order and occlusion retained',attachment:'Complete actual un-clipped guarded glyph polygons must fit the physical paper, and the changed writing field plus the original per-side font-relative overhang allowance; gate has .25font padding, blintz has .84rx by .84ry writing field inside its physical diamond',sourceMode:native.g.mode,requestedMode:cut.params.mode,explicitSizePreserved:explicitSize,candidateBudget:memo.size},safety:segments.every(s=>s.status==='safe')?'certified-bounded-adapter':'insufficient-space'};
++ return {kind:'layouts-d-source-native',version:1,revision,evaluationRange,measurementSupported:true,units:[{owner:'origami.composition',segments}],sourceProof:{kind:'analytic-sheet-hinge-extrema',coverage:native.quality,interval:'All source fold clocks and shrink0..1; gate cos[-1,1]/sin[-1,1]; blintz apex convex hinge-centre-corner segment; all hidden faces and both under/over branches',lineRecorderProof:'Every joined flap line is measured by its axis-aligned box. The continuous four-hinge box union fits the octagon(cx±rx,cy±ry/2),(cx±rx/2,cy±ry), including all cos/sin branches; physical diamond and its fixed shadow remain separately included before stroke/miter/camera guards.',font:'ON uses fixed native CSS size and continuous Canvas sx/sy shrink; measured source outline plus font/device guards. OFF retains original CSS-size shrink.',ownership:'Lyric, sheet, shadow, creases and all folding flaps; original order and occlusion retained',attachment:'Complete actual un-clipped guarded glyph polygons must fit the physical paper, and the changed writing field plus the original per-side font-relative overhang allowance; gate has .25font padding, blintz has .84rx by .84ry writing field inside its physical diamond',sourceMode:native.g.mode,requestedMode:cut.params.mode,explicitSizePreserved:explicitSize,candidateBudget:memo.size},safety:segments.every(s=>s.status==='safe')?'certified-bounded-adapter':'insufficient-space'};
+ }
+ const contains=(p,poly)=>{let pos=false,neg=false;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],v=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);if(v>1e-5)pos=true;if(v< -1e-5)neg=true;}return !(pos&&neg);};
+ function render({renderer,env,trajectory}){

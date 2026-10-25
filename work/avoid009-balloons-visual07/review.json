@@ -1,0 +1,34 @@
+{
+  "scope": "Local PNG visual comparison only; all 14 supplied images actually viewed with view_image.",
+  "frames": [6, 24, 60, 120, 216, 231, 244],
+  "fps": 60,
+  "imageSize": [960, 540],
+  "verdict": "Sampled glyph appearance preserved; minor string-to-anchor gap observation requires attention; motion remains human-review pending.",
+  "appearance": {
+    "glyphShapeSizeInflation": "Preserved by visual comparison at matched frames.",
+    "glossHighlightsOutlineColor": "Preserved, including yellow/cyan surfaces, white glyphs, outlines and highlights.",
+    "orderReadability": "Visible order 風の先へ retained. Two separated groups 風の and 先へ remain readable; wider middle spacing is intentional.",
+    "knots": "Small triangular knots remain visible at corresponding glyphs; no conspicuous missing knot observed.",
+    "strings": "Four curved strings remain present when all glyphs are visible. No conspicuous mid-string severance or stray segment observed. At after-024/060/120/216, string ends visibly stop beside the central anchor dot with small dark gaps; these gaps appear wider than in corresponding before samples. This is a minor attachment-appearance concern, not a claim of exact pixel measurement.",
+    "anchor": "Central dot visually retains matched-frame position, including upward displacement during exit at frame 231. String paths widen to follow the intended group displacement."
+  },
+  "perFrame": [
+    {"frame": 6, "observation": "Only entering first glyph visible; glyph, pink trailing layer, knot and faint curved string preserved after horizontal shift. Full text unavailable at this sample."},
+    {"frame": 24, "observation": "All four glyphs and cyan/pink trailing layers preserved; intentional group split visible. Small gaps beside central anchor more apparent after change."},
+    {"frame": 60, "observation": "Holding appearance, gloss, glyph sizes and four knots preserved. All four strings visible; small central attachment gaps observed."},
+    {"frame": 120, "observation": "Holding glyph appearance and order preserved; no conspicuous glyph loss or mid-string defect. Small central attachment gaps observed."},
+    {"frame": 216, "observation": "Glyph appearance and readable order preserved. Wider curves follow split groups; small central attachment gaps observed."},
+    {"frame": 231, "observation": "Exit with pink/cyan trailing layers and upper cropping present in both versions, including cropped 先. No new conspicuous missing component observed in visible region."},
+    {"frame": 244, "observation": "Both images show background only; no residual glyph or string visible."}
+  ],
+  "limitations": [
+    "No circle is burned into supplied PNGs; exact circle clearance is not established by this visual review and belongs to parent mathematical checks.",
+    "Original motion, speed and complete MP4 playback cannot be judged from stills. Human motion review pending.",
+    "Times outside the seven sampled frames are unreviewed.",
+    "No video, public URL, network, HTTP/hash check, publication polling, Git operation or source modification performed."
+  ],
+  "humanChecks": [
+    "Play fixed local comparison to judge preserved motion/speed and entry/exit transitions.",
+    "Check whether the slightly separated string ends beside the anchor dot are acceptable during the hold."
+  ]
+}

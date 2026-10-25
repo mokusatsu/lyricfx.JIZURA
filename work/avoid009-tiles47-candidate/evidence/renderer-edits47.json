@@ -1,0 +1,46 @@
+{
+  "originalSHA256": "e793af7e826ddf61d2a4aaf4355615b07344b0e4e1ca395754b47c260f22b623",
+  "candidateSHA256": "352d1adc24f35d9eb21e85f4a4fe5528c63375f515edcb911c63378a33e004c5",
+  "edits": [
+    {
+      "oldStart": 7,
+      "oldEnd": 7,
+      "newLines": [
+        "// SOURCE47 candidate: private issuer, no caller-forgeable env capability.\n",
+        "const tiles47Frames=new WeakMap();let tiles47Hooks=null;\n",
+        "Object.defineProperty(J,'installTilesFrame47',{configurable:true,value:hooks=>{\n",
+        " if(tiles47Hooks||!hooks||!['needs','prepare','finish'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_TILES47_FRAME_HOOKS');\n",
+        " tiles47Hooks=Object.freeze({needs:hooks.needs,prepare:hooks.prepare,finish:hooks.finish});\n",
+        " delete J.installTilesFrame47;\n",
+        " return Object.freeze({take:(renderer,env)=>{const rec=tiles47Frames.get(env);if(!rec||rec.renderer!==renderer||rec.ctx!==env.ctx||rec.plan!==env.plan||rec.cut!==env.cut)throw Error('TILES47_FRAME_ISSUER_REQUIRED');tiles47Frames.delete(env);return rec;}});\n",
+        "}});\n"
+      ],
+      "kind": "insert"
+    },
+    {
+      "oldStart": 72,
+      "oldEnd": 72,
+      "newLines": [
+        "    // All pilot B/A/main proofs finish before clearRect, background, or ANY bitmap write.\n",
+        "    const tiles47Frame=tiles47Hooks?.needs(plan)?tiles47Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;\n"
+      ],
+      "kind": "insert"
+    },
+    {
+      "oldStart": 256,
+      "oldEnd": 256,
+      "newLines": [
+        "        if(tiles47Frame)tiles47Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:tiles47Frame,pass:P.pass}));\n"
+      ],
+      "kind": "insert"
+    },
+    {
+      "oldStart": 303,
+      "oldEnd": 303,
+      "newLines": [
+        "    if(tiles47Frame)tiles47Hooks.finish(tiles47Frame);\n"
+      ],
+      "kind": "insert"
+    }
+  ]
+}

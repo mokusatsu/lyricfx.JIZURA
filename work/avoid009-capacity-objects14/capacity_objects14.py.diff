@@ -1,0 +1,124 @@
+--- accepted13/capacity_objects13.py
++++ prefreeze14/capacity_objects14.py
+@@ -1,11 +1,11 @@
+ #!/usr/bin/env python3
+ """Parent-reviewed, single-file Gitblob-only capacity transaction. Abrupt-death NONATOMIC."""
+-import argparse,gzip,hashlib,io,json,os,pathlib,stat,subprocess
++import argparse,gzip,hashlib,io,json,os,pathlib,stat,subprocess,tarfile
+ P=pathlib.Path;ROOT=P('/workspace/lyricfx.JIZURA');INDEX=ROOT/'.git/index'
+-BASE=P('/dev/shm/avoid009-evening-20261024');SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-objects13/snapshot.json')
+-REL='tasks/evidence/AVOID-008/objects/integrated01/matrix01.json.gz'
+-BLOB='0fa23b43f765a75341c77d3705354b237f7f49e6';RAW_SHA='1cecddb3bae348f51bb6d9edb86bce060277f3deb22a7a4abccdf321ad1d0db1';RAW_BYTES=32488013
+-PROOF=BASE/'capacity-objects13-proof.json';RECEIPT=BASE/'capacity-objects13-receipt.json';START=BASE/'capacity-objects13-started.json';INTENT=BASE/'capacity-objects13-unlink-intent.json';PRIVATE=BASE/'capacity-objects13-index'
++BASE=P('/dev/shm/avoid009-evening-20261024');SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-objects14/snapshot.json')
++REL='tasks/evidence/AVOID-008/objects859-main01/matrix01.json.gz'
++BLOB='7e5aa4790765a199fd9a2d0822a2586c2dc79cd2';RAW_SHA='07ee3304da854ba3be11a196e6b0da635dbdf3d76349fa2406dbfd06c00acf9d';RAW_BYTES=32487897
++PROOF=BASE/'capacity-objects14-proof.json';RECEIPT=BASE/'capacity-objects14-receipt.json';START=BASE/'capacity-objects14-started.json';INTENT=BASE/'capacity-objects14-unlink-intent.json';PRIVATE=BASE/'capacity-objects14-index'
+ def need(x,m):
+  if not x:raise RuntimeError(m)
+ def sha(b):return hashlib.sha256(b).hexdigest()
+@@ -29,24 +29,53 @@
+ def protect(m,new=False):
+  expected=m['skip']+([REL] if new else [])
+  need(len(m['pycs'])==7 and len({x['path'] for x in m['pycs']})==7,'exact7PYC required')
+- need(len(m['skip'])==61 and len(set(expected))==len(expected),'exact old61 plus optional one')
++ need(len(m['skip'])==62 and len(set(expected))==len(expected),'exact old62 plus optional one')
+  for rel in expected:need(not os.path.lexists(ROOT/rel),'protected absent path appeared')
+  for x in m['pycs']:
+   p=ROOT/x['path'];regular(p);b=p.read_bytes();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'PYC changed')
+ def model():
+  regular(SNAP);b=SNAP.read_bytes();need(ARGS.snapshot_sha256 and sha(b)==ARGS.snapshot_sha256,'snapshot seal required');return json.loads(b)
+ def parent_gates():
+- need(ARGS.source56_conditional_postpins_reviewed and ARGS.source55_failure_preserved,'parent56conditional raw/postpins review and55failurepreservation required; notadapter/perf/55pass')
++ need(ARGS.source59_parent_review_accepted,'parent59 fullraw/postpins review required; not productadapter/saving/perf')
++def source59_context(m):
++ c=m['source59Context']
++ need(m['finalSourceReviewPending'] is False,'parent14 final source review gate pending: no action')
++ need(c['reviewSHA256'] and c['finalReviewPending'] is False and ARGS.source59_review_sha256==c['reviewSHA256'],'final parent59 review exact seal not bound: no action')
++ data={}
++ for key in ['archive','manifest','storage','sourceSeal','sourceGate']:
++  x=c[key];p=ROOT/x['path'];s=regular(p);b=p.read_bytes()
++  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode),s.st_nlink)==(x['device'],x['inode'],x['mode'],1),'59 retained context identity changed')
++  need(len(b)==x['bytes'] and sha(b)==x['sha256'],'59 retained context bytes changed');data[key]=b
++ need(sha(data['manifest'])=='9c228e33ddea86851c4cf6cae5ffe61bc7debfddb0ca1b30121a2760844976b1' and sha(data['archive'])=='fc527532ff3c8cd7d497bcbe1a74253dc2b77f0ced1f00a8ea25d5862cb5a1c3','exact final59 raw seals differ')
++ raw=json.loads(data['manifest']);storage=json.loads(data['storage'])
++ need(raw['complete'] is True and not raw['errors'] and not raw['partialRecords'] and not raw['inFlight'] and raw['postPins']['unchanged'] is True,'59 producer not complete/postpins clean')
++ need(storage['archiveSHA256']==sha(data['archive']) and storage['manifestSHA256']==sha(data['manifest']) and storage['files']==2495 and storage['allLiteralArchiveMembersFullByteComparedToOriginals'] is True,'59 storage proof differs')
++ rows={x['member']:x for x in storage['inventory']};need(len(rows)==len(storage['inventory'])==2495,'exact2495 literal members required');seen=set()
++ with tarfile.open(fileobj=io.BytesIO(data['archive']),mode='r|xz') as tf:
++  for info in tf:
++   need(info.isfile() and info.name in rows and info.name not in seen,'59 archive member scope differs');x=rows[info.name];b=tf.extractfile(info).read();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'59 full literal member differs')
++   if info.name=='manifest.json':need(b==data['manifest'],'59 literal archived manifest differs')
++   seen.add(info.name)
++ need(seen==set(rows),'59 archive member missing')
++ pins=raw['pins'];need(len(pins['files'])==124 and len(pins['pycache'])==7 and sorted(pins['absent62'])==m['skip'],'59 original124/PYC7/62 scope differs')
++ need(pins['HEADReference']==m['head'] and pins['index']['sha256']==m['indexSHA256'] and pins['index']['bytes']==m['indexBytes'] and pins['indexInode']==m['indexInode'],'59 baseline pins differ')
++ for x in pins['files']+pins['pycache']:
++  p=ROOT/x['path'];regular(p);b=p.read_bytes();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'59 current source/postpin changed')
++ for rel in pins['absent62']:need(not os.path.lexists(ROOT/rel),'59 original protected absent appeared')
++ p=ROOT/c['reviewPath'];regular(p);rb=p.read_bytes();need(sha(rb)==c['reviewSHA256'],'59 parent review bytes differ');r=json.loads(rb)
++ need(r['state']==c['reviewStateRequired'] and r['manifestSHA256']==sha(data['manifest']),'59 parent fullraw review not accepted')
++ for key in ['sourcePostpins124PYC7Index62IndependentlyRechecked','allNeighborWitnessesAndPreferredShortfallsIndependentlyChecked','fullOwnPassTextFaceRimCaptionQualityIndependentlyChecked','circleAndStageActualDestinationsExactFractionChecked','numericalFoundationConditional','independentRecipeOraclePending']:need(r[key] is True,'59 parent conditional review qualification differs')
++ need(r['productAdapterAdded'] is False and r['formalPerformanceAccepted'] is False and r['savingBodyTested'] is False and r['humanApproval'] is False and r['publicChecks']==0 and r['parentImagesViewed']==0,'59 broader acceptance falsely claimed')
+ def baseline(m):
+- parent_gates()
++ parent_gates();source59_context(m)
+  s=regular(INDEX);need(s.st_nlink==m['indexNlink']==1,'ROOT nlink changed');b=INDEX.read_bytes()
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'ROOT identity/mode changed')
+  need(len(b)==m['indexBytes'] and sha(b)==m['indexSHA256'],'ROOT index changed')
+  need(head()==m['head']==ARGS.expected_head,'explicit baseline HEAD differs')
+- need(skips()==m['skip'] and special()==m['specialFlags'],'old61/fullspecial changed')
++ need(skips()==m['skip'] and special()==m['specialFlags'],'old62/fullspecial changed')
+  need(sha(flags())==m['flagsSHA256'] and sha(git(['ls-files','--stage','-z']))==m['stageSHA256'],'full stage/flags changed');protect(m)
+  regular(P(m['bootstrapReceiptPath']));receipt=P(m['bootstrapReceiptPath']).read_bytes();need(sha(receipt)==m['bootstrapReceiptSHA256'],'installed receipt changed')
+- r=json.loads(receipt);need(r['round']==2 and r['sameInode'] is True and r['skipCount']==61 and r['PYCAndProtected61Preserved'] is True and r['newSHA256']==sha(b) and r['head']==head(),'installed receipt mismatch')
++ r=json.loads(receipt);need(r['round']==3 and r['sameInode'] is True and r['skipCount']==62 and r['PYCAndProtected62Preserved'] is True and r['newSHA256']==sha(b) and r['head']==head(),'installed receipt mismatch')
+  return b
+ def decodedcheck(data):
+  digest=hashlib.sha256();count=0
+@@ -55,7 +84,7 @@
+    chunk=stream.read(1048576)
+    if not chunk:break
+    digest.update(chunk);count+=len(chunk)
+- need(count==244873234 and digest.hexdigest()=='308f5e7608a76abc03392397a180abdc3a5a176343f0353a7589b3d9ae421610','gzip decoded full stream size/hash/CRC differs')
++ need(count==244873152 and digest.hexdigest()=='af46cb8b32ff12c89db55017f9c0576c1b586412c6b02f54a0032b7aa0e402f5','gzip decoded full stream size/hash/CRC differs')
+ def raw(m):
+  p=ROOT/REL;s=regular(p);need(s.st_nlink==m['targetNlink']==1,'target nlink changed');need(s.st_blocks*512==m['targetAllocated'],'target allocated bytes changed');b=p.read_bytes()
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['targetDevice'],m['targetInode'],m['targetMode']),'target identity/mode changed')
+@@ -70,7 +99,7 @@
+ def source_sha():return sha(P(__file__).read_bytes())
+ def verify(m):
+  official();need(all(not os.path.lexists(x) for x in [PROOF,PRIVATE,START,INTENT,RECEIPT]),'fresh transaction required');b=baseline(m);data=raw(m)
+- writejson(PROOF,{'state':'VERIFIED_NOT_RELEASED','sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'head':head(),'rootSHA256':sha(b),'rawSHA256':sha(data),'rawBytes':len(data),'rawAllocated':(ROOT/REL).stat().st_blocks*512,'releaseOnlyPath':REL,'old61Preserved':True,'PYC7Preserved':True,'source56Result':'CONDITIONAL_RAW_REVIEW02_ACCEPTED_NOT_ADAPTER_OR_PERFORMANCE','source56Completed':True,'source56ConditionalPostpinsReviewed':True,'source56AdapterAccepted':False,'source56PerformanceAccepted':False,'source55Result':'FAILED_INTERN_KEY_BYTE_BUDGET','source55Passed':False,'source55FailurePreserved':True})
++ writejson(PROOF,{'state':'VERIFIED_NOT_RELEASED','sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'head':head(),'rootSHA256':sha(b),'rawSHA256':sha(data),'rawBytes':len(data),'rawAllocated':(ROOT/REL).stat().st_blocks*512,'releaseOnlyPath':REL,'old62Preserved':True,'PYC7Preserved':True,'source59ManifestSHA256':m['source59Context']['manifest']['sha256'],'source59RawArchiveSHA256':m['source59Context']['archive']['sha256'],'source59ParentReviewSHA256':m['source59Context']['reviewSHA256'],'source59ParentReviewAccepted':True,'source59ConditionalOnly':True,'source59ProductAdapterAccepted':False,'source59SavingBodyAccepted':False,'source59FormalPerformanceAccepted':False})
+  print(PROOF.read_text())
+ def put(fd,b):
+  off=0
+@@ -80,8 +109,8 @@
+ def finalcheck(m,final,new):
+  need(INDEX.read_bytes()==final,'installed ROOT bytes differ');s=regular(INDEX);need(s.st_nlink==m['indexNlink']==1,'installed ROOT nlink changed')
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'installed identity/mode differs')
+- need(skips()==sorted(m['skip']+[REL]),'expected exact62 skips');need(special()==sorted(m['specialFlags']+['S '+REL]),'special flags differ')
+- need(git(['ls-files','--stage','-z'])==git(['ls-files','--stage','-z'],PRIVATE),'installed stage mismatch');protect(m,new);need(head()==m['head'],'HEAD changed')
++ need(skips()==sorted(m['skip']+[REL]),'expected exact63 skips');need(special()==sorted(m['specialFlags']+['S '+REL]),'special flags differ')
++ need(git(['ls-files','--stage','-z'])==git(['ls-files','--stage','-z'],PRIVATE),'installed stage mismatch');protect(m,new);need(head()==m['head'],'HEAD changed');source59_context(m)
+ def release(m):
+  official();regular(PROOF);pb=PROOF.read_bytes();proof=json.loads(pb)
+  need(ARGS.proof_sha256 and sha(pb)==ARGS.proof_sha256,'parent exact proof seal required')
+@@ -108,7 +137,7 @@
+    try:os.fsync(directory)
+    finally:os.close(directory)
+    finalcheck(m,final,True)
+-   writejson(RECEIPT,{'state':'RELEASED_GITBLOB_ONLY','releaseOnlyPath':REL,'blob':BLOB,'rawSHA256':sha(data),'rawBytes':len(data),'freedAllocatedBytes':proof['rawAllocated'],'head':head(),'oldSHA256':sha(old),'newSHA256':sha(final),'newBytes':len(final),'sameInode':True,'skipCount':62,'old61AndPYC7Preserved':True,'proofSHA256':sha(pb),'sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'unlinkIntentSHA256':sha(INTENT.read_bytes()),'source56Result':'CONDITIONAL_RAW_REVIEW02_ACCEPTED_NOT_ADAPTER_OR_PERFORMANCE','source56Completed':True,'source56ConditionalPostpinsReviewed':True,'source56AdapterAccepted':False,'source56PerformanceAccepted':False,'source55Result':'FAILED_INTERN_KEY_BYTE_BUDGET','source55Passed':False,'source55FailurePreserved':True})
++   writejson(RECEIPT,{'state':'RELEASED_GITBLOB_ONLY','releaseOnlyPath':REL,'blob':BLOB,'rawSHA256':sha(data),'rawBytes':len(data),'freedAllocatedBytes':proof['rawAllocated'],'head':head(),'oldSHA256':sha(old),'newSHA256':sha(final),'newBytes':len(final),'sameInode':True,'skipCount':63,'old62AndPYC7Preserved':True,'proofSHA256':sha(pb),'sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'unlinkIntentSHA256':sha(INTENT.read_bytes()),'source59ManifestSHA256':m['source59Context']['manifest']['sha256'],'source59RawArchiveSHA256':m['source59Context']['archive']['sha256'],'source59ParentReviewSHA256':m['source59Context']['reviewSHA256'],'source59ParentReviewAccepted':True,'source59ConditionalOnly':True,'source59ProductAdapterAccepted':False,'source59SavingBodyAccepted':False,'source59FormalPerformanceAccepted':False})
+   except BaseException:
+    try:
+     if removed:
+@@ -122,6 +151,6 @@
+   if fd is not None:os.close(fd)
+   need(regular(lock).st_ino==os.fstat(lfd).st_ino and regular(lock).st_size==0,'owned zero-byte lock replaced');os.close(lfd);lock.unlink()
+ if __name__=='__main__':
+- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('action',choices=['VERIFY','RELEASE']);ap.add_argument('--snapshot-sha256',required=True);ap.add_argument('--expected-head',required=True);ap.add_argument('--proof-sha256');ap.add_argument('--source56-conditional-postpins-reviewed',action='store_true',required=True);ap.add_argument('--source55-failure-preserved',action='store_true',required=True);ARGS=ap.parse_args();m=model()
++ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('action',choices=['VERIFY','RELEASE']);ap.add_argument('--snapshot-sha256',required=True);ap.add_argument('--expected-head',required=True);ap.add_argument('--proof-sha256');ap.add_argument('--source59-parent-review-accepted',action='store_true',required=True);ap.add_argument('--source59-review-sha256',required=True);ARGS=ap.parse_args();m=model()
+  if ARGS.action=='VERIFY':verify(m)
+  else:release(m)

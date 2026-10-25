@@ -1,0 +1,66 @@
+{
+  "runs": [
+    {
+      "path": "/tmp/avoid009-origami04.json.gz",
+      "sha256": "eaaeee0b40ae9f933f7f01dcd3fa7bb76f473a4513abb6cfb9ad0570b185d6ff",
+      "cases": 384,
+      "invocationInputArchive": "/tmp/avoid009-origami04.json.gz.inputs",
+      "harnessExit": "passed",
+      "states": {
+        "insufficient-space": 83,
+        "certified-bounded-adapter": 301
+      },
+      "runtimeErrors": 0,
+      "sourceStable": true,
+      "warnings": []
+    },
+    {
+      "path": "/tmp/avoid009-origami-extended05.json.gz",
+      "sha256": "364e4406b0f558aab5e2fbbeaab06b708028257df340d38d8c9233747c554648",
+      "cases": 96,
+      "invocationInputArchive": "/tmp/avoid009-origami-extended05.json.gz.inputs",
+      "harnessExit": "passed",
+      "states": {
+        "insufficient-space": 4,
+        "certified-bounded-adapter": 92
+      },
+      "runtimeErrors": 0,
+      "sourceStable": true,
+      "warnings": []
+    },
+    {
+      "path": "/tmp/avoid009-origami-attachment03.json.gz",
+      "sha256": "7df380be322c2801507ded61314619693b2afaac4762bb91f31ddae84bdcf4bf",
+      "cases": 60,
+      "invocationInputArchive": "/tmp/avoid009-origami-attachment03.json.gz.inputs",
+      "harnessExit": "passed",
+      "states": {
+        "insufficient-space": 27,
+        "certified-bounded-adapter": 33
+      },
+      "runtimeErrors": 0,
+      "sourceStable": true,
+      "warnings": [],
+      "actualNominalAdvanceOverhangCases": 50,
+      "allPhysicalPaperContained": true,
+      "allWritingFieldsContained": true
+    },
+    {
+      "path": "/tmp/avoid009-origami-off01.json.gz",
+      "sha256": "29844630d986343d01573a76aa19a8599afffb5084e23999c8f9d3218df91a7b",
+      "cases": 12,
+      "invocationInputArchive": "/tmp/avoid009-origami-off01.json.gz.inputs",
+      "harnessExit": "passed",
+      "allPixelsEqual": true,
+      "allMeasurementCallsEqual": true,
+      "reference": "/tmp/avoid009-origami-off01.json.gz.reference.html.gz",
+      "baselineMedianMsPerFrame": 0.05791666666627862,
+      "candidateMedianMsPerFrame": 0.057083333334109435
+    }
+  ],
+  "supersedes": "origami-test-receipts01.json pre-parent-correction runs remain historical",
+  "sourcePins": "origami-source03.json",
+  "allInvocationsSnapshotsFrozenBeforeBrowserInput": true,
+  "limits": "Functional tests, sampled alpha1 audits, OFF parity and scoped OFF call/time diagnostic; parent review, independent visual intent review and formal performance acceptance remain separate.",
+  "publicChecks": "excluded per user"
+}

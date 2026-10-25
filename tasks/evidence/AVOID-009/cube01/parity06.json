@@ -1,0 +1,3667 @@
+{
+  "scope": "Exact pixel parity; true-before source OFF and same-final-cut native vs D zero-offset replay, local only",
+  "summary": {
+    "baselineCases": 12,
+    "transportCases": 108,
+    "failures": 0
+  },
+  "pins": [
+    {
+      "file": "index.html",
+      "sha256": "65a284902ae940ace5e7545ecf0b202d7406354f94d3f71a7ce587489dafaf87"
+    },
+    {
+      "file": "src/09a_placement.js",
+      "sha256": "2c2767719f26a93f8aeaa1685ee008af10499c272b42825f7a9f9b1c9be3ca80"
+    },
+    {
+      "file": "src/09m_layoutsD_cube.js",
+      "sha256": "8cdebfef1c2497a34473c2a7d1291e5c338caef7c59dc5ce18240ce8d1a525f9"
+    },
+    {
+      "file": "src/11p_layoutsD.js",
+      "sha256": "0f6cc266c54692c94507a5fb8c557091e1c5cf7babe70d37a5c00a3a3b14aaad"
+    },
+    {
+      "file": "dev/avoidance/layouts-d-cube-parity.cjs",
+      "sha256": "b7893dd4292716eefc0ae93766a92c14c9022f71cb230caa64c62841a6f5f6a2"
+    },
+    {
+      "file": "dev/avoidance/layouts-b-fixture.js",
+      "sha256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/dot.ttf",
+      "sha256": "698973bc745d94efd431df7728f47c452f38f50a0379ce2b853d0c88e4e6c0a1"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/manifest.json",
+      "sha256": "946af88de4305e4df4c6f8c0755b67b716eff151e70ee28e7d36dc9d432f7b42"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/mono.otf",
+      "sha256": "587bb2aefac8591e9611ec28c683f7a30612b06c086f1cacb053011f9bee9ff7"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/rounded.ttf",
+      "sha256": "be2d9a7c873e61074c0b678e4700e3696ed2144ada4c13cfbc25a5f4139da6c6"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/sans-bold.otf",
+      "sha256": "a52fbc5a6e02f44bc3a1c8ae182a2cbbf4077a2dbc22b853f3747b6bdd468a86"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/sans-regular.otf",
+      "sha256": "07c0ee524e4e2e9193219a895a7753d6beb67dcc3835894cdfa7746ba7a798a0"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/serif-bold.otf",
+      "sha256": "b137669a02df894a65cef32b4f75156ced18fba8b59a30eae65c92d32047e163"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/serif-regular.otf",
+      "sha256": "d4bbf138f7cd85f73d2fafbf754510a120bb30a307116021e17e7704b96a731a"
+    },
+    {
+      "file": "dev/avoidance/layouts-c-editorial-fonts/symbols.ttf",
+      "sha256": "ddb4a83272ab74548b6b5664a4691b156b6b55cf021d1ccc3c612ed99b1290f1"
+    }
+  ],
+  "rows": [
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "風の先へ",
+        "params": {
+          "mode": "single",
+          "chunks": [
+            "風の先へ"
+          ],
+          "dir": 1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "8fc3dadb0eabe345b74ffd6285bea95de2cec79acbea25bc926c3eed67162c4e",
+        "26c47f527afd14db96b8d9ba970b843d7d8fb6943b30f646a08c71bcb617c89a",
+        "5bbfe2680f9dd99ac6e5781b3f6f7384657138e07ebf5d60b718cb83b5c139f6",
+        "87bbd15b930b84e9724d9b1ac7f268fc213a5202752fcb558676ee6dc6629d31",
+        "7747d4624cd15b58ca2fc3b85f48c35ee314f47c0b4e5a335cab8b94b53ede87",
+        "5b9e6f93e61d0183b86898ebcc207089162c492db43c20bf7ea82037481e9dfc"
+      ],
+      "after": [
+        "8fc3dadb0eabe345b74ffd6285bea95de2cec79acbea25bc926c3eed67162c4e",
+        "26c47f527afd14db96b8d9ba970b843d7d8fb6943b30f646a08c71bcb617c89a",
+        "5bbfe2680f9dd99ac6e5781b3f6f7384657138e07ebf5d60b718cb83b5c139f6",
+        "87bbd15b930b84e9724d9b1ac7f268fc213a5202752fcb558676ee6dc6629d31",
+        "7747d4624cd15b58ca2fc3b85f48c35ee314f47c0b4e5a335cab8b94b53ede87",
+        "5b9e6f93e61d0183b86898ebcc207089162c492db43c20bf7ea82037481e9dfc"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "風の先へ",
+        "params": {
+          "mode": "single",
+          "chunks": [
+            "風の先へ"
+          ],
+          "dir": -1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "1003da920d51155e13c4f8e04353eaad26af19fef61ca0ce696f27de41f7ea3f",
+        "8e1b2de07f30ce4d3f2c8385597600f60c0f0d981cfca6e81b1a732b91994c18",
+        "4b9ee31e55d128d2a421927d5d54a7bbe14a061c4a7955a4b78e8609b166b90f",
+        "c2c8103b97bd0604bfecd174481b133b8e5d5d469bdd13dcfcf8f48bec600b9d",
+        "b98e21a5a9b6a6dcab03bddbca6490eaece4d32693d80bf858e33b7a0e6ebff8",
+        "880882f5086a190fa160d256d6206419a66266c176c2935225af3b75240fb3dc"
+      ],
+      "after": [
+        "1003da920d51155e13c4f8e04353eaad26af19fef61ca0ce696f27de41f7ea3f",
+        "8e1b2de07f30ce4d3f2c8385597600f60c0f0d981cfca6e81b1a732b91994c18",
+        "4b9ee31e55d128d2a421927d5d54a7bbe14a061c4a7955a4b78e8609b166b90f",
+        "c2c8103b97bd0604bfecd174481b133b8e5d5d469bdd13dcfcf8f48bec600b9d",
+        "b98e21a5a9b6a6dcab03bddbca6490eaece4d32693d80bf858e33b7a0e6ebff8",
+        "880882f5086a190fa160d256d6206419a66266c176c2935225af3b75240fb3dc"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "Beyond the blue sky",
+        "params": {
+          "mode": "single",
+          "chunks": [
+            "Beyond the blue sky"
+          ],
+          "dir": 1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "72ab56a21f2d3412a1cc3305dbd6ce1b96e19c34c053fbca742ad466b6428a57",
+        "63c1a613f1b76437a11c00bfe9935d5ac6805d55c3b74cc10d43833c2fc1e0c2",
+        "b2d79974e2d0ceebeea078b4c92605ca5607433a184dbdada283f25755858732",
+        "fc6392aec0917eab1c1eb84a7b14ea089512ae74ec755dc3c8ee3fd5ad4c895d",
+        "3ad8a08697e474d6fd23d0a134336572f79fac3f9ef921488f77979248732ce1",
+        "fdfefd8f20e860600d19d32c0d5c91cdd7df5bb1ec7fa94f9c1dcda4148645fb"
+      ],
+      "after": [
+        "72ab56a21f2d3412a1cc3305dbd6ce1b96e19c34c053fbca742ad466b6428a57",
+        "63c1a613f1b76437a11c00bfe9935d5ac6805d55c3b74cc10d43833c2fc1e0c2",
+        "b2d79974e2d0ceebeea078b4c92605ca5607433a184dbdada283f25755858732",
+        "fc6392aec0917eab1c1eb84a7b14ea089512ae74ec755dc3c8ee3fd5ad4c895d",
+        "3ad8a08697e474d6fd23d0a134336572f79fac3f9ef921488f77979248732ce1",
+        "fdfefd8f20e860600d19d32c0d5c91cdd7df5bb1ec7fa94f9c1dcda4148645fb"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "Beyond the blue sky",
+        "params": {
+          "mode": "single",
+          "chunks": [
+            "Beyond the blue sky"
+          ],
+          "dir": -1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "e911bf972b4996bcf991d75cfb6c6abf64e13cc71d7c879a7cf2297cd57172c7",
+        "7d7683ff8f62331915bd05c3627a925d64f46d1e8dcf9cf296915559546e73e6",
+        "21b791cf2b0be83e7381e511a52d6b1f11f4c9a888ee6998c6ea6bd369d9d902",
+        "8a2b017ae57dab5de45e45f099a634269e482319fd90a1fa8e78e06dfaca31d6",
+        "558b869e00385147fc723726d9a5773397c1c747ba868a33492cd89cd755e0ad",
+        "4f52c805d875a26c2687b3075f957f059e4a7505911a91922b4e482a2c993dec"
+      ],
+      "after": [
+        "e911bf972b4996bcf991d75cfb6c6abf64e13cc71d7c879a7cf2297cd57172c7",
+        "7d7683ff8f62331915bd05c3627a925d64f46d1e8dcf9cf296915559546e73e6",
+        "21b791cf2b0be83e7381e511a52d6b1f11f4c9a888ee6998c6ea6bd369d9d902",
+        "8a2b017ae57dab5de45e45f099a634269e482319fd90a1fa8e78e06dfaca31d6",
+        "558b869e00385147fc723726d9a5773397c1c747ba868a33492cd89cd755e0ad",
+        "4f52c805d875a26c2687b3075f957f059e4a7505911a91922b4e482a2c993dec"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "風の先へ",
+        "params": {
+          "mode": "pair",
+          "chunks": [
+            "風の",
+            "先へ"
+          ],
+          "dir": 1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "46e1b3ac7ea003a3210d8d590b7489668b3bc2c6e03ecd1845be5c6f15784109",
+        "641a2bda8ec7513cea31975bb2dc18aa3c99e9165bf6ef9286d8d51ef5aad057",
+        "df13cbc39cb77ce795cdb1950a3de19f41565334b2f12b7f1ea2197fb44a063a",
+        "e49c297a2d82dfd323ce0ab3993a079ef400da52845fd5ba69014ab614fc62f4",
+        "4671050815cac521a0fc491b14d365e5c200a9fe803388b2daadb774ddb6f231",
+        "b71806423ee795042239e4911e5b6ad08ce0bce812ea9478d230ea3879bed14f"
+      ],
+      "after": [
+        "46e1b3ac7ea003a3210d8d590b7489668b3bc2c6e03ecd1845be5c6f15784109",
+        "641a2bda8ec7513cea31975bb2dc18aa3c99e9165bf6ef9286d8d51ef5aad057",
+        "df13cbc39cb77ce795cdb1950a3de19f41565334b2f12b7f1ea2197fb44a063a",
+        "e49c297a2d82dfd323ce0ab3993a079ef400da52845fd5ba69014ab614fc62f4",
+        "4671050815cac521a0fc491b14d365e5c200a9fe803388b2daadb774ddb6f231",
+        "b71806423ee795042239e4911e5b6ad08ce0bce812ea9478d230ea3879bed14f"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "風の先へ",
+        "params": {
+          "mode": "pair",
+          "chunks": [
+            "風の",
+            "先へ"
+          ],
+          "dir": -1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "f6dfce6ce0e8ef2f5a8421cd8d2d7628b5f00b1a5c8c9752ad0e9da093940448",
+        "2dc3b62ef9ac7f6438c0fe01ed04336be0edc16c4bc61560a41ec4042ae02ef5",
+        "ef76daf8da832cfa67dd1e603b5e9b4260ef90ea9295d8d120228e9e90ab57fc",
+        "1b188ada167c68f966079c0a7ff5f8c5f8a50950389784e954b088c2be9db8e5",
+        "fa39cb624cc5a23e6e96b47070186ff5516a7bcf5e34548130eb4519b437ae18",
+        "67a3e726c62d66985e3c720d87891a67a32d940941a31e0ca5982aa49f1c38e1"
+      ],
+      "after": [
+        "f6dfce6ce0e8ef2f5a8421cd8d2d7628b5f00b1a5c8c9752ad0e9da093940448",
+        "2dc3b62ef9ac7f6438c0fe01ed04336be0edc16c4bc61560a41ec4042ae02ef5",
+        "ef76daf8da832cfa67dd1e603b5e9b4260ef90ea9295d8d120228e9e90ab57fc",
+        "1b188ada167c68f966079c0a7ff5f8c5f8a50950389784e954b088c2be9db8e5",
+        "fa39cb624cc5a23e6e96b47070186ff5516a7bcf5e34548130eb4519b437ae18",
+        "67a3e726c62d66985e3c720d87891a67a32d940941a31e0ca5982aa49f1c38e1"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "Beyond the blue sky",
+        "params": {
+          "mode": "pair",
+          "chunks": [
+            "Beyond the",
+            "blue sky"
+          ],
+          "dir": 1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "ca99e5da0b9634edc46acedf46e6243842e87c37c7b225397ba361cd29a906be",
+        "b9d261f47f23bf2274ba079db6f0933faa5fb357f267a702d2627be60f513655",
+        "66bfc7b2478639a37d46dfaa07cdb2c121d597c820294ad93b6576097d7c1d1d",
+        "02c857997ae5d741803695edd1fbe55f5593575b5602671df8bfd9aac2fd40a9",
+        "76928759ff7dad04728399928807cbfcff8d64ea0c305d22972a1b3ef6384aae",
+        "cd0e37b4b1deb57c6d1bc8b3e5bcd24ccf583362fbadfe913df40561f21a7171"
+      ],
+      "after": [
+        "ca99e5da0b9634edc46acedf46e6243842e87c37c7b225397ba361cd29a906be",
+        "b9d261f47f23bf2274ba079db6f0933faa5fb357f267a702d2627be60f513655",
+        "66bfc7b2478639a37d46dfaa07cdb2c121d597c820294ad93b6576097d7c1d1d",
+        "02c857997ae5d741803695edd1fbe55f5593575b5602671df8bfd9aac2fd40a9",
+        "76928759ff7dad04728399928807cbfcff8d64ea0c305d22972a1b3ef6384aae",
+        "cd0e37b4b1deb57c6d1bc8b3e5bcd24ccf583362fbadfe913df40561f21a7171"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "Beyond the blue sky",
+        "params": {
+          "mode": "pair",
+          "chunks": [
+            "Beyond the",
+            "blue sky"
+          ],
+          "dir": -1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "5192c4e9f4ab305a2a1d552998f209dcce641bf519001dce9e9ed2432afee22e",
+        "b6fc59a49db2ca76379fd62ce1b74a5cfbcf7d2ea25288e47f8f8445b1524954",
+        "757ac9d95e9d6be1b66a402046b6dca6f8d5b8132dfa543523c3fe32ffb81f2f",
+        "fddc8ac1993b6a9686252a4b1cecb77b7f4814ed037c0e86ed57ea9cd8eb824f",
+        "18f6c3b6aff0efb556ae1b75074cc64910d699ce30844dbbb7d4ac66d2f97364",
+        "6d5fb4f05426526d2e0e133726f0d1b03e59aafa0f74103cc4ead05fec3f1011"
+      ],
+      "after": [
+        "5192c4e9f4ab305a2a1d552998f209dcce641bf519001dce9e9ed2432afee22e",
+        "b6fc59a49db2ca76379fd62ce1b74a5cfbcf7d2ea25288e47f8f8445b1524954",
+        "757ac9d95e9d6be1b66a402046b6dca6f8d5b8132dfa543523c3fe32ffb81f2f",
+        "fddc8ac1993b6a9686252a4b1cecb77b7f4814ed037c0e86ed57ea9cd8eb824f",
+        "18f6c3b6aff0efb556ae1b75074cc64910d699ce30844dbbb7d4ac66d2f97364",
+        "6d5fb4f05426526d2e0e133726f0d1b03e59aafa0f74103cc4ead05fec3f1011"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "風の先へ",
+        "params": {
+          "mode": "turn",
+          "chunks": [
+            "風の",
+            "先へ"
+          ],
+          "dir": 1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "4cd43e31015524d730e4943aa8511587214b3a0cb7172770a8694da5da2efa09",
+        "0d561adb579f1a55bc3d2a4de0df3b73b10b050b5ac1170b00d15abb8e219191",
+        "cbce4b46e19aaefe94ea35c0351ec37a5629762e51d0840ee276a9d6f9ac0887",
+        "9fb79c57ff74112c827dcb365a29329c16fa7ad42d88a564b8dba9aadf580446",
+        "108ba3831cb099c9ebcfb52b5c4bad89d23eb42f0d8bec3a395ee5034e17c15e",
+        "ef945f9303ae817a2032eb762faf54f61efe1586882ae92923612bf158c26976"
+      ],
+      "after": [
+        "4cd43e31015524d730e4943aa8511587214b3a0cb7172770a8694da5da2efa09",
+        "0d561adb579f1a55bc3d2a4de0df3b73b10b050b5ac1170b00d15abb8e219191",
+        "cbce4b46e19aaefe94ea35c0351ec37a5629762e51d0840ee276a9d6f9ac0887",
+        "9fb79c57ff74112c827dcb365a29329c16fa7ad42d88a564b8dba9aadf580446",
+        "108ba3831cb099c9ebcfb52b5c4bad89d23eb42f0d8bec3a395ee5034e17c15e",
+        "ef945f9303ae817a2032eb762faf54f61efe1586882ae92923612bf158c26976"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "風の先へ",
+        "params": {
+          "mode": "turn",
+          "chunks": [
+            "風の",
+            "先へ"
+          ],
+          "dir": -1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "92696daa633e57ec472da56b7fa912bd736ce371a99480d87c58466731c660bc",
+        "338a5db32e13785f76e3eeea1ba5fa0f4dfdda15357e3dd2d995020605696493",
+        "c74257b9197855dee26bfabe22ccfa89536ab91134186b28dbf29467780004e2",
+        "5e497159f200e3a5a95455a9cbe95a298381a3bbcd438237080f5f666f46353c",
+        "932816095b45fa3c9c4a80c2cf3e2fc4ea5fe057a17b817236267ba5ea65f086",
+        "92b46c7bb9a118b25044dcd4acdbb987a8e3977718ef54cfbdcc6c25f5d095e1"
+      ],
+      "after": [
+        "92696daa633e57ec472da56b7fa912bd736ce371a99480d87c58466731c660bc",
+        "338a5db32e13785f76e3eeea1ba5fa0f4dfdda15357e3dd2d995020605696493",
+        "c74257b9197855dee26bfabe22ccfa89536ab91134186b28dbf29467780004e2",
+        "5e497159f200e3a5a95455a9cbe95a298381a3bbcd438237080f5f666f46353c",
+        "932816095b45fa3c9c4a80c2cf3e2fc4ea5fe057a17b817236267ba5ea65f086",
+        "92b46c7bb9a118b25044dcd4acdbb987a8e3977718ef54cfbdcc6c25f5d095e1"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "Beyond the blue sky",
+        "params": {
+          "mode": "turn",
+          "chunks": [
+            "Beyond the",
+            "blue sky"
+          ],
+          "dir": 1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "fc0ab40e26122e1cf12adb6d11c75f67988b19d982e76cdc9a51242ec2cc3f4c",
+        "7803ffbcb17deee269857b267e4ddd41708b4e3e926756d83f58d6794683b85d",
+        "3b7c0b9711eb409518b7a810d5b8f4b23b162270da39c1b795b99c5fc5c18281",
+        "487839160e20dff2ba33cbb32ac09032994720238181ab0d8671b9a25023f217",
+        "bb2a411cc8f9422a7e5ce4645389e251775392228403dd5710577d5dde8b7566",
+        "0afea81463ec03d4029c9cce101e51b42a9b2bc7a1fd176465e6d81b122a6868"
+      ],
+      "after": [
+        "fc0ab40e26122e1cf12adb6d11c75f67988b19d982e76cdc9a51242ec2cc3f4c",
+        "7803ffbcb17deee269857b267e4ddd41708b4e3e926756d83f58d6794683b85d",
+        "3b7c0b9711eb409518b7a810d5b8f4b23b162270da39c1b795b99c5fc5c18281",
+        "487839160e20dff2ba33cbb32ac09032994720238181ab0d8671b9a25023f217",
+        "bb2a411cc8f9422a7e5ce4645389e251775392228403dd5710577d5dde8b7566",
+        "0afea81463ec03d4029c9cce101e51b42a9b2bc7a1fd176465e6d81b122a6868"
+      ],
+      "equal": true
+    },
+    {
+      "spec": {
+        "layout": "cube",
+        "control": "off",
+        "text": "Beyond the blue sky",
+        "params": {
+          "mode": "turn",
+          "chunks": [
+            "Beyond the",
+            "blue sky"
+          ],
+          "dir": -1,
+          "pitch": 25,
+          "sway": 5
+        }
+      },
+      "kind": "true-before-OFF",
+      "before": [
+        "041c4f9b0c3c557bdeb1339f0d0df1995c7c95541a0f33a45b1a2719fff69ed0",
+        "d6106039203b45df5694f6a260ec3201e6dd531c8f31a6f8ce3d088448b1e4d6",
+        "a44a2c01ca717e7cd84fd0023e68341ae05b6b5d79a66e304eeb740806dfbd06",
+        "6d2a03772a831679c2f9451ab4913eca61728130905ddbe769d5f06079f9a325",
+        "8fb077513e6a0d9c60bd46a8eec37759153f954ae1c811a7f65545f773d5388c",
+        "840e24be216e4bd1f8e883c69055bfd72a0aa9e5b2de8df68e4d4727e8a5055c"
+      ],
+      "after": [
+        "041c4f9b0c3c557bdeb1339f0d0df1995c7c95541a0f33a45b1a2719fff69ed0",
+        "d6106039203b45df5694f6a260ec3201e6dd531c8f31a6f8ce3d088448b1e4d6",
+        "a44a2c01ca717e7cd84fd0023e68341ae05b6b5d79a66e304eeb740806dfbd06",
+        "6d2a03772a831679c2f9451ab4913eca61728130905ddbe769d5f06079f9a325",
+        "8fb077513e6a0d9c60bd46a8eec37759153f954ae1c811a7f65545f773d5388c",
+        "840e24be216e4bd1f8e883c69055bfd72a0aa9e5b2de8df68e4d4727e8a5055c"
+      ],
+      "equal": true
+    }
+  ],
+  "transport": [
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.05,
+      "hashes": [
+        "5d5bfdea39ae8cadeb32ded003fdfbb253fa1c5812964cc34311a85e16ccb3a5",
+        "5d5bfdea39ae8cadeb32ded003fdfbb253fa1c5812964cc34311a85e16ccb3a5"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.25,
+      "hashes": [
+        "b1bdcf3ba323102a28d8c89f952425682b6213c0b1c39694adf2f3fe3456bb44",
+        "b1bdcf3ba323102a28d8c89f952425682b6213c0b1c39694adf2f3fe3456bb44"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.75,
+      "hashes": [
+        "95a6e3e3a0925d400a0668663c94a1e88633df8c12b0e748f669b6fb4b9390d7",
+        "95a6e3e3a0925d400a0668663c94a1e88633df8c12b0e748f669b6fb4b9390d7"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 1.5,
+      "hashes": [
+        "7d08705f20948ff7707abc70c065111252315f6714e6a4fbc66cf986f2a09cbd",
+        "7d08705f20948ff7707abc70c065111252315f6714e6a4fbc66cf986f2a09cbd"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 2.5,
+      "hashes": [
+        "0911720e7b26983e5fadf98197f8602f50d8f286def3c12db4b0ce011bcc5878",
+        "0911720e7b26983e5fadf98197f8602f50d8f286def3c12db4b0ce011bcc5878"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 3.7,
+      "hashes": [
+        "e520547f3996f26958b3f11f6a13a1a768ab962c10d41eeb7a7d607de9c5a142",
+        "e520547f3996f26958b3f11f6a13a1a768ab962c10d41eeb7a7d607de9c5a142"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.05,
+      "hashes": [
+        "9271a2f98e5d9fc39cb6cfe0f8747f284df964d5055e2b48f6b8a9c73a725db9",
+        "9271a2f98e5d9fc39cb6cfe0f8747f284df964d5055e2b48f6b8a9c73a725db9"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.25,
+      "hashes": [
+        "3f3cf677ead18171dc9cd03899f2c9092b0675ff86139ed1990a807f59b3264b",
+        "3f3cf677ead18171dc9cd03899f2c9092b0675ff86139ed1990a807f59b3264b"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.75,
+      "hashes": [
+        "8a1193f1665dbf84fa6fb3ca8b8c7541e82f8931c773b66d7dcf58473a55415a",
+        "8a1193f1665dbf84fa6fb3ca8b8c7541e82f8931c773b66d7dcf58473a55415a"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 1,
+      "t": 1.5,
+      "hashes": [
+        "d8761f585528f4bd53458117306f6fab5794b676898430d073985450588e6576",
+        "d8761f585528f4bd53458117306f6fab5794b676898430d073985450588e6576"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 1,
+      "t": 2.5,
+      "hashes": [
+        "a1ca697b9de452f3c9d84e9f08102c31248691320a893c1e335abda849ce9445",
+        "a1ca697b9de452f3c9d84e9f08102c31248691320a893c1e335abda849ce9445"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 1,
+      "t": 3.7,
+      "hashes": [
+        "d8f899813cc85f7d807ad5b91f4536fd25d2c9581016b81a11af3dd5f78a52f3",
+        "d8f899813cc85f7d807ad5b91f4536fd25d2c9581016b81a11af3dd5f78a52f3"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.05,
+      "hashes": [
+        "0e757e440e2118c892db150f70f09d41979ed521476996c2270be3f291dc6977",
+        "0e757e440e2118c892db150f70f09d41979ed521476996c2270be3f291dc6977"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.25,
+      "hashes": [
+        "3292feddd9118515231509d818d1efef11f38e7753fb3e8412570dcfdf7ec875",
+        "3292feddd9118515231509d818d1efef11f38e7753fb3e8412570dcfdf7ec875"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.75,
+      "hashes": [
+        "fa07226f5c1664e3c9aa038aa50e0a4e3507fdeb6d400a37bf2706a16d1702bb",
+        "fa07226f5c1664e3c9aa038aa50e0a4e3507fdeb6d400a37bf2706a16d1702bb"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 2,
+      "t": 1.5,
+      "hashes": [
+        "7691d53e7f4547c1986cc0251ecef77f2a45ed432ab012fd91e91290f962b519",
+        "7691d53e7f4547c1986cc0251ecef77f2a45ed432ab012fd91e91290f962b519"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 2,
+      "t": 2.5,
+      "hashes": [
+        "608dcca3087b50fbc5925e78702ef5d760094e90f69b9bf915da55519860a0a0",
+        "608dcca3087b50fbc5925e78702ef5d760094e90f69b9bf915da55519860a0a0"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": 1,
+      "scale": 2,
+      "t": 3.7,
+      "hashes": [
+        "1d03ee30cb35396bdf259fe6b99f68cc31e7b3d7293d1e86802f047caac3cd2f",
+        "1d03ee30cb35396bdf259fe6b99f68cc31e7b3d7293d1e86802f047caac3cd2f"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.05,
+      "hashes": [
+        "745a350ce707140efa43ce507adc3bb047739e14db1fd9f94d92687d862fa1d8",
+        "745a350ce707140efa43ce507adc3bb047739e14db1fd9f94d92687d862fa1d8"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.25,
+      "hashes": [
+        "621d7968668ea46fc6142c1d63bf16d80b085cfef02795b8b65b800c00b1fb05",
+        "621d7968668ea46fc6142c1d63bf16d80b085cfef02795b8b65b800c00b1fb05"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.75,
+      "hashes": [
+        "d596ab1addbee210466ff0f7ad43c0f6b3017c2e584e1a0562190704bdb0c883",
+        "d596ab1addbee210466ff0f7ad43c0f6b3017c2e584e1a0562190704bdb0c883"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 1.5,
+      "hashes": [
+        "48bec2fcb046c12d3c86385a564e8c61baa9da25a4d60a87d0b7ee2eef5f7193",
+        "48bec2fcb046c12d3c86385a564e8c61baa9da25a4d60a87d0b7ee2eef5f7193"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 2.5,
+      "hashes": [
+        "493d26e903a988b8d33b3aaf2bfae957e3831f83929684049e54cb0fcca0a2c6",
+        "493d26e903a988b8d33b3aaf2bfae957e3831f83929684049e54cb0fcca0a2c6"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 3.7,
+      "hashes": [
+        "1b1deb58466609cc182170be3e763b36efbe67431c3204e203bd39118f355a6f",
+        "1b1deb58466609cc182170be3e763b36efbe67431c3204e203bd39118f355a6f"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.05,
+      "hashes": [
+        "4998c5643115671c68bb5a174b913992be8106939ebd83f18a7142df593060d5",
+        "4998c5643115671c68bb5a174b913992be8106939ebd83f18a7142df593060d5"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.25,
+      "hashes": [
+        "43fe7e7ba557d309b8035ab970c4cc8ecce3c099773e7867a8a634408bcb3a39",
+        "43fe7e7ba557d309b8035ab970c4cc8ecce3c099773e7867a8a634408bcb3a39"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.75,
+      "hashes": [
+        "0f010023ffc71624ce680101bcc2c1664e2b51f9b3fce66db6ac78536632fd43",
+        "0f010023ffc71624ce680101bcc2c1664e2b51f9b3fce66db6ac78536632fd43"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 1,
+      "t": 1.5,
+      "hashes": [
+        "c07f5be030c428e314898a8ac146c37d48128fe92df7470a64935139fbbe3ed7",
+        "c07f5be030c428e314898a8ac146c37d48128fe92df7470a64935139fbbe3ed7"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 1,
+      "t": 2.5,
+      "hashes": [
+        "11c5cd39a3ae8f6a2e79f7a677f91d54ee31a21785aeb809142c7853afbe728f",
+        "11c5cd39a3ae8f6a2e79f7a677f91d54ee31a21785aeb809142c7853afbe728f"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 1,
+      "t": 3.7,
+      "hashes": [
+        "4babbf973677626287b69b034deb9edf2d33e5f09a07c1fcc068804474c47853",
+        "4babbf973677626287b69b034deb9edf2d33e5f09a07c1fcc068804474c47853"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.05,
+      "hashes": [
+        "f356d3af54e14628474a239633060702e28053d0fbd2362f765961abaf3994c9",
+        "f356d3af54e14628474a239633060702e28053d0fbd2362f765961abaf3994c9"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.25,
+      "hashes": [
+        "1fdb4a68956dde19013c6a6debec574ca32f21885b5e22458a9e4b57847b7bb0",
+        "1fdb4a68956dde19013c6a6debec574ca32f21885b5e22458a9e4b57847b7bb0"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.75,
+      "hashes": [
+        "0b34610665020c486396d898bb4bf865cedc166c71c34050e3d31474fe0a2367",
+        "0b34610665020c486396d898bb4bf865cedc166c71c34050e3d31474fe0a2367"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 2,
+      "t": 1.5,
+      "hashes": [
+        "c0866af0e70f0f7a5d31d9f3fcd8f62a3982a872141d86f58c7e38633c337ba0",
+        "c0866af0e70f0f7a5d31d9f3fcd8f62a3982a872141d86f58c7e38633c337ba0"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 2,
+      "t": 2.5,
+      "hashes": [
+        "8af9aeb685c383aad2ad82537d7079025fe5934035631e0723e965f350e0a8ec",
+        "8af9aeb685c383aad2ad82537d7079025fe5934035631e0723e965f350e0a8ec"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "single",
+      "dir": -1,
+      "scale": 2,
+      "t": 3.7,
+      "hashes": [
+        "bf74e029ddb797094b99d35a0fedcef5bb04b5ffdc4405119f973b2902977ba0",
+        "bf74e029ddb797094b99d35a0fedcef5bb04b5ffdc4405119f973b2902977ba0"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.05,
+      "hashes": [
+        "2e7090c57c0a6b08d91c08cb027913759860e94cc8bcebd92db88e7f88a2f906",
+        "2e7090c57c0a6b08d91c08cb027913759860e94cc8bcebd92db88e7f88a2f906"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.25,
+      "hashes": [
+        "2e552180f80bef7cb715f73a3a208510b8000966ecb699c9da650ad9520798ce",
+        "2e552180f80bef7cb715f73a3a208510b8000966ecb699c9da650ad9520798ce"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.75,
+      "hashes": [
+        "527557c0e80c599e21603859f2f05bbc239cacc425364411a80d3843c264b28c",
+        "527557c0e80c599e21603859f2f05bbc239cacc425364411a80d3843c264b28c"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 1.5,
+      "hashes": [
+        "b5508fe5aa4fbf5c4dcf9b045afb84dafd258f180d740755051c71e358365f1a",
+        "b5508fe5aa4fbf5c4dcf9b045afb84dafd258f180d740755051c71e358365f1a"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 2.5,
+      "hashes": [
+        "4848c4cc31b104a7153b2bb687f313f57a3a5da7d0ff13e2b3f4424bcba7e0fa",
+        "4848c4cc31b104a7153b2bb687f313f57a3a5da7d0ff13e2b3f4424bcba7e0fa"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 3.7,
+      "hashes": [
+        "ce644450640310fd08b0f57141dffe60252c241ed94c8509867310a14d0de1bd",
+        "ce644450640310fd08b0f57141dffe60252c241ed94c8509867310a14d0de1bd"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.05,
+      "hashes": [
+        "4050c5a1d4c5a381bda7f0bbe547976dd53e49cc139d38fda0c284012ec2c48a",
+        "4050c5a1d4c5a381bda7f0bbe547976dd53e49cc139d38fda0c284012ec2c48a"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.25,
+      "hashes": [
+        "a0613f4f7d2643a5d1d46c60883fb72947bda7415dfdbc35ad4a9cba7d6fdfd7",
+        "a0613f4f7d2643a5d1d46c60883fb72947bda7415dfdbc35ad4a9cba7d6fdfd7"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.75,
+      "hashes": [
+        "725a2bb62b04e044ab9d53d0ce36d2215c89eacb6cedb6eb5f92bef528563672",
+        "725a2bb62b04e044ab9d53d0ce36d2215c89eacb6cedb6eb5f92bef528563672"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 1,
+      "t": 1.5,
+      "hashes": [
+        "760fee6ad2cc4a8922c2f74d92ab739798df3a69959d73c364ffbd41dc4f728c",
+        "760fee6ad2cc4a8922c2f74d92ab739798df3a69959d73c364ffbd41dc4f728c"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 1,
+      "t": 2.5,
+      "hashes": [
+        "14703590f52af3b7749b62cd1d7f59bbdad487b751a357b2034af1b7815eb22e",
+        "14703590f52af3b7749b62cd1d7f59bbdad487b751a357b2034af1b7815eb22e"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 1,
+      "t": 3.7,
+      "hashes": [
+        "f024b72a389c2448c9e8e150976a4ce5b536434cce4ab70fb31244fb8b9db4a3",
+        "f024b72a389c2448c9e8e150976a4ce5b536434cce4ab70fb31244fb8b9db4a3"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.05,
+      "hashes": [
+        "a7457b24f41996b53d233311f6f7fb7a362006468136679c378f5618d2674585",
+        "a7457b24f41996b53d233311f6f7fb7a362006468136679c378f5618d2674585"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.25,
+      "hashes": [
+        "f31bfa1065007d45494b45bfb9a9607e25dac2d5820cdf8497ac1e75fca949d5",
+        "f31bfa1065007d45494b45bfb9a9607e25dac2d5820cdf8497ac1e75fca949d5"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.75,
+      "hashes": [
+        "b6143c6d6eaa7856bbdae6500e544fc919f5c9dc30b502c0de74fe607f6a2ae1",
+        "b6143c6d6eaa7856bbdae6500e544fc919f5c9dc30b502c0de74fe607f6a2ae1"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 2,
+      "t": 1.5,
+      "hashes": [
+        "17140028d7862ae58262231448376ceada3e8aff0c3c43d2680acaf91557e02c",
+        "17140028d7862ae58262231448376ceada3e8aff0c3c43d2680acaf91557e02c"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 2,
+      "t": 2.5,
+      "hashes": [
+        "88b34fa0ccb87e2eec3e136a8c5e2af4376c832a38fbbae10bc1220f121c6e6c",
+        "88b34fa0ccb87e2eec3e136a8c5e2af4376c832a38fbbae10bc1220f121c6e6c"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": 1,
+      "scale": 2,
+      "t": 3.7,
+      "hashes": [
+        "e79b1920ad6c815bd985ef638116d05fd4ebb98f6184c20102fb230b666ef9fe",
+        "e79b1920ad6c815bd985ef638116d05fd4ebb98f6184c20102fb230b666ef9fe"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.05,
+      "hashes": [
+        "631de33be57013138b8152ddcdd448421e7a9cecaf49c261e8f0898a7af20067",
+        "631de33be57013138b8152ddcdd448421e7a9cecaf49c261e8f0898a7af20067"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.25,
+      "hashes": [
+        "313030b6754d7f1383f81fe94b6b5302ebb9cfd134f561f158304503bb254812",
+        "313030b6754d7f1383f81fe94b6b5302ebb9cfd134f561f158304503bb254812"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.75,
+      "hashes": [
+        "8023b7e3179d1f831ef21e7a9818d3598efb5e2d25079439794b488259f207f5",
+        "8023b7e3179d1f831ef21e7a9818d3598efb5e2d25079439794b488259f207f5"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 1.5,
+      "hashes": [
+        "c8802ab53460ad399e4c28a4a69972915d3268b19af689ad4fc6a044643eaae5",
+        "c8802ab53460ad399e4c28a4a69972915d3268b19af689ad4fc6a044643eaae5"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 2.5,
+      "hashes": [
+        "52f8ba3c8c7816b016008ca893b49ccd47e304f7421fe137669b1b344a6782e4",
+        "52f8ba3c8c7816b016008ca893b49ccd47e304f7421fe137669b1b344a6782e4"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 3.7,
+      "hashes": [
+        "06b85ceec1f93e4305c470c7ae8a9de4e66484d4b2ed319cb3b17e106fa3c4bd",
+        "06b85ceec1f93e4305c470c7ae8a9de4e66484d4b2ed319cb3b17e106fa3c4bd"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.05,
+      "hashes": [
+        "b1ab113d874a8f89a357c9dbb38590a153ea1330c1e16d61d5df2b5ad80ebe62",
+        "b1ab113d874a8f89a357c9dbb38590a153ea1330c1e16d61d5df2b5ad80ebe62"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.25,
+      "hashes": [
+        "ed27c6f2b6e23141000b88d9c0e285c78e52df5922503605f922d48a057cb5bb",
+        "ed27c6f2b6e23141000b88d9c0e285c78e52df5922503605f922d48a057cb5bb"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.75,
+      "hashes": [
+        "579e2a222b82a5db6741150086105dfc5945f8d79dff64a4a5a4625cd94c6602",
+        "579e2a222b82a5db6741150086105dfc5945f8d79dff64a4a5a4625cd94c6602"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 1,
+      "t": 1.5,
+      "hashes": [
+        "9a06e11c71bf1ff3398e1075a5ddd08930e88edf2c2565c9609ca38befdb8ddb",
+        "9a06e11c71bf1ff3398e1075a5ddd08930e88edf2c2565c9609ca38befdb8ddb"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 1,
+      "t": 2.5,
+      "hashes": [
+        "048092af477082f10a1f2707f1534dc24073be2fb609a9a2368ce6a876ee1cfd",
+        "048092af477082f10a1f2707f1534dc24073be2fb609a9a2368ce6a876ee1cfd"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 1,
+      "t": 3.7,
+      "hashes": [
+        "087e922ba55010a0b218d0794e90a13f9770ff449cbd94eb2983e610ab41c9bb",
+        "087e922ba55010a0b218d0794e90a13f9770ff449cbd94eb2983e610ab41c9bb"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.05,
+      "hashes": [
+        "3a17068d58a8fb5f84b2bf51bbb4568ddbd176eabce4a446ff23c1a7ab35546a",
+        "3a17068d58a8fb5f84b2bf51bbb4568ddbd176eabce4a446ff23c1a7ab35546a"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.25,
+      "hashes": [
+        "a55ea7bd2181c49c72f763165ed84b999597688a39a7822d62bf961023e32208",
+        "a55ea7bd2181c49c72f763165ed84b999597688a39a7822d62bf961023e32208"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.75,
+      "hashes": [
+        "ee0cf763fb8680a65871fcf19c385877bae720ce40a52806a3edb0d61af03917",
+        "ee0cf763fb8680a65871fcf19c385877bae720ce40a52806a3edb0d61af03917"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 2,
+      "t": 1.5,
+      "hashes": [
+        "f7f062830e9dbd703e0dca3b0bad1cf78d0c7111e1cdce8333a6fe8960ba6a59",
+        "f7f062830e9dbd703e0dca3b0bad1cf78d0c7111e1cdce8333a6fe8960ba6a59"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 2,
+      "t": 2.5,
+      "hashes": [
+        "6c185d1dce4e1d0d30655d39d6aff1717ac6f4b82c7c6862c56d8227f7d52075",
+        "6c185d1dce4e1d0d30655d39d6aff1717ac6f4b82c7c6862c56d8227f7d52075"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "pair",
+      "dir": -1,
+      "scale": 2,
+      "t": 3.7,
+      "hashes": [
+        "2a7722b9458a9a190ff07d350322b157f1c6a784f4151eabae9eeab3c2e258c1",
+        "2a7722b9458a9a190ff07d350322b157f1c6a784f4151eabae9eeab3c2e258c1"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.05,
+      "hashes": [
+        "17886154ed3195bf6f5815d695c39829ddab2a52025f0b83e00b8bce9e9e77a3",
+        "17886154ed3195bf6f5815d695c39829ddab2a52025f0b83e00b8bce9e9e77a3"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.25,
+      "hashes": [
+        "b4a3951e70d5771e5c0cadd142ac94b9d74d4302582775315587cf60027b723d",
+        "b4a3951e70d5771e5c0cadd142ac94b9d74d4302582775315587cf60027b723d"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 0.75,
+      "hashes": [
+        "8f2344e748ab8d74021160c536b40a308ffd0231c709dadb8aac28b1cbeea740",
+        "8f2344e748ab8d74021160c536b40a308ffd0231c709dadb8aac28b1cbeea740"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 1.5,
+      "hashes": [
+        "42289b6a79869d0646fa6619b9de8665838a9a7670d6f9bbdf0aaad876325d2d",
+        "42289b6a79869d0646fa6619b9de8665838a9a7670d6f9bbdf0aaad876325d2d"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 2.5,
+      "hashes": [
+        "f4d1431cfb0c52aa0ebe85d913437635cc3996a6a6445eec32b3556fee6babcf",
+        "f4d1431cfb0c52aa0ebe85d913437635cc3996a6a6445eec32b3556fee6babcf"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 0.5,
+      "t": 3.7,
+      "hashes": [
+        "3c0f2be1633575e8c85a4207a7969f005f58593922c62db08fe9ee022a086494",
+        "3c0f2be1633575e8c85a4207a7969f005f58593922c62db08fe9ee022a086494"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.05,
+      "hashes": [
+        "9a9d86657744d5a936de110c719c88d2cbe311a2a1fd67a6cbb9e54a23d75131",
+        "9a9d86657744d5a936de110c719c88d2cbe311a2a1fd67a6cbb9e54a23d75131"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.25,
+      "hashes": [
+        "70dbb7d2548e482b731ffae3bf306387af2b2dca392cd7cae7ac08894aeb5a08",
+        "70dbb7d2548e482b731ffae3bf306387af2b2dca392cd7cae7ac08894aeb5a08"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 1,
+      "t": 0.75,
+      "hashes": [
+        "5f4059eba11ee7ae5434d10409d1ea826d910f24a33eba371b2fd59c34096715",
+        "5f4059eba11ee7ae5434d10409d1ea826d910f24a33eba371b2fd59c34096715"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 1,
+      "t": 1.5,
+      "hashes": [
+        "9a6b317642fecf5a1eac9cc0cf58e399a110a5654c4f2efc77cce0f441e3b225",
+        "9a6b317642fecf5a1eac9cc0cf58e399a110a5654c4f2efc77cce0f441e3b225"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 1,
+      "t": 2.5,
+      "hashes": [
+        "dacff670f9e089692eac12e61bab92720129d3fb2da3bd58cbaf52ec80e68a59",
+        "dacff670f9e089692eac12e61bab92720129d3fb2da3bd58cbaf52ec80e68a59"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 1,
+      "t": 3.7,
+      "hashes": [
+        "bf0e7aee1b41b70506a5f7235b59cc7759cdfa2c175e1103b03ca8358d666271",
+        "bf0e7aee1b41b70506a5f7235b59cc7759cdfa2c175e1103b03ca8358d666271"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.05,
+      "hashes": [
+        "8554bee25b2309e4565da78db951d6a5d7b83080681f0327edcab2defd4b59a8",
+        "8554bee25b2309e4565da78db951d6a5d7b83080681f0327edcab2defd4b59a8"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.25,
+      "hashes": [
+        "0588fb02c35a94bdbed6995db847d7e555b026b5299b76d0362baa7423942fe2",
+        "0588fb02c35a94bdbed6995db847d7e555b026b5299b76d0362baa7423942fe2"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 2,
+      "t": 0.75,
+      "hashes": [
+        "5c1fcf97c18ad50453a7bdfa407a698b24b922df91181b1e632bc2de420cd21c",
+        "5c1fcf97c18ad50453a7bdfa407a698b24b922df91181b1e632bc2de420cd21c"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 2,
+      "t": 1.5,
+      "hashes": [
+        "7e8024767a316cae61f9f60426acdd7e1b7bc9391d4f05662dce67ea43522e20",
+        "7e8024767a316cae61f9f60426acdd7e1b7bc9391d4f05662dce67ea43522e20"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 2,
+      "t": 2.5,
+      "hashes": [
+        "83920f65aff7934eab0326dfed23e9a808a3f87536f3d5a4fa72799c6c297d91",
+        "83920f65aff7934eab0326dfed23e9a808a3f87536f3d5a4fa72799c6c297d91"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": 1,
+      "scale": 2,
+      "t": 3.7,
+      "hashes": [
+        "7fe04a06e4f9eabd2e2ec9fa755c9aaff1d2f429012be306b8a7825d3057d463",
+        "7fe04a06e4f9eabd2e2ec9fa755c9aaff1d2f429012be306b8a7825d3057d463"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.05,
+      "hashes": [
+        "862744876ad15dcdf680346a38de653843104544a79389a3cee7687266c03eee",
+        "862744876ad15dcdf680346a38de653843104544a79389a3cee7687266c03eee"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.25,
+      "hashes": [
+        "f924b36e3072c6c95c12b0b43ab24cb08f5e92fcd7f0586482097db2de483033",
+        "f924b36e3072c6c95c12b0b43ab24cb08f5e92fcd7f0586482097db2de483033"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 0.75,
+      "hashes": [
+        "6ec33f48533b918a9202bacbad0f95eaf852057531c95857fc538ea76743df56",
+        "6ec33f48533b918a9202bacbad0f95eaf852057531c95857fc538ea76743df56"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 1.5,
+      "hashes": [
+        "74934b8c2c2259061ea1c2f31b6d990921d9cfa72339489c5f0d15229ca8dfe0",
+        "74934b8c2c2259061ea1c2f31b6d990921d9cfa72339489c5f0d15229ca8dfe0"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 2.5,
+      "hashes": [
+        "192b69231f080acabc33a3d3a1fb0002ec0aa8d4b45e8bedad2099bdf575ed9d",
+        "192b69231f080acabc33a3d3a1fb0002ec0aa8d4b45e8bedad2099bdf575ed9d"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 0.5,
+      "t": 3.7,
+      "hashes": [
+        "1ce63e0dad5f567f756b7f23c2e0526f3458f6140b3d33fb633c883d418af594",
+        "1ce63e0dad5f567f756b7f23c2e0526f3458f6140b3d33fb633c883d418af594"
+      ],
+      "roots": [
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ],
+        [
+          0.5065000057220459,
+          0,
+          0,
+          0.5065000057220459,
+          -3.1200027465820312,
+          -1.7550015449523926
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.05,
+      "hashes": [
+        "2bda5ec35c677fc3833a8ffd4d6135a5dc280b6bfd600280f580a583f655a12b",
+        "2bda5ec35c677fc3833a8ffd4d6135a5dc280b6bfd600280f580a583f655a12b"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.25,
+      "hashes": [
+        "31c9750765996db0fe2539e9d932b0c4c629db2b14d2823fa29d65c4ab5b6f6e",
+        "31c9750765996db0fe2539e9d932b0c4c629db2b14d2823fa29d65c4ab5b6f6e"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 1,
+      "t": 0.75,
+      "hashes": [
+        "430e86ea5bcf18ccbc57ef2d45edd60a61e974d2dd30049d4dfbbad1a6a3195c",
+        "430e86ea5bcf18ccbc57ef2d45edd60a61e974d2dd30049d4dfbbad1a6a3195c"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 1,
+      "t": 1.5,
+      "hashes": [
+        "b66a50000ac3b9b874708977970dd5beaa8b244f4b54af034d7e63e5a93ca16c",
+        "b66a50000ac3b9b874708977970dd5beaa8b244f4b54af034d7e63e5a93ca16c"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 1,
+      "t": 2.5,
+      "hashes": [
+        "2c75218a11d5e222761bf1111a3197437210b9dd22274a081852302544950f64",
+        "2c75218a11d5e222761bf1111a3197437210b9dd22274a081852302544950f64"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 1,
+      "t": 3.7,
+      "hashes": [
+        "ca4716a91ff832ffddb793493b71caaf8c3595916feb07a7fc3226f505fb5be9",
+        "ca4716a91ff832ffddb793493b71caaf8c3595916feb07a7fc3226f505fb5be9"
+      ],
+      "roots": [
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ],
+        [
+          1.0130000114440918,
+          0,
+          0,
+          1.0130000114440918,
+          -6.2400054931640625,
+          -3.510003089904785
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.05,
+      "hashes": [
+        "e68438c2be6fa3dad1988a957da3ef87f01fed6cdc818d4d4d5f2c68fc83709a",
+        "e68438c2be6fa3dad1988a957da3ef87f01fed6cdc818d4d4d5f2c68fc83709a"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.25,
+      "hashes": [
+        "ab4e932a3c676088b820539ed9f976d589bca2a99126340b2d983bc7a9408eba",
+        "ab4e932a3c676088b820539ed9f976d589bca2a99126340b2d983bc7a9408eba"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 2,
+      "t": 0.75,
+      "hashes": [
+        "d6a6738ca4c74b9c8c5c2dfbd87019a201ff08be84c1359436ee9ff263b2af31",
+        "d6a6738ca4c74b9c8c5c2dfbd87019a201ff08be84c1359436ee9ff263b2af31"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 2,
+      "t": 1.5,
+      "hashes": [
+        "04fe590fdbf17bf382c5ea57113bb47293853cf7685f96116c8d5302786ca57b",
+        "04fe590fdbf17bf382c5ea57113bb47293853cf7685f96116c8d5302786ca57b"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 2,
+      "t": 2.5,
+      "hashes": [
+        "ac82d290c3e5901ec75f6446ce99baf57a062d44d5174bfff10ce0e6d9686d44",
+        "ac82d290c3e5901ec75f6446ce99baf57a062d44d5174bfff10ce0e6d9686d44"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    },
+    {
+      "mode": "turn",
+      "dir": -1,
+      "scale": 2,
+      "t": 3.7,
+      "hashes": [
+        "4d508ab9fb5cda68b201279c968eb9d0c5a1a4afb574bbbf13eea8550893ff78",
+        "4d508ab9fb5cda68b201279c968eb9d0c5a1a4afb574bbbf13eea8550893ff78"
+      ],
+      "roots": [
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ],
+        [
+          2.0260000228881836,
+          0,
+          0,
+          2.0260000228881836,
+          -12.480010986328125,
+          -7.02000617980957
+        ]
+      ],
+      "equal": true
+    }
+  ],
+  "benchmark": [
+    {
+      "repeat": 0,
+      "route": "after",
+      "frames": 120,
+      "ms": 14.5,
+      "fitCalls": 220
+    },
+    {
+      "repeat": 0,
+      "route": "before",
+      "frames": 120,
+      "ms": 18,
+      "fitCalls": 220
+    },
+    {
+      "repeat": 1,
+      "route": "after",
+      "frames": 120,
+      "ms": 13.799999999813735,
+      "fitCalls": 220
+    },
+    {
+      "repeat": 1,
+      "route": "before",
+      "frames": 120,
+      "ms": 16.200000000186265,
+      "fitCalls": 220
+    },
+    {
+      "repeat": 2,
+      "route": "after",
+      "frames": 120,
+      "ms": 13.700000000186265,
+      "fitCalls": 220
+    },
+    {
+      "repeat": 2,
+      "route": "before",
+      "frames": 120,
+      "ms": 12.299999999813735,
+      "fitCalls": 220
+    }
+  ],
+  "failures": []
+}

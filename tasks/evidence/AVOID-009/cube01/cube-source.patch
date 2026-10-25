@@ -1,0 +1,83 @@
+--- a/src/11p_layoutsD.js
++++ b/src/11p_layoutsD.js
+@@ -189,10 +189,14 @@
+   },
+   render(env) {
+     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, u = U(env), lt = env.lt;
++    const previousOwnership=env.drawOwnership;
++    if(cut.placementLayoutsD)env.drawOwnership={role:'primary',owner:'cube.solid'};
++    try {
+     let chunks = Pm.chunks && Pm.chunks.length ? Pm.chunks : [flat(cut.text)];
+     const mode = chunks.length < 2 ? 'single' : Pm.mode;
+-    const ph = Pm.pitch * J.DEG, dir = Pm.dir || 1;
+-    const h = Math.min(W * (mode === 'pair' ? 0.27 : 0.3), H * 0.285, u * 0.36);
++    const recipe=cut.placementLayoutsD?cut.layoutDRecipe||{}:{}, typeScale=recipe.fontScale??1;
++    const ph = (recipe.pitch??Pm.pitch) * J.DEG, dir = Pm.dir || 1;
++    const nativeH = Math.min(W * (mode === 'pair' ? 0.27 : 0.3), H * 0.285, u * 0.36), h=nativeH*(recipe.edgeScale??1);
+     const cx = W / 2, cy = H / 2 + h * Math.sin(ph) * 0.55;
+     const pc = plateCol(sc, Pm.face === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.fg, sc.accent]);
+     const tc = onCol(sc, pc);
+@@ -221,6 +225,7 @@
+     const hs = h * pop;
+     if (hs < 1 || out <= 0) return null;
+     const faces = cubeFaces(cx, cy, hs, th, ph);
++
+     // contact shadow: the (hidden) bottom face pushed down
+     const bm = faces[4].m.slice(); bm[5] = cy + hs * Math.cos(ph) + hs * 0.14;
+     env.poly(polyPts(bm, [[-hs * 1.04, -hs * 1.04], [hs * 1.04, -hs * 1.04], [hs * 1.04, hs * 1.04], [-hs * 1.04, hs * 1.04]]), darkOf(sc), 0.35 * out, false);
+@@ -230,6 +235,23 @@
+     // which face carries which chunk
+     const faceOf = mode === 'turn' ? (f => { const idx = ((dir > 0 ? f : (4 - f) % 4)); return idx < k ? idx : -1; })
+       : mode === 'pair' ? (f => (dir > 0 ? (f === 0 ? 0 : f === 1 ? 1 : -1) : (f === 3 ? 0 : f === 0 ? 1 : -1))) : (f => (f === 0 ? 0 : -1));
++    const localItems=[];
++    const content=F=>{
++      let it,main=false,nativeTextForField;
++      if(F.top)it={text:'No.'+lineNo(env),font:monoF(env),size:nativeH*.2,x:0,y:0,track:.2,color:onCol(sc,topC),alpha:out*.9,ghost:false};
++      else {const ci=faceOf(F.f);
++       if(ci>=0&&chunks[ci]){const nativeText=brk(chunks[ci],mode==='single'?(isPort(env)?4:5):4),t=brk(chunks[ci],recipe.wrap??(mode==='single'?(isPort(env)?4:5):4));
++        const size=Math.min(J.fitSize(nativeText,Pm.font,nativeH*1.64,nativeH*1.5,{lead:1.12,track:.02}),nativeH*.9);
++        nativeTextForField=nativeText;
++        const arrive=mode==='turn'?segT[ci]+(ci?.05:.12):.18+ci*.12;
++        it={text:t,font:Pm.font,size,x:0,y:0,lead:1.12,track:.02,color:tc,noHold:plateHold(env),mi:miAt(env,arrive)};main=true;
++       }else if(mode==='single'&&F.f===(dir>0?1:3)){const t=brk(altCopy(env),recipe.wrap?Math.max(6,recipe.wrap):6);const nativeText=brk(altCopy(env),6);const fs=Math.min(J.fitSize(nativeText,bodyF(env),nativeH*1.5,nativeH*1.2,{lead:1.4,track:.08}),nativeH*.2);it={text:t,font:bodyF(env),size:fs,x:0,y:0,lead:1.4,track:.08,color:tc,alpha:.75*out*tin(env,.3,.4),ghost:false};nativeTextForField=nativeText;
++       }else if(mode==='single'&&F.f===(dir>0?3:1))it={text:lineNo(env),font:Pm.font,size:nativeH*1.1,x:0,y:0,fill:false,stroke:Math.max(1.5,nativeH*.012),strokeColor:tc,alpha:.5*out,ghost:false};
++      }
++      if(it){const nativeItem=cut.placementLayoutsD?{...it,text:nativeTextForField??it.text,alpha:1}:null;if(!F.top)it.size*=typeScale;if(cut.placementLayoutsD)localItems.push({face:F.f,main,chunk:main?faceOf(F.f):null,kind:main?'lyric':F.top?'top-label':it.fill===false?'side-numeral':'alternate-copy',item:{...it,alpha:1},nativeItem});}return {it,main};
++    };
++    const contents=cut.placementLayoutsD?faces.map(content):null;
++    if(cut.placementLayoutsD)env.placementDGeometry={kind:'cube',h,nativeH,cx,cy,pitch:ph,mode,chunks:chunks.slice(),dir,items:localItems};
+     for (const F of faces) {
+       if (F.vis <= 0.004) continue;
+       const light = F.top ? 0.28 : (-0.55 * F.nx * dir + 0.55 * F.nz) * 0.35;
+@@ -241,27 +263,12 @@
+       const lm = F.m.slice();
+       // content in face-local px (face size 2h, unscaled): compose the pop scale into the matrix
+       const s0 = hs / h; lm[0] *= s0; lm[1] *= s0; lm[2] *= s0; lm[3] *= s0;
+-      if (F.top) {
+-        const lab = 'No.' + lineNo(env);
+-        drawAffPlain(env, { text: lab, font: monoF(env), size: h * 0.2, x: 0, y: 0, track: 0.2, color: onCol(sc, topC), alpha: out * 0.9, ghost: false }, lm);
+-        continue;
+-      }
+-      const ci = faceOf(F.f);
+-      if (ci >= 0 && chunks[ci]) {
+-        const t = brk(chunks[ci], mode === 'single' ? (isPort(env) ? 4 : 5) : 4);
+-        const size = Math.min(J.fitSize(t, Pm.font, h * 1.64, h * 1.5, { lead: 1.12, track: 0.02 }), h * 0.9);
+-        const arrive = mode === 'turn' ? segT[ci] + (ci ? 0.05 : 0.12) : 0.18 + ci * 0.12;
+-        const r = drawAff(env, { text: t, font: Pm.font, size, x: 0, y: 0, lead: 1.12, track: 0.02, color: tc, noHold: plateHold(env), mi: miAt(env, arrive) }, lm);
+-        bb = UB(bb, r);
+-      } else if (mode === 'single' && F.f === (dir > 0 ? 1 : 3)) {
+-        const t = brk(altCopy(env), 6);
+-        const fs = Math.min(J.fitSize(t, bodyF(env), h * 1.5, h * 1.2, { lead: 1.4, track: 0.08 }), h * 0.2);
+-        drawAffPlain(env, { text: t, font: bodyF(env), size: fs, x: 0, y: 0, lead: 1.4, track: 0.08, color: tc, alpha: 0.75 * out * tin(env, 0.3, 0.4), ghost: false }, lm);
+-      } else if (mode === 'single' && F.f === (dir > 0 ? 3 : 1)) {
+-        drawAffPlain(env, { text: lineNo(env), font: Pm.font, size: h * 1.1, x: 0, y: 0, fill: false, stroke: Math.max(1.5, h * 0.012), strokeColor: tc, alpha: 0.5 * out, ghost: false }, lm);
+-      }
++      const {it,main}=contents?contents[F.f]:content(F);
++      if(it){if(main)bb=UB(bb,drawAff(env,it,lm));else drawAffPlain(env,it,lm);}
++
+     }
+     return bb || box(cx - hs * 1.4, cy - hs * 1.6, cx + hs * 1.4, cy + hs * 1.2);
++    } finally {if(cut.placementLayoutsD)env.drawOwnership=previousOwnership;}
+   },
+ });
+ 

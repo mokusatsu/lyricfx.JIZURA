@@ -1,0 +1,4 @@
+from pathlib import Path
+import subprocess,json,hashlib
+R=Path('/workspace/lyricfx.JIZURA');E=R/'tasks/evidence/AVOID-009/bulbs-oracle60';b=Path('/dev/shm/avoid009-evening-20261024/bulbs60.oracle01/manifest.json').read_bytes();assert hashlib.sha256(b).hexdigest()=='9aeae203f535d429ee2286fe19e57abf93fc1d7bae1323da69fa03cd5c19b831';assert (E/'parent-review-bulbs60-attempt01.py').read_bytes()==(R/'work/parent-review-bulbs60.py').read_bytes();w=['python','-B','work/avoid009-night-command-receipts01/command_receipt.py']
+for rid,cmd in [('bulbs60-oracle-archive01',['python','-B','work/archive-bulbs60-output01.py','--phase','oracle','--manifest-sha256','9aeae203f535d429ee2286fe19e57abf93fc1d7bae1323da69fa03cd5c19b831']),('bulbs60-oracle-parent-review01',['python','-B','work/parent-review-bulbs60.py'])]:subprocess.run(w+['--receipt-id',rid,'--argv-json',json.dumps(cmd)],check=True)

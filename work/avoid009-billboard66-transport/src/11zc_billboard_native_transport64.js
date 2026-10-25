@@ -1,0 +1,6 @@
+/* Billboard-only late stock witness; no adapter or generic gradient capability. */
+(()=>{'use strict';
+const A=J.placement,source=J.LAYOUTS.billboard.render,drawCut=J.Renderer.prototype.drawCut,makeEnv=J.Renderer.prototype.makeEnv,keys=['mainDraw','drawFx','drawItem','layoutText','fontCSS','faceOf','fontForChar','measure','fitSize','clamp','lerp','h','r','mix','rgba','lum','contrast','fmtTime','combineChar','combinePiece'],helpers=keys.map(k=>[k,J[k]]),E=J.E,eases=['inCubic','outCubic','outBack','inOutCubic','outExpo'].map(k=>[k,E[k]]),hold=J.HOLD.still,holdApply=hold.apply,enter=J.ENTER.cut,exit=J.EXIT.cut,enterApply=enter.apply,exitApply=exit.apply,degree=J.DEG,tau=J.TAU,PID=J.PID,math=['sin','cos','imul'].map(k=>[k,Math[k]]);
+const known=renderer=>J.LAYOUTS.billboard.render===source&&renderer.drawCut===drawCut&&renderer.makeEnv===makeEnv&&helpers.every(([k,v])=>J[k]===v)&&J.E===E&&eases.every(([k,v])=>E[k]===v)&&J.HOLD.still===hold&&hold.apply===holdApply&&J.ENTER.cut===enter&&enter.apply===enterApply&&J.EXIT.cut===exit&&exit.apply===exitApply&&J.DEG===degree&&J.TAU===tau&&J.PID===PID&&math.every(([k,v])=>Math[k]===v);
+Object.defineProperty(A,'billboardTransport64Known',{value:Object.freeze(known),writable:false,configurable:false,enumerable:true});
+})();

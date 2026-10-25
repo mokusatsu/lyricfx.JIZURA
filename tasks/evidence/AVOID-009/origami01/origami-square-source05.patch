@@ -1,0 +1,11 @@
+--- source04/src/11p_layoutsD.js
++++ source05/src/11p_layoutsD.js
+@@ -2418,7 +2418,7 @@
+     // Native blintz writing fit also contracts with R before the final shrink.
+     // Preserve that piecewise cap exactly with a fixed CSS font and CTM scale.
+     const typeFold = nativeD ? Math.min(fit * shrink, u * .2) / Math.min(fit, u * .2) : 1;
+-    const m = nativeD ? J.measure({text,font:Pm.font,size,...o}) : null, rx0 = recipe?.sheetWriting ? Math.min(nativeR, m.w / .84 + size * .2) : nativeR, ry0 = recipe?.sheetWriting ? Math.min(nativeR, m.h / .84 + size * .2) : nativeR, rx = rx0 * shrink, ry = ry0 * shrink;
++    const m = nativeD ? J.measure({text,font:Pm.font,size,...o}) : null, writeR = recipe?.sheetWriting ? Math.min(nativeR, Math.max(m.w, m.h) / (.94 * .84) + size * .35) : nativeR, rx0 = writeR, ry0 = writeR, rx = rx0 * shrink, ry = ry0 * shrink;
+     if (cut.placementLayoutsD === true) env.placementDGeometry = {kind:'origami',mode:'blintz',text,size,writing:[m.w,m.h],rx:rx0,ry:ry0,shadow:[u*.012,u*.018]};
+     const C = [[cx, cy - ry], [cx + rx, cy], [cx, cy + ry], [cx - rx, cy]];
+     const M = C.map((p, i) => [(p[0] + C[(i + 1) % 4][0]) / 2, (p[1] + C[(i + 1) % 4][1]) / 2]);

@@ -1,0 +1,59 @@
+{
+  "source": "src/11p_layoutsD.js",
+  "sourceSHA256": "9650acc45b91e6ef5e213eaa27a20fa6f91a547fa48812714dfa054f6c03fbd9",
+  "scope": "helpers exact; resample fixed original N; explicit render geometry replacements only",
+  "changes": [
+    {
+      "before": "const text = brk(cut.text, port ? 5 : 8);",
+      "after": "const text = recipe.writingText;"
+    },
+    {
+      "before": "const size = Math.min(J.fitSize(text, Pm.font, maxW, maxH, o), u * 0.24, W * (arrow ? 0.8 : 0.9) / (m100.w / 100 + 1.5), H * 0.8 / (m100.h / 100 + 1.24 + (subT ? 0.3 : 0)));",
+      "after": "const size = reference.size * recipe.scale;"
+    },
+    {
+      "before": "const ss = Math.max(smallSize(env), size * 0.16);",
+      "after": "const ss = reference.ss;"
+    },
+    {
+      "before": "const padX = size * 0.75, padY = size * 0.62;",
+      "after": "const padX = size * recipe.pad[0], padY = size * recipe.pad[1];"
+    },
+    {
+      "before": "const r = J.clamp(size * 0.075, 4, u * 0.022);",
+      "after": "const r = reference.r * recipe.radiusScale;"
+    },
+    {
+      "before": "const pts = resample(insetPoints, r * 3.3, 140);",
+      "after": "const pts = resampleCount58(insetPoints, reference.rings[ri].N);"
+    },
+    {
+      "before": "const sz = Math.min(fs, J.fitSize(t, bodyF(env), bw - padX, ss * 1.2, { track: 0.18 }));",
+      "after": "const sz = reference.subtitle.size;"
+    },
+    {
+      "before": "const nativeD = cut.placementLayoutsD === true;",
+      "after": "const nativeD = cut.placementLayoutsD === true;\n    if (!recipe || !reference || cut.text!=='風の先へ' || Pm.shape!=='board' || !Pm.sub || env.W!==960 || env.H!==540) throw Error('RECIPE58_FIXED_SCOPE');"
+    },
+    {
+      "before": "if(captureD)catalog.bb=clone(bb);",
+      "after": "if(captureD){catalog.bb=clone(bb);catalog.reshape58={recipe:clone(recipe),originalSize:reference.size,originalRadius:reference.r,originalN:reference.rings.map(r=>r.N),sourceCaption:clone(reference.subtitle),notNativeGeometry:true};}"
+    },
+    {
+      "before": "kind:'bulbs-native-catalog',version:1,nativeOnly:true",
+      "after": "kind:'bulbs-reshape58-diagnostic-catalog',version:1,nativeOnly:false,sourceNativeClockUnchanged:true"
+    },
+    {
+      "before": "spacing:r*3.3,maxN:140,segmentsRecomputedMetadata:segments,totalLengthRecomputedMetadata:segments.reduce((a,b)=>a+b,0)",
+      "after": "nominalRecipeSpacing:r*3.3,sourceNativeSpacing:reference.rings[ri].spacing,originalN:reference.rings[ri].N,actualArcStep58:segments.reduce((a,b)=>a+b,0)/N,maxN:140,segmentsRecomputedMetadata:segments,totalLengthRecomputedMetadata:segments.reduce((a,b)=>a+b,0)"
+    },
+    {
+      "before": "derivation:'inset evaluated once; original resample result; segment lengths separately recomputed metadata only'",
+      "after": "derivation:'new inset evaluated once; fixed source-original N; actualArcStep58 from separately recomputed segment lengths; geometry changed, not native resample result'"
+    }
+  ],
+  "resampleChanges": [
+    "explicit N input with4..140 guard",
+    "original segments/step/while/lerp order retained"
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "registration": [
+    {
+      "name": "unknown",
+      "rejected": true
+    },
+    {
+      "name": "reserved",
+      "rejected": true
+    },
+    {
+      "name": "bad-id",
+      "rejected": true
+    },
+    {
+      "name": "duplicate",
+      "rejected": true
+    }
+  ],
+  "returns": [
+    {
+      "name": "valid",
+      "staged": true,
+      "sourceAdapter": "D009_registry_test",
+      "restored": false,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "STAGED_D_ADAPTER",
+          "adapter": "D009_registry_test",
+          "safety": "insufficient-space"
+        }
+      ],
+      "equal": false
+    },
+    {
+      "name": "units-empty",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "Complete typed D source/interval proof required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "segments-empty",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "Unique owner and complete exact region segments required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "nan-time",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "Finite fixed segment offset, source region and exact stage circle required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "moving",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "Finite fixed segment offset, source region and exact stage circle required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "circle",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "Finite fixed segment offset, source region and exact stage circle required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "coverage",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "Unique owner and complete exact region segments required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "owner",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "Unique owner and complete exact region segments required",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "root-safe",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "D root safety contradicts segment outcomes",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "decision",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "D decision/status mismatch",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "hold-empty",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "D safe-hold requires explicit in-cut hold window of at least.04s",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "hold-outside",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "INVALID_D_ADAPTER_RESULT",
+          "details": "D safe-hold requires explicit in-cut hold window of at least.04s",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    },
+    {
+      "name": "throw",
+      "staged": false,
+      "restored": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "EXPECTED_CALLBACK_FAILURE",
+          "details": "Expected callback failure",
+          "safety": "unsupported"
+        }
+      ],
+      "equal": null
+    }
+  ],
+  "controls": [
+    {
+      "control": "off",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_LEGACY",
+          "safety": "not-evaluated"
+        }
+      ]
+    },
+    {
+      "control": "manual",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_LEGACY",
+          "safety": "not-evaluated"
+        }
+      ]
+    },
+    {
+      "control": "lock",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_LEGACY",
+          "safety": "not-evaluated"
+        }
+      ]
+    },
+    {
+      "control": "emphasis",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_LEGACY",
+          "safety": "not-evaluated"
+        }
+      ]
+    },
+    {
+      "control": "no-regions",
+      "callbackCalls": 0,
+      "staged": false,
+      "equal": true,
+      "diagnostics": [
+        {
+          "cut": 0,
+          "code": "PRESERVED_NO_ACTIVE_REGION",
+          "safety": "not-evaluated"
+        }
+      ]
+    }
+  ],
+  "calls": 13,
+  "renders": 1,
+  "scope": "Registry schema and routing only; no actual avoidance certification",
+  "start": "2026-10-23T11:52:53.539Z",
+  "end": "2026-10-23T11:52:55.899Z",
+  "pins": [
+    {
+      "path": "index.html",
+      "sha256": "7e0c6df26ea44f19e93f4085357ce56eac9f3a99de24b0989278439b69b960d5"
+    },
+    {
+      "path": "en/index.html",
+      "sha256": "f3da5db50a7db637b3e88c7ed75a604cb17fe7d731c5a2815e54f425ea3fe873"
+    },
+    {
+      "path": "src/09k_layoutsD_placement.js",
+      "sha256": "d5776c9ad249b83b2fb75065168de6e089622e28c28662fc31e13b46c0afbc5a"
+    },
+    {
+      "path": "src/09a_placement.js",
+      "sha256": "d0b64c493181d7501b2f3a7f8a248b25e89ad249da5ab90fc292989050c8b540"
+    },
+    {
+      "path": "src/11p_layoutsD.js",
+      "sha256": "075538176a1a600f100477753fedbe3befe0621b983cb67abeda784c5335688d"
+    },
+    {
+      "path": "src/11za_layoutsD_transport.js",
+      "sha256": "3abd1b35040a83861a5328797fc41f78f6730f2e8a72c4d95348491dbdec67f1"
+    },
+    {
+      "path": "dev/avoidance/layouts-a-fixture.js",
+      "sha256": "f8211cbf17b370ada86f68d32c5d6ba6bb0c5f3af4c379d71bad38e6c7d3a524"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-registry-test.cjs",
+      "sha256": "c48e0c59fca43e706e5948d2a1e3069a2c0187e371577686abbb750cd6b05c08"
+    }
+  ]
+}

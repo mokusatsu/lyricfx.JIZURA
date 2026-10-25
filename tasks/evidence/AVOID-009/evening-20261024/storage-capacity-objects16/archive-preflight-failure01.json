@@ -1,0 +1,11 @@
+{
+  "atUTC": "2026-10-25T02:49:17.728202+00:00",
+  "state": "READ_ONLY_PREFLIGHT_REJECTED_LEGITIMATE_HARDLINK_BEFORE_RAM_GIT_OR_NETWORK",
+  "reviewedSourceSHA256": "8dba2d39a7f2df2fce7da39799eefa071fdfbb416ea95cd5b17e7205135662e3",
+  "cause": "Generic read-only reader demanded nlink==1 although audit allowed regular non-symlink hardlinked source files",
+  "correction": "Read-only reader permits nlink>=1; explicit ROOT index single-link gate retained",
+  "ROOTGitMutation": false,
+  "RAMGitStarted": false,
+  "networkStarted": false,
+  "publicChecks": 0
+}

@@ -1,0 +1,32 @@
+DURABILITY CANDIDATE — source prepared, no archive BUILD/action executed by preparer.
+
+Current parent-reported push: work309a7c16..a5bc1de12b779b87c60a21f3402dad5cdca4e621 DONE.
+The original external final-result.json records an earlier proxy failure. Preserve it as
+history; do not silently rewrite it. The new capsule manifest records later actual push.
+
+preserve_commit_rounds16.py BUILD preserves both exact historical private indexes and
+all six external JSON state/receipt/review/result files in a Git-candidate XZ archive.
+VERIFY requires the exact parent-reviewed manifest SHA, validates all member hashes and
+sizes plus the complete XZ checksum/footer. EXTRACT creates only an absent explicit
+outside-repository directory. No command installs ROOT index or authorizes stale rounds.
+The archive becomes durable only after parent review, commit and successful Git push.
+
+Historical index bytes carry stat/inode metadata and historical HEAD context. They are
+inspectable recovery evidence, never the authority for a later HEAD or a fresh clone.
+For continuation, read actual current Git HEAD/index/stage/65 protected absences/PYC7;
+bootstrap a newly reviewed model and a fresh private index. Do not automatically replay
+round3 from a restored R2 after newer capsule commits. Fresh-clone materialization of
+skip/absences/PYC/runtime is separate work; no portable app/runtime test is claimed.
+
+untracked-009-blob-audit.json records exact Git blob identities at HEADa5bc: 1275
+scoped files/164086211B; 998 identical to a HEAD blob; 277 nonduplicates/152310500B
+require triage. A match means those exact bytes already exist in Git at the mapped
+tracked path. Nonmatch does not mean required, accepted or unrepresented in an archive.
+No artifacts deleted. 76221 untracked files were enumerated; large 001-008 scratch/build
+outputs were not all hashed or archived. They remain outside the durability claim.
+Nonduplicate old performance/font/raster/native/registry/proof data must be classified
+before claiming complete evidence preservation. Some work sources may be inside tracked
+archives, requiring archive-member identity checks rather than direct blob matching.
+
+RAW67 remains unavailable from old SHM and was never ROOT/Git-durable. Nothing in this
+capsule recreates that missing evidence. Public/network/media checks remain zero.

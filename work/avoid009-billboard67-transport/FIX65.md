@@ -1,0 +1,5 @@
+# SOURCE65 — measurement initial text-state copy only
+
+SOURCE64 actual failed after3 native/zero triples, at ownlt.02 main. Parent raw finding reports full paintCore letterSpacing/wordSpacing replay empty string versus native0px. Existing A.record c.reset then copies alpha/blend/line fields but not these text fields; billboard event snapshots therefore faithfully captured the wrong measurement initial state. No unused field is waived and no pixel pass is inferred.
+
+SOURCE65 copies bb64paint(env.ctx) into measurementc via existing bb64apply, ONLY for nativeBillboard64, immediately after original initial state-copy sequence and before any source callback. No setTransform is added; actual M and M' remain distinct. Generic other layouts stay unchanged. Strict full paint/CTM/gradient/clip/native RGBA assertions, two fixtures, clocks,205zero pairs/14negatives, caps and transport-only qualification unchanged. Private64API/material/witness names intentionally retained for compatibility; source65 runner/release/pins/seal names distinct. SOURCE64 sealed capsule/raw remain immutable. No application/selfcheck executed by preparer.
