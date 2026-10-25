@@ -1,0 +1,28 @@
+{
+  "state": "PARENT_LOCAL_REVIEW_FAILED",
+  "type": "AssertionError",
+  "message": "",
+  "traceback": "Traceback (most recent call last):\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 170, in <module>\n    try:main(pathlib.Path(sys.argv[1]),out)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 80, in main\n    try:return canonical['review'](folder,out)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-canonical-review70.py\", line 38, in review\n    eq(prog['nativeBulbsTransport51']['actualRoot'],b['native']['root']);eq(t['catalog'].get('bb'),b['native']['bb']);eq(t['catalog'],b['native']['catalog']);assert t['zeroSHA256']==a['native']['pixelSHA256'] and t['movedSHA256']==a['directMoved']['pixelSHA256'];eq([paint(p) for p in t['zeroPaint']],[paint(p) for p in a['native']['paint']]);eq([paint(p) for p in t['movedPaint']],[paint(p) for p in a['directMoved']['paint']])\n                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-canonical-review70.py\", line 8, in eq\n    def eq(a,b):assert exact(a)==exact(b)\n                       ^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "stats": {},
+  "focusedReviewProgress": {
+    "records": 2,
+    "phase": "tuple",
+    "phases": {
+      "init": 1,
+      "tuple": 1
+    },
+    "counts": {
+      "init": 1
+    },
+    "producerErrors": [
+      {
+        "case": "ja.manual-source-area",
+        "name": "AssertionError",
+        "message": "same candidate source inputs, clock, logical geometry and original-root catalog\n+ actual - expected\n... Skipped lines\n\n  {\n    arrow: false,\n    ax: 0,\n    bh: 159.6672,\n    board: '#2c3039',\n...\n    root: [\n+     0.9925461411476135,\n+     0.12186934053897858,\n+     -0.12186934053897858,\n+     0.9925461411476135,\n+     116.53976440429688,\n+     65.1060791015625\n-     0.992546151641322,\n-     0.12186934340514748,\n-     -0.12186934340514748,\n-     0.992546151641322,\n-     116.539761496984,\n-     65.10607869317951\n    ],\n    seed: 1205,\n    shape: [\n      [\n        541.0510694824219,\n",
+        "stack": "AssertionError [ERR_ASSERTION]: same candidate source inputs, clock, logical geometry and original-root catalog\n+ actual - expected\n... Skipped lines\n\n  {\n    arrow: false,\n    ax: 0,\n    bh: 159.6672,\n    board: '#2c3039',\n...\n    root: [\n+     0.9925461411476135,\n+     0.12186934053897858,\n+     -0.12186934053897858,\n+     0.9925461411476135,\n+     116.53976440429688,\n+     65.1060791015625\n-     0.992546151641322,\n-     0.12186934340514748,\n-     -0.12186934340514748,\n-     0.992546151641322,\n-     116.539761496984,\n-     65.10607869317951\n    ],\n    seed: 1205,\n    shape: [\n      [\n        541.0510694824219,\n\n    at compareCandidateCatalog70 (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs70-canonical.cjs:7:294)\n    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs70-canonical.cjs:22:222"
+      }
+    ]
+  },
+  "publicChecks": 0,
+  "parentImages": 0
+}

@@ -1,0 +1,157 @@
+{
+  "version": 70,
+  "mode": "canonical-JAEN-native70",
+  "storageCodecRevision": "source69-root-and-metadata59-gzip-v2",
+  "limits": {
+    "entriesPerTable": 100000,
+    "keyBytesPerTable": 67108864,
+    "serializedOutputBytes": 268435456,
+    "requestBytes": 16777216
+  },
+  "tableLifetime": "one epoch per language and fixture; both original/candidate share that epoch",
+  "pins": [
+    {
+      "path": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs70-canonical.cjs",
+      "bytes": 9830,
+      "sha256": "76911ed982eb0a49bf42961fa3e505ab35a2d7ecf951cfb8d342ca970624b3c6"
+    },
+    {
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "bytes": 125989464,
+      "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12"
+    },
+    {
+      "path": "/usr/bin/chromium",
+      "bytes": 5064,
+      "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779"
+    },
+    {
+      "path": "/usr/lib/chromium/chromium",
+      "bytes": 326880088,
+      "sha256": "4dc9f9f9b20e9bd95bf201f43d2d643f48938f36a70ddcb6fce3dd611a178180"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs69-runner.cjs",
+      "bytes": 17846,
+      "sha256": "f1e61cd05f3f581a1043e87b84333f5c81d07652f3eaf9b720b3ecffaa31cae3"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/dev/avoidance/layouts-b-fixture.js",
+      "bytes": 6552,
+      "sha256": "21bea37ff4a275f5faa8de74dfeadf380f8bb2d754f01e3ac9b0d7993ca566da"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/dev/browser.cjs",
+      "bytes": 267,
+      "sha256": "cb0d19bc47ca37853308b00cc3d382f6303fd82e1baacb08a0205d31aa8b1f44"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/bulbs-transport51/source51/runner/exercise51.js",
+      "bytes": 15078,
+      "sha256": "3fd52703e329391efd3227f5265754c4464a4b86cddbbc27bd75f77c73fb734f"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/bulbs-transport51/source51/runner/specs51.cjs",
+      "bytes": 2334,
+      "sha256": "f4f0b28694224c6e94a40958c9089f9e2ca02ded2819cfac6299df571f284492"
+    },
+    {
+      "path": "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/bulbs-canonical53/source53/runner/oracle53.cjs",
+      "bytes": 3495,
+      "sha256": "bae00b0b70b1e9dfbab35c39ec5f8f7dac4b61a57cd6d1acca300b1f50fd53ea"
+    }
+  ],
+  "exerciseAdaptation": {
+    "originalSHA256": "3fd52703e329391efd3227f5265754c4464a4b86cddbbc27bd75f77c73fb734f",
+    "adaptedSHA256": "0c44bd117a911900eb25f9350cbcc4114e4e14dcc38258d56daa3a31d1febbb4",
+    "inverseExact": true,
+    "onlyChange": "historical forced JA becomes actual composed plan.lang"
+  },
+  "html": [
+    {
+      "path": "/baseline-ja.html",
+      "bytes": 5855748,
+      "sha256": "952af1ec8c04eed68d1db42ea47649ee97bbb33e8c141e003cbabdce9ffd8265"
+    },
+    {
+      "path": "/candidate-ja.html",
+      "bytes": 5911145,
+      "sha256": "c048eb396d8d025c7233fc52fdfdacc70e2ae78d42846f9147e1096ab4be746b"
+    },
+    {
+      "path": "/baseline-en.html",
+      "bytes": 5870670,
+      "sha256": "505e99d8c69c49fdb6dd94bedb74e149120fd7b1ddee8e0495177207b92380bf"
+    },
+    {
+      "path": "/candidate-en.html",
+      "bytes": 5926067,
+      "sha256": "fb57f5d925c58897df5f5206d1800f5d5bed851f308f821bcb5a08a913f501b8"
+    }
+  ],
+  "expected": {
+    "fixtures": 30,
+    "tuples": 900,
+    "whole": 180,
+    "controls": 30
+  },
+  "completed": {
+    "fixtures": 0,
+    "tuples": 0,
+    "whole": 0,
+    "controls": 0
+  },
+  "records": [
+    {
+      "case": "ja.manual-source-area",
+      "sequence": 0,
+      "file": "000000.json.gz",
+      "bytes": 7284,
+      "JSONBytes": 9980,
+      "sha256": "210637e520a3ec477805468716630d56c79f5a8cf85d41564d747021ef162552",
+      "phase": "init"
+    },
+    {
+      "case": "ja.manual-source-area",
+      "sequence": 1,
+      "file": "000001.json.gz",
+      "bytes": 4854,
+      "JSONBytes": 22705,
+      "sha256": "0f5db72833b1cc679c8cd08dca992b1676a28a3f2f386665e31a99d842611138",
+      "phase": "tuple"
+    },
+    {
+      "case": "ja.manual-source-area",
+      "sequence": 2,
+      "file": "000002.json.gz",
+      "bytes": 887,
+      "JSONBytes": 1346,
+      "sha256": "669a24a073dcf481facd3354368aa0a71741cbb4ebd47f1effbaff18bd109a3b",
+      "phase": "failure-partial"
+    },
+    {
+      "case": "ja.manual-source-area",
+      "sequence": 3,
+      "file": "000003.json.gz",
+      "bytes": 1906,
+      "JSONBytes": 5558,
+      "sha256": "1a12fc7502b9971cf4a5f000599031cc5b31760f4929c21c49327d61dd90f20d",
+      "phase": "failure-partial"
+    }
+  ],
+  "failedRequests": [],
+  "errors": [
+    {
+      "case": "ja.manual-source-area",
+      "name": "AssertionError",
+      "message": "same candidate source inputs, clock, logical geometry and original-root catalog\n+ actual - expected\n... Skipped lines\n\n  {\n    arrow: false,\n    ax: 0,\n    bh: 159.6672,\n    board: '#2c3039',\n...\n    root: [\n+     0.9925461411476135,\n+     0.12186934053897858,\n+     -0.12186934053897858,\n+     0.9925461411476135,\n+     116.53976440429688,\n+     65.1060791015625\n-     0.992546151641322,\n-     0.12186934340514748,\n-     -0.12186934340514748,\n-     0.992546151641322,\n-     116.539761496984,\n-     65.10607869317951\n    ],\n    seed: 1205,\n    shape: [\n      [\n        541.0510694824219,\n",
+      "stack": "AssertionError [ERR_ASSERTION]: same candidate source inputs, clock, logical geometry and original-root catalog\n+ actual - expected\n... Skipped lines\n\n  {\n    arrow: false,\n    ax: 0,\n    bh: 159.6672,\n    board: '#2c3039',\n...\n    root: [\n+     0.9925461411476135,\n+     0.12186934053897858,\n+     -0.12186934053897858,\n+     0.9925461411476135,\n+     116.53976440429688,\n+     65.1060791015625\n-     0.992546151641322,\n-     0.12186934340514748,\n-     -0.12186934340514748,\n-     0.992546151641322,\n-     116.539761496984,\n-     65.10607869317951\n    ],\n    seed: 1205,\n    shape: [\n      [\n        541.0510694824219,\n\n    at compareCandidateCatalog70 (/workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs70-canonical.cjs:7:294)\n    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs70-canonical.cjs:22:222"
+    }
+  ],
+  "complete": false,
+  "serializedBytes": 39589,
+  "publicChecks": 0,
+  "nativeRegressionOnly": true,
+  "formalPerformanceAccepted": false,
+  "phase": "failed-partial-raw-retained"
+}
