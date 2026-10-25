@@ -1,0 +1,30 @@
+/* Harness-only synthetic checks; no Canvas/browser qualification. */
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),{webcrypto}=require('node:crypto');
+async function exercise(mode='normal'){
+ const writes=[],J={placement:{},metrics:{revision:3},measure(){return 1;}},originalMeasure=J.measure,originalRevision=J.metrics.revision;
+ const ctx={fillStyle:'',letterSpacing:'0px',fillRect(){},getImageData(){return{data:new Uint8Array([this.changed?1:0,2,3,4])};}},canvas={width:960,height:540,getContext:()=>ctx};
+ const A=J.placement;A.bulbsProof69={clone:structuredClone};A.bulbs69Stats=()=>({cacheEntries:1});
+ const final={cuts:[{text:'風の先へ',placementTrajectory:{certificate:{}}}]},plan={cuts:[{text:'風の先へ'}]};let calls=0;
+ const errors=['STALE_PLACEMENT_PLAN','STALE_PLACEMENT_PLAN','BULBS69_SOURCE_DEPENDENCY','BULBS69_FRAME_OPTIONS','TILES48_TEXT_STATE:letterSpacing'];
+ const renderer={frame(){const index=calls++;if(mode==='paint-before-reject'&&index===0)ctx.changed=true;if(mode==='missing-reject'&&index===0)return;throw Object.assign(Error(errors[index]),{code:mode==='wrong-reason'&&index===0?'WRONG':errors[index]});}};
+ J.finalizePlacementPlan=input=>{assert.equal(input,plan,'must use live composed source, not a detached clone');assert.equal(input.cuts[0].lyricSize,40);return{cuts:[{placementTrajectory:{safety:mode==='silent-safe'?'certified-bounded-adapter':'unsupported',units:[]}}],placementFinalization:{diagnostics:[{code:'UNSUPPORTED'}]}};};
+ class XMLHttpRequest{open(){}setRequestHeader(){}send(body){writes.push(JSON.parse(body));this.status=200;}}
+ const window={},context={window,J,document:{createElement:()=>({...canvas})},DataView,ArrayBuffer,Uint8Array,crypto:webcrypto,XMLHttpRequest};vm.createContext(context);vm.runInContext(fs.readFileSync(__dirname+'/layouts-d-bulbs69-browser.js','utf8'),context);
+ window.bulbs69Local={run:{plan,renderer},final};let result,error;
+ try{result=await window.negativeBoundaries69();}catch(e){error=e;}
+ assert.equal(J.measure,originalMeasure);assert.equal(J.metrics.revision,originalRevision);assert(!Object.hasOwn(plan.cuts[0],'lyricSize'));
+ return{result,error,writes,calls};
+}
+function cacheExercise(mode='normal'){
+ const writes=[],stats={proofRuns:1,proofHits:0,cacheEntries:1},upper={hits:0,misses:0,stores:1,entries:1},certificate={winner:'fixture'},A={bulbs69Stats:()=>({...stats}),layoutsCFinalCacheStats:()=>({...upper}),bulbsProof69:{same:(a,b)=>JSON.stringify(a)===JSON.stringify(b)},clearLayoutsCFinalCache(){Object.assign(upper,{hits:0,misses:0,stores:0,entries:0});if(mode==='clear-atlas')stats.cacheEntries=0;}},J={placement:A,finalizePlacementPlan(){if(upper.entries&&mode!=='upper-miss')upper.hits++;else{upper.misses++;upper.stores++;upper.entries=1;if(mode==='wrong-atlas')stats.proofRuns++;else stats.proofHits++;}return{cuts:[{placementTrajectory:{certificate:mode==='wrong-certificate'?{winner:'wrong'}:certificate}}]};}},window={};
+ class XMLHttpRequest{open(){}setRequestHeader(){}send(body){writes.push(JSON.parse(body));this.status=200;}}
+ vm.runInNewContext(fs.readFileSync(__dirname+'/layouts-d-bulbs69-browser.js','utf8'),{window,J,XMLHttpRequest,DataView,ArrayBuffer});window.bulbs69Local={run:{plan:{}},final:{cuts:[{placementTrajectory:{certificate}}]}};let error=null;try{window.cacheHit69();}catch(e){error=e;}return{writes,error,stats};
+}
+(async()=>{
+ const ok=await exercise();assert(!ok.error);assert.equal(ok.result.cases,5);assert.equal(ok.calls,5);assert.equal(ok.writes.length,7);assert.equal(ok.writes[6].value.phase,'boundary-negatives');assert.equal(ok.writes[6].value.rows.length,5);
+ for(const mode of['missing-reject','wrong-reason','paint-before-reject','silent-safe']){const r=await exercise(mode);assert(r.error,mode);assert(r.writes.length>=1,mode+' must preserve failed attempt before assertion');assert(!r.writes.some(w=>w.value.phase==='boundary-negatives'),mode+' must not emit successful summary');const last=r.writes.at(-1).value;assert(['boundary-negative-attempt','boundary-unsupported-attempt'].includes(last.phase));if(mode==='silent-safe')assert.equal(last.safe,true);else assert(last.atomic===false||last.reasonMatches===false);}
+ const hit=cacheExercise();assert(!hit.error);assert.equal(hit.stats.proofHits,1);assert.equal(hit.stats.proofRuns,1);assert.deepEqual(hit.writes.map(w=>w.value.phase),['boundary-cache-upper-attempt','boundary-cache-isolation','boundary-cache-hit']);
+ for(const mode of['upper-miss','clear-atlas','wrong-atlas','wrong-certificate']){const r=cacheExercise(mode);assert(r.error,mode);assert(r.writes.length>=1,mode+' must preserve cache attempt');}
+ console.log(JSON.stringify({status:'PASS',checks:10,scope:'ordinary boundary and two-layer cache harness only; real browser cases unexecuted',browserExecutions:0}));
+})().catch(e=>{console.error(e);process.exitCode=1;});
