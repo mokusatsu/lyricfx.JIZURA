@@ -1,0 +1,43 @@
+--- native-extracted-render
++++ private-render
+@@ -10,10 +10,12 @@
+     const L = Math.max(...words.map(w => w.length));
+     const C = Math.max(L + 2, port ? 7 : 9), R = words.length > 1 ? 7 : port ? 7 : 5;
+     const below = Pm.clue && H > W * 0.7, clueW = Pm.clue && !below ? 0.24 : 0;
+-    const cell = Math.min(W * (0.88 - clueW) / C, H * (below ? 0.64 : 0.8) / R, u * 0.14);
++    const nativeCell = Math.min(W * (0.88 - clueW) / C, H * (below ? 0.64 : 0.8) / R, u * 0.14);
++    const recipe=recipes.get(env), cell=recipe?nativeCell*recipe.scale:nativeCell;
+     const gw = C * cell, gh = R * cell;
+-    const fsC = Math.max(smallSize(env) * 1.15, cell * 0.24);
+-    const gx = (W - gw - (clueW ? W * clueW : 0)) / 2, gy = (H - gh - (below ? fsC * 5 : 0)) / 2;
++    const fsC = Math.max(smallSize(env) * 1.15, nativeCell * 0.24);
++    const clueBelow=recipe?recipe.below:below;
++    const gx=recipe?(W-gw-(clueBelow?0:(clueW?W*clueW:0)))/2:(W-gw-(clueW?W*clueW:0))/2, gy=recipe?(H-gh-(clueBelow?fsC*5:0))/2:(H-gh-(below?fsC*5:0))/2;
+     const rowsW = words.length > 1 ? [1, 5] : [Math.floor(R / 2)];
+     const c0 = words.map(w => Math.floor((C - w.length) / 2) - (J.h(s, w.length) % 2 && C - w.length > 2 ? 1 : 0));
+     // black cells: symmetric scatter that keeps the lyric entries (and their end caps) intact
+@@ -73,7 +75,7 @@
+         if (L0 && order[cur] && order[cur][0] === L0.wi && order[cur][1] === L0.j) env.rect(x, y, cell, cell, sc.accent, 0.5 * out, false);
+         env.line([[x, y + cell], [x + cell, y + cell]], inkC, lw * 0.6, 0.55 * ra * out, false);
+         env.line([[x + cell, y], [x + cell, y + cell]], inkC, lw * 0.6, 0.55 * ra * out, false);
+-        if (num.has(kk)) env.draw({ text: String(num.get(kk)), font: monoF(env), size: cell * 0.2, align: 'left', x: x + cell * 0.07, y: y + cell * 0.15, color: inkC, alpha: 0.8 * ra * out, ghost: false });
++        if (num.has(kk)) env.draw({ text: String(num.get(kk)), font: monoF(env), size: recipe ? nativeCell * 0.2 : cell * 0.2, align: 'left', x: x + cell * 0.07, y: y + cell * 0.15, color: inkC, alpha: 0.8 * ra * out, ghost: false });
+         const pc = pencil.get(kk);
+         if (pc) env.draw({ text: pc, font: bodyF(env), size: cell * 0.46, x: x + cell / 2, y: y + cell * 0.56, color: J.mix(paperC, inkC, 0.38), alpha: tin(env, 0.3 + r * 0.03, 0.3) * out, ghost: false });
+       }
+@@ -86,13 +88,13 @@
+     });
+     if (Pm.clue) {
+       const fs = fsC;
+-      const cxl = below ? gx : gx + gw + W * 0.035, cyl = below ? gy + gh + fs * 1.6 : gy + fs;
++      const cxl = clueBelow ? gx : gx + gw + W * 0.035, cyl = clueBelow ? gy + gh + fs * 1.6 : gy + fs;
+       const a = tin(env, 0.35, 0.4, E.outCubic) * out;
+       const n1 = num.get(key(rowsW[0], c0[0])) || 1;
+       const lines = [['ヨコのカギ', sc.accent, monoF(env)], [n1 + '  ' + (cut.note || romajiOf(env) || '(' + n + ')'), sc.fg, bodyF(env)], ['タテのカギ', sc.accent, monoF(env)], [(num.size > 3 ? 3 : 2) + '  ─', sc.sub, bodyF(env)]];
+       lines.forEach(([t, col, f], i) => {
+         const tt = t.length > 22 ? t.slice(0, 21) + '…' : t;
+-        const yy = below ? cyl + (i % 2) * fs * 1.7 : cyl + i * fs * 1.9 + (i >= 2 ? fs * 0.8 : 0), xx = below && i >= 2 ? cxl + gw * 0.55 : cxl;
++        const yy = clueBelow ? cyl + (i % 2) * fs * 1.7 : cyl + i * fs * 1.9 + (i >= 2 ? fs * 0.8 : 0), xx = clueBelow && i >= 2 ? cxl + gw * 0.55 : cxl;
+         env.draw({ text: tt, font: f, size: fs, align: 'left', x: xx, y: yy, track: 0.08, color: col, alpha: a, ghost: false });
+       });
+     }

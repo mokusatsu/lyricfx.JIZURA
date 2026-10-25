@@ -1,0 +1,65 @@
+--- source01/support26.js
++++ source02/support26.js
+@@ -4,7 +4,9 @@
+ function support26(record,primitive,ordinal){
+  const r={...record,ordinal};need(r.role==='primary'&&/^dominoes\.row\.[01]$/.test(r.owner),'DOMINO26_UNKNOWN_OWNER');
+  need(r.state.alpha>0&&r.state.filter==='none'&&!r.state.shadowBlur&&!r.state.shadowOffsetX&&!r.state.shadowOffsetY&&['rgba(0, 0, 0, 0)','transparent'].includes(r.state.shadowColor)&&!r.state.dash.length,'DOMINO26_PAINT_EFFECT');
+- need(typeof r.state.fillStyle==='string'&&typeof r.state.strokeStyle==='string'&&r.matrix.every(Number.isFinite),'DOMINO26_STYLE_MATRIX');
++ const activeStyle=r.kind.startsWith('stroke')?'strokeStyle':'fillStyle';
++ need(typeof r.state[activeStyle]==='string','DOMINO26_ACTIVE_STYLE:'+activeStyle);
++ need(r.matrix.every(Number.isFinite),'DOMINO26_STYLE_MATRIX');
+  let bounds,foundation;
+  if(r.kind==='fillText'||r.kind==='fill'&&r.path.some(c=>c.key==='arc')){
+   if(r.kind==='fillText')need(r.args.length===3&&r.state.textAlign==='center'&&r.state.textBaseline==='middle','DOMINO26_TEXT_SCOPE');
+--- source01/browser26.js
++++ source02/browser26.js
+@@ -40,7 +40,8 @@
+   need(passes.length===expected.length&&spy.records.length===paintPrimitives.length&&spy.records.length<=2048,'DOMINO26_PASS_PAINT_COUNTS');
+  }finally{J.LAYOUTS.dominoes.render=native;spy?.restore();if(oldOwn)Object.defineProperty(r,'drawCut',oldOwn);else delete r.drawCut;if(mainOwn)Object.defineProperty(J,'mainDraw',mainOwn);else delete J.mainDraw;if(oldDY)Object.defineProperty(window,'domino26OracleDY',oldDY);else delete window.domino26OracleDY;}
+  Q.pristine(ctx);stable();const records=spy.records;need(records.every(p=>p.state.alpha>0),'DOMINO26_ZERO_ALPHA_PAINT');
+- const supports=oracle?[]:records.map((p,i)=>window.domino26Support.support(p,paintPrimitives[i],i));
+- const out={n,time:state.firstTime,recipe,oracle,context,passes,rows,glyphs,records,paintPrimitives,primitiveCalls,supports,sourceUnchanged:true,adapterRegistered:false};canvas.width=1;return out;
++ const supports=[];let supportError=null;
++ if(!oracle)for(let i=0;i<records.length;i++){try{supports.push(window.domino26Support.support(records[i],paintPrimitives[i],i));}catch(e){const paint=records[i],activeStyle=paint.kind.startsWith('stroke')?'strokeStyle':'fillStyle';supportError={name:e.name,message:e.message,code:e.code??null,ordinal:i,kind:paint.kind,pass:paint.pass,owner:paint.owner,activeStyle,activeStyleValue:clean(paint.state[activeStyle]),supportsCompleted:supports.length};break;}}
++ const out={n,time:state.firstTime,recipe,oracle,context,passes,rows,glyphs,records,paintPrimitives,primitiveCalls,supports,supportError,sourceUnchanged:true,adapterRegistered:false};canvas.width=1;return out;
+ };
+ })();
+--- source01/runner26.cjs
++++ source02/runner26.cjs
+@@ -34,14 +34,14 @@
+    for(const p of[ROOT+'/dev/avoidance/layouts-b-fixture.js',ROOT+'/dev/avoidance/layouts-d-bulbs69-oracle-primitives.js',ROOT+'/work/avoid009-domino73-isolated/runtime73.js',HERE+'/support26.js',HERE+'/browser26.js'])await page.addScriptTag({content:fs.readFileSync(p,'utf8')});
+    await page.addScriptTag({content:'window.domino26Bounded=(()=>{const module={exports:{}};'+fs.readFileSync(HERE+'/bounded73.cjs','utf8')+';return module.exports;})();'});
+    const init=await page.evaluate(input=>initDomino26(input),{fonts,text});B.family(init.plan.cuts[0]);store({phase:'init',fixture,init});const native=[];
+-   for(let n=0;n<250;n++){const frame=await page.evaluate(n=>frameDomino26({n}),n);store({phase:'native-frame',fixture,frame});native.push(frame);}
++   for(let n=0;n<250;n++){const frame=await page.evaluate(n=>frameDomino26({n}),n);store({phase:'native-frame',fixture,frame});assert(!frame.supportError,'DOMINO26_SUPPORT_FAILED:'+JSON.stringify(frame.supportError));native.push(frame);}
+    const held=heldRows(native[90]);store({phase:'source-held-heuristic',fixture,held,provenance:'source row w/h/g formula at held native state90; seed only, not support certificate'});
+    const results=[];
+    for(const[region,circle]of[['default',{cx:480,cy:.42*540,r:108,margin:2.7}],['upper',{cx:480,cy:.2*540,r:108,margin:2.7}]]){
+     const plan=B.candidates(held,circle,G);store({phase:'candidate-plan',fixture,region,circle,plan});let winner=null;
+     for(const recipe of plan.candidates){let checked=0,witness=null;for(let n=0;n<250;n++){
+      const frame=recipe.kind==='native'?native[n]:await page.evaluate(x=>frameDomino26(x),{n,recipe});
+-     if(recipe.kind!=='native'){const oracle=await page.evaluate(x=>frameDomino26({...x,oracle:true}),{n,recipe});store({phase:'destination-frame',fixture,region,frame});store({phase:'oracle-frame',fixture,region,frame:oracle});assert.deepEqual(oracleProjection(frame),oracleProjection(oracle),'DOMINO26_ORIGINAL_CLOSURE_ORACLE');}
++     if(recipe.kind!=='native'){store({phase:'destination-frame',fixture,region,frame});assert(!frame.supportError,'DOMINO26_SUPPORT_FAILED:'+JSON.stringify(frame.supportError));const oracle=await page.evaluate(x=>frameDomino26({...x,oracle:true}),{n,recipe});store({phase:'oracle-frame',fixture,region,frame:oracle});assert(!oracle.supportError,'DOMINO26_ORACLE_SUPPORT_FAILED');assert.deepEqual(oracleProjection(frame),oracleProjection(oracle),'DOMINO26_ORIGINAL_CLOSURE_ORACLE');}
+      const evaluation=B.evaluatePairs(native[n].supports,frame.supports,circle,G,{emptyPositivePaintSource:native[n].records.length===0&&frame.records.length===0});store({phase:'pair-evaluation',fixture,region,recipe,n,evaluation});checked++;if(!evaluation.passed){witness={n,evaluation};break;}
+     }
+     const accepted=checked===250&&!witness;store({phase:'candidate-result',fixture,region,recipe,checked,notEvaluated:250-checked,accepted,witness,conditional:true,allNumberPreimagesCovered:accepted,certificateIssued:false});if(accepted){winner=recipe;break;}}
+--- source01/checker26.py
++++ source02/checker26.py
+@@ -24,7 +24,7 @@
+  v=float(x)
+  return nextf(v,up) if (Q(v)<x if up else Q(v)>x) else v
+ def support(p,primitive):
+- M=p['matrix'];s=p['state'];need(s['alpha']>0 and s['filter']=='none' and not s['shadowBlur'] and not s['shadowOffsetX'] and not s['shadowOffsetY'] and not s['dash'],'paint effects');kind=p['kind'];arc=[c for c in p['path'] if c['key']=='arc']
++ M=p['matrix'];s=p['state'];active='strokeStyle' if p['kind'].startswith('stroke') else 'fillStyle';need(isinstance(s[active],str),'active paint style');need(s['alpha']>0 and s['filter']=='none' and not s['shadowBlur'] and not s['shadowOffsetX'] and not s['shadowOffsetY'] and not s['dash'],'paint effects');kind=p['kind'];arc=[c for c in p['path'] if c['key']=='arc']
+  if kind=='fillText' or arc:
+   if kind=='fillText':
+    m=p['metrics'];x,y=map(Q,p['args'][1:3]);x0=x-Q(m['actualBoundingBoxLeft'])-1;x1=x+Q(m['actualBoundingBoxRight'])+1;y0=y-Q(m['actualBoundingBoxAscent'])-1;y1=y+Q(m['actualBoundingBoxDescent'])+1
+@@ -86,7 +86,7 @@
+    v=restore(r['binding'],tables);phase=v['phase'];fixture=v['fixture'];need(row['phase']==phase and row['case']==fixture,'case phase');stats[phase]+=1
+    if phase=='init':init[fixture]=v['init'];clocks(v['init']['clocks']);native[fixture]=[]
+    elif phase.endswith('-frame'):
+-    f=v['frame'];n=int(f['n']);expected=init[fixture]['clocks']['states'][n];need(exact(f['time'])==exact(expected['firstTime']) and len(f['passes'])==sum(p['active'] for p in expected['passes']),'actual passes');
++    f=v['frame'];need(not f.get('supportError'),'preserved support failure: '+json.dumps(f.get('supportError')));n=int(f['n']);expected=init[fixture]['clocks']['states'][n];need(exact(f['time'])==exact(expected['firstTime']) and len(f['passes'])==sum(p['active'] for p in expected['passes']),'actual passes');
+     for a,p in zip(f['passes'],[p for p in expected['passes'] if p['active']]):need(all(exact(a[k])==exact(p[k]) for k in ['pass','tp','lt','ltb','step']),'actual clock')
+     need(len(f['records'])==len(f['paintPrimitives'])<=2048,'paint counts');rowcheck(f,init[fixture]['plan']['cuts'][0])
+     if not f['oracle']:
