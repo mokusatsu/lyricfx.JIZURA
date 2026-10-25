@@ -1,0 +1,11 @@
+--- source30/browser30.js
++++ source31/browser30.js
+@@ -12,7 +12,7 @@
+  if(cut.area||cut.placementLocked||['manual','notation'].includes(cut.areaMode)||cut.lyricSize!=null||cut.contentScale!==1||Object.values(project.overrides||{}).some(o=>o.lock||o.lockedAreas||o.lockedEffects)||Object.keys(project.lyricCutOptions||{}).length)return{status:'unsupported',code:'CROSSWORD28_MANUAL_LOCK_SIZE'};
+  need(plan.cuts.length===1&&plan.W===960&&plan.H===540&&plan.fps===60&&plan.lang==='ja'&&J.lang==='ja','CROSSWORD28_STAGE_LANGUAGE');
+  need(cut.layout==='crossword'&&cut.text==='風の先へ'&&cut.seed===1205&&same(cut.params,{font:'dela',dens:.18,fill:2,clue:true}),'CROSSWORD28_FAMILY');
+- need(cut.start===0&&cut.end===4&&cut.dur===4&&(cut.renderStart??0)===0&&(cut.displayEnd??4)===4&&cut.inDur===.35&&cut.outDur===.4&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&cut.cam==='push'&&same(cut.camP,{a:.022,dir:1})&&cut.motionScale===1&&cut.stagger===.04&&plan.fx.motion===.65,'CROSSWORD28_NATIVE_OPERATIONS');
++ need(cut.start===0&&cut.end===4&&cut.dur===4&&(cut.renderStart??0)===0&&(cut.displayEnd??4)===4&&cut.inDur===.35&&cut.outDur===.4&&cut.enter==='cut'&&cut.exit==='cut'&&cut.hold==='still'&&cut.treat==='none'&&cut.cam==='push'&&same(cut.camP,{a:.022,dir:1})&&cut.motionScale===1&&cut.stagger===0.03950859557604417&&plan.fx.motion===.65,'CROSSWORD28_NATIVE_OPERATIONS');
+  need(cut.lineText==='風の先へ'&&!cut.note&&!cut.decor?.length&&!cut.drawing&&!cut.mask&&!cut.effectsOnly&&!cut.effectFx&&!cut.effectStyle&&!cut.group&&!cut.groupExit&&!cut.fonts&&!plan.events?.length&&!plan.beats?.length&&!plan.media&&!plan.foreground&&!plan.energy&&!plan.ghostPreRoll,'CROSSWORD28_EXTRA_INPUT');
+  need(plan.duration===4.150001&&J.stepDur(plan.fx,60)===1/60&&J.komaOf(plan.fx)===0&&plan.fx.chroma===.25&&plan.style.ghost===.6&&plan.style.glow===0&&document.fonts.status==='loaded','CROSSWORD28_CLOCK_FONTS');
+  return{status:'eligible',code:'SOURCE_PENDING_ONLY',safe:false};

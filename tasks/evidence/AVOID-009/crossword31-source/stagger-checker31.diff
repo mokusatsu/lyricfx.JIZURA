@@ -1,0 +1,26 @@
+--- source30/checker30.py
++++ source31/checker30.py
+@@ -60,12 +60,12 @@
+    if x['x0']<=y['x1'] and y['x0']<=x['x1'] and x['y0']<=y['y1'] and y['y0']<=x['y1']:passed=False
+  need(passed==row['quality']['passed'],'independent full quality result; tolerance never used for acceptance');return passed
+ NUMBERS={'1':(0,1),'2':(0,3),'3':(0,4),'4':(0,6),'5':(0,7),'6':(0,8),'7':(1,0),'8':(1,3),'9':(2,1),'10':(2,2),'11':(2,6),'12':(3,0),'13':(3,5),'14':(3,7),'15':(4,0),'16':(4,4)}
+-def tuple_check(v,policy):
++def tuple_check(v,policy,cut):
+  need(v['shape'] in policy['shapes'],'fixed shape');shape=v['shape'];n=int(v['n']);need(0<=n<250,'state index');a,b=v['actual'],v['expected'];own=v['own'];lag={'B':1.6/24,'A':.8/24,'main':0}[own['pass']];tp=max(0,n*(1/60)-lag);need(tp<4 and own['active'],'selected actual pass');clock=a['clock'];need(clock['pass']==own['pass'] and exact(own['tp'])==exact(tp) and exact(own['lt'])==exact(tp) and exact(own['ltb'])==exact(tp+lag) and exact(own['lag'])==exact(lag) and own['step']==math.floor(tp/(1/24)+1e-6),'all own pass fields');need(exact(clock['t'])==exact(tp) and exact(clock['lt'])==exact(tp) and exact(clock['ltb'])==exact(tp+lag),'own native source clocks');need(math.floor(v['time']/(1/60)+1e-6)==n and exact(clock['realTime'])==exact(v['time']),'realTime selector preimage');need(clock['step']==math.floor(tp/(1/24)+1e-6),'own step');need(exact(clock['pOut'])==exact(max(0,min(1,(tp-3.6)/.4))),'own pOut');need(exact(clock['pIn'])==exact(max(0,min(1,tp/.35))),'own pIn')
+  need(exact(a['records'])==exact(b['records']) and exact(a['calls'])==exact(b['calls']) and exact(a['clock'])==exact(b['clock']),'all literal paint/sourcecall/clock values');need(rgba(a['rgba'])==rgba(b['rgba']),'full lossless literal RGBA')
+  for x in [a,b]:
+   need(not x['paintError'] and x['rootRestored'] and x['allPrimary'],'healthy source draw');need(all(r['role']=='primary' and r['owner'].startswith('crossword28.') for r in x['records']),'all primary paints');need(all(f['passed'] and f['acceptedCSS']==f['actualCSS'] for f in x['fontChecks']),'actual source accepted font')
+- mains=[c['item'] for c in a['calls'] if c['kind']=='main'];need(''.join(i['text'] for i in mains)=='風の先へ' and len(mains)==4,'full natural main text');need(all(exact(it['mi'])==exact(max(0,.25+i*.11)/.04) for i,it in enumerate(mains)),'original stagger/read order')
++ mains=[c['item'] for c in a['calls'] if c['kind']=='main'];need(''.join(i['text'] for i in mains)=='風の先へ' and len(mains)==4,'full natural main text');need(all(exact(it['mi'])==exact(max(0,.25+i*.11)/max(.005,cut.get('stagger') or .04)) for i,it in enumerate(mains)),'original stagger/read order')
+  cell=68.26666666666667*shape['scale'];gx=(960-9*cell)/2;gy=(540-5*cell-16.384*5)/2;mainRatio=.7 if shape['profile']=='B' else .65;mainY=.62 if shape['profile']=='B' else .64
+  for i,it in enumerate(mains):need(exact(it['size'])==exact(cell*mainRatio) and exact(it['x'])==exact(gx+(1+i+.5)*cell) and exact(it['y'])==exact(gy+(2+mainY)*cell),'main fixed cell/size')
+  clues=[c['args'][0] for c in a['calls'] if c.get('sub')=='clue'];need([c['text'] for c in clues]==['ヨコのカギ','9  (4)','タテのカギ','3  ─'] and all(exact(c['size'])==exact(16.384) for c in clues),'all native clues')
+@@ -91,7 +91,7 @@
+   need(total==m['JSONBytes'] and len(values)==m['values']==host['valuesEmitted'],'full lossless stored counts');tuples=[];shapes={};anchorRows=[];finalRows=[];pilot=None;tuple_groups={}
+   for v in values:
+    if v['kind']=='tuple':
+-    need(exact(v['time'])==exact(host['init']['clocks']['states'][int(v['n'])]['firstTime']),'original complete clock first preimage');q,g=tuple_check(v,policy);key=(v['phase'],v['shape']['id'],v['circle']['id'] if v['circle'] else None,tuple(v['delta']));group=tuple_groups.setdefault(key,[]);need(not group or group[-1][1] and group[-1][2] is not False,'first failure must stop immediately');group.append((v,q,g));tuples.append(v)
++    need(exact(v['time'])==exact(host['init']['clocks']['states'][int(v['n'])]['firstTime']),'original complete clock first preimage');q,g=tuple_check(v,policy,host['init']['plan']['cuts'][0]);key=(v['phase'],v['shape']['id'],v['circle']['id'] if v['circle'] else None,tuple(v['delta']));group=tuple_groups.setdefault(key,[]);need(not group or group[-1][1] and group[-1][2] is not False,'first failure must stop immediately');group.append((v,q,g));tuples.append(v)
+    elif v['kind']=='shape-result':
+     need(v['shape']['id'] not in shapes,'one screen per shape');rows=[r for r in tuples if r['phase']=='shape-screen' and r['shape']['id']==v['shape']['id']];need(rows,'screen evidence');bad=[r for r in rows if not r['quality']['passed']];need(v['passedSparseQuality']==(not bad) and (not bad or rows[-1] is bad[0]),'first shape witness');expected=[(n,pa) for n in policy['sparseN'] for pa,lag in [('B',1.6/24),('A',.8/24),('main',0)] if max(0,n*(1/60)-lag)<4];actual=[(int(r['n']),r['own']['pass']) for r in rows];need(actual==expected[:len(actual)] and (bad or len(actual)==len(expected)),'screen tuple coverage');shapes[v['shape']['id']]={'result':v,'rows':rows}
+    elif v['kind']=='anchor-result':

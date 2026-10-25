@@ -1,0 +1,7 @@
+/* Actual eligibility condition only: no driver creation, DOM or Canvas. */
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict'),{isDeepStrictEqual:same}=require('node:util'),crypto=require('node:crypto');
+const B=__dirname,file=B+'/../run28-sparse02-20261025c/raw/host-receipt.json',before=fs.readFileSync(file),host=JSON.parse(before),plan=host.init.plan,cut=plan.cuts[0],cutBefore=JSON.stringify(cut);
+function condition(dir){const s=fs.readFileSync(dir+'/browser30.js','utf8'),line=s.split('\n').find(l=>l.includes("'CROSSWORD28_NATIVE_OPERATIONS'"));assert(line);const expr=line.slice(line.indexOf('need(')+5,line.lastIndexOf(",'CROSSWORD28_NATIVE_OPERATIONS'"));return Function('cut','plan','same','return ('+expr+')')(cut,plan,same);}
+assert.equal(condition(B+'/../source30'),false);assert.equal(condition(B),true);assert.equal(cut.stagger,0.03950859557604417);assert.equal(JSON.stringify(cut),cutBefore);assert.deepEqual(fs.readFileSync(file),before);
+const result={state:'PASS_PURE_ACTUAL_ELIGIBILITY_STAGGER31',old04GuardRejectsNaturalFixture:true,newSeedSpecificGuardAcceptsNaturalFixture:true,naturalStagger:cut.stagger,fixtureScope:'exact seed1205 fixture only; no general stagger domain claim',inputCutUnchanged:true,receiptSHA256:crypto.createHash('sha256').update(before).digest('hex'),Canvas:0,browser:0,driverInvocations:0};fs.writeFileSync(B+'/pure-stagger-guard-result31.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
