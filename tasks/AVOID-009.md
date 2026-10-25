@@ -1,3 +1,5 @@
+LATEST 電球69の限定adapterを親source/raw受入、canonical70は日英15条件/900tuple/49832paint/180whole/540typed/90他DとHTML反映後6テストの親照合PASS。旧全raw3cc4f6d、新レビュー/freshbuild204files32,787,642Bをf3d78f253c3c5bfc685b692364a848ca2c3e943aへpush済み。親utility修正後は既存生データだけを照合しnative/6再実行なし、生成2HTML同SHAを反映。現在14D登録+fisheye専用分岐=15IDの限定経路（全入力/全184/全34対応ではない）。次は電球の上寄り横1段/右円左2段だけnative60fps MP4、freshsol静止、看板へ。新候補0/約6、全009/正式性能/保存本体/新動作承認は未完。公開/保存先到達性確認0。
+
 LATEST canonical70 actual03は30fixture/900tuple/180whole/30controlとHTML反映後6テストがproducer上すべてPASS。親raw照合は422recordsでcaption孤立UTF16 surrogateのPython UTF8計数エラー。全1356files82,862,847Bを3cc4f6d0dcc89a992e22a67395aef1604489d04aへpush、HTMLは規則どおり元へ復元。親utilityはJS well-formedJSONと同じescapeへ修正しNodeとの6例全bytes一致。製品/既存試験条件不変のためnative/6再描画を省き、既知archiveを未完functional raw review入力として取得するrecovery70を指定sol6.1mediumが準備中。これは到達性/公開確認ではない。全009/正式性能/保存本体/新視覚承認は未完、ready0/約6。
 
 LATEST Canonical70 actual02:6JA条件180tuple/36whole/108typed/18otherDの親raw一致後、JAページLatin歌詞の正常なen推定をpageJAと同じとした検証assertで停止。全436files41,064,808B push71f0c11b417e8c4fb1264042556d8fe7f1c15de3、HTML未変更。source04で既存default/fixtureは維持、actual/plan/sourcePlan/resolvedproject言語とdocument/page言語を分けてexact検査。親diff/source11 PASS、製品変更なし。actual03へ、基本6/media未実施・新候補0。
@@ -19,7 +21,7 @@ LATEST SAVE POLICY: GitHub保存/pushと操作元返値・commit/path記録ま�
 # AVOID-009 拡張Dの34レイアウト・カスタム描画の対応
 
 - 状態: 実装中
-- 現在の確認段階: 2026-10-25最新。ノウハウを[実装手引き](avoidance-playbook.md)へ整理し、src登録と受入記録を突合せた。13登録+fisheye専用分岐の14Dは限定実装であり全面対応ではない。電球native53は統合済み、59/60の表示固定2行右側候補は動作OKだが形状自動選択/製品adapterは未実装。[次段階設計](reviews/AVOID-009-bulbs-next-design-20261025.md)を親が限定設計として受入れ、指定担当がsourceを準備中。看板native63は統合済み、67 zero限定試験は本体未統合、全rawが旧SHMのみで現在アクセス不能のため次は新規検証が必要。全D/custom・正式性能・保存本体・009全体は未完、010未着手。
+- 現在の確認段階: 電球69の限定adapterを親source/raw受入、canonical70は日英15条件/900tuple/49832paint/180whole/540typed/90他DとHTML反映後6テストの親照合PASS。旧全raw3cc4f6d、新レビュー/freshbuild204files32,787,642Bをf3d78f253c3c5bfc685b692364a848ca2c3e943aへpush済み。親utility修正後は既存生データだけを照合しnative/6再実行なし、生成2HTML同SHAを反映。現在14D登録+fisheye専用分岐=15IDの限定経路（全入力/全184/全34対応ではない）。次は電球の上寄り横1段/右円左2段だけnative60fps MP4、freshsol静止、看板へ。新候補0/約6、全009/正式性能/保存本体/新動作承認は未完。公開/保存先到達性確認0。
 - 最新回答: 利用者「実装を再開して これまでの回避設計のノウハウを整理した後、順次残りのエフェクトに適用していってください」。固定マグネット/タイル/電球への既承認を保持し、未回答の過去記録は履歴として扱う。電球承認は表示済み「風の先へ」2行・一枚看板・右側候補のみで、一般配置方針や他入力へ拡張しない。公開結果確認永久禁止・親画像動画0、実装gpt-6.1-sol/medium・親source/rawレビューを維持する。
 - 段階: 特殊描画
 - 技術依存: [AVOID-005](AVOID-005.md)
