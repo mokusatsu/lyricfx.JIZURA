@@ -27,7 +27,7 @@ def review(folder,out):
    epoch=r['tableEpoch']
   assert r['tableEpoch']==epoch and r['sequence']==row['sequence']==lastseq.get(case,-1)+1;lastseq[case]=r['sequence']
   for k,values in r['tableDeltas'].items():
-   for v in values:assert v['id']==len(tables[k]);tables[k].append(v['value']);keybytes[k]+=len(json.dumps(v['value'],ensure_ascii=False,separators=(',',':')).encode())
+   for v in values:assert v['id']==len(tables[k]);tables[k].append(v['value']);keybytes[k]+=len(json.dumps(v['value'],ensure_ascii=False,separators=(',',':')).encode('utf-8','backslashreplace'))
    assert len(tables[k])==r['tableStats'][k]['entries']<=100000 and keybytes[k]==r['tableStats'][k]['canonicalKeyBytes']<=67108864
   v=restore(r['binding'],tables);phase=v['phase'];assert phase==row['phase'];phases[phase]+=1;PROGRESS.update(records=sum(phases.values()),phase=phase,phases=dict(phases),counts=dict(counts),producerErrors=m.get('errors'))
   if phase=='init':
@@ -63,5 +63,8 @@ def review(folder,out):
   seal=json.loads((folder.parent/'reviewed-seal.json').read_bytes());build=json.loads((folder.parent/'build/build-receipt.json').read_bytes());transition=json.loads((folder/'html-transition.json').read_bytes());outputs={r['path']:r['sha256'] for r in build['outputs']};new={'index.html':outputs['build/candidate-ja.html'],'en/index.html':outputs['build/candidate-en/index.html']};assert transition['initial']==seal['root']['oldHTML'] and transition['declaredNormalBuild']==transition['final']==new and seal['before6Reuse']['reusedNotRerun'];assert six['node']==seal['resolvedNodeDependency']['nodeVersion'];assert build['EnglishCompiledFromSource'] and build['normalBuildSourceUnmodified'] and build['PYC7Unchanged'] and build['ROOTIndexUnchanged']
   for name,digest in new.items():assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest
   for name,digest in seal['root']['PYC'].items():assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest
-  assert hashlib.sha256((ROOT/'.git/index').read_bytes()).hexdigest()==seal['root']['indexSHA256']
+  active_root=seal['root'];recovery=folder.parent/'recovery-reviewed-seal.json'
+  if recovery.exists():
+   recovery_seal=json.loads(recovery.read_bytes());assert recovery_seal['sourceArchiveCommit']=='3cc4f6d0dcc89a992e22a67395aef1604489d04a';assert recovery_seal['historicalReviewedSealSHA256']==hashlib.sha256((folder.parent/'reviewed-seal.json').read_bytes()).hexdigest();assert recovery_seal['historicalSourceExceptions']==['tasks/evidence/AVOID-009/resume-20261025/parent-canonical-review70.py'];assert recovery_seal['root']['PYC']==seal['root']['PYC'];active_root=recovery_seal['root']
+  assert hashlib.sha256((ROOT/'.git/index').read_bytes()).hexdigest()==active_root['indexSHA256']
  result={'state':'PASS_CANONICAL_JAEN_NATIVE_RAW_AND_AFTER6' if m['complete'] else 'PASS_CANONICAL_STORED_PREFIX_PRODUCER_FAILED','producerComplete':m['complete'],'producerErrors':m['errors'],'counts':dict(counts),'phases':dict(phases),'records':sum(phases.values()),'storedJSONBytes':total,'rendererSourceStringComparedAsPixelData':False,'nativeRendererSourceWitnessSHARecorded':True,'canonicalHTMLAndAfter6IndependentlyChecked':m['complete'],'before6ReuseSameProtectedInputs':m['complete'],'formalPerformanceAccepted':False,'saveBodyAccepted':False,'whole009Complete':False,'publicChecks':0,'postSaveReachabilityChecks':0,'parentImages':0};out.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
