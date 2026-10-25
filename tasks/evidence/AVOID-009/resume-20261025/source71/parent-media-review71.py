@@ -6,7 +6,13 @@ P=runpy.run_path(str(E/'parent-local-review69.py'));exact=P['exact'];restore=P['
 PROGRESS={}
 def review(folder,out):
  m=json.loads((folder/'manifest.json').read_bytes());assert m['mode']=='media71-two-representatives';seal=json.loads((folder.parent/'reviewed-seal.json').read_bytes());accepted=json.loads((E/'parent-bulbs69-canonical70-acceptance01.json').read_bytes());assert accepted['accepted'] and accepted['HTML']==seal['root']['oldHTML'];assert hashlib.sha256((E/'parent-bulbs69-canonical70-acceptance01.json').read_bytes()).hexdigest()==seal['acceptanceSHA256']
- for pin in seal['files']:assert hashlib.sha256((ROOT/pin['path']).read_bytes()).hexdigest()==pin['sha256']
+ correction=folder.parent/'parent-review-recovery71.json';correction=json.loads(correction.read_bytes()) if correction.exists() else None
+ if correction:
+  assert correction['sourceArchiveCommit']=='ad866b427c1c3d8d2f3b45ff5cbc484e77f6afb6' and correction['originalSealSHA256']==hashlib.sha256((folder.parent/'reviewed-seal.json').read_bytes()).hexdigest();assert correction['oldManifestSHA256']==hashlib.sha256((folder/'manifest.json').read_bytes()).hexdigest()
+ for pin in seal['files']:
+  digest=hashlib.sha256((ROOT/pin['path']).read_bytes()).hexdigest()
+  if correction and pin['path']=='tasks/evidence/AVOID-009/resume-20261025/source71/parent-media-review71.py':assert pin['sha256']==correction['previousCheckerSHA256'] and digest==correction['correctedCheckerSHA256']
+  else:assert digest==pin['sha256']
  cases={'upper':{'circle':{'cx':480.,'cy':108.,'r':108.,'margin':2.7},'id':'one-row-compact','side':'bottom'},'right':{'circle':{'cx':720.,'cy':.42*540,'r':108.,'margin':2.7},'id':'two-row-native','side':'left'}};clocks={};winners={};qualified={};encoded={};phases=collections.Counter();stats=collections.Counter();tables={};case=None;epoch=None;sequence={};keybytes=collections.Counter();total=0;last=time.monotonic()
  for row in m['records']:
   z=(folder/row['file']).read_bytes();assert len(z)==row['bytes'] and hashlib.sha256(z).hexdigest()==row['sha256'];raw=gzip.decompress(z);assert len(raw)==row['JSONBytes'];total+=len(raw);assert total<=268435456;r=json.loads(raw)
@@ -20,7 +26,7 @@ def review(folder,out):
    assert len(tables[k])==r['tableStats'][k]['entries']<=100000 and keybytes[k]==r['tableStats'][k]['canonicalKeyBytes']<=67108864
   v=restore(r['binding'],tables);phase=v['phase'];assert phase==row['phase'];phases[phase]+=1;example=case.split('.')[0];PROGRESS.update(records=sum(phases.values()),phase=phase,case=case,stats=dict(stats),producerErrors=m['errors'])
   if phase=='init':
-   P['clock'](v['clocks']);p=v['plan'];assert (p['lang'],p['W'],p['H'],p['duration'],p['fps'],p['cuts'][0]['text'],p['cuts'][0]['seed'])==('ja',960,540,4.150001,60,'風の先へ',1205)
+   P['clock'](v['clocks']);p=v['plan'];assert (p['lang'],p['W'],p['H'],p['duration'],p['fps'],p['cuts'][0]['text'],p['cuts'][0]['seed'])==('ja',960,540,4.150001,60,'風の先へ',1205);assert (p['cuts'][0]['renderStart'],p['cuts'][0]['start'],p['cuts'][0]['dur'],p['cuts'][0]['inDur'],p['cuts'][0]['outDur'])==(0,0,4,.35,.4)
    if example in clocks:assert exact(clocks[example])==exact(v['clocks'])
    clocks[example]=v['clocks'];stats['initializations']+=1
   elif phase=='focused-baseline-proof':
@@ -29,7 +35,7 @@ def review(folder,out):
    j=int(v['j']);assert v['j']==j and 0<=j<250 and v['example']==example and v['time']==j/60 and (example,j) not in qualified;a,b,d=v['before'],v['native'],v['after'];assert a['SHA256']==b['SHA256'];assert all(x['j']==j and x['time']==j/60 for x in [a,b,d]);oracle=d['oracle'];assert oracle['n']==j and oracle['firstTime']==j/60 and d['SHA256']==oracle['oracleSHA256'];assert exact(oracle['delta'])==exact(winners[example]['delta'])
    state=next(s for s in clocks[example]['states'] if s['n']==j);expected=[p for p in state['passes'] if p['active']];passes=[p['pass'] for p in expected];assert all(x['expectedPasses']==passes for x in [a,b,d]);assert [o['pass'] for o in d['observations']]==passes==[o['pass'] for o in oracle['passes']]
    for own,obs,reference in zip(expected,d['observations'],oracle['passes']):
-    assert obs['realTime']==j/60 and obs['sourceAdapter']=='bulbs-finite-live-source-v69' and obs['safety']=='safe';assert exact(obs['root'])==exact(reference['root']);assert all(reference[k]==own[k] for k in ['pass','tp','lt','ltb','step','pIn','pOut']);circle=cases[example]['circle'];cx,cy=Q(circle['cx']),Q(circle['cy']);rr=(Q(circle['r'])+Q(circle['margin']))**2
+    assert obs['realTime']==j/60 and obs['sourceAdapter']=='bulbs-finite-live-source-v69' and obs['safety']=='safe';assert exact(obs['root'])==exact(reference['root']);assert all(reference[k]==own[k] for k in ['pass','tp','lt','ltb','step']);clamp=lambda x:0. if x<0 else 1. if x>1 else x;assert exact(reference['pIn'])==exact(clamp(own['lt']/max(.01,.35))) and exact(reference['pOut'])==exact(clamp((own['lt']-(4-.4))/.4));circle=cases[example]['circle'];cx,cy=Q(circle['cx']),Q(circle['cy']);rr=(Q(circle['r'])+Q(circle['margin']))**2
     for paint in obs['preflightPaint']:
      assert paint['pass']==own['pass'] and paint['role']=='primary' and paint['owner'].startswith('bulbs.sign.')
      if paint['state']['alpha']<=0:continue
