@@ -1,0 +1,45 @@
+{
+  "state": "SOURCE28_CHECKPOINT_SAVE_FAILED_NOT_SAVED",
+  "preparedPayloadFiles": [
+    {
+      "path": "verification/AVOID-009/domino26-actual02-originals-20261025-01.tar.gz",
+      "source": "/dev/shm/avoid009-domino26-storage27/domino26-actual02-originals-20261025-01.tar.gz",
+      "bytes": 10666098,
+      "sha256": "471025ac5f3c0cc69783801b4e93fc4326ba370c69ead3045eed4854eeff9cdc"
+    },
+    {
+      "path": "verification/AVOID-009/domino26-actual02-originals-20261025-01.manifest.json",
+      "source": "/dev/shm/avoid009-domino26-storage27/domino26-actual02-originals-20261025-01.manifest.json",
+      "bytes": 350054,
+      "sha256": "abed313124a91a08bf4bb81df39a9e665300e3906d6c952ec907b08084b7ed5c"
+    }
+  ],
+  "preparedPayloadBytes": 11016152,
+  "parentArchiveRoundtripAndWriterDiffAccepted": true,
+  "normalManagedConsumer": 23623,
+  "fixedTwoPayloadReceived": true,
+  "echoOffConfirmed": true,
+  "credentialRoute": "normal-managed-namespace-only",
+  "failure": {
+    "safePhase": "FETCH_EXISTING_SOURCE_MAIN",
+    "safeGitError": "UNCLASSIFIED_GIT_FAILURE",
+    "priorHEAD": null,
+    "head": null,
+    "pushCommandReturnedSuccess": false,
+    "stderrRetained": false,
+    "cause": "UNKNOWN"
+  },
+  "capacityObserved": {
+    "rootAvailableBytes": 0,
+    "tmpAvailableBytes": 45056
+  },
+  "executionSourceFact": "writer did not explicitly set git TMPDIR; inherited value was not established",
+  "remaining": "Preserve existing normal-managed private SHM stage. Any eventual save requires an authorized normal-permission managed execution route. No retry is authorized by this checkpoint.",
+  "retryPerformed": false,
+  "externalOperations": 0,
+  "credentialReprocessing": 0,
+  "additionalProxyInvestigation": false,
+  "publicChecks": 0,
+  "postSaveReadback": false,
+  "saved": false
+}
