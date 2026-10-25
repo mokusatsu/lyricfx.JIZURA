@@ -1,3 +1,5 @@
+LATEST actual02: producer全処理完走(0/complete=true)、親は4recipe union/144200支持/62720灯対を独立照合後、culled空destinationの簡略schemaでutility停止。親最終合格/新視覚候補は未成立。5072files98,636,859BをGit archive786a391a8f5c43f7ac63b916338af98a339ebda6へpush済み。親checker空状態処理のみ修正、担当が通常negative/seek/cacheを追加し次のローカル再検証へ。保存後の取得確認/公開確認/親画像0。
+
 LATEST SAVE POLICY: GitHub保存/pushと操作元返値・commit/path記録まで。保存後の到達性を確認するための再取得/download/readbackは利用者により禁止。描画/実装の正しさの検証は省略せず、次試行は生成時と同じprocess/namespaceで親raw checkerを実行してから結果ごとpushする。公開結果確認永久禁止も維持。
 
 2026-10-25最新: 電球69のローカル全時刻試行actual01は保存量上限で停止（668records、新配置proof前）。全生データ・source839filesはGit archive `da9fd1978d4f9adabeef2f033c284c5e07844b98`へpush済み。担当sol6.1/mediumがrunnerの損失なし重複圧縮のみ修正、上限/合格条件は据置。新規視覚確認候補0/約6件まで続行。公開結果確認/親画像0、009全体未完。詳細はbatch progress/checkpointとresume-20261025記録。

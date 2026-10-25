@@ -1,0 +1,58 @@
+{
+  "parentReview": {
+    "state": "PARENT_LOCAL_REVIEW_FAILED",
+    "type": "KeyError",
+    "message": "'checked'",
+    "traceback": "Traceback (most recent call last):\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 127, in <module>\n    try:main(pathlib.Path(sys.argv[1]),out)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 98, in main\n    if phase=='destination':evaluation_equal(evaluate(sample['supports'],circle,[0,0]),v['evaluation']);assert v['evaluation']['passed'] and sample['quality']['passed'];stats['destinationPasses']+=1\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 36, in evaluation_equal\n    for k in ['passed','checked','failures']:assert exact(a[k])==exact(b[k]),k\n                                                                       ~^^^\nKeyError: 'checked'\n",
+    "stats": {
+      "records": 3665,
+      "clockStates": 500,
+      "clockSelectedPasses": 1454,
+      "independentPaintSupports": 144200,
+      "neighborPairs": 62720,
+      "recipesComplete": 4
+    },
+    "publicChecks": 0,
+    "parentImages": 0
+  },
+  "execution": {
+    "state": "PRODUCER_OR_REVIEW_FAILED_ALL_PREFIX_DURABLE",
+    "producerReturn": 0,
+    "producerComplete": true,
+    "parentReview": {
+      "passed": false,
+      "returnCode": 1,
+      "error": null,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py",
+        "/dev/shm/avoid009-bulbs69-actual02-20261025/raw",
+        "/dev/shm/avoid009-bulbs69-actual02-20261025/parent-local-review.json"
+      ],
+      "checkerSHA256": "ba9c9c9259f2fb9cad0779de0e46a54cbd6f146ff9cdc07fdb2b136baf837f56",
+      "summaryPrinted": true,
+      "outputSHA256": "3475a9173a0c620fe038343be6d9f0ec0e7891824a75a6ef93f057519f920ff1",
+      "outputBytes": 1334
+    },
+    "rawPersisted": true,
+    "archive": {
+      "state": "RAW69_ALL_PREFIX_PUSH_DONE",
+      "commit": "786a391a8f5c43f7ac63b916338af98a339ebda6",
+      "branch": "archive/avoid009-bulbs69-actual02-20261025-attempt1",
+      "baseHEAD": "22ba1a824c384a66e092f6d46ceb4b48f8c6ed19",
+      "ROOTIndexSHA256": "70f0da677f4b4ddef3d0d4f3f387c4e0c9a842bd2f59246dda085f11788899ab",
+      "ROOTHEADIndexPYCAndOldHTMLUnchanged": true,
+      "scopeFiles": 5072,
+      "scopeBytes": 98636859,
+      "allStoredBytesVerified": true,
+      "pushOutput": "To https://github.com/mokusatsu/lyricfx.JIZURA.git\n*\t786a391a8f5c43f7ac63b916338af98a339ebda6:refs/heads/archive/avoid009-bulbs69-actual02-20261025-attempt1\t[new branch]\nDone\n",
+      "publicChecks": 0
+    },
+    "RAMRetained": "/dev/shm/avoid009-bulbs69-actual02-20261025",
+    "publicChecks": 0
+  },
+  "interpretation": "Producer completed with all default assertions. Parent independently checked four complete recipe source unions, 144200 positive supports and 62720 neighbor pairs, then stopped on its own missing checked field assumption for a culled empty destination. Not a final product acceptance; do not fetch for reachability.",
+  "publicChecks": 0,
+  "parentImages": 0
+}

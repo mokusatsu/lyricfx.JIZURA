@@ -34,6 +34,23 @@ def evaluate(supports,circle,delta):
  return {'passed':not fail,'checked':len(supports),'failures':fail}
 def evaluation_equal(a,b):
  for k in ['passed','checked','failures']:assert exact(a[k])==exact(b[k]),k
+def destination_equal(sample,circle,saved):
+ if not sample['supports']:
+  assert sample['reference'].get('culled') is True and saved=={'passed':True}
+ else:evaluation_equal(evaluate(sample['supports'],circle,[0,0]),saved)
+ assert saved['passed'] and sample['quality']['passed']
+def selection_check(selection,tables,circle):
+ for o in selection['outcomes']:
+  if 'zero' in o:evaluation_equal(evaluate(tables[o['recipe']]['supports'],circle,[0,0]),o['zero']['evaluation'])
+  for p in o.get('positions',[]):
+   if p['status']=='evaluated':evaluation_equal(evaluate(tables[o['recipe']]['supports'],circle,p['delta']),p['evaluation'])
+ winner=selection['winner']
+ if winner:assert evaluate(tables[winner['recipe']['id']]['supports'],circle,winner['delta'])['passed']
+def repeated_proof(proof,tables):
+ rows=[v for v in proof if v['phase']=='recipe-complete'];done=[v['atlas'] for v in proof if v['phase']=='complete'];assert len(rows)==4 and len(done)==1
+ assert {v['table']['recipe'] for v in rows}==set(tables)
+ for row in rows:assert exact(row['table'])==exact(tables[row['table']['recipe']]) and row['resource']['serializedWorkingBytes']<=8388608
+ atlas=done[0];selection_check(atlas['selection'],tables,atlas['region']['circle']);assert atlas['bytes']<=8388608;stats['ordinaryRepeatedProofs']+=1;return atlas
 def disk(p):
  M=list(map(Q,p['matrix']));arc=next(c for c in p['path'] if c['key']=='arc');x,y,r=map(Q,arc['args'][:3]);assert M[1]==M[2]==0 and M[0]==M[3]
  return (M[0]*x+M[4],M[3]*y+M[5],abs(M[0])*r)
@@ -58,7 +75,7 @@ def neighbor_quality(sample):
     hardfail+=not hard;expected.append(v)
   assert len(expected)==len(own['neighborRecords']) and short==own['preferredShortfalls'];assert hardfail==sum(f['criterion']=='neighbor-bulb-body-gap' for f in own['failures']);stats['neighborPairs']+=len(expected)
 def main(folder,out):
- m=json.loads((folder/'manifest.json').read_bytes());tables={};case=None;lastseq={};native={};groups=collections.defaultdict(dict);counts=collections.defaultdict(collections.Counter);summaries={};circle=None;phases=collections.Counter();atlas=None;product={};oracle={};active_by_n={};previous_epoch=None;total=0;started=time.monotonic();lastlog=started
+ m=json.loads((folder/'manifest.json').read_bytes());tables={};case=None;lastseq={};native={};groups=collections.defaultdict(dict);counts=collections.defaultdict(collections.Counter);summaries={};circle=None;phases=collections.Counter();atlas=None;product={};oracle={};active_by_n={};orders=collections.defaultdict(list);circle_labels=[];previous_epoch=None;total=0;started=time.monotonic();lastlog=started
  for row in m['records']:
   z=(folder/row['file']).read_bytes();assert len(z)==row['bytes'] and hashlib.sha256(z).hexdigest()==row['sha256'];raw=gzip.decompress(z);assert len(raw)==row['JSONBytes'];total+=len(raw);r=json.loads(raw)
   if r['case']!=case:
@@ -95,7 +112,7 @@ def main(folder,out):
      key=owner(support['owner'],own['pass']);g=groups[v['recipe']].setdefault(key,{'owner':key,'bounds':dict(expected),'sourceMemberCount':0});g['sourceMemberCount']+=1
      for k in expected:g['bounds'][k]=(min if k.endswith('0') else max)(g['bounds'][k],expected[k])
    if phase=='untranslated':counts[v['recipe']]['passes']+=1;counts[v['recipe']]['paints']+=len(direct['records']);counts[v['recipe']]['supports']+=len(paints)
-   if phase=='destination':evaluation_equal(evaluate(sample['supports'],circle,[0,0]),v['evaluation']);assert v['evaluation']['passed'] and sample['quality']['passed'];stats['destinationPasses']+=1
+   if phase=='destination':destination_equal(sample,circle,v['evaluation']);stats['destinationPasses']+=1
   if phase=='recipe-complete':
    table=v['table'];rid=table['recipe'];assert table['complete'] and table['sourceVerified'];assert counts[rid]['passes']==table['counts']['passes']==727 and table['counts']['states']==250 and counts[rid]['paints']==table['counts']['paints'];assert len(table['supports'])==len(groups[rid])
    for s in table['supports']:
@@ -103,22 +120,40 @@ def main(folder,out):
    assert sum(s['sourceMemberCount'] for s in table['supports'])==counts[rid]['supports']==table['counts']['positivePaintSupports'];assert v['resource']['serializedWorkingBytes']<=8388608;summaries[rid]=table;stats['recipesComplete']+=1
   if phase=='complete':
    atlas=v['atlas'];assert len(summaries)==4
-   for o in atlas['selection']['outcomes']:
-    if 'zero' in o:evaluation_equal(evaluate(summaries[o['recipe']]['supports'],circle,[0,0]),o['zero']['evaluation'])
-    for p in o.get('positions',[]):
-     if p['status']=='evaluated':evaluation_equal(evaluate(summaries[o['recipe']]['supports'],circle,p['delta']),p['evaluation'])
+   selection_check(atlas['selection'],summaries,circle)
    winner=atlas['selection']['winner']
    if winner:assert evaluate(summaries[winner['recipe']['id']]['supports'],circle,winner['delta'])['passed'] and atlas['destination']['complete'] and stats['destinationPasses']==727
    assert atlas['bytes']<=8388608
   if phase=='product-frame':
    n=int(v['n']);assert n not in product;product[n]=v['hash'];assert [o['pass'] for o in v['observations']]==active_by_n[n] and all(o['realTime']==v['time'] for o in v['observations'])
   if phase=='independent-native-closure-oracle':oracle[int(v['n'])]=v['result']['oracleSHA256'];assert not v['result'].get('wrapperErrors')
+  if phase=='boundary-frame':
+   n=int(v['n']);assert v['hash']==v['oracle']['oracleSHA256'] and not v['oracle'].get('wrapperErrors');assert v['expectedPasses']==active_by_n[n]==[o['pass'] for o in v['observations']] and all(o['realTime']==v['time'] for o in v['observations']);assert v['stats']['cacheEntries']<=2;orders[v['label']].append(n)
+   if v['label'] in ['reverse','nonmonotonic','evicted-default-redecode']:assert v['hash']==product[n]
+   if v['recomputedProof']:repeated_proof(v['recomputedProof'],summaries)
+   stats['ordinaryFrames']+=1
+  if phase=='boundary-cache-circle':
+   a=repeated_proof(v['proof'],summaries);r0=v['input']['lyricAvoidanceIndex']['regions'][0];c={'cx':r0['center']['x']*960,'cy':r0['center']['y']*540,'r':r0['radius']*540,'margin':2.7};assert exact(a['region']['circle'])==exact(c) and v['allSourceUnionValuesEqual'] and v['fullPaintsResaved'] is False;assert v['after']['proofRuns']==v['before']['proofRuns']+1 and v['after']['cacheEntries']==2
+   cert=v['trajectory'].get('certificate');accepted=isinstance(cert,dict)
+   if accepted:assert exact(cert['winner'])==exact(a['selection']['winner']) and evaluate(summaries[cert['winner']['recipe']['id']]['supports'],c,cert['winner']['delta'])['passed']
+   circle_labels.append((v['label'],accepted));stats['ordinaryCacheCircles']+=1
+  if phase=='boundary-cache-hit':assert v['after']['proofRuns']==v['before']['proofRuns'] and v['after']['proofHits']==v['before']['proofHits']+1 and v['after']['cacheEntries']<=2;stats['ordinaryCacheHits']+=1
+  if phase=='boundary-negatives':
+   expected={'stale-plan':'STALE_PLACEMENT_PLAN','font-revision':'STALE_PLACEMENT_PLAN','helper-reference':'BULBS69_STALE_DEPENDENCY','frame-options':'BULBS69_FRAME_OPTIONS','frame-context':'TILES48_TEXT_STATE:letterSpacing'};assert len(v['rows'])==5 and {r['kind'] for r in v['rows']}==set(expected)
+   for r0 in v['rows']:
+    code=r0['error'].get('code');code=r0['error'].get('message') if code is None or code is undefined else code;assert r0['before']==r0['after'] and not r0['observations'] and code==expected[r0['kind']]
+   tr=v['unsupported'].get('trajectory');assert tr is None or tr is undefined or tr.get('safety')!='certified-bounded-adapter' and all(s.get('status')!='safe' for u in tr.get('units',[]) for s in u.get('segments',[]));stats['ordinaryNegativeCases']+=5
   if time.monotonic()-lastlog>25:print(json.dumps({'parentLocalReviewRecords':stats['records'],'phase':phase,'independentPaintSupports':stats['independentPaintSupports']}),flush=True);lastlog=time.monotonic()
  a=native.get('baseline-original',[]);b=native.get('candidate-default',[]);assert len(a)<=250 and [v[0] for v in a]==list(range(len(a))) and b==a[:len(b)];assert total<=268435456
  if m['complete']:assert total==m['serializedBytes']
  if m['complete']:
   assert len(a)==len(b)==250 and atlas and len(product)==250
   assert product==oracle
+  if m['phase']=='complete-local-default-and-ordinary-boundaries':
+   assert orders['reverse']==list(range(249,-1,-1)) and orders['nonmonotonic']==[(i*73)%250 for i in range(250)] and orders['evicted-default-redecode']==[90]
+   assert stats['ordinaryCacheCircles']==2 and stats['ordinaryCacheHits']==2 and stats['ordinaryRepeatedProofs']==3 and stats['ordinaryNegativeCases']==5
+   for label,accepted in circle_labels:
+    if accepted:assert orders[label]==[0,36,90,231,249]
  for f in m['failedRequests']:
   z=(folder/f['file']).read_bytes();assert len(z)==f['bytes'] and hashlib.sha256(z).hexdigest()==f['sha256'];assert len(gzip.decompress(z))==f['rawBytes']
  result={'state':'PASS_DEFAULT_LIMITED_GEOMETRY' if m['complete'] else 'PASS_STORED_PREFIX_ONLY_PRODUCER_FAILED','producerComplete':m['complete'],'producerErrors':m['errors'],'stats':dict(stats),'phases':dict(phases),'storedJSONBytes':total,'nativeFramesEqual':len(b),'productFrames':len(product),'independentOracleFrames':len(oracle),'winner':atlas['selection']['winner'] if atlas else None,'recipeSummaries':[{k:t[k] for k in ['recipe','complete','qualityPassed','counts']} for t in summaries.values()],'metadataCodecAllValuesRestored':True,'allPositivePaintSupportBoundsIndependentFraction':True,'semanticUnionsIndependent':stats['recipesComplete'],'whole009Complete':False,'allQualityCriteriaIndependentlyRecomputed':False,'staleNegativeCanonicalAndScopeExpansionPending':True,'formalPerformanceAccepted':False,'saveBodyAccepted':False,'publicChecks':0,'parentImages':0,'networkRequests':0};out.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
