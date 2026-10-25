@@ -1,3 +1,5 @@
+2026-10-25最新: 009実装中。必要転送済み、電球1件は人間視覚確認待ち（公開操作受付・結果未確認）。看板統合回帰とドミノ短TMP実検証を優先。詳細は [AVOID-009](AVOID-009.md)。
+
 2026-10-25最新: AVOID-009実装中。看板限定親raw受入／ドミノsource準備保存済み。約6候補は未達。最新補足は [再開checkpoint](reviews/AVOID-009-source-checkpoint-20261025.md)。公開結果確認・保存後readbackは禁止。
 
 LATEST 2026-10-25: 比較assets(MP4/PNG/閲覧HTML)は今後Sitesのみ、新GitHub追加禁止。既存asset削除/history改変なし。電球71は500exact時刻/57680独立支持/4MP4/12PNG/freshsol6対PASS、人間動作未承認・Sites保留。旧GitHubasset commitad866b427c1c3d8d2f3b45ff5cbc484e77f6afb6の正確pathはtasks/reviews/AVOID-009-candidates-20261025.md。Source token外部TTY入力はauto拒否・未送信で中止、Source保存/公開0。看板はlocal検証後親rawreview中、具体512/67.8MB承認を実行者へ転送済だがlocal02subset96/24.57MBの申請もauto拒否（全4拒否/実行0）。追加3run最小1135+件は承認拡張せず保留。Root canonical/PYC7/65保持、公開結果確認/到達性readback0。

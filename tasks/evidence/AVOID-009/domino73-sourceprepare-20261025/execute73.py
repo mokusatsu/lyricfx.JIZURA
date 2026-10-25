@@ -1,4 +1,4 @@
-"""SOURCE73 only: reviewed gate -> producer -> independent raw review -> narrow archive -> hold.
+"""SOURCE73 only: reviewed gate -> producer -> independent raw review -> Sites Source pending inventory -> hold.
 No build, asset export, source mutation, public check, fetch or work-branch write.
 """
 import sys
@@ -20,16 +20,18 @@ def hold(run,result):
  while True:
   if eof:time.sleep(30);continue
   try:line=sys.stdin.readline()
-  except KeyboardInterrupt:print('SOURCE73_HOLD retained; only status/finish accepted.',flush=True);continue
+  except KeyboardInterrupt:print('SOURCE73_HOLD retained; only status/finish-sites-saved accepted.',flush=True);continue
   if not line:eof=True;print('SOURCE73_HOLD_STDIN_EOF_RAM_RETAINED',flush=True);continue
   cmd=line.strip()
   if cmd=='status':print(json.dumps(brief(result)),flush=True)
-  elif cmd=='finish' and result['rawPersisted']:return
-  elif cmd=='finish':print('SOURCE73_UNPERSISTED_CANNOT_FINISH; parent must preserve RAM or explicitly record failure.',flush=True)
+  elif cmd=='finish-sites-saved':
+   try:
+    receipt=json.loads(M.read(run/'sites-source-receipt.json'));M.need(receipt['project_id']=='appgprj_6adbafe9f07c8191ab0b404c53caab16' and receipt['branch']=='main' and receipt['pushReturnCode']==0 and receipt['verificationBackupOnly'] is True and receipt['manifestSHA256']==M.sha(M.read(run/'raw/manifest.json'))==result['manifestSHA256'] and re.fullmatch('[0-9a-f]{40}',receipt['head']),'Sites Source receipt mismatch');print(json.dumps({'state':'SOURCE73_SITES_SOURCE_SAVED_FINISH','sourceHEAD':receipt['head'],'manifestSHA256':receipt['manifestSHA256'],'receiptFile':str(run/'sites-source-receipt.json'),'postSaveReadback':False}),flush=True);return
+   except (OSError,ValueError,KeyError,RuntimeError) as e:print(json.dumps({'state':'SOURCE73_SITES_SOURCE_RECEIPT_REQUIRED','firstError':str(e).splitlines()[0][:240]}),flush=True)
   else:print('SOURCE73_HOLD_COMMAND_REFUSED',flush=True)
 def main():
  a=argparse.ArgumentParser();a.add_argument('--reviewed-gate',required=True);a=a.parse_args();M.need(os.environ.get('DOMINO73_EXECUTE_RELEASE')=='PARENT_REVIEWED_SOURCE73_RAW_ONLY_RUN','execution gate absent')
- gate_bytes=M.read(a.reviewed_gate);g=json.loads(gate_bytes);M.need(g['kind']=='SOURCE73_REPRESENTATIVE_RAW_RUN_GATE' and g['accepted'] is True,'unreviewed gate');M.need(re.fullmatch('[A-Za-z0-9_-]+',g['runId']),'runId');M.need(0<g['archiveMaxBytes']<=286261248,'archive policy max exceeds273MiB');guard=M.RootGuard(g['root']['HEAD'],g['root']['indexSHA256']);M.need(guard.summary()==g['root'],'ROOT strict baseline');M.need(guard.command(['config','--get','remote.origin.url']).decode().strip()=='https://github.com/mokusatsu/lyricfx.JIZURA.git','archive destination must be authorized GitHub repository');files=g['files'];M.need(len(files)==len({p['path'] for p in files}),'duplicate input pins');check_files(files,guard,g['sourceCheckpoint'])
+ gate_bytes=M.read(a.reviewed_gate);g=json.loads(gate_bytes);M.need(g['kind']=='SOURCE73_REPRESENTATIVE_RAW_RUN_GATE' and g['accepted'] is True,'unreviewed gate');M.need(g['archiveMode']=='sites-source-pending','only Sites Source pending persistence is allowed');M.need(re.fullmatch('[A-Za-z0-9_-]+',g['runId']),'runId');M.need(0<g['archiveMaxBytes']<=286261248,'archive policy max exceeds273MiB');guard=M.RootGuard(g['root']['HEAD'],g['root']['indexSHA256']);M.need(guard.summary()==g['root'],'ROOT strict baseline');M.need(guard.command(['config','--get','remote.origin.url']).decode().strip()=='https://github.com/mokusatsu/lyricfx.JIZURA.git','archive destination must be authorized GitHub repository');files=g['files'];M.need(len(files)==len({p['path'] for p in files}),'duplicate input pins');check_files(files,guard,g['sourceCheckpoint'])
  required={str(HERE/n) for n in ['runner73.cjs','browser73.js','oracle-source73.cjs','execute73.py','parent-raw-review73.py']}|{str(ROOT/n) for n in ['index.html','src/11p_layoutsD.js','work/avoid009-domino73-isolated/overlay73.cjs','work/avoid009-domino73-isolated/runtime73.js','dev/avoidance/layouts_d_bulbs69_runtime.py','dev/avoidance/layouts-b-fixture.js','dev/avoidance/layouts-d-bulbs69-oracle-primitives.js','dev/avoidance/layouts-d-bulbs69-runner.cjs','tasks/evidence/AVOID-009/resume-20261025/parent-read-raw69.py']}
  required|={str(ROOT/n) for n in ['dev/browser.cjs','dev/package.json','dev/package-lock.json','tasks/evidence/AVOID-009/bulbs-focused59/source59/runner/kernel59.cjs','tasks/evidence/AVOID-009/bulbs-focused59/source59/runner/catalog59.cjs','dev/avoidance/layouts-c-editorial-fonts/manifest.json']}
  fonts=json.loads(M.read(ROOT/'dev/avoidance/layouts-c-editorial-fonts/manifest.json'))
@@ -63,19 +65,11 @@ def main():
   M.need(manifest_sha is not None and M.sha(M.read(run/'raw/manifest.json'))==manifest_sha,'manifest mutated after producer');guard.check()
  except BaseException as e:failure={'type':type(e).__name__,'message':str(e)}
  passed=producer==0 and checker==0 and failure is None and review['state']=='PASS_SOURCE73_REPRESENTATIVE_RAW_FIDELITY';M.write_json(run/'producer-result.json',{'producerReturnCode':producer,'parentReviewReturnCode':checker,'passedRepresentativeSourceFidelity':passed,'failure':failure,'manifestSHA256':manifest_sha,'geometrySafe':False,'productAdapterRegistered':False})
- # Scope identical to existing69 archiver: raw + two small new utilities/refs + named root logs only.
- archive_scope=[p for folder in ['raw','frozen-inputs'] for p in (run/folder).rglob('*') if p.is_file()]+[p for p in run.iterdir() if p.is_file()];scope_bytes=sum(p.stat().st_size for p in archive_scope)
- receipt_path=run/'archive-receipt73.json';original_write=M.write_json;push_returned=[]
- def write_receipt(path,value):
-  if path==receipt_path:push_returned.append(value);print(json.dumps({'state':'SOURCE73_RAW_PUSH_RETURNED_BEFORE_RECEIPT_WRITE','commit':value['commit'],'branch':value['branch'],'scopeFiles':value['scopeFiles'],'scopeBytes':value['scopeBytes'],'receiptFile':str(receipt_path)}),flush=True)
-  return original_write(path,value)
- try:
-  M.need(scope_bytes<=g['archiveMaxBytes'],'raw-only archive preflight byte bound');M.write_json=write_receipt;receipt=M.archive_raw69(run,guard,'archive/avoid009-bulbs69-domino73-native-'+g['runId']+'-attempt1',1,receipt_path)
- except BaseException as e:
-  if push_returned:receipt=push_returned[0]
-  detail={'type':type(e).__name__,'message':str(e),'scopeBytes':scope_bytes,'rawUnpersisted':receipt is None,'pushAlreadyReturned':receipt is not None,'automaticRetry':False};print(json.dumps({'state':'SOURCE73_ARCHIVE_EXCEPTION_HOLD','scopeBytes':scope_bytes,'rawUnpersisted':receipt is None,'firstError':str(e).splitlines()[0][:240],'failureFile':str(run/'persistence-failure-1.json')}),flush=True)
-  try:original_write(run/'persistence-failure-1.json',detail)
-  except OSError:print('SOURCE73_RAM_FAILURE_RECEIPT_WRITE_FAILED; original push return above is authoritative.',flush=True)
- finally:M.write_json=original_write
- hold(run,{'passedRepresentativeSourceFidelity':passed,'rawPersisted':receipt is not None,'archive':receipt,'scopeBytes':scope_bytes,'parentReview':review,'geometrySafetyCertified':False,'publicChecks':0})
+ # Inventory only: no GitHub raw archive or network operation in this mode.
+ input_list,rows=M.scope_files(run,1);scope_bytes=sum(row['bytes'] for row in rows)+input_list.stat().st_size
+ M.need(scope_bytes<=g['archiveMaxBytes'],'raw-only pending inventory byte bound')
+ pending={'state':'SOURCE73_SITES_SOURCE_PERSISTENCE_PENDING','archiveMode':'sites-source-pending','run':str(run),'manifestSHA256':manifest_sha,'passedRepresentativeSourceFidelity':passed,'producerReturnCode':producer,'parentReviewReturnCode':checker,'files':rows,'inputList':{'path':str(input_list.relative_to(run)),'bytes':input_list.stat().st_size,'sha256':M.sha(M.read(input_list))},'scopeBytes':scope_bytes,'comparisonAssets':0,'verificationBackupOnly':True,'GitHubRawPush':False,'publicChecks':0,'postSaveReadback':False}
+ M.write_json(run/'sites-source-persistence-pending.json',pending);print(json.dumps({'state':pending['state'],'scopeFiles':len(rows),'scopeBytes':scope_bytes,'manifestSHA256':manifest_sha,'inventoryFile':str(run/'sites-source-persistence-pending.json')}),flush=True)
+ hold(run,{'passedRepresentativeSourceFidelity':passed,'rawPersisted':False,'archive':None,'scopeBytes':scope_bytes,'parentReview':review,'manifestSHA256':manifest_sha,'geometrySafetyCertified':False,'publicChecks':0})
+
 if __name__=='__main__':main()
