@@ -663,3 +663,7 @@ Media71 exactknown SHM is directly visible torequire_escalated commands andview_
 
 
 2026-10-25 再開更新3：親が現存ドミノactual02原本結果を照合。限定raw PASS1357records/500native/47226支持/270独立oracle。上寄り円1行だけdy109.18999999999997の固定移動で通過、通常円・2行は試した有限方式では不足。製品adapter/代表MP4/人間承認は未実施、全原本は共有SHMのみでSites非配信保存を準備中。ドカンfullclockはsourceレビュー、クロスワード28・輪郭29はsource準備のみCanvas未実施。技術比較候補2（電球・看板）、両方人間未承認、約6候補まで続行。通常アプリHTMLの旧create_blobは返値不明・後続commit/ref操作なし・再送しない。Root391/index2b656c/65/PYC保持、比較資材Sitesのみ、公開結果確認/保存後readback/親画像0。詳細はresume-20261025c/continuation-status03.json。
+
+
+2026-10-25 続行更新4：技術レビュー済み候補3/約6（電球・看板・ドミノ上円1段）、全て人間未承認。ドミノは750raw/21946支持/250oracle/500encode/2MP4/6PNG親数値PASS・freshsol3対照合、Sites未保存を別管理。ドカンsource03は局所字号.5＋2行化で両円全250/727、1530records/72390支持/500oracle親受入。時計・文字順保持と字号変更を分けて表示、media準備中。クロスワードはsource28起動失敗を保持→source29一行ASI修正後60raw全paint/call/clock/RGBA PASS、quality診断16失敗は未承認のまま。輪郭は12tuple108mode72独立pair/36RGBA全byte一致のみ受入、円安全性未実施。次は各bounded配置と必要比較。
+保存：GitHub work2a1b75cまでsource/必要数値集計の保存元返値成功、比較assets新規GitHub追加0。Sitesはnormal managed consumerで2file受信したがsource fetch前段失敗（push0/理由UNCLASSIFIEDで詳細失失）、network通常runtimeは/tmp/.git mountENOSPCでPython前exit101。新権限取得/認証外部移送/失敗操作の盲目的再試行なし。numeric archive Github分割試行はpart0 blobだけ返値あり、次partの返値詳細不足で停止・ref更新0、原本を保存済としない。全新重要raw/assetsはSHM保持・未永続。Root391/index2b/65/PYC保持、公開確認/readback/親画像0。最新詳細continuation-status04.json。
