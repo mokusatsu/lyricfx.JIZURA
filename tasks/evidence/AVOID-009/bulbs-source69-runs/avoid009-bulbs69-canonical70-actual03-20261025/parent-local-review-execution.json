@@ -1,0 +1,9 @@
+{
+  "returnCode": 1,
+  "producerStagePassed": true,
+  "error": {
+    "type": "RuntimeError",
+    "message": "parent canonical raw review failed",
+    "traceback": "Traceback (most recent call last):\n  File \"/workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs70-execute.py\", line 72, in main\n    guard.check();(run/'raw').mkdir(exist_ok=True);checker=R/'parent-local-review69.py';code=child([sys.executable,'-B',str(checker),str(run/'raw'),str(run/'parent-local-review.json')],run/'parent-local-review.stdout.txt',run/'parent-local-review.stderr.txt');parent_execution['returnCode']=code;report=json.loads(M.read(run/'parent-local-review.json'));print('SOURCE70_PARENT_LOCAL_REVIEW_JSON '+json.dumps(report),flush=True);M.need(code==0,'parent canonical raw review failed');parent_pass=True\n                                                                                                                                                                                                                                                                                                                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/dev/avoidance/layouts_d_bulbs69_runtime.py\", line 9, in need\n    if not v:raise RuntimeError(msg)\n             ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: parent canonical raw review failed\n"
+  }
+}
