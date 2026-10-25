@@ -1825,6 +1825,20 @@ reg('billboard', {
   },
   render(env) {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const nativeD=cut.placementLayoutsD===true,matrixNow=()=>{const m=ctx.getTransform();return[m.a,m.b,m.c,m.d,m.e,m.f];};
+    const clone=v=>Array.isArray(v)?v.map(clone):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,clone(x)])):typeof v==='function'?{nativeFunctionSource:String(v),notExecutableSerialization:true}:v;
+    const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
+    const textBudget=nativeD&&typeof cut.text==='string'&&cut.text.length<=4096&&[...cut.text].length<=512,paramScope=nativeD&&Number.isInteger(Pm.lamps)&&Pm.lamps>=3&&Pm.lamps<=4&&Number.isFinite(Pm.sweep)&&typeof Pm.font==='string',captureD=nativeD&&textBudget&&paramScope;
+    const catalog=nativeD?{kind:'billboard-native-catalog',version:1,nativeOnly:true,complete:false,bounded:captureD,status:captureD?'collecting':textBudget?'partial-scope':'partial-budget',unsupported:captureD?null:textBudget?'catalog-scope:stockL3or4/finiteSweep/fontString':'catalog-budget:4096UTF16/512codepoints',limits:{textUTF16:4096,textCodepoints:512,calls:1024},role:'primary',stage:[env.plan?.W??W,env.plan?.H??H],environmentSize:[W,H],root:matrixNow(),pass:env.pass,clock:{t:env.t,realTime:env.realTime,lt,ltb:env.ltb,step:env.step,pIn:env.pIn,pOut:env.pOut,beat:clone(env.beat),beatPulse:env.beatPulse},seed:s,params:clone(Pm),sourceInputs:{text:textBudget?cut.text:null,lineText:textBudget?cut.lineText:null,line:cut.line,start:cut.start,end:cut.end,dur:cut.dur,inDur:cut.inDur,outDur:cut.outDur,stagger:cut.stagger,enter:cut.enter,hold:cut.hold,exit:cut.exit,treat:cut.treat,motionScale:cut.motionScale},effectiveFX:clone(env.fx),sourceCalls:[],primaryOwners:[],independentDecorOwners:[],lampStates:[],ownerCatalog:[],painterOrder:'posts,braces,deck,11uprights,rail,ground,frame,face; clippedcones,illumination; eacharm/body/lens; mainDraw; No,sourceTime',motionUnchanged:true}:null;
+    if(nativeD)env.placementDGeometry=catalog;
+    let currentCall=null,finished=false;
+    const owned=(owner,kind,fn)=>{if(!nativeD)return fn();const id='billboard.'+owner;let call=null;if(captureD&&catalog.sourceCalls.length<1024){call={ordinal:catalog.sourceCalls.length,owner:id,role:'primary',kind,matrixBeforeCall:matrixNow(),globalAlphaBefore:ctx.globalAlpha};catalog.sourceCalls.push(call);if(!catalog.primaryOwners.includes(id))catalog.primaryOwners.push(id);}else if(captureD){catalog.bounded=false;catalog.status='partial-budget';catalog.unsupported='catalog-budget:1024calls';}const previous=currentCall;currentCall=call;try{return env.withDrawRole('primary',id,fn);}finally{if(call){call.matrixAfterCall=matrixNow();call.globalAlphaAfter=ctx.globalAlpha;}currentCall=previous;}};
+    const args=v=>{if(currentCall)currentCall.arguments=clone(v);return v;};
+    const item=v=>{if(currentCall)currentCall.arguments=[clone(v)];return v;};
+    const gradientArgs=v=>{if(currentCall)currentCall.gradient={kind:'radial',arguments:clone(v),creationMatrix:matrixNow(),stops:[]};return v;};
+    const stopArgs=v=>{if(currentCall)currentCall.gradient.stops.push(clone(v));return v;};
+    const pathArgs=(kind,v)=>{if(currentCall){currentCall.path??=[];currentCall.path.push({kind,arguments:clone(v),matrix:matrixNow()});}return v;};
+    try {
     const port = isPort(env);
     const text = brk(cut.text, port ? 5 : 9);
     const out = tout(env);
@@ -1837,20 +1851,21 @@ reg('billboard', {
     const steel = J.mix(darkOf(sc), sc.sub, 0.35);
     const faceC = Pm.face === 'accent' || J.lum(sc.bg) > 0.55 ? (J.lum(sc.bg) > 0.55 ? [sc.accent, sc.ink, sc.fg].find(c => J.contrast(c, sc.bg) >= 1.8) || sc.fg : plateCol(sc, [sc.accent, sc.ink])) : J.mix(lightOf(sc), sc.accent, 0.06);
     const tc = onCol(sc, faceC);
+    if(captureD)Object.assign(catalog,{port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc});
     // posts, bracing, catwalk
     const pw = bw * 0.035;
-    for (const px of [bx + bw * 0.22, bx + bw * 0.78]) env.rect(px - pw / 2, y0 + bh, pw, groundY - y0 - bh, steel, a0, false);
+    let postIndex=0;for (const px of [bx + bw * 0.22, bx + bw * 0.78]) {const i=postIndex++;owned('structure.post.'+i,'rect',()=>env.rect(...args([px - pw / 2, y0 + bh, pw, groundY - y0 - bh, steel, a0, false])));}
     const lw = Math.max(1.2, u * 0.0025);
     const x1 = bx + bw * 0.22, x2 = bx + bw * 0.78, yb = y0 + bh + (groundY - y0 - bh) * 0.25, yb2 = groundY - (groundY - y0 - bh) * 0.1;
-    env.line([[x1, yb], [x2, yb2]], steel, lw, a0, false); env.line([[x2, yb], [x1, yb2]], steel, lw, a0, false);
+    owned('structure.brace.0','line',()=>env.line(...args([[[x1, yb], [x2, yb2]], steel, lw, a0, false]))); owned('structure.brace.1','line',()=>env.line(...args([[[x2, yb], [x1, yb2]], steel, lw, a0, false])));
     const cwY = y0 + bh + bh * 0.1;
-    env.rect(bx + bw * 0.04, cwY, bw * 0.92, bh * 0.025, steel, a0, false);
-    for (let i = 0; i <= 10; i++) env.rect(bx + bw * (0.04 + 0.92 * i / 10) - lw / 2, cwY - bh * 0.07, lw, bh * 0.07, steel, a0 * 0.8, false);
-    env.line([[bx + bw * 0.04, cwY - bh * 0.07], [bx + bw * 0.96, cwY - bh * 0.07]], steel, lw, a0 * 0.8, false);
-    env.line([[W * 0.03, groundY], [W * 0.97, groundY]], sc.sub, lw, 0.5 * a0, false);
+    owned('catwalk.deck','rect',()=>env.rect(...args([bx + bw * 0.04, cwY, bw * 0.92, bh * 0.025, steel, a0, false])));
+    for (let i = 0; i <= 10; i++) owned('catwalk.upright.'+i,'rect',()=>env.rect(...args([bx + bw * (0.04 + 0.92 * i / 10) - lw / 2, cwY - bh * 0.07, lw, bh * 0.07, steel, a0 * 0.8, false])));
+    owned('catwalk.rail','line',()=>env.line(...args([[[bx + bw * 0.04, cwY - bh * 0.07], [bx + bw * 0.96, cwY - bh * 0.07]], steel, lw, a0 * 0.8, false])));
+    owned('ground.line','line',()=>env.line(...args([[[W * 0.03, groundY], [W * 0.97, groundY]], sc.sub, lw, 0.5 * a0, false])));
     // board
-    env.rect(bx - bw * 0.015, y0 - bw * 0.015, bw * 1.03, bh + bw * 0.03, steel, a0, false);
-    env.rect(bx, y0, bw, bh, J.mix(faceC, darkOf(sc), 0.28), a0, gIn(env));
+    owned('board.frame','rect',()=>env.rect(...args([bx - bw * 0.015, y0 - bw * 0.015, bw * 1.03, bh + bw * 0.03, steel, a0, false])));
+    owned('board.face','rect',()=>env.rect(...args([bx, y0, bw, bh, J.mix(faceC, darkOf(sc), 0.28), a0, gIn(env)])));
     // lamps: flicker on one by one, cones sweep across the face
     const L = Pm.lamps;
     const lampOn = [];
@@ -1859,38 +1874,44 @@ reg('billboard', {
       let on = lt > t1 + 0.25 ? 1 : lt > t1 ? (J.r(s, i, env.step, 7) < 0.55 ? 1 : 0.1) : 0;
       on *= 1 - E.inCubic(J.clamp(env.pOut * 1.6 - i * 0.12));
       lampOn.push(on);
+      if(captureD)catalog.lampStates.push({i,t1,on,lt,ltb:env.ltb,step:env.step,sourceConeThresholdMet:on>0.01,sourceLensThresholdMet:on>0.5});
     }
+    if(captureD)Object.assign(catalog,{pw,lw,x1,x2,yb,yb2,cwY,L,lampOn:lampOn.slice(),sourceOwnClip:env.pass==='main'?{rectangle:[bx,y0,bw,bh],matrix:matrixNow(),scope:'main cones+illumination only; original source clip, not new mask'}:null});
     if (env.pass === 'main') {
       ctx.save(); ctx.beginPath(); ctx.rect(bx, y0, bw, bh); ctx.clip();
       for (let i = 0; i < L; i++) {
         if (lampOn[i] <= 0.01) continue;
+        owned('lamp.'+i+'.cone','source-clipped-radial-path',()=>{
         const lx = bx + bw * (i + 0.5) / L, ly = y0 + bh + bh * 0.06;
         const ang = (-90 + Math.sin(env.ltb * 0.8 + i * 1.7) * Pm.sweep) * J.DEG;
         const tx = lx + Math.cos(ang) * bh * 1.25, ty = ly + Math.sin(ang) * bh * 1.25;
-        const g = ctx.createRadialGradient(lx, ly, 0, lx, ly, bh * 1.2);
-        g.addColorStop(0, J.rgba(faceC, 0.95 * lampOn[i])); g.addColorStop(0.6, J.rgba(faceC, 0.6 * lampOn[i])); g.addColorStop(1, J.rgba(faceC, 0));
+        const g = ctx.createRadialGradient(...gradientArgs([lx, ly, 0, lx, ly, bh * 1.2]));
+        g.addColorStop(...stopArgs([0, J.rgba(faceC, 0.95 * lampOn[i])])); g.addColorStop(...stopArgs([0.6, J.rgba(faceC, 0.6 * lampOn[i])])); g.addColorStop(...stopArgs([1, J.rgba(faceC, 0)]));
         const spread = bw / L * 0.75;
-        ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(lx - bw * 0.02, ly); ctx.lineTo(tx - spread, ty); ctx.lineTo(tx + spread, ty); ctx.lineTo(lx + bw * 0.02, ly); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(...pathArgs('moveTo',[lx - bw * 0.02, ly])); ctx.lineTo(...pathArgs('lineTo',[tx - spread, ty])); ctx.lineTo(...pathArgs('lineTo',[tx + spread, ty])); ctx.lineTo(...pathArgs('lineTo',[lx + bw * 0.02, ly])); ctx.closePath();if(currentCall){currentCall.alphaAtFill=ctx.globalAlpha;currentCall.fillMatrix=matrixNow();currentCall.clipScope='sourceOwnClip';currentCall.path.push({kind:'closePath',arguments:[],matrix:matrixNow()});} ctx.fill();
+        });
       }
       const lit = lampOn.reduce((a, b) => a + b, 0) / L;
-      ctx.globalAlpha = 0.55 * lit * a0; ctx.fillStyle = faceC; ctx.fillRect(bx, y0, bw, bh);
+      owned('board.illumination','source-clipped-fillRect',()=>{ctx.globalAlpha = 0.55 * lit * a0; ctx.fillStyle = faceC;if(currentCall){currentCall.alphaAtFill=ctx.globalAlpha;currentCall.clipScope='sourceOwnClip';}ctx.fillRect(...args([bx,y0,bw,bh]));});
       ctx.restore();
     }
     // lamp housings
     for (let i = 0; i < L; i++) {
       const lx = bx + bw * (i + 0.5) / L, ly = y0 + bh + bh * 0.06;
-      env.line([[lx, cwY], [lx, ly + bh * 0.02]], steel, lw * 1.5, a0, false);
-      env.poly([[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false);
-      if (lampOn[i] > 0.5) env.circle(lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false);
+      owned('lamp.'+i+'.arm','line',()=>env.line(...args([[[lx, cwY], [lx, ly + bh * 0.02]], steel, lw * 1.5, a0, false])));
+      owned('lamp.'+i+'.body','poly',()=>env.poly(...args([[[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false])));
+      if (lampOn[i] > 0.5) owned('lamp.'+i+'.lens','circle',()=>env.circle(...args([lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false])));
     }
     const size = Math.min(J.fitSize(text, Pm.font, bw * 0.84, bh * 0.66, { track: 0.04, lead: 1.1 }), bh * 0.6);
-    const bb = J.mainDraw(env, { text, font: Pm.font, size, x: W / 2, y: y0 + bh / 2 + (Pm.tag ? bh * 0.03 : 0), track: 0.04, lead: 1.1, color: tc, noHold: plateHold(env), mi: miAt(env, 0.3) });
+    const bb = owned('lyric.main','mainDraw',()=>J.mainDraw(env,item({ text, font: Pm.font, size, x: W / 2, y: y0 + bh / 2 + (Pm.tag ? bh * 0.03 : 0), track: 0.04, lead: 1.1, color: tc, noHold: plateHold(env), mi: miAt(env, 0.3) })));
     if (Pm.tag) {
       const fs = Math.max(smallSize(env) * 0.8, bh * 0.05);
-      env.draw({ text: 'No.' + lineNo(env), font: monoF(env), size: fs, align: 'left', track: 0.2, x: bx + bw * 0.025, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false });
-      env.draw({ text: J.fmtTime(cut.start), font: monoF(env), size: fs, align: 'right', track: 0.2, x: bx + bw * 0.975, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false });
+      owned('tag.number','item',()=>env.draw(item({ text: 'No.' + lineNo(env), font: monoF(env), size: fs, align: 'left', track: 0.2, x: bx + bw * 0.025, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false })));
+      owned('tag.time','item',()=>env.draw(item({ text: J.fmtTime(cut.start), font: monoF(env), size: fs, align: 'right', track: 0.2, x: bx + bw * 0.975, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false })));
     }
-    return bb || box(bx, y0, bx + bw, y0 + bh);
+    if(captureD){catalog.mainReturnedBB=clone(bb);catalog.mainSize=size;const owners=['structure.post.0','structure.post.1','structure.brace.0','structure.brace.1','catwalk.deck',...Array.from({length:11},(_,i)=>'catwalk.upright.'+i),'catwalk.rail','ground.line','board.frame','board.face',...Array.from({length:L},(_,i)=>'lamp.'+i+'.cone'),'board.illumination',...Array.from({length:L},(_,i)=>['lamp.'+i+'.arm','lamp.'+i+'.body','lamp.'+i+'.lens']).flat(),'lyric.main','tag.number','tag.time'];catalog.ownerCatalog=owners.map(owner=>({owner:'billboard.'+owner,role:'primary',sourceConditional:owner==='board.illumination'||owner.includes('.cone')||owner.includes('.lens')||owner.startsWith('tag.')}));}
+    finished=true;return bb || box(bx, y0, bx + bw, y0 + bh);
+    } finally {if(nativeD){catalog.complete=finished&&catalog.bounded;catalog.status=catalog.complete?'complete':finished?catalog.status:'native-threw';freeze(catalog);}}
   },
 });
 

@@ -1,0 +1,156 @@
+--- accepted15/capacity_objects15.py
++++ draft16/capacity_objects16.py
+@@ -2,10 +2,10 @@
+ """Parent-reviewed, single-file Gitblob-only capacity transaction. Abrupt-death NONATOMIC."""
+ import argparse,gzip,hashlib,io,json,os,pathlib,stat,subprocess,tarfile
+ P=pathlib.Path;ROOT=P('/workspace/lyricfx.JIZURA');INDEX=ROOT/'.git/index'
+-BASE=P('/dev/shm/avoid009-evening-20261024');SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-objects15/snapshot.json')
+-REL='tasks/evidence/AVOID-008/objects/matrix14.json.gz'
+-BLOB='9665f87619cf62ea3e5f4f46b17b92fddb73373d';RAW_SHA='aba87fdcdbaaf5130b12d039d8047aa4b4ee07740cc3e53a28b88ae738354bcf';RAW_BYTES=30574111
+-PROOF=BASE/'capacity-objects15-proof.json';RECEIPT=BASE/'capacity-objects15-receipt.json';START=BASE/'capacity-objects15-started.json';INTENT=BASE/'capacity-objects15-unlink-intent.json';PRIVATE=BASE/'capacity-objects15-index'
++BASE=P('/dev/shm/avoid009-evening-20261024');SNAP=P('/workspace/lyricfx.JIZURA/work/avoid009-capacity-objects16/snapshot.json')
++REL='tasks/evidence/AVOID-008/writingC861-main01/matrix01.json.gz'
++BLOB='cfc2428a9b37bd852b13db50ae81d75d9e91bae5';RAW_SHA='944904bdd6f15d982b63853cd68334fa8e2ffcd3ed9a8aaee5793aad770287ea';RAW_BYTES=30565904
++PROOF=BASE/'capacity-objects16-proof.json';RECEIPT=BASE/'capacity-objects16-receipt.json';START=BASE/'capacity-objects16-started.json';INTENT=BASE/'capacity-objects16-unlink-intent.json';PRIVATE=BASE/'capacity-objects16-index'
+ def need(x,m):
+  if not x:raise RuntimeError(m)
+ def sha(b):return hashlib.sha256(b).hexdigest()
+@@ -29,60 +29,54 @@
+ def protect(m,new=False):
+  expected=m['skip']+([REL] if new else [])
+  need(len(m['pycs'])==7 and len({x['path'] for x in m['pycs']})==7,'exact7PYC required')
+- need(len(m['skip'])==63 and len(set(expected))==len(expected),'exact old63 plus optional one')
++ need(len(m['skip'])==64 and len(set(expected))==len(expected),'exact old64 plus optional one')
+  for rel in expected:need(not os.path.lexists(ROOT/rel),'protected absent path appeared')
+  for x in m['pycs']:
+   p=ROOT/x['path'];regular(p);b=p.read_bytes();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'PYC changed')
+ def model():
+  regular(SNAP);b=SNAP.read_bytes();need(ARGS.snapshot_sha256 and sha(b)==ARGS.snapshot_sha256,'snapshot seal required');return json.loads(b)
+ def parent_gates():
+- need(ARGS.source60_parent_oracle_media_accepted,'parent60 BOTH oracle/media fullraw/postpins reviews required; not human/product/perf/save')
+-def source60_context(m):
+- c=m['source60Context'];need(m['finalSourceReviewPending'] is False,'parent15 final source review pending: no action')
+- need(c['finalReviewPending'] is False and ARGS.source60_oracle_review_sha256==c['phases']['oracle']['review']['sha256'] and ARGS.source60_media_review_sha256==c['phases']['media']['review']['sha256'],'both exact60parent review seals required')
+- data={}
+- for key in ['sourceSeal','sourcePins','sourceGate','mediaGate']:
+-  x=c[key];p=ROOT/x['path'];s=regular(p);b=p.read_bytes();need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode),s.st_nlink)==(x['device'],x['inode'],x['mode'],1),'60 context identity changed');need(len(b)==x['bytes'] and sha(b)==x['sha256'],'60 context bytes changed');data[key]=b
+- pins=json.loads(data['sourcePins']);need(len(pins['files'])==124 and len(pins['pycache'])==7 and sorted(pins['protectedAbsent'])==m['skip'],'60 original124/PYC7/63 scope differs')
+- need(pins['HEADReference']==m['head'] and pins['index']['sha256']==m['indexSHA256'] and pins['index']['bytes']==m['indexBytes'] and pins['indexInode']==m['indexInode'],'60 source baseline pin differs')
+- need(REL not in {x['path'] for x in pins['files']+pins['pycache']},'old raw is active60 input')
+- for x in pins['files']+pins['pycache']:
+-  p=ROOT/x['path'];regular(p);b=p.read_bytes();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'60 current124/PYC7 postpin differs')
+- for rel in pins['protectedAbsent']:need(not os.path.lexists(ROOT/rel),'60 original63 protected absent appeared')
+- phases={}
+- for phase in ['oracle','media']:
+-  d=c['phases'][phase];v={}
+-  for key in ['archive','manifest','storage','review']:
+-   x=d[key];p=ROOT/x['path'];s=regular(p);b=p.read_bytes();need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode),s.st_nlink)==(x['device'],x['inode'],x['mode'],1),'60 phase file identity differs');need(len(b)==x['bytes'] and sha(b)==x['sha256'],'60 phase fullbytes differ');v[key]=b
+-  manifest=json.loads(v['manifest']);storage=json.loads(v['storage']);review=json.loads(v['review'])
+-  need(manifest['complete'] is True and not manifest['errors'] and not manifest.get('partialRecords',[]) and not manifest['inFlight'] and manifest['postPins']['unchanged'] is True and manifest['productAdmission'] is False and manifest['numericalFoundationConditional'] is True,'60 phase producer/postpins/scope differs')
+-  need(storage['files']==d['literalMembers'] and storage['archiveSHA256']==sha(v['archive']) and storage['manifestSHA256']==sha(v['manifest']) and storage['allLiteralMembersComparedToLiveOriginalBytes'] is True and storage['complete'] is True and not storage['errors'] and storage['postPins']['unchanged'] is True,'60 literal storage proof differs')
+-  rows={x['member']:x for x in storage['inventory']};need(len(rows)==len(storage['inventory'])==d['literalMembers'],'60 exact literal member count differs');seen=set()
++ need(ARGS.source63_ja_en_raw_and_after6_accepted,'parent BOTH63native raw/postpins+sixAFTER required; noadapter/perf/save')
++def source63_context(m):
++ c=m['source63Context'];need(m['finalSourceReviewPending'] is False and c['finalReviewPending'] is False and c['freshSnapshotAfter63CompleteRequired'] is False and c['after'],'final63/AFTER6 contexts and freshsnapshot pending: no action')
++ def checked(x):
++  need(x and x['sha256'],'unbound63context');p=ROOT/x['path'];s=regular(p);b=p.read_bytes();need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode),s.st_nlink)==(x['device'],x['inode'],x['mode'],1),'63context identity changed');need(len(b)==x['bytes'] and sha(b)==x['sha256'],'63context fullbytes changed');return b
++ pins=json.loads(checked(c['postPins']));checked(c['sourceSeal']);checked(c['sourceGate']);checked(c['buildReview']);before=json.loads(checked(c['beforeLiteral']))
++ need(len(pins['files'])==124 and len(pins['pycache'])==7 and sorted(pins['protectedAbsent'])==m['skip'] and pins['index']['sha256']==m['indexSHA256'] and pins['HEADReference']==m['head'],'63final124/PYC7/64 baseline differs')
++ need(REL not in {x['path'] for x in pins['files']},'oldraw active63input')
++ for x in pins['files']+pins['pycache']:need(sha((ROOT/x['path']).read_bytes())==x['sha256'],'63currentpostpin changed')
++ for lang,arg in [('ja',ARGS.source63_ja_review_sha256),('en',ARGS.source63_en_review_sha256)]:
++  d=c['phases'][lang];v={k:checked(d[k]) for k in ['archive','manifest','storage','review']};raw=json.loads(v['manifest']);storage=json.loads(v['storage']);review=json.loads(v['review'])
++  need(arg==d['review']['sha256'] and raw['language']==lang and raw['complete'] is True and not raw['errors'] and not raw['partialRecords'] and not raw['inFlight'] and raw['postPins']['unchanged'] is True,'63languagecomplete/reviewseal/postpins differs')
++  need(raw['pins']['files']==pins['files'] and raw['pins']['pycache']==pins['pycache'] and raw['pins']['index']==pins['index'],'63languagepins differ')
++  need(storage['archiveSHA256']==sha(v['archive']) and storage['manifestSHA256']==sha(v['manifest']) and storage['files']==d['literalMembers'] and storage['allLiteralMembersByteExact'] is True and not storage['errors'] and storage['postPins']['unchanged'] is True,'63literalstorage differs')
++  rows={x['member']:x for x in storage['inventory']};need(len(rows)==len(storage['inventory'])==d['literalMembers'],'63membercount differs');seen=set()
+   with tarfile.open(fileobj=io.BytesIO(v['archive']),mode='r|xz') as tf:
+    for info in tf:
+-    need(info.isfile() and info.name in rows and info.name not in seen,'60 literal archive scope differs');x=rows[info.name];b=tf.extractfile(info).read();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'60 full literal member differs')
+-    if info.name=='manifest.json':need(b==v['manifest'],'60 archived literal manifest differs')
++    need(info.isfile() and info.name in rows and info.name not in seen,'63member scope differs');x=rows[info.name];b=tf.extractfile(info).read();need(len(b)==x['bytes'] and sha(b)==x['sha256'],'63literalmember changed')
++    if info.name=='manifest.json':need(b==v['manifest'],'63archivedmanifest differs')
+     seen.add(info.name)
+-  need(seen==set(rows),'60 literal member missing')
+-  need(review['state']==d['reviewStateRequired'] and review['manifestSHA256']==sha(v['manifest']) and review['source124PYC7Protected63IndexPostpinsChecked'] is True and review['conditionalNumericalFoundation'] is True,'60 parent fullraw review/postpins differs')
+-  need(review['humanApproval'] is False and review['formalPerformanceAccepted'] is False and review['savingBodyTested'] is False and review['publicChecks']==0 and review['parentImagesViewed']==0,'60 broader acceptance falsely claimed');phases[phase]=(manifest,review)
+- oracle,orr=phases['oracle'];media,mr=phases['media']
+- need(oracle['sealSHA256']==sha(data['sourceSeal']) and orr['sourceSealSHA256']==sha(data['sourceSeal']) and media['sourceSealSHA256']==sha(data['sourceSeal']),'60 sourceSeal chain differs')
+- need(media['oracleManifestSHA256']==c['phases']['oracle']['manifest']['sha256']==mr['oracleManifestSHA256'] and media['parentGateSHA256']==sha(data['mediaGate'])==mr['parentMediaGateSHA256'],'60 oracle/media/gate chain differs')
+- for key in ['allOriginalNativeRecipeOraclePaintValuesAndRGBAEqual','proofNative250FullValuesEqualAccepted59','everyOriginalAndReplacementCallMatchedWithOnlyDeclaredGeometryFieldsChanged','thirdLinearLookupArcPointsExact','allCurrentHardQualityAndPreferredWarningsIndependentlyChecked','actualCurrentCircleStageIndependentFraction']:need(orr[key] is True,'60 oracle qualification differs')
+- need(orr['productAdapterAdded'] is False and orr['totals']['proof']==250 and orr['totals']['media-time']==250,'60 oracle scope/count differs')
+- for key in ['freshNative250FullPaintCatalogAndWholeRGBAEqualAcceptedOracle','all500EmittedCanvasRGBAHashesEqualAcceptedReferences','two250FrameNative60fpsMP4AndAllPTSValidated','MP4EncodedLossyNotPixelEqualityClaim']:need(mr[key] is True,'60 media qualification differs')
+- need(mr['productAdmission'] is False and media['completed']['freshNativeReferences']==250 and media['completed']['beforeFrames']==250 and media['completed']['afterFrames']==250,'60 media scope/count differs')
++  need(seen==set(rows),'63member missing');need(review['state']==d['reviewStateRequired'] and review['language']==lang and review['manifestSHA256']==sha(v['manifest']) and review['sourcePinsPostVerified'] is True,'63parentrawreview notaccepted')
++  for key in ['allLiteralFragmentsFullHashAndCRC','independentPythonFullValueDecodeAndMatrixReconstruction','independentOriginalOffOnFullPaintClipGradientRNGAndRGBAExact','catalogComparedToActualTraceAndCanvasPaint']:need(review[key] is True,'63rawqualification differs')
++  need(review['adapter'] is False and review['transportQualified'] is False and review['allTimeOrNumericalCertificate'] is False and review['formalPerformance'] is False and review['savingBodyTested'] is False,'63broaderclaim false')
++ # Preserve ALL literal BEFORE output, and all fresh AFTER outputs with exact reviewed receipt.
++ import base64
++ for x in before['files']:need(base64.b64decode(x['base64'])==(ROOT/x['path']).read_bytes(),'literalbefore baseline changed')
++ a=c['after'];need(ARGS.after6_receipt_sha256==a['receipt']['sha256'],'exactAFTER6receipt seal required')
++ for x in a['files']:checked(x)
++ ar=json.loads(checked(a['receipt']));results=json.loads(checked(a['results']));need(ar['exitCode']==0 and ar['postPinsError'] is None and len(results['results'])==6 and all(x['exitCode']==0 for x in results['results']),'sixAFTER notpassed')
++ br=next(x for x in before['files'] if x['path'].endswith('baseline53-receipt.json'));need(ar['beforeReferenceSHA256']==br['sha256'] and ar['beforeReferenceReusedNotRerun'] is True and ar['beforeSourceHTMLFontIdentityExact53Postbuild'] is True,'literalBEFORE reusequalification differs')
++ need(ar['savingBodyTested'] is False and ar['formalPerformance'] is False,'baseline broaderclaim false')
+ def baseline(m):
+- parent_gates();source60_context(m)
++ parent_gates();source63_context(m)
+  s=regular(INDEX);need(s.st_nlink==m['indexNlink']==1,'ROOT nlink changed');b=INDEX.read_bytes()
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'ROOT identity/mode changed')
+  need(len(b)==m['indexBytes'] and sha(b)==m['indexSHA256'],'ROOT index changed')
+  need(head()==m['head']==ARGS.expected_head,'explicit baseline HEAD differs')
+- need(skips()==m['skip'] and special()==m['specialFlags'],'old63/fullspecial changed')
++ need(skips()==m['skip'] and special()==m['specialFlags'],'old64/fullspecial changed')
+  need(sha(flags())==m['flagsSHA256'] and sha(git(['ls-files','--stage','-z']))==m['stageSHA256'],'full stage/flags changed');protect(m)
+  regular(P(m['bootstrapReceiptPath']));receipt=P(m['bootstrapReceiptPath']).read_bytes();need(sha(receipt)==m['bootstrapReceiptSHA256'],'installed receipt changed')
+- r=json.loads(receipt);need(r['round']==1 and r['sameInode'] is True and r['skipCount']==63 and r['PYCAndProtected63Preserved'] is True and r['newSHA256']==sha(b) and r['head']==head(),'installed receipt mismatch')
++ r=json.loads(receipt);need(r['round']==2 and r['sameInode'] is True and r['skipCount']==64 and r['PYCAndProtected64Preserved'] is True and r['newSHA256']==sha(b) and r['head']==head(),'installed receipt mismatch')
+  return b
+ def decodedcheck(data):
+  digest=hashlib.sha256();count=0
+@@ -91,7 +85,7 @@
+    chunk=stream.read(1048576)
+    if not chunk:break
+    digest.update(chunk);count+=len(chunk)
+- need(count==227208579 and digest.hexdigest()=='79c38c30293d5f027484ce5be00776b7520dbc7436e5b2a52a3721af46affb7d','gzip decoded full stream size/hash/CRC differs')
++ need(count==227248774 and digest.hexdigest()=='29b3f76f9aea01e0ce4160db6f999c066445f0b0c274579f5049875cfd9fb9b2','gzip decoded full stream size/hash/CRC differs')
+ def raw(m):
+  p=ROOT/REL;s=regular(p);need(s.st_nlink==m['targetNlink']==1,'target nlink changed');need(s.st_blocks*512==m['targetAllocated'],'target allocated bytes changed');b=p.read_bytes()
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['targetDevice'],m['targetInode'],m['targetMode']),'target identity/mode changed')
+@@ -106,7 +100,7 @@
+ def source_sha():return sha(P(__file__).read_bytes())
+ def verify(m):
+  official();need(all(not os.path.lexists(x) for x in [PROOF,PRIVATE,START,INTENT,RECEIPT]),'fresh transaction required');b=baseline(m);data=raw(m)
+- writejson(PROOF,{'state':'VERIFIED_NOT_RELEASED','sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'head':head(),'rootSHA256':sha(b),'rawSHA256':sha(data),'rawBytes':len(data),'rawAllocated':(ROOT/REL).stat().st_blocks*512,'releaseOnlyPath':REL,'old63Preserved':True,'PYC7Preserved':True,'source60OracleManifestSHA256':m['source60Context']['phases']['oracle']['manifest']['sha256'],'source60OracleArchiveSHA256':m['source60Context']['phases']['oracle']['archive']['sha256'],'source60OracleReviewSHA256':m['source60Context']['phases']['oracle']['review']['sha256'],'source60MediaManifestSHA256':m['source60Context']['phases']['media']['manifest']['sha256'],'source60MediaArchiveSHA256':m['source60Context']['phases']['media']['archive']['sha256'],'source60MediaReviewSHA256':m['source60Context']['phases']['media']['review']['sha256'],'source60BothParentRawReviewsAccepted':True,'source60ConditionalOnly':True,'source60HumanApproval':False,'source60ProductAdmission':False,'source60SavingBodyAccepted':False,'source60FormalPerformanceAccepted':False})
++ writejson(PROOF,{'state':'VERIFIED_NOT_RELEASED','sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'head':head(),'rootSHA256':sha(b),'rawSHA256':sha(data),'rawBytes':len(data),'rawAllocated':(ROOT/REL).stat().st_blocks*512,'releaseOnlyPath':REL,'old64Preserved':True,'PYC7Preserved':True,'source63JAContext':m['source63Context']['phases']['ja'],'source63ENContext':m['source63Context']['phases']['en'],'source63AfterReceiptSHA256':m['source63Context']['after']['receipt']['sha256'],'source63BothNativeRawReviewsAccepted':True,'source63After6Accepted':True,'source63AdapterAccepted':False,'source63TransportQualified':False,'source63SavingBodyAccepted':False,'source63FormalPerformanceAccepted':False})
+  print(PROOF.read_text())
+ def put(fd,b):
+  off=0
+@@ -116,8 +110,8 @@
+ def finalcheck(m,final,new):
+  need(INDEX.read_bytes()==final,'installed ROOT bytes differ');s=regular(INDEX);need(s.st_nlink==m['indexNlink']==1,'installed ROOT nlink changed')
+  need((s.st_dev,s.st_ino,stat.S_IMODE(s.st_mode))==(m['indexDevice'],m['indexInode'],m['indexMode']),'installed identity/mode differs')
+- need(skips()==sorted(m['skip']+[REL]),'expected exact64 skips');need(special()==sorted(m['specialFlags']+['S '+REL]),'special flags differ')
+- need(git(['ls-files','--stage','-z'])==git(['ls-files','--stage','-z'],PRIVATE),'installed stage mismatch');protect(m,new);need(head()==m['head'],'HEAD changed');source60_context(m)
++ need(skips()==sorted(m['skip']+[REL]),'expected exact65 skips');need(special()==sorted(m['specialFlags']+['S '+REL]),'special flags differ')
++ need(git(['ls-files','--stage','-z'])==git(['ls-files','--stage','-z'],PRIVATE),'installed stage mismatch');protect(m,new);need(head()==m['head'],'HEAD changed');source63_context(m)
+ def release(m):
+  official();regular(PROOF);pb=PROOF.read_bytes();proof=json.loads(pb)
+  need(ARGS.proof_sha256 and sha(pb)==ARGS.proof_sha256,'parent exact proof seal required')
+@@ -144,7 +138,7 @@
+    try:os.fsync(directory)
+    finally:os.close(directory)
+    finalcheck(m,final,True)
+-   writejson(RECEIPT,{'state':'RELEASED_GITBLOB_ONLY','releaseOnlyPath':REL,'blob':BLOB,'rawSHA256':sha(data),'rawBytes':len(data),'freedAllocatedBytes':proof['rawAllocated'],'head':head(),'oldSHA256':sha(old),'newSHA256':sha(final),'newBytes':len(final),'sameInode':True,'skipCount':64,'old63AndPYC7Preserved':True,'proofSHA256':sha(pb),'sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'unlinkIntentSHA256':sha(INTENT.read_bytes()),'source60OracleManifestSHA256':m['source60Context']['phases']['oracle']['manifest']['sha256'],'source60OracleArchiveSHA256':m['source60Context']['phases']['oracle']['archive']['sha256'],'source60OracleReviewSHA256':m['source60Context']['phases']['oracle']['review']['sha256'],'source60MediaManifestSHA256':m['source60Context']['phases']['media']['manifest']['sha256'],'source60MediaArchiveSHA256':m['source60Context']['phases']['media']['archive']['sha256'],'source60MediaReviewSHA256':m['source60Context']['phases']['media']['review']['sha256'],'source60BothParentRawReviewsAccepted':True,'source60ConditionalOnly':True,'source60HumanApproval':False,'source60ProductAdmission':False,'source60SavingBodyAccepted':False,'source60FormalPerformanceAccepted':False})
++   writejson(RECEIPT,{'state':'RELEASED_GITBLOB_ONLY','releaseOnlyPath':REL,'blob':BLOB,'rawSHA256':sha(data),'rawBytes':len(data),'freedAllocatedBytes':proof['rawAllocated'],'head':head(),'oldSHA256':sha(old),'newSHA256':sha(final),'newBytes':len(final),'sameInode':True,'skipCount':65,'old64AndPYC7Preserved':True,'proofSHA256':sha(pb),'sourceSHA256':source_sha(),'snapshotSHA256':ARGS.snapshot_sha256,'unlinkIntentSHA256':sha(INTENT.read_bytes()),'source63JAContext':m['source63Context']['phases']['ja'],'source63ENContext':m['source63Context']['phases']['en'],'source63AfterReceiptSHA256':m['source63Context']['after']['receipt']['sha256'],'source63BothNativeRawReviewsAccepted':True,'source63After6Accepted':True,'source63AdapterAccepted':False,'source63TransportQualified':False,'source63SavingBodyAccepted':False,'source63FormalPerformanceAccepted':False})
+   except BaseException:
+    try:
+     if removed:
+@@ -158,6 +152,6 @@
+   if fd is not None:os.close(fd)
+   need(regular(lock).st_ino==os.fstat(lfd).st_ino and regular(lock).st_size==0,'owned zero-byte lock replaced');os.close(lfd);lock.unlink()
+ if __name__=='__main__':
+- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('action',choices=['VERIFY','RELEASE']);ap.add_argument('--snapshot-sha256',required=True);ap.add_argument('--expected-head',required=True);ap.add_argument('--proof-sha256');ap.add_argument('--source60-parent-oracle-media-accepted',action='store_true',required=True);ap.add_argument('--source60-oracle-review-sha256',required=True);ap.add_argument('--source60-media-review-sha256',required=True);ARGS=ap.parse_args();m=model()
++ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('action',choices=['VERIFY','RELEASE']);ap.add_argument('--snapshot-sha256',required=True);ap.add_argument('--expected-head',required=True);ap.add_argument('--proof-sha256');ap.add_argument('--source63-ja-en-raw-and-after6-accepted',action='store_true',required=True);ap.add_argument('--source63-ja-review-sha256',required=True);ap.add_argument('--source63-en-review-sha256',required=True);ap.add_argument('--after6-receipt-sha256',required=True);ARGS=ap.parse_args();m=model()
+  if ARGS.action=='VERIFY':verify(m)
+  else:release(m)

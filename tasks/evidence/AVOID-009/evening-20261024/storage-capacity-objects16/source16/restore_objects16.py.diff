@@ -1,0 +1,45 @@
+--- accepted15/restore_objects15.py
++++ draft16/restore_objects16.py
+@@ -1,17 +1,16 @@
+ #!/usr/bin/env python3
+ """Immediate restore; reviewed sibling guard supplies pinned common primitives."""
+-import capacity_objects15 as core
+-from capacity_objects15 import *
++import capacity_objects16 as core
++from capacity_objects16 import *
+ def restore(m):
+- official();receipt=ROOT/'tasks/evidence/AVOID-009/evening-20261024/storage-capacity-objects15/capacity-objects15-receipt.json';regular(receipt);rb=receipt.read_bytes();r=json.loads(rb)
++ official();receipt=ROOT/'tasks/evidence/AVOID-009/evening-20261024/storage-capacity-objects16/capacity-objects16-receipt.json';regular(receipt);rb=receipt.read_bytes();r=json.loads(rb)
+  need(sha(rb)==ARGS.release_receipt_sha256,'exact durable release receipt SHA required')
+  need(r['snapshotSHA256']==ARGS.snapshot_sha256 and r['sourceSHA256']==source_sha(),'release snapshot/source differs')
+- need(r['state']=='RELEASED_GITBLOB_ONLY' and r['releaseOnlyPath']==REL and r['blob']==BLOB and r['rawSHA256']==RAW_SHA and r['old63AndPYC7Preserved'] is True,'release receipt differs')
+- need(m['finalSourceReviewPending'] is False and m['source60Context']['finalReviewPending'] is False and r['source60BothParentRawReviewsAccepted'] is True and r['source60ConditionalOnly'] is True and r['source60HumanApproval'] is False and r['source60ProductAdmission'] is False and r['source60SavingBodyAccepted'] is False and r['source60FormalPerformanceAccepted'] is False,'release60 both reviews/conditional scope differs')
+- for phase in ['oracle','media']:
+-  d=m['source60Context']['phases'][phase];prefix='source60'+phase.title();need(r[prefix+'ManifestSHA256']==d['manifest']['sha256'] and r[prefix+'ArchiveSHA256']==d['archive']['sha256'] and r[prefix+'ReviewSHA256']==d['review']['sha256'],'release60 exactphase bytegate chain differs')
++ need(r['state']=='RELEASED_GITBLOB_ONLY' and r['releaseOnlyPath']==REL and r['blob']==BLOB and r['rawSHA256']==RAW_SHA and r['old64AndPYC7Preserved'] is True,'release receipt differs')
++ need(m['finalSourceReviewPending'] is False and m['source63Context']['finalReviewPending'] is False and m['source63Context']['freshSnapshotAfter63CompleteRequired'] is False and r['source63BothNativeRawReviewsAccepted'] is True and r['source63After6Accepted'] is True and r['source63AdapterAccepted'] is False and r['source63TransportQualified'] is False and r['source63SavingBodyAccepted'] is False and r['source63FormalPerformanceAccepted'] is False,'release63final native/AFTER6 scope differs')
++ need(r['source63JAContext']==m['source63Context']['phases']['ja'] and r['source63ENContext']==m['source63Context']['phases']['en'] and r['source63AfterReceiptSHA256']==m['source63Context']['after']['receipt']['sha256'],'release63exactcontexts differ')
+  need(head()==ARGS.expected_head==m['head']==r['head'],'restore only supported immediately at release HEAD; fresh source gate required after later commits')
+- need(skips()==sorted(m['skip']+[REL]) and special()==sorted(m['specialFlags']+['S '+REL]),'restore expected exact64 flags');protect(m,True)
++ need(skips()==sorted(m['skip']+[REL]) and special()==sorted(m['specialFlags']+['S '+REL]),'restore expected exact65 flags');protect(m,True)
+  need(sha(git(['ls-files','--stage','-z']))==m['stageSHA256'],'restore stage differs')
+  old=INDEX.read_bytes();info=regular(INDEX);need(info.st_nlink==m['indexNlink']==1,'restore ROOT nlink changed')
+  need(sha(old)==ARGS.root_index_sha256,'explicit current ROOT index seal required')
+@@ -20,7 +19,7 @@
+  data=git(['cat-file','blob',BLOB]);need(len(data)==RAW_BYTES and sha(data)==RAW_SHA,'restore blob mismatch')
+  decodedcheck(data)
+  need(git(['rev-parse',head()+':'+REL]).decode().strip()==BLOB,'restore HEAD blob differs')
+- private=BASE/'capacity-objects15-restore-index';started=BASE/'capacity-objects15-restore-started.json';out=BASE/'capacity-objects15-restore-receipt.json'
++ private=BASE/'capacity-objects16-restore-index';started=BASE/'capacity-objects16-restore-started.json';out=BASE/'capacity-objects16-restore-receipt.json'
+  need(all(not os.path.lexists(x) for x in [private,started,out,ROOT/REL]),'fresh restore required')
+  with private.open('xb') as f:f.write(old);f.flush();os.fsync(f.fileno())
+  git(['update-index','--no-skip-worktree','--',REL],private)
+@@ -38,7 +37,7 @@
+    written=True;put(fd,final)
+    restored_info=regular(INDEX);need((restored_info.st_dev,restored_info.st_ino,stat.S_IMODE(restored_info.st_mode),restored_info.st_nlink)==(m['indexDevice'],m['indexInode'],m['indexMode'],1),'restored identity/mode/nlink differs')
+    need(INDEX.read_bytes()==final and skips()==m['skip'] and special()==m['specialFlags'],'restored index differs');protect(m);need(head()==m['head'],'HEAD changed')
+-   writejson(out,{'state':'RESTORED_FULL_BYTES_OLD63_ONLY','path':REL,'blob':BLOB,'rawSHA256':sha(data),'newIndexSHA256':sha(final),'sameInode':True,'old63AndPYC7Preserved':True,'head':head()})
++   writejson(out,{'state':'RESTORED_FULL_BYTES_OLD64_ONLY','path':REL,'blob':BLOB,'rawSHA256':sha(data),'newIndexSHA256':sha(final),'sameInode':True,'old64AndPYC7Preserved':True,'head':head()})
+   except BaseException:
+    try:
+     if written:put(fd,old);need(INDEX.read_bytes()==old,'restore index rollback differs')

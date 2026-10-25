@@ -1,0 +1,5 @@
+# SOURCE66 — preserve already-correct native inherited state
+
+Actual65 failed after3 native/zero tuples at.02 main. Full raw firstevent stored letterSpacing/wordSpacing0px and native0px, but actualzero paint showed empty strings. Measurement initialization copy worked. Parent bounded aboutblank diagnostic with single setters and interleaved reads did not reproduce the change, so platform/setter cause remains UNRESOLVED. No cause is claimed proved.
+
+SOURCE66 changes only bb64apply: skip each scalar assignment when actual current getter Object.is desired; map alpha/blend/dashOffset to their actual Canvas properties; compare each current dash element before setLineDash. No normalization, tolerance, string rewrite or ignored comparison field. Native source leaves already-correct unused inherited fields untouched. This is a source-faithful hypothesis requiring actual66 run. SOURCE65 initial measurement-state copy remains. Fullstrict paintCore/RGBA/clock/scope/caps/205zero/14negative assertions unchanged; private64 APIs intentionally retained. Frozen64/65 source/raw remain unchanged. No app/selfcheck by preparer.
