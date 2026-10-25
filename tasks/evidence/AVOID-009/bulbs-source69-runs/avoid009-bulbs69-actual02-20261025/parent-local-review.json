@@ -1,0 +1,16 @@
+{
+  "state": "PARENT_LOCAL_REVIEW_FAILED",
+  "type": "KeyError",
+  "message": "'checked'",
+  "traceback": "Traceback (most recent call last):\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 127, in <module>\n    try:main(pathlib.Path(sys.argv[1]),out)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 98, in main\n    if phase=='destination':evaluation_equal(evaluate(sample['supports'],circle,[0,0]),v['evaluation']);assert v['evaluation']['passed'] and sample['quality']['passed'];stats['destinationPasses']+=1\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 36, in evaluation_equal\n    for k in ['passed','checked','failures']:assert exact(a[k])==exact(b[k]),k\n                                                                       ~^^^\nKeyError: 'checked'\n",
+  "stats": {
+    "records": 3665,
+    "clockStates": 500,
+    "clockSelectedPasses": 1454,
+    "independentPaintSupports": 144200,
+    "neighborPairs": 62720,
+    "recipesComplete": 4
+  },
+  "publicChecks": 0,
+  "parentImages": 0
+}
