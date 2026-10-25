@@ -1,0 +1,11 @@
+--- parent-review-before-cap-fix/controller30.py
++++ source30/controller30.py
+@@ -12,7 +12,7 @@
+ M=module('runtime69',ROOT/'dev/avoidance/layouts_d_bulbs69_runtime.py');L=module('lifecycle73',SOURCE73)
+ def main():
+  p=argparse.ArgumentParser();p.add_argument('--reviewed-gate',required=True);a=p.parse_args();M.need(os.environ.get('CROSSWORD30_EXECUTE_RELEASE')=='PARENT_REVIEWED_CROSSWORD30_SOURCE_AND_PERSISTENCE','execution gate absent');gate=M.read(a.reviewed_gate);g=json.loads(gate)
+- M.need(g['kind']=='CROSSWORD30_CANDIDATE_PILOT_GATE' and g['accepted'] is True and g['archiveMode']=='sites-source-pending','unreviewed gate');M.need(re.fullmatch('[A-Za-z0-9_-]+',g['runId']),'runId');M.need(g['phase'] in ['representative','full'],'reviewed phase');M.need(0<g['archiveMaxBytes']<=306261248,'original273MiB cap');guard=M.RootGuard(g['root']['HEAD'],g['root']['indexSHA256']);M.need(guard.summary()==g['root'],'ROOT baseline')
++ M.need(g['kind']=='CROSSWORD30_CANDIDATE_PILOT_GATE' and g['accepted'] is True and g['archiveMode']=='sites-source-pending','unreviewed gate');M.need(re.fullmatch('[A-Za-z0-9_-]+',g['runId']),'runId');M.need(g['phase'] in ['representative','full'],'reviewed phase');M.need(0<g['archiveMaxBytes']<=286261248,'original273MiB cap');guard=M.RootGuard(g['root']['HEAD'],g['root']['indexSHA256']);M.need(guard.summary()==g['root'],'ROOT baseline')
+  required={str(HERE/n) for n in ['host30.cjs','browser30.js','storage30.cjs','native-factory.js','private-factory.js','policy30.json',*[f'oracle-{n}{p}-factory.js' for n in [60,58,55] for p in ['A','B','C']],'observer-factory.js','checker30.py','controller30.py']}|{str(SOURCE73),str(ROOT/'dev/avoidance/layouts_d_bulbs69_runtime.py'),str(ROOT/'tasks/evidence/AVOID-009/resume-20261025/parent-read-raw69.py')};M.need(required<={p['path'] for p in g['files']},'mandatory pins');M.need(len(g['files'])==len({p['path'] for p in g['files']}),'duplicate pins')
+  def pins():
+   for pin in g['files']+g['runtime']:
