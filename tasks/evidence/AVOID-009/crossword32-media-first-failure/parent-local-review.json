@@ -1,0 +1,19 @@
+{
+  "state": "FAIL_CROSSWORD32_MEDIA_NUMERIC",
+  "Canvas": 0,
+  "imagesViewed": 0,
+  "rawPersistence": "RAM_ONLY",
+  "publicChecks": 0,
+  "formalPerformanceAccepted": false,
+  "conditionalModelOnly": true,
+  "fullPostFXQualified": false,
+  "adapterRegistered": false,
+  "failure": {
+    "name": "AssertionError",
+    "message": "complete/offline",
+    "traceback": "Traceback (most recent call last):\n  File \"/dev/shm/avoid009-crossword26/media32-source/checker32.py\", line 60, in check\n    m=json.loads((folder/'manifest.json').read_bytes());d=json.loads((folder/'details/manifest.json').read_bytes());need(m['complete'] and not m['errors'] and not m['networkAttempts'] and not m['pageErrors'] and d['complete'],'complete/offline');winner=m['winner'];need(winner['id']=='58A-default-left-bottom' and exact(winner['delta'])==exact([-291.6562058007809,141.39171833166608]) and winner['shape']=={'id':'58A','scale':.58,'below':True,'profile':'A'} and winner['circle']=={'id':'default','cx':480,'cy':226.8,'effectiveRadius':110.7},'one fixed accepted winner');cut=m['init']['plan']['cuts'][0];need(cut['lineText']==cut['text']=='風の先へ' and exact(cut['stagger'])==exact(0.03950859557604417),'natural input unmodified');need(m['init']['clocks']['actualCounts']=={'states':250,'selectedPasses':727},'full original clock');need(len(d['records'])<=96,'record cap');tables={k:[] for k in ['matrix','paint','catalog']};current={};hashes={};qualifications=[];lastJ=-1\n                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/dev/shm/avoid009-crossword26/source31/checker30.py\", line 9, in need\n    if not v:raise AssertionError(m)\n             ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: complete/offline\n"
+  },
+  "partialStats": {},
+  "peakRSSBytes": 360038400,
+  "RSSMeaning": "Linux ru_maxrss diagnostic only; no formal performance acceptance"
+}

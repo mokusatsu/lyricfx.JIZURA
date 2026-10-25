@@ -1,0 +1,95 @@
+{
+  "state": "PRIOR_J0_ROOT_CAUSE_DIAGNOSIS",
+  "originalRaw": "/dev/shm/avoid009-crossword26/media32-media01-20261025c/raw",
+  "manifestSHA256": "62042eb23978551294324da923b1e0f8970f4c601de98a0a8fa85cb12f6c534c",
+  "rawPersistence": "RAM_ONLY_NOT_DURABLY_SAVED",
+  "rowsRestored": 4,
+  "rows": [
+    {
+      "kind": "media-frame",
+      "variant": "native",
+      "j": 0.0,
+      "healthy": false,
+      "frameError": {
+        "name": "Error",
+        "message": "MEDIA32_ACTUAL_DRAW_ENV",
+        "stack": "Error: MEDIA32_ACTUAL_DRAW_ENV\n    at need (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:8:96)\n    at renderer.drawCut (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:38:3)\n    at Renderer.frame (<anonymous>:8864:78)\n    at J.Renderer.frame (<anonymous>:47157:197)\n    at frame32 (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:52:15)\n    at Object.qualify32 [as qualify] (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:59:16)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:30)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      },
+      "passes": 0,
+      "paintCount": 0,
+      "callCount": 0,
+      "qualityPassed": null,
+      "geometryPassed": null,
+      "rgba": {
+        "bytes": 2073600.0,
+        "sha256": "fafabfb6dee90e27fe0171a880c706991a1d795f44558ce033a3941ea73d4b9b"
+      }
+    },
+    {
+      "kind": "media-frame",
+      "variant": "destination",
+      "j": 0.0,
+      "healthy": false,
+      "frameError": {
+        "name": "Error",
+        "message": "MEDIA32_ACTUAL_DRAW_ENV",
+        "stack": "Error: MEDIA32_ACTUAL_DRAW_ENV\n    at need (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:8:96)\n    at renderer.drawCut (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:38:3)\n    at Renderer.frame (<anonymous>:8864:78)\n    at J.Renderer.frame (<anonymous>:47157:197)\n    at frame32 (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:52:15)\n    at Object.qualify32 [as qualify] (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:59:54)\n    at async <anonymous>:337:30"
+      },
+      "passes": 0,
+      "paintCount": 0,
+      "callCount": 0,
+      "qualityPassed": true,
+      "geometryPassed": true,
+      "rgba": {
+        "bytes": 2073600.0,
+        "sha256": "fafabfb6dee90e27fe0171a880c706991a1d795f44558ce033a3941ea73d4b9b"
+      }
+    },
+    {
+      "kind": "media-frame",
+      "variant": "oracle",
+      "j": 0.0,
+      "healthy": false,
+      "frameError": {
+        "name": "Error",
+        "message": "MEDIA32_ACTUAL_DRAW_ENV",
+        "stack": "Error: MEDIA32_ACTUAL_DRAW_ENV\n    at need (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:8:96)\n    at renderer.drawCut (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:38:3)\n    at Renderer.frame (<anonymous>:8864:78)\n    at J.Renderer.frame (<anonymous>:47157:197)\n    at frame32 (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:52:15)\n    at Object.qualify32 [as qualify] (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:59:97)\n    at async <anonymous>:337:30"
+      },
+      "passes": 0,
+      "paintCount": 0,
+      "callCount": 0,
+      "qualityPassed": true,
+      "geometryPassed": true,
+      "rgba": {
+        "bytes": 2073600.0,
+        "sha256": "fafabfb6dee90e27fe0171a880c706991a1d795f44558ce033a3941ea73d4b9b"
+      }
+    },
+    {
+      "kind": "media-qualified",
+      "j": 0.0,
+      "time": 0.0,
+      "nativeSHA256": "fafabfb6dee90e27fe0171a880c706991a1d795f44558ce033a3941ea73d4b9b",
+      "destinationSHA256": "fafabfb6dee90e27fe0171a880c706991a1d795f44558ce033a3941ea73d4b9b",
+      "oracleSHA256": "fafabfb6dee90e27fe0171a880c706991a1d795f44558ce033a3941ea73d4b9b",
+      "fullRGBABytesCompared": 2073600.0,
+      "rgbaEqual": true,
+      "allNumericEqual": false,
+      "healthy": false,
+      "candidateQualityPassed": true,
+      "strictCircleStagePassed": true
+    }
+  ],
+  "rootCause": "stock activeCuts applies J.lyricRenderCut; displayEnd present produces a distinct canonical cut object, invalidating env.cut===originalcut identity",
+  "failedHardConditions": [
+    "healthy",
+    "allNumericEqual"
+  ],
+  "notCandidateQualification": [
+    "empty-pass every true for quality/geometry is vacuous and blocked by healthy false",
+    "RGBA equal for empty failed frames is not source fidelity acceptance"
+  ],
+  "Canvas": 0,
+  "browser": 0,
+  "encoder": 0
+}
