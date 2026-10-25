@@ -1,0 +1,40 @@
+{
+  "archiveCommit": "da9fd1978d4f9adabeef2f033c284c5e07844b98",
+  "records": 668,
+  "phase": "failed-partial-raw-retained",
+  "failedRequests": [
+    {
+      "case": "candidate-default",
+      "file": "failed-request-0000.encoded.json.gz",
+      "bytes": 190486,
+      "rawBytes": 2640651,
+      "sha256": "5a080c29dad19ca83f6230a1d8d1c4c5344c6c29c7ba8155a886321f77cafd93",
+      "completeIncomingRequest": true,
+      "encoding": "literal incoming K.encode JSON request; no failed codec projection omitted",
+      "reason": "RAW_SERIALIZED_BUDGET"
+    }
+  ],
+  "cases": [
+    {
+      "case": "baseline-original",
+      "frames": 250
+    }
+  ],
+  "errors": [
+    {
+      "phase": "raw-storage",
+      "name": "AssertionError",
+      "message": "RAW_SERIALIZED_BUDGET",
+      "case": "candidate-default"
+    },
+    {
+      "phase": "execution",
+      "case": "candidate-default",
+      "name": "Error",
+      "message": "page.evaluate: Error: BULBS69_RAW_STORAGE_FAILURE\n    at need (<anonymous>:3:32)\n    at store (<anonymous>:6:208)\n    at window.historicalControl69 (<anonymous>:33:2)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:4)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+      "stack": "page.evaluate: Error: BULBS69_RAW_STORAGE_FAILURE\n    at need (<anonymous>:3:32)\n    at store (<anonymous>:6:208)\n    at window.historicalControl69 (<anonymous>:33:2)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:4)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs69-runner.cjs:32:65"
+    }
+  ],
+  "complete": false,
+  "serializedBytes": 269986921
+}

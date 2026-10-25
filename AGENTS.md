@@ -1,3 +1,7 @@
+2026-10-25最新: 電球69のローカル全時刻試行actual01は保存量上限で停止（668records、新配置proof前）。全生データ・source839filesはGit archive `da9fd1978d4f9adabeef2f033c284c5e07844b98`へpush済み。担当sol6.1/mediumがrunnerの損失なし重複圧縮のみ修正、上限/合格条件は据置。新規視覚確認候補0/約6件まで続行。公開結果確認/親画像0、009全体未完。詳細はbatch progress/checkpointとresume-20261025記録。
+
+CURRENT STOP CONDITION: 最新の利用者指示は実装・自動試験・親レビュー済みの異なる演出の視覚確認候補を約6件ためるまで続行。新規ready0、既承認tile/bulbs-fixed/magnetsは加算しない。人間未回答は承認せず、009内の非依存次候補を継続する。旧期限/停止記録は履歴。
+
 CURRENT 2026-10-25: 利用者の「知見整理→残り順次適用」を実行中。playbookと電球4構成/最大32配置の限定設計を親受入、feature担当avoid009_strategy_resume01(sol6.1/medium)がsource準備中。実装/試験はまだ未受入。旧source67 rawはアクセス不能、公開結果確認/親画像動画0、PYC7/65保持。
 
 CURRENT_FEATURE 2026-10-25: latest user request resumes AVOID-009: organize proven avoidance practices then apply sequentially. Sole feature owner avoid009_strategy_resume01 (gpt-6.1-sol/medium) prepares playbook + bulbs design for parent source/raw review; product source changes wait for design acceptance. Resource owner scope is workcapacity16 only. Fixed magnets/tiles/bulbs approvals remain limited; public result checks permanently prohibited.
