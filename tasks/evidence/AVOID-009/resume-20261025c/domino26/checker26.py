@@ -50,6 +50,22 @@ def clocks(c):
   for own,(name,lag) in zip(s['passes'],[('B',1.6/24),('A',.8/24),('main',0)]):
    tp=max(0.,i*h-lag);need(own['pass']==name and exact(own['tp'])==exact(tp) and exact(own['lt'])==exact(tp) and exact(own['ltb'])==exact(tp+lag) and own['step']==math.floor(tp/(1/24)+1e-6) and own['active']==(0<=tp<4),'source selector clock');passes+=int(own['active'])
  need(previous==bits(last) and int(c['domainNumberCount'])==previous+1 and passes==727,'complete domain/pass count')
+def rowcheck(frame,cut):
+ if frame['oracle']:return
+ rows=frame['rows'];glyphs=frame['glyphs'];need(len(rows)==len(frame['passes'])*(1 if cut['text']=='風の先へ' else 2),'row count')
+ visible=[]
+ for p in frame['passes']:
+  rs=[r for r in rows if r['pass']==p['pass']];need([r['r'] for r in rs]==list(range(len(rs))),'row order')
+  need(''.join(''.join(r['rowsD'][i]) for i,r in enumerate(rs))==cut['text'],'row membership text')
+  for ri,r in enumerate(rs):
+   gi=sum(len(v) for v in r['rowsD'][:ri]);dT=max(.04,min(.09,cut['dur']*.3/len(cut['text'])));need(r['gi']==gi and exact(r['dT'])==exact(dT) and exact(r['T0'])==exact(.1),'gi/dT source')
+   need(all(exact(r[k])==exact(p[k]) for k in ['lt','ltb','step','pIn','pOut']),'row ownclock')
+   recipe=frame['recipe'];dy=0 if recipe['kind']=='native' else recipe['deltas'][0 if recipe['kind']=='joint-translation' else ri][1];need(exact(r['delta'])==exact([0,dy]),'vertical recipe')
+   for j,text in enumerate(r['rowsD'][ri]):
+    ti=.1+(gi+j)*dT;clamp=lambda x:max(0.,min(1.,x));fade=clamp((p['pOut']-.7)/.3);vis=clamp((p['lt']-ti+.08)/.1)*(1-fade*fade*fade)
+    if vis>0:visible.append((p,text,max(0.,ti)/max(.005,cut.get('stagger') or .04)))
+ need(len(glyphs)==len(visible),'all visible source glyph items')
+ for g,(p,text,mi) in zip(glyphs,visible):need(g['item']['text']==text and g['item']['font']=='dela' and exact(g['item']['mi'])==exact(mi) and all(exact(g[k])==exact(p[k]) for k in ['pass','lt','ltb','step','pIn','pOut']),'glyph text/mi/clock')
 def projection(f):return {k:f[k] for k in ['n','time','passes','glyphs']}|{'records':[{k:v for k,v in p.items() if k not in ['owner','role']} for p in f['records']]}
 def pair(a,b,c):
  need(len(a)==len(b),'support pair count');fails=[]
@@ -72,12 +88,15 @@ def check(folder,output):
    elif phase.endswith('-frame'):
     f=v['frame'];n=int(f['n']);expected=init[fixture]['clocks']['states'][n];need(exact(f['time'])==exact(expected['firstTime']) and len(f['passes'])==sum(p['active'] for p in expected['passes']),'actual passes');
     for a,p in zip(f['passes'],[p for p in expected['passes'] if p['active']]):need(all(exact(a[k])==exact(p[k]) for k in ['pass','tp','lt','ltb','step']),'actual clock')
-    need(len(f['records'])==len(f['paintPrimitives'])<=2048,'paint counts')
+    need(len(f['records'])==len(f['paintPrimitives'])<=2048,'paint counts');rowcheck(f,init[fixture]['plan']['cuts'][0])
     if not f['oracle']:
      need(len(f['supports'])==len(f['records']),'all positive paints supported')
      for i,(p,primitive,s) in enumerate(zip(f['records'],f['paintPrimitives'],f['supports'])):need(exact(support(p,primitive))==exact(s['bounds']) and s['ordinal']==i and s['role']==p['role']=='primary' and s['owner']==p['owner'],'independent support bounds');stats['supports']+=1
     if phase=='native-frame':need(n==len(native[fixture]),'native order');native[fixture].append(f)
     else:
+     if not f['oracle']:
+      strip=lambda rs:[{k:v for k,v in r.items() if k!='delta'} for r in rs]
+      need(exact(strip(f['rows']))==exact(strip(native[fixture][n]['rows'])),'unchanged row pitch/lean/gi/source model')
      key=(fixture,v['region'],f['recipe']['id'],n);(oracle if f['oracle'] else destination)[key]=f
      if key in oracle and key in destination:need(exact(projection(oracle[key]))==exact(projection(destination[key])),'original closure equality');stats['oraclePairs']+=1
    elif phase=='candidate-plan':plans[(fixture,v['region'])]=v
