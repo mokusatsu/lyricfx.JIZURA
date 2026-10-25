@@ -564,3 +564,5 @@ LATEST08JST_REVIEW_READY 2026-10-24T22:59UTC: work309a7c16b82e130ea92c966983576e
 ## 2026-10-25 実装再開・知見整理
 
 利用者の最新再開依頼に従い、[実装手引き](avoidance-playbook.md)と[電球次段階設計](reviews/AVOID-009-bulbs-next-design-20261025.md)を追加。今回はsource/契約/受入記録の読取りと文書同期のみ。src/build/ブラウザ実行・新しい幾何合格はない。開始HEAD d08cd4d6be162b8ba9e93764a03b53c3551821e5/work、既存dirty/PYC7/保護65等は親の開始記録どおり保持。文書のGit保存は親が担当し、workspace-onlyを継続の必須入力にしない。次は親の設計レビュー後、同実装担当が電球の有限候補adapterを実装し、看板以降へ順次進める。
+
+2026-10-25 source68限定受入：一枚看板recipe入口・finite候補・native/recipe metadata分離を親sourceレビュー。親がpure31件、基準4d837への逆変換source監査、独立Fraction1003件を実行し一致。原文snapshotと全幾何rawをevidence/AVOID-009/resume-20261025へ保存。アプリCanvas/JAEN/adapter/正式性能/保存本体の合格ではない。source69のfresh native bind・全時計描画/品質・destination再認定・frame preflight接続を同担当が準備中。公開結果確認/親画像動画0。

@@ -1,0 +1,78 @@
+{
+  "state": "PARENT_SOURCE68_PRIMITIVE_AND_SEAM_LIMITED_ACCEPTANCE",
+  "baselineHEAD": "4d8378a81e4e8ed881ca1af95972c4fcf9cc2790",
+  "implementationAgent": "avoid009_strategy_resume01",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "reviewedSource": [
+    {
+      "path": "src/09a_placement.js",
+      "sha256": "edd90b3d48d30d223738b14325fe60ef15816ea87f7099796bb5aad440fe4ed7"
+    },
+    {
+      "path": "src/11p_layoutsD.js",
+      "sha256": "c923950eddb1fd4c02b84f1d42ef986c41af4ad3c234f60982d3aee1fc5a4b50"
+    },
+    {
+      "path": "src/11p_layoutsEe_bulbs_geometry68.js",
+      "sha256": "e477d745e471a1c70507e7c8df379cb9024ac786b41f306d46f0a12ed8d2ee2a"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs68-source-test.cjs",
+      "sha256": "e468acef4c706feec89ed7ed407def69cdbd61f1e0472ff79ddc8acc963b0c4d"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs68-source-audit.py",
+      "sha256": "0c0cc193dd07fad765557e39329bb2e744f70bd1b9c39a3d93fac49d1581ff89"
+    }
+  ],
+  "parentCorrectionsResolved": [
+    "culled native reference does not require absent radius/subtitle",
+    "own-clock subtitle size instead of held constant",
+    "recursive numeric-preserving reference clone",
+    "recipe-specific ring resampling metadata",
+    "zero position for every recipe and truthful not-evaluated results",
+    "exception-safe binding cleanup"
+  ],
+  "parentExecutedCommands": [
+    {
+      "argv": [
+        "node",
+        "dev/avoidance/layouts-d-bulbs68-source-test.cjs"
+      ],
+      "exitCode": 0,
+      "checks": 31,
+      "scope": "pure synthetic geometry and source seam; no browser/font qualification"
+    },
+    {
+      "argv": [
+        "python",
+        "dev/avoidance/layouts-d-bulbs68-source-audit.py",
+        "--baseline-ref",
+        "4d8378a81e4e8ed881ca1af95972c4fcf9cc2790"
+      ],
+      "exitCode": 0,
+      "scope": "exact inverse full source to baseline outside declared changes"
+    },
+    {
+      "argv": [
+        "python",
+        "tasks/evidence/AVOID-009/resume-20261025/parent-geometry-review68.py"
+      ],
+      "exitCode": 0,
+      "cases": 1003,
+      "scope": "independent exact Fraction comparison against JS captured-AABB model"
+    }
+  ],
+  "adapterRegistered": false,
+  "freshContextBindingImplemented": false,
+  "browserExecutions": 0,
+  "JAENBuilt": false,
+  "fullAdapterAccepted": false,
+  "humanApprovalExpanded": false,
+  "formalPerformancePassed": false,
+  "savingBodyPassed": false,
+  "publicChecks": 0,
+  "parentImages": 0,
+  "next": "source69 fresh native binding, full own-clock paint/quality proof, actual destination recapture, preflight and adapter; source/harness review required before browser execution"
+}
