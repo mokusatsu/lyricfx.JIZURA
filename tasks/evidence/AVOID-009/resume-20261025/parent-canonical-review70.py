@@ -6,6 +6,10 @@ PROGRESS={}
 def review(folder,out):
  P=runpy.run_path(str(E/'parent-local-review69.py'));exact=P['exact'];restore=P['restore'];U=P['undefined'];m=json.loads((folder/'manifest.json').read_bytes());assert m['mode']=='canonical-JAEN-native70'
  def eq(a,b):assert exact(a)==exact(b)
+ def logical_catalog(c):
+  # Native live CTM and measurement-context CTM differ after setTransform.
+  # Actual original roots, replay commands and RGBA remain exact checks below.
+  return {**{k:v for k,v in c.items() if k not in ['root','sourceCalls']},'sourceCalls':[{k:v for k,v in call.items() if k not in ['matrixBeforeCall','matrixAfterCall']} for call in c['sourceCalls']]}
  def paint(p):
   s=p['state'];keys=['alpha','blend','filter','shadowColor','shadowBlur','shadowOffsetX','shadowOffsetY'];keys+=['strokeStyle','lineWidth','lineCap','lineJoin','miterLimit','dash','dashOffset'] if p['kind'].startswith('stroke') else ['fillStyle']
   if p['kind'].endswith('Text'):keys+=['font','textAlign','textBaseline','direction']
@@ -35,7 +39,7 @@ def review(folder,out):
    a,b=v['pair'];eq(a['tuple'],b['tuple']);eq(a['tuple'],v['tuple']);assert a['sourceUnchanged'] and b['sourceUnchanged'];native(a['native'],b['native']);native(a['directMoved'],b['directMoved']);t=b['transport'];assert t['destinationUnpainted'] and t['rootUnchanged'] and (t['error'] is None or t['error'] is U)
    st=t['sameTurn'];assert st['recordToBothReplaysWithoutAwait'] and st['helperKnownAfter'] and st['fontRevisionUnchanged'] and st['fontTableUnchanged'];prog=t['program'];assert prog['measurementSupported'] and prog['nativeBulbsTransport51']['effectiveFXIdentityPreserved']
    for x in [prog['nativeBulbsTransport51']['inputEffectiveFX'],prog['nativeBulbsTransport51']['recordedEffectiveFX'],t['catalog']['effectiveFX'],a['native']['effectiveFX'],b['native']['effectiveFX']]:eq(x,t['effectiveFX'])
-   eq(prog['nativeBulbsTransport51']['actualRoot'],b['native']['root']);eq(t['catalog'].get('bb'),b['native']['bb']);eq(t['catalog'],b['native']['catalog']);assert t['zeroSHA256']==a['native']['pixelSHA256'] and t['movedSHA256']==a['directMoved']['pixelSHA256'];eq([paint(p) for p in t['zeroPaint']],[paint(p) for p in a['native']['paint']]);eq([paint(p) for p in t['movedPaint']],[paint(p) for p in a['directMoved']['paint']])
+   eq(prog['nativeBulbsTransport51']['actualRoot'],b['native']['root']);eq(t['catalog'].get('bb'),b['native']['bb']);eq(logical_catalog(t['catalog']),logical_catalog(b['native']['catalog']));assert t['zeroSHA256']==a['native']['pixelSHA256'] and t['movedSHA256']==a['directMoved']['pixelSHA256'];eq([paint(p) for p in t['zeroPaint']],[paint(p) for p in a['native']['paint']]);eq([paint(p) for p in t['movedPaint']],[paint(p) for p in a['directMoved']['paint']])
    for e in prog['events']:assert e['role']=='primary' and e['owner'].startswith('bulbs.sign.') and exact(e['nativeTransform']['root'])==exact(b['native']['root'])
    key=(v['lang'],v['spec'],v['tuple']['id']);assert key not in seen['tuple'];seen['tuple'].add(key);counts['tuple']+=1;counts['transportPaints']+=len(t['zeroPaint'])
   if phase=='whole':

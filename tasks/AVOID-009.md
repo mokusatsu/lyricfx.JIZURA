@@ -1,3 +1,5 @@
+LATEST Canonical70 actual01は新追加catalog比較が実Canvas CTMと再設定後CTMを混同して最初のtupleで停止。全209files32,420,035Bを70698df94faff5501555c8e5228bced4484859b8へpush済み、ROOTHTML未変更。source03はcatalogのroot/2call行列だけ意味が異なるためlogical比較から除外、元oracle actualRoot/events/全paint/画素exactは不変。担当sol6.1medium修正、親diff/source11再実行PASS、独立親projection対応。合格条件/対象15条件日英を変更せずactual02へ。新候補0、公開/取得確認0。
+
 LATEST actual05限定受入: 148依存一致、5atomic拒否/明示size40非safe、上位・69cachehit各2/上位隔離2/cache2/3円/redecode1/実12frame独立oracleを親source/raw照合PASS。29records2,773,361JSONB、全214files32,730,720B push2eeacdb8f925abd8e4c252fe05876223c9e9c208。既受入actual03 default証拠を条件固定で再利用、旧table直接数値照合/旧全paint再保存とは主張しない。次は既存15nativefixture日英/基本6の最小統合検証、必要MP4、次の看板。ready0/約6継続、全009/正式性能/保存本体は未完。
 
 LATEST actual04: 148依存・5atomic拒否・明示size40非safeまで通過、上位C/Dcacheが先行するため69hit計数をそこで要求したtestが停止。全194files32,060,275B push9a21c90a2d445dcaa3a9216b41a9f5c78aecda24。実装/共有cache変更なし、testで上位hit→上位だけclear→69stats全値不変→69hitへ分離、pure10/25親受入。次actual05は同focused範囲のみ。
