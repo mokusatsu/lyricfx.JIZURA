@@ -1,0 +1,11 @@
+--- source28/host28.cjs
++++ source29/host28.cjs
+@@ -29,7 +29,7 @@
+    const p=run.plan;p.duration=4.150001;p.fps=60;p.fx.koma=0;p.lyricAvoidanceIndex.regions[0].end=p.duration;
+    if(p.cuts[0].lineText!=='風の先へ')throw Error('NATURAL_LINETEXT_CHANGED');
+    // Natural sourcepool input is retained in both native and private/oracle paths.
+-   const create=Function('return '+harness)();window.crossword28Local={run,driver:create({J,renderer:run.renderer,plan:p,project:run.project,sources})};
++   const create=Function('return ('+harness+'\n)')();window.crossword28Local={run,driver:create({J,renderer:run.renderer,plan:p,project:run.project,sources})};
+    const clock=J.placement.tilesProof48.clock(p,p.cuts[0]),ns=[0,18,24,90,231,249],recordsExpected=4*clock.states.filter(s=>ns.includes(s.n)).reduce((n,s)=>n+s.passes.filter(p=>p.active).length,0);
+    return{plan:p,project:run.project,naturalLineText:p.cuts[0].lineText,clocks:clock.actualCounts,recordsExpected,fontAudit:window.layoutsBFixtureFontAudit};
+   },{fonts,fontInputs,sources,harness});
