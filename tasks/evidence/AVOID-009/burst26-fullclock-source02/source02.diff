@@ -1,0 +1,79 @@
+--- fullclock/browser26.js
++++ fullclock-source02/browser26.js
+@@ -18,7 +18,7 @@
+ };
+ function stable(){const l=window.burst26Local;need(l.source===JSON.stringify(l.plan)&&l.native===J.LAYOUTS.burst.render&&l.original===J.burst26Original&&l.oracle===J.burst26Oracle&&l.fontRevision===J.metrics.revision&&l.fontFaces===JSON.stringify([...document.fonts].map(f=>[f.family,f.style,f.weight,f.status]))&&l.fontRegistry===JSON.stringify(J.FONTS),'BURST26_SOURCE_FONT_DRIFT');const h=[J.mainDraw,J.measure,J.fitSize,J.layoutText,J.fontCSS,J.stepDur,J.komaOf,J.lyricCutsAt,J.lyricRenderCut,J.CAMERA.push.get,J.r,J.rs,J.rr,J.Renderer.prototype.frame,J.Renderer.prototype.makeEnv,J.Renderer.prototype.drawCut];need(h.every((v,i)=>v===l.helpers[i]),'BURST26_HELPER_DRIFT');return l;}
+ function support(record,ordinal,l){
+- const p=l.primitives.clean(record);need(p.role==='primary'&&p.owner==='burst.native-plate'&&p.state.alpha>0&&typeof p.state.fillStyle==='string'&&typeof p.state.strokeStyle==='string'&&p.state.dash.length===0&&p.state.blend==='source-over','BURST26_PAINT_SCOPE');
++ const p=l.primitives.clean(record);need(p.role==='primary'&&p.owner==='burst.native-plate'&&p.state.alpha>0&&typeof p.state[p.kind.startsWith('stroke')?'strokeStyle':'fillStyle']==='string'&&p.state.dash.length===0&&p.state.blend==='source-over','BURST26_PAINT_SCOPE');
+  // Narrow normalization only: source shock-ring stroke and source two-point speed ray.
+  // Both remain primary. Ring uses a half-line-width outer circle; ray reuses T48.support unchanged.
+  const arcs=p.path.filter(c=>c.key==='arc');let normalization='none',ringStroke=false;
+@@ -28,6 +28,11 @@
+  if(ringStroke){const F=l.K.F,add=(a,b)=>{const e=Math.min(a.e,b.e);return{n:(a.n<<BigInt(a.e-e))+(b.n<<BigInt(b.e-e)),e};},mul=(a,b)=>({n:a.n*b.n,e:a.e+b.e}),abs=a=>({n:a.n<0n?-a.n:a.n,e:a.e}),neg=a=>({n:-a.n,e:a.e});const pad=mul(F(record.state.lineWidth),F(.5)),px=mul(add(abs(F(p.matrix[0])),abs(F(p.matrix[2]))),pad),py=mul(add(abs(F(p.matrix[1])),abs(F(p.matrix[3]))),pad);atom.bounds={x0:add(atom.bounds.x0,neg(px)),x1:add(atom.bounds.x1,px),y0:add(atom.bounds.y0,neg(py)),y1:add(atom.bounds.y1,py)};}
+  const bounds=Object.fromEntries(Object.entries(atom.bounds).map(([k,v])=>[k,l.K.directed(v,k.endsWith('1'))]));
+  return{ordinal,owner:record.owner,role:record.role,kind:record.kind,bounds,normalization,foundation:atom.foundation};
++}
++function collectSupports(records,l){
++ const supports=[];let supportError=null;
++ for(let i=0;i<records.length;i++){if(!(records[i].state.alpha>0))continue;try{supports.push(support(records[i],i,l));}catch(e){supportError={ordinal:i,name:String(e.name||'Error'),code:e.code==null?null:String(e.code),message:String(e.message||e),stack:e.stack==null?null:String(e.stack)};break;}}
++ return{supports,supportPrefix:supportError?supports:null,supportError};
+ }
+ window.frameBurst26=async({n,mode,recipe=null,delta=[0,0]})=>{
+  const l=stable(),s=l.clocks.states.find(s=>s.n===n);need(s&&['native','candidate','oracle'].includes(mode),'BURST26_STATE_MODE');
+@@ -48,9 +53,9 @@
+  stable();const expected=s.passes.filter(p=>p.active);need(eq(passes.map(p=>p.clock.pass),expected.map(p=>p.pass)),'BURST26_ACTUAL_PASS_SET');
+  for(let i=0;i<expected.length;i++){const e=expected[i],a=passes[i];for(const k of ['lt','ltb','step'])need(Object.is(a.clock[k],e[k]),'BURST26_ACTUAL_CLOCK:'+k);need(Object.is(a.clock.t,e.tp)&&Object.is(a.clock.realTime,s.firstTime)&&eq(a.root,a.finalRoot),'BURST26_ACTUAL_CLOCK_ROOT');}
+  const records=observer.records;need(records.length<=2048&&records.every(p=>p.role==='primary'&&p.owner==='burst.native-plate'),'BURST26_PRIMARY_ALL');
+- const supports=records.map((p,i)=>p.state.alpha>0?support(p,i,l):null).filter(Boolean);
++ const {supports,supportPrefix,supportError}=collectSupports(records,l);
+  for(const g of glyphs){need(g.item.text===(shape?shape.text:'風の先へ')&&g.item.font==='dela','BURST26_FULLTEXT');const p=passes.find(p=>p.clock.pass===g.pass);for(const k of ['lt','ltb','step','pIn','pOut'])need(Object.is(p.clock[k],g[k]),'BURST26_GLYPH_CLOCK');}
+- const result={n,firstTime:s.firstTime,mode,recipe:recipe?.id??null,delta,passes,glyphs,records,supports,positivePaintCount:supports.length,rgbaSHA256:await l.primitives.hash(ctx),sourceUnchanged:true,adapterRegistered:false};c.width=1;return result;
++ const result={n,firstTime:s.firstTime,mode,recipe:recipe?.id??null,delta,passes,glyphs,records,supports,supportPrefix,supportError,positivePaintCount:records.filter(p=>p.state.alpha>0).length,rgbaSHA256:await l.primitives.hash(ctx),sourceUnchanged:true,adapterRegistered:false};c.width=1;return result;
+ };
+ window.evaluateBurst26=({supports,circle})=>{const l=stable();return l.B.evaluate(supports,circle,l.G,{sourcePositivePaintCount:supports.length});};
+ window.candidatesBurst26=({recipe,supports,circle})=>{const l=stable();return l.B.candidates(recipe,supports,circle,l.G);};
+--- fullclock/runner26.cjs
++++ fullclock-source02/runner26.cjs
+@@ -5,6 +5,7 @@
+ const old=ROOT+'/tasks/evidence/AVOID-009/bulbs-focused59/source59/runner',K=require(old+'/kernel59.cjs'),C=require(old+'/catalog59.cjs');
+ function codec26(){const source=fs.readFileSync(ROOT+'/dev/avoidance/layouts-d-bulbs69-runner.cjs','utf8'),a=source.indexOf('const CODEC69='),b=source.indexOf('function referenceReuse69(',a);assert(a>0&&b>a);const span=source.slice(a,b);return{...new Function('K','C','zlib','assert','sha',span+';return {revision:CODEC69,create:createCodec69};')(K,C,zlib,assert,sha),sourceSpanSHA256:sha(span)};}
+ function projection(f){return{...f,mode:null};}
++function acceptSample(frame,store){if(frame.supportError){store({phase:'support-error-frame',frame});assert.fail('BURST26_SUPPORT_ERROR:'+frame.supportError.message);}return frame;}
+ async function main(){
+  assert.equal(process.env.BURST26_RENDER_RELEASE,'PARENT_REVIEWED_BURST26_FULLCLOCK');
+  const argv=process.argv.slice(2),arg=k=>{assert(argv.includes(k));return argv[argv.indexOf(k)+1];},out=arg('--output-dir'),binary=arg('--browser-path');assert(out.startsWith('/dev/shm/')&&!fs.existsSync(out));fs.mkdirSync(out,{recursive:true});
+@@ -30,7 +31,7 @@
+   browser=await require(ROOT+'/dev/browser.cjs').launch({executablePath:binary});const page=await browser.newPage();page.on('pageerror',e=>{m.errors.push({case:activeCase,pageError:e.message});save();});await page.route('**/*',r=>r.request().url().startsWith(origin+'/')?r.continue():r.abort());await page.goto(origin+'/overlay.html');await page.waitForFunction(()=>window.J?.ui?.plan);
+   for(const name of ['layouts-b-fixture.js','layouts-d-bulbs69-oracle-primitives.js'])await page.addScriptTag({content:fs.readFileSync(ROOT+'/dev/avoidance/'+name,'utf8')});await page.addScriptTag({content:pure});reset('native');const init=await page.evaluate(input=>initBurst26(input),{fonts});store({phase:'init',init});
+   assert.equal(init.clocks.actualCounts.states,250);assert.equal(init.clocks.actualCounts.selectedPasses,727);const states=init.clocks.states,native=new Map();
+-  const sample=async(n,mode,recipe=null,delta=[0,0])=>await page.evaluate(input=>frameBurst26(input),{n,mode,recipe,delta});
++  const sample=async(n,mode,recipe=null,delta=[0,0])=>acceptSample(await page.evaluate(input=>frameBurst26(input),{n,mode,recipe,delta}),store);
+   const evaluate=async(supports,circle)=>await page.evaluate(input=>evaluateBurst26(input),{supports,circle});
+   for(const s of states){const frame=await sample(s.n,'native');store({phase:'native-frame',frame});native.set(s.n,frame);m.nativeFrames++;m.nativePasses+=frame.passes.length;}
+   save();const circles=[{id:'default',cx:480,cy:540*.42,r:108,margin:2.7},{id:'upper',cx:480,cy:540*.2,r:108,margin:2.7}],seedN=90;
+@@ -61,4 +62,4 @@
+  }catch(e){m.errors.push({case:activeCase,name:e.name,message:e.message,stack:e.stack});process.exitCode=1;}
+  finally{if(browser)await browser.close();if(server?.listening)await new Promise(ok=>server.close(ok));save();console.log(JSON.stringify({complete:m.complete,records:m.records.length,nativeFrames:m.nativeFrames,nativePasses:m.nativePasses,outcomes:m.outcomes.map(o=>({circle:o.circle.id,status:o.status,winner:o.winner})),errors:m.errors,output:out}));}
+ }
+-module.exports={codec26};if(require.main===module)main();
++module.exports={codec26,acceptSample};if(require.main===module)main();
+--- fullclock/checker26.py
++++ fullclock-source02/checker26.py
+@@ -30,7 +30,7 @@
+  wx=iadd(iadd(imul([M[0]]*2,X),imul([M[2]]*2,Y)),[M[4]]*2);wy=iadd(iadd(imul([M[1]]*2,X),imul([M[3]]*2,Y)),[M[5]]*2)
+  return dict(x0=math.nextafter(wx[0]-2,-math.inf),x1=math.nextafter(wx[1]+2,math.inf),y0=math.nextafter(wy[0]-2,-math.inf),y1=math.nextafter(wy[1]+2,math.inf))
+ def bounds(p):
+- st=p['state'];need(st['alpha']>0 and st['filter']=='none' and st['dash']==[] and st['blend']=='source-over' and not st['shadowBlur'] and not st['shadowOffsetX'] and not st['shadowOffsetY'],'paint effects');need(p['role']=='primary' and p['owner']=='burst.native-plate','primary');kind=p['kind'];M=list(map(F,p['matrix']));ring=False;pad=F(0)
++ st=p['state'];need(st['alpha']>0 and st['filter']=='none' and st['dash']==[] and st['blend']=='source-over' and not st['shadowBlur'] and not st['shadowOffsetX'] and not st['shadowOffsetY'],'paint effects');need(p['role']=='primary' and p['owner']=='burst.native-plate','primary');kind=p['kind'];need(isinstance(st['strokeStyle' if kind.startswith('stroke') else 'fillStyle'],str),'active paint style');M=list(map(F,p['matrix']));ring=False;pad=F(0)
+  if kind=='stroke' and len(p['path'])==2 and all(c['key'] in ['moveTo','lineTo'] for c in p['path']):return ray_bounds(p),'none-existing-T48-two-point-line-support'
+  if kind.endswith('Text'):
+   need(st['textBaseline']=='middle' and st['textAlign']=='center','text alignment');x,y=map(F,p['args'][1:3]);m=p['metrics'];tp=F(1)+(F(st['lineWidth'])*F(float(st['miterLimit'])/2) if kind=='strokeText' else F(0));x0=x-F(m['actualBoundingBoxLeft'])-tp;x1=x+F(m['actualBoundingBoxRight'])+tp;y0=y-F(m['actualBoundingBoxAscent'])-tp;y1=y+F(m['actualBoundingBoxDescent'])+tp;local=[(x0,y0),(x1,y0),(x1,y1),(x0,y1)]
+@@ -68,6 +68,7 @@
+  need(previous==lastbits and count==lastbits+1 and passes==727 and c['actualCounts']=={'states':250,'selectedPasses':727},'clock total coverage')
+  for b,n in c['queryBitsAndNs']:need(N(number(b))==n,'clock binary search query')
+ def frame_check(f,init,summary,mode=None):
++ need(f['supportError'] is None and f['supportPrefix'] is None,'support computation complete')
+  n=int(f['n']);state=init['clocks']['states'][n];need(exact(f['firstTime'],state['firstTime']) and f['sourceUnchanged'] and not f['adapterRegistered'],'frame context');expected=[p for p in state['passes'] if p['active']];need(len(expected)==len(f['passes']),'pass count');need(len(f['rgbaSHA256'])==64,'RGBA digest');need(len(f['records'])<=2048,'paint budget')
+  for e,p in zip(expected,f['passes']):
+   a=p['clock'];need(a['pass']==e['pass'] and exact(a['realTime'],state['firstTime']) and exact(a['t'],e['tp']),'actual clock');need(exact(p['root'],p['finalRoot']),'root restored')

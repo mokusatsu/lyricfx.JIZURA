@@ -1,0 +1,15 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),{prepare}=require('./source26.cjs'),create=require('./private26.cjs');
+const source=fs.readFileSync('/workspace/lyricfx.JIZURA/src/11p_layoutsD.js','utf8'),p=prepare(source),binding=create();
+assert(p.original.includes(p.native.trim().slice(0,-3).replace("reg('burst', {",'J.burst26Original = ({')));
+const E={outBack:x=>x,outCubic:x=>x,inCubic:x=>x},J={E,clamp:x=>Math.max(0,Math.min(1,x)),fitSize:()=>80,measure:({text,size})=>({w:text.includes('\n')?size*2:size*4,h:text.includes('\n')?size*2.1:size}),DEG:Math.PI/180,TAU:2*Math.PI,r:()=>.5,rs:()=>0,rr:(a,b)=>(a+b)/2,contrast:()=>3,mainDraw:(env,item)=>{env.calls.push(['mainDraw',item]);return{item};}};
+const context={J,E,burst26Binding:binding,reg:(k,d)=>context.render=d.render,U:e=>Math.min(e.W,e.H),isPort:e=>e.H>e.W*1.08,brk:s=>s,tout:e=>1-e.pOut,plateCol:(s,a)=>a[0],darkOf:()=> '#000000',lightOf:()=>'#ffffff',onCol:()=>'#ffffff',gIn:()=>true,Math};vm.createContext(context);vm.runInContext(p.native,context);const original=context.render;vm.runInContext(p.changed,context);const patched=context.render;vm.runInContext(p.oracle,context);
+const env=(lt,pass)=>{const e={W:960,H:540,sc:{accent:'#ff0000',ink:'#ffffff',bg:'#000000',fg:'#ffffff',sub:'#888888'},cut:{layout:'burst',text:'風の先へ',params:{font:'dela',spikes:15,sharp:.72,tilt:4,lines:true,debris:true,order:'accent'},seed:1205,areaMode:'auto'},plan:{lyricAvoidanceIndex:{enabled:true}},lt,ltb:lt+.03,step:Math.floor(lt*24),pOut:lt>3.6?(lt-3.6)/.4:0,pass,calls:[]};for(const k of ['poly','circle','line'])e[k]=(...a)=>e.calls.push([k,...a]);return e;};
+const clean=v=>JSON.parse(JSON.stringify(v));let pairs=0;
+for(const lt of [0,.2,.45,.9,3.8])for(const pass of ['main','A','B']){
+ const native=env(lt,pass);original(native);
+ for(const mode of ['unbound','zero','off','off-shape']){const e=env(lt,pass);if(mode.startsWith('off'))e.plan.lyricAvoidanceIndex.enabled=false;if(mode==='unbound')patched(e);else binding.withRecipe(e,{dx:mode.startsWith('off')?17:0,dy:mode.startsWith('off')?-23:0,...(mode==='off-shape'?{shape:{text:'風の\n先へ',fontRatio:.72,padEm:.1}}:{})},()=>patched(e));assert.deepEqual(clean(e.calls),clean(native.calls));assert.equal(binding.recipeFor(e),null);pairs++;}
+ for(const r of [{dx:17,dy:-23,shape:null},{dx:0,dy:0,shape:{text:'風の\n先へ',fontRatio:.8,padEm:.1}},{dx:-19,dy:23,shape:{text:'風の先へ',fontRatio:.72,padEm:.1}}]){const e=env(lt,pass),o=env(lt,pass);binding.withRecipe(e,r,()=>patched(e));J.burst26Oracle(o,r);assert.deepEqual(clean(e.calls),clean(o.calls));pairs++;}
+}
+const e=env(1,'main');assert.throws(()=>binding.withRecipe(e,{dx:0,dy:0},()=>{throw Error('expected');}),/expected/);assert.equal(binding.recipeFor(e),null);
+console.log(JSON.stringify({status:'PASS_PURE_SOURCE26',pairs,canvasFrames:0,fullclockRun:false,nativeInverseByteExact:true}));
