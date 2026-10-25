@@ -1,3 +1,7 @@
+CURRENT 2026-10-25: 利用者の「知見整理→残り順次適用」を実行中。playbookと電球4構成/最大32配置の限定設計を親受入、feature担当avoid009_strategy_resume01(sol6.1/medium)がsource準備中。実装/試験はまだ未受入。旧source67 rawはアクセス不能、公開結果確認/親画像動画0、PYC7/65保持。
+
+CURRENT_FEATURE 2026-10-25: latest user request resumes AVOID-009: organize proven avoidance practices then apply sequentially. Sole feature owner avoid009_strategy_resume01 (gpt-6.1-sol/medium) prepares playbook + bulbs design for parent source/raw review; product source changes wait for design acceptance. Resource owner scope is workcapacity16 only. Fixed magnets/tiles/bulbs approvals remain limited; public result checks permanently prohibited.
+
 最新保存先：AVOID-009追加資料1349件をGitの `archive/avoid009-workspace-20261025` / `683a50d492cb2ee2967a3e7ffff40f350610dfbd` へpush済み。workspace外の旧パスを継続の必須入力にしない。正本は tasks/reviews/AVOID-009-durable-resume-20261025.md。過去の専用indexは履歴、現環境では最新HEADから新手順を準備する。RAW67はアクセス不能のまま、公開結果確認永久禁止。
 
 LATEST_COMMIT16_WORKSPACE_PREPARED 2026-10-25: explicitusercommitrequest; parentreviewed authorized_private_index16.py SHA34adc54ddd0700ad9630bc8a27eed9f8bf1bcd4222292b8f907eb82871e8f7e9 BASE /workspace/avoid009-private-commit16-20261025 outside repo. Newworkspace round1PREPARE_DONE0/312explicitfiles fullbytesstage reviewed, commit+INSTALL NOTyetrecorded. OldSHMhelperNOT_READY superseded onlybythisreviewedwrapper; old64helper remainsDEAD/oldrestore16 remainsNOT_READY. Preserveallrounds/receipts. Historicalpendingnotesbelow retained; current2fixedhumanapproved/magnetsapproved/raw67inaccessible/009unfinished/publicchecks0 unchanged.
