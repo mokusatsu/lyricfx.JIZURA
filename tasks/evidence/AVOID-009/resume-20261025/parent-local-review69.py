@@ -76,7 +76,9 @@ def neighbor_quality(sample):
   assert len(expected)==len(own['neighborRecords']) and short==own['preferredShortfalls'];assert hardfail==sum(f['criterion']=='neighbor-bulb-body-gap' for f in own['failures']);stats['neighborPairs']+=len(expected)
 def main(folder,out):
  if json.loads((folder/'manifest.json').read_bytes()).get('mode')=='focused-ordinary-boundaries':
-  return runpy.run_path(str(E/'parent-focused-review69.py'))['review'](folder,out)
+  focused=runpy.run_path(str(E/'parent-focused-review69.py'))
+  try:return focused['review'](folder,out)
+  except BaseException as e:e.focusedReviewProgress=focused['PROGRESS'];raise
  m=json.loads((folder/'manifest.json').read_bytes());tables={};case=None;lastseq={};native={};groups=collections.defaultdict(dict);counts=collections.defaultdict(collections.Counter);summaries={};circle=None;phases=collections.Counter();atlas=None;product={};oracle={};active_by_n={};orders=collections.defaultdict(list);circle_labels=[];previous_epoch=None;total=0;started=time.monotonic();lastlog=started
  for row in m['records']:
   z=(folder/row['file']).read_bytes();assert len(z)==row['bytes'] and hashlib.sha256(z).hexdigest()==row['sha256'];raw=gzip.decompress(z);assert len(raw)==row['JSONBytes'];total+=len(raw);r=json.loads(raw)
@@ -163,4 +165,4 @@ if __name__=='__main__':
  out=pathlib.Path(sys.argv[2])
  try:main(pathlib.Path(sys.argv[1]),out)
  except BaseException as e:
-  result={'state':'PARENT_LOCAL_REVIEW_FAILED','type':type(e).__name__,'message':str(e),'traceback':traceback.format_exc(),'stats':dict(stats),'publicChecks':0,'parentImages':0};out.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result));sys.exit(1)
+  result={'state':'PARENT_LOCAL_REVIEW_FAILED','type':type(e).__name__,'message':str(e),'traceback':traceback.format_exc(),'stats':dict(stats),'focusedReviewProgress':getattr(e,'focusedReviewProgress',None),'publicChecks':0,'parentImages':0};out.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result));sys.exit(1)

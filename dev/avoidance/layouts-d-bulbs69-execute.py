@@ -57,11 +57,15 @@ except BaseException as e:
  if producer is not None and producer.poll() is None:producer.terminate();producer.wait(timeout=30);producer_return=producer.returncode
  M.write_json(run/'orchestrator-failure.json',run_error)
 finally:
+ producer_summary=M.producer_summary(run,producer_return,run_error);M.write_json(run/'producer-summary.json',producer_summary);print('SOURCE69_PRODUCER_SUMMARY '+json.dumps(producer_summary,ensure_ascii=False),flush=True)
+ try:M.write_json(M.ROOT/'tasks/evidence/AVOID-009/resume-20261025'/('producer69-summary-'+a.run_id+'.json'),producer_summary)
+ except OSError as e:
+  receipt_error={'type':type(e).__name__,'message':str(e),'phase':'producer-summary-root-receipt'};producer_summary['rootReceiptError']=receipt_error;M.write_json(run/'producer-summary-root-error.json',receipt_error);run_error=run_error or receipt_error;print('SOURCE69_PRODUCER_SUMMARY_ROOT_RECEIPT_FAILED '+json.dumps(receipt_error),flush=True)
  M.write_json(run/'producer-result.json',{'returnCode':producer_return,'producerComplete':producer_ok,'orchestratorError':run_error,'rawPersisted':False,'notProductAcceptance':True})
 # Parent-authored independent raw checker runs in this same RAM namespace,
 # after producer termination and before any archive/push, including failures.
 checker_rel='tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py';checker=M.ROOT/checker_rel
-parent_review={'passed':False,'returnCode':None,'error':None};review_process=None
+parent_review={'passed':False,'returnCode':None,'error':None,'producerSummary':producer_summary};review_process=None
 try:
  checker_pin=next(r for r in review['files'] if r['path']==checker_rel);M.need(M.sha(M.read(checker))==checker_pin['sha256'],'parent checker source changed');M.check_inputs(review['files']);guard.check()
  command=[sys.executable,'-B',str(checker),str(run/'raw'),str(run/'parent-local-review.json')];parent_review['argv']=command;parent_review['checkerSHA256']=checker_pin['sha256']

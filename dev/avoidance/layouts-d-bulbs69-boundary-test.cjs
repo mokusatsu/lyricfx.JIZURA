@@ -16,8 +16,15 @@ async function exercise(mode='normal'){
  assert.equal(J.measure,originalMeasure);assert.equal(J.metrics.revision,originalRevision);assert(!Object.hasOwn(plan.cuts[0],'lyricSize'));
  return{result,error,writes,calls};
 }
+function cacheExercise(mode='normal'){
+ const writes=[],stats={proofRuns:1,proofHits:0,cacheEntries:1},upper={hits:0,misses:0,stores:1,entries:1},certificate={winner:'fixture'},A={bulbs69Stats:()=>({...stats}),layoutsCFinalCacheStats:()=>({...upper}),bulbsProof69:{same:(a,b)=>JSON.stringify(a)===JSON.stringify(b)},clearLayoutsCFinalCache(){Object.assign(upper,{hits:0,misses:0,stores:0,entries:0});if(mode==='clear-atlas')stats.cacheEntries=0;}},J={placement:A,finalizePlacementPlan(){if(upper.entries&&mode!=='upper-miss')upper.hits++;else{upper.misses++;upper.stores++;upper.entries=1;if(mode==='wrong-atlas')stats.proofRuns++;else stats.proofHits++;}return{cuts:[{placementTrajectory:{certificate:mode==='wrong-certificate'?{winner:'wrong'}:certificate}}]};}},window={};
+ class XMLHttpRequest{open(){}setRequestHeader(){}send(body){writes.push(JSON.parse(body));this.status=200;}}
+ vm.runInNewContext(fs.readFileSync(__dirname+'/layouts-d-bulbs69-browser.js','utf8'),{window,J,XMLHttpRequest,DataView,ArrayBuffer});window.bulbs69Local={run:{plan:{}},final:{cuts:[{placementTrajectory:{certificate}}]}};let error=null;try{window.cacheHit69();}catch(e){error=e;}return{writes,error,stats};
+}
 (async()=>{
  const ok=await exercise();assert(!ok.error);assert.equal(ok.result.cases,5);assert.equal(ok.calls,5);assert.equal(ok.writes.length,7);assert.equal(ok.writes[6].value.phase,'boundary-negatives');assert.equal(ok.writes[6].value.rows.length,5);
  for(const mode of['missing-reject','wrong-reason','paint-before-reject','silent-safe']){const r=await exercise(mode);assert(r.error,mode);assert(r.writes.length>=1,mode+' must preserve failed attempt before assertion');assert(!r.writes.some(w=>w.value.phase==='boundary-negatives'),mode+' must not emit successful summary');const last=r.writes.at(-1).value;assert(['boundary-negative-attempt','boundary-unsupported-attempt'].includes(last.phase));if(mode==='silent-safe')assert.equal(last.safe,true);else assert(last.atomic===false||last.reasonMatches===false);}
- console.log(JSON.stringify({status:'PASS',checks:5,scope:'ordinary boundary harness only; real browser cases unexecuted',browserExecutions:0}));
+ const hit=cacheExercise();assert(!hit.error);assert.equal(hit.stats.proofHits,1);assert.equal(hit.stats.proofRuns,1);assert.deepEqual(hit.writes.map(w=>w.value.phase),['boundary-cache-upper-attempt','boundary-cache-isolation','boundary-cache-hit']);
+ for(const mode of['upper-miss','clear-atlas','wrong-atlas','wrong-certificate']){const r=cacheExercise(mode);assert(r.error,mode);assert(r.writes.length>=1,mode+' must preserve cache attempt');}
+ console.log(JSON.stringify({status:'PASS',checks:10,scope:'ordinary boundary and two-layer cache harness only; real browser cases unexecuted',browserExecutions:0}));
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -81,6 +81,14 @@ def ram_build(run_dir,guard,baseline_ref):
  for name,dest in [('index.html',out/'baseline-ja.html'),('en/index.html',out/'baseline-en/index.html')]:dest.write_bytes(guard.command(['show',baseline_ref+':'+name]))
  guard.check();receipt={'normalBuildSourceUnmodified':True,'EnglishCompiledFromSource':True,'PYC7Unchanged':True,'ROOTIndexUnchanged':True,'oldHTMLUnchanged':True,'baselineRef':baseline_ref,'reads':[{'path':p,'sha256':sha(read(p))} for p in sorted(reads)],'outputs':[{'path':str(p.relative_to(run_dir)),'bytes':len(read(p)),'sha256':sha(read(p))} for p in [*targets.values(),out/'baseline-ja.html',out/'baseline-en/index.html']], 'browserExecuted':False,'publicChecks':0};write_json(out/'build-receipt.json',receipt);return out
 
+def producer_summary(run_dir,return_code,orchestrator_error=None):
+ p=Path(run_dir)/'raw/manifest.json';manifest={};error=None
+ try:
+  manifest=json.loads(read(p))
+  if not isinstance(manifest,dict):raise ValueError('producer manifest must be an object')
+ except (OSError,ValueError,RuntimeError) as e:manifest={};error={'type':type(e).__name__,'message':str(e)}
+ return {'kind':'SOURCE69_PRODUCER_MANIFEST_SUMMARY','returnCode':return_code,'complete':manifest.get('complete',False),'producerPassed':return_code==0 and manifest.get('complete') is True and not manifest.get('errors') and orchestrator_error is None,'mode':manifest.get('mode'),'phase':manifest.get('phase'),'records':len(manifest.get('records',[])),'serializedBytes':manifest.get('serializedBytes'),'errors':manifest.get('errors',[]),'failedRequests':len(manifest.get('failedRequests',[])),'cases':manifest.get('cases',[]),'manifestReadError':error,'orchestratorError':orchestrator_error,'rawPersisted':False,'notProductAcceptance':True,'publicChecks':0}
+
 def input_paths():
  names=['build.py','assets/effect-preview.png','vendor/mp4-muxer.min.js','dev/browser.cjs','dev/package.json','dev/package-lock.json','dev/avoidance/layouts-b-fixture.js','tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py','tasks/evidence/AVOID-009/resume-20261025/parent-read-raw69.py','tasks/evidence/AVOID-009/bulbs-diagnostic56/parent-review-bulbs56.py']
  paths=[ROOT/n for n in names]+list((ROOT/'src').glob('*.js'))+[p for p in (ROOT/'app').iterdir() if p.is_file() and p.suffix in ['.py','.js','.html','.css']]
@@ -118,7 +126,7 @@ def scope_files(run_dir,attempt):
    for p in sorted(base.rglob('*')):
     need(not p.is_symlink(),'source symlink refused: '+str(p))
     if p.is_file():selected.append(p)
- root_names=['reviewed-seal.json','run-start.json','frozen-inputs.json','producer-command.json','producer.stdout.txt','producer.stderr.txt','orchestrator-failure.json','producer-result.json','parent-local-review.json','parent-local-review.stdout.txt','parent-local-review.stderr.txt','parent-local-review-execution.json']
+ root_names=['reviewed-seal.json','run-start.json','frozen-inputs.json','producer-command.json','producer.stdout.txt','producer.stderr.txt','orchestrator-failure.json','producer-result.json','producer-summary.json','producer-summary-root-error.json','parent-local-review.json','parent-local-review.stdout.txt','parent-local-review.stderr.txt','parent-local-review-execution.json']
  for name in root_names:
   p=run_dir/name
   if os.path.lexists(p):selected.append(p)

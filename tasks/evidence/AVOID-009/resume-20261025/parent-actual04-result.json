@@ -1,0 +1,81 @@
+{
+  "parentReview": {
+    "state": "PARENT_LOCAL_REVIEW_FAILED",
+    "type": "AssertionError",
+    "message": "",
+    "traceback": "Traceback (most recent call last):\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 164, in <module>\n    try:main(pathlib.Path(sys.argv[1]),out)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py\", line 79, in main\n    return runpy.run_path(str(E/'parent-focused-review69.py'))['review'](folder,out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-focused-review69.py\", line 56, in review\n    assert m['complete'] and not m['errors'] and total==m['serializedBytes'];assert len(attempts)==5 and len(set(attempts))==5 and unsupported and len(cache)==2 and len(hits)==2 and redecode==1 and baseline_atlas\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+    "stats": {},
+    "publicChecks": 0,
+    "parentImages": 0
+  },
+  "execution": {
+    "state": "PRODUCER_OR_REVIEW_FAILED_ALL_PREFIX_DURABLE",
+    "producerReturn": 1,
+    "producerComplete": false,
+    "parentReview": {
+      "passed": false,
+      "returnCode": 1,
+      "error": null,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/lyricfx.JIZURA/tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py",
+        "/dev/shm/avoid009-bulbs69-actual04-20261025/raw",
+        "/dev/shm/avoid009-bulbs69-actual04-20261025/parent-local-review.json"
+      ],
+      "checkerSHA256": "08923e287c580ab352ad98a7709d374ffca49ddd03e3aa759a48677e829a5f5f",
+      "summaryPrinted": true,
+      "outputSHA256": "29fe0470e0087781638c12d5927ce50e32e5b1807d6346a9beae09b5de251e31",
+      "outputBytes": 1146
+    },
+    "rawPersisted": true,
+    "archive": {
+      "state": "RAW69_ALL_PREFIX_PUSH_DONE",
+      "commit": "9a21c90a2d445dcaa3a9216b41a9f5c78aecda24",
+      "branch": "archive/avoid009-bulbs69-actual04-20261025-attempt1",
+      "baseHEAD": "dd24d1e3f6d16736cc47b94d139b95d7ce20c167",
+      "ROOTIndexSHA256": "c3699289f2b9799b8a12e19e74d70e915d140886ff7f656d2189d7687a372de8",
+      "ROOTHEADIndexPYCAndOldHTMLUnchanged": true,
+      "scopeFiles": 194,
+      "scopeBytes": 32060275,
+      "allStoredBytesVerified": true,
+      "pushOutput": "To https://github.com/mokusatsu/lyricfx.JIZURA.git\n*\t9a21c90a2d445dcaa3a9216b41a9f5c78aecda24:refs/heads/archive/avoid009-bulbs69-actual04-20261025-attempt1\t[new branch]\nDone\n",
+      "publicChecks": 0
+    },
+    "RAMRetained": "/dev/shm/avoid009-bulbs69-actual04-20261025",
+    "publicChecks": 0
+  },
+  "producerDiagnostic": {
+    "manifest": "/dev/shm/avoid009-bulbs69-actual04-20261025/raw/manifest.json",
+    "complete": false,
+    "records": 10,
+    "serializedBytes": 651856,
+    "errors": [
+      {
+        "phase": "execution",
+        "case": "candidate-focused",
+        "name": "Error",
+        "message": "page.evaluate: Error: BULBS69_CACHE_HIT\n    at need (<anonymous>:3:32)\n    at window.cacheHit69 (<anonymous>:70:166)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:5)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "stack": "page.evaluate: Error: BULBS69_CACHE_HIT\n    at need (<anonymous>:3:32)\n    at window.cacheHit69 (<anonymous>:70:166)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:5)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs69-runner.cjs:66:13"
+      }
+    ],
+    "rawDurability": "RAM_ONLY; parent same-process archiver required before execution environment exits",
+    "publicChecks": 0
+  },
+  "diagnosticRead": {
+    "purpose": "Read the single saved producer error log as functional failure input, not a publication or save-reachability check",
+    "path": "producer.stdout.txt",
+    "ref": "9a21c90a2d445dcaa3a9216b41a9f5c78aecda24"
+  },
+  "subsetAcceptance": {
+    "sourcePins148Matched": true,
+    "atomicNegativeCases": 5,
+    "unsupportedExplicitSizeNotSafe": true,
+    "basis": "Producer reached first cacheHit after all five assertions, and independent focused checker processed all10 records without a field assertion before rejecting incomplete producer.",
+    "wholeFocusedRunPassed": false,
+    "cachePending": true
+  },
+  "cause": "Whole C/D finalization cache precedes adapter69 acquisition; expecting adapter hit counter at the upper cache return is an incorrect harness assumption. Product and shared cache unchanged.",
+  "publicChecks": 0,
+  "parentImages": 0
+}

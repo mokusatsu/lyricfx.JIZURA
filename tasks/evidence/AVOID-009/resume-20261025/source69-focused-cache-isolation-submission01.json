@@ -1,0 +1,69 @@
+{
+  "kind": "source69 focused cache isolation and producer summary submission before parent browser gate",
+  "files": [
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-browser.js",
+      "bytes": 14121,
+      "sha256": "25196d95e885d45b4fb7f570d932be9b7f98d7db3d00b4af4688e47b203cd01d"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-execute.py",
+      "bytes": 11169,
+      "sha256": "179ffaaa336d2118ce27897fb115ce848b095b3f003ceb0349bde0a54bb6cc41"
+    },
+    {
+      "path": "dev/avoidance/layouts_d_bulbs69_runtime.py",
+      "bytes": 15596,
+      "sha256": "35d0e1e84b5a13768555eaea3ee399d996088493047118672aa93efcedda0a53"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-boundary-test.cjs",
+      "bytes": 4904,
+      "sha256": "2651fe0dc70c86b6f291b3536186ab74fc2a561863946dc438ab567f6ead41c2"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-runtime-test.py",
+      "bytes": 3635,
+      "sha256": "bb94a884d7c283ebf17ece99883ff83c0a9b4e2b34cda76a2cd5218e092b6b6a"
+    }
+  ],
+  "productChanged": false,
+  "runnerCodecChanged": false,
+  "ordinaryTestSequenceChanged": false,
+  "cacheIsolation": "normal upper C/D hit first, then clear only upper cache with unchanged full69counters, finally independent69atlas hit; source unchanged",
+  "rawBeforeAssertions": [
+    "boundary-cache-upper-attempt",
+    "boundary-cache-isolation",
+    "boundary-cache-hit"
+  ],
+  "producerSummary": [
+    "same-run producer-summary.json",
+    "ROOT producer69-summary-<run-id>.json",
+    "SOURCE69_PRODUCER_SUMMARY stdout",
+    "parent-local-review-execution.json producerSummary"
+  ],
+  "scopeIncludesSummary": true,
+  "pureObserved": [
+    {
+      "command": "node dev/avoidance/layouts-d-bulbs69-boundary-test.cjs",
+      "status": "PASS",
+      "checks": 10
+    },
+    {
+      "command": "python -B dev/avoidance/layouts-d-bulbs69-runtime-test.py --expected-head dd24d1e3f6d16736cc47b94d139b95d7ce20c167 --expected-index c3699289f2b9799b8a12e19e74d70e915d140886ff7f656d2189d7687a372de8",
+      "status": "PASS",
+      "checks": 25
+    },
+    {
+      "command": "Python ast.parse all changed Python sources",
+      "status": "PASS"
+    }
+  ],
+  "preservedPureFailures": [
+    "source69-producer-summary-pure-failure01",
+    "source69-producer-summary-pure-failure02"
+  ],
+  "browserExecuted": false,
+  "publicChecks": 0,
+  "GitModified": false
+}

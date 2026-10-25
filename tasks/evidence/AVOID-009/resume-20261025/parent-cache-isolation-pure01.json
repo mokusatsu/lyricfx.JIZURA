@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "dev/avoidance/layouts-d-bulbs69-boundary-test.cjs"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"status\":\"PASS\",\"checks\":10,\"scope\":\"ordinary boundary and two-layer cache harness only; real browser cases unexecuted\",\"browserExecutions\":0}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "dev/avoidance/layouts-d-bulbs69-runtime-test.py",
+        "--expected-head",
+        "dd24d1e3f6d16736cc47b94d139b95d7ce20c167",
+        "--expected-index",
+        "c3699289f2b9799b8a12e19e74d70e915d140886ff7f656d2189d7687a372de8"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"checks\": 25, \"status\": \"PASS\", \"buildExecuted\": false, \"browserExecuted\": false, \"GitModified\": false, \"networkRequests\": 0}\n",
+      "stderr": ""
+    }
+  ],
+  "parentCheckerAST": "PASS",
+  "publicChecks": 0,
+  "parentImages": 0
+}

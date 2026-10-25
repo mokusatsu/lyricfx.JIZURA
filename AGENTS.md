@@ -1,3 +1,5 @@
+LATEST actual04: 148依存・5atomic拒否・明示size40非safeまで通過、上位C/Dcacheが先行するため69hit計数をそこで要求したtestが停止。全194files32,060,275B push9a21c90a2d445dcaa3a9216b41a9f5c78aecda24。実装/共有cache変更なし、testで上位hit→上位だけclear→69stats全値不変→69hitへ分離、pure10/25親受入。次actual05は同focused範囲のみ。
+
 LATEST actual03 default限定受入: 全173040描画支持/75264灯対/4union/727移動先pass、250通常と独立oracle、逆・非単調500frameを親がsource/raw照合。whole producerはhelper変更拒否の期待コード誤りで未合格、cache未実施を保持。実装の51stock guardによるSOURCE_DEPENDENCY先行拒否は正しい。全raw5573files109,841,952Bをarchive44edefbf4ef4e1c27d0685223f33d49534cb2bf5へpush済み。次は未変更148依存を固定し未完の通常拒否/cacheへ絞るactual04、全測定無条件反復なし。
 
 LATEST actual02: producer全処理完走(0/complete=true)、親は4recipe union/144200支持/62720灯対を独立照合後、culled空destinationの簡略schemaでutility停止。親最終合格/新視覚候補は未成立。5072files98,636,859BをGit archive786a391a8f5c43f7ac63b916338af98a339ebda6へpush済み。親checker空状態処理のみ修正、担当が通常negative/seek/cacheを追加し次のローカル再検証へ。保存後の取得確認/公開確認/親画像0。
