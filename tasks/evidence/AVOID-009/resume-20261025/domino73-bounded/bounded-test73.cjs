@@ -1,0 +1,18 @@
+// Pure only, existing exact geometry/eases; no browser/filesystem mutation/Git/network.
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),B=require('./bounded73.cjs');
+const root='/workspace/lyricfx.JIZURA',window={J:{}},ctx=vm.createContext({window});vm.runInContext(fs.readFileSync(root+'/src/01_util.js','utf8'),ctx);window.J.placement={};vm.runInContext(fs.readFileSync(root+'/src/11p_layoutsEe_bulbs_geometry68.js','utf8'),ctx);const G=window.J.placement.bulbsGeometry68;vm.runInContext(fs.readFileSync(root+'/work/avoid009-domino73-isolated/runtime73.js','utf8'),ctx);
+const c={cx:480,cy:.42*540,r:108,margin:2.7},pair=(b)=>({role:'primary',owner:'dominoes.row.0',ordinal:0,semanticKey:'source-shape-clock-style',bounds:b});
+const native=[pair({x0:-20,x1:100,y0:50,y1:100})],same=[pair({x0:-20,x1:100,y0:300,y1:350})];assert(B.evaluatePairs(native,same,c,G).passed);assert.equal(B.evaluatePairs(native,same,c,G).nativeXOutside,1);
+assert(!B.evaluatePairs(native,[pair({x0:-21,x1:100,y0:300,y1:350})],c,G).passed);assert(!B.evaluatePairs(native,[pair({x0:-20,x1:100,y0:500,y1:541})],c,G).passed);
+assert(!B.evaluatePairs([pair({x0:479,x1:481,y0:1,y1:2})],[pair({x0:479,x1:481,y0:225,y1:228})],c,G).passed);
+// Circle outside the viewport still sees the whole support; no clipped geometry.
+assert(!B.evaluatePairs(native,native,{cx:-15,cy:75,r:5,margin:2.7},G).passed);
+assert(!B.evaluatePairs([],[],c,G).passed);assert(B.evaluatePairs([],[],c,G,{emptyPositivePaintSource:true}).passed);
+const held=[{x0:112.8,x1:847.2,y0:167.4,y1:377}],two=[{x0:90,x1:870,y0:70,y1:255},{x0:90,x1:870,y0:285,y1:470}];
+for(const circle of [c,{...c,cy:.2*540}])for(const rows of [held,two]){const p=B.candidates(rows,circle,G);assert(p.candidates.length<=p.maximumCandidates);assert(p.candidates[0].kind==='native');for(const r of p.candidates){assert(r.deltas.every(d=>d[0]===0));assert.equal(r.scale,1);if(r.rowDeltas.length===2)assert(r.rowDeltas[1][1]>=r.rowDeltas[0][1]);assert(r.requiresActualDestinationProof);assert.doesNotThrow(()=>window.J.domino73.withRecipe(r,()=>null));}}
+const cut={text:'風の先へ',seed:1205,dur:4,inDur:.35,outDur:.4,start:0,stagger:.02579145403462462,params:{font:'dela',face:'light',pips:true},enter:'cut',exit:'cut',hold:'still',cam:'push',camP:{a:.022,dir:1}};assert.equal(B.family(cut).rowCount,1);assert.throws(()=>B.family({...cut,text:'ABC'}),/DOMINO73_BOUNDED_FAMILY/);assert.throws(()=>B.family({...cut,lyricSize:40}),/DOMINO73_BOUNDED_OPERATIONS/);
+const J=window.J,w=108,h=w*1.9,thick=w*.12,lean=Math.asin(J.clamp((w*.5-thick*.2)/h,0,.95))/J.DEG;
+function body(lt,j){const ti=.1+j*.09,fu=J.clamp((lt-ti)/.26),fo=(lt-3.35-j*.05)/.3;let th=0,pivot=0;if(fu<1){th=-(j===0?88:lean)*(1-J.E.outBack(fu,1.6));pivot=-1;}if(fo>0){th=(j===3?88:lean)*J.E.inQuad(Math.min(1,fo));pivot=1;}const xc=480+(j-1.5)*(w+w*.5),yF=270+h/2,ca=Math.cos(th*J.DEG),sa=Math.sin(th*J.DEG),m=[ca,sa,-sa,ca,xc+pivot*w/2-ca*pivot*w/2,yF-sa*pivot*w/2];return[[-w/2,0],[w/2,0],[w/2,-h],[-w/2,-h]].map(([x,y])=>[m[0]*x+m[2]*y+m[4],m[1]*x+m[3]*y+m[5]]);}
+const entry=body(.03,0),exit=body(3.9,3),hold=body(1.5,0);assert(Math.min(...entry.map(p=>p[0]))<0);assert(Math.max(...exit.map(p=>p[0]))>960);assert(Math.min(...hold.map(p=>p[0]))>=0);
+console.log(JSON.stringify({state:'PASS_SOURCE73_BOUNDED_PRIMITIVES_ONLY',policy:B.POLICY,sourcePlaneFactsOnly:{entryMinX:Math.min(...entry.map(p=>p[0])),exitMaxX:Math.max(...exit.map(p=>p[0])),holdFirstMinX:Math.min(...hold.map(p=>p[0]))},actualCanvasGeometryAccepted:false,candidateCertificates:0,adapterRegistered:false,browser:false,Git:false,network:false}));
