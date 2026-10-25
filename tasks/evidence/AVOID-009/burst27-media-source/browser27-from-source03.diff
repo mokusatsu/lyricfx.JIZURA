@@ -1,0 +1,31 @@
+--- /dev/shm/avoid009-burst26/source03/fullclock/browser26.js
++++ /dev/shm/avoid009-burst27-media-source01/browser27.js
+@@ -34,8 +34,9 @@
+  for(let i=0;i<records.length;i++){if(!(records[i].state.alpha>0))continue;try{supports.push(support(records[i],i,l));}catch(e){supportError={ordinal:i,name:String(e.name||'Error'),code:e.code==null?null:String(e.code),message:String(e.message||e),stack:e.stack==null?null:String(e.stack)};break;}}
+  return{supports,supportPrefix:supportError?supports:null,supportError};
+ }
+-window.frameBurst26=async({n,mode,recipe=null,delta=[0,0]})=>{
++window.frameBurst26=async({n,mode,recipe=null,delta=[0,0],media=false,png=false})=>{
+  const l=stable(),s=l.clocks.states.find(s=>s.n===n);need(s&&['native','candidate','oracle'].includes(mode),'BURST26_STATE_MODE');
++ const renderTime=media?n/60:s.firstTime;if(media){const pre=l.clocks.preimages.find(p=>p.n===n&&p.reachable);need(pre&&pre.firstTime<=renderTime&&renderTime<=pre.lastTime&&Math.floor(renderTime/l.clocks.h+1e-6)===n,'BURST27_SAME_NUMBER_PREIMAGE');}
+  const selected=recipe?l.recipes.find(r=>r.recipe.id===recipe.id):null;need(!recipe||selected&&eq(selected.recipe,recipe),'BURST26_RECIPE_INPUT');
+  const shape=recipe&&recipe.id!=='native'?{text:recipe.text,fontRatio:recipe.fontRatio,padEm:recipe.padEm}:null,r={dx:delta[0],dy:delta[1],shape};
+  const c=l.primitives.cv(),ctx=c.getContext('2d'),renderer=l.run.renderer,oldDraw=renderer.drawCut,ownDraw=Object.getOwnPropertyDescriptor(renderer,'drawCut'),oldMain=J.mainDraw,ownMain=Object.getOwnPropertyDescriptor(J,'mainDraw'),glyphs=[],passes=[],saved=[];let current=null,observer;
+@@ -48,14 +49,14 @@
+    finally{passes.push({clock,root,finalRoot:l.primitives.matrix(ctx),bb:l.primitives.clean(bb??null)});current=null;need(binding.recipeFor(env)===null,'BURST26_BINDING_LEAK');}
+    return bb;
+   };
+-  renderer.frame(ctx,l.plan,s.firstTime,{...l.primitives.options,avoidanceRealTime:s.firstTime});
++  renderer.frame(ctx,l.plan,renderTime,{...l.primitives.options,avoidanceRealTime:renderTime});
+  }finally{current=null;for(const[k,d]of saved.reverse())if(d)Object.defineProperty(ctx,k,d);else delete ctx[k];observer?.restore();if(ownDraw)Object.defineProperty(renderer,'drawCut',ownDraw);else delete renderer.drawCut;if(ownMain)Object.defineProperty(J,'mainDraw',ownMain);else delete J.mainDraw;}
+  stable();const expected=s.passes.filter(p=>p.active);need(eq(passes.map(p=>p.clock.pass),expected.map(p=>p.pass)),'BURST26_ACTUAL_PASS_SET');
+- for(let i=0;i<expected.length;i++){const e=expected[i],a=passes[i];for(const k of ['lt','ltb','step'])need(Object.is(a.clock[k],e[k]),'BURST26_ACTUAL_CLOCK:'+k);need(Object.is(a.clock.t,e.tp)&&Object.is(a.clock.realTime,s.firstTime)&&eq(a.root,a.finalRoot),'BURST26_ACTUAL_CLOCK_ROOT');}
++ for(let i=0;i<expected.length;i++){const e=expected[i],a=passes[i];for(const k of ['lt','ltb','step'])need(Object.is(a.clock[k],e[k]),'BURST26_ACTUAL_CLOCK:'+k);need(Object.is(a.clock.t,e.tp)&&Object.is(a.clock.realTime,renderTime)&&eq(a.root,a.finalRoot),'BURST26_ACTUAL_CLOCK_ROOT');}
+  const records=observer.records;need(records.length<=2048&&records.every(p=>p.role==='primary'&&p.owner==='burst.native-plate'),'BURST26_PRIMARY_ALL');
+  const {supports,supportPrefix,supportError}=collectSupports(records,l);
+  for(const g of glyphs){need(g.item.text===(shape?shape.text:'風の先へ')&&g.item.font==='dela','BURST26_FULLTEXT');const p=passes.find(p=>p.clock.pass===g.pass);for(const k of ['lt','ltb','step','pIn','pOut'])need(Object.is(p.clock[k],g[k]),'BURST26_GLYPH_CLOCK');}
+- const result={n,firstTime:s.firstTime,mode,recipe:recipe?.id??null,delta,passes,glyphs,records,supports,supportPrefix,supportError,positivePaintCount:records.filter(p=>p.state.alpha>0).length,rgbaSHA256:await l.primitives.hash(ctx),sourceUnchanged:true,adapterRegistered:false};c.width=1;return result;
++ const result={n,firstTime:s.firstTime,time:renderTime,media,mode,recipe:recipe?.id??null,delta,passes,glyphs,records,supports,supportPrefix,supportError,positivePaintCount:records.filter(p=>p.state.alpha>0).length,rgbaSHA256:await l.primitives.hash(ctx),sourceUnchanged:true,adapterRegistered:false};if(png){need(media,'BURST27_PNG_REQUIRES_EXACT_MEDIA_TIME');result.png=c.toDataURL('image/png');}c.width=1;return result;
+ };
+ window.evaluateBurst26=({supports,circle})=>{const l=stable();return l.B.evaluate(supports,circle,l.G,{sourcePositivePaintCount:supports.length});};
+ window.candidatesBurst26=({recipe,supports,circle})=>{const l=stable();return l.B.candidates(recipe,supports,circle,l.G);};
