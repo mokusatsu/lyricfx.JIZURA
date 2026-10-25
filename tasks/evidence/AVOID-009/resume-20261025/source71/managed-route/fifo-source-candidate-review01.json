@@ -1,0 +1,23 @@
+{
+  "state": "SOURCE_REVIEW_REQUIRED_DO_NOT_EXECUTE_CANDIDATES",
+  "fifo": "/workspace/lyricfx.JIZURA/work/avoid009-capacity-objects16/source71-assets-only.fifo",
+  "inode": 927035,
+  "uid": 1000,
+  "mode": "0600",
+  "managedStatAndNonblockingReadOpen": true,
+  "streamExecuted": false,
+  "assetCopies": 0,
+  "credentialOperations": 0,
+  "networkOperations": 0,
+  "sourceGitOperations": 0,
+  "gateModified": false,
+  "candidateSyntaxCompile": "PASS memory-only no pyc",
+  "limitations": [
+    "No stream execution before parent source review",
+    "SHM namespace only retained while consumer process lives",
+    "Consumer deliberately never starts Source helper or accepts credentials",
+    "FIFO is new task-owned empty inode; retain for parent review, cleanup only this exact dev/inode/type after use",
+    "No canonical helper modification needed for privateSHM input prefix; helper output/runtime must stay inside same private namespace",
+    "No public checks or post-save readback"
+  ]
+}

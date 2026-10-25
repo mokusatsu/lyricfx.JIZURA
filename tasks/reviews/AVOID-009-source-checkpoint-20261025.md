@@ -1,0 +1,9 @@
+# AVOID-009 再開チェックポイント
+
+workの正本HEADは3912178b、当checkpoint branchは未統合のドミノsourceと新しい親レビュー・Sites通常経路のコード/記録を保存する補足です。比較アセットと、拒否済み看板payloadは含めていません。新候補は約6件に未達です。
+
+最新状態は `tasks/evidence/AVOID-009/resume-20261025/resume-status-parent72-domino73.json`。ドミノのRAM sourceは同Git treeの `tasks/evidence/AVOID-009/domino73-sourceprepare-20261025/` に全バイト保存、元work sourceは同パスです。未実行draftも履歴として保持。既存のsource-submission内の絶対SHMパスは生成時履歴です。
+
+看板の限定親raw受入は製品統合・独立candidate画素oracle・MP4・人間承認を含みません。看板source/rawの拒否済み保存は再試行していません。Rootとtmpの空きは0B、唯一のrawは4つのRAMholdに残っています。原本を消さず容量を回復し、許可された保存手段が成立するまで、新しい重要なRAM原本を増やさないでください。
+
+Sitesは通常sandbox内でexact11ローカル入力を受渡せましたがSource fetchが失敗、push/save/deploy0。ネットワーク権限を明示したsandboxは起動前ENOSPC。外部TTYへのtoken経路は拒否後未実行のままです。gateはBLOCKED_DO_NOT_RUN。公開URL確認、deploy polling、保存後の到達性readbackは恒久禁止です。

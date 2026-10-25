@@ -5,8 +5,8 @@
 | 演出 | 技術検証 | 人間の動作確認 | 閲覧用公開・保存 |
 |---|---|---|---|
 | 電球：上寄り円→横1段下／右円→2段左 | 限定family source/raw/canonical日英・6テスト、500exact時刻画素、57,680支持、4MP4/12PNG、freshsol6対PASS | 未承認。静止だけでは点灯順・動きを判定しない | GitHub旧保存版あり。Sites追加・公開は認証経路拒否で保留 |
-| 看板 | 隔離local native58、全Number proof/12frame、通常拒否、不足時除外などproducerPASS。親source/raw照合中 | MP4未生成・未依頼 | raw/source保存は具体承認転送後も自動審査拒否。RAM保持、Git保存済みにしない |
-| ドミノ | 後続 | 未着手 | 未着手 |
+| 看板 | 隔離local native58、全Number proof/12frame、通常拒否、不足時除外などproducerPASS。親source/raw限定受入（1054records/935tuple/15565支持/727pass/12frame）。統合・MP4未実施 | MP4未生成・未依頼 | raw/source保存は具体承認転送後も自動審査拒否。RAM保持、Git保存済みにしない |
+| ドミノ | source seam・pure親受入、実Canvas未実施 | 未準備 | 19files/53,116BをGitHub checkpoint bcc35689へ保存、比較assets0 |
 | バースト | 後続 | 未着手 | 未着手 |
 | クロスワード | 後続 | 未着手 | 未着手 |
 | 等高線 | 後続 | 未着手 | 未着手 |
