@@ -1,0 +1,63 @@
+{
+  "kind": "canonical70 source preparation only, before parent browser gate",
+  "files": [
+    {
+      "path": "dev/avoidance/layouts-d-bulbs70-canonical.cjs",
+      "bytes": 9459,
+      "sha256": "2fbbd35d03cf308f64f31e2930478b2170a0a7e97e36af58428ee21cd03c97c7"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs70-execute.py",
+      "bytes": 12633,
+      "sha256": "d3338ae22ba841b80fbb58c92e741af1c8847df59b16ee5d2a78dc4e9eb94941"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs70-source-test.cjs",
+      "bytes": 1415,
+      "sha256": "54e7ec20cb80c2be339f7b1fb97cc6d0c06341bcf4cbee287a3c15b40009e575"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs70-source-test.py",
+      "bytes": 2526,
+      "sha256": "4ca9e5cc19183cf942df5588d58c0e0db525aac9c12718a88847ca3a5de3e40f"
+    },
+    {
+      "path": "dev/avoidance/layouts_d_bulbs69_runtime.py",
+      "bytes": 15936,
+      "sha256": "601bfc906aa2cf313d740667acd2ebc2dc95abcb4b60ac6dc338b7dbb826faae"
+    }
+  ],
+  "mode": "canonical-JAEN-native70",
+  "matrix": {
+    "fixtures": 30,
+    "tuplePairs": 900,
+    "wholePairs": 180,
+    "controlGroups": 30
+  },
+  "originalInputs": [
+    "tasks/evidence/AVOID-009/bulbs-transport51/source51/runner/specs51.cjs",
+    "tasks/evidence/AVOID-009/bulbs-transport51/source51/runner/exercise51.js",
+    "tasks/evidence/AVOID-009/bulbs-canonical53/source53/runner/oracle53.cjs"
+  ],
+  "exerciseOnlyTransformation": "J.setLang('ja'); -> J.setLang(plan.lang);",
+  "exerciseOriginalSHA256": "3fd52703e329391efd3227f5265754c4464a4b86cddbbc27bd75f77c73fb734f",
+  "exerciseAdaptedSHA256": "0c44bd117a911900eb25f9350cbcc4114e4e14dcc38258d56daa3a31d1febbb4",
+  "rendererToString": "full raw witness and SHA only; no old-string equality assertion",
+  "pureObserved": {
+    "source70": 9,
+    "guard70": 9,
+    "runtime69": 25,
+    "JSParse": "PASS",
+    "PythonAST": "PASS"
+  },
+  "before6Reuse": "63 accepted after6 + same old ROOT HTML two SHA, ten source SHA, Node/Chromium and466runtime hashes; verified by pure test, after6 not executed",
+  "ROOTHTMLTransition": "only two declared normal RAM-build byte strings; all other guards strict; failure restores original two bytes",
+  "parentChecker": "tasks/evidence/AVOID-009/resume-20261025/parent-canonical-review70.py via parent-local-review69.py mode dispatch",
+  "archive": "same-process existing scoped RAM Git archiver, all successful or failed producer prefix, no postpush readback",
+  "buildExecuted": false,
+  "browserExecuted": false,
+  "ROOTHTMLWritten": false,
+  "productSourceChanged": false,
+  "publicChecks": 0,
+  "GitModified": false
+}

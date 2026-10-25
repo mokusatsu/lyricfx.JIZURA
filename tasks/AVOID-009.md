@@ -1,3 +1,5 @@
+LATEST actual05限定受入: 148依存一致、5atomic拒否/明示size40非safe、上位・69cachehit各2/上位隔離2/cache2/3円/redecode1/実12frame独立oracleを親source/raw照合PASS。29records2,773,361JSONB、全214files32,730,720B push2eeacdb8f925abd8e4c252fe05876223c9e9c208。既受入actual03 default証拠を条件固定で再利用、旧table直接数値照合/旧全paint再保存とは主張しない。次は既存15nativefixture日英/基本6の最小統合検証、必要MP4、次の看板。ready0/約6継続、全009/正式性能/保存本体は未完。
+
 LATEST actual04: 148依存・5atomic拒否・明示size40非safeまで通過、上位C/Dcacheが先行するため69hit計数をそこで要求したtestが停止。全194files32,060,275B push9a21c90a2d445dcaa3a9216b41a9f5c78aecda24。実装/共有cache変更なし、testで上位hit→上位だけclear→69stats全値不変→69hitへ分離、pure10/25親受入。次actual05は同focused範囲のみ。
 
 LATEST actual03 default限定受入: 全173040描画支持/75264灯対/4union/727移動先pass、250通常と独立oracle、逆・非単調500frameを親がsource/raw照合。whole producerはhelper変更拒否の期待コード誤りで未合格、cache未実施を保持。実装の51stock guardによるSOURCE_DEPENDENCY先行拒否は正しい。全raw5573files109,841,952Bをarchive44edefbf4ef4e1c27d0685223f33d49534cb2bf5へpush済み。次は未変更148依存を固定し未完の通常拒否/cacheへ絞るactual04、全測定無条件反復なし。

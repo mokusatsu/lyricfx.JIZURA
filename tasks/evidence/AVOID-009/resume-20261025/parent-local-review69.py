@@ -75,6 +75,10 @@ def neighbor_quality(sample):
     hardfail+=not hard;expected.append(v)
   assert len(expected)==len(own['neighborRecords']) and short==own['preferredShortfalls'];assert hardfail==sum(f['criterion']=='neighbor-bulb-body-gap' for f in own['failures']);stats['neighborPairs']+=len(expected)
 def main(folder,out):
+ if json.loads((folder/'manifest.json').read_bytes()).get('mode')=='canonical-JAEN-native70':
+  canonical=runpy.run_path(str(E/'parent-canonical-review70.py'))
+  try:return canonical['review'](folder,out)
+  except BaseException as e:e.focusedReviewProgress=canonical['PROGRESS'];raise
  if json.loads((folder/'manifest.json').read_bytes()).get('mode')=='focused-ordinary-boundaries':
   focused=runpy.run_path(str(E/'parent-focused-review69.py'))
   try:return focused['review'](folder,out)
