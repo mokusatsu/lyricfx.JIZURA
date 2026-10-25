@@ -10,14 +10,17 @@ P=Path;HERE=P(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location('bulbs69_runtime',HERE/'layouts_d_bulbs69_runtime.py');M=importlib.util.module_from_spec(spec);spec.loader.exec_module(M)
 ap=argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--prepare-seal');ap.add_argument('--reviewed-seal');ap.add_argument('--run-id')
+ap.add_argument('--focused-boundaries',action='store_true')
 ap.add_argument('--expected-head',default='4a76100c63b3a8b55c7c12ad9e98656ba37f9599')
 ap.add_argument('--expected-index',default='cbcb5d5fe39c960139c5b25a8d62c66340b7e858b58644a2b1e87930487c8352')
 ap.add_argument('--node',required=True);ap.add_argument('--browser-launcher',required=True);ap.add_argument('--browser-engine',required=True)
 a=ap.parse_args();runtime=[P(a.node),P(a.browser_launcher),P(a.browser_engine)]
+reference_acceptance=M.ROOT/'tasks/evidence/AVOID-009/resume-20261025/parent-actual03-result.json'
+reference_seal=M.ROOT/'tasks/evidence/AVOID-009/resume-20261025/parent-reviewed-seal69-actual03.json'
 for p in runtime:M.need(p.is_absolute() and p.is_file(),'absolute existing runtime required: '+str(p))
 guard=M.RootGuard(a.expected_head,a.expected_index)
 def seal_now():
- return {'kind':'SOURCE69_REVIEW_INPUT_SEAL','root':guard.summary(),'baselineHTMLRef':'4a76100c63b3a8b55c7c12ad9e98656ba37f9599','files':[{'path':str(p.relative_to(M.ROOT)),'bytes':len(M.read(p)),'sha256':M.sha(M.read(p))} for p in M.input_paths()],'runtime':[{'path':str(p),'bytes':p.stat().st_size,'sha256':M.sha(p.read_bytes())} for p in runtime],'resolvedNodeDependency':M.node_dependency(a.node),'publicChecks':0}
+ return {'kind':'SOURCE69_REVIEW_INPUT_SEAL','mode':'focused-ordinary-boundaries' if a.focused_boundaries else 'full-default-and-ordinary-boundaries','root':guard.summary(),'baselineHTMLRef':'4a76100c63b3a8b55c7c12ad9e98656ba37f9599','files':[{'path':str(p.relative_to(M.ROOT)),'bytes':len(M.read(p)),'sha256':M.sha(M.read(p))} for p in M.input_paths()],'runtime':[{'path':str(p),'bytes':p.stat().st_size,'sha256':M.sha(p.read_bytes())} for p in runtime],'resolvedNodeDependency':M.node_dependency(a.node),'publicChecks':0}
 if a.prepare_seal:
  M.need(not a.reviewed_seal and not a.run_id,'prepare only');guard.check();M.write_json(P(a.prepare_seal),seal_now());print(json.dumps({'seal':a.prepare_seal,'browserExecuted':False,'buildExecuted':False,'GitModified':False}));sys.exit(0)
 M.need(a.reviewed_seal and a.run_id and a.run_id.isascii() and len(a.run_id)<=90 and all(c.isalnum() or c in '-_' for c in a.run_id),'reviewed seal and safe fresh run-id required')
@@ -31,6 +34,7 @@ try:
  out=M.ram_build(run,guard,review['baselineHTMLRef']);M.check_inputs(rows);guard.check()
  env=os.environ.copy();env.update(TMPDIR=str(run/'tmp'),PYTHONDONTWRITEBYTECODE='1',BULBS69_RELEASE='PARENT_REVIEWED_SOURCE69_LOCAL_ONLY');env.pop('JIZURA_BROWSER',None)
  command=[a.node,str(HERE/'layouts-d-bulbs69-runner.cjs'),'--candidate-html',str(out/'candidate-ja.html'),'--baseline-html',str(out/'baseline-ja.html'),'--output-dir',str(run/'raw'),'--browser-path',a.browser_launcher]
+ if a.focused_boundaries:command+=['--focused-boundaries','--reference-acceptance',str(reference_acceptance),'--reference-seal',str(reference_seal)]
  M.write_json(run/'producer-command.json',{'argv':command,'browserEngineSHA256':review['runtime'][2]['sha256'],'localOnly':True,'publicChecks':0})
  print('SOURCE69_LOCAL_PRODUCER_START '+str(run),flush=True)
  with (run/'producer.stdout.txt').open('xb') as stdout,(run/'producer.stderr.txt').open('xb') as stderr:

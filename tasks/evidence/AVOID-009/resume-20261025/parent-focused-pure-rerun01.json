@@ -1,0 +1,28 @@
+{
+  "initialNormalSandboxFailures": [
+    "Node git show child EPERM",
+    "separate launcher /tmp/.aws ENOSPC before program"
+  ],
+  "readOnlyEscalatedRerun": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "dev/avoidance/layouts-d-bulbs69-focused-test.cjs"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"status\":\"PASS\",\"checks\":7,\"matchedProductPins\":148,\"codecFactoryExact872b\":true,\"scope\":\"same-workspace limited source/pin reuse, not browser qualification\",\"browserExecutions\":0,\"GitModified\":false,\"networkRequests\":0}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "dev/avoidance/layouts-d-bulbs69-boundary-test.cjs"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"status\":\"PASS\",\"checks\":5,\"scope\":\"ordinary boundary harness only; real browser cases unexecuted\",\"browserExecutions\":0}\n",
+      "stderr": ""
+    }
+  ],
+  "browserExecutions": 0,
+  "networkRequests": 0
+}

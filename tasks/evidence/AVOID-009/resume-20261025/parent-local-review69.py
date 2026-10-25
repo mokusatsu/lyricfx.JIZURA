@@ -75,6 +75,8 @@ def neighbor_quality(sample):
     hardfail+=not hard;expected.append(v)
   assert len(expected)==len(own['neighborRecords']) and short==own['preferredShortfalls'];assert hardfail==sum(f['criterion']=='neighbor-bulb-body-gap' for f in own['failures']);stats['neighborPairs']+=len(expected)
 def main(folder,out):
+ if json.loads((folder/'manifest.json').read_bytes()).get('mode')=='focused-ordinary-boundaries':
+  return runpy.run_path(str(E/'parent-focused-review69.py'))['review'](folder,out)
  m=json.loads((folder/'manifest.json').read_bytes());tables={};case=None;lastseq={};native={};groups=collections.defaultdict(dict);counts=collections.defaultdict(collections.Counter);summaries={};circle=None;phases=collections.Counter();atlas=None;product={};oracle={};active_by_n={};orders=collections.defaultdict(list);circle_labels=[];previous_epoch=None;total=0;started=time.monotonic();lastlog=started
  for row in m['records']:
   z=(folder/row['file']).read_bytes();assert len(z)==row['bytes'] and hashlib.sha256(z).hexdigest()==row['sha256'];raw=gzip.decompress(z);assert len(raw)==row['JSONBytes'];total+=len(raw);r=json.loads(raw)
@@ -139,7 +141,7 @@ def main(folder,out):
    circle_labels.append((v['label'],accepted));stats['ordinaryCacheCircles']+=1
   if phase=='boundary-cache-hit':assert v['after']['proofRuns']==v['before']['proofRuns'] and v['after']['proofHits']==v['before']['proofHits']+1 and v['after']['cacheEntries']<=2;stats['ordinaryCacheHits']+=1
   if phase=='boundary-negatives':
-   expected={'stale-plan':'STALE_PLACEMENT_PLAN','font-revision':'STALE_PLACEMENT_PLAN','helper-reference':'BULBS69_STALE_DEPENDENCY','frame-options':'BULBS69_FRAME_OPTIONS','frame-context':'TILES48_TEXT_STATE:letterSpacing'};assert len(v['rows'])==5 and {r['kind'] for r in v['rows']}==set(expected)
+   expected={'stale-plan':'STALE_PLACEMENT_PLAN','font-revision':'STALE_PLACEMENT_PLAN','helper-reference':'BULBS69_SOURCE_DEPENDENCY','frame-options':'BULBS69_FRAME_OPTIONS','frame-context':'TILES48_TEXT_STATE:letterSpacing'};assert len(v['rows'])==5 and {r['kind'] for r in v['rows']}==set(expected)
    for r0 in v['rows']:
     code=r0['error'].get('code');code=r0['error'].get('message') if code is None or code is undefined else code;assert r0['before']==r0['after'] and not r0['observations'] and code==expected[r0['kind']]
    tr=v['unsupported'].get('trajectory');assert tr is None or tr is undefined or tr.get('safety')!='certified-bounded-adapter' and all(s.get('status')!='safe' for u in tr.get('units',[]) for s in u.get('segments',[]));stats['ordinaryNegativeCases']+=5

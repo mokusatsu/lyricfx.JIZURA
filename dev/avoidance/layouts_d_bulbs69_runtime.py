@@ -84,6 +84,7 @@ def ram_build(run_dir,guard,baseline_ref):
 def input_paths():
  names=['build.py','assets/effect-preview.png','vendor/mp4-muxer.min.js','dev/browser.cjs','dev/package.json','dev/package-lock.json','dev/avoidance/layouts-b-fixture.js','tasks/evidence/AVOID-009/resume-20261025/parent-local-review69.py','tasks/evidence/AVOID-009/resume-20261025/parent-read-raw69.py','tasks/evidence/AVOID-009/bulbs-diagnostic56/parent-review-bulbs56.py']
  paths=[ROOT/n for n in names]+list((ROOT/'src').glob('*.js'))+[p for p in (ROOT/'app').iterdir() if p.is_file() and p.suffix in ['.py','.js','.html','.css']]
+ paths+=[ROOT/'tasks/evidence/AVOID-009/resume-20261025'/n for n in ['parent-focused-review69.py','parent-actual03-result.json','parent-reviewed-seal69-actual03.json']]
  paths+=list((ROOT/'dev/avoidance').glob('*bulbs69*'))+[ROOT/'dev/avoidance/layouts-d-bulbs68-source-test.cjs']
  paths+=[ROOT/'tasks/evidence/AVOID-009/bulbs-focused59/source59/runner'/n for n in ['kernel59.cjs','catalog59.cjs','quality59.cjs']]
  fm=ROOT/'dev/avoidance/layouts-c-editorial-fonts/manifest.json';fonts=json.loads(read(fm));paths.append(fm)

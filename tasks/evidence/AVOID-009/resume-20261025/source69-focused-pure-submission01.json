@@ -1,0 +1,118 @@
+{
+  "kind": "source69 focused source/pure submission before parent browser gate",
+  "files": [
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-browser.js",
+      "bytes": 12951,
+      "sha256": "bd4a33bcd5aabdfd23959193c39fb63ee6b8cdcfad5d3c99f89ce86af9cc742a"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-runner.cjs",
+      "bytes": 17846,
+      "sha256": "f1e61cd05f3f581a1043e87b84333f5c81d07652f3eaf9b720b3ecffaa31cae3"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-execute.py",
+      "bytes": 10416,
+      "sha256": "63178c05403c8db2ce5b4dcdbc621a63fc531df0479fd3493fb282bae8c097a7"
+    },
+    {
+      "path": "dev/avoidance/layouts_d_bulbs69_runtime.py",
+      "bytes": 14516,
+      "sha256": "334ebb0647cbffc0849e15a50f44c980098f1e312ad665cb5fd147c6722f5974"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-boundary-test.cjs",
+      "bytes": 3241,
+      "sha256": "a8ce5c79f6057e567d20fb1a918550ae75be313c0e4ffa30e92e61b91a8389c6"
+    },
+    {
+      "path": "dev/avoidance/layouts-d-bulbs69-focused-test.cjs",
+      "bytes": 2413,
+      "sha256": "5a555a3bc18d981b62e9f62607e14fe24f66a61506918a505ed9f39df27444cb"
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "dev/avoidance/layouts-d-bulbs69-boundary-test.cjs"
+      ],
+      "returnCode": 0,
+      "stdout": "{\"status\":\"PASS\",\"checks\":5,\"scope\":\"ordinary boundary harness only; real browser cases unexecuted\",\"browserExecutions\":0}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "dev/avoidance/layouts-d-bulbs69-focused-test.cjs"
+      ],
+      "returnCode": 0,
+      "stdout": "{\"status\":\"PASS\",\"checks\":7,\"matchedProductPins\":148,\"codecFactoryExact872b\":true,\"scope\":\"same-workspace limited source/pin reuse, not browser qualification\",\"browserExecutions\":0,\"GitModified\":false,\"networkRequests\":0}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "dev/avoidance/layouts-d-bulbs69-source-test.cjs"
+      ],
+      "returnCode": 0,
+      "stdout": "{\"tests\":24,\"status\":\"PASS\",\"scope\":\"source69 synthetic only\",\"browserExecutions\":0,\"nativeGeometryCertified\":false}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "dev/avoidance/layouts-d-bulbs69-runtime-test.py",
+        "--expected-head",
+        "872b8b093ed5bef0ff7c8dcaac846f33f48cc1d5",
+        "--expected-index",
+        "a0e0c823bd1e1ea312e7c22c323556c7c502a5bb383de9b648114dd60746351c"
+      ],
+      "returnCode": 0,
+      "stdout": "{\"checks\": 18, \"status\": \"PASS\", \"buildExecuted\": false, \"browserExecuted\": false, \"GitModified\": false, \"networkRequests\": 0}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "dev/avoidance/layouts-d-bulbs69-browser.js"
+      ],
+      "returnCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "dev/avoidance/layouts-d-bulbs69-runner.cjs"
+      ],
+      "returnCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "dev/avoidance/layouts-d-bulbs69-codec-test.cjs",
+        "tasks/evidence/AVOID-009/resume-20261025/actual01-control-n83.encoded.json.gz",
+        "tasks/evidence/AVOID-009/resume-20261025/actual01-control-n120.encoded.json.gz",
+        "tasks/evidence/AVOID-009/resume-20261025/actual01-control-n165.encoded.json.gz",
+        "tasks/evidence/AVOID-009/resume-20261025/failed-request-0000.encoded.json.gz"
+      ],
+      "returnCode": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"codec\": \"source69-root-and-metadata59-gzip-v2\",\n  \"runnerSourceSHA256\": \"f1e61cd05f3f581a1043e87b84333f5c81d07652f3eaf9b720b3ecffaa31cae3\",\n  \"probeSourceSHA256\": \"502fb56b4980e8ada35e2bb5ac2a9d679e8b2b4bab1f705773a16896b31e0384\",\n  \"actual\": [\n    {\n      \"path\": \"tasks/evidence/AVOID-009/resume-20261025/actual01-control-n83.encoded.json.gz\",\n      \"inputSHA256\": \"2b9f922a322ead278542c372d219fde609c831249b37b3c237887cc7101dae73\",\n      \"n\": 83,\n      \"JSONBytes\": 611576,\n      \"gzipBytes\": 108175,\n      \"tableStats\": {\n        \"matrix\": {\n          \"entries\": 40,\n          \"canonicalKeyBytes\": 6760,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        },\n        \"paint\": {\n          \"entries\": 248,\n          \"canonicalKeyBytes\": 262633,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        },\n        \"catalog\": {\n          \"entries\": 553,\n          \"canonicalKeyBytes\": 173488,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        }\n      },\n      \"fullValueRoundtrip\": true,\n      \"runnerExactProbe\": true\n    },\n    {\n      \"path\": \"tasks/evidence/AVOID-009/resume-20261025/actual01-control-n120.encoded.json.gz\",\n      \"inputSHA256\": \"6f43eac5a28baa52b138933aa2708ee1635ad17adb5dcda08d4b82543d7ab621\",\n      \"n\": 120,\n      \"JSONBytes\": 187515,\n      \"gzipBytes\": 85594,\n      \"tableStats\": {\n        \"matrix\": {\n          \"entries\": 80,\n          \"canonicalKeyBytes\": 13520,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        },\n        \"paint\": {\n          \"entries\": 248,\n          \"canonicalKeyBytes\": 262633,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        },\n        \"catalog\": {\n          \"entries\": 565,\n          \"canonicalKeyBytes\": 200872,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        }\n      },\n      \"fullValueRoundtrip\": true,\n      \"runnerExactProbe\": true\n    },\n    {\n      \"path\": \"tasks/evidence/AVOID-009/resume-20261025/actual01-control-n165.encoded.json.gz\",\n      \"inputSHA256\": \"abcda6909dd5c07c00d741096cd77b0cb97c2e4f3ed9ac51a698410252c68ab0\",\n      \"n\": 165,\n      \"JSONBytes\": 187802,\n      \"gzipBytes\": 85469,\n      \"tableStats\": {\n        \"matrix\": {\n          \"entries\": 120,\n          \"canonicalKeyBytes\": 20280,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        },\n        \"paint\": {\n          \"entries\": 248,\n          \"canonicalKeyBytes\": 262633,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        },\n        \"catalog\": {\n          \"entries\": 577,\n          \"canonicalKeyBytes\": 228256,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        }\n      },\n      \"fullValueRoundtrip\": true,\n      \"runnerExactProbe\": true\n    },\n    {\n      \"path\": \"tasks/evidence/AVOID-009/resume-20261025/failed-request-0000.encoded.json.gz\",\n      \"inputSHA256\": \"5a080c29dad19ca83f6230a1d8d1c4c5344c6c29c7ba8155a886321f77cafd93\",\n      \"n\": 166,\n      \"JSONBytes\": 188108,\n      \"gzipBytes\": 85737,\n      \"tableStats\": {\n        \"matrix\": {\n          \"entries\": 160,\n          \"canonicalKeyBytes\": 27040,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        },\n        \"paint\": {\n          \"entries\": 248,\n          \"canonicalKeyBytes\": 262633,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        },\n        \"catalog\": {\n          \"entries\": 589,\n          \"canonicalKeyBytes\": 255640,\n          \"entryLimit\": 100000,\n          \"keyByteLimit\": 67108864,\n          \"notJSHeapClaim\": true\n        }\n      },\n      \"fullValueRoundtrip\": true,\n      \"runnerExactProbe\": true\n    }\n  ],\n  \"microChecks\": [\n    \"PER_COMMAND fallback\",\n    \"empty path\",\n    \"undefined property\",\n    \"Float64 -0\"\n  ],\n  \"tableLifetime\": \"unchanged per-case; no record epoch reset\",\n  \"budgetsUnchanged\": true,\n  \"browserExecuted\": false\n}\n",
+      "stderr": ""
+    }
+  ],
+  "PythonAST": "PASS",
+  "browserExecuted": false,
+  "productSourceChanged": false,
+  "originalDefaultTablesDirectlyCompared": false,
+  "allPaintsResaved": false,
+  "publicChecks": 0,
+  "environmentFailure": "first sandbox focused-test child Git show reported spawnSync EPERM; same unchanged command with escalation passed; no product failure"
+}
