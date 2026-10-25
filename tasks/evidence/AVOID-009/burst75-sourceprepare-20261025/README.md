@@ -1,0 +1,24 @@
+# Burst SOURCE75 representative Canvas fidelity source
+
+State: SOURCE ONLY / parent review pending. No browser, server, actual Canvas, images, source publish, Git or root files were changed by preparation. SOURCE74 private center seam was parent-accepted only at five stub states. This package does not register an avoidance adapter or certify circle/stage safety.
+
+Implementation: gpt-6.1-sol / medium. Scope: dedicated shared memory directory only. Existing domino73 runner and independent checker patterns are reused at smaller representative scope; existing CODEC69 factory and primitive spy are imported unchanged. No archive/upload infrastructure is added: parent owns the established private SitesSource persistence before starting any actual run, on success or failure. The runner's output is RAM-only until that path completes.
+
+Fixture: Japanese four-glyph `風の先へ`, 960×540, seed1205, font dela, spikes15, sharp.72, tilt4, lines/debris true, accent order. Existing fixture sets cut dur4/inDur.35/outDur.4, still hold, cut enter/exit, while source burst has its own q/rot/boil and transient events. Queries are lt 0,.2,.45,.9,3.8,4.05 × main/A/B. A/B use original representative lag .8/24 and1.6/24; ltb=lt+lag, t=lt+cut.start, realTime=t+lag, step=floor(t/(1/24)+1e-6). These explicitly requested makeEnv tuples include entrance/hold/exit and after-end ghost samples, but are not the full renderer's active-pass selector or complete displayEnd/tail inventory. No all-clock, nonmonotonic-seek, camera or spatial-FX claim.
+
+Modes: native (original page source); off (overlay with private positive offset but ephemeral env.plan avoidance enabled=false); on-zero (private0,0, original arithmetic); public-recipe (unbound overlay; only ephemeral env.cut gets placementLayoutsD/layoutDRecipe dx999,dy-999); oracle-moved (original independent closure with center formula W/2+17,H/2+-23); on-moved (private WeakMap17,-23). Saved plan remains exact in all modes. All comparisons retain owner/role, paint order, full primitive spy state/path/metrics, root/finalRoot, complete mainDraw item, clocks and SHA256 of actual RGBA bytes. Only frame mode is removed from comparisons. Glyph text remains whole and all plate/shadow/ring/ray/debris output is primary `burst.native-plate`. No Canvas state setters or save/restore are added around source calls.
+
+Private helper is copied byte-for-byte from SOURCE74. setupBurst75 captures its WeakMap in a browser closure and never puts recipe controls on J or cuts. Harness entry functions are browser globals for page.evaluate; they are test functions, not a production API. Reinstalling the full D module in that isolated page refreshes nativeSources and definitions before fixture planning; source bodies other than burst are byte unchanged. Native page does not reinstall. source75.cjs verifies byte inverse of the sole center edit and the independent oracle center expression. No registered safe adapter. Manual/locked/emphasis production eligibility remains unintegrated; private09a provenance is not certified.
+
+Expected actual count: 1fixture ×18tuples×6modes =108 paint/state/RGBA captures +6 init =114 raw records. It is direct `J.LAYOUTS.burst.render(makeEnv(...))` fidelity only, zero whole Renderer.frame captures. Off/zero/public-recipe each compare with native (54 pairs), moved compares with direct-source oracle (18 pairs). No geometry envelope/matrix, placement, performance, media or human approval tests.
+
+Source gate completed: JS syntax, Python syntax, full source/center-oracle inverse algebra, exact embedded HTML module, existing codec all-value synthetic roundtrip including undefined/-0. These are not Canvas results. pure-gate75.stdout.json stores the result; no browser module launch occurs in the gate.
+
+Parent review needed before any real execution: all source here, existing referenced codec/spy/fixture/restore dependencies, exact native HTML/source/fonts/browser/runtime pins, and durable-success/failure saving route. Runner records runtime pins and rechecks their bytes at end. Actual execution is not authorized by this README.
+
+After parent releases the source (commands are reviewable only; NOT EXECUTED):
+
+    BURST75_RENDER_RELEASE=PARENT_REVIEWED_SOURCE75_NATIVE_FIDELITY node /dev/shm/avoid009-burst74-isolated-20261025/fidelity-source75/runner75.cjs --browser-path QUALIFIED_BROWSER_PATH --output-dir FRESH_OWNED_SHM_OUTPUT
+    PYTHONDONTWRITEBYTECODE=1 python3 /dev/shm/avoid009-burst74-isolated-20261025/fidelity-source75/raw-review75.py FRESH_OWNED_SHM_OUTPUT OWNED_REVIEW_JSON
+
+The parent execution wrapper must persist every produced record and any error before tool/session exit; this source package intentionally does not create another wrapper. Published URLs, HTTP/assets, deploy polling, smoke, and post-save readback remain forbidden.
