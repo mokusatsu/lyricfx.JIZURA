@@ -1,0 +1,12 @@
+{
+  "returnCode": 1,
+  "producerComplete": false,
+  "parentPassed": false,
+  "orchestratorError": {
+    "type": "RuntimeError",
+    "message": "canonical producer failed",
+    "traceback": "Traceback (most recent call last):\n  File \"/workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs70-execute.py\", line 60, in main\n    rows=M.freeze_inputs(run,runtime);M.need([{k:r[k] for k in ['path','bytes','sha256']} for r in rows]==review['files'],'frozen input mismatch');build=M.ram_build(run,guard,review['baselineHTMLRef']);command=[a.node,str(HERE/'layouts-d-bulbs70-canonical.cjs'),'--build-dir',str(build),'--output-dir',str(run/'raw'),'--browser-path',a.browser_launcher];M.write_json(run/'producer-command.json',{'argv':command,'localOnly':True});producer_return=child(command,run/'producer.stdout.txt',run/'producer.stderr.txt');summary=M.producer_summary(run,producer_return);M.write_json(run/'producer-summary.json',summary);print('SOURCE70_PRODUCER_SUMMARY '+json.dumps(summary),flush=True);M.write_json(R/('producer70-summary-'+a.run_id+'.json'),summary);M.need(summary['producerPassed'],'canonical producer failed');M.check_inputs(rows);guard.check()\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/lyricfx.JIZURA/dev/avoidance/layouts_d_bulbs69_runtime.py\", line 9, in need\n    if not v:raise RuntimeError(msg)\n             ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: canonical producer failed\n"
+  },
+  "htmlTransition": null,
+  "publicChecks": 0
+}
