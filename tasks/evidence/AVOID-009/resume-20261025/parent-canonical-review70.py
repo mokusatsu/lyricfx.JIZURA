@@ -33,7 +33,7 @@ def review(folder,out):
   if phase=='init':
    assert v['lang'] in ['ja','en'] and len(v['pair'])==2
    for i,p in enumerate(v['pair']):
-    assert p['actualLanguage']==p['planLanguage']==p['value']['sourcePlan']['lang']==v['lang'];assert hashlib.sha256(p['value']['sourceNativeFunction'].encode()).hexdigest()==v['sourceWitnessSHA256'][i]
+    assert p['actualLanguage']==p['planLanguage']==p['value']['sourcePlan']['lang']==p['expectedResolvedLanguage'];assert p['documentLanguage']==v['lang'];assert hashlib.sha256(p['value']['sourceNativeFunction'].encode()).hexdigest()==v['sourceWitnessSHA256'][i]
    a,b=[p['value'] for p in v['pair']];eq(a['sourcePlan'],b['sourcePlan']);audit=lambda p:{**p['fontAudit'],'faces':[{**f,'url':urlparse(f['url']).path} for f in p['fontAudit']['faces']]};eq(audit(a),audit(b));eq(a['spec'],b['spec']);key=(v['lang'],v['spec']['id']);assert key not in seen['init'];seen['init'].add(key);counts['init']+=1
   if phase=='tuple':
    a,b=v['pair'];eq(a['tuple'],b['tuple']);eq(a['tuple'],v['tuple']);assert a['sourceUnchanged'] and b['sourceUnchanged'];native(a['native'],b['native']);native(a['directMoved'],b['directMoved']);t=b['transport'];assert t['destinationUnpainted'] and t['rootUnchanged'] and (t['error'] is None or t['error'] is U)

@@ -1,0 +1,70 @@
+{
+  "state": "FAILED_CANONICAL_INIT_LANGUAGE_ASSUMPTION_RAW_DURABLE",
+  "producer": {
+    "kind": "SOURCE69_PRODUCER_MANIFEST_SUMMARY",
+    "returnCode": 1,
+    "complete": false,
+    "producerPassed": false,
+    "mode": "canonical-JAEN-native70",
+    "phase": "failed-partial-raw-retained",
+    "records": 231,
+    "serializedBytes": 30207674,
+    "errors": [
+      {
+        "case": "ja.latin-arrow-left",
+        "name": "AssertionError",
+        "message": "ACTUAL_PLAN_LANGUAGE",
+        "stack": "AssertionError [ERR_ASSERTION]: ACTUAL_PLAN_LANGUAGE\n    at /workspace/lyricfx.JIZURA/dev/avoidance/layouts-d-bulbs70-canonical.cjs:25:415"
+      }
+    ],
+    "failedRequests": 0,
+    "cases": [],
+    "completed": {
+      "fixtures": 6,
+      "tuples": 180,
+      "whole": 36,
+      "controls": 6
+    },
+    "expected": {
+      "fixtures": 30,
+      "tuples": 900,
+      "whole": 180,
+      "controls": 30
+    },
+    "manifestReadError": null,
+    "orchestratorError": null,
+    "rawPersisted": false,
+    "notProductAcceptance": true,
+    "publicChecks": 0
+  },
+  "archive": {
+    "state": "RAW69_ALL_PREFIX_PUSH_DONE",
+    "commit": "71f0c11b417e8c4fb1264042556d8fe7f1c15de3",
+    "branch": "archive/avoid009-bulbs69-canonical70-actual02-20261025-attempt1",
+    "baseHEAD": "a684bf5a61466970a5b5b491c1feb5e80eae6b44",
+    "ROOTIndexSHA256": "2ab68a1a84ca364f8b9d62673e667be885720c84cab96fb0de59d3113399715b",
+    "ROOTHEADIndexPYCAndOldHTMLUnchanged": true,
+    "scopeFiles": 436,
+    "scopeBytes": 41064808,
+    "allStoredBytesVerified": true,
+    "pushOutput": "To https://github.com/mokusatsu/lyricfx.JIZURA.git\n*\t71f0c11b417e8c4fb1264042556d8fe7f1c15de3:refs/heads/archive/avoid009-bulbs69-canonical70-actual02-20261025-attempt1\t[new branch]\nDone\n",
+    "publicChecks": 0
+  },
+  "HTMLTransition": null,
+  "ROOTHTMLUnchanged": true,
+  "parentReviewedPrefix": {
+    "init": 6,
+    "tuple": 180,
+    "whole": 36,
+    "controls": 6,
+    "typedControls": 108,
+    "otherD": 18,
+    "transportPaints": 6819
+  },
+  "parentConclusion": "JA UI locale and detected lyric language are different. Original JA fixture uses auto; Latin input may resolve en. EN default source may explicitly use en. Do not change product or original fixture language to satisfy invalid locale-equality assertion; verify current/plan/resolvedProject match and UI document language separately.",
+  "wholeCanonicalAccepted": false,
+  "newVisualReady": 0,
+  "publicChecks": 0,
+  "postSaveReachabilityChecks": 0,
+  "parentImages": 0
+}

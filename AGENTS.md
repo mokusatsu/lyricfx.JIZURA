@@ -1,3 +1,5 @@
+LATEST Canonical70 actual02:6JA条件180tuple/36whole/108typed/18otherDの親raw一致後、JAページLatin歌詞の正常なen推定をpageJAと同じとした検証assertで停止。全436files41,064,808B push71f0c11b417e8c4fb1264042556d8fe7f1c15de3、HTML未変更。source04で既存default/fixtureは維持、actual/plan/sourcePlan/resolvedproject言語とdocument/page言語を分けてexact検査。親diff/source11 PASS、製品変更なし。actual03へ、基本6/media未実施・新候補0。
+
 LATEST Canonical70 actual01は新追加catalog比較が実Canvas CTMと再設定後CTMを混同して最初のtupleで停止。全209files32,420,035Bを70698df94faff5501555c8e5228bced4484859b8へpush済み、ROOTHTML未変更。source03はcatalogのroot/2call行列だけ意味が異なるためlogical比較から除外、元oracle actualRoot/events/全paint/画素exactは不変。担当sol6.1medium修正、親diff/source11再実行PASS、独立親projection対応。合格条件/対象15条件日英を変更せずactual02へ。新候補0、公開/取得確認0。
 
 LATEST actual05限定受入: 148依存一致、5atomic拒否/明示size40非safe、上位・69cachehit各2/上位隔離2/cache2/3円/redecode1/実12frame独立oracleを親source/raw照合PASS。29records2,773,361JSONB、全214files32,730,720B push2eeacdb8f925abd8e4c252fe05876223c9e9c208。既受入actual03 default証拠を条件固定で再利用、旧table直接数値照合/旧全paint再保存とは主張しない。次は既存15nativefixture日英/基本6の最小統合検証、必要MP4、次の看板。ready0/約6継続、全009/正式性能/保存本体は未完。
