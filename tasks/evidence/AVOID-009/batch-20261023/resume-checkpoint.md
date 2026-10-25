@@ -660,3 +660,6 @@ Media71 exactknown SHM is directly visible torequire_escalated commands andview_
 
 
 2026-10-25 続行更新2：看板72の代表固定版 billboard-native-20261025-01 は原寸960x540/60fpsの前後2MP4・必要6PNGを生成し、native比較250/actual250/encode同一500/PTS500を親numeric受入、文脈なしsol6PNGも照合。entry本文なしは前後共通、exit右1灯は前後共通、after上枠約4pxを確認限界として保持。比較9件4302278Bと全1002recordを含む非配信21原本はSitesSource2bb3f426へpush0、旧440tracked保持。公開操作はまだ行わず、人間は未承認。比較が揃った候補は電球・看板の2件（電球は旧公開操作受付pending/結果未確認、看板はSites保存済み/公開操作未実施）。看板の製品Root反映は未実施。ドカン75はnative18描画/19raw後、検証HTMLのmodule二重実行でCannot redefine property: withBulbsRecipe68、その後init未定義となり停止。旧36原本151808Bを非配信SitesSource7e27ad11へ保存、FAIL保持。初期HTMLのsource1箇所置換へ修正し、1描画probe PASS後、同108条件を1度再試験中（bootstrap/helper変更のため前後同条件の再確認が必要）。ドミノは全own-clock支持の最小source準備中。約6候補へ続行、全009/正式性能/保存本体未合格、公開確認/再取得確認0。
+
+
+2026-10-25 再開更新3：親が現存ドミノactual02原本結果を照合。限定raw PASS1357records/500native/47226支持/270独立oracle。上寄り円1行だけdy109.18999999999997の固定移動で通過、通常円・2行は試した有限方式では不足。製品adapter/代表MP4/人間承認は未実施、全原本は共有SHMのみでSites非配信保存を準備中。ドカンfullclockはsourceレビュー、クロスワード28・輪郭29はsource準備のみCanvas未実施。技術比較候補2（電球・看板）、両方人間未承認、約6候補まで続行。通常アプリHTMLの旧create_blobは返値不明・後続commit/ref操作なし・再送しない。Root391/index2b656c/65/PYC保持、比較資材Sitesのみ、公開結果確認/保存後readback/親画像0。詳細はresume-20261025c/continuation-status03.json。
