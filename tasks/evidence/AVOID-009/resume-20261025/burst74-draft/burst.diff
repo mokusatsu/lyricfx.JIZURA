@@ -1,0 +1,12 @@
+--- native/burst
++++ overlay/burst
+@@ -13,7 +13,8 @@
+     const size = Math.min(J.fitSize(text, Pm.font, rxM * 1.08, ryM * 1.0, o), u * 0.24);
+     const m = J.measure(Object.assign({ text, font: Pm.font, size }, o));
+     const rx = Math.min(rxM, m.w / 2 / 0.54 + size * 0.15), ry = Math.min(ryM, Math.max(m.h / 2 / 0.54 + size * 0.15, rx * 0.55));
+-    const cx = W / 2, cy = H / 2;
++    const burst74 = burst74Binding.offsetFor(env);
++    const cx = burst74 ? W / 2 + burst74.dx : W / 2, cy = burst74 ? H / 2 + burst74.dy : H / 2;
+     const out = tout(env);
+     const q = E.outBack(J.clamp(lt / 0.3), 2.2) * (1 - 0.6 * E.inCubic(env.pOut)) * (1 + 0.015 * Math.sin(env.ltb * 7) * J.clamp(lt - 0.3));
+     const rot = (Pm.tilt + (1 - E.outCubic(J.clamp(lt / 0.3))) * -25 + E.inCubic(env.pOut) * 20) * J.DEG;

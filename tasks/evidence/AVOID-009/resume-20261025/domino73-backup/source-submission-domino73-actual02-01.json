@@ -1,0 +1,41 @@
+{
+  "state": "PREPARED_ONLY_SOURCE_REVIEW_REQUIRED_DO_NOT_RUN",
+  "writer": {
+    "file": "domino73-actual02-writer01.py",
+    "sha256": "422e5ca8888e06cf998e9c6826fb266aceb9efc18865582379213d5c02ecf4a6"
+  },
+  "producer": {
+    "file": "domino73-actual02-producer01.py",
+    "sha256": "4607d6037b6898f293d6e8cd4e6725ec371a655dbb006170ac2a70ad51d31faa"
+  },
+  "consumer": {
+    "file": "domino73-actual02-managed-consumer01.py",
+    "sha256": "c48558ef96baab27554eab0b1a45595fedaaf2b39028f2935e2da6ad3a6a0196"
+  },
+  "payload": [
+    {
+      "path": "domino73-actual02-20261025-01.tar.gz",
+      "bytes": 708698,
+      "sha256": "63b4d5fe0436929988486c7208c7a696e3d779e3ffe39fbfa84b59fe1b5b3050"
+    },
+    {
+      "path": "domino73-actual02-20261025-01.manifest.json",
+      "bytes": 47537,
+      "sha256": "96ed892b95fe8900d6a7ebe9c2e8629cf6c8913b05de38532d1e81817b277e06"
+    }
+  ],
+  "innerFiles": 291,
+  "innerBytes": 943781,
+  "priorHEAD": "280b64732d3866afa95afc12858b3eb0f31010d1",
+  "protectedFiles": 438,
+  "diffFromPrior03": [
+    "fixed payload names and pins",
+    "exact priorHEAD280b and protected438",
+    "inner291/943781",
+    "privateSHM prefix and marker/name constants"
+  ],
+  "syntax": "PASS",
+  "ASTSingleActualLF": "PASS",
+  "credentialsNetworkSourceGit": 0,
+  "RootOldGateChanges": 0
+}
