@@ -1,3 +1,5 @@
+2026-10-25最新: AVOID-009実装中。看板限定親raw受入／ドミノsource準備保存済み。約6候補は未達。最新補足は [再開checkpoint](reviews/AVOID-009-source-checkpoint-20261025.md)。公開結果確認・保存後readbackは禁止。
+
 LATEST 2026-10-25: 比較assets(MP4/PNG/閲覧HTML)は今後Sitesのみ、新GitHub追加禁止。既存asset削除/history改変なし。電球71は500exact時刻/57680独立支持/4MP4/12PNG/freshsol6対PASS、人間動作未承認・Sites保留。旧GitHubasset commitad866b427c1c3d8d2f3b45ff5cbc484e77f6afb6の正確pathはtasks/reviews/AVOID-009-candidates-20261025.md。Source token外部TTY入力はauto拒否・未送信で中止、Source保存/公開0。看板はlocal検証後親rawreview中、具体512/67.8MB承認を実行者へ転送済だがlocal02subset96/24.57MBの申請もauto拒否（全4拒否/実行0）。追加3run最小1135+件は承認拡張せず保留。Root canonical/PYC7/65保持、公開結果確認/到達性readback0。
 
 LATEST 電球69の限定adapterを親source/raw受入、canonical70は日英15条件/900tuple/49832paint/180whole/540typed/90他DとHTML反映後6テストの親照合PASS。旧全raw3cc4f6d、新レビュー/freshbuild204files32,787,642Bをf3d78f253c3c5bfc685b692364a848ca2c3e943aへpush済み。親utility修正後は既存生データだけを照合しnative/6再実行なし、生成2HTML同SHAを反映。現在14D登録+fisheye専用分岐=15IDの限定経路（全入力/全184/全34対応ではない）。次は電球の上寄り横1段/右円左2段だけnative60fps MP4、freshsol静止、看板へ。新候補0/約6、全009/正式性能/保存本体/新動作承認は未完。公開/保存先到達性確認0。

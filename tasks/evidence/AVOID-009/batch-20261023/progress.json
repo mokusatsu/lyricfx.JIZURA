@@ -1870,7 +1870,7 @@
             -5.001750946044922
           ]
         ],
-        "maxRootImportDifference": 2.384185791015625e-07
+        "maxRootImportDifference": 2.384185791015625e-7
       },
       {
         "fixture": "wide-drop-no-score",
@@ -1894,7 +1894,7 @@
             -5.001750946044922
           ]
         ],
-        "maxRootImportDifference": 2.384185791015625e-07
+        "maxRootImportDifference": 2.384185791015625e-7
       },
       {
         "fixture": "tall-right-latin-no-score",
@@ -1918,7 +1918,7 @@
             -8.89200210571289
           ]
         ],
-        "maxRootImportDifference": 2.384185791015625e-07
+        "maxRootImportDifference": 2.384185791015625e-7
       }
     ],
     "parentReviewAttempt1": "TypeError due baseline on=None; no product/test changes; corrected parent comparison uses independent baseline off for both instrumented off/on, as runner specifies.",
@@ -3099,7 +3099,7 @@
     "baseProductCommit": "1979116a4d8e58e072cde87237aec772ee358061",
     "actualTestsExecuted": true,
     "parentPlanAccepted": true,
-    "parentReview": "SOURCE_RAW_IN_PROGRESS_NOT_ACCEPTED",
+    "parentReview": "LIMITED_SOURCE_RAW_ACCEPTED",
     "networkSave": "FOUR_REJECTIONS_BEFORE_PROCESS_NO_PUSH",
     "explicitApprovalForwarded": true,
     "additionalRunsNotApprovedAs512": true,
@@ -3108,7 +3108,23 @@
       "local03 250states/727passes/12frames",
       "local04 excluded frame",
       "local05 renderer-instance stale rejection"
-    ]
+    ],
+    "acceptance": {
+      "literalRecords": 1054,
+      "semanticTuples": 935,
+      "supportEnclosures": 15565,
+      "winnerPasses": 727,
+      "winnerPaints": 13579,
+      "winnerOwnerUnions": 40,
+      "actualFrames": 12,
+      "actualObservationPairs": 32,
+      "atomicNegatives": 6,
+      "groundExcluded": 1,
+      "otherD": 3
+    },
+    "canonicalRegression": "NOT_RUN",
+    "media": "NOT_RUN",
+    "storage": "RAW_PRODUCT_PAYLOAD_NOT_DURABLE; no refused operation retried"
   },
   "assetStoragePolicy": "../resume-20261025/asset-storage-policy-20261025.json",
   "newTechnicalPreparedCount": 1,
@@ -3127,7 +3143,30 @@
     "oldArchive": "ad866b427c1c3d8d2f3b45ff5cbc484e77f6afb6",
     "oldAssetPath": "tasks/evidence/AVOID-009/bulbs-source69-runs/avoid009-bulbs69-media71-actual01-20261025/raw/public/",
     "SourcePushOrPublishExecuted": false,
-    "publication": "BLOCKED_CREDENTIAL_ROUTE_NOT_SENT",
+    "publication": "MANAGED_SOURCE_FETCH_FAILED; explicit-network sandbox ENOSPC before Python; push/save/deploy0",
     "newAssetsGitHubAllowed": false
-  }
+  },
+  "latestSmallRecordsPush": {
+    "head": "3912178bebb4aa458906665a91d5e87f21c44d4e",
+    "files": 33,
+    "bytes": 675786,
+    "pushCommandReturnedSuccess": true,
+    "assetsAdded": 0,
+    "readback": false
+  },
+  "domino73": {
+    "phase": "ISOLATED_SOURCE_SEAM_PURE_REVIEWED",
+    "nativeZeroStates": 66,
+    "movedPaints": 36,
+    "twoRowGlyphs": 10,
+    "parentPureRerun": "PASS",
+    "browser": "NOT_RUN",
+    "safeAdapterRegistered": false,
+    "humanMotion": "NOT_READY",
+    "storage": "GITHUB_CHECKPOINT_bcc35689c71216b020cb15e9e56aeb1aa89a5925",
+    "next": "minimal actual Canvas fidelity gate source preparing",
+    "CanvasGate": "SOURCE_REVIEWED_NOT_RUN"
+  },
+  "latestCheckpointBranch": "archive/avoid009-domino73-sourceprep01-20261025",
+  "latestCheckpointDetail": "../resume-20261025/resume-status-parent72-domino73.json"
 }

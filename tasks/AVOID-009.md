@@ -588,3 +588,9 @@ LATEST08JST_REVIEW_READY 2026-10-24T22:59UTC: work309a7c16b82e130ea92c966983576e
 利用者の最新再開依頼に従い、[実装手引き](avoidance-playbook.md)と[電球次段階設計](reviews/AVOID-009-bulbs-next-design-20261025.md)を追加。今回はsource/契約/受入記録の読取りと文書同期のみ。src/build/ブラウザ実行・新しい幾何合格はない。開始HEAD d08cd4d6be162b8ba9e93764a03b53c3551821e5/work、既存dirty/PYC7/保護65等は親の開始記録どおり保持。文書のGit保存は親が担当し、workspace-onlyを継続の必須入力にしない。次は親の設計レビュー後、同実装担当が電球の有限候補adapterを実装し、看板以降へ順次進める。
 
 2026-10-25 source68限定受入：一枚看板recipe入口・finite候補・native/recipe metadata分離を親sourceレビュー。親がpure31件、基準4d837への逆変換source監査、独立Fraction1003件を実行し一致。原文snapshotと全幾何rawをevidence/AVOID-009/resume-20261025へ保存。アプリCanvas/JAEN/adapter/正式性能/保存本体の合格ではない。source69のfresh native bind・全時計描画/品質・destination再認定・frame preflight接続を同担当が準備中。公開結果確認/親画像動画0。
+
+
+2026-10-25 続行: small code/records33件を3912178bへpush成功（新比較assets0/readback0）。看板72の1054raw復号/hashとnative58 exact比較は親確認、幾何/実frame最終レビュー未完。親utilityのtight-bound期待/typed finalized schema停止を製品合格へ補完しない。ドミノ73は元row/pitch/gi/fallを保つ5seamと共同/row移動のみ、pure66状態/36paint/2row10glyphを親再実行PASS、実Canvas/安全adapterは未実施。約6候補のうち技術準備済み1、閲覧準備済み0、人間未承認保持。今後assetsはSitesのみ、旧GitHubassetsは保持。通常managed用Sites input準備のみ別solが検討、credential/networkは親gateまで0。
+
+
+2026-10-25最新checkpoint: 看板72は限定source/rawを親受入（1054records/935tuple/15565支持/727pass/12frame）。統合・MP4・人間確認は未実施。ドミノ73は19files/53116BをGitHub保存、source/pure親確認、Canvas gate未実行。通常Sites入力exact11は成功したがSource fetch失敗、network権限付きsandboxは起動前ENOSPC、push/save/deploy0・gateBLOCKED。新比較assetsはSitesのみ。Rootwork3912178/index2b656c/65/PYC保持、公開確認/readback0。補足正本はarchive/avoid009-domino73-sourceprep01-20261025の最新commitとtasks/reviews/AVOID-009-source-checkpoint-20261025.md。拒否済看板payloadは当checkpointに含めず未保存のまま4RAMhold保持。約6候補未達（media/static済み1、閲覧準備0）、新独立RUNは同process親review/許可済durable archiveを先に用意してから進める。
