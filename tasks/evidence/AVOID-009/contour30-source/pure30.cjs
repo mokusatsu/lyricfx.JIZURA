@@ -1,0 +1,16 @@
+/* Numeric-only on already accepted29 raw; no DOM/Canvas/Git/network. */
+'use strict';
+const fs=require('node:fs'),zlib=require('node:zlib'),assert=require('node:assert/strict'),util=require('node:util'),path=require('node:path');
+const R='/workspace/lyricfx.JIZURA',O=__dirname,C=require(R+'/tasks/evidence/AVOID-009/bulbs-focused59/source59/runner/kernel59.cjs'),src=fs.readFileSync(R+'/src/11p_layoutsEf_bulbs_proof69.js','utf8');
+const start=src.indexOf('const K=(()=>{'),end=src.indexOf('\nconst Q=(()=>{',start);assert(start>=0&&end>start);const K=Function('assert',src.slice(start,end)+';return K;')(assert),J={placement:{bulbsProof69:{kernel:K,same:util.isDeepStrictEqual}}};
+Function('J',fs.readFileSync(R+'/src/11p_layoutsEe_bulbs_geometry68.js','utf8'))(J);
+const t48=fs.readFileSync(R+'/src/11p_layoutsEc_tiles_proof48.js','utf8'),arith=t48.slice(t48.indexOf('function arithmetic('),t48.indexOf('function clock(')),supp=t48.slice(t48.indexOf('function support('),t48.indexOf('const paintSignature='));J.placement.tilesProof48={support:Function('need','same',arith+supp+';return support;')((v,c)=>assert(v,c),util.isDeepStrictEqual)};
+const support=(0,eval)(fs.readFileSync(O+'/support30.js','utf8'))(J),ref=JSON.parse(fs.readFileSync(O+'/accepted29-reference.json')),raw=path.dirname(ref.rawManifest),m=JSON.parse(fs.readFileSync(ref.rawManifest)),rows=[];let count=0;const crypto=require('node:crypto');assert.equal(crypto.createHash('sha256').update(fs.readFileSync(ref.rawManifest)).digest('hex'),ref.rawManifestSHA256);
+for(const p of m.records){const r=C.decode(JSON.parse(zlib.gunzipSync(fs.readFileSync(raw+'/'+p.file))));if(!r.observed)continue;const a={...r.observed,supportFailure:null,supports:support.supports(r.observed.records)};rows.push(a);count+=a.supports.length;}
+assert.equal(rows.length,108);const paints=rows.flatMap(r=>r.records),fill=paints.find(r=>r.kind==='fillText'&&r.state.alpha>0),stroke=paints.find(r=>r.kind==='strokeText'&&r.state.alpha>0),line=paints.find(r=>r.kind==='stroke');assert(fill&&stroke&&line);
+const edit=(r,x)=>({...structuredClone(r),state:{...r.state,...x}}),inactive={nonstring:true};
+assert.deepEqual(support.supports([edit(fill,{strokeStyle:inactive})]),support.supports([fill]));assert.deepEqual(support.supports([edit(stroke,{fillStyle:inactive})]),support.supports([stroke]));
+assert.throws(()=>support.supports([edit(fill,{fillStyle:inactive})]),/C30_ACTIVE_STYLE/);assert.throws(()=>support.supports([edit(stroke,{strokeStyle:inactive})]),/C30_ACTIVE_STYLE/);assert.throws(()=>support.supports([edit(stroke,{lineJoin:'miter'})]),/C30_ROUND_TEXT/);assert.throws(()=>support.supports([edit(fill,{filter:'blur(1px)'})]),/C30_EFFECT_STATE/);
+assert.throws(()=>support.supports([{...line,path:line.path.slice(0,1)}]),/C30_TWO_POINT_LINE/);assert.equal(support.supports([edit(fill,{alpha:0})]).length,0);
+const json=JSON.stringify(C.encode(rows));fs.writeFileSync(O+'/pure30-numeric.json.gz',zlib.gzipSync(json));fs.writeFileSync(O+'/pure30-results.json',JSON.stringify({state:'PASS_NUMERIC_WRAPPER_ON_ACCEPTED29_RAW',rows:rows.length,positivePaintSupports:count,typedNegatives:5,inactiveStyleCases:2,zeroAlphaCase:1,CanvasRuns:0,fullClockGeometryRun:false,geometryCertified:false},null,2)+'\n');
+console.log(JSON.stringify({rows:rows.length,positivePaintSupports:count,CanvasRuns:0}));
