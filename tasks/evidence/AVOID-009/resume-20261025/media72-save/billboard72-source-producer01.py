@@ -1,0 +1,22 @@
+import os,stat,tarfile,io,json,hashlib,sys,signal
+from pathlib import Path
+FIFO=Path('/workspace/lyricfx.JIZURA/work/avoid009-capacity-objects16/source71-assets-only.fifo')
+ROOT=Path('/workspace/lyricfx.JIZURA')
+def need(v):
+ if not v:raise RuntimeError('fixed-two local IPC precondition')
+def sha(b):return hashlib.sha256(b).hexdigest()
+def fifo_fd(flags):
+ s=FIFO.lstat();need(stat.S_ISFIFO(s.st_mode) and s.st_ino==927035 and s.st_uid==1000 and stat.S_IMODE(s.st_mode)==0o600)
+ fd=os.open(FIFO,flags|os.O_NOFOLLOW);t=os.fstat(fd);need(t.st_dev==s.st_dev and t.st_ino==s.st_ino);return fd
+PINS={'verification/AVOID-009/billboard72-media-originals-20261025-01.tar.gz': (185342, '733ed7599a5fb2b717dbd4900c712b1bcf60b939e0ce93cd3102621dceae517e'), 'verification/AVOID-009/billboard72-media-originals-20261025-01.manifest.json': (8085, '2bbe130986fc5fff2b1057b2c1f90abad83b71caa671871801de4a17cd901ef8'), 'dist/review/AVOID-009/billboard-native-20261025-01/videos/default-before.mp4': (489877, 'd103138b6fa27249d1f2999dc18a119fcad2210c1178229040fa64d2c52c480e'), 'dist/review/AVOID-009/billboard-native-20261025-01/videos/default-after.mp4': (610738, '53a745fffced48d7556ebd6168f853969481784d61dcbb0d2fa1dcca2d7f2fa2'), 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-before-014.png': (446342, 'eb0c8d7e3cfc676cc150816111b087d71e92166aec2e6ea6a1e75386eea66fa8'), 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-before-090.png': (514807, '53aafbde6ae428ab9eab9be95dab4293ec45dfd701b40f9ed26834fc5c3f6376'), 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-before-231.png': (546510, 'bb4d05752d990a0437e746a987e6d7240d5b531a3b0b14a22c85d19c706ac0a8'), 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-after-014.png': (523053, '76172a49fd476325e2343bf17c26080fcb4e72fc597ac457b4efa40998a106bb'), 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-after-090.png': (571622, '7d10706b3195c561d1253aaa59c37e38bd3f0b1a344c4ed408b1185dc5edcef7'), 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-after-231.png': (597397, '9a921a32968900cbf6a76630a2117d25d67c478fb514177a62805056a346c430'), 'dist/review/AVOID-009/billboard-native-20261025-01/index.html': (1932, '444e9c4c18ae1080500960a7a5074e3741128ed10320285be6a984a100d8aa3d')}
+SOURCES={'verification/AVOID-009/billboard72-media-originals-20261025-01.tar.gz': '/dev/shm/avoid009-billboard72-sites-save-20261025-01/billboard72-media-originals-20261025-01.tar.gz', 'verification/AVOID-009/billboard72-media-originals-20261025-01.manifest.json': '/dev/shm/avoid009-billboard72-sites-save-20261025-01/billboard72-media-originals-20261025-01.manifest.json', 'dist/review/AVOID-009/billboard-native-20261025-01/videos/default-before.mp4': '/dev/shm/m72a01/media/videos/default-before.mp4', 'dist/review/AVOID-009/billboard-native-20261025-01/videos/default-after.mp4': '/dev/shm/m72a01/media/videos/default-after.mp4', 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-before-014.png': '/dev/shm/m72a01/media/images/default-before-014.png', 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-before-090.png': '/dev/shm/m72a01/media/images/default-before-090.png', 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-before-231.png': '/dev/shm/m72a01/media/images/default-before-231.png', 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-after-014.png': '/dev/shm/m72a01/media/images/default-after-014.png', 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-after-090.png': '/dev/shm/m72a01/media/images/default-after-090.png', 'dist/review/AVOID-009/billboard-native-20261025-01/images/default-after-231.png': '/dev/shm/m72a01/media/images/default-after-231.png', 'dist/review/AVOID-009/billboard-native-20261025-01/index.html': '/dev/shm/m72a01/media/index.html'}
+payload={}
+for name,(size,digest) in PINS.items():
+ p=Path(SOURCES[name])
+ for q in [*reversed(p.parents),p]:need(not q.is_symlink())
+ need(stat.S_ISREG(p.stat().st_mode));b=p.read_bytes();need(len(b)==size and sha(b)==digest);payload[name]=b
+with os.fdopen(fifo_fd(os.O_WRONLY),'wb') as pipe:
+ with tarfile.open(fileobj=pipe,mode='w|',format=tarfile.USTAR_FORMAT) as tar:
+  for name,b in payload.items():
+   t=tarfile.TarInfo(name);t.size=len(b);t.mode=0o600;tar.addfile(t,io.BytesIO(b))
+print('BILLBOARD72_FIXED_ELEVEN_LOCAL_STREAM_SENT',flush=True)
