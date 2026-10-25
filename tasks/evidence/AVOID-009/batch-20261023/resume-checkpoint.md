@@ -593,3 +593,6 @@ LATEST08JST_REVIEW_READY 2026-10-24T22:59UTC: work309a7c16b82e130ea92c966983576e
 
 
 2026-10-25 commit準備最新（2026-10-25T02:34:42.279951+00:00）：利用者の現作業commit依頼に基づき、親はauthorized_private_index16.pyのBASEのみrepo外 /workspace/avoid009-private-commit16-20261025 に固定した差分（SHA256 34adc54ddd0700ad9630bc8a27eed9f8bf1bcd4222292b8f907eb82871e8f7e9）をレビュー受入。新workspace PREPARE round1 DONE0、312ファイル/26,589,758Bを明示allowlistでstageし親が全バイト照合。stageレビュー時private SHA256 a77b79e8d27c4decd2732bbcc538a5dcb92dc35c7c5e17accdd32214d5b139c6（この追記後のstage再固定値ではない）。immutable証拠のdiffcheck例外のみ原文保持を親受入、製品/docsは別確認。この時点ではcommit/INSTALL未記録。旧SHM helper NOT_READY表記は新workspace authorized wrapperの親レビュー/PREPAREで更新されるが、旧64helperは使用禁止、旧restore16は新receipt/namespaceへの再固定前で引き続きNOT_READY。旧SHM版PREPARE後のRUN FileNotFoundはGit dispatch前のまま保持。
+
+
+最新保存先：AVOID-009追加資料1349件をGitの `archive/avoid009-workspace-20261025` / `683a50d492cb2ee2967a3e7ffff40f350610dfbd` へpush済み。workspace外の旧パスを継続の必須入力にしない。正本は tasks/reviews/AVOID-009-durable-resume-20261025.md。過去の専用indexは履歴、現環境では最新HEADから新手順を準備する。RAW67はアクセス不能のまま、公開結果確認永久禁止。

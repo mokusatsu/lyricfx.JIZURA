@@ -184,3 +184,6 @@ READONLY37の原寸4文字・共通stage移動案を親数学レビュー。次S
 
 
 2026-10-25最新：AVOID-009実装中。固定タイル/電球の2比較は利用者動作承認済み、マグネット既承認を保持。電球承認は表示済み2行右側候補のみ、一般配置判定は説明依頼・adapter未適用。詳細は[AVOID-009](AVOID-009.md)。
+
+
+最新保存先：AVOID-009追加資料1349件をGitの `archive/avoid009-workspace-20261025` / `683a50d492cb2ee2967a3e7ffff40f350610dfbd` へpush済み。workspace外の旧パスを継続の必須入力にしない。正本は tasks/reviews/AVOID-009-durable-resume-20261025.md。過去の専用indexは履歴、現環境では最新HEADから新手順を準備する。RAW67はアクセス不能のまま、公開結果確認永久禁止。
