@@ -1,0 +1,133 @@
+--- /dev/shm/avoid009-crossword26/source31/browser30.js
++++ media32-source/browser32.js
+@@ -1,6 +1,6 @@
+ /* SOURCE_PENDING. Definition only. Caller must obtain parent review before invoking.
+    No URL, fetch, network, registry replacement, product install or frame loop. */
+-(function createCrossword30(input) {
++(function createMedia32(input) {
+ 'use strict';
+ const {J,renderer,plan,project,sources}=input;
+ const A=J.placement,P=A.bulbsProof69,T=A.tilesProof48,need=(v,c,d)=>{if(!v)throw Object.assign(Error(c),{code:c,details:d});},clone=P.clone,same=P.same;
+@@ -23,87 +23,41 @@
+ const fontProbe=document.createElement('canvas').getContext('2d');P.pristine(fontProbe);
+ const compile=(text,facade)=>Function('return ('+text+'\n)')()(facade),spy=compile(sources.observer,J);
+ const rgba64=bytes=>{let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));return{encoding:'literal-RGBA-unorm8-base64',bytes:bytes.length,data:btoa(binary)};};
+-const policy=input.policy;
+-function makeCanvas(){const canvas=document.createElement('canvas');canvas.width=960;canvas.height=540;const ctx=canvas.getContext('2d');T.contextState(ctx);P.pristine(ctx);return ctx;}
+-function paintProjection(rows){return rows.map(({owner,role,...row})=>row);}
+-function draw(ctx,own,realTime,mode,useOracle=false,registered=false){
+- P.pristine(ctx);const initial=T.contextState(ctx),env=T.makeEnv(renderer,plan,cut,ctx,own,realTime),root=P.matrix(ctx),calls=[],counts={rect:0,line:0,draw:0,main:0};let factory;
+- const facade=Object.create(J);facade.mainDraw=(e,it)=>{const owner='crossword28.main.'+(counts.main++);calls.push({kind:'main',owner,item:clone(it),matrix:P.matrix(e.ctx)});return e.withDrawRole('primary',owner,()=>J.mainDraw(e,it));};
+- const native=compile(sources.native,facade),privateSource=compile(sources.private,facade),oracle=compile(sources.oracles[mode.id],facade);
+- for(const key of['rect','line','draw']){const original=env[key];env[key]=(...args)=>{const ordinal=counts[key]++,item=key==='draw'?args[0]:null,sub=key==='draw'?(item.track===.08?'clue':/^\d+$/.test(item.text)?'number':'pencil'):key,owner='crossword28.'+sub+'.'+ordinal;calls.push({kind:key,sub,owner,args:clone(args),matrix:P.matrix(ctx)});return env.withDrawRole('primary',owner,()=>original(...args));};}
+- const observation=spy(ctx,()=>env,false);let result,paintError=null;
+- try{result=env.withDrawRole('primary','crossword28.native',()=>P.shift(env,mode.delta,()=>registered?nativeRegistered(env):useOracle?oracle(env):mode.native?native(env):privateSource.withRecipe(env,mode.recipe,()=>privateSource.render(env))));}catch(e){paintError={name:e.name,message:e.message,stack:e.stack};}finally{observation.restore();}
+- const rootRestored=same(root,P.matrix(ctx)),allPrimary=observation.records.every(r=>r.role==='primary'&&r.owner?.startsWith('crossword28.'));
+- const fontChecks=[];
+- for(const p of observation.records.filter(p=>p.kind.endsWith('Text'))){const call=calls.find(c=>c.owner===p.owner),item=call?.kind==='main'?call.item:call?.kind==='draw'?call.args[0]:null;
+-  if(!item){fontChecks.push({owner:p.owner,unboundRegisteredNative:registered&&p.owner==='crossword28.native',passed:registered&&p.owner==='crossword28.native'});continue;}
+-  const requestedCSS=J.FONTS[item.font]?.composite?J.fontCSS(item.font,item.size,String(p.args[0])):J.fontCSS(item.font,item.size);fontProbe.font=requestedCSS;const acceptedCSS=fontProbe.font,passed=acceptedCSS===p.state.font; fontChecks.push({owner:p.owner,text:p.args[0],font:item.font,size:item.size,requestedCSS,acceptedCSS,actualCSS:p.state.font,passed});
+- }
+- const rgba=ctx.getImageData(0,0,960,540).data;ctx.canvas.width=1;
+- return{initial,root,rootRestored,allPrimary,paintError,clock:{pass:env.pass,t:env.t,realTime:env.realTime,lt:env.lt,ltb:env.ltb,pIn:env.pIn,pOut:env.pOut,step:env.step},calls,counts,fontChecks,records:observation.records,result:clone(result),rgba};
++const winner=input.winner,policy=input.policy,clocks=T.clock(plan,cut),shape=winner.shape;
++need(winner.id==='58A-default-left-bottom'&&shape.id==='58A'&&shape.scale===.58&&shape.profile==='A'&&same(winner.delta,[-291.6562058007809,141.39171833166608])&&same(winner.circle,{id:'default',cx:480,cy:226.8,effectiveRadius:110.7}),'MEDIA32_FIXED_WINNER');
++need(clocks.actualCounts.states===250&&clocks.actualCounts.selectedPasses===727,'MEDIA32_COMPLETE_CLOCK');
++const privateSource=compile(sources.private,J),oracle=compile(sources.oracles[shape.id],J),candidateQuality=Function('A','nativeCell','need','return ('+sources.qualityCandidate+'\n)')(A,68.26666666666667,need),nativeQuality=Function('A','nativeCell','nativeNumber','return ('+sources.qualityNative+'\n)')(A,68.26666666666667,68.26666666666667*.2),supportOf=Function('T','need','return ('+sources.support+'\n)')(T,need),geometryOf=Function('P','return ('+sources.geometry+'\n)')(P),recipe={scale:.58,below:true,profile:'A'},mediaRefs=[renderer.frame,renderer.drawCut,T.support,T.clock,P.shift,P.kernel],policyKey=JSON.stringify(policy);
++function guard32(){stable();need(JSON.stringify(policy)===policyKey&&mediaRefs.every((f,i)=>f===[renderer.frame,renderer.drawCut,T.support,T.clock,P.shift,P.kernel][i]),'MEDIA32_HELPER_DRIFT');}
++async function pixelsSHA32(pixels){return window.crossword32Hash(rgba64(pixels));}
++async function frame32({j,variant,png=false}){
++ guard32();need(Number.isInteger(j)&&j>=0&&j<250&&['native','destination','oracle'].includes(variant),'MEDIA32_FRAME_DOMAIN');const state=clocks.states[j],time=j/60,pre=clocks.preimages.find(p=>p.n===j&&p.reachable);need(pre&&pre.firstTime<=time&&time<=pre.lastTime&&Math.floor(time/clocks.h+1e-6)===j,'MEDIA32_EXACT_J_PREIMAGE');
++ const canvas=document.createElement('canvas');canvas.width=960;canvas.height=540;const ctx=canvas.getContext('2d');P.pristine(ctx);const context=T.contextState(ctx),rows=[],expected=state.passes.filter(p=>p.active),drawOwn=Object.getOwnPropertyDescriptor(renderer,'drawCut'),drawStock=renderer.drawCut,mainOwn=Object.getOwnPropertyDescriptor(J,'mainDraw'),mainStock=J.mainDraw,renderStock=J.LAYOUTS.crossword.render;let active=null,frameError=null;
++ renderer.drawCut=function(env){
++  need(env.ctx===ctx&&env.cut===cut,'MEDIA32_ACTUAL_DRAW_ENV');const own=expected[rows.length];need(own,'MEDIA32_EXTRA_PASS');const actualClock={pass:env.pass,t:env.t,realTime:env.realTime,lt:env.lt,ltb:env.ltb,pIn:env.pIn,pOut:env.pOut,step:env.step};need(actualClock.pass===own.pass&&Object.is(actualClock.t,own.tp)&&Object.is(actualClock.lt,own.lt)&&Object.is(actualClock.ltb,own.ltb)&&actualClock.step===own.step&&Object.is(actualClock.realTime,time),'MEDIA32_ACTUAL_OWN_CLOCK');
++  const scope={own,clock:actualClock,passRoot:P.matrix(ctx),root:null,rootRestored:false,calls:[],counts:{rect:0,line:0,draw:0,main:0},sourceCalls:0,paintError:null,fontChecks:[],records:[]},saved=[],placement=Object.getOwnPropertyDescriptor(env,'placementRecording');active={env,scope};
++  for(const key of['rect','line','draw']){const f=env[key];saved.push([key,f]);env[key]=(...args)=>{const ordinal=scope.counts[key]++,item=key==='draw'?args[0]:null,sub=key==='draw'?(item.track===.08?'clue':/^\d+$/.test(item.text)?'number':'pencil'):key,owner='crossword28.'+sub+'.'+ordinal;scope.calls.push({kind:key,sub,owner,args:clone(args),matrix:P.matrix(ctx)});return env.withDrawRole('primary',owner,()=>f(...args));};}
++  const observation=spy(ctx,()=>env,false);
++  J.LAYOUTS.crossword.render=function(e){need(e===env,'MEDIA32_SOURCE_ENV');scope.sourceCalls++;scope.root=P.matrix(ctx);try{return env.withDrawRole('primary','crossword28.native',()=>P.shift(env,variant==='native'?[0,0]:winner.delta,()=>variant==='native'?renderStock(env):variant==='oracle'?oracle(env):privateSource.withRecipe(env,recipe,()=>privateSource.render(env))));}finally{scope.rootRestored=same(scope.root,P.matrix(ctx));}};
++  env.placementRecording=true;
++  try{return Reflect.apply(drawStock,this,[env]);}catch(e){scope.paintError={name:e.name,message:e.message,stack:e.stack};throw e;}
++  finally{
++   J.LAYOUTS.crossword.render=renderStock;observation.restore();scope.records=observation.records;scope.allPrimary=scope.records.every(r=>r.role==='primary'&&r.owner?.startsWith('crossword28.'));for(const[k,f]of saved)env[k]=f;if(placement)Object.defineProperty(env,'placementRecording',placement);else delete env.placementRecording;active=null;
++   for(const p of scope.records.filter(p=>p.kind.endsWith('Text'))){const call=scope.calls.find(c=>c.owner===p.owner),it=call?.kind==='main'?call.item:call?.kind==='draw'?call.args[0]:null;if(!it){scope.fontChecks.push({owner:p.owner,passed:false,reason:'unbound-source-text'});continue;}const requestedCSS=J.FONTS[it.font]?.composite?J.fontCSS(it.font,it.size,String(p.args[0])):J.fontCSS(it.font,it.size);fontProbe.font=requestedCSS;scope.fontChecks.push({owner:p.owner,font:it.font,size:it.size,requestedCSS,acceptedCSS:fontProbe.font,actualCSS:p.state.font,passed:fontProbe.font===p.state.font});}
++   const mode=variant==='native'?{native:true,delta:[0,0]}:{id:shape.id,recipe,delta:winner.delta};scope.quality=scope.root?(variant==='native'?nativeQuality(scope,mode):candidateQuality(scope,mode)):null;scope.support=supportOf(scope);scope.geometry=variant==='native'||scope.support.error?null:geometryOf(scope.support.rows,winner.circle);rows.push(scope);
++  }
++ };
++ J.mainDraw=function(env,it){if(active?.env===env){const s=active.scope,owner='crossword28.main.'+s.counts.main++;s.calls.push({kind:'main',owner,item:clone(it),matrix:P.matrix(ctx)});return env.withDrawRole('primary',owner,()=>Reflect.apply(mainStock,this,[env,it]));}return Reflect.apply(mainStock,this,[env,it]);};
++ try{renderer.frame(ctx,plan,time,{noHud:true,noPost:true,noForeground:true,noMedia:true,fast:true,avoidanceRealTime:time});}catch(e){frameError={name:e.name,message:e.message,stack:e.stack};}
++ finally{J.LAYOUTS.crossword.render=renderStock;if(drawOwn)Object.defineProperty(renderer,'drawCut',drawOwn);else delete renderer.drawCut;if(mainOwn)Object.defineProperty(J,'mainDraw',mainOwn);else delete J.mainDraw;}
++ const pixels=ctx.getImageData(0,0,960,540).data,rgba={bytes:pixels.length,sha256:await pixelsSHA32(pixels)},image=png?canvas.toDataURL('image/png'):null;canvas.width=1;guard32();
++ const healthy=!frameError&&rows.length===expected.length&&rows.every(s=>!s.paintError&&s.sourceCalls===1&&s.rootRestored&&s.allPrimary&&s.fontChecks.every(f=>f.passed)&&!s.support.error),qualityPassed=variant==='native'?null:rows.every(s=>s.quality?.passed),geometryPassed=variant==='native'?null:rows.every(s=>s.geometry?.passed);
++ return{detail:{kind:'media-frame',j,time,variant,delta:variant==='native'?[0,0]:winner.delta,context,expectedPasses:expected,passes:rows,frameError,healthy,qualityPassed,geometryPassed,rgba,conditionalFoundation:true,adapterRegistered:false},pixels,png:image};
+ }
+-const nativeCell=68.26666666666667,clocks=T.clock(plan,cut);
+-const refs30=[T.support,P.kernel,P.kernel.F,P.kernel.circleConflict,P.kernel.stageFail,A.inverse],policyKey30=JSON.stringify(policy);function stable30(){stable();need(JSON.stringify(policy)===policyKey30&&refs30.every((f,i)=>f===[T.support,P.kernel,P.kernel.F,P.kernel.circleConflict,P.kernel.stageFail,A.inverse][i]),'CROSSWORD30_SUPPORT_POLICY_DRIFT');}
+-need(clocks.actualCounts.states===250&&clocks.actualCounts.selectedPasses===727,'CROSSWORD30_CLOCK_COUNTS');
+-function modeFor(shape,delta=[0,0]){return{id:shape.id,recipe:{scale:shape.scale,below:true,profile:shape.profile},delta};}
+-function quality30(sample,mode){
+- const cell=nativeCell*mode.recipe.scale,fs=16.384,gx=(960-9*cell)/2,gy=(540-5*cell-fs*5)/2,mainY=mode.recipe.profile==='B'?.62:.64,numberY=mode.recipe.profile==='A'?.15:.18,inverse=A.inverse(sample.root),sx=inverse[0]*mode.delta[0]+inverse[2]*mode.delta[1],sy=inverse[1]*mode.delta[0]+inverse[3]*mode.delta[1];
+- const point=(m,x,y)=>[m[0]*x+m[2]*y+m[4],m[1]*x+m[3]*y+m[5]],atoms=[];
+- for(const p of sample.records.filter(p=>p.kind.endsWith('Text')&&p.state.alpha>0)){
+-  const m=p.metrics,x=p.args[1],y=p.args[2],points=[[x-m.actualBoundingBoxLeft-1,y-m.actualBoundingBoxAscent-1],[x+m.actualBoundingBoxRight+1,y-m.actualBoundingBoxAscent-1],[x+m.actualBoundingBoxRight+1,y+m.actualBoundingBoxDescent+1],[x-m.actualBoundingBoxLeft-1,y+m.actualBoundingBoxDescent+1]].map(q=>point(inverse,...point(p.matrix,...q)));
+-  atoms.push({owner:p.owner,text:p.args[0],local:{x0:Math.min(...points.map(p=>p[0])),y0:Math.min(...points.map(p=>p[1])),x1:Math.max(...points.map(p=>p[0])),y1:Math.max(...points.map(p=>p[1]))}});
+- }
+- const checks=[];let witness=null;
+- for(const c of sample.calls.filter(c=>c.kind==='main'||c.sub==='number'||c.sub==='pencil')){
+-  const it=c.kind==='main'?c.item:c.args[0],kind=c.kind==='main'?'main':c.sub,xFraction=kind==='number'?.07:.5,yFraction=kind==='number'?numberY:kind==='main'?mainY:.56,col=Math.round((it.x-gx)/cell-xFraction),row=Math.round((it.y-gy)/cell-yFraction),box={x0:gx+col*cell+sx,y0:gy+row*cell+sy,x1:gx+(col+1)*cell+sx,y1:gy+(row+1)*cell+sy},owned=atoms.filter(a=>a.owner===c.owner),padding=owned.map(a=>Math.min(a.local.x0-box.x0,a.local.y0-box.y0,box.x1-a.local.x1,box.y1-a.local.y1)),floor=kind==='main'?18.9:kind==='number'?12:0,sizePassed=it.size>=floor,contained=padding.every(x=>x>=0);
+-  checks.push({owner:c.owner,kind,text:it.text,size:it.size,floor,sizePassed,cell:[row,col],box,padding,contained});
+-  if(!witness&&(!sizePassed||!contained))witness={criterion:!sizePassed?'size-floor':'cell-containment',owner:c.owner,kind,text:it.text,padding,size:it.size,floor};
+- }
+- const contacts=[];
+- if(!witness)for(const a of atoms.filter(a=>a.owner.includes('.number.'))){for(const b of atoms.filter(b=>b.owner.includes('.main.')||b.owner.includes('.pencil.'))){const x=a.local,y=b.local;if(x.x0<=y.x1&&y.x0<=x.x1&&x.y0<=y.y1&&y.y0<=x.y1){const c={criterion:'number-character-contact',numberOwner:a.owner,numberGlyph:a.text,otherOwner:b.owner,otherText:b.text};contacts.push(c);witness=c;break;}}if(witness)break;}
+- return{passed:!witness,witness,checks,atoms,contacts,held:sample.clock.lt>=.35&&sample.clock.pOut===0,foundation:'source29 actual TextMetrics+1fontpx local containment/contact, conditional; no positive gap floor',partialAfterFirstWitness:!!witness};
++async function qualify32(j,emit){
++ const a=await frame32({j,variant:'native'}),d=await frame32({j,variant:'destination'}),o=await frame32({j,variant:'oracle'}),rgbaEqual=d.pixels.length===o.pixels.length&&d.pixels.every((x,i)=>x===o.pixels[i]),projection=x=>{const{variant,...rest}=x;return rest;},allNumericEqual=same(projection(d.detail),projection(o.detail));
++ for(const f of[a,d,o])await emit(f.detail);const result={kind:'media-qualified',j,time:j/60,nativeSHA256:a.detail.rgba.sha256,destinationSHA256:d.detail.rgba.sha256,oracleSHA256:o.detail.rgba.sha256,fullRGBABytesCompared:2073600,rgbaEqual,allNumericEqual,healthy:[a,d,o].every(f=>f.detail.healthy),candidateQualityPassed:d.detail.qualityPassed&&o.detail.qualityPassed,strictCircleStagePassed:d.detail.geometryPassed&&o.detail.geometryPassed};await emit(result);
++ need(result.healthy&&rgbaEqual&&allNumericEqual&&result.candidateQualityPassed&&result.strictCircleStagePassed,'MEDIA32_QUALIFICATION_FAILED',result);return result;
+ }
+-function supports30(sample){const rows=[];let error=null;for(let ordinal=0;ordinal<sample.records.length;ordinal++){
+- const p=sample.records[ordinal];if(p.state.alpha<=0)continue;
+- try{need(p.role==='primary'&&p.owner?.startsWith('crossword28.'),'CROSSWORD30_SUPPORT_OWNER');const active=p.kind.startsWith('stroke')?'strokeStyle':'fillStyle';need(typeof p.state[active]==='string','CROSSWORD30_ACTIVE_STYLE:'+active);need(p.state.filter==='none'&&!p.state.shadowBlur&&!p.state.shadowOffsetX&&!p.state.shadowOffsetY&&!p.state.dash.length,'CROSSWORD30_SUPPORT_EFFECT');
+-  let primitive=null;if(p.kind==='stroke'){need(p.path.length===2&&p.path[0].key==='moveTo'&&p.path[1].key==='lineTo','CROSSWORD30_LINE_SCOPE');primitive={kind:'line'};}else need(['fillText','fillRect'].includes(p.kind),'CROSSWORD30_SUPPORT_CHANNEL');
+-  const support=T.support({...p,ordinal,primitive});rows.push({ordinal,owner:p.owner,kind:p.kind,bounds:support.bounds,foundation:support.foundation});
+- }catch(e){error={name:e.name,message:e.message,code:e.code??null,ordinal,owner:p.owner,kind:p.kind,activeStyle:p.kind.startsWith('stroke')?'strokeStyle':'fillStyle',supportsCompleted:rows.length};break;}}
+- return{rows,error,foundation:'unmodified tilesProof48.support; all active primary paints, no moving exemptions'};
+-}
+-function geometry30(supports,circle,delta=[0,0]){const K=P.kernel;let checked=0;for(const s of supports){checked++;const b=s.bounds,poly=[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]].map(p=>p.map(K.F)),bounds=Object.fromEntries(Object.entries(b).map(([k,v])=>[k,K.F(v)])),stage=K.stageFail(bounds,delta),conflict=K.circleConflict(poly,circle,delta);if(stage||conflict)return{passed:false,checked,total:supports.length,witness:{owner:s.owner,ordinal:s.ordinal,stage,circle:conflict,bounds:b},partial:true};}return{passed:true,checked,total:supports.length,witness:null,partial:false};}
+-async function tuple30(shape,state,own,delta,phase,emit,circle=null){
+- stable30();const mode=modeFor(shape,delta),actual=draw(makeCanvas(),own,state.firstTime,mode),expected=draw(makeCanvas(),own,state.firstTime,mode,true),quality=quality30(actual,mode),support=supports30(actual),healthy=x=>!x.paintError&&x.rootRestored&&x.allPrimary&&x.fontChecks.every(f=>f.passed),checks={healthy:healthy(actual)&&healthy(expected),paint:same(actual.records,expected.records),calls:same(actual.calls,expected.calls),clock:same(actual.clock,expected.clock),RGBA:actual.rgba.every((x,i)=>x===expected.rgba[i])},geometry=circle&&!support.error?geometry30(support.rows,circle):null;
+- const row={kind:'tuple',phase,shape,n:state.n,own,time:state.firstTime,delta,circle,actual:{...actual,rgba:rgba64(actual.rgba)},expected:{...expected,rgba:rgba64(expected.rgba)},checks,quality,support,geometry,safetyCertified:false};
+- await emit(row);need(Object.values(checks).every(Boolean),'CROSSWORD30_LITERAL_FIDELITY_FAILED',checks);need(!support.error,'CROSSWORD30_UNSUPPORTED_PAINT',support.error);stable30();return{qualityPassed:quality.passed,qualityWitness:quality.witness,supports:support.rows,geometry};
+-}
+-async function pilot30({phase,emit}){
+- need(['representative','full'].includes(phase)&&typeof emit==='function','CROSSWORD30_PHASE');const results=[],winners=[],finalists=[],screened=[];let tupleCount=0;
+- const sink=async row=>{if(row.kind==='tuple')tupleCount++;await emit(row);};
+- if(phase==='representative'){
+-  const shape=policy.shapes.find(s=>s.id==='55C'),state=clocks.states[90];let witness=null,passes=[];
+-  for(const own of state.passes.filter(p=>p.active)){const r=await tuple30(shape,state,own,[0,0],phase,sink);passes.push(own.pass);if(!r.qualityPassed){witness={n:state.n,pass:own.pass,quality:r.qualityWitness};break;}}
+-  const result={kind:'pilot-result',phase,tupleCount,representative:{shape,passes,witness},winners:[],complete:true,geometrySafetyCertified:false,rawPersisted:false};await sink(result);return result;
+- }
+- for(const shape of policy.shapes){const supports=[],visited=[];let witness=null;
+-  outer:for(const n of policy.sparseN){const state=clocks.states[n];visited.push(n);for(const own of state.passes.filter(p=>p.active)){const r=await tuple30(shape,state,own,[0,0],'shape-screen',sink);supports.push(...r.supports.map(s=>({...s,n,pass:own.pass})));if(!r.qualityPassed){witness={n,pass:own.pass,quality:r.qualityWitness};break outer;}}}
+-  const result={kind:'shape-result',shape,visited,witness,passedSparseQuality:!witness,notFullClockQualification:true};results.push(result);await sink(result);if(!witness)screened.push({shape,supports});
+- }
+- const anchors=[];
+- for(const {shape,supports}of screened){need(supports.length,'CROSSWORD30_EMPTY_SHAPE_SUPPORT');const b={x0:Math.min(...supports.map(s=>s.bounds.x0)),y0:Math.min(...supports.map(s=>s.bounds.y0)),x1:Math.max(...supports.map(s=>s.bounds.x1)),y1:Math.max(...supports.map(s=>s.bounds.y1))};
+-  for(const circle of policy.circles)for(const [side,dx]of[['left',2-b.x0],['right',958-b.x1]])for(const [vertical,dy]of[['top',2-b.y0],['center',(540-b.y0-b.y1)/2],['bottom',538-b.y1]]){
+-   need(anchors.length<108,'CROSSWORD30_ANCHOR_CAP');const delta=[dx,dy],geometry=geometry30(supports,circle,delta),anchor={kind:'anchor-result',id:shape.id+'-'+circle.id+'-'+side+'-'+vertical,shape,circle,delta,geometry,source:'sparse-support bound only; actual destination/allclock not yet evaluated'};anchors.push(anchor);await sink(anchor);
+-  }
+- }
+- for(const circle of policy.circles){let tried=0;for(const anchor of anchors.filter(a=>a.circle.id===circle.id&&a.geometry.passed)){
+-  if(tried>=3||finalists.length>=6)break;tried++;let witness=null,statesVisited=0,passesChecked=0;
+-  outer:for(const state of clocks.states){statesVisited++;for(const own of state.passes.filter(p=>p.active)){
+-   const r=await tuple30(anchor.shape,state,own,anchor.delta,'finalist',sink,circle);passesChecked++;
+-   if(!r.qualityPassed||!r.geometry.passed){witness={n:state.n,pass:own.pass,quality:r.qualityWitness,geometry:r.geometry.witness};break outer;}
+-  }}
+-  const result={kind:'finalist-result',id:anchor.id,shape:anchor.shape,circle,delta:anchor.delta,statesVisited,passesChecked,witness,passed:!witness&&statesVisited===250&&passesChecked===727,conditionalFoundation:true};finalists.push(result);await sink(result);if(result.passed){winners.push(result);break;}
+- }}
+- const result={kind:'pilot-result',phase,tupleCount,screenedShapes:results,anchorsConsidered:anchors.length,finalists,winners,complete:true,notEvaluatedEligibleAnchors:anchors.filter(a=>a.geometry.passed&&!finalists.some(f=>f.id===a.id)).map(a=>a.id),geometrySafetyCertified:false,conditionalFullClockWinners:winners.length,rawPersisted:false,scope:'finite9shape/108anchor/6finalist pilot; not global impossibility or product registration'};await sink(result);return result;
+-}
+-return Object.freeze({pilot:pilot30,eligibility,admissibility,policy,scope:'SOURCE30_PENDING_PARENT_RUN_GATE',clock:clocks});
++async function encode32({j,side,expectedSHA256,emit}){const f=await frame32({j,variant:side==='before'?'native':'destination',png:true});if(!f.detail.healthy||side==='after'&&(!f.detail.qualityPassed||!f.detail.geometryPassed)||f.detail.rgba.sha256!==expectedSHA256){await emit({...f.detail,kind:'media-encode-failure'});need(false,'MEDIA32_ENCODE_RGBA_OR_SUPPORT_FAILED');}return{j,time:j/60,SHA256:f.detail.rgba.sha256,png:f.png};}
++return Object.freeze({qualify:qualify32,encode:encode32,clocks,admissibility,winner,scope:'single accepted fixed winner; exact-j media pending'});
+ })
