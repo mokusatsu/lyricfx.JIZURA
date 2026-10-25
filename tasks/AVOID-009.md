@@ -614,3 +614,12 @@ LATEST08JST_REVIEW_READY 2026-10-24T22:59UTC: work309a7c16b82e130ea92c966983576e
 
 2026-10-25 続行更新5：技術レビュー済み4/約6（電球・看板・上円1段ドミノ・通常円ドカン）、全人間未承認。ドカンは750詳細/27141支持/250oracle/500encode/2MP4/6PNG親数値PASS＋freshsol3対、字号90.656→45.328/2行化と文字順・時計保持を分けて表示。輪郭source30は20attempt/43364支持/両円250state727pass727oracle受入（hero.5左/本文native右）。media31はj0..156/471raw後Target crashed・MP4PNG0、未完を保持。クロスワードsource31は自然stagger.0395086を保持しfull producer0/1533tuple・2winner報告したが旧checker全RGBA一括保持がexit-9/reportなし、親fullrawは未受入。source32streaming checkerだけ修正して既存rawを再照合（再描画0）、その間新heavyRUNなし。cgroup16GiB/OOMkill3は観測、特定PIDの因果断定なし。修正後に輪郭同条件media再試行、crossmediaへ。
 保存：code/集計work7d4b9aまで元返値成功、比較assetsGitHub追加0。Sites通常runtimeは/tmp/.git ENOSPCで起動不可。既存packとloose3989のOID重複0、指定tmp空profile0B、既承認matrixcopy不在で安全な容量解放候補なし（削除0）。新権限/認証外部移送/公開確認/readback/親画像0。新重要raw/MP4/PNG/閲覧HTMLはSHMのみ未永続、保存済に補完しない。Root391/index2b/65/PYC維持、009/正式性能/保存本体未完。continuation-status05.jsonが現状詳細。
+
+
+## 2026-10-25 continuation06 — five technical candidates, crossword media pending
+
+Bulbs / billboard / upper-circle one-row domino / default-circle half-size two-row burst / default-circle contour are technical motion-review candidates, all human approval PENDING. Contour retry02 unchanged source succeeded: 750 detailed numeric frames, 24,042 supports, 727 native/body pairs, 250 oracle pairs, 500 encoded frames, 2 native60fps MP4 and 6 PNG. Fresh-context sol reviewed 3 local PNG pairs: no sampled new missing text, but half-size hero and split emblem/title composition reduce giant-letter impact. No fullPostFX or adapter-registration claim. Prior crashed471-frame prefix remains failed and retained.
+
+Crossword existing full raw now parent accepted by source32 streaming checker: 1,533 tuples / 1,581 values / 25 codec records, both fixed winners. No producer redraw. RSS152,522,752B is diagnostic only, not formal performance. Fixed default58A media32 code preparation continues. Previous checker-9 and guard failures preserved.
+
+New MP4/PNG/HTML and important full raw remain SHM_ONLY because Sites fetch failed before push; no retry or credential transfer. No review assets sent to GitHub. Public checks0, post-save readback0, parent image/video views0. Root3912178/index/65skip/PYC7 preserved. Whole009 incomplete; save-body known failure013 and formal performance not accepted. Next: crossword media source review, native60fps run, independent sol statics, then six-candidate human motion queue. Sites durability blocker tracked separately.

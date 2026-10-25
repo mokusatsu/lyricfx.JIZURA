@@ -229,3 +229,12 @@ READONLY37の原寸4文字・共通stage移動案を親数学レビュー。次S
 
 
 2026-10-25 続行更新2：看板72の代表固定版 billboard-native-20261025-01 は原寸960x540/60fpsの前後2MP4・必要6PNGを生成し、native比較250/actual250/encode同一500/PTS500を親numeric受入、文脈なしsol6PNGも照合。entry本文なしは前後共通、exit右1灯は前後共通、after上枠約4pxを確認限界として保持。比較9件4302278Bと全1002recordを含む非配信21原本はSitesSource2bb3f426へpush0、旧440tracked保持。公開操作はまだ行わず、人間は未承認。比較が揃った候補は電球・看板の2件（電球は旧公開操作受付pending/結果未確認、看板はSites保存済み/公開操作未実施）。看板の製品Root反映は未実施。ドカン75はnative18描画/19raw後、検証HTMLのmodule二重実行でCannot redefine property: withBulbsRecipe68、その後init未定義となり停止。旧36原本151808Bを非配信SitesSource7e27ad11へ保存、FAIL保持。初期HTMLのsource1箇所置換へ修正し、1描画probe PASS後、同108条件を1度再試験中（bootstrap/helper変更のため前後同条件の再確認が必要）。ドミノは全own-clock支持の最小source準備中。約6候補へ続行、全009/正式性能/保存本体未合格、公開確認/再取得確認0。
+
+
+## 2026-10-25 continuation06 — five technical candidates, crossword media pending
+
+Bulbs / billboard / upper-circle one-row domino / default-circle half-size two-row burst / default-circle contour are technical motion-review candidates, all human approval PENDING. Contour retry02 unchanged source succeeded: 750 detailed numeric frames, 24,042 supports, 727 native/body pairs, 250 oracle pairs, 500 encoded frames, 2 native60fps MP4 and 6 PNG. Fresh-context sol reviewed 3 local PNG pairs: no sampled new missing text, but half-size hero and split emblem/title composition reduce giant-letter impact. No fullPostFX or adapter-registration claim. Prior crashed471-frame prefix remains failed and retained.
+
+Crossword existing full raw now parent accepted by source32 streaming checker: 1,533 tuples / 1,581 values / 25 codec records, both fixed winners. No producer redraw. RSS152,522,752B is diagnostic only, not formal performance. Fixed default58A media32 code preparation continues. Previous checker-9 and guard failures preserved.
+
+New MP4/PNG/HTML and important full raw remain SHM_ONLY because Sites fetch failed before push; no retry or credential transfer. No review assets sent to GitHub. Public checks0, post-save readback0, parent image/video views0. Root3912178/index/65skip/PYC7 preserved. Whole009 incomplete; save-body known failure013 and formal performance not accepted. Next: crossword media source review, native60fps run, independent sol statics, then six-candidate human motion queue. Sites durability blocker tracked separately.
