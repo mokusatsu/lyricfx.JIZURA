@@ -1,5 +1,5 @@
 """Parent-only read of archived SOURCE69 actual01; no browser or product mutation."""
-import gzip, hashlib, json, os, pathlib, struct, subprocess, sys, tempfile
+import base64, gzip, hashlib, json, os, pathlib, struct, subprocess, sys, tempfile, zlib
 ROOT=pathlib.Path('/workspace/lyricfx.JIZURA')
 REF='archive/avoid009-bulbs69-actual01-20261025-attempt1'
 PREFIX='tasks/evidence/AVOID-009/bulbs-source69-runs/avoid009-bulbs69-actual01-20261025/'
@@ -27,6 +27,15 @@ def restore(b,t):
  if typ=='scalar':return dec(b['value'])
  if typ=='array':return [restore(v,t) for v in b['items']]
  if typ=='object':return {k:restore(v,t) for k,v in b['entries']}
+ if typ=='metadata59-gzip-v2':
+  need(isinstance(b['jsonBytes'],int) and 0<=b['jsonBytes']<=16777216)
+  z=zlib.decompressobj(31);raw=z.decompress(base64.b64decode(b['gzipBase64'],validate=True),16777217)
+  need(z.eof and not z.unused_data and not z.unconsumed_tail and len(raw)==b['jsonBytes'] and hashlib.sha256(raw).hexdigest()==b['jsonSHA256'])
+  return dec(json.loads(raw))
+ if typ=='paint-v2':
+  d=table('paint',b['descriptor']);m=table('matrix',b['matrix']);pb=b['pathBinding'];need(pb['kind'] in ['PAINT_ROOT','PER_COMMAND'])
+  if pb['kind']=='PER_COMMAND':need(len(pb['matrixIDs'])==len(d['path']))
+  d['matrix']=m;d['path']=[{**c,'matrix':m[:] if pb['kind']=='PAINT_ROOT' else table('matrix',pb['matrixIDs'][i])} for i,c in enumerate(d['path'])];return d
  if typ=='paint':
   d=table('paint',b['descriptor']);d['matrix']=table('matrix',b['matrix'])
   d['path']=[{**{k:v for k,v in c.items() if k!='matrixID'},'matrix':table('matrix',c['matrixID'])} for c in d['path']];return d

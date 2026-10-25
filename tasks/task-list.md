@@ -1,3 +1,5 @@
+LATEST SAVE POLICY: GitHub保存/pushと操作元返値・commit/path記録まで。保存後の到達性を確認するための再取得/download/readbackは利用者により禁止。描画/実装の正しさの検証は省略せず、次試行は生成時と同じprocess/namespaceで親raw checkerを実行してから結果ごとpushする。公開結果確認永久禁止も維持。
+
 2026-10-25最新: 電球69のローカル全時刻試行actual01は保存量上限で停止（668records、新配置proof前）。全生データ・source839filesはGit archive `da9fd1978d4f9adabeef2f033c284c5e07844b98`へpush済み。担当sol6.1/mediumがrunnerの損失なし重複圧縮のみ修正、上限/合格条件は据置。新規視覚確認候補0/約6件まで続行。公開結果確認/親画像0、009全体未完。詳細はbatch progress/checkpointとresume-20261025記録。
 
 2026-10-25現在: 009実装中。最新依頼「知見整理後に残りへ順次適用」に従い、[実装手引き](avoidance-playbook.md)と[電球次設計](reviews/AVOID-009-bulbs-next-design-20261025.md)を親が限定設計として受入れ、電球sourceを準備中。電球/タイル/マグネット固定例は承認済み、電球一般adapter/看板移送は未完。以下の同日以前の未回答表記は履歴。

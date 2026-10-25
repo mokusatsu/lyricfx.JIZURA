@@ -1624,6 +1624,38 @@ const rrPts = (x, y, w, h, r, nc = 5) => {
 };
 
 /* ================================================================== 13 bulbs — 電球サイン */
+/* SOURCE68: an explicit, synchronous recipe binding. Native registry identity
+   and no-binding evaluation order stay unchanged. Not an avoidance certificate. */
+const bulbsRecipe68Key=Symbol('bulbs-recipe68');
+const bulbs68Need=(v,code)=>{if(!v)throw Object.assign(Error(code),{code});};
+const bulbs68Clone=x=>Array.isArray(x)?x.map(bulbs68Clone):x&&typeof x==='object'?Object.fromEntries(Object.entries(x).map(([k,v])=>[k,bulbs68Clone(v)])):x;
+const bulbs68Freeze=x=>{if(x&&typeof x==='object'&&!Object.isFrozen(x)){Object.values(x).forEach(bulbs68Freeze);Object.freeze(x);}return x;};
+const bulbs68Scope=(env,recipe,reference)=>{
+  const c=env.cut,p=c.params;
+  bulbs68Need(env.plan?.lang==='ja'&&J.lang===env.plan.lang&&env.W===960&&env.H===540&&c.placementLayoutsD===true&&c.text==='風の先へ'&&c.seed===1205&&p.font==='dela'&&p.shape==='board'&&p.sub===true&&p.chase==='chase'&&p.dir===1&&c.enter==='cut'&&c.exit==='cut'&&c.hold==='still'&&c.treat==='none'&&c.cam==='push'&&!c.drawing&&!c.effectsOnly&&!(c.decor||[]).length,'BULBS68_RECIPE_SCOPE');
+  bulbs68Need(c.lyricSize==null&&c.contentScale===1&&c.motionScale===1,'BULBS68_EXPLICIT_OR_SCALE');
+  bulbs68Need(recipe&&['one-row-compact','two-row-native','two-row-95'].includes(recipe.id)&&recipe.scale===(recipe.id==='two-row-95'?.95:1)&&recipe.writingText===(recipe.id==='one-row-compact'?'風の先へ':'風の\n先へ')&&recipe.pad?.[0]===.22&&recipe.pad?.[1]===.25&&recipe.radiusScale===.8,'BULBS68_RECIPE_DOMAIN');
+  bulbs68Need(reference?.kind==='bulbs-native-catalog'&&reference.nativeOnly===true&&reference.complete&&reference.sourceInputs.text===c.text&&reference.seed===c.seed&&reference.params.font===p.font&&reference.params.shape===p.shape&&reference.params.chase===p.chase&&reference.params.dir===p.dir&&reference.params.sub===p.sub,'BULBS68_NATIVE_REFERENCE');
+  bulbs68Need(reference.pass===env.pass&&['t','realTime','lt','ltb','step','pIn','pOut'].every(k=>Object.is(reference.clock[k],env[k]))&&Number.isFinite(reference.size)&&reference.size>0&&(reference.culled===true||Number.isFinite(reference.r)&&reference.r>0&&reference.rings.length===1&&reference.rings.every(r=>Number.isInteger(r.N)&&r.N>=4&&r.N<=140)),'BULBS68_REFERENCE_CLOCK');
+  const a=J.layoutText({text:reference.text,font:p.font,size:reference.size,track:.06,lead:1.12}),b=J.layoutText({text:recipe.writingText,font:p.font,size:reference.size*recipe.scale,track:.06,lead:1.12});
+  bulbs68Need(a.length===4&&b.length===4&&a.every((g,i)=>g.ch===['風','の','先','へ'][i]&&g.i===i&&b[i].ch===g.ch&&b[i].i===g.i),'BULBS68_SOURCE_GLYPH_MAP');
+  const q=E.outBack(J.clamp(env.lt/.35),1.4)*(1-.1*E.inCubic(env.pOut)),out=tout(env),culled=q<=.01||out<=0;
+  bulbs68Need(Object.is(reference.q,q)&&Object.is(reference.out,out)&&reference.culled===culled,'BULBS68_CULL_CLOCK');
+  if(culled){bulbs68Need(reference.cullReason===(q<=.01?'q<=.01':'out<=0')&&reference.sourceCalls.length===0&&reference.rings.length===0&&!Object.hasOwn(reference,'subtitle'),'BULBS68_CULLED_REFERENCE');return;}
+  const fs=reference.ss*Math.min(1,q),expected=Math.min(fs,J.fitSize('No.01',bodyF(env),reference.bw-reference.padX,reference.ss*1.2,{track:.18}));
+  bulbs68Need(reference.subtitle?.text==='No.01'&&Object.is(reference.subtitle.fs,fs)&&Object.is(reference.subtitle.size,expected),'BULBS68_CAPTION_SCOPE');
+};
+const bulbs68Resample=(pts,N)=>{
+  const seg=[];let L=0;for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length],l=Math.hypot(b[0]-a[0],b[1]-a[1]);seg.push(l);L+=l;}
+  const step=L/N,out=[];let si=0,acc=0;for(let k=0;k<N;k++){const t=k*step;while(si<seg.length-1&&acc+seg[si]<t){acc+=seg[si];si++;}const a=pts[si],b=pts[(si+1)%pts.length],f=seg[si]>0?(t-acc)/seg[si]:0;out.push([J.lerp(a[0],b[0],f),J.lerp(a[1],b[1],f)]);}return out;
+};
+Object.defineProperty(J.placement,'withBulbsRecipe68',{enumerable:true,value:Object.freeze((env,recipe,reference,fn)=>{
+  bulbs68Need(typeof fn==='function'&&!Object.hasOwn(env,bulbsRecipe68Key),'BULBS68_RECIPE_BINDING');bulbs68Scope(env,recipe,reference);
+  const binding=bulbs68Freeze({recipe:bulbs68Clone(recipe),reference:bulbs68Clone(reference)});
+  Object.defineProperty(env,bulbsRecipe68Key,{value:binding,enumerable:true,configurable:true});
+  try{return fn();}finally{delete env[bulbsRecipe68Key];}
+})});
+
 reg('bulbs', {
   name: '電球サイン', tags: ['pop', 'emotional', 'graphic'], w: 0.8, treat: 'safe', emph: 1.3, ae: 'center', fits: n => n >= 1 && n <= 14,
   enterBias: { cut: 1.8, flicker: 1.6, pop: 1.2, blur: 0.6, slice: 0.3, wipe: 0.4 },
@@ -1633,26 +1665,29 @@ reg('bulbs', {
   render(env) {
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
     const nativeD = cut.placementLayoutsD === true;
+    const recipeBinding68=env[bulbsRecipe68Key]||null;
+    if(recipeBinding68)bulbs68Scope(env,recipeBinding68.recipe,recipeBinding68.reference);
     const matrixNow = () => {const v=ctx.getTransform();return [v.a,v.b,v.c,v.d,v.e,v.f];};
     const clone = v => Array.isArray(v)?v.map(clone):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,clone(x)])):v;
     const freeze = v => {if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
     const captureD = nativeD && typeof cut.text==='string' && cut.text.length<=4096 && [...cut.text].length<=512;
     const catalog = nativeD?{kind:'bulbs-native-catalog',version:1,nativeOnly:true,complete:false,bounded:captureD,status:captureD?'collecting':'partial-budget',unsupported:captureD?null:'catalog-budget:max4096UTF16/512codepoints/1024calls',limits:{textUTF16:4096,textCodepoints:512,calls:1024},owner:'bulbs.sign',role:'primary',stage:[env.plan?.W??W,env.plan?.H??H],environmentSize:[W,H],root:matrixNow(),pass:env.pass,clock:{t:env.t,realTime:env.realTime,lt,ltb:env.ltb,step:env.step,pIn:env.pIn,pOut:env.pOut,beat:clone(env.beat),beatPulse:env.beatPulse},seed:s,params:clone(Pm),effectiveFX:clone(env.fx),sourceInputs:{text:captureD?cut.text:null,lineText:captureD?cut.lineText:null,line:cut.line,inDur:cut.inDur,outDur:cut.outDur,dur:cut.dur,start:cut.start,end:cut.end,stagger:cut.stagger,enter:cut.enter,hold:cut.hold,exit:cut.exit,treat:cut.treat,motionScale:cut.motionScale},sourceCalls:[],primaryOwners:[],independentDecorOwners:[],rings:[],motionUnchanged:true,painterOrder:'shadow,face,outline; each ring each light halo,bulb,glint; full mainDraw; subtitle'}:null;
+    if(recipeBinding68&&catalog){catalog.kind='bulbs-recipe68-catalog';catalog.nativeOnly=false;catalog.recipe68=bulbs68Clone(recipeBinding68.recipe);catalog.sourceProof={kind:'bulbs68-declared-recipe-only',geometryCertified:false,nativeGeometry:false,sourceGlyphIndices:[0,1,2,3],sourceClocksUnchanged:true};}
     if(nativeD)env.placementDGeometry=catalog;
     let finished=false;
     const owned=(owner,kind,fn)=>{if(!nativeD)return fn();const id='bulbs.sign.'+owner;let call=null;if(captureD&&catalog.sourceCalls.length<1024){call={ordinal:catalog.sourceCalls.length,owner:id,role:'primary',kind,matrixBeforeCall:matrixNow()};catalog.sourceCalls.push(call);if(!catalog.primaryOwners.includes(id))catalog.primaryOwners.push(id);}else if(captureD){catalog.bounded=false;catalog.status='partial-budget';catalog.unsupported='catalog-budget:1024calls';}try{return env.withDrawRole('primary',id,fn);}finally{if(call)call.matrixAfterCall=matrixNow();}};
     try {
     const port = isPort(env);
-    const text = brk(cut.text, port ? 5 : 8);
+    const text = recipeBinding68?recipeBinding68.recipe.writingText:brk(cut.text, port ? 5 : 8);
     const o = { track: 0.06, lead: 1.12 };
     const arrow = Pm.shape === 'arrow' && !port;
     const maxW = W * (arrow ? 0.62 : 0.72), maxH = H * (port ? 0.36 : 0.42);
     const m100 = J.measure(Object.assign({ text, font: Pm.font, size: 100 }, o));
     const subT = Pm.sub ? altCopy(env) : null;
-    const size = Math.min(J.fitSize(text, Pm.font, maxW, maxH, o), u * 0.24, W * (arrow ? 0.8 : 0.9) / (m100.w / 100 + 1.5), H * 0.8 / (m100.h / 100 + 1.24 + (subT ? 0.3 : 0)));
+    const size = recipeBinding68?recipeBinding68.reference.size*recipeBinding68.recipe.scale:Math.min(J.fitSize(text, Pm.font, maxW, maxH, o), u * 0.24, W * (arrow ? 0.8 : 0.9) / (m100.w / 100 + 1.5), H * 0.8 / (m100.h / 100 + 1.24 + (subT ? 0.3 : 0)));
     const m = J.measure(Object.assign({ text, font: Pm.font, size }, o));
-    const ss = Math.max(smallSize(env), size * 0.16);
-    const padX = size * 0.75, padY = size * 0.62;
+    const ss = recipeBinding68?recipeBinding68.reference.ss:Math.max(smallSize(env), size * 0.16);
+    const padX = recipeBinding68?size*recipeBinding68.recipe.pad[0]:size * 0.75, padY = recipeBinding68?size*recipeBinding68.recipe.pad[1]:size * 0.62;
     const bw = m.w + padX * 2, bh = m.h + padY * 2 + (subT ? ss * 1.8 : 0);
     const ax = arrow ? bh * 0.42 * Pm.dir : 0;
     const cx = W / 2 - ax / 2, cy = H / 2;
@@ -1677,7 +1712,7 @@ reg('bulbs', {
     owned('face','poly',()=>env.poly(sp, board, out, gIn(env)));
     owned('outline','outline',()=>outline(env, sp, J.mix(board, bulbC, 0.35), Math.max(1.5, u * 0.003), out));
     // bulbs round the rim (and an inner ring for 'double')
-    const r = J.clamp(size * 0.075, 4, u * 0.022);
+    const r = recipeBinding68?recipeBinding68.reference.r*recipeBinding68.recipe.radiusScale:J.clamp(size * 0.075, 4, u * 0.022);
     const inset = (k) => { if (arrow) return sp.map(([x, y]) => [cx + (x - cx) * k, cy + (y - cy) * k]); const d = size * 0.3 * (1 - k); return rrPts(x0 + d, y0 + d * (bh / bw), bw - d * 2, bh - d * 2 * (bh / bw), size * 0.3 * k).map(([x, y]) => [cx + (x - cx) * q, cy + (y - cy) * q]); };
     const rings = Pm.shape === 'double' && !arrow ? [0.95, 0.86] : [arrow ? 0.93 : 0.95];
     const beatFlash = env.beat && env.beat.since < 0.12 ? 1 : 0;
@@ -1685,9 +1720,9 @@ reg('bulbs', {
     if(captureD)Object.assign(catalog,{r,ringInsets:rings.slice(),beatFlash,step,ghostFace:gIn(env),outlineWidth:Math.max(1.5,u*.003),shadowOffset:[u*.012,u*.016]});
     rings.forEach((k, ri) => {
       const insetPoints = inset(k);
-      const pts = resample(insetPoints, r * 3.3, 140);
+      const pts = recipeBinding68?bulbs68Resample(insetPoints,recipeBinding68.reference.rings[ri].N):resample(insetPoints, r * 3.3, 140);
       const N = pts.length;
-      let ring=null;if(captureD){const segments=insetPoints.map((a,i)=>{const b=insetPoints[(i+1)%insetPoints.length];return Math.hypot(b[0]-a[0],b[1]-a[1]);});ring={ri,k,insetPoints:clone(insetPoints),points:clone(pts),N,spacing:r*3.3,maxN:140,segmentsRecomputedMetadata:segments,totalLengthRecomputedMetadata:segments.reduce((a,b)=>a+b,0),derivation:'inset evaluated once; original resample result; segment lengths separately recomputed metadata only',lights:[]};catalog.rings.push(ring);}
+      let ring=null;if(captureD){const segments=insetPoints.map((a,i)=>{const b=insetPoints[(i+1)%insetPoints.length];return Math.hypot(b[0]-a[0],b[1]-a[1]);});ring={ri,k,insetPoints:clone(insetPoints),points:clone(pts),N,spacing:r*3.3,maxN:140,segmentsRecomputedMetadata:segments,totalLengthRecomputedMetadata:segments.reduce((a,b)=>a+b,0),derivation:'inset evaluated once; original resample result; segment lengths separately recomputed metadata only',lights:[]};if(recipeBinding68){ring.nativeCount=recipeBinding68.reference.rings[ri].N;ring.actualStep=ring.totalLengthRecomputedMetadata/N;ring.spacing=ring.actualStep;ring.derivation='recipe68 outline resampled at fixed native N(t); actualStep is new perimeter/N, not radius*3.3';}catalog.rings.push(ring);}
       pts.forEach((p, i) => {
         const on0 = (i / N) < E.inOutCubic(J.clamp((lt - 0.1 - ri * 0.1) / 0.6)) && (i / N) >= E.inCubic(env.pOut);
         let lit = 0;
@@ -1713,11 +1748,11 @@ reg('bulbs', {
     if (subT) {
       const fs = ss * Math.min(1, q);
       const t = subT.length > 28 ? subT.slice(0, 27) + '…' : subT;
-      const sz = Math.min(fs, J.fitSize(t, bodyF(env), bw - padX, ss * 1.2, { track: 0.18 }));
+      const sz = recipeBinding68?recipeBinding68.reference.subtitle.size:Math.min(fs, J.fitSize(t, bodyF(env), bw - padX, ss * 1.2, { track: 0.18 }));
       if(captureD)catalog.subtitle={owner:'bulbs.sign.subtitle',original:subT,text:t,UTF16Length:subT.length,truncated:subT.length>28,fs,size:sz,x:cx,y:cy+m.h/2+padY*.1};
       owned('subtitle','draw',()=>env.draw({ text: t, font: bodyF(env), size: sz, x: cx, y: cy + m.h / 2 + padY * 0.1, track: 0.18, color: bulbC, alpha: tin(env, 0.3, 0.3) * out, ghost: false }));
     }
-    if(captureD)catalog.bb=clone(bb);
+    if(captureD){catalog.bb=clone(bb);if(recipeBinding68){catalog.lyric.sourceGlyphIndices=[0,1,2,3];catalog.recipe68OriginalN=recipeBinding68.reference.rings.map(r=>r.N);catalog.recipe68OriginalClock=clone(recipeBinding68.reference.clock);}}
     finished=true;return bb;
     } finally {if(nativeD){catalog.complete=finished&&catalog.bounded;catalog.status=catalog.complete?'complete':finished?'partial-budget':'native-threw';freeze(catalog);}}
   },
