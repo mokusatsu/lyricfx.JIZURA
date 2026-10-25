@@ -217,3 +217,6 @@ READONLY37の原寸4文字・共通stage移動案を親数学レビュー。次S
 最新保存先：AVOID-009追加資料1349件をGitの `archive/avoid009-workspace-20261025` / `683a50d492cb2ee2967a3e7ffff40f350610dfbd` へpush済み。workspace外の旧パスを継続の必須入力にしない。正本は tasks/reviews/AVOID-009-durable-resume-20261025.md。過去の専用indexは履歴、現環境では最新HEADから新手順を準備する。RAW67はアクセス不能のまま、公開結果確認永久禁止。
 
 2026-10-25最新再開: 009実装中。利用者依頼により[回避実装手引き](avoidance-playbook.md)と[電球次段階設計](reviews/AVOID-009-bulbs-next-design-20261025.md)を準備し親レビューへ。固定電球/タイル/マグネット承認とsrc限定受入を保持し、電球一般adapter・看板新規transportから順次進める。全009/正式性能/保存本体未完、010未着手、公開結果確認0。
+
+
+2026-10-25 続行更新：看板72は隔離RAMで通常JAENビルドのbefore/after想定SHA一致、同一/usr/bin/chromiumで本文不変6試験を前後各1回、計12件PASS。親がliteral logsを閲読しRootGuard保持を確認。製品Rootへの反映・代表MP4・人間動作確認は未実施で、既存935tupleの限定幾何受入を一般化しない。ドミノ73は短TMPで実Canvas260描画/270records/errors0、旧checker行番号float扱いの失敗を保存し、1行訂正後に同じ生データだけを親照合（104native pairs/52moved pairs/4575paint/1045glyph/156rowclock）PASS、再描画0。内部描画fidelity段階のため追加人間確認不要、円回避adapterは次段階。全291原本943781BをSitesSource080116c83f5d5b34a0cc2642e5b5d74dfca5e733の非配信verificationへ保存、push0、旧438tracked/dist不変、公開操作0/取得確認0。人間確認待ちは電球1候補（Sites公開操作受付pending/結果未確認）。ドカンはpure5状態だけ親再実行PASSのDRAFT、Canvas/円安全性未検証。約6候補へ看板→ドミノ→後続の順に継続、全009/正式性能/保存本体未完。

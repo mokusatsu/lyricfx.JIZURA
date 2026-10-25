@@ -654,3 +654,6 @@ Media71 exactknown SHM is directly visible torequire_escalated commands andview_
 
 
 2026-10-25更新: 必要転送済み。電球の比較9ファイル4475831Bは非公開SitesSource b93a394...へ保存、非公開公開操作は受付pending（結果確認/poll0）。電球1件を「人間視覚確認待ち・公開操作受付済み/結果未確認」と数える。看板全原本1193件とドミノ初回失敗17件はSitesSource280b647...の配信外verificationへ退避（合計1210件11919049B、archive10414943B＋台帳226797B）。HTML/MP4/PNGの新GitHub追加0、旧HTML例外承認は今後の根拠に使わない。ドミノ初回はChromium socket path長で描画前失敗records0、Git保存試行はHTTP500でremote状態UNKNOWN。短TMP実browser/Canvas probeはPASS、renderer/checker/26tuple不変でSites保存待ちwrapperへ変更。次は既存260描画、看板のpaired6 before/after回帰を優先し、ドカン準備はpause。約6候補未達、全009/正式性能/保存本体未完。localRoot391/index2b656c/65/PYC保持。公開URLアクセス/公開結果確認/保存後readback0。
+
+
+2026-10-25 続行更新：看板72は隔離RAMで通常JAENビルドのbefore/after想定SHA一致、同一/usr/bin/chromiumで本文不変6試験を前後各1回、計12件PASS。親がliteral logsを閲読しRootGuard保持を確認。製品Rootへの反映・代表MP4・人間動作確認は未実施で、既存935tupleの限定幾何受入を一般化しない。ドミノ73は短TMPで実Canvas260描画/270records/errors0、旧checker行番号float扱いの失敗を保存し、1行訂正後に同じ生データだけを親照合（104native pairs/52moved pairs/4575paint/1045glyph/156rowclock）PASS、再描画0。内部描画fidelity段階のため追加人間確認不要、円回避adapterは次段階。全291原本943781BをSitesSource080116c83f5d5b34a0cc2642e5b5d74dfca5e733の非配信verificationへ保存、push0、旧438tracked/dist不変、公開操作0/取得確認0。人間確認待ちは電球1候補（Sites公開操作受付pending/結果未確認）。ドカンはpure5状態だけ親再実行PASSのDRAFT、Canvas/円安全性未検証。約6候補へ看板→ドミノ→後続の順に継続、全009/正式性能/保存本体未完。
