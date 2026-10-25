@@ -1,0 +1,14 @@
+{
+  "state": "FAIL_CROSSWORD28_SPARSE_FIDELITY",
+  "restoredRecords": 0,
+  "allCrosswordCertified": false,
+  "geometrySafetyCertified": false,
+  "publicChecks": 0,
+  "imagesViewed": 0,
+  "qualityNotApproved": true,
+  "failure": {
+    "type": "KeyError",
+    "message": "'init'",
+    "traceback": "Traceback (most recent call last):\n  File \"/dev/shm/avoid009-crossword26/source28/checker28.py\", line 21, in check\n    manifest=json.loads((folder/'manifest.json').read_bytes());host=json.loads((folder/'host-receipt.json').read_bytes());init=host['init'];cut=init['plan']['cuts'][0];need(cut['lineText']==cut['text']=='\u98a8\u306e\u5148\u3078','natural lineText preserved');need(not host['networkAttempts'],'network forbidden')\n                                                                                                                               ~~~~^^^^^^^^\nKeyError: 'init'\n"
+  }
+}

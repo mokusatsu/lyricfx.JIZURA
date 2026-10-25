@@ -1,0 +1,3 @@
+'use strict';
+// Existing T48 clock, isolated selectors only. No Renderer/Canvas.
+const fs=require('node:fs'),assert=require('node:assert/strict');const s=fs.readFileSync('/workspace/lyricfx.JIZURA/src/11p_layoutsEc_tiles_proof48.js','utf8'),body=s.slice(s.indexOf('function arithmetic()'),s.indexOf('function observe(')),cut={start:0,index:0,end:4,dur:4},J={stepDur:()=>1/60,komaOf:()=>0,lyricCutsAt:(p,t)=>t>=0&&t<4?[cut]:[],lyricRenderCut:c=>c};const clock=new Function('J','need',body+';return clock;')(J,(v,c)=>assert(v,c));console.log(JSON.stringify(clock({duration:4.150001,fps:60,fx:{koma:0}},cut)));

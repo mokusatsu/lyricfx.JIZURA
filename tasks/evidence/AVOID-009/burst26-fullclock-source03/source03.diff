@@ -1,0 +1,60 @@
+--- source02/bounded26.cjs
++++ source03/bounded26.cjs
+@@ -18,6 +18,8 @@
+  out.push({id:'two-row',kind:'oneplate-reflow',text:'風の\n先へ',fontRatio:1,padEm:.15,minAspect:.55});
+  out.push({id:'two-row-pad',kind:'oneplate-reflow-padding',text:'風の\n先へ',fontRatio:1,padEm:.1,minAspect:.55});
+  for(const text of ['風の先へ','風の\n先へ'])for(const fontRatio of [.9,.8,.72])out.push({id:(text.includes('\n')?'two':'one')+'-local-'+fontRatio,kind:'oneplate-local-font',text,fontRatio,padEm:.1,minAspect:.55});
++ // source03: append only; preserve all nine previous recipes and their choice order.
++ for(const text of ['風の先へ','風の\n先へ'])for(const fontRatio of [.6,.5,.4,.32])out.push({id:(text.includes('\n')?'two':'one')+'-local-'+fontRatio,kind:'oneplate-local-font',text,fontRatio,padEm:.1,minAspect:.55});
+  return out.map(r=>({...r,wholeStageScale:1,onePlate:true,status:'not-evaluated'}));
+ }
+ function dimensions(recipe,nativeSize,m){
+@@ -35,7 +37,7 @@
+  need(G&&typeof G.positions==='function','BURST26_GEOMETRY68');
+  const out=[{recipe:recipe.id,delta:[0,0],kind:recipe.id==='native'?'native':'recipe-at-native-center'}],seen=new Set(['0,0']);
+  for(const p of G.positions(heldSupports,circle,{evaluate:false})){need(p.delta.length===2&&p.delta.every(Number.isFinite),'BURST26_POSITION');const key=p.delta.join(',');if(seen.has(key))continue;seen.add(key);out.push({recipe:recipe.id,delta:p.delta.slice(),kind:'joint-translation'});}
+- need(out.length<=9,'BURST26_POSITION_BUDGET');return{policy:POLICY,candidates:out,maximumPerRecipe:9,maximumTotal:81,status:'heuristic-source-coordinate-seeds',requiresActualDestinationProof:true};
++ need(out.length<=9,'BURST26_POSITION_BUDGET');return{policy:POLICY,candidates:out,maximumPerRecipe:9,maximumTotal:153,status:'heuristic-source-coordinate-seeds',requiresActualDestinationProof:true};
+ }
+ function evaluate(supports,circle,G,{sourcePositivePaintCount}={}){
+  circleScope(circle);need(Array.isArray(supports)&&supports.length<=2048&&supports.every(s=>s.role==='primary'&&s.owner==='burst.native-plate'&&box(s.bounds)),'BURST26_PRIMARY_SUPPORT');
+--- source02/private26.cjs
++++ source03/private26.cjs
+@@ -6,7 +6,7 @@
+  return Object.freeze({withRecipe(env,r,fn){
+   need(env?.cut?.layout==='burst'&&typeof fn==='function'&&!bindings.has(env),'BURST26_BINDING');need(!excluded(env),'BURST26_PRIORITY');
+   need(r&&Number.isFinite(r.dx)&&Number.isFinite(r.dy),'BURST26_OFFSET');
+-  const shape=r.shape??null;need(shape===null||['風の先へ','風の\n先へ'].includes(shape.text)&&[1,.9,.8,.72].includes(shape.fontRatio)&&[.15,.1].includes(shape.padEm),'BURST26_SHAPE');
++  const shape=r.shape??null;need(shape===null||['風の先へ','風の\n先へ'].includes(shape.text)&&[1,.9,.8,.72,.6,.5,.4,.32].includes(shape.fontRatio)&&[.15,.1].includes(shape.padEm),'BURST26_SHAPE');
+   const b=Object.freeze({cut:env.cut,W:env.W,H:env.H,dx:r.dx,dy:r.dy,shape:shape?Object.freeze({...shape}):null});bindings.set(env,b);try{return fn();}finally{bindings.delete(env);}
+  },recipeFor(env){const b=bindings.get(env);if(!b)return null;need(b.cut===env.cut&&b.W===env.W&&b.H===env.H,'BURST26_ENV_CHANGED');if(excluded(env)||off(env)||(!b.shape&&b.dx===0&&b.dy===0))return null;return b;}});
+ };
+--- source02/checker26.py
++++ source03/checker26.py
+@@ -100,7 +100,7 @@
+     stats=rec['tableStats'][k];need(stats['entries']==len(tables[k])<=100000 and stats['canonicalKeyBytes']==keybytes[k]<=67108864 and stats['entryLimit']==100000 and stats['keyByteLimit']==67108864,'codec limits')
+    v=restore(rec['binding'],tables);phase=v['phase'];need(phase==row['phase'],'phase restore');summary['restoredRecords']+=1
+    if phase=='init':
+-    need(init is None,'one source initialization');init=v['init'];p=init['plan'];need(p['lang']=='ja' and p['W']==960 and p['H']==540 and len(p['cuts'])==1 and p['cuts'][0]['text']=='風の先へ' and p['cuts'][0]['layout']=='burst','initial scope');clocks(init['clocks']);need(len(init['recipes'])==9,'recipe budget')
++    need(init is None,'one source initialization');init=v['init'];p=init['plan'];need(p['lang']=='ja' and p['W']==960 and p['H']==540 and len(p['cuts'])==1 and p['cuts'][0]['text']=='風の先へ' and p['cuts'][0]['layout']=='burst','initial scope');clocks(init['clocks']);need(len(init['recipes'])==17,'recipe budget')
+    elif phase=='native-frame':
+     f=v['frame'];need(int(f['n'])==len(native) and f['mode']=='native' and f['recipe'] is None,'native sequence');frame_check(f,init,summary);native[int(f['n'])]=f;summary['nativeFrames']+=1;summary['nativePasses']+=len(f['passes'])
+    elif phase=='recipe-seed':
+@@ -108,7 +108,7 @@
+    elif phase=='recipe-rejected':
+     key=(v['circle']['id'],v['recipe']['id']);need(v['reason']=='writing-field-insufficient' and not v['dimensions']['writingFieldFits'],'quality rejection');recipes_done[key[0]].add(key[1])
+    elif phase=='candidate-family':
+-    key=(v['circle']['id'],v['recipe']['id']);need(key not in families and 1<=len(v['family']['candidates'])<=9 and v['family']['maximumTotal']==81,'family bounded');families[key]=v;recipes_done[key[0]].add(key[1])
++    key=(v['circle']['id'],v['recipe']['id']);need(key not in families and 1<=len(v['family']['candidates'])<=9 and v['family']['maximumTotal']==153,'family bounded');families[key]=v;recipes_done[key[0]].add(key[1])
+    elif phase=='candidate-frame':
+     f=v['frame'];circle=v['circle'];key=(circle['id'],v['recipe']['id'],int(v['candidateOrdinal']));trial=trials.setdefault(key,[]);need(f['n']==len(trial),'candidate chronological order');family=families[key[:2]]['family']['candidates'][key[2]];need(exact(f['delta'],family['delta']),'candidate fixed delta')
+     if v['reusedNative']:need(exact(f,native[int(f['n'])]),'cached native bytes')
+@@ -124,7 +124,7 @@
+    elif phase=='circle-result':
+     cid=v['circle']['id'];need(cid in ['default','upper'] and cid not in circle_results and not v['certificateIssued'] and v['notGlobalImpossibility'],'circle outcome');winner=v['winner'];local=[r for k,r in results.items() if k[0]==cid];need(len(local)==len(v['outcomes'])-sum(1 for r in v['outcomes'] if r['status']=='quality-rejected'),'all candidate outcomes')
+     if winner:need(v['status']=='bounded-source-candidate-awaiting-parent-review' and oracle_count[(cid,winner['recipe'])]==250 and winner['oraclePairs']==250 and winner['checked']==250 and winner['passes']==727,'winner full clocks')
+-    else:need(v['status']=='insufficient-space-in-evaluated-finite-family' and len(recipes_done[cid])==9,'all finite recipes considered')
++    else:need(v['status']=='insufficient-space-in-evaluated-finite-family' and len(recipes_done[cid])==17,'all finite recipes considered')
+     for key,family in families.items():
+      if key[0]!=cid:continue
+      got=[k[2] for k in results if k[:2]==key];expected=list(range(len(family['family']['candidates'])))
