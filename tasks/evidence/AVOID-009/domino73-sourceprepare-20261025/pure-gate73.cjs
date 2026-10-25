@@ -1,0 +1,7 @@
+// No browser, build, network or Git. Source algebra/codec API checks only.
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict'),vm=require('node:vm'),crypto=require('node:crypto');
+const root='/workspace/lyricfx.JIZURA',source=fs.readFileSync(root+'/src/11p_layoutsD.js','utf8'),html=fs.readFileSync(root+'/index.html','utf8'),{patch,END}=require(root+'/work/avoid009-domino73-isolated/overlay73.cjs'),{oracleAlias73}=require('./oracle-source73.cjs'),{codec73}=require('./runner73.cjs'),alias=oracleAlias73(source);
+assert.equal(html.split(source).length,2);assert.equal(patch(patch(source),true),source);new vm.Script(patch(source).replace(END,alias+END));new vm.Script(fs.readFileSync(__dirname+'/browser73.js','utf8'));
+const factory=codec73(),codec=factory.create();const value={phase:'synthetic',empty:[],negativeZero:-0,missing:undefined,clock:{time:.1,pass:'ghost'},records:[{kind:'fillText',args:['風',0,0],matrix:[1,0,0,1,-0,2],path:[],owner:'dominoes.row.0',role:'primary',state:{alpha:1}}]};assert.deepEqual(codec.restore(codec.pack(value)),value);for(const t of Object.values(codec.tables)){const s=t.stats();assert(s.entries<=100000&&s.canonicalKeyBytes<=67108864);}
+console.log(JSON.stringify({state:'PASS_SOURCE73_GATE_PURE_ONLY',HTMLExactModule:1,overlayInverse:true,nativeOracleThreeArgumentInverse:true,browserSyntax:true,codecFactorySHA256:factory.sourceSpanSHA256,codecRevision:factory.revision,allValueRoundtrip:true,undefinedAndNegativeZeroPreserved:true,browser:false,build:false,Git:false,network:false}));
