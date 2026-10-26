@@ -1,0 +1,35 @@
+{
+  "result": {
+    "state": "SITES36_FETCH_RETRY_DIAGNOSTIC_STOPPED",
+    "phase": "FETCH_EXISTING_SOURCE_MAIN",
+    "fetchAttempts": 1,
+    "gitFailure": {
+      "phase": "FETCH_EXISTING_SOURCE_MAIN",
+      "exitCode": 128,
+      "sanitizedStderr": "fatal: unable to access '[URL REDACTED] Failed to connect to proxy port 8080 after 0 ms: Could not connect to server"
+    },
+    "project_id": "appgprj_6adbafe9f07c8191ab0b404c53caab16",
+    "branch": "main",
+    "assetSave": false,
+    "push": false,
+    "publish": false,
+    "publicChecks": 0,
+    "automaticRetry": false,
+    "privateRuntime": "/dev/shm/avoid009-sites36-fetch-retry-20261026-m5e9rxfk"
+  },
+  "authorization": "Manager explicitly allowed one same-normal-route retry after prior proxy failure; stop if still unreachable",
+  "sameManagedRoute": true,
+  "proxySettingsUnchanged": true,
+  "TLSAndCAUnchanged": true,
+  "privilegeEscalation": false,
+  "alternateNetwork": false,
+  "proxyInvestigation": false,
+  "additionalDeletion": false,
+  "rawTransfer": false,
+  "assetTransfer": false,
+  "original36FilesPreserved": true,
+  "previousManagedStageVisibleFromNewNormalRuntime": false,
+  "priorUnknownFetchCause": "NOT_RECONSTRUCTED",
+  "sixTechnicalCandidates": "ALL_HUMAN_PENDING",
+  "next": "Stopped on repeated proxy connection failure; no further retry or bypass"
+}
