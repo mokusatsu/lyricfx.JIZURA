@@ -1,0 +1,59 @@
+{
+  "state": "SITES36_SAVE_STOPPED_FETCH_PROXY_CONNECTION_FAILED",
+  "project_id": "appgprj_6adbafe9f07c8191ab0b404c53caab16",
+  "sourceHelpersCommit": "8dac2967f3af6e76beee121f7e35698fb32cfc49",
+  "ownershipEvidence": {
+    "role": "owner",
+    "accessMode": "custom",
+    "allowedOwners": 1,
+    "externalVisitors": 0,
+    "groups": 0,
+    "editors": 0,
+    "latestEditThread": "01a150a0-76ae-7405-95d2-9c3bb9f10086"
+  },
+  "scope": {
+    "files": 36,
+    "bytes": 20141720,
+    "reviewAssetsOnly": true,
+    "rawAdded": 0
+  },
+  "execution": {
+    "route": "normal managed TTY only",
+    "session": 41916,
+    "managedStage": "/dev/shm/avoid009-sites36-source-managed01-400519",
+    "fixedFilesReceived": true,
+    "credentialEchoOffConfirmed": true,
+    "credentialFiles": 0,
+    "credentialExternalTerminalTransfers": 0,
+    "fetchAttempts": 1,
+    "pushAttempts": 0
+  },
+  "result": {
+    "state": "SITES36_SOURCE_SOURCE_SAVE_STOPPED",
+    "safePhase": "FETCH_EXISTING_SOURCE_MAIN",
+    "safeGitError": "UNCLASSIFIED_GIT_FAILURE",
+    "gitFailure": {
+      "phase": "FETCH_EXISTING_SOURCE_MAIN",
+      "exitCode": 128,
+      "sanitizedStderr": "fatal: unable to access '[URL REDACTED] Failed to connect to proxy port 8080 after 0 ms: Could not connect to server"
+    },
+    "priorHEAD": null,
+    "head": null,
+    "pushCommandReturnedSuccess": false,
+    "automaticRetry": false,
+    "publish": false,
+    "publicChecks": 0,
+    "postPushReadback": false
+  },
+  "originalsPreserved": true,
+  "sourceSaved": false,
+  "publicChecks": 0,
+  "postSaveReadback": false,
+  "accessChanges": 0,
+  "additionalDeletions": 0,
+  "proxyInvestigation": 0,
+  "retry": false,
+  "priorUnknownFetchCause": "NOT_ESTABLISHED_BY_THIS_NEW_FAILURE",
+  "sixTechnicalCandidates": "ALL_HUMAN_PENDING_UNCHANGED",
+  "remaining": "36 review assets and detailed raw remain not durably saved; stop under requested one-attempt rule; no alternate transfer route"
+}
