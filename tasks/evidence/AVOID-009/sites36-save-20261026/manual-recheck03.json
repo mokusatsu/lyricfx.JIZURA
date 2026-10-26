@@ -1,0 +1,34 @@
+{
+  "trigger": "Explicit manager request after about one hour; single check, not automatic monitoring",
+  "result": {
+    "state": "SITES36_FETCH_RETRY_DIAGNOSTIC_STOPPED",
+    "phase": "FETCH_EXISTING_SOURCE_MAIN",
+    "fetchAttempts": 1,
+    "gitFailure": {
+      "phase": "FETCH_EXISTING_SOURCE_MAIN",
+      "exitCode": 128,
+      "sanitizedStderr": "fatal: unable to access '[URL REDACTED] Failed to connect to proxy port 8080 after 0 ms: Could not connect to server"
+    },
+    "project_id": "appgprj_6adbafe9f07c8191ab0b404c53caab16",
+    "branch": "main",
+    "assetSave": false,
+    "push": false,
+    "publish": false,
+    "publicChecks": 0,
+    "automaticRetry": false,
+    "privateRuntime": "/dev/shm/avoid009-sites36-fetch-retry-20261026-f0_bbxe5"
+  },
+  "sameNormalRoute": true,
+  "proxySettingsUnchanged": true,
+  "networkBypass": false,
+  "privilegeEscalation": false,
+  "assetHandoff": false,
+  "rawTransfer": false,
+  "additionalDeletion": false,
+  "newImplementation": false,
+  "original36FilesPreserved": true,
+  "pushAttempts": 0,
+  "publicChecks": 0,
+  "postSaveReadback": false,
+  "stoppedOnRepeatedFailure": true
+}
