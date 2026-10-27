@@ -1,3 +1,11 @@
+## 2026-10-27 22:15 UTC — 承認済み6候補をロジックへ
+
+利用者「動画はどれもOKです 固定候補はもういいのでロジックに落としてください」。親からの対象特定は Sites source `ba6e987910967666a622055477e49307990bcecb` / project `appgprj_6ae0bda657c88191b9ddec956ceb911f` 掲載の6固定比較（電球、看板、domino upper-one-row、burst two-row-half、contour hero-half-body-native、crossword58A default-left-bottom）。この6件の動作は HUMAN_APPROVED。同じ固定候補の再承認は不要。古い未承認・旧集約予定は各時点の履歴として保持する。
+
+今回の実装担当は gpt-6.1-sol / medium、開始 branch `work/avoid009-approved-logic-20261027`、HEAD `245232cf874e4859061c6e19c0d0b7dbdcb11460`、開始時clean。独立worktree `/workspace/jizura-logic-20261027`。順序は電球69の入力一般化→看板72統合→ドミノ／ドカン→輪郭／クロスワード。固定文字列・seed・座標だけの分岐から、各入力の元描画と全所有物・全時計を数値評価する有限候補へ進める。成立しない入力は typed unsupported / insufficient-space を維持する。
+
+承認は固定表示の動作に限り、全入力・全FX・正式性能・009全体完了への拡張ではない。通常円2段ドミノとnoPost境界を維持する。共有描画の大幅な例外安全再設計は別承認待ち。既存Sites動画変更、公開URL/HTTP/hash/画像動画閲覧、保存後readback、新しい比較媒体・巨大rawのGit追加は禁止。新証拠はrepo外 `/workspace/jizura-logic-evidence-20261027`。親が設計・ソース・rawをレビューし、commit/pushは親が担当する。
+
 2026-10-27 レビュー中間媒体のGit再混入防止：専用2root ignore、staged/incoming全commit軽量guard、独立temp Git17試験PASS。既存履歴/製品資産/CEP ZIP保持、容量制限なし、CI実行/親最終レビュー未完。詳細 [媒体guard](reviews/AVOID-009-review-media-guard-20261027.md)。
 
 2026-10-27 ローカル復旧検証：work固定HEADで既存pure 78チェックPASS、製品/既存試験は不変。実Canvas例外診断は起動制限で描画前BLOCKED、native未検証。既存6候補は人間未承認のまま。詳細は [ローカル再開検証](reviews/AVOID-009-local-resume-verification-20261027.md)。commit/push/Sites/公開確認0。

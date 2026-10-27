@@ -1,3 +1,5 @@
+2026-10-27 22:15 UTC: AVOID-009の6掲載固定版は承認済み、一般化ロジック実装中。現行の承認範囲と証拠は[レビュー台帳](reviews/AVOID-009-review-ledger-20261027.md)。
+
 2026-10-27 レビュー中間媒体のGit再混入防止：専用2root ignore、staged/incoming全commit軽量guard、独立temp Git17試験PASS。既存履歴/製品資産/CEP ZIP保持、容量制限なし、CI実行/親最終レビュー未完。詳細 [媒体guard](reviews/AVOID-009-review-media-guard-20261027.md)。
 
 2026-10-27 ローカル復旧検証：work固定HEADで既存pure 78チェックPASS、製品/既存試験は不変。実Canvas例外診断は起動制限で描画前BLOCKED、native未検証。既存6候補は人間未承認のまま。詳細は [ローカル再開検証](reviews/AVOID-009-local-resume-verification-20261027.md)。commit/push/Sites/公開確認0。
@@ -90,7 +92,7 @@ LATEST SAVE POLICY: GitHub保存/pushと操作元返値・commit/path記録ま�
 | AVOID-006 | 拡張Aの26通常レイアウトの対応 | 完了 | AVOID-005 | [詳細](AVOID-006.md) |
 | AVOID-007 | 拡張Bの25通常レイアウトの対応 | 完了 | AVOID-005 | [詳細](AVOID-007.md) |
 | AVOID-008 | 拡張Cの34レイアウトの対応 | 完了 | AVOID-005 | [詳細](AVOID-008.md) |
-| AVOID-009 | 拡張Dの34レイアウト・カスタム描画の対応 | 実装中 | AVOID-005 | [詳細](AVOID-009.md)（10/27カスタム診断params分離・親レビュー済、未反映） |
+| AVOID-009 | 拡張Dの34レイアウト・カスタム描画の対応 | 実装中 | AVOID-005 | [詳細](AVOID-009.md)・6掲載版承認済・一般化実装中 |
 | AVOID-010 | ホラー・キネティック・タイポ42レイアウトの対応 | 未着手 | AVOID-005 | [詳細](AVOID-010.md) |
 | AVOID-011 | 7種の円軌道系を回避中心へ接続 | 未着手 | AVOID-004 | [詳細](AVOID-011.md) |
 | AVOID-019 | 既存通常レイアウトへの段階戦略拡張と可変半径の横断検証 | 未着手 | AVOID-006, AVOID-007, AVOID-008, AVOID-009, AVOID-010, AVOID-011 | [詳細](AVOID-019.md) |
