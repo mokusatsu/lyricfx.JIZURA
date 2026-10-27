@@ -1,0 +1,41 @@
+name: Review artifact guard
+
+on:
+  push:
+    branches: [main, work]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      review_base:
+        description: Known ancestor commit for incoming artifact inspection
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  review-artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Inspect every incoming commit
+        env:
+          REVIEW_EVENT: ${{ github.event_name }}
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha || github.event.before || inputs.review_base }}
+          REVIEW_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          args=()
+          if [[ "$REVIEW_EVENT" == pull_request ]]; then args+=(--merge-base); fi
+          python3 tools/check_review_artifacts.py incoming --base "$REVIEW_BASE" --head "$REVIEW_HEAD" "${args[@]}"
+      - name: Test review artifact guard
+        run: python3 -m unittest discover -s dev -p review_artifact_guard_test.py -v

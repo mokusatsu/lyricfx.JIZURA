@@ -1,3 +1,7 @@
+2026-10-27 レビュー中間媒体のGit再混入防止：専用2root ignore、staged/incoming全commit軽量guard、独立temp Git17試験PASS。既存履歴/製品資産/CEP ZIP保持、容量制限なし、CI実行/親最終レビュー未完。詳細 [媒体guard](reviews/AVOID-009-review-media-guard-20261027.md)。
+
+2026-10-27 ローカル復旧検証：work固定HEADで既存pure 78チェックPASS、製品/既存試験は不変。実Canvas例外診断は起動制限で描画前BLOCKED、native未検証。既存6候補は人間未承認のまま。詳細は [ローカル再開検証](reviews/AVOID-009-local-resume-verification-20261027.md)。commit/push/Sites/公開確認0。
+
 2026-10-25最新：009継続、技術候補4/約6・人間未承認。輪郭media停止/クロスワードraw checker -9を資源競合修正で回復中。Sites容量不足・重要原本未保存は別管理。詳細 [AVOID-009](AVOID-009.md)。
 
 2026-10-25最新：009継続、技術候補3/約6（全人間未承認）。ドカン両円raw受入・media準備、クロスワード/輪郭は限定fidelity受入・円安全性未完。Sites保存は通常runtime容量不足等で未完、原本保持。詳しくは [AVOID-009](AVOID-009.md)。

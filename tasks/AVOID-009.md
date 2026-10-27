@@ -1,3 +1,7 @@
+2026-10-27 レビュー中間媒体のGit再混入防止：専用2root ignore、staged/incoming全commit軽量guard、独立temp Git17試験PASS。既存履歴/製品資産/CEP ZIP保持、容量制限なし、CI実行/親最終レビュー未完。詳細 [媒体guard](reviews/AVOID-009-review-media-guard-20261027.md)。
+
+2026-10-27 ローカル復旧検証：work固定HEADで既存pure 78チェックPASS、製品/既存試験は不変。実Canvas例外診断は起動制限で描画前BLOCKED、native未検証。既存6候補は人間未承認のまま。詳細は [ローカル再開検証](reviews/AVOID-009-local-resume-verification-20261027.md)。commit/push/Sites/公開確認0。
+
 LATEST 2026-10-25: 比較assets(MP4/PNG/閲覧HTML)は今後Sitesのみ、新GitHub追加禁止。既存asset削除/history改変なし。電球71は500exact時刻/57680独立支持/4MP4/12PNG/freshsol6対PASS、人間動作未承認・Sites保留。旧GitHubasset commitad866b427c1c3d8d2f3b45ff5cbc484e77f6afb6の正確pathはtasks/reviews/AVOID-009-candidates-20261025.md。Source token外部TTY入力はauto拒否・未送信で中止、Source保存/公開0。看板はlocal検証後親rawreview中、具体512/67.8MB承認を実行者へ転送済だがlocal02subset96/24.57MBの申請もauto拒否（全4拒否/実行0）。追加3run最小1135+件は承認拡張せず保留。Root canonical/PYC7/65保持、公開結果確認/到達性readback0。
 
 LATEST 電球69の限定adapterを親source/raw受入、canonical70は日英15条件/900tuple/49832paint/180whole/540typed/90他DとHTML反映後6テストの親照合PASS。旧全raw3cc4f6d、新レビュー/freshbuild204files32,787,642Bをf3d78f253c3c5bfc685b692364a848ca2c3e943aへpush済み。親utility修正後は既存生データだけを照合しnative/6再実行なし、生成2HTML同SHAを反映。現在14D登録+fisheye専用分岐=15IDの限定経路（全入力/全184/全34対応ではない）。次は電球の上寄り横1段/右円左2段だけnative60fps MP4、freshsol静止、看板へ。新候補0/約6、全009/正式性能/保存本体/新動作承認は未完。公開/保存先到達性確認0。
