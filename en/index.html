@@ -13786,7 +13786,9 @@ A.layoutsDInventory=()=>rows.map(([layout,unit,primary,strategy])=>({layout,unit
 // No program node, component parameter or manual coordinate is changed.
 A.customDrawingCapability=(cut,plan)=>{
  const definitions=new Map((plan.customEffects||[]).map(d=>[d.id,d])),programs=[],components=[];
- const add=(program,path,group,params={},event=null)=>{if(!program)return;const nodes=(program.nodes||[]).map((n,index)=>({path:path+'.nodes['+index+']',type:n.type,role:['text','arcText'].includes(n.type)?'primary':'owned-program-shape',...(['text','arcText'].includes(n.type)?{textSource:n.text==='$text'||n.text===undefined?(group==='fx'||group==='trans'?'empty-render-input':'lyric'):n.text==='$note'?(group==='fx'||group==='trans'?'empty-render-input':'note'):'literal'}:{}),frame:n.frame||'area',units:n.units||'frame'}));programs.push({path,group,mode:program.mode,nodes,params,...(event?{event}:{})});};
+ // Snapshot nested portable JSON values; retain primitive/undefined spread overrides.
+ const snapshotParams=params=>Object.fromEntries(Object.entries(params).map(([key,value])=>[key,value&&typeof value==='object'?JSON.parse(JSON.stringify(value)):value]));
+ const add=(program,path,group,params={},event=null)=>{if(!program)return;const nodes=(program.nodes||[]).map((n,index)=>({path:path+'.nodes['+index+']',type:n.type,role:['text','arcText'].includes(n.type)?'primary':'owned-program-shape',...(['text','arcText'].includes(n.type)?{textSource:n.text==='$text'||n.text===undefined?(group==='fx'||group==='trans'?'empty-render-input':'lyric'):n.text==='$note'?(group==='fx'||group==='trans'?'empty-render-input':'note'):'literal'}:{}),frame:n.frame||'area',units:n.units||'frame'}));programs.push({path,group,mode:program.mode,nodes,params:snapshotParams(params),...(event?{event}:{})});};
  add(cut.drawing,'cut.drawing','drawing');
  for(const group of ['layout','enter','hold','exit','treat','cam','bg','trans']){
   const d=definitions.get(cut[group]);if(!d||d.group!==group)continue;

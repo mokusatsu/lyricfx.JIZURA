@@ -90,7 +90,7 @@ LATEST SAVE POLICY: GitHub保存/pushと操作元返値・commit/path記録ま�
 | AVOID-006 | 拡張Aの26通常レイアウトの対応 | 完了 | AVOID-005 | [詳細](AVOID-006.md) |
 | AVOID-007 | 拡張Bの25通常レイアウトの対応 | 完了 | AVOID-005 | [詳細](AVOID-007.md) |
 | AVOID-008 | 拡張Cの34レイアウトの対応 | 完了 | AVOID-005 | [詳細](AVOID-008.md) |
-| AVOID-009 | 拡張Dの34レイアウト・カスタム描画の対応 | 実装中 | AVOID-005 | [詳細](AVOID-009.md)（10/27独立ローカル検証器・レビュー台帳整備） |
+| AVOID-009 | 拡張Dの34レイアウト・カスタム描画の対応 | 実装中 | AVOID-005 | [詳細](AVOID-009.md)（10/27カスタム診断params分離・親レビュー済、未反映） |
 | AVOID-010 | ホラー・キネティック・タイポ42レイアウトの対応 | 未着手 | AVOID-005 | [詳細](AVOID-010.md) |
 | AVOID-011 | 7種の円軌道系を回避中心へ接続 | 未着手 | AVOID-004 | [詳細](AVOID-011.md) |
 | AVOID-019 | 既存通常レイアウトへの段階戦略拡張と可変半径の横断検証 | 未着手 | AVOID-006, AVOID-007, AVOID-008, AVOID-009, AVOID-010, AVOID-011 | [詳細](AVOID-019.md) |

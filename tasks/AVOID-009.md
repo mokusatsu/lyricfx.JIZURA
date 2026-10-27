@@ -648,3 +648,9 @@ Whole009 INCOMPLETE; adapters for scoped prototypes not registered; formal perfo
 今回の範囲は8条件Canvas例外診断のオフライン検証器・試験と、6候補の人間確認点／技術証拠／未取得資料を分離した台帳。製品描画変更・候補追加有効化・公開・pushは行わない。Canvas起動はsandboxエラーのため未検証を維持し、設定変更による回避はしない。別環境の未保存188件は未取得であり、合成fixtureは実Canvas証拠ではない。AVOID-009全体は実装中、人間6候補未承認を維持する。
 
 再開成果: [検証器の親レビュー](reviews/AVOID-009-offline-diagnostic-review-20261027.md)に65合成試験PASS、親指摘の整合性修正と制約を記録。[6候補台帳](reviews/AVOID-009-review-ledger-20261027.md)は確認点・歴史的技術数値・未取得媒体を分離し、JSONの出典3blob/hashを照合。新規成果はすべてローカル未commit。実Canvas／人間承認／188件取得は未完。残る次段階は実Canvasを使える環境または媒体引継ぎが必要で、現環境の設定回避は行わない。
+
+## 2026-10-27 カスタム診断paramsの入力分離
+
+開始HEAD `4c198240965cc69529558269f2d6fe1af65098a1`、branch `resume-local-20261027`、開始時clean。009のカスタムcomponent契約・座標保持の継続として、診断report内paramsが元のネストしたJSON paramsを共有する不具合を修正する。親の最小再現ではreport編集後にsource nested.xが0.2から0.9へ変わった。標準JSONのobjects/arraysはcustomEffectSpecで許可済み。実装sol6.1/medium、親がソース・純粋試験を確認。描画やadapter登録を変えず、Canvas未検証・6候補未承認を保持する。外部反映は未承認、ローカル差分のみ。
+
+入力分離の修正と親レビューを完了。[結果・残TODOの阻害](reviews/AVOID-009-custom-params-isolation-20261027.md)。旧moduleで所有権試験FAIL、修正版11ケースPASS、既存境界13ケース/34inventory PASS。日英通常buildの差分は対象moduleだけと親が全byte照合。実Canvasは未検証、6候補未承認。7ファイルのローカル新差分であり、前回push承認を流用しない。
