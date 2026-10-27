@@ -640,3 +640,11 @@ Queue: tasks/evidence/AVOID-009/resume-20261025c/human-motion-queue07.json. Reus
 Sites remains a separate blocker. Bulbs/billboard source saved previously; four newer media bundles and detailed raw are still shared-SHM ONLY, not durably saved. Last fetch failed pre-push, stderr and Git exit details lost; exact cause UNKNOWN. Saved classifier covers authfailed/401/403 but not permissiondenied/accessdenied, so access denial cannot be excluded. Manager's conditional minimum retry therefore not authorized by the existing evidence; no retry, new credential transfer, permission extension or alternative asset destination. Do not call these four published or batch-view ready. Originals preserved; no cleanup. Public URL/HTTP/hash/media/startup/deploy polling0; post-save download/readback0.
 
 Whole009 INCOMPLETE; adapters for scoped prototypes not registered; formal performance NOT_ACCEPTED; save body cut expected0/actual1 remains AVOID013. Resume from latest remote work plus this queue. Resolve only a safe authorized Sites save path, then collect human motion review without public-result checking. Never turn unapproved comparisons into approval.
+
+## 2026-10-27 独立ローカル再開
+
+開始HEAD `e32ada3eb1560d5ab58c9ef1a1ab958c6b629109`、branch `resume-local-20261027`、開始時clean。旧checkoutと復旧packは変更しない。evidence-driven-task-managementと実装レビュー規約に従い、実装担当gpt-6.1-sol / medium、親がソースと試験結果を確認する。
+
+今回の範囲は8条件Canvas例外診断のオフライン検証器・試験と、6候補の人間確認点／技術証拠／未取得資料を分離した台帳。製品描画変更・候補追加有効化・公開・pushは行わない。Canvas起動はsandboxエラーのため未検証を維持し、設定変更による回避はしない。別環境の未保存188件は未取得であり、合成fixtureは実Canvas証拠ではない。AVOID-009全体は実装中、人間6候補未承認を維持する。
+
+再開成果: [検証器の親レビュー](reviews/AVOID-009-offline-diagnostic-review-20261027.md)に65合成試験PASS、親指摘の整合性修正と制約を記録。[6候補台帳](reviews/AVOID-009-review-ledger-20261027.md)は確認点・歴史的技術数値・未取得媒体を分離し、JSONの出典3blob/hashを照合。新規成果はすべてローカル未commit。実Canvas／人間承認／188件取得は未完。残る次段階は実Canvasを使える環境または媒体引継ぎが必要で、現環境の設定回避は行わない。
