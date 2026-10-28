@@ -1,0 +1,7 @@
+# Owner-to-plan registry bridge81z — unregistered
+
+Factory wraps81y with fixed owner callbacks and actual validateFinal identity. Arbitrary callers can create separate registries with frozen fake callbacks; those registries grant no authority to any real frame controller. The genuine controller must instantiate privately with its own ticketRecords, resident handle and fresh retained-budget getter; it must reject certificates/tickets from every external registry. That real connection is not implemented here.
+
+Release revokes registry authority before any resource callback, then invokes ticket deletion even if budget/source accounting failed. Diagnostic stores only bounded code/boolean data. The genuine owner callback must delete its private ticket record before any subsequent accounting that might throw. If a supplied callback instead throws before deleting, this generic factory cannot guarantee its private resource cleanup; certificate authority still stays revoked. Source drift during cleanup does not prevent registry revocation. No shared Canvas exception restoration changes.
+
+`node owner-binding81-test.cjs <81y/plan-binding81.js>`25checks PASS: opaque ownership,JSON alias,model drift,eviction/release,post-delete failure,combined-budget/source failure,authority remains rejected. Tests use mock private owner/lineage, not real owner/adapter/cache/Canvas/UI. No compile/paint operation is provided by this unit.
