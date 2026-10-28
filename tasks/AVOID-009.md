@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82g終了直前n239：1pair/3ownのnative一致、40支持Fraction包含を親確認、29pins / 5raw照合。全clock/回避/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82f先行4時刻のrunはn248がcut終了後でown0となりFAIL保持。完了n12/30/231の9pass・112支持を親Fraction照合、29pins / 12raw確認。全clock/回避未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82d source sampler：7files hash・元sourceからの独立再生成一致を親確認しlocal `25da74c5`。held 82eの同sourceでの限定実Canvas結果以外、全clock/回避/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
