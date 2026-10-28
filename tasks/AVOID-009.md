@@ -1,3 +1,5 @@
+2026-10-28 看板81h品質単位：元qualityとのoffline実測値比較84 own / 597 checks、親の7files hash・baseline一致・再実行PASS。source-only `dc56ed54` をwork保存。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。sample構成・compiler / union・所有 / frame / UI未接続。
+
 2026-10-28 看板81g2 EN全時計：変更円で左2候補の各250時刻・727 own、計28444 positive paintが実支持のstage/円clear・品質PASS。親が671 pins/新732 raw、Fraction支持/品質を独立照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。owner union・製品runtime/UIは未資格。
 
 2026-10-28 看板81g2 EN pilot：変更円で4候補×8時刻、84 ownの品質PASS。左2候補はsampleの全支持がstage/円clear、右2候補は円衝突で拒否。親が全600 pins/48 raw・左648 paintと42 ownを独立照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。全250時刻・製品/UI未資格。
