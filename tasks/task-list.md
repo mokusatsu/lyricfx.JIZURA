@@ -1,3 +1,5 @@
+2026-10-28 電球実描画限定gate：実J.plan lineageの調整済JA fixtureで6比較/18own/611paint、RGBA等一致、4拒否bitmap不変、明示再準備復帰を親raw照合。[レビュー](reviews/AVOID-009-product-frame-20261028.md)。初回25.7秒は限定観測。製品候補は未commit、decode・別文字列/円・他演出回帰・UIは未完。
+
 2026-10-28 電球cleanup診断試作：source80xの20files hashとmock 53/19/76(重複)/88/1012 checksを親確認し `9b7fe0f1` をwork保存。[レビュー](reviews/AVOID-009-cleanup-diagnostic-20261028.md)。模擬条件で証明record回収と上限付き最新診断を確認。実J.plan/Canvas・製品接続・UIと他5演出は未完。
 
 2026-10-28 電球finalizer後始末試作：source80w 18files hash照合とmock 53+16 checksを親確認し `c2163053` をwork保存。[レビュー](reviews/AVOID-009-finalizer-cleanup-20261028.md)。cleanup自体の失敗時の即時解放・永続診断は未保証で製品適用前の阻害。実J.plan/Canvas/UI・看板以下5演出は未完。
