@@ -1,0 +1,13 @@
+# Unregistered local table and zero replay experiments
+
+These files are independent development checkpoints. They are not loaded by build.py, HTML, renderer, safe-adapter registry, finalizer, cache, or UI. They issue no runtime certificate and do not establish general-input or moved-circle safety.
+
+`local-table80.js` is a verbatim copy of the reviewed80k input-derived table module. It owns frozen plain-data clones, preserves exact Float64 values including signed zero, and interns only complete canonical data with full-value verification. Its local budget counts templates, keys, references and simultaneous construction using exact-Float64 serialized bytes; it is not a JavaScript heap/RSS bound. The standalone test keeps the original29checks and replaces only the former external compiler bootstrap with an independent slow JSON exact-Float64 codec.
+
+Run `node dev/avoidance/bulbs80/local-table-test.cjs` from any checkout. No Qt or repository-external source is required.
+
+`zero-replay80.js` is a verbatim copy of reviewed80l source-only replay. It requires the experimental compiler/proof/quality/geometry helpers supplied by its external numerical harness; this checkpoint does not install those dependencies or register replay as a product path. A supplied model is explicitly unowned. The test-only afterPristine observer is not an authentication or rendering guard. The zero operation sequence omits P.shift, so it cannot certify a future destination, including that destination's zero branch.
+
+The same-runtime80l experiment produced four727-root replays and16268potential glyph matrices. All40groups, roots, newly aggregated held inputs and quality results matched80k exactly; the parent independently matched15908actual source text matrices bit-for-bit, while360additional potential-support matrices were not misreported as paint. Guarded paint/measureText/layout calls were absent; zero geometry compilation is a source-call-graph observation rather than an independent instrumented counter. Peak serialized helper working state was at most4955150bytes. Replay850–1498ms included repeated diagnostic accounting and is not ordinary frame/UI performance. Current-input model preparation remained about6.11seconds in that run.
+
+The evidence remains outside Git at `/workspace/jizura-logic-evidence-20261027/bulbs-zero80-actual01` and `bulbs-zero80-parent-review01.json`. Input ownership, stale/cache admission, actual P.shift destinations, normal direct frames, other inputs for this replay stage, UI publication and the other five effects remain separate unfinished stages. Raw data, generated HTML and media are excluded from this checkpoint.
