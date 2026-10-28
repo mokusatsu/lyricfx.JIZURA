@@ -33,6 +33,18 @@
 
 初回は日本語「風の先へ」seed1205、960×540、noPost / fast / scale1、単一cutの限定域。入力由来の候補選択結果は one-row-compact、delta `[0,94.40105101731228]`。固定値を通す分岐はない。`0 <= t < plan.duration` の未確定 native plan と実験用 opt ticket だけを扱い、既存69の広い登録済み時刻範囲を置き換えない。別文字列・別円のモデル検証80nを、別文字列・別円の通常 frame 検証と数えない。
 
-次は成功する別文字列・別円の通常 frame、遅延の支配項の観測、製品 admission / cache 接続、UI の分割準備と依存整理。残5演出は未接続であり、看板の source descriptor / 全部品・全時計検証契約を別途準備済み。共有 Canvas の大幅な例外復旧変更は引き続き別扱い。
+次は遅延の支配項の観測、別 renderer の資格、製品 admission / cache 接続、UI の分割準備と依存整理。残5演出は未接続であり、看板の source descriptor / 全部品・全時計検証契約を別途準備済み。共有 Canvas の大幅な例外復旧変更は引き続き別扱い。
 
 正本証拠は repo 外の `/workspace/jizura-logic-evidence-20261027/bulbs-frame80-actual01`、`bulbs-frame80-parent-review01.json`、`parent-frame80-review.py`。製品 src の未保存試作と混同せず、dev unit のみを段階保存する。
+
+## 追加80p：別文字列と円変更
+
+80o の9実装 module、2 HTML、fixture は byte 不変で、日本語「風風先先」seed1205 の上側円 `(0.5,0.2,r0.2)` と右側円 `(0.82,0.5,r0.16)` を追加検証した。候補・delta は現在入力から計算し、実配置先の全時計検査を通した。入力文字列や保存 delta を特別扱いする分岐はない。
+
+両ケース各6比較 frame / 18 own / 586 paint、合計12比較 / 36 own / 1,172 paint が独立旧 source68 oracle と一致した。親は full RGBA SHA256、全 primitive / path / arguments / state / owner / clock / root / result、新しい Canvas の記録を照合した。各通常 frame の compile 増分は0。円変更前後は同じ handle、compile 増分0、cache hit 増分1であり、2 plan の差が region の center / radius だけであることも確認した。
+
+literal exit 0 / complete=true / errors=[]。37 pins、28 raw の両 hash / bytes を親照合、decoded 11,275,743 bytes / gzip 575,676 bytes。Qt PID 27737 は回収済み、port 9333 未使用。結果は05:31 UTCに保存済みで、05:35の環境切断通知後も既存環境で全 hash とファイルの保持を再確認した。試験の重複実行・新環境移動は0。
+
+これは正例の追加であり、新たな性能計測や base の拒否試験反復は行っていない。EN、異なる renderer instance、より広い入力 / 時刻 / FX、製品 adapter / cache / UI は引き続き別資格。準備用 canonical renderer と UI / export renderer を同一視しない。
+
+証拠は `/workspace/jizura-logic-evidence-20261027/bulbs-frame-generalized80-actual01`、`bulbs-frame-generalized80-parent-review01.json`、`parent-frame-generalized80-review.py`。次の CDP profile は別の未実行診断として準備しており、保存済み比較の再生成ではない。
