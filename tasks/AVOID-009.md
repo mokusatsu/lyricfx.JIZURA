@@ -1,3 +1,5 @@
+2026-10-28 看板81z owner binding：account/source失敗時のauthority削除・ticket解放を含む25 mock checks親確認、local `ea3bb26d`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。外部registryはframe権限なし、実owner / Canvas / UI未資格。
+
 2026-10-28 看板81y plan binding：元bulbs binding hash一致、6 files / 79 pure checks親確認、local `fd410970`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。mock ticket限定、実owner / adapter / cache / UI未資格。
 
 2026-10-28 看板81x最大step診断：96own prefixのtarget12で1.295秒は再現せずmax204.6ms、CPU leaf1016のbyteLength352 / bytes320 / GC109。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。522 pins / 6raw親照合、因果未確定。
