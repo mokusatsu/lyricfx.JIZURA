@@ -1,3 +1,5 @@
+2026-10-28 電球準備分割試作：80ab 12files hash、mock job40・owner71 checksを親確認し `e30a4914` をwork保存。[レビュー](reviews/AVOID-009-cooperative-prepare-20261028.md)。実Canvas一致・heartbeat遅延・private owner移譲・UI接続と他5演出は未完。
+
 2026-10-28 電球限定adapter製品反映：`940237810660a66c4ffe55b13af9e8173d222b48` をworkへpush、同SHAのartifact CI 40675059599とfull verify CI 40675067984成功。実J.plan調整fixtureの入出力・失効/復帰・日英既存演出・通常電球回帰は各レビュー参照。UI準備分割・通常option対応・性能・看板以下5演出は未完。元worktreeの既存4dirty/未追跡試作は保持し、製品commitは別worktree。
 
 2026-10-28 通常電球回帰：日英5条件35比較/100own/3511paintが旧版と一致。回避専用observerの初回failを保持し、通常native専用observerで再検証。[レビュー](reviews/AVOID-009-unbound-bulbs-20261028.md)。UI/性能と他5演出は未完。
