@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82r実frame：4frames/12own/165paintが82n oracle一致、8拒否bitmap不変/compile0、fresh/境界を親確認。41pins/10raw両hash。無観測8回17.3–24.3ms、準備17.17秒、60fps/実用UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82r詳細観測seam：preflight後のみ観測wrapper、一時状態復元をmock25/prefix12/owner37・12files hash親確認、local `0461de2e`。無観測通常frame実時間/実Canvas/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82q frame試作：内部owner/ticket、before-bitmap最大3own照合・native source-Y dispatch、mock24/prefix12/owner37とrenderer独立再生成を親確認、local `386188f6`。実Canvas/frame時間・official plan/cache/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
