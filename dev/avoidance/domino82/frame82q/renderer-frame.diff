@@ -1,0 +1,29 @@
+--- a/09_render.js
++++ b/09_render.js
+@@ -18,0 +19,7 @@
++// Unregistered domino current-frame issuer, opt-in ticket only.
++const domino82qFrames=new WeakMap();let domino82qHooks=null;
++Object.defineProperty(J,'installDominoFrame82q',{configurable:true,value:hooks=>{
++ if(domino82qHooks||!hooks||!['needs','prepare','paint','finish','abort'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_DOMINO82Q_FRAME_HOOKS');
++ domino82qHooks=Object.freeze({needs:hooks.needs,prepare:hooks.prepare,paint:hooks.paint,finish:hooks.finish,abort:hooks.abort});delete J.installDominoFrame82q;
++ return Object.freeze({take:(renderer,env)=>{const record=domino82qFrames.get(env);if(!record||record.renderer!==renderer||record.ctx!==env.ctx||record.plan!==env.plan||record.cut!==env.cut)throw Object.assign(Error('DOMINO82Q_FRAME_ISSUER_REQUIRED'),{code:'DOMINO82Q_FRAME_ISSUER_REQUIRED'});domino82qFrames.delete(env);return record;}});
++}});
+@@ -95,0 +103,3 @@
++    // Reject hook overlap before any prepare can allocate an active lease.
++    const domino82qNeeded=!!domino82qHooks?.needs(plan,opt);
++    if(domino82qNeeded&&(tiles48Hooks?.needs(plan)||bulbs69Hooks?.needs(plan)||bulbs80Hooks?.needs(plan,opt)))throw Object.assign(Error('DOMINO82Q_HOOK_CONFLICT'),{code:'DOMINO82Q_HOOK_CONFLICT'});
+@@ -99,0 +110 @@
++    const domino82qFrame=domino82qNeeded?domino82qHooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
+@@ -287 +298,6 @@
+-        if(bulbs80Frame){
++        if(domino82qFrame){
++          domino82qFrames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:domino82qFrame,pass:P.pass}));
++          // Scope has no decor/effectsOnly: dispatch the original layout and
++          // propagate its error. Only token lifetime cleanup changes here.
++          domino82qHooks.paint(Object.freeze({renderer:this,env}));
++        } else if(bulbs80Frame){
+@@ -341,0 +358 @@
++    if(domino82qFrame)domino82qHooks.finish(domino82qFrame);
+@@ -343 +360 @@
+-    } finally {if(bulbs80Frame)bulbs80Hooks.abort(bulbs80Frame);}
++    } finally {if(domino82qFrame)domino82qHooks.abort(domino82qFrame);if(bulbs80Frame)bulbs80Hooks.abort(bulbs80Frame);}

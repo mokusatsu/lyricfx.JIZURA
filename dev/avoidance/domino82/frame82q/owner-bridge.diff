@@ -1,0 +1,8 @@
+--- 82p/private-owner82.js
++++ 82q/private-owner82.js
+@@ -32 +32 @@
+- function withPrepared(handle,plan,run){validate(handle,plan);need(typeof run==='function','DOMINO82P_SYNC_CONSUMER');busy=true;const r=record;try{const out=run(r.model,r.clock);need(!out||typeof out.then!=='function','DOMINO82P_SYNC_CONSUMER');generationGuard(r.generation);need(record===r&&key(plan)===r.sourceKey&&dependencyMatches(r.dep),'DOMINO82P_STALE_INPUT');return out;}finally{busy=false;}}
++ function withPrepared(handle,plan,run){validate(handle,plan);need(typeof run==='function','DOMINO82P_SYNC_CONSUMER');busy=true;const r=record;try{const out=run(r.model,r.clock,Object.freeze({reservedBytes:r.reservedBytes+r.metadata,modelBytes:r.model.budget.residentBytes}));need(!out||typeof out.then!=='function','DOMINO82P_SYNC_CONSUMER');generationGuard(r.generation);need(record===r&&key(plan)===r.sourceKey&&dependencyMatches(r.dep),'DOMINO82P_STALE_INPUT');return out;}finally{busy=false;}}
+@@ -35 +35 @@
+-Object.defineProperty(A,'dominoPrivateOwner82p',{value:Object.freeze({create,sourceOnly:true,certificateIssuer:false,rendererAuthority:false})});})();
++Object.defineProperty(A,'dominoPrivateOwner82q',{value:Object.freeze({create,sourceOnly:true,certificateIssuer:false,rendererAuthority:false})});})();
