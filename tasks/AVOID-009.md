@@ -1,3 +1,5 @@
+2026-10-28 看板入力由来model試作：11files hash・純粋17819/4100/146 checksを親独立確認し `7842166d` をwork保存。[レビュー](reviews/AVOID-009-billboard-model-20261028.md)。実Canvas包含・候補品質・所有/adapter/UI未資格、offline compilerをframe/UIへ登録しない。
+
 2026-10-28 看板native基準JA全時計：既8＋新242、250時刻/500pairs/1454own/27158paintが旧source一致。新972raw・227pinsを親独立照合。[記録](reviews/AVOID-009-billboard-native-helper-20261028.md)。他入力はpilotのみ、入力由来支持/回避証明/adapterは未完。
 
 2026-10-28 看板native先行実Canvas：可視/timer preflight後、日英4条件32時刻・2modeの64pairs/168own/2504paintが旧source一致、140rawを親照合。[記録](reviews/AVOID-009-billboard-native-helper-20261028.md)。全250時計・回避支持/adapterは未完。
