@@ -1,3 +1,5 @@
+2026-10-28 domino82d held実pilot初回：native可視/字体init後、既存看板observerのmaterial guard `BILLBOARD81_MEASURED_MATERIAL` によりnative観測中に停止、host exit1 / complete false。candidate比較・fresh ctx sampler未到達。親が28 pins / 2rawのbytes・両hash、失敗codeとpostPinsUnchangedを照合。Git外 `domino-native-pilot82d-actual01`、失敗を保持。ドミノ固有の観測条件をsourceで確認した別版のみ検討し、当結果をCanvas一致や回避安全性としない。
+
 2026-10-28 domino82c：実装gpt-6.1-sol / medium。観測済6成分affine行列の回転/反射/shear/非uniform/ゼロを含む矩形とpadを外向き浮動小数演算で囲うunit。BigInt dyadic独立判定1351有限例/21620 checks＋overflow 1拒否と3files hashを親再実行、local `b26079a4`。元JS座標合成をCanvas CTMと代用せず、実Canvas CTM取得・線幅・文字metrics・既存2px raster guardの前提・全時計/回避安全性は未資格。CLI401で未push / CI未実施。
 
 2026-10-28 domino82b：実装gpt-6.1-sol / medium。元domino render全体をstub primitivesで実行し、床線・影・側面・面・仕切り・全pip・文字の呼出順 / 引数 / matrix / RNGをdescriptorと比較。半角空白gi/j、alpha 0を含む5040 pure checksと5files hashを親再実行、local `02e3aa38`。実Canvas CTM丸め・文字metrics・mainDraw delay gate・paint支持・全時計・回避安全性・adapter/UI未資格。既存source-X clippingを変えず、通常円/2段回避を認定しない。CLI401で未push / CI未実施。

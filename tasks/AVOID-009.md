@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82d held先行実試験は看板観測器のmaterial条件でnative観測中に停止。28 pins / 2raw親照合、candidate/sampler未到達、FAIL保持。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82c観測affine矩形支持：1351有限例/21620 BigInt dyadic checks・overflow拒否を親再実行、local `b26079a4`。Canvas CTM取得/文字metrics/raster前提/全時計/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82b全部品native呼出記述：元renderの床/影/側面/面/仕切り/pips/文字の順序・変換・RNGと5040 pure checks一致、5files hash親照合、local `02e3aa38`。実Canvas/support/全時計/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
