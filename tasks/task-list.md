@@ -1,3 +1,5 @@
+2026-10-28 看板81m全clock：旧modelと全semantic / eligibility bit一致、同期72399.2ms / heartbeat最大72496.3ms。440 pins / 3 raw親照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。source local `81a78dc5`、CLI401で未push。さらなる高速化・分割/失効/UI未完。
+
 2026-10-28 看板81m代表性能：同9 own診断でouter 972.6ms（旧8446.9ms）、10ms timer最大間隔983.1ms、422 pins / 3 raw親照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。全clock同値・実用的準備 / 失効 / UI未完、Git CLI401でlocalのみ。
 
 2026-10-28 看板81m計数部品：従来codecとbyte長一致545純粋checksを親再実行、local `deee25bd`。CLI認証401で未push。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。統合前後の全clock同値・実時間 / UI未資格。
