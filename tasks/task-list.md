@@ -1,3 +1,5 @@
+2026-10-28 看板7候補基準JA：7×727own / 94948 paintの支持union包含を親Fraction照合、0.72左右は全品質・stage/円strict clear、他5は品質または円で拒否。[記録](reviews/AVOID-009-billboard-direct-quality-20261028.md)。別文字列/円/EN・runtime所有/frame/UIは未資格。
+
 2026-10-28 看板direct/quality試作：81e 14files hash・純粋direct826/quality19を親確認し `bf6f8874` をwork保存。[レビュー](reviews/AVOID-009-billboard-direct-quality-20261028.md)。実7recipeの描画/品質・安全候補・adapter/UI未資格。
 
 2026-10-28 看板native支持：基準JA 727own/13564 positive paintの実支持が各own/owner unionに包含、5787文字/clock/root/metricsも親独立照合。[記録](reviews/AVOID-009-billboard-model-20261028.md)。7候補direct/品質・安全certificate・frame/UIは未完。
