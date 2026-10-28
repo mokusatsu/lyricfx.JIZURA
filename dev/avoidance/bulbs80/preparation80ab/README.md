@@ -1,0 +1,20 @@
+#80ab cooperative compiler source unit (not product-installed)
+
+Base product94023781. Followup tree /workspace/jizura-followup-20261029 remains clean; parent716bb74c documentation delta will be synchronized before a later save. Frozen product tree and original4dirty are untouched.
+
+`scalar-generator80.js` is generated from current scalar compiler with arithmetic and own/recipe order unchanged. One yield follows completion of every original own (all recipes/held.end/localStore/budget), exposing only frozen primitive completed/total metadata. Observer callbacks are explicitly rejected. The original outer Canvas save, accumulated lineWidth/font state carry and full finally are retained. Only the job's dedicated private context spans yields; no shared binding/spy or unfinished nested glyph save crosses this boundary. No geometry/model is externally exposed before completion.
+
+`job80.js` clones/freezes input for the generator, retains an exact validated input fingerprint, uses full existing owner dependency snapshot before/after every resume and before finish, plus generation/AbortSignal/current module/stock context guards. It owns one private canvas/context. run() yields with setTimeout tasks after each own; finish exposes completed frozen data for this experiment only. Product adoption must atomically transfer to private owner admission, without exposing a model to UI/callers. No finalizer, certificate, UI publication or new safety claim exists here.
+
+`model-owner80.js` adds one private preparation registration. Active/pending or completed-but-unconsumed job serialized state is included in every existing owner/frame account, so later actions cannot omit it. Synchronous prepare refuses while active; source frame reads still use existing current-model/admission checks and combined account. Job/account can evict old models before crossing8MiB. Snapshot clone reservation is checked before allocation. Owner registry/data budget remains serialized working state, not JS heap. The new job's snapshot/key/dependency strings/guard temporaries/current compiler state/completed model/progress/metadata are counted; native context/function handles and encoder allocation retain existing exclusions. Dropped job clears input/renderer/context/iterator/model references; private canvas shrinks on disposal. Callers retaining diagnostic completed data acquire no private model/certificate authority.
+
+71owner pure checks preserve all original61 and add reservation/compile exclusion/dependency read/eviction/limit cases.40job pure checks cover private state carry/restoration, no incomplete publication, one job, explicit cancel, changed generation/input/font dependency/source, original exception, combined limit, final-publication generation gate, actual timer heartbeat, old queued task versus replacement job isolation, dense/index-only data and idempotent dispose. These use mock compiler/context and do not qualify actual Canvas output.
+
+Next numerical gate must compare original sync full model to completed step model (all schedules/metrics/groups/local payload/held/frameData/counts/budget, excluding timing only), actual727own/all4recipes and reference chronology. Measure per-step/max step and real event-loop heartbeat delay. FinalHQ.check/localStore.finish/frameData/final byte/freeze remain one synchronous final step; taskyield alone is not UI practicality/performance acceptance. Cancel/generation/font drift must prevent finish and release reservations. UI publish/async composition/opaque owner transfer and default Post/preview domain are still separate. Remaining5演出 need not wait for UI completion; billboard native helper extraction remains the next independent source unit.
+
+Repository checkpoint: the six JavaScript sources/tests here match the fixed80ab evidence. The owner and compiler generator are not loaded by product. From the repository root run:
+
+```
+node dev/avoidance/bulbs80/preparation80ab/job-test.cjs
+node dev/avoidance/bulbs80/preparation80ab/owner-test.cjs
+```
