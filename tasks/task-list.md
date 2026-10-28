@@ -1,3 +1,5 @@
+2026-10-28 看板81x最大step診断：96own prefixのtarget12で1.295秒は再現せずmax204.6ms、CPU leaf1016のbyteLength352 / bytes320 / GC109。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。522 pins / 6raw親照合、因果未確定。
+
 2026-10-28 看板81w全clock owner / normal実Canvas：522 pins / 4 raw親照合、6比較/18own/330paint一致・5拒否bitmap不変、normal15.7–79.8ms。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。準備61.99秒 / maxstep1.295秒 / heartbeat1.319秒、UI実用不可・plan/cache未完。
 
 2026-10-28 看板81v代表normal実Canvas：部分9own modelで6比較 / 18own / 330paintとRGBA一致、5拒否bitmap不変、521 pins / 4raw親照合。normal observer前20.8–31.7ms。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。full model / plan/cache / UI未資格、CLI401でlocalのみ。
