@@ -1,3 +1,5 @@
+2026-10-28 看板81j入力recovery：初回16＋新1438=左2候補1454 own / 12884 glyphを元paintと親独立照合、1198 pins / 92 raw一致。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。初回失敗保持、同期428秒改善・所有 / frame / UI未完。
+
 2026-10-28 看板81j compiled領域：失敗runの保存modelで左2候補各40 unionがstage/円strict clear、旧全727 own×2 / 28444 paintを親Fraction包含確認。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。品質入力対応・428秒準備改善・runtime/UI未完。
 
 2026-10-28 看板81j実入力初回：model生成後hostのFloat64 wrapper参照比較でERR_ASSERTION、1180 pins / 4 raw保持。同期428,763.9msでUI接続不可。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。compiledを再利用し比較recovery、準備分割 / 高速化・所有 / frame / UI未完。
