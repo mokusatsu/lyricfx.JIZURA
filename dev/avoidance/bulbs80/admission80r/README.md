@@ -1,0 +1,11 @@
+# Unregistered stock-renderer and clock admission experiment
+
+These are source-only checkpoints, not product registration. `renderer-time80.js` and `model-owner80.js` are byte-identical to the reviewed80r sources. `frame-controller.patch` is the same reviewed change in zero-context form; it targets `../frame80/frame-controller80.js` and requires `--unidiff-zero` with git apply. The parent applied it to an isolated copy and verified the result byte-for-byte against the reviewed controller.
+
+The unit keeps the canonical renderer/context for model preparation. A different renderer may borrow a resident model only when its prototype and frame/makeEnv/drawCut methods match the captured stock implementation and existing transport guards. Its actual renderer, Canvas, clock, root and metrics remain bound to current-frame preflight; this source-only change does not certify the renderer or Canvas.
+
+The optional registered range uses the existing finalizer's step and reach-tail values. Negative in-range times retain actual realTime and quantized n while the clamped source row uses `sourceN=0`; all three selectors and the source's q-cull are checked. At or after duration, all three selectors must be empty. Positive preimages remain unchanged; outside-range input rejects. Added range, selector temporaries and sourceN use the existing combined 8MiB serialized accounting. No whole-clock frame scan or shared Canvas exception restoration is added.
+
+Run `node renderer-time80-test.cjs` and `node model-owner-test.cjs` in this directory. The parent independently ran 79 clock/renderer checks and 61 mock-owner checks, including the original 41 ownership assertions. These do not exercise a real Canvas or establish product safety. Focused Qt comparisons and bitmap-before-rejection checks are pending; adapter registration, both upper cache admission paths, final plan binding and UI are also unfinished.
+
+Source review and raw evidence are retained under `/workspace/jizura-logic-evidence-20261027/bulbs-admission-source80r`. No render result, media file or public-site check is included here.
