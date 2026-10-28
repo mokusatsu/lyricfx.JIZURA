@@ -1,3 +1,5 @@
+2026-10-28 看板direct/quality試作：81e 14files hash・純粋direct826/quality19を親確認し `bf6f8874` をwork保存。[レビュー](reviews/AVOID-009-billboard-direct-quality-20261028.md)。実7recipeの描画/品質・安全候補・adapter/UI未資格。
+
 2026-10-28 看板native支持：基準JA 727own/13564 positive paintの実支持が各own/owner unionに包含、5787文字/clock/root/metricsも親独立照合。[記録](reviews/AVOID-009-billboard-model-20261028.md)。7候補direct/品質・安全certificate・frame/UIは未完。
 
 2026-10-28 看板入力由来model試作：11files hash・純粋17819/4100/146 checksを親独立確認し `7842166d` をwork保存。[レビュー](reviews/AVOID-009-billboard-model-20261028.md)。実Canvas包含・候補品質・所有/adapter/UI未資格、offline compilerをframe/UIへ登録しない。
