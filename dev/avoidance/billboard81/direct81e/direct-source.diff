@@ -1,0 +1,18 @@
+--- 81d/11p_layoutsD.js
++++ 81e/11p_layoutsD.js
+@@ -1983,0 +1984,5 @@
++// Source-only declared recipe seam. The unbound route returns the original helper.
++function billboardDrawInitial81(env){const recipe=J.placement.billboardRecipe81For?.(env)||null,d=billboardInitial81(env);if(!recipe)return d;const text=brk(env.cut.text,recipe.columns),bw=recipe.bw,bh=recipe.bh,bx=recipe.bx,by=recipe.by,y0=by+d.rise;if(!(d.groundY>y0+bh*1.125)||![bw,bh,bx,by,y0,recipe.mainSize].every(Number.isFinite)||bw<=0||bh<=0||recipe.mainSize<=0)throw Object.assign(Error('BILLBOARD81E_CONNECTION'),{code:'BILLBOARD81E_CONNECTION'});if(text!==recipe.writingText)throw Object.assign(Error('BILLBOARD81E_WRITING_TEXT'),{code:'BILLBOARD81E_WRITING_TEXT'});return{...d,text,bw,bh,bx,by,y0};}
++function billboardDrawSize81(env,d){const recipe=J.placement.billboardRecipe81For?.(env)||null;return recipe?recipe.mainSize:billboardMainSize81(env,d);}
++function billboardDrawMainItem81(env,d,size){const it=billboardMainItem81(env,d,size),recipe=J.placement.billboardRecipe81For?.(env)||null;if(recipe)it.x=d.bx+d.bw/2;return it;}
++
+@@ -2006,2 +2011,2 @@
+-    const {port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc}=billboardInitial81(env);
+-    if(captureD)Object.assign(catalog,{port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc});
++    const {port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc}=billboardDrawInitial81(env);
++    if(captureD){Object.assign(catalog,{port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc});const recipe81=J.placement.billboardRecipe81For?.(env)||null;if(recipe81)Object.assign(catalog,{nativeOnly:false,recipe81:clone(recipe81)});}
+@@ -2051,2 +2056,2 @@
+-    const size = billboardMainSize81(env,{text,bw,bh});
+-    const bb = owned('lyric.main','mainDraw',()=>J.mainDraw(env,item(billboardMainItem81(env,{text,y0,bh,tc},size))));
++    const size = billboardDrawSize81(env,{text,bw,bh});
++    const bb = owned('lyric.main','mainDraw',()=>J.mainDraw(env,item(billboardDrawMainItem81(env,{text,y0,bh,tc,bx,bw},size))));
