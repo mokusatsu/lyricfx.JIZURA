@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82j source-Y試作：native yFに同期bound dyを加える限定seam、manifest8/139 pure・別tmp再生成親確認、local `0e37b3b8`。実Canvas移動先/X同一/安全性・owner/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82i全clock候補試作：250states/727own/9393支持から限定入力dy 64.923px、5.726秒・最大step115.4ms。29pins/4raw親照合、mock34 source local `b3e96cab`。実移動/品質/所有/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82h入力由来縦候補：source supportsと上側円から必要dyを導出、984 pure checks親再実行、local `23164aa5`。保守的失敗は一般解なしを意味しない。実移動/全clock/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
