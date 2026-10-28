@@ -1,3 +1,5 @@
+2026-10-28 domino82a：実装gpt-6.1-sol / medium。元 `11p_layoutsD.js` SHA256 ccbee023a72d3736c2e50cd6f21b1ee29b1eae182dfcfa86c1deb1529805f35f から寸法・床線・row位置・時刻別姿勢の演算順を抽出し、親が3files hash・7555 pure checksを再実行、local `ae08c0aa`。rowsOfの元結果を入力する限定unitで、空白をskipしてgiのみ進めない元挙動とjによる位置/退出差を保持。元x clipping、床/影/厚み/face/divider/pips/文字の描画支持、文字metrics、全時計、回避候補、実Canvas/所有/adapter/UIは未資格。109px固定分岐なし、通常円/2段の回避保証なし。CLI401で未push / CI未実施。
+
 # 承認済み6候補の一般化 — 2026-10-27
 
 担当 gpt-6.1-sol / medium。承認の正本は[台帳](AVOID-009-review-ledger-20261027.md)。親の電球設計・source段階レビュー受入後、限定数値検証中。全6の統合と009全体は未完。
