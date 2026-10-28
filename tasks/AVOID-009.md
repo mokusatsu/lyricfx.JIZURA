@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82l承認入力：seed1205/風の先へ・承認上円で全727ownの安全最小dy80.839px、承認動画109.19pxとの差28.351px。31pins/2raw親照合。承認余白を保持する一般条件・実移動後検証が必要。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82k限定入力の全clock移動先：250state/727own、2712glyph/9393支持を親Fractionで照合、44pins/738新raw両hash確認。空5stateと旧native6/dest4再利用。品質/他入力/owner/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82j移動後先行：未bind native回帰、4時刻/12pass・144支持のX bits不変/Y画面・円下/paint包含を親Fraction照合。37pins / 12raw確認。全clock/品質/owner/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
