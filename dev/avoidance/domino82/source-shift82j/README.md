@@ -1,0 +1,9 @@
+# Domino source-Y operation seam82j
+
+Unregistered test-only synchronous source-Y binding. Native patch adds the bound dy to the existing row yF expression, before ground, tile pose and affine transforms. X arithmetic, primitive order, glyph size/text/font/delay, RNG, alpha, clock and viewport clipping remain unchanged. With no binding, read returns0; native finite positive row yF+0 preserves bits. Ordinary circles/two-row avoidance are not qualified. Binding explicitly rejects a different env, multiple rows, nested calls, nonfinite dy or async result and clears in finally. This public test factory is not private frame/certificate authority.
+
+Reproduce `python prepare-source.py /path/native/11p_layoutsD.js /path/82d/source-input-fragment.js`; inverse removal/replacement must restore original source bytes. `node shift-test.cjs`:139 checks of source binding, signed-zero/Float64 row addition, invalid/exception cleanup. These do not establish actual Canvas displacement safety.
+
+Load scalar-support82.js as separate dominoScalarSupport82j. It retains the82d native sampler behavior and adds sourceDy to the same row yF and both ground endpoints, using the new actual Canvas transforms rather than shifting old bounds. sourceDy is counted in serialized base and result; current row coordinate values have fixed-width exact Float64 encoding. The original82d module and all earlier evidence remain unchanged. Pure139, syntax and inverse-source checks precede actual tests.
+
+Current proposal64.92345842921245 comes from seed1206/風風先先/960×540/current upper circle at(.75,.25),radius.12H+2.7margin. It is not the prior approved seed1205/about109px scene. No visual equivalence, general safety, runtime owner/frame/UI or practical preparation claim follows. A later gate must compare unbound native, actual shifted matrices/X bits, all paint/support/quality and Y/circle bounds, with old native oracle reused only under exact same source/input/clock.

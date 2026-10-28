@@ -1,0 +1,5 @@
+from pathlib import Path
+import sys,json,hashlib,difflib
+D=Path(__file__).resolve().parent;S=Path(sys.argv[1]);accessor=Path(sys.argv[2]).read_text();native=S.read_text();fragment=(D/'shift-fragment.js').read_text();reg="reg('dominoes', {";old='const yF = H / 2 + (r - (rows - 1) / 2) * (h + w * 0.35) + h / 2;';new=old[:-1]+' + J.placement.dominoSourceShift82j.read(env,rows);';assert native.count(reg)==1 and native.count(old)==1
+out=native.replace(reg,accessor+fragment+reg,1).replace(old,new,1);assert out.replace(accessor+fragment,'',1).replace(new,old,1)==native
+(D/'11p_layoutsD-shift82.js').write_text(out);(D/'source-from-native.diff').write_text(''.join(difflib.unified_diff(native.splitlines(True),out.splitlines(True),fromfile='native/11p_layoutsD.js',tofile='82j/11p_layoutsD.js',n=0)));(D/'boundary.json').write_text(json.dumps({'nativeSHA256':hashlib.sha256(S.read_bytes()).hexdigest(),'nativeFunctionChanges':'only row yF adds synchronously bound sourceDy; no X/paint/glyph/clock/clip change','unboundDy':0,'sourceOnly':True,'actualQualified':False},indent=2)+'\n')
