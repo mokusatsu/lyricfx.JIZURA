@@ -1,3 +1,5 @@
+2026-10-28 看板81af不変fragment再利用：同generator 2文字列の純粋545/420/567＋100/439、Qt代表9ownで旧/新model完全一致、単発726.4→594.8ms。31 pins / 6 raw親照合、source-only local `b7850b73`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。全clock/UI未資格、CLI401で未push。
+
 2026-10-28 看板81ae軽量会計試験もbeginで一時snapshotが131072B上限に達し失敗。親が34 pins / 3 raw照合、compile / draw 0。会計試作反復を止め準備性能へ切替。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。
 
 2026-10-28 看板81ad軽量会計試験はcommit 116380B後、issue中134620Bで上限131072Bを超え失敗。親が34 pins / 3 rawを照合。全clock再生成0、追加の重複削減を検討。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。
