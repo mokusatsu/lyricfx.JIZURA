@@ -1,3 +1,5 @@
+2026-10-28 看板81n実Canvas初回：最初のown後DEPENDENCY_STALE拒否。別snapshot診断でspacing2値 `0px`→空文字の差を確認、親が両run 970 pins / 6 rawを照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。原因・等価性未証明、guard維持、UI未資格。
+
 2026-10-28 看板81n分割job：合成33＋bootstrap100 checksを親再実行、local `589fa709`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実Canvas応答 / 実owner / UI未資格、CLI401で未push。
 
 2026-10-28 看板81o sample計数：親独立8243 ledger / 50 model tests、代表9own 695.6ms・timer最大713ms、旧model値一致。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。local `d2974b0e`、CLI401で未push。全clock / UI未資格。
