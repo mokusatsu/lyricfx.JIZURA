@@ -15,6 +15,13 @@ Object.defineProperty(J,'installTilesFrame48',{configurable:true,value:hooks=>{
 }});
 
 // SOURCE69: bulbs-only preflight issuer, before every bitmap write.
+// SOURCE80 source-only frame issuer. Default/unbound drawing remains unchanged.
+const bulbs80Frames=new WeakMap();let bulbs80Hooks=null;
+Object.defineProperty(J,'installBulbsFrame80',{configurable:true,value:hooks=>{
+ if(bulbs80Hooks||!hooks||!['needs','prepare','paint','finish','abort'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_BULBS80_FRAME_HOOKS');
+ bulbs80Hooks=Object.freeze({needs:hooks.needs,prepare:hooks.prepare,paint:hooks.paint,finish:hooks.finish,abort:hooks.abort});delete J.installBulbsFrame80;
+ return Object.freeze({take:(renderer,env)=>{const rec=bulbs80Frames.get(env);if(!rec||rec.renderer!==renderer||rec.ctx!==env.ctx||rec.plan!==env.plan||rec.cut!==env.cut)throw Object.assign(Error('BULBS80_FRAME_ISSUER_REQUIRED'),{code:'BULBS80_FRAME_ISSUER_REQUIRED'});bulbs80Frames.delete(env);return rec;}});
+}});
 const bulbs69Frames=new WeakMap();let bulbs69Hooks=null;
 Object.defineProperty(J,'installBulbsFrame69',{configurable:true,value:hooks=>{
  if(bulbs69Hooks||!hooks||!['needs','prepare','finish'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_BULBS69_FRAME_HOOKS');
@@ -89,6 +96,8 @@ class Renderer {
     // All pilot B/A/main proofs finish before clearRect, background, or ANY bitmap write.
     const tiles48Frame=tiles48Hooks?.needs(plan)?tiles48Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
     const bulbs69Frame=bulbs69Hooks?.needs(plan)?bulbs69Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
+    const bulbs80Frame=bulbs80Hooks?.needs(plan,opt)?bulbs80Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
+    try {
     const foregroundCut = plan.foreground && J.mediaAt(plan, t, 'foreground');
     if (!opt.noForeground && foregroundCut && J.mediaCutsAt(plan, t, 'foreground').some(c => J.mediaAssets.has(c.itemId))) {
       const step = J.stepDur(plan.fx, plan.fps);
@@ -275,7 +284,13 @@ class Renderer {
         if(cut.fullStagePlacement&&cut.placementLayoutsC===true&&cut.layout==='shoji'&&cut.params?.variant==='shadow'){const m=X.getTransform();shadowOutputFrames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,width:cw,height:ch,scale,allowFilter,root:Object.freeze([m.a,m.b,m.c,m.d,m.e,m.f])}));env.placementOutputDomain=J.placement.layoutsCShadowOutputDomain(this,env);}
         if(tiles48Frame)tiles48Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:tiles48Frame,pass:P.pass}));
         if(bulbs69Frame)bulbs69Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:bulbs69Frame,pass:P.pass}));
-        if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
+        if(bulbs80Frame){
+          bulbs80Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:bulbs80Frame,pass:P.pass}));
+          // Controller's fixed domain has decor=[] and effectsOnly=false: the
+          // native drawCut body is L.render plus its catch. Dispatch the same
+          // source directly so an admitted source failure propagates explicitly.
+          bulbs80Hooks.paint(Object.freeze({renderer:this,env}));
+        } else if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
         X.restore();
         if (sourceMask) J.applyMaskToCanvas(X.canvas, mask, contentMatrix, contentW, contentH, { cut, t: tp, plan });
         if (X !== target) {
@@ -324,6 +339,8 @@ class Renderer {
     if (key && !opt.noPost && !backgroundMedia) this.keyFinish(ctx, key, opt);
     if(tiles48Frame)tiles48Hooks.finish(tiles48Frame);
     if(bulbs69Frame)bulbs69Hooks.finish(bulbs69Frame);
+    if(bulbs80Frame)bulbs80Hooks.finish(bulbs80Frame);
+    } finally {if(bulbs80Frame)bulbs80Hooks.abort(bulbs80Frame);}
   }
 
   /* 合成用の背景: make the finished frame monochrome (white text + effects only) and put it on the key colour.

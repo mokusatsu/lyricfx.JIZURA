@@ -1,3 +1,5 @@
+2026-10-28 通常電球回帰：日英5条件35比較/100own/3511paintが旧版と一致。回避専用observerの初回failを保持し、通常native専用observerで再検証。[レビュー](reviews/AVOID-009-unbound-bulbs-20261028.md)。UI/性能と他5演出は未完。
+
 2026-10-28 電球入力/cache・既存回帰：JA限定10比較/30own/1193paint、decode miss、別文字列/円、退去と明示復帰を親照合。既存3演出の日英18frames・計画/graph一致（balloons出力計測時間slotのみ別検査）。初回の時間差failは保持し、未完をrecovery02で検証。[レビュー](reviews/AVOID-009-product-input-regression-20261028.md)。製品候補は未commit、UI/性能と他5演出は未完。
 
 2026-10-28 電球実描画限定gate：実J.plan lineageの調整済JA fixtureで6比較/18own/611paint、RGBA等一致、4拒否bitmap不変、明示再準備復帰を親raw照合。[レビュー](reviews/AVOID-009-product-frame-20261028.md)。初回25.7秒は限定観測。製品候補は未commit、decode・別文字列/円・他演出回帰・UIは未完。

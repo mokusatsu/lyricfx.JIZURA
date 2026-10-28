@@ -60,5 +60,5 @@ function finish(token){const frame=frames.get(token);need(frame&&!frame.finished
 const frameAccess=J.installBulbsFrame69(Object.freeze({needs:plan=>plan.cuts.some(c=>c.placementTrajectory?.sourceAdapter===REV),prepare,finish}));
 A.bulbs69Stats=()=>Object.freeze({...counters,cacheEntries:cache.size});
 A.withBulbs69Diagnostic=(fn,run)=>{need(!diagnostic&&typeof fn==='function'&&typeof run==='function','BULBS69_DIAGNOSTIC_BINDING');diagnostic=fn;try{return run();}finally{diagnostic=null;}};
-A.registerLayoutsDAdapter('bulbs',{id:REV,finalize,render});
+// Registration replaced by late-loaded owned bulbs80 adapter; legacy helpers remain.
 })();

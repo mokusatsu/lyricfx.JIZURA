@@ -7,7 +7,10 @@ const J={placement:{tilesProof48:{clock(){},makeEnv(){},contextState(){},paintSi
 const context={J,TextEncoder,DataView,ArrayBuffer,performance,CanvasRenderingContext2D};vm.createContext(context);
 for(const name of['11p_layoutsEe_bulbs_geometry68.js','11p_layoutsEf_bulbs_proof69.js','11p_layoutsEg_bulbs_adapter69.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../../src',name),'utf8'),context,{filename:name});
 const P=J.placement.bulbsProof69,G=J.placement.bulbsGeometry68,check=v=>{assert(v);tests++;};
-check(!!P&&Object.isFrozen(P));check(!!P.kernel&&Object.isFrozen(P.kernel)&&typeof P.kernel.atom==='function');check(registration.layout==='bulbs'&&typeof registration.adapter.finalize==='function'&&typeof installed.prepare==='function');
+check(!!P&&Object.isFrozen(P));check(!!P.kernel&&Object.isFrozen(P.kernel)&&typeof P.kernel.atom==='function');// Product80y replaces only registration; legacy proof/observation assertions remain.
+check(registration===null&&typeof installed.prepare==='function');
+check(!installed.needs({cuts:[{placementTrajectory:{sourceAdapter:'bulbs-owned-source80-v1'}}]}));
+const adapter80=fs.readFileSync(path.join(__dirname,'../../src/11zz10_bulbs_adapter80.js'),'utf8');check((adapter80.match(/A\.registerLayoutsDAdapter\('bulbs',/g)||[]).length===1&&adapter80.includes("REV='bulbs-owned-source80-v1'"));
 check(!installed.needs({cuts:[]}));check(installed.needs({cuts:[{placementTrajectory:{sourceAdapter:'bulbs-finite-live-source-v69'}}]}));
 const policy=P.qualityPolicy(G.recipes[0]);check(policy.native===true&&policy.neighborPreferredMinimum===4.86&&policy.neighborHardMinimum===3);
 check(P.quality([],[{pass:'main',lt:0,ltb:0,pOut:0,catalog:{q:0}}],policy).passed);

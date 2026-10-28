@@ -420,7 +420,7 @@ J.finalizePlacementPlan = (input,options={}) => {
   if(!sources.has(input))fail('SOURCE_PLAN_REQUIRED','Finalize an actual composed J.plan result; serialized clones require replanning from project');
   const lineage=sources.get(input),cCache=layoutsCFinalCache?.begin(input,options,lineage),cPrior=layoutsCFinalCache?.read(cCache);
   if(cPrior){const cached=cPrior.plan;finalized.set(cached,{signature:signature(cached),revision,options:optionsCacheable?JSON.stringify(options):null});sources.set(cached,{...lineage,originalCuts:cPrior.originalCuts});return typeof layoutsCFinalCache.freeze==='function'?layoutsCFinalCache.freeze(cached,freeze):freeze(cached);}
-  const plan=jsonClone(input);delete plan.placementFinalization;
+  const plan=jsonClone(input);try{delete plan.placementFinalization;
   if(lineage.originalCuts)plan.cuts=jsonClone(lineage.originalCuts);
   const originalCuts=jsonClone(plan.cuts);
   const diagnostics=[],stepDur=J.stepDur(plan.fx,plan.fps),maxSupportedTransDur=.6,maxStep=1,dProofMemo=options.layoutsD===true&&options.layoutsDProofMemo!==false?A.createLayoutsDFisheyeProofMemo?.():null;
@@ -470,9 +470,10 @@ J.finalizePlacementPlan = (input,options={}) => {
     cut.placementTrajectory={version:1,kind:'piecewise-stage-translation',revision,segments,envelope,evaluationRange,measurementSupported:true,safety:segments.some(s=>s.status!=='safe')?'insufficient-space':'certified-bounded-adapter'};
     diagnostics.push({cut:cut.index,code:'STAGED_ADAPTER',measurement:'supported',safety:cut.placementTrajectory.safety});
   }
+  A.markLayoutsDRuntimeFailures?.(plan,diagnostics,options);
   plan.placementFinalization={version:1,revision,diagnostics,duration:plan.duration};
   layoutsCFinalCache?.keep(cCache,{plan,originalCuts});
-  finalized.set(plan,{signature:signature(plan),revision,options:optionsCacheable?JSON.stringify(options):null});sources.set(plan,{...lineage,originalCuts});return freeze(plan);
+  finalized.set(plan,{signature:signature(plan),revision,options:optionsCacheable?JSON.stringify(options):null});sources.set(plan,{...lineage,originalCuts});const output=freeze(plan);A.finishLayoutsDFinalization?.(output);return output;}catch(error){finalized.delete(plan);sources.delete(plan);try{A.abortLayoutsDFinalization?.(plan,error,{authorityRevoked:true})}catch{}/* Preserve the original throw value, including null/primitive/frozen Error. */throw error;}
 };
 J.finalizePlacementPlanAsync = async (plan,wait,options={}) => {const token={},sig=signature(plan);requests.set(plan,token);await wait; if(requests.get(plan)!==token||signature(plan)!==sig)fail('STALE_FINALIZATION','A newer request or composed plan superseded this result');return J.finalizePlacementPlan(plan,options);};
 A.validateFinal = plan => {const rec=finalized.get(plan);if(!rec||rec.revision!==(J.metrics.revision||0)||!Object.isFrozen(plan))fail('STALE_PLACEMENT_PLAN','Refinalize after font/compose changes');};

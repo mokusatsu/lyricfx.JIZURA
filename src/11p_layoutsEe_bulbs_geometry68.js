@@ -4,6 +4,16 @@
 const A=J.placement,need=(v,code)=>{if(!v)throw Object.assign(Error(code),{code});},freeze=x=>{if(x&&typeof x==='object'&&!Object.isFrozen(x)){Object.values(x).forEach(freeze);Object.freeze(x);}return x;};
 const limits=freeze({recipes:4,positionsPerRecipe:8,statesPerRecipe:512,passesPerRecipe:1536,paintPerPass:2048,proofBytes:8388608,cacheEntries:2});
 const recipes=freeze([{id:'native',native:true,writingText:'風の先へ',scale:1},...['one-row-compact','two-row-native','two-row-95'].map(id=>({id,native:false,writingText:id==='one-row-compact'?'風の先へ':'風の\n先へ',scale:id==='two-row-95'?.95:1,pad:[.22,.25],radiusScale:.8,neighborHardMinimum:3,neighborPreferredMinimum:4.86}))]);
+// J.layoutText indexes code points. This bounded domain excludes grapheme clusters,
+// whitespace and explicit rows rather than silently flattening their meaning.
+function recipesFor(text){
+ need(typeof text==='string'&&text.length>0&&[...text].length<=16,'BULBS68_TEXT_BUDGET');
+ need(!/[\s\p{M}\p{Cf}\p{Cs}\p{Cc}\p{Regional_Indicator}\p{Emoji_Modifier}]/u.test(text),'BULBS68_TEXT_STRUCTURE_UNSUPPORTED');
+ need(typeof Intl.Segmenter==='function','BULBS68_GRAPHEME_SEGMENTER_UNAVAILABLE');
+ const chars=[...text],segments=[...new Intl.Segmenter('und',{granularity:'grapheme'}).segment(text)].map(s=>s.segment);need(segments.length===chars.length&&segments.every((s,i)=>s===chars[i]),'BULBS68_GRAPHEME_CLUSTER_UNSUPPORTED');
+ const split=Math.ceil(chars.length/2),rows=chars.slice(0,split).join('')+'\n'+chars.slice(split).join('');
+ return freeze([{id:'native',native:true,writingText:text,scale:1},...['one-row-compact',...(chars.length>1?['two-row-native','two-row-95']:[])].map(id=>({id,native:false,writingText:id==='one-row-compact'?text:rows,scale:id==='two-row-95'?.95:1,pad:[.22,.25],radiusScale:.8,neighborHardMinimum:3,neighborPreferredMinimum:4.86}))]);
+}
 // Dyadic comparisons are on the captured finite doubles, including translation.
 // They do not infer a universal bound for font/AA/libm errors.
 const view=new DataView(new ArrayBuffer(8));
@@ -22,12 +32,13 @@ function positions(supports,c,{evaluate=true}={}){validCircle(c);need(supports.l
  need(out.length<=limits.positionsPerRecipe,'BULBS68_POSITION_BUDGET');const pref=s=>c.cy/540<.45?(s==='top'?1:0):c.cy/540>.55?(s==='bottom'?1:0):0;
  return out.sort((a,b)=>pref(a.side)-pref(b.side)||a.distance2-b.distance2||b.stageSlack-a.stageSlack||sideRank[a.side]-sideRank[b.side]||a.ordinal-b.ordinal);
 }
-function choose(tables,c,{explicitSize=false}={}){
+function choose(tables,c,{explicitSize=false,recipeFamily=recipes}={}){
+ need(Array.isArray(recipeFamily)&&recipeFamily.length<=4,'BULBS68_RECIPE_BUDGET');
  need(tables.length<=4,'BULBS68_RECIPE_BUDGET');
- const outcomes=recipes.map(recipe=>({recipe:recipe.id,status:'not-evaluated'}));
+ const outcomes=recipeFamily.map(recipe=>({recipe:recipe.id,status:'not-evaluated'}));
  const won=(winner,index)=>{for(let i=index+1;i<outcomes.length;i++)outcomes[i].reason='earlier-recipe-winner';return{winner,outcomes};};
- for(let index=0;index<recipes.length;index++){
-  const recipe=recipes[index],outcome=outcomes[index];
+ for(let index=0;index<recipeFamily.length;index++){
+  const recipe=recipeFamily[index],outcome=outcomes[index];
   if(explicitSize&&recipe.scale!==1){outcome.status='explicit-size-excluded';continue;}
   const table=tables.find(t=>t.recipe===recipe.id);if(!table){outcome.reason='source-table-not-acquired';continue;}
   if(!table.complete||!table.sourceVerified||table.qualityPassed!==true){outcome.status='unqualified-source-or-quality';continue;}
@@ -43,5 +54,5 @@ function choose(tables,c,{explicitSize=false}={}){
  }
  return{winner:null,outcomes,status:'insufficient-space-in-evaluated-finite-family',notGlobalImpossibility:true};
 }
-A.bulbsGeometry68=freeze({revision:'bulbs-finite-recipes68-v1',recipes,limits,evaluation,positions,choose});
+A.bulbsGeometry68=freeze({revision:'bulbs-finite-recipes68-v1',recipes,recipesFor,limits,evaluation,positions,choose});
 })();

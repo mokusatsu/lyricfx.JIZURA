@@ -23,7 +23,7 @@ const wrong={...cut,placementTrajectory:{...cut.placementTrajectory,sourceAdapte
 const srcA=read('09a_placement.js'),startA=srcA.indexOf('J.finalizePlacementPlan = (input,options={}) => {'),endA=srcA.indexOf('  const diagnostics=[],stepDur=',startA);assert(startA>=0&&endA>startA);
 const finalized=new WeakMap(),sources=new WeakMap();let cacheResult=null,cacheReads=0,keepFreezeCalls=0;
 Object.assign(sandbox,{finalized,sources,signature:p=>JSON.stringify(p),layoutsCFinalCache:{begin:()=>({}),read:()=>{cacheReads++;return cacheResult},freeze:p=>{keepFreezeCalls++;return p}},freeze:p=>p,jsonClone:x=>JSON.parse(JSON.stringify(x)),fail:(code,message)=>{throw Object.assign(Error(message),{code})}});A.layoutsAOptionsFinite=()=>true;
-vm.runInContext(srcA.slice(startA,endA)+'return {continued:true,plan,originalCuts};\n};',sandbox);
+vm.runInContext(srcA.slice(startA,endA)+'return {continued:true,plan,originalCuts};}catch(error){throw error}\n};',sandbox);
 const options={layoutsD:true},prior=p=>finalized.set(p,{signature:JSON.stringify(p),revision:1,options:JSON.stringify(options)}),lineage={originalCuts:[{index:0,layout:'bulbs',text:'RESTORED_SOURCE'}]};sources.set(plan,lineage);prior(plan);
 const readsBefore=cacheReads;ok(J.finalizePlacementPlan(plan,options)===plan);ok(cacheReads===readsBefore);
 for(const value of ['false','throw']){mode=value;const v=J.finalizePlacementPlan(plan,options);ok(v.continued===true);ok(v.plan!==plan);eq(v.plan.cuts[0].text,'RESTORED_SOURCE');ok(!v.plan.cuts[0].placementTrajectory)}mode='owned';
