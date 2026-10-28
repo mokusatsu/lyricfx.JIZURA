@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82s正式finalizer入力射影：実09k callbackの3flag検証・除去、unknown field保持・偽装output拒否、pure33＋実registry stage4を親確認、local `89dd116e`。実J.plan/cache/Canvas/authority未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82r実frame：4frames/12own/165paintが82n oracle一致、8拒否bitmap不変/compile0、fresh/境界を親確認。41pins/10raw両hash。無観測8回17.3–24.3ms、準備17.17秒、60fps/実用UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82r詳細観測seam：preflight後のみ観測wrapper、一時状態復元をmock25/prefix12/owner37・12files hash親確認、local `0461de2e`。無観測通常frame実時間/実Canvas/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
