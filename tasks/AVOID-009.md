@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82r詳細観測seam：preflight後のみ観測wrapper、一時状態復元をmock25/prefix12/owner37・12files hash親確認、local `0461de2e`。無観測通常frame実時間/実Canvas/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82q frame試作：内部owner/ticket、before-bitmap最大3own照合・native source-Y dispatch、mock24/prefix12/owner37とrenderer独立再生成を親確認、local `386188f6`。実Canvas/frame時間・official plan/cache/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82p私有owner実Canvas：取消60own後、全2phaseモデルが旧offline modelとrows/index/static/circle/dy完全一致。準備17.315秒・heartbeat最大111.2ms、失効拒否compile0。34pins/4raw親照合、frame/UI・実用性能未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
