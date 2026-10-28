@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82c観測affine矩形支持：1351有限例/21620 BigInt dyadic checks・overflow拒否を親再実行、local `b26079a4`。Canvas CTM取得/文字metrics/raster前提/全時計/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82b全部品native呼出記述：元renderの床/影/側面/面/仕切り/pips/文字の順序・変換・RNGと5040 pure checks一致、5files hash親照合、local `02e3aa38`。実Canvas/support/全時計/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82a native寸法/row/pose抽出：元source直接比較7555 pure checksを親再実行、local `ae08c0aa`。空白時gi/j差を保持、入力由来候補/全部品支持/Canvas/adapter/UI未実装。通常円・2段の回避へ拡張しない。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
