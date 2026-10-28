@@ -1,0 +1,9 @@
+# Private ready-model owner 81p — unregistered
+
+Extends the executed 81n2 private factory. One opaque handle owns one ready job, numerical model and native private context until drop/next begin. It exposes no model/context/renderer. Generation, exact input, stock helpers/prototypes, font identities/revision and literal context guards are reused before validation/eligibility. A cloned/imported handle is rejected. This is not a runtime certificate, frame API or UI registration.
+
+32 KiB owner metadata/result reservation is included before compilation. Eligibility passes the producer reservation (including caller reservation) into both candidate and quality-result live budget checks. It remains prepare-only; ordinary frames must not call eligibility. `validate` does not compile, scan clocks/quality or serialize the model. Its dependency/input snapshot still allocates; no frame performance qualification is claimed. Model serialized length is measured once on commit for stats.
+
+The native 960×540 backing surface survives while resident, then is resized to 1×1 on drop/next begin/failure. Serialized 8 MiB accounting excludes native surface, JS heap/RSS and GPU resources; no such memory bound is claimed. Single active ready lease prevents overlapping preparation/resident models.
+
+Run `node private-test.cjs <81m-unit> <81o-scalar-support.js> ./model-compiler81.js`. The bootstrap uses portable path arguments. Original native-DOM rejection is exercised before the test-only VM native predicate bypass; test counters instrument compile invocation/model-byte calls only. Current synthetic result: 65 checks plus 100 integration / 439 family bootstrap. Canvas/owner/frame/UI qualification remains incomplete. Existing full 81n2 model preparation took 57,332.7ms, maximum heartbeat 438.8ms: neither total preparation nor UI performance is accepted.
