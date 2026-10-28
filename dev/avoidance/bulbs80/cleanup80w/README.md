@@ -1,0 +1,20 @@
+# 80w outer finalizer data cleanup — mock-only fixed unit
+
+Unapplied source proposal; no product build, actual08 J.plan/Canvas or UI qualification. It extends fixed80v only across the new-plan portion of09a: after detached clone, finalization errors attempt abort cleanup, remove the failed plan from finalized/sources WeakMaps, and rethrow the original value unchanged. Existing prior/completed early returns create no new adapter work. Callback-free legacy uses the same output/freeze path without new lifecycle callbacks.
+
+09k validated now retains adapter work; finalized is called only after09a diagnostics/cache keep/lineage registration/freeze. Actual80 adapter clears work at finalized. Any later callback exception invokes aborted callbacks for every matching adapter, including earlier finalized ones. Aborted can recover certificate from the actual trajectory even after work was cleared. This changes data lifetime, not Canvas exception restoration. Original throw identity is preserved for null, primitive and frozen Error, including when a secondary cleanup throws.
+
+outer-cleanup-test.cjs53PASS executes the full actual09a finalizer function/validator and actual09k/proposed adapter with mock planner lineage/compiler/geometry/context. It injects keep/freeze failure values, verifies removal of provisional records/bindings and old healthy plan preservation, then recovery. Multiple lifecycle adapters exercise first-finalized/second-fails and continued abort after one cleanup throws. No source08 planner or real drawing qualification is implied.
+
+Explicit unresolved cleanup-failure limitation (blocks product application): cleanup failures are collected locally but no persistent production diagnostic/report is exported. Successful resource release is not guaranteed if cleanup itself throws. cleanup-failure-test.cjs16PASS injects a frozen error into the mock codec during actual binding release accounting. The original outer error is preserved. A provisional binding is deleted but its controller proof record can remain: measured reservation18415→25064bytes, records1→2, bindings1→1. The failed plan is rejected by captured actual A.validateFinal after forcibly freezing it, runtimeAdmission is false, and trying to finalize that failed object rejects SOURCE_PLAN_REQUIRED. Thus retained data cannot regain authority through the failed plan. Original composed input can refinalize normally; owner accounts the live reservation on the next operation, and bounded future record/binding eviction retires the orphan. Test observes12actual owner reservation reads and verifies8MiB peak bound. These are fault-injected mock numbers, not production heap/resource guarantees.
+
+Authority rationale even when cleanup fails:09a always deletes failed-plan finalized/sources entries after its cleanup attempt.80 opaque registry uses captured A.validateFinal and dependency identity before ticket/model access, not public certificate IDs. Failed public payload/codec aliases therefore cannot be admitted or drawn. Retained private controller/binding state stays in its existing max2 registries/live serialized getter until release/eviction; no frame-time recompilation repairs it. A failed plan is never returned. This fail-closed authority is separate from complete release/diagnostic guarantees, which remain unfinished.
+
+Next independent unit must complete robust cleanup-result transport and bounded observable failure diagnostics (without mutating the original throw), then actual J.plan/key/unsupported-marker/ordinary-frame/old69-switch/runtime-domain tests. Do not count this mock-only unit as product connection completion. No Qt has run and prior source/evidence is preserved.
+
+Repository checkpoint: the JavaScript fixtures match the fixed 80w evidence; both tests change only the path to `../admission80r`. The 09a/09k files here are fixtures, not product sources. Run from the repository root:
+
+```
+node dev/avoidance/bulbs80/cleanup80w/outer-cleanup-test.cjs
+node dev/avoidance/bulbs80/cleanup80w/cleanup-failure-test.cjs
+```
