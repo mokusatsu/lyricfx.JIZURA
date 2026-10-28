@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82n承認入力・中点actual全clock：250state/727own、2718glyph/10973支持を親Fraction照合、35pins/753raw両hash確認。旧109.19pxとの差+3.487pxは保持、他入力/owner/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82m表示戦略：承認sourceの安全区間中点を全clock条件へ一般化、1695 pure checks親確認、local `0fa4a8f9`。承認入力約112.68px（旧109.19と差3.49px）、実移動/品質/owner/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82l承認入力：seed1205/風の先へ・承認上円で全727ownの安全最小dy80.839px、承認動画109.19pxとの差28.351px。31pins/2raw親照合。承認余白を保持する一般条件・実移動後検証が必要。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
