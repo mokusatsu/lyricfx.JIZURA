@@ -1,3 +1,5 @@
+2026-10-28 看板81n分割job：合成33＋bootstrap100 checksを親再実行、local `589fa709`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実Canvas応答 / 実owner / UI未資格、CLI401で未push。
+
 2026-10-28 看板81o sample計数：親独立8243 ledger / 50 model tests、代表9own 695.6ms・timer最大713ms、旧model値一致。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。local `d2974b0e`、CLI401で未push。全clock / UI未資格。
 
 2026-10-28 看板81m2残費用：同9own profile outer800.4ms、cache構築inclusive229.1ms、work bytes走査210.0ms、439 pins / 3 raw親照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。時間重複あり、全clock/UI未資格、CLI401でlocalのみ。
