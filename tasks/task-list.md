@@ -1,3 +1,5 @@
+2026-10-28 看板81g2 EN pilot：変更円で4候補×8時刻、84 ownの品質PASS。左2候補はsampleの全支持がstage/円clear、右2候補は円衝突で拒否。親が全600 pins/48 raw・左648 paintと42 ownを独立照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。全250時刻・製品/UI未資格。
+
 2026-10-28 看板幅81g2：旧81gはcaller予約由来peakがsemantic familyに混ざる欠陥を実Canvas前に発見。予算を別合算し幾何一致を試験する修正版 `8095f4ed` をwork保存、17files hash・純粋813/439/28親確認。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実EN / 全clockは未検証。
 
 2026-10-28 看板入力由来幅81g：17files hash・純粋813/439/26を親確認し `d8893208` をwork保存。[レビュー](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。EN移動円の実字体/全clock再検証、品質・支持・製品接続は未完。
