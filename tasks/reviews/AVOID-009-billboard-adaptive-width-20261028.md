@@ -1,3 +1,5 @@
+81ac 実finalizer初回：visible Qt / 8字体で実J.plan→09a正規化stageは `BILLBOARD81AB_PREPARE_REQUIRED`、bitmap変更前 `BILLBOARD81Y_OWNED_PLAN_REQUIRED`、prior miss、decoded admissionRejects +1 / hit 0、準備開始前compiles 0。staged retained 115572B。全clock private prepare 1回の後、commit中 `BILLBOARD81AB_STAGE_BUDGET`、host exit1 / 完了false、再確定とframe未到達。親が35 input pins / 4 rawのbytes・両hashと拒否値を照合、postPinsUnchanged true、media / public check 0。証拠Git外 `billboard-finalizer81ac-actual01`、source `billboard-finalizer-gate-source81ac`。stage identifier二重保持の原因を調査し上限を保つ別修正版を検討、元失敗は保持し成功に書換えない。Qt runtime固有、旧runtime受入の流用なし。
+
 81ab prepared-only adapter：実装gpt-6.1-sol / medium。6 files manifestを親照合、コピー保存時にprivate-job末尾空行だけを除きmanifest再計算。09k実marker/admission helperを含む64 mock checks、既存private owner 105 checks＋bootstrap 100/439を保存版から親再実行しlocal `5421d90b`。未準備markerのcache拒否・bitmap前拒否、同入力再確定、text / circle / revision / face / source変更の失効と再stage、generation / cancel / budgetを合成確認。private factoryのstageFingerprintは既存stock/source/字体依存を取得しCanvas作成なし。実09a / 09g / J.plan、真の全clock owner / Canvas / UIには未資格。同期finalize内compileなしだが全準備約62秒の性能改善ではない。CLI401のため未push / CI未実施。
 
 # 看板81g：入力計測による候補幅の試作

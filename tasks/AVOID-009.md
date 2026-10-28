@@ -1,3 +1,5 @@
+2026-10-28 看板81ac実finalizer初回は準備済みcommitの131072B stage上限で失敗。親が35 pins / 4 rawとhashを照合、先行実J.planの未準備bitmap拒否・prior/decoded missを確認。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。修正版・再確定・実描画は未完、元失敗を保持。
+
 2026-10-28 看板81ab準備済みadapter試作：正規化済みstage・未準備marker・変更時失効/再stageを合成64 checks、既存owner回帰105＋100/439を親再実行、local `5421d90b`。実09a/09g/J.plan/Canvas・UI未資格、準備約62秒は未解消、CLI401で未push。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。
 
 2026-10-28 看板81aa genuine owner bridge：7files / 合成integration98＋trajectory20を親再実行しlocal `ae4833fa`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。fullclock positiveはmock、実finalizer/cache/UI未資格。
