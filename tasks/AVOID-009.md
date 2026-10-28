@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82b全部品native呼出記述：元renderの床/影/側面/面/仕切り/pips/文字の順序・変換・RNGと5040 pure checks一致、5files hash親照合、local `02e3aa38`。実Canvas/support/全時計/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82a native寸法/row/pose抽出：元source直接比較7555 pure checksを親再実行、local `ae08c0aa`。空白時gi/j差を保持、入力由来候補/全部品支持/Canvas/adapter/UI未実装。通常円・2段の回避へ拡張しない。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 看板81af不変fragment再利用：同generator 2文字列の純粋545/420/567＋100/439、Qt代表9ownで旧/新model完全一致、単発726.4→594.8ms。31 pins / 6 raw親照合、source-only local `b7850b73`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。全clock/UI未資格、CLI401で未push。
