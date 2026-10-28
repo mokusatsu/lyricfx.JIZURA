@@ -41,11 +41,15 @@ const rows=[
 ];
 A.layoutsD34=rows.map(r=>r[0]);
 const adapters=new Map(),fail=(code,message)=>{const e=Error(message);e.code=code;throw e;};
-A.registerLayoutsDAdapter=(layout,adapter)=>{if(!A.layoutsD34.includes(layout)||layout==='fisheye'||adapters.has(layout)||!adapter||typeof adapter.id!=='string'||!/^[A-Za-z0-9_-]{3,64}$/.test(adapter.id)||typeof adapter.finalize!=='function'||typeof adapter.render!=='function')fail('INVALID_D_ADAPTER_REGISTRATION','Unique native D ID and stable finalize/render callbacks required');adapters.set(layout,Object.freeze({id:adapter.id,finalize:adapter.finalize,render:adapter.render}));};
+A.registerLayoutsDAdapter=(layout,adapter)=>{if(!A.layoutsD34.includes(layout)||layout==='fisheye'||adapters.has(layout)||!adapter||typeof adapter.id!=='string'||!/^[A-Za-z0-9_-]{3,64}$/.test(adapter.id)||typeof adapter.finalize!=='function'||typeof adapter.render!=='function'||adapter.runtimeAdmission!==undefined&&typeof adapter.runtimeAdmission!=='function')fail('INVALID_D_ADAPTER_REGISTRATION','Unique native D ID and stable finalize/render callbacks required');adapters.set(layout,Object.freeze({id:adapter.id,finalize:adapter.finalize,render:adapter.render,...(adapter.runtimeAdmission===undefined?{}:{runtimeAdmission:adapter.runtimeAdmission})}));};
 A.layoutsDRegisteredAdapters=()=>Array.from(adapters,([layout,a])=>({layout,id:a.id}));
 // Exact completed-plan cache dependency collector receives identities only;
 // neither its snapshots nor callers can mutate the private adapter registry.
-A.layoutsDCacheAdapterDependencies=()=>Array.from(adapters,([layout,a])=>[layout,a.id,a.finalize,a.render]);
+A.layoutsDCacheAdapterDependencies=()=>Array.from(adapters,([layout,a])=>a.runtimeAdmission===undefined?[layout,a.id,a.finalize,a.render]:[layout,a.id,a.finalize,a.render,a.runtimeAdmission]);
+// Read-only runtime ownership admission. A false result/exception is a cache miss;
+// this callback must not compile, paint, mutate or reissue a certificate.
+// Adapters without the optional callback retain their existing cache behavior.
+Object.defineProperty(A,'layoutsDRuntimeAdmission',{enumerable:true,value:Object.freeze(plan=>{for(const cut of plan.cuts||[]){if(cut.placementLayoutsD!==true||cut.layout==='fisheye')continue;const adapter=adapters.get(cut.layout);if(!adapter?.runtimeAdmission)continue;if(cut.placementTrajectory?.sourceAdapter!==adapter.id)return false;try{if(adapter.runtimeAdmission(Object.freeze({plan,cut,trajectory:cut.placementTrajectory}))!==true)return false;}catch{return false;}}return true;})});
 const readonly=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(readonly);Object.freeze(v);}return v;};
 function validate(tr,plan,cut,{revision,stepDur,reachTail}){
  const bad=m=>fail('INVALID_D_ADAPTER_RESULT',m),pair=v=>Array.isArray(v)&&v.length===2&&v.every(Number.isFinite),range=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail];

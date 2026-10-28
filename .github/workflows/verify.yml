@@ -39,6 +39,8 @@ jobs:
         run: |
           python3 build.py
           git diff --exit-code -- index.html en/index.html
+      - name: Verify optional D cache admission contract
+        run: node dev/avoidance/layouts-d-runtime-admission-pure.cjs
       - name: Verify lyric parser
         run: node dev/lyric_test.js
       - name: Verify both browser editions

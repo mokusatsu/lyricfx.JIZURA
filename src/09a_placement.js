@@ -415,7 +415,7 @@ const jsonClone=v=>JSON.parse(JSON.stringify(v));
    No automatic media-duration inference and no render-time repair of stale plans. */
 J.finalizePlacementPlan = (input,options={}) => {
   const prior=finalized.get(input), sig=signature(input),revision=J.metrics.revision||0,optionsCacheable=(options.layoutsA!==true&&options.layoutsB!==true&&options.layoutsC!==true&&options.layoutsD!==true)||A.layoutsAOptionsFinite(options);
-  if(optionsCacheable&&prior?.signature===sig&&prior.revision===revision&&prior.options===JSON.stringify(options))return input;
+  if(optionsCacheable&&prior?.signature===sig&&prior.revision===revision&&prior.options===JSON.stringify(options)&&(!A.layoutsDRuntimeAdmission||A.layoutsDRuntimeAdmission(input)===true))return input;
   if(!Number.isFinite(input.duration))fail('FINAL_DURATION_REQUIRED','Final composed duration required');
   if(!sources.has(input))fail('SOURCE_PLAN_REQUIRED','Finalize an actual composed J.plan result; serialized clones require replanning from project');
   const lineage=sources.get(input),cCache=layoutsCFinalCache?.begin(input,options,lineage),cPrior=layoutsCFinalCache?.read(cCache);
