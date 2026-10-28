@@ -1,3 +1,5 @@
+2026-10-28 看板81j実入力初回：model生成後hostのFloat64 wrapper参照比較でERR_ASSERTION、1180 pins / 4 raw保持。同期428,763.9msでUI接続不可。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。compiledを再利用し比較recovery、準備分割 / 高速化・所有 / frame / UI未完。
+
 2026-10-28 看板81j結合試作：入力由来qualityと領域unionを結ぶsource-only `64fd2155` をwork保存。23 files hash・合成100 / bootstrap439 checksを親確認。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実model / 全clock paint包含・所有 / frame / UI未資格。
 
 2026-10-28 看板81i拡大：開始時 / ghost / delay / exit・2字号の新15 own / 272 glyph、空selector2を元Canvasと一致確認。679 pins / 22 rawを親独立照合。source-only `4c198f4b`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。model union / 製品runtime / UI未資格。
