@@ -1,3 +1,5 @@
+2026-10-28 看板81n2 private factory：外部ctx拒否・lease / 失効の合成31＋bootstrap100 checksを親再実行しlocal `aba798f6`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実Canvas / 全clock / owner / UI未資格、CLI401で未push。
+
 2026-10-28 看板81n spacing対照：save中getter空はzero / 非zero両方で発生しrestore後に元値復帰。3run 1530 pins / 6raw親照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。空文字をzeroと一般化せず、専用ctx所有 / phase検証は別版で試験。
 
 2026-10-28 看板81n実Canvas初回：最初のown後DEPENDENCY_STALE拒否。別snapshot診断でspacing2値 `0px`→空文字の差を確認、親が両run 970 pins / 6 rawを照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。原因・等価性未証明、guard維持、UI未資格。
