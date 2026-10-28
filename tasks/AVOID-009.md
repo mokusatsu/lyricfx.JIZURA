@@ -1,3 +1,5 @@
+2026-10-28 看板別入力81f：JA別文字列は全7候補支持/品質、円変更と大円不足を親独立確認。真EN小円はnative3成立、円変更は英単語が狭板に収まらずmustAccept失敗を保持。[レビュー](reviews/AVOID-009-billboard-variable-input-20261028.md)。条件を緩めず入力由来幅を検討、runtime/UIは未完。
+
 2026-10-28 看板7候補基準JA：7×727own / 94948 paintの支持union包含を親Fraction照合、0.72左右は全品質・stage/円strict clear、他5は品質または円で拒否。[記録](reviews/AVOID-009-billboard-direct-quality-20261028.md)。別文字列/円/EN・runtime所有/frame/UIは未資格。
 
 2026-10-28 看板direct/quality試作：81e 14files hash・純粋direct826/quality19を親確認し `bf6f8874` をwork保存。[レビュー](reviews/AVOID-009-billboard-direct-quality-20261028.md)。実7recipeの描画/品質・安全候補・adapter/UI未資格。
