@@ -1,3 +1,5 @@
+2026-10-28 電球adapter試作：source80vの18filesを親hash照合、mock25+88 checksを独立再実行し `864926a5` をwork保存。[レビュー](reviews/AVOID-009-adapter-lifecycle-20261028.md)。09k後の09a cache/lineage/freeze例外cleanupが未完のため製品適用不可。実J.plan/Canvas/UIと看板以下5演出は未完。
+
 2026-10-28 電球所有証明の結合試作：実 owner/controller/private binding の mock compiler・context による26 checksを親が独立確認し、source-only unit `e103fcd5` をwork保存。[レビュー](reviews/AVOID-009-controller-binding-20261028.md)。実J.plan/Canvas・adapter・UIは未接続、通常UI optionは限定noPost/fastを満たすとは限らない。6動画承認は維持、看板以下5演出は未完。
 
 2026-10-28 製品cache接続：09k optional runtimeAdmission・09a prior・09g decoded hit前の所有確認を実製品src/日英HTMLへ反映、callback無し旧挙動とidentity依存/拒否統計を維持。JA/EN実finalize/codecで既存C・D・fisheye各3frameとtest-only insufficient adapterの所有/失効/lineageを親raw照合。work `5deb63af`、artifact CI・full verify CIとも同SHA成功。詳細 [cacheレビュー](reviews/AVOID-009-cache-admission-20261028.md)。実bulbs80 certificate/final plan binding・製品frame接続・UIと残5演出は未完。現worktreeの11p_layoutsD/Ee/Ef/Eg 4filesとgeneralized testは前からの未commit試作で、このcommitや生成HTMLへは入っていない。既承認6動画は維持。
