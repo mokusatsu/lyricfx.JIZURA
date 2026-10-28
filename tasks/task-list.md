@@ -1,3 +1,5 @@
+2026-10-28 看板81t frame controller：sole region / preimage / ticket寿命 / renderCut clone等の合成88＋prefix12を親再実行、local `2f438e8e`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実CanvasはQt navigation timeoutで描画前停止、実用UI未資格。
+
 2026-10-28 看板81s通常frame初回 / recovery失敗：誤copyにより描画前停止、修正版は浅いrenderCut cloneの参照同一検証で描画中拒否。親が1021 pins / 5raw照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。全field preflightの別修正版待ち、元失敗保持・bitmap不変未主張。
 
 2026-10-28 看板81r frame seam：6files hash / 独立再生成差分 / seam10合成checksを親確認、local `668c112c`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。private issuer / 実Canvas / 製品UI未資格。
