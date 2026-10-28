@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82o再生用model試作：既82n rawから727own/10973支持/2718glyphのmodel/indexを親独立照合、保持5795731B・peak5864333B。pure34・source local `05781f67`。fresh owner/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82n承認入力・中点actual全clock：250state/727own、2718glyph/10973支持を親Fraction照合、35pins/753raw両hash確認。旧109.19pxとの差+3.487pxは保持、他入力/owner/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82m表示戦略：承認sourceの安全区間中点を全clock条件へ一般化、1695 pure checks親確認、local `0fa4a8f9`。承認入力約112.68px（旧109.19と差3.49px）、実移動/品質/owner/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
