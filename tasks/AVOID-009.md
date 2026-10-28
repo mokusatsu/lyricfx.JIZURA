@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82j移動後先行：未bind native回帰、4時刻/12pass・144支持のX bits不変/Y画面・円下/paint包含を親Fraction照合。37pins / 12raw確認。全clock/品質/owner/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82j source-Y試作：native yFに同期bound dyを加える限定seam、manifest8/139 pure・別tmp再生成親確認、local `0e37b3b8`。実Canvas移動先/X同一/安全性・owner/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82i全clock候補試作：250states/727own/9393支持から限定入力dy 64.923px、5.726秒・最大step115.4ms。29pins/4raw親照合、mock34 source local `b3e96cab`。実移動/品質/所有/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
