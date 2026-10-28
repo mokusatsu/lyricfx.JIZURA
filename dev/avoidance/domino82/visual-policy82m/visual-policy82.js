@@ -1,0 +1,8 @@
+/* Midpoint-style selection over an input-derived ideal safety interval.
+   No actual displacement certificate or frame authority. */
+(()=>{'use strict';const A=J.placement,C=A.bulbsScalarCompiler80,need=(v,c)=>{if(!v)throw Object.assign(Error(c),{code:c})};
+function select({constraints,fraction=.5,reservedBytes=0}){
+ need(constraints&&Object.keys(constraints).length===3&&['lower','upper','below'].every(k=>Object.hasOwn(constraints,k)&&Number.isFinite(constraints[k])),'DOMINO82M_CONSTRAINTS');need(Number.isFinite(fraction)&&fraction>0&&fraction<1,'DOMINO82M_VISUAL_FRACTION');need(Number.isSafeInteger(reservedBytes)&&reservedBytes>=0,'DOMINO82M_RESERVED');
+ const lo=Math.max(0,constraints.lower,constraints.below),hi=constraints.upper,span=hi-lo;need(Number.isFinite(span)&&span>0,'DOMINO82M_NO_VISUAL_INTERVAL');const dy=lo+span*fraction;need(Number.isFinite(dy)&&dy>lo&&dy<hi,'DOMINO82M_ROUNDED_VISUAL_INTERVAL');const result={kind:'domino-feasible-interval-visual82m',strategy:'source-y-interior-fraction',fraction,dx:0,dy,interval:{lo,hi},sourceClearance:{circleSide:dy-lo,stageBottom:hi-dy},safetyAccepted:false,actualDestinationRequired:true,budget:{definition:'serialized current three constraints/options/output/work plus caller reservation; not JS heap',limit:8388608,peak:0}};const bytes=reservedBytes+C.serializedBytes({constraints,fraction,reservedBytes,lo,hi,span,dy,result});need(bytes<=8388608,'DOMINO82M_SERIALIZED_WORKING_BUDGET');result.budget.peak=bytes;return Object.freeze(result);
+}
+Object.defineProperty(A,'dominoVisualPolicy82m',{value:Object.freeze({select,sourceOnly:true,certificateIssuer:false})});})();

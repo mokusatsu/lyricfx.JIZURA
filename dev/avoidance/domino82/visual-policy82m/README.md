@@ -1,0 +1,9 @@
+# Domino feasible-interval visual policy82m
+
+Unregistered pure selection policy. Given input-derived whole-clock ideal source-Y constraints, choose the strict interior fraction of [max(0,lower,below),upper], default fraction=.5. This is the same general midpoint-style preference that the historical bounded73→G.positions candidate family offered, now using whole-clock constraints rather than held heuristic boxes. No text/seed/coordinate special branch or hardcoded109px displacement.
+
+For current Qt seed1205/風の先へ/960×540/circle(.5,.2,.2),82l minimum80.83896936935523 and upper144.51592309682172 produce midpoint112.67744623308848px. Historical human-approved source-Y109.18999999999997 differs by+3.48744623308851px. This numerical difference is explicit; neither same pixels nor same appearance is claimed. The midpoint leaves31.83847686373324source pixels of interval clearance on each side, preserving an interior-margin strategy instead of choosing the safety boundary. No new video or human reapproval is needed for this calculation.
+
+An explicit fraction must be strictly between0and1; nonfinite, no interval, rounded-to-boundary and budget-overflow cases reject with typed errors. There is no silent clamp or fallback to a boundary/minimal placement. Safety still depends on actual shifted Canvas matrices/support and full original quality, Y-stage and circle tests. Output has safetyAccepted:false and actualDestinationRequired:true. It is not authority to render an unprepared plan.
+
+Run `node visual-test.cjs`:1695checks. Includes many intervals/fractions, signed zero, exact current-input expected midpoint, no mutation, too-small interval/rounding refusal, invalid fractions and8MiB rejection. Actual Canvas and owner/runtime/UI remain unqualified. Accounting covers the three constraint values/options/output/scalars and caller reservation with the existing fixed-width exact codec; not JS heap/RSS.
