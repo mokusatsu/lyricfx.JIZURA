@@ -1,0 +1,8 @@
+// Input-derived descriptor seam only. Native render remains byte-identical.
+Object.defineProperty(J.placement,'dominoSourceInput82d',{value:Object.freeze(env=>{
+ const {cut,sc}=env,Pm=cut.params,n=J.glyphCount(cut.text);if(n<1)return null;
+ const G=J.placement.dominoNativeGeometry82a;if(!G||!Object.isFrozen(G))throw Object.assign(Error('DOMINO82D_GEOMETRY'),{code:'DOMINO82D_GEOMETRY'});
+ const port=isPort(env),rowsD=rowsOf(cut.text,port?5:n<=7?7:Math.ceil(n/2)),layout=G.layout(env,rowsD);
+ const faceC=Pm.face==='ink'?plateCol(sc,[sc.ink,sc.fg]):J.mix(lightOf(sc),sc.accent,.06),tc=onCol(sc,faceC),sideC=shade(sc,faceC,-.35),pipC=J.mix(faceC,tc,.7);
+ return{kind:'domino-current-source-input82d',rowsD,layout,palette:{face:faceC,text:tc,side:sideC,pip:pipC,dark:darkOf(sc),ground:sc.sub,divider:J.mix(faceC,tc,.45)},source:{text:cut.text,seed:cut.seed,params:{...Pm},dur:cut.dur,outDur:cut.outDur,stagger:cut.stagger,hold:cut.hold,lt:env.lt,pOut:env.pOut,pass:env.pass},sourceOnly:true,certificateIssuer:false};
+})});
