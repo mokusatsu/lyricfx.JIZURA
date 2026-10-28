@@ -1,3 +1,5 @@
+2026-10-28 看板81p残費用診断：代表9ownでcache構築時の重複accountが各126回 / inclusive115.9・94.5ms、458 pins / 3raw親照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。入れ子あり、同時計数を保持して削減検討。
+
 2026-10-28 看板81p private owner試作：親独立65＋100/439合成checks、local `92b83872` / EOF整形`b737e63d`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実Canvas / frame / UI未資格、CLI401で未push。
 
 2026-10-28 看板81n2全clock：private 727own / 728step、旧modelと非budget全値一致。親が520 pins / 3 raw照合、57332.7ms / maxstep433.1 / heartbeat438.8ms。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実UI / owner / frame未資格、CLI401でlocalのみ。
