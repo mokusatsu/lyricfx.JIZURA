@@ -1,3 +1,5 @@
+2026-10-28 看板81i拡大：開始時 / ghost / delay / exit・2字号の新15 own / 272 glyph、空selector2を元Canvasと一致確認。679 pins / 22 rawを親独立照合。source-only `4c198f4b`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。model union / 製品runtime / UI未資格。
+
 2026-10-28 看板81i最小実数値：EN n60 main 1 own、実Canvas由来sample / typed入力と先行描画の36 glyph・時計・metadata等が一致。629 pins / 6 rawを親独立照合、serialized peak 1,132,993B。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。ghost・全時計・union・製品runtime / UI未資格。
 
 2026-10-28 看板81h品質単位：元qualityとのoffline実測値比較84 own / 597 checks、親の7files hash・baseline一致・再実行PASS。source-only `dc56ed54` をwork保存。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。sample構成・compiler / union・所有 / frame / UI未接続。
