@@ -1,3 +1,5 @@
+2026-10-28 看板幅81g2：旧81gはcaller予約由来peakがsemantic familyに混ざる欠陥を実Canvas前に発見。予算を別合算し幾何一致を試験する修正版 `8095f4ed` をwork保存、17files hash・純粋813/439/28親確認。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実EN / 全clockは未検証。
+
 2026-10-28 看板入力由来幅81g：17files hash・純粋813/439/26を親確認し `d8893208` をwork保存。[レビュー](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。EN移動円の実字体/全clock再検証、品質・支持・製品接続は未完。
 
 2026-10-28 看板別入力81f：JA別文字列は全7候補支持/品質、円変更と大円不足を親独立確認。真EN小円はnative3成立、円変更は英単語が狭板に収まらずmustAccept失敗を保持。[レビュー](reviews/AVOID-009-billboard-variable-input-20261028.md)。条件を緩めず入力由来幅を検討、runtime/UIは未完。
