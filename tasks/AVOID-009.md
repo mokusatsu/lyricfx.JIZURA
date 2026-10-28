@@ -1,3 +1,5 @@
+2026-10-28 電球finalizer後始末試作：source80w 18files hash照合とmock 53+16 checksを親確認し `c2163053` をwork保存。[レビュー](reviews/AVOID-009-finalizer-cleanup-20261028.md)。cleanup自体の失敗時の即時解放・永続診断は未保証で製品適用前の阻害。実J.plan/Canvas/UI・看板以下5演出は未完。
+
 2026-10-28 電球adapter試作：source80vの18filesを親hash照合、mock25+88 checksを独立再実行し `864926a5` をwork保存。[レビュー](reviews/AVOID-009-adapter-lifecycle-20261028.md)。09k後の09a cache/lineage/freeze例外cleanupが未完のため製品適用不可。実J.plan/Canvas/UIと看板以下5演出は未完。
 
 2026-10-28 電球所有証明の結合試作：実 owner/controller/private binding の mock compiler・context による26 checksを親が独立確認し、source-only unit `e103fcd5` をwork保存。[レビュー](reviews/AVOID-009-controller-binding-20261028.md)。実J.plan/Canvas・adapter・UIは未接続、通常UI optionは限定noPost/fastを満たすとは限らない。6動画承認は維持、看板以下5演出は未完。
