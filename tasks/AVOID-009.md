@@ -1,3 +1,5 @@
+2026-10-28 電球cleanup診断試作：source80xの20files hashとmock 53/19/76(重複)/88/1012 checksを親確認し `9b7fe0f1` をwork保存。[レビュー](reviews/AVOID-009-cleanup-diagnostic-20261028.md)。模擬条件で証明record回収と上限付き最新診断を確認。実J.plan/Canvas・製品接続・UIと他5演出は未完。
+
 2026-10-28 電球finalizer後始末試作：source80w 18files hash照合とmock 53+16 checksを親確認し `c2163053` をwork保存。[レビュー](reviews/AVOID-009-finalizer-cleanup-20261028.md)。cleanup自体の失敗時の即時解放・永続診断は未保証で製品適用前の阻害。実J.plan/Canvas/UI・看板以下5演出は未完。
 
 2026-10-28 電球adapter試作：source80vの18filesを親hash照合、mock25+88 checksを独立再実行し `864926a5` をwork保存。[レビュー](reviews/AVOID-009-adapter-lifecycle-20261028.md)。09k後の09a cache/lineage/freeze例外cleanupが未完のため製品適用不可。実J.plan/Canvas/UIと看板以下5演出は未完。
