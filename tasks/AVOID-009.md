@@ -1,3 +1,5 @@
+2026-10-28 看板81m計数部品：従来codecとbyte長一致545純粋checksを親再実行、local `deee25bd`。CLI認証401で未push。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。統合前後の全clock同値・実時間 / UI未資格。
+
 2026-10-28 看板81l性能診断：代表9 ownでouter8446.9ms、serialized 12313回 / inclusive7499.1ms、measureText 493回 / 48.5ms。親が405 pins / 3 raw照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。入れ子/計測overheadあり、全時計保証・8MiB・失効を保つ計数削減と準備分割が必要。
 
 2026-10-28 看板81j入力recovery：初回16＋新1438=左2候補1454 own / 12884 glyphを元paintと親独立照合、1198 pins / 92 raw一致。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。初回失敗保持、同期428秒改善・所有 / frame / UI未完。
