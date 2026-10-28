@@ -1,3 +1,5 @@
+81ab prepared-only adapter：実装gpt-6.1-sol / medium。6 files manifestを親照合、コピー保存時にprivate-job末尾空行だけを除きmanifest再計算。09k実marker/admission helperを含む64 mock checks、既存private owner 105 checks＋bootstrap 100/439を保存版から親再実行しlocal `5421d90b`。未準備markerのcache拒否・bitmap前拒否、同入力再確定、text / circle / revision / face / source変更の失効と再stage、generation / cancel / budgetを合成確認。private factoryのstageFingerprintは既存stock/source/字体依存を取得しCanvas作成なし。実09a / 09g / J.plan、真の全clock owner / Canvas / UIには未資格。同期finalize内compileなしだが全準備約62秒の性能改善ではない。CLI401のため未push / CI未実施。
+
 # 看板81g：入力計測による候補幅の試作
 
 2026-10-28。実装担当 gpt-6.1-sol / medium。親は固定17filesのbytes / SHA256とsourceを確認、純粋幅813 / family439 / model26 checksを独立再実行し、未登録source-only unit `d8893208` を保存。製品 / UIは未変更。
