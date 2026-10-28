@@ -1,3 +1,5 @@
+2026-10-28 ドミノ82i全clock候補試作：250states/727own/9393支持から限定入力dy 64.923px、5.726秒・最大step115.4ms。29pins/4raw親照合、mock34 source local `b3e96cab`。実移動/品質/所有/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-28 ドミノ82h入力由来縦候補：source supportsと上側円から必要dyを導出、984 pure checks親再実行、local `23164aa5`。保守的失敗は一般解なしを意味しない。実移動/全clock/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82g終了直前n239：1pair/3ownのnative一致、40支持Fraction包含を親確認、29pins / 5raw照合。全clock/回避/adapter/UI未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
