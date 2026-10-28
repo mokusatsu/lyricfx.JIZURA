@@ -1,3 +1,5 @@
+2026-10-28 看板81w全clock owner / normal実Canvas：522 pins / 4 raw親照合、6比較/18own/330paint一致・5拒否bitmap不変、normal15.7–79.8ms。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。準備61.99秒 / maxstep1.295秒 / heartbeat1.319秒、UI実用不可・plan/cache未完。
+
 2026-10-28 看板81v代表normal実Canvas：部分9own modelで6比較 / 18own / 330paintとRGBA一致、5拒否bitmap不変、521 pins / 4raw親照合。normal observer前20.8–31.7ms。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。full model / plan/cache / UI未資格、CLI401でlocalのみ。
 
 2026-10-28 看板81t frame controller：sole region / preimage / ticket寿命 / renderCut clone等の合成88＋prefix12を親再実行、local `2f438e8e`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実CanvasはQt navigation timeoutで描画前停止、実用UI未資格。
