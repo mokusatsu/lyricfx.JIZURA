@@ -1,3 +1,5 @@
+2026-10-28 電球準備visible実測：同期・分割モデル全727own一致、取消/世代/入力/字体失効を親確認。一方最終step 9,442.9ms・heartbeat最大9,449.6msでUI実用化未達、試作未適用。[記録](reviews/AVOID-009-cooperative-prepare-20261028.md)。看板を独立に優先。
+
 2026-10-28 電球準備の実Canvas初回：hidden Qtで約8分/727中55ownのため親指示で中断、exit130・2raw/156pins保持。未完を合否扱いしない。[記録](reviews/AVOID-009-cooperative-prepare-20261028.md)。visible条件の切分けと看板を独立に進める。
 
 2026-10-28 電球準備分割試作：80ab 12files hash、mock job40・owner71 checksを親確認し `e30a4914` をwork保存。[レビュー](reviews/AVOID-009-cooperative-prepare-20261028.md)。実Canvas一致・heartbeat遅延・private owner移譲・UI接続と他5演出は未完。
