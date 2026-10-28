@@ -1,3 +1,5 @@
+2026-10-28 一般化の中間検証：電球の入力由来モデルを日本語重複文字・別seed・英語ページで数値照合。独立G68 unit117試験と既存選択60件一致、commit `9ae02a28` のartifact CI成功。製品接続は未実施。配置先CTM→別円/文字列とcache失効→通常frame→UI準備制御の順に検証し、同基盤を残5演出へ適用する。初回約5.66秒は条件付き中間値、1秒はユーザー指定受入閾値ではない。詳細 [一般化レビュー](reviews/AVOID-009-source-model-generalization-20261028.md)。6掲載動画の承認は維持し、追加固定候補作成・再承認は不要。
+
 ## 2026-10-27 22:15 UTC — 承認済み6候補をロジックへ
 
 利用者「動画はどれもOKです 固定候補はもういいのでロジックに落としてください」。親からの対象特定は Sites source `ba6e987910967666a622055477e49307990bcecb` / project `appgprj_6ae0bda657c88191b9ddec956ceb911f` 掲載の6固定比較（電球、看板、domino upper-one-row、burst two-row-half、contour hero-half-body-native、crossword58A default-left-bottom）。この6件の動作は HUMAN_APPROVED。同じ固定候補の再承認は不要。古い未承認・旧集約予定は各時点の履歴として保持する。

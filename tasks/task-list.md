@@ -1,3 +1,5 @@
+2026-10-28 一般化の中間検証：電球の入力由来モデルを日本語重複文字・別seed・英語ページで数値照合。独立G68 unit117試験と既存選択60件一致、commit `9ae02a28` のartifact CI成功。製品接続は未実施。配置先CTM→別円/文字列とcache失効→通常frame→UI準備制御の順に検証し、同基盤を残5演出へ適用する。初回約5.66秒は条件付き中間値、1秒はユーザー指定受入閾値ではない。詳細 [一般化レビュー](reviews/AVOID-009-source-model-generalization-20261028.md)。6掲載動画の承認は維持し、追加固定候補作成・再承認は不要。
+
 2026-10-27 22:15 UTC: AVOID-009の6掲載固定版は承認済み、一般化ロジック実装中。現行の承認範囲と証拠は[レビュー台帳](reviews/AVOID-009-review-ledger-20261027.md)。
 
 2026-10-27 レビュー中間媒体のGit再混入防止：専用2root ignore、staged/incoming全commit軽量guard、独立temp Git17試験PASS。既存履歴/製品資産/CEP ZIP保持、容量制限なし、CI実行/親最終レビュー未完。詳細 [媒体guard](reviews/AVOID-009-review-media-guard-20261027.md)。
