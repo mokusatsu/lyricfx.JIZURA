@@ -1,0 +1,74 @@
+[
+  [
+    "post",
+    "rect",
+    "[px - pw / 2, y0 + bh, pw, groundY - y0 - bh, steel, a0, false]",
+    "{px,pw,y0,bh,groundY,steel,a0}"
+  ],
+  [
+    "brace0",
+    "line",
+    "[[[x1, yb], [x2, yb2]], steel, lw, a0, false]",
+    "{x1,x2,yb,yb2,steel,lw,a0}"
+  ],
+  [
+    "brace1",
+    "line",
+    "[[[x2, yb], [x1, yb2]], steel, lw, a0, false]",
+    "{x1,x2,yb,yb2,steel,lw,a0}"
+  ],
+  [
+    "deck",
+    "rect",
+    "[bx + bw * 0.04, cwY, bw * 0.92, bh * 0.025, steel, a0, false]",
+    "{bx,bw,cwY,bh,steel,a0}"
+  ],
+  [
+    "upright",
+    "rect",
+    "[bx + bw * (0.04 + 0.92 * i / 10) - lw / 2, cwY - bh * 0.07, lw, bh * 0.07, steel, a0 * 0.8, false]",
+    "{bx,bw,i,lw,cwY,bh,steel,a0}"
+  ],
+  [
+    "rail",
+    "line",
+    "[[[bx + bw * 0.04, cwY - bh * 0.07], [bx + bw * 0.96, cwY - bh * 0.07]], steel, lw, a0 * 0.8, false]",
+    "{bx,bw,cwY,bh,steel,lw,a0}"
+  ],
+  [
+    "ground",
+    "line",
+    "[[[W * 0.03, groundY], [W * 0.97, groundY]], sc.sub, lw, 0.5 * a0, false]",
+    "{groundY,lw,a0}"
+  ],
+  [
+    "frame",
+    "rect",
+    "[bx - bw * 0.015, y0 - bw * 0.015, bw * 1.03, bh + bw * 0.03, steel, a0, false]",
+    "{bx,bw,y0,bh,steel,a0}"
+  ],
+  [
+    "face",
+    "rect",
+    "[bx, y0, bw, bh, J.mix(faceC, darkOf(sc), 0.28), a0, gIn(env)]",
+    "{bx,y0,bw,bh,faceC,a0}"
+  ],
+  [
+    "arm",
+    "line",
+    "[[[lx, cwY], [lx, ly + bh * 0.02]], steel, lw * 1.5, a0, false]",
+    "{lx,ly,cwY,bh,steel,lw,a0}"
+  ],
+  [
+    "body",
+    "poly",
+    "[[[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false]",
+    "{lx,ly,bh,steel,a0}"
+  ],
+  [
+    "lens",
+    "circle",
+    "[lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false]",
+    "{lx,ly,bh,a0}"
+  ]
+]

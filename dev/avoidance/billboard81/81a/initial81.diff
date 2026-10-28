@@ -1,0 +1,36 @@
+--- a/src/11p_layoutsD.js
++++ b/src/11p_layoutsD.js
+@@ -1913,0 +1914,19 @@
++// Source-only extraction proposal. Original normal render calls this at the
++// same point. Env is a stock plain record; no getter side-effect guarantee.
++function billboardInitial81(env){const {W,H,sc}=env,cut=env.cut,Pm=cut.params,lt=env.lt;
++    const port = isPort(env);
++    const text = brk(cut.text, port ? 5 : 9);
++    const out = tout(env);
++    const bw = W * (port ? 0.86 : 0.72), bh = Math.min(H * (port ? 0.3 : 0.42), bw * 0.5);
++    const bx = W / 2 - bw / 2, by = H * (port ? 0.3 : 0.16);
++    const groundY = H * 0.94;
++    const rise = (1 - E.outCubic(J.clamp(lt / 0.55))) * H * 0.08 + E.inCubic(env.pOut) * H * 0.05;
++    const y0 = by + rise;
++    const a0 = tin(env, 0, 0.35, E.outCubic) * out;
++    const steel = J.mix(darkOf(sc), sc.sub, 0.35);
++    const faceC = Pm.face === 'accent' || J.lum(sc.bg) > 0.55 ? (J.lum(sc.bg) > 0.55 ? [sc.accent, sc.ink, sc.fg].find(c => J.contrast(c, sc.bg) >= 1.8) || sc.fg : plateCol(sc, [sc.accent, sc.ink])) : J.mix(lightOf(sc), sc.accent, 0.06);
++    const tc = onCol(sc, faceC);
++    return {port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc};
++}
++Object.defineProperty(J.placement,'billboardNativeGeometry81',{enumerable:true,value:Object.freeze({initial:billboardInitial81,sourceOnly:true,certificateIssuer:false})});
++
+@@ -1936,12 +1955 @@
+-    const port = isPort(env);
+-    const text = brk(cut.text, port ? 5 : 9);
+-    const out = tout(env);
+-    const bw = W * (port ? 0.86 : 0.72), bh = Math.min(H * (port ? 0.3 : 0.42), bw * 0.5);
+-    const bx = W / 2 - bw / 2, by = H * (port ? 0.3 : 0.16);
+-    const groundY = H * 0.94;
+-    const rise = (1 - E.outCubic(J.clamp(lt / 0.55))) * H * 0.08 + E.inCubic(env.pOut) * H * 0.05;
+-    const y0 = by + rise;
+-    const a0 = tin(env, 0, 0.35, E.outCubic) * out;
+-    const steel = J.mix(darkOf(sc), sc.sub, 0.35);
+-    const faceC = Pm.face === 'accent' || J.lum(sc.bg) > 0.55 ? (J.lum(sc.bg) > 0.55 ? [sc.accent, sc.ink, sc.fg].find(c => J.contrast(c, sc.bg) >= 1.8) || sc.fg : plateCol(sc, [sc.accent, sc.ink])) : J.mix(lightOf(sc), sc.accent, 0.06);
+-    const tc = onCol(sc, faceC);
++    const {port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc}=billboardInitial81(env);

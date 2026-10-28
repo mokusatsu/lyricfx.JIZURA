@@ -1,0 +1,91 @@
+--- a/src/11p_layoutsD.js
++++ b/src/11p_layoutsD.js
+@@ -1949 +1949,31 @@
+-Object.defineProperty(J.placement,'billboardNativeGeometry81',{enumerable:true,value:Object.freeze({initial:billboardInitial81,mainSize:billboardMainSize81,mainItem:billboardMainItem81,lampOn:billboardLampOn81,tagSize:billboardTagSize81,tagNumber:billboardTagNumber81,tagTime:billboardTagTime81,sourceOnly:true,certificateIssuer:false})});
++function billboardPostWidth81(bw){return bw * 0.035}
++function billboardLineWidth81(u){return Math.max(1.2, u * 0.0025)}
++function billboardBraceMetrics81({bx,bw,y0,bh,groundY}){const x1 = bx + bw * 0.22, x2 = bx + bw * 0.78, yb = y0 + bh + (groundY - y0 - bh) * 0.25, yb2 = groundY - (groundY - y0 - bh) * 0.1;return{x1,x2,yb,yb2}}
++function billboardDeckY81(y0,bh){return y0 + bh + bh * 0.1}
++function billboardLampPosition81({bx,bw,y0,bh,L},i){const lx = bx + bw * (i + 0.5) / L, ly = y0 + bh + bh * 0.06;return{lx,ly}}
++function billboardConeAim81(env,{lx,ly,bh},i,sweep){const ang = (-90 + Math.sin(env.ltb * 0.8 + i * 1.7) * sweep) * J.DEG;const tx = lx + Math.cos(ang) * bh * 1.25, ty = ly + Math.sin(ang) * bh * 1.25;return{ang,tx,ty}}
++function billboardConeSpread81(bw,L){return bw / L * 0.75}
++function billboardLit81(lampOn,L){return lampOn.reduce((a, b) => a + b, 0) / L}
++function billboardIlluminationAlpha81(lit,a0){return 0.55 * lit * a0}
++function billboardPart81(env,kind,v){const {W,sc}=env,{px,pw,y0,bh,groundY,steel,a0,x1,x2,yb,yb2,lw,bx,bw,cwY,i,lx,ly,faceC,tx,ty,spread}=v;switch(kind){
++case 'post':return [px - pw / 2, y0 + bh, pw, groundY - y0 - bh, steel, a0, false];
++case 'brace0':return [[[x1, yb], [x2, yb2]], steel, lw, a0, false];
++case 'brace1':return [[[x2, yb], [x1, yb2]], steel, lw, a0, false];
++case 'deck':return [bx + bw * 0.04, cwY, bw * 0.92, bh * 0.025, steel, a0, false];
++case 'upright':return [bx + bw * (0.04 + 0.92 * i / 10) - lw / 2, cwY - bh * 0.07, lw, bh * 0.07, steel, a0 * 0.8, false];
++case 'rail':return [[[bx + bw * 0.04, cwY - bh * 0.07], [bx + bw * 0.96, cwY - bh * 0.07]], steel, lw, a0 * 0.8, false];
++case 'ground':return [[[W * 0.03, groundY], [W * 0.97, groundY]], sc.sub, lw, 0.5 * a0, false];
++case 'frame':return [bx - bw * 0.015, y0 - bw * 0.015, bw * 1.03, bh + bw * 0.03, steel, a0, false];
++case 'face':return [bx, y0, bw, bh, J.mix(faceC, darkOf(sc), 0.28), a0, gIn(env)];
++case 'arm':return [[[lx, cwY], [lx, ly + bh * 0.02]], steel, lw * 1.5, a0, false];
++case 'body':return [[[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false];
++case 'lens':return [lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false];
++case 'coneGradient':return [lx, ly, 0, lx, ly, bh * 1.2];
++case 'clip':return [bx,y0,bw,bh];
++case 'illumination':return [bx,y0,bw,bh];
++case 'coneMove0':return [lx - bw * 0.02, ly];
++case 'coneLine0':return [tx - spread, ty];
++case 'coneLine1':return [tx + spread, ty];
++case 'coneMove1':return [lx + bw * 0.02, ly];
++default:throw Object.assign(Error('BILLBOARD81_PART_NAME'),{code:'BILLBOARD81_PART_NAME'});}}
++Object.defineProperty(J.placement,'billboardNativeGeometry81',{enumerable:true,value:Object.freeze({initial:billboardInitial81,mainSize:billboardMainSize81,mainItem:billboardMainItem81,lampOn:billboardLampOn81,tagSize:billboardTagSize81,tagNumber:billboardTagNumber81,tagTime:billboardTagTime81,postWidth:billboardPostWidth81,lineWidth:billboardLineWidth81,braces:billboardBraceMetrics81,deckY:billboardDeckY81,lampPosition:billboardLampPosition81,coneAim:billboardConeAim81,coneSpread:billboardConeSpread81,lit:billboardLit81,illuminationAlpha:billboardIlluminationAlpha81,part:billboardPart81,sourceOnly:true,certificateIssuer:false})});
+@@ -1976,10 +2006,10 @@
+-    const pw = bw * 0.035;
+-    let postIndex=0;for (const px of [bx + bw * 0.22, bx + bw * 0.78]) {const i=postIndex++;owned('structure.post.'+i,'rect',()=>env.rect(...args([px - pw / 2, y0 + bh, pw, groundY - y0 - bh, steel, a0, false])));}
+-    const lw = Math.max(1.2, u * 0.0025);
+-    const x1 = bx + bw * 0.22, x2 = bx + bw * 0.78, yb = y0 + bh + (groundY - y0 - bh) * 0.25, yb2 = groundY - (groundY - y0 - bh) * 0.1;
+-    owned('structure.brace.0','line',()=>env.line(...args([[[x1, yb], [x2, yb2]], steel, lw, a0, false]))); owned('structure.brace.1','line',()=>env.line(...args([[[x2, yb], [x1, yb2]], steel, lw, a0, false])));
+-    const cwY = y0 + bh + bh * 0.1;
+-    owned('catwalk.deck','rect',()=>env.rect(...args([bx + bw * 0.04, cwY, bw * 0.92, bh * 0.025, steel, a0, false])));
+-    for (let i = 0; i <= 10; i++) owned('catwalk.upright.'+i,'rect',()=>env.rect(...args([bx + bw * (0.04 + 0.92 * i / 10) - lw / 2, cwY - bh * 0.07, lw, bh * 0.07, steel, a0 * 0.8, false])));
+-    owned('catwalk.rail','line',()=>env.line(...args([[[bx + bw * 0.04, cwY - bh * 0.07], [bx + bw * 0.96, cwY - bh * 0.07]], steel, lw, a0 * 0.8, false])));
+-    owned('ground.line','line',()=>env.line(...args([[[W * 0.03, groundY], [W * 0.97, groundY]], sc.sub, lw, 0.5 * a0, false])));
++    const pw = billboardPostWidth81(bw);
++    let postIndex=0;for (const px of [bx + bw * 0.22, bx + bw * 0.78]) {const i=postIndex++;owned('structure.post.'+i,'rect',()=>env.rect(...args(billboardPart81(env,'post',{px,pw,y0,bh,groundY,steel,a0}))));}
++    const lw = billboardLineWidth81(u);
++    const {x1,x2,yb,yb2}=billboardBraceMetrics81({bx,bw,y0,bh,groundY});
++    owned('structure.brace.0','line',()=>env.line(...args(billboardPart81(env,'brace0',{x1,x2,yb,yb2,steel,lw,a0})))); owned('structure.brace.1','line',()=>env.line(...args(billboardPart81(env,'brace1',{x1,x2,yb,yb2,steel,lw,a0}))));
++    const cwY = billboardDeckY81(y0,bh);
++    owned('catwalk.deck','rect',()=>env.rect(...args(billboardPart81(env,'deck',{bx,bw,cwY,bh,steel,a0}))));
++    for (let i = 0; i <= 10; i++) owned('catwalk.upright.'+i,'rect',()=>env.rect(...args(billboardPart81(env,'upright',{bx,bw,i,lw,cwY,bh,steel,a0}))));
++    owned('catwalk.rail','line',()=>env.line(...args(billboardPart81(env,'rail',{bx,bw,cwY,bh,steel,lw,a0}))));
++    owned('ground.line','line',()=>env.line(...args(billboardPart81(env,'ground',{groundY,lw,a0}))));
+@@ -1987,2 +2017,2 @@
+-    owned('board.frame','rect',()=>env.rect(...args([bx - bw * 0.015, y0 - bw * 0.015, bw * 1.03, bh + bw * 0.03, steel, a0, false])));
+-    owned('board.face','rect',()=>env.rect(...args([bx, y0, bw, bh, J.mix(faceC, darkOf(sc), 0.28), a0, gIn(env)])));
++    owned('board.frame','rect',()=>env.rect(...args(billboardPart81(env,'frame',{bx,bw,y0,bh,steel,a0}))));
++    owned('board.face','rect',()=>env.rect(...args(billboardPart81(env,'face',{bx,y0,bw,bh,faceC,a0}))));
+@@ -1995 +2025 @@
+-      ctx.save(); ctx.beginPath(); ctx.rect(bx, y0, bw, bh); ctx.clip();
++      ctx.save(); ctx.beginPath(); ctx.rect(...billboardPart81(env,'clip',{bx,y0,bw,bh})); ctx.clip();
+@@ -1999,4 +2029,3 @@
+-        const lx = bx + bw * (i + 0.5) / L, ly = y0 + bh + bh * 0.06;
+-        const ang = (-90 + Math.sin(env.ltb * 0.8 + i * 1.7) * Pm.sweep) * J.DEG;
+-        const tx = lx + Math.cos(ang) * bh * 1.25, ty = ly + Math.sin(ang) * bh * 1.25;
+-        const g = ctx.createRadialGradient(...gradientArgs([lx, ly, 0, lx, ly, bh * 1.2]));
++        const {lx,ly}=billboardLampPosition81({bx,bw,y0,bh,L},i);
++        const {ang,tx,ty}=billboardConeAim81(env,{lx,ly,bh},i,Pm.sweep);
++        const g = ctx.createRadialGradient(...gradientArgs(billboardPart81(env,'coneGradient',{lx,ly,bh})));
+@@ -2004,2 +2033,2 @@
+-        const spread = bw / L * 0.75;
+-        ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(...pathArgs('moveTo',[lx - bw * 0.02, ly])); ctx.lineTo(...pathArgs('lineTo',[tx - spread, ty])); ctx.lineTo(...pathArgs('lineTo',[tx + spread, ty])); ctx.lineTo(...pathArgs('lineTo',[lx + bw * 0.02, ly])); ctx.closePath();if(currentCall){currentCall.alphaAtFill=ctx.globalAlpha;currentCall.fillMatrix=matrixNow();currentCall.clipScope='sourceOwnClip';currentCall.path.push({kind:'closePath',arguments:[],matrix:matrixNow()});} ctx.fill();
++        const spread = billboardConeSpread81(bw,L);
++        ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(...pathArgs('moveTo',billboardPart81(env,'coneMove0',{lx,ly,bw,tx,ty,spread}))); ctx.lineTo(...pathArgs('lineTo',billboardPart81(env,'coneLine0',{lx,ly,bw,tx,ty,spread}))); ctx.lineTo(...pathArgs('lineTo',billboardPart81(env,'coneLine1',{lx,ly,bw,tx,ty,spread}))); ctx.lineTo(...pathArgs('lineTo',billboardPart81(env,'coneMove1',{lx,ly,bw,tx,ty,spread}))); ctx.closePath();if(currentCall){currentCall.alphaAtFill=ctx.globalAlpha;currentCall.fillMatrix=matrixNow();currentCall.clipScope='sourceOwnClip';currentCall.path.push({kind:'closePath',arguments:[],matrix:matrixNow()});} ctx.fill();
+@@ -2008,2 +2037,2 @@
+-      const lit = lampOn.reduce((a, b) => a + b, 0) / L;
+-      owned('board.illumination','source-clipped-fillRect',()=>{ctx.globalAlpha = 0.55 * lit * a0; ctx.fillStyle = faceC;if(currentCall){currentCall.alphaAtFill=ctx.globalAlpha;currentCall.clipScope='sourceOwnClip';}ctx.fillRect(...args([bx,y0,bw,bh]));});
++      const lit = billboardLit81(lampOn,L);
++      owned('board.illumination','source-clipped-fillRect',()=>{ctx.globalAlpha = billboardIlluminationAlpha81(lit,a0); ctx.fillStyle = faceC;if(currentCall){currentCall.alphaAtFill=ctx.globalAlpha;currentCall.clipScope='sourceOwnClip';}ctx.fillRect(...args(billboardPart81(env,'illumination',{bx,y0,bw,bh})));});
+@@ -2014,4 +2043,4 @@
+-      const lx = bx + bw * (i + 0.5) / L, ly = y0 + bh + bh * 0.06;
+-      owned('lamp.'+i+'.arm','line',()=>env.line(...args([[[lx, cwY], [lx, ly + bh * 0.02]], steel, lw * 1.5, a0, false])));
+-      owned('lamp.'+i+'.body','poly',()=>env.poly(...args([[[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false])));
+-      if (lampOn[i] > 0.5) owned('lamp.'+i+'.lens','circle',()=>env.circle(...args([lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false])));
++      const {lx,ly}=billboardLampPosition81({bx,bw,y0,bh,L},i);
++      owned('lamp.'+i+'.arm','line',()=>env.line(...args(billboardPart81(env,'arm',{lx,ly,cwY,bh,steel,lw,a0}))));
++      owned('lamp.'+i+'.body','poly',()=>env.poly(...args(billboardPart81(env,'body',{lx,ly,bh,steel,a0}))));
++      if (lampOn[i] > 0.5) owned('lamp.'+i+'.lens','circle',()=>env.circle(...args(billboardPart81(env,'lens',{lx,ly,bh,a0}))));

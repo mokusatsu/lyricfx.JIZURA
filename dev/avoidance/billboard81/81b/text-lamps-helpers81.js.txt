@@ -1,0 +1,18 @@
+function billboardMainSize81(env,{text,bw,bh}){const Pm=env.cut.params;
+    return Math.min(J.fitSize(text, Pm.font, bw * 0.84, bh * 0.66, { track: 0.04, lead: 1.1 }), bh * 0.6);
+}
+function billboardMainItem81(env,{text,y0,bh,tc},size){const {W}=env,Pm=env.cut.params;
+    return { text, font: Pm.font, size, x: W / 2, y: y0 + bh / 2 + (Pm.tag ? bh * 0.03 : 0), track: 0.04, lead: 1.1, color: tc, noHold: plateHold(env), mi: miAt(env, 0.3) };
+}
+function billboardLampOn81(env,L){const cut=env.cut,s=cut.seed,lt=env.lt,lampOn=[];
+    for (let i = 0; i < L; i++) {
+      const t1 = 0.15 + i * 0.12;
+      let on = lt > t1 + 0.25 ? 1 : lt > t1 ? (J.r(s, i, env.step, 7) < 0.55 ? 1 : 0.1) : 0;
+      on *= 1 - E.inCubic(J.clamp(env.pOut * 1.6 - i * 0.12));
+      lampOn.push(on);
+    }
+    return lampOn;
+}
+function billboardTagSize81(env,bh){return Math.max(smallSize(env) * 0.8, bh * 0.05)}
+function billboardTagNumber81(env,{bx,bw,y0,tc,a0},fs){return { text: 'No.' + lineNo(env), font: monoF(env), size: fs, align: 'left', track: 0.2, x: bx + bw * 0.025, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false }}
+function billboardTagTime81(env,{bx,bw,y0,tc,a0},fs){const cut=env.cut;return { text: J.fmtTime(cut.start), font: monoF(env), size: fs, align: 'right', track: 0.2, x: bx + bw * 0.975, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false }}
