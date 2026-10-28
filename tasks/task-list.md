@@ -1,3 +1,5 @@
+2026-10-28 看板native先行実Canvas：可視/timer preflight後、日英4条件32時刻・2modeの64pairs/168own/2504paintが旧source一致、140rawを親照合。[記録](reviews/AVOID-009-billboard-native-helper-20261028.md)。全250時計・回避支持/adapterは未完。
+
 2026-10-28 看板native helper：81a–cの22files hash / 3段逆変換・純粋896/2024を親独立再現し `d2909920` をwork保存。[レビュー](reviews/AVOID-009-billboard-native-helper-20261028.md)。実Canvas・支持/recipe/adapterは未検証、電球UIも未完。
 
 2026-10-28 電球準備visible実測：同期・分割モデル全727own一致、取消/世代/入力/字体失効を親確認。一方最終step 9,442.9ms・heartbeat最大9,449.6msでUI実用化未達、試作未適用。[記録](reviews/AVOID-009-cooperative-prepare-20261028.md)。看板を独立に優先。
