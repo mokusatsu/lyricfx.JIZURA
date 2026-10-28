@@ -1,0 +1,25 @@
+--- baseline/09_render.js
++++ 80o/09_render-frame80.js
+@@ -17,0 +18,7 @@
++// SOURCE80 source-only frame issuer. Default/unbound drawing remains unchanged.
++const bulbs80Frames=new WeakMap();let bulbs80Hooks=null;
++Object.defineProperty(J,'installBulbsFrame80',{configurable:true,value:hooks=>{
++ if(bulbs80Hooks||!hooks||!['needs','prepare','paint','finish','abort'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_BULBS80_FRAME_HOOKS');
++ bulbs80Hooks=Object.freeze({needs:hooks.needs,prepare:hooks.prepare,paint:hooks.paint,finish:hooks.finish,abort:hooks.abort});delete J.installBulbsFrame80;
++ return Object.freeze({take:(renderer,env)=>{const rec=bulbs80Frames.get(env);if(!rec||rec.renderer!==renderer||rec.ctx!==env.ctx||rec.plan!==env.plan||rec.cut!==env.cut)throw Object.assign(Error('BULBS80_FRAME_ISSUER_REQUIRED'),{code:'BULBS80_FRAME_ISSUER_REQUIRED'});bulbs80Frames.delete(env);return rec;}});
++}});
+@@ -91,0 +99,2 @@
++    const bulbs80Frame=bulbs80Hooks?.needs(plan,opt)?bulbs80Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
++    try {
+@@ -278 +287,7 @@
+-        if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
++        if(bulbs80Frame){
++          bulbs80Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:bulbs80Frame,pass:P.pass}));
++          // Controller's fixed domain has decor=[] and effectsOnly=false: the
++          // native drawCut body is L.render plus its catch. Dispatch the same
++          // source directly so an admitted source failure propagates explicitly.
++          bulbs80Hooks.paint(Object.freeze({renderer:this,env}));
++        } else if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
+@@ -326,0 +342,2 @@
++    if(bulbs80Frame)bulbs80Hooks.finish(bulbs80Frame);
++    } finally {if(bulbs80Frame)bulbs80Hooks.abort(bulbs80Frame);}
