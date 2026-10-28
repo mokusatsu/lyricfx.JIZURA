@@ -1,0 +1,13 @@
+# Source-only billboard prepare steps81n
+
+Unregistered experiment, no runtime/owner/adapter/UI publication. Uses optimized81m fragment accounting and the81o append-only sampler. compileSteps preserves original own order and Canvas state carry, yields only after the full own/7recipes complete and fragment cache is cleared, and counts current native/input/progress state before yielding. Iterator return executes the original context restore/finally. Synchronous compile drains the exact same iterator.
+
+prepare-job81 requires caller-owned dedicated ctx and synchronous validate callback. Before/after each step and takeForTest it checks exact full plan, language/metrics revision, compiler/codec identity, generation and abort; validate must supply real source/font/Face/context dependency verification and its working reservation. The mocked test does not establish that real verification. A second active job on the same context is refused. cancel/stale input closes the iterator, releases context lock and discards model.
+
+Ready releases context lock after compiler restoration. Therefore final take validation must independently reverify the dedicated ctx and dependencies; it cannot rely on the earlier lock. Validation receives phase/done/state/steps/progress. Future product owner must privately consume the completed model and include other resident/model/frame reservations. takeForTest is unqualified test export only. This unit does not solve UI generation publication or global multi-model budget.
+
+Compiler receives a static reservedBytes including exact input key and bounded job metadata/validation-argument envelope plus callerReservedBytes. Dedicated caller plan/context/function handles and encoder/generator heap are not JS heap guarantees. Callback snapshot work must be covered by caller reservation; real owner connection is pending.8MiB remains unchanged.
+
+Run node job-test.cjs /path/to/saved81m-unit /path/to/81o/scalar-support81.js. 33 checks plus100bootstrap: sync/step semantic model equality,9own steps, cancel restore, generation/input/dependency invalidation, same-context new job recovery, final generation rejection. Fake font revision is explicit in the pure fixture; actual Canvas/font ownership remains unqualified. Initial pure attempt lacked that fixture metrics object and failed before job creation; fixed fixture only.
+
+Next gate: protected visible Qt/8fonts/native timer+rAF preflight, representative9own with task yields, exact model comparison, maximum step/final-step/heartbeat, generation/metrics/dependency cancellation and recovery. Fullclock equality and UI practicality are not implied by these pure tests.
