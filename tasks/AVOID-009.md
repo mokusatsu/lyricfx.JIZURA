@@ -1,3 +1,5 @@
+2026-10-28 看板81q診断：代表profileはbudget peak +44Bのassertで失敗。親が459 pins / 3 raw照合、generatorのreservedBytes field追加が差で非budget一致。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。異条件で性能改善未証明、元failure保持・localのみ。
+
 2026-10-28 看板81p残費用診断：代表9ownでcache構築時の重複accountが各126回 / inclusive115.9・94.5ms、458 pins / 3raw親照合。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。入れ子あり、同時計数を保持して削減検討。
 
 2026-10-28 看板81p private owner試作：親独立65＋100/439合成checks、local `92b83872` / EOF整形`b737e63d`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実Canvas / frame / UI未資格、CLI401で未push。
