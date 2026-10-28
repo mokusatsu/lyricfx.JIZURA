@@ -1,3 +1,5 @@
+2026-10-28 看板81n2全clock：private 727own / 728step、旧modelと非budget全値一致。親が520 pins / 3 raw照合、57332.7ms / maxstep433.1 / heartbeat438.8ms。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実UI / owner / frame未資格、CLI401でlocalのみ。
+
 2026-10-28 看板81n2実Canvas代表：private9own / 恢復modelが旧81o全semantic一致、497 pins / 4raw、lease / 失効 / getter差替拒否を親照合。outer620.1ms、maxstep164.1ms / heartbeat187.8ms。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。全clock / UI未資格、CLI401でlocalのみ。
 
 2026-10-28 看板81n2 private factory：外部ctx拒否・lease / 失効の合成31＋bootstrap100 checksを親再実行しlocal `aba798f6`。[記録](reviews/AVOID-009-billboard-adaptive-width-20261028.md)。実Canvas / 全clock / owner / UI未資格、CLI401で未push。
