@@ -1,0 +1,9 @@
+# Contour native source/request checkpoint
+
+84a source-only header/hero-ring extraction (`902c3ebd`) passed29,161 checks/5,832 states/6,840 synthetic recorder calls. 84b body fit/measure/mainDraw and underline/metadata requests (`a903c8b7`, reference-footer normalization `d6669876`) passed20,737 checks/3,456 states/1,152 attachment calls, including portable independent parent regeneration. These tests use real utility/chunk source but synthetic fonts/measurement boxes and NodeIntl; they do not qualify actual Canvas or trueEN UI language behavior.
+
+84c used the unchanged product HTML/render source in protected visible Qt after native timer/rAF/eight-font preflight. One held frame contained3passes/34paints. Fresh helpers matched native mainDraw arguments and returned-bb attachment requests (six calls). Fourteen hero ring calls matched requested font/alpha/line width/material after fresh native setter readback. Warm/cold body values and envctx state matched; metrics.clear deliberately advanced revision4→5→6→7. Helper sampling preserved the whole canvas SHA52796cb3adde4e0b4d566a0ae6c0fc540a7cd47867ebd28c5d75e7fd55f749d5. Parent independently checked24pins/two raw compressed/decoded hashes, complete/errors, three passes/34paints, bitmap equality and revisions.
+
+This is one held/current-eight-font request/measurement comparison. Metrics cache use is not side-effect free; the measurement context is private and full native/helper cache effects are not equated. Historical font/runtime evidence is separate. Actual stroke/glyph support, clip/AA, source-alpha gating, wholeclock, half-hero/native-body candidate, owner/runtime/plan/UI remain unqualified. Existing human approval of the strategy remains unchanged; no new image/video/approval was requested.
+
+Literal exit0, native process PIDs absent/port111 and standard service cleanup-15 are recorded in body84b/actual84c-evidence.json. Raw/media remain outside Git. No source/material guard was relaxed.
