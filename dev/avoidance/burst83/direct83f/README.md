@@ -1,0 +1,7 @@
+# Burst source-direct half-native prefix83f
+
+Unregistered test-only candidate. The generator replaces only the native burst dimension prefix in83c with a fresh accessor call and83e half-layout call. All remaining native star/line/debris/circle/glyph/scalar/palette statements remain byte-identical; inverse replacement restores the full83c input. The path accepts no retained native input argument. This does not create a stale-proof owner, adapter, certificate or product/UI route. External mutation/Proxy/plan inputs are not authorized by this source unit.
+
+paint-bounds83.js encloses observed current paints with the previously validated82c outward affine helper: logical path bounds, circle envelope, actual TextMetrics plus1fontpx, conservative stroke miter pad, then2devicepx. It rejects unsupported paths/effects/state. Zero-alpha paints are skipped; clipping is ignored conservatively. This supplies conditional numeric bounds only, not acquisition or all-clock/destination qualification. The 324 pure checks use synthetic observed paints, and run-tests.py also verifies source regeneration.
+
+The83g Canvas pilot separately compared this source to the historical77 changed half-native body under one current runtime: three text inputs and three times. Full current-frame records/RGBA matched. Its rectangle positions are ideal preliminary candidates and no destination or all-clock safety is granted. Font/Canvas/helper/source dependency checks are harness-owned, not a production stale-input boundary.
