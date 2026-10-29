@@ -1,3 +1,5 @@
+2026-10-29 ドミノ82y frame-time/profile初回：12frameのvalidate実測96回に対しharness期待108で停止、38pins/4raw親照合。boundary/拒否未到達、失敗保持。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-29 ドミノ82x時間射影とframe接続試作：mock28・8files/4deps hash親確認、local `ccbe7b0a`。負時刻成功/empty tailは実owned frame未資格、正式trajectory/plan/cache/UI未接続。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-29 ドミノ82w実時間端：zero/負3/-0の15ownは旧n0とrealTime以外一致・0paint/支持、duration以後3時刻は全selector空。36pins/10raw親確認、formal frame-time/plan未接続。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
