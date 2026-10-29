@@ -1,0 +1,7 @@
+# Burst half-native source-direct pilot83g
+
+Parent checked all41pins/four raw JSON and gzip hashes. Reference (historical77 half-native body executed on the current runtime) and fresh83c→83e source-direct candidate decoded records match byte-for-byte:3,203,752B. Scope is three inputs (風の先へ,風風先先,HELLO) at0.1/1/3.85seconds, nine paired frames/27own/381positive paints and conditional support rectangles. Full RGBA, paths/state/clock/root/RNG/fit/source calls agree; helper/Canvas/font dependency and source-input snapshots remain unchanged through each frame.
+
+The32 individual-time placement proposals are ideal translations only, not actual destinations or all-clock safety. Aggregating the three times gives four common rectangle proposals for each JA input and no proposal for HELLO with the current finite axis heuristic. That rejection is conservative and is not an impossibility proof. The next gate must verify original P.shift and actual destination CTMs/paint, followed by all reachable clocks. Text-structure negatives exercise the helper before a frame; they are not Renderer admission or stale-plan ownership.
+
+Producer complete/errors0/exit0; both PID97283/97343 disappeared, service terminated normally with-15 and port9333 connect111. Raw and generated HTML remain outside Git. No media was generated or viewed. Product/owner/cache/UI and real EN project qualification remain unfinished.
