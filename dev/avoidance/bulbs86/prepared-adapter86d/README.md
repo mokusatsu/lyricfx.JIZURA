@@ -1,0 +1,13 @@
+# Prepared canonical adapter 86d
+
+Source-only isolated adapter overlay, not applied to src or UI. Generate from the existing formal adapter with `python generate.py /path/to/repo /tmp/adapter86.js`; compare with adapter86.js. Run `node stage-test.cjs` (22 checks, synthetic stage/mock owner only).
+
+Load the original generator80ab before generated owner86c; load controller and this generated adapter in the existing adapter positions. The original adapter-private canonical canvas/context and renderer are reused exactly. The public preparation API exposes state/begin/step/cancel only: no ctx, renderer, plan, model or owner handle. Frame/issuer authority remains exclusively the existing genuine controller and private owner path. Factory/API visibility alone is not authority.
+
+First formal finalize captures the normalized native input and throws BULBS86D_PREPARE_REQUIRED before compilation. Original finalizer failure marker/runtimeAdmission paths must reject prior and decoded caches and frames; those real paths are pending an actual gate. After explicit cooperative preparation, same-input finalization uses the prepared private handle and the existing candidate/quality/replay/opaque certificate code. There is no synchronous O.prepare fallback.
+
+The stage plan/key/phase and temporary comparison key are included in the existing adapter reservedBytes getter, including during owner compilation and issue. The 8 MiB global limit is unchanged. Real combined peak remains unqualified and may fail conservatively. Stage key uses existing exact compiler encoding of the finalizer-owned clone; the owner separately performs dense-data validation and exact input/dependency/context guards.
+
+Input change cancels/drops the old stage. Expected STALE_MODEL / UNKNOWN_OR_EVICTED becomes a fresh PREPARE_REQUIRED stage; budget, source/dependency failure and unexpected original throws clean the old stage and propagate literally. Cancel/step/budget failure discards stage ownership. Mock tests distinguish these cases, preserve exact frozen Error identity, verify same ctx passed to owner, prevent raw output and confirm source-only state. No broad shared recovery behavior was changed.
+
+Remaining: real 09a/09k/J.plan prior and decoded cache recovery; actual generator and Canvas context carry/spacing; combined live accounting at all phases; normal stock frame and stale nonempty sentinel; maximum and final-step/heartbeat times. Ordinary UI stays unconnected, and the prior ~9.44 s final step / ~18.45 s synchronous preparation are unresolved performance observations. No real-time or UI performance acceptance is claimed.
