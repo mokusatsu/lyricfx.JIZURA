@@ -1,0 +1,7 @@
+# Burst formal preparation marker and retry
+
+Source-only stage `5ea9e195` passed 22 real09k/synthetic-plan tests. Actual83al used real J.plan lineage and 09a/09k/09g, with a fixture adjusted after planning. Cold, prior, decoded and revision retries invoked the adapter 1/2/3/4 times; misses were 1/2/3/4, hits0, and decoded admissionReject increased once. Captured normalized stage was 20,776 bytes. Revision4→5 rejected old stage, then restaging succeeded. Parent independently checked39 pins/two raw hashes and these values.
+
+The initial83ak failed because a harness replacement confused adapter diagnostic BURST83AJ_PREPARE_REQUIRED with controller frame code BURST83AG_PREPARE_REQUIRED. It remains failed and preserved. Recovery changed only the diagnostic expected literal. Actual Renderer rejected the unsupported final plan with AG before a nonempty sentinel changed. The producer compared hashes internally but exported only the boolean; independent before/after hash-value comparison is unavailable.
+
+No owner.start/fullmodel preparation or safe trajectory was issued. Compiler absence is source-callgraph evidence. The 256KiB stage subcap is not extra allowance: future stage/owner/model/plan/issuer work must combine under8MiB. Completed-owner formal handoff, generic time-domain contract and ordinary UI performance remain unfinished. Literal recovery exit0, both PIDs absent and port111 are recorded in the evidence ledger; media/raw remain outside Git.
