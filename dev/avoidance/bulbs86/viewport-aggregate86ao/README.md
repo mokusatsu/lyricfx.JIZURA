@@ -1,0 +1,7 @@
+# Bounded aggregate diagnostics86ao
+
+Source-only variation of86am owner. Same private inline geometry and no authority/frame permission. Adds only union4numbers, feasible translation4numbers and four side/axis interval records to finite evaluation diagnostics. No per-owner supports, glyphs, local table or ctx are returned. Private trace callback is hardwired inside owner, never caller supplied. Outputs are copied/frozen numeric data. Empty stage-feasible interval is distinguished from empty side ranges; neither implies actual ink/global impossibility.
+
+Existing pre-reserved65536+2048*groups, work+8192 bound, measured private result+4096 and copied summary account remain unchanged and include new numeric fields. Cancel/observed expiry still clears result/reservation. viewportState.serializedViewportBytes now includes candidate evaluation reservation, matching owner stats; original86an status omitted that term while its global account was already correct.
+
+Portable `python dev/avoidance/bulbs86/viewport-aggregate86ao/run-tests.py REPO`: generated owner byte equality,67 mock checks and30 existing handoff regression. No actual data/Canvas/quality/root/destination proof. Next gate changes only private test bridge to existing one-row-compact, reuses canonical model source, derives new viewport proposals rather than old canonical delta. Prior two-row-native finite insufficiency remains stored; preparation32s+, soft64 and ordinaryUI acceptance remain unmet.
