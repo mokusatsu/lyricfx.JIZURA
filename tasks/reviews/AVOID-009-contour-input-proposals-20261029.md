@@ -1,0 +1,7 @@
+# Contour input-derived opposite-side proposal checkpoint
+
+84h reuses geometry68 positions/Fraction checks and outward-next82c. It tries hero-left/body-right first, at most2×2 proposals, and reverses only when no preferred proposal passes. Both groups retain all required support and padded stage/circle tests plus outward horizontal separation. No candidates means finite-search insufficiency, not impossibility. Portable40 synthetic-rectangle checks passed independent parent rerun; helper outputs remain sourceOnly/qualifiedfalse.
+
+84i generated fresh current-input/ctx half-hero14 plus native-body/attachments20 supports at n60, without old raw as model input or new Contour frames. Four preferred left/right proposals were found; no reverse orientation was needed. These numeric shifts are generated values, not fixed runtime branches. Parent independently checked27pins/two raw hashes and4×34 ideal shifted rectangles with exact Fraction stage/circle/separation, minimum padded stage slack16.5973px or8.29865px. Derive4.6ms/combinedpeak1,133,933bytes are held-case diagnostics. Both child PIDs disappeared/port111 after exit0.
+
+Half/direct shifted painting, actual destination CTM/coverage, fullclock and other inputs, quality/source-alpha completeness, owner/plan/UI remain pending. The result is not safe authority. Raw/media stay outside Git and human approval is not re-requested. Next mandatory gate is one held native assembled control plus half/native-body direct painting and source/sampler correspondence, before fullclock aggregation and acceptance.
