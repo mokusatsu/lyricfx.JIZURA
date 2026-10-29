@@ -1,0 +1,3 @@
+Run `node dev/avoidance/burst83/half83e/run-tests.cjs` from the repository. 489 checks use synthetic measurements only. All dependencies are tracked. The manifest preserves original evidence paths as provenance; portable-manifest.json supplies relative paths.
+
+The layout helper checks text/font only. It does not reject stale size, W/H, params, seed, time or dependency values and is not an authority boundary. qualified:false is mandatory. Direct rendering must obtain a fresh accessor result under matching source/dependency identity; persistent adapter adoption additionally requires stale-input rejection. No source binding or product/UI registration is installed here.

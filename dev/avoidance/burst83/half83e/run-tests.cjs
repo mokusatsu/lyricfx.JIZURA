@@ -1,0 +1,1 @@
+'use strict';const path=require('node:path'),cp=require('node:child_process');const R=path.resolve(__dirname,'../../../..');const p=cp.spawnSync(process.execPath,[path.join(__dirname,'half-test.cjs'),path.join(R,'src/11p_layoutsEe_bulbs_geometry68.js')],{stdio:'inherit'});process.exit(p.status??1);

@@ -1,0 +1,5 @@
+# Next candidate boundary
+
+The approved half-native two-row candidate derives original native brk fitSize first and multiplies that raw size by 0.5. It measures the resulting two-row writing text at that size, with native track0.02/lead1.05 and recipe pad0.1; it never refits to the new line breaks. The native scalar motion and palette are preserved. This module is source-only, unregistered and has no support/quality/runtime authority. Size/text-fit diagnostics are necessary predicates only; actual glyph metrics, all primary parts, stroke/raster expansion, real CTMs, clock coverage and circle/stage geometry remain required. Source color/metric cache history and revision guards remain relevant.
+
+Pure command: `node half-test.cjs /path/to/src/11p_layoutsEe_bulbs_geometry68.js`. 489 checks passed with synthetic J.measure. fitSize is a throwing stub to ensure the candidate never refits; native inputs stay unchanged. Japanese, Latin, duplicate strings, portrait/landscape, four native sizes, unsupported structure and missing native input are covered. No product installation or source recipe binding is present yet.
