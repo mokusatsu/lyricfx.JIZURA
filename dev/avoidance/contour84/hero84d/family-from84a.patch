@@ -1,0 +1,15 @@
+--- 84a/native-geometry84.js
++++ 84d/hero-family84.js
+@@ -3 +3 @@
+-function header(env){
++function header(env,{heroScale=1}={}){if(![1,.5].includes(heroScale))throw Object.assign(Error('CONTOUR84D_SCALE'),{code:'CONTOUR84D_SCALE'});
+@@ -10 +10,2 @@
+-    const bs = Math.min(H * 0.95, W * (port ? 1.05 : 0.7));
++    const nativeBS = Math.min(H * 0.95, W * (port ? 1.05 : 0.7));
++    const bs = heroScale===1?nativeBS:nativeBS*heroScale;
+@@ -16 +17 @@
+-function rings(env){const{W,H,sc}=env,cut=env.cut,Pm=cut.params,{port,out,t0,big,bs,bx,by,lineC,cin,u,lt}=header(env),calls=[],ctx={save(){},restore(){},strokeText(text,x,y){calls.push({kind:'strokeText',text,x,y,font:this.font,align:this.textAlign,baseline:this.textBaseline,lineJoin:this.lineJoin,width:this.lineWidth,alpha:this.globalAlpha,color:this.strokeStyle})},fillText(text,x,y){calls.push({kind:'fillText',text,x,y,font:this.font,align:this.textAlign,baseline:this.textBaseline,alpha:this.globalAlpha,color:this.fillStyle})}};
++function rings(env,options={}){const{W,H,sc}=env,cut=env.cut,Pm=cut.params,{port,out,t0,big,bs,bx,by,lineC,cin,u,lt}=header(env,options),calls=[],ctx={save(){},restore(){},strokeText(text,x,y){calls.push({kind:'strokeText',text,x,y,font:this.font,align:this.textAlign,baseline:this.textBaseline,lineJoin:this.lineJoin,width:this.lineWidth,alpha:this.globalAlpha,color:this.strokeStyle})},fillText(text,x,y){calls.push({kind:'fillText',text,x,y,font:this.font,align:this.textAlign,baseline:this.textBaseline,alpha:this.globalAlpha,color:this.fillStyle})}};
+@@ -35 +36 @@
+-Object.defineProperty(A,'contourNativeGeometry84a',{value:Object.freeze({header,rings,sourceOnly:true,certificateIssuer:false})});})();
++Object.defineProperty(A,'contourHeroFamily84d',{value:Object.freeze({header,rings,sourceOnly:true,certificateIssuer:false})});})();
