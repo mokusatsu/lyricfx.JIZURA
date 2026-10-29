@@ -1,0 +1,58 @@
+--- 83c/11p_layoutsD.js
++++ 83ad/11p_layoutsD.js
+@@ -8,0 +9,7 @@
++
++// Uninstalled source lease scope only; this capability is not a safe certificate.
++const burstSourceLeases83ad=new WeakMap();let burstSourceInstalled83ad=false,burstSourceActive83ad=false;
++Object.defineProperty(J.placement,'installBurstSource83ad',{configurable:true,value:()=>{
++ if(burstSourceInstalled83ad)throw Object.assign(Error('BURST83AD_SOURCE_INSTALLED'),{code:'BURST83AD_SOURCE_INSTALLED'});burstSourceInstalled83ad=true;delete J.placement.installBurstSource83ad;
++ return Object.freeze({withLease(env,run,paint){if(burstSourceActive83ad)throw Object.assign(Error('BURST83AD_SOURCE_ACTIVE'),{code:'BURST83AD_SOURCE_ACTIVE'});if(!env||env.cut?.layout!=='burst'||env.placementEnvelope||env.cut.placementUnits||typeof run!=='function'||typeof paint!=='function')throw Object.assign(Error('BURST83AD_SOURCE_SCOPE'),{code:'BURST83AD_SOURCE_SCOPE'});const record={run,taken:false};burstSourceActive83ad=true;burstSourceLeases83ad.set(env,record);try{const out=paint();if(out&&typeof out.then==='function')throw Object.assign(Error('BURST83AD_SOURCE_ASYNC'),{code:'BURST83AD_SOURCE_ASYNC'});if(!record.taken)throw Object.assign(Error('BURST83AD_SOURCE_NOT_CONSUMED'),{code:'BURST83AD_SOURCE_NOT_CONSUMED'});return out}finally{burstSourceLeases83ad.delete(env);burstSourceActive83ad=false}}});
++}});
+@@ -2624,0 +2632,47 @@
++    const lease83ad=burstSourceLeases83ad.get(env);
++    if(lease83ad){if(lease83ad.taken)throw Object.assign(Error('BURST83AD_SOURCE_REUSED'),{code:'BURST83AD_SOURCE_REUSED'});lease83ad.taken=true;return lease83ad.run(()=>{
++    const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
++    const fresh83ad=J.placement.burstSourceInput83c(env),half83ad=J.placement.burstHalfLayout83e.layout(env,fresh83ad);
++    const {text,o,rxM,ryM,size,m,rx,ry,cx,cy,port}=half83ad.layout;
++    const out = tout(env);
++    const q = E.outBack(J.clamp(lt / 0.3), 2.2) * (1 - 0.6 * E.inCubic(env.pOut)) * (1 + 0.015 * Math.sin(env.ltb * 7) * J.clamp(lt - 0.3));
++    const rot = (Pm.tilt + (1 - E.outCubic(J.clamp(lt / 0.3))) * -25 + E.inCubic(env.pOut) * 20) * J.DEG;
++    const boil = Math.floor(env.step / 3);
++    const A = plateCol(sc, Pm.order === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.accent]);
++    const B = [darkOf(sc), lightOf(sc), sc.bg, sc.fg].find(c => J.contrast(c, A) >= 2.2 && c !== A) || onCol(sc, A);
++    const star = (k, scale, jit) => {
++      const N = Pm.spikes, pts = [];
++      for (let i = 0; i < N * 2; i++) {
++        const a = i / (N * 2) * J.TAU + rot;
++        const rr = i % 2 ? Pm.sharp + J.rs(s, i, k, boil) * 0.04 : 1 + J.r(s, i, k, boil) * jit;
++        pts.push([cx + Math.cos(a) * rx * rr * scale * q, cy + Math.sin(a) * ry * rr * scale * q]);
++      }
++      return pts;
++    };
++    // shock ring + speed lines + debris
++    const ring = J.clamp(lt / 0.45);
++    if (ring < 1) env.circle(cx, cy, Math.max(rx, ry) * (0.6 + ring * 1.1), null, A, Math.max(2, u * 0.012) * (1 - ring), (1 - ring) * out, false);
++    if (Pm.lines && env.pass === 'main') {
++      const L = 28;
++      for (let i = 0; i < L; i++) {
++        if (J.r(s, i, env.step, 9) < 0.3) continue;
++        const a = i / L * J.TAU + J.rs(s, i, 8) * 0.08;
++        const r0 = 1.25 + J.r(s, i, env.step, 10) * 0.15, r1 = r0 + 0.2 + J.r(s, i, 11) * 0.25;
++        env.line([[cx + Math.cos(a) * rx * r0 * q, cy + Math.sin(a) * ry * r0 * q], [cx + Math.cos(a) * rx * r1 * q, cy + Math.sin(a) * ry * r1 * q]], sc.sub, Math.max(1.5, u * 0.004), 0.7 * out, false);
++      }
++    }
++    if (Pm.debris && lt < 0.9) {
++      for (let i = 0; i < 12; i++) {
++        const a = J.r(s, i, 21) * J.TAU, sp = J.rr(0.5, 1.1, s, i, 22), f = E.outCubic(J.clamp(lt / 0.8));
++        const d = (1.05 + f * 0.6 * sp), x = cx + Math.cos(a) * rx * d, y = cy + Math.sin(a) * ry * d + f * f * H * 0.05;
++        const sz = u * 0.018 * (1 - f), rr = J.r(s, i, 23) * J.TAU + f * 6;
++        if (sz > 0.5) env.poly([[x + Math.cos(rr) * sz, y + Math.sin(rr) * sz], [x + Math.cos(rr + 2.2) * sz, y + Math.sin(rr + 2.2) * sz], [x + Math.cos(rr + 4.1) * sz * 0.7, y + Math.sin(rr + 4.1) * sz * 0.7]], i % 2 ? A : B, out, false);
++      }
++    }
++    if (q <= 0.01) return null;
++    env.poly(star(1, 1.12, 0.22).map(([x, y]) => [x + u * 0.012, y + u * 0.016]), darkOf(sc), 0.3 * out, false);
++    env.poly(star(1, 1.12, 0.22), A, out, gIn(env));
++    env.poly(star(2, 0.93, 0.12), B, out, false);
++    env.poly(star(3, 0.86, 0.08), A, out, false);
++    return J.mainDraw(env, Object.assign({ text, font: Pm.font, size: size * Math.min(1, q), x: cx, y: cy, rot: rot / J.DEG * 0.6, color: onCol(sc, A) }, o));
++    });}

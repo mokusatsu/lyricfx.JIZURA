@@ -1,0 +1,29 @@
+--- a/09_render.js
++++ b/09_render.js
+@@ -18,0 +19,7 @@
++// Unregistered burst current-frame issuer, opt-in ticket only.
++const burst83adFrames=new WeakMap();let burst83adHooks=null;
++Object.defineProperty(J,'installBurstFrame83ad',{configurable:true,value:hooks=>{
++ if(burst83adHooks||!hooks||!['needs','prepare','paint','finish','abort'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_BURST83AD_FRAME_HOOKS');
++ burst83adHooks=Object.freeze({needs:hooks.needs,prepare:hooks.prepare,paint:hooks.paint,finish:hooks.finish,abort:hooks.abort});delete J.installBurstFrame83ad;
++ return Object.freeze({take:(renderer,env)=>{const record=burst83adFrames.get(env);if(!record||record.renderer!==renderer||record.ctx!==env.ctx||record.plan!==env.plan||record.cut!==env.cut)throw Object.assign(Error('BURST83AD_FRAME_ISSUER_REQUIRED'),{code:'BURST83AD_FRAME_ISSUER_REQUIRED'});burst83adFrames.delete(env);return record;}});
++}});
+@@ -95,0 +103,3 @@
++    // Reject hook overlap before any prepare can allocate an active lease.
++    const burst83adNeeded=!!burst83adHooks?.needs(plan,opt);
++    if(burst83adNeeded&&(tiles48Hooks?.needs(plan)||bulbs69Hooks?.needs(plan)||bulbs80Hooks?.needs(plan,opt)))throw Object.assign(Error('BURST83AD_HOOK_CONFLICT'),{code:'BURST83AD_HOOK_CONFLICT'});
+@@ -99,0 +110 @@
++    const burst83adFrame=burst83adNeeded?burst83adHooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
+@@ -287 +298,6 @@
+-        if(bulbs80Frame){
++        if(burst83adFrame){
++          burst83adFrames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:burst83adFrame,pass:P.pass}));
++          // Scope has no decor/effectsOnly: dispatch the original layout and
++          // propagate its error. Only token lifetime cleanup changes here.
++          burst83adHooks.paint(Object.freeze({renderer:this,env}));
++        } else if(bulbs80Frame){
+@@ -341,0 +358 @@
++    if(burst83adFrame)burst83adHooks.finish(burst83adFrame);
+@@ -343 +360 @@
+-    } finally {if(bulbs80Frame)bulbs80Hooks.abort(bulbs80Frame);}
++    } finally {if(burst83adFrame)burst83adHooks.abort(burst83adFrame);if(bulbs80Frame)bulbs80Hooks.abort(bulbs80Frame);}
