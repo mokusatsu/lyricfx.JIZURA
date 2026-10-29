@@ -1,0 +1,7 @@
+# Replay-only diagnostic 86r
+
+Source-only numeric diagnostic. Old80ab model oracle was decoded in-place with F64 bits preserved and never admitted to a genuine owner. Fresh current fixture/context ran original N.replay across727schedule roots/4067glyph matrices and1quality evaluation. Producer counters report geometry/layout/measureText/paint0; owner compiles0→0 and bitmap unchanged/pristine were measured independently. No full model generation, frame/certificate issuance or UI connection.
+
+Parent checked32pins/3raw compressed+decoded hashes. Replay681.6ms, codec root7292calls/226,554,086B/inclusive525.6ms. Wrapper/measurement overhead and nested times apply. This is not the same instrumentation or caller budget as the previous genuine1.753s finalize, so it does not establish that whole-finalize decomposition. Diagnostic peak2,494,541B uses reservedBytes8192 and excludes a genuine resident/caller reservation; it cannot replace the full7,970,076B evidence. The previous accepted recipe/delta is only a diagnostic target.
+
+Browser function expects the test-only current fixture accessor (as the existing80y fixture wrapper), J modules and the numeric codec overlay from prefix-profile86n. It exposes no owner model/ctx. Actual one-off protected Qt orchestration is Git-external at E/bulbs-replay-profile-gate-source86r, result E/bulbs-replay-profile86r-actual01. Loading this file in the product is not authorized or sufficient. Media/raw remain outsideGit; original source guards/8fonts/visible timer preflight were retained. Exit0, bothPIDs absent/port111.
