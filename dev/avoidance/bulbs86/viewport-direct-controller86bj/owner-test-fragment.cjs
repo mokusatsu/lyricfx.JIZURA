@@ -1,0 +1,12 @@
+const privateFrame=O.installFrameAccess80(),freshDirect=()=>{current=true;return complete(begin())},request=()=>({renderer:r,plan:p}),borrow=(h,fn=()=>null)=>privateFrame.withDirectViewport86bj(h,request(),fn);let hd=freshDirect(),later;
+ok(borrow(hd,(m,b,onWork)=>{ok(m.text==='A'&&b.ctx===ctx&&b.viewport.scale===.75&&b.framePermission===false);ok(onWork(1024)<=8388608);later=onWork;return'normal'})==='normal');reject(()=>later(0),'BULBS86BJ_BORROW_EXPIRED');ok(privateFrame.assertDirectViewport86bj(hd,request()).handle===hd);O.drop(hd);reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');reject(()=>borrow(Object.freeze({})),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();p.cuts[0].text='B';reject(()=>borrow(hd),'BULBS86BJ_STALE');p.cuts[0].text='A';reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();p.lyricAvoidanceIndex.regions[0].radius=.3;reject(()=>borrow(hd),'BULBS86BJ_STALE');p.lyricAvoidanceIndex.regions[0].radius=.2;reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();const face=[...fonts][0],oldFamily=face.family;face.family='Changed';reject(()=>borrow(hd),'BULBS86BJ_STALE');face.family=oldFamily;reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();current=false;reject(()=>borrow(hd),'BULBS86BJ_GENERATION');current=true;reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();ctx.canvas.width=721;reject(()=>borrow(hd),'BULBS86BE_VIEWPORT_CONTEXT');ctx.canvas.width=720;reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();const error=Object.freeze(Error('callback'));assert.throws(()=>borrow(hd,()=>{throw error}),e=>e===error);checks++;reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();reject(()=>borrow(hd,()=>({then(){}})),'BULBS86BJ_SYNC');reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();reject(()=>borrow(hd,(m,b,onWork)=>onWork(9000000)),'BULBS80N_MEMORY_BUDGET');reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');
+hd=freshDirect();reject(()=>borrow(hd,()=>{current=false;return null}),'BULBS86BJ_GENERATION');current=true;reject(()=>borrow(hd),'BULBS80N_UNKNOWN_OR_EVICTED');ok(O.stats().residentModels===0);
+console.log(JSON.stringify({checks,scope:'mock private direct model/current input/generation/source/context admission only; no actual Canvas/frame'}));
