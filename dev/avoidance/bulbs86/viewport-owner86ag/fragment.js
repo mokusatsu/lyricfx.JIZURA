@@ -1,0 +1,26 @@
+// Unregistered proposal job. Only opaque token and progress escape this owner.
+const viewportModule86ag=A.bulbsViewportReplay86af,viewportReplay86ag=viewportModule86ag?.replay,viewportRoot86ag=A.bulbsViewportRoot86ae;
+let viewportJob86ag=null,viewportWork86ag=0,viewportMeta86ag=0,viewportBusy86ag=false;
+function viewportContext86ag(c){return{profile:contextSnapshot(c),matrix:P.matrix(c),width:c.canvas.width,height:c.canvas.height,font:c.font,alpha:c.globalAlpha,composite:c.globalCompositeOperation,lineWidth:c.lineWidth,fill:c.fillStyle,stroke:c.strokeStyle}}
+function viewportMetadata86ag(){const r=viewportJob86ag;viewportMeta86ag=r?bytes({phase:r.phase,steps:r.steps,entryId:r.entry.id,fullKey:r.fullKey,viewport:r.viewport,recipeId:r.recipeId,delta:r.delta,expectedContext:r.expectedContext,handleSlots:16})+16*96:0}
+function viewportClear86ag(){const r=viewportJob86ag;viewportJob86ag=null;viewportWork86ag=0;viewportMeta86ag=0;if(!r)return;const iterator=r.iterator;r.iterator=null;r.value=null;r.plan=null;r.ctx=null;r.canonicalCtx=null;r.entry=null;try{iterator?.return()}finally{r.fullKey=null;r.expectedContext=null;r.phase='disposed'}}
+function viewportOperation86ag(fn){need(!pending&&!borrowed&&!cooperativeReservation&&!viewportBusy86ag,'BULBS80N_REENTRANT');viewportBusy86ag=true;borrowed=true;borrowWork={mode:'viewport-proposal86ag',viewportGuard:null};try{return fn()}finally{borrowWork=null;borrowed=false;viewportBusy86ag=false}}
+function viewportRecord86ag(token){need(viewportJob86ag&&viewportJob86ag.token===token,'BULBS86AG_UNKNOWN_JOB');return viewportJob86ag}
+function viewportCheck86ag(r){
+ need(viewportJob86ag===r&&A.bulbsViewportReplay86af===viewportModule86ag&&viewportModule86ag?.replay===viewportReplay86ag&&A.bulbsViewportRoot86ae===viewportRoot86ag,'BULBS86AG_SOURCE');
+ need(r.isCurrent()===true,'BULBS86AG_GENERATION');
+ const e=lookup(r.handle),state={key:geometryKey(r.plan),fullKey:keys(r.plan),dependency:dependency(r.renderer),context:contextSnapshot(r.canonicalCtx),viewport:viewportContext86ag(r.ctx)};
+ borrowWork.viewportGuard=state;account();
+ need(e===r.entry&&resident.get(e.key)===e&&e.renderer===r.renderer&&e.ctx===r.canonicalCtx&&state.key===e.key&&state.fullKey===r.fullKey&&keys(state.dependency)===e.depKey&&keys(state.context)===keys(e.context)&&keys(state.viewport)===keys(r.expectedContext),'BULBS86AG_STALE');
+ need(r.isCurrent()===true,'BULBS86AG_GENERATION');borrowWork.viewportGuard=null;
+}
+function beginViewport86ag(handle,{renderer,plan,ctx,viewportCtx,viewport,recipeId,delta,isCurrent}){return viewportOperation86ag(()=>{
+ need(!viewportJob86ag&&typeof viewportReplay86ag==='function'&&typeof isCurrent==='function','BULBS86AG_INPUT');
+ keyData(viewport);keyData(delta);need(Object.keys(viewport).sort().join(',')==='height,scale,width'&&Number.isFinite(viewport.scale)&&viewport.scale>0&&viewport.scale<=1&&viewport.width===Math.round(960*viewport.scale)&&viewport.height===Math.round(540*viewport.scale)&&viewportCtx!==ctx&&viewportCtx.canvas.width===viewport.width&&viewportCtx.canvas.height===viewport.height&&typeof recipeId==='string'&&Array.isArray(delta)&&delta.length===2&&delta.every(Number.isFinite),'BULBS86AG_VIEWPORT');
+ const entry=lookup(handle),token=Object.freeze({});viewportWork86ag=8*bytes(plan)+131072;try{account();const r={token,handle,entry,renderer,plan,canonicalCtx:ctx,ctx:viewportCtx,viewport:Object.freeze({...viewport}),recipeId,delta:Object.freeze([...delta]),isCurrent,fullKey:keys(plan),expectedContext:viewportContext86ag(viewportCtx),iterator:null,value:null,phase:'preparing',steps:0};
+ viewportJob86ag=r;
+ viewportMetadata86ag();viewportCheck86ag(r);r.iterator=viewportReplay86ag({renderer,plan,ctx:viewportCtx,model:entry.model,recipeId,delta:r.delta,viewport:r.viewport,beforeResume:()=>viewportCheck86ag(r),ownerReservation:()=>{need(viewportBusy86ag&&borrowed&&viewportJob86ag===r,'BULBS86AG_CALLBACK');viewportMetadata86ag();return account()-viewportWork86ag},onAccounting:n=>{need(viewportBusy86ag&&borrowed&&viewportJob86ag===r,'BULBS86AG_CALLBACK');need(Number.isSafeInteger(n)&&n>=0,'BULBS86AG_WORK');viewportWork86ag=n;viewportMetadata86ag();account()}});account();return token}catch(error){try{viewportClear86ag()}catch{}throw error}
+})}
+function stepViewport86ag(token){return viewportOperation86ag(()=>{const r=viewportRecord86ag(token);try{need(r.phase==='preparing','BULBS86AG_NOT_PREPARING');viewportCheck86ag(r);const next=r.iterator.next();viewportCheck86ag(r);r.steps++;if(next.done){r.value=next.value;r.iterator=null;r.phase='ready'}viewportMetadata86ag();account();return Object.freeze({phase:r.phase,steps:r.steps,modelExposed:false,framePermission:false})}catch(error){try{viewportClear86ag()}catch{}throw error}})}
+function cancelViewport86ag(token){return viewportOperation86ag(()=>{viewportRecord86ag(token);viewportClear86ag();return Object.freeze({phase:'cancelled',modelExposed:false,framePermission:false})})}
+function viewportState86ag(token){return viewportOperation86ag(()=>{const r=viewportRecord86ag(token);try{viewportCheck86ag(r);return Object.freeze({phase:r.phase,steps:r.steps,serializedViewportBytes:viewportWork86ag+viewportMeta86ag,modelExposed:false,framePermission:false})}catch(error){try{viewportClear86ag()}catch{}throw error}})}
