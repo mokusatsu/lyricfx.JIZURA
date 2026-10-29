@@ -1,0 +1,11 @@
+--- 83ad/11p_layoutsD-controller83.js
++++ 83ag/11p_layoutsD-controller83.js
+@@ -12 +12 @@
+-Object.defineProperty(J.placement,'installBurstSource83ad',{configurable:true,value:()=>{
++const installBurstSource83ag=()=>{
+@@ -15 +15,4 @@
+-}});
++};
++Object.defineProperty(J.placement,'installBurstSource83ad',{configurable:true,value:installBurstSource83ag});
++Object.defineProperty(J.placement,'burstSourceInstallerIdentity83ag',{value:()=>installBurstSource83ag});
++Object.defineProperty(J.placement,'burstRenderIdentity83ag',{value:()=>nativeSources.get('burst')});

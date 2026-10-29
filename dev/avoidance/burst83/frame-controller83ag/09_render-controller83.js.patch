@@ -1,0 +1,18 @@
+--- 83ad/09_render-controller83.js
++++ 83ag/09_render-controller83.js
+@@ -21 +21 @@
+-Object.defineProperty(J,'installBurstFrame83ad',{configurable:true,value:hooks=>{
++const installBurstFrame83ag=hooks=>{
+@@ -25 +25,9 @@
+-}});
++};
++let burstBlocked83ag=false,burstRequired83ag=false;
++const burstTarget83ag=(plan,opt={})=>opt.burstFrame83ad!==undefined||!!plan?.burstRuntime83ag||(burstRequired83ag&&plan?.lyricAvoidanceIndex?.enabled===true&&(!Array.isArray(plan.lyricAvoidanceIndex.regions)||plan.lyricAvoidanceIndex.regions.length>0)&&Array.isArray(plan.cuts)&&plan.cuts.some(c=>c.layout==='burst'&&!c.placementLocked&&!['manual','notation'].includes(c.areaMode)));
++Object.defineProperty(J,'installBurstFrame83ad',{configurable:true,value:installBurstFrame83ag});
++Object.defineProperty(J,'burstFrameInstallerIdentity83ag',{value:()=>installBurstFrame83ag});
++Object.defineProperty(J,'blockBurstFrame83ag',{value:()=>{burstBlocked83ag=true}});
++Object.defineProperty(J,'burstFrameBlocked83ag',{value:()=>burstBlocked83ag});
++Object.defineProperty(J,'requireBurstProof83ag',{value:()=>{burstRequired83ag=true}});
++Object.defineProperty(J,'burstFrameTarget83ag',{value:burstTarget83ag});
+@@ -96,0 +105 @@
++    if(burstBlocked83ag&&burstTarget83ag(plan,opt))throw Object.assign(Error('BURST83AG_BOOTSTRAP_BLOCKED'),{code:'BURST83AG_BOOTSTRAP_BLOCKED'});
