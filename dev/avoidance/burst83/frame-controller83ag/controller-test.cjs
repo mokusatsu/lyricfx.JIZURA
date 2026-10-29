@@ -25,6 +25,6 @@ reject(()=>hooks.prepare(args(JSON.parse(JSON.stringify(published)))),'BURST83AG
 reject(()=>hooks.prepare({...args(published),t:-.001,opt:{...args(published).opt,avoidanceRealTime:-.001}}),'BURST83AG_TIME_NOT_QUALIFIED');ok(paintCount===1);
 const unfinished=hooks.prepare(args(published));reject(()=>hooks.finish(unfinished),'BURST83AG_INCOMPLETE_FRAME');ok(hooks.abort(unfinished)===false);const retry=hooks.prepare(args(published));hooks.abort(retry);
 const second=O.createOwner();reject(()=>second.connect(),'BURST83AG_OTHER_CONTROLLER');ok(!blocked);reject(()=>second.publishPlan(ready.handle),'BURST83AG_NOT_CONNECTED');
-p.cuts[0].text='changed';reject(()=>hooks.prepare(args(published)),'BURST83S_INPUT');ok(paintCount===1);owner.drop(ready.handle);reject(()=>hooks.prepare(args(published)),'BURST83AG_PREPARE_REQUIRED');ok(compileCount===1);
+p.cuts[0].text='changed';reject(()=>hooks.prepare(args(published)),'BURST83S_INPUT');ok(paintCount===1);p.cuts[0].text='風の先へ';reject(()=>hooks.prepare(args(published)),'BURST83AG_PREPARE_REQUIRED');reject(()=>owner.validate(ready.handle),'BURST83S_UNKNOWN');ok(compileCount===1);
 console.log(JSON.stringify({checks,passed:true,scope:'mock compiler/DOM/installer/issuer only; normal controller has no inspection API; no actual authority'}));
 `,c);
