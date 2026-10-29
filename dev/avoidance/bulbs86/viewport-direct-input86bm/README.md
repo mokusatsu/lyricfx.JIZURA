@@ -1,0 +1,7 @@
+# Changed-text formal run86bm, retained oracle failure
+
+Test-only continuation of the saved86bj formal source-only controller. Old current text「風の先へ」→「風風先先」invalidates the old formal plan with BULBS86BJ_STALE before bitmap mutation; restoration still rejects UNKNOWN_OR_EVICTED. The old model/record/binding is explicitly released. A genuine changed J.plan initially returns typed PREPARE_REQUIRED, then a necessary fresh current model is prepared and its formal plan is admitted with input-derived one-row-compact. Its n60 source frame is saved. No old250 paint set is redrawn.
+
+The first independent oracle used P.sample, whose native-reference draw leaves outline strokeStyle/lineWidth behind before its declared-recipe draw. The test fails complete=false after16raw/59pins, preserving that exact mismatch: only main shadow/face fill records differ in strokeStyle/lineWidth; no fields are waived. The formal source draw is subsequently compared to the corrected86bn oracle with no repeated model preparation or formal painting. See ../viewport-input-oracle86bn/README.md and checker there.
+
+New-text preparation16,597.5ms,max867.9ms,formal finalize5,844.4ms. No UI/performance acceptance. The new-text plan was live at the oracle assertion failure, so explicit final release was not reached for that plan; owned service teardown reclaimed the process. Baseline release had already been checked. Raw and pinned orchestration remain outsideGit. No media/public operations or product source changes.

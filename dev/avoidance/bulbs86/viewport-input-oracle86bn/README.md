@@ -1,0 +1,7 @@
+# State-restored source oracle86bn, reused changed-text formal frame
+
+Corrects only the independent test oracle. Native-reference paint is enclosed in save/restore, all Canvas state and CTM are checked restored, then the declared recipe is observed at the actual P.shift transform. Source clock/params/inputs, ring N/light clocks, glyph order/subtitle, root restoration and source quality checks remain. No lineWidth/strokeStyle or other record field is excluded. All126 saved changed-text formal paint records,3roots and metrics match this fresh oracle exactly. Main native-reference before state is1/#000000; its outline changes those fields; restore returns the original state, matching the actual renderer pass initialization.
+
+`python check-text86bn.py ACTUAL86BN ACTUAL86BM` verifies60pins/3raw,old input-run pins/raw,oldplan and restored-old refusals, genuine changed source equality and new formal admission. Original86bm state mismatch remains preserved and checked. The new oracle compiles0models and reruns0formal frames; it reuses the already saved text「風風先先」formal paint. Font bytes/runtime/input/recipe/delta match, but oracle holds its own fresh source-only context. This is not another250-frame paint test.
+
+Node0/owned service cleanup−15,bothPIDs absent/port closed. No pictures/media/public operations. The saved source-only formal plan is a technical connection milestone; ordinary UI and practical latency remain unfinished.
