@@ -1,0 +1,9 @@
+# Contour body and attachment requests84b
+
+Unregistered source-only unit. Run `python3 run-tests.py /path/to/repository`.
+
+The helper retains literal native line breaking, body fitSize→measure order, native mainDraw arguments and position clamp. Its separate after(env,bb) describes the original underline and metadata requests when bb exists and entry/exit alpha permits. The supplied bb is not trusted evidence or authority; actual native mainDraw output and complete paint still require matching. Ghost=false on metadata is preserved as a source request, not a claim that the request paints in every pass.
+
+The20,737 checks cover3,456 synthetic states and1,152 attachment requests against the literal original fragment. Real01_util predicates/easing,06 splitLines and08 chunk/segment source run on NodeIntl with default Japanese segmentation. English strings in this test do not qualify trueEN UI language behavior. Font fit/measure and mainDraw bbox are synthetic; side/place, orientation, time/exit, empty/null body and mono-font fallback cases are checked. The initial test stopped at a host JS newline escape SyntaxError and was corrected without source/expectation changes.
+
+Calling layout uses real J.fitSize/J.measure in an actual host, so font metrics cache and measurement-context effects remain possible. It does not promise no side effects or reproduce the later measurements performed by mainDraw/env.draw. Font setter readback, actual eight-font metrics/revision/context effects, glyphs/underline/metadata completeness and native Canvas state must be checked next. No product source, default rendering or cache is modified by this extraction. There is no candidate shift/scale, support/clip/stroke/quality/wholeclock proof, owner/runtime/UI registration, or safe authority. Existing approved half-hero/native-body behavior remains the later target without new approval/video.

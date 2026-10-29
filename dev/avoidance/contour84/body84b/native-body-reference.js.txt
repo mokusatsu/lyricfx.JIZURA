@@ -1,0 +1,14 @@
+    const text = brk(cut.text, port ? 6 : 8);
+    const o = { track: 0.06, lead: 1.25 };
+    const size = Math.min(J.fitSize(text, Pm.font, W * (port ? 0.8 : 0.5), H * 0.3, o), u * 0.12);
+    const m = J.measure(Object.assign({ text, font: Pm.font, size }, o));
+    const tx = port ? W / 2 : W / 2 - Pm.side * W * 0.2, ty = Pm.place === 'low' ? H * (port ? 0.78 : 0.7) : H / 2;
+    const mx = J.clamp(tx, W * 0.06 + m.w / 2, W * 0.94 - m.w / 2);
+    const bb = J.mainDraw(env, Object.assign({ text, font: Pm.font, size, x: mx, y: ty, color: sc.fg }, o));
+    const la = tin(env, 0.3, 0.4, E.outCubic) * out;
+    if (bb && la > 0) {
+      const ls = smallSize(env) * 0.9;
+      env.line([[bb.x0, bb.y0 - ls * 1.2], [bb.x0 + (bb.x1 - bb.x0) * la, bb.y0 - ls * 1.2]], lineC, Math.max(1, u * 0.0015), 0.8, false);
+      env.draw({ text: `${big}  ─  No.${lineNo(env)}`, font: monoF(env), size: ls, track: 0.2, align: 'left', x: bb.x0, y: bb.y0 - ls * 2.3, color: sc.sub, alpha: la, ghost: false });
+    }
+    return bb;
