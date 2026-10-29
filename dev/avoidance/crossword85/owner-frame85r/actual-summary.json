@@ -1,0 +1,41 @@
+{
+  "output": "/workspace/jizura-logic-evidence-20261027/crossword-owned85r-actual01",
+  "resultSHA256": "dea4bddd2bfdbfeacfe87afb6ade93da19fed0c3ac4a513e3a4b3127f87b5792",
+  "complete": false,
+  "raw": [
+    {
+      "file": "page-init.json.gz",
+      "jsonBytes": 7893,
+      "sha256": "5261e648d93d49d59f11b93f7d467322657cea50153199dc197fc2caef723f23",
+      "gzipBytes": 1446,
+      "gzipSHA256": "6fc20b55b73d7ed7bb04ad7a128bce2eec65eb9849709f419a4e88b479da7bc6"
+    },
+    {
+      "file": "formal.json.gz",
+      "jsonBytes": 879,
+      "sha256": "c8b31ae1831f89cf10c802ee29531eafe8dc3c19c5caf393ad6bac5d4032cd6d",
+      "gzipBytes": 370,
+      "gzipSHA256": "3e08699b00c3f77b748e2fddc5e52489bb5790f759d324a5524901cd61b338a8"
+    }
+  ],
+  "errors": [
+    {
+      "code": "ERR_ASSERTION",
+      "message": "{\"code\":\"CROSSWORD85R_CELL_CONTAINMENT\",\"message\":\"CROSSWORD85R_CELL_CONTAINMENT\",\"details\":{\"ownerContextBefore\":{\"letterSpacing\":\"0px\",\"wordSpacing\":\"0px\",\"ownLetterSpacing\":false,\"ownWordSpacing\":false,\"miterLimit\":10,\"lineJoin\":\"miter\",\"lineCap\":\"butt\",\"width\":960,\"height\":540},\"ownerContextAtFailure\":{\"letterSpacing\":\"0px\",\"wordSpacing\":\"0px\",\"ownLetterSpacing\":false,\"ownWordSpacing\":false,\"miterLimit\":10,\"lineJoin\":\"miter\",\"lineCap\":\"butt\",\"width\":960,\"height\":540},\"own\":{\"pass\":\"main\",\"tp\":0.016666666666666666,\"lt\":0.016666666666666666,\"ltb\":0.016666666666666666,\"step\":0}},\"stack\":\"Error: CROSSWORD85R_CELL_CONTAINMENT\\n    at need (<anonymous>:2:393)\\n    at quality (<anonymous>:18:2254)\\n    at sample (<anonymous>:19:1501)\\n    at Object.step (<anonymous>:22:79)\\n    at window.formalCrossword85r (<anonymous>:3:600)\\n    at async <anonymous>:1:35\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: {\"code\":\"CROSSWORD85R_CELL_CONTAINMENT\",\"message\":\"CROSSWORD85R_CELL_CONTAINMENT\",\"details\":{\"ownerContextBefore\":{\"letterSpacing\":\"0px\",\"wordSpacing\":\"0px\",\"ownLetterSpacing\":false,\"ownWordSpacing\":false,\"miterLimit\":10,\"lineJoin\":\"miter\",\"lineCap\":\"butt\",\"width\":960,\"height\":540},\"ownerContextAtFailure\":{\"letterSpacing\":\"0px\",\"wordSpacing\":\"0px\",\"ownLetterSpacing\":false,\"ownWordSpacing\":false,\"miterLimit\":10,\"lineJoin\":\"miter\",\"lineCap\":\"butt\",\"width\":960,\"height\":540},\"own\":{\"pass\":\"main\",\"tp\":0.016666666666666666,\"lt\":0.016666666666666666,\"ltb\":0.016666666666666666,\"step\":0}},\"stack\":\"Error: CROSSWORD85R_CELL_CONTAINMENT\\n    at need (<anonymous>:2:393)\\n    at quality (<anonymous>:18:2254)\\n    at sample (<anonymous>:19:1501)\\n    at Object.step (<anonymous>:22:79)\\n    at window.formalCrossword85r (<anonymous>:3:600)\\n    at async <anonymous>:1:35\"}\n    at valid (/workspace/jizura-logic-evidence-20261027/crossword-owned-gate-source85r/probe.cjs:2:1317)\n    at /workspace/jizura-logic-evidence-20261027/crossword-owned-gate-source85r/probe.cjs:3:1474"
+    }
+  ],
+  "postPinsUnchanged": true,
+  "host": {
+    "exit": 1,
+    "scope": "offline native current-input model/metric/CTM containment; no safe certificate/direct recipes/UI qualification",
+    "servicePID": 157624,
+    "nodePID": 157686,
+    "nodeExit": 1,
+    "nodeProcAbsent": true,
+    "serviceExit": -15,
+    "serviceProcAbsent": true,
+    "portConnectEx": 111
+  },
+  "resolution": "85s separates old85n ink1fontpx cell quality from unchanged old85o stage/circle2devicepx support"
+}
