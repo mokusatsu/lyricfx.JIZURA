@@ -1,0 +1,11 @@
+# Burst83z / 83aa private current-region sampled record
+
+83z source was saved in53f8b551 after independent manifest7+8 and portable35-check acceptance. Its private owner invokes a zero-only current-input compiler, derives a circle solely from the current plan region and right-first candidates from the source support union, then checks all own actual-prefix geometry before returning a handle. Arbitrary delta options reject. The ready record is explicitly sample-clock-states-only with framePermission=false; no generic trajectory or renderer permission is issued.
+
+The parent independently verified83aa304pins/3raw hashes and completion:250states/727own/9,047supports/2,872glyph counts, zero-replay count727, derived delta302.9133791599228 and guarded stage slack0.04546529564584034px, combined peak6,021,823B under8MiB. Eight ready validations, foreign handle rejection, current-circle mutation revocation, cancel12own, text/revision/generation rejection, one-own revision recovery and arbitrary delta rejection completed. Metrics.clear changed revision4→5; this is not a font-face replacement test. Proof-phase cancellation is still mock evidence, not part of this actual run.
+
+Private model/context stayed hidden. Consequently these counts and wrapper checks do not independently establish hidden model content identity or directly transfer83w full numeric acceptance into the owner. Evidence remains the current fixed-input/sampled-clock record. Preimage/source-time equivalence, negative/tail, genuine frame issuer, official plan/cache and practical UI are incomplete.
+
+Wall preparation14,682.1ms includes yielding/task wait. Compile-step sum6,445.7ms and proof-step sum2,218.3ms do not sum to wall time. Maximum compile step44.3ms/proof26.5ms/final2.5ms, heartbeat64.1ms. This is not practical UI acceptance or a controlled speed comparison. Future plan/adapter/frame reservations must join the same8MiB accounting; they are not certified by the owner-only measurement.
+
+Producer literal exit0; node107332/service107278 absent, port9333 connect_ex111. Git-external `burst-proof-owner83aa-actual01` has73,636decoded/10,006gzip bytes. Raw/media/generated HTML stay outside Git. Next is source-and-actual time mapping and private frame coupling; unsupported times remain typed failure until qualified.
