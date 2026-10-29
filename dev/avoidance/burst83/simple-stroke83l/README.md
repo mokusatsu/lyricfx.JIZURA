@@ -1,0 +1,9 @@
+# Burst simple-stroke bounds83l
+
+Unregistered observed-paint geometry only. A single open moveTo→lineTo butt segment has no join; a single arc has no miter join. Those exact path classes now use actual Canvas readback lineWidth/2, outward-rounded, rather than miterLimit*lineWidth/2. All other stroke paths keep the prior miter envelope; glyph1fontpx and device2px guards, unsupported effects/state, source methods, fonts/clock and drawing stay unchanged. Existing native tilesProof48.support and burst77.support use the same simple-line/arc geometric premise. This does not assume a universal Canvas numerical error bound or certify arbitrary input.
+
+Portable pure command: `node bounds-test.cjs /path/to/tracked/dev/avoidance/domino82/affine82c/affine-support82.js` (324checks). run-tests.py locates that tracked dependency. The raw-only CLI tools take explicit oracle paths; no external raw is embedded or needed for the pure test.
+
+recompute.cjs streamed existing83k/83g/83i paints:9047supports,4777changed (4750single lines/27arcs),4270nonstroke bounds bit-identical, all new bounds inside old. At the old approved delta the prior1stage+3circle rectangle failures become0. fraction-check.py independently reconstructed4777exact Fraction half-width affine envelopes plus2devicepx and checked new containment, then all9047ideal translated stage/circle predicates:37,202checks PASS. Parent independently reran it and checked source/corrected hashes. The original failed runs and overconservative83f bounds remain intact.
+
+New finite proposals exist for upper/default, but their stage slack can be only0.023–0.045px. All positions so far are IDEAL translations of captured base supports. Actual original-P.shift all-clock destination verification is mandatory before safety. No owner, adapter, stale-plan authority, product/UI or practical preparation claim. Raw/results/HTML/media stay outside Git.
