@@ -1,0 +1,217 @@
+{
+  "complete": true,
+  "errors": [],
+  "postPinsUnchangedAtExecution": true,
+  "raw": [
+    {
+      "file": "page-init.json.gz",
+      "jsonBytes": 13541,
+      "sha256": "d72829008c53f06f1fa6f90b1705470531eae7a4e489abf2f0912ba60990e4ae",
+      "gzipBytes": 3394,
+      "gzipSHA256": "531028b3b35c1dc06546d030f0aaa90c2fc25ec813ec80f034331a6f9d4a3b60"
+    },
+    {
+      "file": "preflight.json.gz",
+      "jsonBytes": 72,
+      "sha256": "0413c05d58320afc4fea32b2e163e53a0a0f2cae6924f3ed433e305567f02950",
+      "gzipBytes": 77,
+      "gzipSHA256": "6c13672f5373fdbba56c28e9db58fc68f02b1122d8528228f21fe8754f40bd80"
+    },
+    {
+      "file": "actual-ui-scope.json.gz",
+      "jsonBytes": 14152,
+      "sha256": "d2215930f02f041e3a05df987c468627a70373f4a6117fac79e6be177cc5b9d8",
+      "gzipBytes": 2699,
+      "gzipSHA256": "f90276d2ca7c541e701f5d71f0e7debbb213eccf9bdf0b0bc1414b2a0edd5a6b"
+    }
+  ],
+  "actual": [
+    {
+      "text": "風の先へ",
+      "planUnchanged": true,
+      "stage": [
+        1920,
+        1080
+      ],
+      "duration": 2.4,
+      "cutCount": 2,
+      "checks": {
+        "layers": {
+          "value": true
+        },
+        "timing": {
+          "error": {
+            "code": "BULBS86BU_CLOCK",
+            "message": "BULBS86BU_CLOCK"
+          }
+        },
+        "clock": {
+          "error": {
+            "code": "BULBS86BU_CLOCK",
+            "message": "BULBS86BU_CLOCK"
+          }
+        }
+      },
+      "final": {
+        "diagnostics": [
+          {
+            "cut": 0,
+            "code": "UNSUPPORTED_POST_FX",
+            "safety": "unsupported",
+            "adapter": "bulbs-owned-cooperative86br-v1",
+            "runtimeAdmissionRequired": true
+          },
+          {
+            "cut": 1,
+            "code": "UNSUPPORTED_ADAPTER",
+            "safety": "unsupported"
+          }
+        ],
+        "cuts": [
+          {
+            "layout": "bulbs",
+            "trajectory": false,
+            "contentScale": 1,
+            "motionScale": 1,
+            "area": {
+              "x": 0.51,
+              "y": 0.7249999999999999,
+              "w": 0.46,
+              "h": 0.245,
+              "angle": 0,
+              "lockAspect": true
+            }
+          },
+          {
+            "layout": "outro",
+            "trajectory": false
+          }
+        ]
+      }
+    },
+    {
+      "text": "明日へ向かう",
+      "planUnchanged": true,
+      "stage": [
+        1920,
+        1080
+      ],
+      "duration": 3.175,
+      "cutCount": 2,
+      "checks": {
+        "layers": {
+          "value": true
+        },
+        "timing": {
+          "error": {
+            "code": "BULBS86BU_CLOCK",
+            "message": "BULBS86BU_CLOCK"
+          }
+        },
+        "clock": {
+          "error": {
+            "code": "BULBS86BU_CLOCK",
+            "message": "BULBS86BU_CLOCK"
+          }
+        }
+      },
+      "final": {
+        "diagnostics": [
+          {
+            "cut": 0,
+            "code": "UNSUPPORTED_POST_FX",
+            "safety": "unsupported",
+            "adapter": "bulbs-owned-cooperative86br-v1",
+            "runtimeAdmissionRequired": true
+          },
+          {
+            "cut": 1,
+            "code": "UNSUPPORTED_ADAPTER",
+            "safety": "unsupported"
+          }
+        ],
+        "cuts": [
+          {
+            "layout": "bulbs",
+            "trajectory": false,
+            "contentScale": 1,
+            "motionScale": 1,
+            "area": {
+              "x": 0.51,
+              "y": 0.7249999999999999,
+              "w": 0.46,
+              "h": 0.245,
+              "angle": 0,
+              "lockAspect": true
+            }
+          },
+          {
+            "layout": "outro",
+            "trajectory": false
+          }
+        ]
+      }
+    },
+    {
+      "text": "青い空の向こう側へ",
+      "planUnchanged": true,
+      "stage": [
+        1920,
+        1080
+      ],
+      "duration": 2.597,
+      "cutCount": 1,
+      "checks": {
+        "layers": {
+          "value": true
+        },
+        "timing": {
+          "value": true
+        },
+        "clock": {
+          "value": {
+            "states": 156,
+            "selected": 384,
+            "end": 2.597,
+            "last": 2.5969999999999995
+          }
+        }
+      },
+      "final": {
+        "diagnostics": [
+          {
+            "cut": 0,
+            "code": "UNSUPPORTED_POST_FX",
+            "safety": "unsupported",
+            "adapter": "bulbs-owned-cooperative86br-v1",
+            "runtimeAdmissionRequired": true
+          }
+        ],
+        "cuts": [
+          {
+            "layout": "bulbs",
+            "trajectory": false,
+            "contentScale": 1,
+            "motionScale": 1,
+            "area": {
+              "x": 0.51,
+              "y": 0.7249999999999999,
+              "w": 0.46,
+              "h": 0.245,
+              "angle": 0,
+              "lockAspect": true
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "qualified": false,
+  "limitations": [
+    "source-only",
+    "no prepared model/formal render",
+    "actual UI design stage unsupported",
+    "auto events/outro unsupported",
+    "source snapshot retains runtime, expanded pure test changed afterward"
+  ]
+}
