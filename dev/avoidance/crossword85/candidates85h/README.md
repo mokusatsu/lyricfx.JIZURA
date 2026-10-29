@@ -1,0 +1,9 @@
+# Crossword input-derived left/bottom target85h
+
+Unregistered finite proposal for the approved58A semantic family. The sole anchor aligns the provided full-support minX to an explicit2devicepx display inset and maxY to H−inset. It uses outward nextafter on the derived delta and checks every support rectangle using the existing exact Fraction geometry. It does not substitute the union rectangle for circle checks. There is no fixed text/seed/circle/delta branch and no new visual strategy.
+
+`derive({supports,circle,stageMargin=2,reservedBytes=0})` accepts at most4096 bounded-owner support rectangles. It counts caller/input, bounds/work/candidate/result and a conservative temporary per-support evaluation-failure upper bound within8MiB serialized; native arithmetic/encoder heap remains separate. A failure is typed CROSSWORD85H_FINITE_INSUFFICIENT with notImpossibilityProof:true and at most16 witnesses. It means this single finite anchor failed, not that placement is impossible. No quality, source provenance or authority is inferred from supplied data.
+
+Run `python dev/avoidance/crossword85/candidates85h/run-tests.py /path/to/repository`:17 synthetic support checks with real codec/geometry/affine, covering input-derived deltas, display margin, immutable input, capacity, malformed data and finite refusal. As a host-only oracle calculation, the prior85g one-held141supports yield delta[-294.170263662109,143.09111066258615] and141clear with118779B peak. This is not a new current-input model or an actual destination proof.
+
+The next1held gate must derive from fresh current input/metrics, draw the source-directed shift, compare every actual paint to fresh shifted supports and check all parts/circle/stage. Full clocks, continuous time, glyph/cell quality, owner/formal plan and normalUI remain unqualified.
