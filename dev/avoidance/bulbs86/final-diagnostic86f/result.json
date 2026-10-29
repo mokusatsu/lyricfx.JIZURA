@@ -1,0 +1,36 @@
+{
+  "complete": true,
+  "scope": "saved old model host-only pure phase diagnostic; no Canvas, no new model compile or authority; runtime differs from Qt, callbacks/serialization overhead included; timings inclusive and not additive",
+  "rawPath": "/workspace/jizura-logic-evidence-20261027/bulbs-prepare80ab-visible02-actual01/sync.json.gz",
+  "rawGzipSHA256": "bca7bfd9d932196d987adc2b07a4318f238ed7f03a27d1628d3170d33cc5be0b",
+  "rows": [
+    {
+      "name": "HQ.check without callback host-only",
+      "wallMs": 127.23727599999998
+    },
+    {
+      "name": "HQ.check with generator-shaped work serialization host-only",
+      "wallMs": 234.29733099999999,
+      "workSerialization": {
+        "calls": 54,
+        "inclusiveMs": 118.32996899999995,
+        "totalBytes": 5706360
+      }
+    },
+    {
+      "name": "FD.build with generator-shaped work serialization host-only",
+      "wallMs": 21133.895780000003,
+      "workSerialization": {
+        "calls": 978,
+        "inclusiveMs": 21113.806670000035,
+        "totalBytes": 1732163352
+      }
+    },
+    {
+      "name": "full model serialized fixed-point surrogate host-only",
+      "wallMs": 108.97177200000078
+    }
+  ],
+  "qualityExact": true,
+  "frameDataExact": true
+}
