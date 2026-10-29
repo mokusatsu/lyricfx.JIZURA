@@ -1,0 +1,15 @@
+# Domino dependency static subtrees 82ah
+
+Unregistered optimization prototype. Real Canvas and performance comparison are pending. It does not reduce geometry coverage or remove any validation call.
+
+The owner constructs and freezes its own numeric `tokens` and descriptor `platform` trees once. Only these two private identities can bypass another dense copy. External frozen values and Proxy wrappers are traversed through the original dense-data rules. Font registries, face descriptors, language, revision and constants remain freshly captured and validated on every call.
+
+All current source-reference checks, complete Canvas/FontFaceSet prototype descriptor checks, status checks and actual FontFace identity comparisons remain. An admitted reference array has the same length, order and actual objects as the stored array; its generated numeric reference-slot sequence is therefore equal. Both snapshots must refer to the same private static trees. Only after these conditions hold can the old exact codec compare the dynamic projection (revision/language/fonts/faces/constants), instead of encoding known-equal static trees again. Field order, undefined, signed zero, dense arrays, accessors, symbols, cycles and prototype rules retain the existing implementation.
+
+The full dependency snapshot still encodes identically to the old snapshot. Two additional static-sized serialized reservations cover the new persistent static payload/slot metadata and a conservative simultaneous working representation. These bytes are added to dependencyReferenceBytes in preparation and resident metadata under the unchanged 8 MiB cap. This is serialized accounting, not JS heap or native backing-store accounting. A metadata increase is deliberate; geometry equivalence does not imply identical budget peaks.
+
+Generation/dependency guards before and after each step, borrow and publication remain. Tests include generation changes from a face getter and revision changes from a font Proxy during comparison; the job is rejected and the private surface released. The source does not grant a new guarantee against arbitrary hostile callbacks or redesign shared Canvas exception handling.
+
+Pure tests: dependency-oracle-test.cjs takes geometry68, exact codec80k, visual82m, owner82p fixture, and baseline82ac owner paths. It injects private test hooks and the established mock native-capability gate only in the evaluated test copy. It compares full snapshot keys, acceptance/rejection codes, data order, external Proxy read traces, reference/prototype drift and static reservation growth (82 checks). Owner regression has 62 checks; native controller has 29; actual09k with mock DOM/clock/lineage has 34. Dependencies are explicit paths; a portable repository runner will accompany the saved unit.
+
+Next: same source-preserving 96-step native prefix/CDP diagnostic as 82ag. This entry prefix is not the complete prepare/held/destination workload. Full-model and UI acceptance remain separate. The existing 17-second preparation must not be wired into ordinary UI as an accepted synchronous operation.
