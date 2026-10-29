@@ -1,0 +1,11 @@
+# Burst83ab / 83ac primary time correspondence
+
+Source-only83ab selector helper was saved in48dd8bdb after parent manifest3+6 and25 pure checks. Its registered range derives from current cut/clock; positive times must lie in the Q.clock preimage, negatives reproduce initial three-pass selectors while preserving actualN/actualRealTime, and tail selectors must be empty. It is not frame authority.
+
+The parent independently verified83ac301pins/24raw plus83m oracle references:10 actual times /18 own /234 paints /24 glyphs. Negative-low/tiny/-0, n0 last-preimage, n60 first/last, n249 first, duration/next and tail-high primary source/half, root/actual matrices, used paint signatures/path and clock except actualRealTime matched the corresponding earlier source state. Actual realTime stayed bit-exact, including signed zero. Fresh source sampling on another private context matched camera/root/clock/pOut and glyph font/ink/matrices. No full model was generated.
+
+These actual Renderer.frame calls use the same test-only drawCut observer override as83m. Recomputed pure camera values plus observed roots were recorded; they are not an instrumented capture of Renderer's private local cam variable. Primary geometry correspondence is separated from background whole-frame RGBA, which may vary with actual time and was not asserted identical. Range-low/high nextafter helper refusals kept the caller bitmap hash unchanged before any renderer call; this is not an installed Renderer entry gate.
+
+Source dataflow requires fixed quantized tp/lt/ltb/step/cut and excludes actual-t events, beats, energy, unsupported FX/style/masks/post and caller options. These current-input/time samples support that correspondence but do not alone certify arbitrary continuous time, ownership, frame permission or generic trajectory. The private record remains sample-domain/framePermission=false; actual frame/controller and official plan coupling remain next. UI preparation/runtime performance is unaccepted.
+
+Parent checker (Git external) `parent-burst83ac-review.py` SHA256 `8eb16c8d160ca68761dcd5dcdcd5731317f960dc6ca2ed7b708d72ddf22b50af`. Producer literal exit0; node108204/service108156 absent, port9333 connect_ex111. Git-external `burst-time83ac-actual01`:2,727,477decoded/255,163gzip bytes. No raw/media/generated HTML is included.
