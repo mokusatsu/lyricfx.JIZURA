@@ -1,3 +1,5 @@
+2026-10-29 ドミノ82v時間射影：負時刻はsource0、duration以後は3selector空のみ許容、09k range維持。pure23・3files/3deps hash親確認、local `44ee6511`。実CTM/trajectory/authority未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-29 ドミノ82u実J.plan未準備gate：cold/prior/decoded/revision miss・marker実bitmap拒否/compile0を親確認、36pins/2raw両hash。準備後発行の時間域・owner/UI未完。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-29 ドミノ82t未準備stage：実09k marker/復元/失効の合成22・controller bitmap前拒否6を親確認、local `ec0c5d10`。実J.plan/cache/Canvas未資格、時間域差解消まで安全trajectory発行なし。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
