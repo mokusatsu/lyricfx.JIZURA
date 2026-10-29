@@ -1,0 +1,308 @@
+/* Literal native crossword source requests/topology only; no Canvas or authority. */
+(()=>{'use strict';const A=J.placement,E=J.E;
+/* ------------------------------------------------------------------ helpers */
+const U = env => Math.min(env.W, env.H);
+const isPort = env => env.H > env.W * 1.08;
+const strip = t => String(t || '').replace(/\s+/g, '');
+const hasLatin = t => /[A-Za-z]/.test(t);
+/* text as one run: latin keeps single word spaces, Japanese drops them */
+const flat = t => (hasLatin(t) ? String(t || '').trim().replace(/\s+/g, ' ') : strip(t));
+/* glyph slots keeping single word gaps (latin lyrics): a ' ' slot is left empty */
+const slotsOf = t => [...flat(t)];
+const fontsOf = (st, roles) => J.fontsOf(st, roles);
+const bodyF = env => (env.st.fonts.body && env.st.fonts.body[0]) || 'gothic_med';
+const monoF = env => (env.st.fonts.mono && env.st.fonts.mono[0]) || 'mono';
+const tin = (env, d = 0, len = 0.4, ease = E.outExpo) => ease(J.clamp((env.lt - d) / Math.max(0.01, len)));
+const tout = env => 1 - E.inCubic(env.pOut);
+const box = (x0, y0, x1, y1) => ({ x0, y0, x1, y1, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, boxes: [] });
+const UB = J.unionBB;
+const pad2 = n => String(n).padStart(2, '0');
+const lineNo = env => pad2(Math.max(0, env.cut.line | 0) + 1);
+const smallSize = env => J.clamp(U(env) * 0.024, 13, 32);
+/* motion index that makes J.mainDraw start this item's entrance at local time t */
+const miAt = (env, t) => Math.max(0, t) / Math.max(0.005, env.cut.stagger || 0.04);
+/* chromatic ghosts on big plates only while they fly in */
+const gIn = env => env.lt < 0.6 && env.pOut <= 0;
+/* text printed on an object only takes holds that keep it in place */
+const plateHold = env => !['still', 'jitter', 'breathe', 'glitchtick'].includes(env.cut.hold);
+const romajiOf = env => { const c = strip(env.cut.text); if (hasLatin(c) || !/[ぁ-ヿ]/.test(c)) return null; const r = J.romaji(c); return r ? r.toUpperCase() : null; };
+const altCopy = env => { const c = env.cut; if (c.lineText && strip(c.lineText) !== strip(c.text)) return flat(c.lineText); return romajiOf(env) || 'No.' + lineNo(env); };
+const lightOf = sc => (J.lum(sc.fg) > J.lum(sc.bg) ? sc.fg : sc.bg);
+const darkOf = sc => (J.lum(sc.fg) > J.lum(sc.bg) ? sc.bg : sc.fg);
+const _onc = new Map();
+/* best-contrast scheme colour for text on a plate of colour `fill` */
+const onCol = (sc, fill) => {
+  const key = fill + sc.bg + sc.fg + sc.ink + sc.accent;
+  let v = _onc.get(key);
+  if (v) return v;
+  let best = null, bv = 0;
+  for (const c of [sc.bg, sc.fg, sc.ink, sc.accent, sc.sub]) { if (!c || c === fill) continue; const k = J.contrast(c, fill); if (k > bv) { bv = k; best = c; } }
+  v = bv >= 2.4 ? best : (J.lum(fill) > 0.5 ? '#111111' : '#FFFFFF');
+  if (_onc.size > 300) _onc.clear();
+  _onc.set(key, v); return v;
+};
+/* first scheme colour that stands out from the background (for plates / objects) */
+const plateCol = (sc, pref) => { for (const c of pref) if (c && J.contrast(c, sc.bg) >= 1.6) return c; return sc.fg; };
+/* shade a plate colour towards the scheme's light (s > 0) or dark (s < 0) end */
+const shade = (sc, c, s) => (s >= 0 ? J.mix(c, lightOf(sc), Math.min(0.9, s)) : J.mix(c, darkOf(sc), Math.min(0.9, -s)));
+/* palette of object colours (plates, magnets, balloons …) that read on the bg */
+const objCols = sc => { const out = []; for (const c of [sc.accent, sc.fg, sc.accent2, sc.ink, sc.sub]) if (c && J.contrast(c, sc.bg) >= 1.7 && !out.includes(c)) out.push(c); return out.length ? out : [sc.fg]; };
+const adv = (font, ch) => (ch === ' ' ? 0.34 : J.metrics.adv(font, ch));
+
+/* ---- chunking: k balanced groups of words (J.chunkText / latin words), long words split at natural points ---- */
+const splitWord = w => {
+  const n = [...w].length;
+  if (/[A-Za-z]/.test(w)) {
+    if (/[^\x00-\x7F]/.test(w)) { const c = J.chunkText(w).filter(Boolean); if (c.length > 1) return c; }
+    return n > 10 ? [w.slice(0, Math.ceil(w.length / 2)), w.slice(Math.ceil(w.length / 2))] : [w];
+  }
+  return n < 2 ? [w] : J.splitLines(w, Math.ceil(n / 2)).split('\n').filter(Boolean);
+};
+function chunksK(text, k) {
+  const t = String(text || '').trim();
+  if (!t) return [''];
+  let words = [];
+  if (/\s/.test(t) && hasLatin(t)) { const ws = t.split(/\s+/).filter(Boolean); ws.forEach((w, i) => words.push({ t: w, sp: i < ws.length - 1 })); }
+  else words = J.chunkText(strip(t)).map(w => ({ t: w.trim(), sp: false })).filter(w => w.t);
+  if (!words.length) words = [{ t, sp: false }];
+  k = Math.max(1, Math.min(k, J.glyphCount(t)));
+  const gl = w => J.glyphCount(w.t);
+  const hard = new Set();
+  const splitAt = idx => {
+    const w = words[idx], parts = splitWord(w.t);
+    if (parts.length < 2) { hard.add(w.t); return false; }
+    words.splice(idx, 1, ...parts.map((q, i) => ({ t: q, sp: i === parts.length - 1 ? w.sp : false })));
+    return true;
+  };
+  for (let guard = 0; words.length < k && guard < 20; guard++) {
+    let bi = -1, bl = 1;
+    words.forEach((w, i) => { if (!hard.has(w.t) && gl(w) > bl) { bl = gl(w); bi = i; } });
+    if (bi < 0) break;
+    splitAt(bi);
+  }
+  // contiguous partition into k groups with the most even glyph counts (small DP)
+  const part = () => {
+    const n = words.length, kk = Math.min(k, n), L = words.map(w => gl(w) + 0.4);
+    const pre = [0]; L.forEach(l => pre.push(pre[pre.length - 1] + l));
+    const tgt = pre[n] / kk;
+    const dp = Array.from({ length: kk + 1 }, () => new Array(n + 1).fill(Infinity)), by = Array.from({ length: kk + 1 }, () => new Array(n + 1).fill(0));
+    dp[0][0] = 0;
+    for (let g = 1; g <= kk; g++) for (let i = g; i <= n; i++) for (let j = g - 1; j < i; j++) {
+      const d = pre[i] - pre[j] - tgt, v = dp[g - 1][j] + d * d;
+      if (v < dp[g][i]) { dp[g][i] = v; by[g][i] = j; }
+    }
+    const cuts = []; let i = n;
+    for (let g = kk; g >= 1; g--) { cuts.unshift(i); i = by[g][i]; }
+    const out = []; let prev = 0;
+    for (const c of cuts) { out.push(words.slice(prev, c)); prev = c; }
+    return out;
+  };
+  let groups = part();
+  for (let it = 0; it < 3 && groups.length > 1; it++) {
+    const lens = groups.map(g => g.reduce((a, w) => a + gl(w), 0)), mx = Math.max(...lens), mn = Math.min(...lens);
+    if (mx <= mn * 1.7 + 1) break;
+    const big = groups[lens.indexOf(mx)];
+    let bw = null; for (const w of big) if (!hard.has(w.t) && gl(w) >= 4 && (!bw || gl(w) > gl(bw))) bw = w;
+    if (!bw || !splitAt(words.indexOf(bw))) break;
+    groups = part();
+  }
+  return groups.map(g => g.map((w, i) => w.t + (i < g.length - 1 && w.sp ? ' ' : '')).join('')).filter(Boolean);
+}
+/* rows of glyph slots (a ' ' slot is a word gap) broken at chunk boundaries */
+const rowsOf = (text, maxPer) => { const t = flat(text), n = J.glyphCount(t); return (n > maxPer ? chunksK(t, Math.ceil(n / maxPer)) : [t]).map(r => [...r.trim()]); };
+/* balanced display line breaks at chunk boundaries */
+const brk = (text, maxPer) => { const t = flat(text), n = J.glyphCount(t); return n <= maxPer ? t : chunksK(t, Math.ceil(n / maxPer)).join('\n'); };
+
+/* ---- affine helpers: draw the lyric through a matrix, map its bbox back to design space ---- */
+const mapPt = (m, x, y) => [m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5]];
+const mapBB = (bb, m) => {
+  if (!bb) return null;
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (const [x, y] of [[bb.x0, bb.y0], [bb.x1, bb.y0], [bb.x1, bb.y1], [bb.x0, bb.y1]]) { const p = mapPt(m, x, y); x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); }
+  return box(x0, y0, x1, y1);
+};
+const drawAff = (env, it, m) => { const c = env.ctx; c.save(); c.transform(m[0], m[1], m[2], m[3], m[4], m[5]); const bb = J.mainDraw(env, it); c.restore(); return mapBB(bb, m); };
+const drawAffPlain = (env, it, m) => { const c = env.ctx; c.save(); c.transform(m[0], m[1], m[2], m[3], m[4], m[5]); env.draw(it); c.restore(); };
+const polyPts = (m, pts) => pts.map(([x, y]) => mapPt(m, x, y));
+/* rounded-rect path */
+const rrPath = (ctx, x, y, w, h, r) => {
+  r = Math.max(0, Math.min(r, w / 2, h / 2));
+  ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+};
+/* outline of a polygon (main pass) */
+const outline = (env, pts, col, lw, a = 1) => { if (pts.length > 1) env.line(pts.concat([pts[0]]), col, lw, a, false); };
+/* pool of glyphs taken from the line (for decoys / fillers) */
+const KANA = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん';
+const _pool = new Map();
+const poolOf = cut => {
+  const key = (cut.lineText || '') + '|' + cut.text;
+  let p = _pool.get(key);
+  if (!p) {
+    const own = [...strip((cut.lineText || '') + cut.text)].filter(c => !J.isPunct(c) && !J.isSmallKana(c) && c !== 'ー' && !J.isLatin(c));
+    p = own.concat([...KANA].filter((c, i) => i % 3 === 0));
+    if (_pool.size > 100) _pool.clear();
+    _pool.set(key, p);
+  }
+  return p;
+};
+/* per-font glyph memo reset when font metrics are rebuilt (fonts loading late) */
+const MEMO = new Map(), SENT = '\u0001layoutsD';
+const memo = (key, fn) => {
+  const mm = J.metrics && J.metrics.m;
+  if (mm && !mm.has(SENT)) { MEMO.clear(); mm.set(SENT, 1); }
+  let v = MEMO.get(key);
+  if (v === undefined) { v = fn(); if (MEMO.size > 300) MEMO.clear(); MEMO.set(key, v); }
+  return v;
+};
+
+function render(env){
+    const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const port = isPort(env);
+    const t0 = flat(cut.text);
+    const chs = [...t0].filter(c => c !== ' ');
+    const n = chs.length;
+    if (!n) return null;
+    const maxRow = port ? 7 : 12;
+    const words = n > maxRow ? chunksK(t0, Math.ceil(n / maxRow)).map(w => [...w].filter(c => c !== ' ')) : [chs];
+    const L = Math.max(...words.map(w => w.length));
+    const C = Math.max(L + 2, port ? 7 : 9), R = words.length > 1 ? 7 : port ? 7 : 5;
+    const below = Pm.clue && H > W * 0.7, clueW = Pm.clue && !below ? 0.24 : 0;
+    const cell = Math.min(W * (0.88 - clueW) / C, H * (below ? 0.64 : 0.8) / R, u * 0.14);
+    const gw = C * cell, gh = R * cell;
+    const fsC = Math.max(smallSize(env) * 1.15, cell * 0.24);
+    const gx = (W - gw - (clueW ? W * clueW : 0)) / 2, gy = (H - gh - (below ? fsC * 5 : 0)) / 2;
+    const rowsW = words.length > 1 ? [1, 5] : [Math.floor(R / 2)];
+    const c0 = words.map(w => Math.floor((C - w.length) / 2) - (J.h(s, w.length) % 2 && C - w.length > 2 ? 1 : 0));
+    // black cells: symmetric scatter that keeps the lyric entries (and their end caps) intact
+    const key = (r, c) => r * 64 + c;
+    const lyr = new Map();
+    words.forEach((w, wi) => w.forEach((ch, j) => lyr.set(key(rowsW[wi], c0[wi] + j), { ch, wi, j })));
+    const black = new Set();
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+      const r2 = R - 1 - r, c2 = C - 1 - c;
+      if (lyr.has(key(r, c)) || lyr.has(key(r2, c2))) continue;
+      if (J.r(s, Math.min(key(r, c), key(r2, c2)), 3) < Pm.dens) { black.add(key(r, c)); black.add(key(r2, c2)); }
+    }
+    words.forEach((w, wi) => { const r = rowsW[wi]; if (c0[wi] > 0) black.add(key(r, c0[wi] - 1)); if (c0[wi] + w.length < C) black.add(key(r, c0[wi] + w.length)); });
+    const isW = (r, c) => r >= 0 && c >= 0 && r < R && c < C && !black.has(key(r, c));
+    // numbering
+    const num = new Map(); let k = 1;
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+      if (!isW(r, c)) continue;
+      const ac = !isW(r, c - 1) && isW(r, c + 1), dn = !isW(r - 1, c) && isW(r + 1, c);
+      if (ac || dn) num.set(key(r, c), k++);
+    }
+    // pencilled crossing entries (down words through some lyric cells)
+    const pool = poolOf(cut), NP = pool.length;
+    const pencil = new Map();
+    let fills = 0;
+    words.forEach((w, wi) => w.forEach((ch, j) => {
+      if (fills >= Pm.fill * words.length || J.r(s, wi, j, 5) > 0.45) return;
+      const c = c0[wi] + j, r = rowsW[wi];
+      let a = r, b = r; while (isW(a - 1, c)) a--; while (isW(b + 1, c)) b++;
+      if (b - a < 2) return;
+      fills++;
+      for (let rr = a; rr <= b; rr++) if (!lyr.has(key(rr, c))) pencil.set(key(rr, c), pool[J.h(s, rr, c, 6) % NP]);
+    }));
+    const out = tout(env);
+    const ga = tin(env, 0, 0.35, E.outCubic) * out;
+    const paperC = lightOf(sc), inkC = darkOf(sc);
+    const lw = Math.max(1, cell * 0.035);
+    env.rect(gx - lw * 2, gy - lw * 2, gw + lw * 4, gh * ga + lw * 4, inkC, out, false);
+    env.rect(gx, gy, gw, gh * ga, paperC, out, gIn(env));
+    // typing progress
+    const T1 = 0.25, per = J.clamp(cut.dur * 0.4 / n, 0.04, 0.11);
+    const typed = Math.floor((lt - T1) / per);
+    let cur = -1, gi = 0;
+    const order = [];
+    words.forEach((w, wi) => w.forEach((ch, j) => order.push([wi, j])));
+    if (typed >= 0 && typed < n) cur = typed;
+    const curWi = cur >= 0 ? order[cur][0] : -1;
+    for (let r = 0; r < R; r++) {
+      const ra = J.clamp((ga * R - r));
+      if (ra <= 0) continue;
+      for (let c = 0; c < C; c++) {
+        const x = gx + c * cell, y = gy + r * cell;
+        const kk = key(r, c);
+        if (black.has(kk)) { env.rect(x, y, cell, cell, inkC, ra * out, false); continue; }
+        const L0 = lyr.get(kk);
+        if (L0 && (L0.wi === curWi || typed >= n)) env.rect(x, y, cell, cell, sc.accent, (L0.wi === curWi ? 0.2 : 0.12) * out, false);
+        if (L0 && order[cur] && order[cur][0] === L0.wi && order[cur][1] === L0.j) env.rect(x, y, cell, cell, sc.accent, 0.5 * out, false);
+        env.line([[x, y + cell], [x + cell, y + cell]], inkC, lw * 0.6, 0.55 * ra * out, false);
+        env.line([[x + cell, y], [x + cell, y + cell]], inkC, lw * 0.6, 0.55 * ra * out, false);
+        if (num.has(kk)) env.draw({ text: String(num.get(kk)), font: monoF(env), size: cell * 0.2, align: 'left', x: x + cell * 0.07, y: y + cell * 0.15, color: inkC, alpha: 0.8 * ra * out, ghost: false });
+        const pc = pencil.get(kk);
+        if (pc) env.draw({ text: pc, font: bodyF(env), size: cell * 0.46, x: x + cell / 2, y: y + cell * 0.56, color: J.mix(paperC, inkC, 0.38), alpha: tin(env, 0.3 + r * 0.03, 0.3) * out, ghost: false });
+      }
+    }
+    let bb = null;
+    order.forEach(([wi, j], q) => {
+      const ch = words[wi][j];
+      const x = gx + (c0[wi] + j + 0.5) * cell, y = gy + (rowsW[wi] + 0.56) * cell;
+      bb = UB(bb, J.mainDraw(env, { text: ch, font: Pm.font, size: cell * 0.7, x, y, color: inkC, noHold: plateHold(env), mi: miAt(env, T1 + q * per) }));
+    });
+    if (Pm.clue) {
+      const fs = fsC;
+      const cxl = below ? gx : gx + gw + W * 0.035, cyl = below ? gy + gh + fs * 1.6 : gy + fs;
+      const a = tin(env, 0.35, 0.4, E.outCubic) * out;
+      const n1 = num.get(key(rowsW[0], c0[0])) || 1;
+      const lines = [['ヨコのカギ', sc.accent, monoF(env)], [n1 + '  ' + (cut.note || romajiOf(env) || '(' + n + ')'), sc.fg, bodyF(env)], ['タテのカギ', sc.accent, monoF(env)], [(num.size > 3 ? 3 : 2) + '  ─', sc.sub, bodyF(env)]];
+      lines.forEach(([t, col, f], i) => {
+        const tt = t.length > 22 ? t.slice(0, 21) + '…' : t;
+        const yy = below ? cyl + (i % 2) * fs * 1.7 : cyl + i * fs * 1.9 + (i >= 2 ? fs * 0.8 : 0), xx = below && i >= 2 ? cxl + gw * 0.55 : cxl;
+        env.draw({ text: tt, font: f, size: fs, align: 'left', x: xx, y: yy, track: 0.08, color: col, alpha: a, ghost: false });
+      });
+    }
+    return bb || box(gx, gy, gx + gw, gy + gh);
+}
+function layout(env){
+    const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const port = isPort(env);
+    const t0 = flat(cut.text);
+    const chs = [...t0].filter(c => c !== ' ');
+    const n = chs.length;
+    if (!n) return null;
+    const maxRow = port ? 7 : 12;
+    const words = n > maxRow ? chunksK(t0, Math.ceil(n / maxRow)).map(w => [...w].filter(c => c !== ' ')) : [chs];
+    const L = Math.max(...words.map(w => w.length));
+    const C = Math.max(L + 2, port ? 7 : 9), R = words.length > 1 ? 7 : port ? 7 : 5;
+    const below = Pm.clue && H > W * 0.7, clueW = Pm.clue && !below ? 0.24 : 0;
+    const cell = Math.min(W * (0.88 - clueW) / C, H * (below ? 0.64 : 0.8) / R, u * 0.14);
+    const gw = C * cell, gh = R * cell;
+    const fsC = Math.max(smallSize(env) * 1.15, cell * 0.24);
+    const gx = (W - gw - (clueW ? W * clueW : 0)) / 2, gy = (H - gh - (below ? fsC * 5 : 0)) / 2;
+    const rowsW = words.length > 1 ? [1, 5] : [Math.floor(R / 2)];
+    const c0 = words.map(w => Math.floor((C - w.length) / 2) - (J.h(s, w.length) % 2 && C - w.length > 2 ? 1 : 0));
+    // black cells: symmetric scatter that keeps the lyric entries (and their end caps) intact
+    const key = (r, c) => r * 64 + c;
+    const lyr = new Map();
+    words.forEach((w, wi) => w.forEach((ch, j) => lyr.set(key(rowsW[wi], c0[wi] + j), { ch, wi, j })));
+    const black = new Set();
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+      const r2 = R - 1 - r, c2 = C - 1 - c;
+      if (lyr.has(key(r, c)) || lyr.has(key(r2, c2))) continue;
+      if (J.r(s, Math.min(key(r, c), key(r2, c2)), 3) < Pm.dens) { black.add(key(r, c)); black.add(key(r2, c2)); }
+    }
+    words.forEach((w, wi) => { const r = rowsW[wi]; if (c0[wi] > 0) black.add(key(r, c0[wi] - 1)); if (c0[wi] + w.length < C) black.add(key(r, c0[wi] + w.length)); });
+    const isW = (r, c) => r >= 0 && c >= 0 && r < R && c < C && !black.has(key(r, c));
+    // numbering
+    const num = new Map(); let k = 1;
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+      if (!isW(r, c)) continue;
+      const ac = !isW(r, c - 1) && isW(r, c + 1), dn = !isW(r - 1, c) && isW(r + 1, c);
+      if (ac || dn) num.set(key(r, c), k++);
+    }
+    // pencilled crossing entries (down words through some lyric cells)
+    const pool = poolOf(cut), NP = pool.length;
+    const pencil = new Map();
+    let fills = 0;
+    words.forEach((w, wi) => w.forEach((ch, j) => {
+      if (fills >= Pm.fill * words.length || J.r(s, wi, j, 5) > 0.45) return;
+      const c = c0[wi] + j, r = rowsW[wi];
+      let a = r, b = r; while (isW(a - 1, c)) a--; while (isW(b + 1, c)) b++;
+      if (b - a < 2) return;
+      fills++;
+      for (let rr = a; rr <= b; rr++) if (!lyr.has(key(rr, c))) pencil.set(key(rr, c), pool[J.h(s, rr, c, 6) % NP]);
+    }));
+return {port,t0,chs,n,words:words.map(w=>w.slice()),L,C,R,below,clueW,cell,gw,gh,fsC,gx,gy,rowsW,c0,black:[...black],numbers:[...num],pencil:[...pencil],fills};}
+Object.defineProperty(A,'crosswordNative85a',{value:Object.freeze({render,layout,sourceOnly:true,certificateIssuer:false})});})();
