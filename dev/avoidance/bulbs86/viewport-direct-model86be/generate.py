@@ -1,0 +1,13 @@
+from pathlib import Path
+import sys
+root=Path(sys.argv[1]);out=Path(sys.argv[2]);out.mkdir(parents=True,exist_ok=True)
+s=(root/'dev/avoidance/bulbs86/layout-accounting86j/scalar-generator86.js').read_text();key="function* compileGenerator(renderer,plan,cut,ctx,{onScalar=null,deviceDelta=[0,0],externalAccounting=null}={}){";assert s.count(key)==1;s=s.replace(key,key+"\n const viewportRoot86be=A.bulbsViewportRoot86ae,viewport86be=Object.freeze({scale:.75,width:720,height:405});need(viewportRoot86be&&typeof viewportRoot86be.makeEnv==='function'&&ctx.canvas.width===720&&ctx.canvas.height===405,'BULBS86BE_VIEWPORT');")
+key='const env=P.makeEnv(renderer,plan,nativeCut,ctx,own,state.firstTime);';assert s.count(key)==1;s=s.replace(key,"need(A.bulbsViewportRoot86ae===viewportRoot86be,'BULBS86BE_ROOT_SOURCE');const env=viewportRoot86be.makeEnv(renderer,plan,nativeCut,ctx,own,state.firstTime,viewport86be.scale);")
+key='measuredBytes({clocks,recipes,nativeCut,heldFamilyEntries:';assert s.count(key)==1;s=s.replace(key,'measuredBytes({viewport:viewport86be,clocks,recipes,nativeCut,heldFamilyEntries:')
+key="const model={kind:'bulbs-derived-scalar-model80',";assert s.count(key)==1;s=s.replace(key,"const model={viewport:viewport86be,kind:'bulbs-derived-scalar-model80',")
+s=s.replace("revision:'bulbs-scalar-metrics80-preparation-v1'","revision:'bulbs-current-viewport-scalar86be-v1'");(out/'scalar-generator86.js').write_text(s)
+s=(root/'dev/avoidance/bulbs86/owner-accounting86o/model-owner86.js').read_text();key='function contextSnapshot(ctx){';assert s.count(key)==1;s=s.replace(key,"const viewportRoot86be=A.bulbsViewportRoot86ae;\n"+key+"need(ctx.canvas.width===720&&ctx.canvas.height===405,'BULBS86BE_VIEWPORT_CONTEXT');")
+key='return{...P.contextState(ctx),line:';assert s.count(key)==1;s=s.replace(key,'return{viewport:{scale:.75,width:ctx.canvas.width,height:ctx.canvas.height},...P.contextState(ctx),line:')
+key='function dependency(renderer,canonical=renderer){';assert s.count(key)==1;s=s.replace(key,key+"need(A.bulbsViewportRoot86ae===viewportRoot86be&&typeof viewportRoot86be?.makeEnv==='function','BULBS86BE_ROOT_SOURCE');")
+s=s.replace('const refs=[...(planDependencies?', 'const refs=[viewportRoot86be,viewportRoot86be.makeEnv,...(planDependencies?')
+a=s.index('function prepare({');b=s.index('function withPreparedModel(',a);s=s[:a]+"function prepare(){need(!pending&&!borrowed&&!cooperativeReservation,'BULBS80N_REENTRANT');need(false,'BULBS86BE_COOPERATIVE_ONLY')}\n"+s[b:];s=s.replace('prepare uses same canonical renderer/context;', 'prepare uses same dedicated720x405 viewport context/logical960x540 geometry;');(out/'model-owner86.js').write_text(s)
