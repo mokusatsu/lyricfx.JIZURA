@@ -1,3 +1,9 @@
+## 2026-10-29 — 試験資源と容量の管理
+
+利用者の指示により、生成前に空き容量を確認し、終了した試験の不要な一時物は再生成可能性・重複を確認して整理する。原本、必要な検証証跡、未pushコミット、未コミット差分、最新の正常な復元ZIPとその依存は保持し、容量不足なら大量生成を開始しない。
+
+今後のローカルQt試験は [管理runner](dev/avoidance/qt-resource-runtime/README.md) を入口とする。生成前に1 GiB以上の空きと想定出力量を確認し、同時実行は1件とする。試験が作成したページを通常APIで閉じ、所有する子・孤児子を回収し、未確認なら失敗として記録する。既存のPID1配下zombieや無関係なプロセスにはsignalを送らない。凍結済み旧証跡のsourceを上書きせず、新しいsidecarへ記録する。runnerによる一度の実Qt lifecycle検証は済んでいるが、環境全体の突然の停止時の回収は保証されない。
+
 ## 2026-10-27 22:15 UTC — 承認済み6候補をロジックへ
 
 利用者「動画はどれもOKです 固定候補はもういいのでロジックに落としてください」。親からの対象特定は Sites source `ba6e987910967666a622055477e49307990bcecb` / project `appgprj_6ae0bda657c88191b9ddec956ceb911f` 掲載の6固定比較（電球、看板、domino upper-one-row、burst two-row-half、contour hero-half-body-native、crossword58A default-left-bottom）。この6件の動作は HUMAN_APPROVED。同じ固定候補の再承認は不要。古い未承認・旧集約予定は各時点の履歴として保持する。
