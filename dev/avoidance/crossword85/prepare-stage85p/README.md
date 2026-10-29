@@ -1,0 +1,5 @@
+# Crossword limited prepare stage85p
+
+Unregistered stage-only reuse of84o, with source-key preservation for normalized09k input. Run `python dev/avoidance/crossword85/prepare-stage85p/run-tests.py /path/to/repository`.24 synthetic-plan checks use actual09k catch/registry/admission for PREPARE_REQUIRED/original-cut restoration, input/text/circle/font key changes, revision/FontFace/generation stale+restage and other-adapter/intentional legacy nonrejection.
+
+No safe trajectory, prepared-owner/frame authority or model compilation is available. Stage256KiB must be reserved inside the shared8MiB together with any future owner/model/proof; this unit does not allocate an owner. The optional zero-context Renderer patch invokes this immutable marker predicate at the very first frame statement, before bitmap/otherhooks. Product src/HTML are unchanged. Actual J.plan/cache/sentinel gate is separate. Finite85m/85o source-direct results do not cover continuous-time authority or normalUI. Input outside eventual qualified geometry scope cannot get authority from this stage.

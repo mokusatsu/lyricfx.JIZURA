@@ -1,0 +1,5 @@
+# Limited formal refusal85q
+
+Actual J.plan lineage with real09a/09k/09g produced PREPARE_REQUIRED. Cold/prior/decoded/revision calls1/2/3/4, misses1/2/3/4/hits0; decodedadmissionReject+1. Revision4→5 rejected oldstage then explicitfinalize restaged. Cold and revision-old markedplan directframe both refused CROSSWORD85P_PREPARE_REQUIRED before changing nonempty sentinel; all before/after hashes144f0c0f905139a27793ebe4eadca93c71b96e2458f7d5da8cc47f986a050908. Parent independently checked24pins/2raw and results. Exit0/processesabsent/port9333 closed.
+
+No owner/model-capable source path was called; this is source-callgraph evidence rather than a measured compiler counter. No SAFE trajectory or continuous-time authority is available. Productsrc/HTML unchanged, normalUI unconnected. Before genuine publication: qualify continuous-time/prestart/tail semantics for the limited plain profile, bind private current-input/font/revision/source ownership and immutablefinalplan/caches, reserve stage+owner/proof within8MiB, and meet practical prepare/normalframe performance. Other profile values must remain typed unsupported.
