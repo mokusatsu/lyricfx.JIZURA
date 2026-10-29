@@ -1,0 +1,9 @@
+# Burst83u / 83v local geometry replay
+
+Source-only83u was independently checked against its 11-file/11-dependency manifest and portable85/751 pure checks, then saved as8adc381f. It retains local shape boxes/readback padding and glyph prefix transforms. The numeric replay helper has no candidate, owner, renderer or certificate authority.
+
+The parent independently checked83v: 300pins/11raw plus the three83m oracle state hashes; nine own rows/124support bounds contain the actual-paint enclosures by Fraction calculation. Thirty-six glyph text/font/ink/actual destination matrices and root matched, with bitmap unchanged and pristine Canvas methods. This uses fresh zero-base input samples and retained geometry, not imported raw as an authority. No new paint or destination text measurement was performed; the no-measure statement is a source-callgraph/pure-counter property rather than a native observer measurement.
+
+Sample plus geometry replay took1.9–19.0ms per own, maximum serialized peak1,167,362B. These are three sampled times on the current limited input and private harness, not normal-frame or full-model performance. The original1fontpx/2devicepx raster assumptions remain. Fullclock geometry retention capacity and input-derived candidate validation remain untested at this checkpoint. Continuous time, genuine proof issuance, formal plan and UI are unqualified.
+
+Git-external parent checker `parent-burst83v-review.py` SHA256 `68f6c019a07a52949c89e142c88a8b06b9eac9849e0d1a9a313116ff841a0a79`. Output `burst-replay83v-actual01`: 262,890decoded /58,801gzip bytes, literal exit0; node104906/service104847 absent and port9333 connect_ex111. Raw/media/generated HTML remain outside Git. Next is a fresh geometry-retaining full model under the unchanged8MiB budget, followed by actual-CTM all-own candidate evaluation from current plan regions; arbitrary delta must not confer safety.
