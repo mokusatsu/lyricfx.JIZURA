@@ -1,0 +1,5 @@
+# Burst no-paint sampler source83n checkpoint
+
+Parent verified5source/9tracked-dependency hashes and independently ran the portable55mock tests. The sampler file is byte-identical to the executed83o/83p version. Pure tests cover current source operations/control, unsupported profile values, zero-spacing, budget overflow and exception restoration with mock context/layout/metrics; they are not Canvas or authority tests. Actual selected-time evidence remains separately recorded in AVOID-009-burst-no-paint-pilot-20261029.md.
+
+This unregistered sampler and its mutable source-only data grant no frame/model/certificate authority. Future private input-owned compiler/owner must create and lock the native surface, enforce full plan/source/font/generation scope and cancellation/8MiB live transfer, and use oracle raw only for offline verification. No UI synchronous observer path or practical performance is accepted by this checkpoint. Raw/media/generated HTML remain Git-external; no network/auth retry.
