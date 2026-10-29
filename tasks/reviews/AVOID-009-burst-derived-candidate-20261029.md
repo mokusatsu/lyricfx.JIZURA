@@ -1,0 +1,13 @@
+# Burst83w retained full model and input-derived candidate
+
+The fresh zero-delta geometry-retaining model completed250 states/727 own with9,047 supports and2,872 glyphs. It reused no saved model as runtime input. Model preparation was5,923.2ms, max step54.3ms/final4.6ms and heartbeat58.7ms; serialized peak7,770,072B. These one-run low-level measurements are not a controlled owner/UI performance comparison or practical acceptance.
+
+The current plan's sole full-duration region was converted to pixels with the existing0.005H margin. G68 finite proposals were derived from the current model support union. A right-first generic policy selected delta[302.9133791599228,0], bit-identical to the earlier83m destination by observation, without taking it as candidate input or branching on text/seed/coordinates. A missing/failed chosen candidate would be typed insufficient, not an impossibility proof. No runtime certificate was issued.
+
+The same model was then reused for actual native Canvas prefix reevaluation across all727 own rows. Four-own diagnostic batches counted their retained arrays in caller reservation. All9,047 resulting support enclosures passed strict stage/circle tests and contained the prior actual-paint boxes by independent parent Fraction calculation. All2,872 glyph text/font/ink/actual matrices and roots matched. No new paint or destination text measurement was performed. Parent independently checked302pins/186raw plus old83m hashes; Git-external checker `parent-burst83w-review.py` SHA256 `c688179fbf48fb82282f4bb667953490ce331d3abd8bbad45ae46fe2af0a8538`.
+
+Candidate-phase peak7,791,981B leaves596,627B below8MiB. Future owner/plan/issuer/frame reservation must be combined at every stage and may fail typed budget; this checkpoint does not reserve that headroom for them. The182 diagnostic batch wall durations total about1,056.5ms, maximum36ms; they include diagnostic work and are not normal frame timings. Minimum stage slack0.04546529564584034px remains after the existing1fontpx/2devicepx guards; it does not expand their conditional raster assumptions.
+
+A saved-data reanalysis also passed5,807 scalar/size/clock/seed comparisons using the reusable wholeclock83r checker. Evidence is current input/sampled times/non-authority only. Positive real-time preimage/source equivalence, negative/tail behavior, genuine private proof/issuer, bitmap-before-paint frame route, official plan/cache and practical UI remain incomplete. Preparation near six seconds is not accepted for normal UI.
+
+Producer literal exit0; node105450/service105395 absent, port9333 connect_ex111. Git-external output `burst-model-candidate83w-actual01` contains9,698,665decoded/1,411,314gzip bytes. No raw/media/generated HTML is in this commit.
