@@ -1,0 +1,9 @@
+# Burst private canonical frame prototype
+
+Source-only units `48fd5ae8` and `1af3df1a` add private model/proof ownership, immutable publication, protected installer identities, and canonical frame preflight. The second commit makes every guard failure revoke the owner record and publication; restoring old input cannot revive them. Portable 23 controller, 15 install, and 12 extracted bootstrap checks pass. Normal painting exposes no observer API.
+
+The parent independently checked 83ah's 38 pins and seven raw records. Unobserved canonical frames n6/60/231 have whole RGBA hashes identical to the same-input 83m oracle; times were 23.4/15.7/13.3 ms. Alias, negative, tail, interior-time, changed-circle, and revoked-publication failures preserved a nonempty sentinel bitmap. The old handle remained UNKNOWN after restoring the circle. Frame compile absence is source-callgraph evidence, not an instrumented counter.
+
+Preparation took 15,532.7 ms, maximum step 95.7 ms and heartbeat 100.8 ms; ready serialized peak was 6,034,238 bytes. These are one-run diagnostics and do not qualify ordinary UI performance. The generic sample proof still has `framePermission:false`; the controller grants only this prototype's canonical sample-time route. Formal J.finalize/09a/09k/cache/UI connection and continuous-time permission remain absent. Actual fake-first-install and protected-bootstrap normal-build regressions remain required before product registration.
+
+Evidence and cleanup are in `dev/avoidance/burst83/frame-controller83ag/actual83ah-evidence.json`; raw stays outside Git. Literal process exit was 0. Both child PIDs disappeared, standard service cleanup returned -15, and port9333 was free (connect_ex111). No media/public output or authentication retry occurred.
