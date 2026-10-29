@@ -1,0 +1,9 @@
+# Domino actual final-plan browser helpers82ad/ae/af
+
+Executed initial/recovery browser sources are byte-identical to their local evidence copies. Alias diagnostic is the exactstandalonefunction extracted from82ae. These are reusablebrowserhelpers, not auto-installed productcode. Load the recorded fixture/renderer/source modules first. One-off protectedQt service/driver,generatedHTML andraw remain outsideGit. There is no portable fullbrowserorchestrator in thisunit; portablepure tests are in siblingprepared-binding82ac.
+
+Initial82ad completed actualJ.plan-derived adjustedfixture→09a/09k PREPARE_REQUIRED bitmap refusal/prior anddecoded cachemiss→freshprivatefullowner→sameinput finalizedcertificate→prioridentity/decodedaliasrecertificate withoutrecompile. Fourunobservedframes andfullheldpaint/root/clock/RGBA matchedoldoracle. It thenFAILED ataliasexpectedcode beforecirclecase; thatfailure remains.
+
+82ae generatedno model:unknownJSONaliaswithfinalizationmetadata was refused byexistingRenderer.validateFinal beforetheprivatehook withliteralSTALE_PLACEMENT_PLAN,nonemptygreensentinel unchanged andcompile0. Recovery82af retainsoriginalcontroller/owner/registry/HTML/spec,corrects onlytheharnessexpectation andrecordsactualwitnessesbeforeassert. It reused82adpositiveframe evidence,preparednewgenuineowner onlybecauseclosedprocessauthority cannot be restored fromraw,then verifiedalias/lineage/circle revocation.
+
+Call prepareDominoFrame82r then finalPlanNegatives82af for recovery. Legacywindow helpernames are retained because ofbyteexactreuse; do not call the obsoletefailing finalPlanNegatives82ad as a qualifiedtest. No newUI/practicalperformance/generalinput/otherDclaim follows.17secondpreparation remainsunsuitable forordinaryUI. Scope,hashes,results andremainingdependencies are in the review.
