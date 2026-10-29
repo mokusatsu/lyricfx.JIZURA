@@ -1,3 +1,5 @@
+2026-10-29 ドミノ82u実J.plan未準備gate：cold/prior/decoded/revision miss・marker実bitmap拒否/compile0を親確認、36pins/2raw両hash。準備後発行の時間域・owner/UI未完。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
+
 2026-10-29 ドミノ82t未準備stage：実09k marker/復元/失効の合成22・controller bitmap前拒否6を親確認、local `ec0c5d10`。実J.plan/cache/Canvas未資格、時間域差解消まで安全trajectory発行なし。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
 
 2026-10-28 ドミノ82s正式finalizer入力射影：実09k callbackの3flag検証・除去、unknown field保持・偽装output拒否、pure33＋実registry stage4を親確認、local `89dd116e`。実J.plan/cache/Canvas/authority未資格。[記録](reviews/AVOID-009-approved-logic-20261027.md)。
