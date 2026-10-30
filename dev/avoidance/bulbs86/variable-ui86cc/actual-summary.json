@@ -1,0 +1,329 @@
+{
+  "source": "/workspace/jizura-logic-evidence-20261027/bulbs-variable-ui-source86cc01",
+  "output": "/workspace/jizura-logic-evidence-20261027/bulbs-variable-ui86cc-actual01",
+  "rawComplete": true,
+  "errors": [],
+  "postPinsUnchanged": true,
+  "productRegistered": false,
+  "formalPerformanceAccepted": false,
+  "independentAllTimePaintOracle": false,
+  "old86bx07and08FailuresUnchanged": true,
+  "sourcePlan1920x1080Only": true,
+  "runtime": {
+    "probeExit": 0,
+    "complete": true,
+    "normalPageClosureConfirmed": true,
+    "cleanupComplete": true,
+    "remaining": [],
+    "signals": [],
+    "debugPortClosed": true,
+    "pages": {
+      "created": 3,
+      "closed": [
+        2,
+        1,
+        0
+      ],
+      "shutdownRequested": true,
+      "errors": [],
+      "serviceReturned": true
+    }
+  },
+  "cases": [
+    {
+      "raw": "ui-480-r0.1.json.gz",
+      "viewport": {
+        "width": 480,
+        "height": 270
+      },
+      "phase": "ready",
+      "error": null,
+      "details": null,
+      "elapsedMs": 8756,
+      "maxStepMs": 80.90000000596046,
+      "stepCount": 538,
+      "stepProfile": {
+        "scalar": {
+          "count": 251,
+          "totalMs": 2938.4999997615814,
+          "maxMs": 39.900000005960464,
+          "maxIteratorMs": 35.400000005960464
+        },
+        "held-snapshot": {
+          "count": 1,
+          "totalMs": 5.5,
+          "maxMs": 5.5,
+          "maxIteratorMs": 0.5
+        },
+        "held-quality": {
+          "count": 5,
+          "totalMs": 115.19999998807907,
+          "maxMs": 59.69999998807907,
+          "maxIteratorMs": 22.69999998807907
+        },
+        "local-finish": {
+          "count": 1,
+          "totalMs": 24.099999994039536,
+          "maxMs": 24.099999994039536,
+          "maxIteratorMs": 21.299999982118607
+        },
+        "frame-data": {
+          "count": 1,
+          "totalMs": 3.399999976158142,
+          "maxMs": 3.399999976158142,
+          "maxIteratorMs": 0.3999999761581421
+        },
+        "frame-validate": {
+          "count": 1,
+          "totalMs": 4,
+          "maxMs": 4,
+          "maxIteratorMs": 0.09999999403953552
+        },
+        "frame-account-setup": {
+          "count": 1,
+          "totalMs": 41.70000001788139,
+          "maxMs": 41.70000001788139,
+          "maxIteratorMs": 37.900000005960464
+        },
+        "frame-preimages": {
+          "count": 8,
+          "totalMs": 39.39999997615814,
+          "maxMs": 6.5999999940395355,
+          "maxIteratorMs": 2.5999999940395355
+        },
+        "frame-index": {
+          "count": 16,
+          "totalMs": 98.99999997019768,
+          "maxMs": 10.899999976158142,
+          "maxIteratorMs": 7.300000011920929
+        },
+        "model-output": {
+          "count": 1,
+          "totalMs": 77.19999998807907,
+          "maxMs": 77.19999998807907,
+          "maxIteratorMs": 11.900000005960464
+        },
+        "proof": {
+          "count": 252,
+          "totalMs": 2805.799999922514,
+          "maxMs": 48.5,
+          "maxIteratorMs": 0
+        }
+      },
+      "hash": "0044033aed64c8afd0c4aaad72dbe34858a6d2ebf40e7cdcc418df3e50d92ae5",
+      "peakSerializedWorkingBytes": 3825198
+    },
+    {
+      "raw": "ui-480-r0.2.json.gz",
+      "viewport": null,
+      "phase": "unsupported",
+      "error": "BULBS86BJ_INSUFFICIENT_SPACE",
+      "details": {
+        "quality": [
+          {
+            "recipe": "native",
+            "passed": true,
+            "failureCount": 0,
+            "failureCounts": {
+              "row-gap": 0,
+              "main-caption-gap": 0,
+              "text-outline-clearance": 0,
+              "neighbor-bulb-body-gap": 0,
+              "bulb-body-text-gap": 0,
+              "potential-halo-text-clearance": 0
+            }
+          },
+          {
+            "recipe": "one-row-compact",
+            "passed": false,
+            "failureCount": 1,
+            "failureCounts": {
+              "row-gap": 0,
+              "main-caption-gap": 1,
+              "text-outline-clearance": 0,
+              "neighbor-bulb-body-gap": 0,
+              "bulb-body-text-gap": 0,
+              "potential-halo-text-clearance": 0
+            }
+          },
+          {
+            "recipe": "two-row-native",
+            "passed": false,
+            "failureCount": 66,
+            "failureCounts": {
+              "row-gap": 1,
+              "main-caption-gap": 1,
+              "text-outline-clearance": 0,
+              "neighbor-bulb-body-gap": 64,
+              "bulb-body-text-gap": 0,
+              "potential-halo-text-clearance": 0
+            }
+          },
+          {
+            "recipe": "two-row-95",
+            "passed": false,
+            "failureCount": 66,
+            "failureCounts": {
+              "row-gap": 1,
+              "main-caption-gap": 1,
+              "text-outline-clearance": 0,
+              "neighbor-bulb-body-gap": 64,
+              "bulb-body-text-gap": 0,
+              "potential-halo-text-clearance": 0
+            }
+          }
+        ]
+      },
+      "elapsedMs": 4896.899999976158,
+      "maxStepMs": 80.2999999821186,
+      "stepCount": 287,
+      "stepProfile": {
+        "scalar": {
+          "count": 251,
+          "totalMs": 2971.400000065565,
+          "maxMs": 80.09999999403954,
+          "maxIteratorMs": 36.19999998807907
+        },
+        "held-snapshot": {
+          "count": 1,
+          "totalMs": 6.699999988079071,
+          "maxMs": 6.699999988079071,
+          "maxIteratorMs": 0.5999999940395355
+        },
+        "held-quality": {
+          "count": 5,
+          "totalMs": 126,
+          "maxMs": 36.900000005960464,
+          "maxIteratorMs": 31.799999982118607
+        },
+        "local-finish": {
+          "count": 1,
+          "totalMs": 51,
+          "maxMs": 51,
+          "maxIteratorMs": 25.299999982118607
+        },
+        "frame-data": {
+          "count": 1,
+          "totalMs": 6.4000000059604645,
+          "maxMs": 6.4000000059604645,
+          "maxIteratorMs": 1
+        },
+        "frame-validate": {
+          "count": 1,
+          "totalMs": 4.9000000059604645,
+          "maxMs": 4.9000000059604645,
+          "maxIteratorMs": 0.19999998807907104
+        },
+        "frame-account-setup": {
+          "count": 1,
+          "totalMs": 60.69999998807907,
+          "maxMs": 60.69999998807907,
+          "maxIteratorMs": 55.900000005960464
+        },
+        "frame-preimages": {
+          "count": 8,
+          "totalMs": 54.09999993443489,
+          "maxMs": 15.5,
+          "maxIteratorMs": 11.199999988079071
+        },
+        "frame-index": {
+          "count": 16,
+          "totalMs": 108.60000002384186,
+          "maxMs": 16.299999982118607,
+          "maxIteratorMs": 11.5
+        },
+        "model-output": {
+          "count": 1,
+          "totalMs": 71.2999999821186,
+          "maxMs": 71.2999999821186,
+          "maxIteratorMs": 16.599999994039536
+        }
+      },
+      "hash": null,
+      "peakSerializedWorkingBytes": 3825198
+    },
+    {
+      "raw": "ui-720-r0.2.json.gz",
+      "viewport": {
+        "width": 720,
+        "height": 405
+      },
+      "phase": "ready",
+      "error": null,
+      "details": null,
+      "elapsedMs": 10539.699999988079,
+      "maxStepMs": 108.09999999403954,
+      "stepCount": 538,
+      "stepProfile": {
+        "scalar": {
+          "count": 251,
+          "totalMs": 4669.199999958277,
+          "maxMs": 83.7999999821186,
+          "maxIteratorMs": 76.39999997615814
+        },
+        "held-snapshot": {
+          "count": 1,
+          "totalMs": 3.5,
+          "maxMs": 3.5,
+          "maxIteratorMs": 0.5999999940395355
+        },
+        "held-quality": {
+          "count": 5,
+          "totalMs": 132.90000000596046,
+          "maxMs": 41.80000001192093,
+          "maxIteratorMs": 33.69999998807907
+        },
+        "local-finish": {
+          "count": 1,
+          "totalMs": 23.600000023841858,
+          "maxMs": 23.600000023841858,
+          "maxIteratorMs": 19.30000001192093
+        },
+        "frame-data": {
+          "count": 1,
+          "totalMs": 3.7000000178813934,
+          "maxMs": 3.7000000178813934,
+          "maxIteratorMs": 0.5999999940395355
+        },
+        "frame-validate": {
+          "count": 1,
+          "totalMs": 3.5999999940395355,
+          "maxMs": 3.5999999940395355,
+          "maxIteratorMs": 0.4000000059604645
+        },
+        "frame-account-setup": {
+          "count": 1,
+          "totalMs": 50.29999998211861,
+          "maxMs": 50.29999998211861,
+          "maxIteratorMs": 47.30000001192093
+        },
+        "frame-preimages": {
+          "count": 8,
+          "totalMs": 46.99999997019768,
+          "maxMs": 8.200000017881393,
+          "maxIteratorMs": 4.699999988079071
+        },
+        "frame-index": {
+          "count": 16,
+          "totalMs": 122.09999999403954,
+          "maxMs": 11.200000017881393,
+          "maxIteratorMs": 8.099999994039536
+        },
+        "model-output": {
+          "count": 1,
+          "totalMs": 95.30000001192093,
+          "maxMs": 95.30000001192093,
+          "maxIteratorMs": 17.900000005960464
+        },
+        "proof": {
+          "count": 252,
+          "totalMs": 2766.5000000596046,
+          "maxMs": 36.30000001192093,
+          "maxIteratorMs": 0
+        }
+      },
+      "hash": "af614a3eefbe21a2a4deaf451a68a50d3eccf952a1c455c86574bf87589d541b",
+      "peakSerializedWorkingBytes": 3814824
+    }
+  ]
+}
