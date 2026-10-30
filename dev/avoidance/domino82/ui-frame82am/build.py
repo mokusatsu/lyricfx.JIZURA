@@ -1,0 +1,9 @@
+from pathlib import Path
+import sys,subprocess,shutil,json,hashlib
+R=Path(sys.argv[1]).resolve();D=Path(sys.argv[2]).resolve();U=Path(__file__).resolve().parent;B=R/'dev/avoidance/domino82'
+subprocess.run([sys.executable,str(B/'source-paint82al/build.py'),str(R),str(D)],check=True)
+for n in ['controller82am.js','renderer-time82am.js','plan-binding82am.js','post-scope82am.js']:shutil.copy2(U/n,D/n)
+shutil.copy2(U/'browser-test.js',D/'browser-test.js');shutil.copy2(B/'frame-inspection82r/frame-gradients.js',D/'frame-gradients.js')
+s=(D/'candidate-ja.html').read_text();old=(R/'src/09_render.js').read_text();assert s.count(old)==1;s=s.replace(old,(U/'renderer82am.js').read_text());needle='A.burstPostScope83bb?.neutralMissingGlow?.(plan)===true';assert s.count(needle)==1;s=s.replace(needle,needle+'||A.dominoPostScope82am?.neutralMissingGlow?.(plan)===true');(D/'candidate-ja.html').write_text(s)
+s=(D/'probe.cjs').read_text();needle="D+'/browser-test.js'";assert s.count(needle)==1;s=s.replace(needle,','.join("D+'/"+n+"'"for n in ['frame-gradients.js','renderer-time82am.js','plan-binding82am.js','post-scope82am.js','controller82am.js','browser-test.js']));s=s.replace("'prepareDominoSourcePaint82al'","'prepareDominoUIFrame82am'");a=s.index("const compare=require(D+'/compare82al.cjs');");z=s.index('verify();',a);s=s[:a]+"const frames=store('frames',await call(page,'drawDominoUIFrame82am'));valid(frames);const release=store('release',await call(page,'releaseDominoUIFrame82am'));valid(release);"+s[z:];(D/'probe.cjs').write_text(s)
+pins=json.loads((D/'pins.json').read_text());paths={Path(p['path'])for p in pins}|{p for p in U.iterdir()if p.is_file()}|{p for p in D.iterdir()if p.is_file()and p.name!='pins.json'};(D/'pins.json').write_text(json.dumps([{'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}for p in sorted(paths)],indent=2)+'\n')
