@@ -5,7 +5,7 @@ const E = J.E;
 const P = 'layoutsB';
 // Dormant outside the explicit B25 stage adapter. Ownership never follows
 // mainDraw presence: semantic copies/reveal substitutes stay primary.
-const bRole=(env,role='primary',unit='composition')=>{if(env.cut.placementLayoutsB)env.drawOwnership={role,owner:env.cut.layout+'.'+unit};};
+const bRole=(env,role='primary',unit='composition')=>{env.formulaRole?.(role);if(env.cut.placementLayoutsB)env.drawOwnership={role,owner:env.cut.layout+'.'+unit};};
 
 const bFlat=t=>[...String(t||'').replace(/\s/g,'')];
 const bSpan=(env,start,end,copy='main',fragment=null)=>({field:'cut.text',normalization:'remove-whitespace/codepoints',start,end,copy,fragment,originalCodepointOffsets:[...String(env.cut.text)].flatMap((ch,i)=>/\s/.test(ch)?[]:[i]).slice(start,end),text:bFlat(env.cut.text).slice(start,end).join('')});

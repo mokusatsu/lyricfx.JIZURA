@@ -14,12 +14,12 @@ function attachment(g,polygons,plan,nativeAllowance){
  if(!writingFieldContained)fail('WRITING_FIELD_OVERFLOW','Actual guarded glyph ink exceeds the writing field and original font-relative overhang allowance');
  return {physicalPaperContained,writingFieldContained,kind:g.mode==='gate'?'padded-sheet-rectangle':'proportional-inner-field-and-physical-diamond',padding,halfWritingField:[hx,hy],bounds:b,nativeOverhangAllowanceEm:allowance,actualOverhangEm:overhang,guardScope:'Complete un-clipped source TextMetrics + stroke/font/device guards; no nominal-advance substitution'};
 }
-function proof(renderer,plan,cut,nativeAllowance){
- const ctx=A.measurementContext();ctx.reset();const time=cut.start+Math.min(cut.dur/2,Math.max(.9,cut.inDur)),env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:time,realTime:time,lt:time-cut.start,ltb:time-cut.start,step:0,scale:1,allowFilter:false,placementEnvelope:true}),program=A.record(renderer,env),g=program.nativeDGeometry;
+function proof(renderer,plan,cut,nativeAllowance,options={}){
+ const ctx=A.measurementContext();ctx.reset();const time=cut.start+Math.min(cut.dur/2,Math.max(.9,cut.inDur)),env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:time,realTime:time,lt:time-cut.start,ltb:time-cut.start,step:0,scale:1,allowFilter:false,placementEnvelope:true}),program=options.sourceProgram||A.record(renderer,env),g=program.nativeDGeometry;
  if(!program.measurementSupported)fail('UNSUPPORTED_MEASUREMENT',JSON.stringify(program.diagnostics));
  if(g?.kind!=='origami'||!['gate','blintz'].includes(g.mode)||!Number.isFinite(g.size)||g.size<=0)fail('ORIGAMI_SOURCE_GEOMETRY','Finite source sheet/text metadata required');
  const text=program.events.filter(e=>e.owner==='origami.text');if(text.length!==1||text[0].kind!=='item'||norm(text[0].args[0].text)!==norm(cut.text))fail('SOURCE_COVERAGE','Exactly one complete original lyric run required');
- if(program.events.some(e=>e.role!=='primary'||!['origami.sheet','origami.text'].includes(e.owner)))fail('UNMEASURED_OWNER','Every sheet, flap, crease, shadow and lyric event must be source owned');
+ if(!options.sourceOnly&&program.events.some(e=>e.role!=='primary'||!['origami.sheet','origami.text'].includes(e.owner)))fail('UNMEASURED_OWNER','Every sheet, flap, crease, shadow and lyric event must be source owned');
  if(cut.layoutDRecipe && (g.mode==='gate' ? g.writing[0]>g.sw-g.size*.5||g.writing[1]>g.sh-g.size*.5 : g.writing[0]>g.rx*.84||g.writing[1]>g.ry*.84))fail('WRITING_FIELD_OVERFLOW','Reflow must retain the native sheet interior writing field');
  const attached=attachment(g,text[0].polygons,plan,nativeAllowance);
  const cx=plan.W/2,cy=plan.H/2,points=g.mode==='gate'?rect(cx-g.sw/2,cy-g.sh*.55,cx+g.sw/2,cy+g.sh*.55):[[cx,cy-g.ry],[cx+g.rx,cy],[cx,cy+g.ry],[cx-g.rx,cy]],shadow=points.map(p=>[p[0]+g.shadow[0],p[1]+g.shadow[1]]);
@@ -32,7 +32,7 @@ function proof(renderer,plan,cut,nativeAllowance){
  // apex=hm+(centre-hm)*cos(theta) is a convex segment inside the diamond.
  // shrink∈[0,1] contracts all sheet coordinates about centre. Shadow offset
  // stays fixed. All hidden faces and both painter branches are included.
- const sheet=A.convexHull([...points,...shadow,...lineInterval,[cx,cy]].flatMap(p=>rect(p[0]-10,p[1]-10,p[0]+10,p[1]+10))),ink=text[0].polygons.flat(),textSweep=A.convexHull([[cx,cy],...ink]),camera=ps=>A.cameraEnvelope([ps],{...plan,fx:cut.effectFx||plan.fx,style:cut.effectStyle||plan.style},cut,20);
+ const sheet=A.convexHull([...points,...shadow,...lineInterval,[cx,cy]].flatMap(p=>rect(p[0]-10,p[1]-10,p[0]+10,p[1]+10))),ink=text[0].polygons.flat(),textSweep=A.convexHull([[cx,cy],...ink]),camera=ps=>(options.project||A.cameraEnvelope)([ps],{...plan,fx:cut.effectFx||plan.fx,style:cut.effectStyle||plan.style},cut,20);
  return {g,envelopes:[camera(sheet),camera(textSweep)],unitProofs:[{owner:'origami.sheet',envelopes:[camera(sheet)]},{owner:'origami.text',envelopes:[camera(textSweep)]}],quality:{complete:true,sourceGlyphs:[...norm(g.text)].length,minPrimaryPx:g.size*(cut.contentScale??1),fontSize:g.size,requestedMode:cut.params.mode,sourceMode:g.mode,attachment:attached}};
 }
 function finalize({plan,cut,revision,stepDur,reachTail,explicitSize}){
@@ -65,4 +65,5 @@ function render({renderer,env,trajectory}){
  env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,measurementSupported:true,envelopeCovered:covered,stageContained,strictCircleClear:clear,safety:active?.status==='insufficient-space'?'conflict':clear?'safe':'conflict',polygons,events:program.events.map(e=>({kind:e.kind,role:e.role,owner:e.owner,order:e.order,polygons:e.polygons}))});A.replay(env,program,offset);
 }
 A.registerLayoutsDAdapter('origami',{id:'origami-native-hinges-v1',finalize,render});
+A.sourceFormulaD=A.sourceFormulaD||{};A.sourceFormulaD.origami=(renderer,plan,cut,program)=>proof(renderer,plan,cut,null,{sourceProgram:program,sourceOnly:true,project:ps=>A.convexHull(ps.flat())});
 })();

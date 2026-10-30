@@ -729,6 +729,7 @@ const DEFS = {
 
   /* ---------- reveal devices ---------- */
   resolve: {
+    boundGlyphs: SIGNS,
     name: '解読', tags: ['glitch', 'editorial'], w: 0.9, minDur: 0.6,
     inDur: (dur, n) => clamp(0.2 + n * 0.045, 0.3, Math.max(0.3, Math.min(0.95, dur * 0.55))),
     apply(env, it, p) {

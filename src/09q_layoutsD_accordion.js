@@ -4,12 +4,12 @@
 'use strict';
 const A=J.placement,ID=[1,0,0,1,0,0],rect=(a,b,c,d)=>[[a,b],[c,b],[c,d],[a,d]],fail=(code,message)=>{const e=Error(message);e.code=code;throw e;};
 const trig=(a,b)=>{const lo=2*J.DEG,hi=88.5*J.DEG,vs=[a*Math.cos(lo)+b*Math.sin(lo),a*Math.cos(hi)+b*Math.sin(hi)],t=Math.atan2(b,a);for(let k=Math.ceil((lo-t)/Math.PI);k<=Math.floor((hi-t)/Math.PI);k++)vs.push(a*Math.cos(t+k*Math.PI)+b*Math.sin(t+k*Math.PI));return [Math.min(...vs),Math.max(...vs)];};
-function proof(renderer,plan,cut){
- const ctx=A.measurementContext();ctx.reset();const t=cut.start+cut.dur/2,env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t,realTime:t,lt:t-cut.start,ltb:t-cut.start,step:0,scale:1,allowFilter:false,placementEnvelope:true}),program=A.record(renderer,env),g=program.nativeDGeometry;
+function proof(renderer,plan,cut,options={}){
+ const ctx=A.measurementContext();ctx.reset();const t=cut.start+cut.dur/2,env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t,realTime:t,lt:t-cut.start,ltb:t-cut.start,step:0,scale:1,allowFilter:false,placementEnvelope:true}),program=options.sourceProgram||A.record(renderer,env),g=program.nativeDGeometry;
  if(!program.measurementSupported||g?.kind!=='accordion')fail('ACCORDION_NATIVE_RECORD','Unchanged complete native fold recorder required: '+JSON.stringify(program.diagnostics));
  const slots=g.rows.flatMap(r=>r.slots),original=g.nativeRows.flat();if(original.map(s=>s.ch).join('').replace(/\s/g,'')!==String(cut.text).replace(/\s/g,'')||!original.length||slots.length!==original.length||slots.some((s,i)=>s.source!==i||s.ch!==original[i].ch||s.sourceRow!==original[i].sourceRow||s.sourceJ!==original[i].sourceJ))fail('ACCORDION_SOURCE_COVERAGE','Every native slot, including spaces, must retain original order and source row/j');
  const nativeInk=new Map(),metrics=new Map(),metric=(ch,size)=>{const key=JSON.stringify([ch,size]);if(!metrics.has(key)){const geo=A.itemGeometry({text:ch,font:cut.params.font,size,x:0,y:0,alpha:1},ID,env);metrics.set(key,{all:A.bounds(geo.polygons),ink:geo.inkPolygons});}return metrics.get(key);};
- const camera=p=>A.cameraEnvelope([p],{...plan,fx:cut.effectFx||plan.fx,style:cut.effectStyle||plan.style},cut,20),units=[],attachmentFailures=[],M=Math.min(plan.W,plan.H),lw=Math.max(1,M*.0016),pad=lw*10+4,C=(g.vert?plan.H:plan.W)/2;
+ const camera=p=>(options.project||A.cameraEnvelope)([p],{...plan,fx:cut.effectFx||plan.fx,style:cut.effectStyle||plan.style},cut,20),units=[],attachmentFailures=[],M=Math.min(plan.W,plan.H),lw=Math.max(1,M*.0016),pad=lw*10+4,C=(g.vert?plan.H:plan.W)/2;
  // Each source point is constant + a*cos(alpha) + b*sin(alpha). Bounding
  // endpoints and every derivative root gives continuous support, never samples.
  const bound=(owner,points,source)=>{let a=Infinity,b=Infinity,c=-Infinity,d=-Infinity;for(const [xc,xa,xb,yc,ya,yb]of points){const x=trig(xa,xb),y=trig(ya,yb);a=Math.min(a,xc+x[0]);c=Math.max(c,xc+x[1]);b=Math.min(b,yc+y[0]);d=Math.max(d,yc+y[1]);}const p=g.vert?rect(b-pad,a-pad,d+pad,c+pad):rect(a-pad,b-pad,c+pad,d+pad);units.push({owner,source,envelopes:[camera(p)]});};
@@ -25,8 +25,8 @@ function proof(renderer,plan,cut){
   }
   if(g.covers)for(const side of [0,1]){const edge=side?cnt:0,points=[];for(const x of [side?0:-g.Ph*.09,side?g.Ph*.09:0])for(const y of [-1,1])points.push([C+x,(edge-cnt/2)*g.Pw,0,cy+y*g.Ph*.58,0,y*g.Ph*.58*g.kap*sign(edge)]);bound('accordion.cover.'+row.row+'.'+side,points,{kind:'owned-end-cover',row:row.row,side});}
  }
- const actual=program.events.filter(e=>e.kind==='item');if(new Set(actual.map(e=>e.owner)).size!==actual.length||actual.some(e=>{const s=slots.find(s=>'accordion.panel.'+s.source===e.owner);return !s||e.args[0].text!==s.ch||e.args[0].font!==cut.params.font||e.args[0].size!==g.size;}))fail('ACCORDION_SOURCE_COVERAGE','Every source glyph must be recorded once under its own panel');
- if(program.events.some(e=>e.role!=='primary'||!units.some(u=>u.owner===e.owner)))fail('ACCORDION_UNMEASURED_OWNER','All source glyphs, blank panels, creases, covers and shadows require primary owners');
+ const actual=program.events.filter(e=>e.kind==='item');if(!options.sourceOnly&&(new Set(actual.map(e=>e.owner)).size!==actual.length||actual.some(e=>{const s=slots.find(s=>'accordion.panel.'+s.source===e.owner);return !s||e.args[0].text!==s.ch||e.args[0].font!==cut.params.font||e.args[0].size!==g.size;})))fail('ACCORDION_SOURCE_COVERAGE','Every source glyph must be recorded once under its own panel');
+ if(!options.sourceOnly&&program.events.some(e=>e.role!=='primary'||!units.some(u=>u.owner===e.owner)))fail('ACCORDION_UNMEASURED_OWNER','All source glyphs, blank panels, creases, covers and shadows require primary owners');
  return {g,units,envelopes:units.flatMap(u=>u.envelopes),error:attachmentFailures.length?{code:'ACCORDION_ATTACHMENT',details:attachmentFailures}:null,quality:{sourceSlots:slots.length,lyricGlyphs:slots.filter(s=>s.ch!==' ').length,rows:g.rows.length,covers:g.covers?g.rows.length*2:0,minPrimaryPx:g.size*(cut.contentScale??1),nativeSize:g.nativeSize,panelWidth:g.Pw,panelHeight:g.Ph,fold:g.fold,start:g.start,panelAspect:g.Ph/g.Pw,complete:!attachmentFailures.length,attachmentFailures}};
 }
 function finalize({plan,cut,revision,stepDur,reachTail,explicitSize}){
@@ -51,4 +51,5 @@ function render({renderer,env,trajectory}){
  if(active?.status==='safe'&&(!covered||!clear||!stageContained))fail('ACCORDION_SOURCE_SAFETY_VIOLATION','Native accordion escaped its complete continuous source owner support');env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,measurementSupported:true,envelopeCovered:covered,stageContained,strictCircleClear:clear,safety:active?.status==='safe'?'safe':'conflict',polygons,events:program.events.map(e=>({kind:e.kind,role:e.role,owner:e.owner,order:e.order}))});A.replay(env,program,offset);
 }
 A.registerLayoutsDAdapter('accordion',{id:'accordion_source_v1',finalize,render});
+A.sourceFormulaD=A.sourceFormulaD||{};A.sourceFormulaD.accordion=(renderer,plan,cut,program)=>proof(renderer,plan,cut,{sourceProgram:program,sourceOnly:true,project:ps=>A.convexHull(ps.flat())});
 })();

@@ -1493,10 +1493,11 @@ reg('magnets', {
         owned('independentDecor','decoy.'+d+'.body',()=>env.draw({ text: ch, font: Pm.df, size: sz * k, x, y, rot, color: col, stroke: sz * 0.08, strokeColor: col, strokeUnder: true, alpha: 0.85 * out * e, ghost: false }));
       }
     }
-    let bb = null;
+    let bb = null,nativeDecorationBB=null;
     const gap = J.clamp(cut.dur * 0.32 / n, 0.04, 0.1);
     if(nativeD)catalog.gap=gap;
-    for (const m of items) {
+    for (const nativeItem of items) {
+      const group=cut.simpleCircleRecipe?.scene?.layout==='magnets'?cut.simpleCircleRecipe.scene.groups.find(g=>nativeItem.q>=g.from&&nativeItem.q<g.to):null, m=group?{...nativeItem,x:nativeItem.x+group.offset[0],y:nativeItem.y+group.offset[1]}:nativeItem;
       const t1 = 0.18 + m.q * gap;
       const f = (lt - t1) / 0.16;
       if(nativeD)Object.assign(catalog.glyphs[m.q],{t1,f,emitted:f>=0});
@@ -1507,9 +1508,9 @@ reg('magnets', {
       if(nativeD)Object.assign(catalog.glyphs[m.q],{snap,lift,animatedSize:sz,stroke:sz*.08,depth:{x:m.x+m.size*(.04+lift*.12),y:m.y+m.size*(.06+lift*.18),alpha:(.3-lift*.15)*out}});
       owned('primary','glyph.'+m.q+'.depth',()=>env.draw({ text: m.ch, font: Pm.font, size: sz, x: m.x + m.size * (0.04 + lift * 0.12), y: m.y + m.size * (0.06 + lift * 0.18), rot: m.rot, color: darkOf(sc), stroke: sz * 0.08, strokeColor: darkOf(sc), strokeUnder: true, alpha: (0.3 - lift * 0.15) * out, ghost: false }));
       const mi=miAt(env,t1);if(nativeD)catalog.glyphs[m.q].mi=mi;
-      bb = UB(bb, owned('primary','glyph.'+m.q+'.body',()=>J.mainDraw(env, { text: m.ch, font: Pm.font, size: sz, x: m.x, y: m.y, rot: m.rot, color: m.col, stroke: sz * 0.08, strokeColor: m.col, strokeUnder: true, plain: true, mi })));
+      const glyphBB=owned('primary','glyph.'+m.q+'.body',()=>J.mainDraw(env, { text: m.ch, font: Pm.font, size: sz, x: m.x, y: m.y, rot: m.rot, color: m.col, stroke: sz * 0.08, strokeColor: m.col, strokeUnder: true, plain: true, mi }));bb=UB(bb,glyphBB);if(group&&glyphBB)nativeDecorationBB=UB(nativeDecorationBB,{...glyphBB,x0:glyphBB.x0-group.offset[0],x1:glyphBB.x1-group.offset[0],y0:glyphBB.y0-group.offset[1],y1:glyphBB.y1-group.offset[1],cx:glyphBB.cx-group.offset[0],cy:glyphBB.cy-group.offset[1]});
     }
-    return bb;
+    return nativeDecorationBB||bb;
     } finally {if(nativeD)freeze(catalog);}
   },
 });
@@ -1525,6 +1526,7 @@ reg('tiles', {
   },
   render(env) {
     const { W, H, sc } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const shift=cut.simpleCircleRecipe?.scene?.layout==='tiles'?cut.simpleCircleRecipe.scene.offset:[0,0];
     const nativeD = cut.placementLayoutsD === true;
     const matrixNow = () => { const m=env.ctx.getTransform();return [m.a,m.b,m.c,m.d,m.e,m.f]; };
     const freeze = v => { if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v; };
@@ -1544,27 +1546,27 @@ reg('tiles', {
     const edge = J.mix(tileC, darkOf(sc), 0.3), hi = J.mix(tileC, '#FFFFFF', 0.35);
     const rackC = plateCol(sc, Pm.rack === 'accent' ? [sc.accent, sc.ink] : Pm.rack === 'sub' ? [sc.sub, sc.ink] : [sc.ink, sc.accent]);
     const gap = J.clamp(cut.dur * 0.36 / n, 0.05, 0.12), fd = 0.28;
-    let bb = null, score = 0, total = 0;
+    let bb = null,nativeDecorationBB=null, score = 0, total = 0;
     const ra = tin(env, 0, 0.4, E.outCubic) * out;
     if(captureD){catalog.out=out;catalog.ra=ra;catalog.gap=gap;catalog.fd=fd;catalog.fonts={glyph:Pm.font,points:monoF(env),score:monoF(env)};catalog.colors={tileC,tileT,edge,hi,rackC};}
     let gi = 0;
     for (let r = 0; r < rows; r++) {
       const row = rowsT[r], cnt = row.length;
-      const rowY = H / 2 + (r - (rows - 1) / 2) * k * 1.75;
+      const rowY = H / 2 + shift[1] + (r - (rows - 1) / 2) * k * 1.75;
       const rw = cnt * k * 1.08 + k * 0.5;
       // rack: back slot + slanted front lip + shadow
       const ry = rowY + k * 0.42;
       const rw2 = rw * (0.3 + 0.7 * ra);
       if(captureD){catalog.rowRecords.push({r,text:row.join(''),slots:row.slice(),cnt,rowY,rw,ry,rw2,sourceRoot:matrixNow()});catalog.primaryOwners.push(...['shadow','slot','lip','edge'].map(part=>'tiles.row.'+r+'.rack.'+part));}
 
-      owned('row.'+r+'.rack.shadow','poly','main-only',()=>env.poly([[W / 2 - rw2 / 2 + k * 0.06, ry + k * 0.34], [W / 2 + rw2 / 2 + k * 0.06, ry + k * 0.34], [W / 2 + rw2 / 2 + k * 0.2, ry + k * 0.42], [W / 2 - rw2 / 2 + k * 0.2, ry + k * 0.42]], darkOf(sc), 0.25 * ra, false));
-      owned('row.'+r+'.rack.slot','rect','main-only',()=>env.rect(W / 2 - rw2 / 2, ry - k * 0.12, rw2, k * 0.14, shade(sc, rackC, -0.3), ra, false));
+      owned('row.'+r+'.rack.shadow','poly','main-only',()=>env.poly([[(W / 2 + shift[0]) - rw2 / 2 + k * 0.06, ry + k * 0.34], [(W / 2 + shift[0]) + rw2 / 2 + k * 0.06, ry + k * 0.34], [(W / 2 + shift[0]) + rw2 / 2 + k * 0.2, ry + k * 0.42], [(W / 2 + shift[0]) - rw2 / 2 + k * 0.2, ry + k * 0.42]], darkOf(sc), 0.25 * ra, false));
+      owned('row.'+r+'.rack.slot','rect','main-only',()=>env.rect((W / 2 + shift[0]) - rw2 / 2, ry - k * 0.12, rw2, k * 0.14, shade(sc, rackC, -0.3), ra, false));
       for (let j = 0; j < cnt; j++) {
         const ch = row[j];
         if (ch === ' ') continue;
         const i = gi++, pts = tilePts(ch);
         total += pts;
-        const x = W / 2 + (j - (cnt - 1) / 2) * k * 1.08, y = rowY;
+        const x = (W / 2 + shift[0]) + (j - (cnt - 1) / 2) * k * 1.08, y = rowY;
         const t1 = 0.12 + i * gap;
         const f = J.clamp((lt - t1) / fd);
         const sourceTile=captureD?{i,j,cnt,sourceRow:r,ch,pts,scoreFlag:Pm.score,x,y,t1,f,rawF:(lt-t1)/fd,emitted:f>0,mi:miAt(env,t1),delay:(miAt(env,t1)|0)*(cut.stagger||0),mainDrawOwnClock:lt-(miAt(env,t1)|0)*(cut.stagger||0),exitSourceJ:j,exitDenominator:Math.max(1,cnt),sourceRootBeforeTile:matrixNow()}:null;
@@ -1593,21 +1595,21 @@ reg('tiles', {
         ctx.restore();
         const m = [Math.cos(rot * J.DEG), Math.sin(rot * J.DEG), -Math.sin(rot * J.DEG), Math.cos(rot * J.DEG), tx, ty + lean];
         if(captureD){sourceTile.glyphAffine=m.slice();sourceTile.rootBeforeGlyph=matrixNow();}
-        bb = UB(bb, owned('tile.'+i+'.glyph','drawAff-mainDraw','all-native-passes',()=>drawAff(env, { text: ch, font: Pm.font, size: k * 0.6, x: -k * 0.06, y: -k * 0.05, color: tileT, noHold: plateHold(env), mi: miAt(env, t1) }, m)));
+        const glyphBB=owned('tile.'+i+'.glyph','drawAff-mainDraw','all-native-passes',()=>drawAff(env, { text: ch, font: Pm.font, size: k * 0.6, x: -k * 0.06, y: -k * 0.05, color: tileT, noHold: plateHold(env), mi: miAt(env, t1) }, m));bb=UB(bb,glyphBB);if(glyphBB&&(shift[0]||shift[1])){const dx=shift[0]*(e-po),dy=shift[1];nativeDecorationBB=UB(nativeDecorationBB,{...glyphBB,x0:glyphBB.x0-dx,x1:glyphBB.x1-dx,y0:glyphBB.y0-dy,y1:glyphBB.y1-dy,cx:glyphBB.cx-dx,cy:glyphBB.cy-dy});}
       }
-      owned('row.'+r+'.rack.lip','poly','original-gIn',()=>env.poly([[W / 2 - rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2 - k * 0.06, ry + k * 0.34], [W / 2 - rw2 / 2 + k * 0.06, ry + k * 0.34]], rackC, ra, gIn(env)));
-      owned('row.'+r+'.rack.edge','line','main-only',()=>env.line([[W / 2 - rw2 / 2, ry + k * 0.02], [W / 2 + rw2 / 2, ry + k * 0.02]], shade(sc, rackC, 0.3), Math.max(1, k * 0.02), ra, false));
+      owned('row.'+r+'.rack.lip','poly','original-gIn',()=>env.poly([[(W / 2 + shift[0]) - rw2 / 2, ry + k * 0.02], [(W / 2 + shift[0]) + rw2 / 2, ry + k * 0.02], [(W / 2 + shift[0]) + rw2 / 2 - k * 0.06, ry + k * 0.34], [(W / 2 + shift[0]) - rw2 / 2 + k * 0.06, ry + k * 0.34]], rackC, ra, gIn(env)));
+      owned('row.'+r+'.rack.edge','line','main-only',()=>env.line([[(W / 2 + shift[0]) - rw2 / 2, ry + k * 0.02], [(W / 2 + shift[0]) + rw2 / 2, ry + k * 0.02]], shade(sc, rackC, 0.3), Math.max(1, k * 0.02), ra, false));
     }
     if (Pm.score && env.pass === 'main') {
       const fs = Math.max(smallSize(env), k * 0.16);
-      const lastY = H / 2 + ((rows - 1) - (rows - 1) / 2) * k * 1.75 + k * 0.42 + k * 0.34;
+      const lastY = H / 2 + shift[1] + ((rows - 1) - (rows - 1) / 2) * k * 1.75 + k * 0.42 + k * 0.34;
       const a = tin(env, 0.2, 0.3, E.outCubic) * out;
       if(captureD){catalog.scoreRecord={enabled:Pm.score,pass:env.pass,score,total,value:String(score).padStart(3,'0'),fs,lastY,alpha:a};catalog.primaryOwners.push('tiles.score.label','tiles.score.value');}
-      owned('score.label','item','main-only-score-flag',()=>env.draw({ text: 'SCORE', font: monoF(env), size: fs, track: 0.3, align: 'left', x: W / 2 - Math.min(per, n) * k * 0.54 - k * 0.25, y: lastY + fs * 1.6, color: sc.sub, alpha: a, ghost: false }));
-      owned('score.value','item','main-only-score-flag',()=>env.draw({ text: String(score).padStart(3, '0'), font: monoF(env), size: fs * 1.5, track: 0.1, align: 'right', x: W / 2 + Math.min(per, n) * k * 0.54 + k * 0.25, y: lastY + fs * 1.6, color: score >= total && total > 0 ? sc.accent : sc.fg, alpha: a, ghost: false }));
+      owned('score.label','item','main-only-score-flag',()=>env.draw({ text: 'SCORE', font: monoF(env), size: fs, track: 0.3, align: 'left', x: (W / 2 + shift[0]) - Math.min(per, n) * k * 0.54 - k * 0.25, y: lastY + fs * 1.6, color: sc.sub, alpha: a, ghost: false }));
+      owned('score.value','item','main-only-score-flag',()=>env.draw({ text: String(score).padStart(3, '0'), font: monoF(env), size: fs * 1.5, track: 0.1, align: 'right', x: (W / 2 + shift[0]) + Math.min(per, n) * k * 0.54 + k * 0.25, y: lastY + fs * 1.6, color: score >= total && total > 0 ? sc.accent : sc.fg, alpha: a, ghost: false }));
     }
     if(captureD){catalog.score=score;catalog.total=total;catalog.gi=gi;catalog.complete=true;}
-    return bb;
+    return nativeDecorationBB||bb;
     } finally {if(nativeD)freeze(catalog);}
   },
 });
@@ -1924,6 +1926,70 @@ reg('ledScroll', {
 });
 
 /* ================================================================== 15 billboard — 看板 */
+function billboardInitial81(env){const {W,H,sc}=env,cut=env.cut,Pm=cut.params,lt=env.lt;
+    const port = isPort(env);
+    const text = brk(cut.text, port ? 5 : 9);
+    const out = tout(env);
+    const bw = W * (port ? 0.86 : 0.72), bh = Math.min(H * (port ? 0.3 : 0.42), bw * 0.5);
+    const bx = W / 2 - bw / 2, by = H * (port ? 0.3 : 0.16);
+    const groundY = H * 0.94;
+    const rise = (1 - E.outCubic(J.clamp(lt / 0.55))) * H * 0.08 + E.inCubic(env.pOut) * H * 0.05;
+    const y0 = by + rise;
+    const a0 = tin(env, 0, 0.35, E.outCubic) * out;
+    const steel = J.mix(darkOf(sc), sc.sub, 0.35);
+    const faceC = Pm.face === 'accent' || J.lum(sc.bg) > 0.55 ? (J.lum(sc.bg) > 0.55 ? [sc.accent, sc.ink, sc.fg].find(c => J.contrast(c, sc.bg) >= 1.8) || sc.fg : plateCol(sc, [sc.accent, sc.ink])) : J.mix(lightOf(sc), sc.accent, 0.06);
+    const tc = onCol(sc, faceC);
+    const adapted=cut.simpleCircleRecipe?.scene;return adapted?.layout==='billboard'?{port,text:adapted.text,out,bw:adapted.bw,bh:adapted.bh,bx:adapted.bx,by:adapted.by,groundY,rise,y0:adapted.by+rise,a0,steel,faceC,tc}:{port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc};
+}
+function billboardMainSize81(env,{text,bw,bh}){const Pm=env.cut.params;
+    return env.cut.simpleCircleRecipe?.scene?.mainSize??Math.min(J.fitSize(text, Pm.font, bw * 0.84, bh * 0.66, { track: 0.04, lead: 1.1 }), bh * 0.6);
+}
+function billboardMainItem81(env,{text,y0,bh,tc},size){const {W}=env,Pm=env.cut.params;
+    return { text, font: Pm.font, size, x: env.cut.simpleCircleRecipe?.scene?.layout==='billboard'?env.cut.simpleCircleRecipe.scene.bx+env.cut.simpleCircleRecipe.scene.bw/2:W/2, y: y0 + bh / 2 + (Pm.tag ? bh * 0.03 : 0), track: 0.04, lead: 1.1, color: tc, noHold: plateHold(env), mi: miAt(env, 0.3) };
+}
+function billboardLampOn81(env,L){const cut=env.cut,s=cut.seed,lt=env.lt,lampOn=[];
+    for (let i = 0; i < L; i++) {
+      const t1 = 0.15 + i * 0.12;
+      let on = lt > t1 + 0.25 ? 1 : lt > t1 ? (J.r(s, i, env.step, 7) < 0.55 ? 1 : 0.1) : 0;
+      on *= 1 - E.inCubic(J.clamp(env.pOut * 1.6 - i * 0.12));
+      lampOn.push(on);
+    }
+    return lampOn;
+}
+function billboardTagSize81(env,bh){return Math.max(smallSize(env) * 0.8, bh * 0.05)}
+function billboardTagNumber81(env,{bx,bw,y0,tc,a0},fs){return { text: 'No.' + lineNo(env), font: monoF(env), size: fs, align: 'left', track: 0.2, x: bx + bw * 0.025, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false }}
+function billboardTagTime81(env,{bx,bw,y0,tc,a0},fs){const cut=env.cut;return { text: J.fmtTime(cut.start), font: monoF(env), size: fs, align: 'right', track: 0.2, x: bx + bw * 0.975, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false }}
+function billboardPostWidth81(bw){return bw * 0.035}
+function billboardLineWidth81(u){return Math.max(1.2, u * 0.0025)}
+function billboardBraceMetrics81({bx,bw,y0,bh,groundY}){const x1 = bx + bw * 0.22, x2 = bx + bw * 0.78, yb = y0 + bh + (groundY - y0 - bh) * 0.25, yb2 = groundY - (groundY - y0 - bh) * 0.1;return{x1,x2,yb,yb2}}
+function billboardDeckY81(y0,bh){return y0 + bh + bh * 0.1}
+function billboardLampPosition81({bx,bw,y0,bh,L},i){const lx = bx + bw * (i + 0.5) / L, ly = y0 + bh + bh * 0.06;return{lx,ly}}
+function billboardConeAim81(env,{lx,ly,bh},i,sweep){const ang = (-90 + Math.sin(env.ltb * 0.8 + i * 1.7) * sweep) * J.DEG;const tx = lx + Math.cos(ang) * bh * 1.25, ty = ly + Math.sin(ang) * bh * 1.25;return{ang,tx,ty}}
+function billboardConeSpread81(bw,L){return bw / L * 0.75}
+function billboardLit81(lampOn,L){return lampOn.reduce((a, b) => a + b, 0) / L}
+function billboardIlluminationAlpha81(lit,a0){return 0.55 * lit * a0}
+function billboardPart81(env,kind,v){const {W,sc}=env,{px,pw,y0,bh,groundY,steel,a0,x1,x2,yb,yb2,lw,bx,bw,cwY,i,lx,ly,faceC,tx,ty,spread}=v;switch(kind){
+case 'post':return [px - pw / 2, y0 + bh, pw, groundY - y0 - bh, steel, a0, false];
+case 'brace0':return [[[x1, yb], [x2, yb2]], steel, lw, a0, false];
+case 'brace1':return [[[x2, yb], [x1, yb2]], steel, lw, a0, false];
+case 'deck':return [bx + bw * 0.04, cwY, bw * 0.92, bh * 0.025, steel, a0, false];
+case 'upright':return [bx + bw * (0.04 + 0.92 * i / 10) - lw / 2, cwY - bh * 0.07, lw, bh * 0.07, steel, a0 * 0.8, false];
+case 'rail':return [[[bx + bw * 0.04, cwY - bh * 0.07], [bx + bw * 0.96, cwY - bh * 0.07]], steel, lw, a0 * 0.8, false];
+case 'ground':return [[[W * 0.03, groundY], [W * 0.97, groundY]], sc.sub, lw, 0.5 * a0, false];
+case 'frame':return [bx - bw * 0.015, y0 - bw * 0.015, bw * 1.03, bh + bw * 0.03, steel, a0, false];
+case 'face':return [bx, y0, bw, bh, J.mix(faceC, darkOf(sc), 0.28), a0, gIn(env)];
+case 'arm':return [[[lx, cwY], [lx, ly + bh * 0.02]], steel, lw * 1.5, a0, false];
+case 'body':return [[[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false];
+case 'lens':return [lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false];
+case 'coneGradient':return [lx, ly, 0, lx, ly, bh * 1.2];
+case 'clip':return [bx,y0,bw,bh];
+case 'illumination':return [bx,y0,bw,bh];
+case 'coneMove0':return [lx - bw * 0.02, ly];
+case 'coneLine0':return [tx - spread, ty];
+case 'coneLine1':return [tx + spread, ty];
+case 'coneMove1':return [lx + bw * 0.02, ly];
+default:throw Object.assign(Error('BILLBOARD81_PART_NAME'),{code:'BILLBOARD81_PART_NAME'});}}
+Object.defineProperty(J.placement,'billboardNativeGeometry81',{enumerable:true,value:Object.freeze({initial:billboardInitial81,mainSize:billboardMainSize81,mainItem:billboardMainItem81,lampOn:billboardLampOn81,tagSize:billboardTagSize81,tagNumber:billboardTagNumber81,tagTime:billboardTagTime81,postWidth:billboardPostWidth81,lineWidth:billboardLineWidth81,braces:billboardBraceMetrics81,deckY:billboardDeckY81,lampPosition:billboardLampPosition81,coneAim:billboardConeAim81,coneSpread:billboardConeSpread81,lit:billboardLit81,illuminationAlpha:billboardIlluminationAlpha81,part:billboardPart81,sourceOnly:true,certificateIssuer:false})});
 reg('billboard', {
   name: '看板', tags: ['pop', 'emotional', 'graphic'], w: 0.8, treat: 'safe', ae: 'center', fits: n => n >= 1 && n <= 16,
   enterBias: { cut: 1.6, flicker: 1.5, blur: 1, pop: 0.8, slice: 0.4, wipe: 0.6 },
@@ -1946,18 +2012,7 @@ reg('billboard', {
     const stopArgs=v=>{if(currentCall)currentCall.gradient.stops.push(clone(v));return v;};
     const pathArgs=(kind,v)=>{if(currentCall){currentCall.path??=[];currentCall.path.push({kind,arguments:clone(v),matrix:matrixNow()});}return v;};
     try {
-    const port = isPort(env);
-    const text = brk(cut.text, port ? 5 : 9);
-    const out = tout(env);
-    const bw = W * (port ? 0.86 : 0.72), bh = Math.min(H * (port ? 0.3 : 0.42), bw * 0.5);
-    const bx = W / 2 - bw / 2, by = H * (port ? 0.3 : 0.16);
-    const groundY = H * 0.94;
-    const rise = (1 - E.outCubic(J.clamp(lt / 0.55))) * H * 0.08 + E.inCubic(env.pOut) * H * 0.05;
-    const y0 = by + rise;
-    const a0 = tin(env, 0, 0.35, E.outCubic) * out;
-    const steel = J.mix(darkOf(sc), sc.sub, 0.35);
-    const faceC = Pm.face === 'accent' || J.lum(sc.bg) > 0.55 ? (J.lum(sc.bg) > 0.55 ? [sc.accent, sc.ink, sc.fg].find(c => J.contrast(c, sc.bg) >= 1.8) || sc.fg : plateCol(sc, [sc.accent, sc.ink])) : J.mix(lightOf(sc), sc.accent, 0.06);
-    const tc = onCol(sc, faceC);
+    const geometry81=billboardInitial81(env),{port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc}=geometry81;
     if(captureD)Object.assign(catalog,{port,text,out,bw,bh,bx,by,groundY,rise,y0,a0,steel,faceC,tc});
     // posts, bracing, catwalk
     const pw = bw * 0.035;
@@ -2009,8 +2064,8 @@ reg('billboard', {
       owned('lamp.'+i+'.body','poly',()=>env.poly(...args([[[lx - bh * 0.05, ly + bh * 0.03], [lx + bh * 0.05, ly + bh * 0.03], [lx + bh * 0.035, ly - bh * 0.03], [lx - bh * 0.035, ly - bh * 0.03]], steel, a0, false])));
       if (lampOn[i] > 0.5) owned('lamp.'+i+'.lens','circle',()=>env.circle(...args([lx, ly - bh * 0.03, bh * 0.025, lightOf(sc), null, 0, a0, false])));
     }
-    const size = Math.min(J.fitSize(text, Pm.font, bw * 0.84, bh * 0.66, { track: 0.04, lead: 1.1 }), bh * 0.6);
-    const bb = owned('lyric.main','mainDraw',()=>J.mainDraw(env,item({ text, font: Pm.font, size, x: W / 2, y: y0 + bh / 2 + (Pm.tag ? bh * 0.03 : 0), track: 0.04, lead: 1.1, color: tc, noHold: plateHold(env), mi: miAt(env, 0.3) })));
+    const size=billboardMainSize81(env,geometry81);
+    const bb=owned('lyric.main','mainDraw',()=>J.mainDraw(env,item(billboardMainItem81(env,geometry81,size))));
     if (Pm.tag) {
       const fs = Math.max(smallSize(env) * 0.8, bh * 0.05);
       owned('tag.number','item',()=>env.draw(item({ text: 'No.' + lineNo(env), font: monoF(env), size: fs, align: 'left', track: 0.2, x: bx + bw * 0.025, y: y0 + fs * 1.1, color: tc, alpha: 0.7 * a0, ghost: false })));
@@ -2695,14 +2750,17 @@ reg('burst', {
     env.poly(star(3, 0.86, 0.08), A, out, false);
     return J.mainDraw(env, Object.assign({ text, font: Pm.font, size: size * Math.min(1, q), x: cx, y: cy, rot: rot / J.DEG * 0.6, color: onCol(sc, A) }, o));
     });}
-    const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
-    const port = isPort(env);
-    const text = brk(cut.text, port ? 4 : 6);
+    const recipe=env.cut.simpleCircleRecipe?.burst,nativeEnv=recipe?{...env,W:recipe.W,H:recipe.H}:env;
+    const { W,H }=nativeEnv,{sc,ctx}=env,cut=env.cut,Pm=cut.params,s=cut.seed,u=U(nativeEnv),lt=env.lt;
+    if(recipe){ctx.save();ctx.translate(...recipe.offset);}
+    try {
+    const port = isPort(nativeEnv);
+    const text = recipe?.layout.text??brk(cut.text, port ? 4 : 6);
     const o = { track: 0.02, lead: 1.05 };
     const rxM = W * 0.355, ryM = Math.min(H * 0.355, rxM * (port ? 1.5 : 1.1));
-    const size = Math.min(J.fitSize(text, Pm.font, rxM * 1.08, ryM * 1.0, o), u * 0.24);
+    const size = recipe?.layout.size??Math.min(J.fitSize(text, Pm.font, rxM * 1.08, ryM * 1.0, o), u * 0.24);
     const m = J.measure(Object.assign({ text, font: Pm.font, size }, o));
-    const rx = Math.min(rxM, m.w / 2 / 0.54 + size * 0.15), ry = Math.min(ryM, Math.max(m.h / 2 / 0.54 + size * 0.15, rx * 0.55));
+    const rx = recipe?.layout.rx??Math.min(rxM, m.w / 2 / 0.54 + size * 0.15), ry = recipe?.layout.ry??Math.min(ryM, Math.max(m.h / 2 / 0.54 + size * 0.15, rx * 0.55));
     const cx = W / 2, cy = H / 2;
     const out = tout(env);
     const q = E.outBack(J.clamp(lt / 0.3), 2.2) * (1 - 0.6 * E.inCubic(env.pOut)) * (1 + 0.015 * Math.sin(env.ltb * 7) * J.clamp(lt - 0.3));
@@ -2745,6 +2803,7 @@ reg('burst', {
     env.poly(star(2, 0.93, 0.12), B, out, false);
     env.poly(star(3, 0.86, 0.08), A, out, false);
     return J.mainDraw(env, Object.assign({ text, font: Pm.font, size: size * Math.min(1, q), x: cx, y: cy, rot: rot / J.DEG * 0.6, color: onCol(sc, A) }, o));
+    }finally{if(recipe)ctx.restore();}
   },
 });
 

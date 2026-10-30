@@ -5,11 +5,11 @@
 const A=J.placement,ID=[1,0,0,1,0,0],EPS=1e-7,rect=(a,b,c,d)=>[[a,b],[c,b],[c,d],[a,d]],fail=(code,message)=>{throw Object.assign(Error(message),{code});},norm=s=>String(s).replace(/\s/g,'');
 function trig(a,b,lo,hi){const ts=[lo,hi],r=Math.atan2(b,a);for(let k=Math.ceil((lo-r)/Math.PI);k<=Math.floor((hi-r)/Math.PI);k++)ts.push(r+k*Math.PI);const v=ts.map(t=>a*Math.cos(t)+b*Math.sin(t));return [Math.min(...v)-EPS,Math.max(...v)+EPS];}
 const add=(a,b)=>[a[0]+b[0]-EPS,a[1]+b[1]+EPS],times=(a,b)=>{const v=[a[0]*b[0],a[0]*b[1],a[1]*b[0],a[1]*b[1]];return [Math.min(...v)-EPS,Math.max(...v)+EPS];};
-function inventory(renderer,plan,cut){
+function inventory(renderer,plan,cut,options={}){
  const ctx=A.measurementContext();ctx.reset();const t=cut.start+Math.max(1,cut.dur/2),env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t,realTime:t,lt:t-cut.start,ltb:t-cut.start,step:0,scale:1,allowFilter:false});env.pOut=0;
- const p=A.record(renderer,env),g=p.nativeDGeometry;if(!p.measurementSupported||g?.kind!=='pendulum'||!g.items?.length)fail('PENDULUM_SOURCE_CATALOG','Complete unchanged source pendulum catalog required: '+JSON.stringify(p.diagnostics));
+ const p=(options.sourceProgram||A.record(renderer,env)),g=p.nativeDGeometry;if(!p.measurementSupported||g?.kind!=='pendulum'||!g.items?.length)fail('PENDULUM_SOURCE_CATALOG','Complete unchanged source pendulum catalog required: '+JSON.stringify(p.diagnostics));
  if(g.k<1||g.k>16||g.items.length!==g.k||g.items.some((q,i)=>q.index!==i||q.k!==g.k||q.glyphs.map(v=>v.ch).join('')!==q.text)||norm(g.items.map(q=>q.text).join(''))!==norm(cut.text))fail('PENDULUM_SOURCE_COVERAGE','Original ordered item/glyph catalog must cover every source lyric');
- if(p.events.some(e=>e.role!=='primary'||!/^pendulum\.(support|bob\.\d+)$/.test(e.owner)))fail('PENDULUM_SOURCE_OWNER','Every support/string/body/spark/glyph must remain primary');
+ if(!options.sourceOnly&&p.events.some(e=>e.role!=='primary'||!/^pendulum\.(support|bob\.\d+)$/.test(e.owner)))fail('PENDULUM_SOURCE_OWNER','Every support/string/body/spark/glyph must remain primary');
  return {g,env,program:p};
 }
 function angles(g,q){if(g.mode==='cradle'){const a=g.amp*J.DEG*(.6+.5*g.motion);return q.index===0&&g.n===1?[-a,a]:q.index===0?[-a,0]:q.index===g.n-1?[0,a]:[0,0];}const a=(g.mode==='fan'?7:5)*J.DEG*(.5+.7*g.motion),exit=30*J.DEG*(.5+q.index/g.k);return g.side===1?[-a,a+exit]:[-a-exit,a];}
@@ -26,8 +26,8 @@ function physicalAttachment(g,q,ink,theta,guard){
  const inkMinY=Math.min(...points.map(p=>p[1]))+by[0],holeGap=inkMinY-(holeY+holeR);if(holeGap<=0)failures.push({kind:'paper-hole-separation',holeGap});
  return {complete:!failures.length,hw,hh,rho,baselineX:bx,baselineY:by,guard,ink,theta,holeY,holeR,holeGap,minRoundedMargin:Math.min(...margins),failures};
 }
-function proof(renderer,plan,cut,nativeReference=null){
- const {g}=inventory(renderer,plan,cut),M=Math.min(plan.W,plan.H),guard=20*Math.SQRT2/(cut.contentScale??1),camera=p=>A.cameraEnvelope([p],{...plan,style:cut.effectStyle||plan.style,fx:cut.effectFx||plan.fx},cut,20),units=[],attachments=[],support=[],boxes=new Map();
+function proof(renderer,plan,cut,nativeReference=null,options={}){
+ const {g}=inventory(renderer,plan,cut,options),M=Math.min(plan.W,plan.H),guard=20*Math.SQRT2/(cut.contentScale??1),camera=p=>(options.project||A.cameraEnvelope)([p],{...plan,style:cut.effectStyle||plan.style,fx:cut.effectFx||plan.fx},cut,20),units=[],attachments=[],support=[],boxes=new Map();
  const put=(owner,x,y,pad=0)=>{const b=[x[0]-pad-EPS,y[0]-pad-EPS,x[1]+pad+EPS,y[1]+pad+EPS],old=boxes.get(owner);boxes.set(owner,old?[Math.min(old[0],b[0]),Math.min(old[1],b[1]),Math.max(old[2],b[2]),Math.max(old[3],b[3])]:b);};
  if(g.mode==='cradle'){
   const frameLW=Math.max(2,M*.006),footR=g.r*.1,footX0=g.cx-g.fw-g.r*.7,footX1=g.cx+g.fw+g.r*.7,footY1=g.fb+g.r*.28;
@@ -87,4 +87,5 @@ function render({renderer,env,trajectory}){
  const p=A.record(renderer,env);if(!p.measurementSupported)fail('PENDULUM_RECORD',JSON.stringify(p.diagnostics));const events=p.events.map(event=>({event,polygons:event.polygons.map(q=>q.map(v=>[v[0]/scale,v[1]/scale]))})),covered=!active||events.every(({event,polygons})=>{const u=active.unitProofs.find(u=>u.owner===event.owner);return event.role==='primary'&&u&&polygons.every(q=>u.envelopes.some(e=>q.every(v=>contains(v,e))));}),polygons=events.flatMap(e=>e.polygons.map(q=>q.map(v=>[v[0]+offset[0],v[1]+offset[1]]))),region=J.resolveAvoidanceAt(env.plan,env.realTime),circle=region?J.avoidanceCirclePixels(region,env.plan.W,env.plan.H):null,clear=!polygons.length||A.clear(polygons,circle,Math.max(2,.005*Math.min(env.plan.W,env.plan.H))),stageContained=polygons.every(q=>q.every(v=>v[0]>=0&&v[0]<=env.plan.W&&v[1]>=0&&v[1]<=env.plan.H));if(active&&(!covered||!clear||!stageContained))fail('PENDULUM_SOURCE_SAFETY_VIOLATION','Actual full owned pendulum escaped source support/stage/circle');env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,measurementSupported:true,envelopeCovered:covered,stageContained,strictCircleClear:clear,safety:active?'safe':'not-active',polygons,geometry:p.nativeDGeometry,events:p.events.map(e=>({kind:e.kind,owner:e.owner,role:e.role,order:e.order,args:e.args,polygons:e.polygons}))});A.replay(env,p,offset);
 }
 A.registerLayoutsDAdapter('pendulum',{id:'pendulum-physical-source-v1',finalize,render});
+A.sourceFormulaD=A.sourceFormulaD||{};A.sourceFormulaD.pendulum=(renderer,plan,cut,program)=>proof(renderer,plan,cut,null,{sourceProgram:program,sourceOnly:true,project:ps=>A.convexHull(ps.flat())});
 })();

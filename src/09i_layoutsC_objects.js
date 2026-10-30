@@ -68,7 +68,7 @@ function intervalPose(s,cut,t0,t1,entry){
  }
  return {x:[ax+dx[0],ax+dx[1]],y:[ay+dy[0],ay+dy[1]],angle:a,sx:times(k,scale),sy:times(k,scale)};
 }
-function textStage(local,s,plan,cut,entry){const points=[],N=96;for(let j=0;j<N;j++){const p=sweep(local,intervalPose(s,cut,cut.dur*j/N,cut.dur*(j+1)/N,entry));points.push(...p);}let polygon=A.convexHull(points);if(s.kind==='book-shelf'){const b=A.bounds([polygon]);polygon=rect(b.x0,b.y0,b.x1,Math.min(b.y1,s.anchor[1]+s.h-1));}return camera([polygon],plan,cut,20);}
+function textStage(local,s,plan,cut,entry,project=camera){const points=[],N=96;for(let j=0;j<N;j++){const p=sweep(local,intervalPose(s,cut,cut.dur*j/N,cut.dur*(j+1)/N,entry));points.push(...p);}let polygon=A.convexHull(points);if(s.kind==='book-shelf'){const b=A.bounds([polygon]);polygon=rect(b.x0,b.y0,b.x1,Math.min(b.y1,s.anchor[1]+s.h-1));}return project([polygon],plan,cut,20);}
 function record(renderer,plan,cut,time){const ctx=A.measurementContext();ctx.reset();const env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:time,realTime:time,lt:time-cut.start,ltb:time-cut.start,step:Math.floor(time*(plan.fps||24)),scale:1,allowFilter:false});const p=A.record(renderer,env);if(!p.measurementSupported)fail('C_OBJECT_RECORD',JSON.stringify(p.diagnostics));return p;}
 function sourceMapping(program,cut){
  const items=program.events.filter(e=>e.kind==='item'),main=items.filter(e=>e.args[0].placementMain).map(e=>({text:e.args[0].text,font:e.args[0].font,size:e.args[0].size,mi:e.args[0].mi??0,physicalScale:physicalScale(e,cut),owner:e.owner}));
@@ -89,7 +89,7 @@ function writingFields(program){
  }
  return fields;
 }
-function bodies(program,plan,cut,entry){
+function bodies(program,plan,cut,entry,project=camera){
  const grouped=new Map();
  for(const e of program.events){if(!['primary','independentDecor'].includes(e.role))fail('C_OBJECT_UNCLASSIFIED_ROLE','Object ink may not be silently auxiliary');if(e.role!=='primary')continue;const s=e.nativeCBody;if(!s?.key||!s.frame||!s.anchor||!s.support)fail('C_OBJECT_UNCLASSIFIED_INK','Every owned source event requires its native body model');
   const inv=A.inverse(matrix(s.frame)),local=e.polygons.map(p=>p.map(v=>A.point(inv,v)));const key=s.key;
@@ -112,7 +112,7 @@ function bodies(program,plan,cut,entry){
   if(s.kind==='calendar-month')fullLocal={x0:Math.min(s.tcx,s.X1)-s.anchor[0]-20,x1:Math.max(s.tcx+s.cell,s.X1+s.PW)-s.anchor[0]+20,y0:Math.min(s.tcy,s.Y1)-s.anchor[1]-20,y1:Math.max(s.tcy+s.rh,s.Y1+s.PH)-s.anchor[1]+20};
   // Native entry/exit shadows absent at rest (stamp tear) are bounded explicitly.
   if(s.kind==='stamp-hero'){const p=Math.min(plan.W,plan.H)*.08;fullLocal={x0:fullLocal.x0-p,y0:fullLocal.y0-p,x1:fullLocal.x1+p,y1:fullLocal.y1+p};}
-  const strictFrom=strictEntry(s,cut),hp=pose(s,false,strictFrom),fp=pose(s,true,strictFrom),hold=camera([sweep(holdLocal,hp)],plan,cut,20),full=camera([sweep(fullLocal,fp)],plan,cut,20);
+  const strictFrom=strictEntry(s,cut),hp=pose(s,false,strictFrom),fp=pose(s,true,strictFrom),hold=project([sweep(holdLocal,hp)],plan,cut,20),full=project([sweep(fullLocal,fp)],plan,cut,20);
   // The stage regression contract protects real readable ink. Paper edges and
   // native shadows may enter/leave the stage without becoming a glyph crop.
   let textFull=null,textHold=null,visibilityText=null;
@@ -121,7 +121,7 @@ function bodies(program,plan,cut,entry){
    if(['vinyl-label','vinyl-disc','calendar-pad','calendar-month'].includes(s.kind))textLocal=fullLocal;
    // This is an analytic interval partition. No source frame is sampled.
    // Every easing/sine/product is bounded throughout each time subinterval.
-   if(s.kind==='postcard'&&s.postmark){const [x,y,r]=s.postmark;textLocal={x0:Math.min(textLocal.x0,x-r),y0:Math.min(textLocal.y0,y-r),x1:Math.max(textLocal.x1,x+r),y1:Math.max(textLocal.y1,y+r)};}textFull=textStage(textLocal,s,plan,cut,entry);textHold=camera([sweep(textLocal,hp)],plan,cut,20);visibilityText=sweep(textLocal,hp);
+   if(s.kind==='postcard'&&s.postmark){const [x,y,r]=s.postmark;textLocal={x0:Math.min(textLocal.x0,x-r),y0:Math.min(textLocal.y0,y-r),x1:Math.max(textLocal.x1,x+r),y1:Math.max(textLocal.y1,y+r)};}textFull=textStage(textLocal,s,plan,cut,entry,project);textHold=project([sweep(textLocal,hp)],plan,cut,20);visibilityText=sweep(textLocal,hp);
   }
   result.push({owner,source:s,strictFrom,strictExit:['fixed','letterPaper','stamp-replica'].includes(s.kind)&&!(s.kind==='letterPaper'&&s.port),local,fullLocal,hold,full,textFull,textHold,visibilityText,visibilityBody:sweep(fullLocal,fp),holdPose:hp,fullPose:fp,kinds:[...g.kinds]});
  }
@@ -221,8 +221,8 @@ function offsetDomain(candidate,native,plan,cut){
 // Other object IDs retain the accepted native-envelope enumeration.
 // It never replaces the complete owned polygons used for circle clearance.
 function solve(envelopes,circle,plan,cut,domain){if(domain.minX>domain.maxX||domain.minY>domain.maxY)return {status:'insufficient-space',offset:[0,0],reason:'native-stage-sweep-has-no-crop-preserving-offset'};const paper=cut.layout==='postcard'||cut.layout==='letterPaper',b=paper?A.bounds(envelopes):null,fitBounds=paper?{x0:Math.min(b.x0,-domain.minX),y0:Math.min(b.y0,-domain.minY),x1:Math.max(b.x1,plan.W-domain.maxX),y1:Math.max(b.y1,plan.H-domain.maxY)}:null;const accept=d=>d[0]>=domain.minX-1e-7&&d[0]<=domain.maxX+1e-7&&d[1]>=domain.minY-1e-7&&d[1]<=domain.maxY+1e-7,result=A.solveBasic(envelopes,circle,plan.W,plan.H,cut.seed,paper?{fitBounds,accept}:{accept});if(result.status==='safe'){const d=result.offset;if(!Array.isArray(d)||d.length!==2||!d.every(Number.isFinite)||!accept(d))fail('C_OBJECT_SOLVER_RESULT','Safe solver offset escaped the certified native stage domain');const moved=envelopes.map(p=>p.map(v=>[v[0]+d[0],v[1]+d[1]]));if(moved.some(p=>p.some(v=>v[0]<-1e-7||v[0]>plan.W+1e-7||v[1]<-1e-7||v[1]>plan.H+1e-7))||!A.clear(moved,circle,Math.max(2,.005*Math.min(plan.W,plan.H))))fail('C_OBJECT_SOLVER_RESULT','Safe solver offset failed complete owned hold stage/circle verification');}return result;}
-function validate(cut){
- if(A.layoutsCObjectsTag!==tag)fail('C_OBJECT_SOURCE_HOOK','Object source ownership hook identity changed');if(cut.treat!=='none'||cut.enter!=='cut'||cut.exit!=='cut'||cut.hold!=='still')fail('C_OBJECT_EFFECT_DOMAIN','Dedicated object proofs presently support source-native clocks with cut/cut/still and no treatment');if(!finite(cut.params))fail('C_OBJECT_PARAMETER_DOMAIN','Finite source object params required');
+function validate(cut,sourceOnly=false){
+ if(!sourceOnly&&A.layoutsCObjectsTag!==tag)fail('C_OBJECT_SOURCE_HOOK','Object source ownership hook identity changed');if(!sourceOnly&&(cut.treat!=='none'||cut.enter!=='cut'||cut.exit!=='cut'||cut.hold!=='still'))fail('C_OBJECT_EFFECT_DOMAIN','Dedicated object proofs presently support source-native clocks with cut/cut/still and no treatment');if(!finite(cut.params))fail('C_OBJECT_PARAMETER_DOMAIN','Finite source object params required');
 
 
  const p=cut.params,one=(v,list)=>list.includes(v),between=(v,a,b)=>Number.isFinite(v)&&v>=a-1e-8&&v<=b+1e-8,int=(v,a,b)=>Number.isInteger(v)&&between(v,a,b),font=v=>typeof v==='string'&&!!J.FONTS[v],bool=v=>typeof v==='boolean';let good=font(p.font);
@@ -283,5 +283,6 @@ function render({renderer,env,trajectory:tr}){
  const decorOffsets={};if(['ema','bookSpine','stampSheet'].includes(env.cut.layout))for(const e of program.events)if(e.role==='independentDecor')decorOffsets[e.key??e.owner]=offset;
  A.replay(env,program,offset,decorOffsets);
 }
+A.layoutsCObjectsSource=Object.freeze({ids,clock:entryFor,domain:cut=>validate(cut,true),envelopes(program,plan,cut){const neutral={...plan,fx:{...plan.fx,motion:0,chroma:0},style:{...plan.style,ghost:0}},c={...cut,contentScale:1,motionScale:0,cam:'push',effectFx:null,effectStyle:null};return bodies(program,neutral,c,entryFor(c),ps=>A.convexHull(ps.flat())).flatMap(b=>[b.full,...(b.textFull?[b.textFull]:[])]);}});
 for(const id of ids)A.registerLayoutsCAdapter(id,{id:'c-objects',finalize,render});
 })();

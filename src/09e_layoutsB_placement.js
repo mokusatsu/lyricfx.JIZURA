@@ -109,84 +109,85 @@ function recipeRead(context){if(!context)return null;const value=recipePool.read
 function recipeKeep(context,value){if(!context)return;if(!context.verify()){recipePool.bypass();return;}let safe;try{safe=recipeSafeData(value);}catch{recipePool.bypass();return;}recipePool.keep(context,safe);}
 const cellIDs=['keycaps','bubbles','slotMachine','flipBoard'];
 function sourceRestTime(cut){return cut.start+(cellIDs.includes(cut.layout)?Math.max(1.5,.5+[...String(cut.text).trim()].length*.2):1.5);}
-function cellEnvelopes(program,plan,cut){
+function cellEnvelopes(program,plan,cut,project=A.cameraEnvelope){
  const g=program.nativeGeometry;if(!g||g.kind!=='cells')fail('UNSUPPORTED_MEASUREMENT','B source cell geometry missing');const {k,cells}=g,U=Math.min(plan.W,plan.H),polygons=[],id=cut.layout;
  for(const c of cells){if(!c.ch.trim()&&id!=='flipBoard')continue;let shape;
   if(id==='bubbles'){
    const kind=J.isKanji(c.ch)?1:J.isSmallKana(c.ch)||J.isPunct(c.ch)?.7:.86,R=k*.5*kind*(.94+.12*J.r(cut.seed,c.i,5)),entryEnd=.42+Math.max(0,cells.length-1)*.05,grow=cut.dur-cut.outDur>=entryEnd?1.35:1.155*1.35,outer=R*grow,radius=Math.max(outer/Math.cos(Math.PI/64)+Math.max(1.2,R*.035)/2,.78*outer+Math.max(1.5,R*.07)/2,Math.SQRT2*.52*outer+Math.max(1.5,R*.05)),range=cut.layoutBEvaluationRange.map(t=>t-cut.start),lifts=range.flatMap(t=>(cut.layoutBRecipe?.commonLift?[1]:[.7,1.3]).map(a=>-plan.H*cut.params.rise*t*a)),dx=R*.1+k*.1,dy=R*.06+k*.14;
-   const ink=A.bounds(A.itemGeometry({text:c.ch,font:cut.params.font,size:R*1.05,x:0,y:0},[1,0,0,1,0,0],{pass:'main',scale:1}).polygons),left=Math.max(radius,-ink.x0),right=Math.max(radius,ink.x1),top=Math.max(radius,-ink.y0),bottom=Math.max(radius,ink.y1);
+   const ink=glyphBox(cut,cut.params.font,R*1.05,c.ch),left=Math.max(radius,-ink.x0),right=Math.max(radius,ink.x1),top=Math.max(radius,-ink.y0),bottom=Math.max(radius,ink.y1);
    shape=rect(c.x-dx-left,c.y+Math.min(...lifts)-dy-top,c.x+dx+right,c.y+Math.max(...lifts)+dy+bottom);
   }else if(id==='keycaps'){
    const d=k*.15;shape=rect(c.x-k*.55,c.y-k*.55,c.x+k*.55,c.y+k*.55+d*1.1);
   }else{
    let hx=k/2,hy=k*(id==='slotMachine'?1.34:1.32)/2;
-   if(id==='flipBoard')for(const ch of [...new Set([c.ch,...(g.revealPool||[])])].filter(ch=>ch.trim())){const b=A.bounds(A.itemGeometry({text:ch,font:cut.params.font,size:k*.78,x:0,y:0},[1,0,0,1,0,0],{pass:'main',scale:1}).polygons);hx=Math.max(hx,-b.x0,b.x1);hy=Math.max(hy,-b.y0,b.y1);}
+   if(id==='flipBoard')for(const ch of [...new Set([c.ch,...(g.revealPool||[])])].filter(ch=>ch.trim())){const b=glyphBox(cut,cut.params.font,k*.78,ch);hx=Math.max(hx,-b.x0,b.x1);hy=Math.max(hy,-b.y0,b.y1);}
    shape=rect(c.x-hx-2,c.y-hy-2,c.x+hx+2,c.y+hy+2);
   }
-  polygons.push(A.cameraEnvelope([shape],plan,cut,20));
+  if(cut.sourceFormulaGlyphEffects){let tail=0;for(const e of program.events.filter(e=>e.kind==='item'&&e.args[0].placementMain&&e.nativeGroup==='cell-'+c.i)){const item={...e.args[0],x:0,y:0},raw=A.bounds(A.itemGeometry({...item,pre:null,post:null,blur:0,shadow:null,extrude:null},[1,0,0,1,0,0],{pass:'main',scale:1}).polygons),full=A.simpleCircle.itemEnvelope(item,cut).bounds;tail=Math.max(tail,raw.x0-full.x0,raw.y0-full.y0,full.x1-raw.x1,full.y1-raw.y1);}if(tail){const b=A.bounds([shape]),growth=1.155*1.35;shape=rect(b.x0-tail*growth,b.y0-tail*growth,b.x1+tail*growth,b.y1+tail*growth);}}
+  polygons.push(project([shape],plan,cut,20));
  }
  // Backing plate, cabinet, payline/arrows and semantic header are source-static.
  // Cell-local moving/reveal ink above is independently bounded across all phases.
- for(const e of program.events.filter(e=>e.role==='primary'&&!/^cell-/.test(e.nativeGroup||'')))for(const p of e.polygons)polygons.push(A.cameraEnvelope([p],plan,cut,e.kind==='item'?20:10));
+ for(const e of program.events.filter(e=>e.role==='primary'&&!/^cell-/.test(e.nativeGroup||'')))for(const p of e.polygons)polygons.push(project([p],plan,cut,e.kind==='item'?20:10));
  return polygons;
 }
-function glyphBox(font,size,ch,extra={}){return A.bounds(A.itemGeometry({text:ch,font,size,x:0,y:0,...extra},[1,0,0,1,0,0],{pass:'main',scale:1}).polygons);}
-function rainEnvelopes(program,plan,cut,mainOnly=false){
+function glyphBox(cut,font,size,ch,extra={}){const item={text:ch,font,size,x:0,y:0,...extra};return cut.sourceFormulaGlyphEffects?A.simpleCircle.itemEnvelope(item,cut).bounds:A.bounds(A.itemGeometry(item,[1,0,0,1,0,0],{pass:'main',scale:1}).polygons);}
+function rainEnvelopes(program,plan,cut,mainOnly=false,project=A.cameraEnvelope){
  const g=program.nativeGeometry;if(!g||g.kind!=='rain')fail('UNSUPPORTED_MEASUREMENT','Rain source geometry missing');const {base,gl,pool,trailN,ts,tsp}=g,out=[];
- const trails=pool.map(ch=>glyphBox(cut.params.rf,ts,ch.repeat(trailN),{track:.12,vertical:true,align:'left'})),tb={x0:Math.min(...trails.map(b=>b.x0)),y0:Math.min(...trails.map(b=>b.y0)),x1:Math.max(...trails.map(b=>b.x1)),y1:Math.max(...trails.map(b=>b.y1))};
- for(const q of gl){const b=glyphBox(base.font,base.size,q.ch,{vertical:base.vertical});out.push(A.cameraEnvelope([rect(q.x+b.x0,q.y+b.y0,q.x+b.x1,q.y+b.y1)],plan,cut,20));if(mainOnly)continue;
+ const trails=pool.map(ch=>glyphBox(cut,cut.params.rf,ts,ch.repeat(trailN),{track:.12,vertical:true,align:'left'})),tb={x0:Math.min(...trails.map(b=>b.x0)),y0:Math.min(...trails.map(b=>b.y0)),x1:Math.max(...trails.map(b=>b.x1)),y1:Math.max(...trails.map(b=>b.y1))};
+ for(const q of gl){const b=glyphBox(cut,base.font,base.size,q.ch,{vertical:base.vertical});out.push(project([rect(q.x+b.x0,q.y+b.y0,q.x+b.x1,q.y+b.y1)],plan,cut,20));if(mainOnly)continue;
   // Only the delivery lead uses a fixed fontCSS and continuous uniform scale.
   // Thus native size growth is exact while the glyph ink cannot change hinting
   // midway. Signed products retain punctuation/kana offsets and ts>base cases.
-  const fixed=glyphBox(base.font,base.size,q.ch,{vertical:base.vertical}),scales=[Math.min(ts/base.size,1),Math.max(ts/base.size,1)],lead={x0:Math.min(...scales.map(k=>fixed.x0*k))-2,y0:Math.min(...scales.map(k=>fixed.y0*k))-2,x1:Math.max(...scales.map(k=>fixed.x1*k))+2,y1:Math.max(...scales.map(k=>fixed.y1*k))+2},lo=Math.min(-2*tsp,q.y),hi=Math.max(-2*tsp,q.y);out.push(A.cameraEnvelope([rect(q.x+lead.x0,lo+lead.y0,q.x+lead.x1,hi+lead.y1)],plan,cut,20));
+  const fixed=glyphBox(cut,base.font,base.size,q.ch,{vertical:base.vertical}),scales=[Math.min(ts/base.size,1),Math.max(ts/base.size,1)],lead={x0:Math.min(...scales.map(k=>fixed.x0*k))-2,y0:Math.min(...scales.map(k=>fixed.y0*k))-2,x1:Math.max(...scales.map(k=>fixed.x1*k))+2,y1:Math.max(...scales.map(k=>fixed.y1*k))+2},lo=Math.min(-2*tsp,q.y),hi=Math.max(-2*tsp,q.y);out.push(project([rect(q.x+lead.x0,lo+lead.y0,q.x+lead.x1,hi+lead.y1)],plan,cut,20));
   // Independent product bounds contain the complete quadratic head / cubic
   // size-coupled tail origin, including every pool glyph at every vertical slot.
-  const y0=lo-Math.max(ts,base.size)/2-trailN*tsp,y1=hi-Math.min(ts,base.size)/2-trailN*tsp;out.push(A.cameraEnvelope([rect(q.x+tb.x0,y0+tb.y0,q.x+tb.x1,y1+tb.y1)],plan,cut,20));
+  const y0=lo-Math.max(ts,base.size)/2-trailN*tsp,y1=hi-Math.min(ts,base.size)/2-trailN*tsp;out.push(project([rect(q.x+tb.x0,y0+tb.y0,q.x+tb.x1,y1+tb.y1)],plan,cut,20));
  }
  return out;
 }
-function bounceEnvelopes(program,plan,cut){
+function bounceEnvelopes(program,plan,cut,project=A.cameraEnvelope){
  const g=program.nativeGeometry;if(!g||g.kind!=='bounceLine')fail('UNSUPPORTED_MEASUREMENT','Bounce source geometry missing');const {base,gl}=g,S=base.size,out=[],lines=new Map(),sn=Math.sin(7*J.DEG);
- for(const q of gl){const b=glyphBox(base.font,S,q.ch),x=Math.max(-b.x0,b.x1)*1.2,y=Math.max(-b.y0,b.y1)*1.08,hx=x+y*sn,hy=y+x*sn;out.push(A.cameraEnvelope([rect(q.x-hx,q.y-.04*S-S*cut.params.hop-hy,q.x+hx,q.y+.12*S+hy)],plan,cut,20));
-  if(cut.params.shadow)out.push(A.cameraEnvelope([rect(q.x-.408*S,q.y+.56*S-.0816*S,q.x+.408*S,q.y+.56*S+.0816*S)],plan,cut,10));
+ for(const q of gl){const b=glyphBox(cut,base.font,S,q.ch),x=Math.max(-b.x0,b.x1)*1.2,y=Math.max(-b.y0,b.y1)*1.08,hx=x+y*sn,hy=y+x*sn;out.push(project([rect(q.x-hx,q.y-.04*S-S*cut.params.hop-hy,q.x+hx,q.y+.12*S+hy)],plan,cut,20));
+  if(cut.params.shadow)out.push(project([rect(q.x-.408*S,q.y+.56*S-.0816*S,q.x+.408*S,q.y+.56*S+.0816*S)],plan,cut,10));
   const line=lines.get(q.li)||{x0:Infinity,x1:-Infinity,y:q.y+.6*S};line.x0=Math.min(line.x0,q.x-q.w/2);line.x1=Math.max(line.x1,q.x+q.w/2);lines.set(q.li,line);
  }
  const lw=Math.max(1.5,Math.min(plan.W,plan.H)*.0022),pad=lw*1.6;
- if(cut.params.line!=='none')for(const l of lines.values())out.push(A.cameraEnvelope([rect(l.x0-.35*S-pad,l.y-pad,l.x1+.35*S+pad,l.y+pad)],plan,cut,10));return out;
+ if(cut.params.line!=='none')for(const l of lines.values())out.push(project([rect(l.x0-.35*S-pad,l.y-pad,l.x1+.35*S+pad,l.y+pad)],plan,cut,10));return out;
 }
-function hangingEnvelopes(program,plan,cut,withoutRail=false){
+function hangingEnvelopes(program,plan,cut,withoutRail=false,project=A.cameraEnvelope){
  const g=program.nativeGeometry;if(!g||g.kind!=='hanging')fail('UNSUPPORTED_MEASUREMENT','Suspension source geometry missing');const out=[],B=1+4*1.4**3/(27*(1.4+1)**2);
  for(const q of g.items){if(!String(cut.text).trim())continue;const pivot=[q.ax,g.railY],angle=(cut.params.amp+cut.params.kick)*Math.abs(q.dk*q.ampK)*g.angleScale,sweep=p=>A.layoutsASweep(p,{pivot,angle});
-  out.push(A.cameraEnvelope([sweep(rect(q.ax-g.strokeW,g.railY-g.strokeW,q.ax+g.strokeW,g.railY+1.05*q.L+g.strokeW))],plan,cut,10));
-  if(cut.params.rail){const radius=Math.max(2.5,Math.min(plan.W,plan.H)*.004);out.push(A.cameraEnvelope([rect(q.ax-radius,g.railY-radius,q.ax+radius,g.railY+radius)],plan,cut,10));}
+  out.push(project([sweep(rect(q.ax-g.strokeW,g.railY-g.strokeW,q.ax+g.strokeW,g.railY+1.05*q.L+g.strokeW))],plan,cut,10));
+  if(cut.params.rail){const radius=Math.max(2.5,Math.min(plan.W,plan.H)*.004);out.push(project([rect(q.ax-radius,g.railY-radius,q.ax+radius,g.railY+radius)],plan,cut,10));}
   const ch=[...String(cut.text).trim().replace(/[\s\u3000]+/g,' ')][q.i];if(!ch?.trim())continue;
-  if(cut.params.tag){const hole=Math.max(2,g.size*.055),hx=Math.max(g.tagW/2,hole)*B,hy=Math.max(g.tagH/2,g.tagH*.4+hole)*B;out.push(A.cameraEnvelope([sweep(rect(q.ax-hx,g.railY+.95*q.L+q.attach-hy,q.ax+hx,g.railY+1.05*q.L+q.attach+hy))],plan,cut,10));}
-  const b=glyphBox(cut.params.font,g.csize,ch),offset=cut.params.tag?g.tagH*.06:0;out.push(A.cameraEnvelope([sweep(rect(q.ax+b.x0,g.railY+.95*q.L+q.attach+offset+b.y0,q.ax+b.x1,g.railY+1.05*q.L+q.attach+offset+b.y1))],plan,cut,20));
+  if(cut.params.tag){const hole=Math.max(2,g.size*.055),hx=Math.max(g.tagW/2,hole)*B,hy=Math.max(g.tagH/2,g.tagH*.4+hole)*B;out.push(project([sweep(rect(q.ax-hx,g.railY+.95*q.L+q.attach-hy,q.ax+hx,g.railY+1.05*q.L+q.attach+hy))],plan,cut,10));}
+  const b=glyphBox(cut,cut.params.font,g.csize,ch),offset=cut.params.tag?g.tagH*.06:0;out.push(project([sweep(rect(q.ax+b.x0,g.railY+.95*q.L+q.attach+offset+b.y0,q.ax+b.x1,g.railY+1.05*q.L+q.attach+offset+b.y1))],plan,cut,20));
  }
- if(cut.params.rail&&!withoutRail)out.push(A.cameraEnvelope([rect(plan.W/2-g.railSpan,g.railY-g.strokeW,plan.W/2+g.railSpan,g.railY+g.strokeW)],plan,cut,10));return out;
+ if(cut.params.rail&&!withoutRail)out.push(project([rect(plan.W/2-g.railSpan,g.railY-g.strokeW,plan.W/2+g.railSpan,g.railY+g.strokeW)],plan,cut,10));return out;
 }
-function fixedEnvelopes(program,plan,cut){return program.events.filter(e=>e.role==='primary'&&e.args[0]?.placementFixedStage).flatMap(e=>inkPolygons(e).map(p=>{const b=A.bounds([p]);return A.cameraEnvelope([rect(b.x0,b.y0-plan.H*.025,b.x1,b.y1+plan.H*.025)],plan,cut,20);}));}
-function copyEnvelopes(program,plan,cut){
+function fixedEnvelopes(program,plan,cut,project=A.cameraEnvelope){return program.events.filter(e=>e.role==='primary'&&e.args[0]?.placementFixedStage).flatMap(e=>inkPolygons(e).map(p=>{const b=A.bounds([p]);return project([rect(b.x0,b.y0-plan.H*.025,b.x1,b.y1+plan.H*.025)],plan,cut,20);}));}
+function copyEnvelopes(program,plan,cut,project=A.cameraEnvelope){
  const g=program.nativeGeometry;if(!g)fail('UNSUPPORTED_MEASUREMENT','B primary copy geometry missing');const U=Math.min(plan.W,plan.H);
  if(cut.layout==='depthStack'){
   const common={text:g.mt,font:cut.params.font,size:g.size,x:g.cx,y:g.cy,track:.03,lead:1.1,stroke:Math.max(1,g.size*.014)},ink=A.bounds(A.itemGeometry(common,[1,0,0,1,0,0],{pass:'main',scale:1}).polygons),layout=rect(g.cx-g.mm.w/2,g.cy-g.mm.h/2,g.cx+g.mm.w/2,g.cy+g.mm.h/2),vx=g.cx+g.dx*U*g.dist,vy=g.cy+g.dy*U*g.dist,sx=g.sway?U*.05:0,sy=g.sway?U*.035:0,pad=Math.max(3,Math.max(1,U*.0013)/2+2),points=[...rect(ink.x0-pad,ink.y0-pad,ink.x1+pad,ink.y1+pad),...layout,...rect(vx-sx-pad,vy-sy-pad,vx+sx+pad,vy+sy+pad)];
-  return [A.cameraEnvelope([A.convexHull(points)],plan,cut,20)];
+  return [project([A.convexHull(points)],plan,cut,20)];
  }
- const scales=[1,1.1232],fixed=glyphBox(g.font,g.big,g.fch,{stroke:Math.max(1.2,g.big*1.1232*.004)}),giant=rect(g.bx+Math.min(...scales.map(k=>fixed.x0*k))-2,g.by+Math.min(...scales.map(k=>fixed.y0*k))-2,g.bx+Math.max(...scales.map(k=>fixed.x1*k))+2,g.by+Math.max(...scales.map(k=>fixed.y1*k))+2),rest=program.events.filter(e=>e.role==='primary'&&!(e.kind==='item'&&e.args[0].placementSource?.copy==='focus')).flatMap(e=>inkPolygons(e).map(p=>{if(e.kind!=='item'){const b=A.bounds([p]);p=rect(b.x0-(b.x1-b.x0)*.132,b.y0-(b.y1-b.y0)*.132,b.x1+(b.x1-b.x0)*.132,b.y1+(b.y1-b.y0)*.132);}return A.cameraEnvelope([p],plan,cut,e.kind==='item'?20:10);}));
- return [A.cameraEnvelope([giant],plan,cut,20),...rest];
+ const scales=[1,1.1232],fixed=glyphBox(cut,g.font,g.big,g.fch,{stroke:Math.max(1.2,g.big*1.1232*.004)}),giant=rect(g.bx+Math.min(...scales.map(k=>fixed.x0*k))-2,g.by+Math.min(...scales.map(k=>fixed.y0*k))-2,g.bx+Math.max(...scales.map(k=>fixed.x1*k))+2,g.by+Math.max(...scales.map(k=>fixed.y1*k))+2),rest=program.events.filter(e=>e.role==='primary'&&!(e.kind==='item'&&e.args[0].placementSource?.copy==='focus')).flatMap(e=>inkPolygons(e).map(p=>{if(e.kind!=='item'){const b=A.bounds([p]);p=rect(b.x0-(b.x1-b.x0)*.132,b.y0-(b.y1-b.y0)*.132,b.x1+(b.x1-b.x0)*.132,b.y1+(b.y1-b.y0)*.132);}return project([p],plan,cut,e.kind==='item'?20:10);}));
+ return [project([giant],plan,cut,20),...rest];
 }
-function equalizerEnvelopes(program,plan,cut){
+function equalizerEnvelopes(program,plan,cut,project=A.cameraEnvelope){
  const g=program.nativeGeometry;if(g?.kind!=='equalizer')fail('UNSUPPORTED_MEASUREMENT','Equalizer source geometry missing');const out=[],lw=Math.max(1,Math.min(plan.W,plan.H)*.0016);
- for(const q of g.items){const b=glyphBox(cut.params.font,g.size,q.ch),peak=cut.params.peaks?g.sw*.1:0,top=q.yb-q.hmax-g.size*.62-peak,bottom=q.yb-g.size*.62-peak;out.push(A.cameraEnvelope([rect(q.x+b.x0,top+b.y0,q.x+b.x1,bottom+b.y1)],plan,cut,20));
-  const height=Math.max(3,g.sw*.05),barTop=q.yb-q.hmax-(cut.params.peaks?height+g.sw*.04:0),barBottom=cut.params.style==='mirror'?q.yb+2*lw+.35*q.hmax:q.yb;out.push(A.cameraEnvelope([rect(q.x-q.bw/2-1,barTop-1,q.x+q.bw/2+1,barBottom+1)],plan,cut,10));
+ for(const q of g.items){const b=glyphBox(cut,cut.params.font,g.size,q.ch),peak=cut.params.peaks?g.sw*.1:0,top=q.yb-q.hmax-g.size*.62-peak,bottom=q.yb-g.size*.62-peak;out.push(project([rect(q.x+b.x0,top+b.y0,q.x+b.x1,bottom+b.y1)],plan,cut,20));
+  const height=Math.max(3,g.sw*.05),barTop=q.yb-q.hmax-(cut.params.peaks?height+g.sw*.04:0),barBottom=cut.params.style==='mirror'?q.yb+2*lw+.35*q.hmax:q.yb;out.push(project([rect(q.x-q.bw/2-1,barTop-1,q.x+q.bw/2+1,barBottom+1)],plan,cut,10));
  }
- for(const q of g.thinItems){const bottom=cut.params.style==='mirror'?q.yb+2*lw+.35*q.hmax:q.yb;out.push(A.cameraEnvelope([rect(q.x-q.bw/2-1,q.yb-q.hmax-1,q.x+q.bw/2+1,bottom+1)],plan,cut,10));}
+ for(const q of g.thinItems){const bottom=cut.params.style==='mirror'?q.yb+2*lw+.35*q.hmax:q.yb;out.push(project([rect(q.x-q.bw/2-1,q.yb-q.hmax-1,q.x+q.bw/2+1,bottom+1)],plan,cut,10));}
  // Native baseline grows from its fixed start toward this complete source-rest
  // endpoint. Include even a row whose source slots are only word gaps.
- for(const e of program.events.filter(e=>e.role==='primary'&&/^baseline-/.test(e.nativeGroup||'')))for(const p of inkPolygons(e))out.push(A.cameraEnvelope([p],plan,cut,10));return out;
+ for(const e of program.events.filter(e=>e.role==='primary'&&/^baseline-/.test(e.nativeGroup||'')))for(const p of inkPolygons(e))out.push(project([p],plan,cut,10));return out;
 }
-function envelope(program,plan,cut){
- if(A.layoutsBEditorial?.supports(cut.layout))return A.layoutsBEditorial.envelope(program,plan,cut);
+function envelope(program,plan,cut,project=A.cameraEnvelope){
+ if(A.layoutsBEditorial?.supports(cut.layout))return A.layoutsBEditorial.envelope(program,plan,cut,project);
  if(cut.layout==='elastic'){
  const g=program.nativeGeometry;if(g?.kind!=='elastic')fail('UNSUPPORTED_MEASUREMENT','Elastic source geometry missing');const spring=1+3/Math.sqrt(13)*Math.exp(-2/3*(Math.PI-Math.atan(2/3))),kmax=1.6*spring,postMin=1-Math.exp(-4.3),postMax=1.6*(1+Math.exp(-4.3)),out=[],S=g.size,amp=S*cut.params.amp,R=Math.max(5,S*.1),lw=Math.max(1.5,S*.03),B=275/243;
  const point=(a,d,row)=>{const rad=g.ang*J.DEG,dy=(row-(g.rowCount-1)/2)*S*3.2;return g.vert?[plan.W/2+d,plan.H/2+a]:[plan.W/2+a*Math.cos(rad)-d*Math.sin(rad),plan.H/2+a*Math.sin(rad)+d*Math.cos(rad)+dy];};
@@ -198,21 +199,21 @@ function envelope(program,plan,cut){
  const phases=[{lo:.04,hi:kmax,wave:0},{lo:postMin,hi:postMax,wave:amp}];
  for(const phase of phases){const bins=[phase.lo,...[.15,.5,1,1.2,1.6].filter(k=>k>phase.lo&&k<phase.hi),phase.hi];
   for(let j=0;j<bins.length-1;j++){const lo=bins[j],hi=bins[j+1],st0=J.clamp(lo,.15,1.6),st1=J.clamp(hi,.15,1.6),rot=Math.atan(Math.PI*phase.wave/Math.max(1,2*g.half*lo))/J.DEG;
-   for(const q of g.gl){const b=glyphBox(cut.params.font,S,q.ch,{vertical:g.vert}),xs=g.vert?[1/Math.sqrt(st1),1/Math.sqrt(st0)]:[st0,st1],ys=g.vert?[st0,st1]:[1/Math.sqrt(st1),1/Math.sqrt(st0)],ink=rect(Math.min(b.x0*xs[0],b.x0*xs[1]),Math.min(b.y0*ys[0],b.y0*ys[1]),Math.max(b.x1*xs[0],b.x1*xs[1]),Math.max(b.y1*ys[0],b.y1*ys[1])).map(([x,y])=>{const a=g.ang*J.DEG;return [x*Math.cos(a)-y*Math.sin(a),x*Math.sin(a)+y*Math.cos(a)];}),ib=A.bounds([A.layoutsASweep(ink,{pivot:[0,0],angle:rot})]),a=g.vert?q.y:q.x,positions=rect(Math.min(lo*a,hi*a),-phase.wave,Math.max(lo*a,hi*a),phase.wave).map(p=>point(p[0],p[1],0)),poly=A.convexHull(positions.flatMap(p=>rect(p[0]+ib.x0,p[1]+ib.y0,p[0]+ib.x1,p[1]+ib.y1)));out.push(A.cameraEnvelope([poly],plan,cut,20));}
+   for(const q of g.gl){const b=glyphBox(cut,cut.params.font,S,q.ch,{vertical:g.vert}),xs=g.vert?[1/Math.sqrt(st1),1/Math.sqrt(st0)]:[st0,st1],ys=g.vert?[st0,st1]:[1/Math.sqrt(st1),1/Math.sqrt(st0)],ink=rect(Math.min(b.x0*xs[0],b.x0*xs[1]),Math.min(b.y0*ys[0],b.y0*ys[1]),Math.max(b.x1*xs[0],b.x1*xs[1]),Math.max(b.y1*ys[0],b.y1*ys[1])).map(([x,y])=>{const a=g.ang*J.DEG;return [x*Math.cos(a)-y*Math.sin(a),x*Math.sin(a)+y*Math.cos(a)];}),ib=A.bounds([A.layoutsASweep(ink,{pivot:[0,0],angle:rot})]),a=g.vert?q.y:q.x,positions=rect(Math.min(lo*a,hi*a),-phase.wave,Math.max(lo*a,hi*a),phase.wave).map(p=>point(p[0],p[1],0)),poly=A.convexHull(positions.flatMap(p=>rect(p[0]+ib.x0,p[1]+ib.y0,p[0]+ib.x1,p[1]+ib.y1)));out.push(project([poly],plan,cut,20));}
   }
  }
- for(let row=0;row<g.rowCount;row++)for(const phase of phases){const points=rect(-g.half*phase.hi,-phase.wave,g.half*phase.hi,phase.wave).map(p=>point(p[0],p[1],row)),pad=Math.max(lw*10,R*(3.2+1.3*B)+lw);out.push(A.cameraEnvelope([support(points,pad,pad)],plan,cut,10));}return out;
+ for(let row=0;row<g.rowCount;row++)for(const phase of phases){const points=rect(-g.half*phase.hi,-phase.wave,g.half*phase.hi,phase.wave).map(p=>point(p[0],p[1],row)),pad=Math.max(lw*10,R*(3.2+1.3*B)+lw);out.push(project([support(points,pad,pad)],plan,cut,10));}return out;
  }
- if(cut.layout==='splitHalves'){const g=program.nativeGeometry;if(g?.kind!=='split')fail('UNSUPPORTED_MEASUREMENT','Split source geometry missing');const out=[],off=plan.W*.72*g.pathScale+(cut.params.variant==='shear'?.175*g.size:0),gap=cut.params.gap*g.size/2,lw=Math.max(1.5,g.size*.016);for(const q of g.lines){const b=glyphBox(cut.params.font,g.size,q.ln,{track:.04});out.push(A.cameraEnvelope([rect(plan.W/2+b.x0-off,q.y+b.y0-gap,plan.W/2+b.x1+off,q.y+b.y1+gap)],plan,cut,20));out.push(A.cameraEnvelope([rect(plan.W/2-q.half-lw*1.6,q.y-lw*1.6,plan.W/2+q.half+lw*1.6,q.y+lw*1.6)],plan,cut,10));}return out;}
- if(cut.layout==='stickerBomb'){const g=program.nativeGeometry;if(g?.kind!=='stickers')fail('UNSUPPORTED_MEASUREMENT','Sticker source geometry missing');return program.events.filter(e=>e.role==='primary').flatMap(e=>inkPolygons(e).map(p=>{const item=g.items.find(it=>'sticker-'+it.index===e.nativeGroup),pivot=item?[item.x,item.y]:[plan.W/2,plan.H/2];return A.cameraEnvelope([A.layoutsASweep(p,{pivot,angle:14,scale:[.94,1.404]})],plan,cut,e.kind==='item'?20:10);}));}
- if(cut.layout==='equalizer')return equalizerEnvelopes(program,plan,cut);
- if(['depthStack','kanjiFocus'].includes(cut.layout))return copyEnvelopes(program,plan,cut);
- if(cut.layout==='hanging')return hangingEnvelopes(program,plan,cut);
- if(cut.layout==='rain')return rainEnvelopes(program,plan,cut);if(cut.layout==='bounceLine')return bounceEnvelopes(program,plan,cut);
- if(cellIDs.includes(cut.layout))return cellEnvelopes(program,plan,cut);
+ if(cut.layout==='splitHalves'){const g=program.nativeGeometry;if(g?.kind!=='split')fail('UNSUPPORTED_MEASUREMENT','Split source geometry missing');const out=[],off=plan.W*.72*g.pathScale+(cut.params.variant==='shear'?.175*g.size:0),gap=cut.params.gap*g.size/2,lw=Math.max(1.5,g.size*.016);for(const q of g.lines){const b=glyphBox(cut,cut.params.font,g.size,q.ln,{track:.04});out.push(project([rect(plan.W/2+b.x0-off,q.y+b.y0-gap,plan.W/2+b.x1+off,q.y+b.y1+gap)],plan,cut,20));out.push(project([rect(plan.W/2-q.half-lw*1.6,q.y-lw*1.6,plan.W/2+q.half+lw*1.6,q.y+lw*1.6)],plan,cut,10));}return out;}
+ if(cut.layout==='stickerBomb'){const g=program.nativeGeometry;if(g?.kind!=='stickers')fail('UNSUPPORTED_MEASUREMENT','Sticker source geometry missing');return program.events.filter(e=>e.role==='primary').flatMap(e=>inkPolygons(e).map(p=>{const item=g.items.find(it=>'sticker-'+it.index===e.nativeGroup),pivot=item?[item.x,item.y]:[plan.W/2,plan.H/2];return project([A.layoutsASweep(p,{pivot,angle:14,scale:[.94,1.404]})],plan,cut,e.kind==='item'?20:10);}));}
+ if(cut.layout==='equalizer')return equalizerEnvelopes(program,plan,cut,project);
+ if(['depthStack','kanjiFocus'].includes(cut.layout))return copyEnvelopes(program,plan,cut,project);
+ if(cut.layout==='hanging')return hangingEnvelopes(program,plan,cut,false,project);
+ if(cut.layout==='rain')return rainEnvelopes(program,plan,cut,false,project);if(cut.layout==='bounceLine')return bounceEnvelopes(program,plan,cut,project);
+ if(cellIDs.includes(cut.layout))return cellEnvelopes(program,plan,cut,project);
  const id=cut.layout,events=program.events.filter(e=>e.role==='primary'&&!e.args[0]?.placementFixedStage),polygons=events.flatMap(e=>e.polygons);if(!polygons.length)fail('UNSUPPORTED_MEASUREMENT','Empty B primary program');
  if(!['tunnel','wordCloud','crossBands','neon','zoomRepeat','curtain','columnsBig','halfVertical','dotMatrix','tape'].includes(id))fail('B_INTERVAL_ADAPTER_PENDING','Source interval adapter not yet implemented: '+id);
- if(id==='dotMatrix'){const g=program.nativeGeometry;if(!g)fail('UNSUPPORTED_MEASUREMENT','LED source grid missing');const w=g.smp.cols*g.p,h=g.smp.rows*g.p,pad=cut.params.panel?g.p*1.2+Math.max(1,g.p*.12)/2:2;return [A.cameraEnvelope([rect(plan.W/2-w/2-pad,plan.H/2-h/2-pad,plan.W/2+w/2+pad,plan.H/2+h/2+pad)],plan,cut,20)];}
+ if(id==='dotMatrix'){const g=program.nativeGeometry;if(!g)fail('UNSUPPORTED_MEASUREMENT','LED source grid missing');const w=g.smp.cols*g.p,h=g.smp.rows*g.p,pad=cut.params.panel?g.p*1.2+Math.max(1,g.p*.12)/2:2;return [project([rect(plan.W/2-w/2-pad,plan.H/2-h/2-pad,plan.W/2+w/2+pad,plan.H/2+h/2+pad)],plan,cut,20)];}
  return events.flatMap(e=>inkPolygons(e).map(p=>{
   // The native central sign/outline/main item is static under cut/still.
   // Cross plate outBack(1.6) has its unique extremum <1.1; both exit
@@ -222,7 +223,7 @@ function envelope(program,plan,cut){
   // Theatre slate is drawn only after open>.9. Native yt then lies
   // between rest and rest+.1*(H/2-rest); y=yt/2. Main lyric is static.
   if(id==='curtain'&&e.kind==='item'&&!e.args[0].placementMain){const b=A.bounds([p]);p=rect(b.x0,b.y0-plan.H*.025,b.x1,b.y1+plan.H*.025);}
-  return A.cameraEnvelope([p],plan,cut,e.kind==='item'?20:10);
+  return project([p],plan,cut,e.kind==='item'?20:10);
  }));
 }
 function ownedTopology(program,cut){
@@ -281,7 +282,7 @@ function nativeSizeQuality(native,prepared,explicitSize){
 function fitBounds(program,plan,cut,envelopes){
  if(A.layoutsBEditorial?.supports(cut.layout))return A.layoutsBEditorial.fitBounds(program,plan,cut,envelopes);
  if(cut.layout==='splitHalves'){
-  const g=program.nativeGeometry,hold=[];for(const q of g.lines){const b=glyphBox(cut.params.font,g.size,q.ln,{track:.04}),shear=cut.params.variant==='shear'?.175*g.size:0;hold.push(A.cameraEnvelope([rect(plan.W/2+b.x0-shear,q.y+b.y0-cut.params.gap*g.size/2,plan.W/2+b.x1+shear,q.y+b.y1+cut.params.gap*g.size/2)],plan,cut,20));}
+  const g=program.nativeGeometry,hold=[];for(const q of g.lines){const b=glyphBox(cut,cut.params.font,g.size,q.ln,{track:.04}),shear=cut.params.variant==='shear'?.175*g.size:0;hold.push(A.cameraEnvelope([rect(plan.W/2+b.x0-shear,q.y+b.y0-cut.params.gap*g.size/2,plan.W/2+b.x1+shear,q.y+b.y1+cut.params.gap*g.size/2)],plan,cut,20));}
   const body=A.bounds(hold),all=A.bounds(envelopes);return {...all,x0:cut.params.line==='full'?Math.min(0,body.x0):body.x0,x1:cut.params.line==='full'?Math.max(plan.W,body.x1):body.x1};
  }
  if(cut.layout==='rain')return A.bounds(rainEnvelopes(program,plan,cut,true));
@@ -292,7 +293,7 @@ function tunnelQuiet(program,plan,cut){
  const g=program.nativeGeometry;if(g?.kind!=='tunnel'||!g.fixedAux)fail('TUNNEL_QUIET_UNPROVED','Moved tunnel needs finite-CSS perimeter support');
  const a=g.auxSource,{A:ax,B:ay,s0,ref,lw}=a,C=Math.min(ax,ay)*.15;
  let normal=0;
- if(ref>=3)for(const ch of [...new Set([...a.unit])].filter(ch=>ch.trim())){const b=glyphBox(a.font,ref,ch);normal=Math.max(normal,-b.y0,b.y1);}
+ if(ref>=3)for(const ch of [...new Set([...a.unit])].filter(ch=>ch.trim())){const b=glyphBox(cut,a.font,ref,ch);normal=Math.max(normal,-b.y0,b.y1);}
  // Every horizontal/vertical edge is a rotated copy of the same fixed-font
  // normal ink. f=min(sc*C,ref); inset=.62*f. Stroke is round and keeps its
  // native physical width max(1,.035*f). Keep the final device reserve outside
@@ -328,7 +329,7 @@ function candidateRecipes(plan,cut,program,explicitSize){
  if(cut.layout==='equalizer'){
   const g=program.nativeGeometry;
   for(const fontScale of [1,.95,.9,.85,.8,.75,.7]){if(explicitSize&&fontScale!==1)continue;
-   const ink=new Map(g.items.map(q=>[q.i,glyphBox(cut.params.font,g.nativeSize*fontScale,q.ch)])),gap=Math.max(4,g.nativeSize*fontScale*.04);
+   const ink=new Map(g.items.map(q=>[q.i,glyphBox(cut,cut.params.font,g.nativeSize*fontScale,q.ch)])),gap=Math.max(4,g.nativeSize*fontScale*.04);
    for(const heightScale of [1,.85])for(const widthScale of [1,.7,.55,.45,.4]){
     if(widthScale===1&&(heightScale!==1||fontScale===1))continue;
     const pitch=g.nativeSw*fontScale*widthScale;
@@ -380,9 +381,9 @@ function adaptSign(plan,cut,program,renderer,segment,circle,explicitSize,budget)
  }
 }
 A.layoutsBNativeEnvelopes=envelope;
-A.finalizeLayoutsB=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize=false,cacheInputs})=>{
- const evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail];
- try{
+A.layoutsBSourceRestTime=sourceRestTime;
+A.layoutsBSourceEnvelopes=(program,plan,cut)=>envelope(program,plan,{...cut,sourceFormulaGlyphEffects:true},ps=>A.convexHull(ps.flat()));
+A.layoutsBFormulaDomain=(plan,cut,sourceOnly=false)=>{
   if(!(cut.dur>0)||cut.inDur<0||cut.outDur<0)fail('UNSUPPORTED_PARAMETER_RANGE','B finite positive duration required');
   if([...String(cut.text).trim()].length>64)fail('GEOMETRY_LIMIT','B source glyph count exceeds bounded domain');
   if(cut.layout==='stickerBomb'&&(!Number.isInteger(cut.params.cnt)||cut.params.cnt<4||cut.params.cnt>6))fail('UNSUPPORTED_PARAMETER_RANGE','Sticker source-rest domain requires native integer count4..6; late custom stickers are not certified');
@@ -394,8 +395,13 @@ A.finalizeLayoutsB=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,ex
   if(cut.layout==='hanging'&&(!(cut.params.amp>=.06&&cut.params.amp<=.11)||!(cut.params.kick>=.16&&cut.params.kick<=.26)))fail('UNSUPPORTED_PARAMETER_RANGE','Suspension amp/kick outside native domain');
   if(cut.layout==='bounceLine'&&(!(cut.params.hop>=.38&&cut.params.hop<=.6)||!(cut.params.tempo>=.42&&cut.params.tempo<=.6)))fail('UNSUPPORTED_PARAMETER_RANGE','Bounce hop/tempo outside native domain');
   if(cut.layout==='bubbles'&&(!(cut.params.rise>=.018&&cut.params.rise<=.035)||!(cut.params.wob>=.6&&cut.params.wob<=1.2)))fail('UNSUPPORTED_PARAMETER_RANGE','Bubble rise/wob outside native domain');
-  if(cut.treat!=='none')fail('UNSUPPORTED_ADAPTER','B treatment needs an owned interval adapter');
+  if(!sourceOnly&&cut.treat!=='none')fail('UNSUPPORTED_ADAPTER','B treatment needs an owned interval adapter');
   const finite=v=>typeof v==='number'?Number.isFinite(v):!v||typeof v!=='object'||Object.values(v).every(finite);if(!finite(cut.params))fail('UNSUPPORTED_PARAMETER_RANGE','Nonfinite B native parameter');
+};
+A.finalizeLayoutsB=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,explicitSize=false,cacheInputs})=>{
+ const evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail];
+ try{
+  A.layoutsBFormulaDomain(plan,cut);
   cut.placementUnits=true;cut.placementLayoutsB=true;cut.layoutBEvaluationRange=evaluationRange;const renderer=Object.create(J.Renderer.prototype),program=record(renderer,plan,cut,sourceRestTime(cut));
   const envelopes=envelope(program,plan,cut),fixed=fixedEnvelopes(program,plan,cut),segments=[],owner=cut.layout+'.composition',budget={cache:new Map(),hits:0},nativeMapping=sourceMapping(program,program,cut);let proofKey=null,priorProof=null,proofChecked=false,reusedSegments=0;const proofOutcomes=[];
   for(let i=0;i<plan.lyricAvoidanceIndex.regions.length;i++){

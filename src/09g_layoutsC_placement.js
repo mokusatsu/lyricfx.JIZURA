@@ -402,9 +402,9 @@ function solveSource(trial,recipe,plan,cut,circle,entryProof,exitProof){
  if(solution.status==='safe'){if(!selected)fail('BADGE_ANCHOR_PROOF_REQUIRED','Offset-dependent badge anchor connection requires its exact source envelopes');trial.badgeEntryEnvelopes=selected.entry;trial.exitEnvelopes=selected.exit;}
  return solution;
 }
-function sourceStageEnvelopes(program,plan,cut){
+function sourceStageEnvelopes(program,plan,cut,project=cameraEnvelope){
  if(!['stickyNotes','nameTag','clapper'].includes(cut.layout))return null;
- if(cut.layout==='nameTag')return program.events.filter(e=>e.role==='primary').map(e=>cameraEnvelope(e.polygons,plan,cut,e.kind==='item'?20:10));
+ if(cut.layout==='nameTag')return program.events.filter(e=>e.role==='primary').map(e=>project(e.polygons,plan,cut,e.kind==='item'?20:10));
  const trig=(a,b,cos)=>{const f=cos?Math.cos:Math.sin,v=[f(a),f(b)],base=cos?0:Math.PI/2;for(let k=Math.ceil((a-base)/Math.PI);base+k*Math.PI<b;k++)v.push(f(base+k*Math.PI));return [Math.min(...v),Math.max(...v)];},mul=(a,b)=>{const v=[a[0]*b[0],a[0]*b[1],a[1]*b[0],a[1]*b[1]];return [Math.min(...v),Math.max(...v)];},out=[];
  for(const e of program.events.filter(e=>e.role==='primary')){
   const s=e.nativeCBody;if(!s||!['sticky-note','name-badge','clapper-body','clapper-stick'].includes(s.kind))fail('SOURCE_STAGE_SWEEP_MISSING','Each sticky owned event requires its native note pivot/peel model');const theta=s.angle*J.DEG,c=Math.cos(theta),sn=Math.sin(theta),[px,py]=s.pivot,points=[];
@@ -413,13 +413,13 @@ function sourceStageEnvelopes(program,plan,cut){
    for(const scale of [1,s.maxEntryScale])points.push([px+(c*dx-sn*dy)*scale,py+(sn*dx+c*dy)*scale]);
    for(let j=0;j<32;j++){const z0=j/32,z1=(j+1)/32,angles=[theta+s.turn*J.DEG*z0,theta+s.turn*J.DEG*z1].sort((a,b)=>a-b),cs=trig(...angles,true),ss=trig(...angles,false),ys=mul([dy,dy],[1-(1-s.minYScale)*z1,1-(1-s.minYScale)*z0]),cx=mul(cs,[dx,dx]),sy=mul(ss,ys),sx=mul(ss,[dx,dx]),cy=mul(cs,ys),xx=[px+cx[0]-sy[1]+Math.min(s.dx*z0,s.dx*z1),px+cx[1]-sy[0]+Math.max(s.dx*z0,s.dx*z1)],yy=[py+sx[0]+cy[0]+Math.min(s.dy*z0,s.dy*z1),py+sx[1]+cy[1]+Math.max(s.dy*z0,s.dy*z1)];points.push([xx[0],yy[0]],[xx[0],yy[1]],[xx[1],yy[0]],[xx[1],yy[1]]);}
   }
-  out.push(cameraEnvelope([A.convexHull(points)],plan,cut,e.kind==='item'?20:10));
+  out.push(project([A.convexHull(points)],plan,cut,e.kind==='item'?20:10));
  }return out;
 }
 // Clapper entry may retain its native bottom entry crop. Its upper-stick
 // hinge arc, body drop and shake must still keep every owned pixel above the
 // stage top and inside both horizontal edges. Circle entry relaxation is separate.
-function sourceEntryEnvelopes(program,plan,cut){
+function sourceEntryEnvelopes(program,plan,cut,project=cameraEnvelope){
  if(cut.layout!=='clapper')return null;
  const range=(a,b,lo,hi)=>{const f=t=>a*Math.cos(t)+b*Math.sin(t),v=[f(lo),f(hi)],root=Math.atan2(b,a);for(let k=Math.ceil((lo-root)/Math.PI);root+k*Math.PI<hi;k++)v.push(f(root+k*Math.PI));return [Math.min(...v),Math.max(...v)];};
  return program.events.filter(e=>e.role==='primary').map(e=>{
@@ -429,7 +429,7 @@ function sourceEntryEnvelopes(program,plan,cut){
    const dx=c*(x-px)+sn*(y-py)-hx,dy=-sn*(x-px)+c*(y-py)-hy,lo=th-(s.kind==='clapper-stick'?28*J.DEG:0),hi=th,xr=range(dx,-dy,lo,hi),yr=range(dy,dx,lo,hi);
    for(const xx of xr)for(const yy of yr)for(const sx of [-s.entryShake,s.entryShake])for(const sy of [-s.entryShake*.6,s.entryDrop+s.entryShake*.6])points.push([base[0]+xx+sx,base[1]+yy+sy]);
   }
-  return cameraEnvelope([A.convexHull(points)],plan,cut,e.kind==='item'?20:10);
+  return project([A.convexHull(points)],plan,cut,e.kind==='item'?20:10);
  });
 }
 function sourceFitBounds(stage,entry,exit,badgeEntry){if(!stage)return null;const b=A.bounds(stage);if(entry){const a=A.bounds(entry);b.x0=Math.min(b.x0,a.x0);b.x1=Math.max(b.x1,a.x1);b.y0=Math.min(b.y0,a.y0);}if(badgeEntry){const a=A.bounds(badgeEntry);b.x0=Math.min(b.x0,a.x0);b.y0=Math.min(b.y0,a.y0);b.x1=Math.max(b.x1,a.x1);b.y1=Math.max(b.y1,a.y1);}if(exit){const a=A.bounds(exit);b.x0=Math.min(b.x0,a.x0);b.y0=Math.min(b.y0,a.y0);b.x1=Math.max(b.x1,a.x1);b.y1=Math.max(b.y1,a.y1);}return b;}
@@ -508,4 +508,5 @@ A.renderLayoutsC=(renderer,env)=>{
  if(active?.status==='safe-hold'&&!strictClear)fail('HOLD_CIRCLE_VIOLATION','C stationary owned unit intersects the active avoidance circle');
  env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,measurementSupported:true,envelopeCovered:covered,stageEnvelopeCovered,stageContained,entryEnvelopeCovered,entryStageContained,exitEnvelopeCovered,exitStageContained,badgeEntryEnvelopeCovered,badgeEntryStageContained,stationaryEvents:groups.filter(g=>g.strict).length,movingEvents:groups.filter(g=>!g.strict).length,strictCircleClear:strictClear,safety:active?.status==='insufficient-space'?'conflict':clear?'safe':relaxed&&strictClear?'source-entry-exit-relaxed':'conflict',safetyScope:active?.safetyScope||'no-active-region',polygons:moved,events:program.events.map(e=>({kind:e.kind,role:e.role,owner:e.owner,order:e.order,polygons:e.polygons}))});A.replay(env,program,offset);
 };
+A.layoutsCLinkedSource=Object.freeze({ids:['clapper','stickyNotes'],clock:(cut,plan)=>sourceStrategy(cut,cut.lyricSize!=null,plan).entry+.0001,envelopes:(program,plan,cut)=>[...(sourceStageEnvelopes(program,plan,cut,ps=>A.convexHull(ps.flat()))||[]),...(sourceEntryEnvelopes(program,plan,cut,ps=>A.convexHull(ps.flat()))||[])]});
 })();

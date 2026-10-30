@@ -5,8 +5,8 @@
 (() => {
 'use strict';
 const A=J.placement,ID=[1,0,0,1,0,0],fail=(code,message)=>{const e=Error(message);e.code=code;throw e;},rect=(a,b,c,d)=>[[a,b],[c,b],[c,d],[a,d]],clean=t=>String(t).replace(/\s/g,'');
-function proof(renderer,plan,cut){
- const ctx=A.measurementContext();ctx.reset();const time=cut.start+cut.dur/2,env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:time,realTime:time,lt:time-cut.start,ltb:time-cut.start,step:0,scale:1,allowFilter:false}),program=A.record(renderer,env),g=program.nativeDGeometry;
+function proof(renderer,plan,cut,options={}){
+ const ctx=A.measurementContext();ctx.reset();const time=cut.start+cut.dur/2,env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:time,realTime:time,lt:time-cut.start,ltb:time-cut.start,step:0,scale:1,allowFilter:false}),program=options.sourceProgram||A.record(renderer,env),g=program.nativeDGeometry;
  if(!program.measurementSupported||g?.kind!=='cube')fail('CUBE_RECORD','Native source cube geometry required: '+JSON.stringify(program.diagnostics));
  if(clean(g.chunks.join(''))!==clean(cut.text))fail('CUBE_SOURCE_COVERAGE','Ordered chunks must cover the complete source lyric');
  const {h,cx,cy,pitch:p}=g,cp=Math.cos(p),sp=Math.abs(Math.sin(p)),pop=1+4*1.3**3/(27*(1+1.3)**2),lw=Math.max(1.2,Math.min(plan.W,plan.H)*.0022);
@@ -22,10 +22,10 @@ function proof(renderer,plan,cut){
  }
  // Outline recorder's conservative miter bound uses the Frobenius norm of
  // the root; the native screen-space cube edges themselves have no CTM.
- const pad=lw*10+2,poly=rect(cx-rx*pop-pad,cy-up*pop-pad,cx+rx*pop+pad,cy+down*pop+pad),envelopes=[A.cameraEnvelope([poly],{...plan,style:cut.effectStyle||plan.style,fx:cut.effectFx||plan.fx},cut,20)];
- if(program.events.some(e=>e.role!=='primary'||e.owner!=='cube.solid'))fail('CUBE_UNMEASURED_OWNER','All cube surfaces and copies remain primary');
+ const pad=lw*10+2,poly=rect(cx-rx*pop-pad,cy-up*pop-pad,cx+rx*pop+pad,cy+down*pop+pad),envelopes=[(options.project||A.cameraEnvelope)([poly],{...plan,style:cut.effectStyle||plan.style,fx:cut.effectFx||plan.fx},cut,20)];
+ if(!options.sourceOnly&&program.events.some(e=>e.role!=='primary'||e.owner!=='cube.solid'))fail('CUBE_UNMEASURED_OWNER','All cube surfaces and copies remain primary');
  const ordered=sources.filter(s=>s.main).sort((a,b)=>a.chunk-b.chunk);
- if(ordered.length!==g.chunks.length||ordered.some((s,i)=>s.chunk!==i)||clean(ordered.map(s=>s.text).join(''))!==clean(cut.text))fail('CUBE_SOURCE_COVERAGE','Every lyric chunk must have a distinct native face');
+ if(!options.sourceOnly&&(ordered.length!==g.chunks.length||ordered.some((s,i)=>s.chunk!==i)||clean(ordered.map(s=>s.text).join(''))!==clean(cut.text)))fail('CUBE_SOURCE_COVERAGE','Every lyric chunk must have a distinct native face');
  return {envelopes,sources,geometry:{h,edgeLengths:[2*h,2*h,2*h],pitch:p,mode:g.mode,dir:g.dir},minPrimaryPx:Math.min(...sources.filter(s=>s.main).map(s=>s.size))*(cut.contentScale??1)};
 }
 function finalize({plan,cut,revision,stepDur,reachTail,explicitSize}){
@@ -55,4 +55,5 @@ function render({renderer,env,trajectory}){
  env.placementObservation?.({cut:env.cut.index,realTime:env.realTime,motionTime:env.t,pass:env.pass,offset,measurementSupported:true,envelopeCovered:covered,stageContained,strictCircleClear:clear,safety:active?.status==='safe'?'safe':'conflict',polygons:moved,events:program.events.map(e=>({kind:e.kind,role:e.role,owner:e.owner,order:e.order}))});A.replay(env,program,offset);
 }
 A.registerLayoutsDAdapter('cube',{id:'cube_source_v1',finalize,render});
+A.sourceFormulaD=A.sourceFormulaD||{};A.sourceFormulaD.cube=(renderer,plan,cut,program)=>proof(renderer,plan,cut,{sourceProgram:program,sourceOnly:true,project:ps=>A.convexHull(ps.flat())});
 })();

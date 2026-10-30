@@ -12,11 +12,11 @@ function validate(plan,cut,g){
   if(g.rows.length>48||g.rows.some(r=>[...r.value].length>256))bad('EDITORIAL_RECORD_LIMIT','Credits finite semantic source budget exceeded');
  }else if(g.cells.some(c=>!J.FONTS[c.font]))bad('EDITORIAL_FONT_MISSING','A real font key is required for every specimen cell');
 }
-function envelope(program,plan,cut){
+function envelope(program,plan,cut,project=A.cameraEnvelope){
  const g=program.nativeGeometry;validate(plan,cut,g);const out=[];
  for(const e of program.events){if(e.role!=='primary')bad('EDITORIAL_OWNERSHIP','Every editorial draw must remain primary');for(let p of A.layoutsBClip(e)){
   if(cut.layout==='typeSpecimen'&&e.kind==='item'&&e.args[0].placementSource&&!e.args[0].placementMain){const b=A.bounds([p]);p=rect(b.x0,b.y0,b.x1,b.y1+1.5*g.captionSize);}
-  out.push(A.cameraEnvelope([p],plan,cut,e.kind==='item'?20:10));
+  out.push(project([p],plan,cut,e.kind==='item'?20:10));
  }}
  if(!out.length)bad('EDITORIAL_EMPTY','No full source events');
  return [...new Map(out.map(p=>[JSON.stringify(p),p])).values()];

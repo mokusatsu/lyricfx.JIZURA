@@ -113,6 +113,7 @@ class Renderer {
 
   /* main entry: draw frame at time t into ctx (canvas px = design * scale) */
   frame(ctx, plan, t, opt = {}) {
+    if(plan.simpleCircleRequiresNoPost&&!opt.noPost&&!opt.noLyrics&&plan.layerVisibility?.lyrics!==false&&J.lyricCutsAt(plan,t).some(c=>Object.values(c.simpleCircleRecipe||{}).some(r=>r?.requiresNoPost)))throw Object.assign(Error('Prepared circle placement requires explicit noPost rendering'),{code:'SIMPLE_CIRCLE_NOPOST_REQUIRED'});
     if(!domino82qHooks&&J.dominoFrameTarget82ao(plan,{...opt,avoidanceRealTime:opt.avoidanceRealTime??t}))throw Object.assign(Error('DOMINO_UI_PREPARE_REQUIRED'),{code:'DOMINO_UI_PREPARE_REQUIRED'});
     if((burstBlocked83ag||!burst83adHooks)&&burstTarget83ag(plan,{...opt,avoidanceRealTime:opt.avoidanceRealTime??t}))throw Object.assign(Error('BURST83AG_BOOTSTRAP_BLOCKED'),{code:'BURST83AG_BOOTSTRAP_BLOCKED'});
     opt = { ...opt, avoidanceRealTime: opt.avoidanceRealTime ?? t, placementBudget: opt.placementBudget || {events:0,glyphs:0} };
@@ -299,7 +300,8 @@ class Renderer {
           env = this.makeEnv(X, plan, cut, csc, envOptions);
         }
         const blend = P.pass !== 'main' && J.lum(csc.bg) > .55 ? 'multiply' : 'source-over';
-        if(cut.simpleCircleRecipe)J.placement.simpleCircle.drawDecor(this,X,plan,cut,csc,envOptions,{x:shx+P.off[0],y:shy+P.off[1],blend},'back');
+        let simpleSourceBB=null;
+        if(cut.simpleCircleRecipe&&!cut.simpleCircleRecipe.nativeIdentity)J.placement.simpleCircle.drawDecor(this,X,plan,cut,csc,envOptions,{x:shx+P.off[0],y:shy+P.off[1],blend},'back');
         X.save();
         const area = cut.fullStagePlacement ? null : cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
         const contentW = env.W, contentH = env.H;
@@ -307,7 +309,7 @@ class Renderer {
           X.translate(areaX + contentW / 2, areaY + contentH / 2);
           X.rotate((area.angle || 0) * J.DEG);
           X.translate(-areaX - contentW / 2, -areaY - contentH / 2);
-          X.beginPath(); X.rect(areaX, areaY, contentW, contentH); X.clip();
+          if(!Object.values(cut.simpleCircleRecipe||{}).some(r=>r?.nativeViewport&&r.sourceArea)){X.beginPath(); X.rect(areaX, areaY, contentW, contentH); X.clip();}
         }
         const cs = J.lerp(1, cam.s ?? 1, motion) * (cut.contentScale ?? 1);
         X.translate(areaX + contentW / 2 + (shx + P.off[0] + (cam.x || 0)) * motion, areaY + contentH / 2 + (shy + P.off[1] + (cam.y || 0)) * motion);
@@ -334,10 +336,11 @@ class Renderer {
           // native drawCut body is L.render plus its catch. Dispatch the same
           // source directly so an admitted source failure propagates explicitly.
           bulbs80Hooks.paint(Object.freeze({renderer:this,env}));
-        } else if(cut.simpleCircleRecipe)J.LAYOUTS[cut.layout].render(env);
-        else if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
+        } else if(cut.simpleCircleRecipe?.nativeIdentity)simpleSourceBB=this.drawCut(env);
+        else if(cut.simpleCircleRecipe)simpleSourceBB=cut.simpleCircleRecipe.sourceFormula?J.placement.sourceFormulaBase.render(this,env,cut.simpleCircleRecipe.sourceFormula):J.LAYOUTS[cut.layout].render(env);
+        else if (cut.fullStagePlacement) {const legacy=J.placement.simpleCircle.origin(plan,plan.cuts.find(c=>c.index===cut.index));J.placement.render(this,legacy?{...env,plan:legacy.plan,cut:J.lyricRenderCut(legacy.cut)}:env);} else this.drawCut(env);
         X.restore();
-        if(cut.simpleCircleRecipe)J.placement.simpleCircle.drawDecor(this,X,plan,cut,csc,envOptions,{x:shx+P.off[0],y:shy+P.off[1],blend},'front');
+        if(cut.simpleCircleRecipe&&!cut.simpleCircleRecipe.nativeIdentity)J.placement.simpleCircle.drawDecor(this,X,plan,cut,csc,envOptions,{x:shx+P.off[0],y:shy+P.off[1],blend,bb:simpleSourceBB},'front');
         if (sourceMask) J.applyMaskToCanvas(X.canvas, mask, contentMatrix, contentW, contentH, { cut, t: tp, plan });
         if (X !== target) {
           target.save(); target.setTransform(1, 0, 0, 1, 0, 0); target.globalAlpha = 1; target.globalCompositeOperation = blend;

@@ -410,7 +410,8 @@ function placementCutPreserved86cm(plan,cut,lineage=sources.get(plan)){
  if(plan.lyricAvoidanceIndex?.enabled!==true||['manual','notation'].includes(cut.areaMode)||cut.placementLocked||cut.emphasis)return true;
  return lineage?lineage.locked.includes(cut.index):null;
 }
-Object.defineProperty(A,'placementCutPreserved86cm',{value:(plan,cut)=>Array.isArray(plan?.cuts)&&plan.cuts.includes(cut)?placementCutPreserved86cm(plan,cut):null});
+Object.defineProperty(A,'placementSourceCut86cm',{value:(plan,cut)=>{const origin=A.simpleCircle?.origin(plan,cut),lineage=sources.get(origin?.plan||plan);return lineage?.originalCuts?.find(c=>c.index===cut.index)||origin?.cut||cut;}});
+Object.defineProperty(A,'placementCutPreserved86cm',{value:(plan,cut)=>{if(!Array.isArray(plan?.cuts)||!plan.cuts.includes(cut))return null;const origin=A.simpleCircle?.origin(plan,cut);return origin?placementCutPreserved86cm(origin.plan,origin.cut):placementCutPreserved86cm(plan,cut);}});
 let layoutsCFinalCache=null;
 A.installLayoutsCFinalCache=hooks=>{if(layoutsCFinalCache||!hooks||!['begin','read','keep'].every(k=>typeof hooks[k]==='function'))fail('INVALID_C_CACHE_HOOKS','Single C cache installation required');layoutsCFinalCache=Object.freeze({...hooks});delete A.installLayoutsCFinalCache;return {stats:nativeLocalBoundsStats,clear:clearNativeLocalBounds};};
 const oldPlan=J.plan;
@@ -482,6 +483,21 @@ J.finalizePlacementPlan = (input,options={}) => {
   finalized.set(plan,{signature:signature(plan),revision,options:optionsCacheable?JSON.stringify(options):null});sources.set(plan,{...lineage,originalCuts});const output=freeze(plan);A.finishLayoutsDFinalization?.(output);return output;}catch(error){finalized.delete(plan);sources.delete(plan);try{A.abortLayoutsDFinalization?.(plan,error,{authorityRevoked:true})}catch{}/* Preserve the original throw value, including null/primitive/frozen Error. */throw error;}
 };
 J.finalizePlacementPlanAsync = async (plan,wait,options={}) => {const token={},sig=signature(plan);requests.set(plan,token);await wait; if(requests.get(plan)!==token||signature(plan)!==sig)fail('STALE_FINALIZATION','A newer request or composed plan superseded this result');return J.finalizePlacementPlan(plan,options);};
+// A loaded FontFaceSet can still contain unloaded unicode-range subsets, or no
+// matching face at all. Reuse measurements only after checking the actual request.
+A.finalFontsCurrent = async (plan,text='') => {
+ const rec=finalized.get(plan),current=()=>!!rec&&rec.revision===(J.metrics.revision||0)&&Object.isFrozen(plan)&&rec.signature===signature(plan);
+ if(!current()||!document.fonts?.load||!document.fonts.check)return false;
+ const keys=J.fontsOfPlan(plan),faces=keys.map(k=>J.faceOf?J.faceOf(k):J.FONTS[k]);
+ if(J.langBaseFaces)for(const f of J.langBaseFaces(keys))faces.push({family:'"'+f.family+'"',weight:f.weight});
+ const specs=[...new Set(faces.map(f=>`${f.weight} 64px ${f.family}`))],glyphs=[...new Set([...(text+plan.cuts.map(c=>c.text||'').join('')+J.drawingText(plan))])].join('')||'あ';
+ if(!specs.every(spec=>document.fonts.check(spec,glyphs)))return false;
+ const loaded=new Set([...document.fonts].filter(f=>f.status==='loaded'));
+ // load() also resolves the matched faces. Empty results cannot prove a family
+ // exists; any newly loaded face requires ensureFonts to invalidate metrics.
+ const matches=await Promise.all(specs.map(spec=>document.fonts.load(spec,glyphs).catch(()=>[])));
+ return current()&&matches.every(fs=>fs.length>0&&fs.every(f=>loaded.has(f)&&document.fonts.has(f)&&f.status==='loaded'))&&specs.every(spec=>document.fonts.check(spec,glyphs));
+};
 A.validateFinal = plan => {const rec=finalized.get(plan);if(!rec||rec.revision!==(J.metrics.revision||0)||!Object.isFrozen(plan))fail('STALE_PLACEMENT_PLAN','Refinalize after font/compose changes');};
 A.offsetAt=(trajectory,t)=>{const s=trajectory.segments.find(s=>s.start<=t&&t<s.end);if(!s)return [0,0];const u=(t-s.start)/(s.end-s.start);return [J.lerp(s.from[0],s.to[0],u),J.lerp(s.from[1],s.to[1],u)];};
 A.render = (renderer,env) => {

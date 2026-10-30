@@ -35,7 +35,7 @@ J.animateMainItem = (env,it) => {
   const ex = J.EXIT[it.exit || cut.exit] || J.EXIT.cut;
   const ho = J.HOLD[it.hold || cut.hold] || J.HOLD.still;
   // text treatment (outline, extrude, marker...) — layouts that paint their own plates opt out with it.plain
-  if (cut.treat && !it.plain && J.TREAT && J.TREAT[cut.treat]) { try { J.TREAT[cut.treat].apply(env, it, cut.treatP || {}); } catch (e) { if (env.placementRecording) throw e; console.warn('treat', cut.treat, e); } }
+  if (cut.treat && !it.plain && J.TREAT && J.TREAT[cut.treat]) { try { J.TREAT[cut.treat].apply(env, it, cut.treatP || {}); } catch (e) { if (env.placementRecording || env.sourceGeometryItem) throw e; console.warn('treat', cut.treat, e); } }
   const motion = cut.motionScale ?? 1;
   const rest = motion < 1 ? { x: it.x, y: it.y, size: it.size, sx: it.sx ?? 1, sy: it.sy ?? 1, rot: it.rot || 0, skew: it.skew || 0 } : null;
   if (ltI < 0 && en === J.ENTER.cut) return null;
@@ -83,7 +83,7 @@ J.drawFx = (env, it) => {
     }
     const r = J.drawItem(env, it); if (r) bb = r;
   };
-  if (it.pre) { try { it.pre(env, it); } catch (e) { if (env.placementRecording) throw e; console.warn(e); } }
+  if (it.pre) { try { it.pre(env, it); } catch (e) { if (env.placementRecording || env.sourceGeometryItem) throw e; console.warn(e); } }
   if (it.clip) { ctx.save(); ctx.beginPath(); ctx.rect(it.clip[0], -env.H, it.clip[1] - it.clip[0], env.H * 3); ctx.clip(); }
   if (it.clipY) { ctx.save(); ctx.beginPath(); ctx.rect(-env.W, it.clipY[0], env.W * 3, it.clipY[1] - it.clipY[0]); ctx.clip(); }
   if (it.clipFn) { ctx.save(); ctx.beginPath(); it.clipFn(ctx, env, it); ctx.clip(); }
@@ -102,7 +102,7 @@ J.drawFx = (env, it) => {
   if (it.clipFn) ctx.restore();
   if (it.clipY) ctx.restore();
   if (it.clip) ctx.restore();
-  if (it.post) { try { it.post(env, it, bb); } catch (e) { if (env.placementRecording) throw e; console.warn(e); } }
+  if (it.post) { try { it.post(env, it, bb); } catch (e) { if (env.placementRecording || env.sourceGeometryItem) throw e; console.warn(e); } }
   if (it.wipeBar) env.rect(it.wipeBar.x - Math.max(4, it.size * 0.035), it.y - it.wipeBar.h / 2, Math.max(8, it.size * 0.07), it.wipeBar.h, env.sc.accent, 1, false);
   if (it.cursorAt != null && it.cursorAt >= 0) {
     const m = it._m || J.measure(it);

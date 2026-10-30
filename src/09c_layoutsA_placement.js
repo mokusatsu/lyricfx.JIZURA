@@ -51,11 +51,11 @@ function numericSweep(event,cut){
  const ink=[...new Set(digits+fixed.join(''))].flatMap(ch=>A.itemGeometry({text:ch,font:it.font,size:it.size,x:0,y:0},[1,0,0,1,0,0],{pass:'main',scale:1}).polygons),b=A.bounds(ink),x0=it.align==='left'?0:it.align==='right'?-width:-width/2,x1=it.align==='left'?width:it.align==='right'?0:width/2,a=(it.rot||0)*J.DEG,c=Math.cos(a),sn=Math.sin(a),sk=Math.tan((it.skew||0)*J.DEG),m=A.multiply(event.matrix,A.multiply([1,0,0,1,it.x,it.y],A.multiply([c,sn,-sn,c,0,0],[it.sx||1,0,sk*(it.sy||1),it.sy||1,0,0])));
  return rect(x0+b.x0,b.y0,x1+b.x1,b.y1).map(p=>A.point(m,p));
 }
-function nativeEnvelopes(program,plan,cut,holdOnly=false){
+function nativeEnvelopes(program,plan,cut,holdOnly=false,project=A.cameraEnvelope){
  const u=Math.min(plan.W,plan.H),id=cut.layout,p=cut.params;
- const primary=program.events.filter(e=>e.role==='primary'&&e.polygons.length),main=primary.filter(e=>e.args[0]?.placementMain),mainPolys=main.flatMap(e=>e.polygons),mainBounds=A.bounds(mainPolys);
+ const primary=program.events.filter(e=>e.role==='primary'&&e.polygons.length),main=primary.filter(e=>e.args[0]?.placementMain),mainPolys=main.flatMap(e=>e.polygons),mainBounds=mainPolys.length?A.bounds(mainPolys):null;
  const polygons=[];
- for(const e of primary){const numeric=numericSweep(e,cut);if(numeric)polygons.push(A.cameraEnvelope([sweepPolygon(numeric,e.nativeSweep)],plan,cut,20));}
+ for(const e of primary){const numeric=numericSweep(e,cut);if(numeric)polygons.push(project([sweepPolygon(numeric,e.nativeSweep)],plan,cut,20));}
  for(const e of primary)for(const polygon of clippedPolygons(e)){
   let sweep=e.nativeSweep;
   if(holdOnly&&['quote','ticket'].includes(id))sweep=null;
@@ -76,24 +76,28 @@ function nativeEnvelopes(program,plan,cut,holdOnly=false){
    const V=[plan.W/2+(p.mode==='side'?p.vx*plan.W*.36:0),plan.H*.1],anchorY=main[0].args[0].y,pad=Math.max(Math.abs(mainBounds.y0-anchorY),Math.abs(mainBounds.y1-anchorY))*Math.tan(14*J.DEG)+4;
    shape=rect(Math.min(mainBounds.x0,V[0])-pad,Math.min(mainBounds.y0,V[1])-pad,Math.max(mainBounds.x1,V[0])+pad,Math.max(mainBounds.y1,V[1])+pad);
   }
-  polygons.push(A.cameraEnvelope([shape],plan,cut,e.kind==='item'?20:10));
+  polygons.push(project([shape],plan,cut,e.kind==='item'?20:10));
  }
  if(!polygons.length)fail('UNSUPPORTED_MEASUREMENT','A26 requires measured native primary ink');
  return polygons;
 }
+A.layoutsASourceEnvelopes=(program,plan,cut,hold=false)=>nativeEnvelopes(program,plan,cut,hold,ps=>A.convexHull(ps.flat()));
 A.layoutsAHoldEnvelopes=(program,plan,cut)=>nativeEnvelopes(program,plan,cut,true);
-A.finalizeLayoutsA=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,adaptive=false,explicitSize=false,selectionOrigin='unknown'})=>{
- const evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail];
- try{
+A.layoutsAFormulaDomain=(plan,cut,sourceOnly=false)=>{
   const visit=v=>{if(Array.isArray(v)&&v.length>64||typeof v==='string'&&[...v].length>4096)fail('GEOMETRY_LIMIT','Native parameter array/string resource ceiling exceeded');if(typeof v==='number'&&!Number.isFinite(v))fail('UNSUPPORTED_PARAMETER_RANGE','Nonfinite native layout parameter');if(v&&typeof v==='object')Object.values(v).forEach(visit);};visit(cut.params);visit([cut.text,cut.lineText||'',cut.note||'']);
   const p=cut.params,between=(v,a,b)=>Number.isFinite(v)&&v>=a&&v<=b;
   if(cut.layout==='justified'&&!between(p.dens,.062,.078)||cut.layout==='searchBar'&&(!Number.isInteger(p.sugg)||!between(p.sugg,1,4))||cut.layout==='subtitleBar'&&(!between(p.bar,.1,.13)||![-1,1].includes(p.drift))||cut.layout==='filmstrip'&&![-1,1].includes(p.dir)||cut.layout==='perspective'&&(!between(p.speed,.25,.45)||!['floor','side'].includes(p.mode))||cut.layout==='gridCells'&&!between(p.gap,0,.16)||cut.layout==='lowerThird'&&!between(p.lift,0,.04)||cut.layout==='zigzag'&&(!between(p.amp,.24,.34)||![-1,1].includes(p.phase))||cut.layout==='genkou'&&!between(p.pad,2,4)||cut.layout==='panels'&&(!between(p.slant,5,11)||!Array.isArray(p.widths)||p.widths.some(v=>!between(v,.8,1.25))))fail('UNSUPPORTED_PARAMETER_RANGE','Outside source-certified native parameter domain');
   const nativeNumbers={corners:{ratio:[.76,1]},staircase:{shrink:[.82,.9]},bubble:{off:[-.05,.05]},ticker:{speed:[.8,1.3]},splitScreen:{tilt:[12,22]},mirror:{strength:[.34,.5]},ticket:{serial:[1,999999]}};
   for(const [key,range]of Object.entries(nativeNumbers[cut.layout]||{}))if(!between(p[key],...range))fail('UNSUPPORTED_PARAMETER_RANGE','Outside native '+cut.layout+'.'+key+' range');
   if(cut.layout==='bubble'&&![-1,1].includes(p.tail)||cut.layout==='splitScreen'&&![-1,1].includes(p.side)||cut.layout==='edgeFrame'&&!between(Math.abs(p.speed),.6,1.2)||cut.layout==='panels'&&p.widths.length!==3||cut.layout==='ticket'&&!Number.isInteger(p.serial))fail('UNSUPPORTED_PARAMETER_RANGE','Outside native A26 discrete parameter domain');
-  if(cut.treat!=='none')fail('UNSUPPORTED_ADAPTER','A26 treatment requires an owned native treatment envelope');
+  if(!sourceOnly&&cut.treat!=='none')fail('UNSUPPORTED_ADAPTER','A26 treatment requires an owned native treatment envelope');
   if(cut.layout==='panels'&&cut.params.fx==='tone')fail('UNSUPPORTED_ADAPTER','Panel tone pattern requires a bounded paint adapter');
   if(cut.layout==='bubble'&&Math.abs(cut.params.tilt)>3||cut.layout==='hanko'&&Math.abs(cut.params.rot)>7||cut.layout==='filmstrip'&&Math.abs(cut.params.tilt)>3||cut.layout==='ticket'&&Math.abs(cut.params.tilt)>5||cut.layout==='perspective'&&(!(cut.params.copies>=1&&cut.params.copies<=16)||Math.abs(cut.params.vx)>1)||cut.layout==='mirror'&&(!(cut.params.squash>0&&cut.params.squash<=1)))fail('UNSUPPORTED_PARAMETER_RANGE','Native A26 transform range exceeded');
+};
+A.finalizeLayoutsA=(plan,cut,original,diagnostics,{revision,stepDur,reachTail,adaptive=false,explicitSize=false,selectionOrigin='unknown'})=>{
+ const evaluationRange=[Math.min(cut.start,cut.renderStart??cut.start)-stepDur,Math.max(cut.end,cut.displayEnd??cut.end)+reachTail];
+ try{
+  A.layoutsAFormulaDomain(plan,cut);
   cut.placementUnits=true;cut.placementLayoutsA=true;cut.layoutAEvaluationRange=evaluationRange;if(adaptive&&A.layoutsAAdaptive8.includes(cut.layout))cut.placementAdaptiveTrial=true;
   const renderer=Object.create(J.Renderer.prototype),ctx=A.measurementContext();ctx.reset();
   const time=cut.start+cut.dur/2,env=renderer.makeEnv(ctx,plan,cut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass:'main',t:time,realTime:time,lt:cut.dur/2,ltb:cut.dur/2,pIn:1,pOut:0,step:0,scale:1,allowFilter:false,placementEnvelope:true,layoutAEvaluationRange:evaluationRange});
