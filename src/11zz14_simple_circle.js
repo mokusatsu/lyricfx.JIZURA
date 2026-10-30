@@ -4,7 +4,8 @@
 const A=J.placement,ID=[1,0,0,1,0,0],policy='direction-region-arrangement-20261030';
 const sourceCuts=new WeakMap();
 const intervals=(plan,cut)=>{const h=J.stepDur(plan.fx,plan.fps),start=Math.min(cut.start,cut.renderStart??cut.start)-h,end=Math.max(cut.end,cut.displayEnd??cut.end)+.6+2*h+1.6/24+.07;return {start,end,regions:(plan.lyricAvoidanceIndex?.regions||[]).filter((r,i)=>r.start<end&&Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration)>start)};};
-const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&(['center','vcols','headlineDeck'].includes(cut.layout)||cut.layout==='numbered'&&cut.params.variant==='cols')&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
+const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&((['center','vcols','headlineDeck'].includes(cut.layout)||cut.layout==='bulbs'&&A.bulbsSimple?.handles(plan,cut))||cut.layout==='numbered'&&cut.params.variant==='cols')&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
+const preparedCut=(plan,cut)=>sourceCuts.get(plan)?.has(cut.index)===true&&plan.cuts.includes(cut);
 const activeCut=(plan,c,t)=>{const r=intervals(plan,c);return targets(plan,c)&&t>=r.start&&t<r.end;};
 const active=(plan,t)=>plan?.cuts.some(c=>activeCut(plan,c,t));
 const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];
@@ -14,7 +15,7 @@ const SUPPORT_SIGMA=6,MAX_GLYPHS=256,MAX_PAINTS=8192;
 function localEnvelope(item,cut){
  const n=J.layoutText(item).length;if(n>MAX_GLYPHS)throw Object.assign(Error('Glyph budget'),{code:'UNSUPPORTED_GLYPH_BUDGET'});
  const paints=3*(8*n+16);if(paints>MAX_PAINTS)throw Object.assign(Error('Paint budget'),{code:'UNSUPPORTED_PAINT_BUDGET'});
- const inkBleed=cut.enter==='inkBleed',magnet=cut.enter==='magnet',exit=cut.exit==='overexposeOut',flash=cut.hold==='flashBox',z=item.size,rest={...item,x:0,y:0},box=J.itemBox(rest),points=[],steady=[],light=[];
+ const inkBleed=cut.enter==='inkBleed',neon=cut.enter==='neonOn',magnet=cut.enter==='magnet',exit=cut.exit==='overexposeOut',flash=cut.hold==='flashBox',z=item.size,rest={...item,x:0,y:0},box=J.itemBox(rest),points=[],steady=[],light=[];
  const glyphScale=(inkBleed?1.023:1)*(magnet?1.14:1)*(flash?1.05:1),travel=magnet?z*2.8:0;
  for(const k of exit?[1,1.07]:[1])for(const track of exit?[item.track||0,(item.track||0)+.06]:[item.track||0]){
   const it={...rest,_m:null,_lay:null,size:z*k,track,x:box.cx*(1-k),y:box.cy*(1-k)},lay=J.layoutText(it),geometry=A.itemGeometry(it,ID,{pass:'main',scale:1});
@@ -22,9 +23,9 @@ function localEnvelope(item,cut){
   if(flash)for(const g of lay){const cx=it.x+(g.x+g.vx)*(it.sx||1),cy=it.y+(g.y+g.vy)*(it.sy||1),w=(it.vertical?it.size*(it.sx||1):g.w*(it.sx||1))*1.224,h=(it.vertical?g.h*(it.sy||1):it.size*(it.sy||1))*1.224;light.push(...rectangle({x0:cx-w/2,y0:cy-h/2,x1:cx+w/2,y1:cy+h/2}));}
   if(exit){const b=J.itemBox(it),w=b.w*3.06;light.push(...rectangle({x0:b.cx-w/2,y0:it.y-z*.09,x1:b.cx+w/2,y1:it.y+z*.09}));}
  }
- const b=A.bounds([points]),filter=inkBleed?Math.min(36,z*.16):0,shadow=Math.max(inkBleed?z*.3:0,exit?z*.9:0),d=cut.treat==='hardShadow'?z*1.07*cut.treatP.d:0,ox=d*Math.abs(cut.treatP?.dir?.[0]||0),oy=d*Math.abs(cut.treatP?.dir?.[1]||0);
+ const b=A.bounds([points]),filter=inkBleed?Math.min(36,z*.16):0,shadow=Math.max(inkBleed?z*.3:0,neon?Math.min(80,z*.32):0,exit?z*.9:0),d=cut.treat==='hardShadow'?z*1.07*cut.treatP.d:0,ox=d*Math.abs(cut.treatP?.dir?.[0]||0),oy=d*Math.abs(cut.treatP?.dir?.[1]||0);
  // This deliberately adds filter and shadow tails, including enter/exit overlap.
- const separated=(cut.inDur??0)+(cut.outDur??0)<=cut.dur,entryTail=filter+(inkBleed?z*.3/2:0),exitTail=exit?z*.9/2:0,blurPad=SUPPORT_SIGMA*(separated?Math.max(entryTail,exitTail):filter+shadow/2),pad=(blurPad+2)/Math.min(1,cut.contentScale??1);
+ const separated=(cut.inDur??0)+(cut.outDur??0)<=cut.dur,entryTail=filter+(inkBleed?z*.3/2:neon?Math.min(80,z*.32)/2:0),exitTail=exit?z*.9/2:0,blurPad=SUPPORT_SIGMA*(separated?Math.max(entryTail,exitTail):filter+shadow/2),pad=(blurPad+2)/Math.min(1,cut.contentScale??1);
  const entryBox=A.bounds([points]),exitBox=A.bounds([steady]),entryPad=(SUPPORT_SIGMA*entryTail+2)/Math.min(1,cut.contentScale??1),exitPad=(SUPPORT_SIGMA*exitTail+2)/Math.min(1,cut.contentScale??1),expand=(b,p)=>rectangle({x0:b.x0-p-ox,y0:b.y0-p-oy,x1:b.x1+p+ox,y1:b.y1+p+oy}),glyphBounds=separated?[expand(entryBox,entryPad),expand(exitBox,exitPad)]:[expand(b,pad)],bounds=A.bounds([...glyphBounds,...(light.length?[light]:[])]);const body=A.bounds(A.itemGeometry(rest,ID,{pass:'main',scale:1}).polygons),bodyPad=flash?z*.06:0;return {bounds,body:{x0:body.x0-bodyPad,y0:body.y0-bodyPad,x1:body.x1+bodyPad,y1:body.y1+bodyPad},paintBudget:paints,blurPad,glyphs:n};
 }
 function stageEnvelope(local,item,plan,cut,bodyOnly=false){
@@ -35,7 +36,7 @@ function stageEnvelope(local,item,plan,cut,bodyOnly=false){
  const cw=Math.round(W*scale),sw=Math.max(1,Math.round(cw/4)),upscale=cw/sw,rasterPad=2/scale,resamplePad=2*upscale/scale;
  const dx=rasterPad+turn+(3.4*chroma+16*shake)*H/1080*motion+W*.016*rgb+resamplePad+(cut.cam==='panL'||cut.cam==='panR'?W*Math.abs(P.a||.022)*K*motion:0),dy=rasterPad+turn+(1.9*chroma+11*shake)*H/1080*motion+H*.004*rgb+resamplePad+(cut.cam==='dollyIn'?H*.008*K:cut.cam==='beatPunch'?H*.004*K:0);
  // Existing quarter-size post bloom: sigma is max(2,round(width/4/160))*4.
- const bloom=SUPPORT_SIGMA*Math.max(2,Math.round(sw/160))*upscale/scale;
+ const bloom=cut.layout!=='bulbs'||(st.glow??.6)*.5*(fx.texture??.6)>.05?SUPPORT_SIGMA*Math.max(2,Math.round(sw/160))*upscale/scale:0;
  return rectangle({x0:box.x0-dx-bloom,y0:box.y0-dy-bloom,x1:box.x1+dx+bloom,y1:box.y1+dy+bloom});
 }
 function prepare(plan,previous=null,{scale=1}={}){
@@ -45,13 +46,15 @@ function prepare(plan,previous=null,{scale=1}={}){
   let reason=null;
   const fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style;
   const numeric=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fx.motion??.7,fx.chroma??.7,st.ghost??1,cut.camP?.a??0,cut.camP?.dir??1,cut.treatP?.d??0,...(cut.treatP?.dir||[]),...Object.values(cut.params).filter(v=>typeof v==='number')];if(!numeric.every(Number.isFinite)||plan.W<=0||plan.H<=0||(cut.contentScale??1)<=0||(cut.motionScale??1)<0||(cut.motionScale??1)>1||(fx.motion??.7)<0||(fx.motion??.7)>1||(fx.chroma??.7)<0||(st.ghost??1)<0||cut.text.length===0||(cut.camP?.a??0)<0||Math.abs(cut.camP?.dir??1)>1||(cut.treatP?.d??0)<0)reason='UNSUPPORTED_PARAMETER_RANGE';
-  if(!['cut','flicker','inkBleed','magnet'].includes(cut.enter)||!['cut','overexposeOut'].includes(cut.exit)||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)||!['none','hardShadow'].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!['verticalStrip','dataColumns','sonarArcs'].includes(d.id)&&!(cut.layout==='headlineDeck'&&d.id==='romajiLine'))||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam))reason='UNSUPPORTED_MOTION';
+  if(!['cut','flicker','inkBleed','magnet',...(cut.layout==='bulbs'?['neonOn']:[])].includes(cut.enter)||!['cut','overexposeOut'].includes(cut.exit)||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)||!['none','hardShadow'].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!['verticalStrip','dataColumns','sonarArcs'].includes(d.id)&&!(['headlineDeck','bulbs'].includes(cut.layout)&&d.id==='romajiLine'))||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam))reason='UNSUPPORTED_MOTION';
   if((plan.events||[]).some(e=>!['chroma','shake','rgbSplit'].includes(e.type))||cut.trans&&cut.trans!=='none')reason='UNSUPPORTED_EFFECT';
   if(cut.layout==='center'&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text))reason='UNSUPPORTED_AUXILIARY';
   const regions=intervals(plan,original).regions;
   if(regions.length!==1)reason='UNSUPPORTED_REGION_CHANGE';
   if(cut.layout==='numbered'&&((cut.decor||[]).length||cut.params.chunks?.length>3))reason='UNSUPPORTED_NUMBERED_COLUMNS';
+  if(cut.layout==='bulbs'&&(cut.decor||[]).some(d=>d.id!=='romajiLine'))reason='UNSUPPORTED_BULBS_DECOR';
   if(reason){diagnostics.push({cut:cut.index,status:'unsupported',reason});continue;}
+  if(cut.layout==='bulbs'){const result=A.bulbsSimple.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:original,bulbs:result.recipe,renderScale:scale,policy};}continue;}
   if(cut.layout==='headlineDeck'){const result=A.headlineCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:original,headlineDeck:result.recipe,renderScale:scale,policy};}continue;}
   if(cut.layout==='numbered'){const result=A.numberedCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:original,numberedColumns:result.recipe,renderScale:scale,policy};}continue;}
   const area=cut.area,W0=area?plan.W*area.w:plan.W,H0=area?plan.H*area.h:plan.H;
@@ -91,12 +94,12 @@ function prepare(plan,previous=null,{scale=1}={}){
 function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
  const source=cut.simpleCircleRecipe.sourceCut;if(source.layout==='numbered')return;const env=renderer.makeEnv(ctx,plan,source,sc,options),area=source.area,W=env.W,H=env.H,ax=area?area.x*plan.W:0,ay=area?area.y*plan.H:0,motion=source.motionScale??1,cam=J.CAMERA[source.cam].get(env,source.camP||{}),scale=J.lerp(1,cam.s??1,motion)*(source.contentScale??1);
  ctx.save();try{if(area){ctx.translate(ax+W/2,ay+H/2);ctx.rotate((area.angle||0)*J.DEG);ctx.translate(-ax-W/2,-ay-H/2);ctx.beginPath();ctx.rect(ax,ay,W,H);ctx.clip();}ctx.translate(ax+W/2+(root.x+(cam.x||0))*motion,ay+H/2+(root.y+(cam.y||0))*motion);if(cam.rot)ctx.rotate(cam.rot*J.DEG*motion);ctx.scale(scale,scale);ctx.translate(-W/2,-H/2);ctx.globalCompositeOperation=root.blend;
-  const hg=source.layout==='headlineDeck'?J.headlineDeckGeometry(env):null,base=hg?{text:hg.fb.text,font:source.params.font,size:hg.size,x:hg.mx,y:hg.hy,align:'left',lead:1.02,track:-.01}:J.basicMainItem(env),item=J.animateMainItem(env,base);let bb=hg?{x0:hg.mx,y0:hg.hy-hg.m.h/2,x1:hg.mx+hg.m.w,y1:hg.hy+hg.m.h/2,cx:hg.mx+hg.m.w/2,cy:hg.hy,boxes:[]}:null;
-  if(item){const lay=J.layoutText(item),boxes=[];for(const g of lay){if(!g.ch.trim())continue;const c=item.charFn?.(g.i,g,lay.N);if(c?.hide||(item.alpha??1)*(c?.a??1)<=.002)continue;const k=c?.s??1;boxes.push({x:(g.x+g.vx)*(item.sx||1)+(c?.dx||0),y:(g.y+g.vy)*(item.sy||1)+(c?.dy||0),w:g.w*(item.sx||1)*k,h:g.h*(item.sy||1)*k});}if(boxes.length)bb={x0:item.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:item.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:item.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:item.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:item.x,cy:item.y,boxes};}
+  const bg=source.layout==='bulbs'?A.bulbsNativeGeometry80.layout(env):null,bp=bg?A.bulbsNativeGeometry80.pose(env,bg):null,hg=source.layout==='headlineDeck'?J.headlineDeckGeometry(env):null,base=bg?{text:bg.text,font:source.params.font,size:bg.size*Math.min(1,bp.q),x:bg.cx,y:bg.cy-(bg.subT?bg.ss*.9:0),...bg.o,noHold:!['still','jitter','breathe','glitchtick'].includes(source.hold)}:hg?{text:hg.fb.text,font:source.params.font,size:hg.size,x:hg.mx,y:hg.hy,align:'left',lead:1.02,track:-.01}:J.basicMainItem(env),item=J.animateMainItem(env,base);let bb=hg?{x0:hg.mx,y0:hg.hy-hg.m.h/2,x1:hg.mx+hg.m.w,y1:hg.hy+hg.m.h/2,cx:hg.mx+hg.m.w/2,cy:hg.hy,boxes:[]}:null;
+  if(item&&(!bp||bp.q>.01&&bp.out>0)){const lay=J.layoutText(item),boxes=[];for(const g of lay){if(!g.ch.trim())continue;const c=item.charFn?.(g.i,g,lay.N);if(c?.hide||(item.alpha??1)*(c?.a??1)<=.002)continue;const k=c?.s??1;boxes.push({x:(g.x+g.vx)*(item.sx||1)+(c?.dx||0),y:(g.y+g.vy)*(item.sy||1)+(c?.dy||0),w:g.w*(item.sx||1)*k,h:g.h*(item.sy||1)*k});}if(boxes.length)bb={x0:item.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:item.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:item.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:item.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:item.x,cy:item.y,boxes};}
   for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,bb,d);}
  }finally{ctx.restore();}
 }
 function outputPlan(plan,{scale=1}={}){if(!plan.cuts.some(c=>targets(plan,c)))return plan;const prepared=prepare(plan,null,{scale}),failed=prepared.diagnostics.find(d=>d.status==='insufficient-space');if(failed)throw Object.assign(Error(J.mediaLabel('この条件では回避配置を出力できません。円の位置・サイズや演出を変更してください。','Avoidance cannot be exported for these conditions. Change the circle position, size or effects.')),{code:'SIMPLE_CIRCLE_'+failed.status.toUpperCase().replaceAll('-','_'),details:failed});const unsupported=prepared.diagnostics.filter(d=>d.status==='unsupported');prepared.plan.circleAvoidanceStatus={status:unsupported.length?'partial':'applied',unsupportedCuts:unsupported.map(d=>d.cut),diagnostics:prepared.diagnostics};return prepared.plan;}
-A.simpleCircle=Object.freeze({targets,active,activeCut,prepare,drawDecor,outputPlan,itemEnvelope:localEnvelope,stageEnvelope,policy});
+A.simpleCircle=Object.freeze({targets,active,activeCut,preparedCut,prepare,drawDecor,outputPlan,itemEnvelope:localEnvelope,stageEnvelope,policy});
 for(const name of ['center','vcols']){const render=J.LAYOUTS[name].render;J.LAYOUTS[name].render=function(env){const recipe=env.cut.simpleCircleRecipe;if(!recipe)return render(env);return J.mainDraw(env,{...recipe.item,color:env.cut.params.accent?env.sc.accent:env.sc.fg});};}
 })();

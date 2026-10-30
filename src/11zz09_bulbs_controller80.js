@@ -86,7 +86,7 @@ function drawPass({token,renderer,env}){need(renderAccess,'BULBS80O_RENDERER_ISS
 function finish(token){const frame=frames.get(token);need(frame&&activeFrame===token&&!frame.finished,'BULBS80O_UNKNOWN_FRAME');try{need([...frame.passes.values()].every(p=>p.used),'BULBS80O_INCOMPLETE_FRAME');frame.finished=true}finally{invalidate(token)}}
 function abort(token){need(frames.has(token)&&activeFrame===token,'BULBS80O_UNKNOWN_FRAME');invalidate(token)}
 // Editable avoidance inputs must never reach an unproved stock frame path.
-function targetCut(plan,c){return c.layout==='bulbs'&&A.placementCutPreserved86cm(plan,c)!==true;}
+function targetCut(plan,c){return c.layout==='bulbs'&&!A.bulbsSimple?.handles(plan,c)&&A.placementCutPreserved86cm(plan,c)!==true;}
 function targetsCut(plan,cut){return !!cut&&plan?.lyricAvoidanceIndex?.enabled===true&&Array.isArray(plan.lyricAvoidanceIndex.regions)&&plan.lyricAvoidanceIndex.regions.length>0&&Array.isArray(plan.cuts)&&plan.cuts.includes(cut)&&targetCut(plan,cut);}
 function targetsPreview(plan){return plan?.lyricAvoidanceIndex?.enabled===true&&Array.isArray(plan.lyricAvoidanceIndex.regions)&&plan.lyricAvoidanceIndex.regions.length>0&&Array.isArray(plan.cuts)&&plan.cuts.some(c=>targetCut(plan,c));}
 function targetsFrame(plan,t){if(!targetsPreview(plan)||plan.layerVisibility?.lyrics===false)return false;const h=J.stepDur(plan.fx,plan.fps);if(!Number.isFinite(t)||!Number.isFinite(h)||h<=0)return true;const q=Math.floor(t/h+1e-6)*h;return[1.6/24,.8/24,0].some(lag=>J.lyricCutsAt(plan,Math.max(0,q-lag)).some(c=>targetCut(plan,c)));}
