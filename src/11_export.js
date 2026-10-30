@@ -8,6 +8,7 @@
 // This proved bulbs route currently publishes only to the main preview.
 // Keep this preflight shared by UI, MCP, CEP and direct render-export callers.
 J.assertPlanOutputSupported = plan => {
+  if(plan?.layerVisibility?.lyrics!==false&&J.placement?.burstUIBoundary83be?.targetsPreview(plan))throw Object.assign(new Error(J.mediaLabel('ドカンの回避配置は現在メインプレビューのみ対応しています。画像・動画・After Effects用の出力にはまだ対応していません。','Burst avoidance currently supports the main preview only. Image, video and After Effects output are not yet supported.')),{code:'BURST_UI_OUTPUT_UNSUPPORTED'});
   if (plan?.layerVisibility?.lyrics !== false && J.placement?.bulbsFrameController80?.targetsPreview(plan)) throw Object.assign(new Error(J.mediaLabel(
     '電球の回避配置は現在メインプレビューのみ対応しています。画像・動画・After Effects用の出力にはまだ対応していません。',
     'Bulbs avoidance currently supports the main preview only. Image, video and After Effects output are not yet supported.'

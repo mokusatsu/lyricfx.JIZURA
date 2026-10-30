@@ -16,6 +16,21 @@ Object.defineProperty(J,'installTilesFrame48',{configurable:true,value:hooks=>{
 
 // SOURCE69: bulbs-only preflight issuer, before every bitmap write.
 // SOURCE80 source-only frame issuer. Default/unbound drawing remains unchanged.
+// Unregistered burst current-frame issuer, opt-in ticket only.
+const burst83adFrames=new WeakMap();let burst83adHooks=null;
+const installBurstFrame83ag=hooks=>{
+ if(burst83adHooks||!hooks||!['needs','prepare','paint','finish','abort'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_BURST83AD_FRAME_HOOKS');
+ burst83adHooks=Object.freeze({needs:hooks.needs,prepare:hooks.prepare,paint:hooks.paint,finish:hooks.finish,abort:hooks.abort});delete J.installBurstFrame83ad;
+ return Object.freeze({take:(renderer,env)=>{const record=burst83adFrames.get(env);if(!record||record.renderer!==renderer||record.ctx!==env.ctx||record.plan!==env.plan||record.cut!==env.cut)throw Object.assign(Error('BURST83AD_FRAME_ISSUER_REQUIRED'),{code:'BURST83AD_FRAME_ISSUER_REQUIRED'});burst83adFrames.delete(env);return record;}});
+};
+let burstBlocked83ag=false,burstRequired83ag=false;
+const burstTarget83ag=(plan,opt={})=>opt.burstFrame83ad!==undefined||!!plan?.burstRuntime83ag||(burstRequired83ag&&(J.placement.burstUIBoundary83be?J.placement.burstUIBoundary83be.targetsFrame(plan,opt.avoidanceRealTime):plan?.lyricAvoidanceIndex?.enabled===true&&(!Array.isArray(plan.lyricAvoidanceIndex.regions)||plan.lyricAvoidanceIndex.regions.length>0)&&Array.isArray(plan.cuts)&&plan.cuts.some(c=>c.layout==='burst'&&!c.placementLocked&&!['manual','notation'].includes(c.areaMode))));
+Object.defineProperty(J,'installBurstFrame83ad',{configurable:true,value:installBurstFrame83ag});
+Object.defineProperty(J,'burstFrameInstallerIdentity83ag',{value:()=>installBurstFrame83ag});
+Object.defineProperty(J,'blockBurstFrame83ag',{value:()=>{burstBlocked83ag=true}});
+Object.defineProperty(J,'burstFrameBlocked83ag',{value:()=>burstBlocked83ag});
+Object.defineProperty(J,'requireBurstProof83ag',{value:()=>{burstRequired83ag=true}});
+Object.defineProperty(J,'burstFrameTarget83ag',{value:burstTarget83ag});
 const bulbs80Frames=new WeakMap();let bulbs80Hooks=null;
 Object.defineProperty(J,'installBulbsFrame80',{configurable:true,value:hooks=>{
  if(bulbs80Hooks||!hooks||!['needs','prepare','paint','finish','abort'].every(k=>typeof hooks[k]==='function'))throw Error('INVALID_BULBS80_FRAME_HOOKS');
@@ -87,16 +102,21 @@ class Renderer {
 
   /* main entry: draw frame at time t into ctx (canvas px = design * scale) */
   frame(ctx, plan, t, opt = {}) {
+    if((burstBlocked83ag||!burst83adHooks)&&burstTarget83ag(plan,{...opt,avoidanceRealTime:opt.avoidanceRealTime??t}))throw Object.assign(Error('BURST83AG_BOOTSTRAP_BLOCKED'),{code:'BURST83AG_BOOTSTRAP_BLOCKED'});
     opt = { ...opt, avoidanceRealTime: opt.avoidanceRealTime ?? t, placementBudget: opt.placementBudget || {events:0,glyphs:0} };
     if (plan.placementFinalization) J.placement.validateFinal(plan);
     const hidden=plan.layerVisibility || {};
     opt={...opt,noForeground:opt.noForeground || hidden.foreground===false,noMedia:opt.noMedia || hidden.media===false,noLyrics:opt.noLyrics || hidden.lyrics===false,noHud:opt.noHud || hidden.lyrics===false,noPost:opt.noPost || hidden.lyrics===false};
     const W = plan.W, H = plan.H, scale = opt.scale || 1;
     const cw = ctx.canvas.width, ch = ctx.canvas.height;
+    // Reject hook overlap before any prepare can allocate an active lease.
+    const burst83adNeeded=!!burst83adHooks?.needs(plan,opt);
+    if(burst83adNeeded&&(tiles48Hooks?.needs(plan)||bulbs69Hooks?.needs(plan)||bulbs80Hooks?.needs(plan,opt)))throw Object.assign(Error('BURST83AD_HOOK_CONFLICT'),{code:'BURST83AD_HOOK_CONFLICT'});
     // All pilot B/A/main proofs finish before clearRect, background, or ANY bitmap write.
     const tiles48Frame=tiles48Hooks?.needs(plan)?tiles48Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
     const bulbs69Frame=bulbs69Hooks?.needs(plan)?bulbs69Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
     const bulbs80Frame=bulbs80Hooks?.needs(plan,opt)?bulbs80Hooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
+    const burst83adFrame=burst83adNeeded?burst83adHooks.prepare(Object.freeze({renderer:this,ctx,plan,t,opt})):null;
     try {
     const foregroundCut = plan.foreground && J.mediaAt(plan, t, 'foreground');
     if (!opt.noForeground && foregroundCut && J.mediaCutsAt(plan, t, 'foreground').some(c => J.mediaAssets.has(c.itemId))) {
@@ -284,7 +304,12 @@ class Renderer {
         if(cut.fullStagePlacement&&cut.placementLayoutsC===true&&cut.layout==='shoji'&&cut.params?.variant==='shadow'){const m=X.getTransform();shadowOutputFrames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,width:cw,height:ch,scale,allowFilter,root:Object.freeze([m.a,m.b,m.c,m.d,m.e,m.f])}));env.placementOutputDomain=J.placement.layoutsCShadowOutputDomain(this,env);}
         if(tiles48Frame)tiles48Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:tiles48Frame,pass:P.pass}));
         if(bulbs69Frame)bulbs69Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:bulbs69Frame,pass:P.pass}));
-        if(bulbs80Frame){
+        if(burst83adFrame){
+          burst83adFrames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:burst83adFrame,pass:P.pass}));
+          // Scope has no decor/effectsOnly: dispatch the original layout and
+          // propagate its error. Only token lifetime cleanup changes here.
+          burst83adHooks.paint(Object.freeze({renderer:this,env}));
+        } else if(bulbs80Frame){
           bulbs80Frames.set(env,Object.freeze({renderer:this,ctx:X,plan,cut,frame:bulbs80Frame,pass:P.pass}));
           // Controller's fixed domain has decor=[] and effectsOnly=false: the
           // native drawCut body is L.render plus its catch. Dispatch the same
@@ -339,8 +364,9 @@ class Renderer {
     if (key && !opt.noPost && !backgroundMedia) this.keyFinish(ctx, key, opt);
     if(tiles48Frame)tiles48Hooks.finish(tiles48Frame);
     if(bulbs69Frame)bulbs69Hooks.finish(bulbs69Frame);
+    if(burst83adFrame)burst83adHooks.finish(burst83adFrame);
     if(bulbs80Frame)bulbs80Hooks.finish(bulbs80Frame);
-    } finally {if(bulbs80Frame)bulbs80Hooks.abort(bulbs80Frame);}
+    } finally {if(burst83adFrame)burst83adHooks.abort(burst83adFrame);if(bulbs80Frame)bulbs80Hooks.abort(bulbs80Frame);}
   }
 
   /* 合成用の背景: make the finished frame monochrome (white text + effects only) and put it on the key colour.
@@ -460,6 +486,7 @@ class Renderer {
   }
 
   post(ctx, plan, t, tq, step, sc, scale, opt, allowFilter) {
+    if(J.placement.burstNormalPostScope83bc?.needs(plan))J.placement.burstNormalPostScope83bc.assertBeforePost(plan,{...opt,scale},this,ctx);
     const cw = ctx.canvas.width, ch = ctx.canvas.height;
     const effectCut = J.cutAt(plan,tq);
     const fx = effectCut?.effectFx || plan.fx, st = effectCut?.effectStyle || plan.style;

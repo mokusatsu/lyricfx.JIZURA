@@ -1,0 +1,483 @@
+<div id="app">
+  <header class="bar">
+    <div class="brand"><span class="mark">字面一</span> <span class="word">JIZURA</span> <span class="tag">ONE STOP EDITION</span></div>
+    <div class="proj">
+      <input id="songTitle" type="text" placeholder="曲名（タイトルカード・HUDに表示）" aria-label="曲名">
+      <input id="songArtist" type="text" placeholder="アーティスト" aria-label="アーティスト">
+      <input id="projectName" type="text" placeholder="プロジェクト名" aria-label="プロジェクト名" title="プロジェクト保存時のファイル名。保存すると更新されます">
+    </div>
+    <div class="acts">
+      <details class="header-menu" id="projectMenu">
+        <summary>プロジェクト</summary><div class="header-menu-items">
+          <button id="btnNew">新規</button>
+          <label class="file" tabindex="0" title="素材入りプロジェクト（.jizuraichi）を開く">開く<input id="fileProject" type="file" accept=".jizuraichi,.jizura,.json"></label>
+          <button id="btnSave" title="画像・動画・音声を含むプロジェクトを保存">保存</button>
+          <button id="btnSaveSettings">設定のみ書き出し</button>
+          <label class="file" tabindex="0">設定のみ読み込み<input id="fileSettings" type="file" accept=".jizuraichi,.json"></label>
+        </div>
+      </details>
+      <details class="header-menu" id="outputMenu">
+        <summary>出力</summary><div class="header-menu-items">
+          <button id="menuMP4" data-export-dialog="mp4">MP4 を書き出す</button>
+          <button id="menuShort" data-export-dialog="short">ショート用出力</button>
+          <button id="menuPNG" data-export-dialog="png">連番PNG（ZIP）</button>
+          <button id="menuPNGA" data-export-dialog="pnga">透過PNG（ZIP・背景なし）</button>
+          <button id="btnAE" title="After Effects パネル用の構成データを書き出す">AE用に書き出し</button>
+        </div>
+      </details>
+      <button id="btnTerms" class="ghost terms-open" title="出力物の権利とライセンス">利用について</button>
+    </div>
+  </header>
+
+  <main class="work">
+    <!-- ================= left: lyrics & timing ================= -->
+    <section id="sourceDrawer" class="col col-left" aria-label="歌詞とタイミング">
+      <nav class="source-tabs" role="tablist" aria-label="素材"><button id="sourceForeground" role="tab" aria-selected="false">前景</button><button id="sourceLyrics" role="tab" aria-selected="true">歌詞・曲</button><button id="sourceMedia" role="tab" aria-selected="false">背景</button></nav>
+      <div class="source-drawer-heading"><strong id="sourceDrawerTitle"></strong><button id="closeSourceDrawer" type="button">×</button></div>
+      <div class="sec" id="lyricsPane">
+        <div class="sec-h"><h2>歌詞</h2><button id="btnSyntax" class="ghost small" aria-expanded="false">記法</button></div>
+        <div class="lyrics-editor">
+        <textarea id="lyrics" rows="9" spellcheck="false" aria-label="歌詞（1行 = 1フレーズ）"></textarea>
+          <div id="lyricPlaybackHighlight" class="lyric-playback-highlight" aria-hidden="true" hidden><div></div></div>
+        </div>
+        <div id="lyricInputTools" class="lyric-input-tools" role="group" aria-label="歌詞入力補助">
+          <button type="button" data-lyric-insert="cut">カット</button><button type="button" data-lyric-insert="break">改行</button><button type="button" data-lyric-insert="strong">強調</button><button type="button" data-lyric-insert="soft">抑制</button><button type="button" data-lyric-insert="scene">1シーン</button><button type="button" data-lyric-insert="separate">重ねず1シーン</button><button type="button" data-lyric-insert="empty">空の歌詞</button>
+        </div>
+        <label class="lang-row">歌詞の言語<select id="lyricLang"><option value="auto">自動判定</option><option value="ja">日本語</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ko">한국어</option></select><span id="langNote" class="muted"></span></label>
+        <div id="syntax" class="syntax" hidden>
+          <ul>
+            <li>1行が1フレーズ。空行は少し間を空けます</li>
+            <li><code>｜　　　｜</code> … 全角の縦線で囲んだ空白は、文字なし・演出のみの歌詞行になります</li>
+            <li><code>夜明けの色を/覚えてる</code> … <code>/</code> でカットの切れ目を指定</li>
+            <li><code>{</code> と <code>}</code> で囲んだ複数行 … 最後のカットが消えるまで順に重ねて表示</li>
+            <li><code>{-</code> と <code>-}</code> で囲んだ複数行 … 順に残して表示し、歌詞同士の重なりを避ける</li>
+            <li><code>夜明けの色を\n覚えてる</code> … <code>\n</code> で1カット内の改行を指定（文字として書く場合は <code>\\n</code>）</li>
+            <li><code>*透明*</code> … 強調（自動表示エリアを大きくし、前景より手前に表示。前景回避の対象外）</li>
+            <li><code>~ささやき~</code> … 抑制（表示と動きを小さく）</li>
+            <li>行末の <code>!</code> … フラッシュと揺れを入れる</li>
+            <li><code>50:歌詞</code> … カットの配置・サイズ（100で画面全体、50で幅・高さが半分。自動配置の最小・最大倍率より優先）。数字とコロンを表示する場合は <code>50\:歌詞</code></li>
+            <li><code>歌詞|ruby or note</code> … 注釈レイアウトの小さな文字（対応している演出のみ）</li>
+            <li><code>[01:23.45]歌詞</code> … LRC のタイムスタンプをそのまま使用</li>
+            <li><code>#</code> で始まる行 … コメント（無視）</li>
+            <li><code>\</code> を制御文字の前に置くと、その文字を歌詞として表示（例：<code>\*</code>・<code>\~</code>・<code>\{</code>・<code>\}</code>・<code>\/</code>・<code>\|</code>・<code>\!</code>・<code>\#</code>・<code>\[</code>・<code>\\</code>）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sec" id="mediaPane" hidden>
+        <div class="sec-h media-pane-heading"><h2 id="mediaPaneTitle">背景</h2></div>
+        <div class="media-upload-row"><p class="hint">画像・動画をここへドラッグ＆ドロップ、または「追加」から選択できます。素材はこのブラウザに保存されます。</p><label class="file">追加<input id="mediaFiles" type="file" accept="image/*,video/*" multiple></label><button type="button" id="btnSpriteExtract" class="ghost" style="margin-left:6px;white-space:nowrap" title="グリーンバック等の複数ポーズ画像から一括切り出し">✂️ シート切り出し</button></div>
+        <div id="mediaList" class="media-list"></div>
+        <div id="mediaCutInsert" class="media-lyric-insert">
+          <fieldset id="backgroundInsertSources" hidden><legend>一括挿入する項目</legend></fieldset>
+          <div class="sec-h"><h2>カット挿入</h2></div>
+          <label class="field">一括挿入の基準<select id="mediaLyricInsertMode"><option value="line">行に合わせる</option><option value="cut">カットに合わせる</option></select></label>
+          <label class="check"><input id="mediaGroupLyrics" type="checkbox" checked><span>{ }で囲まれた歌詞は1カット</span></label>
+          <button id="btnMediaFromLyrics" type="button" aria-describedby="mediaLyricInsertHint">歌詞に合わせて一括挿入</button>
+          <button id="btnTapMedia" type="button" title="動画を見ながら各カットのタイミングでタップ">動画を見ながらタップで挿入</button>
+          <p id="mediaLyricInsertHint" class="hint"></p>
+          <label class="check"><input id="mediaRandom" type="checkbox"><span>ランダム順で挿入</span></label>
+          <label class="check"><input id="mediaLoop" type="checkbox"><span>ループ<small>素材数よりカットが多い場合、素材をループして挿入します。</small></span></label>
+        </div>
+      </div>
+
+      <div class="sec" id="audioTimingSection">
+        <div class="sec-h"><h2>曲とタイミング</h2></div>
+        <div id="audioName" class="muted audio-name">曲なし（読み込むと拍を検出してカットを合わせます）</div>
+        <div class="row">
+          <label class="file" title="mp3 / wav / m4a / mp4 / webm など">曲・動画を読み込む<input id="audioFile" type="file" accept="audio/*,video/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.mp4,.m4v,.mov,.webm,.ogv,.mkv"></label>
+          <button id="btnRemoveAudio" class="ghost" type="button" hidden>曲を削除</button>
+          <button id="btnTap" title="曲を再生しながら各行の頭でタップ">タップで同期</button>
+        </div>
+        <div class="theme-settings"><button id="btnThemes" type="button">テーマ設定</button><div id="themeLabels" aria-live="polite"></div></div>
+        <div class="fields pro-only">
+          <label class="field">BPM<input id="bpm" type="number" min="0" max="300" step="0.1" placeholder="自動"></label>
+          <label class="field">開始(秒)<input id="offset" type="number" min="0" step="0.05"></label>
+          <label class="field">行の長さ<input id="lineScale" type="number" min="0.4" max="3" step="0.05"></label>
+        </div>
+        <div class="row pro-only">
+          <label class="row" style="gap:6px"><input id="snap" type="checkbox"> 拍にスナップ</label>
+          <button id="btnResetTimes" class="ghost small">手動タイミングを消す</button>
+        </div>
+      </div>
+
+
+      <div class="sec">
+        <div class="sec-h"><h2 id="cutsHeading">行とカット</h2><span id="linesInfo" class="muted mono"></span></div>
+        <ol id="lineList"></ol>
+        <ol id="mediaLineList" hidden></ol>
+      </div>
+    </section>
+
+    <!-- ================= center: stage ================= -->
+    <section class="col col-stage" aria-label="プレビュー">
+      <div class="viewport" id="viewport"><button id="exitPreviewFullscreen" class="fullscreen-exit" type="button">全画面を終了</button><div class="fullscreen-transport"><button id="fullscreenPlay" type="button" aria-label="再生">▶</button><span id="fullscreenTime" class="tc"></span><input id="fullscreenScrub" type="range" min="0" max="10000" value="0" aria-label="再生位置"></div><canvas id="view" width="1280" height="720"></canvas><div id="itemFrames" class="item-frames"></div><div id="areaEditOverlay" class="area-edit-overlay" aria-label="表示位置とサイズを編集" hidden><div id="areaEditRect" class="area-edit-rect"><span class="area-edit-handle nw" data-handle="nw"></span><span class="area-edit-handle ne" data-handle="ne"></span><span class="area-edit-handle sw" data-handle="sw"></span><span class="area-edit-handle se" data-handle="se"></span><span class="area-rotate-handle n" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle e" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle s" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle w" data-handle="rotate" role="button" aria-label="回転"></span></div></div><div id="bulbsPreparation" class="bulbs-preparation" hidden><span id="bulbsPreparationText" role="status" aria-live="polite"></span><button id="bulbsCancel" type="button">準備を中止</button><button id="bulbsRetry" type="button" hidden>再準備</button></div><div id="viewMsg" class="overlay-msg" hidden></div><div id="keyBadge" class="key-badge" hidden></div><div id="toast" class="toast" role="status" aria-live="polite" hidden></div></div>
+      <div id="areaEditControls" class="area-edit-controls" hidden><div id="mediaAreaSizeControls" class="media-area-size-controls" hidden><label><input id="mediaAreaAspectLock" type="checkbox" checked>アスペクト比を固定</label><label>幅（画面比％）<input id="mediaAreaWidth" type="number" min="0.5" max="400" step="0.5"></label><label>高さ（画面比％）<input id="mediaAreaHeight" type="number" min="0.5" max="400" step="0.5"></label><label id="mediaAreaAngleField">角度（°）<input id="mediaAreaAngle" type="number" min="-180" max="180" step="0.1"></label></div><div class="area-edit-actions"><button id="areaResetAuto" class="ghost" type="button">自動配置</button><button id="areaResetFull" class="ghost" type="button">全域表示</button><button id="areaDelete" type="button">削除</button></div><div class="area-edit-confirm"><button id="areaApplyOne" class="primary" disabled>配置決定</button><button id="areaApplyFollowing" disabled>以降すべて同じ配置</button><button id="areaCancel" class="ghost">キャンセル</button></div></div>
+      <div id="tapPanel" class="tapbox" hidden>
+        <div class="hint" id="tapHint">挿入したいタイミングでボタンをクリック（またはスペースキー）</div>
+        <div class="tap-queue">
+          <div class="tap-queue-line tap-future-two" hidden><span class="tap-marker" aria-hidden="true"></span><span id="tapLineAhead2"></span></div>
+          <div class="tap-queue-line tap-future-one" hidden><span class="tap-marker" aria-hidden="true"></span><span id="tapLineAhead1"></span></div>
+          <div class="next tap-queue-line tap-current" aria-live="polite"><span class="tap-marker" aria-hidden="true">▶</span><b id="tapLine">—</b></div>
+        </div>
+        <div class="tap-button-wrap">
+          <button id="tapBtn" class="tap">TAP</button>
+          <div id="tapCountdown" role="status" aria-live="polite" hidden></div>
+        </div>
+        <button id="tapStop" class="ghost">終了する</button>
+      </div>
+      <div class="preview-options"><label class="item-frame-toggle"><input id="showItemFrames" type="checkbox" checked><span id="showItemFramesLabel">編集モード</span></label><label class="ghost-toggle" title="歌い出しの前に文字の輪郭・シルエットを先行表示します"><input id="showGhostPreRoll" type="checkbox"><span id="showGhostPreRollLabel">予兆表示</span></label><button id="effectFavorites" type="button" class="ghost small">☆お気に入り演出</button><button id="previewScreenshot" type="button" class="ghost small" title="プレビューをPNGで保存">スクショ</button><button id="previewFullscreen" type="button" class="ghost small">全画面でプレビュー</button></div>
+      <div class="transport">
+        <button id="btnPlay" class="play" aria-label="再生">▶</button>
+        <span id="timeNow" class="tc">00:00.00</span><span class="tc muted">/</span><button id="timeDur" class="tc muted duration-value" type="button" title="動画全体の長さを入力（空欄で自動）" aria-label="動画全体の長さを入力">00:00.00</button><input id="timeDurInput" class="tc duration-input" type="text" inputmode="decimal" aria-label="動画全体の長さ（秒または分:秒、空欄で自動）" hidden>
+        <input id="scrub" type="range" min="0" max="10000" value="0" aria-label="再生位置">
+        <button id="btnLoop" class="ghost small" aria-pressed="true">ループ</button>
+        <span class="undo-btns"><button id="btnUndo" class="ghost small" type="button" title="元に戻す（Ctrl+Z）" disabled>↶ 元に戻す</button><button id="btnRedo" class="ghost small" type="button" title="やり直す（Ctrl+Shift+Z）" disabled>↷ やり直す</button></span>
+        <span class="hist-btns">
+          <button id="btnPrev" class="ghost small icon-txt" title="前の案に戻る" aria-label="前の案">◀</button>
+          <button id="btnNext" class="ghost small icon-txt" title="次の案へ進む" aria-label="次の案">▶</button>
+        </span>
+        <button id="btnShuffle" class="accent" title="設定はそのままで構成だけ再抽選（ロックした行は維持）">シャッフル</button>
+        <button id="btnOmakase" class="primary" title="スタイル・雰囲気・演出・配色をまるごとランダムに（キー R）">おまかせ</button>
+      </div>
+      <div class="timeline-toolbar">
+      <div class="timeline-position-label" id="playheadMenuLabel">再生位置で編集：</div>
+      <div class="timeline-split playhead-menu" id="playheadMenu">
+        <div class="playhead-primary" role="group" aria-labelledby="playheadMenuLabel"><button type="button" data-playhead-menu="insert" aria-expanded="false"></button><button type="button" data-playhead-menu="split" aria-expanded="false"></button><button type="button" data-playhead-menu="endHere" aria-expanded="false"></button><button type="button" data-playhead-menu="untilNext" aria-expanded="false"></button><button id="relayoutAtPlayhead" type="button" disabled></button></div>
+        <div class="playhead-secondary" role="group" hidden><button id="insertForegroundAtPlayhead" type="button" data-playhead-action="insert" data-layer="foreground" disabled></button><button id="insertLyricAtPlayhead" type="button" data-playhead-action="insert" data-layer="lyrics" disabled></button><button id="insertBackgroundAtPlayhead" type="button" data-playhead-action="insert" data-layer="media" disabled></button><button id="splitForegroundCut" type="button" data-playhead-action="split" data-layer="foreground" disabled></button><button id="splitBackgroundCut" type="button" data-playhead-action="split" data-layer="media" disabled></button><button id="endForegroundHere" type="button" data-playhead-action="endHere" data-layer="foreground" disabled></button><button id="endLyricHere" type="button" data-playhead-action="endHere" data-layer="lyrics" disabled></button><button id="endBackgroundHere" type="button" data-playhead-action="endHere" data-layer="media" disabled></button><button id="untilNextForeground" type="button" data-playhead-action="untilNext" data-layer="foreground" disabled></button><button id="untilNextLyric" type="button" data-playhead-action="untilNext" data-layer="lyrics" disabled></button><button id="untilNextBackground" type="button" data-playhead-action="untilNext" data-layer="media" disabled></button></div>
+      </div>
+      <div class="timeline-volume"><button id="volumeMuteBtn" type="button" aria-label="消音切替" title="消音切替">🔊</button><input id="timelineVolume" type="range" min="0" max="100" value="100" title="音量"><span id="timelineVolumeValue" aria-live="polite">100%</span></div>
+      <div class="timeline-zoom"><button id="timelineZoomOut" type="button" aria-label="タイムラインを縮小">−</button><span id="timelineZoomValue" aria-live="polite">100%</span><button id="timelineZoomIn" type="button" aria-label="タイムラインを拡大">＋</button></div>
+      </div>
+      <div class="timeline-with-visibility"><div id="layerVisibilityControls" class="layer-visibility-controls"></div><div id="timelineScroll" class="timeline-scroll"><div id="timelineStack" class="timeline-stack">
+        <canvas id="foregroundTimeline" aria-label="前景タイムライン（境界をドラッグして開始時刻を変更、ほかは再生位置を移動）"></canvas>
+        <canvas id="timeline" aria-label="歌詞タイムライン（境界をドラッグして開始時刻を変更、ほかは再生位置を移動）"></canvas>
+        <canvas id="mediaTimeline" aria-label="背景タイムライン（境界をドラッグして開始時刻を変更、ほかは再生位置を移動）"></canvas>
+        <svg id="timelineLinks" class="timeline-links" aria-label="タイムラインの境界リンク"></svg>
+        <button id="timelineDurationHandle" class="timeline-duration-handle" type="button" title="ドラッグして動画全体の長さを変更" aria-label="動画全体の長さをドラッグして変更"><span aria-hidden="true">◀▶</span></button>
+      </div></div>
+      </div>
+    </section>
+
+    <!-- ================= right: look & output ================= -->
+    <div class="modes settings-rail" role="group" aria-label="表示モード">
+      <button id="modeEasy" aria-pressed="false" aria-expanded="false" aria-controls="settingsDrawer" title="おまかせボタン中心のシンプルな画面">かんたん</button>
+      <button id="modePro" aria-pressed="false" aria-expanded="false" aria-controls="settingsDrawer" title="すべての設定を表示">詳細</button>
+    </div>
+    <section id="settingsDrawer" class="col col-right" aria-label="スタイルと書き出し" hidden>
+      <div class="settings-drawer-heading"><strong id="settingsDrawerTitle"></strong><button id="closeSettingsDrawer" type="button">×</button></div>
+      <div id="easyPanel" class="easy" hidden>
+        <div class="easy-hero">
+          <button id="btnOmakaseBig" class="omakase">おまかせで作る</button>
+          <p class="hint">押すたびに、スタイル・雰囲気・動き・配色・構成がまるごと変わります。キーボードの <span class="kbd">R</span> でも実行できます。</p>
+          <div class="hist-row">
+            <button id="btnPrev2" class="ghost">◀ 前の案</button>
+            <span id="histPos" class="muted mono"></span>
+            <button id="btnNext2" class="ghost">次の案 ▶</button>
+          </div>
+          <div class="pick-sets">
+            <label class="check"><input id="eLyricAvoidCenter" class="avoid-center-toggle" type="checkbox"><span>歌詞が画面中央を避ける<small>歌詞を自動配置するとき、画面の中央を空けます。*強調*した歌詞は中央にも置きます。</small></span></label>
+          </div>
+        </div>
+        <div class="easy-sec">
+          <h3>いまの案</h3>
+          <div id="easyNow" class="now"></div>
+        </div>
+        <div class="easy-sec">
+          <h3>ここだけ変える</h3>
+          <div class="easy-grid">
+            <button id="eStyle" title="スタイルだけ別のものに">スタイル</button>
+            <button id="ePalette" title="アクセント・ズレ色A/Bをランダムに">配色</button>
+            <button id="eMood" title="動き・グリッチ・使う手法の雰囲気だけ">雰囲気</button>
+            <button id="eCut" title="レイアウトと動きの組み合わせだけ">構成</button>
+          </div>
+        </div>
+        <div class="easy-sec">
+          <h3>書き出し</h3>
+          <div class="fields">
+            <label class="field">画面比<select id="eAspect"><option value="16:9">16:9</option><option value="9:16">9:16 縦</option><option value="4:3">4:3</option><option value="3:4">3:4 縦</option><option value="1:1">1:1</option><option value="4:5">4:5 縦</option><option value="21:9">21:9</option></select></label>
+            <label class="field">解像度<select id="eRes"><option value="720">720p</option><option value="1080">1080p</option><option value="1440">1440p</option><option value="2160">4K</option></select></label>
+            <label class="field field-wide">動画サイズ<select id="eVideoSize"><option value="legacy">画面比と解像度から指定</option><option value="1920x1080">1920 × 1080（フルHD）</option><option value="1280x720">1280 × 720（HD）</option><option value="3840x2160">3840 × 2160（4K）</option><option value="1080x1920">1080 × 1920（縦型）</option><option value="1080x1080">1080 × 1080（正方形）</option><option value="1080x1350">1080 × 1350（4:5）</option><option value="custom">自由入力</option></select></label>
+            <label class="field video-size-custom" hidden>幅（px）<input id="eVideoWidth" type="number" min="16" max="8192" step="2"></label><label class="field video-size-custom" hidden>高さ（px）<input id="eVideoHeight" type="number" min="16" max="8192" step="2"></label>
+            <label class="field">fps<select id="eFps"><option>24</option><option>30</option><option>60</option></select></label>
+            <label class="field field-wide">背景<select id="eKey"><option value="off">通常（スタイルの背景）</option><option value="green">グリーンバック（合成用）</option><option value="black">ブラックバック（合成用）</option></select></label>
+          </div>
+          <div class="outbtns"><button id="eMP4" class="primary">MP4 を書き出す</button></div>
+          <button class="terms-open linkish">書き出した動画の権利について</button>
+          <div class="exp-box" hidden>
+            <div class="progress"><i class="exp-bar"></i></div>
+            <div class="row" style="justify-content:space-between;margin-top:6px"><span class="exp-text muted mono">—</span><button class="exp-cancel ghost small">中止</button></div>
+          </div>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="style" aria-selected="true">スタイル</button>
+        <button role="tab" data-tab="fx" aria-selected="false">演出</button>
+        <button role="tab" data-tab="tech" aria-selected="false">手法</button>
+        <button role="tab" data-tab="foregroundFx" aria-selected="false">前景</button>
+        <button role="tab" data-tab="mediaFx" aria-selected="false">背景</button>
+        <button role="tab" data-tab="out" aria-selected="false">書き出し</button>
+      </nav>
+
+      <div class="tabpane" data-pane="style">
+        <div id="styleGrid" class="style-grid"></div>
+        <h3>フォントの役割</h3>
+        <div id="fontRoles"></div>
+        <div class="row" style="margin-top:8px">
+          <input id="localFont" type="text" placeholder="PCのフォント名（例: 游明朝）" style="flex:1">
+          <button id="btnAddFont">追加</button>
+        </div>
+        <div class="row" style="margin-top:8px"><label class="file">フォントファイル（.ttf/.otf）<input id="fontFile" type="file" accept=".ttf,.otf,.woff,.woff2"></label></div>
+        <div class="row font-import" style="margin-top:8px"><button id="btnListFonts" type="button">PCのフォントを一覧表示</button><select id="installedFonts" aria-label="PCのフォント" hidden></select><button id="btnImportFont" type="button" hidden>選択したフォントを取り込む</button></div>
+        <h3>合成フォント</h3><div class="composite-font"><label>設定名<input id="compositeName" type="text" maxlength="60"></label><label>ベースになるフォント<select id="compositeBase"></select></label><div id="compositeParts"></div><button id="btnSaveComposite" type="button">合成フォントを保存</button><div id="compositeList"></div></div>
+        <h3>アクセント・ズレ色</h3>
+        <label class="check"><input id="accentOn" type="checkbox"><span>自分の色で上書き<small>全シーンに適用。背景に合わせて明るさを自動調整します</small></span></label>
+        <div class="color-row" id="colorRowAccent"></div>
+        <div class="row" style="margin-top:10px">
+          <button id="btnRandPalette" class="accent">ランダムに配色</button>
+          <div id="paletteSwatch" class="swatches" aria-hidden="true"></div>
+        </div>
+        <h3>背景・文字色</h3>
+        <label class="check"><input id="colorOn" type="checkbox"><span>メインの背景と文字を自分の色にする</span></label>
+        <div class="color-row" id="colorRow"></div>
+      </div>
+
+      <div class="tabpane" data-pane="fx" hidden>
+        <div id="fxSliders"></div>
+        <div class="row" style="margin-top:6px">
+          <label class="row" style="gap:6px"><input id="fxFlash" type="checkbox"> フラッシュ</label>
+          <label class="row" style="gap:6px">コマ打ち <select id="fxKoma" title="動きを何枚/秒で描くか（出力fpsとは別）"><option value="0">フル（出力fpsのまま）</option><option value="12">2コマ打ち（12枚/秒）</option><option value="8">3コマ打ち（8枚/秒）</option></select></label>
+        </div>
+        <div class="fields" style="margin-top:12px">
+          <label class="field">HUD<select id="fxHud"><option value="auto">スタイル次第</option><option value="on">常に表示</option><option value="off">表示しない</option></select></label>
+          <label class="field">シード<input id="seed" type="number" step="1"></label>
+          <label class="field">&nbsp;<button id="btnSeed" class="ghost">新しいシード</button></label>
+        </div>
+        <p class="note">同じシードなら同じ構成になります。行ごとの「再抽選」「ロック」は左の行リストから。</p>
+      </div>
+
+      <div class="tabpane" data-pane="tech" hidden>
+        <div class="pick-sets">
+          <label class="check"><input id="lyricAutoPlacement" type="checkbox"><span>配置・サイズにも自動で変化をつける<small>オフでは全画面を使用。手動の表示エリアは維持します。「自動配置に戻す」で手動指定を解除できます。</small></span></label>
+          <label class="check"><input id="lyricAvoidCenter" class="avoid-center-toggle" type="checkbox"><span>画面中央を避ける<small>自動配置で歌詞を画面の中央に置きません。*強調*したカットは対象外です。</small></span></label>
+          <label class="check"><input id="lyricAvoidForeground" type="checkbox" checked><span>前景との重なりを避ける<small>自動配置時に前景の表示領域を避けます。*強調*したカットには適用しません。</small></span></label>
+          <label class="slider"><span>重なり回避の強度</span><input id="lyricAvoidanceStrength" type="range" min="0" max="1" step="0.05" value="1"><output id="lyricAvoidanceStrengthValue">1.00</output></label>
+          <p class="note">1で前景の範囲を避け、下げると周辺の重なりを許容します。0では回避しません。空き領域がない場合は最も重なりの少ない配置を使います。</p>
+          <label class="slider"><span>歌詞同士の重なり回避の強度</span><input id="lyricGroupAvoidanceStrength" type="range" min="0" max="1" step="0.05" value="1"><output id="lyricGroupAvoidanceStrengthValue">1.00</output></label>
+          <p class="note"><code>{- … -}</code> のグループに適用。1で歌詞の表示領域を重ならないように配置し、0では通常の重ね表示になります。自動配置がオフでも適用します。</p>
+          <label class="check"><input id="lyricRandomBlend" type="checkbox"><span>合成方法もランダム<small>通常・乗算・スクリーン・オーバーレイからカットごとに選びます。</small></span></label>
+          <label class="check"><input id="lyricRandomOpacity" type="checkbox"><span>歌詞不透明度もランダム<small>指定範囲内で、*強調*は高め、~抑制~は低めにします。手動指定とロックを優先します。</small></span></label>
+          <div class="fields lyric-opacity-range" id="lyricOpacityRange" hidden>
+            <label class="field">最低不透明度（％）<input id="lyricOpacityMin" type="number" min="0" max="100" step="1" value="0"></label>
+            <label class="field">最大不透明度（％）<input id="lyricOpacityMax" type="number" min="0" max="100" step="1" value="100"></label>
+          </div>
+        </div>
+        <div class="pick-sets">
+        </div>
+        <div class="row" style="margin-bottom:10px"><input id="techFilter" type="search" placeholder="あいまい検索" style="flex:1;min-width:0" aria-label="あいまい検索"><span id="techTotal" class="muted mono"></span></div>
+        <div id="techLists"></div>
+      </div>
+
+      <div class="tabpane" data-pane="foregroundFx" hidden><div class="row" style="margin-bottom:10px"><input id="foregroundEffectFilter" type="search" placeholder="あいまい検索" aria-label="あいまい検索" style="flex:1;min-width:0"></div><div id="foregroundEffectsPanel" class="media-effects-panel"></div></div>
+      <div class="tabpane" data-pane="mediaFx" hidden><div class="row" style="margin-bottom:10px"><input id="mediaEffectFilter" type="search" placeholder="あいまい検索" aria-label="あいまい検索" style="flex:1;min-width:0"></div><div id="mediaEffectsPanel" class="media-effects-panel"></div></div>
+
+      <div class="tabpane" data-pane="out" hidden><div id="exportSettingsHome"><div id="exportSettings">
+        <div class="fields">
+          <label class="field">画面比<select id="outAspect"><option value="16:9">16:9</option><option value="9:16">9:16 縦</option><option value="4:3">4:3</option><option value="3:4">3:4 縦</option><option value="1:1">1:1</option><option value="4:5">4:5 縦</option><option value="21:9">21:9</option></select></label>
+          <label class="field">解像度<select id="outRes"><option value="720">720p</option><option value="1080">1080p</option><option value="1440">1440p</option><option value="2160">4K</option></select></label>
+          <label class="field field-wide">動画サイズ<select id="outVideoSize"><option value="legacy">画面比と解像度から指定</option><option value="1920x1080">1920 × 1080（フルHD）</option><option value="1280x720">1280 × 720（HD）</option><option value="3840x2160">3840 × 2160（4K）</option><option value="1080x1920">1080 × 1920（縦型）</option><option value="1080x1080">1080 × 1080（正方形）</option><option value="1080x1350">1080 × 1350（4:5）</option><option value="custom">自由入力</option></select></label>
+          <label class="field video-size-custom" hidden>幅（px）<input id="outVideoWidth" type="number" min="16" max="8192" step="2"></label><label class="field video-size-custom" hidden>高さ（px）<input id="outVideoHeight" type="number" min="16" max="8192" step="2"></label>
+          <label class="field">fps<select id="outFps"><option>24</option><option>30</option><option>60</option></select></label>
+          <label class="field">画質<select id="outQuality"><option value="standard">標準</option><option value="high">高</option><option value="max">最高</option><option value="custom">任意ビットレート</option><option value="qp">画質優先（QP指定）</option></select><span id="outQPNote" class="note" style="margin:0" hidden>値が小さいほど高画質、大きいほど軽量になります。低QPはPCからの利用を推奨。</span></label>
+          <label class="field" hidden>ビットレート（Mbps）<input id="outBitrate" type="number" min="0.001" step="any" required></label>
+          <label class="field" hidden>圧縮の強さ（QP）<input id="outQP" type="number" min="0" max="51" step="1" required></label>
+          <label class="field field-wide">背景<select id="outKey"><option value="off">通常（スタイルの背景）</option><option value="green">グリーンバック（合成用）</option><option value="black">ブラックバック（合成用）</option></select></label>
+        </div>
+        <p class="note key-note">グリーンバック／ブラックバックにすると、白い文字と演出だけを単色の背景の上に描きます（背景の模様・紙の質感・粒子・周辺減光は入りません）。プレビューにもそのまま反映されます。グリーンバックは動画編集ソフトのクロマキーで、ブラックバックは「スクリーン」合成や輝度キーで抜いて、別の映像の上に重ねられます。</p>
+        <label class="row" style="gap:6px;margin-top:10px"><input id="outAudio" type="checkbox" checked> 曲を動画に含める</label>
+        <div class="outbtns">
+          <button id="btnMP4" class="primary">MP4 を書き出す</button>
+          <button id="btnShort" class="primary" hidden>ショート用MP4を書き出す</button>
+          <button id="btnPNG">連番PNG（ZIP）</button>
+          <button id="btnPNGA">透過PNG（ZIP・背景なし）</button>
+        </div>
+        <div class="exp-box" hidden style="margin-top:12px">
+          <div class="progress"><i class="exp-bar"></i></div>
+          <div class="row" style="justify-content:space-between;margin-top:6px"><span class="exp-text muted mono">—</span><button class="exp-cancel ghost small">中止</button></div>
+        </div>
+        <button class="terms-open linkish" style="margin-top:10px">書き出した動画・画像の権利とライセンスについて</button>
+        <p class="note" id="codecNote">書き出しはこのブラウザの中で行われます（Chrome / Edge 推奨）。</p></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="termsDlg" class="terms" aria-labelledby="termsTitle">
+  <form method="dialog">
+    <h2 id="termsTitle">利用について</h2>
+    <section class="terms-section" aria-labelledby="termsOriginalTitle">
+      <h3 id="termsOriginalTitle">オリジナル版（852wa/JIZURA）</h3>
+    <div class="terms-main">
+      <p class="terms-big">このツールで作った<strong>動画や画像（出力物）の権利は、作った人</strong>に帰属します。</p>
+      <p class="terms-sub">※ 使った歌詞や曲の権利は、それぞれの権利者に帰属します。</p>
+    </div>
+    <p>ツール本体は <strong>MIT ライセンス</strong>で公開しています。詳細なライセンスはこちら：</p>
+    <p><a href="https://github.com/852wa/JIZURA" target="_blank" rel="noopener">https://github.com/852wa/JIZURA</a></p>
+    <p class="muted terms-note">入力した歌詞や曲は、このブラウザの中だけで処理され、サーバーには送信されません。</p>
+    <details class="terms-oss"><summary>使用しているオープンソース</summary>
+      <p>MP4 書き出し：mp4-muxer（MIT License）<br>フォント：Google Fonts 配布の各書体（SIL Open Font License 1.1）</p>
+    </details>
+    <p class="muted mono">© 2026 hakoniwa · MIT</p>
+    </section>
+    <section class="terms-section terms-fork" aria-labelledby="termsForkTitle">
+      <h3 id="termsForkTitle">字面一 JIZURA ONE STOP EDITION</h3>
+      <p>このfork版は、ワンストップでのリリックビデオ作成をコンセプトに<br>オリジナル版JIZURAに機能を追加したものです。<br>編集・書き出しはブラウザ内で処理します。</p>
+      <p>fork版のソースコード：<a href="https://github.com/hirazisora/JIZURA" target="_blank" rel="noopener">https://github.com/hirazisora/JIZURA</a></p>
+      <p>人物切り抜きの外部モデル：RVM（GPL-3.0）。<a href="THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener">モデル・ライブラリの利用条件</a></p>
+      <p class="muted mono">© 2026 hirazisora · MIT</p>
+    </section>
+    <div class="terms-foot"><button value="close" class="primary" autofocus>閉じる</button></div>
+  </form>
+</dialog>
+
+<dialog id="newProjectDlg" class="terms" aria-labelledby="newProjectTitle">
+ <form method="dialog">
+  <h2 id="newProjectTitle">新規プロジェクト</h2>
+  <p>現在の編集内容を残す場合は、先に保存してください。</p>
+  <label class="field">画面比<select id="newProjectAspect"><option>16:9</option><option>9:16</option><option>4:3</option><option>3:4</option><option>1:1</option><option>4:5</option><option>21:9</option></select></label>
+  <div class="acts"><button value="cancel">キャンセル</button><button id="btnCreateProject" type="button">作成</button></div>
+ </form>
+</dialog>
+
+<dialog id="themesDlg" class="terms" aria-labelledby="themesTitle">
+ <form method="dialog"><h2 id="themesTitle">テーマ設定</h2>
+ <div class="theme-balance" role="radiogroup" aria-label="統一感・にぎやかさ">
+  <label><input type="radio" name="themeBalance" value="unified"><span>統一感重視</span></label>
+  <label><input type="radio" name="themeBalance" value="lively"><span>にぎやかさ重視</span></label>
+ </div>
+ <p id="themeBalanceNote" class="note" aria-live="polite"></p>
+ <div id="themeChoices"></div>
+ <div class="acts"><button id="btnClearThemes" type="button">選択を解除</button><button value="cancel">キャンセル</button><button id="btnApplyThemes" type="button">適用</button></div>
+ </form>
+</dialog>
+
+<dialog id="exportDlg" class="terms export-dialog" aria-labelledby="exportDlgTitle">
+ <h2 id="exportDlgTitle">出力</h2>
+ <p id="shortExportDescription" class="note" hidden>元の映像を中央に表示し、上下の余白を補間して9:16の縦型動画にします。</p>
+ <label class="field filename-field">ファイル名<input id="exportFilename" type="text" maxlength="180" autocomplete="off"></label>
+ <p class="note">拡張子は自動で付加されます。使用できない文字は置き換えます。</p>
+ <section id="shortExportOptions" class="short-export-options" hidden>
+  <div class="short-preview">
+   <canvas id="shortExportPreview" width="234" height="416" aria-label="ショート用出力のプレビュー"></canvas>
+  </div>
+  <div class="short-timeline">
+     <div class="short-range-values"><label for="shortStartValue">開始（秒） <input id="shortStartValue" type="number" min="0" step="any" inputmode="decimal" value="0.000" required></label><label for="shortEndValue">終了（秒） <input id="shortEndValue" type="number" min="0" step="any" inputmode="decimal" value="0.000" required></label></div>
+     <div id="shortRange" class="short-range">
+      <span class="short-range-track"><span class="short-range-selection"></span></span>
+      <input id="shortStart" type="range" min="0" max="1" step="0.001" value="0" aria-label="開始（秒）">
+      <input id="shortEnd" type="range" min="0" max="1" step="0.001" value="1" aria-label="終了（秒）">
+      <input id="shortPreviewSeek" type="range" min="0" max="1" step="0.001" value="0" aria-label="ショート用プレビューの再生位置">
+     </div>
+     <div class="short-timeline-transport">
+      <div class="short-preview-transport"><button id="shortPreviewPlay" type="button" class="ghost small" aria-label="プレビューを再生">▶</button><span id="shortPreviewTime" class="tc">00:00.00</span></div>
+      <div class="short-preview-markers"><button id="shortSetStart" type="button" class="ghost small">ここから</button><button id="shortSetEnd" type="button" class="ghost small">ここまで</button></div>
+     </div>
+  </div>
+  <div class="short-fill-settings">
+   <div class="fields">
+    <label class="field field-wide">縦型の動画サイズ<select id="shortRes"><option value="720">720 × 1280</option><option value="1080" selected>1080 × 1920</option><option value="1440">1440 × 2560</option><option value="2160">2160 × 3840</option></select></label>
+    <label class="field field-wide">上下の補間<select id="shortFill"><option value="zoom">元動画を拡大した背景</option><option value="tile">元動画を上下に並べる</option><option value="ambient">拡散（映像の色を余白へ広げる）</option></select></label>
+    <label class="field field-wide">ぼかし度合い <output id="shortBlurValue">35</output><input id="shortBlur" type="range" min="0" max="100" value="35"></label>
+   </div>
+   <p id="shortExportError" class="short-export-error" role="status"></p>
+  </div>
+ </section>
+ <div id="exportDialogContent"></div>
+ <div class="terms-foot"><button id="btnCloseExport" type="button">閉じる</button></div>
+</dialog>
+<dialog id="filenameDlg" class="terms" aria-labelledby="filenameDlgTitle">
+ <form method="dialog">
+  <h2 id="filenameDlgTitle">ファイル名</h2>
+  <label class="field filename-field">ファイル名<input id="saveFilename" type="text" maxlength="180" autocomplete="off"></label>
+  <label class="check"><input id="saveFilenameDate" type="checkbox"><span>ファイル名に日時を追加<small id="saveFilenamePreview"></small></span></label>
+  <p class="note">拡張子は自動で付加されます。使用できない文字は置き換えます。</p>
+  <div class="terms-foot"><button value="cancel">キャンセル</button><button value="save" class="primary">保存</button></div>
+ </form>
+</dialog>
+
+<dialog id="spriteExtractDlg" class="terms sprite-extract-dialog" aria-labelledby="spriteExtractTitle">
+  <div class="se-header">
+    <h2 id="spriteExtractTitle">キャラシート切り出し</h2>
+    <button type="button" class="btn-close" id="btnCloseSpriteExtract" aria-label="閉じる">×</button>
+  </div>
+  <div class="se-body">
+    <div class="se-left">
+      <div class="se-canvas-wrap">
+        <canvas id="sePreview"></canvas>
+        <div id="seDropzone" class="se-dropzone">
+          <p>キャラシート画像をドラッグ＆ドロップ<br>またはクリックして選択</p>
+          <input type="file" id="seFileInput" accept="image/*" hidden>
+        </div>
+      </div>
+      <div class="se-canvas-hint">※ 画像をクリックするとその位置の色をキーカラーとして取得します（スポイト）</div>
+    </div>
+    <div class="se-right">
+      <fieldset class="se-group">
+        <legend>分割方式</legend>
+        <div class="se-mode-row">
+          <label><input type="radio" name="seMode" value="ccl" checked> 自動検出（ポーズ塊を認識）</label>
+          <label><input type="radio" name="seMode" value="grid"> グリッド等分割</label>
+        </div>
+        <div id="seGridOpts" class="se-grid-opts" hidden>
+          <label>行 <input type="number" id="seRows" value="2" min="1" max="20" class="se-num"></label>
+          <span>×</span>
+          <label>列 <input type="number" id="seCols" value="5" min="1" max="20" class="se-num"></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="se-group">
+        <legend>クロマキー（背景透過）</legend>
+        <div class="se-row">
+          <label class="se-color-label">キーカラー: <input type="color" id="seKeyColor" value="#00ff00"></label>
+          <button type="button" id="seBtnPick" class="ghost small">スポイト</button>
+          <button type="button" id="seBtnAutoColor" class="ghost small">自動色検出</button>
+        </div>
+        <div class="se-slider-row">
+          <label for="seThreshold">色許容度: <span id="seThresholdVal">45</span></label>
+          <input type="range" id="seThreshold" min="5" max="150" value="45">
+        </div>
+        <div class="se-slider-row">
+          <label for="seFeather">境界ぼかし: <span id="seFeatherVal">2</span>px</label>
+          <input type="range" id="seFeather" min="0" max="15" value="2">
+        </div>
+      </fieldset>
+
+      <div class="se-action-row">
+        <button type="button" id="seBtnAnalyze" class="primary" style="width:100%">再検出・更新</button>
+      </div>
+
+      <div class="se-thumb-header">
+        <strong>検出結果: <span id="seCount">0</span>件</strong>
+        <div class="se-thumb-btns">
+          <button type="button" id="seCheckAll" class="ghost small">全選択</button>
+          <button type="button" id="seUncheckAll" class="ghost small">全解除</button>
+        </div>
+      </div>
+      <div id="seThumbList" class="se-thumb-list"></div>
+
+      <div class="se-footer">
+        <label class="field se-target-field">登録先:
+          <select id="seTargetLayer">
+            <option value="foreground" selected>前景レイヤー</option>
+            <option value="media">背景レイヤー</option>
+          </select>
+        </label>
+        <div class="se-footer-btns">
+          <button type="button" id="seBtnCancel">キャンセル</button>
+          <button type="button" id="seBtnRegister" class="primary">一括登録して追加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+

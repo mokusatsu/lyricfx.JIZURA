@@ -432,7 +432,7 @@ J.finalizePlacementPlan = (input,options={}) => {
   const diagnostics=[],stepDur=J.stepDur(plan.fx,plan.fps),maxSupportedTransDur=.6,maxStep=1,dProofMemo=options.layoutsD===true&&options.layoutsDProofMemo!==false?A.createLayoutsDFisheyeProofMemo?.():null;
   if(options.layoutsD===true&&plan.lyricAvoidanceIndex?.enabled===true&&plan.lyricAvoidanceIndex.regions.length)diagnostics.push(...(A.customGlobalEventCapabilities?.(plan)||[]));
   // All frame passes share the effectCut's style/FX/clock. Reject mixed unsupported state once.
-  const unsupportedPlanFX=!(Number.isFinite(stepDur)&&stepDur>0&&stepDur<=maxStep)||plan.cuts.some(c=>c.effectStyle||c.effectFx||c.trans&&c.trans!=='none'&&(c.trans!=='wipe'||!Number.isFinite(c.transDur??.35)||(c.transDur??.35)<0||(c.transDur??.35)>maxSupportedTransDur))||(plan.events||[]).some(e=>!['chroma','shake'].includes(e.type))||(plan.style?.glow!==0&&!(options.layoutsD===true&&A.bulbsPostScope86w?.neutralMissingGlow?.(plan)===true));
+  const unsupportedPlanFX=!(Number.isFinite(stepDur)&&stepDur>0&&stepDur<=maxStep)||plan.cuts.some(c=>c.effectStyle||c.effectFx||c.trans&&c.trans!=='none'&&(c.trans!=='wipe'||!Number.isFinite(c.transDur??.35)||(c.transDur??.35)<0||(c.transDur??.35)>maxSupportedTransDur))||(plan.events||[]).some(e=>!['chroma','shake'].includes(e.type))||(plan.style?.glow!==0&&!(options.layoutsD===true&&(A.bulbsPostScope86w?.neutralMissingGlow?.(plan)===true||A.burstPostScope83bb?.neutralMissingGlow?.(plan)===true)));
   // Root quantization + recursive previous-frame quantization, one maximum ghost lag,
   // transition duration, permitted cut gap and previous-rest-frame/rounding allowance.
   const reachTail=maxSupportedTransDur+2*stepDur+1.6/24+.06+.01;

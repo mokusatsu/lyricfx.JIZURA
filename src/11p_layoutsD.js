@@ -7,6 +7,16 @@ const nativeSources=new Map();
 const reg = (key, def) => {nativeSources.set(key,def.render);J.register('layout', key, def, P);};
 J.placement.layoutsDSourceKnown=key=>nativeSources.has(key)&&nativeSources.get(key)===J.LAYOUTS[key]?.render;
 
+// Uninstalled source lease scope only; this capability is not a safe certificate.
+const burstSourceLeases83ad=new WeakMap();let burstSourceInstalled83ad=false,burstSourceActive83ad=false;
+const installBurstSource83ag=()=>{
+ if(burstSourceInstalled83ad)throw Object.assign(Error('BURST83AD_SOURCE_INSTALLED'),{code:'BURST83AD_SOURCE_INSTALLED'});burstSourceInstalled83ad=true;delete J.placement.installBurstSource83ad;
+ return Object.freeze({withLease(env,run,paint){if(burstSourceActive83ad)throw Object.assign(Error('BURST83AD_SOURCE_ACTIVE'),{code:'BURST83AD_SOURCE_ACTIVE'});if(!env||env.cut?.layout!=='burst'||env.placementEnvelope||env.cut.placementUnits||typeof run!=='function'||typeof paint!=='function')throw Object.assign(Error('BURST83AD_SOURCE_SCOPE'),{code:'BURST83AD_SOURCE_SCOPE'});const record={run,taken:false};burstSourceActive83ad=true;burstSourceLeases83ad.set(env,record);try{const out=paint();if(out&&typeof out.then==='function')throw Object.assign(Error('BURST83AD_SOURCE_ASYNC'),{code:'BURST83AD_SOURCE_ASYNC'});if(!record.taken)throw Object.assign(Error('BURST83AD_SOURCE_NOT_CONSUMED'),{code:'BURST83AD_SOURCE_NOT_CONSUMED'});return out}finally{burstSourceLeases83ad.delete(env);burstSourceActive83ad=false}}});
+};
+Object.defineProperty(J.placement,'installBurstSource83ad',{configurable:true,value:installBurstSource83ag});
+Object.defineProperty(J.placement,'burstSourceInstallerIdentity83ag',{value:()=>installBurstSource83ag});
+Object.defineProperty(J.placement,'burstRenderIdentity83ag',{value:()=>nativeSources.get('burst')});
+
 /* ------------------------------------------------------------------ helpers */
 const U = env => Math.min(env.W, env.H);
 const isPort = env => env.H > env.W * 1.08;
@@ -2587,6 +2597,34 @@ reg('dominoes', {
 });
 
 /* ================================================================== 23 burst — 爆発プレート */
+/* Native burst read-only input accessor83c. Not an adapter/certificate. */
+const peekBurstOnCol83c = (sc, fill) => {
+  const key = fill + sc.bg + sc.fg + sc.ink + sc.accent;
+  let v = _onc.get(key);
+  if (v) return v;
+  let best = null, bv = 0;
+  for (const c of [sc.bg, sc.fg, sc.ink, sc.accent, sc.sub]) { if (!c || c === fill) continue; const k = J.contrast(c, fill); if (k > bv) { bv = k; best = c; } }
+  v = bv >= 2.4 ? best : (J.lum(fill) > 0.5 ? '#111111' : '#FFFFFF');
+  return v;
+};
+Object.defineProperty(J.placement,'burstSourceInput83c',{value:Object.freeze(env=>{
+    const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const port = isPort(env);
+    const text = brk(cut.text, port ? 4 : 6);
+    const o = { track: 0.02, lead: 1.05 };
+    const rxM = W * 0.355, ryM = Math.min(H * 0.355, rxM * (port ? 1.5 : 1.1));
+    const size = Math.min(J.fitSize(text, Pm.font, rxM * 1.08, ryM * 1.0, o), u * 0.24);
+    const m = J.measure(Object.assign({ text, font: Pm.font, size }, o));
+    const rx = Math.min(rxM, m.w / 2 / 0.54 + size * 0.15), ry = Math.min(ryM, Math.max(m.h / 2 / 0.54 + size * 0.15, rx * 0.55));
+    const cx = W / 2, cy = H / 2;
+    const out = tout(env);
+    const q = E.outBack(J.clamp(lt / 0.3), 2.2) * (1 - 0.6 * E.inCubic(env.pOut)) * (1 + 0.015 * Math.sin(env.ltb * 7) * J.clamp(lt - 0.3));
+    const rot = (Pm.tilt + (1 - E.outCubic(J.clamp(lt / 0.3))) * -25 + E.inCubic(env.pOut) * 20) * J.DEG;
+    const boil = Math.floor(env.step / 3);
+    const A = plateCol(sc, Pm.order === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.accent]);
+    const B = [darkOf(sc), lightOf(sc), sc.bg, sc.fg].find(c => J.contrast(c, A) >= 2.2 && c !== A) || peekBurstOnCol83c(sc, A);
+return{kind:'burst-current-native-input83c',layout:{text,font:Pm.font,o,rxM,ryM,size,m:{w:m.w,h:m.h},rx,ry,cx,cy,u,port},scalar:{out,q,rot,boil},colors:{A,B,dark:q>.01?darkOf(sc):null,onA:q>.01?peekBurstOnCol83c(sc,A):null},source:{text:cut.text,params:Pm,seed:s,W,H,lt,ltb:env.ltb,step:env.step,pOut:env.pOut,pass:env.pass}};
+})});
 reg('burst', {
   name: 'ドカン', tags: ['pop', 'graphic', 'emotional'], w: 0.8, treat: 'safe', emph: 1.6, ae: 'circle', fits: n => n >= 1 && n <= 12,
   enterBias: { cut: 1.6, pop: 1.6, zoom: 1.4, blur: 0.5, slice: 0.3, wipe: 0.3, type: 0.3 },
@@ -2594,6 +2632,53 @@ reg('burst', {
     return { font: rng.pick(fontsOf(st, ['display'])), spikes: rng.int(13, 19), sharp: rng.range(0.66, 0.78), tilt: rng.range(-9, 9), lines: rng.chance(0.75), debris: rng.chance(0.8), order: rng.pick(['accent', 'ink']) };
   },
   render(env) {
+    const lease83ad=burstSourceLeases83ad.get(env);
+    if(lease83ad){if(lease83ad.taken)throw Object.assign(Error('BURST83AD_SOURCE_REUSED'),{code:'BURST83AD_SOURCE_REUSED'});lease83ad.taken=true;return lease83ad.run(()=>{
+    const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
+    const fresh83ad=J.placement.burstSourceInput83c(env),half83ad=J.placement.burstHalfLayout83e.layout(env,fresh83ad);
+    const {text,o,rxM,ryM,size,m,rx,ry,cx,cy,port}=half83ad.layout;
+    const out = tout(env);
+    const q = E.outBack(J.clamp(lt / 0.3), 2.2) * (1 - 0.6 * E.inCubic(env.pOut)) * (1 + 0.015 * Math.sin(env.ltb * 7) * J.clamp(lt - 0.3));
+    const rot = (Pm.tilt + (1 - E.outCubic(J.clamp(lt / 0.3))) * -25 + E.inCubic(env.pOut) * 20) * J.DEG;
+    const boil = Math.floor(env.step / 3);
+    const A = plateCol(sc, Pm.order === 'accent' ? [sc.accent, sc.ink] : [sc.ink, sc.accent]);
+    const B = [darkOf(sc), lightOf(sc), sc.bg, sc.fg].find(c => J.contrast(c, A) >= 2.2 && c !== A) || onCol(sc, A);
+    const star = (k, scale, jit) => {
+      const N = Pm.spikes, pts = [];
+      for (let i = 0; i < N * 2; i++) {
+        const a = i / (N * 2) * J.TAU + rot;
+        const rr = i % 2 ? Pm.sharp + J.rs(s, i, k, boil) * 0.04 : 1 + J.r(s, i, k, boil) * jit;
+        pts.push([cx + Math.cos(a) * rx * rr * scale * q, cy + Math.sin(a) * ry * rr * scale * q]);
+      }
+      return pts;
+    };
+    // shock ring + speed lines + debris
+    const ring = J.clamp(lt / 0.45);
+    if (ring < 1) env.circle(cx, cy, Math.max(rx, ry) * (0.6 + ring * 1.1), null, A, Math.max(2, u * 0.012) * (1 - ring), (1 - ring) * out, false);
+    if (Pm.lines && env.pass === 'main') {
+      const L = 28;
+      for (let i = 0; i < L; i++) {
+        if (J.r(s, i, env.step, 9) < 0.3) continue;
+        const a = i / L * J.TAU + J.rs(s, i, 8) * 0.08;
+        const r0 = 1.25 + J.r(s, i, env.step, 10) * 0.15, r1 = r0 + 0.2 + J.r(s, i, 11) * 0.25;
+        env.line([[cx + Math.cos(a) * rx * r0 * q, cy + Math.sin(a) * ry * r0 * q], [cx + Math.cos(a) * rx * r1 * q, cy + Math.sin(a) * ry * r1 * q]], sc.sub, Math.max(1.5, u * 0.004), 0.7 * out, false);
+      }
+    }
+    if (Pm.debris && lt < 0.9) {
+      for (let i = 0; i < 12; i++) {
+        const a = J.r(s, i, 21) * J.TAU, sp = J.rr(0.5, 1.1, s, i, 22), f = E.outCubic(J.clamp(lt / 0.8));
+        const d = (1.05 + f * 0.6 * sp), x = cx + Math.cos(a) * rx * d, y = cy + Math.sin(a) * ry * d + f * f * H * 0.05;
+        const sz = u * 0.018 * (1 - f), rr = J.r(s, i, 23) * J.TAU + f * 6;
+        if (sz > 0.5) env.poly([[x + Math.cos(rr) * sz, y + Math.sin(rr) * sz], [x + Math.cos(rr + 2.2) * sz, y + Math.sin(rr + 2.2) * sz], [x + Math.cos(rr + 4.1) * sz * 0.7, y + Math.sin(rr + 4.1) * sz * 0.7]], i % 2 ? A : B, out, false);
+      }
+    }
+    if (q <= 0.01) return null;
+    env.poly(star(1, 1.12, 0.22).map(([x, y]) => [x + u * 0.012, y + u * 0.016]), darkOf(sc), 0.3 * out, false);
+    env.poly(star(1, 1.12, 0.22), A, out, gIn(env));
+    env.poly(star(2, 0.93, 0.12), B, out, false);
+    env.poly(star(3, 0.86, 0.08), A, out, false);
+    return J.mainDraw(env, Object.assign({ text, font: Pm.font, size: size * Math.min(1, q), x: cx, y: cy, rot: rot / J.DEG * 0.6, color: onCol(sc, A) }, o));
+    });}
     const { W, H, sc, ctx } = env, cut = env.cut, Pm = cut.params, s = cut.seed, u = U(env), lt = env.lt;
     const port = isPort(env);
     const text = brk(cut.text, port ? 4 : 6);
