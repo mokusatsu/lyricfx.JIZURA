@@ -864,7 +864,8 @@ J.register('layout', 'neon', {
     const solid = (EN && EN.pieces && env.pIn < 1) || (EX && EX.pieces && env.pOut > 0);
     const gl = glyphPts(base);
     const tw = Math.max(1.5, size * (dark ? 0.05 : 0.06)), cw = Math.max(1, size * 0.018);
-    const glow = env.cut.placementLayoutsB ? null : { color: J.rgba(tube, dark ? 0.95 : 0.55), blur: Math.min(60, size * (dark ? 0.24 : 0.14)) };
+    const legacyHalo = cut.placementLayoutsB && !env.sourceFormulaNeonNative;
+    const glow = legacyHalo ? null : { color: J.rgba(tube, dark ? 0.95 : 0.55), blur: Math.min(60, size * (dark ? 0.24 : 0.14)) };
     let bb = null;
     // ignition + occasional flicker (on the ≤24 Hz step clock)
     const on = (i, t0) => {
@@ -881,7 +882,7 @@ J.register('layout', 'neon', {
       if (k <= 0) return;
       const common = { placementSource:env.cut.placementLayoutsB?bSpan(env,i,i+1):undefined,text: g.ch, font: Pm.font, size, x: g.x, y: g.y, mi: i * 0.4 };
       if (solid) { bb = U(bb, bMain(env, Object.assign(common, { color: tube, shadow: glow, alpha: k }))); return; }
-      if(env.cut.placementLayoutsB)for(const [width,alpha]of [[.34,.05],[.22,.09],[.13,.16]])bMain(env,Object.assign({},common,{fill:false,stroke:size*width,strokeColor:tube,color:tube,alpha:k*alpha,ghost:false}));
+      if(legacyHalo)for(const [width,alpha]of [[.34,.05],[.22,.09],[.13,.16]])bMain(env,Object.assign({},common,{fill:false,stroke:size*width,strokeColor:tube,color:tube,alpha:k*alpha,ghost:false}));
       const r = bMain(env, Object.assign({}, common, { fill: false, stroke: tw, strokeColor: tube, color: tube, shadow: k > 0.5 ? glow : null, alpha: k }));
       bMain(env, Object.assign({}, common, { fill: false, stroke: cw, strokeColor: core, color: core, alpha: k > 0.5 ? 1 : 0.3, ghost: false }));
       bb = U(bb, r);
@@ -913,7 +914,7 @@ J.register('layout', 'neon', {
         if (st) {
           const fs = J.clamp(size * 0.2, 12, 34);
           const c2 = [sc.accent2, sc.fg, sc.sub].find(c => c && c !== tube && J.contrast(c, sc.bg) >= 2) || sc.sub;
-          ctx.save(); if(!env.cut.placementLayoutsB){ctx.shadowColor = J.rgba(c2, 0.9); ctx.shadowBlur = fs * 0.6 * env.scale;}
+          ctx.save(); if(!legacyHalo){ctx.shadowColor = J.rgba(c2, 0.9); ctx.shadowBlur = fs * 0.6 * env.scale;}
           bDraw(env,{ text: st, font: monoF(env), size: fs, track: 0.3, x: (x0 + x1) / 2, y: y1 + fs * 1.6, color: c2, alpha: fk * on(98, 0.4), ghost: false });
           ctx.restore();
         }

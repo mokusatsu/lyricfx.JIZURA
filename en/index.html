@@ -33715,7 +33715,8 @@ J.register('layout', 'neon', {
     const solid = (EN && EN.pieces && env.pIn < 1) || (EX && EX.pieces && env.pOut > 0);
     const gl = glyphPts(base);
     const tw = Math.max(1.5, size * (dark ? 0.05 : 0.06)), cw = Math.max(1, size * 0.018);
-    const glow = env.cut.placementLayoutsB ? null : { color: J.rgba(tube, dark ? 0.95 : 0.55), blur: Math.min(60, size * (dark ? 0.24 : 0.14)) };
+    const legacyHalo = cut.placementLayoutsB && !env.sourceFormulaNeonNative;
+    const glow = legacyHalo ? null : { color: J.rgba(tube, dark ? 0.95 : 0.55), blur: Math.min(60, size * (dark ? 0.24 : 0.14)) };
     let bb = null;
     // ignition + occasional flicker (on the ≤24 Hz step clock)
     const on = (i, t0) => {
@@ -33732,7 +33733,7 @@ J.register('layout', 'neon', {
       if (k <= 0) return;
       const common = { placementSource:env.cut.placementLayoutsB?bSpan(env,i,i+1):undefined,text: g.ch, font: Pm.font, size, x: g.x, y: g.y, mi: i * 0.4 };
       if (solid) { bb = U(bb, bMain(env, Object.assign(common, { color: tube, shadow: glow, alpha: k }))); return; }
-      if(env.cut.placementLayoutsB)for(const [width,alpha]of [[.34,.05],[.22,.09],[.13,.16]])bMain(env,Object.assign({},common,{fill:false,stroke:size*width,strokeColor:tube,color:tube,alpha:k*alpha,ghost:false}));
+      if(legacyHalo)for(const [width,alpha]of [[.34,.05],[.22,.09],[.13,.16]])bMain(env,Object.assign({},common,{fill:false,stroke:size*width,strokeColor:tube,color:tube,alpha:k*alpha,ghost:false}));
       const r = bMain(env, Object.assign({}, common, { fill: false, stroke: tw, strokeColor: tube, color: tube, shadow: k > 0.5 ? glow : null, alpha: k }));
       bMain(env, Object.assign({}, common, { fill: false, stroke: cw, strokeColor: core, color: core, alpha: k > 0.5 ? 1 : 0.3, ghost: false }));
       bb = U(bb, r);
@@ -33764,7 +33765,7 @@ J.register('layout', 'neon', {
         if (st) {
           const fs = J.clamp(size * 0.2, 12, 34);
           const c2 = [sc.accent2, sc.fg, sc.sub].find(c => c && c !== tube && J.contrast(c, sc.bg) >= 2) || sc.sub;
-          ctx.save(); if(!env.cut.placementLayoutsB){ctx.shadowColor = J.rgba(c2, 0.9); ctx.shadowBlur = fs * 0.6 * env.scale;}
+          ctx.save(); if(!legacyHalo){ctx.shadowColor = J.rgba(c2, 0.9); ctx.shadowBlur = fs * 0.6 * env.scale;}
           bDraw(env,{ text: st, font: monoF(env), size: fs, track: 0.3, x: (x0 + x1) / 2, y: y1 + fs * 1.6, color: c2, alpha: fk * on(98, 0.4), ghost: false });
           ctx.restore();
         }
@@ -51123,10 +51124,11 @@ function construct(renderer,plan,cut,{W=plan.W,H=plan.H,scale=1,time=1.5,pass='m
   const value=t[k];return typeof value==='function'?value.bind(t):value;
  },set(t,k,v){t[k]=v;return true;}});
  const isD=sourceD||!!A.sourceFormulaD?.[cut.layout],sourceCut={...cut,fullStagePlacement:true,placementUnits:true,placementLayoutsD:isD,placementLayoutsA:!isD,placementLayoutsB:A.layoutsB25?.includes(cut.layout)||A.layoutsC34?.includes(cut.layout),placementLayoutsC:A.layoutsC34?.includes(cut.layout),layoutAEvaluationRange:[Math.min(cut.start,cut.renderStart??cut.start),Math.max(cut.end,cut.displayEnd??cut.end)+.7],layoutBEvaluationRange:[Math.min(cut.start,cut.renderStart??cut.start),Math.max(cut.end,cut.displayEnd??cut.end)+.7]};
- env=renderer.makeEnv(proxy,{...plan,W,H},sourceCut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass,t:cut.start+time,realTime:cut.start+time,lt:time,ltb:time,pIn:1,pOut:0,step:0,scale,allowFilter:false,placementEnvelope:true});env.pIn=1;env.pOut=0;env.layoutAEvaluationRange=sourceCut.layoutAEvaluationRange;env.hugeSweep=dir=>{const range=sourceCut.layoutAEvaluationRange.map(t=>(t-cut.start)/cut.dur),xs=range.map(t=>(.5+(.5-t)*.16*dir)*W);return {x0:Math.min(...xs),x1:Math.max(...xs),y0:H*.52,y1:H*.52};};
+ env=renderer.makeEnv(proxy,{...plan,W,H},sourceCut,cut.palette||plan.style.schemes[cut.scheme%plan.style.schemes.length],{pass,t:cut.start+time,realTime:cut.start+time,lt:time,ltb:time,pIn:1,pOut:0,step:0,scale,allowFilter:false,placementEnvelope:true});env.sourceFormulaNeonNative=cut.layout==='neon';env.pIn=1;env.pOut=0;env.layoutAEvaluationRange=sourceCut.layoutAEvaluationRange;env.hugeSweep=dir=>{const range=sourceCut.layoutAEvaluationRange.map(t=>(t-cut.start)/cut.dur),xs=range.map(t=>(.5+(.5-t)*.16*dir)*W);return {x0:Math.min(...xs),x1:Math.max(...xs),y0:H*.52,y1:H*.52};};
  env.withDrawRole=(r,key,fn)=>{const old=env.drawOwnership;env.drawOwnership={role:r,owner:key};try{return fn();}finally{env.drawOwnership=old;}};
  env.withDProjectedText=(kind,fn)=>fn();
- env.draw=it=>{if((pass!=='main'&&it.ghost===false)||!it.text||it.size<=.5)return null;if(it.pieceFn||(it.extrude&&cut.treat!=='hardShadow'))fail('SOURCE_FORMULA_ITEM_SHADER');const raw=A.itemGeometry({...it,blur:0,shadow:null,extrude:null},matrix(ctx),{pass:'main',scale:1});if(!raw.polygons.length)return J.itemBox(it);let polygons=raw.polygons;const extra=(6*((it.blur||0)+(it.shadow?.blur||0)/2)+Math.max(Math.abs(it.shadow?.dx||0),Math.abs(it.shadow?.dy||0)))/Math.min(1,cut.contentScale??1);if(extra){const m=matrix(ctx),pad=extra*Math.max(Math.hypot(m[0],m[1]),Math.hypot(m[2],m[3])),b=A.bounds(polygons);polygons=[rect(b.x0-pad,b.y0-pad,b.x1+pad,b.y1+pad)];}if(it.placementMain){const local=S.itemEnvelope(it,cut),b=local.bounds;const a=(it.rot||0)*J.DEG,c=Math.cos(a),sn=Math.sin(a);polygons=[transform(rect(b.x0,b.y0,b.x1,b.y1).map(([x,y])=>[it.x+x*c-y*sn,it.y+x*sn+y*c]))];}if(it.placementSweep){const b=S.itemEnvelope({...it,x:0,y:0,rot:0},cut).bounds,r=it.placementSweep;polygons=[transform(rect(r.x0+b.x0,r.y0+b.y0,r.x1+b.x1,r.y1+b.y1))];}const event=push('item',[{...it}],polygons);if(event){event.inkPolygons=raw.inkPolygons||raw.polygons;event.bodyPolygons=raw.polygons;}return J.itemBox(it);};
+ // Neon subtitles inherit a Canvas shadow; include its support after item envelopes.
+ env.draw=it=>{if((pass!=='main'&&it.ghost===false)||!it.text||it.size<=.5)return null;if(it.pieceFn||(it.extrude&&cut.treat!=='hardShadow'))fail('SOURCE_FORMULA_ITEM_SHADER');const raw=A.itemGeometry({...it,blur:0,shadow:null,extrude:null},matrix(ctx),{pass:'main',scale:1});if(!raw.polygons.length)return J.itemBox(it);let polygons=raw.polygons;const extra=(6*((it.blur||0)+(it.shadow?.blur||0)/2)+Math.max(Math.abs(it.shadow?.dx||0),Math.abs(it.shadow?.dy||0)))/Math.min(1,cut.contentScale??1);if(extra){const m=matrix(ctx),pad=extra*Math.max(Math.hypot(m[0],m[1]),Math.hypot(m[2],m[3])),b=A.bounds(polygons);polygons=[rect(b.x0-pad,b.y0-pad,b.x1+pad,b.y1+pad)];}if(it.placementMain){const local=S.itemEnvelope(it,cut),b=local.bounds;const a=(it.rot||0)*J.DEG,c=Math.cos(a),sn=Math.sin(a);polygons=[transform(rect(b.x0,b.y0,b.x1,b.y1).map(([x,y])=>[it.x+x*c-y*sn,it.y+x*sn+y*c]))];}if(it.placementSweep){const b=S.itemEnvelope({...it,x:0,y:0,rot:0},cut).bounds,r=it.placementSweep;polygons=[transform(rect(r.x0+b.x0,r.y0+b.y0,r.x1+b.x1,r.y1+b.y1))];}if(env.sourceFormulaNeonNative){const pad=(3*ctx.shadowBlur+Math.max(Math.abs(ctx.shadowOffsetX),Math.abs(ctx.shadowOffsetY)))/Math.min(1,cut.contentScale??1);if(pad){const b=A.bounds(polygons);polygons=[rect(b.x0-pad,b.y0-pad,b.x1+pad,b.y1+pad)];}}const event=push('item',[{...it}],polygons);if(event){event.inkPolygons=raw.inkPolygons||raw.polygons;event.bodyPolygons=raw.polygons;}return J.itemBox(it);};
  env.sourceGeometryItem=env.draw;
  env.poly=(points,color,alpha=1)=>{if(alpha>0)shape('poly',[points],points);};env.line=(points,color,lw=1,alpha=1)=>{if(alpha>0)shape('line',[points,color,lw,alpha,{miterLimit:ctx.miterLimit}],points,lw);};env.polyPartial=(points,f,color,lw=1,alpha=1)=>{if(alpha>0)shape('line',[points,color,lw,alpha,{miterLimit:ctx.miterLimit}],points,lw);};
  env.rect=(x,y,w,h,color,alpha=1)=>{if(alpha>0)shape('rect',[x,y,w,h,color,alpha],rect(x,y,x+w,y+h));};env.rrect=(x,y,w,h,r,color,alpha=1,ghost=true,stroke,lw=1)=>{if(alpha>0)shape('rrect',[x,y,w,h,r,color,alpha,ghost,stroke,lw],rect(x,y,x+w,y+h),stroke?lw:0);};
@@ -51143,7 +51145,7 @@ function render(renderer,env,recipe){
  const paint=(key,args)=>{setRole(proxyEnv.drawOwnership?.role||'primary');if(!clips)return target[key](...args);const m=matrix(target);target.save();try{target.setTransform(1,0,0,1,0,0);target.clip(clips[Number(shifted)]);target.setTransform(...m);return target[key](...args);}finally{target.restore();}};
  const proxy=new Proxy(target,{get(t,k){if(k==='save')return()=>{states.push(shifted);t.save();};if(k==='restore')return()=>{t.restore();shifted=states.pop()??false;};if(k==='beginPath')return(...args)=>{setRole(proxyEnv.drawOwnership?.role||'primary');return t[k](...args);};if(['fill','stroke','fillRect','strokeRect','fillText','strokeText','drawImage'].includes(k))return(...args)=>paint(k,args);const v=t[k];return typeof v==='function'?v.bind(t):v;},set(t,k,v){t[k]=v;return true;}});
  const isD=!!A.sourceFormulaD?.[env.cut.layout],cut={...env.cut,fullStagePlacement:true,placementUnits:true,placementLayoutsD:isD,placementLayoutsA:!isD,placementLayoutsB:A.layoutsB25?.includes(env.cut.layout)||A.layoutsC34?.includes(env.cut.layout),placementLayoutsC:A.layoutsC34?.includes(env.cut.layout)};
- const source=renderer.makeEnv(proxy,env.plan,cut,env.sc,{...env,ctx:proxy,cut,W:recipe.W,H:recipe.H});source.W=recipe.W;source.H=recipe.H;
+ const source=renderer.makeEnv(proxy,env.plan,cut,env.sc,{...env,ctx:proxy,cut,W:recipe.W,H:recipe.H});source.W=recipe.W;source.H=recipe.H;source.sourceFormulaNeonNative=cut.layout==='neon';
  proxyEnv=new Proxy(source,{set(t,k,v){if(k==='drawOwnership')setRole(v?.role||'primary');t[k]=v;return true;}});proxyEnv.withDProjectedText=(kind,fn)=>fn();proxyEnv.formulaRole=setRole;proxyEnv.withDrawRole=(r,key,fn)=>{const old=proxyEnv.drawOwnership;proxyEnv.drawOwnership={role:r};try{return fn();}finally{proxyEnv.drawOwnership=old;}};
  target.save();try{setRole('primary');return J.LAYOUTS[cut.layout].render(proxyEnv);}finally{target.restore();}
 }
