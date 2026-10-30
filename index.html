@@ -35491,17 +35491,9 @@ reg('magazine', {
 /* ======================================================================
    2  headlineDeck — 見出しとリード
    ====================================================================== */
-reg('headlineDeck', {
-  name: '見出しとリード', tags: ['editorial', 'graphic', 'calm'], w: 1.1, ae: 'center', fits: n => n <= 22,
-  enterBias: { wipe: 1.4, slice: 1.2, stretch: 1.2 },
-  plan: (rng, cut, st) => ({
-    font: rng.pick(fontsOf(st, ['display', 'display', 'serif'])), variant: portOf(cut) ? rng.pick(['top', 'bottom']) : rng.pick(['top', 'bottom', 'split']),
-    kicker: rng.pick(['特集', 'FEATURE', 'COVER STORY', 'ESSAY', '連載', 'REPORT']), mark: rng.pick(['none', 'bar', 'none', 'dot']), dbl: rng.chance(0.5),
-  }),
-  render(env) {
-    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
+J.headlineDeckGeometry = (env,adapt=null) => {
+    if(adapt)return reflowHeadlineDeck(env,adapt);
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
-    const out = tout(env);
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.headlineMeasure ?? 1 : 1;
     const nativeMX = W * (port ? 0.08 : 0.075), aw = editorialMeasure === 1 ? W-nativeMX*2 : (W-nativeMX*2)*editorialMeasure, mx = editorialMeasure === 1 ? nativeMX : (W-aw)/2;
     const split = p.variant === 'split' && !port;
@@ -35531,6 +35523,30 @@ reg('headlineDeck', {
       top = Math.max(H * 0.07, (H - tot) / 2 - H * 0.03);
       hy = top + kickH + m.h / 2; ry = hy + m.h / 2 + size * 0.22; dy = ry + ls * 1.2;
     }
+
+    const by=split?dy+deckH+ls*1.5:(p.variant==='bottom'?top-ls*1.4:dy+deckH+ls*.8);
+    const original={variant:p.variant,W,H,port,split,aw,mx,hw,fb,size,m,ls,ds,dc,dw,dlines,dfont,dsz,deckH,kickH,lw,top,hy,ry,dy,by,deckStarts:dlines.map((_,i)=>i),deckCounts:dlines.map(()=>1),showByline:!!dc&&by<H*.95&&by>H*.04,bylineText:'— '+J.fmtTime(env.cut.start)+'  /  '+(romajiOf(env)||'No.'+lineNo(env)).slice(0,22),explicitHead:env.cut.text.includes('\n')};
+    return original;
+};
+function reflowHeadlineDeck(env,adapt){const p=env.cut.params;
+    const n=adapt.native,width=adapt.width,wrap=(text,font,size,width,track)=>text.split('\n').map(line=>{let rows=[],row='',w=0;for(const c of [...line]){const advance=J.metrics.adv(font,c)*size,extra=row?track*size:0;if(row&&w+extra+advance>width){rows.push(row);row='';w=0;}w+=(row?track*size:0)+advance;row+=c;}rows.push(row);return rows.join('\n');}).join('\n');
+    const next={...n,aw:width,hw:n.split?width*.6:width,dw:n.split?width*.32:Math.min(width,n.port?width:width*.62)};
+    next.fb={...n.fb,text:wrap(n.explicitHead?n.fb.text:n.fb.text.replace(/\n/g,''),p.font,n.size,next.hw,-.01)};next.m=meas(next.fb.text,p.font,n.size,{lead:1.02,track:-.01});
+    next.dlines=n.dlines.map(line=>n.dc?wrap(line,n.dfont,n.dsz,next.dw,0):line);next.deckCounts=next.dlines.map(line=>line.split('\n').length);let count=0;next.deckStarts=next.deckCounts.map(n=>{const start=count;count+=n;return start;});next.deckH=count*n.ds*1.6;
+    if(n.split){next.top=n.H/2-next.m.h/2;next.hy=n.H/2;next.ry=null;next.dy=n.H/2-next.deckH/2;}else if(p.variant==='bottom'){const total=next.deckH+n.ls*1.6+next.m.h+n.kickH;next.top=Math.max(n.H*.08,n.H*.9-total);next.dy=next.top;next.ry=next.top+next.deckH+n.ls*.6;next.hy=next.ry+n.ls+n.kickH+next.m.h/2;}else{const total=n.kickH+next.m.h+n.size*.3+n.ls+next.deckH;next.top=Math.max(n.H*.07,(n.H-total)/2-n.H*.03);next.hy=next.top+n.kickH+next.m.h/2;next.ry=next.hy+next.m.h/2+n.size*.22;next.dy=next.ry+n.ls*1.2;}
+    next.by=n.split?next.dy+next.deckH+n.ls*1.5:(p.variant==='bottom'?next.top-n.ls*1.4:next.dy+next.deckH+n.ls*.8);return next;
+}
+reg('headlineDeck', {
+  name: '見出しとリード', tags: ['editorial', 'graphic', 'calm'], w: 1.1, ae: 'center', fits: n => n <= 22,
+  enterBias: { wipe: 1.4, slice: 1.2, stretch: 1.2 },
+  plan: (rng, cut, st) => ({
+    font: rng.pick(fontsOf(st, ['display', 'display', 'serif'])), variant: portOf(cut) ? rng.pick(['top', 'bottom']) : rng.pick(['top', 'bottom', 'split']),
+    kicker: rng.pick(['特集', 'FEATURE', 'COVER STORY', 'ESSAY', '連載', 'REPORT']), mark: rng.pick(['none', 'bar', 'none', 'dot']), dbl: rng.chance(0.5),
+  }),
+  render(env) {
+    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
+    const recipe=env.cut.simpleCircleRecipe?.headlineDeck,g=recipe?.geometry||J.headlineDeckGeometry(env),{W,H,port,split,aw,mx,hw,fb,size,m,ls,ds,dc,dw,dlines,dfont,dsz,deckH,kickH,lw,top,hy,ry,dy}=g,{sc,ctx}=env,p=env.cut.params,out=tout(env);
+    if(recipe){ctx.save();ctx.translate(recipe.offset[0],recipe.offset[1]);}
     // kicker
     const ka = tin(env, 0.05, 0.4) * out;
     const ky = hy - m.h / 2 - ls * 1.1;
@@ -35566,11 +35582,12 @@ reg('headlineDeck', {
     dlines.forEach((l, i) => {
       const a = tin(env, env.cut.inDur * 0.6 + 0.08 * i, 0.4, E.outCubic) * out;
       if (a <= 0.01) return;
-      editorialMotion(env.cut.inDur*.6+.08*i+.4, () => env.draw({ text: l, font: dfont, size: dsz, track: dc ? 0 : 0.12, align: 'left', x: dx, y: dy + ds * 0.8 + i * ds * 1.6 + (1 - a) * ds * 0.5, color: i === 0 && dc ? sc.fg : sc.sub, alpha: a, ghost: false }));
+      editorialMotion(env.cut.inDur*.6+.08*i+.4, () => env.draw({ text: l, font: dfont, size: dsz, track: dc ? 0 : 0.12, align: 'left', x: dx, lead:1.6,y: dy + ds * 0.8 + (g.deckStarts[i]+(g.deckCounts[i]-1)/2) * ds * 1.6 + (1 - a) * ds * 0.5, color: i === 0 && dc ? sc.fg : sc.sub, alpha: a, ghost: false }));
     });
     const by = split ? dy + deckH + ls * 1.5 : (p.variant === 'bottom' ? top - ls * 1.4 : dy + deckH + ls * 0.8);
     const ba = tin(env, env.cut.inDur + 0.15, 0.4, E.outCubic) * out;
-    if (dc && by < H * 0.95 && by > H * 0.04) env.draw({ text: '— ' + J.fmtTime(env.cut.start) + '  /  ' + (romajiOf(env) || 'No.' + lineNo(env)).slice(0, 22), font: monoF(env), size: ls * 0.85, track: 0.12, align: split ? 'left' : 'right', x: split ? dx : mx + aw, y: by, color: sc.sub, alpha: ba, ghost: false });
+    if (g.showByline) env.draw({ text:g.bylineText, font: monoF(env), size: ls * 0.85, track: 0.12, align: split ? 'left' : 'right', x: split ? dx : mx + aw, y: by, color: sc.sub, alpha: ba, ghost: false });
+    if(recipe)ctx.restore();
     return bb || box(hx, hy - m.h / 2, hx + m.w, hy + m.h / 2);
   },
 });
@@ -50617,7 +50634,7 @@ J.requireDominoProof82ao();
 const A=J.placement,ID=[1,0,0,1,0,0],policy='direction-region-arrangement-20261030';
 const sourceCuts=new WeakMap();
 const intervals=(plan,cut)=>{const h=J.stepDur(plan.fx,plan.fps),start=Math.min(cut.start,cut.renderStart??cut.start)-h,end=Math.max(cut.end,cut.displayEnd??cut.end)+.6+2*h+1.6/24+.07;return {start,end,regions:(plan.lyricAvoidanceIndex?.regions||[]).filter((r,i)=>r.start<end&&Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration)>start)};};
-const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&(['center','vcols'].includes(cut.layout)||cut.layout==='numbered'&&cut.params.variant==='cols')&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
+const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&(['center','vcols','headlineDeck'].includes(cut.layout)||cut.layout==='numbered'&&cut.params.variant==='cols')&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
 const activeCut=(plan,c,t)=>{const r=intervals(plan,c);return targets(plan,c)&&t>=r.start&&t<r.end;};
 const active=(plan,t)=>plan?.cuts.some(c=>activeCut(plan,c,t));
 const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];
@@ -50658,13 +50675,14 @@ function prepare(plan,previous=null,{scale=1}={}){
   let reason=null;
   const fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style;
   const numeric=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fx.motion??.7,fx.chroma??.7,st.ghost??1,cut.camP?.a??0,cut.camP?.dir??1,cut.treatP?.d??0,...(cut.treatP?.dir||[]),...Object.values(cut.params).filter(v=>typeof v==='number')];if(!numeric.every(Number.isFinite)||plan.W<=0||plan.H<=0||(cut.contentScale??1)<=0||(cut.motionScale??1)<0||(cut.motionScale??1)>1||(fx.motion??.7)<0||(fx.motion??.7)>1||(fx.chroma??.7)<0||(st.ghost??1)<0||cut.text.length===0||(cut.camP?.a??0)<0||Math.abs(cut.camP?.dir??1)>1||(cut.treatP?.d??0)<0)reason='UNSUPPORTED_PARAMETER_RANGE';
-  if(!['cut','flicker','inkBleed','magnet'].includes(cut.enter)||!['cut','overexposeOut'].includes(cut.exit)||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)||!['none','hardShadow'].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!['verticalStrip','dataColumns','sonarArcs'].includes(d.id))||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam))reason='UNSUPPORTED_MOTION';
+  if(!['cut','flicker','inkBleed','magnet'].includes(cut.enter)||!['cut','overexposeOut'].includes(cut.exit)||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)||!['none','hardShadow'].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!['verticalStrip','dataColumns','sonarArcs'].includes(d.id)&&!(cut.layout==='headlineDeck'&&d.id==='romajiLine'))||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam))reason='UNSUPPORTED_MOTION';
   if((plan.events||[]).some(e=>!['chroma','shake','rgbSplit'].includes(e.type))||cut.trans&&cut.trans!=='none')reason='UNSUPPORTED_EFFECT';
   if(cut.layout==='center'&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text))reason='UNSUPPORTED_AUXILIARY';
   const regions=intervals(plan,original).regions;
   if(regions.length!==1)reason='UNSUPPORTED_REGION_CHANGE';
   if(cut.layout==='numbered'&&((cut.decor||[]).length||cut.params.chunks?.length>3))reason='UNSUPPORTED_NUMBERED_COLUMNS';
   if(reason){diagnostics.push({cut:cut.index,status:'unsupported',reason});continue;}
+  if(cut.layout==='headlineDeck'){const result=A.headlineCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:original,headlineDeck:result.recipe,renderScale:scale,policy};}continue;}
   if(cut.layout==='numbered'){const result=A.numberedCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:original,numberedColumns:result.recipe,renderScale:scale,policy};}continue;}
   const area=cut.area,W0=area?plan.W*area.w:plan.W,H0=area?plan.H*area.h:plan.H;
   const native=J.basicMainItem({W:W0,H:H0,cut,sc:cut.palette||st.schemes[cut.scheme%st.schemes.length]});
@@ -50703,7 +50721,7 @@ function prepare(plan,previous=null,{scale=1}={}){
 function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
  const source=cut.simpleCircleRecipe.sourceCut;if(source.layout==='numbered')return;const env=renderer.makeEnv(ctx,plan,source,sc,options),area=source.area,W=env.W,H=env.H,ax=area?area.x*plan.W:0,ay=area?area.y*plan.H:0,motion=source.motionScale??1,cam=J.CAMERA[source.cam].get(env,source.camP||{}),scale=J.lerp(1,cam.s??1,motion)*(source.contentScale??1);
  ctx.save();try{if(area){ctx.translate(ax+W/2,ay+H/2);ctx.rotate((area.angle||0)*J.DEG);ctx.translate(-ax-W/2,-ay-H/2);ctx.beginPath();ctx.rect(ax,ay,W,H);ctx.clip();}ctx.translate(ax+W/2+(root.x+(cam.x||0))*motion,ay+H/2+(root.y+(cam.y||0))*motion);if(cam.rot)ctx.rotate(cam.rot*J.DEG*motion);ctx.scale(scale,scale);ctx.translate(-W/2,-H/2);ctx.globalCompositeOperation=root.blend;
-  const item=J.animateMainItem(env,J.basicMainItem(env));let bb=null;
+  const hg=source.layout==='headlineDeck'?J.headlineDeckGeometry(env):null,base=hg?{text:hg.fb.text,font:source.params.font,size:hg.size,x:hg.mx,y:hg.hy,align:'left',lead:1.02,track:-.01}:J.basicMainItem(env),item=J.animateMainItem(env,base);let bb=hg?{x0:hg.mx,y0:hg.hy-hg.m.h/2,x1:hg.mx+hg.m.w,y1:hg.hy+hg.m.h/2,cx:hg.mx+hg.m.w/2,cy:hg.hy,boxes:[]}:null;
   if(item){const lay=J.layoutText(item),boxes=[];for(const g of lay){if(!g.ch.trim())continue;const c=item.charFn?.(g.i,g,lay.N);if(c?.hide||(item.alpha??1)*(c?.a??1)<=.002)continue;const k=c?.s??1;boxes.push({x:(g.x+g.vx)*(item.sx||1)+(c?.dx||0),y:(g.y+g.vy)*(item.sy||1)+(c?.dy||0),w:g.w*(item.sx||1)*k,h:g.h*(item.sy||1)*k});}if(boxes.length)bb={x0:item.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:item.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:item.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:item.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:item.x,cy:item.y,boxes};}
   for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,bb,d);}
  }finally{ctx.restore();}
@@ -50767,6 +50785,40 @@ function prepare(plan,cut,{scale,region,previous}){
  return {recipe:{geometry:g,offsets:win.placements.map(p=>p.offset)},diagnostic:{cut:cut.index,status:'safe',direction:win.direction,score:win.score,auxiliary:win.auxiliary,reusedPosition:!!win.reusedPosition,mainRegion:win.main,sideRegion:win.side||null,placements:win.placements,candidates:attempts,chunks:chunks.slice(),fontSize:g.csize,numberSize:g.nsz,order:'left-to-right; source index and clocks unchanged'}};
 }
 A.numberedCircle=Object.freeze({prepare});
+})();
+
+/* Headline + deck: width reflow of one linked native composition, never side splitting. */
+(() => {
+'use strict';
+const A=J.placement,S=A.simpleCircle,ID=[1,0,0,1,0,0],rect=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]],move=(b,x,y)=>({x0:b.x0+x,y0:b.y0+y,x1:b.x1+x,y1:b.y1+y});
+function support(g,env,scale){
+ const p=env.cut.params,main={text:g.fb.text,font:p.font,size:g.size,x:g.mx,y:g.hy,align:'left',lead:1.02,track:-.01},head=S.itemEnvelope(main,env.cut),shapes=[],texts=[];
+ const shape=(x0,y0,x1,y1,pad=g.lw+1)=>shapes.push(rect({x0:x0-pad,y0:y0-pad,x1:x1+pad,y1:y1+pad})),text=it=>texts.push(...A.itemGeometry(it,ID,{pass:'main',scale:1}).polygons),mono=env.st.fonts.mono?.[0]||'mono',ky=g.hy-g.m.h/2-g.ls*1.1,kt=p.kicker+'  '+String(Math.max(0,env.cut.line|0)+1).padStart(2,'0'),km=J.measure({text:kt,font:mono,size:g.ls,track:.2});
+ shape(g.mx,ky-g.ls*.8,g.mx+km.w+g.ls*1.2,ky+g.ls*.8);text({text:kt,font:mono,size:g.ls,track:.2,align:'left',x:g.mx+g.ls*.6,y:ky});
+ const last=g.fb.text.split('\n').at(-1),lastW=[...last].reduce((v,c)=>v+J.metrics.adv(p.font,c)*g.size,0),ly=g.hy+(g.fb.text.split('\n').length-1)/2*g.size*1.02;
+ if(p.mark==='bar')shape(g.mx,ly+g.size*.5,g.mx+lastW,ly+g.size*.5+Math.max(4,g.size*.07));
+ if(p.mark==='dot'){const x=g.mx+lastW+g.size*.25,y=ly+g.size*.3,r=g.size*.09*1.14;shape(x-r,y-r,x+r,y+r);}
+ if(g.split){const x=g.mx+g.aw*.64,h=Math.max(g.m.h,g.deckH)/2;shape(x,g.H/2-h,x,g.H/2+h);if(p.dbl)shape(g.mx,g.H*.1,g.mx+g.aw,g.H*.1);}else{shape(g.mx,g.ry,g.mx+g.aw,g.ry);if(p.dbl)shape(g.mx,g.ry+g.lw*2.5,g.mx+g.aw,g.ry+g.lw*2.5);}
+ const dx=g.split?g.mx+g.aw*.68:g.mx;
+ g.dlines.forEach((line,i)=>{const it={text:line,font:g.dfont,size:g.dsz,track:g.dc?0:.12,align:'left',lead:1.6,x:dx,y:g.dy+g.ds*.8+(g.deckStarts[i]+(g.deckCounts[i]-1)/2)*g.ds*1.6},ink=A.itemGeometry(it,ID,{pass:'main',scale:1}).polygons;texts.push(...ink,...ink.map(poly=>poly.map(v=>[v[0],v[1]+g.ds*.5])));});
+ if(g.showByline)text({text:g.bylineText,font:mono,size:g.ls*.85,track:.12,align:g.split?'left':'right',x:g.split?dx:g.mx+g.aw,y:g.by});
+ const other=[...shapes,...texts],bounds=A.bounds([...other,rect(move(head.bounds,main.x,main.y))]),body=A.bounds([...other,rect(move(head.body,main.x,main.y))]);return {bounds,body,renderScale:scale};
+}
+function prepare(plan,cut,{scale,region,previous}){
+ const W=plan.W,H=plan.H,area=cut.area,st={...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},env={W:area?W*area.w:W,H:area?H*area.h:H,cut,plan,st,sc:cut.palette||st.schemes[cut.scheme%st.schemes.length]},p=cut.params;
+ if(!['top','bottom','split'].includes(p.variant)||!['none','bar','dot'].includes(p.mark)||typeof p.kicker!=='string')return {diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_HEADLINE_VARIANT'}};
+ const native=J.headlineDeckGeometry(env),count=[native.fb.text,...native.dlines,native.bylineText,p.kicker].join('').replace(/\n/g,'').length;if(count>256)return {diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_HEADLINE_GLYPH_BUDGET'}};
+ const c={cx:region.center.x*W,cy:region.center.y*H,r:region.radius*Math.min(W,H)},pad=Math.max(2,.005*Math.min(W,H))+1,dx=2*c.cx/W-1,dy=2*c.cy/H-1,regions=[{direction:'down',score:-dy,x0:0,y0:c.cy+c.r+pad,x1:W,y1:H},{direction:'up',score:dy,x0:0,y0:0,x1:W,y1:c.cy-c.r-pad},{direction:'right',score:-dx,x0:c.cx+c.r+pad,y0:0,x1:W,y1:H},{direction:'left',score:dx,x0:0,y0:0,x1:c.cx-c.r-pad,y1:H}],candidates=[];let attempts=0;
+ const point={bounds:{x0:-.5,y0:-.5,x1:.5,y1:.5},body:{x0:-.5,y0:-.5,x1:.5,y1:.5},renderScale:scale},tail=A.bounds([S.stageEnvelope(point,{x:W/2,y:H/2},plan,cut)]),tailWidth=tail.x1-tail.x0-1;
+ function place(local,offset,r){let b=A.bounds([S.stageEnvelope(local,{x:offset[0],y:offset[1]},plan,cut)]),body=A.bounds([S.stageEnvelope(local,{x:offset[0],y:offset[1]},plan,cut,true)]);b={x0:Math.max(0,b.x0),y0:Math.max(0,b.y0),x1:Math.min(W,b.x1),y1:Math.min(H,b.y1)};if(body.x0<0||body.y0<0||body.x1>W||body.y1>H||b.x0<r.x0||b.y0<r.y0||b.x1>r.x1||b.y1>r.y1||!A.clear([rect(b)],c,pad))return null;return {envelope:rect(b),body};}
+ for(const r of regions){if(r.x0>=r.x1||r.y0>=r.y1)continue;const available=Math.max(1,(r.x1-r.x0-tailWidth)/(cut.contentScale??1));for(const width of new Set([native.aw,Math.min(native.aw,available),Math.min(native.aw,available*.75),available])){
+  const g=J.headlineDeckGeometry(env,{native,width}),local=support(g,env,scale),b=A.bounds([S.stageEnvelope(local,{x:0,y:0},plan,cut)]),offset=[(r.x0+r.x1-b.x0-b.x1)/2/(cut.contentScale??1),(r.y0+r.y1-b.y0-b.y1)/2/(cut.contentScale??1)];let moved=A.bounds([S.stageEnvelope(local,{x:offset[0],y:offset[1]},plan,cut)]);offset[0]+=(r.x0>0?Math.max(0,r.x0-moved.x0):r.x1<W?-Math.max(0,moved.x1-r.x1):0)/(cut.contentScale??1);offset[1]+=(r.y0>0?Math.max(0,r.y0-moved.y0):r.y1<H?-Math.max(0,moved.y1-r.y1):0)/(cut.contentScale??1);attempts++;const fit=place(local,offset,r);if(fit)candidates.push({geometry:g,local,offset,region:r,...fit,fitness:Math.abs(Math.log(((local.body.x1-local.body.x0)/(local.body.y1-local.body.y0))/((r.x1-r.x0)/(r.y1-r.y0)))),distance:Math.hypot(offset[0]/W,offset[1]/H)});
+ }}
+ const old=previous?.policy===S.policy?previous.diagnostics.find(d=>d.cut===cut.index&&d.status==='safe'):null;candidates.sort((a,b)=>b.region.score-a.region.score||a.fitness-b.fitness||a.distance-b.distance||Number(b.region.direction===old?.direction)-Number(a.region.direction===old?.direction));const win=candidates[0];if(!win)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_HEADLINE_COMPOSITION',candidates:attempts}};
+ const prior=previous?.plan.cuts.find(c=>c.index===cut.index)?.simpleCircleRecipe?.headlineDeck;if(old?.direction===win.region.direction&&prior?.geometry.variant===p.variant){const fit=place(win.local,prior.offset,win.region);if(fit){win.offset=prior.offset.slice();Object.assign(win,fit);win.reusedPosition=true;}}
+ return {recipe:{geometry:win.geometry,offset:win.offset},diagnostic:{cut:cut.index,status:'safe',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,headline:win.geometry.fb.text,deck:win.geometry.dlines,headlineSize:native.size,deckSize:native.dsz,width:win.geometry.aw,nativeWidth:native.aw,variant:p.variant,candidates:attempts,reusedPosition:!!win.reusedPosition,sideDispersion:false}};
+}
+A.headlineCircle=Object.freeze({prepare});
 })();
 
 /* ============================================================

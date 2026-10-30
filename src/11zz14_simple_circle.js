@@ -4,7 +4,7 @@
 const A=J.placement,ID=[1,0,0,1,0,0],policy='direction-region-arrangement-20261030';
 const sourceCuts=new WeakMap();
 const intervals=(plan,cut)=>{const h=J.stepDur(plan.fx,plan.fps),start=Math.min(cut.start,cut.renderStart??cut.start)-h,end=Math.max(cut.end,cut.displayEnd??cut.end)+.6+2*h+1.6/24+.07;return {start,end,regions:(plan.lyricAvoidanceIndex?.regions||[]).filter((r,i)=>r.start<end&&Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration)>start)};};
-const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&(['center','vcols'].includes(cut.layout)||cut.layout==='numbered'&&cut.params.variant==='cols')&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
+const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&(['center','vcols','headlineDeck'].includes(cut.layout)||cut.layout==='numbered'&&cut.params.variant==='cols')&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
 const activeCut=(plan,c,t)=>{const r=intervals(plan,c);return targets(plan,c)&&t>=r.start&&t<r.end;};
 const active=(plan,t)=>plan?.cuts.some(c=>activeCut(plan,c,t));
 const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];
@@ -45,13 +45,14 @@ function prepare(plan,previous=null,{scale=1}={}){
   let reason=null;
   const fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style;
   const numeric=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fx.motion??.7,fx.chroma??.7,st.ghost??1,cut.camP?.a??0,cut.camP?.dir??1,cut.treatP?.d??0,...(cut.treatP?.dir||[]),...Object.values(cut.params).filter(v=>typeof v==='number')];if(!numeric.every(Number.isFinite)||plan.W<=0||plan.H<=0||(cut.contentScale??1)<=0||(cut.motionScale??1)<0||(cut.motionScale??1)>1||(fx.motion??.7)<0||(fx.motion??.7)>1||(fx.chroma??.7)<0||(st.ghost??1)<0||cut.text.length===0||(cut.camP?.a??0)<0||Math.abs(cut.camP?.dir??1)>1||(cut.treatP?.d??0)<0)reason='UNSUPPORTED_PARAMETER_RANGE';
-  if(!['cut','flicker','inkBleed','magnet'].includes(cut.enter)||!['cut','overexposeOut'].includes(cut.exit)||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)||!['none','hardShadow'].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!['verticalStrip','dataColumns','sonarArcs'].includes(d.id))||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam))reason='UNSUPPORTED_MOTION';
+  if(!['cut','flicker','inkBleed','magnet'].includes(cut.enter)||!['cut','overexposeOut'].includes(cut.exit)||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)||!['none','hardShadow'].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!['verticalStrip','dataColumns','sonarArcs'].includes(d.id)&&!(cut.layout==='headlineDeck'&&d.id==='romajiLine'))||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam))reason='UNSUPPORTED_MOTION';
   if((plan.events||[]).some(e=>!['chroma','shake','rgbSplit'].includes(e.type))||cut.trans&&cut.trans!=='none')reason='UNSUPPORTED_EFFECT';
   if(cut.layout==='center'&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text))reason='UNSUPPORTED_AUXILIARY';
   const regions=intervals(plan,original).regions;
   if(regions.length!==1)reason='UNSUPPORTED_REGION_CHANGE';
   if(cut.layout==='numbered'&&((cut.decor||[]).length||cut.params.chunks?.length>3))reason='UNSUPPORTED_NUMBERED_COLUMNS';
   if(reason){diagnostics.push({cut:cut.index,status:'unsupported',reason});continue;}
+  if(cut.layout==='headlineDeck'){const result=A.headlineCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:original,headlineDeck:result.recipe,renderScale:scale,policy};}continue;}
   if(cut.layout==='numbered'){const result=A.numberedCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:original,numberedColumns:result.recipe,renderScale:scale,policy};}continue;}
   const area=cut.area,W0=area?plan.W*area.w:plan.W,H0=area?plan.H*area.h:plan.H;
   const native=J.basicMainItem({W:W0,H:H0,cut,sc:cut.palette||st.schemes[cut.scheme%st.schemes.length]});
@@ -90,7 +91,7 @@ function prepare(plan,previous=null,{scale=1}={}){
 function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
  const source=cut.simpleCircleRecipe.sourceCut;if(source.layout==='numbered')return;const env=renderer.makeEnv(ctx,plan,source,sc,options),area=source.area,W=env.W,H=env.H,ax=area?area.x*plan.W:0,ay=area?area.y*plan.H:0,motion=source.motionScale??1,cam=J.CAMERA[source.cam].get(env,source.camP||{}),scale=J.lerp(1,cam.s??1,motion)*(source.contentScale??1);
  ctx.save();try{if(area){ctx.translate(ax+W/2,ay+H/2);ctx.rotate((area.angle||0)*J.DEG);ctx.translate(-ax-W/2,-ay-H/2);ctx.beginPath();ctx.rect(ax,ay,W,H);ctx.clip();}ctx.translate(ax+W/2+(root.x+(cam.x||0))*motion,ay+H/2+(root.y+(cam.y||0))*motion);if(cam.rot)ctx.rotate(cam.rot*J.DEG*motion);ctx.scale(scale,scale);ctx.translate(-W/2,-H/2);ctx.globalCompositeOperation=root.blend;
-  const item=J.animateMainItem(env,J.basicMainItem(env));let bb=null;
+  const hg=source.layout==='headlineDeck'?J.headlineDeckGeometry(env):null,base=hg?{text:hg.fb.text,font:source.params.font,size:hg.size,x:hg.mx,y:hg.hy,align:'left',lead:1.02,track:-.01}:J.basicMainItem(env),item=J.animateMainItem(env,base);let bb=hg?{x0:hg.mx,y0:hg.hy-hg.m.h/2,x1:hg.mx+hg.m.w,y1:hg.hy+hg.m.h/2,cx:hg.mx+hg.m.w/2,cy:hg.hy,boxes:[]}:null;
   if(item){const lay=J.layoutText(item),boxes=[];for(const g of lay){if(!g.ch.trim())continue;const c=item.charFn?.(g.i,g,lay.N);if(c?.hide||(item.alpha??1)*(c?.a??1)<=.002)continue;const k=c?.s??1;boxes.push({x:(g.x+g.vx)*(item.sx||1)+(c?.dx||0),y:(g.y+g.vy)*(item.sy||1)+(c?.dy||0),w:g.w*(item.sx||1)*k,h:g.h*(item.sy||1)*k});}if(boxes.length)bb={x0:item.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:item.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:item.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:item.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:item.x,cy:item.y,boxes};}
   for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,bb,d);}
  }finally{ctx.restore();}

@@ -590,17 +590,9 @@ reg('magazine', {
 /* ======================================================================
    2  headlineDeck — 見出しとリード
    ====================================================================== */
-reg('headlineDeck', {
-  name: '見出しとリード', tags: ['editorial', 'graphic', 'calm'], w: 1.1, ae: 'center', fits: n => n <= 22,
-  enterBias: { wipe: 1.4, slice: 1.2, stretch: 1.2 },
-  plan: (rng, cut, st) => ({
-    font: rng.pick(fontsOf(st, ['display', 'display', 'serif'])), variant: portOf(cut) ? rng.pick(['top', 'bottom']) : rng.pick(['top', 'bottom', 'split']),
-    kicker: rng.pick(['特集', 'FEATURE', 'COVER STORY', 'ESSAY', '連載', 'REPORT']), mark: rng.pick(['none', 'bar', 'none', 'dot']), dbl: rng.chance(0.5),
-  }),
-  render(env) {
-    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
+J.headlineDeckGeometry = (env,adapt=null) => {
+    if(adapt)return reflowHeadlineDeck(env,adapt);
     const { W, H, sc } = env, p = env.cut.params, u = U(env), port = isPort(env);
-    const out = tout(env);
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.headlineMeasure ?? 1 : 1;
     const nativeMX = W * (port ? 0.08 : 0.075), aw = editorialMeasure === 1 ? W-nativeMX*2 : (W-nativeMX*2)*editorialMeasure, mx = editorialMeasure === 1 ? nativeMX : (W-aw)/2;
     const split = p.variant === 'split' && !port;
@@ -630,6 +622,30 @@ reg('headlineDeck', {
       top = Math.max(H * 0.07, (H - tot) / 2 - H * 0.03);
       hy = top + kickH + m.h / 2; ry = hy + m.h / 2 + size * 0.22; dy = ry + ls * 1.2;
     }
+
+    const by=split?dy+deckH+ls*1.5:(p.variant==='bottom'?top-ls*1.4:dy+deckH+ls*.8);
+    const original={variant:p.variant,W,H,port,split,aw,mx,hw,fb,size,m,ls,ds,dc,dw,dlines,dfont,dsz,deckH,kickH,lw,top,hy,ry,dy,by,deckStarts:dlines.map((_,i)=>i),deckCounts:dlines.map(()=>1),showByline:!!dc&&by<H*.95&&by>H*.04,bylineText:'— '+J.fmtTime(env.cut.start)+'  /  '+(romajiOf(env)||'No.'+lineNo(env)).slice(0,22),explicitHead:env.cut.text.includes('\n')};
+    return original;
+};
+function reflowHeadlineDeck(env,adapt){const p=env.cut.params;
+    const n=adapt.native,width=adapt.width,wrap=(text,font,size,width,track)=>text.split('\n').map(line=>{let rows=[],row='',w=0;for(const c of [...line]){const advance=J.metrics.adv(font,c)*size,extra=row?track*size:0;if(row&&w+extra+advance>width){rows.push(row);row='';w=0;}w+=(row?track*size:0)+advance;row+=c;}rows.push(row);return rows.join('\n');}).join('\n');
+    const next={...n,aw:width,hw:n.split?width*.6:width,dw:n.split?width*.32:Math.min(width,n.port?width:width*.62)};
+    next.fb={...n.fb,text:wrap(n.explicitHead?n.fb.text:n.fb.text.replace(/\n/g,''),p.font,n.size,next.hw,-.01)};next.m=meas(next.fb.text,p.font,n.size,{lead:1.02,track:-.01});
+    next.dlines=n.dlines.map(line=>n.dc?wrap(line,n.dfont,n.dsz,next.dw,0):line);next.deckCounts=next.dlines.map(line=>line.split('\n').length);let count=0;next.deckStarts=next.deckCounts.map(n=>{const start=count;count+=n;return start;});next.deckH=count*n.ds*1.6;
+    if(n.split){next.top=n.H/2-next.m.h/2;next.hy=n.H/2;next.ry=null;next.dy=n.H/2-next.deckH/2;}else if(p.variant==='bottom'){const total=next.deckH+n.ls*1.6+next.m.h+n.kickH;next.top=Math.max(n.H*.08,n.H*.9-total);next.dy=next.top;next.ry=next.top+next.deckH+n.ls*.6;next.hy=next.ry+n.ls+n.kickH+next.m.h/2;}else{const total=n.kickH+next.m.h+n.size*.3+n.ls+next.deckH;next.top=Math.max(n.H*.07,(n.H-total)/2-n.H*.03);next.hy=next.top+n.kickH+next.m.h/2;next.ry=next.hy+next.m.h/2+n.size*.22;next.dy=next.ry+n.ls*1.2;}
+    next.by=n.split?next.dy+next.deckH+n.ls*1.5:(p.variant==='bottom'?next.top-n.ls*1.4:next.dy+next.deckH+n.ls*.8);return next;
+}
+reg('headlineDeck', {
+  name: '見出しとリード', tags: ['editorial', 'graphic', 'calm'], w: 1.1, ae: 'center', fits: n => n <= 22,
+  enterBias: { wipe: 1.4, slice: 1.2, stretch: 1.2 },
+  plan: (rng, cut, st) => ({
+    font: rng.pick(fontsOf(st, ['display', 'display', 'serif'])), variant: portOf(cut) ? rng.pick(['top', 'bottom']) : rng.pick(['top', 'bottom', 'split']),
+    kicker: rng.pick(['特集', 'FEATURE', 'COVER STORY', 'ESSAY', '連載', 'REPORT']), mark: rng.pick(['none', 'bar', 'none', 'dot']), dbl: rng.chance(0.5),
+  }),
+  render(env) {
+    const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
+    const recipe=env.cut.simpleCircleRecipe?.headlineDeck,g=recipe?.geometry||J.headlineDeckGeometry(env),{W,H,port,split,aw,mx,hw,fb,size,m,ls,ds,dc,dw,dlines,dfont,dsz,deckH,kickH,lw,top,hy,ry,dy}=g,{sc,ctx}=env,p=env.cut.params,out=tout(env);
+    if(recipe){ctx.save();ctx.translate(recipe.offset[0],recipe.offset[1]);}
     // kicker
     const ka = tin(env, 0.05, 0.4) * out;
     const ky = hy - m.h / 2 - ls * 1.1;
@@ -665,11 +681,12 @@ reg('headlineDeck', {
     dlines.forEach((l, i) => {
       const a = tin(env, env.cut.inDur * 0.6 + 0.08 * i, 0.4, E.outCubic) * out;
       if (a <= 0.01) return;
-      editorialMotion(env.cut.inDur*.6+.08*i+.4, () => env.draw({ text: l, font: dfont, size: dsz, track: dc ? 0 : 0.12, align: 'left', x: dx, y: dy + ds * 0.8 + i * ds * 1.6 + (1 - a) * ds * 0.5, color: i === 0 && dc ? sc.fg : sc.sub, alpha: a, ghost: false }));
+      editorialMotion(env.cut.inDur*.6+.08*i+.4, () => env.draw({ text: l, font: dfont, size: dsz, track: dc ? 0 : 0.12, align: 'left', x: dx, lead:1.6,y: dy + ds * 0.8 + (g.deckStarts[i]+(g.deckCounts[i]-1)/2) * ds * 1.6 + (1 - a) * ds * 0.5, color: i === 0 && dc ? sc.fg : sc.sub, alpha: a, ghost: false }));
     });
     const by = split ? dy + deckH + ls * 1.5 : (p.variant === 'bottom' ? top - ls * 1.4 : dy + deckH + ls * 0.8);
     const ba = tin(env, env.cut.inDur + 0.15, 0.4, E.outCubic) * out;
-    if (dc && by < H * 0.95 && by > H * 0.04) env.draw({ text: '— ' + J.fmtTime(env.cut.start) + '  /  ' + (romajiOf(env) || 'No.' + lineNo(env)).slice(0, 22), font: monoF(env), size: ls * 0.85, track: 0.12, align: split ? 'left' : 'right', x: split ? dx : mx + aw, y: by, color: sc.sub, alpha: ba, ghost: false });
+    if (g.showByline) env.draw({ text:g.bylineText, font: monoF(env), size: ls * 0.85, track: 0.12, align: split ? 'left' : 'right', x: split ? dx : mx + aw, y: by, color: sc.sub, alpha: ba, ghost: false });
+    if(recipe)ctx.restore();
     return bb || box(hx, hy - m.h / 2, hx + m.w, hy + m.h / 2);
   },
 });

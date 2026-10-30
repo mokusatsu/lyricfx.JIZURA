@@ -1,0 +1,28 @@
+# AVOID-009 headlineDeck partial adaptation — 2026-10-30
+
+Limited unit reviewed. Owner gpt-6.1-sol / medium. Base8ec021a531b5d744f3f7b84918a2620617453631. No media encode, public/HTTP/hash/media viewing, smoke or deployment polling. Previous untracked experiments were kept.
+
+## Scope
+
+The native top/bottom/split geometry is shared through J.headlineDeckGeometry. Original fitBlock resolves headline size only once at native dimensions. Adaptation fixes that size, lead size, kicker/byline sizes and spacing; only line wrapping and permitted width change. Top/bottom retain their source stacking formulas; split retains its left60% headline/right32% deck and separating rule. All headline/deck/kicker/rules/mark/byline furniture stays one translated composition, with no independent side distribution.
+
+Original deck content is the native visible sequence (including the existing source maximum4 lines). Each native deck row remains one item with the same color, source i and entrance delay; width reflow happens inside that item, so extra wrapped rows do not acquire new delays. Original manual newline constraints remain. The native byline display decision is frozen, preventing new omissions when reflow grows beyond its former local area. Header mark, rules and kicker animation formulas remain native.
+
+The short shared direction/region/geometry path is reused. Candidate widths retain native and reduced widths and add the available main-region width, allowing wider fewer-line layouts without font-size changes. No side auxiliary region, all-clock search or ownership framework is added. Previous offsets are reusable only when current geometry fits the selected direction region and circle again. Main body/furniture must fit the screen; effect tails use the existing natural canvas clipping policy and inherited conservative engineering envelope.
+
+Unsupported effects/variants keep original rendering with the existing permanent unsupported/original-placement warning; insufficient space stays explicit. Manual/notation/lock/emphasis priority and other layouts retain their existing route. Common supported decorators and romajiLine retain their original area/camera/clock through the native headline BB helper. Their original independent behavior is preserved, not newly certified for circle clearance. Other decorators, unadmitted effects/masks/transitions and multiple active circles remain unsupported. Existing image/video preparation and AE not-applied warning/metadata apply; no encode/AE execution was run.
+
+## Representative local evidence
+
+All sources/raw/resource sidecars are outside the repo at /workspace/jizura-logic-evidence-20261027/headline-circle-sourceNN and headline-circle-actualNN[-runtime].
+
+- actual01: controlled top width adaptation, changed input/circle, and explicit scale8 insufficient all passed. Original ordinary automatic split was unsupported due independent romajiLine, preserving original visible display. That state is historical, not current generic failure behavior.
+- actual02: after retaining romajiLine on its native root, the unmodified automatic split composition had insufficient space (25.5ms) and was explicitly excluded. This result is preserved; the probe's expectation that normal split would succeed failed. Controlled top still passed: original width750.72→203.724, headline63.504/lead16 unchanged; changed text/note/circle→width347.724, same sizes; genuine insufficient→empty. These successes are not a claim that split always fits.
+- actual03 PASS: ordinary automatic effects/decor retained, with native variant top selected. magnet/flashBox/overexposeOut/push and romajiLine were not disabled. Default circle(.5,.42,r=.2), headline63.504/lead16 retained, width750.72→195.959, left main region, visible preview. One observed UI prepare19.4ms, excluding fonts; no formal performance claim.
+- Source plan bytes remained unchanged; probes checked fixed role sizes, original headline/deck visible content and byline visibility. Input change used a new lyric/note/circle and displayed the changed composition. No continuous raster oracle or image comparison was performed.
+
+All three managed runs normally closed three pages and completed owned-child cleanup, leaving no descendants/debug port or forced signals. actual02 retains functional probeExit1/host complete=false; cleanup success does not replace that failed expectation. Free floor1GiB and declared output1MiB were unchanged. Failed/historical original source/raw remain preserved.
+
+The parent-requested wider main-region candidate was added after actual03, retaining prior native/reduced candidates. Final code was then checked in actual04 with exactly the same ordinary top condition: PASS, nonempty preview, headline63.504/deck16 unchanged from native, left main region, all envelope vertices inside that region, width750.72→195.958866. UI prepare29.8ms, one observation. Source postpins unchanged; three pages closed normally, owned descendants reaped, no forced signals/remaining children/open debug port. No other cases were rerun. Final syntax checks, normal JA/EN build and git diff --check passed. Human visual judgment where required, broad/default-variant qualification, all-effect support and formal performance remain outstanding.
+
+Parent review checked the fixed-size reflow, native content and composition order, main-region-only candidate selection, original decoration route and explicit unsupported handling. The parent independently checked the actual04 result and Qt shutdown record, as well as JavaScript syntax and diff whitespace. The ordinary split insufficient result and the narrower admitted effect set remain limitations; this review does not claim all automatic combinations or human visual acceptance.
