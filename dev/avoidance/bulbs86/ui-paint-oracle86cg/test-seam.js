@@ -1,0 +1,8 @@
+// TEST ONLY inside the adapter closure; no product installation or model export.
+let savedFormal86cd=null;
+Object.defineProperty(A,'uiPaintTest86cd',{value:Object.freeze({
+ snapshot(){need(uiFormal86bx&&A.layoutsDRuntimeAdmission(uiFormal86bx),'TEST86CD_READY');savedFormal86cd=uiFormal86bx;const plan=copy(J.ui.plan),viewport={width:cv.width,height:cv.height,scale:cv.width/plan.W};const source=copy(preparedStage.plan);return{plan,source,formal:copy(uiFormal86bx),viewport,circle:A.bulbsDesignViewportGeometry86bv.circleFor(plan,viewport,viewport.scale).circle,clock:A.bulbsComposeScope86bu.clock(source,source.cuts[0])}},
+ actual(time){need(savedFormal86cd===uiFormal86bx,'TEST86CD_FORMAL');const view=document.getElementById('view'),target=view.getContext('2d'),rows=[];F.withInspection((env,paint)=>{const root=A.bulbsProof69.matrix(env.ctx),clock={pass:env.pass,t:env.t,realTime:env.realTime,lt:env.lt,ltb:env.ltb,step:env.step,pOut:env.pOut};const observation=A.bulbsProof69.observe(env,paint,{suppress:false});rows.push({pass:env.pass,clock,root,records:observation.records,catalog:observation.catalog});return observation.result},()=>A.bulbsUIRuntime86bx.draw(target,time,{scale:view.width/J.ui.plan.W,fast:false,noTrans:false,noPost:false}));return{time,rows}},
+ old(){let failure=null;try{J.ui.renderer.frame(document.getElementById('view').getContext('2d'),savedFormal86cd,.5,{scale:document.getElementById('view').width/J.ui.plan.W,fast:false,noTrans:false,noPost:false})}catch(e){failure={code:e.code,message:e.message}}return{failure,admitted:A.layoutsDRuntimeAdmission(savedFormal86cd),stats:A.bulbs80Stats(),session:J.uiApi.bulbsSessionState86bx()}},
+ cancel(){return A.bulbsUIRuntime86bx.cancel()}
+})});

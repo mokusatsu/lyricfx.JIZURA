@@ -1,0 +1,5 @@
+# UI paint oracle86ce — preserved recipe-domain failure
+
+Test-only successor to86cd. The seam saves editable input, copied preparedStage.plan (the actual normalized compiler input), formal publication plan, actual viewport and freshly computed Float64 clock. Original finalizer code src/09a_placement.js clears auto area before D preparation; editable→normalized differs only in cut.area, and deleting the original adapter's fixed finalization fields from formal reproduces normalized source exactly. No unexpected input change is allowed by the final checker.
+
+Actual01 records that provenance, then stops at the first independent source recipe draw: existing withBulbsRecipe68 is explicitly restricted to960×540, so the design1920×1080 compact recipe correctly refuses BULBS68_RECIPE_SCOPE. Product/candidate guard was not weakened. All4raw files and source remain frozen. Managed runner closed3pages normally, reaped children, signals0/remaining0/port closed. See actual-summary.json. The general checker copied here was an intermediate single-success-run utility; final composite checker is86cg/check-combined.py. Continue86cf's explicitly scoped independent reference page.

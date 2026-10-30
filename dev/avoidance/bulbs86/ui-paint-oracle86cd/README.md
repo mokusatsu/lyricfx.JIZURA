@@ -1,0 +1,5 @@
+# UI paint oracle86cd — preserved setup failure
+
+Test-only continuation from frozen86cc, beginning HEAD3a111d02. No product src/guard/HTML/media edits. Source01 was built but never executed; snapshot clock rebuilding was moved out of each endpoint into once-per-input setup before source02. Source02 actual02 used managed Qt runner96MiB/240s with1GiB spare floor and bounded8MiB record/256MiB JSON/64MiB gzip evidence. Only4small raw files were saved; the first720oracle rejected BULBS86AE_SCOPE because the editable UI cut contains an automatic area, while the finalizer-normalized input intentionally has area:null. The initial guess about missing scale defaults was incorrect; raw comparison established area is the only difference.
+
+Guard and failed aggregate remain unchanged.3pages closed normally, owned children were reaped, signals0/remaining0/port closed. No new250-frame material was reused or rendered. See actual-summary.json for frozen source/output. Continue86ce/86cf/86cg for subsequent evidence; this unit is not a paint/geometry pass.
