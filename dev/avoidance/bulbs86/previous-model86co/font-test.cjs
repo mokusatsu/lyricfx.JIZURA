@@ -1,0 +1,4 @@
+'use strict';const fs=require('node:fs'),vm=require('node:vm');
+const ui=fs.readFileSync(__dirname+'/ui86co.js','utf8');let a=ui.indexOf('function readDominoFonts82aq(){'),z=ui.indexOf('\nconst dominoSession82ao=',a);const phase='let bulbsFontReady86co=null;\n'+ui.slice(a,z);a=ui.indexOf(' async waitFonts(plan,isCurrent){');z=ui.indexOf('\n schedule:',a);const method=ui.slice(a,z);
+let source=fs.readFileSync(__dirname+'/../../domino82/previous-model82aq/font-test.cjs','utf8');source=source.replace("fs.readFileSync(__dirname+'/font-phase.js','utf8')",JSON.stringify(phase)).replace("fs.readFileSync(__dirname+'/font-wait-method.js','utf8')",JSON.stringify(method));
+vm.runInThisContext('(function(require,__dirname){'+source+'\n})',{filename:__filename})(require,__dirname);
