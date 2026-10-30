@@ -1,0 +1,15 @@
+# AVOID-009 product connection86ch — integration readiness audit
+
+担当ui_viewport_performance（親指定gpt-6.1-sol/medium）。開始HEAD1a62d403、worktree clean。親が86cd–86cg端点証拠を独立検査・commitし復元ZIPv125を確認した後、通常UIへの接続に必須の依存・取消/失敗/応答を既存設計内で確認した。新Qt・描画・媒体生成/閲覧・公開アクセス・製品source変更・commit/pushは0。
+
+成果はdev/avoidance/bulbs86/product-connection86ch/README.mdのbuild依存表・限定main-view routing表・取消/failure分析・構造的選択肢、およびdependency-profile.jsonの既測定根拠とsource hash。buildはsrc辞書順連結で、既存bulbs adapter/once-only issuerを追記置換できない。86ccのFD/owner/controller/adapter、別generator/clock/root/実layout-accounting86j/post-fast依存、共有finalizerのbulbs限定missing-glow同値1箇所、UIの世代接続が必要。既存12_ui試作hookはarea draft適用前にreturnし、snapshotの別Rendererを無視するため、そのまま取り込めない。
+
+親の指示で最後に限定routingを検討し、通常viewの同一ctx＋S.renderer＋非area編集だけをcoordinator、bulbsなしを元stock全経路、area/別renderer/未対応出力入口を明示typed unsupportedへ分離する小設計は成立すると判断。黙って別演出へ戻す／blank保存へ進む経路は認めない。ただしこのroutingを実装しても現応答資格が成立せず、追加guard層を実装するだけにはしなかった。共有描画の大幅例外復旧設計は、routingのために必須とは確認されず、別承認待ちの大設計を勝手に着手していない。
+
+既86cc実測はready10.540/8.756秒、maxstep108.1/80.9ms。scalar＋proofは7.436/5.744秒、profile済outer workの93.9/93.3%。残りtail全体を除いても測定上0.5秒未満で、無意味な小幅高速化を続けない。main-threadの同期step中は入力eventを処理できず、取消はyield後。実入力・font値・resizeからの世代失効と旧formal拒否/解放は前段rawで確認済みだが、専用cancel control・新job再開policyは未接続。failureは通常typed unsupportedと旧結果非公開を維持する。新しい全入力/全演出資格は主張しない。
+
+製品適用は保留。小さなmain-only接続設計は示したが、9–11秒の準備と実用応答未達、出力/area/別renderer semantics未接続を残したまま適用しない。構造的選択肢はcircle-only不変geometry再利用（既fullKey/世代bindingの遷移設計が必要、hitでも約2.8秒proof残存）、保証を保持した不変依存再利用、DOM測定とauthorityを保つUI外計算、新算法の別設計。単なるclock/owner削減・guard/余白緩和は禁止。いずれも今回実装/性能達成と記録しない。
+
+製品差分がないので新たな他演出退行は導入していないが、将来実buildを変えた後の非bulbs回帰資格は必要。旧center07/08失敗と86bz限定粒子説明も保持。端点2入力の448frame/1000owner/35956supportは、このauditによって全入力・全連続時刻・RGBA保証には拡張されない。
+
+この単位の保存対象はproduct-connection86chのREADME/小JSONと本reviewだけ。親がsourceと数値をレビューしてcommit/pushし、承認済み残り演出の独立実装へ切替可能な区切り。詳細表に示した未適用設計を実装済み・製品完了とは数えない。
