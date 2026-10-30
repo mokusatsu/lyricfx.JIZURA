@@ -23,6 +23,7 @@ const ICON = {
 };
 
 const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
+document.fonts.addEventListener('loadingdone', () => { S.need = true; });
 
 const simpleCircle=J.placement.simpleCircle;
 let simpleGeneration=0,simplePrepared=null,simplePrevious=null,simplePending=false,simpleError=null,simpleDirty=false;
