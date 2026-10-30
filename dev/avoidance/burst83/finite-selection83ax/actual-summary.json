@@ -1,0 +1,118 @@
+{
+  "source": "/workspace/jizura-logic-evidence-20261027/burst-finite-selection-source83ax01",
+  "output": "/workspace/jizura-logic-evidence-20261027/burst-finite-selection83ax-actual01",
+  "runComplete": true,
+  "sourcePins": 35,
+  "rawFiles": 3,
+  "jsonBytes": 43057,
+  "gzipBytes": 9028,
+  "changedCircle": {
+    "cx": 0.7,
+    "cy": 0.42,
+    "radius": 0.2
+  },
+  "counts": {
+    "states": 250.0,
+    "own": 727.0,
+    "supports": 9047.0,
+    "glyphs": 2872.0,
+    "zeroReplayOwn": 727.0
+  },
+  "proof": {
+    "circle": {
+      "cx": 672.0,
+      "cy": 226.79999999999998,
+      "r": 108.0,
+      "margin": 2.7
+    },
+    "delta": [
+      -99.74114045379645,
+      0.0
+    ],
+    "selection": {
+      "side": "left",
+      "sourceUnion": {
+        "x0": 291.78662084007726,
+        "y0": 75.55757612607,
+        "x1": 657.0411404537964,
+        "y1": 456.31609616314074
+      },
+      "zeroClear": false,
+      "finiteCount": 2.0,
+      "policy": "zero-if-clear; preserve first valid existing right; remaining existing finite order"
+    },
+    "checkedOwn": 727.0,
+    "checkedSupports": 9047.0,
+    "minStageSlack": 75.55757612607,
+    "peak": 6071431.0,
+    "domain": "sample-clock-states-only",
+    "framePermission": false
+  },
+  "prepareMs": 17751.30000001192,
+  "maxStepMs": 69.19999998807907,
+  "finalizeMs": 51.19999998807907,
+  "frames": [
+    {
+      "n": 6,
+      "t": 0.1,
+      "hash": "9eb8ed154096372a06adbc22d7a667b263a365d789ea297bb557991d6bf0e26c",
+      "elapsedMs": 87
+    },
+    {
+      "n": 60,
+      "t": 1,
+      "hash": "2c9b199fb23c6cbf00fd23b829dd766a98566f8e1429e8eee65faba4d953476d",
+      "elapsedMs": 50.20000001788139
+    },
+    {
+      "n": 231,
+      "t": 3.85,
+      "hash": "d2c6e040b4eb077ba58b5fe1b40f154d9d65c8bccb3ad35adaddbad26baf854d",
+      "elapsedMs": 42.400000005960464
+    }
+  ],
+  "refusals": [
+    {
+      "label": "alias",
+      "code": "STALE_PLACEMENT_PLAN"
+    },
+    {
+      "label": "post",
+      "code": "BURST83AG_FRAME_SCOPE"
+    },
+    {
+      "label": "changed-circle",
+      "code": "BULBS80T_OWNED_PLAN_REQUIRED"
+    },
+    {
+      "label": "restored-old",
+      "code": "BULBS80T_OWNED_PLAN_REQUIRED"
+    }
+  ],
+  "released": {
+    "staged": false,
+    "preparing": false,
+    "ready": false,
+    "generation": 3,
+    "retainedStageBytes": 4122,
+    "sourceOnly": true,
+    "canIssueSafeTrajectory": true,
+    "formal": {
+      "bindings": 0,
+      "bindingBytes": 173,
+      "certificates": 0
+    }
+  },
+  "independentCheckerPassed": true,
+  "originalCircleRightDeltaNumericallyEqual": [
+    302.9133791599228,
+    0
+  ],
+  "originalCircleRedrawn": false,
+  "zeroActualFrameQualified": false,
+  "normalUIQualified": false,
+  "performanceAccepted": false,
+  "checkerSHA256": "9662a17270ff1a37fa2373ce782d47cd5b493889b501ad5c16a002392028bec6",
+  "newVideosOrImages": 0,
+  "publicChecks": 0
+}
