@@ -59,10 +59,29 @@ const burstSession83be=J.placement.burstUISession83bd.create({
  waitFonts(plan,isCurrent){return bulbsFontQueue86ci.run(isCurrent,async()=>{const lyrics=S.project.lyrics;await ensureFonts();if(!isCurrent())return;await trackFonts86ci(()=>J.ensureFonts(lyrics,J.fontsOfPlan(plan)));if(!isCurrent())return;await trackFonts86ci(()=>J.ensureFonts('字面',[...new Set(J.STYLE_ORDER.map(k=>J.STYLES[k].fonts.display[0]))]));if(!isCurrent())return;await document.fonts.ready;if(!isCurrent())return;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))});},
  schedule:fn=>setTimeout(fn,0),now:()=>performance.now(),hide:clearBulbsView86ci,onState(state){burstState83be=state;showBurstState83be(state);if(!state.active&&!state.cleanupError)return;S.need=true;if(!state.ready)clearBulbsView86ci($('view').getContext('2d'))}
 });
-function beginPlacementSessions83be(){const bulbs=bulbsTarget86ci(S.plan),burst=burstTarget83be(S.plan);if(bulbs&&burst){bulbsSession86ci.reject('MIXED_AVOIDANCE_UNSUPPORTED');burstSession83be.reject('MIXED_AVOIDANCE_UNSUPPORTED');return}if(burst){bulbsSession86ci.stop();burstSession83be.begin()}else{burstSession83be.stop();if(bulbs)bulbsSession86ci.begin();else bulbsSession86ci.stop()}}
+function beginPlacementSessions83be(){const pairs=[[bulbsSession86ci,bulbsTarget86ci(S.plan)],[burstSession83be,burstTarget83be(S.plan)],[dominoSession82ao,dominoTarget82ao(S.plan)]],targets=pairs.filter(p=>p[1]);if(targets.length>1){for(const [session]of pairs)session.reject('MIXED_AVOIDANCE_UNSUPPORTED');return}let cleanupFailed=false;for(const [session,target]of pairs)if(!target){const state=session.stop();cleanupFailed=cleanupFailed||!!state.cleanupError}if(targets.length){if(cleanupFailed)targets[0][0].reject('OTHER_AVOIDANCE_CLEANUP_FAILED');else targets[0][0].begin()}}
 $('burstCancel').addEventListener('click',()=>{burstSession83be.cancel();S.need=true});
 $('burstRetry').addEventListener('click',()=>{if(burstTarget83be(S.plan)&&!S.areaEdit)beginPlacementSessions83be()});
 for(const event of ['input','change'])document.addEventListener(event,e=>{if(['lyrics','lyricAvoidanceStrength','lyricGroupAvoidanceStrength'].includes(e.target.id)||e.target.closest?.('#fontRoles'))burstSession83be.invalidate('input')},true);
+
+const dominoBoundary82ao=J.placement.dominoUIBoundary82ao,dominoTarget82ao=plan=>plan?.layerVisibility?.lyrics!==false&&dominoBoundary82ao.targetsPreview(plan);
+let dominoState82ao=null;
+const dominoError82ao=kind=>Object.assign(new Error(J.mediaLabel(
+ kind==='area'?'ドミノの回避プレビューでは位置編集にまだ対応していません。':kind==='detail'?'ドミノの回避配置はメインプレビューで確認してください。':'ドミノの回避配置は現在メインプレビューのみ対応しています。画像・動画・After Effects用の出力にはまだ対応していません。',
+ kind==='area'?'Position editing is not yet supported for domino avoidance.':kind==='detail'?'Check domino avoidance in the main preview.':'Domino avoidance currently supports the main preview only. Image, video and After Effects output are not yet supported.'
+)),{code:'DOMINO_UI_'+kind.toUpperCase()+'_UNSUPPORTED'});
+function showDominoState82ao(state){const box=$('dominoPreparation'),label=$('dominoPreparationText'),cancel=$('dominoCancel'),retry=$('dominoRetry');const pending=state.active&&['empty','fonts','preparing'].includes(state.phase),blocked=!!state.cleanupError||state.active&&['cancelled','unsupported'].includes(state.phase);box.hidden=(!pending&&!blocked)||!dominoBoundary82ao.targetsFrame(S.plan,S.t);cancel.hidden=!pending;retry.hidden=!blocked||!!state.cleanupError;cancel.textContent=J.mediaLabel('準備を中止','Cancel preparation');retry.textContent=J.mediaLabel('再準備','Try again');label.textContent=state.phase==='cancelled'?J.mediaLabel('準備を中止しました。','Preparation cancelled.'):state.phase==='unsupported'?J.mediaLabel('この条件ではドミノの回避配置を表示できません。入力やプレビューサイズを変更してください。','Domino avoidance is unavailable for these conditions. Change the input or preview size.'):J.mediaLabel('ドミノの回避配置を準備中…','Preparing domino avoidance…');if(state.cleanupError)label.textContent+=' '+J.mediaLabel('準備の終了処理に失敗しました。再読み込みしてください。','Preparation cleanup failed. Reload the app.');}
+// Only a completed, unchanged request can omit repeated font load/cache clearing.
+let dominoFontReady82aq=null;
+function readDominoFonts82aq(){const faces=[...document.fonts],attributes=['family','style','weight','stretch','unicodeRange','status','featureSettings','variationSettings','ascentOverride','descentOverride','lineGapOverride'];return{revision:J.metrics.revision,loader:J.ensureFonts,faces,loaded:document.fonts.status==='loaded'&&faces.every(f=>f.status==='loaded'),data:JSON.stringify(faces.map(f=>attributes.map(k=>String(f[k]??''))))}}
+const dominoSession82ao=J.placement.dominoUISession82ao.create({
+ runtime:J.placement.dominoUIRuntime82ao.create({renderer:S.renderer,readViewport:plan=>({width:$('view').width,height:$('view').height,scale:$('view').width/plan.W})}),readPlan:()=>S.plan,
+ async waitFonts(plan,isCurrent){let request;await bulbsFontQueue86ci.run(isCurrent,async()=>{const lyrics=S.project.lyrics,keys=J.fontsOfPlan(plan),thumbs=[...new Set(J.STYLE_ORDER.map(k=>J.STYLES[k].fonts.display[0]))];request=JSON.stringify([lyrics,S.project.title,S.project.artist,J.drawingText(plan),keys,thumbs,J.lang,J.FONTS,J.LANG_FACES?.[J.lang],plan.style.fonts]);const previous=dominoFontReady82aq,current=readDominoFonts82aq(),same=previous&&previous.request===request&&previous.revision===current.revision&&previous.loader===current.loader&&current.loaded&&previous.data===current.data&&previous.faces.length===current.faces.length&&previous.faces.every((f,i)=>f===current.faces[i]);if(!same){await ensureFonts();if(!isCurrent())return;await trackFonts86ci(()=>J.ensureFonts(lyrics,keys));if(!isCurrent())return;await trackFonts86ci(()=>J.ensureFonts('字面',thumbs));if(!isCurrent())return;await document.fonts.ready}if(!isCurrent())return;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))});if(isCurrent())dominoFontReady82aq={request,...readDominoFonts82aq()}},
+ schedule:fn=>setTimeout(fn,0),now:()=>performance.now(),hide:clearBulbsView86ci,onState(state){dominoState82ao=state;showDominoState82ao(state);if(!state.active&&!state.cleanupError)return;S.need=true;if(!state.ready)clearBulbsView86ci($('view').getContext('2d'))}
+});
+$('dominoCancel').addEventListener('click',()=>{dominoSession82ao.cancel();S.need=true});
+$('dominoRetry').addEventListener('click',()=>{if(dominoTarget82ao(S.plan)&&!S.areaEdit)beginPlacementSessions83be()});
+for(const event of ['input','change'])document.addEventListener(event,e=>{if(['lyrics','lyricAvoidanceStrength','lyricGroupAvoidanceStrength'].includes(e.target.id)||e.target.closest?.('#fontRoles'))dominoSession82ao.invalidate('input')},true);
 
 /* WebAudio player (works inside sandboxed pages where blob media may be blocked) */
 const AP = {
@@ -330,7 +349,7 @@ function composePlan(project) {
   return plan;
 }
 function replan() {
-  bulbsSession86ci.invalidate('replan');burstSession83be.invalidate('replan');bulbsReplanning86ci=true;try{
+  bulbsSession86ci.invalidate('replan');burstSession83be.invalidate('replan');dominoSession82ao.invalidate('replan');bulbsReplanning86ci=true;try{
   closeTimelineCutMenu();
   S.plan = composePlan(S.project);
   J.captureAutoEffects(S.project,S.plan);
@@ -343,14 +362,14 @@ function replan() {
   S.project.timelineLinks = S.project.timelineLinks.filter(link => link && link.a !== link.b && (boundaryCut(link.a) || temporarilyHidden(link.a)) && (boundaryCut(link.b) || temporarilyHidden(link.b)));
   lastCutIdx = null;
   renderLines(); renderMediaList(); renderMediaLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
-  S.need = true; autosave(); if(!bulbsTarget86ci(S.plan)&&!burstTarget83be(S.plan))ensureFonts(); drawSwatch(); showNow();
+  S.need = true; autosave(); if(!bulbsTarget86ci(S.plan)&&!burstTarget83be(S.plan)&&!dominoTarget82ao(S.plan))ensureFonts(); drawSwatch(); showNow();
   clearTimeout(warmTimer); warmTimer = setTimeout(warm, 450);
   }finally{bulbsReplanning86ci=false;}beginPlacementSessions83be();
 }
 /* pre-decompose glyphs used by piece animations while the editor is idle, so playback does not hitch */
 let warmTimer = 0, warmJob = 0;
 function warm() {
-  if(bulbsTarget86ci(S.plan)||burstTarget83be(S.plan))return;
+  if(bulbsTarget86ci(S.plan)||burstTarget83be(S.plan)||dominoTarget82ao(S.plan))return;
   const job = ++warmJob;
   const cuts = S.plan.cuts.filter(c => c.enter === 'assemble' || ['explode', 'fall', 'drift'].includes(c.exit));
   const src = $('view');
@@ -372,7 +391,7 @@ function warm() {
   idle(step);
 }
 let replanTimer = 0;
-const replanSoon = (ms = 220) => { bulbsSession86ci.invalidate('debounce');burstSession83be.invalidate('debounce'); clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
+const replanSoon = (ms = 220) => { bulbsSession86ci.invalidate('debounce');burstSession83be.invalidate('debounce');dominoSession82ao.invalidate('debounce'); clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
 let fontKey = '';
 let thumbFonts = null;
 async function ensureFonts() {
@@ -420,7 +439,7 @@ function sizeViewport() {
   if (cssH > maxH) { cssH = maxH; cssW = cssH * ar; }
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const pw = Math.round(Math.min(S.plan.W, cssW * dpr)), ph = Math.round(pw / ar);
-  if(c.width!==pw||c.height!==ph){bulbsSession86ci.invalidate('viewport');burstSession83be.invalidate('viewport');c.width=pw;c.height=ph;if(!bulbsReplanning86ci)beginPlacementSessions83be();}
+  if(c.width!==pw||c.height!==ph){bulbsSession86ci.invalidate('viewport');burstSession83be.invalidate('viewport');dominoSession82ao.invalidate('viewport');c.width=pw;c.height=ph;if(!bulbsReplanning86ci)beginPlacementSessions83be();}
   c.style.width = cssW + 'px'; c.style.height = cssH + 'px';
   positionAreaEditor();
   if(S.tap)$('tapPanel').style.top=(vp.offsetTop+vp.offsetHeight+6)+'px';
@@ -432,6 +451,13 @@ function syncMainMediaPreview() {
   if(!$('cutDetailsDialog')?.open&&!$('effectFavoritesDialog')?.open&&!($('exportDlg')?.open&&S.exportKind==='short'))J.syncMediaPreview(S.plan,S.t,S.playing);
 }
 function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
+  if(dominoTarget82ao(S.plan)&&(renderer!==S.renderer||ctx.canvas!==$('view')))throw dominoError82ao('output');
+  if(dominoState82ao)showDominoState82ao(dominoState82ao);
+  if(dominoBoundary82ao.targetsFrame(S.plan,S.t)){
+    if(S.areaEdit){dominoSession82ao.reject('DOMINO_UI_AREA_UNSUPPORTED');clearBulbsView86ci(ctx);return;}
+    if(!dominoSession82ao.frame(ctx,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false}))clearBulbsView86ci(ctx);
+    return;
+  }
   if(burstTarget83be(S.plan)&&(renderer!==S.renderer||ctx.canvas!==$('view')))throw burstError83be('output');
   if(burstState83be)showBurstState83be(burstState83be);
   if(burstBoundary83be.targetsFrame(S.plan,S.t)){
@@ -977,6 +1003,7 @@ function detailButton(onClick) {
 }
 let cutPreviewSolo=false,cutPreviewFocus=false;// remembered while the page is open
 function openCutDetails(layer,index,part=0) {
+  if(layer==='lyrics'&&dominoTarget82ao(S.plan)&&dominoBoundary82ao.targetsCut(S.plan,S.plan.cuts.find(c=>c.line===index&&c.part===part))){toast(dominoError82ao('detail').message);return;}
   if(layer==='lyrics'&&burstTarget83be(S.plan)&&burstBoundary83be.targetsCut(S.plan,S.plan.cuts.find(c=>c.line===index&&c.part===part))){toast(burstError83be('detail').message);return;}
   if(layer==='lyrics'&&bulbsTarget86ci(S.plan)&&J.placement.bulbsFrameController80.targetsCut(S.plan,S.plan.cuts.find(c=>c.line===index&&c.part===part))){toast(bulbsBoundary86ci('detail').message);return;}
   const lyric = layer === 'lyrics', L = J.mediaLabel, clone = value => JSON.parse(JSON.stringify(value));
@@ -2484,6 +2511,7 @@ function showAreaDraft() {
   S.need = true;
 }
 function openAreaEditor(index,fromPreview=false) {
+  if(dominoTarget82ao(S.plan)&&dominoBoundary82ao.targetsCut(S.plan,S.plan.cuts.find(c=>c.line===index))){toast(dominoError82ao('area').message);return;}
   if(burstTarget83be(S.plan)&&burstBoundary83be.targetsCut(S.plan,S.plan.cuts.find(c=>c.line===index))){toast(burstError83be('area').message);return;}
   if(bulbsTarget86ci(S.plan)&&J.placement.bulbsFrameController80.targetsCut(S.plan,S.plan.cuts.find(c=>c.line===index))){toast(bulbsBoundary86ci('area').message);return;}
   if (S.exporting || S.tap) return;
@@ -3585,6 +3613,7 @@ async function prepareShortPreview(time,play=false){
   finally{if(p.controller===controller)p.controller=null;}
 }
 function startShortPreview(){
+  if(dominoTarget82ao(S.plan)){stopShortPreview();$('shortExportError').textContent=dominoError82ao('output').message;return;}
   if(burstTarget83be(S.plan)){stopShortPreview();$('shortExportError').textContent=burstError83be('output').message;return;}
   if(bulbsTarget86ci(S.plan)&&S.plan.layerVisibility?.lyrics!==false){stopShortPreview();$('shortExportError').textContent=bulbsBoundary86ci('output').message;return;}
   stopShortPreview();if(!shortExportActive())return;
@@ -3711,6 +3740,7 @@ async function codecNote() {
 }
 const EXP_BTNS = ['btnMP4', 'btnShort', 'btnPNG', 'btnPNGA', 'eMP4'];
 function openExportDialog(kind) {
+  if(dominoTarget82ao(S.plan)){toast(dominoError82ao('output').message);return;}
   if(burstTarget83be(S.plan)){toast(burstError83be('output').message);return;}
   if(bulbsTarget86ci(S.plan)&&S.plan.layerVisibility?.lyrics!==false){toast(bulbsBoundary86ci('output').message);return;}
   if (S.exporting) return;
@@ -3770,6 +3800,7 @@ function confirmHiddenLayers() {
   return !['foreground','lyrics','media'].some(layer=>S.project.layerVisibility?.[layer]===false) || window.confirm(J.mediaLabel('非表示のレイヤーは書き出しに含まれません。よろしいですか？','Hidden layers will not be included in the export. Continue?'));
 }
 async function runExport(kind) {
+  if(dominoTarget82ao(S.plan)){toast(dominoError82ao('output').message);return;}
   if(burstTarget83be(S.plan)){toast(burstError83be('output').message);return;}
   if(bulbsTarget86ci(S.plan)&&S.plan.layerVisibility?.lyrics!==false){toast(bulbsBoundary86ci('output').message);return;}
   if (S.exporting) return;
@@ -5047,7 +5078,7 @@ J.uiAudio = AP;
 J.addMediaFiles = addMediaFiles;
 J.activeMediaLayer = activeMediaLayer;
 // hooks for hosts that embed the app (the After Effects CEP panel)
-J.uiApi = { burstSessionState83be:burstSession83be.state, bulbsSessionState86ci:bulbsSession86ci.state, toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
+J.uiApi = { dominoSessionState82ao:dominoSession82ao.state, burstSessionState83be:burstSession83be.state, bulbsSessionState86ci:bulbsSession86ci.state, toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
   openProjectFile, replaceProject, ensureFonts, splitMediaCut, insertLyricAtPlayhead,
   removeLyricCut, removeMediaCut, connectTimelineBoundaries,
   boundaryGroupLimits, commitTimelineBoundary, addMediaFiles, activeMediaLayer };

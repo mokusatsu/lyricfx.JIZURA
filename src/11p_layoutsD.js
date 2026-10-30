@@ -2532,6 +2532,19 @@ reg('kaleido', {
 
 /* ================================================================== 22 dominoes — ドミノ */
 const PIPS = [[], [[0, 0]], [[-1, -1], [1, 1]], [[-1, -1], [0, 0], [1, 1]], [[-1, -1], [1, -1], [-1, 1], [1, 1]], [[-1, -1], [1, -1], [0, 0], [-1, 1], [1, 1]], [[-1, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [1, 1]]];
+// Input-derived descriptor seam only. Native render remains byte-identical.
+Object.defineProperty(J.placement,'dominoSourceInput82d',{value:Object.freeze(env=>{
+ const {cut,sc}=env,Pm=cut.params,n=J.glyphCount(cut.text);if(n<1)return null;
+ const G=J.placement.dominoNativeGeometry82a;if(!G||!Object.isFrozen(G))throw Object.assign(Error('DOMINO82D_GEOMETRY'),{code:'DOMINO82D_GEOMETRY'});
+ const port=isPort(env),rowsD=rowsOf(cut.text,port?5:n<=7?7:Math.ceil(n/2)),layout=G.layout(env,rowsD);
+ const faceC=Pm.face==='ink'?plateCol(sc,[sc.ink,sc.fg]):J.mix(lightOf(sc),sc.accent,.06),tc=onCol(sc,faceC),sideC=shade(sc,faceC,-.35),pipC=J.mix(faceC,tc,.7);
+ return{kind:'domino-current-source-input82d',rowsD,layout,palette:{face:faceC,text:tc,side:sideC,pip:pipC,dark:darkOf(sc),ground:sc.sub,divider:J.mix(faceC,tc,.45)},source:{text:cut.text,seed:cut.seed,params:{...Pm},dur:cut.dur,outDur:cut.outDur,stagger:cut.stagger,hold:cut.hold,lt:env.lt,pOut:env.pOut,pass:env.pass},sourceOnly:true,certificateIssuer:false};
+})});
+// Test-only synchronous source-Y binding. No frame/certificate authority.
+(()=>{let active=null;const need=(v,c)=>{if(!v)throw Object.assign(Error(c),{code:c})};
+const read=(env,rows)=>{if(!active)return 0;need(active.env===env&&rows===1,'DOMINO82J_BOUND_ONE_ROW');return active.dy;};
+const withShift=(env,dy,run)=>{need(!active,'DOMINO82J_NESTED');need(env?.cut?.layout==='dominoes'&&Number.isFinite(dy)&&typeof run==='function','DOMINO82J_INPUT');active={env,dy};try{const out=run();need(!out||typeof out.then!=='function','DOMINO82J_SYNC_ONLY');return out;}finally{active=null;}};
+Object.defineProperty(J.placement,'dominoSourceShift82j',{value:Object.freeze({read,withShift,sourceOnly:true,certificateIssuer:false})});})();
 reg('dominoes', {
   name: 'ドミノ', tags: ['pop', 'graphic'], w: 0.7, treat: 'safe', portrait: 0.7, ae: 'labels', fits: n => n >= 2 && n <= 14,
   enterBias: { cut: 3, blur: 0.5, pop: 0.6, slice: 0.2, wipe: 0.2, stretch: 0.2, drop: 0.5 },
@@ -2558,7 +2571,7 @@ reg('dominoes', {
     let bb = null, gi = 0;
     for (let r = 0; r < rows; r++) {
       const row = rowsD[r], cnt = row.length;
-      const yF = H / 2 + (r - (rows - 1) / 2) * (h + w * 0.35) + h / 2;
+      const yF = H / 2 + (r - (rows - 1) / 2) * (h + w * 0.35) + h / 2 + J.placement.dominoSourceShift82j.read(env,rows);
       env.line([[W / 2 - (cnt * (w + g)) / 2 - w * 0.4, yF], [W / 2 + (cnt * (w + g)) / 2 + w * 0.4, yF]], sc.sub, Math.max(1, u * 0.0018), 0.5 * tin(env, 0, 0.3) * out, false);
       for (let j = 0; j < cnt; j++) {
         if (row[j] === ' ') continue;

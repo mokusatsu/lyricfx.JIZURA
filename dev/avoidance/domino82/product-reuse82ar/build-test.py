@@ -1,0 +1,13 @@
+from pathlib import Path
+import sys,subprocess,shutil,json,hashlib
+R=Path(sys.argv[1]).resolve();D=Path(sys.argv[2]).resolve();U=Path(__file__).resolve().parent;Q=R/'dev/avoidance/domino82/previous-model82aq'
+subprocess.run([sys.executable,str(R/'dev/avoidance/bulbs86/product-ui86ci/build-test.py'),str(R),str(D)],check=True)
+driver='routing-ui.js'if len(sys.argv)>3 and sys.argv[3]=='routing'else'product-test.js';shutil.copy2(U/driver,D/'browser-test.js');p=(D/'probe.cjs').read_text().replace("'productUI86ci'","'productReuse82ar'").replace('errors:result.errors,postPinsUnchanged','errors:result.errors.map(e=>({code:e.code,message:e.message?.slice(0,240)})),postPinsUnchanged');(D/'probe.cjs').write_text(p)
+s=(D/'candidate-ja.html').read_text();marker='/* ============================================================\n   JIZURA — editor UI';assert s.count(marker)==1;s=s.replace(marker,"/* Test starts with center until actual UI configuration. */\n(()=>{const p=J.defaultProject();p.lang='ja';p.title='';p.lyrics='[00:00]待機';p.overrides={0:{layout:'center',single:true}};localStorage.setItem('jizura.project.v1',JSON.stringify(p))})();\n"+marker)
+owner=(Q/'owner82aq.js').read_text();modified=owner
+for a,b in [('nativeResult=S.sample(env,{reservedBytes:reserved});','window.nativeSamples82ar++;nativeResult=S.sample(env,{reservedBytes:reserved});'),('shiftResult=D.sample(env,','window.shiftedSamples82ar++;shiftResult=D.sample(env,'),('const model=j.ready,clock=j.clock,plan=j.plan,','window.observeDominoModel82ar?.(j.ready,j.clock);const model=j.ready,clock=j.clock,plan=j.plan,')]:assert modified.count(a)==1;modified=modified.replace(a,b)
+assert s.count(owner)==1;s=s.replace(owner,modified);needle='sample=S.sample(env,{reservedBytes:reservation});';assert s.count(needle)==1;s=s.replace(needle,'window.nativeSamples82ar++;'+needle)
+runtime=(Q/'runtime82aq.js').read_text();modified=runtime
+for a,b in [('return renderer.frame(ctx,formal,t,{...opt,scale:viewport.scale})','window.observeDominoFormal82ar?.(formal,ctrl.stats());return renderer.frame(ctx,formal,t,{...opt,scale:viewport.scale})'),('viewport=null}\n function stage(plan)','viewport=null;window.observeDominoCancel82ar?.(ctrl?.stats()||null)}\n function stage(plan)')]:assert modified.count(a)==1;modified=modified.replace(a,b)
+assert s.count(runtime)==1;s=s.replace(runtime,modified);(D/'candidate-ja.html').write_text(s)
+pins=json.loads((D/'pins.json').read_text());paths={Path(p['path'])for p in pins}|{p for p in U.iterdir()if p.is_file()}|{R/'src/11zz13_domino_core82.js'};(D/'pins.json').write_text(json.dumps([{'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}for p in sorted(paths)],indent=2)+'\n')

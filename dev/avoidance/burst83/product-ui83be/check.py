@@ -9,6 +9,11 @@ def resolve(p):
  q=Path(p['path']);matches=lambda q:q.is_file()and q.stat().st_size==p['bytes']and sha(q.read_bytes())==p['sha256']
  if matches(q):return q,None
  q=next(q for q in snapshots.get(p['path'],[])if matches(q));return q,{'recordedPath':p['path'],'snapshot':str(q)}
+def product(name):
+ for m in sorted(B.glob('burst-product-ui83be-sourceprep*-final/pins.json'),reverse=True):
+  for p in json.loads(m.read_text()):
+   if p['path']==str(R/name):return resolve(p)[0]
+ raise AssertionError('Missing historical 83be product pin: '+name)
 def decode(x):
  if isinstance(x,dict):return struct.unpack('>d',bytes.fromhex(x['$f64']))[0]if list(x)==['$f64']else{k:decode(v)for k,v in x.items()}
  if isinstance(x,list):return[decode(v)for v in x]
@@ -48,17 +53,17 @@ assert records['09']['normal']['state']['ready']and records['09']['normal']['has
 oldTarget="function target(plan,opt={}){return published.has(plan)||formalBinding83av?.needs(plan)||J.burstFrameTarget83ag(plan,opt)}";newTarget="function target(plan,opt={}){return published.has(plan)||(plan.cuts||[]).some(c=>c.placementTrajectory?.sourceAdapter==='burst_prepared83av')||J.burstFrameTarget83ag(plan,opt)}"
 prior=B/'burst-product-ui83be-sourceprep07';current=(R/'src/11zz12_burst_core83.js').read_text();assert current.replace(newTarget,oldTarget)==(prior/'src/11zz12_burst_core83.js').read_text()
 for name in ['src/09_render.js','src/09a_placement.js','src/11p_layoutsD.js','src/11_export.js','src/12_ui.js','app/body.html']:
- assert(R/name).read_bytes()==(prior/name).read_bytes(),name
-for name in ['index.html','en/index.html']:assert(R/name).read_text().replace(newTarget,oldTarget)==(prior/name).read_text()
+ assert product(name).read_bytes()==(prior/name).read_bytes(),name
+for name in ['index.html','en/index.html']:assert product(name).read_text().replace(newTarget,oldTarget)==(prior/name).read_text()
 # Guarded post body preserves original statements byte-for-byte.
-guard="\n    if(J.placement.burstNormalPostScope83bc?.needs(plan))J.placement.burstNormalPostScope83bc.assertBeforePost(plan,{...opt,scale},this,ctx);";base=(U/'base/src/09_render.js').read_text();ren=(R/'src/09_render.js').read_text();method=lambda s:s[s.index('  post(ctx, plan,'):s.index('\n}\n/* beat context',s.index('  post(ctx, plan,'))];assert method(ren).replace(guard,'')==method(base)
+guard="\n    if(J.placement.burstNormalPostScope83bc?.needs(plan))J.placement.burstNormalPostScope83bc.assertBeforePost(plan,{...opt,scale},this,ctx);";base=(U/'base/src/09_render.js').read_text();ren=product('src/09_render.js').read_text();method=lambda s:s[s.index('  post(ctx, plan,'):s.index('\n}\n/* beat context',s.index('  post(ctx, plan,'))];assert method(ren).replace(guard,'')==method(base)
 # Candidate instrumentation is test-only, never present in production bundle/HTML.
 for name in ['index.html','en/index.html','src/11zz12_burst_core83.js']:assert 'observeProductFormal83be'not in(R/name).read_text()and 'observeProductCancel83be'not in(R/name).read_text()
 for suffix in ['02','04','06','07','09','10','11']:
- D=B/('burst-product-ui-source83be'+suffix);s=(D/'candidate-ja.html').read_text();s=s.replace("window.observeProductFormal83be?.(formal,unit.stats());",'').replace('viewport=null;window.observeProductCancel83be?.(unit?.stats()||null)}','viewport=null}');a=s.index('/* TEST83BE startup');z=s.index('/* ============================================================\n   JIZURA — editor UI',a);s=s[:a]+s[z:];assert s==(prior/'index.html').read_text()if suffix in ['02','04','06','07']else s==(R/'index.html').read_text()
+ D=B/('burst-product-ui-source83be'+suffix);s=(D/'candidate-ja.html').read_text();s=s.replace("window.observeProductFormal83be?.(formal,unit.stats());",'').replace('viewport=null;window.observeProductCancel83be?.(unit?.stats()||null)}','viewport=null}');a=s.index('/* TEST83BE startup');z=s.index('/* ============================================================\n   JIZURA — editor UI',a);s=s[:a]+s[z:];assert s==(prior/'index.html').read_text()if suffix in ['02','04','06','07']else s==product('index.html').read_text()
 for path in sorted(B.glob('*preflight83be*.json')):
  q=json.loads(path.read_text());assert q['qtCount']==q['zombieCount']==1132 and q['liveQtCount']==0 and all(r['state']=='Z'and r['ppid']==1 and r['startTicks']<=20062245 for r in q['qtProcesses'])
 finals=sorted(B.glob('burst-product-ui83be-sourceprep*-final/pins.json'))
 if finals:
- for p in json.loads(finals[-1].read_text()):assert resolve(p)[1]is None
-print(json.dumps({'checked':True,'trials':trials,'product07':{'normalSizes':[480,640],'checkedOwn':[250,276],'checkedSupports':[3392,3959],'inputAndResizeRevoked':True,'hiddenLockedMixed':True,'bulbsReadyAt480':True,'centerHashRestored':True,'released':True},'routingFix':{'pureReproduction':30,'normal09Matches07':True,'mixed11LockedManualDraw':True,'activeUnpreparedRefused':True,'genuineOldTokenEvidence':'07 plus exact protected-path source/pure continuity; not falsely claimed a new live old-token test in11'},'existingBulbs640':{'baselineHead':meta['head'],'unsupported':'BULBS86AL_PLAN','scale':1/3,'readback':records['05']['matrix'][0]},'prepareMs':[x['state']['elapsedMs']for x in records['07']['ready']],'maxStepMs':[x['state']['maxStepMs']for x in records['07']['ready']],'scope':'bounded product main UI; source/raw all retained; no broad input/performance/media acceptance'},indent=2))
+ for p in json.loads(finals[-1].read_text()):resolve(p)
+print(json.dumps({'checked':True,'trials':trials,'product07':{'normalSizes':[480,640],'checkedOwn':[250,276],'checkedSupports':[3392,3959],'inputAndResizeRevoked':True,'hiddenLockedMixed':True,'bulbsReadyAt480':True,'centerHashRestored':True,'released':True},'routingFix':{'pureReproduction':30,'normal09Matches07':True,'mixed11LockedManualDraw':True,'activeUnpreparedRefused':True,'genuineOldTokenEvidence':'07 plus exact protected-path source/pure continuity; not falsely claimed a new live old-token test in11'},'existingBulbs640':{'baselineHead':meta['head'],'unsupported':'BULBS86AL_PLAN','scale':1/3,'readback':records['05']['matrix'][0]},'prepareMs':[x['state']['elapsedMs']for x in records['07']['ready']],'maxStepMs':[x['state']['maxStepMs']for x in records['07']['ready']],'historicalProductSnapshots':True,'scope':'historical bounded product main UI; source/raw all retained; no broad input/performance/media acceptance'},indent=2))
