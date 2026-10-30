@@ -35930,6 +35930,11 @@ function ls0(env) { return smallSize(env); }
 /* ======================================================================
    6  numbered — 番号付き
    ====================================================================== */
+// The native column dimensions are shared by rendering and the small placement path.
+J.numberedColumnGeometry = env => {
+ const {W,H}=env,p=env.cut.params,chunks=(p.chunks?.length?p.chunks:[env.cut.text.trim()]).filter(Boolean),k=chunks.length,u=Math.min(W,H),ls=smallSize(env),cw=W*.86/k,csize=Math.min(...chunks.map(c=>J.fitSize(c,p.font,cw*.86,H*.3,{track:.02})),u*.2),nsz=Math.min(cw*.42,Math.max(csize*1.5,u*.14),H*.3),top=H/2-(nsz*1.05+csize*1.4)/2+ls;
+ return {W,H,chunks,k,cw,csize,nsz,top,ls,lw:Math.max(1.2,u*.0018),xs:chunks.map((_,i)=>W*.07+i*cw)};
+};
 reg('numbered', {
   name: '番号付き', tags: ['graphic', 'editorial', 'pop'], w: 1, ae: 'mixed', fits: n => n >= 2 && n <= 18,
   enterBias: { slice: 1.3, wipe: 1.3, drop: 1.2 },
@@ -35947,13 +35952,13 @@ reg('numbered', {
     const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const chunks = (p.chunks && p.chunks.length ? p.chunks : [env.cut.text.trim()]).filter(Boolean);
-    const k = chunks.length, out = tout(env), ls = smallSize(env);
+    const k = chunks.length, out = tout(env), columnRecipe=env.cut.simpleCircleRecipe?.numberedColumns, ls=columnRecipe?columnRecipe.geometry.ls:smallSize(env);
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberMeasure ?? 1 : 1;
     const columnSpread = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberColumnsSpread : null;
     if (columnSpread && (p.variant !== 'cols' || port || k !== 2 || ![columnSpread.width,columnSpread.left,columnSpread.right].every(Number.isFinite) || columnSpread.width < .25 || columnSpread.width > .36 || columnSpread.left < .02 || columnSpread.right + columnSpread.width > .98 || columnSpread.left + columnSpread.width > columnSpread.right)) { const e = new Error('Numbered column gutter recipe requires two native landscape columns'); e.code = 'NUMBERED_SPREAD_DOMAIN'; throw e; }
     const rowPacking = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberRowsPacking : null;
     if (rowPacking && (p.variant === 'behind' || p.variant === 'cols' && !port && k <= 3 || ![rowPacking.measure,rowPacking.numberScale].every(Number.isFinite) || rowPacking.measure < .4 || rowPacking.measure > .7 || rowPacking.numberScale < .7 || rowPacking.numberScale > 1)) { const e = new Error('Numbered packed rows require native row flow and bounded type'); e.code = 'NUMBERED_ROWS_DOMAIN'; throw e; }
-    const lw = Math.max(1.2, u * 0.0018);
+    const lw = columnRecipe?columnRecipe.geometry.lw:Math.max(1.2, u * 0.0018);
     const numItem = (i, size, x, y, align, big) => {
       const it = { text: pad2(i + 1), font: p.numFont, size, x, y, align, track: -0.02, ghost: false };
       if (p.num === 'outline' || big) Object.assign(it, { fill: false, stroke: Math.max(1.5, size * (big ? 0.008 : 0.012)), strokeColor: p.num === 'accent' ? sc.accent : sc.fg, color: sc.fg, alpha: big ? 0.55 : 1 });
@@ -35973,20 +35978,24 @@ reg('numbered', {
     const lab = (i, x, y, align, a) => env.draw({ text: p.label === 'No.' ? 'No.' : p.label, font: monoF(env), size: ls * 0.85, track: 0.3, align, x, y, color: i === 0 ? sc.accent : sc.sub, alpha: a, ghost: false });
     let bb = null;
     if (p.variant === 'cols' && !port && k <= 3) {
-      const cw = columnSpread ? W*columnSpread.width : W * 0.86 / k * editorialMeasure, x0 = editorialMeasure === 1 ? W*.07 : (W-cw*k)/2;
-      const csize = Math.min(...chunks.map(c => J.fitSize(c, p.font, cw * 0.86, H * 0.3, { track: 0.02 })), u * 0.2);
-      const nsz = Math.min(cw * 0.42, Math.max(csize * 1.5, u * 0.14), H * 0.3);
-      const top = H / 2 - (nsz * 1.05 + csize * 1.4) / 2 + ls;
+      const geometry=columnRecipe?.geometry||(!columnSpread&&editorialMeasure===1?J.numberedColumnGeometry(env):null);
+      const cw = geometry?geometry.cw:columnSpread ? W*columnSpread.width : W * 0.86 / k * editorialMeasure, x0 = editorialMeasure === 1 ? W*.07 : (W-cw*k)/2;
+      const csize = geometry?geometry.csize:Math.min(...chunks.map(c => J.fitSize(c, p.font, cw * 0.86, H * 0.3, { track: 0.02 })), u * 0.2);
+      const nsz = geometry?geometry.nsz:Math.min(cw * 0.42, Math.max(csize * 1.5, u * 0.14), H * 0.3);
+      const top = geometry?geometry.top:H / 2 - (nsz * 1.05 + csize * 1.4) / 2 + ls;
       chunks.forEach((c, i) => {
-        const x = columnSpread ? W*(i ? columnSpread.right : columnSpread.left) : x0 + i * cw;
+        const delta=columnRecipe?.offsets[i];if(delta){ctx.save();ctx.translate(delta[0],delta[1]);}
+        const columnH=geometry?geometry.H:H;
+        const x = geometry?geometry.xs[i]:columnSpread ? W*(i ? columnSpread.right : columnSpread.left) : x0 + i * cw;
         const re = tin(env, 0.1 + i * 0.08, 0.6, E.inOutCubic) * out;
-        if (i > 0) env.line([[x, H / 2 - H * 0.28 * re], [x, H / 2 + H * 0.28 * re]], sc.sub, lw, 0.7, false);
+        if (i > 0) env.line([[x, columnH / 2 - columnH * 0.28 * re], [x, columnH / 2 + columnH * 0.28 * re]], sc.sub, lw, 0.7, false);
         const xl = x + cw * 0.07;
         lab(i, xl, top - ls * 0.9, 'left', tin(env, 0.1 + i * 0.1, 0.4, E.outCubic) * out);
         drawNum(numItem(i, nsz, xl, top + nsz * 0.5, 'left'), i, [x, top, cw, nsz * 1.02]);
         env.line([[xl, top + nsz * 1.05], [xl + cw * 0.82 * re, top + nsz * 1.05]], sc.fg, lw * 1.4, 1, false);
         if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:x,y0:top+nsz*1.05,x1:x+cw,y1:top+nsz*1.05+csize*1.7};
         bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size: csize, x: xl, y: top + nsz * 1.05 + csize * 0.85, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
+        if(delta)ctx.restore();
       });
       return bb;
     }
@@ -50608,7 +50617,7 @@ J.requireDominoProof82ao();
 const A=J.placement,ID=[1,0,0,1,0,0],policy='direction-region-arrangement-20261030';
 const sourceCuts=new WeakMap();
 const intervals=(plan,cut)=>{const h=J.stepDur(plan.fx,plan.fps),start=Math.min(cut.start,cut.renderStart??cut.start)-h,end=Math.max(cut.end,cut.displayEnd??cut.end)+.6+2*h+1.6/24+.07;return {start,end,regions:(plan.lyricAvoidanceIndex?.regions||[]).filter((r,i)=>r.start<end&&Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration)>start)};};
-const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&['center','vcols'].includes(cut.layout)&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
+const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&(['center','vcols'].includes(cut.layout)||cut.layout==='numbered'&&cut.params.variant==='cols')&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
 const activeCut=(plan,c,t)=>{const r=intervals(plan,c);return targets(plan,c)&&t>=r.start&&t<r.end;};
 const active=(plan,t)=>plan?.cuts.some(c=>activeCut(plan,c,t));
 const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];
@@ -50654,7 +50663,9 @@ function prepare(plan,previous=null,{scale=1}={}){
   if(cut.layout==='center'&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text))reason='UNSUPPORTED_AUXILIARY';
   const regions=intervals(plan,original).regions;
   if(regions.length!==1)reason='UNSUPPORTED_REGION_CHANGE';
+  if(cut.layout==='numbered'&&((cut.decor||[]).length||cut.params.chunks?.length>3))reason='UNSUPPORTED_NUMBERED_COLUMNS';
   if(reason){diagnostics.push({cut:cut.index,status:'unsupported',reason});continue;}
+  if(cut.layout==='numbered'){const result=A.numberedCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:original,numberedColumns:result.recipe,renderScale:scale,policy};}continue;}
   const area=cut.area,W0=area?plan.W*area.w:plan.W,H0=area?plan.H*area.h:plan.H;
   const native=J.basicMainItem({W:W0,H:H0,cut,sc:cut.palette||st.schemes[cut.scheme%st.schemes.length]});
   const r=regions[0],circle={cx:r.center.x*plan.W,cy:r.center.y*plan.H,r:r.radius*Math.min(plan.W,plan.H)},W=plan.W,H=plan.H,pad=Math.max(2,.005*Math.min(W,H))+1,dx=2*circle.cx/W-1,dy=2*circle.cy/H-1;
@@ -50690,7 +50701,7 @@ function prepare(plan,previous=null,{scale=1}={}){
  const resultPlan={...plan,cuts};sourceCuts.set(resultPlan,new Set(cuts.filter(c=>c.simpleCircleRecipe).map(c=>c.index)));return {plan:resultPlan,diagnostics,revision:J.metrics.revision||0,elapsedMs:performance.now()-started,renderScale:scale,policy};
 }
 function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
- const source=cut.simpleCircleRecipe.sourceCut,env=renderer.makeEnv(ctx,plan,source,sc,options),area=source.area,W=env.W,H=env.H,ax=area?area.x*plan.W:0,ay=area?area.y*plan.H:0,motion=source.motionScale??1,cam=J.CAMERA[source.cam].get(env,source.camP||{}),scale=J.lerp(1,cam.s??1,motion)*(source.contentScale??1);
+ const source=cut.simpleCircleRecipe.sourceCut;if(source.layout==='numbered')return;const env=renderer.makeEnv(ctx,plan,source,sc,options),area=source.area,W=env.W,H=env.H,ax=area?area.x*plan.W:0,ay=area?area.y*plan.H:0,motion=source.motionScale??1,cam=J.CAMERA[source.cam].get(env,source.camP||{}),scale=J.lerp(1,cam.s??1,motion)*(source.contentScale??1);
  ctx.save();try{if(area){ctx.translate(ax+W/2,ay+H/2);ctx.rotate((area.angle||0)*J.DEG);ctx.translate(-ax-W/2,-ay-H/2);ctx.beginPath();ctx.rect(ax,ay,W,H);ctx.clip();}ctx.translate(ax+W/2+(root.x+(cam.x||0))*motion,ay+H/2+(root.y+(cam.y||0))*motion);if(cam.rot)ctx.rotate(cam.rot*J.DEG*motion);ctx.scale(scale,scale);ctx.translate(-W/2,-H/2);ctx.globalCompositeOperation=root.blend;
   const item=J.animateMainItem(env,J.basicMainItem(env));let bb=null;
   if(item){const lay=J.layoutText(item),boxes=[];for(const g of lay){if(!g.ch.trim())continue;const c=item.charFn?.(g.i,g,lay.N);if(c?.hide||(item.alpha??1)*(c?.a??1)<=.002)continue;const k=c?.s??1;boxes.push({x:(g.x+g.vx)*(item.sx||1)+(c?.dx||0),y:(g.y+g.vy)*(item.sy||1)+(c?.dy||0),w:g.w*(item.sx||1)*k,h:g.h*(item.sy||1)*k});}if(boxes.length)bb={x0:item.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:item.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:item.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:item.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:item.x,cy:item.y,boxes};}
@@ -50698,8 +50709,64 @@ function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
  }finally{ctx.restore();}
 }
 function outputPlan(plan,{scale=1}={}){if(!plan.cuts.some(c=>targets(plan,c)))return plan;const prepared=prepare(plan,null,{scale}),failed=prepared.diagnostics.find(d=>d.status==='insufficient-space');if(failed)throw Object.assign(Error(J.mediaLabel('この条件では回避配置を出力できません。円の位置・サイズや演出を変更してください。','Avoidance cannot be exported for these conditions. Change the circle position, size or effects.')),{code:'SIMPLE_CIRCLE_'+failed.status.toUpperCase().replaceAll('-','_'),details:failed});const unsupported=prepared.diagnostics.filter(d=>d.status==='unsupported');prepared.plan.circleAvoidanceStatus={status:unsupported.length?'partial':'applied',unsupportedCuts:unsupported.map(d=>d.cut),diagnostics:prepared.diagnostics};return prepared.plan;}
-A.simpleCircle=Object.freeze({targets,active,activeCut,prepare,drawDecor,outputPlan,policy});
+A.simpleCircle=Object.freeze({targets,active,activeCut,prepare,drawDecor,outputPlan,itemEnvelope:localEnvelope,stageEnvelope,policy});
 for(const name of ['center','vcols']){const render=J.LAYOUTS[name].render;J.LAYOUTS[name].render=function(env){const recipe=env.cut.simpleCircleRecipe;if(!recipe)return render(env);return J.mainDraw(env,{...recipe.item,color:env.cut.params.accent?env.sc.accent:env.sc.fg});};}
+})();
+
+/* Numbered columns: preserve each native number/label/lyric/clip as one unit. */
+(() => {
+'use strict';
+const A=J.placement,S=A.simpleCircle,ID=[1,0,0,1,0,0],rect=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]],box=(x0,y0,x1,y1)=>({x0,y0,x1,y1}),moved=(b,x,y)=>box(b.x0+x,b.y0+y,b.x1+x,b.y1+y),clip=(b,W,H)=>box(Math.max(0,b.x0),Math.max(0,b.y0),Math.min(W,b.x1),Math.min(H,b.y1)),within=(b,r)=>b.x0>=r.x0&&b.x1<=r.x1&&b.y0>=r.y0&&b.y1<=r.y1;
+function prepare(plan,cut,{scale,region,previous}){
+ const W=plan.W,H=plan.H,area=cut.area,sw=area?W*area.w:W,sh=area?H*area.h:H,p=cut.params,chunks=p.chunks;
+ const unsupported=reason=>({diagnostic:{cut:cut.index,status:'unsupported',reason}});
+ if(p.variant!=='cols'||H>W*1.08||sh>sw*1.08||!Array.isArray(chunks)||chunks.length<1||chunks.length>3)return unsupported('UNSUPPORTED_NUMBERED_COLUMNS');
+ if(chunks.some(s=>typeof s!=='string'||!s.trim())||chunks.join('').replace(/\s/g,'')!==cut.text.replace(/\s/g,''))return unsupported('UNSUPPORTED_NUMBERED_SOURCE');
+ if(typeof p.label!=='string'||[...cut.text.replace(/\s/g,'')].length+chunks.length*([...p.label].length+2)>256)return unsupported('UNSUPPORTED_NUMBERED_GLYPH_BUDGET');
+ if(cut.exit==='overexposeOut'&&J.glyphCount(cut.text)>1&&chunks.some(s=>[...s.replace(/\n/g,'')].length===1))return unsupported('UNSUPPORTED_NUMBERED_GLOBAL_LIGHT');
+ const st={...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},sc=cut.palette||st.schemes[cut.scheme%st.schemes.length],g=J.numberedColumnGeometry({W:sw,H:sh,cut,st,sc}),units=[];
+ for(let i=0;i<g.k;i++){
+  const x=g.xs[i],xl=x+g.cw*.07,main={text:chunks[i],font:p.font,size:g.csize,x:xl,y:g.top+g.nsz*1.05+g.csize*.85,align:'left',track:.02,color:sc.fg,mi:i*3},label={text:p.label==='No.'?'No.':p.label,font:st.fonts.mono?.[0]||'mono',size:g.ls*.85,track:.3,align:'left',x:xl,y:g.top-g.ls*.9},labelInk=A.itemGeometry(label,ID,{pass:'main',scale:1}).polygons,lyric=S.itemEnvelope(main,cut),numberClip=box(x,g.top,x+g.cw,g.top+g.nsz*1.02),stroke=g.lw*1.4/2+1;
+  const furniture=[rect(numberClip),...labelInk,rect(box(xl-stroke,g.top+g.nsz*1.05-stroke,xl+g.cw*.82+stroke,g.top+g.nsz*1.05+stroke))];
+  if(i>0)furniture.push(rect(box(x-g.lw/2-1,g.H*.22-g.lw/2-1,x+g.lw/2+1,g.H*.78+g.lw/2+1)));
+  const bounds=A.bounds([...furniture,rect(moved(lyric.bounds,main.x,main.y))]),body=A.bounds([...furniture,rect(moved(lyric.body,main.x,main.y))]);units.push({i,main,numberClip,local:{bounds,body,renderScale:scale,paintBudget:lyric.paintBudget+12}});
+ }
+ const circle={cx:region.center.x*W,cy:region.center.y*H,r:region.radius*Math.min(W,H)},pad=Math.max(2,.005*Math.min(W,H))+1,dx=2*circle.cx/W-1,dy=2*circle.cy/H-1,L=circle.cx-circle.r-pad,R=circle.cx+circle.r+pad,T=circle.cy-circle.r-pad,B=circle.cy+circle.r+pad,gap=pad;
+ const directions=[{direction:'down',score:-dy,main:box(0,B,W,H),sides:[box(0,0,L,H),box(R,0,W,H)]},{direction:'up',score:dy,main:box(0,0,W,T),sides:[box(0,0,L,H),box(R,0,W,H)]},{direction:'right',score:-dx,main:box(R,0,W,H),sides:[box(0,0,L,H)]},{direction:'left',score:dx,main:box(0,0,L,H),sides:[box(R,0,W,H)]}];
+ const positive=r=>r.x0>=0&&r.y0>=0&&r.x1<=W&&r.y1<=H&&r.x1>r.x0&&r.y1>r.y0;
+ let attempts=0;
+ function pack(indices,r){
+  if(!positive(r))return null;let cursor=r.x0;const out=[];
+  for(const index of indices){const u=units[index],item={x:0,y:0};let b=A.bounds([S.stageEnvelope(u.local,item,plan,cut)]);item.x=(cursor-b.x0)/(cut.contentScale??1);item.y=((r.y0+r.y1-b.y0-b.y1)/2)/(cut.contentScale??1);b=A.bounds([S.stageEnvelope(u.local,item,plan,cut)]);item.x+=Math.max(0,cursor-b.x0)/(cut.contentScale??1);item.y+=((r.y0+r.y1-b.y0-b.y1)/2)/(cut.contentScale??1);b=clip(A.bounds([S.stageEnvelope(u.local,item,plan,cut)]),W,H);const body=A.bounds([S.stageEnvelope(u.local,item,plan,cut,true)]);
+   if(!within(b,r)||!within(body,r)||!A.clear([rect(b)],circle,pad))return null;out.push({i:index,offset:[item.x,item.y],bounds:b,body,region:r});cursor=b.x1+gap;
+  }
+  return out;
+ }
+ const all=units.map(u=>u.i),candidates=[];
+ for(const d of directions){
+  const whole=pack(all,d.main);attempts++;
+  if(whole){candidates.push({...d,placements:whole,auxiliary:false});continue;}
+  // Main-only is decided first. A side region never shares its space with main.
+  for(const side of d.sides){if(!positive(side)||!positive(d.main))continue;
+   for(let split=1;split<g.k;split++){const sideFirst=side.x1<=d.main.x0||side.x0===0&&d.direction!=='left',orderedMain=sideFirst?box(Math.max(d.main.x0,side.x1+gap),d.main.y0,d.main.x1,d.main.y1):box(d.main.x0,d.main.y0,Math.min(d.main.x1,side.x0-gap),d.main.y1),first=all.slice(0,split),rest=all.slice(split),a=pack(first,sideFirst?side:orderedMain),b=pack(rest,sideFirst?orderedMain:side);attempts++;if(!a||!b)continue;const placements=[...a,...b];if(placements.some((v,i)=>i&&placements[i-1].bounds.x1+gap>v.bounds.x0))continue;candidates.push({...d,main:orderedMain,placements,auxiliary:true,side});}
+  }
+ }
+ const old=previous?.policy===S.policy?previous.diagnostics.find(d=>d.cut===cut.index&&d.status==='safe'):null;
+ for(const c of candidates){const b=A.bounds(c.placements.map(p=>rect(p.bounds)));c.fitness=Math.abs(Math.log(((b.x1-b.x0)/(b.y1-b.y0))/((c.main.x1-c.main.x0)/(c.main.y1-c.main.y0))));c.distance=c.placements.reduce((n,p)=>n+Math.hypot(p.offset[0]/W,p.offset[1]/H),0);}
+ candidates.sort((a,b)=>b.score-a.score||Number(a.auxiliary)-Number(b.auxiliary)||a.fitness-b.fitness||a.distance-b.distance||Number(b.direction===old?.direction)-Number(a.direction===old?.direction));const win=candidates[0];
+ if(!win)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NUMBERED_COLUMNS',candidates:attempts}};
+ // Reuse the complete previous arrangement only if the new unit geometry,
+ // region assignment and reading order still admit all of its offsets.
+ const prior=old&&previous.plan.cuts.find(c=>c.index===cut.index)?.simpleCircleRecipe?.numberedColumns,keys=['x0','y0','x1','y1'];
+ if(prior?.offsets.length===g.k&&old.direction===win.direction&&old.auxiliary===win.auxiliary&&old.placements?.length===g.k&&win.placements.every((p,i)=>old.placements[i].i===p.i&&keys.every(k=>p.region[k]===win.main[k])===keys.every(k=>old.placements[i].region[k]===old.mainRegion[k]))){
+  const retained=[];let valid=true;
+  for(const p of win.placements){const offset=prior.offsets[p.i],item={x:offset[0],y:offset[1]},u=units[p.i],bounds=clip(A.bounds([S.stageEnvelope(u.local,item,plan,cut)]),W,H),body=A.bounds([S.stageEnvelope(u.local,item,plan,cut,true)]);if(!within(bounds,p.region)||!within(body,p.region)||!A.clear([rect(bounds)],circle,pad)||retained.length&&retained.at(-1).bounds.x1+gap>bounds.x0){valid=false;break;}retained.push({i:p.i,offset:offset.slice(),bounds,body,region:p.region});}
+  if(valid){win.placements=retained;win.reusedPosition=true;}
+ }
+
+ return {recipe:{geometry:g,offsets:win.placements.map(p=>p.offset)},diagnostic:{cut:cut.index,status:'safe',direction:win.direction,score:win.score,auxiliary:win.auxiliary,reusedPosition:!!win.reusedPosition,mainRegion:win.main,sideRegion:win.side||null,placements:win.placements,candidates:attempts,chunks:chunks.slice(),fontSize:g.csize,numberSize:g.nsz,order:'left-to-right; source index and clocks unchanged'}};
+}
+A.numberedCircle=Object.freeze({prepare});
 })();
 
 /* English labels are applied after all expression packs register, before the editor starts.

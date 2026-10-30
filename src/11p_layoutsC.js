@@ -1029,6 +1029,11 @@ function ls0(env) { return smallSize(env); }
 /* ======================================================================
    6  numbered — 番号付き
    ====================================================================== */
+// The native column dimensions are shared by rendering and the small placement path.
+J.numberedColumnGeometry = env => {
+ const {W,H}=env,p=env.cut.params,chunks=(p.chunks?.length?p.chunks:[env.cut.text.trim()]).filter(Boolean),k=chunks.length,u=Math.min(W,H),ls=smallSize(env),cw=W*.86/k,csize=Math.min(...chunks.map(c=>J.fitSize(c,p.font,cw*.86,H*.3,{track:.02})),u*.2),nsz=Math.min(cw*.42,Math.max(csize*1.5,u*.14),H*.3),top=H/2-(nsz*1.05+csize*1.4)/2+ls;
+ return {W,H,chunks,k,cw,csize,nsz,top,ls,lw:Math.max(1.2,u*.0018),xs:chunks.map((_,i)=>W*.07+i*cw)};
+};
 reg('numbered', {
   name: '番号付き', tags: ['graphic', 'editorial', 'pop'], w: 1, ae: 'mixed', fits: n => n >= 2 && n <= 18,
   enterBias: { slice: 1.3, wipe: 1.3, drop: 1.2 },
@@ -1046,13 +1051,13 @@ reg('numbered', {
     const editorialMotion = (entryEnd, fn, exitStart = env.cut.dur-env.cut.outDur) => { const prior = env.placementCBody; if (env.cut.placementLayoutsC) env.placementCBody = {kind:"editorial-phase",entryEnd,exitStart}; try { return fn(); } finally { env.placementCBody = prior; } };
     const { W, H, sc, ctx } = env, p = env.cut.params, u = U(env), port = isPort(env);
     const chunks = (p.chunks && p.chunks.length ? p.chunks : [env.cut.text.trim()]).filter(Boolean);
-    const k = chunks.length, out = tout(env), ls = smallSize(env);
+    const k = chunks.length, out = tout(env), columnRecipe=env.cut.simpleCircleRecipe?.numberedColumns, ls=columnRecipe?columnRecipe.geometry.ls:smallSize(env);
     const editorialMeasure = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberMeasure ?? 1 : 1;
     const columnSpread = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberColumnsSpread : null;
     if (columnSpread && (p.variant !== 'cols' || port || k !== 2 || ![columnSpread.width,columnSpread.left,columnSpread.right].every(Number.isFinite) || columnSpread.width < .25 || columnSpread.width > .36 || columnSpread.left < .02 || columnSpread.right + columnSpread.width > .98 || columnSpread.left + columnSpread.width > columnSpread.right)) { const e = new Error('Numbered column gutter recipe requires two native landscape columns'); e.code = 'NUMBERED_SPREAD_DOMAIN'; throw e; }
     const rowPacking = env.cut.placementLayoutsC ? env.cut.layoutCRecipe?.numberRowsPacking : null;
     if (rowPacking && (p.variant === 'behind' || p.variant === 'cols' && !port && k <= 3 || ![rowPacking.measure,rowPacking.numberScale].every(Number.isFinite) || rowPacking.measure < .4 || rowPacking.measure > .7 || rowPacking.numberScale < .7 || rowPacking.numberScale > 1)) { const e = new Error('Numbered packed rows require native row flow and bounded type'); e.code = 'NUMBERED_ROWS_DOMAIN'; throw e; }
-    const lw = Math.max(1.2, u * 0.0018);
+    const lw = columnRecipe?columnRecipe.geometry.lw:Math.max(1.2, u * 0.0018);
     const numItem = (i, size, x, y, align, big) => {
       const it = { text: pad2(i + 1), font: p.numFont, size, x, y, align, track: -0.02, ghost: false };
       if (p.num === 'outline' || big) Object.assign(it, { fill: false, stroke: Math.max(1.5, size * (big ? 0.008 : 0.012)), strokeColor: p.num === 'accent' ? sc.accent : sc.fg, color: sc.fg, alpha: big ? 0.55 : 1 });
@@ -1072,20 +1077,24 @@ reg('numbered', {
     const lab = (i, x, y, align, a) => env.draw({ text: p.label === 'No.' ? 'No.' : p.label, font: monoF(env), size: ls * 0.85, track: 0.3, align, x, y, color: i === 0 ? sc.accent : sc.sub, alpha: a, ghost: false });
     let bb = null;
     if (p.variant === 'cols' && !port && k <= 3) {
-      const cw = columnSpread ? W*columnSpread.width : W * 0.86 / k * editorialMeasure, x0 = editorialMeasure === 1 ? W*.07 : (W-cw*k)/2;
-      const csize = Math.min(...chunks.map(c => J.fitSize(c, p.font, cw * 0.86, H * 0.3, { track: 0.02 })), u * 0.2);
-      const nsz = Math.min(cw * 0.42, Math.max(csize * 1.5, u * 0.14), H * 0.3);
-      const top = H / 2 - (nsz * 1.05 + csize * 1.4) / 2 + ls;
+      const geometry=columnRecipe?.geometry||(!columnSpread&&editorialMeasure===1?J.numberedColumnGeometry(env):null);
+      const cw = geometry?geometry.cw:columnSpread ? W*columnSpread.width : W * 0.86 / k * editorialMeasure, x0 = editorialMeasure === 1 ? W*.07 : (W-cw*k)/2;
+      const csize = geometry?geometry.csize:Math.min(...chunks.map(c => J.fitSize(c, p.font, cw * 0.86, H * 0.3, { track: 0.02 })), u * 0.2);
+      const nsz = geometry?geometry.nsz:Math.min(cw * 0.42, Math.max(csize * 1.5, u * 0.14), H * 0.3);
+      const top = geometry?geometry.top:H / 2 - (nsz * 1.05 + csize * 1.4) / 2 + ls;
       chunks.forEach((c, i) => {
-        const x = columnSpread ? W*(i ? columnSpread.right : columnSpread.left) : x0 + i * cw;
+        const delta=columnRecipe?.offsets[i];if(delta){ctx.save();ctx.translate(delta[0],delta[1]);}
+        const columnH=geometry?geometry.H:H;
+        const x = geometry?geometry.xs[i]:columnSpread ? W*(i ? columnSpread.right : columnSpread.left) : x0 + i * cw;
         const re = tin(env, 0.1 + i * 0.08, 0.6, E.inOutCubic) * out;
-        if (i > 0) env.line([[x, H / 2 - H * 0.28 * re], [x, H / 2 + H * 0.28 * re]], sc.sub, lw, 0.7, false);
+        if (i > 0) env.line([[x, columnH / 2 - columnH * 0.28 * re], [x, columnH / 2 + columnH * 0.28 * re]], sc.sub, lw, 0.7, false);
         const xl = x + cw * 0.07;
         lab(i, xl, top - ls * 0.9, 'left', tin(env, 0.1 + i * 0.1, 0.4, E.outCubic) * out);
         drawNum(numItem(i, nsz, xl, top + nsz * 0.5, 'left'), i, [x, top, cw, nsz * 1.02]);
         env.line([[xl, top + nsz * 1.05], [xl + cw * 0.82 * re, top + nsz * 1.05]], sc.fg, lw * 1.4, 1, false);
         if (env.cut.placementLayoutsC) env.placementCEditorialZone = {x0:x,y0:top+nsz*1.05,x1:x+cw,y1:top+nsz*1.05+csize*1.7};
         bb = J.unionBB(bb, J.mainDraw(env, { ...(env.cut.placementLayoutsC ? {placementCOwnedZone:env.placementCEditorialZone} : {}), text: c, font: p.font, size: csize, x: xl, y: top + nsz * 1.05 + csize * 0.85, align: 'left', track: 0.02, color: sc.fg, mi: i * 3 }));
+        if(delta)ctx.restore();
       });
       return bb;
     }
