@@ -54,6 +54,7 @@ let building = false, cancelReq = false;
 const STEP_MS = 1200;
 async function buildInAE() {
   if (building) return;
+  try { J.assertPlanOutputSupported(S.plan); } catch (e) { status(e.message, true); toast(e.message); return; }
   if (!(await connect())) { toast('After Effects に接続できませんでした'); return; }
   building = true; cancelReq = false; setBusy(true);
   try {
@@ -67,6 +68,7 @@ async function buildInAE() {
     const what = R ? `${R.from + 1}${R.to > R.from ? '–' + (R.to + 1) : ''}行目・` : '';
     status(`コンポを作成中…（${what}${plan.cuts.length} カット）`);
     await new Promise(r => setTimeout(r, 30));              // let the status paint before AE starts
+    J.assertPlanOutputSupported(S.plan);
     let r;
     if (fs && os && pathM) {
       const p = pathM.join(os.tmpdir(), 'jizura_plan_' + Date.now() + '.json');

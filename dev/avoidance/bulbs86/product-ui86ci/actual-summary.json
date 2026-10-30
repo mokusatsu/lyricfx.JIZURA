@@ -1,0 +1,171 @@
+{
+  "checked": true,
+  "pureChecks": {
+    "session": 14,
+    "failureRace": 28,
+    "fontQueue": 6,
+    "routing": 15
+  },
+  "trials": [
+    {
+      "output": "/workspace/jizura-logic-evidence-20261027/bulbs-product-ui86ci-actual01",
+      "resultSHA256": "9904eb1e98326106f8aaf4592dc64e26773f54f11cf976a26b609137eff7cd0e",
+      "complete": true,
+      "rawRecords": 2,
+      "sourcePins": 170,
+      "currentHarnessPinDifferences": [
+        {
+          "recordedPath": "/workspace/jizura-bulbs-product-20261029/dev/avoidance/bulbs86/product-ui86ci/session-test.cjs",
+          "executedSnapshot": "/workspace/jizura-logic-evidence-20261027/bulbs-product-ui86ci-historical-pin-recovery03/bulbs-product-ui86ci-actual01-session-test.cjs"
+        }
+      ],
+      "normalPagesClosed": 3,
+      "ownedCleanupComplete": true
+    },
+    {
+      "output": "/workspace/jizura-logic-evidence-20261027/bulbs-product-ui86ci-boundary-actual02",
+      "resultSHA256": "ed66ee61e15ef8078edc71d06f543c4b81ce81a36e2119fbd350a525466a880e",
+      "complete": false,
+      "rawRecords": 2,
+      "sourcePins": 173,
+      "currentHarnessPinDifferences": [
+        {
+          "recordedPath": "/workspace/jizura-bulbs-product-20261029/dev/avoidance/bulbs86/product-ui86ci/boundary-browser.js",
+          "executedSnapshot": "/workspace/jizura-logic-evidence-20261027/bulbs-product-ui86ci-historical-pin-recovery03/bulbs-product-ui86ci-boundary-actual02-boundary-browser.js"
+        },
+        {
+          "recordedPath": "/workspace/jizura-bulbs-product-20261029/dev/avoidance/bulbs86/product-ui86ci/session-test.cjs",
+          "executedSnapshot": "/workspace/jizura-logic-evidence-20261027/bulbs-product-ui86ci-historical-pin-recovery03/bulbs-product-ui86ci-boundary-actual02-session-test.cjs"
+        }
+      ],
+      "normalPagesClosed": 3,
+      "ownedCleanupComplete": true,
+      "failure": "RESIZE_STALE: requested 600px remained 480px due height clamp; fixture corrected to 400px in fresh03, old failure retained"
+    },
+    {
+      "output": "/workspace/jizura-logic-evidence-20261027/bulbs-product-ui86ci-boundary-actual03",
+      "resultSHA256": "42d94717e5dab6467cc98e5a2ae6150481e1c1751ad1a6d47925bf57fc953dc1",
+      "complete": true,
+      "rawRecords": 4,
+      "sourcePins": 173,
+      "currentHarnessPinDifferences": [],
+      "normalPagesClosed": 3,
+      "ownedCleanupComplete": true,
+      "languages": {
+        "ja": {
+          "readyMs": 9415.299999982119,
+          "maxStepMs": 67.40000000596046,
+          "resizeFrom": [
+            480,
+            270
+          ],
+          "resizeTo": [
+            398,
+            224
+          ],
+          "fontFailure": "TEST_FONT_FAILURE",
+          "drawFailure": "TEST_DRAW_FAILURE",
+          "stock": [
+            {
+              "layout": "center",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "bulbs",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "dominoes",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "burst",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "contour",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "crossword",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            }
+          ]
+        },
+        "en": {
+          "readyMs": 8387.59999999404,
+          "maxStepMs": 91.2999999821186,
+          "resizeFrom": [
+            480,
+            270
+          ],
+          "resizeTo": [
+            398,
+            224
+          ],
+          "fontFailure": "TEST_FONT_FAILURE",
+          "drawFailure": "TEST_DRAW_FAILURE",
+          "stock": [
+            {
+              "layout": "center",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "bulbs",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "dominoes",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "burst",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "contour",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            },
+            {
+              "layout": "crossword",
+              "active": false,
+              "alpha": 129600,
+              "overlay": false
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "checker": "/workspace/jizura-bulbs-product-20261029/dev/avoidance/bulbs86/product-ui86ci/check-evidence.py",
+  "checkerSHA256": "b2d196475137980f1254cf33330c1a978a287102e40f8eea62e54c81b9766d82",
+  "historicalPinRecovery": "/workspace/jizura-logic-evidence-20261027/bulbs-product-ui86ci-historical-pin-recovery03/map.json",
+  "mediaOutputs": 0,
+  "publicChecks": 0,
+  "productSourceChangedAfterActual01": false,
+  "formalPerformanceAccepted": false,
+  "fullRegressionCertified": false,
+  "sharedRendererExceptionRecoveryCertified": false
+}

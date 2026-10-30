@@ -1,0 +1,8 @@
+from pathlib import Path
+import sys,shutil,json,hashlib
+R=Path(sys.argv[1]).resolve();D=Path(sys.argv[2]).resolve();U=Path(__file__).resolve().parent;S=Path('/workspace/jizura-logic-evidence-20261027/bulbs-variable-ui-source86cc01');D.mkdir(exist_ok=False)
+for n in ['qt-service-visible.py','browser.js','product-browser.js','spec.json']:shutil.copy2(S/n,D/n)
+shutil.copy2(R/'index.html',D/'candidate-ja.html');shutil.copy2(R/'en/index.html',D/'candidate-en.html');shutil.copy2(U/'browser-test.js',D/'browser-test.js')
+p=(S/'probe.cjs').read_text();a=p.index('for(const file of[');z=p.index('const init=store',a);p=p[:a]+"for(const file of[R+'/dev/avoidance/bulbs80/product80y/fixture.js',D+'/browser.js',D+'/product-browser.js',D+'/browser-test.js'])await page.addScriptTag({content:fs.readFileSync(file,'utf8')});\n"+p[z:];a=p.index('const pre=store');z=p.index('}catch(e){result.errors.push',a);p=p[:a]+"const actual=store('product-ui',await call(page,'productUI86ci'));valid(actual);result.summary=actual;verify();assert.equal(result.errors.length,0);result.complete=true;\n"+p[z:]
+(D/'probe.cjs').write_text(p)
+paths=[p for p in D.iterdir()if p.is_file()]+[p for p in U.iterdir()if p.is_file()]+list((R/'src').glob('*.js'))+list((R/'dev/avoidance/qt-resource-runtime').glob('*.py'))+[R/'dev/avoidance/bulbs80/product80y/fixture.js',R/'dev/avoidance/layouts-c-editorial-fonts/manifest.json',R/'app/body.html',R/'app/style.css',R/'build.py'];(D/'pins.json').write_text(json.dumps([{'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}for p in sorted(set(paths))],indent=2)+'\n');print(D)

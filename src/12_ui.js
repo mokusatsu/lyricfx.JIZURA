@@ -24,6 +24,29 @@ const ICON = {
 
 const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
 
+let bulbsReplanning86ci=false,bulbsState86ci=null;
+// Serialize generation font phases, including already-started UI/font-thumbnail requests.
+function createBulbsFontQueue86ci(){let tail=Promise.resolve();const pending=new Set();function track(factory){const p=Promise.resolve().then(factory);pending.add(p);p.then(()=>pending.delete(p),()=>pending.delete(p));return p}async function drain(){for(;;){if(pending.size)await Promise.allSettled([...pending]);await Promise.resolve();if(!pending.size)return}}function run(isCurrent,work){const job=tail.then(async()=>{await drain();if(!isCurrent())return;await work();await drain()});tail=job.catch(()=>{});return job}return Object.freeze({track,run});}
+const bulbsFontQueue86ci=createBulbsFontQueue86ci(),trackFonts86ci=factory=>bulbsFontQueue86ci.track(factory);
+
+// The editable plan stays mutable. Only the private current generation is drawn.
+const bulbsTarget86ci=plan=>plan?.layerVisibility?.lyrics!==false&&J.placement.bulbsFrameController80.targetsPreview(plan);
+const bulbsBoundary86ci=kind=>Object.assign(new Error(J.mediaLabel(
+  kind==='area'?'電球の回避プレビューでは位置編集にまだ対応していません。':kind==='detail'?'電球の回避配置はメインプレビューで確認してください。':'電球の回避配置は現在メインプレビューのみ対応しています。画像・動画の保存にはまだ対応していません。',
+  kind==='area'?'Position editing is not yet supported for the bulbs avoidance preview.':kind==='detail'?'Check bulbs avoidance in the main preview.':'Bulbs avoidance currently supports the main preview only. Image and video output are not yet supported.'
+)),{code:'BULBS_UI_'+kind.toUpperCase()+'_UNSUPPORTED'});
+function clearBulbsView86ci(ctx){ctx.save();try{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height)}finally{ctx.restore()}}
+function showBulbsState86ci(state){const box=$('bulbsPreparation'),label=$('bulbsPreparationText'),cancel=$('bulbsCancel'),retry=$('bulbsRetry');if(!box)return;const pending=state.active&&['empty','fonts','preparing'].includes(state.phase),blocked=!!state.cleanupError||state.active&&['cancelled','unsupported'].includes(state.phase);box.hidden=(!pending&&!blocked)||!J.placement.bulbsFrameController80.targetsFrame(S.plan,S.t);cancel.hidden=!pending;retry.hidden=!blocked||!!state.cleanupError;cancel.textContent=J.mediaLabel('準備を中止','Cancel preparation');retry.textContent=J.mediaLabel('再準備','Try again');label.textContent=state.phase==='cancelled'?J.mediaLabel('準備を中止しました。','Preparation cancelled.'):state.phase==='unsupported'?J.mediaLabel('この条件では電球の回避配置を表示できません。入力やプレビューサイズを変更してください。','Bulbs avoidance is unavailable for these conditions. Change the input or preview size.'):J.mediaLabel('電球の回避配置を準備中…','Preparing bulbs avoidance…');if(state.cleanupError)label.textContent+=' '+J.mediaLabel('準備の終了処理に失敗しました。再読み込みしてください。','Preparation cleanup failed. Reload the app.');}
+const bulbsSession86ci=J.placement.bulbsUISession86bx.create({
+ runtime:J.placement.bulbsUIRuntime86bx,readPlan:()=>S.plan,
+ waitFonts(plan,isCurrent){return bulbsFontQueue86ci.run(isCurrent,async()=>{const lyrics=S.project.lyrics;await ensureFonts();if(!isCurrent())return;await trackFonts86ci(()=>J.ensureFonts(lyrics,J.fontsOfPlan(plan)));if(!isCurrent())return;await trackFonts86ci(()=>J.ensureFonts('字面',[...new Set(J.STYLE_ORDER.map(k=>J.STYLES[k].fonts.display[0]))]));if(!isCurrent())return;await document.fonts.ready;if(!isCurrent())return;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))});},
+ schedule:fn=>setTimeout(fn,0),now:()=>performance.now(),hide:clearBulbsView86ci,
+ onState(state){bulbsState86ci=state;showBulbsState86ci(state);if(!state.active&&!state.cleanupError)return;S.need=true;if(!state.ready){const c=$('view');if(c)clearBulbsView86ci(c.getContext('2d'))}}
+});
+$('bulbsCancel').addEventListener('click',()=>{bulbsSession86ci.cancel();S.need=true});
+$('bulbsRetry').addEventListener('click',()=>{if(bulbsTarget86ci(S.plan)&&!S.areaEdit)bulbsSession86ci.begin()});
+for(const event of ['input','change'])document.addEventListener(event,e=>{if(['lyrics','lyricAvoidanceStrength','lyricGroupAvoidanceStrength'].includes(e.target.id)||e.target.closest?.('#fontRoles'))bulbsSession86ci.invalidate('input')},true);
+
 /* WebAudio player (works inside sandboxed pages where blob media may be blocked) */
 const AP = {
   ctx: null, src: null, gain: null, volume: 1.0, muted: false, lastVolume: 1.0, startAt: 0,
@@ -290,6 +313,7 @@ function composePlan(project) {
   return plan;
 }
 function replan() {
+  bulbsSession86ci.invalidate('replan');bulbsReplanning86ci=true;try{
   closeTimelineCutMenu();
   S.plan = composePlan(S.project);
   J.captureAutoEffects(S.project,S.plan);
@@ -302,12 +326,14 @@ function replan() {
   S.project.timelineLinks = S.project.timelineLinks.filter(link => link && link.a !== link.b && (boundaryCut(link.a) || temporarilyHidden(link.a)) && (boundaryCut(link.b) || temporarilyHidden(link.b)));
   lastCutIdx = null;
   renderLines(); renderMediaList(); renderMediaLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
-  S.need = true; autosave(); ensureFonts(); drawSwatch(); showNow();
+  S.need = true; autosave(); if(!bulbsTarget86ci(S.plan))ensureFonts(); drawSwatch(); showNow();
   clearTimeout(warmTimer); warmTimer = setTimeout(warm, 450);
+  }finally{bulbsReplanning86ci=false;}if(bulbsTarget86ci(S.plan))bulbsSession86ci.begin();else bulbsSession86ci.stop();
 }
 /* pre-decompose glyphs used by piece animations while the editor is idle, so playback does not hitch */
 let warmTimer = 0, warmJob = 0;
 function warm() {
+  if(bulbsTarget86ci(S.plan))return;
   const job = ++warmJob;
   const cuts = S.plan.cuts.filter(c => c.enter === 'assemble' || ['explode', 'fall', 'drift'].includes(c.exit));
   const src = $('view');
@@ -329,7 +355,7 @@ function warm() {
   idle(step);
 }
 let replanTimer = 0;
-const replanSoon = (ms = 220) => { clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
+const replanSoon = (ms = 220) => { bulbsSession86ci.invalidate('debounce'); clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
 let fontKey = '';
 let thumbFonts = null;
 async function ensureFonts() {
@@ -339,13 +365,13 @@ async function ensureFonts() {
   if (key === fontKey) return;
   fontKey = key;
   showMsg('フォントを読み込み中…');
-  try { await J.ensureFonts(txt, keys); } catch (e) {}
+  try { await trackFonts86ci(()=>J.ensureFonts(txt, keys)); } catch (e) {}
   showMsg(null); S.need = true; drawStyleGrid(); loadThumbFonts();
 }
 // style thumbnails need two glyphs of every style's display face — fetched only once the style grid is actually shown
 function loadThumbFonts() {
   if (thumbFonts || !$('styleGrid').offsetParent) return;
-  thumbFonts = J.ensureFonts('字面', [...new Set(J.STYLE_ORDER.map(k => J.STYLES[k].fonts.display[0]))]).then(() => drawStyleGrid()).catch(() => {});
+  thumbFonts = trackFonts86ci(()=>J.ensureFonts('字面', [...new Set(J.STYLE_ORDER.map(k => J.STYLES[k].fonts.display[0]))])).then(() => drawStyleGrid()).catch(() => {});
 }
 function showMsg(m) { const el = $('viewMsg'); if (!m) { el.hidden = true; return; } el.textContent = m; el.hidden = false; }
 
@@ -377,7 +403,7 @@ function sizeViewport() {
   if (cssH > maxH) { cssH = maxH; cssW = cssH * ar; }
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const pw = Math.round(Math.min(S.plan.W, cssW * dpr)), ph = Math.round(pw / ar);
-  if (c.width !== pw || c.height !== ph) { c.width = pw; c.height = ph; }
+  if(c.width!==pw||c.height!==ph){bulbsSession86ci.invalidate('viewport');c.width=pw;c.height=ph;if(!bulbsReplanning86ci&&bulbsTarget86ci(S.plan))bulbsSession86ci.begin();}
   c.style.width = cssW + 'px'; c.style.height = cssH + 'px';
   positionAreaEditor();
   if(S.tap)$('tapPanel').style.top=(vp.offsetTop+vp.offsetHeight+6)+'px';
@@ -389,6 +415,15 @@ function syncMainMediaPreview() {
   if(!$('cutDetailsDialog')?.open&&!$('effectFavoritesDialog')?.open&&!($('exportDlg')?.open&&S.exportKind==='short'))J.syncMediaPreview(S.plan,S.t,S.playing);
 }
 function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
+  if(bulbsTarget86ci(S.plan)&&S.plan.layerVisibility?.lyrics!==false){
+    if(renderer!==S.renderer||ctx.canvas!==$('view'))throw bulbsBoundary86ci('output');
+  }
+  if(bulbsState86ci)showBulbsState86ci(bulbsState86ci);
+  if(J.placement.bulbsFrameController80.targetsFrame(S.plan,S.t)){
+    if(S.areaEdit){bulbsSession86ci.reject('BULBS_UI_AREA_UNSUPPORTED');clearBulbsView86ci(ctx);return;}
+    if(!bulbsSession86ci.frame(ctx,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false}))clearBulbsView86ci(ctx);
+    return;
+  }
   const previewCuts = S.areaEdit && S.areaEdit.kind === 'lyric' && S.areaEdit.draft ? S.plan.cuts.filter(cut => cut.line === S.areaEdit.index) : [];
   const previousAreas = previewCuts.map(cut => cut.area);
   previewCuts.forEach(cut => { cut.area = { ...S.areaEdit.draft, angle: S.areaEdit.angle }; });
@@ -918,6 +953,7 @@ function detailButton(onClick) {
 }
 let cutPreviewSolo=false,cutPreviewFocus=false;// remembered while the page is open
 function openCutDetails(layer,index,part=0) {
+  if(layer==='lyrics'&&bulbsTarget86ci(S.plan)&&J.placement.bulbsFrameController80.targetsCut(S.plan,S.plan.cuts.find(c=>c.line===index&&c.part===part))){toast(bulbsBoundary86ci('detail').message);return;}
   const lyric = layer === 'lyrics', L = J.mediaLabel, clone = value => JSON.parse(JSON.stringify(value));
   const cut = lyric ? S.plan.cuts.find(c=>c.line===index && c.part===part) : S.plan[layer]?.cuts[index];
   if (!cut) return;
@@ -2423,6 +2459,7 @@ function showAreaDraft() {
   S.need = true;
 }
 function openAreaEditor(index,fromPreview=false) {
+  if(bulbsTarget86ci(S.plan)&&J.placement.bulbsFrameController80.targetsCut(S.plan,S.plan.cuts.find(c=>c.line===index))){toast(bulbsBoundary86ci('area').message);return;}
   if (S.exporting || S.tap) return;
   if (S.areaEdit) cancelAreaEditor();
   const line = S.plan.lines[index]; if (!line) return;
@@ -3522,6 +3559,7 @@ async function prepareShortPreview(time,play=false){
   finally{if(p.controller===controller)p.controller=null;}
 }
 function startShortPreview(){
+  if(bulbsTarget86ci(S.plan)&&S.plan.layerVisibility?.lyrics!==false){stopShortPreview();$('shortExportError').textContent=bulbsBoundary86ci('output').message;return;}
   stopShortPreview();if(!shortExportActive())return;
   const p=shortPreview={renderer:new J.Renderer(),portrait:new J.ShortFrameRenderer(),source:document.createElement('canvas'),t:S.project.shortExport.start,plan:S.plan,ready:false,need:true,playing:false};
   const tick=now=>{
@@ -3646,6 +3684,7 @@ async function codecNote() {
 }
 const EXP_BTNS = ['btnMP4', 'btnShort', 'btnPNG', 'btnPNGA', 'eMP4'];
 function openExportDialog(kind) {
+  if(bulbsTarget86ci(S.plan)&&S.plan.layerVisibility?.lyrics!==false){toast(bulbsBoundary86ci('output').message);return;}
   if (S.exporting) return;
   pause();
   const mp4 = kind === 'mp4'||kind==='short';
@@ -3703,6 +3742,7 @@ function confirmHiddenLayers() {
   return !['foreground','lyrics','media'].some(layer=>S.project.layerVisibility?.[layer]===false) || window.confirm(J.mediaLabel('非表示のレイヤーは書き出しに含まれません。よろしいですか？','Hidden layers will not be included in the export. Continue?'));
 }
 async function runExport(kind) {
+  if(bulbsTarget86ci(S.plan)&&S.plan.layerVisibility?.lyrics!==false){toast(bulbsBoundary86ci('output').message);return;}
   if (S.exporting) return;
   if (!$('exportDlg').open || S.exportKind !== kind) { openExportDialog(kind); return; }
   const mp4=kind==='mp4'||kind==='short';
@@ -4403,6 +4443,7 @@ function bind() {
   screenshot.addEventListener('click',async()=>{
     screenshot.disabled=true;
     try{
+      J.assertPlanOutputSupported(S.plan);
       const filename=J.exportFilename(`${baseName()}_preview_${S.t.toFixed(3).replace('.','-')}`,'.png');
       const [w,h]=J.outputSize(S.project),canvas=document.createElement('canvas');
       canvas.width=w;canvas.height=h;
@@ -4758,6 +4799,7 @@ function bind() {
     finally { S.projectBusy = false; e.target.value = ''; }
   });
   $('btnAE').addEventListener('click', async () => {
+    try{J.assertPlanOutputSupported(S.plan)}catch(err){toast(err.message);return;}
     if (S.projectBusy || S.exporting) return;
     if(!confirmHiddenLayers())return;
     const filename = (await requestFilename('ae'))?.filename; if (!filename) return;
@@ -4976,7 +5018,7 @@ J.uiAudio = AP;
 J.addMediaFiles = addMediaFiles;
 J.activeMediaLayer = activeMediaLayer;
 // hooks for hosts that embed the app (the After Effects CEP panel)
-J.uiApi = { toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
+J.uiApi = { bulbsSessionState86ci:bulbsSession86ci.state, toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
   openProjectFile, replaceProject, ensureFonts, splitMediaCut, insertLyricAtPlayhead,
   removeLyricCut, removeMediaCut, connectTimelineBoundaries,
   boundaryGroupLimits, commitTimelineBoundary, addMediaFiles, activeMediaLayer };

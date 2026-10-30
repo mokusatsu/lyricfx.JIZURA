@@ -405,6 +405,12 @@ A.solve = (polygons,circle,W,H) => {
 const signature=plan=>{const source={...plan};delete source.placementFinalization;source.cuts=plan.cuts.map(c=>{const n={...c};delete n.placementTrajectory;delete n.fullStagePlacement;delete n.placementUnits;delete n.placementGlyphs;delete n.placementLayoutsA;delete n.placementLayoutsB;delete n.placementLayoutsC;delete n.placementLayoutsD;delete n.layoutDRecipe;delete n.layoutCRecipe;delete n.layoutBRecipe;delete n.layoutBEvaluationRange;delete n.placementAdaptiveTrial;delete n.layoutARecipe;delete n.layoutAHoldRange;delete n.placementSelectionOrigin;return n;});return JSON.stringify(source);};
 A.planSignature=signature;
 const finalized=new WeakMap(),requests=new WeakMap(),sources=new WeakMap();
+// Shared preserved-cut semantics; unknown automatic lineage is not permission to bypass avoidance.
+function placementCutPreserved86cm(plan,cut,lineage=sources.get(plan)){
+ if(plan.lyricAvoidanceIndex?.enabled!==true||['manual','notation'].includes(cut.areaMode)||cut.placementLocked||cut.emphasis)return true;
+ return lineage?lineage.locked.includes(cut.index):null;
+}
+Object.defineProperty(A,'placementCutPreserved86cm',{value:(plan,cut)=>Array.isArray(plan?.cuts)&&plan.cuts.includes(cut)?placementCutPreserved86cm(plan,cut):null});
 let layoutsCFinalCache=null;
 A.installLayoutsCFinalCache=hooks=>{if(layoutsCFinalCache||!hooks||!['begin','read','keep'].every(k=>typeof hooks[k]==='function'))fail('INVALID_C_CACHE_HOOKS','Single C cache installation required');layoutsCFinalCache=Object.freeze({...hooks});delete A.installLayoutsCFinalCache;return {stats:nativeLocalBoundsStats,clear:clearNativeLocalBounds};};
 const oldPlan=J.plan;
@@ -426,7 +432,7 @@ J.finalizePlacementPlan = (input,options={}) => {
   const diagnostics=[],stepDur=J.stepDur(plan.fx,plan.fps),maxSupportedTransDur=.6,maxStep=1,dProofMemo=options.layoutsD===true&&options.layoutsDProofMemo!==false?A.createLayoutsDFisheyeProofMemo?.():null;
   if(options.layoutsD===true&&plan.lyricAvoidanceIndex?.enabled===true&&plan.lyricAvoidanceIndex.regions.length)diagnostics.push(...(A.customGlobalEventCapabilities?.(plan)||[]));
   // All frame passes share the effectCut's style/FX/clock. Reject mixed unsupported state once.
-  const unsupportedPlanFX=!(Number.isFinite(stepDur)&&stepDur>0&&stepDur<=maxStep)||plan.cuts.some(c=>c.effectStyle||c.effectFx||c.trans&&c.trans!=='none'&&(c.trans!=='wipe'||!Number.isFinite(c.transDur??.35)||(c.transDur??.35)<0||(c.transDur??.35)>maxSupportedTransDur))||(plan.events||[]).some(e=>!['chroma','shake'].includes(e.type))||plan.style?.glow!==0;
+  const unsupportedPlanFX=!(Number.isFinite(stepDur)&&stepDur>0&&stepDur<=maxStep)||plan.cuts.some(c=>c.effectStyle||c.effectFx||c.trans&&c.trans!=='none'&&(c.trans!=='wipe'||!Number.isFinite(c.transDur??.35)||(c.transDur??.35)<0||(c.transDur??.35)>maxSupportedTransDur))||(plan.events||[]).some(e=>!['chroma','shake'].includes(e.type))||(plan.style?.glow!==0&&!(options.layoutsD===true&&A.bulbsPostScope86w?.neutralMissingGlow?.(plan)===true));
   // Root quantization + recursive previous-frame quantization, one maximum ghost lag,
   // transition duration, permitted cut gap and previous-rest-frame/rounding allowance.
   const reachTail=maxSupportedTransDur+2*stepDur+1.6/24+.06+.01;
@@ -434,7 +440,7 @@ J.finalizePlacementPlan = (input,options={}) => {
     const original=jsonClone(cut);
     delete cut.fullStagePlacement;delete cut.placementTrajectory;delete cut.placementUnits;delete cut.placementGlyphs;delete cut.placementLayoutsA;delete cut.placementLayoutsB;delete cut.placementLayoutsC;delete cut.placementLayoutsD;delete cut.layoutDRecipe;delete cut.layoutCRecipe;delete cut.layoutBRecipe;delete cut.layoutBEvaluationRange;delete cut.placementAdaptiveTrial;delete cut.layoutARecipe;delete cut.layoutAHoldRange;delete cut.placementSelectionOrigin;
     if(options.cutIndices&&!options.cutIndices.includes(cut.index))continue;
-    if(plan.lyricAvoidanceIndex?.enabled!==true||sources.get(input)?.locked.includes(cut.index)||['manual','notation'].includes(cut.areaMode)||cut.placementLocked||cut.emphasis){diagnostics.push({cut:cut.index,code:'PRESERVED_LEGACY',safety:'not-evaluated'});continue;}
+    if(placementCutPreserved86cm(plan,cut,lineage)===true){diagnostics.push({cut:cut.index,code:'PRESERVED_LEGACY',safety:'not-evaluated'});continue;}
     if(options.layoutsD===true){const capability=A.customDrawingCapability?.(cut,plan);if((capability||A.layoutsD34?.includes(cut.layout))&&!plan.lyricAvoidanceIndex.regions.some((r,i)=>r.start<Math.max(cut.end,cut.displayEnd??cut.end)+reachTail&&Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration)>Math.min(cut.start,cut.renderStart??cut.start)-stepDur)){diagnostics.push({cut:cut.index,code:'PRESERVED_NO_ACTIVE_REGION',safety:'not-evaluated'});continue;}if(capability){diagnostics.push({cut:cut.index,code:capability.code,safety:capability.safety,capability});continue;}}
     if(!(A.basicLayouts.includes(cut.layout)||(options.layoutsA===true&&A.layoutsA26?.includes(cut.layout)||options.layoutsB===true&&A.layoutsB25?.includes(cut.layout)||options.layoutsC===true&&A.layoutsC34?.includes(cut.layout)||options.layoutsD===true&&A.layoutsD34?.includes(cut.layout)))||!['cut'].includes(cut.enter)||!['cut'].includes(cut.exit)||(cut.groupExit??cut.exit)!=='cut'||cut.hold!=='still'||(cut.decor||[]).length||!['none','marker'].includes(cut.treat||'none')||!['push','panL','panR','dutch'].includes(cut.cam)||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)){diagnostics.push({cut:cut.index,code:'UNSUPPORTED_ADAPTER',safety:'unsupported'});continue;}
     const fxCheck=cut.effectFx||plan.fx,stCheck=cut.effectStyle||plan.style,numbers=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fxCheck.motion??.7,fxCheck.chroma??.7,stCheck.ghost??1,cut.camP?.a??.022,cut.camP?.dir??1];

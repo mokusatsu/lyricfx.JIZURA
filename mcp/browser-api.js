@@ -728,6 +728,8 @@
       return audit();
     },
     async output({ kind, every = 1 }) {
+      if (!["project", "settings", "favorites"].includes(kind))
+        J.assertPlanOutputSupported(S.plan);
       if (!["project", "settings", "favorites"].includes(kind) && !audit().ready)
         throw Error(
           "Run audit, inspect preview images, and approve this revision before export",

@@ -928,3 +928,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .se-target-field { display: flex; align-items: center; gap: 8px; font-size: 12px; margin: 0; }
 .se-footer-btns { display: flex; gap: 8px; justify-content: flex-end; }
 
+
+/* Main-preview preparation stays separate from transient font loading notices. */
+.bulbs-preparation { position:absolute; z-index:7; left:12px; right:12px; bottom:12px; display:flex; align-items:center; justify-content:center; gap:10px; padding:12px; border:1px solid var(--line); border-radius:var(--r); background:var(--panel); font-size:13px; }
+.bulbs-preparation[hidden], .bulbs-preparation button[hidden] { display:none; }

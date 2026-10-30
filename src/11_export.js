@@ -5,6 +5,15 @@
 (() => {
 'use strict';
 
+// This proved bulbs route currently publishes only to the main preview.
+// Keep this preflight shared by UI, MCP, CEP and direct render-export callers.
+J.assertPlanOutputSupported = plan => {
+  if (plan?.layerVisibility?.lyrics !== false && J.placement?.bulbsFrameController80?.targetsPreview(plan)) throw Object.assign(new Error(J.mediaLabel(
+    '電球の回避配置は現在メインプレビューのみ対応しています。画像・動画・After Effects用の出力にはまだ対応していません。',
+    'Bulbs avoidance currently supports the main preview only. Image, video and After Effects output are not yet supported.'
+  )), {code:'BULBS_UI_OUTPUT_UNSUPPORTED'});
+};
+
 /* ---------- saving ---------- */
 J.exportFilename = (value, extension, fallback = 'jizura') => {
   let name = String(value || '').trim().replace(/[\\/:*?"<>|\x00-\x1f\x7f]/g, '_').replace(/[. ]+$/g, '');
@@ -113,6 +122,7 @@ J.createMP4Output = fileStream => {
   };
 };
 J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, signal, fileStream, short }) => {
+  J.assertPlanOutputSupported(plan);
   if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
@@ -225,6 +235,7 @@ class ZipWriter {
   }
 }
 J.exportPNGZip = async ({ plan, project, transparent, onProgress, signal, every = 1 }) => {
+  J.assertPlanOutputSupported(plan);
   if (J.pauseAllVideos) J.pauseAllVideos();
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
@@ -262,6 +273,7 @@ J.AE_MAP = {
 // The plan goes to the After Effects panel as-is (version 2): the panel builds every key it implements and
 // picks the closest counterpart itself (from the exported metadata / J.AE_MAP) for anything it lacks.
 J.planForAE = (plan, project) => {
+  J.assertPlanOutputSupported(plan);
   const clean = JSON.parse(JSON.stringify(plan, (k, v) => (k === 'energy' || k === 'buffer' || k === 'peaks' ? undefined : v)));
   if(plan.layerVisibility?.lyrics===false){clean.cuts=[];clean.lines=[];clean.events=[];clean.retainedCutIndices=[];clean.hud=false;}
   for(const layer of ['foreground','media'])if(plan.layerVisibility?.[layer]===false && clean[layer])clean[layer].cuts=[];

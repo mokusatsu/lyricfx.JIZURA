@@ -1,0 +1,21 @@
+/* Pure retained frame-data construction only; never an observed native catalog. */
+(()=>{'use strict';const A=J.placement,need=(v,c)=>{if(!v)throw Object.assign(Error(c),{code:c})};
+function* buildGenerator86cc({nativeLayout,preparedSubtitle,recipes,preparedLayouts,heldInput,clocks,schedule,onWork=null}){
+ need(onWork===null||typeof onWork==='function','BULBS80O_WORK_CALLBACK');
+ const native=heldInput.find(r=>r.recipe.native);
+ need(nativeLayout&&native&&Number.isFinite(native.r)&&native.r>0&&Object.is(native.nativeSize,nativeLayout.size)&&native.lyricText===nativeLayout.text,'BULBS80O_NATIVE_FRAME_REFERENCE');
+ need(preparedSubtitle?.kind==='bulbs-derived-subtitle-fit80'&&preparedSubtitle.nativeLayout===nativeLayout&&preparedSubtitle.text===native.captionText&&Number.isFinite(preparedSubtitle.fitSize)&&preparedSubtitle.fitSize>0,'BULBS80O_SUBTITLE_FRAME_REFERENCE');
+ const finiteLayout=l=>l&&typeof l.text==='string'&&['size','ss','bw','bh','cx','cy','padX','padY','x0','y0'].every(k=>Number.isFinite(l[k]))&&l.size>0&&l.ss>0&&l.bw>0&&l.bh>0;
+ need(finiteLayout(nativeLayout)&&Array.isArray(recipes)&&recipes.length>=2&&recipes.length<=4&&recipes.filter(r=>r.native).length===1&&new Set(recipes.map(r=>r.id)).size===recipes.length,'BULBS80O_NATIVE_LAYOUT');
+ const rows=recipes.map(recipe=>{const prepared=recipe.native?null:preparedLayouts.get(recipe.id),layout=recipe.native?nativeLayout:prepared?.layout;need(finiteLayout(layout)&&(recipe.native||prepared.kind==='bulbs-derived-static-layout80'&&prepared.recipe===recipe&&prepared.nativeLayout===nativeLayout&&layout.text===recipe.writingText&&Object.is(layout.size,nativeLayout.size*recipe.scale)),'BULBS80O_RECIPE_LAYOUT');return{recipe,layout,prepared}});
+ need(clocks?.h===1/60&&Array.isArray(clocks.preimages)&&clocks.preimages.length<=512&&Array.isArray(clocks.states),'BULBS80O_CLOCK');
+ yield Object.freeze({kind:'bulbs-own-checkpoint80ab',phase:'frame-validate'});let expectedIndex=0;for(const state of clocks.states)for(const own of state.passes)if(own.active){const e=schedule[expectedIndex++];need(e&&e.n===state.n&&e.pass===own.pass&&Object.is(e.t,own.tp)&&Object.is(e.lt,own.lt)&&Object.is(e.ltb,own.ltb)&&Object.is(e.step,own.step),'BULBS80O_SCHEDULE_ACTIVE_ORDER')}
+ need(expectedIndex===schedule.length,'BULBS80O_SCHEDULE_ACTIVE_COVERAGE');
+ const clockRows=[],report=current=>{if(onWork)onWork({nativeLayout,preparedSubtitle,recipeRows:rows,clockRows,current})};yield Object.freeze({kind:'bulbs-own-checkpoint80ab',phase:'frame-account-setup'});report(null);yield Object.freeze({kind:'bulbs-own-checkpoint80ab',phase:'frame-preimages'});
+ for(const [n,p]of clocks.preimages.entries()){need(p.n===n&&typeof p.reachable==='boolean'&&(!p.reachable||Number.isFinite(p.firstTime)&&Number.isFinite(p.lastTime)&&p.firstTime<=p.lastTime),'BULBS80O_PREIMAGE');clockRows.push({n,reachable:p.reachable,firstTime:p.reachable?p.firstTime:null,lastTime:p.reachable?p.lastTime:null,ownIndices:[]});report(p);if((n+1)%16===0)yield Object.freeze({kind:'bulbs-own-checkpoint80ab',phase:'frame-preimages'});}
+ yield Object.freeze({kind:'bulbs-own-checkpoint80ab',phase:'frame-index'});for(let i=0;i<schedule.length;i++){const e=schedule[i],row=clockRows[e.n];need(row?.reachable&&['B','A','main'].includes(e.pass)&&!row.ownIndices.some(j=>schedule[j].pass===e.pass),'BULBS80O_OWN_INDEX');row.ownIndices.push(i);need(row.ownIndices.length<=3,'BULBS80O_OWN_LIMIT');report({index:i,entry:e});if((i+1)%16===0)yield Object.freeze({kind:'bulbs-own-checkpoint80ab',phase:'frame-index'});}
+ return{kind:'bulbs-derived-static-frame-data80',observedNativeCatalog:false,safetyCertified:false,nativeLayout,preparedSubtitle,nativeRadius:native.r,recipes:rows,clock:{h:clocks.h,rows:clockRows}}
+}
+function select(model,t){const clock=model.frameData?.clock;need(clock&&Number.isFinite(t)&&t>=0,'BULBS80O_FRAME_TIME');const n=Math.floor(t/clock.h+1e-6),row=clock.rows[n];need(row?.reachable&&t>=row.firstTime&&t<=row.lastTime,'BULBS80O_NUMBER_PREIMAGE');return{n,ownIndices:row.ownIndices}}
+function build(args){const iterator=buildGenerator86cc(args);for(;;){const next=iterator.next();if(next.done)return next.value}}
+A.bulbsFrameData80=Object.freeze({build,buildGenerator86cc,select});})();
