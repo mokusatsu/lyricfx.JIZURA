@@ -299,6 +299,7 @@ class Renderer {
           env = this.makeEnv(X, plan, cut, csc, envOptions);
         }
         const blend = P.pass !== 'main' && J.lum(csc.bg) > .55 ? 'multiply' : 'source-over';
+        if(cut.simpleCircleRecipe)J.placement.simpleCircle.drawDecor(this,X,plan,cut,csc,envOptions,{x:shx+P.off[0],y:shy+P.off[1],blend},'back');
         X.save();
         const area = cut.fullStagePlacement ? null : cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
         const contentW = env.W, contentH = env.H;
@@ -333,8 +334,10 @@ class Renderer {
           // native drawCut body is L.render plus its catch. Dispatch the same
           // source directly so an admitted source failure propagates explicitly.
           bulbs80Hooks.paint(Object.freeze({renderer:this,env}));
-        } else if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
+        } else if(cut.simpleCircleRecipe)J.LAYOUTS[cut.layout].render(env);
+        else if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
         X.restore();
+        if(cut.simpleCircleRecipe)J.placement.simpleCircle.drawDecor(this,X,plan,cut,csc,envOptions,{x:shx+P.off[0],y:shy+P.off[1],blend},'front');
         if (sourceMask) J.applyMaskToCanvas(X.canvas, mask, contentMatrix, contentW, contentH, { cut, t: tp, plan });
         if (X !== target) {
           target.save(); target.setTransform(1, 0, 0, 1, 0, 0); target.globalAlpha = 1; target.globalCompositeOperation = blend;

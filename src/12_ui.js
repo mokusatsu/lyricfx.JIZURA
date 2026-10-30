@@ -24,6 +24,22 @@ const ICON = {
 
 const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
 
+const simpleCircle=J.placement.simpleCircle;
+let simpleGeneration=0,simplePrepared=null,simplePrevious=null,simplePending=false,simpleError=null,simpleDirty=false;
+const simpleMessage=document.createElement('div');simpleMessage.id='simpleCircleStatus';simpleMessage.className='bulbs-preparation';simpleMessage.hidden=true;simpleMessage.setAttribute('role','status');$('viewport').appendChild(simpleMessage);
+function invalidateSimpleCircle(dirty=simpleDirty){simpleDirty=dirty;simpleGeneration++;if(simplePrepared)simplePrevious=simplePrepared;simplePrepared=null;simplePending=false;simpleError=null;simpleMessage.hidden=true;}
+function beginSimpleCircle(){
+ if(simpleDirty||simplePending||simplePrepared||simpleError)return;simplePending=true;const generation=simpleGeneration,plan=S.plan;
+ bulbsFontQueue86ci.run(()=>generation===simpleGeneration,async()=>{await ensureFonts();await J.ensureFonts(S.project.lyrics,J.fontsOfPlan(plan));await document.fonts.ready;if(generation!==simpleGeneration||S.plan!==plan)return;simplePrepared=simpleCircle.prepare(plan,simplePrevious,{scale:$('view').width/plan.W});}).catch(e=>{if(generation===simpleGeneration)simpleError=e.code||'UNSUPPORTED_MEASUREMENT';}).finally(()=>{if(generation===simpleGeneration){simplePending=false;S.need=true;}});
+}
+function drawSimpleCircle(ctx,renderer,fast){
+ if(simplePrepared&&simplePrepared.revision!==(J.metrics.revision||0))invalidateSimpleCircle();beginSimpleCircle();
+ const active=diagnostic=>S.plan.cuts.some(c=>c.index===diagnostic.cut&&simpleCircle.activeCut(S.plan,c,S.t)),insufficient=simplePrepared?.diagnostics.find(d=>d.status==='insufficient-space'&&active(d)),unsupported=simpleError||simplePrepared?.diagnostics.find(d=>d.status==='unsupported'&&active(d));
+ if(simpleDirty||!simplePrepared&&!simpleError||insufficient){simpleMessage.hidden=false;simpleMessage.textContent=simpleDirty||simplePending?J.mediaLabel('回避配置を準備中…','Preparing avoidance…'):J.mediaLabel('この条件では回避配置の余白が足りません。円の位置・大きさを変更してください。','There is not enough room for avoidance. Change the circle position or size.');clearBulbsView86ci(ctx);return;}
+ simpleMessage.hidden=!unsupported;if(unsupported)simpleMessage.textContent=J.mediaLabel('円回避未対応・元の配置','Circle avoidance unsupported · original placement');
+ renderer.frame(ctx,simplePrepared?.plan||S.plan,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false});
+}
+
 let bulbsReplanning86ci=false,bulbsState86ci=null,bulbsFontReady86co=null;
 // Serialize generation font phases, including already-started UI/font-thumbnail requests.
 function createBulbsFontQueue86ci(){let tail=Promise.resolve();const pending=new Set();function track(factory){const p=Promise.resolve().then(factory);pending.add(p);p.then(()=>pending.delete(p),()=>pending.delete(p));return p}async function drain(){for(;;){if(pending.size)await Promise.allSettled([...pending]);await Promise.resolve();if(!pending.size)return}}function run(isCurrent,work){const job=tail.then(async()=>{await drain();if(!isCurrent())return;await work();await drain()});tail=job.catch(()=>{});return job}return Object.freeze({track,run});}
@@ -349,6 +365,7 @@ function composePlan(project) {
   return plan;
 }
 function replan() {
+  invalidateSimpleCircle(false);
   bulbsSession86ci.invalidate('replan');burstSession83be.invalidate('replan');dominoSession82ao.invalidate('replan');bulbsReplanning86ci=true;try{
   closeTimelineCutMenu();
   S.plan = composePlan(S.project);
@@ -391,7 +408,7 @@ function warm() {
   idle(step);
 }
 let replanTimer = 0;
-const replanSoon = (ms = 220) => { bulbsSession86ci.invalidate('debounce');burstSession83be.invalidate('debounce');dominoSession82ao.invalidate('debounce'); clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
+const replanSoon = (ms = 220) => { invalidateSimpleCircle(true); bulbsSession86ci.invalidate('debounce');burstSession83be.invalidate('debounce');dominoSession82ao.invalidate('debounce'); clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
 let fontKey = '';
 let thumbFonts = null;
 async function ensureFonts() {
@@ -439,7 +456,7 @@ function sizeViewport() {
   if (cssH > maxH) { cssH = maxH; cssW = cssH * ar; }
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const pw = Math.round(Math.min(S.plan.W, cssW * dpr)), ph = Math.round(pw / ar);
-  if(c.width!==pw||c.height!==ph){bulbsSession86ci.invalidate('viewport');burstSession83be.invalidate('viewport');dominoSession82ao.invalidate('viewport');c.width=pw;c.height=ph;if(!bulbsReplanning86ci)beginPlacementSessions83be();}
+  if(c.width!==pw||c.height!==ph){bulbsSession86ci.invalidate('viewport');burstSession83be.invalidate('viewport');dominoSession82ao.invalidate('viewport');invalidateSimpleCircle();c.width=pw;c.height=ph;if(!bulbsReplanning86ci)beginPlacementSessions83be();}
   c.style.width = cssW + 'px'; c.style.height = cssH + 'px';
   positionAreaEditor();
   if(S.tap)$('tapPanel').style.top=(vp.offsetTop+vp.offsetHeight+6)+'px';
@@ -451,6 +468,8 @@ function syncMainMediaPreview() {
   if(!$('cutDetailsDialog')?.open&&!$('effectFavoritesDialog')?.open&&!($('exportDlg')?.open&&S.exportKind==='short'))J.syncMediaPreview(S.plan,S.t,S.playing);
 }
 function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
+  simpleMessage.hidden=true;
+  if(!S.areaEdit&&simpleCircle.active(S.plan,S.t)){if(renderer!==S.renderer||ctx.canvas!==$('view')){const outputPlan=simpleCircle.outputPlan(S.plan,{scale:ctx.canvas.width/S.plan.W});if(outputPlan.circleAvoidanceStatus?.status==='partial')toast(J.mediaLabel('円回避未対応の演出は元の配置で出力します。','Unsupported effects are exported in their original placement.'));renderer.frame(ctx,outputPlan,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false});return;}drawSimpleCircle(ctx,renderer,fast);return;}
   if(dominoTarget82ao(S.plan)&&(renderer!==S.renderer||ctx.canvas!==$('view')))throw dominoError82ao('output');
   if(dominoState82ao)showDominoState82ao(dominoState82ao);
   if(dominoBoundary82ao.targetsFrame(S.plan,S.t)){
@@ -3818,7 +3837,9 @@ async function runExport(kind) {
   const settingsInputs = [...$('exportSettings').querySelectorAll('input,select'),...$('shortExportOptions').querySelectorAll('input,select,button'),$('exportFilename')].map(el=>[el,el.disabled]);
   settingsInputs.forEach(([el])=>{el.disabled=true;}); $('btnCloseExport').disabled = true;
   const boxes = [...document.querySelectorAll('.exp-box')];
-  const setText = m => boxes.forEach(b => { b.querySelector('.exp-text').textContent = m; });
+  let circleWarning='';
+  const setText = m => boxes.forEach(b => { b.querySelector('.exp-text').textContent = m+(circleWarning?' '+circleWarning:''); });
+  const onWarning=()=>{circleWarning=J.mediaLabel('円回避未対応の演出は元の配置で出力','Unsupported effects keep their original placement');toast(circleWarning);};
   const txt = { set textContent(m) { setText(m); }, get textContent() { return boxes[0].querySelector('.exp-text').textContent; } };
   boxes.forEach(b => { b.hidden = false; b.querySelector('.exp-bar').style.width = '0%'; });
   setText('準備中…');
@@ -3840,13 +3861,13 @@ async function runExport(kind) {
     }
     await J.ensureFonts(S.project.lyrics + (S.project.title || '') + (S.project.artist || '') + HUD_CHARS + J.drawingText(S.plan), J.fontsOfPlan(S.plan));
     if (mp4) {
-      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream,short:kind==='short'?{...S.project.shortExport}:null });
+      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, onWarning, signal: ac.signal, fileStream,short:kind==='short'?{...S.project.shortExport}:null });
       fileStream=null;
       txt.textContent = `完成 ${(r.size / 1048576).toFixed(1)}MB・${r.codec}${r.audio ? ' + ' + r.audio.toUpperCase() : ''}・${((performance.now() - t0) / 1000).toFixed(0)}秒`;
       const res = r.saved?'saved':await J.saveFile(filename, r.blob);
       if (res === 'declined') txt.textContent += '（保存はキャンセルされました）';
     } else {
-      const blob = await J.exportPNGZip({ plan: S.plan, project: S.project, transparent: kind === 'pnga', onProgress, signal: ac.signal });
+      const blob = await J.exportPNGZip({ plan: S.plan, project: S.project, transparent: kind === 'pnga', onProgress, onWarning, signal: ac.signal });
       txt.textContent = `完成 ${(blob.size / 1048576).toFixed(1)}MB`;
       await J.saveFile(filename, blob);
     }
@@ -4504,6 +4525,7 @@ function bind() {
     screenshot.disabled=true;
     try{
       J.assertPlanOutputSupported(S.plan);
+      if(S.plan.cuts.some(c=>simpleCircle.targets(S.plan,c))){await ensureFonts();await document.fonts.ready;}
       const filename=J.exportFilename(`${baseName()}_preview_${S.t.toFixed(3).replace('.','-')}`,'.png');
       const [w,h]=J.outputSize(S.project),canvas=document.createElement('canvas');
       canvas.width=w;canvas.height=h;
@@ -4861,6 +4883,7 @@ function bind() {
   $('btnAE').addEventListener('click', async () => {
     try{J.assertPlanOutputSupported(S.plan)}catch(err){toast(err.message);return;}
     if (S.projectBusy || S.exporting) return;
+    if(S.plan.cuts.some(c=>simpleCircle.targets(S.plan,c)))toast(J.mediaLabel('AE出力には円回避配置が反映されません。','Circle avoidance placement is not included in AE output.'));
     if(!confirmHiddenLayers())return;
     const filename = (await requestFilename('ae'))?.filename; if (!filename) return;
     try { await J.saveFile(filename, JSON.stringify(J.planForAE(S.plan, S.project), null, 1)); }
@@ -5078,7 +5101,7 @@ J.uiAudio = AP;
 J.addMediaFiles = addMediaFiles;
 J.activeMediaLayer = activeMediaLayer;
 // hooks for hosts that embed the app (the After Effects CEP panel)
-J.uiApi = { dominoSessionState82ao:dominoSession82ao.state, burstSessionState83be:burstSession83be.state, bulbsSessionState86ci:bulbsSession86ci.state, toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
+J.uiApi = { simpleCircleState:()=>({dirty:simpleDirty,pending:simplePending,error:simpleError,prepared:simplePrepared&&{diagnostics:simplePrepared.diagnostics,elapsedMs:simplePrepared.elapsedMs,revision:simplePrepared.revision}}), dominoSessionState82ao:dominoSession82ao.state, burstSessionState83be:burstSession83be.state, bulbsSessionState86ci:bulbsSession86ci.state, toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
   openProjectFile, replaceProject, ensureFonts, splitMediaCut, insertLyricAtPlayhead,
   removeLyricCut, removeMediaCut, connectTimelineBoundaries,
   boundaryGroupLimits, commitTimelineBoundary, addMediaFiles, activeMediaLayer };

@@ -8,6 +8,7 @@
 // This proved bulbs route currently publishes only to the main preview.
 // Keep this preflight shared by UI, MCP, CEP and direct render-export callers.
 J.assertPlanOutputSupported = plan => {
+
  if(plan?.layerVisibility?.lyrics!==false&&J.placement?.dominoUIBoundary82ao?.targetsPreview(plan))throw Object.assign(Error(J.mediaLabel('ドミノの回避配置は現在メインプレビューのみ対応しています。画像・動画・After Effects用の出力にはまだ対応していません。','Domino avoidance currently supports the main preview only. Image, video and After Effects output are not yet supported.')),{code:'DOMINO_UI_OUTPUT_UNSUPPORTED'});
   if(plan?.layerVisibility?.lyrics!==false&&J.placement?.burstUIBoundary83be?.targetsPreview(plan))throw Object.assign(new Error(J.mediaLabel('ドカンの回避配置は現在メインプレビューのみ対応しています。画像・動画・After Effects用の出力にはまだ対応していません。','Burst avoidance currently supports the main preview only. Image, video and After Effects output are not yet supported.')),{code:'BURST_UI_OUTPUT_UNSUPPORTED'});
   if (plan?.layerVisibility?.lyrics !== false && J.placement?.bulbsFrameController80?.targetsPreview(plan)) throw Object.assign(new Error(J.mediaLabel(
@@ -123,10 +124,12 @@ J.createMP4Output = fileStream => {
     async abort(){parts=[];await queue;if(fileStream)try{await fileStream.abort();}catch{}}
   };
 };
-J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, signal, fileStream, short }) => {
+J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, onWarning, signal, fileStream, short }) => {
   J.assertPlanOutputSupported(plan);
-  if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
+  if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){await J.ensureFonts(project.lyrics,J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
+  if(plan.circleAvoidanceStatus?.status==='partial')onWarning?.(plan.circleAvoidanceStatus);
+  if (J.pauseAllVideos) J.pauseAllVideos();
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
@@ -201,7 +204,7 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   if(signal?.aborted)throw new Error('キャンセルしました');
   const saved=await output.finish();completed=true;
   onProgress && onProgress(1, '完了');
-  return { ...saved, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
+  return { ...saved, circleAvoidance:plan.circleAvoidanceStatus||null, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
   } finally {
     if(venc&&venc.state!=='closed')try{venc.close();}catch{}
     if(aenc&&aenc.state!=='closed')try{aenc.close();}catch{}
@@ -236,8 +239,10 @@ class ZipWriter {
     return new Blob([...this.parts, ...this.central, end.buffer], { type: 'application/zip' });
   }
 }
-J.exportPNGZip = async ({ plan, project, transparent, onProgress, signal, every = 1 }) => {
+J.exportPNGZip = async ({ plan, project, transparent, onProgress, onWarning, signal, every = 1 }) => {
   J.assertPlanOutputSupported(plan);
+  if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){await J.ensureFonts(project.lyrics,J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
+  if(plan.circleAvoidanceStatus?.status==='partial')onWarning?.(plan.circleAvoidanceStatus);
   if (J.pauseAllVideos) J.pauseAllVideos();
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
@@ -247,6 +252,7 @@ J.exportPNGZip = async ({ plan, project, transparent, onProgress, signal, every 
   const R = new J.Renderer();
   const fps = plan.fps, total = Math.max(1, Math.round(plan.duration * fps));
   const zip = new ZipWriter();
+  if(plan.circleAvoidanceStatus?.status==='partial')zip.add('circle-avoidance.json',new TextEncoder().encode(JSON.stringify(plan.circleAvoidanceStatus)));
   const scale = w / plan.W;
   for (let i = 0; i < total; i += every) {
     if (signal && signal.aborted) throw new Error('キャンセルしました');
@@ -257,7 +263,7 @@ J.exportPNGZip = async ({ plan, project, transparent, onProgress, signal, every 
     onProgress && onProgress(i / total, `PNG ${i + 1}/${total}`);
   }
   onProgress && onProgress(1, '完了');
-  return zip.finish();
+  const blob=zip.finish();blob.circleAvoidance=plan.circleAvoidanceStatus||null;return blob;
 };
 
 /* ---------- plan JSON for the After Effects panel ---------- */
@@ -276,9 +282,12 @@ J.AE_MAP = {
 // picks the closest counterpart itself (from the exported metadata / J.AE_MAP) for anything it lacks.
 J.planForAE = (plan, project) => {
   J.assertPlanOutputSupported(plan);
+
   const clean = JSON.parse(JSON.stringify(plan, (k, v) => (k === 'energy' || k === 'buffer' || k === 'peaks' ? undefined : v)));
   if(plan.layerVisibility?.lyrics===false){clean.cuts=[];clean.lines=[];clean.events=[];clean.retainedCutIndices=[];clean.hud=false;}
   for(const layer of ['foreground','media'])if(plan.layerVisibility?.[layer]===false && clean[layer])clean[layer].cuts=[];
+  const unsupportedAvoidance=plan.cuts.filter(c=>J.placement.simpleCircle?.targets(plan,c)).map(c=>c.index);
+  if(unsupportedAvoidance.length)clean.circleAvoidanceExport={status:'not-applied',cuts:unsupportedAvoidance,message:'Circle avoidance placement is not included in AE output; native AE composition is preserved.'};
   clean.version = 2;
   clean.width = J.outputSize(project)[0]; clean.height = J.outputSize(project)[1];
   clean.extra = project.extra === true; clean.wa = project.wa !== false;

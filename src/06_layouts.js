@@ -16,6 +16,10 @@ J.mainDraw = (env, it) => {
   }
   if(env.placementEnvelope){it.seed=it.seed??J.h(env.cut.seed,(it.mi|0)+1,7);if(env.cut.treat&&J.TREAT?.[env.cut.treat]&&!it.plain)J.TREAT[env.cut.treat].apply(env,it,env.cut.treatP||{});return J.drawFx(env,it);}
 
+  const prepared=J.animateMainItem(env,it);return prepared?J.drawFx(env,prepared):null;
+};
+// Reuse the native animation state when positioning unchanged source decorations.
+J.animateMainItem = (env,it) => {
   const cut = env.cut;
   it.seed = it.seed != null ? it.seed : J.h(cut.seed, (it.mi | 0) + 1, 7);
   it.charFns = []; it.pieceFns = [];
@@ -53,7 +57,7 @@ J.mainDraw = (env, it) => {
     };
     for (const key of ['charFn', 'pieceFn']) if (it[key]) { const fn = it[key]; it[key] = (...args) => damp(fn(...args)); }
   }
-  return J.drawFx(env, it);
+  return it;
 };
 
 /* draw an item honouring bands / clip / streak / echo / wipe-bar / cursor / treatment hooks */
@@ -144,15 +148,27 @@ const fontsOf = (st, roles) => { const f = roles.flatMap(r => st.fonts[r] || [])
 J.glyphCount = glyphCount; J.fontsOf = fontsOf; J.unionBB = unionBB;
 J.centerBB = (env, bb) => bb || { x0: env.W * 0.35, x1: env.W * 0.65, y0: env.H * 0.4, y1: env.H * 0.6, cx: env.W / 2, cy: env.H / 2, boxes: [] };
 
+// Shared native main-item construction; avoidance reuses typography without recording a draw.
+J.basicMainItem = (env) => {
+ const {W,H,sc}=env,P=env.cut.params;
+ if(env.cut.layout==='center'){
+  const text=J.splitLines(env.cut.text,W<H?5:11),size=Math.min(J.fitSize(text,P.font,W*.84,H*.5,{sx:P.sx,track:P.track,lead:1.2}),H*.33);
+  return {text,font:P.font,size,x:W/2+P.ox*W,y:H/2+P.oy*H,sx:P.sx,track:P.track,lead:1.2,color:P.accent?sc.accent:sc.fg};
+ }
+ const text=env.cut.text.replace(/\s+/g,''),n=glyphCount(text),per=Math.max(2,Math.min(P.perCol+1,Math.ceil(n/Math.ceil(n/7)))),colsArr=[],arr=[...text];
+ for(let i=0;i<arr.length;i+=per)colsArr.push(arr.slice(i,i+per).join(''));
+ const size=Math.min(H*.78/(per*1.03),W*.8/(colsArr.length*1.4)),colH=per*size*1.03;
+ return {text:colsArr.join('\n'),font:P.font,size,x:W/2,y:H/2-colH/2,vertical:true,lead:1.4,align:'left',track:.03,color:sc.fg};
+};
+
 J.LAYOUTS = {
   /* ------------------------------------------------ */
   center: {
     name: '中央', fits: n => true,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, rng.chance(0.7) ? ['display'] : ['serif'])), sx: rng.pick([1, 1, 1, 1.25, 1.45, 0.78]), track: rng.range(0.02, 0.14), sub: rng.chance(0.45), under: rng.chance(0.3), accent: rng.chance(0.18), ox: rng.range(-0.05, 0.05), oy: rng.range(-0.06, 0.06) }),
     render(env) {
-      const { W, H, sc } = env, P = env.cut.params, text = J.splitLines(env.cut.text, W < H ? 5 : 11);
-      const size = Math.min(J.fitSize(text, P.font, W * 0.84, H * 0.5, { sx: P.sx, track: P.track, lead: 1.2 }), H * 0.33);
-      const bb = J.mainDraw(env, { text, font: P.font, size, x: W / 2 + P.ox * W, y: H / 2 + P.oy * H, sx: P.sx, track: P.track, lead: 1.2, color: P.accent ? sc.accent : sc.fg });
+      const {W,H,sc}=env,P=env.cut.params,item=J.basicMainItem(env),size=item.size;
+      const bb=J.mainDraw(env,item);
       if (bb && P.sub && env.cut.lineText !== env.cut.text) {
         env.draw({ text: env.cut.lineText, font: env.st.fonts.body[0], size: J.clamp(H * 0.026, 16, 34), x: W / 2 + P.ox * W, y: bb.y1 + H * 0.07, track: 0.22, color: sc.sub, alpha: E.outCubic(env.pIn), ghost: false });
       }
@@ -226,13 +242,7 @@ J.LAYOUTS = {
         }
         return bb;
       }
-      const per = Math.max(2, Math.min(P.perCol + 1, Math.ceil(n / Math.ceil(n / 7))));
-      const colsArr = []; const arr = [...text];
-      for (let i = 0; i < arr.length; i += per) colsArr.push(arr.slice(i, i + per).join(''));
-      const t2 = colsArr.join('\n');
-      const size = Math.min(H * 0.78 / (per * 1.03), W * 0.8 / (colsArr.length * 1.4));
-      const colH = per * size * 1.03;
-      return J.mainDraw(env, { text: t2, font: P.font, size, x: W / 2, y: H / 2 - colH / 2, vertical: true, lead: 1.4, align: 'left', track: 0.03, color: sc.fg });
+      return J.mainDraw(env,J.basicMainItem(env));
     },
   },
 

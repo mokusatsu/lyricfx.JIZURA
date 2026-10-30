@@ -3184,6 +3184,10 @@ J.mainDraw = (env, it) => {
   }
   if(env.placementEnvelope){it.seed=it.seed??J.h(env.cut.seed,(it.mi|0)+1,7);if(env.cut.treat&&J.TREAT?.[env.cut.treat]&&!it.plain)J.TREAT[env.cut.treat].apply(env,it,env.cut.treatP||{});return J.drawFx(env,it);}
 
+  const prepared=J.animateMainItem(env,it);return prepared?J.drawFx(env,prepared):null;
+};
+// Reuse the native animation state when positioning unchanged source decorations.
+J.animateMainItem = (env,it) => {
   const cut = env.cut;
   it.seed = it.seed != null ? it.seed : J.h(cut.seed, (it.mi | 0) + 1, 7);
   it.charFns = []; it.pieceFns = [];
@@ -3221,7 +3225,7 @@ J.mainDraw = (env, it) => {
     };
     for (const key of ['charFn', 'pieceFn']) if (it[key]) { const fn = it[key]; it[key] = (...args) => damp(fn(...args)); }
   }
-  return J.drawFx(env, it);
+  return it;
 };
 
 /* draw an item honouring bands / clip / streak / echo / wipe-bar / cursor / treatment hooks */
@@ -3312,15 +3316,27 @@ const fontsOf = (st, roles) => { const f = roles.flatMap(r => st.fonts[r] || [])
 J.glyphCount = glyphCount; J.fontsOf = fontsOf; J.unionBB = unionBB;
 J.centerBB = (env, bb) => bb || { x0: env.W * 0.35, x1: env.W * 0.65, y0: env.H * 0.4, y1: env.H * 0.6, cx: env.W / 2, cy: env.H / 2, boxes: [] };
 
+// Shared native main-item construction; avoidance reuses typography without recording a draw.
+J.basicMainItem = (env) => {
+ const {W,H,sc}=env,P=env.cut.params;
+ if(env.cut.layout==='center'){
+  const text=J.splitLines(env.cut.text,W<H?5:11),size=Math.min(J.fitSize(text,P.font,W*.84,H*.5,{sx:P.sx,track:P.track,lead:1.2}),H*.33);
+  return {text,font:P.font,size,x:W/2+P.ox*W,y:H/2+P.oy*H,sx:P.sx,track:P.track,lead:1.2,color:P.accent?sc.accent:sc.fg};
+ }
+ const text=env.cut.text.replace(/\s+/g,''),n=glyphCount(text),per=Math.max(2,Math.min(P.perCol+1,Math.ceil(n/Math.ceil(n/7)))),colsArr=[],arr=[...text];
+ for(let i=0;i<arr.length;i+=per)colsArr.push(arr.slice(i,i+per).join(''));
+ const size=Math.min(H*.78/(per*1.03),W*.8/(colsArr.length*1.4)),colH=per*size*1.03;
+ return {text:colsArr.join('\n'),font:P.font,size,x:W/2,y:H/2-colH/2,vertical:true,lead:1.4,align:'left',track:.03,color:sc.fg};
+};
+
 J.LAYOUTS = {
   /* ------------------------------------------------ */
   center: {
     name: '中央', fits: n => true,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, rng.chance(0.7) ? ['display'] : ['serif'])), sx: rng.pick([1, 1, 1, 1.25, 1.45, 0.78]), track: rng.range(0.02, 0.14), sub: rng.chance(0.45), under: rng.chance(0.3), accent: rng.chance(0.18), ox: rng.range(-0.05, 0.05), oy: rng.range(-0.06, 0.06) }),
     render(env) {
-      const { W, H, sc } = env, P = env.cut.params, text = J.splitLines(env.cut.text, W < H ? 5 : 11);
-      const size = Math.min(J.fitSize(text, P.font, W * 0.84, H * 0.5, { sx: P.sx, track: P.track, lead: 1.2 }), H * 0.33);
-      const bb = J.mainDraw(env, { text, font: P.font, size, x: W / 2 + P.ox * W, y: H / 2 + P.oy * H, sx: P.sx, track: P.track, lead: 1.2, color: P.accent ? sc.accent : sc.fg });
+      const {W,H,sc}=env,P=env.cut.params,item=J.basicMainItem(env),size=item.size;
+      const bb=J.mainDraw(env,item);
       if (bb && P.sub && env.cut.lineText !== env.cut.text) {
         env.draw({ text: env.cut.lineText, font: env.st.fonts.body[0], size: J.clamp(H * 0.026, 16, 34), x: W / 2 + P.ox * W, y: bb.y1 + H * 0.07, track: 0.22, color: sc.sub, alpha: E.outCubic(env.pIn), ghost: false });
       }
@@ -3394,13 +3410,7 @@ J.LAYOUTS = {
         }
         return bb;
       }
-      const per = Math.max(2, Math.min(P.perCol + 1, Math.ceil(n / Math.ceil(n / 7))));
-      const colsArr = []; const arr = [...text];
-      for (let i = 0; i < arr.length; i += per) colsArr.push(arr.slice(i, i + per).join(''));
-      const t2 = colsArr.join('\n');
-      const size = Math.min(H * 0.78 / (per * 1.03), W * 0.8 / (colsArr.length * 1.4));
-      const colH = per * size * 1.03;
-      return J.mainDraw(env, { text: t2, font: P.font, size, x: W / 2, y: H / 2 - colH / 2, vertical: true, lead: 1.4, align: 'left', track: 0.03, color: sc.fg });
+      return J.mainDraw(env,J.basicMainItem(env));
     },
   },
 
@@ -10335,6 +10345,7 @@ class Renderer {
           env = this.makeEnv(X, plan, cut, csc, envOptions);
         }
         const blend = P.pass !== 'main' && J.lum(csc.bg) > .55 ? 'multiply' : 'source-over';
+        if(cut.simpleCircleRecipe)J.placement.simpleCircle.drawDecor(this,X,plan,cut,csc,envOptions,{x:shx+P.off[0],y:shy+P.off[1],blend},'back');
         X.save();
         const area = cut.fullStagePlacement ? null : cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
         const contentW = env.W, contentH = env.H;
@@ -10369,8 +10380,10 @@ class Renderer {
           // native drawCut body is L.render plus its catch. Dispatch the same
           // source directly so an admitted source failure propagates explicitly.
           bulbs80Hooks.paint(Object.freeze({renderer:this,env}));
-        } else if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
+        } else if(cut.simpleCircleRecipe)J.LAYOUTS[cut.layout].render(env);
+        else if (cut.fullStagePlacement) J.placement.render(this, env); else this.drawCut(env);
         X.restore();
+        if(cut.simpleCircleRecipe)J.placement.simpleCircle.drawDecor(this,X,plan,cut,csc,envOptions,{x:shx+P.off[0],y:shy+P.off[1],blend},'front');
         if (sourceMask) J.applyMaskToCanvas(X.canvas, mask, contentMatrix, contentW, contentH, { cut, t: tp, plan });
         if (X !== target) {
           target.save(); target.setTransform(1, 0, 0, 1, 0, 0); target.globalAlpha = 1; target.globalCompositeOperation = blend;
@@ -15130,6 +15143,7 @@ J.beatGrid = (bpm, offset, duration) => {
 // This proved bulbs route currently publishes only to the main preview.
 // Keep this preflight shared by UI, MCP, CEP and direct render-export callers.
 J.assertPlanOutputSupported = plan => {
+
  if(plan?.layerVisibility?.lyrics!==false&&J.placement?.dominoUIBoundary82ao?.targetsPreview(plan))throw Object.assign(Error(J.mediaLabel('ドミノの回避配置は現在メインプレビューのみ対応しています。画像・動画・After Effects用の出力にはまだ対応していません。','Domino avoidance currently supports the main preview only. Image, video and After Effects output are not yet supported.')),{code:'DOMINO_UI_OUTPUT_UNSUPPORTED'});
   if(plan?.layerVisibility?.lyrics!==false&&J.placement?.burstUIBoundary83be?.targetsPreview(plan))throw Object.assign(new Error(J.mediaLabel('ドカンの回避配置は現在メインプレビューのみ対応しています。画像・動画・After Effects用の出力にはまだ対応していません。','Burst avoidance currently supports the main preview only. Image, video and After Effects output are not yet supported.')),{code:'BURST_UI_OUTPUT_UNSUPPORTED'});
   if (plan?.layerVisibility?.lyrics !== false && J.placement?.bulbsFrameController80?.targetsPreview(plan)) throw Object.assign(new Error(J.mediaLabel(
@@ -15245,10 +15259,12 @@ J.createMP4Output = fileStream => {
     async abort(){parts=[];await queue;if(fileStream)try{await fileStream.abort();}catch{}}
   };
 };
-J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, signal, fileStream, short }) => {
+J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, onWarning, signal, fileStream, short }) => {
   J.assertPlanOutputSupported(plan);
-  if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
+  if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){await J.ensureFonts(project.lyrics,J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
+  if(plan.circleAvoidanceStatus?.status==='partial')onWarning?.(plan.circleAvoidanceStatus);
+  if (J.pauseAllVideos) J.pauseAllVideos();
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
@@ -15323,7 +15339,7 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   if(signal?.aborted)throw new Error('Canceled');
   const saved=await output.finish();completed=true;
   onProgress && onProgress(1, 'Done');
-  return { ...saved, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
+  return { ...saved, circleAvoidance:plan.circleAvoidanceStatus||null, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
   } finally {
     if(venc&&venc.state!=='closed')try{venc.close();}catch{}
     if(aenc&&aenc.state!=='closed')try{aenc.close();}catch{}
@@ -15358,8 +15374,10 @@ class ZipWriter {
     return new Blob([...this.parts, ...this.central, end.buffer], { type: 'application/zip' });
   }
 }
-J.exportPNGZip = async ({ plan, project, transparent, onProgress, signal, every = 1 }) => {
+J.exportPNGZip = async ({ plan, project, transparent, onProgress, onWarning, signal, every = 1 }) => {
   J.assertPlanOutputSupported(plan);
+  if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){await J.ensureFonts(project.lyrics,J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
+  if(plan.circleAvoidanceStatus?.status==='partial')onWarning?.(plan.circleAvoidanceStatus);
   if (J.pauseAllVideos) J.pauseAllVideos();
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
@@ -15369,6 +15387,7 @@ J.exportPNGZip = async ({ plan, project, transparent, onProgress, signal, every 
   const R = new J.Renderer();
   const fps = plan.fps, total = Math.max(1, Math.round(plan.duration * fps));
   const zip = new ZipWriter();
+  if(plan.circleAvoidanceStatus?.status==='partial')zip.add('circle-avoidance.json',new TextEncoder().encode(JSON.stringify(plan.circleAvoidanceStatus)));
   const scale = w / plan.W;
   for (let i = 0; i < total; i += every) {
     if (signal && signal.aborted) throw new Error('Canceled');
@@ -15379,7 +15398,7 @@ J.exportPNGZip = async ({ plan, project, transparent, onProgress, signal, every 
     onProgress && onProgress(i / total, `PNG ${i + 1}/${total}`);
   }
   onProgress && onProgress(1, 'Done');
-  return zip.finish();
+  const blob=zip.finish();blob.circleAvoidance=plan.circleAvoidanceStatus||null;return blob;
 };
 
 /* ---------- plan JSON for the After Effects panel ---------- */
@@ -15398,9 +15417,12 @@ J.AE_MAP = {
 // picks the closest counterpart itself (from the exported metadata / J.AE_MAP) for anything it lacks.
 J.planForAE = (plan, project) => {
   J.assertPlanOutputSupported(plan);
+
   const clean = JSON.parse(JSON.stringify(plan, (k, v) => (k === 'energy' || k === 'buffer' || k === 'peaks' ? undefined : v)));
   if(plan.layerVisibility?.lyrics===false){clean.cuts=[];clean.lines=[];clean.events=[];clean.retainedCutIndices=[];clean.hud=false;}
   for(const layer of ['foreground','media'])if(plan.layerVisibility?.[layer]===false && clean[layer])clean[layer].cuts=[];
+  const unsupportedAvoidance=plan.cuts.filter(c=>J.placement.simpleCircle?.targets(plan,c)).map(c=>c.index);
+  if(unsupportedAvoidance.length)clean.circleAvoidanceExport={status:'not-applied',cuts:unsupportedAvoidance,message:'Circle avoidance placement is not included in AE output; native AE composition is preserved.'};
   clean.version = 2;
   clean.width = J.outputSize(project)[0]; clean.height = J.outputSize(project)[1];
   clean.extra = project.extra === true; clean.wa = project.wa !== false;
@@ -50580,6 +50602,106 @@ Object.defineProperty(A,'dominoUIBoundary82ao',{value:Object.freeze({targetsCut,
 
 J.requireDominoProof82ao();
 
+/* Small center / split-column composition path. No frame atlas or ownership model. */
+(() => {
+'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],policy='direction-region-arrangement-20261030';
+const sourceCuts=new WeakMap();
+const intervals=(plan,cut)=>{const h=J.stepDur(plan.fx,plan.fps),start=Math.min(cut.start,cut.renderStart??cut.start)-h,end=Math.max(cut.end,cut.displayEnd??cut.end)+.6+2*h+1.6/24+.07;return {start,end,regions:(plan.lyricAvoidanceIndex?.regions||[]).filter((r,i)=>r.start<end&&Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration)>start)};};
+const targets=(plan,cut)=>plan.layerVisibility?.lyrics!==false&&['center','vcols'].includes(cut.layout)&&!(cut.layout==='vcols'&&cut.params.variant==='repeat')&&(sourceCuts.get(plan)?.has(cut.index)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
+const activeCut=(plan,c,t)=>{const r=intervals(plan,c);return targets(plan,c)&&t>=r.start&&t<r.end;};
+const active=(plan,t)=>plan?.cuts.some(c=>activeCut(plan,c,t));
+const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];
+// One engineering support policy: six standard deviations, plus raster/resampling guard.
+// shadow sigma=shadowBlur/2; successive filters/shadows add their support widths.
+const SUPPORT_SIGMA=6,MAX_GLYPHS=256,MAX_PAINTS=8192;
+function localEnvelope(item,cut){
+ const n=J.layoutText(item).length;if(n>MAX_GLYPHS)throw Object.assign(Error('Glyph budget'),{code:'UNSUPPORTED_GLYPH_BUDGET'});
+ const paints=3*(8*n+16);if(paints>MAX_PAINTS)throw Object.assign(Error('Paint budget'),{code:'UNSUPPORTED_PAINT_BUDGET'});
+ const inkBleed=cut.enter==='inkBleed',magnet=cut.enter==='magnet',exit=cut.exit==='overexposeOut',flash=cut.hold==='flashBox',z=item.size,rest={...item,x:0,y:0},box=J.itemBox(rest),points=[],steady=[],light=[];
+ const glyphScale=(inkBleed?1.023:1)*(magnet?1.14:1)*(flash?1.05:1),travel=magnet?z*2.8:0;
+ for(const k of exit?[1,1.07]:[1])for(const track of exit?[item.track||0,(item.track||0)+.06]:[item.track||0]){
+  const it={...rest,_m:null,_lay:null,size:z*k,track,x:box.cx*(1-k),y:box.cy*(1-k)},lay=J.layoutText(it),geometry=A.itemGeometry(it,ID,{pass:'main',scale:1});
+  for(const g of geometry.glyphs){const p=g.polygon,b=A.bounds([p]),glyph=lay[g.index],cx=it.x+(glyph.x+glyph.vx)*(it.sx||1),cy=it.y+(glyph.y+glyph.vy)*(it.sy||1),rx=Math.max(Math.abs(b.x0-cx),Math.abs(b.x1-cx))*glyphScale,ry=Math.max(Math.abs(b.y0-cy),Math.abs(b.y1-cy))*glyphScale,r=magnet?Math.hypot(rx,ry):null;points.push(...rectangle({x0:cx-(r??rx)-travel,y0:cy-(r??ry)-travel,x1:cx+(r??rx)+travel,y1:cy+(r??ry)+travel}));const ss=flash?1.05:1,ex=Math.max(Math.abs(b.x0-cx),Math.abs(b.x1-cx))*ss,ey=Math.max(Math.abs(b.y0-cy),Math.abs(b.y1-cy))*ss;steady.push(...rectangle({x0:cx-ex,y0:cy-ey,x1:cx+ex,y1:cy+ey}));}
+  if(flash)for(const g of lay){const cx=it.x+(g.x+g.vx)*(it.sx||1),cy=it.y+(g.y+g.vy)*(it.sy||1),w=(it.vertical?it.size*(it.sx||1):g.w*(it.sx||1))*1.224,h=(it.vertical?g.h*(it.sy||1):it.size*(it.sy||1))*1.224;light.push(...rectangle({x0:cx-w/2,y0:cy-h/2,x1:cx+w/2,y1:cy+h/2}));}
+  if(exit){const b=J.itemBox(it),w=b.w*3.06;light.push(...rectangle({x0:b.cx-w/2,y0:it.y-z*.09,x1:b.cx+w/2,y1:it.y+z*.09}));}
+ }
+ const b=A.bounds([points]),filter=inkBleed?Math.min(36,z*.16):0,shadow=Math.max(inkBleed?z*.3:0,exit?z*.9:0),d=cut.treat==='hardShadow'?z*1.07*cut.treatP.d:0,ox=d*Math.abs(cut.treatP?.dir?.[0]||0),oy=d*Math.abs(cut.treatP?.dir?.[1]||0);
+ // This deliberately adds filter and shadow tails, including enter/exit overlap.
+ const separated=(cut.inDur??0)+(cut.outDur??0)<=cut.dur,entryTail=filter+(inkBleed?z*.3/2:0),exitTail=exit?z*.9/2:0,blurPad=SUPPORT_SIGMA*(separated?Math.max(entryTail,exitTail):filter+shadow/2),pad=(blurPad+2)/Math.min(1,cut.contentScale??1);
+ const entryBox=A.bounds([points]),exitBox=A.bounds([steady]),entryPad=(SUPPORT_SIGMA*entryTail+2)/Math.min(1,cut.contentScale??1),exitPad=(SUPPORT_SIGMA*exitTail+2)/Math.min(1,cut.contentScale??1),expand=(b,p)=>rectangle({x0:b.x0-p-ox,y0:b.y0-p-oy,x1:b.x1+p+ox,y1:b.y1+p+oy}),glyphBounds=separated?[expand(entryBox,entryPad),expand(exitBox,exitPad)]:[expand(b,pad)],bounds=A.bounds([...glyphBounds,...(light.length?[light]:[])]);const body=A.bounds(A.itemGeometry(rest,ID,{pass:'main',scale:1}).polygons),bodyPad=flash?z*.06:0;return {bounds,body:{x0:body.x0-bodyPad,y0:body.y0-bodyPad,x1:body.x1+bodyPad,y1:body.y1+bodyPad},paintBudget:paints,blurPad,glyphs:n};
+}
+function stageEnvelope(local,item,plan,cut,bodyOnly=false){
+ const scale=local.renderScale,fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style,W=plan.W,H=plan.H,K=J.clamp((fx.motion??.7)*1.25,0,1.25),motion=cut.motionScale??1,base=cut.contentScale??1,P=cut.camP||{},camScale=cut.cam==='dollyIn'?Math.min(.14,(P.a||.1)*K):cut.cam==='beatPunch'?(P.a||.035)*K:.03*Math.max(1,K),maxScale=1+camScale;
+ const points=[],b=bodyOnly?local.body:local.bounds;for(const x of [b.x0+item.x,b.x1+item.x])for(const y of [b.y0+item.y,b.y1+item.y])for(const scale of [base,base*maxScale])points.push([W/2+(x-W/2)*scale,H/2+(y-H/2)*scale]);
+ const box=A.bounds([points]),chroma=(fx.chroma??.7)*(st.ghost??1)*(1+(plan.events||[]).filter(e=>e.type==='chroma').reduce((a,e)=>a+e.amp,0)+.9),shake=(plan.events||[]).filter(e=>e.type==='shake').reduce((a,e)=>a+e.amp,0),rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0),turn=cut.cam==='dutch'?Math.max(...points.map(p=>Math.hypot(p[0]-W/2,p[1]-H/2)))*2*Math.sin(2.5*J.DEG):0;
+ if(bodyOnly){const dx=2/scale+turn+(cut.cam==='panL'||cut.cam==='panR'?W*Math.abs(P.a||.022)*K*motion:0)+16*shake*H/1080*motion,dy=2/scale+turn+11*shake*H/1080*motion+(cut.cam==='dollyIn'?H*.008*K:cut.cam==='beatPunch'?H*.004*K:0);return rectangle({x0:box.x0-dx,y0:box.y0-dy,x1:box.x1+dx,y1:box.y1+dy});}
+ const cw=Math.round(W*scale),sw=Math.max(1,Math.round(cw/4)),upscale=cw/sw,rasterPad=2/scale,resamplePad=2*upscale/scale;
+ const dx=rasterPad+turn+(3.4*chroma+16*shake)*H/1080*motion+W*.016*rgb+resamplePad+(cut.cam==='panL'||cut.cam==='panR'?W*Math.abs(P.a||.022)*K*motion:0),dy=rasterPad+turn+(1.9*chroma+11*shake)*H/1080*motion+H*.004*rgb+resamplePad+(cut.cam==='dollyIn'?H*.008*K:cut.cam==='beatPunch'?H*.004*K:0);
+ // Existing quarter-size post bloom: sigma is max(2,round(width/4/160))*4.
+ const bloom=SUPPORT_SIGMA*Math.max(2,Math.round(sw/160))*upscale/scale;
+ return rectangle({x0:box.x0-dx-bloom,y0:box.y0-dy-bloom,x1:box.x1+dx+bloom,y1:box.y1+dy+bloom});
+}
+function prepare(plan,previous=null,{scale=1}={}){
+ if(!Number.isFinite(scale)||scale<=0||scale>4)throw Object.assign(Error('Positive render scale through4 required'),{code:'UNSUPPORTED_RENDER_SCALE'});
+ const started=performance.now(),cuts=plan.cuts.map(c=>({...c})),diagnostics=[];
+ for(const cut of cuts){const original=plan.cuts.find(c=>c.index===cut.index);if(!targets(plan,original))continue;
+  let reason=null;
+  const fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style;
+  const numeric=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fx.motion??.7,fx.chroma??.7,st.ghost??1,cut.camP?.a??0,cut.camP?.dir??1,cut.treatP?.d??0,...(cut.treatP?.dir||[]),...Object.values(cut.params).filter(v=>typeof v==='number')];if(!numeric.every(Number.isFinite)||plan.W<=0||plan.H<=0||(cut.contentScale??1)<=0||(cut.motionScale??1)<0||(cut.motionScale??1)>1||(fx.motion??.7)<0||(fx.motion??.7)>1||(fx.chroma??.7)<0||(st.ghost??1)<0||cut.text.length===0||(cut.camP?.a??0)<0||Math.abs(cut.camP?.dir??1)>1||(cut.treatP?.d??0)<0)reason='UNSUPPORTED_PARAMETER_RANGE';
+  if(!['cut','flicker','inkBleed','magnet'].includes(cut.enter)||!['cut','overexposeOut'].includes(cut.exit)||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)||!['none','hardShadow'].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!['verticalStrip','dataColumns','sonarArcs'].includes(d.id))||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam))reason='UNSUPPORTED_MOTION';
+  if((plan.events||[]).some(e=>!['chroma','shake','rgbSplit'].includes(e.type))||cut.trans&&cut.trans!=='none')reason='UNSUPPORTED_EFFECT';
+  if(cut.layout==='center'&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text))reason='UNSUPPORTED_AUXILIARY';
+  const regions=intervals(plan,original).regions;
+  if(regions.length!==1)reason='UNSUPPORTED_REGION_CHANGE';
+  if(reason){diagnostics.push({cut:cut.index,status:'unsupported',reason});continue;}
+  const area=cut.area,W0=area?plan.W*area.w:plan.W,H0=area?plan.H*area.h:plan.H;
+  const native=J.basicMainItem({W:W0,H:H0,cut,sc:cut.palette||st.schemes[cut.scheme%st.schemes.length]});
+  const r=regions[0],circle={cx:r.center.x*plan.W,cy:r.center.y*plan.H,r:r.radius*Math.min(plan.W,plan.H)},W=plan.W,H=plan.H,pad=Math.max(2,.005*Math.min(W,H))+1,dx=2*circle.cx/W-1,dy=2*circle.cy/H-1;
+  const regionsByDirection=[{direction:'down',score:-dy,x0:0,y0:circle.cy+circle.r+pad,x1:W,y1:H},{direction:'up',score:dy,x0:0,y0:0,x1:W,y1:circle.cy-circle.r-pad},{direction:'right',score:-dx,x0:circle.cx+circle.r+pad,y0:0,x1:W,y1:H},{direction:'left',score:dx,x0:0,y0:0,x1:circle.cx-circle.r-pad,y1:H}];
+  const source=cut.layout==='vcols'?cut.text.split('\n').map(s=>s.replace(/\s+/g,'')).join('\n'):cut.text,explicit=source.includes('\n'),chars=[...source],n=chars.length;
+  const candidates=[];let measured=0;const old=previous?.policy===policy?previous.diagnostics.find(d=>d.cut===cut.index&&d.status==='safe'):null;
+  const advance=Math.max(...chars.filter(c=>c!=='\n').map(c=>J.metrics.adv(native.font,c)*native.size))+native.size*Math.max(0,native.track||0),step=native.size*(native.vertical?native.lead||1.4:native.lead||1.2);
+  for(const region of regionsByDirection){if(region.x0>=region.x1||region.y0>=region.y1)continue;
+   const ratio=(region.x1-region.x0)/(region.y1-region.y0),ideal=native.vertical?Math.sqrt(n*step/(native.size*ratio)):Math.sqrt(n*step*ratio/Math.max(1,advance)),perValues=explicit?[null]:[Math.max(1,Math.min(n,Math.floor(ideal))),Math.max(1,Math.min(n,Math.ceil(ideal))),Math.max(...native.text.split('\n').map(s=>[...s].length))];
+   for(const per of new Set(perValues)){
+    let text=source;if(!explicit){const rows=[];for(let i=0;i<n;i+=per)rows.push(chars.slice(i,i+per).join(''));text=rows.join('\n');}
+    const item={...native,text,x:0,y:0};delete item._lay;delete item._m;
+    const local={...localEnvelope(item,cut),renderScale:scale},b=local.bounds,cx=(b.x0+b.x1)/2,cy=(b.y0+b.y1)/2;
+    const next={...item,x:(region.x0+region.x1)/2-cx,y:(region.y0+region.y1)/2-cy};let envelope=stageEnvelope(local,next,plan,cut),box=A.bounds([envelope]);
+    // Correct the center once for camera scaling about the stage center.
+    next.x+=((region.x0+region.x1-box.x0-box.x1)/2)/(cut.contentScale??1);next.y+=((region.y0+region.y1-box.y0-box.y1)/2)/(cut.contentScale??1);envelope=stageEnvelope(local,next,plan,cut);box=A.bounds([envelope]);measured++;
+    // Canvas already clips effect tails at its bitmap edges. Keep the readable
+    // body inside; constrain only the circle-facing edge of each free region.
+    const shiftX=region.x0>0?Math.max(0,region.x0-box.x0):region.x1<W?-Math.max(0,box.x1-region.x1):0,shiftY=region.y0>0?Math.max(0,region.y0-box.y0):region.y1<H?-Math.max(0,box.y1-region.y1):0;
+    next.x+=shiftX/(cut.contentScale??1);next.y+=shiftY/(cut.contentScale??1);envelope=stageEnvelope(local,next,plan,cut);box=A.bounds([envelope]);
+    const body=A.bounds([stageEnvelope(local,next,plan,cut,true)]);if(body.x0<0||body.x1>W||body.y0<0||body.y1>H)continue;
+    box={x0:Math.max(0,box.x0),y0:Math.max(0,box.y0),x1:Math.min(W,box.x1),y1:Math.min(H,box.y1)};if(box.x0>=box.x1||box.y0>=box.y1)continue;envelope=rectangle(box);
+    if(box.x0<region.x0||box.x1>region.x1||box.y0<region.y0||box.y1>region.y1||!A.clear([envelope],circle,pad))continue;
+    candidates.push({item:next,local,envelope,region,direction:region.direction,score:region.score,fitness:Math.abs(Math.log(((b.x1-b.x0)/(b.y1-b.y0))/ratio)),distance:Math.hypot((next.x-native.x)/W,(next.y-native.y)/H)});
+   }
+  }
+  candidates.sort((a,b)=>b.score-a.score||a.fitness-b.fitness||a.distance-b.distance||Number(b.direction===old?.direction)-Number(a.direction===old?.direction));
+  let winner=candidates[0];if(winner&&old&&old.direction===winner.direction&&old.text===winner.item.text){const prior=previous.plan.cuts.find(c=>c.index===cut.index)?.simpleCircleRecipe?.item;if(prior){const item={...winner.item,x:prior.x,y:prior.y},raw=A.bounds([stageEnvelope(winner.local,item,plan,cut)]),body=A.bounds([stageEnvelope(winner.local,item,plan,cut,true)]),envelope=rectangle({x0:Math.max(0,raw.x0),y0:Math.max(0,raw.y0),x1:Math.min(W,raw.x1),y1:Math.min(H,raw.y1)});if(body.x0>=0&&body.x1<=W&&body.y0>=0&&body.y1<=H&&envelope[0][0]>=winner.region.x0&&envelope[1][0]<=winner.region.x1&&envelope[0][1]>=winner.region.y0&&envelope[2][1]<=winner.region.y1&&A.clear([envelope],circle,pad))winner={...winner,item,envelope,reusedPosition:true};}}
+  if(!winner){diagnostics.push({cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_ARRANGEMENT',candidates:measured,nativeSize:native.size});continue;}
+  cut.area=null;cut.simpleCircleRecipe={item:winner.item,sourceCut:original,renderScale:scale,policy};
+  diagnostics.push({cut:cut.index,status:'safe',direction:winner.direction,region:winner.region,envelope:winner.envelope,text:winner.item.text,size:winner.item.size,candidates:measured,score:winner.score,fitness:winner.fitness,distance:winner.distance,reusedPosition:!!winner.reusedPosition,paintBudget:winner.local.paintBudget,blurPad:winner.local.blurPad});
+ }
+ const resultPlan={...plan,cuts};sourceCuts.set(resultPlan,new Set(cuts.filter(c=>c.simpleCircleRecipe).map(c=>c.index)));return {plan:resultPlan,diagnostics,revision:J.metrics.revision||0,elapsedMs:performance.now()-started,renderScale:scale,policy};
+}
+function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
+ const source=cut.simpleCircleRecipe.sourceCut,env=renderer.makeEnv(ctx,plan,source,sc,options),area=source.area,W=env.W,H=env.H,ax=area?area.x*plan.W:0,ay=area?area.y*plan.H:0,motion=source.motionScale??1,cam=J.CAMERA[source.cam].get(env,source.camP||{}),scale=J.lerp(1,cam.s??1,motion)*(source.contentScale??1);
+ ctx.save();try{if(area){ctx.translate(ax+W/2,ay+H/2);ctx.rotate((area.angle||0)*J.DEG);ctx.translate(-ax-W/2,-ay-H/2);ctx.beginPath();ctx.rect(ax,ay,W,H);ctx.clip();}ctx.translate(ax+W/2+(root.x+(cam.x||0))*motion,ay+H/2+(root.y+(cam.y||0))*motion);if(cam.rot)ctx.rotate(cam.rot*J.DEG*motion);ctx.scale(scale,scale);ctx.translate(-W/2,-H/2);ctx.globalCompositeOperation=root.blend;
+  const item=J.animateMainItem(env,J.basicMainItem(env));let bb=null;
+  if(item){const lay=J.layoutText(item),boxes=[];for(const g of lay){if(!g.ch.trim())continue;const c=item.charFn?.(g.i,g,lay.N);if(c?.hide||(item.alpha??1)*(c?.a??1)<=.002)continue;const k=c?.s??1;boxes.push({x:(g.x+g.vx)*(item.sx||1)+(c?.dx||0),y:(g.y+g.vy)*(item.sy||1)+(c?.dy||0),w:g.w*(item.sx||1)*k,h:g.h*(item.sy||1)*k});}if(boxes.length)bb={x0:item.x+Math.min(...boxes.map(b=>b.x-b.w/2)),x1:item.x+Math.max(...boxes.map(b=>b.x+b.w/2)),y0:item.y+Math.min(...boxes.map(b=>b.y-b.h/2)),y1:item.y+Math.max(...boxes.map(b=>b.y+b.h/2)),cx:item.x,cy:item.y,boxes};}
+  for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,bb,d);}
+ }finally{ctx.restore();}
+}
+function outputPlan(plan,{scale=1}={}){if(!plan.cuts.some(c=>targets(plan,c)))return plan;const prepared=prepare(plan,null,{scale}),failed=prepared.diagnostics.find(d=>d.status==='insufficient-space');if(failed)throw Object.assign(Error(J.mediaLabel('この条件では回避配置を出力できません。円の位置・サイズや演出を変更してください。','Avoidance cannot be exported for these conditions. Change the circle position, size or effects.')),{code:'SIMPLE_CIRCLE_'+failed.status.toUpperCase().replaceAll('-','_'),details:failed});const unsupported=prepared.diagnostics.filter(d=>d.status==='unsupported');prepared.plan.circleAvoidanceStatus={status:unsupported.length?'partial':'applied',unsupportedCuts:unsupported.map(d=>d.cut),diagnostics:prepared.diagnostics};return prepared.plan;}
+A.simpleCircle=Object.freeze({targets,active,activeCut,prepare,drawDecor,outputPlan,policy});
+for(const name of ['center','vcols']){const render=J.LAYOUTS[name].render;J.LAYOUTS[name].render=function(env){const recipe=env.cut.simpleCircleRecipe;if(!recipe)return render(env);return J.mainDraw(env,{...recipe.item,color:env.cut.params.accent?env.sc.accent:env.sc.fg});};}
+})();
+
 /* English labels are applied after all expression packs register, before the editor starts.
    Internal IDs and project JSON remain language independent. */
 (() => {
@@ -50848,6 +50970,22 @@ const ICON = {
 };
 
 const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
+
+const simpleCircle=J.placement.simpleCircle;
+let simpleGeneration=0,simplePrepared=null,simplePrevious=null,simplePending=false,simpleError=null,simpleDirty=false;
+const simpleMessage=document.createElement('div');simpleMessage.id='simpleCircleStatus';simpleMessage.className='bulbs-preparation';simpleMessage.hidden=true;simpleMessage.setAttribute('role','status');$('viewport').appendChild(simpleMessage);
+function invalidateSimpleCircle(dirty=simpleDirty){simpleDirty=dirty;simpleGeneration++;if(simplePrepared)simplePrevious=simplePrepared;simplePrepared=null;simplePending=false;simpleError=null;simpleMessage.hidden=true;}
+function beginSimpleCircle(){
+ if(simpleDirty||simplePending||simplePrepared||simpleError)return;simplePending=true;const generation=simpleGeneration,plan=S.plan;
+ bulbsFontQueue86ci.run(()=>generation===simpleGeneration,async()=>{await ensureFonts();await J.ensureFonts(S.project.lyrics,J.fontsOfPlan(plan));await document.fonts.ready;if(generation!==simpleGeneration||S.plan!==plan)return;simplePrepared=simpleCircle.prepare(plan,simplePrevious,{scale:$('view').width/plan.W});}).catch(e=>{if(generation===simpleGeneration)simpleError=e.code||'UNSUPPORTED_MEASUREMENT';}).finally(()=>{if(generation===simpleGeneration){simplePending=false;S.need=true;}});
+}
+function drawSimpleCircle(ctx,renderer,fast){
+ if(simplePrepared&&simplePrepared.revision!==(J.metrics.revision||0))invalidateSimpleCircle();beginSimpleCircle();
+ const active=diagnostic=>S.plan.cuts.some(c=>c.index===diagnostic.cut&&simpleCircle.activeCut(S.plan,c,S.t)),insufficient=simplePrepared?.diagnostics.find(d=>d.status==='insufficient-space'&&active(d)),unsupported=simpleError||simplePrepared?.diagnostics.find(d=>d.status==='unsupported'&&active(d));
+ if(simpleDirty||!simplePrepared&&!simpleError||insufficient){simpleMessage.hidden=false;simpleMessage.textContent=simpleDirty||simplePending?J.mediaLabel('回避配置をPreparing…','Preparing avoidance…'):J.mediaLabel('この条件では回避配置の余白が足りません。円の位置 · 大きさを変更してください。','There is not enough room for avoidance. Change the circle position or size.');clearBulbsView86ci(ctx);return;}
+ simpleMessage.hidden=!unsupported;if(unsupported)simpleMessage.textContent=J.mediaLabel('円回避未対応 · 元の配置','Circle avoidance unsupported · original placement');
+ renderer.frame(ctx,simplePrepared?.plan||S.plan,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false});
+}
 
 let bulbsReplanning86ci=false,bulbsState86ci=null,bulbsFontReady86co=null;
 // Serialize generation font phases, including already-started UI/font-thumbnail requests.
@@ -51174,6 +51312,7 @@ function composePlan(project) {
   return plan;
 }
 function replan() {
+  invalidateSimpleCircle(false);
   bulbsSession86ci.invalidate('replan');burstSession83be.invalidate('replan');dominoSession82ao.invalidate('replan');bulbsReplanning86ci=true;try{
   closeTimelineCutMenu();
   S.plan = composePlan(S.project);
@@ -51216,7 +51355,7 @@ function warm() {
   idle(step);
 }
 let replanTimer = 0;
-const replanSoon = (ms = 220) => { bulbsSession86ci.invalidate('debounce');burstSession83be.invalidate('debounce');dominoSession82ao.invalidate('debounce'); clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
+const replanSoon = (ms = 220) => { invalidateSimpleCircle(true); bulbsSession86ci.invalidate('debounce');burstSession83be.invalidate('debounce');dominoSession82ao.invalidate('debounce'); clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
 let fontKey = '';
 let thumbFonts = null;
 async function ensureFonts() {
@@ -51264,7 +51403,7 @@ function sizeViewport() {
   if (cssH > maxH) { cssH = maxH; cssW = cssH * ar; }
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const pw = Math.round(Math.min(S.plan.W, cssW * dpr)), ph = Math.round(pw / ar);
-  if(c.width!==pw||c.height!==ph){bulbsSession86ci.invalidate('viewport');burstSession83be.invalidate('viewport');dominoSession82ao.invalidate('viewport');c.width=pw;c.height=ph;if(!bulbsReplanning86ci)beginPlacementSessions83be();}
+  if(c.width!==pw||c.height!==ph){bulbsSession86ci.invalidate('viewport');burstSession83be.invalidate('viewport');dominoSession82ao.invalidate('viewport');invalidateSimpleCircle();c.width=pw;c.height=ph;if(!bulbsReplanning86ci)beginPlacementSessions83be();}
   c.style.width = cssW + 'px'; c.style.height = cssH + 'px';
   positionAreaEditor();
   if(S.tap)$('tapPanel').style.top=(vp.offsetTop+vp.offsetHeight+6)+'px';
@@ -51276,6 +51415,8 @@ function syncMainMediaPreview() {
   if(!$('cutDetailsDialog')?.open&&!$('effectFavoritesDialog')?.open&&!($('exportDlg')?.open&&S.exportKind==='short'))J.syncMediaPreview(S.plan,S.t,S.playing);
 }
 function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
+  simpleMessage.hidden=true;
+  if(!S.areaEdit&&simpleCircle.active(S.plan,S.t)){if(renderer!==S.renderer||ctx.canvas!==$('view')){const outputPlan=simpleCircle.outputPlan(S.plan,{scale:ctx.canvas.width/S.plan.W});if(outputPlan.circleAvoidanceStatus?.status==='partial')toast(J.mediaLabel('円回避未対応のEffectsは元の配置で出力します。','Unsupported effects are exported in their original placement.'));renderer.frame(ctx,outputPlan,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false});return;}drawSimpleCircle(ctx,renderer,fast);return;}
   if(dominoTarget82ao(S.plan)&&(renderer!==S.renderer||ctx.canvas!==$('view')))throw dominoError82ao('output');
   if(dominoState82ao)showDominoState82ao(dominoState82ao);
   if(dominoBoundary82ao.targetsFrame(S.plan,S.t)){
@@ -54643,7 +54784,9 @@ async function runExport(kind) {
   const settingsInputs = [...$('exportSettings').querySelectorAll('input,select'),...$('shortExportOptions').querySelectorAll('input,select,button'),$('exportFilename')].map(el=>[el,el.disabled]);
   settingsInputs.forEach(([el])=>{el.disabled=true;}); $('btnCloseExport').disabled = true;
   const boxes = [...document.querySelectorAll('.exp-box')];
-  const setText = m => boxes.forEach(b => { b.querySelector('.exp-text').textContent = m; });
+  let circleWarning='';
+  const setText = m => boxes.forEach(b => { b.querySelector('.exp-text').textContent = m+(circleWarning?' '+circleWarning:''); });
+  const onWarning=()=>{circleWarning=J.mediaLabel('円回避未対応のEffectsは元の配置で出力','Unsupported effects keep their original placement');toast(circleWarning);};
   const txt = { set textContent(m) { setText(m); }, get textContent() { return boxes[0].querySelector('.exp-text').textContent; } };
   boxes.forEach(b => { b.hidden = false; b.querySelector('.exp-bar').style.width = '0%'; });
   setText('Preparing…');
@@ -54665,13 +54808,13 @@ async function runExport(kind) {
     }
     await J.ensureFonts(S.project.lyrics + (S.project.title || '') + (S.project.artist || '') + HUD_CHARS + J.drawingText(S.plan), J.fontsOfPlan(S.plan));
     if (mp4) {
-      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream,short:kind==='short'?{...S.project.shortExport}:null });
+      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, onWarning, signal: ac.signal, fileStream,short:kind==='short'?{...S.project.shortExport}:null });
       fileStream=null;
       txt.textContent = `Done: ${(r.size / 1048576).toFixed(1)}MB · ${r.codec}${r.audio ? ' + ' + r.audio.toUpperCase() : ''} · ${((performance.now() - t0) / 1000).toFixed(0)}s`;
       const res = r.saved?'saved':await J.saveFile(filename, r.blob);
       if (res === 'declined') txt.textContent += ' (save canceled)';
     } else {
-      const blob = await J.exportPNGZip({ plan: S.plan, project: S.project, transparent: kind === 'pnga', onProgress, signal: ac.signal });
+      const blob = await J.exportPNGZip({ plan: S.plan, project: S.project, transparent: kind === 'pnga', onProgress, onWarning, signal: ac.signal });
       txt.textContent = `Done: ${(blob.size / 1048576).toFixed(1)}MB`;
       await J.saveFile(filename, blob);
     }
@@ -55329,6 +55472,7 @@ function bind() {
     screenshot.disabled=true;
     try{
       J.assertPlanOutputSupported(S.plan);
+      if(S.plan.cuts.some(c=>simpleCircle.targets(S.plan,c))){await ensureFonts();await document.fonts.ready;}
       const filename=J.exportFilename(`${baseName()}_preview_${S.t.toFixed(3).replace('.','-')}`,'.png');
       const [w,h]=J.outputSize(S.project),canvas=document.createElement('canvas');
       canvas.width=w;canvas.height=h;
@@ -55686,6 +55830,7 @@ function bind() {
   $('btnAE').addEventListener('click', async () => {
     try{J.assertPlanOutputSupported(S.plan)}catch(err){toast(err.message);return;}
     if (S.projectBusy || S.exporting) return;
+    if(S.plan.cuts.some(c=>simpleCircle.targets(S.plan,c)))toast(J.mediaLabel('AE出力には円回避配置が反映されません。','Circle avoidance placement is not included in AE output.'));
     if(!confirmHiddenLayers())return;
     const filename = (await requestFilename('ae'))?.filename; if (!filename) return;
     try { await J.saveFile(filename, JSON.stringify(J.planForAE(S.plan, S.project), null, 1)); }
@@ -55903,7 +56048,7 @@ J.uiAudio = AP;
 J.addMediaFiles = addMediaFiles;
 J.activeMediaLayer = activeMediaLayer;
 // hooks for hosts that embed the app (the After Effects CEP panel)
-J.uiApi = { dominoSessionState82ao:dominoSession82ao.state, burstSessionState83be:burstSession83be.state, bulbsSessionState86ci:bulbsSession86ci.state, toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
+J.uiApi = { simpleCircleState:()=>({dirty:simpleDirty,pending:simplePending,error:simpleError,prepared:simplePrepared&&{diagnostics:simplePrepared.diagnostics,elapsedMs:simplePrepared.elapsedMs,revision:simplePrepared.revision}}), dominoSessionState82ao:dominoSession82ao.state, burstSessionState83be:burstSession83be.state, bulbsSessionState86ci:bulbsSession86ci.state, toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
   openProjectFile, replaceProject, ensureFonts, splitMediaCut, insertLyricAtPlayhead,
   removeLyricCut, removeMediaCut, connectTimelineBoundaries,
   boundaryGroupLimits, commitTimelineBoundary, addMediaFiles, activeMediaLayer };
