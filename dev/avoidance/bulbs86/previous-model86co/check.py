@@ -70,5 +70,5 @@ for text in ['for(const entry of model.schedule)','for(const s of template.suppo
 final=B/'bulbs-previous-model86co-sourceprep04-final/pins.json'
 if final.exists():
  for p in load(final):
-  data=Path(p['path']).read_bytes();assert len(data)==p['bytes']and digest(data)==p['sha256'],('final source differs',p['path'])
-print(json.dumps({'passed':True,'finalPins':len(load(final))if final.exists()else None,'scope':'sidecar numeric evidence only; warm reuse, full aggregate circle evaluation, original cold candidate fallback, unchanged semantic model/proof/frame at fallback, revision/font/viewport rejection and old authority release; no cold performance acceptance or all-input claim','runs':summaries},indent=2))
+  verify_pin(p)
+print(json.dumps({'passed':True,'finalPins':len(load(final))if final.exists()else None,'historicalFinalSnapshot':True,'scope':'historical86co sidecar numeric evidence only, including original final review snapshot; not current product qualification; warm reuse, full aggregate circle evaluation, original cold candidate fallback, unchanged semantic model/proof/frame at fallback, revision/font/viewport rejection and old authority release; no cold performance acceptance or all-input claim','runs':summaries},indent=2))

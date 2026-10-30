@@ -3,6 +3,14 @@ from pathlib import Path
 import json,gzip,hashlib,sys
 B=Path(sys.argv[1]).resolve();U=Path(__file__).resolve().parent;R=U.parents[3];Q=U.parent/'previous-model82aq';sha=lambda b:hashlib.sha256(b).hexdigest()
 maps=[p for m in B.glob('domino-product-reuse82ar-sourceprep*/pins.json')for p in json.loads(m.read_text())]
+# The AR product assertions are historical after later bulbs integration.
+# Execution pins below still resolve their own exact bytes independently.
+historical=B/'bulbs-product-reuse86cp-before/pins.json'
+productSnapshots={p['path']:p for p in json.loads(historical.read_text())}if historical.exists()else{}
+def productBytes(p):
+ saved=productSnapshots.get(str(p))
+ if not saved:return p.read_bytes()
+ b=Path(saved['snapshot']).read_bytes();assert len(b)==saved['bytes']and sha(b)==saved['sha256'];return b
 def pin(p):
  b=Path(p['path']).read_bytes()
  if len(b)==p['bytes']and sha(b)==p['sha256']:return False
@@ -39,13 +47,13 @@ routing=data['02'];assert routing['centerInactive']and [c['kind']for c in routin
 for c in routing['cases']:assert c['preserved']and c['finalHash']==c['uiHash']and c['activeBitmapUnchanged']and c['code']and c['areaOpened']and c['detailOpened']
 before=json.loads((B/'domino-product-reuse-routing-before82ar02.json').read_text());assert before=={'manualTimeNeeds':True,'activeTimeNeeds':True}
 # Four frozen AQ modules are exact. Controller differs only in the reviewed routing predicate.
-core=(R/'src/11zz13_domino_core82.js').read_text();ui=(R/'src/12_ui.js').read_text()
+core=productBytes(R/'src/11zz13_domino_core82.js').decode();ui=productBytes(R/'src/12_ui.js').decode()
 for name in ['model82aq.js','owner82aq.js','runtime82aq.js','session82aq.js']:assert core.count((Q/name).read_text())==1,name
 old="||planBinding?.needs(plan)||Object.hasOwn(opt,'dominoFrameTicket')";new="||(plan.cuts||[]).some(c=>c.layout==='dominoes'&&c.placementTrajectory?.sourceAdapter===ADAPTER_ID)||Object.hasOwn(opt,'dominoFrameTicket')";controller=(Q/'controller82aq.js').read_text();assert controller.count(old)==1 and core.count(controller.replace(old,new))==1
 assert ui.count((Q/'font-phase.js').read_text())==1 and ui.count((Q/'font-wait-method.js').read_text().rstrip())==1
 baseline=json.loads((B/'domino-product-ui82ao-before-performance82ap/pins.json').read_text());changed=[]
 for p in baseline:
- b=Path(p['path']).read_bytes()
+ b=productBytes(Path(p['path']))
  if sha(b)!=p['sha256']:changed.append(Path(p['path']).relative_to(R).as_posix())
  v=Path(p['snapshot']).read_bytes();assert len(v)==p['bytes']and sha(v)==p['sha256']
 assert sorted(changed)==['en/index.html','index.html','src/11zz13_domino_core82.js','src/12_ui.js']
@@ -54,4 +62,4 @@ for signature in ['J.exportMP4 = async','J.exportPNGZip = async','J.planForAE ='
  a=export.index(signature);z=export.index('\n',a);assert export[z+1:].lstrip().startswith('J.assertPlanOutputSupported(plan);')
 for p in maps:
  b=Path(p['snapshot']).read_bytes();assert len(b)==p['bytes']and sha(b)==p['sha256']
-print(json.dumps({'checked':True,'runs':runs,'productTimings':[{'label':c['label'],'wallMs':c['wallMs'],'maxStepMs':c['state']['maxStepMs'],'nativeSamples':c['nativeSamples'],'shiftedSamples':c['shiftedSamples']}for c in cases],'AQResultsMatch':True,'oldAuthorityRefused':4,'outputEntrypointsRefused':4,'otherEffectsAndCenterPassed':True,'mixedPreservedLegacyCases':2,'finalPrivateResourcesZero':True,'changedFromPreservedAO':changed,'coldLimitation':'AQ cold17838.7ms/max1157ms remains unresolved; current product cold6888.9ms/max157.3ms is a separate single observation'},indent=2))
+print(json.dumps({'checked':True,'historicalProductSnapshots':bool(productSnapshots),'runs':runs,'productTimings':[{'label':c['label'],'wallMs':c['wallMs'],'maxStepMs':c['state']['maxStepMs'],'nativeSamples':c['nativeSamples'],'shiftedSamples':c['shiftedSamples']}for c in cases],'AQResultsMatch':True,'oldAuthorityRefused':4,'outputEntrypointsRefused':4,'otherEffectsAndCenterPassed':True,'mixedPreservedLegacyCases':2,'finalPrivateResourcesZero':True,'changedFromPreservedAO':changed,'coldLimitation':'AQ cold17838.7ms/max1157ms remains unresolved; AR product cold6888.9ms/max157.3ms is a separate historical single observation'},indent=2))
