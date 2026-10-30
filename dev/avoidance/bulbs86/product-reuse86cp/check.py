@@ -1,9 +1,15 @@
-"""Current product86cp and explicitly historical evidence; no Qt/media/network."""
+"""Historical86cp product evidence and explicit source snapshots; no Qt/media/network."""
 from pathlib import Path
 from fractions import Fraction as F
 import sys,json,gzip,hashlib
 B=Path(sys.argv[1]).resolve();U=Path(__file__).resolve().parent;R=U.parents[3];Q=U.parent/'previous-model86co';sha=lambda b:hashlib.sha256(b).hexdigest();load=lambda p:json.loads(p.read_text())
 maps=[p for pattern in ['bulbs-product-reuse86cp-sourceprep*/pins.json','bulbs-previous-model86co-sourceprep*/pins.json','burst-product-ui83be-sourceprep*/pins.json','domino-product-reuse82ar-sourceprep*/pins.json']for m in B.glob(pattern)for p in load(m)]
+historical=B/'burst-product-reuse83bg-before/pins.json'
+productSnapshots={p['path']:p for p in load(historical)}if historical.exists()else{}
+def productBytes(p):
+ saved=productSnapshots.get(str(p))
+ if not saved:return p.read_bytes()
+ b=Path(saved['snapshot']).read_bytes();assert len(b)==saved['bytes']and sha(b)==saved['sha256'];return b
 def pin(p):
  b=Path(p['path']).read_bytes()
  if len(b)==p['bytes']and sha(b)==p['sha256']:return False
@@ -56,19 +62,19 @@ mixed=second['mixed'];assert len(mixed['editors'])==4 and mixed['otherPart']=={'
 assert [r['kind']for r in mixed['preservedOnly']]==['line-lock','emphasis','manual','notation','disabled','hidden']and all(not r['state']['active']and r['screenshotCanvasControls']==1 for r in mixed['preservedOnly'])
 for r in mixed['cuts']:
  if r['line']in [1,2,3,4]:assert r['preserved']and not r['target']
-# Current product is exactly the reviewed module set, including final cold release.
-for target,source in load(U/'module-map.json'):assert (R/'src'/target).read_bytes()==(Q/source).read_bytes(),target
+# Historical86cp product is the reviewed module set, including final cold release.
+for target,source in load(U/'module-map.json'):assert productBytes(R/'src'/target)==(Q/source).read_bytes(),target
 baseline=load(B/'bulbs-product-reuse86cp-before/pins.json')
 for p in baseline:
  b=Path(p['snapshot']).read_bytes();assert len(b)==p['bytes']and sha(b)==p['sha256']
 oldPins=load(B/'bulbs-previous-model-source86co-new05/pins.json');changed=[]
 for p in oldPins:
  path=Path(p['path'])
- if path.parent==R/'src'and sha(path.read_bytes())!=p['sha256']:changed.append(path.name)
+ if path.parent==R/'src'and sha(productBytes(path))!=p['sha256']:changed.append(path.name)
 assert sorted(changed)==sorted(t for t,_ in load(U/'module-map.json'))
 prior=(B/'bulbs-previous-model86co-sourceprep03/adapter86co.js').read_text();now=(R/'src/11zz10_bulbs_adapter80.js').read_text();line="if(current.job.state().phase!=='reusing')issuer.clearPrevious();";assert now==prior.replace("current.phase='preparing';issuer.checkBudget(0);",line+"current.phase='preparing';issuer.checkBudget(0);")
 final=B/'bulbs-product-reuse86cp-sourceprep03-final/pins.json'
 if final.exists():
  for p in load(final):
-  b=Path(p['path']).read_bytes();assert len(b)==p['bytes']and sha(b)==p['sha256']
-print(json.dumps({'passed':True,'runs':[run1,run2],'currentProductTimings':[{'label':r['label'],'wallMs':r['wallMs'],'maxStepMs':r['state']['maxStepMs'],'compiles':r['compiles'],'steps':r['state']['stepCount'],'geometryCalls':r['geometryCalls'],'evaluatedSupports':r['evaluatedSupports']}for r in cases],'scope':'current product warm/cold/fallback and existing proof/bitmap equality; saved input unsupported preserved; output/cancel/effects/mixed routing; inherited font/viewport evidence remains explicitly historical and source-identical except exercised cold-release line','oldColdOutliersUnresolved':True,'newLyricsInputUnsupported':True,'finalPins':len(load(final))if final.exists()else None},indent=2))
+  pin(p)
+print(json.dumps({'passed':True,'historicalProductSnapshots':bool(productSnapshots),'runs':[run1,run2],'recordedProductTimings':[{'label':r['label'],'wallMs':r['wallMs'],'maxStepMs':r['state']['maxStepMs'],'compiles':r['compiles'],'steps':r['state']['stepCount'],'geometryCalls':r['geometryCalls'],'evaluatedSupports':r['evaluatedSupports']}for r in cases],'scope':'historical86cp product warm/cold/fallback and proof/bitmap evidence, including original final review; not qualification of later products; saved input unsupported preserved; output/cancel/effects/mixed routing; inherited font/viewport evidence remains historical','oldColdOutliersUnresolved':True,'newLyricsInputUnsupported':True,'finalPins':len(load(final))if final.exists()else None},indent=2))

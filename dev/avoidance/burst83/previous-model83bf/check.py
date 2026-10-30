@@ -52,16 +52,19 @@ resize=records['new04']['cases'][1];assert resize['label']=='viewport-change'and
 last=records['new05'];assert len(last['cases'])==1 and last['cases'][0]['viewport']==[640,360]and last['cases'][0]['modelHash']==resize['modelHash']and last['cases'][0]['frameHash']==resize['frameHash']
 glyph=last['glyphFont'];assert glyph['effective']=='gothic_bold'and glyph['state']['phase']=='unsupported'and glyph['state']['error']=='BURST83N_PARAMS'and glyph['clear']and glyph['resources']['owner']['models']==glyph['resources']['owner']['cachedBytes']==0
 cancel=last['cancelled'];assert cancel['clear']and cancel['state']['phase']=='cancelled'and cancel['state']['stepCount']>=2;res=cancel['resources'];assert res['owner']['models']==res['owner']['cachedBytes']==res['formal']['bindings']==res['formal']['certificates']==0 and not res['owner']['preparing']
-# No renderer/compiler/replay/clock/math change: only four product owner/session
-# fragments and one UI font entry are proposed. This is still source-only.
-core=(R/'src/11zz12_burst_core83.js').read_text();markers=load(U/'module-markers.json');current=[core[core.index(markers[i]):core.index(markers[i+1])]for i in range(4)];proposal=[(U/n).read_text()for n in ['owner83bf.js','handoff83bf.js','runtime83bf.js','session83bf.js']]
-assert all(a!=b for a,b in zip(current,proposal))and (R/'src/12_ui.js').read_bytes()!=(U/'ui83bf.js').read_bytes()
+# Compare the proposal with its original product baseline, including after a
+# later product applies it. This checker qualifies historical83bf, not that product.
+final=B/'burst-previous-model83bf-sourceprep06-final/pins.json'
+baseline={p['path']:p for p in load(final)}if final.exists()else{}
+corePath=Path(baseline[str(R/'src/11zz12_burst_core83.js')]['snapshot'])if baseline else R/'src/11zz12_burst_core83.js'
+uiPath=Path(baseline[str(R/'src/12_ui.js')]['snapshot'])if baseline else R/'src/12_ui.js'
+core=corePath.read_text();markers=load(U/'module-markers.json');current=[core[core.index(markers[i]):core.index(markers[i+1])]for i in range(4)];proposal=[(U/n).read_text()for n in ['owner83bf.js','handoff83bf.js','runtime83bf.js','session83bf.js']]
+assert all(a!=b for a,b in zip(current,proposal))and uiPath.read_bytes()!=(U/'ui83bf.js').read_bytes()
 assert 'for(const state of clocks.states)'in core and 'counts.own===clocks.actualCounts.selectedPasses&&counts.zeroReplayOwn===counts.own'in core
 owner=proposal[0]
 for s in ["same83bf=state==='same'","if(!same83bf){","if(previous83bfAttempt&&!evaluation.passed)","proof.checkedSupports===model.counts.supports","matches(previous83bf.dep,dep)","if(cached&&proofReservation>8388608)"]:
  assert s in owner,s
-final=B/'burst-previous-model83bf-sourceprep06-final/pins.json'
 if final.exists():
  for p in load(final):
-  b=Path(p['path']).read_bytes();assert len(b)==p['bytes']and sha(b)==p['sha256']
-print(json.dumps({'passed':True,'runs':runs,'sameInputSkipsCompileAndReplay':True,'circleKeepsExactOriginalReplay':True,'oldNewDifferentValidClearCirclePositionExplicit':True,'coldStillUnresolved':True,'actualFontFaceReplacementNotTested':True,'sourceOnlyNotProductApplied':True,'finalPins':len(load(final))if final.exists()else None},indent=2))
+  pin(p)
+print(json.dumps({'passed':True,'historicalSourceBaseline':bool(baseline),'scope':'historical83bf source-only experiment and original final snapshot; not qualification of later products','runs':runs,'sameInputSkipsCompileAndReplay':True,'circleKeepsExactOriginalReplay':True,'oldNewDifferentValidClearCirclePositionExplicit':True,'coldStillUnresolved':True,'actualFontFaceReplacementNotTested':True,'currentProductDiffersFromHistoricalBaseline':(R/'src/11zz12_burst_core83.js').read_bytes()!=corePath.read_bytes(),'finalPins':len(load(final))if final.exists()else None},indent=2))

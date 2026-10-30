@@ -1,0 +1,11 @@
+from pathlib import Path
+import sys,subprocess,json,hashlib
+R=Path(sys.argv[1]).resolve();D=Path(sys.argv[2]).resolve();U=Path(__file__).resolve().parent;Q=U.parent/'previous-model83bf'
+subprocess.run([sys.executable,str(Q/'build.py'),str(R),str(D),'new'],check=True)
+def rep(s,a,b):
+ assert s.count(a)==1,(a[:160],s.count(a));return s.replace(a,b)
+browser=(D/'browser-test.js').read_text();browser=browser[:browser.index("try{vp.classList.add('preview-fullscreen')")];browser=rep(browser,'window.previousBurst83bf=', 'window.productReuse83bg=');browser=rep(browser,'const record={mode,cases:[],stale:[]};', 'const record={mode,cases:[],stale:[],cancels:[]};window.observeBurstCancel83bf=s=>{if(s)record.cancels.push(s)};')
+mixed=(U.parent/'product-ui83be/mixed-suffix-test.js').read_text().replace('window.productUI83be=', 'window.mixedProduct83bg=',1);mixed=mixed.replace('actual83be09 normal480 complete prefix, source target correction active, identical07 RGBA; no new model preparation','current83bg same-process main prefix; no additional normal preparation');mixed=mixed.replace('protected formal/runtime/published paths unchanged by routing fix (pure30), genuine old token refusal retained in07; no fabricated raw authority imported','current83bg main captures genuine private old authority and refuses it before bitmap changes; mixed active time also refuses')
+browser=mixed+'\n'+browser+(U/'browser-body.js').read_text();(D/'browser-test.js').write_text(browser)
+p=(D/'probe.cjs').read_text();p=rep(p,"await call(page,'previousBurst83bf'","await call(page,'productReuse83bg'");p=rep(p,"stage:'Bulbs dedicated canonical preview one frame and stale sentinel; no ordinary UI qualification'","stage:'Actual product burst warm reuse83bg bounded UI/authority/output/effects/mixed routing; no media'");(D/'probe.cjs').write_text(p)
+pins=json.loads((D/'pins.json').read_text());paths={Path(p['path'])for p in pins}|{p for p in U.iterdir()if p.is_file()}|{p for p in D.iterdir()if p.is_file()and p.name!='pins.json'}|{U.parent/'product-ui83be/mixed-suffix-test.js'};(D/'pins.json').write_text(json.dumps([{'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}for p in sorted(paths)],indent=2)+'\n');print(json.dumps({'producer':True,'pins':len(paths)}))

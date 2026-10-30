@@ -51,7 +51,7 @@ assert s['unsupported']['state']['phase']=='unsupported'and s['unsupported']['cl
 assert records['09']['normal']['state']['ready']and records['09']['normal']['hash']==s['ready'][0]['hash'];p=records['11'];assert [x['kind']for x in p['cases']]==['locked','manual'];assert [x['selectedMode']for x in p['cases']]==['auto','manual'];assert all(x['runtimeDiagnostic']and x['finalLegacyDrawn']and x['activeCode']=='BULBS80T_OWNED_PLAN_REQUIRED'and x['activeBitmapUnchanged']and x['selectedPreserved']and not x['frameTarget']and x['areaOpened']for x in p['cases']);assert not p['center']['state']['active']
 # Only the one target-routing function separates07's product code from09/11/current.
 oldTarget="function target(plan,opt={}){return published.has(plan)||formalBinding83av?.needs(plan)||J.burstFrameTarget83ag(plan,opt)}";newTarget="function target(plan,opt={}){return published.has(plan)||(plan.cuts||[]).some(c=>c.placementTrajectory?.sourceAdapter==='burst_prepared83av')||J.burstFrameTarget83ag(plan,opt)}"
-prior=B/'burst-product-ui83be-sourceprep07';current=(R/'src/11zz12_burst_core83.js').read_text();assert current.replace(newTarget,oldTarget)==(prior/'src/11zz12_burst_core83.js').read_text()
+prior=B/'burst-product-ui83be-sourceprep07';current=product('src/11zz12_burst_core83.js').read_text();assert current.replace(newTarget,oldTarget)==(prior/'src/11zz12_burst_core83.js').read_text()
 for name in ['src/09_render.js','src/09a_placement.js','src/11p_layoutsD.js','src/11_export.js','src/12_ui.js','app/body.html']:
  assert product(name).read_bytes()==(prior/name).read_bytes(),name
 for name in ['index.html','en/index.html']:assert product(name).read_text().replace(newTarget,oldTarget)==(prior/name).read_text()
