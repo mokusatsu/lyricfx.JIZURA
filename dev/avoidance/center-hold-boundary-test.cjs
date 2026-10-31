@@ -36,6 +36,10 @@ for(const layout of ['neon','pill','magazine']){
  near(h.native.start,1.5);cases++;
 }
 {
+ const {plan,cut}=fixture({cam:'jelly'}),h=S.centerHoldInterval(plan,cut);
+ near(h.native.start,1.5);assert.equal(S.prepare(plan).diagnostics[0].safety,'safe-hold');cases++;
+}
+{
  J.LAYOUTS.userRing={custom:true,customDefinition:{base:'ring'},render(){}};
  const {plan,cut}=fixture({layout:'userRing'});
  assert.equal(S.targets(plan,cut),false);assert.equal(S.centerHoldInterval(plan,cut),null);cases++;

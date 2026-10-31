@@ -5,10 +5,13 @@ const A=J.placement,ID=[1,0,0,1,0,0];
 const union=(...bs)=>({x0:Math.min(...bs.map(b=>b.x0)),y0:Math.min(...bs.map(b=>b.y0)),x1:Math.max(...bs.map(b=>b.x1)),y1:Math.max(...bs.map(b=>b.y1))});
 const grow=(b,p)=>({x0:b.x0-p,y0:b.y0-p,x1:b.x1+p,y1:b.y1+p});
 const handles=cut=>cut.layout==='center'&&!cut.area&&['cut','flicker','invertBox'].includes(cut.enter)&&['cut','tyStrike'].includes(cut.exit)&&['still','knCounterRock'].includes(cut.hold)&&['none','hardShadow'].includes(cut.treat||'none');
+// Ruby entrance has no remaining operation once pIn reaches one. ScanBand
+// is certified only in the native hold, including its independent accent bar.
+const holdHandles=cut=>cut.layout==='center'&&!cut.area&&['cut','flicker','invertBox','tyRubyDrop'].includes(cut.enter)&&['cut','tyStrike'].includes(cut.exit)&&['still','knCounterRock','scanBand'].includes(cut.hold)&&(cut.treat||'none')==='none';
 const trigRange=(a,b,lo,hi)=>{const values=[a*Math.cos(lo)+b*Math.sin(lo),a*Math.cos(hi)+b*Math.sin(hi)],root=Math.atan2(b,a);for(let k=-2;k<=2;k++){const t=root+k*Math.PI;if(t>=lo&&t<=hi)values.push(a*Math.cos(t)+b*Math.sin(t));}return [Math.min(...values),Math.max(...values)];};
 function sourceUnits(item,cut,plan,{holdOnly=false}={}){
- if(!handles(cut)||(cut.treat||'none')!=='none')return null;
- const rest={...item,x:0,y:0,_m:null,_lay:null,charFns:[]},lay=J.layoutText(rest),geometry=A.itemGeometry(rest,ID,{pass:'main',scale:1}),m=cut.motionScale??1,units=[],bbs=[];
+ if(!(handles(cut)||holdOnly&&holdHandles(cut))||(cut.treat||'none')!=='none'||(cut.hold==='scanBand'||cut.enter==='tyRubyDrop')&&(!holdOnly||item.vertical||item.rot||item.skew))return null;
+ const rest={...item,x:0,y:0,_m:null,_lay:null,charFns:[]},lay=J.layoutText(rest),geometry=A.itemGeometry(rest,ID,{pass:'main',scale:1}),m=cut.motionScale??1,ruby=cut.enter==='tyRubyDrop',rubyScale=ruby?1-.68*m:1,units=[],bbs=[];
  // itemGeometry omits all trim-whitespace; native returned bb omits only the
  // two source space characters. Keep other whitespace on the full-clip path.
  if(lay.some(g=>!g.ch.trim()&&g.ch!==' '&&g.ch!=='　'))return null;
@@ -25,16 +28,27 @@ function sourceUnits(item,cut,plan,{holdOnly=false}={}){
   // Strike contracts each glyph's local y toward its own baseline before
   // rotation. Include that complete segment even for punctuation whose ink
   // lies wholly on one side of the baseline.
-  const points=[...ink.polygon,...(!holdOnly&&cut.exit==='tyStrike'?ink.polygon.map(([x])=>[x,gy]):[]),[gx,gy]],bounds=[];
+  // A lagged A/B pass may still be in RubyDrop at the main hold boundary.
+  // Include its full .32..1 scale sweep and unrotated upward .8-height
+  // displacement; hidden glyphs also require any-subset attached/decor bb.
+  const points=[...ink.polygon,...(ruby?ink.polygon.map(([x,y])=>[gx+(x-gx)*rubyScale,gy+(y-gy)*rubyScale]):[]),...(!holdOnly&&cut.exit==='tyStrike'?ink.polygon.map(([x])=>[x,gy]):[]),[gx,gy]],bounds=[];
   for(const [x,y]of points){
    if(m===1){const xRange=trigRange(x-px,-(y-py),-angle,angle),yRange=trigRange(y-py,x-px,-angle,angle);bounds.push({x0:px+xRange[0],x1:px+xRange[1],y0:py+yRange[0],y1:py+yRange[1]});}
    else{const xRange=trigRange(x-gx,-(y-gy),-angle*m,angle*m),yRange=trigRange(y-gy,x-gx,-angle*m,angle*m);bounds.push({x0:gx+shiftX[0]+xRange[0],x1:gx+shiftX[1]+xRange[1],y0:gy+shiftY[0]+yRange[0],y1:gy+shiftY[1]+yRange[1]});}
   }
-  const b=union(...bounds);units.push({owner:'center.glyph.'+g.i,kind:'glyph',bounds:{x0:b.x0+item.x,x1:b.x1+item.x,y0:b.y0+item.y,y1:b.y1+item.y}});
+  // Native bands translate only the intersecting stripe. Across the scan's
+  // phase either sign is reachable. motionScale does not damp bands/post.
+  const b=union(...bounds),scan=cut.hold==='scanBand'?item.size*.075*J.clamp(((cut.effectFx||plan.fx).motion??.7)/.7,0,1.6):0;units.push({owner:'center.glyph.'+g.i,kind:'glyph',bounds:{x0:b.x0+item.x-scan,x1:b.x1+item.x+scan,y0:b.y0+item.y-(ruby?g.h*(item.sy||1)*.8*m:0),y1:b.y1+item.y}});
   // Native returned glyph bb ignores character rotation and strike sy shrink.
-  bbs.push({x0:gx+shiftX[0]-g.w*(item.sx||1)/2,x1:gx+shiftX[1]+g.w*(item.sx||1)/2,y0:gy+shiftY[0]-g.h*(item.sy||1)/2,y1:gy+shiftY[1]+g.h*(item.sy||1)/2,leftMax:gx+shiftX[1]-g.w*(item.sx||1)/2,rightMin:gx+shiftX[0]+g.w*(item.sx||1)/2,topMax:gy+shiftY[1]-g.h*(item.sy||1)/2,bottomMin:gy+shiftY[0]+g.h*(item.sy||1)/2});
+  bbs.push({x0:gx+shiftX[0]-g.w*(item.sx||1)/2,x1:gx+shiftX[1]+g.w*(item.sx||1)/2,y0:gy+shiftY[0]-g.h*(item.sy||1)/2-(ruby?g.h*(item.sy||1)*.8*m:0),y1:gy+shiftY[1]+g.h*(item.sy||1)/2,leftMax:gx+shiftX[1]-g.w*(item.sx||1)*rubyScale/2,rightMin:gx+shiftX[0]+g.w*(item.sx||1)*rubyScale/2,topMax:gy+shiftY[1]-g.h*(item.sy||1)*rubyScale/2,bottomMin:gy+shiftY[0]+g.h*(item.sy||1)*rubyScale/2-(ruby?g.h*(item.sy||1)*.8*m:0)});
  }
- const bb=union(...bbs),bottomMin=(holdOnly?Math.max:Math.min)(...bbs.map(b=>b.bottomMin)),add=(owner,b)=>units.push({owner,kind:'attached',bounds:{x0:b.x0+item.x,x1:b.x1+item.x,y0:b.y0+item.y,y1:b.y1+item.y}}),z=item.size;
+ const bb=union(...bbs),bottomMin=(holdOnly&&!ruby?Math.max:Math.min)(...bbs.map(b=>b.bottomMin)),add=(owner,b)=>units.push({owner,kind:'attached',bounds:{x0:b.x0+item.x,x1:b.x1+item.x,y0:b.y0+item.y,y1:b.y1+item.y}}),z=item.size;
+ if(cut.hold==='scanBand'){
+  const b=grow(J.itemBox(rest),z*.1),h=b.y1-b.y0,bh=Math.max(z*.24,h*.12),lw=Math.max(1,z*.012);
+  // v in [0,1): y+bh sweeps from bb.y0 to bb.y1+bh. Native
+  // drawFx returns an unshifted glyph bbox, so decor ranges stay unchanged.
+  add('center.scanBand',{x0:b.x0,x1:b.x1,y0:b.y0-lw,y1:b.y1+bh});
+ }
  if(!holdOnly&&cut.enter==='invertBox')add('center.invertBox',grow(J.itemBox(rest),z*.16));
  if(!holdOnly&&cut.exit==='tyStrike'){
   const lines=new Map();for(const g of lay){if(!g.ch.trim())continue;const b={x0:(g.x-g.w/2)*(item.sx||1),x1:(g.x+g.w/2)*(item.sx||1),y0:g.y*(item.sy||1),y1:g.y*(item.sy||1)};lines.set(g.li,lines.has(g.li)?union(lines.get(g.li),b):b);}
@@ -43,7 +57,7 @@ function sourceUnits(item,cut,plan,{holdOnly=false}={}){
  if(cut.params.under){const lw=Math.max(2,z*.03)/2;add('center.under',{x0:bb.x0-lw,x1:bb.x1+lw,y0:bottomMin+z*.14-lw,y1:bb.y1+z*.14+lw});}
  if(cut.params.sub&&cut.lineText!==cut.text){const st={...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},sub={text:cut.lineText,font:st.fonts.body[0],size:J.clamp(plan.H*.026,16,34),x:0,y:0,track:.22},b=A.bounds(A.itemGeometry(sub,ID,{pass:'main',scale:1}).polygons);add('center.subtitle',{x0:b.x0,x1:b.x1,y0:bottomMin+plan.H*.07+b.y0,y1:bb.y1+plan.H*.07+b.y1});}
  const ranges=full=>({x0:[bb.x0+item.x,(full?Math.min:Math.max)(...bbs.map(b=>b.leftMax))+item.x],x1:[(full?Math.max:Math.min)(...bbs.map(b=>b.rightMin))+item.x,bb.x1+item.x],y0:[bb.y0+item.y,(full?Math.min:Math.max)(...bbs.map(b=>b.topMax))+item.y],y1:[(full?Math.max:Math.min)(...bbs.map(b=>b.bottomMin))+item.y,bb.y1+item.y]});
- return {units,glyphBB:{x0:bb.x0+item.x,x1:bb.x1+item.x,y0:bb.y0+item.y,y1:bb.y1+item.y},bbRanges:ranges(holdOnly),bbRangesAny:ranges(false),scope:holdOnly?'native-hold':'all-native-clocks'};
+ return {units,glyphBB:{x0:bb.x0+item.x,x1:bb.x1+item.x,y0:bb.y0+item.y,y1:bb.y1+item.y},bbRanges:ranges(holdOnly&&!ruby),bbRangesAny:ranges(false),scope:holdOnly?'native-hold':'all-native-clocks'};
 }
 function envelope(item,cut,plan,local){
  if(!handles(cut))return local;
@@ -103,17 +117,25 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
  const native={x0:a.x*W,y0:a.y*H,x1:(a.x+a.w)*W,y1:(a.y+a.h)*H};let local={bounds:native,body:native,renderScale:scale};
  let project=(_local,item,_plan,_cut,bodyOnly)=>{const x=bodyOnly?0:pad+W*.016*rgb+post.x,y=bodyOnly?0:pad+H*.004*rgb+post.y;return [[native.x0+item.x-x,native.y0+item.y-y],[native.x1+item.x+x,native.y0+item.y-y],[native.x1+item.x+x,native.y1+item.y+y],[native.x0+item.x-x,native.y1+item.y+y]];};
  let sourceItem=null,partSupports=null,holdWindow=activeHold;
- const sourceCut=J.lyricRenderCut?.({...cut,area:null})||{...cut,area:null},centerSource=handles(sourceCut)&&['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)&&(cut.decor||[]).every(d=>d.id==='memphis');
+ const sourceCut=J.lyricRenderCut?.({...cut,area:null})||{...cut,area:null},jellyHold=cut.cam==='jelly'&&activeHold&&holdHandles(sourceCut)&&activeHold.native.start-activeHold.step-1.6/24>=cut.start,centerSource=(handles(sourceCut)||activeHold&&holdHandles(sourceCut))&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyHold)&&(cut.decor||[]).every(d=>d.id==='memphis'||activeHold&&d.id==='starburst');
  if(centerSource){
   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},env={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc:cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length]},item=J.basicMainItem(env);
   // Measure the exact native item in its original viewport, including its
   // original subtitle scale, attached rule and native Memphis coordinates.
-  const ink=S.itemEnvelope(item,sourceCut,sourcePlan),absolute=body=>{const b=stageBounds(ink,item,sourcePlan,sourceCut,body);return {x0:b.x0+item.x,y0:b.y0+item.y,x1:b.x1+item.x,y1:b.y1+item.y};};
   holdWindow=activeHold;const holdOnly=!!holdWindow;
-  sourceItem={unitSupport:sourceUnits(item,sourceCut,sourcePlan,{holdOnly})};
-  local={bounds:absolute(false),body:absolute(true),renderScale:scale};
-  project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma});
-  if(sourceItem.unitSupport&&A.memphisUnits){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&sourceCut.exit==='cut'&&sourceCut.outDur>0;let complete=true;for(const d of cut.decor||[]){const parts=A.memphisUnits({W:sw,H:sh,P:d,bbRanges:[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges],includeFallback:!holdOnly||cachedPartial,random:J.r});if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  sourceItem={unitSupport:jellyHold&&(item.shadow||item.blur||item.extrude)?null:sourceUnits(item,sourceCut,sourcePlan,{holdOnly})};
+  if(!handles(sourceCut)){
+   // Hold-only additions must not pass through the older all-clock envelope.
+   // Keep the complete native clip for the coarse candidate; the owned-unit
+   // candidate below also requires every retained native decoration.
+   const b={x0:0,y0:0,x1:sw,y1:sh};
+   local={bounds:b,body:b,renderScale:scale};
+  }else{
+   const ink=S.itemEnvelope(item,sourceCut,sourcePlan),absolute=body=>{const b=stageBounds(ink,item,sourcePlan,sourceCut,body);return {x0:b.x0+item.x,y0:b.y0+item.y,x1:b.x1+item.x,y1:b.y1+item.y};};
+   local={bounds:absolute(false),body:absolute(true),renderScale:scale};
+  }
+  project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma,jellyHoldOnly:!!jellyHold});
+  if(sourceItem.unitSupport){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),bbRanges=[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges];let complete=true;for(const d of cut.decor||[]){const args={W:sw,H:sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges,includeFallback:!holdOnly||cachedPartial,random:J.r},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
  if(!centerSource&&holdWindow&&['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)&&['pill','neon','magazine','type','condensed','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
@@ -121,7 +143,7 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
   if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
  const domain=S.domain(plan,{...cut,simpleCircleClip:true},region,project),candidates=[];
- for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
+ if(!jellyHold&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
  if(!candidates.length&&partSupports){
   const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]],body=union(...partSupports.map(p=>p.body)),xmin=-body.x0,xmax=W-body.x1,ymin=-body.y0,ymax=H-body.y1,c=domain.circle,R=c.r+domain.pad;
   if(xmin<=xmax&&ymin<=ymax){
