@@ -76,9 +76,8 @@ function neonMagazineUnits({W,H,cut,plan,holdOnly=true,holdWindow}){
   }
  }
  for(const d of cut.decor||[])units.push(...A.memphisUnits({W,H,P:d,bbRanges:[bbRanges],includeFallback:partialNeon}));
- // drawCut clips layout and both native decor layers before the post chain.
- const clipped=units.map(u=>({...u,bounds:{x0:Math.max(0,u.bounds.x0),y0:Math.max(0,u.bounds.y0),x1:Math.min(W,u.bounds.x1),y1:Math.min(H,u.bounds.y1)}})).filter(u=>u.bounds.x0<u.bounds.x1&&u.bounds.y0<u.bounds.y1);
- return {units:clipped,bbRanges,glyphBB:union(mainBoxes),scope:'native-hold',sourceConstructionTime:.8,...(partialNeon?{delayedGlyphScope:'all-native-clocks-and-any-visible-subset'}:{})};
+ // The viewport clip is applied after the camera transforms these units.
+ return {units,bbRanges,glyphBB:union(mainBoxes),scope:'native-hold',sourceConstructionTime:.8,...(partialNeon?{delayedGlyphScope:'all-native-clocks-and-any-visible-subset'}:{})};
 }
 A.neonMagazineUnits=neonMagazineUnits;
 })();

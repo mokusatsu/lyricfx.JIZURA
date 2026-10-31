@@ -73,6 +73,11 @@ for(const layout of ['neon','pill','magazine']){
  const {plan,cut}=fixture(),range={start:2,end:3};plan.events=[{type:'zoomPunch',t:1,dur:.2,amp:1},{type:'whipBlur',t:2.2,dur:.2,amp:.5},{type:'heartbeat',t:2.6,dur:.2,amp:1}];
  const p=S.postMotion(plan,1920,1080,1,cut,range);near(p.x,1920*.045*.5+2);near(p.y,1920*.045*.5+2);cases++;
 }
+{
+ const {plan,cut}=fixture(),range={start:2,end:3};plan.events=[{type:'edgeDetect',t:2.2,dur:.2,amp:1}];
+ assert.equal(S.eventPolicy(plan,cut,range).unsupported.length,0);
+ const p=S.postMotion(plan,960,540,1,cut,range);near(p.x,8);near(p.y,8);cases++;
+}
 S.registerProvider('fixed-center-exclusion-test',{ids:['ring'],handles:()=>true,prepare(){throw Error('fixed center must never dispatch');}});
 // Renderer activation lasts at least one output frame, but zoom's k uses
 // max(dur,.001). Tiny durations therefore continue through k>1, reversing

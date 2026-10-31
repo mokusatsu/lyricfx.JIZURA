@@ -46,8 +46,7 @@ function basicUnits({W,H,cut,plan,st,sc,holdOnly=true,holdWindow}){
  const cachedPartial=cut.exit==='cut'&&cut.outDur>0;
  const decorRanges=cachedPartial?Object.fromEntries(['x0','x1','y0','y1'].map(k=>[k,[Math.min(...mains.map(m=>m.bbRangesAny[k][0])),Math.max(...mains.map(m=>m.bbRangesAny[k][1]))]])):ranges;
  for(const d of cut.decor||[]){const parts=A.memphisUnits({W,H,P:d,bbRanges:[decorRanges],includeFallback:cachedPartial});if(!parts?.length)return null;units.push(...parts);}
- const clipped=units.map(u=>({...u,bounds:{x0:Math.max(0,u.bounds.x0),x1:Math.min(W,u.bounds.x1),y0:Math.max(0,u.bounds.y0),y1:Math.min(H,u.bounds.y1)}})).filter(u=>u.bounds.x0<u.bounds.x1&&u.bounds.y0<u.bounds.y1);
- return {units:clipped,bbRanges:ranges,glyphBB:union(mains.map(m=>m.glyphBB)),scope:'native-hold'};
+ return {units,bbRanges:ranges,glyphBB:union(mains.map(m=>m.glyphBB)),scope:'native-hold'};
 }
 A.basicUnits=basicUnits;
 })();
