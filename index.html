@@ -51015,8 +51015,8 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
  const bloomSigma=activeHold?4.5:6,bloom=((plan.style.glow??.6)*.5*(plan.fx.texture??.6)>.05||(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05))?bloomSigma*Math.max(2,Math.round(quarter/160))*up/scale:0,cameraBlur=cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,J.clamp((fx.motion??.7)*1.25,0,1.25))*(cut.motionScale??1):0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((v,e)=>v+J.clamp(e.amp??1,.3,1.6),0),post=S.postMotion(plan,W,H,scale,cut,activeHold?.real),pad=bloom+cameraBlur+(2+2*up)/scale;
  const native={x0:a.x*W,y0:a.y*H,x1:(a.x+a.w)*W,y1:(a.y+a.h)*H};let local={bounds:native,body:native,renderScale:scale};
  let project=(_local,item,_plan,_cut,bodyOnly)=>{const x=bodyOnly?0:pad+W*.016*rgb+post.x,y=bodyOnly?0:pad+H*.004*rgb+post.y;return [[native.x0+item.x-x,native.y0+item.y-y],[native.x1+item.x+x,native.y0+item.y-y],[native.x1+item.x+x,native.y1+item.y+y],[native.x0+item.x-x,native.y1+item.y+y]];};
- let sourceItem=null,partSupports=null,holdWindow=activeHold;
- const sourceCut=J.lyricRenderCut?.({...cut,area:null})||{...cut,area:null},jellyHold=cut.cam==='jelly'&&activeHold&&holdHandles(sourceCut)&&activeHold.native.start-activeHold.step-1.6/24>=cut.start,centerSource=(handles(sourceCut)||activeHold&&holdHandles(sourceCut))&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyHold)&&(cut.decor||[]).every(d=>d.id==='memphis'||activeHold&&d.id==='starburst');
+ let sourceItem=null,partSupports=null,holdWindow=activeHold,usedJellyUnits=false;
+ const sourceCut=J.lyricRenderCut?.({...cut,area:null})||{...cut,area:null},jellyClock=cut.cam==='jelly'&&activeHold&&activeHold.native.start-activeHold.step-1.6/24>=cut.start,jellyHold=jellyClock&&holdHandles(sourceCut),centerSource=(handles(sourceCut)||activeHold&&holdHandles(sourceCut))&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyHold)&&(cut.decor||[]).every(d=>d.id==='memphis'||activeHold&&d.id==='starburst');
  if(centerSource){
   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},env={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc:cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length]},item=J.basicMainItem(env);
   // Measure the exact native item in its original viewport, including its
@@ -51036,13 +51036,13 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
   project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma,jellyHoldOnly:!!jellyHold});
   if(sourceItem.unitSupport){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),bbRanges=[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges];let complete=true;for(const d of cut.decor||[]){const args={W:sw,H:sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges,includeFallback:!holdOnly||cachedPartial,random:J.r},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
- if(!centerSource&&holdWindow&&['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)&&['pill','neon','magazine','type','condensed','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
+ if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
   const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):A.basicUnits?.(args);
-  if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
  const domain=S.domain(plan,{...cut,simpleCircleClip:true},region,project),candidates=[];
- if(!jellyHold&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
+ if(!jellyHold&&!usedJellyUnits&&!(partSupports&&!centerSource)&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
  if(!candidates.length&&partSupports){
   const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]],body=union(...partSupports.map(p=>p.body)),xmin=-body.x0,xmax=W-body.x1,ymin=-body.y0,ymax=H-body.y1,c=domain.circle,R=c.r+domain.pad;
   if(xmin<=xmax&&ymin<=ymax){
@@ -51251,12 +51251,13 @@ J.placement.memphisUnits=options=>memphisUnits({...options,
 (() => {
 'use strict';
 const A=J.placement,ID=[1,0,0,1,0,0];
-function pillUnits({W,H,cut,plan,st,sc,holdOnly=true}){
+function pillUnits({W,H,cut,plan,st,sc,holdOnly=true,holdWindow}){
  if(cut.layout!=='pill'||!holdOnly||(cut.treat||'none')!=='none'||
-    !['cut','flicker','invertBox'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
-    !['still','knCounterRock'].includes(cut.hold)||
+    !['cut','flicker','invertBox','tyRubyDrop'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
+    !['still','knCounterRock','scanBand'].includes(cut.hold)||
     !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
-    !(cut.decor||[]).every(d=>d.id==='memphis'))return null;
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id)))return null;
+ if(cut.enter==='tyRubyDrop'&&(!holdWindow||holdWindow.native.start<cut.start+Math.max(.01,cut.inDur)))return null;
  const env={W,H,cut,plan,st,sc},g=A.nativeBlockCircle.geometry(env),item=g.items[0];
  // Reuse the proven glyph/word-pivot math only. The synthetic center has no
  // center subtitle/rule: pill owns its own independent plates and labels.
@@ -51280,7 +51281,7 @@ function pillUnits({W,H,cut,plan,st,sc,holdOnly=true}){
  // the capsule's canvas clip hides main ink. It does not receive plate bounds.
  const cachedPartial=cut.exit==='cut'&&cut.outDur>0;
  for(const d of cut.decor||[]){
-  const parts=A.memphisUnits({W,H,P:d,bbRanges:[cachedPartial?main.bbRangesAny:main.bbRanges],includeFallback:cachedPartial});
+  const options={W,H,P:d,cut,st,bbRanges:[cachedPartial?main.bbRangesAny:main.bbRanges],includeFallback:cachedPartial},parts=d.id==='memphis'?A.memphisUnits(options):A.starburstUnits?.(options);
   if(!parts?.length)return null;
   units.push(...parts);
  }
@@ -51295,17 +51296,21 @@ A.pillUnits=pillUnits;
 const A=J.placement,ID=[1,0,0,1,0,0];
 const union=bs=>({x0:Math.min(...bs.map(b=>b.x0)),x1:Math.max(...bs.map(b=>b.x1)),y0:Math.min(...bs.map(b=>b.y0)),y1:Math.max(...bs.map(b=>b.y1))});
 const grow=(b,p)=>({x0:b.x0-p,x1:b.x1+p,y0:b.y0-p,y1:b.y1+p});
-function neonMagazineUnits({W,H,cut,plan,holdOnly=true,holdWindow}){
+function neonMagazineUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  if(!['neon','magazine'].includes(cut.layout)||!holdOnly||!holdWindow||cut.layoutBRecipe||cut.layoutCRecipe||
-    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
-    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
-    !(cut.decor||[]).every(d=>d.id==='memphis'))return null;
- // Frame shadowBlur is in device space. This source support is conservative
- // only while content/camera scaling does not shrink the native frame.
- if(cut.layout==='neon'&&((cut.contentScale??1)<1||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)))return null;
- // Every neon glyph exists by .04+.28; subsequent ignition only changes
- // brightness. Magazine's positive page unfold is enclosed analytically below.
- if(holdWindow.native.start<cut.start+(cut.layout==='neon'?.32:0)||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox','tyRubyDrop'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock','scanBand'].includes(cut.hold)||
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id)))return null;
+ // Canvas frame/subtitle shadows stay in device space while jelly can shrink
+ // either source axis. Pull their support back through the smallest camera
+ // singular value, including contentScale, before projecting the owners.
+ const motion=cut.motionScale??1,fx=cut.effectFx||plan.fx,jelly=cut.cam==='jelly',K=J.clamp((fx.motion??.7)*motion*1.25,0,1.25),amp=jelly?Math.abs(cut.camP?.a||.055)*K*motion*1.45:0,minScale=(cut.contentScale??1)*(jelly?(1+.01*motion)*(1-amp):1);
+ if(cut.layout==='neon'&&(!['push','panL','panR','dutch','dollyIn','beatPunch','jelly'].includes(cut.cam)||!(minScale>0)))return null;
+ const shadowFactor=cut.layout==='neon'?1/Math.min(1,minScale):1,deviceShadowExtra=3*60*(shadowFactor-1);
+ // Before .04+.28 the native ignition can hide any glyph. Include that
+ // subset below; ignition changes visibility/brightness, never its position.
+ // Magazine's positive page unfold is enclosed analytically below.
+ if(holdWindow.native.start<cut.start||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
  const sourcePlan={...plan,W,H},sourceCut={...cut,area:null,simpleCircleRecipe:null,enter:'cut',exit:'cut',hold:'still',params:{...cut.params,...(cut.layout==='neon'?{flick:false}:{})}},renderer=Object.create(J.Renderer.prototype);
  const programs=['main','A','B'].map(pass=>A.sourceFormulaBase.construct(renderer,sourcePlan,sourceCut,{W,H,time:.8,pass})),units=[],mainBoxes=[],mainRanges=[];
  // mainDraw's per-item delay remains native. A global hold label alone does
@@ -51316,13 +51321,16 @@ function neonMagazineUnits({W,H,cut,plan,holdOnly=true,holdWindow}){
  // Late glyphs may still be in invertBox while earlier ones already rock.
  // Cover every glyph's complete native entry/hold/exit, every visible subset
  // returned to the underline/decor, and a fresh/held native decor fallback.
- const partialNeon=cut.layout==='neon'&&delayed;
+ const partialNeon=cut.layout==='neon'&&(delayed||holdWindow.native.start<cut.start+.32);
+ // Bracket corners and subtitle centers move with the whole visible subset;
+ // the per-glyph drift below is not a sweep of those independent owners.
  if(delayed&&!partialNeon||partialNeon&&(!['under','none'].includes(cut.params.frame)||cut.params.sub))return null;
+ if(partialNeon&&(!['under','none'].includes(cut.params.frame)||cut.params.sub))return null;
  let frameDrift=0;
  const measured=programs.map(program=>program.events.map((event,index)=>{
   if(event.kind!=='item'||!event.args[0].placementMain)return {event,index};
   const original=event.args[0],item={...original,shadow:null,blur:0,extrude:null,charFn:null,charFns:[]},noHold=original.noHold||cut.layout==='magazine'&&!['still','jitter','breathe','glitchtick'].includes(cut.hold),textCut={...cut,layout:'center',area:null,params:{},hold:noHold?'still':cut.hold};
-  const main=A.centerCircle.sourceUnits(item,textCut,sourcePlan,{holdOnly:!partialNeon});
+  const main=A.centerCircle.sourceUnits(item,textCut,sourcePlan,{holdOnly:!partialNeon||cut.enter==='tyRubyDrop'});
   if(!main)return null;
   const rest=J.itemBox(item),r=main.bbRanges;
   frameDrift=Math.max(frameDrift,...['x0','x1','y0','y1'].flatMap(k=>r[k].map(v=>Math.abs(v-rest[k]))));
@@ -51330,7 +51338,7 @@ function neonMagazineUnits({W,H,cut,plan,holdOnly=true,holdWindow}){
   // The source recorder already bounded native tube blur, shadows and stroke.
   // Reuse that padding around the complete analytical rocking glyph sweep.
   const raw=A.bounds(A.itemGeometry(item,ID,{pass:'main',scale:1}).polygons),outer=A.bounds(event.polygons),pad=Math.max(0,raw.x0-outer.x0,raw.y0-outer.y0,outer.x1-raw.x1,outer.y1-raw.y1);
-  return {event,index,parts:main.units.map(u=>({...u,owner:cut.layout+'.'+event.nativeGroup+'.'+u.owner,bounds:grow(u.bounds,pad)}))};
+  return {event,index,parts:main.units.map(u=>({...u,owner:cut.layout+'.'+event.nativeGroup+'.'+u.owner,bounds:grow(u.bounds,pad*shadowFactor)}))};
  }));
  if(measured.some(es=>es.some(e=>!e))||!mainBoxes.length)return null;
  const bbRanges=Object.fromEntries(['x0','x1','y0','y1'].map(k=>[k,partialNeon?[
@@ -51344,17 +51352,17 @@ function neonMagazineUnits({W,H,cut,plan,holdOnly=true,holdWindow}){
   // Plates/pages remain filled primary objects. In particular the magazine
   // spread cannot be treated as empty merely because its glyphs are sparse.
   for(const polygon of event.polygons){
-   const b=grow(A.bounds([polygon]),cut.layout==='neon'?frameDrift:0);
-   if(partialNeon){
+   const b=grow(A.bounds([polygon]),cut.layout==='neon'?frameDrift+deviceShadowExtra:0);
+   if(partialNeon&&cut.params.frame==='under'&&!cut.params.sub){
     // Underline endpoints are fb.x0-.275*size / fb.x1+.275*size;
     // its level is fb.y1+.42*size. Preserve the source's measured padding
     // (including outer tube shadow) at every visible-subset edge/level.
     if(event.kind!=='line'||cut.params.frame!=='under')return null;
     const rest=A.bounds([polygon]);
-    b.x0=bbRanges.x0[0]+rest.x0-restMain.x0;
-    b.x1=bbRanges.x1[1]+rest.x1-restMain.x1;
-    b.y0=bbRanges.y1[0]+rest.y0-restMain.y1;
-    b.y1=bbRanges.y1[1]+rest.y1-restMain.y1;
+    b.x0=bbRanges.x0[0]+rest.x0-restMain.x0-deviceShadowExtra;
+    b.x1=bbRanges.x1[1]+rest.x1-restMain.x1+deviceShadowExtra;
+    b.y0=bbRanges.y1[0]+rest.y0-restMain.y1-deviceShadowExtra;
+    b.y1=bbRanges.y1[1]+rest.y1-restMain.y1+deviceShadowExtra;
    }
    // q in [0,1] scales page B about the gutter. The union of each complete
    // primitive's endpoint rectangle and its zero-width gutter projection
@@ -51366,7 +51374,7 @@ function neonMagazineUnits({W,H,cut,plan,holdOnly=true,holdWindow}){
    units.push({owner:cut.layout+'.source.'+index,kind:event.kind,bounds:b});
   }
  }
- for(const d of cut.decor||[])units.push(...A.memphisUnits({W,H,P:d,bbRanges:[bbRanges],includeFallback:partialNeon}));
+ for(const d of cut.decor||[]){const options={W,H,P:d,cut,st:st||{...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},bbRanges:[bbRanges],includeFallback:partialNeon},parts=d.id==='memphis'?A.memphisUnits(options):A.starburstUnits?.(options);if(!parts?.length)return null;units.push(...parts);}
  // The viewport clip is applied after the camera transforms these units.
  return {units,bbRanges,glyphBB:union(mainBoxes),scope:'native-hold',sourceConstructionTime:.8,...(partialNeon?{delayedGlyphScope:'all-native-clocks-and-any-visible-subset'}:{})};
 }
@@ -51431,12 +51439,13 @@ A.basicUnits=basicUnits;
 'use strict';
 const A=J.placement;
 const union=bs=>({x0:Math.min(...bs.map(b=>b.x0)),x1:Math.max(...bs.map(b=>b.x1)),y0:Math.min(...bs.map(b=>b.y0)),y1:Math.max(...bs.map(b=>b.y1))});
-function verticalUnits({W,H,cut,plan,sc,holdOnly=true,holdWindow}){
+function verticalUnits({W,H,cut,plan,st,sc,holdOnly=true,holdWindow}){
  if(cut.layout!=='vcols'||!holdOnly||!holdWindow||(cut.treat||'none')!=='none'||
-    !['cut','flicker','invertBox'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
-    !['still','knCounterRock'].includes(cut.hold)||
+    !['cut','flicker','invertBox','tyRubyDrop'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
+    !['still','knCounterRock','scanBand'].includes(cut.hold)||
     !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
-    !(cut.decor||[]).every(d=>d.id==='memphis'))return null;
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id))||
+    cut.enter==='tyRubyDrop'&&cut.hold==='knCounterRock')return null;
  const P=cut.params,text=cut.text.replace(/\s+/g,''),n=J.glyphCount(text),repeat=P.variant==='repeat'&&n<=9;
  if(!n||!['repeat','split'].includes(P.variant)||
     repeat&&(!Number.isInteger(P.cols)||P.cols<1||P.cols>8||!['same','outline','dim'].includes(P.side))||
@@ -51466,16 +51475,43 @@ function verticalUnits({W,H,cut,plan,sc,holdOnly=true,holdWindow}){
   // Existing sourceUnits bounds invertBox's full native plate and every
   // glyph subset. No vertical exit is evaluated: the admitted window ends
   // before tyStrike, and cut exit only reduces hold amplitude.
-  const source={...cut,layout:'center',area:null,params:{},exit:'cut'},main=A.centerCircle.sourceUnits(item,source,plan,{holdOnly:!partial});
+  const ruby=cut.enter==='tyRubyDrop',scan=cut.hold==='scanBand',source={...cut,layout:'center',area:null,params:{},exit:'cut',...(ruby?{enter:'cut'}:{}),...(scan?{hold:'still'}:{})},main=A.centerCircle.sourceUnits(item,source,plan,{holdOnly:ruby||!partial});
   if(!main)return null;
+  if(ruby||scan){
+   const lay=J.layoutText(item),m=cut.motionScale??1,k=J.clamp(((cut.effectFx||plan.fx).motion??.7)/.7,0,1.6),dx=scan?item.size*.075*k:0,bbs=[];
+   main.units=main.units.map(u=>{
+    if(u.kind!=='glyph')return u;
+    const index=Number(u.owner.split('.').pop()),g=lay.find(g=>g.i===index);
+    if(!g)return null;
+    const gx=item.x+(g.x+g.vx)*(item.sx||1),gy=item.y+(g.y+g.vy)*(item.sy||1),w=g.w*(item.sx||1),h=g.h*(item.sy||1),off=ruby?w*.8*m:0,s=ruby?1-.68*m:1,pad=(item.stroke||0)/2+3,b=u.bounds;
+    bbs.push({x0:gx-w/2,x1:gx+off+w/2,y0:gy-h/2,y1:gy+h/2,leftMax:gx+off-w*s/2,rightMin:gx+w*s/2,topMax:gy-h*s/2,bottomMin:gy+h*s/2});
+    // Vertical RubyDrop moves right, while all glyphs (including r90 Latin
+    // and punctuation) shrink about their own source baseline. Include the
+    // baseline stroke/AA guard without shrinking the native outline width.
+    return {...u,bounds:{x0:Math.min(b.x0,ruby?gx-pad:b.x0)-dx,x1:Math.max(b.x1,ruby?gx+pad:b.x1)+off+dx,y0:Math.min(b.y0,ruby?gy-pad:b.y0),y1:Math.max(b.y1,ruby?gy+pad:b.y1)}};
+   });
+   if(main.units.some(u=>!u))return null;
+   if(ruby){
+    // A/B passes can still be in the entrance when main reaches its hold;
+    // any visible subset can be the bbox returned to the native decoration.
+    main.bbRanges=main.bbRangesAny={x0:[Math.min(...bbs.map(b=>b.x0)),Math.max(...bbs.map(b=>b.leftMax))],x1:[Math.min(...bbs.map(b=>b.rightMin)),Math.max(...bbs.map(b=>b.x1))],y0:[Math.min(...bbs.map(b=>b.y0)),Math.max(...bbs.map(b=>b.topMax))],y1:[Math.min(...bbs.map(b=>b.bottomMin)),Math.max(...bbs.map(b=>b.y1))]};
+    main.glyphBB=union(bbs);
+   }
+   if(scan){
+    // scanBand uses horizontal bands even on a vertical item. Its post rect
+    // sweeps through dBox(item,size*.1); bands/post ignore motionScale.
+    const b=J.itemBox({...item,_m:null}),pad=item.size*.1,h=b.y1-b.y0+2*pad,bh=Math.max(item.size*.24,h*.12),lw=Math.max(1,item.size*.012);
+    main.units.push({owner:'center.scanBand',kind:'attached',bounds:{x0:b.x0-pad,x1:b.x1+pad,y0:b.y0-pad-lw,y1:b.y1+pad+bh}});
+   }
+  }
   mains.push({...main,partial});
   units.push(...main.units.map(u=>({...u,owner:'vcols.'+(repeat?'repeat.':'split.')+i+'.'+u.owner})));
  }
- const center=mains[decorIndex],cachedPartial=cut.exit==='cut'&&cut.outDur>0,partial=center.partial||cachedPartial;
+ const center=mains[decorIndex],cachedPartial=cut.exit==='cut'&&cut.outDur>0,partial=cut.enter==='tyRubyDrop'||center.partial||cachedPartial;
  // vcols repeat returns the selected center bb, never the union of repeats.
  // Its delayed/null entrance or held cut-exit cache also permits centerBB.
  const bbRanges=partial?center.bbRangesAny:center.bbRanges;
- for(const d of cut.decor||[]){const parts=A.memphisUnits({W,H,P:d,bbRanges:[bbRanges],includeFallback:partial});if(!parts?.length)return null;units.push(...parts);}
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[bbRanges],includeFallback:partial},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
  return {units,bbRanges,glyphBB:union(mains.map(m=>m.glyphBB)),scope:'native-hold',sourceBranch:repeat?'repeat':'split',decorMainIndex:decorIndex};
 }
 A.verticalUnits=verticalUnits;
@@ -51489,9 +51525,9 @@ const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];
 const bounds=ps=>A.bounds([ps]);
 function cardsUnits({W,H,cut,plan,st,sc,holdWindow}){
  if(!['ticket','labels'].includes(cut.layout)||!holdWindow||cut.layoutARecipe||
-    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
-    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
-    !(cut.decor||[]).every(d=>d.id==='memphis')||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox','tyRubyDrop'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock','scanBand'].includes(cut.hold)||
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id))||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
  const units=[],add=(owner,b)=>units.push({owner,bounds:b}),p=cut.params;
  let bbRanges;
  if(cut.layout==='labels'){
@@ -51511,20 +51547,26 @@ function cardsUnits({W,H,cut,plan,st,sc,holdWindow}){
  }else{
   // The tear starts when pOut becomes positive even if exit is cut; the
   // accepted hold ends before then. Earlier ghost passes may still be entering.
+  const narrowHold=cut.enter==='tyRubyDrop'||cut.hold==='scanBand';
+  // A lagged ghost may still be in invertBox at the hold boundary. The narrow
+  // Ruby/scan source helper does not include that entrance's plate.
+  if(narrowHold&&cut.enter==='invertBox')return null;
   const source={...cut,area:null,simpleCircleRecipe:null,enter:'cut',exit:'cut',hold:'still'},renderer=Object.create(J.Renderer.prototype),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},source,{W,H,time:.8,pass:'main'}),mains=program.events.filter(e=>e.kind==='item'&&e.args[0].placementMain);
   if(!mains.length||mains.some(e=>e.args[0].rot||e.args[0].skew))return null;
   const earliest=Math.max(0,holdWindow.native.start-cut.start-(holdWindow.step||0)-1.6/24),q=J.clamp(earliest/.5),turn=1-2*1.2/(3*(1+1.2)),e0=J.E.outBack(q,1.2),emax=q<=turn?J.E.outBack(turn,1.2):e0,emin=Math.min(1,e0),dy0=(1-emax)*H*.7,dy1=(1-emin)*H*.7,da=Math.max(Math.abs(1-emax),Math.abs(1-emin))*10*J.DEG;
   function moving(b){const r=Math.max(...rectangle(b).map(([x,y])=>Math.hypot(x-W/2,y-H/2))),d=2*r*Math.sin(da/2);return {x0:b.x0-d,x1:b.x1+d,y0:b.y0+dy0-d,y1:b.y1+dy1+d};}
   for(const [i,e]of program.events.entries()){
    if(e.kind==='item'&&e.args[0].placementMain){
-    const main=A.centerCircle.sourceUnits(e.args[0],{...cut,layout:'center',area:null,params:{}}, {...plan,W,H},{holdOnly:false});if(!main)return null;
+    const main=A.centerCircle.sourceUnits(e.args[0],{...cut,layout:'center',area:null,params:{}}, {...plan,W,H},{holdOnly:narrowHold});if(!main)return null;
     for(const u of main.units)add('ticket.main.'+u.owner,moving(bounds(rectangle(u.bounds).map(v=>A.point(e.matrix,v)))));
    }else for(const poly of e.polygons)add('ticket.part.'+i,moving(bounds(poly)));
   }
   const port=H>W*1.08,tw=Math.min(W*(port?.9:.74),H*1.9),th=Math.min(tw*(port?.46:.38),H*.5),cx=W/2,cy=H/2;
   bbRanges={x0:[cx-tw/2,cx-tw/2],x1:[cx+tw/2,cx+tw/2],y0:[cy+dy0-th/2,cy+dy1-th/2],y1:[cy+dy0+th/2,cy+dy1+th/2]};
  }
- for(const d of cut.decor||[]){const parts=A.memphisUnits({W,H,P:d,bbRanges:[bbRanges],includeFallback:true});if(!parts?.length)return null;units.push(...parts);}
+ // Rows/scatter always return their fixed bbox, even while labels enter.
+ // Only ticket can reach the decoration's missing-bbox fallback.
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[bbRanges],includeFallback:cut.layout!=='labels'||d.id!=='starburst'},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
  return units.length?{units,bbRanges,scope:'native-hold'}:null;
 }
 A.cardsUnits=cardsUnits;
@@ -51621,10 +51663,15 @@ function starburstUnits({W,H,P,cut,st,bbRanges,includeFallback=true}){
   // nearBB returns its first non-overlapping candidate. If its first choice
   // is separated for every bbox in this range, later choices are unreachable.
   const right=!!P.right,low=!!P.low,margin=m*.8,sep=gap*.4,guard=64*Number.EPSILON*(1+W+H+size+Math.max(...Object.values(b).flat().map(Math.abs))),xmax=Math.max(margin,W-margin-size),ymax=Math.max(margin,H-margin-size),odd=(P.v|0)%2!==0;
-  const firstClear=gap*.6>guard&&(odd?(right?xmax>b.x1[1]+sep+guard:margin+size<b.x0[0]-sep-guard):(low?ymax>b.y1[1]+sep+guard:margin+size<b.y0[0]-sep-guard));
-  if(firstClear){
+  const horizontalClear=gap*.6>guard&&(right?xmax>b.x1[1]+sep+guard:margin+size<b.x0[0]-sep-guard),verticalClear=gap*.6>guard&&(low?ymax>b.y1[1]+sep+guard:margin+size<b.y0[0]-sep-guard),firstClear=odd?horizontalClear:verticalClear,secondClear=odd?verticalClear:horizontalClear;
+  if(firstClear||secondClear){
    const ax=right?shift(b.x1,-size):b.x0,ox=right?shift(b.x1,gap):shift(b.x0,-gap-size),ay=low?shift(b.y1,gap):shift(b.y0,-gap-size),iy=low?shift(b.y1,-size):b.y0;
-   place(odd?ox:ax,odd?iy:ay,margin);continue;
+   place(odd?ox:ax,odd?iy:ay,margin);
+   // When only the second candidate is proven clear, the first can still
+   // win for part of the bbox range. Retain both; native nearBB cannot reach
+   // any later candidate after this guaranteed separating axis.
+   if(!firstClear)place(odd?ax:ox,odd?ay:iy,margin);
+   continue;
   }
   for(const right of [false,true])for(const low of [false,true]){
    const ax=right?shift(b.x1,-size):b.x0,ox=right?shift(b.x1,gap):shift(b.x0,-gap-size),ay=low?shift(b.y1,gap):shift(b.y0,-gap-size),iy=low?shift(b.y1,-size):b.y0;

@@ -6,9 +6,9 @@ const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];
 const bounds=ps=>A.bounds([ps]);
 function cardsUnits({W,H,cut,plan,st,sc,holdWindow}){
  if(!['ticket','labels'].includes(cut.layout)||!holdWindow||cut.layoutARecipe||
-    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
-    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
-    !(cut.decor||[]).every(d=>d.id==='memphis')||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox','tyRubyDrop'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock','scanBand'].includes(cut.hold)||
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id))||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
  const units=[],add=(owner,b)=>units.push({owner,bounds:b}),p=cut.params;
  let bbRanges;
  if(cut.layout==='labels'){
@@ -28,20 +28,26 @@ function cardsUnits({W,H,cut,plan,st,sc,holdWindow}){
  }else{
   // The tear starts when pOut becomes positive even if exit is cut; the
   // accepted hold ends before then. Earlier ghost passes may still be entering.
+  const narrowHold=cut.enter==='tyRubyDrop'||cut.hold==='scanBand';
+  // A lagged ghost may still be in invertBox at the hold boundary. The narrow
+  // Ruby/scan source helper does not include that entrance's plate.
+  if(narrowHold&&cut.enter==='invertBox')return null;
   const source={...cut,area:null,simpleCircleRecipe:null,enter:'cut',exit:'cut',hold:'still'},renderer=Object.create(J.Renderer.prototype),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},source,{W,H,time:.8,pass:'main'}),mains=program.events.filter(e=>e.kind==='item'&&e.args[0].placementMain);
   if(!mains.length||mains.some(e=>e.args[0].rot||e.args[0].skew))return null;
   const earliest=Math.max(0,holdWindow.native.start-cut.start-(holdWindow.step||0)-1.6/24),q=J.clamp(earliest/.5),turn=1-2*1.2/(3*(1+1.2)),e0=J.E.outBack(q,1.2),emax=q<=turn?J.E.outBack(turn,1.2):e0,emin=Math.min(1,e0),dy0=(1-emax)*H*.7,dy1=(1-emin)*H*.7,da=Math.max(Math.abs(1-emax),Math.abs(1-emin))*10*J.DEG;
   function moving(b){const r=Math.max(...rectangle(b).map(([x,y])=>Math.hypot(x-W/2,y-H/2))),d=2*r*Math.sin(da/2);return {x0:b.x0-d,x1:b.x1+d,y0:b.y0+dy0-d,y1:b.y1+dy1+d};}
   for(const [i,e]of program.events.entries()){
    if(e.kind==='item'&&e.args[0].placementMain){
-    const main=A.centerCircle.sourceUnits(e.args[0],{...cut,layout:'center',area:null,params:{}}, {...plan,W,H},{holdOnly:false});if(!main)return null;
+    const main=A.centerCircle.sourceUnits(e.args[0],{...cut,layout:'center',area:null,params:{}}, {...plan,W,H},{holdOnly:narrowHold});if(!main)return null;
     for(const u of main.units)add('ticket.main.'+u.owner,moving(bounds(rectangle(u.bounds).map(v=>A.point(e.matrix,v)))));
    }else for(const poly of e.polygons)add('ticket.part.'+i,moving(bounds(poly)));
   }
   const port=H>W*1.08,tw=Math.min(W*(port?.9:.74),H*1.9),th=Math.min(tw*(port?.46:.38),H*.5),cx=W/2,cy=H/2;
   bbRanges={x0:[cx-tw/2,cx-tw/2],x1:[cx+tw/2,cx+tw/2],y0:[cy+dy0-th/2,cy+dy1-th/2],y1:[cy+dy0+th/2,cy+dy1+th/2]};
  }
- for(const d of cut.decor||[]){const parts=A.memphisUnits({W,H,P:d,bbRanges:[bbRanges],includeFallback:true});if(!parts?.length)return null;units.push(...parts);}
+ // Rows/scatter always return their fixed bbox, even while labels enter.
+ // Only ticket can reach the decoration's missing-bbox fallback.
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[bbRanges],includeFallback:cut.layout!=='labels'||d.id!=='starburst'},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
  return units.length?{units,bbRanges,scope:'native-hold'}:null;
 }
 A.cardsUnits=cardsUnits;

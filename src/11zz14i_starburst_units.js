@@ -27,10 +27,15 @@ function starburstUnits({W,H,P,cut,st,bbRanges,includeFallback=true}){
   // nearBB returns its first non-overlapping candidate. If its first choice
   // is separated for every bbox in this range, later choices are unreachable.
   const right=!!P.right,low=!!P.low,margin=m*.8,sep=gap*.4,guard=64*Number.EPSILON*(1+W+H+size+Math.max(...Object.values(b).flat().map(Math.abs))),xmax=Math.max(margin,W-margin-size),ymax=Math.max(margin,H-margin-size),odd=(P.v|0)%2!==0;
-  const firstClear=gap*.6>guard&&(odd?(right?xmax>b.x1[1]+sep+guard:margin+size<b.x0[0]-sep-guard):(low?ymax>b.y1[1]+sep+guard:margin+size<b.y0[0]-sep-guard));
-  if(firstClear){
+  const horizontalClear=gap*.6>guard&&(right?xmax>b.x1[1]+sep+guard:margin+size<b.x0[0]-sep-guard),verticalClear=gap*.6>guard&&(low?ymax>b.y1[1]+sep+guard:margin+size<b.y0[0]-sep-guard),firstClear=odd?horizontalClear:verticalClear,secondClear=odd?verticalClear:horizontalClear;
+  if(firstClear||secondClear){
    const ax=right?shift(b.x1,-size):b.x0,ox=right?shift(b.x1,gap):shift(b.x0,-gap-size),ay=low?shift(b.y1,gap):shift(b.y0,-gap-size),iy=low?shift(b.y1,-size):b.y0;
-   place(odd?ox:ax,odd?iy:ay,margin);continue;
+   place(odd?ox:ax,odd?iy:ay,margin);
+   // When only the second candidate is proven clear, the first can still
+   // win for part of the bbox range. Retain both; native nearBB cannot reach
+   // any later candidate after this guaranteed separating axis.
+   if(!firstClear)place(odd?ax:ox,odd?ay:iy,margin);
+   continue;
   }
   for(const right of [false,true])for(const low of [false,true]){
    const ax=right?shift(b.x1,-size):b.x0,ox=right?shift(b.x1,gap):shift(b.x0,-gap-size),ay=low?shift(b.y1,gap):shift(b.y0,-gap-size),iy=low?shift(b.y1,-size):b.y0;

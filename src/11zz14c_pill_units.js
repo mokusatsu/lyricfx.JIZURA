@@ -2,12 +2,13 @@
 (() => {
 'use strict';
 const A=J.placement,ID=[1,0,0,1,0,0];
-function pillUnits({W,H,cut,plan,st,sc,holdOnly=true}){
+function pillUnits({W,H,cut,plan,st,sc,holdOnly=true,holdWindow}){
  if(cut.layout!=='pill'||!holdOnly||(cut.treat||'none')!=='none'||
-    !['cut','flicker','invertBox'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
-    !['still','knCounterRock'].includes(cut.hold)||
+    !['cut','flicker','invertBox','tyRubyDrop'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
+    !['still','knCounterRock','scanBand'].includes(cut.hold)||
     !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
-    !(cut.decor||[]).every(d=>d.id==='memphis'))return null;
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id)))return null;
+ if(cut.enter==='tyRubyDrop'&&(!holdWindow||holdWindow.native.start<cut.start+Math.max(.01,cut.inDur)))return null;
  const env={W,H,cut,plan,st,sc},g=A.nativeBlockCircle.geometry(env),item=g.items[0];
  // Reuse the proven glyph/word-pivot math only. The synthetic center has no
  // center subtitle/rule: pill owns its own independent plates and labels.
@@ -31,7 +32,7 @@ function pillUnits({W,H,cut,plan,st,sc,holdOnly=true}){
  // the capsule's canvas clip hides main ink. It does not receive plate bounds.
  const cachedPartial=cut.exit==='cut'&&cut.outDur>0;
  for(const d of cut.decor||[]){
-  const parts=A.memphisUnits({W,H,P:d,bbRanges:[cachedPartial?main.bbRangesAny:main.bbRanges],includeFallback:cachedPartial});
+  const options={W,H,P:d,cut,st,bbRanges:[cachedPartial?main.bbRangesAny:main.bbRanges],includeFallback:cachedPartial},parts=d.id==='memphis'?A.memphisUnits(options):A.starburstUnits?.(options);
   if(!parts?.length)return null;
   units.push(...parts);
  }
