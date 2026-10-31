@@ -5,17 +5,17 @@ const A=J.placement,ID=[1,0,0,1,0,0];
 function gridUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  const p=cut.params;
  if(cut.layout!=='swissGrid'||!holdOnly||!holdWindow||cut.placementLayoutsC||cut.layoutCRecipe||
-    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
-    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox','tyRubyDrop'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock','scanBand'].includes(cut.hold)||
     !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
     !['a','b'].includes(p.variant)||!['circle','square','bar'].includes(p.shape)||
-    !(cut.decor||[]).every(d=>d.id==='memphis'))return null;
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id)))return null;
  const chunks=(p.chunks?.length?p.chunks:[cut.text.trim()]).filter(Boolean),k=chunks.length;
  if(!k||k>3)return null;
- // Each native main has mi=i*3, so its entrance can end after the global
- // lyric hold begins. Do not certify those delayed entrance frames.
- const ready=cut.start+3*(k-1)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
- if(holdWindow.native.start<ready||holdWindow.native.end>cut.start+cut.dur-(cut.exit==='cut'?0:cut.outDur))return null;
+ // Each native main has mi=i*3. Lagged A/B clocks can remain in its entrance
+ // after main reaches the global hold, so retain those native entrance owners.
+ const entry=cut.enter==='cut'?0:Math.max(.01,cut.inDur),earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(!Number.isFinite(earliest)||holdWindow.native.start<cut.start+entry||holdWindow.native.end>cut.start+cut.dur-(cut.exit==='cut'?0:cut.outDur))return null;
  const u=Math.min(W,H),port=H>W*1.08,ls=J.clamp(u*.024,14,34),cols=port?4:6,rows=port?8:6,m=u*.07;
  const gx0=m*1.35,gx1=W-m,gy0=m,gy1=H-m,cw=(gx1-gx0)/cols,rh=(gy1-gy0)/rows,X=c=>gx0+c*cw,Y=r=>gy0+r*rh,units=[];
  const add=(owner,kind,x0,y0,x1,y1)=>units.push({owner,kind,bounds:{x0,y0,x1,y1}});
@@ -37,9 +37,18 @@ function gridUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
   const ch=chunks[i],q=pl[i],size=sizes[i],x=X(q.c)+cw*.06,y=Y(q.r)+size*.56,w=J.measure({text:ch,font:p.font,size,track:-.01}).w;
   boxes.push([x,Y(q.r),x+w,Y(q.r)+size*1.12]);
   const h=Math.max(3,u*.005);add('swiss.mainRule.'+i,'rule',X(q.c)-1,Y(q.r)-h-1,X(q.c)+Math.min(q.span*cw,w+cw*.12)+1,Y(q.r)+1);
-  const main=A.centerCircle.sourceUnits({text:ch,font:p.font,size,x,y,align:'left',track:-.01,mi:i*3},{...cut,layout:'center',area:null,params:{}},plan,{holdOnly:true});
+  const item={text:ch,font:p.font,size,x,y,align:'left',track:-.01,mi:i*3},source={...cut,layout:'center',area:null,params:{}},partial=cut.enter==='tyRubyDrop'||earliest<cut.start+i*3*(cut.stagger||0)+entry;
+  // Center's hold-only RubyDrop support includes every entry scale/offset and
+  // hidden subset. Flicker/cut add no geometry. InvertBox also owns a plate
+  // while any delayed/lagged chunk can still be entering.
+  const main=A.centerCircle.sourceUnits(item,source,plan,{holdOnly:true});
   if(!main)return null;
-  units.push(...main.units.map(g=>({...g,owner:'swiss.main.'+i+'.'+g.owner})));mains.push(main);
+  if(partial&&cut.enter==='invertBox'){
+   const entrySupport=A.centerCircle.sourceUnits(item,{...source,hold:'still',exit:'cut'},plan,{holdOnly:false});
+   if(!entrySupport)return null;
+   main.units.push(...entrySupport.units.filter(g=>g.owner==='center.invertBox'));
+  }
+  units.push(...main.units.map(g=>({...g,owner:'swiss.main.'+i+'.'+g.owner})));mains.push({...main,partial});
  }
  const cands=[[cols-2,rows-2,2],[0,rows-2,2],[cols-2,0,2],[cols-1,rows-1,1],[0,rows-1,1],[cols-1,0,1]],free=cands.find(([c,r,s])=>!boxes.some(b=>b[0]<X(c+s)&&b[2]>X(c)&&b[1]<Y(r+s)&&b[3]>Y(r)));
  if(free){
@@ -53,9 +62,9 @@ function gridUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  const ranges=Object.fromEntries(['x0','x1','y0','y1'].map(key=>[key,[
   (key.endsWith('0')?Math.min:Math.max)(...mains.map(x=>x.bbRanges[key][0])),
   (key.endsWith('0')?Math.min:Math.max)(...mains.map(x=>x.bbRanges[key][1]))]]));
- const cachedPartial=cut.exit==='cut'&&cut.outDur>0,decorRanges=cachedPartial?Object.fromEntries(['x0','x1','y0','y1'].map(key=>[key,[Math.min(...mains.map(x=>x.bbRangesAny[key][0])),Math.max(...mains.map(x=>x.bbRangesAny[key][1]))]])):ranges;
- for(const d of cut.decor||[]){const parts=A.memphisUnits({W,H,P:d,bbRanges:[decorRanges],includeFallback:cachedPartial});if(!parts?.length)return null;units.push(...parts);}
- return {units,bbRanges:ranges,scope:'native-hold'};
+ const cachedPartial=mains.some(x=>x.partial)||cut.exit==='cut'&&cut.outDur>0,decorRanges=cachedPartial?Object.fromEntries(['x0','x1','y0','y1'].map(key=>[key,[Math.min(...mains.map(x=>x.bbRangesAny[key][0])),Math.max(...mains.map(x=>x.bbRangesAny[key][1]))]])):ranges;
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[decorRanges],includeFallback:cachedPartial},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ return {units,bbRanges:decorRanges,scope:'native-hold'};
 }
 A.gridUnits=gridUnits;
 })();

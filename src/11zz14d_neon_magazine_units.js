@@ -20,7 +20,7 @@ function neonMagazineUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  // Magazine's positive page unfold is enclosed analytically below.
  if(holdWindow.native.start<cut.start||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
  const sourcePlan={...plan,W,H},sourceCut={...cut,area:null,simpleCircleRecipe:null,enter:'cut',exit:'cut',hold:'still',params:{...cut.params,...(cut.layout==='neon'?{flick:false}:{})}},renderer=Object.create(J.Renderer.prototype);
- const programs=['main','A','B'].map(pass=>A.sourceFormulaBase.construct(renderer,sourcePlan,sourceCut,{W,H,time:.8,pass})),units=[],mainBoxes=[],mainRanges=[];
+ const programs=['main','A','B'].map(pass=>A.sourceFormulaBase.construct(renderer,sourcePlan,sourceCut,{W,H,time:.8,pass})),units=[],mainBoxes=[],mainRanges=[],magazineFallbacks=[];
  // mainDraw's per-item delay remains native. A global hold label alone does
  // not establish that a late neon glyph has completed its own entrance.
  const mains=programs.flatMap(p=>p.events.filter(e=>e.kind==='item'&&e.args[0].placementMain));
@@ -38,11 +38,18 @@ function neonMagazineUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  const measured=programs.map(program=>program.events.map((event,index)=>{
   if(event.kind!=='item'||!event.args[0].placementMain)return {event,index};
   const original=event.args[0],item={...original,shadow:null,blur:0,extrude:null,charFn:null,charFns:[]},noHold=original.noHold||cut.layout==='magazine'&&!['still','jitter','breathe','glitchtick'].includes(cut.hold),textCut={...cut,layout:'center',area:null,params:{},hold:noHold?'still':cut.hold};
-  const main=A.centerCircle.sourceUnits(item,textCut,sourcePlan,{holdOnly:!partialNeon||cut.enter==='tyRubyDrop'});
+  const verticalEffects=cut.layout==='magazine'&&item.vertical&&textCut.enter==='tyRubyDrop';
+  const main=verticalEffects?A.verticalSourceUnits?.(item,textCut,sourcePlan,{partial:partialNeon}):A.centerCircle.sourceUnits(item,textCut,sourcePlan,{holdOnly:!partialNeon||cut.enter==='tyRubyDrop'});
   if(!main)return null;
+  if(cut.layout==='magazine'&&verticalEffects&&textCut.enter==='tyRubyDrop'){
+   // Native vertical magazine returns this page-A box when mainDraw has no
+   // visible glyph, rather than the decoration's generic center fallback.
+   const m=J.measure(item),b={x0:item.x-m.w/2,x1:item.x+m.w/2,y0:item.y,y1:item.y+m.h};
+   magazineFallbacks.push(Object.fromEntries(Object.entries(b).map(([k,v])=>[k,[v,v]])));
+  }
   const rest=J.itemBox(item),r=main.bbRanges;
   frameDrift=Math.max(frameDrift,...['x0','x1','y0','y1'].flatMap(k=>r[k].map(v=>Math.abs(v-rest[k]))));
-  mainBoxes.push(main.glyphBB);mainRanges.push(r);
+  mainBoxes.push(main.glyphBB);mainRanges.push(verticalEffects&&cut.enter==='tyRubyDrop'?main.bbRangesAny:r);
   // The source recorder already bounded native tube blur, shadows and stroke.
   // Reuse that padding around the complete analytical rocking glyph sweep.
   const raw=A.bounds(A.itemGeometry(item,ID,{pass:'main',scale:1}).polygons),outer=A.bounds(event.polygons),pad=Math.max(0,raw.x0-outer.x0,raw.y0-outer.y0,outer.x1-raw.x1,outer.y1-raw.y1);
@@ -55,6 +62,7 @@ function neonMagazineUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
   (k.endsWith('0')?Math.min:Math.max)(...mainRanges.map(r=>r[k][0])),
   (k.endsWith('0')?Math.min:Math.max)(...mainRanges.map(r=>r[k][1]))
  ]])),restMain=partialNeon?union(mains.map(e=>J.itemBox(e.args[0]))):null;
+ for(const r of magazineFallbacks)for(const k of ['x0','x1','y0','y1']){bbRanges[k][0]=Math.min(bbRanges[k][0],r[k][0]);bbRanges[k][1]=Math.max(bbRanges[k][1],r[k][1]);}
  for(const es of measured)for(const {event,index,parts}of es){
   if(parts){units.push(...parts);continue;}
   // Plates/pages remain filled primary objects. In particular the magazine
@@ -82,7 +90,7 @@ function neonMagazineUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
    units.push({owner:cut.layout+'.source.'+index,kind:event.kind,bounds:b});
   }
  }
- for(const d of cut.decor||[]){const options={W,H,P:d,cut,st:st||{...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},bbRanges:[bbRanges],includeFallback:partialNeon},parts=d.id==='memphis'?A.memphisUnits(options):A.starburstUnits?.(options);if(!parts?.length)return null;units.push(...parts);}
+ for(const d of cut.decor||[]){const options={W,H,P:d,cut,st:st||{...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},bbRanges:[bbRanges],includeFallback:partialNeon||cut.enter==='tyRubyDrop'&&mains.some(e=>e.args[0].vertical)},parts=d.id==='memphis'?A.memphisUnits(options):A.starburstUnits?.(options);if(!parts?.length)return null;units.push(...parts);}
  // The viewport clip is applied after the camera transforms these units.
  return {units,bbRanges,glyphBB:union(mainBoxes),scope:'native-hold',sourceConstructionTime:.8,...(partialNeon?{delayedGlyphScope:'all-native-clocks-and-any-visible-subset'}:{})};
 }

@@ -137,7 +137,7 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
   project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma,jellyHoldOnly:!!jellyHold});
   if(sourceItem.unitSupport){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),bbRanges=[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges];let complete=true;for(const d of cut.decor||[]){const args={W:sw,H:sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges,includeFallback:!holdOnly||cachedPartial,random:J.r},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
- if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
+ if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
   const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):A.basicUnits?.(args);
   if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
@@ -152,7 +152,13 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
    // Merge owner branches only to schedule candidates. Acceptance retains each
    // primitive, so empty spaces between native objects remain empty.
    const owners=new Map();for(const p of partSupports)owners.set(p.owner,owners.has(p.owner)?union(owners.get(p.owner),p.bounds):p.bounds);
-   for(const b of owners.values()){for(const x of [clampX(c.cx-R-b.x1-1e-5),clampX(c.cx+R-b.x0+1e-5)])for(const y of [ymin,ymax])offsets.push([x,y]);for(const y of [clampY(c.cy-R-b.y1-1e-5),clampY(c.cy+R-b.y0+1e-5)])for(const x of [xmin,xmax])offsets.push([x,y]);}
+   for(const b of owners.values()){
+    for(const x of [clampX(c.cx-R-b.x1-1e-5),clampX(c.cx+R-b.x0+1e-5)])for(const y of [ymin,ymax])offsets.push([x,y]);
+    for(const y of [clampY(c.cy-R-b.y1-1e-5),clampY(c.cy+R-b.y0+1e-5)])for(const x of [xmin,xmax])offsets.push([x,y]);
+    // A rectangle can also clear the circle at a diagonal corner. These are
+    // candidate positions only; every owner is still checked by A.clear.
+    for(const sx of [-1,1])for(const sy of [-1,1])offsets.push([clampX(c.cx+sx*(R+1e-5)*Math.SQRT1_2-(sx>0?b.x0:b.x1)),clampY(c.cy+sy*(R+1e-5)*Math.SQRT1_2-(sy>0?b.y0:b.y1))]);
+   }
    for(const offset of new Map(offsets.map(o=>[o.join(','),o])).values()){
     const polygons=[];let safe=true;
     for(const p of partSupports){const b={x0:Math.max(0,p.bounds.x0+offset[0]),x1:Math.min(W,p.bounds.x1+offset[0]),y0:Math.max(0,p.bounds.y0+offset[1]),y1:Math.min(H,p.bounds.y1+offset[1])};if(b.x0>=b.x1||b.y0>=b.y1)continue;const polygon=rectangle(b);if(!A.clear([polygon],c,domain.pad)){safe=false;break;}polygons.push(polygon);}
