@@ -15303,7 +15303,7 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   J.assertPlanOutputSupported(plan);
   if(short)project=J.shortExportProject(project,short);
   if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){if(!await J.placement.finalFontsCurrent(plan,project.lyrics))await J.ensureFonts(project.lyrics+plan.cuts.map(c=>c.text||'').join('')+J.drawingText(plan),J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
-  if(plan.circleAvoidanceStatus?.status==='partial')onWarning?.(plan.circleAvoidanceStatus);
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)onWarning?.(plan.circleAvoidanceStatus);
   if (J.pauseAllVideos) J.pauseAllVideos();
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
   J.mediaTransitionFrame = null;
@@ -15417,7 +15417,7 @@ class ZipWriter {
 J.exportPNGZip = async ({ plan, project, transparent, onProgress, onWarning, signal, every = 1 }) => {
   J.assertPlanOutputSupported(plan);
   if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){if(!await J.placement.finalFontsCurrent(plan,project.lyrics))await J.ensureFonts(project.lyrics+plan.cuts.map(c=>c.text||'').join('')+J.drawingText(plan),J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
-  if(plan.circleAvoidanceStatus?.status==='partial')onWarning?.(plan.circleAvoidanceStatus);
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)onWarning?.(plan.circleAvoidanceStatus);
   if (J.pauseAllVideos) J.pauseAllVideos();
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
@@ -15427,7 +15427,7 @@ J.exportPNGZip = async ({ plan, project, transparent, onProgress, onWarning, sig
   const R = new J.Renderer();
   const fps = plan.fps, total = Math.max(1, Math.round(plan.duration * fps));
   const zip = new ZipWriter();
-  if(plan.circleAvoidanceStatus?.status==='partial')zip.add('circle-avoidance.json',new TextEncoder().encode(JSON.stringify(plan.circleAvoidanceStatus)));
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)zip.add('circle-avoidance.json',new TextEncoder().encode(JSON.stringify(plan.circleAvoidanceStatus)));
   const scale = w / plan.W;
   for (let i = 0; i < total; i += every) {
     if (signal && signal.aborted) throw new Error('キャンセルしました');
@@ -50740,7 +50740,9 @@ const sourceCuts=new WeakMap(),sourceOrigins=new WeakMap(),providers=new Map(),f
 const providerFor=(plan,cut,{noPost=false}={})=>{if(fixedCenters.has(cut.layout))return null;const p=providers.get(cut.layout);return p&&!(p.provider.legacyNoPost&&!noPost&&!cut.simpleCircleRecipe?.[p.key])&&p.provider.handles(plan,cut)?p:null;};
 function registerProvider(key,provider){for(const id of provider.ids){if(fixedCenters.has(id))continue;if(providers.has(id))throw Error('Duplicate circle provider '+id);providers.set(id,{key,provider});}}
 const intervals=(plan,cut)=>{const h=J.stepDur(plan.fx,plan.fps),start=Math.min(cut.start,cut.renderStart??cut.start)-h,end=Math.max(cut.end,cut.displayEnd??cut.end)+.6+2*h+1.6/24+.07;return {start,end,regions:(plan.lyricAvoidanceIndex?.regions||[]).filter((r,i)=>r.start<end&&Math.min(r.end??plan.lyricAvoidanceIndex.regions[i+1]?.start??plan.duration,plan.duration)>start)};};
-const targets=(plan,cut,{noPost=false}={})=>plan.layerVisibility?.lyrics!==false&&((['center','vcols','headlineDeck'].includes(cut.layout)||cut.layout==='bulbs'&&A.bulbsSimple?.handles(plan,cut))||providerFor(plan,cut,{noPost})||cut.layout==='numbered'&&cut.params.variant==='cols')&&(!(cut.layout==='vcols'&&cut.params.variant==='repeat'))&&(sourceCuts.get(plan)?.has(cut)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
+const ordinaryLyric=cut=>cut.line>=0&&!fixedCenters.has(cut.layout)&&!!J.LAYOUTS[cut.layout]&&!J.LAYOUTS[cut.layout].special&&!J.LAYOUTS[cut.layout].custom&&!J.LAYOUTS[cut.layout].customDefinition&&!['bulbs','burst','dominoes'].includes(cut.layout);
+const legacyTarget=(plan,cut,{noPost=false}={})=>['center','vcols','headlineDeck'].includes(cut.layout)||cut.layout==='bulbs'&&A.bulbsSimple?.handles(plan,cut)||providerFor(plan,cut,{noPost})||cut.layout==='numbered'&&cut.params.variant==='cols';
+const targets=(plan,cut,{noPost=false}={})=>plan.layerVisibility?.lyrics!==false&&(legacyTarget(plan,cut,{noPost})||ordinaryLyric(cut))&&(sourceCuts.get(plan)?.has(cut)||A.placementCutPreserved86cm(plan,cut)===false)&&intervals(plan,cut).regions.length>0;
 const origin=(plan,cut)=>plan.cuts.includes(cut)?sourceOrigins.get(plan)?.get(cut)||null:null;
 const preparedCut=(plan,cut)=>sourceCuts.get(plan)?.has(cut)===true&&plan.cuts.includes(cut);
 const activeCut=(plan,c,t)=>{const r=intervals(plan,c);return targets(plan,c)&&t>=r.start&&t<r.end;};
@@ -50751,9 +50753,14 @@ const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];
 const SUPPORT_SIGMA=6,MAX_GLYPHS=256,MAX_PAINTS=8192;
 const overlayEvents=new Set(['invert','flash','halftone','duotone','bandInvert','lightRays','anamorphic','tvStatic','dustScratches','focusLines','speedLines','starGlint','colorBars','negativeRing']);
 const cameraIds=['push','panL','panR','dutch','dollyIn','beatPunch','pullOut','tiltUp','tiltDown','driftDiag','rackFocus','pendulumSway','bounce'];
-function eventPolicy(plan,cut){const r=intervals(plan,cut),expanded=!['center','vcols','numbered','headlineDeck','bulbs'].includes(cut.layout)&&(providerFor(plan,cut)||A.sourceFormulaCircle?.handles(plan,cut)||A.nativeBlockCircle?.handles(plan,cut)),events=(plan.events||[]).filter(e=>e.t<r.end&&(e.dur==null||e.t+e.dur>r.start)),unsupported=events.filter(e=>!['chroma','shake','rgbSplit'].includes(e.type)&&!(expanded&&(['slice','block','zoom'].includes(e.type)||overlayEvents.has(e.type)))).map(e=>e.type);return {events,unsupported};}
+// drawCut's native area clip is established before the content/camera matrix.
+// Every layout/decor paint remains inside that clip for these stock cameras;
+// the later rackFocus layer blur is included separately by prepareViewport.
+function viewportAllowed(plan,cut){return !['bulbs','burst','dominoes','tiles'].includes(cut.layout)&&A.centerCircle?.viewportHandles(cut)&&cameraIds.includes(cut.cam);}
+function centerHoldInterval(plan,cut){const rc=J.lyricRenderCut(cut);if(!viewportAllowed(plan,cut)||!ordinaryLyric(cut)||!Number.isFinite(rc.inDur)||!Number.isFinite(rc.outDur)||!Number.isFinite(rc.dur))return null;const enter=J.ENTER[rc.enter]||J.ENTER.cut,exit=J.EXIT[rc.exit]||J.EXIT.cut,start=rc.start+(enter===J.ENTER.cut&&cut.layout!=='type'?0:Math.max(.01,rc.inDur)),end=rc.start+rc.dur-(exit===J.EXIT.cut?0:rc.outDur);if(end-start<.04)return null;const step=Math.max(J.stepDur(plan.fx,plan.fps),...(plan.cuts||[]).map(c=>J.stepDur(c.effectFx||plan.fx,plan.fps)));return {native:{start,end},real:{start:Math.max(0,start-step),end:end+step+1.6/24},step};}
+function eventPolicy(plan,cut,range=null){const r=range||intervals(plan,cut),expanded=!['center','vcols','numbered','headlineDeck','bulbs'].includes(cut.layout)&&(providerFor(plan,cut)||A.sourceFormulaCircle?.handles(plan,cut)||A.nativeBlockCircle?.handles(plan,cut)),boundedPost=A.centerCircle?.handles(cut)||viewportAllowed(plan,cut),events=(plan.events||[]).filter(e=>e.t<r.end&&(e.dur==null||e.t+Math.max(e.dur,1/plan.fps)>r.start)),unsupported=events.filter(e=>!['chroma','shake','rgbSplit'].includes(e.type)&&!(boundedPost&&['slice','block','zoom','splitSlide','whipBlur','zoomPunch','heartbeat'].includes(e.type))&&!(expanded&&(['slice','block','zoom'].includes(e.type)||overlayEvents.has(e.type)))).map(e=>e.type);return {events,unsupported};}
 const replacementInk=new Map();let replacementRevision=-1;
-function localEnvelope(item,cut){
+function localEnvelope(item,cut,plan=null){
  const n=J.layoutText(item).length;if(n>MAX_GLYPHS)throw Object.assign(Error('Glyph budget'),{code:'UNSUPPORTED_GLYPH_BUDGET'});
  const paints=3*(8*n+16);if(paints>MAX_PAINTS)throw Object.assign(Error('Paint budget'),{code:'UNSUPPORTED_PAINT_BUDGET'});
  const cursor=cut.enter==='cursorSweep',resolve=cut.enter==='resolve',inkBleed=cut.enter==='inkBleed',neon=cut.enter==='neonOn',magnet=cut.enter==='magnet',exit=cut.exit==='overexposeOut',flash=cut.hold==='flashBox'&&!item.noHold,z=item.size,rest={...item,x:0,y:0,blur:0,shadow:null,extrude:null,rot:0},box=J.itemBox(rest),points=[],steady=[],light=[];
@@ -50770,22 +50777,24 @@ function localEnvelope(item,cut){
  const b=A.bounds([points]),filter=inkBleed?Math.min(36,z*.16):0,shadow=Math.max(inkBleed?z*.3:0,neon?Math.min(80,z*.32):0,exit?z*.9:0),d=!item.plain&&['hardShadow','outlineOffset'].includes(cut.treat)?z*1.07*cut.treatP.d:0,ox=d*Math.abs(cut.treatP?.dir?.[0]||0),oy=d*Math.abs(cut.treatP?.dir?.[1]||0);
  // This deliberately adds filter and shadow tails, including enter/exit overlap.
  const separated=(cut.inDur??0)+(cut.outDur??0)<=cut.dur,entryTail=filter+(inkBleed?z*.3/2:neon?Math.min(80,z*.32)/2:0),exitTail=exit?z*.9/2:0,blurPad=SUPPORT_SIGMA*(separated?Math.max(entryTail,exitTail):filter+shadow/2),pad=(blurPad+2)/Math.min(1,cut.contentScale??1);
- const entryBox=A.bounds([points]),exitBox=A.bounds([steady]),entryPad=(SUPPORT_SIGMA*entryTail+2)/Math.min(1,cut.contentScale??1),exitPad=(SUPPORT_SIGMA*exitTail+2)/Math.min(1,cut.contentScale??1),expand=(b,p)=>rectangle({x0:b.x0-p-ox,y0:b.y0-p-oy,x1:b.x1+p+ox,y1:b.y1+p+oy}),glyphBounds=separated?[expand(entryBox,entryPad),expand(exitBox,exitPad)]:[expand(b,pad)],bounds0=A.bounds([...glyphBounds,...(light.length?[light]:[])]),intrinsic=(6*((item.blur||0)+(item.shadow?.blur||0)/2)+Math.max(Math.abs(item.shadow?.dx||0),Math.abs(item.shadow?.dy||0)))/Math.min(1,cut.contentScale??1),bounds={x0:bounds0.x0-intrinsic,y0:bounds0.y0-intrinsic,x1:bounds0.x1+intrinsic+(cursor&&!item.vertical?z*.3:0),y1:bounds0.y1+intrinsic+(cursor&&item.vertical?z*.3:0)};const body=A.bounds(A.itemGeometry(rest,ID,{pass:'main',scale:1}).polygons),bodyPad=flash?z*.06:0;return {bounds,body:{x0:body.x0-bodyPad,y0:body.y0-bodyPad,x1:body.x1+bodyPad,y1:body.y1+bodyPad},paintBudget:paints,blurPad,glyphs:n};
+ const entryBox=A.bounds([points]),exitBox=A.bounds([steady]),entryPad=(SUPPORT_SIGMA*entryTail+2)/Math.min(1,cut.contentScale??1),exitPad=(SUPPORT_SIGMA*exitTail+2)/Math.min(1,cut.contentScale??1),expand=(b,p)=>rectangle({x0:b.x0-p-ox,y0:b.y0-p-oy,x1:b.x1+p+ox,y1:b.y1+p+oy}),glyphBounds=separated?[expand(entryBox,entryPad),expand(exitBox,exitPad)]:[expand(b,pad)],bounds0=A.bounds([...glyphBounds,...(light.length?[light]:[])]),intrinsic=(6*((item.blur||0)+(item.shadow?.blur||0)/2)+Math.max(Math.abs(item.shadow?.dx||0),Math.abs(item.shadow?.dy||0)))/Math.min(1,cut.contentScale??1),bounds={x0:bounds0.x0-intrinsic,y0:bounds0.y0-intrinsic,x1:bounds0.x1+intrinsic+(cursor&&!item.vertical?z*.3:0),y1:bounds0.y1+intrinsic+(cursor&&item.vertical?z*.3:0)};const body=A.bounds(A.itemGeometry(rest,ID,{pass:'main',scale:1}).polygons),bodyPad=flash?z*.06:0,local={bounds,body:{x0:body.x0-bodyPad,y0:body.y0-bodyPad,x1:body.x1+bodyPad,y1:body.y1+bodyPad},paintBudget:paints,blurPad,glyphs:n};return plan&&A.centerCircle?.handles(cut)?A.centerCircle.envelope(item,cut,plan,local):local;
 }
 function stageEnvelope(local,item,plan,cut,bodyOnly=false){
  const scale=local.renderScale,fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style,W=plan.W,H=plan.H,K=J.clamp((fx.motion??.7)*1.25,0,1.25),motion=cut.motionScale??1,base=cut.contentScale??1,P=cut.camP||{},camScale=cut.cam==='bounce'?(P.a||.07)*K:cut.cam==='pendulumSway'?.02:cut.cam==='rackFocus'?.01:cut.cam==='dollyIn'?Math.min(.14,(P.a||.1)*K):cut.cam==='beatPunch'?(P.a||.035)*K:cut.cam==='pullOut'?(P.a||.07)*K:cut.cam==='tiltDown'?.035:cut.cam==='driftDiag'?.02+.025*K:.03*Math.max(1,K),maxScale=1+camScale,minScale=cut.cam==='pullOut'?1-(P.a||.07)*K:cut.cam==='rackFocus'?1-.02*K:cut.cam==='bounce'?1-camScale:1;
  const phi=Math.abs(P.a||2.2)*K*J.DEG,camBlur=!cut.sourceExcludeCameraBlur&&cut.cam==='rackFocus'?6*(P.b||6.5)*Math.min(1,K)*motion:0;
  const camX=cut.cam==='pendulumSway'?W*.62*Math.sin(phi)*motion:cut.cam==='driftDiag'?W*.0175*K*Math.abs(P.dx||1)*motion:0,camY=cut.cam==='pendulumSway'?W*.62*(1-Math.cos(phi))*motion:cut.cam==='rackFocus'?H*.004*motion:cut.cam==='bounce'?H*.012*K*motion:cut.cam==='tiltUp'?H*Math.abs(P.a||.025)*K*motion:cut.cam==='tiltDown'?H*Math.abs(P.a||.028)*K*motion*1.2:cut.cam==='driftDiag'?H*.015*K*Math.abs(P.dy||1)*motion:0;
- const points=[],b=bodyOnly?local.body:local.bounds;for(const x of [b.x0+item.x,b.x1+item.x])for(const y of [b.y0+item.y,b.y1+item.y])for(const scale of [base*minScale,base*maxScale])points.push([W/2+(x-W/2)*scale,H/2+(y-H/2)*scale]);
- const box=A.bounds([points]),chroma=(fx.chroma??.7)*(st.ghost??1)*(1+(plan.events||[]).filter(e=>e.type==='chroma').reduce((a,e)=>a+e.amp,0)+.9),shake=(plan.events||[]).filter(e=>e.type==='shake').reduce((a,e)=>a+e.amp,0),rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0),turn=['dutch','pendulumSway'].includes(cut.cam)?Math.max(...points.map(p=>Math.hypot(p[0]-W/2,p[1]-H/2)))*2*Math.sin(cut.cam==='pendulumSway'?phi/2:2.5*J.DEG):0;
+ const points=[],b=A.centerCircle?.handles(cut)?A.centerCircle.stageBounds(local,item,plan,cut,bodyOnly):bodyOnly?local.body:local.bounds;for(const x of [b.x0+item.x,b.x1+item.x])for(const y of [b.y0+item.y,b.y1+item.y])for(const scale of [base*minScale,base*maxScale])points.push([W/2+(x-W/2)*scale,H/2+(y-H/2)*scale]);
+ const box=A.bounds([points]),chromaBase=local.centerMainBounds?Math.max((plan.fx.chroma??.7)*(plan.style.ghost??1),...(plan.cuts||[]).map(c=>((c.effectFx||plan.fx).chroma??.7)*((c.effectStyle||plan.style).ghost??1))):(fx.chroma??.7)*(st.ghost??1),chroma=chromaBase*(1+(plan.events||[]).filter(e=>e.type==='chroma').reduce((a,e)=>a+e.amp,0)+.9),shake=(plan.events||[]).filter(e=>e.type==='shake').reduce((a,e)=>a+e.amp,0),rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0),turn=['dutch','pendulumSway'].includes(cut.cam)?Math.max(...points.map(p=>Math.hypot(p[0]-W/2,p[1]-H/2)))*2*Math.sin(cut.cam==='pendulumSway'?phi/2:2.5*J.DEG):0;
  if(bodyOnly){const dx=camX+2/scale+turn+(cut.cam==='panL'||cut.cam==='panR'?W*Math.abs(P.a||.022)*K*motion:0)+16*shake*H/1080*motion,dy=camY+2/scale+turn+11*shake*H/1080*motion+(cut.cam==='dollyIn'?H*.008*K:cut.cam==='beatPunch'?H*.004*K:0);return rectangle({x0:box.x0-dx,y0:box.y0-dy,x1:box.x1+dx,y1:box.y1+dy});}
  const cw=Math.round(W*scale),sw=Math.max(1,Math.round(cw/4)),upscale=cw/sw,rasterPad=2/scale,resamplePad=2*upscale/scale;
  const dx=camBlur+camX+rasterPad+turn+(3.4*chroma+16*shake)*H/1080*motion+W*.016*rgb+resamplePad+(cut.cam==='panL'||cut.cam==='panR'?W*Math.abs(P.a||.022)*K*motion:0),dy=camBlur+camY+rasterPad+turn+(1.9*chroma+11*shake)*H/1080*motion+H*.004*rgb+resamplePad+(cut.cam==='dollyIn'?H*.008*K:cut.cam==='beatPunch'?H*.004*K:0);
  // Existing quarter-size post bloom: sigma is max(2,round(width/4/160))*4.
- const bloom=!['bulbs','burst'].includes(cut.layout)||(st.glow??.6)*.5*(fx.texture??.6)>.05?SUPPORT_SIGMA*Math.max(2,Math.round(sw/160))*upscale/scale:0;
- const post=postMotion(plan,W,H);return rectangle({x0:box.x0-dx-bloom-post.x,y0:box.y0-dy-bloom-post.y,x1:box.x1+dx+bloom+post.x,y1:box.y1+dy+bloom+post.y});
+ const glow=local.centerMainBounds?(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05):(st.glow??.6)*.5*(fx.texture??.6)>.05,bloom=!['bulbs','burst'].includes(cut.layout)||glow?SUPPORT_SIGMA*Math.max(2,Math.round(sw/160))*upscale/scale:0;
+ const post=postMotion(plan,W,H,scale,cut);return rectangle({x0:box.x0-dx-bloom-post.x,y0:box.y0-dy-bloom-post.y,x1:box.x1+dx+bloom+post.x,y1:box.y1+dy+bloom+post.y});
 }
-function postMotion(plan,W,H){let x=0,y=0;for(const e of plan.events||[]){if(e.type==='slice')x+=W*.06*Math.abs(e.amp);if(e.type==='block'){x+=W*.08;y+=H*.04;}if(e.type==='zoom'){x+=W*.066*Math.abs(e.amp);y+=H*.066*Math.abs(e.amp);}}return {x,y};}
+// Zoom remains active for max(dur,1/fps), while native k divides by
+// max(dur,.001). Bound both endpoints of |1-k|, including short-event reversal.
+function postMotion(plan,W,H,scale=1,cut=null,activeRange=null){const range=activeRange||(cut?intervals(plan,cut):null),events=(plan.events||[]).filter(e=>!range||e.t<range.end&&(e.dur==null||e.t+Math.max(e.dur,1/plan.fps)>range.start)),times=events.map(e=>e.t);if(range)times.push(range.start);let x=0,y=0;for(const t of times){let dx=0,dy=0;for(const e of events){if(e.t>t||e.dur!=null&&e.t+Math.max(e.dur,1/plan.fps)<=t)continue;const a=J.clamp(e.amp??1,.3,1.6),guard=2/scale;if(e.type==='slice')dx+=W*.06*Math.abs(e.amp);if(e.type==='block'){dx+=W*.08;dy+=H*.04;}if(e.type==='zoom'){const dur=e.dur??0,kMax=Math.max(dur,1/plan.fps)/Math.max(dur,1e-3),sweep=Math.max(1,kMax-1);dx+=W*.066*Math.abs(e.amp)*sweep;dy+=H*.066*Math.abs(e.amp)*sweep;}if(e.type==='splitSlide'){dx+=W*.09*a+guard;dy+=H*.10*a+guard;}if(e.type==='whipBlur'){dx+=W*.045*a+guard;dy+=W*.045*a+guard;}if(e.type==='zoomPunch'){dx+=W*.05*J.clamp(a,.5,1.3)+guard;dy+=H*.05*J.clamp(a,.5,1.3)+guard;}if(e.type==='heartbeat'){dx+=W*.015*J.clamp(a,.5,1.2)+guard;dy+=H*.015*J.clamp(a,.5,1.2)+guard;}}x=Math.max(x,dx);y=Math.max(y,dy);}return {x,y};}
 // One direction/region/placement policy shared by formula and clipped compositions.
 function domain(plan,cut,region,project=stageEnvelope){
  const W=plan.W,H=plan.H,c={cx:region.center.x*W,cy:region.center.y*H,r:region.radius*Math.min(W,H)},pad=Math.max(2,.005*Math.min(W,H))+1,dx=2*c.cx/W-1,dy=2*c.cy/H-1,regions=[{direction:'down',score:-dy,x0:0,y0:c.cy+c.r+pad,x1:W,y1:H},{direction:'up',score:dy,x0:0,y0:0,x1:W,y1:c.cy-c.r-pad},{direction:'right',score:-dx,x0:c.cx+c.r+pad,y0:0,x1:W,y1:H},{direction:'left',score:dx,x0:0,y0:0,x1:c.cx-c.r-pad,y1:H}];
@@ -50800,7 +50809,7 @@ function domain(plan,cut,region,project=stageEnvelope){
 // replacement for the source geometry needed by other candidates.
 function nativeViewportIdentity(plan,cut,scale,region,previous){
  const a=cut.area;if(!a||a.angle||a.x<0||a.y<0||a.x+a.w>1||a.y+a.h>1)return null;
- const W=plan.W,H=plan.H,fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,bloom=(st.glow??.6)*.5*(fx.texture??.6)>.05?6*Math.max(2,Math.round(quarter/160))*up/scale:0,K=J.clamp((fx.motion??.7)*1.25,0,1.25),cameraBlur=cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,K)*(cut.motionScale??1):0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((v,e)=>v+J.clamp(e.amp??1,.3,1.6),0),post=postMotion(plan,W,H),pad=bloom+cameraBlur+(2+2*up)/scale,b={x0:Math.max(0,a.x*W-pad-post.x-W*.016*rgb),y0:Math.max(0,a.y*H-pad-post.y-H*.004*rgb),x1:Math.min(W,(a.x+a.w)*W+pad+post.x+W*.016*rgb),y1:Math.min(H,(a.y+a.h)*H+pad+post.y+H*.004*rgb)},domain=domainForNative(plan,cut,region),maxScore=Math.max(...domain.regions.map(r=>r.score));
+ const W=plan.W,H=plan.H,fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,bloom=(st.glow??.6)*.5*(fx.texture??.6)>.05?6*Math.max(2,Math.round(quarter/160))*up/scale:0,K=J.clamp((fx.motion??.7)*1.25,0,1.25),cameraBlur=cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,K)*(cut.motionScale??1):0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((v,e)=>v+J.clamp(e.amp??1,.3,1.6),0),post=postMotion(plan,W,H,scale,cut),pad=bloom+cameraBlur+(2+2*up)/scale,b={x0:Math.max(0,a.x*W-pad-post.x-W*.016*rgb),y0:Math.max(0,a.y*H-pad-post.y-H*.004*rgb),x1:Math.min(W,(a.x+a.w)*W+pad+post.x+W*.016*rgb),y1:Math.min(H,(a.y+a.h)*H+pad+post.y+H*.004*rgb)},domain=domainForNative(plan,cut,region),maxScore=Math.max(...domain.regions.map(r=>r.score));
  const fits=domain.regions.filter(r=>r.score===maxScore&&b.x0>=r.x0&&b.y0>=r.y0&&b.x1<=r.x1&&b.y1<=r.y1&&A.clear([rectangle(b)],domain.circle,domain.pad));if(!fits.length)return null;const old=previous?.policy===policy?previous.diagnostics.find(d=>d.cut===cut.index&&d.status==='safe'):null,fitness=r=>Math.abs(Math.log(((b.x1-b.x0)/(b.y1-b.y0))/((r.x1-r.x0)/(r.y1-r.y0))));fits.sort((a,b)=>fitness(a)-fitness(b)||Number(b.direction===old?.direction)-Number(a.direction===old?.direction));const r=fits[0];return {diagnostic:{cut:cut.index,status:'safe',method:'unchanged-native-viewport',direction:r.direction,score:r.score,region:r,envelope:rectangle(b),nativeSourcePreserved:true,allClockGeneration:false},recipe:{nativeIdentity:true}};
 }
 const domainForNative=domain;
@@ -50811,15 +50820,20 @@ function prepare(plan,previous=null,{scale=1,noPost=false}={}){
   let reason=null;
   const fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style,extension=providerFor(plan,original,{noPost}),formulaSource=!!extension||A.sourceFormulaCircle?.handles(plan,original)||A.nativeBlockCircle?.handles(plan,original);
   const numeric=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fx.motion??.7,fx.chroma??.7,st.ghost??1,cut.camP?.a??0,cut.camP?.dir??1,cut.treatP?.d??0,...(cut.treatP?.dir||[]),...Object.values(cut.camP||{}).filter(v=>typeof v==='number'),...Object.values(cut.params).filter(v=>typeof v==='number')];if(!numeric.every(Number.isFinite)||plan.W<=0||plan.H<=0||(cut.contentScale??1)<=0||(cut.motionScale??1)<0||(cut.motionScale??1)>1||(fx.motion??.7)<0||(fx.motion??.7)>1||(fx.chroma??.7)<0||(st.ghost??1)<0||cut.text.length===0||(cut.camP?.a??0)<0||Math.abs(cut.camP?.dir??1)>1||(cut.treatP?.d??0)<0)reason='UNSUPPORTED_PARAMETER_RANGE';
-  if(!['cut','flicker','inkBleed','magnet',...(['bulbs','burst'].includes(cut.layout)||formulaSource?['neonOn','cursorSweep','resolve']:[])].includes(cut.enter)||!['cut','overexposeOut'].includes(cut.exit)||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)||!['none','hardShadow',...(formulaSource?['outlineOffset','kerningWide']:[])].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!(formulaSource)&&!['verticalStrip','dataColumns','sonarArcs'].includes(d.id)&&!(['headlineDeck','bulbs','burst','vcols'].includes(cut.layout)&&d.id==='romajiLine'))||cut.drawing||cut.effectsOnly||J.activeMask?.(cut)||!(formulaSource?cameraIds:['push','panL','panR','dutch','dollyIn','beatPunch']).includes(cut.cam))reason='UNSUPPORTED_MOTION';
-  const post=eventPolicy(plan,original);if(post.unsupported.length||cut.trans&&cut.trans!=='none')reason='UNSUPPORTED_EFFECT';
-  if(cut.layout==='center'&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text))reason='UNSUPPORTED_AUXILIARY';
+  const centerSupport=A.centerCircle?.handles(cut),viewportSupport=viewportAllowed(plan,cut),holdRange=viewportSupport?centerHoldInterval(plan,cut):null;
+  const motionUnsupported=!['cut','flicker','inkBleed','magnet',...(['bulbs','burst'].includes(cut.layout)||formulaSource?['neonOn','cursorSweep','resolve']:[])].includes(cut.enter)&&!centerSupport||!['cut','overexposeOut'].includes(cut.exit)&&!centerSupport||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)&&!centerSupport||!['none','hardShadow',...(formulaSource?['outlineOffset','kerningWide']:[])].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!(formulaSource)&&!['verticalStrip','dataColumns','sonarArcs'].includes(d.id)&&!(['headlineDeck','bulbs','burst','vcols'].includes(cut.layout)&&d.id==='romajiLine')&&!(centerSupport&&d.id==='memphis'))||!(formulaSource?cameraIds:['push','panL','panR','dutch','dollyIn','beatPunch']).includes(cut.cam);
+  if(!viewportSupport&&motionUnsupported||cut.drawing||cut.effectsOnly||J.activeMask?.(cut))reason='UNSUPPORTED_MOTION';
+  const post=eventPolicy(plan,original,holdRange?.real);if(post.unsupported.length||cut.trans&&cut.trans!=='none')reason='UNSUPPORTED_EFFECT';
+  if(cut.layout==='center'&&!centerSupport&&!viewportSupport&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text))reason='UNSUPPORTED_AUXILIARY';
+  if(cut.layout==='vcols'&&cut.params.variant==='repeat'&&!viewportSupport)reason='UNSUPPORTED_VCOLS_REPEAT';
+  if(!viewportSupport&&!legacyTarget(plan,original,{noPost}))reason='UNSUPPORTED_SOURCE_VIEWPORT';
   const regions=intervals(plan,original).regions;
   if(regions.length!==1)reason='UNSUPPORTED_REGION_CHANGE';
   if(cut.layout==='numbered'&&((cut.decor||[]).length||cut.params.chunks?.length>3))reason='UNSUPPORTED_NUMBERED_COLUMNS';
   if(cut.layout==='bulbs'&&(cut.decor||[]).some(d=>d.id!=='romajiLine'))reason='UNSUPPORTED_BULBS_DECOR';
-  if(!reason&&extension?.provider.preflight)reason=extension.provider.preflight(plan,original);
+  if(!reason&&!viewportSupport&&extension?.provider.preflight)reason=extension.provider.preflight(plan,original);
   if(reason){diagnostics.push({cut:cut.index,status:'unsupported',reason,...(post.unsupported.length?{globalEffects:post.unsupported}:{})});continue;}
+  if(viewportSupport){const result=A.centerCircle.prepareViewport(plan,cut,{scale,previous,region:regions[0],holdRange});if(result.recipe){diagnostics.push(result.diagnostic);cut.area=result.area;cut.simpleCircleRecipe={sourceCut:nativeSource,...result.recipe,renderScale:scale,policy};continue;}const auxiliary=cut.layout==='center'&&!centerSupport&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text),newPost=post.events.some(e=>['splitSlide','whipBlur','zoomPunch','heartbeat'].includes(e.type)),legacyPost=holdRange?eventPolicy(plan,original):post,legacyReason=extension?.provider.preflight?.(plan,original);if(motionUnsupported||auxiliary||newPost||legacyPost.unsupported.length||legacyReason||!legacyTarget(plan,original,{noPost})||cut.layout==='vcols'&&cut.params.variant==='repeat'){diagnostics.push(result.diagnostic);continue;}}
   const identity=extension?nativeViewportIdentity(plan,cut,scale,regions[0],previous):null;if(identity){diagnostics.push(identity.diagnostic);cut.simpleCircleRecipe={sourceCut:nativeSource,nativeIdentity:true,renderScale:scale,policy};continue;}
   if(extension){const result=extension.provider.prepare(plan,cut,{scale,previous,region:regions[0],noPost});if(result.recipe?.requiresNoPost&&!noPost){diagnostics.push({cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_POSTPROCESSING',layout:cut.layout,requiresNoPost:true});continue;}diagnostics.push(result.diagnostic);if(result.sceneRecipe){cut.area=result.area??null;cut.simpleCircleRecipe={sourceCut:nativeSource,scene:result.sceneRecipe,renderScale:scale,policy};}else if(result.recipe){cut.area=result.area??null;cut.simpleCircleRecipe={sourceCut:nativeSource,[extension.key]:result.recipe,renderScale:scale,policy};}continue;}
   if(A.nativeBlockCircle?.handles(plan,original)){const result=A.nativeBlockCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=result.area;cut.simpleCircleRecipe={sourceCut:nativeSource,nativeBlock:result.recipe,renderScale:scale,policy};}continue;}
@@ -50840,7 +50854,7 @@ function prepare(plan,previous=null,{scale=1,noPost=false}={}){
    for(const per of new Set(perValues)){
     let text=source;if(!explicit){const rows=[];for(let i=0;i<n;i+=per)rows.push(chars.slice(i,i+per).join(''));text=rows.join('\n');}
     const item={...native,text,x:0,y:0};delete item._lay;delete item._m;
-    const local={...localEnvelope(item,cut),renderScale:scale},b=local.bounds,cx=(b.x0+b.x1)/2,cy=(b.y0+b.y1)/2;
+    const local={...localEnvelope(item,cut,plan),renderScale:scale},b=local.bounds,cx=(b.x0+b.x1)/2,cy=(b.y0+b.y1)/2;
     const next={...item,x:(region.x0+region.x1)/2-cx,y:(region.y0+region.y1)/2-cy};let envelope=stageEnvelope(local,next,plan,cut),box=A.bounds([envelope]);
     // Correct the center once for camera scaling about the stage center.
     next.x+=((region.x0+region.x1-box.x0-box.x1)/2)/(cut.contentScale??1);next.y+=((region.y0+region.y1-box.y0-box.y1)/2)/(cut.contentScale??1);envelope=stageEnvelope(local,next,plan,cut);box=A.bounds([envelope]);measured++;
@@ -50866,6 +50880,7 @@ function prepare(plan,previous=null,{scale=1,noPost=false}={}){
  const resultPlan={...plan,cuts,simpleCircleRequiresNoPost:cuts.some(c=>Object.values(c.simpleCircleRecipe||{}).some(r=>r?.requiresNoPost))};delete resultPlan.placementFinalization;sourceCuts.set(resultPlan,processed);sourceOrigins.set(resultPlan,origins);return {plan:resultPlan,diagnostics,revision:J.metrics.revision||0,elapsedMs:performance.now()-started,renderScale:scale,policy};
 }
 function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
+ if(cut.layout==='center'&&cut.simpleCircleRecipe?.item&&A.centerCircle?.handles(cut))return;
  const source=cut.simpleCircleRecipe.sourceCut;if(source.layout==='numbered'||!(source.decor||[]).some(d=>J.DECOR[d.id]?.layer===layer))return;const env=renderer.makeEnv(ctx,plan,source,sc,options),area=source.area,W=env.W,H=env.H,ax=area?area.x*plan.W:0,ay=area?area.y*plan.H:0,motion=source.motionScale??1,cam=J.CAMERA[source.cam].get(env,source.camP||{}),scale=J.lerp(1,cam.s??1,motion)*(source.contentScale??1);
  ctx.save();try{if(area){ctx.translate(ax+W/2,ay+H/2);ctx.rotate((area.angle||0)*J.DEG);ctx.translate(-ax-W/2,-ay-H/2);ctx.beginPath();ctx.rect(ax,ay,W,H);ctx.clip();}ctx.translate(ax+W/2+(root.x+(cam.x||0))*motion,ay+H/2+(root.y+(cam.y||0))*motion);if(cam.rot)ctx.rotate(cam.rot*J.DEG*motion);ctx.scale(scale,scale);ctx.translate(-W/2,-H/2);ctx.globalCompositeOperation=root.blend;
   if(cut.simpleCircleRecipe.scene){let bb=root.bb??null;if(source.layout==='billboard'){const G=A.billboardNativeGeometry81,g=G.initial(env),it=J.animateMainItem(env,G.mainItem(env,g,G.mainSize(env,g)));if(it)bb=J.itemBox(it);}for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,bb,d);}return;}
@@ -50876,9 +50891,518 @@ function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
   for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,bb,d);}
  }finally{ctx.restore();}
 }
-function outputPlan(plan,{scale=1,noPost=false}={}){if(!plan.cuts.some(c=>targets(plan,c,{noPost})))return plan;const prepared=prepare(plan,null,{scale,noPost}),failed=prepared.diagnostics.find(d=>d.status==='insufficient-space');if(failed)throw Object.assign(Error(J.mediaLabel('この条件では回避配置を出力できません。円の位置・サイズや演出を変更してください。','Avoidance cannot be exported for these conditions. Change the circle position, size or effects.')),{code:'SIMPLE_CIRCLE_'+failed.status.toUpperCase().replaceAll('-','_'),details:failed});const unsupported=prepared.diagnostics.filter(d=>d.status==='unsupported');for(const d of unsupported){const cut=prepared.plan.cuts.find(c=>c.index===d.cut),legacy=origin(prepared.plan,cut);if(cut.fullStagePlacement&&cut.placementTrajectory&&legacy)A.validateFinal(legacy.plan);}prepared.plan.circleAvoidanceStatus={status:unsupported.length?'partial':'applied',noPost,unsupportedCuts:unsupported.map(d=>d.cut),diagnostics:prepared.diagnostics};return prepared.plan;}
-A.simpleCircle=Object.freeze({targets,active,activeCut,preparedCut,origin,domain,nativeViewportIdentity,eventPolicy,cameraIds,registerProvider,prepare,drawDecor,outputPlan,itemEnvelope:localEnvelope,stageEnvelope,postMotion,policy});
-for(const name of ['center','vcols']){const render=J.LAYOUTS[name].render;J.LAYOUTS[name].render=function(env){const recipe=env.cut.simpleCircleRecipe;if(!recipe?.item)return render(env);return J.mainDraw(env,{...recipe.item,color:env.cut.params.accent?env.sc.accent:env.sc.fg});};}
+function outputPlan(plan,{scale=1,noPost=false}={}){if(!plan.cuts.some(c=>targets(plan,c,{noPost})))return plan;const prepared=prepare(plan,null,{scale,noPost}),failed=prepared.diagnostics.find(d=>d.status==='insufficient-space');if(failed)throw Object.assign(Error(J.mediaLabel('この条件では回避配置を出力できません。演出や歌詞を変更するか、中央回避をオフにしてください。','Avoidance cannot be exported for these conditions. Change the effect or lyrics, or turn off center avoidance.')),{code:'SIMPLE_CIRCLE_'+failed.status.toUpperCase().replaceAll('-','_'),details:failed});const unsupported=prepared.diagnostics.filter(d=>d.status==='unsupported'),holdOnly=prepared.diagnostics.filter(d=>d.status==='safe'&&d.safety==='safe-hold');for(const d of unsupported){const cut=prepared.plan.cuts.find(c=>c.index===d.cut),legacy=origin(prepared.plan,cut);if(cut.fullStagePlacement&&cut.placementTrajectory&&legacy)A.validateFinal(legacy.plan);}prepared.plan.circleAvoidanceStatus={status:unsupported.length?'partial':'applied',safety:unsupported.length?'partial':holdOnly.length?'safe-hold':'all-native-clocks',holdOnlyCuts:holdOnly.map(d=>d.cut),noPost,unsupportedCuts:unsupported.map(d=>d.cut),diagnostics:prepared.diagnostics};return prepared.plan;}
+A.simpleCircle=Object.freeze({targets,active,activeCut,preparedCut,origin,domain,nativeViewportIdentity,eventPolicy,cameraIds,registerProvider,prepare,drawDecor,outputPlan,itemEnvelope:localEnvelope,stageEnvelope,postMotion,centerHoldInterval,policy});
+for(const name of ['center','vcols']){const render=J.LAYOUTS[name].render;J.LAYOUTS[name].render=function(env){const recipe=env.cut.simpleCircleRecipe;if(!recipe?.item)return render(env);if(name==='center'&&A.centerCircle?.handles(env.cut)){for(const d of env.cut.decor||[]){const D=J.DECOR[d.id];if(D?.layer==='back')D.draw(env,null,d);}const bb=A.centerCircle.render(env,recipe.item);for(const d of env.cut.decor||[]){const D=J.DECOR[d.id];if(D?.layer==='front')D.draw(env,bb,d);}return bb;}return J.mainDraw(env,{...recipe.item,color:env.cut.params.accent?env.sc.accent:env.sc.fg});};}
+})();
+
+/* Center composition: retain native attached ink and bound every source clock. */
+(() => {
+'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0];
+const union=(...bs)=>({x0:Math.min(...bs.map(b=>b.x0)),y0:Math.min(...bs.map(b=>b.y0)),x1:Math.max(...bs.map(b=>b.x1)),y1:Math.max(...bs.map(b=>b.y1))});
+const grow=(b,p)=>({x0:b.x0-p,y0:b.y0-p,x1:b.x1+p,y1:b.y1+p});
+const handles=cut=>cut.layout==='center'&&!cut.area&&['cut','flicker','invertBox'].includes(cut.enter)&&['cut','tyStrike'].includes(cut.exit)&&['still','knCounterRock'].includes(cut.hold)&&['none','hardShadow'].includes(cut.treat||'none');
+const trigRange=(a,b,lo,hi)=>{const values=[a*Math.cos(lo)+b*Math.sin(lo),a*Math.cos(hi)+b*Math.sin(hi)],root=Math.atan2(b,a);for(let k=-2;k<=2;k++){const t=root+k*Math.PI;if(t>=lo&&t<=hi)values.push(a*Math.cos(t)+b*Math.sin(t));}return [Math.min(...values),Math.max(...values)];};
+function sourceUnits(item,cut,plan,{holdOnly=false}={}){
+ if(!handles(cut)||(cut.treat||'none')!=='none')return null;
+ const rest={...item,x:0,y:0,_m:null,_lay:null,charFns:[]},lay=J.layoutText(rest),geometry=A.itemGeometry(rest,ID,{pass:'main',scale:1}),m=cut.motionScale??1,units=[],bbs=[];
+ // itemGeometry omits all trim-whitespace; native returned bb omits only the
+ // two source space characters. Keep other whitespace on the full-clip path.
+ if(lay.some(g=>!g.ch.trim()&&g.ch!==' '&&g.ch!=='　'))return null;
+ if(!geometry.glyphs.length)return null;
+ // animateMainItem supplies amt=clamp(...)*(1-pOut), hence 0<=amt<=1.
+ // Evaluate the native hold once at sin=1 to obtain its actual word pivots;
+ // this constructs charFns only, and performs no painting or frame sampling.
+ if(cut.hold==='knCounterRock')J.HOLD.knCounterRock.apply({cut,fx:cut.effectFx||plan.fx,lt:1/(4*.55),ltb:1/(4*.55)},rest,1);
+ const fn=rest.charFns[0];
+ for(const ink of geometry.glyphs){
+  const g=lay.find(g=>g.i===ink.index),gx=(g.x+g.vx)*(item.sx||1),gy=(g.y+g.vy)*(item.sy||1),state=fn?.(g.i,g,lay.N),angle=Math.abs(state?.rot||0)*J.DEG,th=(state?.rot||0)*J.DEG,c=Math.cos(th)-1,s=Math.sin(th),den=c*c+s*s;
+  let px=gx,py=gy;if(den>0){const dx=state.dx||0,dy=state.dy||0;px=gx-(c*dx+s*dy)/den;py=gy-(-s*dx+c*dy)/den;}
+  const vx=gx-px,vy=gy-py,rx=trigRange(vx,-vy,-angle,angle),ry=trigRange(vy,vx,-angle,angle),shiftX=[m*(rx[0]-vx),m*(rx[1]-vx)],shiftY=[m*(ry[0]-vy),m*(ry[1]-vy)];
+  // Strike contracts each glyph's local y toward its own baseline before
+  // rotation. Include that complete segment even for punctuation whose ink
+  // lies wholly on one side of the baseline.
+  const points=[...ink.polygon,...(!holdOnly&&cut.exit==='tyStrike'?ink.polygon.map(([x])=>[x,gy]):[]),[gx,gy]],bounds=[];
+  for(const [x,y]of points){
+   if(m===1){const xRange=trigRange(x-px,-(y-py),-angle,angle),yRange=trigRange(y-py,x-px,-angle,angle);bounds.push({x0:px+xRange[0],x1:px+xRange[1],y0:py+yRange[0],y1:py+yRange[1]});}
+   else{const xRange=trigRange(x-gx,-(y-gy),-angle*m,angle*m),yRange=trigRange(y-gy,x-gx,-angle*m,angle*m);bounds.push({x0:gx+shiftX[0]+xRange[0],x1:gx+shiftX[1]+xRange[1],y0:gy+shiftY[0]+yRange[0],y1:gy+shiftY[1]+yRange[1]});}
+  }
+  const b=union(...bounds);units.push({owner:'center.glyph.'+g.i,kind:'glyph',bounds:{x0:b.x0+item.x,x1:b.x1+item.x,y0:b.y0+item.y,y1:b.y1+item.y}});
+  // Native returned glyph bb ignores character rotation and strike sy shrink.
+  bbs.push({x0:gx+shiftX[0]-g.w*(item.sx||1)/2,x1:gx+shiftX[1]+g.w*(item.sx||1)/2,y0:gy+shiftY[0]-g.h*(item.sy||1)/2,y1:gy+shiftY[1]+g.h*(item.sy||1)/2,leftMax:gx+shiftX[1]-g.w*(item.sx||1)/2,rightMin:gx+shiftX[0]+g.w*(item.sx||1)/2,topMax:gy+shiftY[1]-g.h*(item.sy||1)/2,bottomMin:gy+shiftY[0]+g.h*(item.sy||1)/2});
+ }
+ const bb=union(...bbs),bottomMin=(holdOnly?Math.max:Math.min)(...bbs.map(b=>b.bottomMin)),add=(owner,b)=>units.push({owner,kind:'attached',bounds:{x0:b.x0+item.x,x1:b.x1+item.x,y0:b.y0+item.y,y1:b.y1+item.y}}),z=item.size;
+ if(!holdOnly&&cut.enter==='invertBox')add('center.invertBox',grow(J.itemBox(rest),z*.16));
+ if(!holdOnly&&cut.exit==='tyStrike'){
+  const lines=new Map();for(const g of lay){if(!g.ch.trim())continue;const b={x0:(g.x-g.w/2)*(item.sx||1),x1:(g.x+g.w/2)*(item.sx||1),y0:g.y*(item.sy||1),y1:g.y*(item.sy||1)};lines.set(g.li,lines.has(g.li)?union(lines.get(g.li),b):b);}
+  const lw=Math.max(2.5,z*.07)/2;for(const [li,b]of lines)add('center.strike.'+li,{x0:b.x0-z*.1-lw,x1:b.x1+z*.1+lw,y0:b.y0+z*(item.sy||1)*.04-lw,y1:b.y1+z*(item.sy||1)*.04+lw});
+ }
+ if(cut.params.under){const lw=Math.max(2,z*.03)/2;add('center.under',{x0:bb.x0-lw,x1:bb.x1+lw,y0:bottomMin+z*.14-lw,y1:bb.y1+z*.14+lw});}
+ if(cut.params.sub&&cut.lineText!==cut.text){const st={...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},sub={text:cut.lineText,font:st.fonts.body[0],size:J.clamp(plan.H*.026,16,34),x:0,y:0,track:.22},b=A.bounds(A.itemGeometry(sub,ID,{pass:'main',scale:1}).polygons);add('center.subtitle',{x0:b.x0,x1:b.x1,y0:bottomMin+plan.H*.07+b.y0,y1:bb.y1+plan.H*.07+b.y1});}
+ const ranges=full=>({x0:[bb.x0+item.x,(full?Math.min:Math.max)(...bbs.map(b=>b.leftMax))+item.x],x1:[(full?Math.max:Math.min)(...bbs.map(b=>b.rightMin))+item.x,bb.x1+item.x],y0:[bb.y0+item.y,(full?Math.min:Math.max)(...bbs.map(b=>b.topMax))+item.y],y1:[(full?Math.max:Math.min)(...bbs.map(b=>b.bottomMin))+item.y,bb.y1+item.y]});
+ return {units,glyphBB:{x0:bb.x0+item.x,x1:bb.x1+item.x,y0:bb.y0+item.y,y1:bb.y1+item.y},bbRanges:ranges(holdOnly),bbRangesAny:ranges(false),scope:holdOnly?'native-hold':'all-native-clocks'};
+}
+function envelope(item,cut,plan,local){
+ if(!handles(cut))return local;
+ const rest={...item,x:0,y:0,_m:null,_lay:null},lay=J.layoutText(rest),nominal=J.itemBox(rest),z=item.size;
+ // The native word pivot lies inside the layout glyph-box hull. Its distance
+ // to any glyph corner cannot exceed this hull's diameter. Bounding by the
+ // full hull avoids duplicating the source word segmentation/cache.
+ const boxes=lay.map(g=>{const x=(g.x+g.vx)*(item.sx||1),y=(g.y+g.vy)*(item.sy||1),w=g.w*(item.sx||1),h=g.h*(item.sy||1);return {x0:x-w/2,y0:y-h/2,x1:x+w/2,y1:y+h/2};});
+ const layout=union(nominal,...boxes),ink=union(local.bounds,layout),angle=cut.hold==='knCounterRock'?4*(.4+((cut.effectFx||plan.fx).motion??.7))*J.DEG*(cut.motionScale??1):0;
+ // The ink overhang is included in the radius as well as nominal glyph boxes.
+ const diameter=Math.hypot(ink.x1-ink.x0,ink.y1-ink.y0),rock=2*diameter*Math.sin(angle/2);
+ const glyphBB=grow(layout,rock);let main=grow(ink,rock);
+ if(cut.enter==='invertBox')main=union(main,grow(nominal,z*.16));
+ if(cut.exit==='tyStrike')main=union(main,grow(layout,z*.14+Math.max(2.5,z*.07)/2));
+ let attached=main;
+ if(cut.params.under)attached=union(attached,{x0:glyphBB.x0,y0:glyphBB.y0+z*.14-Math.max(2,z*.03)/2,x1:glyphBB.x1,y1:glyphBB.y1+z*.14+Math.max(2,z*.03)/2});
+ if(cut.params.sub&&cut.lineText!==cut.text){
+  const st={...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},size=J.clamp(plan.H*.026,16,34),sub={text:cut.lineText,font:st.fonts.body[0],size,x:0,y:0,track:.22},b=A.bounds(A.itemGeometry(sub,ID,{pass:'main',scale:1}).polygons);
+  attached=union(attached,{x0:b.x0,y0:glyphBB.y0+plan.H*.07+b.y0,x1:b.x1,y1:glyphBB.y1+plan.H*.07+b.y1});
+ }
+ // All attached source ink, including subtitles, must remain readable in frame.
+ // drawItem's returned bbox describes its glyph boxes only: attached plates,
+ // strike lines, ink overhang and filter tails do not move native decorations.
+ return {...local,bounds:attached,body:attached,centerMainBounds:glyphBB};
+}
+function stageBounds(local,item,plan,cut,bodyOnly=false){
+ let b=bodyOnly?local.body:local.bounds;
+ if(!local.centerMainBounds||!(cut.decor||[]).some(d=>d.id==='memphis'))return b;
+ const W=plan.W,H=plan.H,u=Math.min(W,H)/1080,S=J.clamp(Math.min(W,H)*.036,24*u,44*u),m=local.centerMainBounds;
+ // Native getBB clips incoming glyph boxes to [-.1,1.1] viewport. Bound the
+ // complete possible perimeter, then its native viewport-clamped centers.
+ const main={x0:Math.max(m.x0+item.x,-W*.1),x1:Math.min(m.x1+item.x,W*1.1),y0:Math.max(m.y0+item.y,-H*.1),y1:Math.min(m.y1+item.y,H*1.1)},fallback={x0:W*.35,x1:W*.65,y0:H*.4,y1:H*.6},clampX=x=>J.clamp(x,S*1.6,W-S*1.6),clampY=y=>J.clamp(y,S*1.6,H-S*1.6);
+ // Every shape, at any rotation, fits this disk. outBack(q,2)<=1+32/243;
+ // squiggle radius sqrt(1.3²+.28²) dominates triangles, dots and hatches.
+ const radius=Math.max(Math.hypot(1.3,.28),.8*(1+32/243),Math.SQRT1_2+2.6*u/S*(1+32/243))*S+3.4*u/2+2;
+ // A fresh/nonmonotonic source clock may have no visible glyph bbox yet.
+ // Native getBB then uses centerBB, before it has a resting bbox to remember.
+ const decor=[main,fallback].map(bb=>{const pad=34*u+(bb.y1-bb.y0)*.22;return {x0:clampX(bb.x0-pad)-radius-item.x,y0:clampY(bb.y0-pad)-radius-item.y,x1:clampX(bb.x1+pad)+radius-item.x,y1:clampY(bb.y1+pad)+radius-item.y};});
+ return union(b,...decor);
+}
+function render(env,item){
+ const P=env.cut.params,{W,H,sc}=env,bb=J.mainDraw(env,{...item,color:P.accent?sc.accent:sc.fg});
+ if(bb&&P.sub&&env.cut.lineText!==env.cut.text)env.draw({text:env.cut.lineText,font:env.st.fonts.body[0],size:J.clamp(H*.026,16,34),x:item.x,y:bb.y1+H*.07,track:.22,color:sc.sub,alpha:J.E.outCubic(env.pIn),ghost:false});
+ if(bb&&P.under){const e=J.E.outExpo(env.pIn*1.2-.2),o=J.E.inCubic(env.pOut);if(e>0&&o<1)env.line([[J.lerp(bb.x0,bb.x1,o),bb.y1+item.size*.14],[J.lerp(bb.x0,bb.x1,e),bb.y1+item.size*.14]],sc.accent,Math.max(2,item.size*.03),1);}
+ return bb;
+}
+// An existing native viewport is itself a complete source-output certificate:
+// drawCut (back decor, layout, front decor) executes inside this exact clip.
+// Moving only its origin retains every internal coordinate, size and clock.
+// The caller remains responsible for layout targeting and motion/post preflight.
+const viewportHandles=cut=>!!cut.area&&!(cut.area.angle||0)&&[cut.area.x,cut.area.y,cut.area.w,cut.area.h].every(Number.isFinite)&&cut.area.x>=0&&cut.area.y>=0&&cut.area.w>0&&cut.area.h>0&&cut.area.x+cut.area.w<=1&&cut.area.y+cut.area.h<=1&&!cut.drawing&&!cut.effectsOnly;
+function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null}){
+ const S=A.simpleCircle,activeHold=providedHoldRange||S.centerHoldInterval?.(plan,cut)||null,a=cut.area,W=plan.W,H=plan.H,st=cut.effectStyle||plan.style,fx=cut.effectFx||plan.fx,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter;
+ // The hold-only path retains the native glow and uses a practical 4.5-sigma
+ // support; faint bloom tails beyond that support are not certified.
+ const bloomSigma=activeHold?4.5:6,bloom=((plan.style.glow??.6)*.5*(plan.fx.texture??.6)>.05||(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05))?bloomSigma*Math.max(2,Math.round(quarter/160))*up/scale:0,cameraBlur=cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,J.clamp((fx.motion??.7)*1.25,0,1.25))*(cut.motionScale??1):0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((v,e)=>v+J.clamp(e.amp??1,.3,1.6),0),post=S.postMotion(plan,W,H,scale,cut,activeHold?.real),pad=bloom+cameraBlur+(2+2*up)/scale;
+ const native={x0:a.x*W,y0:a.y*H,x1:(a.x+a.w)*W,y1:(a.y+a.h)*H};let local={bounds:native,body:native,renderScale:scale};
+ let project=(_local,item,_plan,_cut,bodyOnly)=>{const x=bodyOnly?0:pad+W*.016*rgb+post.x,y=bodyOnly?0:pad+H*.004*rgb+post.y;return [[native.x0+item.x-x,native.y0+item.y-y],[native.x1+item.x+x,native.y0+item.y-y],[native.x1+item.x+x,native.y1+item.y+y],[native.x0+item.x-x,native.y1+item.y+y]];};
+ let sourceItem=null,partSupports=null,holdWindow=activeHold;
+ const sourceCut=J.lyricRenderCut?.({...cut,area:null})||{...cut,area:null},centerSource=handles(sourceCut)&&['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)&&(cut.decor||[]).every(d=>d.id==='memphis');
+ if(centerSource){
+  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},env={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc:cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length]},item=J.basicMainItem(env);
+  // Measure the exact native item in its original viewport, including its
+  // original subtitle scale, attached rule and native Memphis coordinates.
+  const ink=S.itemEnvelope(item,sourceCut,sourcePlan),absolute=body=>{const b=stageBounds(ink,item,sourcePlan,sourceCut,body);return {x0:b.x0+item.x,y0:b.y0+item.y,x1:b.x1+item.x,y1:b.y1+item.y};};
+  holdWindow=activeHold;const holdOnly=!!holdWindow;
+  sourceItem={unitSupport:sourceUnits(item,sourceCut,sourcePlan,{holdOnly})};
+  local={bounds:absolute(false),body:absolute(true),renderScale:scale};
+  project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma});
+  if(sourceItem.unitSupport&&A.memphisUnits){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&sourceCut.exit==='cut'&&sourceCut.outDur>0;let complete=true;for(const d of cut.decor||[]){const parts=A.memphisUnits({W:sw,H:sh,P:d,bbRanges:[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges],includeFallback:!holdOnly||cachedPartial,random:J.r});if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+ }
+ if(!centerSource&&holdWindow&&['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)&&['pill','neon','magazine','type','condensed'].includes(cut.layout)){
+  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
+  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):A.basicUnits?.(args);
+  if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+ }
+ const domain=S.domain(plan,{...cut,simpleCircleClip:true},region,project),candidates=[];
+ for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
+ if(!candidates.length&&partSupports){
+  const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]],body=union(...partSupports.map(p=>p.body)),xmin=-body.x0,xmax=W-body.x1,ymin=-body.y0,ymax=H-body.y1,c=domain.circle,R=c.r+domain.pad;
+  if(xmin<=xmax&&ymin<=ymax){
+   const clampX=x=>J.clamp(x,xmin,xmax),clampY=y=>J.clamp(y,ymin,ymax),xs=[xmin,xmax,clampX(0),clampX(c.cx-(body.x0+body.x1)/2)],ys=[ymin,ymax,clampY(0),clampY(c.cy-(body.y0+body.y1)/2)],offsets=[];
+   for(const x of xs)for(const y of ys)offsets.push([x,y]);
+   // Merge owner branches only to schedule candidates. Acceptance retains each
+   // primitive, so empty spaces between native objects remain empty.
+   const owners=new Map();for(const p of partSupports)owners.set(p.owner,owners.has(p.owner)?union(owners.get(p.owner),p.bounds):p.bounds);
+   for(const b of owners.values()){for(const x of [clampX(c.cx-R-b.x1-1e-5),clampX(c.cx+R-b.x0+1e-5)])for(const y of [ymin,ymax])offsets.push([x,y]);for(const y of [clampY(c.cy-R-b.y1-1e-5),clampY(c.cy+R-b.y0+1e-5)])for(const x of [xmin,xmax])offsets.push([x,y]);}
+   for(const offset of new Map(offsets.map(o=>[o.join(','),o])).values()){
+    const polygons=[];let safe=true;
+    for(const p of partSupports){const b={x0:Math.max(0,p.bounds.x0+offset[0]),x1:Math.min(W,p.bounds.x1+offset[0]),y0:Math.max(0,p.bounds.y0+offset[1]),y1:Math.min(H,p.bounds.y1+offset[1])};if(b.x0>=b.x1||b.y0>=b.y1)continue;const polygon=rectangle(b);if(!A.clear([polygon],c,domain.pad)){safe=false;break;}polygons.push(polygon);}
+    if(!safe||!polygons.length)continue;
+    const dx=((body.x0+body.x1)/2+offset[0]-c.cx)/W,dy=((body.y0+body.y1)/2+offset[1]-c.cy)/H,direction=Math.abs(dx)>Math.abs(dy)?dx<0?'left':'right':dy<0?'up':'down',r=domain.regions.find(r=>r.direction===direction);
+    candidates.push({offset,region:r,envelope:rectangle(A.bounds(polygons)),unitEnvelopes:polygons,distance:Math.hypot(offset[0]/W,offset[1]/H)});
+   }
+  }
+ }
+ const old=previous?.policy===S.policy?previous.diagnostics.find(d=>d.cut===cut.index&&d.status==='safe'):null;
+ candidates.sort((a,b)=>b.region.score-a.region.score||a.distance-b.distance||Number(b.region.direction===old?.direction)-Number(a.region.direction===old?.direction));
+ const win=candidates[0];if(!win)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT'}};
+ return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),nativeSourcePreserved:true,sourceArea:{...a},offset:win.offset.slice(),allClockGeneration:false}};
+}
+A.centerCircle=Object.freeze({handles,envelope,stageBounds,render,viewportHandles,prepareViewport,sourceUnits});
+})();
+
+/* Independent source-only proposal for decorB.memphis. No renderer mutation.
+ * API: memphisSupports({W,H,P,bbRanges,includeFallback=true,random})
+ * bbRanges: array of post-getBB envelopes, each {x0:[lo,hi],x1:...,y0:...,y1:...}.
+ * A scalar is an exact coordinate. Include every live text bbox AND every held
+ * exit/cache bbox. These are ranges of bbox EDGES, never one union-bbox treated
+ * as an exact resting box. To provide raw pre-getBB ranges use normalizeBBRange.
+ * Invalid/hidden native input uses held cache or centerBB; fallback is included
+ * by default. Caller must include reachable held caches, including on seeking.
+ * Return individual primitive support rectangles for ALL lt,ltb,pOut clocks.
+ * Uncertain clearOf/visibility predicates never remove a primitive.
+ */
+(() => {
+'use strict';
+const DEG = Math.PI / 180;
+const TYPES = ['squig', 'zig', 'tri', 'dots', 'half', 'hatch'];
+const add = (a,b) => a.map((v,i)=>v+b[i]);
+const mul = (a,k) => a.map(v=>v*k);
+const sub = (a,b) => add(a,mul(b,-1));
+const val = (a,x) => a[0]+x.reduce((s,v,i)=>s+a[i+1]*v,0);
+const clamp = (x,a,b) => Math.min(b,Math.max(a,x));
+const range = x => Array.isArray(x) ? x : [x,x];
+
+// getBB clamps edges, but restores the original pair if clamping collapses it.
+// If collapse is possible, keep both alternatives; never silently drop it.
+function normalizeBBRange(raw,W,H) {
+  const r=Object.fromEntries(['x0','x1','y0','y1'].map(k=>[k,range(raw[k])]));
+  const axis=(a,b,size)=>{
+    const ca=r[a].map(v=>Math.max(v,-size*.1));
+    const cb=r[b].map(v=>Math.min(v,size*1.1));
+    return cb[0]>ca[1] ? [[ca,cb]] : [[ca,cb],[r[a],r[b]]];
+  };
+  const out=[];
+  for(const x of axis('x0','x1',W)) for(const y of axis('y0','y1',H))
+    out.push({x0:x[0],x1:x[1],y0:y[0],y1:y[1]});
+  return out;
+}
+
+// Linear extrema over a box clipped to one perimeter branch. Enumerating active
+// constraints in <=4 dimensions preserves correlation between bbox edges, pad,
+// perimeter and seeded t. Independent interval arithmetic loses that correlation.
+function extrema(bounds,conditions,expressions) {
+  // Skip a branch only if one inequality is impossible throughout the box.
+  // A numerically indeterminate vertex search is not evidence of emptiness.
+  if(conditions.some(a=>{let lower=a[0],scale=1+Math.abs(a[0]);for(let j=0;j<bounds.length;j++){const k=a[j+1];lower+=k*(k<0?bounds[j][1]:bounds[j][0]);scale+=Math.abs(k)*Math.max(Math.abs(bounds[j][0]),Math.abs(bounds[j][1]));}return lower>64*Number.EPSILON*scale;}))return null;
+  const fixed=bounds.map(r=>r[0]);
+  const dims=bounds.map((r,i)=>r[0]===r[1]?-1:i).filter(i=>i>=0),n=dims.length;
+  const reduce=a=>[val(a,fixed),...dims.map(i=>a[i+1])];
+  // Variables below are deltas from the lower bbox-edge values.
+  const cs=conditions.map(reduce);
+  for(let j=0;j<n;j++) {
+    const lo=Array(n+1).fill(0),hi=Array(n+1).fill(0);
+    lo[j+1]=-1; hi[j+1]=1; hi[0]=-(bounds[dims[j]][1]-fixed[dims[j]]);
+    cs.push(lo,hi);
+  }
+  const es=expressions.map(reduce),out=es.map(()=>[Infinity,-Infinity]);
+  function accept(x) {
+    if(cs.some(a=>val(a,x)>1e-7)) return;
+    es.forEach((a,i)=>{ const v=val(a,x);out[i][0]=Math.min(out[i][0],v);out[i][1]=Math.max(out[i][1],v); });
+  }
+  if(!n) accept([]);
+  else {
+    const chosen=[];
+    function combinations(start) {
+      if(chosen.length<n) {
+        for(let k=start;k<=cs.length-(n-chosen.length);k++){chosen.push(k);combinations(k+1);chosen.pop();}
+        return;
+      }
+      const m=chosen.map(k=>[...cs[k].slice(1),-cs[k][0]]);
+      for(let j=0;j<n;j++) {
+        let p=j;for(let k=j+1;k<n;k++)if(Math.abs(m[k][j])>Math.abs(m[p][j]))p=k;
+        if(Math.abs(m[p][j])<1e-12)return;
+        [m[j],m[p]]=[m[p],m[j]];
+        const d=m[j][j];for(let k=j;k<=n;k++)m[j][k]/=d;
+        for(let k=0;k<n;k++)if(k!==j){const f=m[k][j];for(let c=j;c<=n;c++)m[k][c]-=f*m[j][c];}
+      }
+      accept(m.map(row=>row[n]));
+    }
+    combinations(0);
+  }
+  if(!Number.isFinite(out[0][0]))return expressions.map(a=>{
+    // The branch may be feasible even when its vertices are numerically
+    // indeterminate. Bounding the whole input box keeps every possible point;
+    // it can reject a placement, but cannot admit one by dropping the branch.
+    let lo=a[0],hi=a[0],magnitude=1+Math.abs(a[0]);
+    for(let j=0;j<bounds.length;j++){
+      const v0=a[j+1]*bounds[j][0],v1=a[j+1]*bounds[j][1];
+      lo+=Math.min(v0,v1);hi+=Math.max(v0,v1);
+      magnitude+=Math.max(Math.abs(v0),Math.abs(v1));
+    }
+    const guard=64*Number.EPSILON*magnitude;
+    return [lo-guard,hi+guard];
+  });
+  return out;
+}
+
+// Rotating a point over a closed angle interval: include endpoints and all
+// stationary angles. This analytically covers the full sin(ltb*1.3+i)*6 sweep.
+function rotatedPoint(x,y,a,b) {
+  const angles=[a,b],phase=Math.atan2(y,x);
+  for(let k=Math.floor((a+phase)/ (Math.PI/2))-1;k<=Math.ceil((b+phase)/(Math.PI/2))+1;k++) {
+    const t=k*Math.PI/2-phase;if(t>=a&&t<=b)angles.push(t);
+  }
+  const xs=angles.map(t=>x*Math.cos(t)-y*Math.sin(t));
+  const ys=angles.map(t=>x*Math.sin(t)+y*Math.cos(t));
+  return [Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
+}
+function primitives(type,S,u) {
+  // outBack(q,2) maximum at q=5/9: 1+32/243; minimum 0.
+  const back=1+32/243,lw=3.4*u,items=[];
+  const line=(pts,pad,scale=false)=>items.push({pts:scale?[[0,0],...pts.map(p=>p.map(v=>v*back))]:pts,pad});
+  if(type==='squig'||type==='zig') {
+    const n=type==='squig'?24:6;
+    const p=Array.from({length:n+1},(_,k)=> type==='squig'?
+      [(k/n-.5)*S*2.6,Math.sin(k/n*Math.PI*3)*S*.28]:
+      [(k/n-.5)*S*2.4,(k%2?-1:1)*S*.3]);
+    for(let k=0;k<n;k++)line([p[k],p[k+1]],lw/2);
+  } else if(type==='tri') {
+    const p=Array.from({length:4},(_,k)=>{const a=(-90+k*120)*DEG;return[Math.cos(a)*S*.8,Math.sin(a)*S*.8];});
+    for(let k=0;k<3;k++)line([p[k],p[k+1]],lw*.8/2,true);
+  } else if(type==='dots') {
+    for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++)line([[a*S*.5,b*S*.5]],2.6*u*back);
+  } else if(type==='half') {
+    line(Array.from({length:21},(_,k)=>{const a=(180+k*9)*DEG;return[Math.cos(a)*S*.7,Math.sin(a)*S*.7];}),0,true);
+  } else {
+    // de in [0,1], each endpoint moves affinely from [k*.45*S,0].
+    for(let k=-1;k<=1;k++)line([[k*S*.45,0],[k*S*.45-S*.3,S*.5],[k*S*.45+S*.3,-S*.5]],lw*.9/2);
+  }
+  return items;
+}
+
+function memphisSupports({W,H,P,bbRanges,includeFallback=true,random=J.r}) {
+  if(!(W>0&&H>0&&Number.isFinite(W+H))||!P||!Array.isArray(bbRanges))throw Error('finite W/H, P and explicit bbRanges required');
+  const ranges=bbRanges.slice();
+  if(includeFallback)ranges.push({x0:W*.35,x1:W*.65,y0:H*.4,y1:H*.6});
+  const u=Math.min(W,H)/1080,S=clamp(Math.min(W,H)*.036,24*u,44*u),K=Math.min(8,5+(P.n|0)),supports=[];
+  // Affine coordinates [constant, x0, x1, y0, y1].
+  const w=[68*u,-1,1,-.44,.44],h=[68*u,0,0,-1.44,1.44];
+  const X=[-34*u,1,0,.22,-.22],Y=[-34*u,0,0,1.22,-.22];
+  for(let i=0;i<K;i++) {
+    const alpha=(i+.2+random(P.seed,i,1)*.6)/K,t=mul(add(w,h),2*alpha);
+    const starts=[[0,0,0,0,0],w,add(w,h),add(mul(w,2),h)],ends=[w,add(w,h),add(mul(w,2),h),mul(add(w,h),2)];
+    const positions=[[add(X,t),Y],[add(X,w),add(Y,sub(t,w))],
+      [add(X,sub(add(mul(w,2),h),t)),add(Y,h)],[X,add(Y,sub(mul(add(w,h),2),t))]];
+    const type=TYPES[(i+(P.v|0))%6]||'hatch',theta=random(P.seed,i,3)*Math.PI*2;
+    const local=primitives(type,S,u).map(p=>{
+      const rs=p.pts.map(([x,y])=>rotatedPoint(x,y,theta-6*DEG,theta+6*DEG));
+      const pad=p.pad+1e-6*Math.max(1,u);
+      return [Math.min(...rs.map(r=>r[0]))-pad,Math.min(...rs.map(r=>r[1]))-pad,
+        Math.max(...rs.map(r=>r[2]))+pad,Math.max(...rs.map(r=>r[3]))+pad];
+    });
+    ranges.forEach((r,rangeIndex)=>{
+      const bounds=['x0','x1','y0','y1'].map(k=>range(r[k]));
+      if(bounds.some(v=>v.length!==2||!v.every(Number.isFinite)||v[1]<v[0]))throw Error('invalid bbox range');
+      for(let branch=0;branch<4;branch++) {
+        const pos=extrema(bounds,[sub(starts[branch],t),sub(t,ends[branch]),[0,1,-1,0,0],[0,0,0,1,-1]],positions[branch]);
+        if(!pos)continue;
+        const center=pos.map((v,j)=>v.map(c=>clamp(c,S*1.6,(j?H:W)-S*1.6)));
+        local.forEach((b,primitive)=>supports.push({i,type,primitive,rangeIndex,branch,
+          x0:center[0][0]+b[0],y0:center[1][0]+b[1],x1:center[0][1]+b[2],y1:center[1][1]+b[3]}));
+      }
+    });
+  }
+  return supports;
+}
+
+function memphisUnits(options) {
+  return memphisSupports(options).map(({i,type,primitive,rangeIndex,branch,x0,y0,x1,y1})=>({
+    owner:'decorB:memphis:'+i,kind:type,primitive,rangeIndex,branch,bounds:{x0,y0,x1,y1}
+  }));
+}
+// Product input consists of raw native glyph bbox ranges. Normalize once here,
+// matching source getBB before solving the seeded perimeter branches.
+J.placement.memphisUnits=options=>memphisUnits({...options,
+  bbRanges:options.bbRanges.flatMap(r=>normalizeBBRange(r,options.W,options.H)),
+  random:J.r,
+});
+})();
+
+/* Native pill viewport supports. Rendering stays on nativeIdentity unchanged. */
+(() => {
+'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0];
+function pillUnits({W,H,cut,plan,st,sc,holdOnly=true}){
+ if(cut.layout!=='pill'||!holdOnly||(cut.treat||'none')!=='none'||
+    !['cut','flicker','invertBox'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
+    !['still','knCounterRock'].includes(cut.hold)||
+    !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'))return null;
+ const env={W,H,cut,plan,st,sc},g=A.nativeBlockCircle.geometry(env),item=g.items[0];
+ // Reuse the proven glyph/word-pivot math only. The synthetic center has no
+ // center subtitle/rule: pill owns its own independent plates and labels.
+ const textCut={...cut,layout:'center',area:null,params:{}},main=A.centerCircle.sourceUnits(item,textCut,plan,{holdOnly:true});
+ if(!main)return null;
+ const units=[],clip=item.clipX;
+ for(const u of main.units){
+  const b={...u.bounds,x0:Math.max(u.bounds.x0,clip[0]),x1:Math.min(u.bounds.x1,clip[1])};
+  if(b.x0<b.x1)units.push({...u,owner:u.owner.replace(/^center\./,'pill.main.'),bounds:b});
+ }
+ // geometry is the source pill formula: its first plate covers all native
+ // expansion values, and each subsequent label plate includes outBack's
+ // analytic maximum plus its native 1.3px stroke. Keep those owners separate.
+ g.shapes.forEach((p,i)=>units.push({owner:i?'pill.labelPlate.'+(i-1):'pill.plate',kind:'plate',bounds:A.bounds([p])}));
+ // Label glyphs do not use mainDraw; their alpha changes but their source
+ // font, size, tracking and position stay fixed throughout the hold window.
+ g.plain.forEach((p,i)=>A.itemGeometry(p,ID,{pass:'main',scale:1}).glyphs.forEach(glyph=>units.push({
+  owner:'pill.label.'+i+'.glyph.'+glyph.index,kind:'glyph',bounds:A.bounds([glyph.polygon])
+ })));
+ // Native decor receives mainDraw's returned glyph-box ranges, even where
+ // the capsule's canvas clip hides main ink. It does not receive plate bounds.
+ const cachedPartial=cut.exit==='cut'&&cut.outDur>0;
+ for(const d of cut.decor||[]){
+  const parts=A.memphisUnits({W,H,P:d,bbRanges:[cachedPartial?main.bbRangesAny:main.bbRanges],includeFallback:cachedPartial});
+  if(!parts?.length)return null;
+  units.push(...parts);
+ }
+ return {units,bbRanges:main.bbRanges,glyphBB:main.glyphBB,scope:'native-hold'};
+}
+A.pillUnits=pillUnits;
+})();
+
+/* Native hold supports only; rendering retains the original clipped viewport. */
+(() => {
+'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0];
+const union=bs=>({x0:Math.min(...bs.map(b=>b.x0)),x1:Math.max(...bs.map(b=>b.x1)),y0:Math.min(...bs.map(b=>b.y0)),y1:Math.max(...bs.map(b=>b.y1))});
+const grow=(b,p)=>({x0:b.x0-p,x1:b.x1+p,y0:b.y0-p,y1:b.y1+p});
+function neonMagazineUnits({W,H,cut,plan,holdOnly=true,holdWindow}){
+ if(!['neon','magazine'].includes(cut.layout)||!holdOnly||!holdWindow||cut.layoutBRecipe||cut.layoutCRecipe||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'))return null;
+ // Frame shadowBlur is in device space. This source support is conservative
+ // only while content/camera scaling does not shrink the native frame.
+ if(cut.layout==='neon'&&((cut.contentScale??1)<1||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)))return null;
+ // Every neon glyph exists by .04+.28; subsequent ignition only changes
+ // brightness. Magazine's positive page unfold is enclosed analytically below.
+ if(holdWindow.native.start<cut.start+(cut.layout==='neon'?.32:0)||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+ const sourcePlan={...plan,W,H},sourceCut={...cut,area:null,simpleCircleRecipe:null,enter:'cut',exit:'cut',hold:'still',params:{...cut.params,...(cut.layout==='neon'?{flick:false}:{})}},renderer=Object.create(J.Renderer.prototype);
+ const programs=['main','A','B'].map(pass=>A.sourceFormulaBase.construct(renderer,sourcePlan,sourceCut,{W,H,time:.8,pass})),units=[],mainBoxes=[],mainRanges=[];
+ // mainDraw's per-item delay remains native. A global hold label alone does
+ // not establish that a late neon glyph has completed its own entrance.
+ const mains=programs.flatMap(p=>p.events.filter(e=>e.kind==='item'&&e.args[0].placementMain));
+ if(mains.some(e=>e.matrix.some((v,i)=>v!==ID[i])||e.args[0].rot||e.args[0].skew))return null;
+ const delayed=mains.some(e=>holdWindow.native.start<cut.start+Math.max(.01,cut.inDur)+(e.args[0].mi|0)*(cut.stagger||0));
+ // Late glyphs may still be in invertBox while earlier ones already rock.
+ // Cover every glyph's complete native entry/hold/exit, every visible subset
+ // returned to the underline/decor, and a fresh/held native decor fallback.
+ const partialNeon=cut.layout==='neon'&&delayed;
+ if(delayed&&!partialNeon||partialNeon&&(!['under','none'].includes(cut.params.frame)||cut.params.sub))return null;
+ let frameDrift=0;
+ const measured=programs.map(program=>program.events.map((event,index)=>{
+  if(event.kind!=='item'||!event.args[0].placementMain)return {event,index};
+  const original=event.args[0],item={...original,shadow:null,blur:0,extrude:null,charFn:null,charFns:[]},noHold=original.noHold||cut.layout==='magazine'&&!['still','jitter','breathe','glitchtick'].includes(cut.hold),textCut={...cut,layout:'center',area:null,params:{},hold:noHold?'still':cut.hold};
+  const main=A.centerCircle.sourceUnits(item,textCut,sourcePlan,{holdOnly:!partialNeon});
+  if(!main)return null;
+  const rest=J.itemBox(item),r=main.bbRanges;
+  frameDrift=Math.max(frameDrift,...['x0','x1','y0','y1'].flatMap(k=>r[k].map(v=>Math.abs(v-rest[k]))));
+  mainBoxes.push(main.glyphBB);mainRanges.push(r);
+  // The source recorder already bounded native tube blur, shadows and stroke.
+  // Reuse that padding around the complete analytical rocking glyph sweep.
+  const raw=A.bounds(A.itemGeometry(item,ID,{pass:'main',scale:1}).polygons),outer=A.bounds(event.polygons),pad=Math.max(0,raw.x0-outer.x0,raw.y0-outer.y0,outer.x1-raw.x1,outer.y1-raw.y1);
+  return {event,index,parts:main.units.map(u=>({...u,owner:cut.layout+'.'+event.nativeGroup+'.'+u.owner,bounds:grow(u.bounds,pad)}))};
+ }));
+ if(measured.some(es=>es.some(e=>!e))||!mainBoxes.length)return null;
+ const bbRanges=Object.fromEntries(['x0','x1','y0','y1'].map(k=>[k,partialNeon?[
+  Math.min(...mainRanges.map(r=>r[k][0])),Math.max(...mainRanges.map(r=>r[k][1]))
+ ]:[
+  (k.endsWith('0')?Math.min:Math.max)(...mainRanges.map(r=>r[k][0])),
+  (k.endsWith('0')?Math.min:Math.max)(...mainRanges.map(r=>r[k][1]))
+ ]])),restMain=partialNeon?union(mains.map(e=>J.itemBox(e.args[0]))):null;
+ for(const es of measured)for(const {event,index,parts}of es){
+  if(parts){units.push(...parts);continue;}
+  // Plates/pages remain filled primary objects. In particular the magazine
+  // spread cannot be treated as empty merely because its glyphs are sparse.
+  for(const polygon of event.polygons){
+   const b=grow(A.bounds([polygon]),cut.layout==='neon'?frameDrift:0);
+   if(partialNeon){
+    // Underline endpoints are fb.x0-.275*size / fb.x1+.275*size;
+    // its level is fb.y1+.42*size. Preserve the source's measured padding
+    // (including outer tube shadow) at every visible-subset edge/level.
+    if(event.kind!=='line'||cut.params.frame!=='under')return null;
+    const rest=A.bounds([polygon]);
+    b.x0=bbRanges.x0[0]+rest.x0-restMain.x0;
+    b.x1=bbRanges.x1[1]+rest.x1-restMain.x1;
+    b.y0=bbRanges.y1[0]+rest.y0-restMain.y1;
+    b.y1=bbRanges.y1[1]+rest.y1-restMain.y1;
+   }
+   // q in [0,1] scales page B about the gutter. The union of each complete
+   // primitive's endpoint rectangle and its zero-width gutter projection
+   // encloses every intermediate q, including all text and image shapes.
+   if(cut.layout==='magazine'&&event.nativeCBody?.kind==='editorial-phase'){
+    const axis=H>W*1.08?'y':'x',gutter=axis==='y'?H/2:W/2;
+    b[axis+'0']=Math.min(b[axis+'0'],gutter);b[axis+'1']=Math.max(b[axis+'1'],gutter);
+   }
+   units.push({owner:cut.layout+'.source.'+index,kind:event.kind,bounds:b});
+  }
+ }
+ for(const d of cut.decor||[])units.push(...A.memphisUnits({W,H,P:d,bbRanges:[bbRanges],includeFallback:partialNeon}));
+ // drawCut clips layout and both native decor layers before the post chain.
+ const clipped=units.map(u=>({...u,bounds:{x0:Math.max(0,u.bounds.x0),y0:Math.max(0,u.bounds.y0),x1:Math.min(W,u.bounds.x1),y1:Math.min(H,u.bounds.y1)}})).filter(u=>u.bounds.x0<u.bounds.x1&&u.bounds.y0<u.bounds.y1);
+ return {units:clipped,bbRanges,glyphBB:union(mainBoxes),scope:'native-hold',sourceConstructionTime:.8,...(partialNeon?{delayedGlyphScope:'all-native-clocks-and-any-visible-subset'}:{})};
+}
+A.neonMagazineUnits=neonMagazineUnits;
+})();
+
+/* Native basic typography hold supports. No drawing or frame sampling. */
+(() => {
+'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],ids=new Set(['type','condensed']);
+const union=bs=>({x0:Math.min(...bs.map(b=>b.x0)),x1:Math.max(...bs.map(b=>b.x1)),y0:Math.min(...bs.map(b=>b.y0)),y1:Math.max(...bs.map(b=>b.y1))});
+function basicUnits({W,H,cut,plan,st,sc,holdOnly=true,holdWindow}){
+ if(!ids.has(cut.layout)||!holdOnly||!holdWindow||(cut.treat||'none')!=='none'||
+    !['cut','flicker','invertBox'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
+    !['still','knCounterRock'].includes(cut.hold)||
+    !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'))return null;
+ const g=A.nativeBlockCircle.geometry({W,H,cut,plan,st,sc}),units=[],mains=[];
+ // Type overrides cut's cut entrance with type. Condensed uses a native mi
+ // delay for every repeat. A global hold label alone does not finish either.
+ const entered=cut.layout==='type'||cut.enter!=='cut';
+ const ready=cut.start+Math.max(...g.items.map(it=>(it.mi|0)*(cut.stagger||0)+(entered?Math.max(.01,cut.inDur):0)));
+ if(holdWindow.native.start<ready||holdWindow.native.end>cut.start+cut.dur-(cut.exit==='cut'?0:cut.outDur))return null;
+ for(let i=0;i<g.items.length;i++){
+  const item=g.items[i],main=A.centerCircle.sourceUnits(item,{...cut,layout:'center',area:null,params:{}},plan,{holdOnly:true});
+  if(!main)return null;
+  units.push(...main.units.map(u=>({...u,owner:cut.layout+'.main.'+i+'.'+u.owner})));mains.push(main);
+ }
+ const addItem=(item,owner)=>A.itemGeometry(item,ID,{pass:'main',scale:1}).glyphs.forEach(glyph=>units.push({owner:owner+'.glyph.'+glyph.index,kind:'glyph',bounds:A.bounds([glyph.polygon])}));
+ if(cut.layout==='type'){
+  // geometry.plain's final item is only a widest-digit advance estimate.
+  // Native fmtTime(t) changes every source clock: retain fixed prefix glyphs
+  // and all digit/punctuation ink, over every possible suffix pen position.
+  g.plain.slice(0,-1).forEach((item,i)=>addItem(item,'type.prompt.'+i));
+  const label=g.plain[g.plain.length-1],prefix=`LINE ${String((cut.line|0)+1).padStart(2,'0')} ─ `;
+  addItem({...label,text:prefix},'type.time.prefix');
+  const chars=[...'0123456789:.'],length=Math.max(J.fmtTime(holdWindow.native.start).length,J.fmtTime(holdWindow.native.end).length),size=label.size,font=label.font;
+  const prefixWidth=J.measure({...label,text:prefix}).w,maxAdvance=Math.max(...chars.map(ch=>J.metrics.adv(font,ch)*size));
+  for(const ch of chars){
+   const polygons=A.itemGeometry({...label,text:ch,x:0},ID,{pass:'main',scale:1}).polygons;
+   if(!polygons.length)return null;
+   const b=A.bounds(polygons);
+   units.push({owner:'type.time.suffix.'+ch,kind:'glyph-range',bounds:{x0:label.x+prefixWidth+b.x0,x1:label.x+prefixWidth+(length-1)*maxAdvance+b.x1,y0:b.y0,y1:b.y1}});
+  }
+ }
+ const ranges=Object.fromEntries(['x0','x1','y0','y1'].map(k=>[k,[
+  (k.endsWith('0')?Math.min:Math.max)(...mains.map(m=>m.bbRanges[k][0])),
+  (k.endsWith('0')?Math.min:Math.max)(...mains.map(m=>m.bbRanges[k][1]))
+ ]]));
+ // With every local entrance complete, every main exists for the hold.
+ // A held cache from cut exit can still contain a visible subset on seeking.
+ const cachedPartial=cut.exit==='cut'&&cut.outDur>0;
+ const decorRanges=cachedPartial?Object.fromEntries(['x0','x1','y0','y1'].map(k=>[k,[Math.min(...mains.map(m=>m.bbRangesAny[k][0])),Math.max(...mains.map(m=>m.bbRangesAny[k][1]))]])):ranges;
+ for(const d of cut.decor||[]){const parts=A.memphisUnits({W,H,P:d,bbRanges:[decorRanges],includeFallback:cachedPartial});if(!parts?.length)return null;units.push(...parts);}
+ const clipped=units.map(u=>({...u,bounds:{x0:Math.max(0,u.bounds.x0),x1:Math.min(W,u.bounds.x1),y0:Math.max(0,u.bounds.y0),y1:Math.min(H,u.bounds.y1)}})).filter(u=>u.bounds.x0<u.bounds.x1&&u.bounds.y0<u.bounds.y1);
+ return {units:clipped,bbRanges:ranges,glyphBB:union(mains.map(m=>m.glyphBB)),scope:'native-hold'};
+}
+A.basicUnits=basicUnits;
 })();
 
 /* Numbered columns: preserve each native number/label/lyric/clip as one unit. */
@@ -51070,10 +51594,10 @@ function geometry(env){
  return {items,plain,shapes,bodies};
 }
 const handles=(plan,cut)=>ids.has(cut.layout)&&(S.preparedCut(plan,cut)||A.placementCutPreserved86cm(plan,cut)===false);
-function viewportProject(plan,cut,scale,{fixedViewport=false}={}){
+function viewportProject(plan,cut,scale,{fixedViewport=false,allCutsBloom=false,allCutsChroma=false,activeRange=null,bloomSigma=6}={}){
  const area=cut.area,W=plan.W,H=plan.H,sw=area?W*area.w:W,sh=area?H*area.h:H,st=cut.effectStyle||plan.style;
- const fx=cut.effectFx||plan.fx,smallFx={...fx,texture:0,chroma:(fx.chroma??.7)*H/sh},smallStyle={...st,glow:0},smallPlan={...plan,W:sw,H:sh,fx:smallFx,style:smallStyle,events:(plan.events||[]).filter(e=>!['rgbSplit','slice','block','zoom'].includes(e.type)).map(e=>e.type==='shake'?{...e,amp:e.amp*H/sh}:e)},smallCut={...cut,layout:'bulbs',effectFx:smallFx,effectStyle:smallStyle,sourceExcludeCameraBlur:!!area},cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,bloom=(st.glow??.6)*.5*(fx.texture??.6)>.05?6*Math.max(2,Math.round(quarter/160))*up/scale:0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0);
- const post=S.postMotion(plan,W,H),cameraBlur=area&&cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,J.clamp((fx.motion??.7)*1.25,0,1.25))*(cut.motionScale??1):0;
+ const fx=cut.effectFx||plan.fx,maxChroma=allCutsChroma?Math.max((plan.fx.chroma??.7)*(plan.style.ghost??1),...(plan.cuts||[]).map(c=>((c.effectFx||plan.fx).chroma??.7)*((c.effectStyle||plan.style).ghost??1))):(fx.chroma??.7),smallFx={...fx,texture:0,chroma:maxChroma*H/sh},smallStyle={...st,glow:0,...(allCutsChroma?{ghost:1}:{})},smallPlan={...plan,W:sw,H:sh,fx:smallFx,style:smallStyle,events:(plan.events||[]).filter(e=>!['rgbSplit','slice','block','zoom','splitSlide','whipBlur','zoomPunch','heartbeat'].includes(e.type)).map(e=>e.type==='shake'?{...e,amp:e.amp*H/sh}:e)},smallCut={...cut,layout:'bulbs',effectFx:smallFx,effectStyle:smallStyle,sourceExcludeCameraBlur:!!area},cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,bloomEnabled=allCutsBloom?((plan.style.glow??.6)*.5*(plan.fx.texture??.6)>.05||(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05)):(st.glow??.6)*.5*(fx.texture??.6)>.05,bloom=bloomEnabled?bloomSigma*Math.max(2,Math.round(quarter/160))*up/scale:0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0);
+ const post=S.postMotion(plan,W,H,scale,cut,activeRange),cameraBlur=area&&cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,J.clamp((fx.motion??.7)*1.25,0,1.25))*(cut.motionScale??1):0;
  const project=(local,item,plan,cut,body)=>{let b=A.bounds([S.stageEnvelope(local,area&&!fixedViewport?{x:0,y:0}:item,smallPlan,smallCut,body)]);if(area)b={x0:Math.max(0,b.x0),y0:Math.max(0,b.y0),x1:Math.min(sw,b.x1),y1:Math.min(sh,b.y1)};const x=area?area.x*W+(fixedViewport?0:item.x):0,y=area?area.y*H+(fixedViewport?0:item.y):0,tx=body?0:bloom+cameraBlur+W*.016*rgb+post.x,ty=body?0:bloom+cameraBlur+H*.004*rgb+post.y;return rect({x0:b.x0+x-tx,y0:b.y0+y-ty,x1:b.x1+x+tx,y1:b.y1+y+ty});};
  return project;
 }
@@ -52228,9 +52752,9 @@ function beginSimpleCircle(){
 }
 function drawSimpleCircle(ctx,renderer,fast){
  if(simplePrepared&&simplePrepared.revision!==(J.metrics.revision||0))invalidateSimpleCircle();beginSimpleCircle();
- const active=diagnostic=>S.plan.cuts.some(c=>c.index===diagnostic.cut&&simpleCircle.activeCut(S.plan,c,S.t)),insufficient=simplePrepared?.diagnostics.find(d=>d.status==='insufficient-space'&&active(d)),unsupported=simpleError||simplePrepared?.diagnostics.find(d=>d.status==='unsupported'&&active(d));
- if(simpleDirty||!simplePrepared&&!simpleError||insufficient){simpleMessage.hidden=false;simpleMessage.textContent=simpleDirty||simplePending?J.mediaLabel('回避配置を準備中…','Preparing avoidance…'):J.mediaLabel('この条件では回避配置の余白が足りません。円の位置・大きさを変更してください。','There is not enough room for avoidance. Change the circle position or size.');clearBulbsView86ci(ctx);return;}
- simpleMessage.hidden=!unsupported;if(unsupported)simpleMessage.textContent=J.mediaLabel('円回避未対応・元の配置','Circle avoidance unsupported · original placement');
+ const active=diagnostic=>S.plan.cuts.some(c=>c.index===diagnostic.cut&&simpleCircle.activeCut(S.plan,c,S.t)),insufficient=simplePrepared?.diagnostics.find(d=>d.status==='insufficient-space'&&active(d)),unsupported=simpleError||simplePrepared?.diagnostics.find(d=>d.status==='unsupported'&&active(d)),holdOnly=simplePrepared?.diagnostics.find(d=>d.status==='safe'&&d.safety==='safe-hold'&&active(d));
+ if(simpleDirty||!simplePrepared&&!simpleError||insufficient){simpleMessage.hidden=false;simpleMessage.textContent=simpleDirty||simplePending?J.mediaLabel('回避配置を準備中…','Preparing avoidance…'):J.mediaLabel('この条件では回避配置の余白が足りません。演出や歌詞を変更するか、中央回避をオフにしてください。','There is not enough room for avoidance. Change the effect or lyrics, or turn off center avoidance.');clearBulbsView86ci(ctx);return;}
+ simpleMessage.hidden=!(unsupported||holdOnly);if(unsupported)simpleMessage.textContent=J.mediaLabel('円回避未対応・元の配置','Circle avoidance unsupported · original placement');else if(holdOnly)simpleMessage.textContent=J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.');
  renderer.frame(ctx,simplePrepared?.plan||S.plan,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false});
 }
 
@@ -56033,7 +56557,7 @@ async function runExport(kind) {
   const boxes = [...document.querySelectorAll('.exp-box')];
   let circleWarning='';
   const setText = m => boxes.forEach(b => { b.querySelector('.exp-text').textContent = m+(circleWarning?' '+circleWarning:''); });
-  const onWarning=()=>{circleWarning=J.mediaLabel('円回避未対応の演出は元の配置で出力','Unsupported effects keep their original placement');toast(circleWarning);};
+  const onWarning=status=>{const messages=[];if(status?.status==='partial')messages.push(J.mediaLabel('円回避未対応の演出は元の配置で出力','Unsupported effects keep their original placement'));if(status?.holdOnlyCuts?.length)messages.push(J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.'));circleWarning=messages.join(' ');if(circleWarning)toast(circleWarning);};
   const txt = { set textContent(m) { setText(m); }, get textContent() { return boxes[0].querySelector('.exp-text').textContent; } };
   boxes.forEach(b => { b.hidden = false; b.querySelector('.exp-bar').style.width = '0%'; });
   setText('準備中…');

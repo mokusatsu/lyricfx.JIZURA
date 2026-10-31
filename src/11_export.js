@@ -128,7 +128,7 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   J.assertPlanOutputSupported(plan);
   if(short)project=J.shortExportProject(project,short);
   if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){if(!await J.placement.finalFontsCurrent(plan,project.lyrics))await J.ensureFonts(project.lyrics+plan.cuts.map(c=>c.text||'').join('')+J.drawingText(plan),J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
-  if(plan.circleAvoidanceStatus?.status==='partial')onWarning?.(plan.circleAvoidanceStatus);
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)onWarning?.(plan.circleAvoidanceStatus);
   if (J.pauseAllVideos) J.pauseAllVideos();
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
   J.mediaTransitionFrame = null;
@@ -242,7 +242,7 @@ class ZipWriter {
 J.exportPNGZip = async ({ plan, project, transparent, onProgress, onWarning, signal, every = 1 }) => {
   J.assertPlanOutputSupported(plan);
   if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){if(!await J.placement.finalFontsCurrent(plan,project.lyrics))await J.ensureFonts(project.lyrics+plan.cuts.map(c=>c.text||'').join('')+J.drawingText(plan),J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
-  if(plan.circleAvoidanceStatus?.status==='partial')onWarning?.(plan.circleAvoidanceStatus);
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)onWarning?.(plan.circleAvoidanceStatus);
   if (J.pauseAllVideos) J.pauseAllVideos();
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
@@ -252,7 +252,7 @@ J.exportPNGZip = async ({ plan, project, transparent, onProgress, onWarning, sig
   const R = new J.Renderer();
   const fps = plan.fps, total = Math.max(1, Math.round(plan.duration * fps));
   const zip = new ZipWriter();
-  if(plan.circleAvoidanceStatus?.status==='partial')zip.add('circle-avoidance.json',new TextEncoder().encode(JSON.stringify(plan.circleAvoidanceStatus)));
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)zip.add('circle-avoidance.json',new TextEncoder().encode(JSON.stringify(plan.circleAvoidanceStatus)));
   const scale = w / plan.W;
   for (let i = 0; i < total; i += every) {
     if (signal && signal.aborted) throw new Error('キャンセルしました');
