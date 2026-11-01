@@ -148,7 +148,7 @@ function mergeProject(p) {
   }
   if (legacy.length) {
     const lp=J.plan(o), ap=J.planAvoidance(o,lp), media={media:J.planMedia(o,lp),foreground:J.planMedia(o,lp,null,'foreground')};
-    const entries=ap.cuts.map(c=>({start:c.start,end:c.end,ov:{...(o.avoidance.cutOverrides[c.index]||{})}}));
+    const entries=ap.cuts.map(c=>({start:c.start,end:c.end,oldIndex:c.index,ov:{...(o.avoidance.cutOverrides[c.index]||{})}}));
     for (const old of legacy) {
       const c=media[old.layer].cuts[old.index];
       if (!c) continue;
@@ -157,7 +157,9 @@ function mergeProject(p) {
     }
     entries.sort((a,b)=>a.start-b.start);
     o.avoidance.manualCuts=true;o.avoidance.cutCount=entries.length;o.avoidance.cutOverrides={};o.avoidance.timing.lineTimes={};
-    entries.forEach((e,i)=>{o.avoidance.timing.lineTimes[i]=e.start;o.avoidance.cutOverrides[i]={...e.ov,untilNext:false,endTime:e.end};});
+    const remap=new Map();
+    entries.forEach((e,i)=>{if(e.oldIndex!=null)remap.set(e.oldIndex,i);o.avoidance.timing.lineTimes[i]=e.start;o.avoidance.cutOverrides[i]={...e.ov,untilNext:false,endTime:e.end};});
+    for(const link of o.timelineLinks)for(const side of ['a','b'])if(/^a:\d+$/.test(link[side])){const old=+link[side].slice(2);if(remap.has(old))link[side]='a:'+remap.get(old);}
   }
   delete o.mediaEffects;
   o.colors = Object.assign({ enabled: false }, (p && p.colors) || {});
@@ -1809,9 +1811,8 @@ function drawItemFrames() {
   for(const layer of ['media','lyrics','foreground','avoidance']) {
     if(S.plan.layerVisibility?.[layer]===false)continue;
     if(layer==='avoidance') {
-      const cut=J.avoidanceAt(S.plan,S.t);
+      const cut=[...S.plan.avoidance.cuts].reverse().find(c=>c.kind!=='person' && S.t>=c.start && S.t<c.end);
       if(!cut || !cut.guide || cut.enabled===false)continue;
-      if(cut.kind==='person') continue; // The matte overlay above is the guide; no source bounding box.
       if(!S.plan.lyricAvoidance?.enabled && S.areaEdit?.kind!=='avoidance' && S.sourceTab!=='avoidance')continue;
       items.push({layer,cut,index:cut.index,area:{...avoidanceCircleToDraft(cut),angle:0}});
     } else if(layer==='lyrics') {
@@ -2231,12 +2232,13 @@ function openInsertAtPlayhead(layer, avoidKind) {
     const a=S.project.avoidance,index=cuts.filter(c=>c.start<start-1e-6).length,overrides={},times={};
     const prev=cuts[Math.max(0,index-1)]||{cx:0.5,cy:0.5,r:0.25,avoidEmphasis:a.avoidEmphasis,maskAvoidance:a.maskAvoidance,maskRadiusOffset:a.maskRadiusOffset,maskFeather:a.maskFeather,maskCurve:a.maskCurve};
     cuts.forEach((cut,i)=>{const n=i>=index?i+1:i;overrides[n]={...a.cutOverrides[i]};times[n]=cut.start;});
-    const replacing=cuts[index] && Math.abs(cuts[index].start-start)<1e-6;
+    const replacing=avoidKind!=='person' && cuts[index] && Math.abs(cuts[index].start-start)<1e-6;
     if(replacing){delete overrides[index+1];delete times[index+1];for(let i=index+2;i<=cuts.length;i++){overrides[i-1]=overrides[i];times[i-1]=times[i];delete overrides[i];delete times[i];}}
-    overrides[index]=avoidKind==='person'?{kind:'person',placement:false,occlusion:'all'}:{cx:prev.cx,cy:prev.cy,r:prev.r,avoidEmphasis:prev.avoidEmphasis,maskAvoidance:prev.maskAvoidance,maskRadiusOffset:prev.maskRadiusOffset,maskFeather:prev.maskFeather,maskCurve:prev.maskCurve};times[index]=start;
+    if(avoidKind==='person') preserveCircleEnds(cuts,overrides,index,start);
+    overrides[index]=avoidKind==='person'?{kind:'person',placement:false,occlusion:'all',...(cuts[index] && Math.abs(cuts[index].start-start)<1e-6?{untilNext:false,endTime:cuts[index].end}:{})}:{cx:prev.cx,cy:prev.cy,r:prev.r,avoidEmphasis:prev.avoidEmphasis,maskAvoidance:prev.maskAvoidance,maskRadiusOffset:prev.maskRadiusOffset,maskFeather:prev.maskFeather,maskCurve:prev.maskCurve};times[index]=start;
     a.manualCuts=true;a.cutCount=cuts.length+(replacing?0:1);a.cutOverrides=overrides;a.timing.lineTimes=times;
     if(!replacing){for(const link of S.project.timelineLinks)for(const side of ['a','b'])if(link[side].startsWith('a:')&&+link[side].slice(2)>=index)link[side]='a:'+(+link[side].slice(2)+1);}
-    S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+    if(avoidKind==='circle') S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
     S.project.durationOverride=S.plan.duration;renderTech();replan();seek(start);if(avoidKind==='circle')openAvoidanceEditor(index,true);
     return;
   }
@@ -3048,6 +3050,38 @@ function remapAvoidanceSources(layer,index,operation) {
     else if (source.index > index || operation==='insert' && source.index===index) source.index += operation==='remove' ? -1 : 1;
   }
 }
+// Keep person intervals attached to the corresponding halves of a split source.
+function splitAvoidanceSources(layer,index,time) {
+  const a=S.project.avoidance, cuts=S.plan.avoidance.cuts, entries=[];
+  if(!cuts.some(c=>c.kind==='person' && c.source?.layer===layer && c.source.index===index)){remapAvoidanceSources(layer,index,'split');return true;}
+  for(const cut of cuts) {
+    const ov=JSON.parse(JSON.stringify(a.cutOverrides[cut.index] || {}));
+    const source=ov.source;
+    if(source?.layer===layer && source.index>index)source.index++;
+    if(source?.layer!==layer || source.index!==index || cut.kind!=='person') {
+      entries.push({start:cut.start,end:cut.end,ov,oldIndex:cut.index});continue;
+    }
+    if(cut.start>=time) {source.index++;entries.push({start:cut.start,end:cut.end,ov,oldIndex:cut.index});}
+    else if(cut.end<=time) entries.push({start:cut.start,end:cut.end,ov,oldIndex:cut.index});
+    else {
+      entries.push({start:cut.start,end:time,ov:{...ov,untilNext:false,endTime:time},oldIndex:cut.index});
+      entries.push({start:time,end:cut.end,ov:{...ov,source:{...source,index:index+1},untilNext:false,endTime:cut.end}});
+    }
+  }
+  if(entries.length>1000){toast(J.mediaLabel('回避カット数の上限に達しました','Avoidance cut limit reached'));return false;}
+  entries.sort((x,y)=>x.start-y.start);
+  const remap=new Map(), overrides={},times={};
+  entries.forEach((entry,i)=>{
+    if(entry.oldIndex!=null)remap.set(entry.oldIndex,i);
+    const next=entries[i+1]?.start ?? S.plan.avoidance.duration;
+    const ov=entry.ov;
+    if(ov.untilNext!==false && Math.abs(next-entry.end)>1e-6){ov.untilNext=false;ov.endTime=entry.end;}
+    overrides[i]=ov;times[i]=entry.start;
+  });
+  for(const link of S.project.timelineLinks)for(const side of ['a','b'])if(/^a:\d+$/.test(link[side])){const old=+link[side].slice(2);if(remap.has(old))link[side]='a:'+remap.get(old);}
+  a.manualCuts=true;a.cutCount=entries.length;a.cutOverrides=overrides;a.timing.lineTimes=times;
+  return true;
+}
 function splitMediaCut(layer,randomLeft=false,randomRight=false) {
   const cut=mediaSplitTarget(layer);if(!cut)return;
   pause();
@@ -3082,7 +3116,7 @@ function splitMediaCut(layer,randomLeft=false,randomRight=false) {
     times[next]=c.start;
   });
   overrides[index+1]=second;times[index+1]=time;
-  remapAvoidanceSources(layer,index,'split');
+  if(!splitAvoidanceSources(layer,index,time))return;
   m.randomOrder=false;m.manualCuts=true;m.cutCount=cuts.length+1;m.cutOverrides=overrides;m.timing.lineTimes=times;
   S.project.durationOverride=S.plan.duration;
   const prefix=layer==='foreground'?'f:':'m:';
@@ -3262,6 +3296,10 @@ function insertAvoidanceFromLyrics() {
   renderTech(); replan(); seek(targets[0].start);
   toast(J.mediaLabel(`${targets.length}個の回避カットを歌詞に合わせて挿入しました`, `Inserted ${targets.length} avoidance cuts aligned to lyrics`));
 }
+// Keep the previous circle active when inserting an overlapping person cut.
+function preserveCircleEnds(cuts, overrides, insertedIndex, start) {
+  cuts.forEach((cut,i)=>{if(cut.kind==='circle' && !cut.manualEnd && cut.start<=start && cut.end>start){const n=i>=insertedIndex?i+1:i;overrides[n]={...overrides[n],untilNext:false,endTime:cut.end};}});
+}
 function insertAvoidanceCut(index, kind = 'circle') {
   const a = S.project.avoidance, cuts = S.plan.avoidance.cuts;
   if (cuts.length >= 1000) { toast('カット数の上限に達しました'); return; }
@@ -3278,10 +3316,12 @@ function insertAvoidanceCut(index, kind = 'circle') {
   if (!cuts.length) start = 0;
   else if (index === 0) {
     start = 0;
-    starts[0] = Math.max(starts[0], Math.min(cuts[0].end, starts[0] + Math.max(0.04, (cuts[0].end - starts[0]) / 2)));
+    if(kind!=='person') starts[0] = Math.max(starts[0], Math.min(cuts[0].end, starts[0] + Math.max(0.04, (cuts[0].end - starts[0]) / 2)));
+    else overrides[index]={...overrides[index],untilNext:false,endTime:cuts[0].end};
   } else if (index === cuts.length) {
     start = Math.max(cuts[index - 1].start + 0.04, (cuts[index - 1].start + S.plan.duration) / 2);
   } else start = (cuts[index - 1].start + cuts[index].start) / 2;
+  if(kind==='person') preserveCircleEnds(cuts,overrides,index,start);
   const times = {};
   starts.forEach((time, i) => { times[i >= index ? i + 1 : i] = +time.toFixed(3); });
   times[index] = +start.toFixed(3);
@@ -3292,7 +3332,7 @@ function insertAvoidanceCut(index, kind = 'circle') {
   for (const link of S.project.timelineLinks) for (const end of ['a', 'b']) {
     if (link[end].startsWith('a:') && +link[end].slice(2) >= index) link[end] = 'a:' + (+link[end].slice(2) + 1);
   }
-  S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+  if(kind==='circle') S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
   renderTech(); replan(); seek(start);
 }
 function removeAvoidanceCut(index) {
