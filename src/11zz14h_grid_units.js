@@ -18,8 +18,11 @@ function gridUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  if(!Number.isFinite(earliest)||holdWindow.native.start<cut.start+entry||holdWindow.native.end>cut.start+cut.dur-(cut.exit==='cut'?0:cut.outDur))return null;
  const u=Math.min(W,H),port=H>W*1.08,ls=J.clamp(u*.024,14,34),cols=port?4:6,rows=port?8:6,m=u*.07;
  const gx0=m*1.35,gx1=W-m,gy0=m,gy1=H-m,cw=(gx1-gx0)/cols,rh=(gy1-gy0)/rows,X=c=>gx0+c*cw,Y=r=>gy0+r*rh,units=[];
- const add=(owner,kind,x0,y0,x1,y1)=>units.push({owner,kind,bounds:{x0,y0,x1,y1}});
- const plain=(it,owner)=>A.itemGeometry(it,ID,{pass:'main',scale:1}).glyphs.forEach(g=>units.push({owner:owner+'.glyph.'+g.index,kind:'glyph',bounds:A.bounds([g.polygon])}));
+ // Native grid/rule calls pass g=false; the column/side copy uses ghost:false.
+ // Keep this source fact for the caller's per-owner camera/chroma projection.
+ // It does not suppress post bloom or any other frame-wide output effect.
+ const add=(owner,kind,x0,y0,x1,y1,ghost=false)=>units.push({owner,kind,ghost,bounds:{x0,y0,x1,y1}});
+ const plain=(it,owner)=>A.itemGeometry(it,ID,{pass:'main',scale:1}).glyphs.forEach(g=>units.push({owner:owner+'.glyph.'+g.index,kind:'glyph',ghost:false,bounds:A.bounds([g.polygon])}));
  // Grid progress stays in [0,1] in hold. Each line retains its own full-length
  // support rather than filling the otherwise empty interiors of its cells.
  const linePad=Math.max(1,u*.0012)/2+1;
@@ -55,15 +58,15 @@ function gridUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
   const [c,r,s]=free,bw=s*cw,bh=s*rh,cx=X(c)+bw/2,cy=Y(r)+bh/2,R=Math.min(bw,bh)*.46;
   // outBack(t,1.2) is bounded by 1+4*s^3/(27*(s+1)^2).
   const q=1+4*1.2**3/(27*2.2**2),pad=1;
-  if(p.shape==='bar')add('swiss.accent','shape',X(c)+cw*.06-pad,cy-rh*.12-pad,X(c)+cw*.06+(bw-cw*.12)*q+pad,cy+rh*.12+pad);
-  else add('swiss.accent','shape',cx-R*q-pad,cy-R*q-pad,cx+R*q+pad,cy+R*q+pad);
+  if(p.shape==='bar')add('swiss.accent','shape',X(c)+cw*.06-pad,cy-rh*.12-pad,X(c)+cw*.06+(bw-cw*.12)*q+pad,cy+rh*.12+pad,true);
+  else add('swiss.accent','shape',cx-R*q-pad,cy-R*q-pad,cx+R*q+pad,cy+R*q+pad,true);
  }
  if(p.label)plain({text:'JIZURA  ／  No.'+String(Math.max(0,cut.line|0)+1).padStart(2,'0')+'  ／  '+J.fmtTime(cut.start),font:mono,size:ls*.8,track:.25,x:m*.62,y:(gy0+gy1)/2,rot:-90},'swiss.sideLabel');
  const ranges=Object.fromEntries(['x0','x1','y0','y1'].map(key=>[key,[
   (key.endsWith('0')?Math.min:Math.max)(...mains.map(x=>x.bbRanges[key][0])),
   (key.endsWith('0')?Math.min:Math.max)(...mains.map(x=>x.bbRanges[key][1]))]]));
  const cachedPartial=mains.some(x=>x.partial)||cut.exit==='cut'&&cut.outDur>0,decorRanges=cachedPartial?Object.fromEntries(['x0','x1','y0','y1'].map(key=>[key,[Math.min(...mains.map(x=>x.bbRangesAny[key][0])),Math.max(...mains.map(x=>x.bbRangesAny[key][1]))]])):ranges;
- for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[decorRanges],includeFallback:cachedPartial},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[decorRanges],includeFallback:cachedPartial},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts.map(p=>({...p,ghost:false})));}
  return {units,bbRanges:decorRanges,scope:'native-hold'};
 }
 A.gridUnits=gridUnits;

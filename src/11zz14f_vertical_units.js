@@ -14,11 +14,16 @@ function verticalSourceUnits(item,cut,plan,{partial=false}={}){
    const index=Number(u.owner.split('.').pop()),g=lay.find(g=>g.i===index);
    if(!g)return null;
    const gx=item.x+(g.x+g.vx)*(item.sx||1),gy=item.y+(g.y+g.vy)*(item.sy||1),w=g.w*(item.sx||1),h=g.h*(item.sy||1),off=ruby?w*.8*m:0,s=ruby?1-.68*m:1,pad=(item.stroke||0)/2+3,b=u.bounds;
-   bbs.push({x0:gx-w/2,x1:gx+off+w/2,y0:gy-h/2,y1:gy+h/2,leftMax:gx+off-w*s/2,rightMin:gx+w*s/2,topMax:gy-h*s/2,bottomMin:gy+h*s/2});
+   const left=[gx-w/2,gx+off-w*s/2],right=[gx+w/2,gx+off+w*s/2];
+   bbs.push({x0:Math.min(...left),x1:Math.max(...right),y0:gy-h/2,y1:gy+h/2,leftMax:Math.max(...left),rightMin:Math.min(...right),topMax:gy-h*s/2,bottomMin:gy+h*s/2});
    // Vertical RubyDrop moves right, while all glyphs (including r90 Latin
    // and punctuation) shrink about their own source baseline. Include the
-   // baseline stroke/AA guard without shrinking the native outline width.
-   return {...u,bounds:{x0:Math.min(b.x0,ruby?gx-pad:b.x0)-dx,x1:Math.max(b.x1,ruby?gx+pad:b.x1)+off+dx,y0:Math.min(b.y0,ruby?gy-pad:b.y0),y1:Math.max(b.y1,ruby?gy+pad:b.y1)}};
+   // Native ruby scale=.32+.68*e and offset=.8*w*(1-e) share one
+   // e in [0,1]. Every corner moves affinely: retain its two endpoints,
+   // rather than combining full size with the largest ruby displacement.
+   // The added guard keeps stroke/AA constant as the ink shrinks.
+   const small=ruby?{x0:gx+(b.x0-gx)*s+off-pad*(1-s),x1:gx+(b.x1-gx)*s+off+pad*(1-s),y0:gy+(b.y0-gy)*s-pad*(1-s),y1:gy+(b.y1-gy)*s+pad*(1-s)}:b;
+   return {...u,bounds:{x0:Math.min(b.x0,small.x0)-dx,x1:Math.max(b.x1,small.x1)+dx,y0:Math.min(b.y0,small.y0),y1:Math.max(b.y1,small.y1)}};
   });
   if(main.units.some(u=>!u))return null;
   if(ruby){

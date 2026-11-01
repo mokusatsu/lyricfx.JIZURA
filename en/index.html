@@ -50785,7 +50785,7 @@ function stageEnvelope(local,item,plan,cut,bodyOnly=false){
  const jelly=cut.cam==='jelly'&&cut.jellyHoldOnly,jk=jelly?J.clamp((fx.motion??.7)*motion*1.25,0,1.25):0,jamp=jelly?Math.abs(P.a||.055)*jk*motion*1.45:0,jbase=base*(1+.01*motion);
  const camX=cut.cam==='pendulumSway'?W*.62*Math.sin(phi)*motion:cut.cam==='driftDiag'?W*.0175*K*Math.abs(P.dx||1)*motion:0,camY=jelly?H*.008*jk*motion*1.45:cut.cam==='pendulumSway'?W*.62*(1-Math.cos(phi))*motion:cut.cam==='rackFocus'?H*.004*motion:cut.cam==='bounce'?H*.012*K*motion:cut.cam==='tiltUp'?H*Math.abs(P.a||.025)*K*motion:cut.cam==='tiltDown'?H*Math.abs(P.a||.028)*K*motion*1.2:cut.cam==='driftDiag'?H*.015*K*Math.abs(P.dy||1)*motion:0;
  const points=[],b=A.centerCircle?.handles(cut)?A.centerCircle.stageBounds(local,item,plan,cut,bodyOnly):bodyOnly?local.body:local.bounds,xscales=jelly?[jbase*(1-jamp),jbase*(1+jamp)]:[base*minScale,base*maxScale],yscales=jelly?[jbase*(1-.9*jamp),jbase*(1+.9*jamp)]:[base*minScale,base*maxScale];for(const x of [b.x0+item.x,b.x1+item.x])for(const y of [b.y0+item.y,b.y1+item.y])for(const [sx,sy] of (jelly?xscales.flatMap(sx=>yscales.map(sy=>[sx,sy])):xscales.map(s=>[s,s])))points.push([W/2+(x-W/2)*sx,H/2+(y-H/2)*sy]);
- const box=A.bounds([points]),chromaBase=local.centerMainBounds?Math.max((plan.fx.chroma??.7)*(plan.style.ghost??1),...(plan.cuts||[]).map(c=>((c.effectFx||plan.fx).chroma??.7)*((c.effectStyle||plan.style).ghost??1))):(fx.chroma??.7)*(st.ghost??1),chroma=chromaBase*(1+(plan.events||[]).filter(e=>e.type==='chroma').reduce((a,e)=>a+e.amp,0)+.9),shake=(plan.events||[]).filter(e=>e.type==='shake').reduce((a,e)=>a+e.amp,0),rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0),turn=['dutch','pendulumSway'].includes(cut.cam)?Math.max(...points.map(p=>Math.hypot(p[0]-W/2,p[1]-H/2)))*2*Math.sin(cut.cam==='pendulumSway'?phi/2:2.5*J.DEG):0;
+ const box=A.bounds([points]),chromaBase=local.centerMainBounds?Math.max((plan.fx.chroma??.7)*(plan.style.ghost??1),...(plan.cuts||[]).map(c=>((c.effectFx||plan.fx).chroma??.7)*((c.effectStyle||plan.style).ghost??1))):(fx.chroma??.7)*(st.ghost??1),chroma=local.ghost===false?0:chromaBase*(1+(plan.events||[]).filter(e=>e.type==='chroma').reduce((a,e)=>a+e.amp,0)+.9),shake=(plan.events||[]).filter(e=>e.type==='shake').reduce((a,e)=>a+e.amp,0),rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0),turn=['dutch','pendulumSway'].includes(cut.cam)?Math.max(...points.map(p=>Math.hypot(p[0]-W/2,p[1]-H/2)))*2*Math.sin(cut.cam==='pendulumSway'?phi/2:2.5*J.DEG):0;
  if(bodyOnly){const dx=camX+2/scale+turn+(cut.cam==='panL'||cut.cam==='panR'?W*Math.abs(P.a||.022)*K*motion:0)+16*shake*H/1080*motion,dy=camY+2/scale+turn+11*shake*H/1080*motion+(cut.cam==='dollyIn'?H*.008*K:cut.cam==='beatPunch'?H*.004*K:0);return rectangle({x0:box.x0-dx,y0:box.y0-dy,x1:box.x1+dx,y1:box.y1+dy});}
  const cw=Math.round(W*scale),sw=Math.max(1,Math.round(cw/4)),upscale=cw/sw,rasterPad=2/scale,resamplePad=2*upscale/scale;
  const dx=camBlur+camX+rasterPad+turn+(3.4*chroma+16*shake)*H/1080*motion+W*.016*rgb+resamplePad+(cut.cam==='panL'||cut.cam==='panR'?W*Math.abs(P.a||.022)*K*motion:0),dy=camBlur+camY+rasterPad+turn+(1.9*chroma+11*shake)*H/1080*motion+H*.004*rgb+resamplePad+(cut.cam==='dollyIn'?H*.008*K:cut.cam==='beatPunch'?H*.004*K:0);
@@ -51034,12 +51034,12 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
    local={bounds:absolute(false),body:absolute(true),renderScale:scale};
   }
   project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma,jellyHoldOnly:!!jellyHold});
-  if(sourceItem.unitSupport){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),bbRanges=[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges];let complete=true;for(const d of cut.decor||[]){const args={W:sw,H:sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges,includeFallback:!holdOnly||cachedPartial,random:J.r},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  if(sourceItem.unitSupport){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),bbRanges=[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges];let complete=true;for(const d of cut.decor||[]){const args={W:sw,H:sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges,includeFallback:!holdOnly||cachedPartial,random:J.r},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
  if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
   const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):A.basicUnits?.(args);
-  if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
  const domain=S.domain(plan,{...cut,simpleCircleClip:true},region,project),candidates=[];
  if(!jellyHold&&!usedJellyUnits&&!(partSupports&&!centerSource)&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
@@ -51464,11 +51464,16 @@ function verticalSourceUnits(item,cut,plan,{partial=false}={}){
    const index=Number(u.owner.split('.').pop()),g=lay.find(g=>g.i===index);
    if(!g)return null;
    const gx=item.x+(g.x+g.vx)*(item.sx||1),gy=item.y+(g.y+g.vy)*(item.sy||1),w=g.w*(item.sx||1),h=g.h*(item.sy||1),off=ruby?w*.8*m:0,s=ruby?1-.68*m:1,pad=(item.stroke||0)/2+3,b=u.bounds;
-   bbs.push({x0:gx-w/2,x1:gx+off+w/2,y0:gy-h/2,y1:gy+h/2,leftMax:gx+off-w*s/2,rightMin:gx+w*s/2,topMax:gy-h*s/2,bottomMin:gy+h*s/2});
+   const left=[gx-w/2,gx+off-w*s/2],right=[gx+w/2,gx+off+w*s/2];
+   bbs.push({x0:Math.min(...left),x1:Math.max(...right),y0:gy-h/2,y1:gy+h/2,leftMax:Math.max(...left),rightMin:Math.min(...right),topMax:gy-h*s/2,bottomMin:gy+h*s/2});
    // Vertical RubyDrop moves right, while all glyphs (including r90 Latin
    // and punctuation) shrink about their own source baseline. Include the
-   // baseline stroke/AA guard without shrinking the native outline width.
-   return {...u,bounds:{x0:Math.min(b.x0,ruby?gx-pad:b.x0)-dx,x1:Math.max(b.x1,ruby?gx+pad:b.x1)+off+dx,y0:Math.min(b.y0,ruby?gy-pad:b.y0),y1:Math.max(b.y1,ruby?gy+pad:b.y1)}};
+   // Native ruby scale=.32+.68*e and offset=.8*w*(1-e) share one
+   // e in [0,1]. Every corner moves affinely: retain its two endpoints,
+   // rather than combining full size with the largest ruby displacement.
+   // The added guard keeps stroke/AA constant as the ink shrinks.
+   const small=ruby?{x0:gx+(b.x0-gx)*s+off-pad*(1-s),x1:gx+(b.x1-gx)*s+off+pad*(1-s),y0:gy+(b.y0-gy)*s-pad*(1-s),y1:gy+(b.y1-gy)*s+pad*(1-s)}:b;
+   return {...u,bounds:{x0:Math.min(b.x0,small.x0)-dx,x1:Math.max(b.x1,small.x1)+dx,y0:Math.min(b.y0,small.y0),y1:Math.max(b.y1,small.y1)}};
   });
   if(main.units.some(u=>!u))return null;
   if(ruby){
@@ -51613,8 +51618,11 @@ function gridUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  if(!Number.isFinite(earliest)||holdWindow.native.start<cut.start+entry||holdWindow.native.end>cut.start+cut.dur-(cut.exit==='cut'?0:cut.outDur))return null;
  const u=Math.min(W,H),port=H>W*1.08,ls=J.clamp(u*.024,14,34),cols=port?4:6,rows=port?8:6,m=u*.07;
  const gx0=m*1.35,gx1=W-m,gy0=m,gy1=H-m,cw=(gx1-gx0)/cols,rh=(gy1-gy0)/rows,X=c=>gx0+c*cw,Y=r=>gy0+r*rh,units=[];
- const add=(owner,kind,x0,y0,x1,y1)=>units.push({owner,kind,bounds:{x0,y0,x1,y1}});
- const plain=(it,owner)=>A.itemGeometry(it,ID,{pass:'main',scale:1}).glyphs.forEach(g=>units.push({owner:owner+'.glyph.'+g.index,kind:'glyph',bounds:A.bounds([g.polygon])}));
+ // Native grid/rule calls pass g=false; the column/side copy uses ghost:false.
+ // Keep this source fact for the caller's per-owner camera/chroma projection.
+ // It does not suppress post bloom or any other frame-wide output effect.
+ const add=(owner,kind,x0,y0,x1,y1,ghost=false)=>units.push({owner,kind,ghost,bounds:{x0,y0,x1,y1}});
+ const plain=(it,owner)=>A.itemGeometry(it,ID,{pass:'main',scale:1}).glyphs.forEach(g=>units.push({owner:owner+'.glyph.'+g.index,kind:'glyph',ghost:false,bounds:A.bounds([g.polygon])}));
  // Grid progress stays in [0,1] in hold. Each line retains its own full-length
  // support rather than filling the otherwise empty interiors of its cells.
  const linePad=Math.max(1,u*.0012)/2+1;
@@ -51650,15 +51658,15 @@ function gridUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
   const [c,r,s]=free,bw=s*cw,bh=s*rh,cx=X(c)+bw/2,cy=Y(r)+bh/2,R=Math.min(bw,bh)*.46;
   // outBack(t,1.2) is bounded by 1+4*s^3/(27*(s+1)^2).
   const q=1+4*1.2**3/(27*2.2**2),pad=1;
-  if(p.shape==='bar')add('swiss.accent','shape',X(c)+cw*.06-pad,cy-rh*.12-pad,X(c)+cw*.06+(bw-cw*.12)*q+pad,cy+rh*.12+pad);
-  else add('swiss.accent','shape',cx-R*q-pad,cy-R*q-pad,cx+R*q+pad,cy+R*q+pad);
+  if(p.shape==='bar')add('swiss.accent','shape',X(c)+cw*.06-pad,cy-rh*.12-pad,X(c)+cw*.06+(bw-cw*.12)*q+pad,cy+rh*.12+pad,true);
+  else add('swiss.accent','shape',cx-R*q-pad,cy-R*q-pad,cx+R*q+pad,cy+R*q+pad,true);
  }
  if(p.label)plain({text:'JIZURA  ／  No.'+String(Math.max(0,cut.line|0)+1).padStart(2,'0')+'  ／  '+J.fmtTime(cut.start),font:mono,size:ls*.8,track:.25,x:m*.62,y:(gy0+gy1)/2,rot:-90},'swiss.sideLabel');
  const ranges=Object.fromEntries(['x0','x1','y0','y1'].map(key=>[key,[
   (key.endsWith('0')?Math.min:Math.max)(...mains.map(x=>x.bbRanges[key][0])),
   (key.endsWith('0')?Math.min:Math.max)(...mains.map(x=>x.bbRanges[key][1]))]]));
  const cachedPartial=mains.some(x=>x.partial)||cut.exit==='cut'&&cut.outDur>0,decorRanges=cachedPartial?Object.fromEntries(['x0','x1','y0','y1'].map(key=>[key,[Math.min(...mains.map(x=>x.bbRangesAny[key][0])),Math.max(...mains.map(x=>x.bbRangesAny[key][1]))]])):ranges;
- for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[decorRanges],includeFallback:cachedPartial},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[decorRanges],includeFallback:cachedPartial},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts.map(p=>({...p,ghost:false})));}
  return {units,bbRanges:decorRanges,scope:'native-hold'};
 }
 A.gridUnits=gridUnits;
@@ -51906,7 +51914,11 @@ function geometry(env){
 const handles=(plan,cut)=>ids.has(cut.layout)&&(S.preparedCut(plan,cut)||A.placementCutPreserved86cm(plan,cut)===false);
 function viewportProject(plan,cut,scale,{fixedViewport=false,allCutsBloom=false,allCutsChroma=false,activeRange=null,bloomSigma=6,jellyHoldOnly=false}={}){
  const area=cut.area,W=plan.W,H=plan.H,sw=area?W*area.w:W,sh=area?H*area.h:H,st=cut.effectStyle||plan.style;
- const fx=cut.effectFx||plan.fx,maxChroma=allCutsChroma?Math.max((plan.fx.chroma??.7)*(plan.style.ghost??1),...(plan.cuts||[]).map(c=>((c.effectFx||plan.fx).chroma??.7)*((c.effectStyle||plan.style).ghost??1))):(fx.chroma??.7),smallFx={...fx,texture:0,chroma:maxChroma*H/sh},smallStyle={...st,glow:0,...(allCutsChroma?{ghost:1}:{})},smallPlan={...plan,W:sw,H:sh,fx:smallFx,style:smallStyle,events:(plan.events||[]).filter(e=>!['rgbSplit','slice','block','zoom','splitSlide','whipBlur','zoomPunch','heartbeat','edgeDetect'].includes(e.type)).map(e=>e.type==='shake'?{...e,amp:e.amp*H/sh}:e)},smallCut={...cut,layout:'bulbs',effectFx:smallFx,effectStyle:smallStyle,sourceExcludeCameraBlur:!!area,jellyHoldOnly},cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,bloomEnabled=allCutsBloom?((plan.style.glow??.6)*.5*(plan.fx.texture??.6)>.05||(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05)):(st.glow??.6)*.5*(fx.texture??.6)>.05,bloom=bloomEnabled?bloomSigma*Math.max(2,Math.round(quarter/160))*up/scale:0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0);
+ // frame() uses real time and ignores chroma/shake events before their start
+ // and more than 14/24 seconds after it. Bound each remaining decay by its
+ // maximum on the active interval; preserve the old all-time bound otherwise.
+ const events=(plan.events||[]).filter(e=>!['rgbSplit','slice','block','zoom','splitSlide','whipBlur','zoomPunch','heartbeat','edgeDetect'].includes(e.type)).filter(e=>!activeRange||!['chroma','shake'].includes(e.type)||e.t<=activeRange.end&&(activeRange.start-e.t)*24<=14).map(e=>{const decay=e.type==='chroma'?.55:e.type==='shake'?.62:null,amp=activeRange&&decay?Math.abs(e.amp)*Math.pow(decay,Math.max(0,(activeRange.start-e.t)*24)):e.amp;return e.type==='shake'?{...e,amp:amp*H/sh}:activeRange&&decay?{...e,amp}:e;});
+ const fx=cut.effectFx||plan.fx,maxChroma=allCutsChroma?Math.max((plan.fx.chroma??.7)*(plan.style.ghost??1),...(plan.cuts||[]).map(c=>((c.effectFx||plan.fx).chroma??.7)*((c.effectStyle||plan.style).ghost??1))):(fx.chroma??.7),smallFx={...fx,texture:0,chroma:maxChroma*H/sh},smallStyle={...st,glow:0,...(allCutsChroma?{ghost:1}:{})},smallPlan={...plan,W:sw,H:sh,fx:smallFx,style:smallStyle,events},smallCut={...cut,layout:'bulbs',effectFx:smallFx,effectStyle:smallStyle,sourceExcludeCameraBlur:!!area,jellyHoldOnly},cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,bloomEnabled=allCutsBloom?((plan.style.glow??.6)*.5*(plan.fx.texture??.6)>.05||(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05)):(st.glow??.6)*.5*(fx.texture??.6)>.05,bloom=bloomEnabled?bloomSigma*Math.max(2,Math.round(quarter/160))*up/scale:0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0);
  const post=S.postMotion(plan,W,H,scale,cut,activeRange),cameraBlur=area&&cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,J.clamp((fx.motion??.7)*1.25,0,1.25))*(cut.motionScale??1):0;
  const project=(local,item,plan,cut,body)=>{let b=A.bounds([S.stageEnvelope(local,area&&!fixedViewport?{x:0,y:0}:item,smallPlan,smallCut,body)]);if(area)b={x0:Math.max(0,b.x0),y0:Math.max(0,b.y0),x1:Math.min(sw,b.x1),y1:Math.min(sh,b.y1)};const x=area?area.x*W+(fixedViewport?0:item.x):0,y=area?area.y*H+(fixedViewport?0:item.y):0,tx=body?0:bloom+cameraBlur+W*.016*rgb+post.x,ty=body?0:bloom+cameraBlur+H*.004*rgb+post.y;return rect({x0:b.x0+x-tx,y0:b.y0+y-ty,x1:b.x1+x+tx,y1:b.y1+y+ty});};
  return project;
