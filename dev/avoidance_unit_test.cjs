@@ -204,3 +204,38 @@ for (const curve of ['smooth', 'linear', 'steep', 'soft']) {
 }
 
 console.log('All Avoidance Mask unit tests passed successfully!');
+
+// Placement cache follows effective measurement inputs, including in-place edits.
+{
+  const circle = { enabled: true, cx: 500, cy: 500, r: 100, pad: 0, R: 100 };
+  J.circleAvoidanceForCut = () => circle;
+  J.DECOR = {};
+  J.metrics = { revision: 0 };
+  J.itemBox = it => ({ x0: it.x, y0: it.y, x1: it.x + it.size, y1: it.y + it.size });
+  J.mainDraw = () => null;
+  J.LAYOUTS = {}; J.LAYOUTS.cacheTest = { render(env) {
+    return J.mainDraw(env, { x: 20, y: 20, size: env.cut.params.size });
+  } };
+  const ctx = { save() {}, restore() {}, translate() {}, scale() {} };
+  const cut = { layout: 'cacheTest', seed: 1, text: 'test', params: { size: 20 }, dur: 2, inDur: .3 };
+  const env = { cut, plan: { W: 1000, H: 1000 }, W: 1000, H: 1000, t: 0, ctx, st: { fonts: { body: ['a'] } } };
+  const draw = () => J.drawCutWithCircleAvoidance({}, env);
+  const changes = (edit, label) => { const before = cut._circleSol; edit(); draw(); assert.notEqual(cut._circleSol, before, label); };
+  draw();
+  const first = cut._circleSol;
+  env.t = 1; draw(); assert.equal(cut._circleSol, first, 'frame time reuses solution');
+  changes(() => { cut.params.size = 30; }, 'parameter edit');
+  changes(() => { cut.circleNativeParams = { size: 40 }; }, 'native params take precedence');
+  const native = cut._circleSol;
+  cut.params.size = 50; draw(); assert.equal(cut._circleSol, native, 'inactive params do not invalidate');
+  changes(() => { cut.circleNativeParams.size = 60; }, 'native parameter edit');
+  changes(() => { delete cut.circleNativeParams; }, 'native params removed');
+  changes(() => { cut.dur = 3; }, 'duration edit');
+  changes(() => { cut.inDur = .5; }, 'entrance duration edit');
+  changes(() => { env.st.fonts.body[0] = 'b'; }, 'style font edit');
+  changes(() => { J.metrics.revision++; }, 'font metrics reset');
+  changes(() => { J.lang = 'en'; }, 'language edit');
+  changes(() => { cut.params.size = 30; }, 'undo parameter edit');
+  changes(() => { cut.params.size = 50; }, 'redo parameter edit');
+  console.log('Circle placement cache tests passed');
+}
