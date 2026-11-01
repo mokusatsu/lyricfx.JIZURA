@@ -79,6 +79,8 @@ class Renderer {
         lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalAlpha = 1; lx.globalCompositeOperation = 'source-over'; lx.filter = 'none'; lx.clearRect(0, 0, cw, ch);
         J.drawForegroundLayer(lx, plan, t, this, !!opt.previewEdit, cut);
         if(!opt.previewEdit && J.maskBehindPersons)J.maskBehindPersons(layer,plan,t,'behindForeground',cut);
+        const ac = J.circleAvoidanceForCut?.(plan,null,t);
+        if (!opt.previewEdit && ac?.enabled && ac.behindForeground) J.applyAvoidanceCircleMask(lx,new DOMMatrix([scale,0,0,scale,0,0]),ac,W,H);
         ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = cut.opacity / 100;
         ctx.globalCompositeOperation = { normal: 'source-over', multiply: 'multiply', screen: 'screen', overlay: 'overlay' }[cut.blend] || 'source-over';
         ctx.drawImage(layer, 0, 0); ctx.restore();
@@ -173,7 +175,10 @@ class Renderer {
     const energy = plan.energy ? plan.energy[Math.min(plan.energy.length - 1, Math.max(0, Math.floor(t * plan.energyRate)))] : null;
     // ---------- background graphic (per line) ----------
     if (hidden.lyrics!==false && hidden.media!==false && (opt.copyLyrics || plan.media?.applyLyricBackground !== false && !opt.transparent) && !key && mainCut && mainCut.bg && mainCut.bg !== 'none' && J.BG[mainCut.bg]) {
-      const avoidCircle = J.activeAvoidanceAtTime ? J.activeAvoidanceAtTime(plan, tq) : null;
+      let avoidCircle = J.activeAvoidanceAtTime ? J.activeAvoidanceAtTime(plan, tq) : null;
+      const allPerson = J.personOccluders?.(plan,tq,'behindLyrics').length;
+      if (avoidCircle?.occlusion === 'all') avoidCircle = {...avoidCircle,maskAvoidance:true,circleMask:true};
+      if (allPerson) avoidCircle = {...avoidCircle,enabled:true,maskAvoidance:true,circleMask:avoidCircle?.person ? avoidCircle.circleMask : !!avoidCircle?.maskAvoidance,person:true,personModes:[...(avoidCircle?.personModes || []),'behindLyrics'],plan,time:tq};
       const drawBg = targetCtx => {
         const env = this.makeEnv(targetCtx, plan, mainCut, sc, { pass: 'main', t: tq, lt: tq - mainCut.start, ltb: tq - mainCut.start, step, scale, allowFilter, energy, beat: beatInfo, bgOnly: true });
         targetCtx.save();
@@ -211,7 +216,9 @@ class Renderer {
       let target = ctx;
       const mask = J.activeMask ? J.activeMask(cut) : null;
       const personOcclusion = !opt.copyLyrics && J.personOccluders?.(plan,t,'behindLyrics').length;
-      if (opacity !== 1 || isGhost || composite !== 'source-over' || backgroundMedia && !opt.noPost || mask || personOcclusion) {
+      const circleOcclusion = !opt.copyLyrics && J.circleAvoidanceForCut?.(plan,null,t);
+      const circleAll = circleOcclusion?.enabled && circleOcclusion.occlusion === 'all';
+      if (opacity !== 1 || isGhost || composite !== 'source-over' || backgroundMedia && !opt.noPost || mask || personOcclusion || circleAll) {
         const layer = this.ensure(this.lyricCutLayer || (this.lyricCutLayer = mk(2, 2)), cw, ch);
         target = layer.getContext('2d'); target.setTransform(1, 0, 0, 1, 0, 0); target.globalAlpha = 1; target.globalCompositeOperation = 'source-over'; target.filter = 'none';
         target.clearRect(0, 0, cw, ch); target.setTransform(scale, 0, 0, scale, 0, 0);
@@ -277,6 +284,7 @@ class Renderer {
         // The cut mask applies to the finished cut, after its effects, in stage units.
         if (mask && mask.target === 'cut') J.applyMaskToCanvas(target.canvas, mask, new DOMMatrix([scale, 0, 0, scale, 0, 0]), W, H, { cut, t: tq, plan });
         if(personOcclusion)J.maskBehindPersons(target.canvas,plan,t,'behindLyrics');
+        if(circleAll)J.applyAvoidanceCircleMask(target,new DOMMatrix([scale,0,0,scale,0,0]),circleOcclusion,W,H);
         ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = opacity; ctx.globalCompositeOperation = composite;
         ctx.drawImage(target.canvas, 0, 0); ctx.restore();
       }

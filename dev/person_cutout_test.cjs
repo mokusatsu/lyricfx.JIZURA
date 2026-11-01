@@ -1,7 +1,7 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
 const {timelineAction}=require('./ui_helpers.cjs');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
  try{for(const locale of ['', 'en/']){
   const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+locale;
@@ -24,8 +24,8 @@ const {timelineAction}=require('./ui_helpers.cjs');
    const sourceDraw=()=>{x.clearRect(0,0,100,100);J.drawMediaCut(x,cut,.5);return sample();};
    cut.personCutout.display='only';const only=sourceDraw();cut.personCutout.display='remove';const legacyDisplay=sourceDraw();
    cut.personCutout.display='only';cut.placement={cx:.75,cy:.5,w:.5,h:.5,lockAspect:true,angle:0};const moved=sourceDraw();cut.placement=null;
-   cut.personCutout.display='none';cut.personCutout.behindForeground=true;r.frame(x,plan,.5,{scale:1,noLyrics:true,noHud:true,noPost:true});const front=sample();
-   plan.foreground.cuts=[];cut.personCutout.behindLyrics=true;for(const c of plan.cuts)c.area=null;r.drawCut=env=>{env.ctx.setTransform(1,0,0,1,0,0);env.ctx.fillStyle='yellow';env.ctx.fillRect(0,0,100,100);};r.frame(x,plan,.5,{scale:1,noHud:true,noPost:true,noGhost:true});const lyrics=sample();
+   cut.personCutout.display='none';plan.avoidance.cuts=[{kind:'person',enabled:true,start:0,end:4,source:{layer:'media',index:0,itemId:'media'},occlusion:'none',behindForeground:true}];r.frame(x,plan,.5,{scale:1,noLyrics:true,noHud:true,noPost:true});const front=sample();
+   plan.foreground.cuts=[];plan.avoidance.cuts[0].occlusion='all';for(const c of plan.cuts)c.area=null;r.drawCut=env=>{env.ctx.setTransform(1,0,0,1,0,0);env.ctx.fillStyle='yellow';env.ctx.fillRect(0,0,100,100);};r.frame(x,plan,.5,{scale:1,noHud:true,noPost:true,noGhost:true});const lyrics=sample();
    // The silhouette follows the identical rotated placement, motion and duplicated-source effect.
    cut.personCutout.display='only';cut.placement={cx:.5,cy:.5,w:.7,h:.8,lockAspect:false,angle:32};cut.hold='rock';cut.treat='mirrorPair';sourceDraw();const displayed=x.getImageData(0,0,100,100).data;
    const hidden=make('white');J.maskBehindPersons(hidden,plan,.5,'behindForeground');const behind=hidden.getContext('2d').getImageData(0,0,100,100).data;let followError=0;for(let i=3;i<displayed.length;i+=4)followError=Math.max(followError,Math.abs(displayed[i]+behind[i]-255));
@@ -38,18 +38,41 @@ const {timelineAction}=require('./ui_helpers.cjs');
    const second=make('white');second.getContext('2d').clearRect(0,0,50,100);const videoRef={...ref,maskId:ref.maskId+'_video',duration:2,fps:1,frameCount:2};
    await J.attachPersonMask(videoRef,J.packPersonMask({sourceId:'media',model:'rvm',fps:1,width:100,height:100,duration:2},[await png(matte),await png(second)]));
    const v={...cut,type:'video',start:10,videoStart:1,videoLoop:true,personCutout:videoRef};await J.preparePersonMask(v,10);const cv=make('black');cv.getContext('2d').clearRect(0,0,100,100);cv.getContext('2d').drawImage(J.personMaskFrame(v,10),0,0);const offset=cv.getContext('2d').getImageData(25,50,1,1).data[3];await J.preparePersonMask(v,11);cv.getContext('2d').clearRect(0,0,100,100);cv.getContext('2d').drawImage(J.personMaskFrame(v,11),0,0);const loop=cv.getContext('2d').getImageData(25,50,1,1).data[3];
-   J.uiApi.replan();return {only,legacyDisplay,moved,front,lyrics,followError,kept,stale,portable,rejected,offset,loop};
+   plan.avoidance.cuts=[{index:0,kind:'circle',enabled:true,start:0,end:4,cx:.5,cy:.5,r:.2,pad:0,feather:0,placement:false,occlusion:'all',maskFeather:0,maskRadiusOffset:0}];plan.lyricAvoidance={enabled:true,pad:0,feather:0};
+   const circleNoMove=!J.usesCircleAvoidance(plan,plan.cuts[0],.5);r.frame(x,plan,.5,{scale:1,noHud:true,noPost:true,noGhost:true});const circlePixels=[[...x.getImageData(50,50,1,1).data],[...x.getImageData(10,50,1,1).data]];
+   cut.placement=null;cut.hold='still';cut.treat='none';
+   plan.avoidance.cuts=[{index:0,kind:'circle',enabled:true,start:0,end:4,cx:.75,cy:.5,r:.1,pad:0,feather:0,placement:true,occlusion:'aux',maskFeather:0,maskRadiusOffset:0},{index:1,kind:'person',enabled:true,start:0,end:4,source:{layer:'media',index:0,itemId:'media'},occlusion:'aux'}];plan.lyricAvoidance={enabled:true,pad:0,feather:0};
+   x.clearRect(0,0,100,100);x.fillStyle='red';x.fillRect(0,0,100,100);
+   const both=J.activeAvoidanceAtTime(plan,.5);J.drawWithAvoidanceMask(r,x,both,100,100,sx=>{sx.fillStyle='yellow';sx.fillRect(0,0,100,100);},new DOMMatrix());
+   const combined=[[...x.getImageData(25,50,1,1).data],[...x.getImageData(75,50,1,1).data],[...x.getImageData(55,50,1,1).data]];
+   let combinedPath=false;const oldDrawAux=J.drawCutMaskedAux;J.drawCutMaskedAux=(renderer,env,run,mask)=>{combinedPath=!!(mask.person&&mask.circleMask);return oldDrawAux(renderer,env,run,mask);};
+   try{const ec=plan.cuts[0],env=r.makeEnv(x,plan,ec,plan.style.schemes[0],{t:.5,lt:.5,ltb:.5,step:12,scale:1,pass:'main',energy:0,beatPulse:0});J.drawCutWithCircleAvoidance(r,env);}finally{J.drawCutMaskedAux=oldDrawAux;}
+
+   J.uiApi.replan();return {only,legacyDisplay,moved,front,lyrics,followError,kept,stale,portable,rejected,offset,loop,circleNoMove,circlePixels,combined,combinedPath};
   });
+  assert.equal(result.combinedPath,true,'circle placement path includes both masks');assert.deepEqual(result.combined,[[255,0,0,255],[255,0,0,255],[255,255,0,255]],'person and circle both mask auxiliary drawing');
+  assert.equal(result.circleNoMove,true);assert.deepEqual(result.circlePixels[0],[255,0,0,255]);assert.deepEqual(result.circlePixels[1],[255,255,0,255]);
   assert.equal(result.only[0][3],255);assert.equal(result.only[1][3],0);assert.equal(result.legacyDisplay[0][3],255);assert.equal(result.legacyDisplay[1][3],255,'retired removal mode displays the original source');
   assert.equal(result.moved[0][3],0);assert.equal(result.moved[1][3],0,'source left half moves to x=50..75');
   assert.deepEqual(result.front[0],[255,0,0,255]);assert.deepEqual(result.front[1],[0,0,255,255]);
   assert.deepEqual(result.lyrics[0],[255,0,0,255]);assert.deepEqual(result.lyrics[1],[255,255,0,255]);
   assert.ok(result.followError<=1,'mask follows placement, rotation, motion and source effects');
   assert.equal(result.kept,true);assert.equal(result.stale,null);assert.equal(result.portable,true);assert.equal(result.rejected,true);assert.equal(result.offset,0);assert.equal(result.loop,255);
+  // A person guide uses the generated matte, follows the source placement and stays out of MP4 output.
+  await page.evaluate(()=>{const p=J.ui.project;p.avoidance={...J.normalizeAvoidance(null),manualCuts:true,cutCount:1,timing:{lineTimes:{0:0}},cutOverrides:{0:{kind:'person',source:{layer:'media',index:0,itemId:'media'},occlusion:'all'}}};p.media.cutOverrides[0].placement=null;J.uiApi.replan();J.uiApi.seek(.5);});
+  await page.waitForFunction(()=>{const g=document.querySelector('#personGuide');return !g.hidden && g.width && g.getContext('2d').getImageData(Math.floor(g.width*.25),Math.floor(g.height*.5),1,1).data[3]>200;});
+  let guidePixels=await page.locator('#personGuide').evaluate(g=>{const x=g.getContext('2d');return [.25,.75].map(v=>x.getImageData(Math.floor(g.width*v),Math.floor(g.height*.5),1,1).data[3]);});assert.ok(guidePixels[0]>200 && guidePixels[1]<5,'guide shows matte rather than source bounds');
+  await page.evaluate(()=>{J.ui.project.media.cutOverrides[0].placement={cx:.75,cy:.5,w:.5,h:.5,lockAspect:true,angle:0};J.uiApi.replan();J.uiApi.seek(.5);});
+  await page.waitForFunction(()=>{const g=document.querySelector('#personGuide'),x=g.getContext('2d');return x.getImageData(Math.floor(g.width*.6),Math.floor(g.height*.5),1,1).data[3]>200 && x.getImageData(Math.floor(g.width*.25),Math.floor(g.height*.5),1,1).data[3]<5;});
+  await page.evaluate(()=>{J.ui.project.media.cutOverrides[0].placement={cx:.5,cy:.5,w:.8,h:.8,lockAspect:true,angle:90};J.uiApi.replan();J.uiApi.seek(.5);});await page.waitForFunction(()=>{const g=document.querySelector('#personGuide'),x=g.getContext('2d');return x.getImageData(Math.floor(g.width*.5),Math.floor(g.height*.3),1,1).data[3]>200 && x.getImageData(Math.floor(g.width*.5),Math.floor(g.height*.7),1,1).data[3]<5;});
+  await page.locator('#sourceAvoidance').click();await page.locator('.avoid-guide').uncheck();await page.waitForFunction(()=>document.querySelector('#personGuide').hidden);
+  await page.locator('.avoid-guide').check();await page.waitForFunction(()=>!document.querySelector('#personGuide').hidden);
+  const exported=await page.evaluate(async()=>{const p=J.ui.project,plan=J.ui.plan;p.videoSize={w:100,h:100};p.durationOverride=.25;plan.W=100;plan.H=100;plan.duration=.25;await J.prepareMediaFrame(plan,0);const c=document.createElement('canvas');c.width=c.height=100;const x=c.getContext('2d');new J.Renderer().frame(x,plan,0,{scale:1});const expected=x.getImageData(0,0,100,100).data;const out=await J.exportMP4({project:p,plan,audio:null,quality:'standard'});const video=document.createElement('video'),url=URL.createObjectURL(out.blob);video.src=url;video.muted=true;await new Promise((resolve,reject)=>{video.onloadeddata=resolve;video.onerror=()=>reject(Error('Cannot decode exported MP4'));});video.currentTime=.08;await new Promise(resolve=>{video.onseeked=resolve;});const decoded=document.createElement('canvas');decoded.width=decoded.height=100;const dx=decoded.getContext('2d');dx.drawImage(video,0,0,100,100);const actual=dx.getImageData(0,0,100,100).data;let delta=0;for(let i=0;i<actual.length;i+=4)for(let j=0;j<3;j++)delta+=Math.abs(actual[i+j]-expected[i+j]);URL.revokeObjectURL(url);return {bytes:out.blob.size,width:video.videoWidth,height:video.videoHeight,duration:video.duration,meanError:delta/30000,expected:[...expected.slice(20200,20204)],actual:[...actual.slice(20200,20204)]};});assert.ok(exported.bytes>100 && exported.width===100 && exported.height===100 && exported.duration>0 && exported.meanError<25,JSON.stringify(exported));
+  await page.evaluate(()=>{J.ui.project.durationOverride=4;J.ui.project.media.cutOverrides[0].placement=null;J.uiApi.replan();});
   await timelineAction(page,'[data-layer="media"][data-index="0"]','details');const modal=page.locator('#cutDetailsDialog');await modal.locator('[data-detail-tab="personCutout"]').click();
   assert.equal(await modal.locator('[data-person-model]').count(),0);assert.equal(await modal.locator('[data-person-display]').getAttribute('type'),'checkbox');assert.equal(await modal.locator('.person-cutout-options h4').textContent(),locale?'Cutout effects':'切り抜き効果');assert.equal(await modal.getByText(locale?'Remove person (leave a hole)':'人物を削除（背景に穴が開く）',{exact:true}).count(),0);
   assert.equal(await modal.locator('.person-cutout-editor > .hint').first().textContent(),locale?'Generate masks only for the range played in this cut. Run again after changing its duration or source start.':'カット内で再生する範囲だけ人物マスクを作成します。再生時間・開始位置を変えた後は再実行してください');
-  assert.equal(await modal.locator('.person-cutout-editor > .hint').last().textContent(),locale?'Lowering the analysis rate finishes the cutout sooner, but masks are more likely to misalign during fast motion.':'解析枚数を下げると切り抜きが早く完了しますが、速い動きでマスクがズレやすくなります。');await modal.locator('[data-person-display]').check();await modal.locator('[data-person-option="behindLyrics"]').check();
+  assert.equal(await modal.locator('.person-cutout-editor > .hint').last().textContent(),locale?'Lowering the analysis rate finishes the cutout sooner, but masks are more likely to misalign during fast motion.':'解析枚数を下げると切り抜きが早く完了しますが、速い動きでマスクがズレやすくなります。');await modal.locator('[data-person-display]').check();assert.equal(await modal.locator('[data-person-option="behindLyrics"]').count(),0);
   // Exercise UI progress and completion without downloading models in this regression suite.
   await page.evaluate(()=>{J.generatePersonMask=async(c,o)=>{o.onProgress({phase:'analyze',completed:1,total:2,backend:'Test'});await new Promise(resolve=>{window.finishPersonTest=resolve;});const ref=J.ui.project.media.cutOverrides[0].personCutout;return {...ref};};});
   const assertBusy=async()=>{
@@ -72,7 +95,7 @@ const {timelineAction}=require('./ui_helpers.cjs');
   await modal.locator('[data-person-run]').click();assert.match(await modal.locator('[data-person-status]').textContent(),/50%/);assert.equal(await modal.locator('[data-person-display]').isDisabled(),true);
   await assertBusy();await page.setViewportSize({width:390,height:844});await assertBusy();
   if(process.env.PERSON_TEST_OUTPUT)await modal.screenshot({path:process.env.PERSON_TEST_OUTPUT+'/person-cutout-'+(locale?'en':'ja')+'-busy-mobile.png'});
-  await page.setViewportSize({width:1280,height:900});await page.evaluate(()=>finishPersonTest());await assertIdle();await modal.locator('[data-person-display]').check();await modal.locator('[data-person-option="behindLyrics"]').check();
+  await page.setViewportSize({width:1280,height:900});await page.evaluate(()=>finishPersonTest());await assertIdle();await modal.locator('[data-person-display]').check();assert.equal(await modal.locator('[data-person-option="behindLyrics"]').count(),0);
   await page.evaluate(()=>{J.generatePersonMask=async(c,o)=>{o.onProgress({phase:'analyze',completed:1,total:10,backend:'Test'});return new Promise((resolve,reject)=>o.signal.addEventListener('abort',()=>reject(new DOMException('Cancelled','AbortError')),{once:true}));};});
   await page.setViewportSize({width:390,height:844});await modal.locator('[data-person-run]').click();await assertBusy();await modal.locator('[data-person-cancel]').click();await assertIdle();assert.equal(await modal.locator('[data-person-display]').isChecked(),true,'cancellation preserves existing settings');await page.setViewportSize({width:1280,height:900});
   await page.evaluate(()=>{J.generatePersonMask=()=>new Promise((resolve,reject)=>{window.failPersonTest=()=>reject(new Error('Test inference failure'));});});
