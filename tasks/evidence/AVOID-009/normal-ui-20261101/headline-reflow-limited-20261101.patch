@@ -1,0 +1,91 @@
+diff --git a/src/11zz14_simple_circle.js b/src/11zz14_simple_circle.js
+index 026b9a17..7a9a7df8 100644
+--- a/src/11zz14_simple_circle.js
++++ b/src/11zz14_simple_circle.js
+@@ -129,7 +129,25 @@ function prepare(plan,previous=null,{scale=1,noPost=false}={}){
+   if(A.nativeBlockCircle?.handles(plan,original)){const result=A.nativeBlockCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=result.area;cut.simpleCircleRecipe={sourceCut:nativeSource,nativeBlock:result.recipe,renderScale:scale,policy};}continue;}
+   if(cut.layout==='burst'){const result=A.burstSimple.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:nativeSource,burst:result.recipe,renderScale:scale,policy};}continue;}
+   if(cut.layout==='bulbs'){const result=A.bulbsSimple.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:nativeSource,bulbs:result.recipe,renderScale:scale,policy};}continue;}
+-  if(cut.layout==='headlineDeck'){const result=A.headlineCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:nativeSource,headlineDeck:result.recipe,renderScale:scale,policy};}continue;}
++  if(cut.layout==='headlineDeck'){
++   const result=A.headlineCircle.prepare(plan,cut,{scale,previous,region:regions[0]});
++   if(result.recipe){diagnostics.push(result.diagnostic);cut.area=null;cut.simpleCircleRecipe={sourceCut:nativeSource,headlineDeck:result.recipe,renderScale:scale,policy};continue;}
++   // Reflow is a fallback only; unsupported decoration stays on the previous
++   // diagnostic because an owner identity does not prove complete visibility.
++   if(viewportSupport&&holdRange&&!['manual','notation'].includes(cut.areaMode)&&A.placementExplicitSize(plan,original)===false&&cut.group==null&&!cut.emphasis&&!cut.placementLocked&&!(cut.decor||[]).length&&!/[\p{Mark}\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text)){
++    const a=cut.area,W=plan.W*a.w,H=plan.H*a.h,style={...(cut.effectStyle||plan.style),...(cut.fonts?{fonts:cut.fonts}:{})},env={W,H,cut,plan:{...plan,W,H},st:style,sc:cut.palette||style.schemes[cut.scheme%style.schemes.length]},native=J.headlineDeckGeometry(env),normalize=t=>String(t??'').replace(/\s/gu,'');
++    let reflowApplied=false;
++    for(const ratio of [.75,.5]){
++     const geometry=J.headlineDeckGeometry(env,{native,width:native.aw*ratio});
++     if(/[\p{Mark}\p{Extended_Pictographic}\u200d\ufe0f]/u.test(native.dlines.join(''))||normalize(geometry.fb.text)!==normalize(cut.text)||geometry.size!==native.size||geometry.dlines.map(normalize).join('')!==native.dlines.map(normalize).join('')||geometry.showByline!==native.showByline)continue;
++     const trial=A.centerCircle.prepareViewport(plan,cut,{scale,previous,region:regions[0],holdRange,headlineGeometry:geometry});
++     if(trial.recipe){diagnostics.push({...trial.diagnostic,nativeSourcePreserved:false,headlineReflow:true,nativeSize:native.size});cut.area=trial.area;cut.simpleCircleRecipe={sourceCut:nativeSource,...trial.recipe,renderScale:scale,policy};reflowApplied=true;break;}
++    }
++    if(reflowApplied)continue;
++   }
++   const reflowUnavailable=(cut.decor||[]).length?'HEADLINE_REFLOW_DECOR_COMPLETENESS_UNPROVEN':A.placementExplicitSize(plan,original)!==false?'HEADLINE_REFLOW_EXPLICIT_SIZE_OR_UNKNOWN':null;
++   diagnostics.push(reflowUnavailable?{...result.diagnostic,headlineReflowUnavailable:reflowUnavailable}:result.diagnostic);continue;
++  }
+   if(A.sourceFormulaCircle?.handles(plan,original)&&!(cut.layout==='numbered'&&cut.params.variant==='cols')){const result=A.sourceFormulaCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.sceneRecipe){cut.area=result.area??null;cut.simpleCircleRecipe={sourceCut:nativeSource,scene:result.sceneRecipe,renderScale:scale,policy};}else if(result.recipe){cut.area=result.area;cut.simpleCircleRecipe={sourceCut:nativeSource,sourceFormula:result.recipe,renderScale:scale,policy};}continue;}
+   if(cut.layout==='numbered'){const result=A.numberedCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=null;cut.simpleCircleRecipe={sourceCut:nativeSource,numberedColumns:result.recipe,renderScale:scale,policy};}continue;}
+   const area=cut.area,W0=area?plan.W*area.w:plan.W,H0=area?plan.H*area.h:plan.H;
+diff --git a/src/11zz14a_center_circle.js b/src/11zz14a_center_circle.js
+index 04ec3b8d..9fcc4e5d 100644
+--- a/src/11zz14a_center_circle.js
++++ b/src/11zz14a_center_circle.js
+@@ -166,7 +166,7 @@ function mixedHoldUnits({W,H,cut,plan,st,holdWindow}){
+  for(const d of cut.decor||[]){const more=A.memphisUnits?.({W,H,P:d,cut,st,bbRanges:ranges,includeFallback:visibility.fallback});if(!more?.length)return null;units.push(...more);}
+  return {units,eventCount:visibility.times.length,cacheEventCount:visibility.cacheEventCount,rangeCount:ranges.length,scope:cut.layout+'-hold-reachable-sets'};
+ }
+-function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null,reflowItem=null,nativeDims=null,correlatedFallback=false}){
++function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null,reflowItem=null,nativeDims=null,correlatedFallback=false,headlineGeometry=null}){
+  const S=A.simpleCircle,activeHold=providedHoldRange||S.centerHoldInterval?.(plan,cut)||null,a=cut.area,W=plan.W,H=plan.H,st=cut.effectStyle||plan.style,fx=cut.effectFx||plan.fx,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter;
+  // The hold-only path retains the native glow and uses a practical 4.5-sigma
+  // support; faint bloom tails beyond that support are not certified.
+@@ -229,11 +229,14 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
+   }
+  }
+  if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['mixed','scatter','pill','neon','magazine','type','condensed','stack','marquee','tile','headlineDeck','dictionary','contents','footnote','proofread','poster','numbered','vcols','ticket','labels','swissGrid','lowerThird','frameBox','quote','ruler','tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps','corners','staircase','zigzag','gridCells','genkou','typeSpecimen','kanjiFocus','searchBar','notification','chat'].includes(cut.layout)){
+-  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow,correlated:correlatedFallback};
++  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow,correlated:correlatedFallback,headlineGeometry};
+   const parts=['mixed','scatter'].includes(cut.layout)?mixedHoldUnits(args):cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):cut.layout==='lowerThird'?A.lowerThirdUnits?.(args):['frameBox','quote','ruler'].includes(cut.layout)?A.framedUnits?.(args):['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)?A.typoStaticUnits?.(args):['corners','staircase','zigzag','gridCells','genkou'].includes(cut.layout)?A.multirowUnits?.(args):['typeSpecimen','kanjiFocus'].includes(cut.layout)?A.bSpecimenFocusUnits?.(args):['searchBar','notification','chat'].includes(cut.layout)?A.uiUnits?.(args):roleSeparated?A.repeatedUnits?.(args):['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)?A.editorialUnits?.(args):A.basicUnits?.(args);
++  if(headlineGeometry&&!parts?.units?.length)return {diagnostic:{cut:cut.index,status:'unsupported',reason:'HEADLINE_REFLOW_UNMEASURED'}};
++  if(parts?.units?.length&&headlineGeometry){const pre=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsChroma:true,activeRange:holdWindow.real,preClip:true});for(const u of parts.units.filter(u=>u.owner.startsWith('headline.'))){const q={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost},b=A.bounds([pre(q,{x:0,y:0},plan,cut,false)]);if(b.x0<native.x0||b.y0<native.y0||b.x1>native.x1||b.y1>native.y1)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'HEADLINE_REFLOW_CLIPS_OWNED_SUPPORT'}};}}
+   if(parts?.units?.length){if(['mixed-hold-reachable-sets','scatter-hold-reachable-sets','multirow-hold-reachable-sets'].includes(parts.scope))supportInfo={scope:parts.scope,eventCount:parts.eventCount,cacheEventCount:parts.cacheEventCount,rangeCount:parts.rangeCount,unitCount:parts.units.length};const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  }
+  // The nativeIdentity viewport would also move tiledAux; never use it here.
++ if(headlineGeometry&&!partSupports?.length)return {diagnostic:{cut:cut.index,status:'unsupported',reason:'HEADLINE_REFLOW_UNMEASURED'}};
+  if(roleSeparated&&!partSupports){const unchanged=S.nativeViewportIdentity(plan,cut,scale,region,previous);return unchanged?{area:{...a},...unchanged}:{diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_ROLE_SEPARATED_UNITS'}};}
+  const domain=S.domain(plan,{...cut,simpleCircleClip:true},region,project),candidates=[];
+  if(!reflowItem&&!jellyHold&&!usedJellyUnits&&!(partSupports&&!centerSource)&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
+@@ -293,7 +296,7 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
+   }
+   return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT',...(supportInfo?{supportInfo}:{})}};
+  }
+- return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:roleSeparated?{sourceFormula:{layout:cut.layout,W:W*a.w,H:H*a.h,offset:win.offset.slice(),nativeViewport:true,sourceArea:{...a},roleSeparated:true},holdWindow}:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(reflowItem?{centerViewportItem:reflowItem,...(nativeDims?{centerNativeDims:nativeDims}:{})}:{}),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),...(supportInfo?{supportInfo}:{}),nativeSourcePreserved:!reflowItem,...(reflowItem?{reflowText:reflowItem.text,nativeSize:reflowItem.size}:{}),sourceArea:nativeDims?{...cut.simpleCircleSourceArea}: {...a},offset:win.offset.slice(),allClockGeneration:false}};
++ return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:roleSeparated?{sourceFormula:{layout:cut.layout,W:W*a.w,H:H*a.h,offset:win.offset.slice(),nativeViewport:true,sourceArea:{...a},roleSeparated:true},holdWindow}:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(headlineGeometry?{headlineDeck:{geometry:headlineGeometry,offset:[0,0]}}:{}),...(reflowItem?{centerViewportItem:reflowItem,...(nativeDims?{centerNativeDims:nativeDims}:{})}:{}),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),...(supportInfo?{supportInfo}:{}),nativeSourcePreserved:!reflowItem&&!headlineGeometry,...(headlineGeometry?{nativeSize:headlineGeometry.size,headlineReflow:true}:{}),...(reflowItem?{reflowText:reflowItem.text,nativeSize:reflowItem.size}:{}),sourceArea:nativeDims?{...cut.simpleCircleSourceArea}: {...a},offset:win.offset.slice(),allClockGeneration:false}};
+ }
+ A.centerCircle=Object.freeze({handles,envelope,stageBounds,render,viewportHandles,prepareViewport,sourceUnits,mixedVisibilityRanges,singleGlyphVisibility,scatterSourceItems});
+ })();
+diff --git a/src/11zz14l_editorial_units.js b/src/11zz14l_editorial_units.js
+index 944eb767..2928e01c 100644
+--- a/src/11zz14l_editorial_units.js
++++ b/src/11zz14l_editorial_units.js
+@@ -3,7 +3,7 @@
+ (() => {
+ 'use strict';
+ const A=J.placement, ID=[1,0,0,1,0,0];
+-function editorialUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
++function editorialUnits({W,H,cut,plan,st,holdOnly=true,holdWindow,headlineGeometry=null}){
+  if(!['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)||!holdOnly||!holdWindow||cut.placementLayoutsC||cut.layoutCRecipe||
+     (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+     !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+@@ -24,7 +24,7 @@ function editorialUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+  const sourcePlan={...plan,W,H};
+  const ready=notes||framed?A.layoutsCEditorialSource.clock(cut,sourcePlan):cut.layout==='contents'?Math.max(.8,.1+k*.1+.5):cut.layout==='dictionary'?Math.max(.8,cut.inDur*.8+.62):Math.max(.8,cut.inDur+.55,cut.inDur*.6+.64,cut.inDur*.8+.45);
+  if(holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+- const source={...cut,area:null,simpleCircleRecipe:null,enter:'cut',exit:'cut',hold:'still'},renderer=Object.create(J.Renderer.prototype);
++ const source={...cut,area:null,simpleCircleRecipe:headlineGeometry?{headlineDeck:{geometry:headlineGeometry,offset:[0,0]}}:null,enter:'cut',exit:'cut',hold:'still'},renderer=Object.create(J.Renderer.prototype);
+  if(framed){try{A.layoutsCEditorialSource.domain(source);}catch(e){if(['SOURCE_COVERAGE','UNSUPPORTED_PARAMETER_RANGE'].includes(e?.code))return null;throw e;}}
+  let programs;
+  try{programs=['main','A','B'].map(pass=>A.sourceFormulaBase.construct(renderer,sourcePlan,source,{W,H,time:ready+.01,pass}));}
