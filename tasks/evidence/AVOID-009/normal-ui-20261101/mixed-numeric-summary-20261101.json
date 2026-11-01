@@ -818,7 +818,30 @@
         }
       }
     },
-    "scope": "Direct solver with UI-generated fixed input; instrumented runtime may affect candidate budget; not an actual render or exhaustive feasibility test."
+    "scope": "Direct solver with UI-generated fixed input; instrumented runtime may affect candidate budget; not an actual render or exhaustive feasibility test.",
+    "supportShortfallsPx": {
+      "glyph.circle": {
+        "count": 9,
+        "minimum": 0.345,
+        "maximum": 16.342
+      },
+      "exit.circle": {
+        "count": 9,
+        "minimum": 16.681,
+        "maximum": 54.549
+      },
+      "memphis.circle": {
+        "count": 2,
+        "minimum": 149.689,
+        "maximum": 149.689
+      },
+      "entry.ink-frame": {
+        "count": 2,
+        "minimum": 6.948,
+        "maximum": 11.862
+      }
+    },
+    "shortfallMeaning": "Distance is from circle to conservative axis-aligned support, not a direct collision measurement or proof no placement exists. Frame shortfall is ink support outside lower canvas. Each candidate records only first failing owner."
   },
   "latestUi": {
     "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-primary-stage-trace-mixed-actual-20261101-02/result.json",
