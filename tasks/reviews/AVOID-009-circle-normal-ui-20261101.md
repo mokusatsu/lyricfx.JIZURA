@@ -67,3 +67,5 @@ Memphis は少数の実図形に対して bbox 変動の保守枝が多数あり
 Memphis / starburst の共通 `getBB` は、現在の有効な bbox で保持中に更新し、文字が隠れた場合と退出中には以前の bbox を維持する。これは表示位置の跳躍を避ける既存の意図である。一方、初回に退出へ直接 seek した場合は、その時点の bbox が以前の保持位置として扱われ得る。さらに `displayEnd` ありの cut は描画ごとに clone され、WeakMap のキーが持続しない。これらは source の読取り結果で、seek 前後の画素差は未実測。単純な cache 消去や固定位置への置換は元の退場・非表示時の描画を変えるため行わず、現行描画の起こし得る cache も回避計算に含める。
 
 単字 item の invertBox / tyStrike に限定し、入場・退場の時刻境界で装飾の cache 候補を分け、全範囲を同じ配置で検査する試作を行った。通常 UI で取得した完全な plan の先頭 cut から source viewport を再構成して直接 `prepareViewport` を呼ぶ限定診断では、mixed / scatter とも配置不成立で、計算時間はそれぞれ約920 / 698 ms。この診断は通常の prepare 全体、旧自動領域 fallback、全 cut、実描画や安全性の検証ではない。基準 build の同一測定もないため速度差は断定しない。対象2条件で改善を示せなかった試作は取り下げ、差分と結果は `normal-ui-common-wip-20261101/cache-ranges-unadopted.patch` と `normal-ui-mixed-scatter-viewport-diagnostic-actual-20261101-01` に保持した。
+
+同じ試作の unit 取得診断では、mixed の主文字6・invertBox 6に対し Memphis が5,555支持、scatter の主文字6・invertBox 6・付属54に対し Memphis が3,962支持だった。各装飾の支持の外接範囲は元 viewport 約797×421 px のほぼ全面に及んだ。これは全面が描画されることや物理的な配置不能を示さない。保存 raw には全投影後矩形・全候補の衝突 owner がないため、正確な最終 blocker と旧 viewport からの縮小率は未確定。記録は `normal-ui-mixed-scatter-multirow-units-diagnostic-actual-20261101-01`。

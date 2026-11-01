@@ -11,3 +11,5 @@
 `memphis-input/` の3ファイルは別の取得 probe。通常 UI の corners / staircase / mixed について最初に一致した `memphisUnits` 入力を記録し、元関数の戻値を変えない。mixed は未採用 provider の試作を含む。実行時には、このディレクトリの `qt-service-visible.py` を probe と同じディレクトリへコピーするほか、上記の固定パス・runtime 条件を満たす必要がある。入力の保存は全候補や描画合格を示さない。
 
 `viewport-diagnostic/` は通常 UI の完全 plan を読み、mixed / scatter の先頭 cut に `prepareViewport` を直接呼ぶ限定診断。実行環境と shared Qt service の前提は同じ。通常 prepare 全体や実描画の受入とは区別する。
+
+`viewport-diagnostic/units-observer.patch` は、この限定診断に unit 出力観測だけを加えた差分。観測のため関数を一時的にラップし、結果記録にはその処理時間も含まれる。

@@ -1,0 +1,91 @@
+{
+  "scope": "Unadopted trial; one direct viewport diagnostic per ID, original UI plan, observer wrapper and measurement overhead. Not normal preparation, UI acceptance or all-offset proof.",
+  "head": "65527c29ad39ba1c15a805e4951254cf000ae089",
+  "buildSha256": "a5cbfae353a3236ca4882eb00256b5963dd467c72bc9ea63dcf719ce0eef799a",
+  "pins": [
+    {
+      "file": "probe.cjs",
+      "sha256": "ec036482387e0019ae93dd7b1c854a1a412627d07c0a64484f152f2efb1cd517"
+    },
+    {
+      "file": "qt-service-visible.py",
+      "sha256": "6b4faf3d16ae3187be043ecbedc89f0c240bb050d7df52f9dc2a448eeef4d25e"
+    },
+    {
+      "file": "observe.cjs",
+      "sha256": "89abe58e5d2ce4833e154ca2dcc615fd8921a3c73c9bd7cee9299e61e1852371"
+    },
+    {
+      "file": "viewport-diagnostic.js",
+      "sha256": "099cc3d8dc623072bf26bb789c179560e0e0d9ec01d8a5cca7984565db91c751"
+    }
+  ],
+  "complete": true,
+  "errors": [],
+  "cases": [
+    {
+      "id": "mixed",
+      "status": "insufficient-space",
+      "reason": "NO_SAFE_NATIVE_VIEWPORT",
+      "elapsed_ms": 931.7999999988824,
+      "unitCalls": [
+        {
+          "keys": [
+            "input",
+            "output",
+            "error"
+          ],
+          "unitCount": 5567
+        }
+      ],
+      "sourceArea": {
+        "x": 0.4592177363720801,
+        "y": 0.72,
+        "w": 0.41489786058917316,
+        "h": 0.245,
+        "angle": 0,
+        "lockAspect": true
+      },
+      "viewportArea": {
+        "x": 0.4592177363720801,
+        "y": 0.5501903622230285,
+        "w": 0.41489786058917316,
+        "h": 0.3898096377769716,
+        "angle": 0,
+        "lockAspect": true
+      }
+    },
+    {
+      "id": "scatter",
+      "status": "insufficient-space",
+      "reason": "NO_SAFE_NATIVE_VIEWPORT",
+      "elapsed_ms": 611,
+      "unitCalls": [
+        {
+          "keys": [
+            "input",
+            "output",
+            "error"
+          ],
+          "unitCount": 4028
+        }
+      ],
+      "sourceArea": {
+        "x": 0.4592177363720801,
+        "y": 0.72,
+        "w": 0.41489786058917316,
+        "h": 0.245,
+        "angle": 0,
+        "lockAspect": true
+      },
+      "viewportArea": {
+        "x": 0.4592177363720801,
+        "y": 0.5501903622230285,
+        "w": 0.41489786058917316,
+        "h": 0.3898096377769716,
+        "angle": 0,
+        "lockAspect": true
+      }
+    }
+  ]
+}
