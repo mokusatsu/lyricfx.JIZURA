@@ -56,6 +56,8 @@ Bの共通構造では kanjiFocus が通常サンプルの保持時点で文字�
 
 上の5演出では各主歌詞文字と、番号・線・ラベル・吹き出し等の呼出しも観測した。ただし tyFullTrack / chat の主文字、および numbered の番号・ゴーストには clip を伴う呼出しがあり、観測器は clip 後の完全な可視性を判定できない。残る2演出でも全付属物の欠落がないことは未監査である。
 
+保存済み main paint の TextMetrics、変換行列、矩形 clip を後から照合したところ、tyFullTrack / chat の「色」「を」は主文字 ink 矩形全体を含む clip 内で呼び出されていた。numbered の主文字6字は局所 clip なし。3演出とも観測した ON の主文字 ink 矩形は viewport と画面内に収まり、該当時点で明確な主文字の切断は見つからなかった。これは記録された矩形の照合であり、OFF 側・別時刻・全付属物の完全性の証明ではない。
+
 既存支持の接線候補と mixed / scatter / B セルの試作を一括で再確認した。corners / staircase / tyVRuler / tyScaleSteps / searchBar / keycaps / mixed / scatter は引き続き配置不成立だった。slotMachine / flipBoard は範囲集計の例外が解消したが、配置不成立だった。ticket は同じ移動量を保ち、保持時点の円内差0を確認した。対象条件で成立例を増やせなかった試作は製品差分から取り下げ、ソースと結果は Git 外の `normal-ui-common-wip-20261101` と `normal-ui-e2e-local-part0-tangent-mixed-eleven-actual-20261101-01` に保持した。これらは限られた通常サンプルでの結果で、別条件の可能性を否定しない。
 
-Memphis は少数の実図形に対して bbox 変動の保守枝が多数あり、既定 mixed では歌詞だけなら候補がある一方、所有する Memphis の支持が移動を制約していた。入退場を除いた主描画の保持時に完全な文字 bbox を使う試作を行ったが、通常 UI の corners / staircase / mixed / scatter は引き続き不成立だった。対照 zigzag は同じ移動量を維持し、保持の最初・中間・最後に確認した各時点で円内差0。試作は不採用とし `normal-ui-common-wip-20261101/main-hold-trial-final.patch` と `normal-ui-e2e-local-part0-decor-hold-boundaries-actual-20261101-01` に保持した。試作途中で、実時間範囲を全 cut 共通の最大 step で丸めると個々の effect step と不一致になり得る問題が見つかり、実装候補で訂正した。採否と別に、入退場通過許容は主描画の実際の動作時刻で扱う。
+Memphis は少数の実図形に対して bbox 変動の保守枝が多数あり、既定 mixed では歌詞だけなら候補がある一方、所有する Memphis の支持が移動を制約していた。入退場を除いた主描画の保持時に完全な文字 bbox を使う試作を行ったが、通常 UI の corners / staircase / mixed / scatter は引き続き不成立だった。対照 zigzag は同じ移動量を維持し、cut 全体の時間を基準に選んだ3時点で円内差0。文字ごとの入場遅延が残る可能性があるため、これを全文字が入場を終えた保持区間の境界確認と数えない。試作は不採用とし `normal-ui-common-wip-20261101/main-hold-trial-final.patch` と `normal-ui-e2e-local-part0-decor-hold-boundaries-actual-20261101-01` に保持した。試作途中で、実時間範囲を全 cut 共通の最大 step で丸めると個々の effect step と不一致になり得る問題が見つかり、実装候補で訂正した。採否と別に、入退場通過許容は主描画の実際の動作時刻で扱う。
