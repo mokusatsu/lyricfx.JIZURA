@@ -535,6 +535,8 @@ dialog.terms .terms-fork h3 { color: var(--cyan); }
 
 .cut-details-dialog { width: min(1180px, 96vw); height: min(90vh, 920px); max-height: 90vh; overflow: hidden; border: 1px solid #555; border-radius: 12px; padding: 0; background: #191b20; color: #eee; }
 .cut-details-dialog[open] { display: grid; grid-template-columns: minmax(300px, 42%) minmax(0, 1fr); }
+.person-analysis-dialog { width:min(760px,96vw); height:min(80vh,720px); }
+.person-analysis-dialog[open] { grid-template-columns:minmax(220px,38%) minmax(0,1fr); }
 .cut-details-preview { min-height: 0; overflow: auto; padding: 24px; border-right: 1px solid #33353b; background: #15161a; }
 .cut-details-preview h2 { font-size: 16px; margin: 0 0 14px; }
 .cut-details-preview canvas { display: block; width: 100%; height: auto; background: #000; border-radius: 6px; }
@@ -1032,24 +1034,9 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
       </div>
 
       <div class="sec" id="avoidancePane" hidden>
-        <div class="sec-h media-pane-heading"><h2 id="avoidancePaneTitle">回避（円形領域回避）</h2></div>
-        <div class="pick-sets" style="margin-bottom:10px">
-          <label class="check"><input id="avoidanceEnable" class="avoid-center-toggle" type="checkbox"><span>歌詞が回避円を避ける（画面中央を避ける）<small>タイムライン上のカットごとに回避円の位置と半径を編集できます。</small></span></label>
-          <label class="check"><input id="avoidanceEmphasis" type="checkbox"><span>*強調*した歌詞も回避する<small>オンにすると *強調* を指定したカットも回避円を避けて配置します（カットごとに個別設定も可能）。</small></span></label>
-          <label class="check"><input id="avoidanceMask" type="checkbox"><span>回避部分をマスク<small>主歌詞以外の装飾・補助演出（枠線・図形・エコー文字・背景演出など）を円形グラデーションで透過します。</small></span></label>
-        </div>
-        <div id="avoidanceDefaultMaskFields" class="fields" style="margin-bottom:10px" hidden>
-          <label class="field">マスク半径の調整（px）<input id="avoidanceMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label>
-          <label class="field">ぼかし幅（px）<input id="avoidanceMaskFeather" type="number" min="0" max="300" step="1" value="60"></label>
-          <label class="field field-wide">勾配カーブ<select id="avoidanceMaskCurve"><option value="smooth">なめらか（標準）</option><option value="linear">直線（リニア）</option><option value="steep">くっきり（急勾配）</option><option value="soft">ふんわり（緩勾配）</option></select></label>
-        </div>
-        <div id="avoidanceCutInsert" class="media-lyric-insert">
-          <div class="sec-h"><h2>カット挿入</h2></div>
-          <label class="field">一括挿入の基準<select id="avoidanceLyricInsertMode"><option value="line">行に合わせる</option><option value="cut">カットに合わせる</option></select></label>
-          <label class="check"><input id="avoidanceGroupLyrics" type="checkbox" checked><span>{ }で囲まれた歌詞は1カット</span></label>
-          <button id="btnAvoidanceFromLyrics" type="button">歌詞に合わせて一括挿入</button>
-          <button id="btnTapAvoidance" type="button" title="動画を見ながら各カットのタイミングでタップ">動画を見ながらタップで挿入</button>
-        </div>
+        <div class="sec-h media-pane-heading"><h2 id="avoidancePaneTitle">回避</h2></div>
+        <button id="addAvoidanceCircle" type="button">円形領域を追加</button>
+        <button id="addAvoidancePerson" type="button">人物マスクを追加</button>
       </div>
 
       <div class="sec" id="mediaPane" hidden>
@@ -1091,17 +1078,16 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 
       <div class="sec">
-        <div class="sec-h"><h2 id="cutsHeading">行とカット</h2><span id="linesInfo" class="muted mono"></span></div>
+        <div class="sec-h" id="cutsHeadingRow"><h2 id="cutsHeading">行とカット</h2><span id="linesInfo" class="muted mono"></span></div>
         <ol id="lineList"></ol>
         <ol id="mediaLineList" hidden></ol>
-        <ol id="avoidanceLineList" hidden></ol>
       </div>
     </section>
 
     <!-- ================= center: stage ================= -->
     <section class="col col-stage" aria-label="プレビュー">
       <div class="viewport" id="viewport"><button id="exitPreviewFullscreen" class="fullscreen-exit" type="button">全画面を終了</button><div class="fullscreen-transport"><button id="fullscreenPlay" type="button" aria-label="再生">▶</button><span id="fullscreenTime" class="tc"></span><input id="fullscreenScrub" type="range" min="0" max="10000" value="0" aria-label="再生位置"></div><canvas id="view" width="1280" height="720"></canvas><canvas id="personGuide" class="person-guide" aria-hidden="true" hidden></canvas><div id="itemFrames" class="item-frames"></div><div id="areaEditOverlay" class="area-edit-overlay" aria-label="表示位置とサイズを編集" hidden><div id="areaEditRect" class="area-edit-rect"><span id="avoidanceMaskInnerRing" class="avoidance-mask-ring inner" hidden></span><span id="avoidanceMaskOuterRing" class="avoidance-mask-ring outer" hidden></span><span class="area-edit-handle nw" data-handle="nw"></span><span class="area-edit-handle ne" data-handle="ne"></span><span class="area-edit-handle sw" data-handle="sw"></span><span class="area-edit-handle se" data-handle="se"></span><span class="area-rotate-handle n" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle e" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle s" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle w" data-handle="rotate" role="button" aria-label="回転"></span></div></div><div id="viewMsg" class="overlay-msg" hidden></div><div id="keyBadge" class="key-badge" hidden></div><div id="toast" class="toast" role="status" aria-live="polite" hidden></div></div>
-      <div id="areaEditControls" class="area-edit-controls" hidden><div id="mediaAreaSizeControls" class="media-area-size-controls" hidden><label><input id="mediaAreaAspectLock" type="checkbox" checked>アスペクト比を固定</label><label>幅（画面比％）<input id="mediaAreaWidth" type="number" min="0.5" max="400" step="0.5"></label><label>高さ（画面比％）<input id="mediaAreaHeight" type="number" min="0.5" max="400" step="0.5"></label><label id="mediaAreaAngleField">角度（°）<input id="mediaAreaAngle" type="number" min="-180" max="180" step="0.1"></label></div><div id="avoidanceMaskControls" class="media-area-size-controls avoidance-mask-controls" hidden><label><input id="avoidanceEditMask" type="checkbox">回避部分をマスク（装飾・補助演出を透過）</label><label>マスク半径の調整（px）<input id="avoidanceEditMaskOffsetRange" type="range" min="-240" max="240" step="1" value="0" aria-label="マスク半径の調整スライダー"><input id="avoidanceEditMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label><label>ぼかし幅（px）<input id="avoidanceEditMaskFeatherRange" type="range" min="0" max="300" step="1" value="60" aria-label="ぼかし幅スライダー"><input id="avoidanceEditMaskFeather" type="number" min="0" max="300" step="1" value="60"></label><label>勾配カーブ<select id="avoidanceEditMaskCurve"><option value="smooth">なめらか（標準）</option><option value="linear">直線（リニア）</option><option value="steep">くっきり（急勾配）</option><option value="soft">ふんわり（緩勾配）</option></select></label></div><div class="area-edit-actions"><button id="areaResetAuto" class="ghost" type="button">自動配置</button><button id="areaResetFull" class="ghost" type="button">全域表示</button><button id="areaDelete" type="button">削除</button></div><div class="area-edit-confirm"><button id="areaApplyOne" class="primary" disabled>配置決定</button><button id="areaApplyFollowing" disabled>以降すべて同じ配置</button><button id="areaCancel" class="ghost">キャンセル</button></div></div>
+      <div id="areaEditControls" class="area-edit-controls" hidden><div id="mediaAreaSizeControls" class="media-area-size-controls" hidden><label><input id="mediaAreaAspectLock" type="checkbox" checked>アスペクト比を固定</label><label>幅（画面比％）<input id="mediaAreaWidth" type="number" min="0.5" max="400" step="0.5"></label><label>高さ（画面比％）<input id="mediaAreaHeight" type="number" min="0.5" max="400" step="0.5"></label><label id="mediaAreaAngleField">角度（°）<input id="mediaAreaAngle" type="number" min="-180" max="180" step="0.1"></label></div><div id="avoidanceMaskControls" class="media-area-size-controls avoidance-mask-controls" hidden><label><input id="avoidanceEditEnabled" type="checkbox">有効</label><label>文字の配置<select id="avoidanceEditPlacement"><option value="move">領域の外へ配置</option><option value="stay">そのまま</option></select></label><label><input id="avoidanceEditEmphasis" type="checkbox">強調も避ける</label><label>重なった部分<select id="avoidanceEditOcclusion"><option value="none">そのまま表示</option><option value="aux">装飾・補助描画だけ隠す</option><option value="all">歌詞全体を背後に隠す</option></select></label><label><input id="avoidanceEditForeground" type="checkbox">前景も背後に隠す</label><label><input id="avoidanceEditGuide" type="checkbox">プレビューに領域ガイドを表示</label><label>開始位置（秒）<input id="avoidanceEditStart" type="number" step="any" min="0"></label><label><input id="avoidanceEditUntilNext" type="checkbox">次カットまで</label><label>終了位置（秒）<input id="avoidanceEditEnd" type="number" step="any" min="0"></label><label>マスク半径の調整（px）<input id="avoidanceEditMaskOffsetRange" type="range" min="-240" max="240" step="1" value="0" aria-label="マスク半径の調整スライダー"><input id="avoidanceEditMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label><label>ぼかし幅（px）<input id="avoidanceEditMaskFeatherRange" type="range" min="0" max="300" step="1" value="60" aria-label="ぼかし幅スライダー"><input id="avoidanceEditMaskFeather" type="number" min="0" max="300" step="1" value="60"></label><label>勾配カーブ<select id="avoidanceEditMaskCurve"><option value="smooth">なめらか（標準）</option><option value="linear">直線（リニア）</option><option value="steep">くっきり（急勾配）</option><option value="soft">ふんわり（緩勾配）</option></select></label></div><div class="area-edit-actions"><button id="areaResetAuto" class="ghost" type="button">自動配置</button><button id="areaResetFull" class="ghost" type="button">全域表示</button><button id="areaDelete" type="button">削除</button></div><div class="area-edit-confirm"><button id="areaApplyOne" class="primary" disabled>配置決定</button><button id="areaApplyFollowing" disabled>以降すべて同じ配置</button><button id="areaCancel" class="ghost">キャンセル</button></div></div>
       <div id="tapPanel" class="tapbox" hidden>
         <div class="hint" id="tapHint">挿入したいタイミングでボタンをクリック（またはスペースキー）</div>
         <div class="tap-queue">
@@ -1166,7 +1152,6 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
             <button id="btnNext2" class="ghost">次の案 ▶</button>
           </div>
           <div class="pick-sets">
-            <label class="check"><input id="eLyricAvoidCenter" class="avoid-center-toggle" type="checkbox"><span>歌詞が画面中央を避ける<small>歌詞を自動配置するとき、画面の中央を空けます。*強調*した歌詞は中央にも置きます。</small></span></label>
           </div>
         </div>
         <div class="easy-sec">
@@ -1249,7 +1234,6 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
       <div class="tabpane" data-pane="tech" hidden>
         <div class="pick-sets">
           <label class="check"><input id="lyricAutoPlacement" type="checkbox"><span>配置・サイズにも自動で変化をつける<small>オフでは全画面を使用。手動の表示エリアは維持します。「自動配置に戻す」で手動指定を解除できます。</small></span></label>
-          <label class="check"><input id="lyricAvoidCenter" class="avoid-center-toggle" type="checkbox"><span>画面中央を避ける<small>自動配置で歌詞を画面の中央に置きません。*強調*したカットは対象外です。</small></span></label>
           <label class="check"><input id="lyricAvoidForeground" type="checkbox" checked><span>前景との重なりを避ける<small>自動配置時に前景の表示領域を避けます。*強調*したカットには適用しません。</small></span></label>
           <label class="slider"><span>重なり回避の強度</span><input id="lyricAvoidanceStrength" type="range" min="0" max="1" step="0.05" value="1"><output id="lyricAvoidanceStrengthValue">1.00</output></label>
           <p class="note">1で前景の範囲を避け、下げると周辺の重なりを許容します。0では回避しません。空き領域がない場合は最も重なりの少ない配置を使います。</p>
@@ -4505,7 +4489,7 @@ J.defaultProject = () => ({
   lyricEffects: { autoPlacement: true, avoidForeground: true, avoidanceStrength: 1, lyricAvoidanceStrength: 1, randomBlend: false, randomOpacity: false, opacityMin: 0, opacityMax: 100 },
   timelineLinks: [],
   layerVisibility: {avoidance:true,foreground:true,lyrics:true,media:true},
-  avoidance: { cutCount: 1, manualCuts: false, avoidEmphasis: false, maskAvoidance: false, maskRadiusOffset: 0, maskFeather: 60, maskCurve: 'smooth', lyricInsertMode: 'line', groupLyricsAsOneCut: true, timing: { lineTimes: {} }, cutOverrides: {} },
+  avoidance: { timelineMode: true, cutCount: 1, manualCuts: false, avoidEmphasis: false, maskAvoidance: false, maskRadiusOffset: 0, maskFeather: 60, maskCurve: 'smooth', lyricInsertMode: 'line', groupLyricsAsOneCut: true, timing: { lineTimes: {} }, cutOverrides: {0:{enabled:false}} },
   media: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
   foreground: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
   colors: { enabled: false },
@@ -5804,7 +5788,7 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
     }
     return {
       cutCount,
-      manualCuts,
+      manualCuts, timelineMode: !!a.timelineMode,
       avoidEmphasis: !!a.avoidEmphasis,
       ...normalizeMaskFields(a, {}, true),
       lyricInsertMode: a.lyricInsertMode === 'cut' ? 'cut' : 'line',
@@ -5877,7 +5861,7 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
         customCircle,
       };
     });
-    return { cuts, duration, avoidEmphasis: a.avoidEmphasis, maskAvoidance: a.maskAvoidance };
+    return { cuts, duration, timelineMode:a.timelineMode, avoidEmphasis: a.avoidEmphasis, maskAvoidance: a.maskAvoidance };
   };
 
   J.avoidanceAt = (plan, t) => {
@@ -5894,7 +5878,7 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
     const W = plan?.W || 1920;
     const H = plan?.H || 1080;
     const settings = J.lyricEffectSettings ? J.lyricEffectSettings(project) : {};
-    const enabled = !!(settings.autoPlacement && settings.avoidCenter);
+    const enabled = !!(project?.avoidance?.timelineMode || settings.autoPlacement && settings.avoidCenter);
     const custom = project?.lyricEffects?.avoidCircle || project?.avoidCircle || null;
     const cx = Number.isFinite(custom?.cx) ? custom.cx : W * 0.5;
     const cy = Number.isFinite(custom?.cy) ? custom.cy : H * 0.5;
@@ -5913,7 +5897,7 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
       feather,
       avoidEmphasis,
       ...J.normalizeAvoidanceMask({ ...(project?.avoidance || {}), ...(custom || {}) }),
-      hasExplicitPixelCircle: !!(custom && (Number.isFinite(custom.cx) || Number.isFinite(custom.cy) || Number.isFinite(custom.r))),
+      hasExplicitPixelCircle: !!(!project?.avoidance?.timelineMode && custom && (Number.isFinite(custom.cx) || Number.isFinite(custom.cy) || Number.isFinite(custom.r))),
     };
   };
 
@@ -8801,8 +8785,10 @@ J.autoLyricArea = (cut, plan, obstacles = [], settings = J.lyricEffectSettings({
   const rng = J.rng(J.h(J.placementSeed ? J.placementSeed(cut) : cut.seed, 947));
   delete cut.lyricPattern;
   // 「画面中央を避ける」 keeps the stage centre clear like an obstacle; *emphasis* may still use it.
-  const avoidEmphasis = !!(plan?.avoidance && J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut)?.avoidEmphasis : plan?.lyricAvoidance?.avoidEmphasis);
-  const avoidCenter = settings.avoidCenter && (!cut.emphasis || avoidEmphasis) && J.CENTER_AVOID;
+  const circle = plan?.avoidance && J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut, cut.start) : plan?.lyricAvoidance;
+  const avoidEmphasis = !!circle?.avoidEmphasis;
+  const centerEnabled=plan?.avoidance?.timelineMode ? !!(circle?.enabled && circle.placement!==false) : settings.avoidCenter;
+  const avoidCenter = centerEnabled && (!cut.emphasis || avoidEmphasis) && J.CENTER_AVOID;
   const blockers = avoidCenter ? [...obstacles, J.CENTER_AVOID] : obstacles;
   if(cut.lyricSize != null){
     const size=Math.max(.04,cut.lyricSize/100),candidates=[];
@@ -9001,7 +8987,7 @@ J.applyLyricGroupAvoidance = (project, plan) => {
       for(const b of bgScenes)if(b.start<end&&b.end>start)for(const box of b.boxes)obstacles.push(grown(box,settings.avoidanceStrength));
     }
     for(const c of cuts)if(fixedCut(c)&&c.area)obstacles.push(c.area);
-    if(settings.autoPlacement&&settings.avoidCenter&&J.CENTER_AVOID)obstacles.push(J.CENTER_AVOID);
+    if(settings.autoPlacement && (plan.avoidance?.timelineMode ? plan.avoidance.cuts.some(c=>c.kind!=='person' && c.enabled && c.placement!==false && c.start<end && c.end>start) : settings.avoidCenter) && J.CENTER_AVOID)obstacles.push(J.CENTER_AVOID);
     const scene=J.lyricScene?J.lyricScene(cuts[0],fgBounds,end,bgScenes):{};
     const result=J.composeLyricScene(free,{aspect:plan.W/plan.H,seed:J.placementSeed?J.placementSeed(cuts[0]):cuts[0].seed,maxOverlap,obstacles,zone:scene.zone,center:scene.fgCenter});
     return result&&{...result,cuts:free};
@@ -9058,7 +9044,7 @@ J.applyLyricGroupAvoidance = (project, plan) => {
       const w=box.w*settings.avoidanceStrength,h=box.h*settings.avoidanceStrength;
       obstacles.push({x:box.x+box.w/2-w/2,y:box.y+box.h/2-h/2,w,h});
     }
-    if(settings.autoPlacement&&settings.avoidCenter&&J.CENTER_AVOID)obstacles.push(J.CENTER_AVOID);
+    if(settings.autoPlacement && (plan.avoidance?.timelineMode ? plan.avoidance.cuts.some(c=>c.kind!=='person' && c.enabled && c.placement!==false && c.start<cuts.at(-1).displayEnd && c.end>cuts[0].start) : settings.avoidCenter) && J.CENTER_AVOID)obstacles.push(J.CENTER_AVOID);
     let regions=emptyRegions(obstacles);if(!regions.length)regions=[{x:.025,y:.025,w:.95,h:.95}];
     // Free space inside the scene's composition zone comes first (a 20% edge when comparing fits).
     const zone=J.lyricScene?(J.lyricScene(cuts[0],fgBounds,cuts.at(-1).displayEnd,bgScenes).zone):null;
@@ -44659,7 +44645,7 @@ function mergeProject(p) {
   o.favoriteSequence = Math.max(o.effectFavorites.length,Math.floor(+o.favoriteSequence)||0);
   o.timelineLinks = Array.isArray(p && p.timelineLinks) ? p.timelineLinks : [];
   o.layerVisibility = Object.assign({avoidance:true,foreground:true,lyrics:true,media:true}, (p && p.layerVisibility) || {});
-  o.avoidance = J.normalizeAvoidance(p && p.avoidance);
+  o.avoidance = J.normalizeAvoidance(p ? p.avoidance : J.defaultProject().avoidance);
   o.media = J.normalizeMedia(p && p.media);
   o.foreground = J.normalizeMedia(p && p.foreground);
   for (const layer of ['media', 'foreground']) o[layer].effects = J.mediaEffectSettings(o, layer);
@@ -44683,6 +44669,26 @@ function mergeProject(p) {
     const remap=new Map();
     entries.forEach((e,i)=>{if(e.oldIndex!=null)remap.set(e.oldIndex,i);o.avoidance.timing.lineTimes[i]=e.start;o.avoidance.cutOverrides[i]={...e.ov,untilNext:false,endTime:e.end};});
     for(const link of o.timelineLinks)for(const side of ['a','b'])if(/^a:\d+$/.test(link[side])){const old=+link[side].slice(2);if(remap.has(old))link[side]='a:'+remap.get(old);}
+  }
+  // Materialize the old circle-wide switch and inherited defaults once per cut.
+  if(!o.avoidance.timelineMode) {
+    const a=o.avoidance,settings=J.lyricEffectSettings(o),on=!!(settings.autoPlacement && settings.avoidCenter);
+    const oldPlan=J.plan(o),custom=o.lyricEffects?.avoidCircle || o.avoidCircle;
+    for(let i=0;i<a.cutCount;i++){
+      const ov=a.cutOverrides[i] ||= {};if(ov.kind==='person')continue;
+      ov.enabled=on && ov.enabled!==false;
+      ov.avoidEmphasis=ov.avoidEmphasis ?? a.avoidEmphasis;
+      ov.occlusion=ov.occlusion || ((ov.maskAvoidance ?? a.maskAvoidance)?'aux':'none');
+      for(const key of ['maskRadiusOffset','maskFeather','maskCurve'])if(ov[key]===undefined)ov[key]=a[key];
+      if(custom && [custom.cx,custom.cy,custom.r].some(Number.isFinite)){
+        if(Number.isFinite(custom.cx))ov.cx=J.clamp(custom.cx/oldPlan.W,0,1);
+        if(Number.isFinite(custom.cy))ov.cy=J.clamp(custom.cy/oldPlan.H,0,1);
+        if(Number.isFinite(custom.r))ov.r=J.clamp(custom.r/Math.min(oldPlan.W,oldPlan.H),.03,.85);
+        if(Number.isFinite(custom.pad))ov.pad=J.clamp(custom.pad/Math.min(oldPlan.W,oldPlan.H),0,.2);
+        if(Number.isFinite(custom.feather))ov.feather=J.clamp(custom.feather/Math.min(oldPlan.W,oldPlan.H),0,.3);
+      }
+    }
+    a.timelineMode=true;
   }
   delete o.mediaEffects;
   o.colors = Object.assign({ enabled: false }, (p && p.colors) || {});
@@ -44845,7 +44851,7 @@ function replan() {
     /^[fma]:\d+$/.test(ref) && +ref.slice(2) < S.project[ref[0]==='f'?'foreground':ref[0]==='a'?'avoidance':'media'].cutCount);
   S.project.timelineLinks = S.project.timelineLinks.filter(link => link && link.a !== link.b && (boundaryCut(link.a) || temporarilyHidden(link.a)) && (boundaryCut(link.b) || temporarilyHidden(link.b)));
   lastCutIdx = null;
-  renderLines(); renderMediaList(); renderMediaLines(); renderAvoidanceLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
+  renderLines(); renderMediaList(); renderMediaLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
   S.need = true; autosave(); ensureFonts(); drawSwatch(); showNow();
   clearTimeout(warmTimer); warmTimer = setTimeout(warm, 450);
 }
@@ -44941,9 +44947,9 @@ function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
   const previousMedia = mediaCut && { placement: mediaCut.placement, zoom: mediaCut.zoom, hold: mediaCut.hold, enter: mediaCut.enter, exit: mediaCut.exit, trans: mediaCut.trans };
   if (mediaCut) Object.assign(mediaCut, { placement: { cx: edit.draft.x + edit.draft.w / 2, cy: edit.draft.y + edit.draft.h / 2, w: edit.draft.w, h: edit.draft.h, lockAspect: edit.lockAspect, angle: edit.angle }, zoom: 100, hold: 'still', enter: 'cut', exit: 'cut', trans: undefined });
   const avoidanceCut = edit && edit.kind === 'avoidance' && S.plan.avoidance?.cuts[edit.index];
-  const previousAvoidance = avoidanceCut && { cx: avoidanceCut.cx, cy: avoidanceCut.cy, r: avoidanceCut.r, enabled: avoidanceCut.enabled, maskAvoidance: avoidanceCut.maskAvoidance, maskRadiusOffset: avoidanceCut.maskRadiusOffset, maskFeather: avoidanceCut.maskFeather, maskCurve: avoidanceCut.maskCurve, planEnabled: S.plan.lyricAvoidance?.enabled };
+  const previousAvoidance = avoidanceCut && { cx: avoidanceCut.cx, cy: avoidanceCut.cy, r: avoidanceCut.r, enabled: avoidanceCut.enabled, placement:avoidanceCut.placement, avoidEmphasis:avoidanceCut.avoidEmphasis, occlusion:avoidanceCut.occlusion, behindForeground:avoidanceCut.behindForeground, maskAvoidance: avoidanceCut.maskAvoidance, maskRadiusOffset: avoidanceCut.maskRadiusOffset, maskFeather: avoidanceCut.maskFeather, maskCurve: avoidanceCut.maskCurve, planEnabled: S.plan.lyricAvoidance?.enabled };
   if (avoidanceCut && edit.draft) {
-    Object.assign(avoidanceCut, draftToAvoidanceCircle(edit.draft), { enabled: true, maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: edit.maskRadiusOffset ?? 0, maskFeather: edit.maskFeather ?? 60, maskCurve: edit.maskCurve || 'smooth' });
+    Object.assign(avoidanceCut, draftToAvoidanceCircle(edit.draft), { enabled:edit.enabled, placement:edit.placement, avoidEmphasis:edit.avoidEmphasis, occlusion:edit.occlusion, behindForeground:edit.behindForeground, maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: edit.maskRadiusOffset ?? 0, maskFeather: edit.maskFeather ?? 60, maskCurve: edit.maskCurve || 'smooth' });
     if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = true;
   }
   try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance', noForeground: !!edit && edit.kind === 'media' }); }
@@ -44951,7 +44957,7 @@ function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
     previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; });
     if (mediaCut) Object.assign(mediaCut, previousMedia);
     if (avoidanceCut && previousAvoidance) {
-      Object.assign(avoidanceCut, { cx: previousAvoidance.cx, cy: previousAvoidance.cy, r: previousAvoidance.r, enabled: previousAvoidance.enabled, maskAvoidance: previousAvoidance.maskAvoidance, maskRadiusOffset: previousAvoidance.maskRadiusOffset, maskFeather: previousAvoidance.maskFeather, maskCurve: previousAvoidance.maskCurve });
+      Object.assign(avoidanceCut, { cx: previousAvoidance.cx, cy: previousAvoidance.cy, r: previousAvoidance.r, enabled: previousAvoidance.enabled, placement:previousAvoidance.placement, avoidEmphasis:previousAvoidance.avoidEmphasis, occlusion:previousAvoidance.occlusion, behindForeground:previousAvoidance.behindForeground, maskAvoidance: previousAvoidance.maskAvoidance, maskRadiusOffset: previousAvoidance.maskRadiusOffset, maskFeather: previousAvoidance.maskFeather, maskCurve: previousAvoidance.maskCurve });
       if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = previousAvoidance.planEnabled;
     }
   }
@@ -45509,7 +45515,8 @@ function detailButton(onClick) {
   button.innerHTML = ICON.details; button.addEventListener('click',onClick); return button;
 }
 let cutPreviewSolo=false,cutPreviewFocus=false;// remembered while the page is open
-function openCutDetails(layer,index,part=0) {
+function openCutDetails(layer,index,part=0,editorOptions={}) {
+  const personOnly=!!editorOptions.personOnly;
   const lyric = layer === 'lyrics', L = J.mediaLabel, clone = value => JSON.parse(JSON.stringify(value));
   const cut = lyric ? S.plan.cuts.find(c=>c.line===index && c.part===part) : S.plan[layer]?.cuts[index];
   if (!cut) return;
@@ -45521,14 +45528,16 @@ function openCutDetails(layer,index,part=0) {
   const disabledChoices=[];
   let removedDetail = null;
   const openDetails = new Map();
-  let activeDetailTab='basic';
+  let activeDetailTab=personOnly?'personCutout':'basic';
   let personFps=draft.personCutout?.fps || Math.min(24,S.plan.fps || 24),personController=null,personStatus=null,personSync=null;
   const dialog = document.createElement('dialog'); dialog.id='cutDetailsDialog'; dialog.className='cut-details-dialog';
-  dialog.setAttribute('aria-label',L('カットの詳細編集','Edit cut details'));dialog.tabIndex=-1;
+  if(personOnly)dialog.classList.add('person-analysis-dialog');
+  dialog.setAttribute('aria-label',personOnly?L('人物マスクの作成・更新','Create or update person mask'):L('カットの詳細編集','Edit cut details'));dialog.tabIndex=-1;
   // Left: a live preview of this cut that stays in view; right: the settings, which scroll on their own.
   const pane=document.createElement('aside');pane.className='cut-details-preview';
   pane.innerHTML=`<h2></h2><canvas></canvas><div class="effect-preview-seek"><button type="button" data-cut-preview-play></button><span class="tc effect-preview-now">00:00.00</span><span class="tc muted">/</span><span class="tc muted effect-preview-dur">00:00.00</span><div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i><input type="range" min="0" max="1000" step="1" value="0" data-cut-preview-seek></div></div><label class="check cut-details-solo"><input type="checkbox" data-preview-solo><span></span></label><label class="check cut-details-focus"><input type="checkbox" data-preview-focus><span></span></label>`;
-  pane.querySelector('h2').textContent=L('カットの詳細編集','Edit cut details')+' — '+(lyric?L('歌詞','Lyrics'):layer==='foreground'?L('前景','Foreground'):L('背景','Background'))+` ${index+1}${lyric?` / ${part+1}`:''}`;
+  pane.querySelector('h2').textContent=personOnly?L('人物マスクの作成・更新','Create or update person mask'):L('カットの詳細編集','Edit cut details')+' — '+(lyric?L('歌詞','Lyrics'):layer==='foreground'?L('前景','Foreground'):L('背景','Background'))+` ${index+1}${lyric?` / ${part+1}`:''}`;
+  if(personOnly){pane.querySelector('.cut-details-solo').hidden=true;pane.querySelector('.cut-details-focus').hidden=true;}
   pane.querySelector('.progress').setAttribute('aria-label',L('再生位置','Playback position'));
   const solo=pane.querySelector('[data-preview-solo]');solo.checked=cutPreviewSolo;solo.nextElementSibling.textContent=L('編集対象単体を表示','Show the edited cut only');
   solo.addEventListener('change',()=>{cutPreviewSolo=solo.checked;});
@@ -45636,6 +45645,7 @@ function openCutDetails(layer,index,part=0) {
   function personEditor(parent){
     if(lyric)return;
     const section=document.createElement('section');section.dataset.detailSection='personCutout';section.className='person-cutout-editor';parent.append(section);
+    if(personOnly){const range=document.createElement('p');range.textContent=L('素材：','Source: ')+(current.name || '')+' / '+L('解析範囲：','Analysis range: ')+`${start.toFixed(2)} – ${current.end.toFixed(2)} s`+(current.type==='video'?' / '+L('素材開始：','Source start: ')+`${(+current.videoStart||0).toFixed(2)} s`+(current.videoLoop?' / '+L('ループ','Loop'):''):'');section.append(range);}
     const hint=document.createElement('p');hint.className='hint';hint.textContent=L('カット内で再生する範囲だけ人物マスクを作成します。再生時間・開始位置を変えた後は再実行してください','Generate masks only for the range played in this cut. Run again after changing its duration or source start.');section.append(hint);
     const controls=document.createElement('div');controls.className='person-cutout-controls';section.append(controls);
     const field=(title,input)=>{const label=document.createElement('label');label.className='cut-detail-field';const text=document.createElement('span');text.textContent=title;label.append(text,input);controls.append(label);};
@@ -45645,7 +45655,7 @@ function openCutDetails(layer,index,part=0) {
     const stop=document.createElement('button');stop.type='button';stop.dataset.personCancel='';stop.textContent=L('処理を中止','Stop processing');stop.hidden=!personController;stop.onclick=()=>personController?.abort();section.append(run,stop);
     const status=document.createElement('p');status.dataset.personStatus='';status.setAttribute('role','status');status.setAttribute('aria-live','polite');section.append(status);
     const progress=document.createElement('progress');progress.dataset.personProgress='';progress.max=1;progress.hidden=!personController;section.append(progress);
-    const options=document.createElement('div');options.className='person-cutout-options';section.append(options);
+    const options=document.createElement('div');options.className='person-cutout-options';section.append(options);if(personOnly)options.style.display='none';
     const effectsTitle=document.createElement('h4');effectsTitle.textContent=L('切り抜き効果','Cutout effects');options.append(effectsTitle);
     const effectsHint=document.createElement('p');effectsHint.className='hint';effectsHint.textContent=L('マスク作成後に切り抜き効果をONにできます。','Generate a mask to enable cutout effects.');options.append(effectsHint);
     const setOption=(key,value)=>{draft.personCutout={...draft.personCutout,[key]:value};schedulePreview();};
@@ -45689,7 +45699,7 @@ function openCutDetails(layer,index,part=0) {
           sync();
         }});
         if(controller.signal.aborted || !dialog.open)return;
-        draft.personCutout=result;personStatus={text:additional===0?L('現在の再生範囲はすべて作成済みです。追加の解析は行っていません。','The current playback range is already covered. No additional inference was needed.'):L('再生範囲のマスクを作成しました。下の切り抜き効果をONにできます。','Masks generated for the playback range. Enable cutout effects below.'),value:1};rememberDetail();current=refreshPreview();
+        draft.personCutout=result;personStatus={text:additional===0?L('現在の再生範囲はすべて作成済みです。追加の解析は行っていません。','The current playback range is already covered. No additional inference was needed.'):personOnly?L('人物マスクを作成しました。保存してください。','Person mask generated. Save it to use it.'):L('再生範囲のマスクを作成しました。下の切り抜き効果をONにできます。','Masks generated for the playback range. Enable cutout effects below.'),value:1};rememberDetail();current=refreshPreview();
       }catch(error){personStatus={text:error.name==='AbortError'?L('処理を中止しました。既存のマスクは保持しています。','Processing stopped. The existing mask is preserved.'):L('人物切り抜きに失敗しました：','Person mask generation failed: ')+error.message};}
       finally{personController=null;previewPlaying=playingBefore;previewLast=performance.now();syncPreviewPlay();if(dialog.open){freeze(false);render();dialog.querySelector('[data-person-run]')?.focus({preventScroll:true});}}
     };
@@ -46245,6 +46255,7 @@ function openCutDetails(layer,index,part=0) {
     for(const node of [...grid.children]){
       const field=(node.dataset.detailSection || node.querySelector('[data-detail-field]')?.dataset.detailField || '').split('.')[0];
       const category=categories.find(([, ,fields])=>fields.includes(field)) || categories.at(-1);
+      if(personOnly && category[0]!=='personCutout'){node.remove();continue;}
       if(!panels.has(category[0])){
         const panel=document.createElement('div');panel.className='cut-details-grid cut-details-tab-panel';panel.dataset.detailTabPanel=category[0];
         panel.id=`cut-detail-panel-${category[0]}`;panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',`cut-detail-tab-${category[0]}`);panels.set(category[0],panel);
@@ -46255,7 +46266,7 @@ function openCutDetails(layer,index,part=0) {
     const undo=document.createElement('button');undo.type='button';undo.dataset.detailUndo='';undo.textContent=L('元に戻す','Undo');undo.onclick=()=>moveDetailHistory(-1);
     const redo=document.createElement('button');redo.type='button';redo.dataset.detailRedo='';redo.textContent=L('やり直す','Redo');redo.onclick=()=>moveDetailHistory(1);
     const reset=document.createElement('button');reset.type='button';reset.textContent=L('リセット','Reset');reset.onclick=()=>{delete draft.details;preview();};
-    historyRow.append(undo,redo,reset);grid.replaceWith(historyRow,tabs);syncDetailHistory();
+    historyRow.append(undo,redo,reset);grid.replaceWith(historyRow,tabs);if(personOnly){historyRow.hidden=true;tabs.hidden=true;}syncDetailHistory();
     const selectTab=(id,focus=false)=>{
       activeDetailTab=id;
       for(const [key,panel] of panels){panel.hidden=key!==id;const button=tabButtons.get(key);button.setAttribute('aria-selected',String(key===id));button.tabIndex=key===id?0:-1;}
@@ -46284,7 +46295,7 @@ function openCutDetails(layer,index,part=0) {
     for(const select of form.querySelectorAll('select'))attachDetailSearch(select);
     const buttons=document.createElement('div');buttons.className='cut-details-actions';form.append(buttons);
     const cancel=document.createElement('button');cancel.type='button';cancel.textContent=L('キャンセル','Cancel');cancel.onclick=()=>{if(!personController)dialog.close();};
-    const apply=document.createElement('button');apply.type='submit';apply.className='primary';apply.textContent=L('適用','Apply');buttons.append(apply,cancel);
+    const apply=document.createElement('button');apply.type='submit';apply.className='primary';apply.textContent=personOnly?L('マスクを保存','Save mask'):L('適用','Apply');buttons.append(apply,cancel);
     formHost.scrollTop=scrollTop;
     form.onsubmit=e=>{e.preventDefault();if(personController||!form.reportValidity())return;
       applyDisabledChoices(S.project);
@@ -46462,7 +46473,8 @@ function openTimelineCutMenu(trigger) {
   if(!cut)return;
   const L=J.mediaLabel,locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:layer==='avoidance'?!!S.project.avoidance?.cutOverrides?.[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
   const labels={dice:L('再抽選','Randomize'),disableReroll:L('この演出をOFFにして再抽選','Disable current effects and randomize'),lock:L(locked?'ロック解除':'ロック',locked?'Unlock':'Lock'),area:layer==='avoidance'?L('回避円の位置・サイズ','Circle position & size'):L('表示範囲','Display area'),avoidEmphasis:L('強調も避ける','Avoid emphasis too'),maskAvoidance:L('回避部分をマスク','Mask avoidance region'),details:L('詳細編集','Edit details'),copy:L('演出をお気に入りに追加','Add effects to favorites'),paste:L('お気に入りから演出を適用','Apply favorite effects'),remove:L('削除','Delete'),frontmost:L('最前に表示','Frontmost')};
-  const actions=layer==='avoidance'?['area','avoidEmphasis','maskAvoidance','lock','remove']:['dice','disableReroll','lock',...(layer==='lyrics'||J.mediaSourceAvailable(cut)?['area']:[]),'details','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'remove'];
+  if(layer==='avoidance' && cut.kind==='person') labels.details=L('人物マスクを編集','Edit person mask');
+  const actions=layer==='avoidance'?(cut.kind==='person'?['details','lock','remove']:['area','lock','remove']):['dice','disableReroll','lock',...(layer==='lyrics'||J.mediaSourceAvailable(cut)?['area']:[]),'details','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'remove'];
   const menu=document.createElement('div'),controller=new AbortController(),signal=controller.signal;
   menu.id='timelineCutMenu';menu.className='timeline-cut-menu';menu.setAttribute('role','menu');menu.setAttribute('aria-label',L('カットの操作','Cut actions'));
   menu.innerHTML=actions.map(action=>{
@@ -46494,7 +46506,7 @@ function performTimelineAction(control) {
   if (!Number.isInteger(index) || index < 0) return;
   if(control.dataset.action==='disableReroll'){disableAndReroll(layer,index,control.dataset.part==null?null:+control.dataset.part);return;}
   if (['copy','paste'].includes(control.dataset.action)) { effectFavoriteAction(control.dataset.action,layer,index,+control.dataset.part||0); return; }
-  if (control.dataset.action === 'details') { openCutDetails(layer,index,+control.dataset.part || 0); return; }
+  if (control.dataset.action === 'details') { if(layer==='avoidance') openAvoidancePersonEditor(index); else openCutDetails(layer,index,+control.dataset.part || 0); return; }
   if (control.dataset.action === 'area') {
     if (layer === 'lyrics') openAreaEditor(index);
     else if (layer === 'avoidance') openAvoidanceEditor(index);
@@ -46758,10 +46770,9 @@ function openInsertAtPlayhead(layer, avoidKind) {
     const replacing=avoidKind!=='person' && cuts[index] && Math.abs(cuts[index].start-start)<1e-6;
     if(replacing){delete overrides[index+1];delete times[index+1];for(let i=index+2;i<=cuts.length;i++){overrides[i-1]=overrides[i];times[i-1]=times[i];delete overrides[i];delete times[i];}}
     if(avoidKind==='person') preserveCircleEnds(cuts,overrides,index,start);
-    overrides[index]=avoidKind==='person'?{kind:'person',placement:false,occlusion:'all',...(cuts[index] && Math.abs(cuts[index].start-start)<1e-6?{untilNext:false,endTime:cuts[index].end}:{})}:{cx:prev.cx,cy:prev.cy,r:prev.r,avoidEmphasis:prev.avoidEmphasis,maskAvoidance:prev.maskAvoidance,maskRadiusOffset:prev.maskRadiusOffset,maskFeather:prev.maskFeather,maskCurve:prev.maskCurve};times[index]=start;
+    overrides[index]=avoidKind==='person'?{kind:'person',placement:false,occlusion:'all',...(cuts[index] && Math.abs(cuts[index].start-start)<1e-6?{untilNext:false,endTime:cuts[index].end}:{})}:{cx:prev.cx,cy:prev.cy,r:prev.r,enabled:true,avoidEmphasis:false,occlusion:'none',maskRadiusOffset:prev.maskRadiusOffset,maskFeather:prev.maskFeather,maskCurve:prev.maskCurve};times[index]=start;
     a.manualCuts=true;a.cutCount=cuts.length+(replacing?0:1);a.cutOverrides=overrides;a.timing.lineTimes=times;
     if(!replacing){for(const link of S.project.timelineLinks)for(const side of ['a','b'])if(link[side].startsWith('a:')&&+link[side].slice(2)>=index)link[side]='a:'+(+link[side].slice(2)+1);}
-    if(avoidKind==='circle') S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
     S.project.durationOverride=S.plan.duration;renderTech();replan();seek(start);if(avoidKind==='circle')openAvoidanceEditor(index,true);
     return;
   }
@@ -47079,11 +47090,13 @@ function showAreaDraft() {
     $('avoidanceMaskControls').hidden = !isAvoidance;
     const innerRing = $('avoidanceMaskInnerRing'), outerRing = $('avoidanceMaskOuterRing');
     if (isAvoidance && area) {
-      const maskOn = !!edit.maskAvoidance;
+      const maskOn = edit.occlusion !== 'none';
       const offset = Math.round(+edit.maskRadiusOffset || 0);
       const feather = Math.max(0, Math.round(+edit.maskFeather ?? 60));
       const curve = edit.maskCurve || 'smooth';
-      $('avoidanceEditMask').checked = maskOn;
+      $('avoidanceEditEnabled').checked=edit.enabled;$('avoidanceEditPlacement').value=edit.placement?'move':'stay';$('avoidanceEditEmphasis').checked=edit.avoidEmphasis;$('avoidanceEditOcclusion').value=edit.occlusion;$('avoidanceEditForeground').checked=edit.behindForeground;$('avoidanceEditGuide').checked=edit.guide;
+      $('avoidanceEditStart').value=edit.start;$('avoidanceEditStart').disabled=!edit.group;$('avoidanceEditStart').min=edit.group?.min??0;$('avoidanceEditStart').max=edit.group?.max??S.plan.duration;
+      $('avoidanceEditUntilNext').checked=edit.untilNext;$('avoidanceEditEnd').value=edit.end;$('avoidanceEditEnd').disabled=edit.untilNext;
       $('avoidanceEditMaskOffset').value = String(offset);
       $('avoidanceEditMaskOffsetRange').value = String(J.clamp(offset, -240, 240));
       $('avoidanceEditMaskFeather').value = String(feather);
@@ -47125,17 +47138,48 @@ function openAreaEditor(index,fromPreview=false) {
   $('areaEditOverlay').hidden = false; $('areaEditControls').hidden = false;
   beginAreaSelection();positionAreaEditor(); showAreaDraft();
 }
+// The timeline and source list edit the same avoidance cut; changes stay local until Apply.
+function openAvoidancePersonEditor(index) {
+  if(S.exporting || S.tap)return;
+  const cut=S.plan.avoidance?.cuts[index];if(!cut || cut.kind!=='person')return;
+  if(S.areaEdit)cancelAreaEditor();pause();
+  const L=J.mediaLabel, dialog=document.createElement('dialog');dialog.id='avoidancePersonDialog';dialog.className='insert-cut-dialog avoidance-person-dialog';
+  dialog.setAttribute('aria-label',L('人物マスクの編集','Edit person mask'));
+  const sources=['media','foreground'].flatMap(layer=>S.plan[layer].cuts.map(c=>({layer,cut:c})));
+  const options=sources.map(({layer,cut:c})=>`<option value="${layer}:${c.index}" ${cut.source?.layer===layer && cut.source.index===c.index && (!cut.source.itemId || cut.source.itemId===c.itemId)?'selected':''}>${L(layer==='media'?'背景':'前景',layer==='media'?'Background':'Foreground')}: ${escapeHtml(c.name)}</option>`).join('');
+  const group=boundaryGroupLimits('a:'+index);
+  dialog.innerHTML=`<form><h2>${L('人物マスクの編集','Edit person mask')}</h2><label class="check"><input name="enabled" type="checkbox" ${cut.enabled?'checked':''}>${L('有効','Enabled')}</label><label class="field">${L('開始位置（秒・リンク先も移動）','Start (s; linked cuts move together)')}<input name="start" type="number" step="any" min="${group?.min??0}" max="${group?.max??S.plan.duration}" value="${cut.start}" ${group?'':'disabled'} required></label><label class="check"><input name="untilNext" type="checkbox" ${cut.manualEnd?'':'checked'}>${L('次カットまで','Until the next cut')}</label><label class="field">${L('終了位置（秒）','End time (s)')}<input name="end" type="number" step="any" min="0" max="${S.plan.duration}" value="${cut.end}" ${cut.manualEnd?'':'disabled'} required></label><label class="field">${L('人物素材','Person source')}<select name="source"><option value="">${L('選択してください','Select source')}</option>${options}</select></label><p data-person-status role="status"></p><p class="hint">${L('人物マスクの作成・更新は素材に保存されます。','Person mask generation updates the source asset.')}</p><button type="button" data-person-generate>${L('人物マスクを作成・更新','Create or update person mask')}</button><label class="check"><input name="guide" type="checkbox" ${cut.guide?'checked':''}>${L('プレビューに領域ガイドを表示','Show region guide in preview')}</label><label class="field">${L('重なった部分','Overlap')}<select name="occlusion"><option value="none" ${cut.occlusion==='none'?'selected':''}>${L('そのまま表示','Show normally')}</option><option value="aux" ${cut.occlusion==='aux'?'selected':''}>${L('装飾・補助描画だけ隠す','Hide decorations and auxiliary drawings')}</option><option value="all" ${cut.occlusion==='all'?'selected':''}>${L('歌詞全体を背後に隠す','Hide all lyrics behind')}</option></select></label><label class="check"><input name="foreground" type="checkbox" ${cut.behindForeground?'checked':''}>${L('前景を人物の後ろへ','Place foreground behind person')}</label><div class="row"><button type="submit" class="primary">${L('適用','Apply')}</button><button type="button" data-cancel>${L('キャンセル','Cancel')}</button></div></form>`;
+  document.body.append(dialog);const form=dialog.querySelector('form'), source=form.elements.source, status=dialog.querySelector('[data-person-status]'), generate=dialog.querySelector('[data-person-generate]');
+  const selected=()=>{const [layer,n]=source.value.split(':');const c=source.value && S.plan[layer]?.cuts[+n];return c?{layer,cut:c}:null;};
+  let statusToken=0, endChanged=false, startChanged=false;
+  const syncStatus=async()=>{const token=++statusToken,choice=selected();generate.disabled=!choice || !choice.cut.itemId;
+    if(!choice || !choice.cut.itemId){status.textContent=L('人物素材を選択してください','Select a person source');return;}
+    const ref=J.personCutout(choice.cut);if(!ref){status.textContent=L('人物マスクは未作成です','Person mask not generated');return;}
+    status.textContent=L('マスクを確認中','Checking mask');try{const entry=await J.loadPersonMask(ref);if(token!==statusToken || !dialog.open)return;status.textContent=!entry?L('人物マスクは未作成です','Person mask not generated'):J.personMaskCoverage(choice.cut,entry).missing?L('マスクの再生範囲が不足しています','Person mask range incomplete'):L('人物マスクは作成済みです','Person mask ready');}catch(error){if(token===statusToken)status.textContent=L('人物マスクを確認できません','Cannot load person mask');}
+  };
+  source.onchange=syncStatus;form.elements.start.oninput=()=>{startChanged=true;form.elements.end.setCustomValidity('');};form.elements.end.oninput=()=>{endChanged=true;form.elements.end.setCustomValidity('');};form.elements.untilNext.onchange=()=>{endChanged=true;form.elements.end.disabled=form.elements.untilNext.checked;form.elements.end.setCustomValidity('');};
+  generate.onclick=()=>{const choice=selected();if(!choice)return;openCutDetails(choice.layer,choice.cut.index,0,{personOnly:true});const nested=document.querySelector('#cutDetailsDialog');if(nested)nested.addEventListener('close',()=>{if(dialog.open)syncStatus();},{once:true});};
+  form.onsubmit=e=>{e.preventDefault();const start=form.elements.start.disabled?cut.start:+form.elements.start.value, end=+form.elements.end.value;
+    if(!form.elements.untilNext.checked && end<start+.04-1e-7){form.elements.end.setCustomValidity(L('終了位置は開始位置より後にしてください','End must be after start'));form.reportValidity();return;}
+    form.elements.end.setCustomValidity('');if(!form.reportValidity())return;
+    const choice=selected();remember();if(group && startChanged && start!==cut.start)for(const member of group.members)setTimelineBoundaryTime(member,start);
+    avoidanceOv(index,{source:choice?{layer:choice.layer,index:choice.cut.index,itemId:choice.cut.itemId}:undefined,enabled:form.elements.enabled.checked,guide:form.elements.guide.checked,occlusion:form.elements.occlusion.value,behindForeground:form.elements.foreground.checked,...(endChanged?(form.elements.untilNext.checked?{untilNext:undefined,endTime:undefined}:{untilNext:false,endTime:end}):{})});
+    replan();const updated=S.plan.avoidance.cuts[index];if(updated && (S.t<updated.start || S.t>=updated.end))seek(updated.start+Math.min(.01,(updated.end-updated.start)/2));dialog.close();
+  };
+  dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{statusToken++;dialog.remove();});dialog.showModal();syncStatus();
+}
 function openAvoidanceEditor(index, fromPreview=false) {
   if (S.exporting || S.tap) return;
   if (S.areaEdit) cancelAreaEditor();
   const cut = S.plan.avoidance?.cuts[index]; if (!cut) return;
+  if(cut.kind==='person'){openAvoidancePersonEditor(index);return;}
   pause();
   clearTimeout(warmTimer); ++warmJob;
   const draft = avoidanceCircleToDraft(cut);
   const autoDraftRect = avoidanceCircleToDraft({ cx: 0.5, cy: 0.5, r: 0.25 });
   const defMask = J.normalizeAvoidanceMask(S.project.avoidance);
   const autoDraft = avoidanceEditDraftKey({ draft: autoDraftRect, ...defMask });
-  S.areaEdit = { kind: 'avoidance', index, oldTime: S.t, draft, ratio: S.plan.W / S.plan.H, lockAspect: true, angle: 0, drag: null, maskAvoidance: cut.occlusion !== 'none', initialMaskAvoidance: cut.occlusion !== 'none', maskRadiusOffset: cut.maskRadiusOffset ?? defMask.maskRadiusOffset, maskFeather: cut.maskFeather ?? defMask.maskFeather, maskCurve: cut.maskCurve || defMask.maskCurve, autoDraft };
+  S.areaEdit = { kind: 'avoidance', index, oldTime: S.t, draft, ratio: S.plan.W / S.plan.H, lockAspect: true, angle: 0, drag: null, enabled:cut.enabled,placement:cut.placement,avoidEmphasis:cut.avoidEmphasis,occlusion:cut.occlusion,behindForeground:cut.behindForeground,guide:cut.guide,start:cut.start,end:cut.end,untilNext:!cut.manualEnd,initialUntilNext:!cut.manualEnd,initialEnd:cut.end,group:boundaryGroupLimits('a:'+index),maskAvoidance: cut.occlusion !== 'none', maskRadiusOffset: cut.maskRadiusOffset ?? defMask.maskRadiusOffset, maskFeather: cut.maskFeather ?? defMask.maskFeather, maskCurve: cut.maskCurve || defMask.maskCurve, autoDraft };
   if (!fromPreview) seek(cut.start + Math.min(0.5, Math.max(0.001, (cut.end - cut.start) / 2)));
   $('areaEditOverlay').hidden = false; $('areaEditControls').hidden = false;
   beginAreaSelection(); positionAreaEditor(); showAreaDraft();
@@ -47172,6 +47216,7 @@ function automaticMediaArea(layer,index) {
 function applyAreaEditor(following) {
   if (!S.areaEdit || !S.areaEdit.draft) return;
   const { kind, index, draft } = S.areaEdit;
+  if(kind==='avoidance' && (!Number.isFinite(S.areaEdit.start) || !S.areaEdit.untilNext && (!Number.isFinite(S.areaEdit.end) || S.areaEdit.end<S.areaEdit.start+.04-1e-7) || S.areaEdit.group && (S.areaEdit.start<S.areaEdit.group.min || S.areaEdit.start>S.areaEdit.group.max))){toast(J.mediaLabel('開始・終了位置を確認してください','Check the start and end times'));return;}
   remember();
   // 「以降にも適用」 leaves other locked cuts alone; the edited cut itself stays locked with its new place.
   if (kind === 'avoidance') {
@@ -47180,14 +47225,13 @@ function applyAreaEditor(following) {
     const autoGeom = JSON.stringify(J.lyricArea({ ...autoRect, angle: 0, lockAspect: true })) === JSON.stringify(J.lyricArea({ ...draft, angle: 0, lockAspect: true }));
     const defMask = J.normalizeAvoidanceMask(S.project.avoidance);
     const maskPatch = J.normalizeAvoidanceMask(S.areaEdit, defMask);
-    const autoMask = maskPatch.maskAvoidance === defMask.maskAvoidance && maskPatch.maskRadiusOffset === defMask.maskRadiusOffset && maskPatch.maskFeather === defMask.maskFeather && maskPatch.maskCurve === defMask.maskCurve;
-    S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+    if(S.areaEdit.group && S.areaEdit.start!==S.plan.avoidance.cuts[index].start)for(const member of S.areaEdit.group.members)setTimelineBoundaryTime(member,S.areaEdit.start);
     for (let i = index; i < (following ? S.plan.avoidance.cuts.length : index + 1); i++) {
-      if (i !== index && S.project.avoidance.cutOverrides[i]?.lock) continue;
+      if (i !== index && (S.project.avoidance.cutOverrides[i]?.lock || S.plan.avoidance.cuts[i]?.kind==='person')) continue;
       avoidanceOv(i, {
         ...(autoGeom ? { cx: undefined, cy: undefined, r: undefined } : circle),
-        ...(S.areaEdit.initialMaskAvoidance !== maskPatch.maskAvoidance ? {occlusion: maskPatch.maskAvoidance ? 'aux' : 'none'} : {}),
-        ...(autoMask ? { maskAvoidance: undefined, maskRadiusOffset: undefined, maskFeather: undefined, maskCurve: undefined } : maskPatch),
+        ...(i===index?{enabled:S.areaEdit.enabled,placement:S.areaEdit.placement,avoidEmphasis:S.areaEdit.avoidEmphasis,occlusion:S.areaEdit.occlusion,behindForeground:S.areaEdit.behindForeground,guide:S.areaEdit.guide,...(S.areaEdit.untilNext!==S.areaEdit.initialUntilNext || S.areaEdit.end!==S.areaEdit.initialEnd?(S.areaEdit.untilNext?{untilNext:undefined,endTime:undefined}:{untilNext:false,endTime:S.areaEdit.end}):{})}:{}),
+        maskRadiusOffset:maskPatch.maskRadiusOffset,maskFeather:maskPatch.maskFeather,maskCurve:maskPatch.maskCurve,
       });
     }
     renderTech();
@@ -47279,7 +47323,8 @@ function syncSourceTab() {
   $('sourceForeground').setAttribute('aria-selected', String(layer === 'foreground'));
   if ($('avoidancePane')) $('avoidancePane').hidden = !avoidance;
   $('lyricsPane').hidden = media || avoidance; $('mediaPane').hidden = !media;
-  if ($('avoidanceLineList')) $('avoidanceLineList').hidden = !avoidance;
+  if ($('avoidanceLineList')) $('avoidanceLineList').hidden = true;
+  if ($('cutsHeadingRow')) $('cutsHeadingRow').hidden = avoidance;
   $('lineList').hidden = media || avoidance; $('mediaLineList').hidden = !media;
   $('cutsHeading').textContent = (media || avoidance) ? J.mediaLabel('カット', 'Cuts') : J.mediaLabel('行とカット', 'Lines and cuts');
   $('mediaPaneTitle').textContent = layer === 'foreground' ? '前景' : '背景';
@@ -47289,24 +47334,6 @@ function syncSourceTab() {
   $('mediaLoop').disabled = !media || (m.items.length === 0 && S.plan[layer].cuts.length === 0);
   $('mediaGroupLyrics').checked = !media || m.groupLyricsAsOneCut !== false;
   $('audioTimingSection').hidden = media || avoidance;
-  if ($('avoidancePane')) {
-    const a = S.project.avoidance || J.normalizeAvoidance(null);
-    const lyricEffects = J.lyricEffectSettings(S.project);
-    $('avoidanceEnable').checked = !!(lyricEffects.avoidCenter && lyricEffects.autoPlacement);
-    $('avoidanceEmphasis').checked = !!a.avoidEmphasis;
-    if ($('avoidanceMask')) $('avoidanceMask').checked = !!a.maskAvoidance;
-    if ($('avoidanceDefaultMaskFields')) {
-      $('avoidanceDefaultMaskFields').hidden = !a.maskAvoidance;
-      $('avoidanceMaskOffset').value = String(a.maskRadiusOffset ?? 0);
-      $('avoidanceMaskFeather').value = String(a.maskFeather ?? 60);
-      $('avoidanceMaskCurve').value = a.maskCurve || 'smooth';
-    }
-    $('avoidanceLyricInsertMode').value = a.lyricInsertMode === 'cut' ? 'cut' : 'line';
-    $('avoidanceGroupLyrics').checked = a.groupLyricsAsOneCut !== false;
-    const aTargets = avoidanceLyricTargets();
-    $('btnAvoidanceFromLyrics').disabled = !aTargets.length;
-    $('btnTapAvoidance').disabled = !S.tap && !S.plan?.lines?.length && !S.audio;
-  }
   const targets = mediaLyricTargets(layer);
   $('mediaLyricInsertMode').value = media && m.lyricInsertMode === 'cut' ? 'cut' : 'line';
   const sourceBox=$('backgroundInsertSources');sourceBox.hidden=layer!=='media';
@@ -47855,7 +47882,6 @@ function insertAvoidanceCut(index, kind = 'circle') {
   for (const link of S.project.timelineLinks) for (const end of ['a', 'b']) {
     if (link[end].startsWith('a:') && +link[end].slice(2) >= index) link[end] = 'a:' + (+link[end].slice(2) + 1);
   }
-  if(kind==='circle') S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
   renderTech(); replan(); seek(start);
 }
 function removeAvoidanceCut(index) {
@@ -47911,53 +47937,6 @@ function splitAvoidanceCut() {
     if (link[end].startsWith('a:') && +link[end].slice(2) > index) link[end] = 'a:' + (+link[end].slice(2) + 1);
   }
   replan(); seek(time);
-}
-function renderAvoidanceLines() {
-  const ol = $('avoidanceLineList'); if (!ol || !S.plan?.avoidance) return;
-  ol.innerHTML = ''; S.avoidanceLineEls = [];
-  const a = S.project.avoidance, L = J.mediaLabel;
-  const addButton = index => {
-    const row = document.createElement('li'); row.className = 'media-cut-insert';
-    row.innerHTML = `<button class="ghost small" type="button" data-kind="circle">＋ ${L('円形領域', 'Circle')}</button> <button class="ghost small" type="button" data-kind="person">＋ ${L('人物マスク', 'Person mask')}</button>`;
-    row.querySelectorAll('button').forEach(button => button.addEventListener('click', () => insertAvoidanceCut(index, button.dataset.kind)));
-    ol.appendChild(row);
-  };
-  S.plan.avoidance.cuts.forEach((cut, i) => {
-    addButton(i);
-    const ov = a.cutOverrides[i] || {};
-    const draft = avoidanceCircleToDraft(cut);
-    const placementControl = `<span class="foreground-placement-controls"><button class="foreground-placement-open ghost" type="button" aria-label="${i + 1}カット目の回避円を編集"><span class="foreground-placement-thumb avoidance-circle-thumb"><i style="left:${draft.x * 100}%;top:${draft.y * 100}%;width:${draft.w * 100}%;height:${draft.h * 100}%"></i></span>${L('位置・サイズを編集', 'Edit circle')}</button>${!cut.customCircle ? `<span class="tagl">${L('中央・既定', 'Center default')}</span>` : `<button class="foreground-placement-reset ghost" type="button">${L('中央に戻す', 'Reset to center')}</button>`}</span>`;
-    const li = document.createElement('li'); li.className = 'ln media-ln avoidance-ln';
-    const sources = ['media','foreground'].flatMap(layer => S.plan[layer].cuts.map(c => ({layer,cut:c})));
-    const sourceOptions = sources.map(({layer,cut:c}) => `<option value="${layer}:${c.index}" ${cut.source?.layer===layer && cut.source.index===c.index && (!cut.source.itemId || cut.source.itemId===c.itemId) ? 'selected':''}>${L(layer==='media'?'背景':'前景',layer==='media'?'Background':'Foreground')}: ${escapeHtml(c.name)}</option>`).join('');
-    li.innerHTML = `<span class="no">${String(i + 1).padStart(2, '0')}</span><input class="time mono" type="number" step="0.01" min="0" value="${cut.start.toFixed(2)}" aria-label="${L('開始秒','Start time')}"><span class="txt">${escapeHtml(cut.name)}</span><div class="meta"><span class="tools"><label class="check"><input type="checkbox" class="avoidance-cut-enable" ${cut.enabled ? 'checked':''}>${L('有効','Enabled')}</label><button class="icon ghost lock" aria-pressed="${ov.lock ? 'true':'false'}">${ICON.lock}</button><button class="ghost small remove-avoidance-cut" type="button">${L('削除','Delete')}</button></span>${cut.kind==='person' ? `<label>${L('人物素材','Person source')} <select class="avoid-source"><option value="">${L('選択してください','Select source')}</option>${sourceOptions}</select></label><span class="avoid-status"></span><button class="ghost small avoid-generate" type="button">${L('人物マスクを作成・更新','Create or update person mask')}</button>` : `${placementControl}<label>${L('文字の配置','Text placement')} <select class="avoid-placement"><option value="move" ${cut.placement ? 'selected':''}>${L('領域の外へ配置','Move outside')}</option><option value="stay" ${!cut.placement ? 'selected':''}>${L('そのまま','Keep position')}</option></select></label><label class="check"><input type="checkbox" class="avoidance-cut-emphasis" ${cut.avoidEmphasis ? 'checked':''}>${L('強調も避ける','Avoid emphasis')}</label>`}<label class="check"><input type="checkbox" class="avoid-guide" ${cut.guide?'checked':''}>${L('プレビューに領域ガイドを表示','Show region guide in preview')}</label><label>${L('重なった部分','Overlap')} <select class="avoid-occlusion"><option value="none" ${cut.occlusion==='none'?'selected':''}>${L('そのまま表示','Show normally')}</option><option value="aux" ${cut.occlusion==='aux'?'selected':''}>${L('装飾・補助描画だけ隠す','Hide decorations and auxiliary drawings')}</option><option value="all" ${cut.occlusion==='all'?'selected':''}>${L('歌詞全体を背後に隠す','Hide all lyrics behind')}</option></select></label><label class="check"><input type="checkbox" class="avoid-foreground" ${cut.behindForeground?'checked':''}>${cut.kind==='person'?L('前景を人物の後ろへ','Place foreground behind person'):L('前景も背後に隠す','Hide foreground behind')}</label></div>`;
-    li.querySelector('.time').addEventListener('change', e => { const v=parseFloat(e.target.value); if(isFinite(v)) a.timing.lineTimes[i]=Math.max(0,v); else delete a.timing.lineTimes[i]; replan(); });
-    li.querySelector('.txt').addEventListener('click', () => seek(cut.start + .001));
-    li.querySelector('.avoidance-cut-enable').onchange = e => { avoidanceOv(i,{enabled:e.target.checked}); replan(); };
-    li.querySelector('.avoid-guide').onchange = e => { avoidanceOv(i,{guide:e.target.checked}); replan(); };
-    li.querySelector('.avoid-occlusion').onchange = e => { avoidanceOv(i,{occlusion:e.target.value}); replan(); };
-    li.querySelector('.avoid-foreground').onchange = e => { avoidanceOv(i,{behindForeground:e.target.checked}); replan(); };
-    if(cut.kind==='person') {
-      const select=li.querySelector('.avoid-source'), status=li.querySelector('.avoid-status'), button=li.querySelector('.avoid-generate');
-      const candidate=cut.source && S.plan[cut.source.layer]?.cuts[cut.source.index];
-      const source=candidate && (!cut.source.itemId || candidate.itemId===cut.source.itemId) ? candidate : null;
-      select.onchange=()=>{const [layer,n]=select.value.split(':');const c=S.plan[layer]?.cuts[+n];avoidanceOv(i,{source:c?{layer,index:c.index,itemId:c.itemId}:undefined});replan();};
-      button.disabled=!source; button.onclick=()=>{openCutDetails(cut.source.layer,cut.source.index);document.querySelector('#cutDetailsDialog [data-detail-tab=personCutout]')?.click();};
-      const ref=source && J.personCutout(source);
-      status.textContent=ref?L('マスクを確認中','Checking mask'):L('未作成','Not generated');
-      if(ref) J.loadPersonMask(ref).then(entry=>{if(!li.isConnected)return;const missing=entry && J.personMaskCoverage(source,entry).missing;status.textContent=!entry?L('未作成','Not generated'):missing?L('範囲不足','Range incomplete'):L('作成済み','Ready');}).catch(()=>{status.textContent=L('未作成','Not generated');});
-    } else {
-      li.querySelector('.foreground-placement-open').onclick=()=>openAvoidanceEditor(i);
-      const reset=li.querySelector('.foreground-placement-reset');if(reset)reset.onclick=()=>{avoidanceOv(i,{cx:undefined,cy:undefined,r:undefined});replan();};
-      li.querySelector('.avoid-placement').onchange=e=>{avoidanceOv(i,{placement:e.target.value==='move'});replan();};
-      li.querySelector('.avoidance-cut-emphasis').onchange=e=>{avoidanceOv(i,{avoidEmphasis:e.target.checked});replan();};
-    }
-    li.querySelector('.lock').addEventListener('click', () => toggleAvoidanceCutLock(i));
-    li.querySelector('.remove-avoidance-cut').addEventListener('click', () => removeAvoidanceCut(i));
-    ol.appendChild(li); S.avoidanceLineEls.push(li);
-  });
-  addButton(S.plan.avoidance.cuts.length);
-  syncSourceTab();
 }
 function renderMediaLines() {
   const layer = activeMediaLayer() || 'media', m = S.project[layer];
@@ -48316,8 +48295,8 @@ function selectSourceDrawer(tab) {
     if(S.sourceOpen){S.settingsOpen=false;syncSettingsDrawer();}
   }
   cancelAreaEditor();S.sourceTab=tab;syncSourceTab();
-  if(tab==='avoidance')renderAvoidanceLines();
-  else if(tab!=='lyrics'){renderMediaList();renderMediaLines();}
+
+  if(tab!=='lyrics' && tab!=='avoidance'){renderMediaList();renderMediaLines();}
   syncSourceDrawer();
 }
 
@@ -48380,7 +48359,7 @@ function renderTech() {
   $('lyricAvoidForeground').checked = lyricEffects.avoidForeground;
   // 「画面中央を避ける」 (詳細 > 手法) and 「歌詞が画面中央を避ける」 (かんたん) are the same setting.
   for (const input of document.querySelectorAll('.avoid-center-toggle')) input.checked = lyricEffects.avoidCenter && lyricEffects.autoPlacement;
-  $('lyricAvoidCenter').disabled = !lyricEffects.autoPlacement;
+  if($('lyricAvoidCenter')) $('lyricAvoidCenter').disabled = !lyricEffects.autoPlacement;
   $('lyricGroupAvoidanceStrength').value = lyricEffects.lyricAvoidanceStrength;
   $('lyricGroupAvoidanceStrengthValue').textContent = lyricEffects.lyricAvoidanceStrength.toFixed(2);
   $('lyricAvoidanceStrength').value = lyricEffects.avoidanceStrength;
@@ -49223,7 +49202,19 @@ function bind() {
   },{capture:true});
   for(const type of ['wheel','pointerdown','touchstart'])$('timelineScroll').addEventListener(type,()=>{timelineUserScroll=performance.now();},{passive:true});
   $('timelinePan')?.addEventListener('pointerdown',()=>{timelineUserScroll=performance.now();});
+  // Avoidance controls use the same labels in both generated editions.
+  $('addAvoidanceCircle').textContent=J.mediaLabel('円形領域を追加','Add circle');
+  $('addAvoidancePerson').textContent=J.mediaLabel('人物マスクを追加','Add person mask');
+  for(const [id,ja,en,after] of [
+    ['avoidanceEditEnabled','有効','Enabled',true],['avoidanceEditPlacement','文字の配置','Text placement',false],
+    ['avoidanceEditEmphasis','強調も避ける','Avoid emphasis',true],['avoidanceEditOcclusion','重なった部分','Overlap',false],
+    ['avoidanceEditForeground','前景も背後に隠す','Hide foreground behind',true],['avoidanceEditGuide','プレビューに領域ガイドを表示','Show region guide in preview',true],
+    ['avoidanceEditStart','開始位置（秒）','Start time (s)',false],['avoidanceEditUntilNext','次カットまで','Until the next cut',true],['avoidanceEditEnd','終了位置（秒）','End time (s)',false]
+  ]){const label=$(id).parentNode,nodes=[...label.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE);const node=after?nodes.at(-1):nodes[0];if(node)node.nodeValue=J.mediaLabel(ja,en);}
+  for(const [id,labels] of [['avoidanceEditPlacement',[[ '領域の外へ配置','Move outside' ],['そのまま','Keep position']]],['avoidanceEditOcclusion',[[ 'そのまま表示','Show normally' ],['装飾・補助描画だけ隠す','Hide decorations and auxiliary drawings'],['歌詞全体を背後に隠す','Hide all lyrics behind']]]]) [...$(id).options].forEach((option,i)=>option.textContent=J.mediaLabel(...labels[i]));
   $('sourceAvoidance')?.addEventListener('click',()=>selectSourceDrawer('avoidance'));
+  $('addAvoidanceCircle').addEventListener('click',()=>openInsertAtPlayhead('avoidance','circle'));
+  $('addAvoidancePerson').addEventListener('click',()=>openInsertAtPlayhead('avoidance','person'));
   $('sourceLyrics').addEventListener('click',()=>selectSourceDrawer('lyrics'));
   $('sourceMedia').addEventListener('click',()=>selectSourceDrawer('media'));
   $('sourceForeground').addEventListener('click',()=>selectSourceDrawer('foreground'));
@@ -49305,7 +49296,10 @@ function bind() {
   $('mediaAreaHeight').addEventListener('change', e => { if (!S.areaEdit) return; const h = J.clamp(+e.target.value / 100, 0.005, 4); setMediaDraftSize(S.areaEdit.lockAspect ? h / S.areaEdit.ratio : S.areaEdit.draft.w, h); });
   document.addEventListener('scroll',()=>{if(S.areaEdit)positionAreaEditor();},{capture:true,passive:true});
   $('mediaAreaAngle').addEventListener('input', e => { if (!S.areaEdit || e.target.value === '') return; S.areaEdit.angle = J.clamp(+e.target.value || 0, -180, 180); showAreaDraft(); });
-  $('avoidanceEditMask')?.addEventListener('change', e => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskAvoidance = e.target.checked; showAreaDraft(); });
+  for(const [id,key] of [['avoidanceEditEnabled','enabled'],['avoidanceEditEmphasis','avoidEmphasis'],['avoidanceEditForeground','behindForeground'],['avoidanceEditGuide','guide'],['avoidanceEditUntilNext','untilNext']])$(id).addEventListener('change',e=>{if(S.areaEdit?.kind==='avoidance'){S.areaEdit[key]=e.target.checked;showAreaDraft();}});
+  $('avoidanceEditPlacement').addEventListener('change',e=>{if(S.areaEdit?.kind==='avoidance'){S.areaEdit.placement=e.target.value==='move';showAreaDraft();}});
+  $('avoidanceEditOcclusion').addEventListener('change',e=>{if(S.areaEdit?.kind==='avoidance'){S.areaEdit.occlusion=e.target.value;S.areaEdit.maskAvoidance=e.target.value!=='none';showAreaDraft();}});
+  for(const [id,key] of [['avoidanceEditStart','start'],['avoidanceEditEnd','end']])$(id).addEventListener('change',e=>{if(S.areaEdit?.kind==='avoidance' && e.target.value!==''){S.areaEdit[key]=+e.target.value;showAreaDraft();}});
   const syncEditMaskOffset = v => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskRadiusOffset = J.clamp(Math.round(+v || 0), -500, 500); showAreaDraft(); };
   $('avoidanceEditMaskOffsetRange')?.addEventListener('input', e => syncEditMaskOffset(e.target.value));
   $('avoidanceEditMaskOffset')?.addEventListener('input', e => { if (e.target.value !== '' && e.target.value !== '-') syncEditMaskOffset(e.target.value); });

@@ -148,7 +148,7 @@
     }
     return {
       cutCount,
-      manualCuts,
+      manualCuts, timelineMode: !!a.timelineMode,
       avoidEmphasis: !!a.avoidEmphasis,
       ...normalizeMaskFields(a, {}, true),
       lyricInsertMode: a.lyricInsertMode === 'cut' ? 'cut' : 'line',
@@ -221,7 +221,7 @@
         customCircle,
       };
     });
-    return { cuts, duration, avoidEmphasis: a.avoidEmphasis, maskAvoidance: a.maskAvoidance };
+    return { cuts, duration, timelineMode:a.timelineMode, avoidEmphasis: a.avoidEmphasis, maskAvoidance: a.maskAvoidance };
   };
 
   J.avoidanceAt = (plan, t) => {
@@ -238,7 +238,7 @@
     const W = plan?.W || 1920;
     const H = plan?.H || 1080;
     const settings = J.lyricEffectSettings ? J.lyricEffectSettings(project) : {};
-    const enabled = !!(settings.autoPlacement && settings.avoidCenter);
+    const enabled = !!(project?.avoidance?.timelineMode || settings.autoPlacement && settings.avoidCenter);
     const custom = project?.lyricEffects?.avoidCircle || project?.avoidCircle || null;
     const cx = Number.isFinite(custom?.cx) ? custom.cx : W * 0.5;
     const cy = Number.isFinite(custom?.cy) ? custom.cy : H * 0.5;
@@ -257,7 +257,7 @@
       feather,
       avoidEmphasis,
       ...J.normalizeAvoidanceMask({ ...(project?.avoidance || {}), ...(custom || {}) }),
-      hasExplicitPixelCircle: !!(custom && (Number.isFinite(custom.cx) || Number.isFinite(custom.cy) || Number.isFinite(custom.r))),
+      hasExplicitPixelCircle: !!(!project?.avoidance?.timelineMode && custom && (Number.isFinite(custom.cx) || Number.isFinite(custom.cy) || Number.isFinite(custom.r))),
     };
   };
 

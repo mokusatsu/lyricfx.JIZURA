@@ -65,24 +65,9 @@
       </div>
 
       <div class="sec" id="avoidancePane" hidden>
-        <div class="sec-h media-pane-heading"><h2 id="avoidancePaneTitle">回避（円形領域回避）</h2></div>
-        <div class="pick-sets" style="margin-bottom:10px">
-          <label class="check"><input id="avoidanceEnable" class="avoid-center-toggle" type="checkbox"><span>歌詞が回避円を避ける（画面中央を避ける）<small>タイムライン上のカットごとに回避円の位置と半径を編集できます。</small></span></label>
-          <label class="check"><input id="avoidanceEmphasis" type="checkbox"><span>*強調*した歌詞も回避する<small>オンにすると *強調* を指定したカットも回避円を避けて配置します（カットごとに個別設定も可能）。</small></span></label>
-          <label class="check"><input id="avoidanceMask" type="checkbox"><span>回避部分をマスク<small>主歌詞以外の装飾・補助演出（枠線・図形・エコー文字・背景演出など）を円形グラデーションで透過します。</small></span></label>
-        </div>
-        <div id="avoidanceDefaultMaskFields" class="fields" style="margin-bottom:10px" hidden>
-          <label class="field">マスク半径の調整（px）<input id="avoidanceMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label>
-          <label class="field">ぼかし幅（px）<input id="avoidanceMaskFeather" type="number" min="0" max="300" step="1" value="60"></label>
-          <label class="field field-wide">勾配カーブ<select id="avoidanceMaskCurve"><option value="smooth">なめらか（標準）</option><option value="linear">直線（リニア）</option><option value="steep">くっきり（急勾配）</option><option value="soft">ふんわり（緩勾配）</option></select></label>
-        </div>
-        <div id="avoidanceCutInsert" class="media-lyric-insert">
-          <div class="sec-h"><h2>カット挿入</h2></div>
-          <label class="field">一括挿入の基準<select id="avoidanceLyricInsertMode"><option value="line">行に合わせる</option><option value="cut">カットに合わせる</option></select></label>
-          <label class="check"><input id="avoidanceGroupLyrics" type="checkbox" checked><span>{ }で囲まれた歌詞は1カット</span></label>
-          <button id="btnAvoidanceFromLyrics" type="button">歌詞に合わせて一括挿入</button>
-          <button id="btnTapAvoidance" type="button" title="動画を見ながら各カットのタイミングでタップ">動画を見ながらタップで挿入</button>
-        </div>
+        <div class="sec-h media-pane-heading"><h2 id="avoidancePaneTitle">回避</h2></div>
+        <button id="addAvoidanceCircle" type="button">円形領域を追加</button>
+        <button id="addAvoidancePerson" type="button">人物マスクを追加</button>
       </div>
 
       <div class="sec" id="mediaPane" hidden>
@@ -124,17 +109,16 @@
 
 
       <div class="sec">
-        <div class="sec-h"><h2 id="cutsHeading">行とカット</h2><span id="linesInfo" class="muted mono"></span></div>
+        <div class="sec-h" id="cutsHeadingRow"><h2 id="cutsHeading">行とカット</h2><span id="linesInfo" class="muted mono"></span></div>
         <ol id="lineList"></ol>
         <ol id="mediaLineList" hidden></ol>
-        <ol id="avoidanceLineList" hidden></ol>
       </div>
     </section>
 
     <!-- ================= center: stage ================= -->
     <section class="col col-stage" aria-label="プレビュー">
       <div class="viewport" id="viewport"><button id="exitPreviewFullscreen" class="fullscreen-exit" type="button">全画面を終了</button><div class="fullscreen-transport"><button id="fullscreenPlay" type="button" aria-label="再生">▶</button><span id="fullscreenTime" class="tc"></span><input id="fullscreenScrub" type="range" min="0" max="10000" value="0" aria-label="再生位置"></div><canvas id="view" width="1280" height="720"></canvas><canvas id="personGuide" class="person-guide" aria-hidden="true" hidden></canvas><div id="itemFrames" class="item-frames"></div><div id="areaEditOverlay" class="area-edit-overlay" aria-label="表示位置とサイズを編集" hidden><div id="areaEditRect" class="area-edit-rect"><span id="avoidanceMaskInnerRing" class="avoidance-mask-ring inner" hidden></span><span id="avoidanceMaskOuterRing" class="avoidance-mask-ring outer" hidden></span><span class="area-edit-handle nw" data-handle="nw"></span><span class="area-edit-handle ne" data-handle="ne"></span><span class="area-edit-handle sw" data-handle="sw"></span><span class="area-edit-handle se" data-handle="se"></span><span class="area-rotate-handle n" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle e" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle s" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle w" data-handle="rotate" role="button" aria-label="回転"></span></div></div><div id="viewMsg" class="overlay-msg" hidden></div><div id="keyBadge" class="key-badge" hidden></div><div id="toast" class="toast" role="status" aria-live="polite" hidden></div></div>
-      <div id="areaEditControls" class="area-edit-controls" hidden><div id="mediaAreaSizeControls" class="media-area-size-controls" hidden><label><input id="mediaAreaAspectLock" type="checkbox" checked>アスペクト比を固定</label><label>幅（画面比％）<input id="mediaAreaWidth" type="number" min="0.5" max="400" step="0.5"></label><label>高さ（画面比％）<input id="mediaAreaHeight" type="number" min="0.5" max="400" step="0.5"></label><label id="mediaAreaAngleField">角度（°）<input id="mediaAreaAngle" type="number" min="-180" max="180" step="0.1"></label></div><div id="avoidanceMaskControls" class="media-area-size-controls avoidance-mask-controls" hidden><label><input id="avoidanceEditMask" type="checkbox">回避部分をマスク（装飾・補助演出を透過）</label><label>マスク半径の調整（px）<input id="avoidanceEditMaskOffsetRange" type="range" min="-240" max="240" step="1" value="0" aria-label="マスク半径の調整スライダー"><input id="avoidanceEditMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label><label>ぼかし幅（px）<input id="avoidanceEditMaskFeatherRange" type="range" min="0" max="300" step="1" value="60" aria-label="ぼかし幅スライダー"><input id="avoidanceEditMaskFeather" type="number" min="0" max="300" step="1" value="60"></label><label>勾配カーブ<select id="avoidanceEditMaskCurve"><option value="smooth">なめらか（標準）</option><option value="linear">直線（リニア）</option><option value="steep">くっきり（急勾配）</option><option value="soft">ふんわり（緩勾配）</option></select></label></div><div class="area-edit-actions"><button id="areaResetAuto" class="ghost" type="button">自動配置</button><button id="areaResetFull" class="ghost" type="button">全域表示</button><button id="areaDelete" type="button">削除</button></div><div class="area-edit-confirm"><button id="areaApplyOne" class="primary" disabled>配置決定</button><button id="areaApplyFollowing" disabled>以降すべて同じ配置</button><button id="areaCancel" class="ghost">キャンセル</button></div></div>
+      <div id="areaEditControls" class="area-edit-controls" hidden><div id="mediaAreaSizeControls" class="media-area-size-controls" hidden><label><input id="mediaAreaAspectLock" type="checkbox" checked>アスペクト比を固定</label><label>幅（画面比％）<input id="mediaAreaWidth" type="number" min="0.5" max="400" step="0.5"></label><label>高さ（画面比％）<input id="mediaAreaHeight" type="number" min="0.5" max="400" step="0.5"></label><label id="mediaAreaAngleField">角度（°）<input id="mediaAreaAngle" type="number" min="-180" max="180" step="0.1"></label></div><div id="avoidanceMaskControls" class="media-area-size-controls avoidance-mask-controls" hidden><label><input id="avoidanceEditEnabled" type="checkbox">有効</label><label>文字の配置<select id="avoidanceEditPlacement"><option value="move">領域の外へ配置</option><option value="stay">そのまま</option></select></label><label><input id="avoidanceEditEmphasis" type="checkbox">強調も避ける</label><label>重なった部分<select id="avoidanceEditOcclusion"><option value="none">そのまま表示</option><option value="aux">装飾・補助描画だけ隠す</option><option value="all">歌詞全体を背後に隠す</option></select></label><label><input id="avoidanceEditForeground" type="checkbox">前景も背後に隠す</label><label><input id="avoidanceEditGuide" type="checkbox">プレビューに領域ガイドを表示</label><label>開始位置（秒）<input id="avoidanceEditStart" type="number" step="any" min="0"></label><label><input id="avoidanceEditUntilNext" type="checkbox">次カットまで</label><label>終了位置（秒）<input id="avoidanceEditEnd" type="number" step="any" min="0"></label><label>マスク半径の調整（px）<input id="avoidanceEditMaskOffsetRange" type="range" min="-240" max="240" step="1" value="0" aria-label="マスク半径の調整スライダー"><input id="avoidanceEditMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label><label>ぼかし幅（px）<input id="avoidanceEditMaskFeatherRange" type="range" min="0" max="300" step="1" value="60" aria-label="ぼかし幅スライダー"><input id="avoidanceEditMaskFeather" type="number" min="0" max="300" step="1" value="60"></label><label>勾配カーブ<select id="avoidanceEditMaskCurve"><option value="smooth">なめらか（標準）</option><option value="linear">直線（リニア）</option><option value="steep">くっきり（急勾配）</option><option value="soft">ふんわり（緩勾配）</option></select></label></div><div class="area-edit-actions"><button id="areaResetAuto" class="ghost" type="button">自動配置</button><button id="areaResetFull" class="ghost" type="button">全域表示</button><button id="areaDelete" type="button">削除</button></div><div class="area-edit-confirm"><button id="areaApplyOne" class="primary" disabled>配置決定</button><button id="areaApplyFollowing" disabled>以降すべて同じ配置</button><button id="areaCancel" class="ghost">キャンセル</button></div></div>
       <div id="tapPanel" class="tapbox" hidden>
         <div class="hint" id="tapHint">挿入したいタイミングでボタンをクリック（またはスペースキー）</div>
         <div class="tap-queue">
@@ -199,7 +183,6 @@
             <button id="btnNext2" class="ghost">次の案 ▶</button>
           </div>
           <div class="pick-sets">
-            <label class="check"><input id="eLyricAvoidCenter" class="avoid-center-toggle" type="checkbox"><span>歌詞が画面中央を避ける<small>歌詞を自動配置するとき、画面の中央を空けます。*強調*した歌詞は中央にも置きます。</small></span></label>
           </div>
         </div>
         <div class="easy-sec">
@@ -282,7 +265,6 @@
       <div class="tabpane" data-pane="tech" hidden>
         <div class="pick-sets">
           <label class="check"><input id="lyricAutoPlacement" type="checkbox"><span>配置・サイズにも自動で変化をつける<small>オフでは全画面を使用。手動の表示エリアは維持します。「自動配置に戻す」で手動指定を解除できます。</small></span></label>
-          <label class="check"><input id="lyricAvoidCenter" class="avoid-center-toggle" type="checkbox"><span>画面中央を避ける<small>自動配置で歌詞を画面の中央に置きません。*強調*したカットは対象外です。</small></span></label>
           <label class="check"><input id="lyricAvoidForeground" type="checkbox" checked><span>前景との重なりを避ける<small>自動配置時に前景の表示領域を避けます。*強調*したカットには適用しません。</small></span></label>
           <label class="slider"><span>重なり回避の強度</span><input id="lyricAvoidanceStrength" type="range" min="0" max="1" step="0.05" value="1"><output id="lyricAvoidanceStrengthValue">1.00</output></label>
           <p class="note">1で前景の範囲を避け、下げると周辺の重なりを許容します。0では回避しません。空き領域がない場合は最も重なりの少ない配置を使います。</p>

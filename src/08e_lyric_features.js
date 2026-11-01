@@ -148,8 +148,10 @@ J.autoLyricArea = (cut, plan, obstacles = [], settings = J.lyricEffectSettings({
   const rng = J.rng(J.h(J.placementSeed ? J.placementSeed(cut) : cut.seed, 947));
   delete cut.lyricPattern;
   // 「画面中央を避ける」 keeps the stage centre clear like an obstacle; *emphasis* may still use it.
-  const avoidEmphasis = !!(plan?.avoidance && J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut)?.avoidEmphasis : plan?.lyricAvoidance?.avoidEmphasis);
-  const avoidCenter = settings.avoidCenter && (!cut.emphasis || avoidEmphasis) && J.CENTER_AVOID;
+  const circle = plan?.avoidance && J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut, cut.start) : plan?.lyricAvoidance;
+  const avoidEmphasis = !!circle?.avoidEmphasis;
+  const centerEnabled=plan?.avoidance?.timelineMode ? !!(circle?.enabled && circle.placement!==false) : settings.avoidCenter;
+  const avoidCenter = centerEnabled && (!cut.emphasis || avoidEmphasis) && J.CENTER_AVOID;
   const blockers = avoidCenter ? [...obstacles, J.CENTER_AVOID] : obstacles;
   if(cut.lyricSize != null){
     const size=Math.max(.04,cut.lyricSize/100),candidates=[];
@@ -348,7 +350,7 @@ J.applyLyricGroupAvoidance = (project, plan) => {
       for(const b of bgScenes)if(b.start<end&&b.end>start)for(const box of b.boxes)obstacles.push(grown(box,settings.avoidanceStrength));
     }
     for(const c of cuts)if(fixedCut(c)&&c.area)obstacles.push(c.area);
-    if(settings.autoPlacement&&settings.avoidCenter&&J.CENTER_AVOID)obstacles.push(J.CENTER_AVOID);
+    if(settings.autoPlacement && (plan.avoidance?.timelineMode ? plan.avoidance.cuts.some(c=>c.kind!=='person' && c.enabled && c.placement!==false && c.start<end && c.end>start) : settings.avoidCenter) && J.CENTER_AVOID)obstacles.push(J.CENTER_AVOID);
     const scene=J.lyricScene?J.lyricScene(cuts[0],fgBounds,end,bgScenes):{};
     const result=J.composeLyricScene(free,{aspect:plan.W/plan.H,seed:J.placementSeed?J.placementSeed(cuts[0]):cuts[0].seed,maxOverlap,obstacles,zone:scene.zone,center:scene.fgCenter});
     return result&&{...result,cuts:free};
@@ -405,7 +407,7 @@ J.applyLyricGroupAvoidance = (project, plan) => {
       const w=box.w*settings.avoidanceStrength,h=box.h*settings.avoidanceStrength;
       obstacles.push({x:box.x+box.w/2-w/2,y:box.y+box.h/2-h/2,w,h});
     }
-    if(settings.autoPlacement&&settings.avoidCenter&&J.CENTER_AVOID)obstacles.push(J.CENTER_AVOID);
+    if(settings.autoPlacement && (plan.avoidance?.timelineMode ? plan.avoidance.cuts.some(c=>c.kind!=='person' && c.enabled && c.placement!==false && c.start<cuts.at(-1).displayEnd && c.end>cuts[0].start) : settings.avoidCenter) && J.CENTER_AVOID)obstacles.push(J.CENTER_AVOID);
     let regions=emptyRegions(obstacles);if(!regions.length)regions=[{x:.025,y:.025,w:.95,h:.95}];
     // Free space inside the scene's composition zone comes first (a 20% edge when comparing fits).
     const zone=J.lyricScene?(J.lyricScene(cuts[0],fgBounds,cuts.at(-1).displayEnd,bgScenes).zone):null;

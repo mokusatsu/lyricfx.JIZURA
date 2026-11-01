@@ -517,6 +517,8 @@ dialog.terms .terms-fork h3 { color: var(--cyan); }
 
 .cut-details-dialog { width: min(1180px, 96vw); height: min(90vh, 920px); max-height: 90vh; overflow: hidden; border: 1px solid #555; border-radius: 12px; padding: 0; background: #191b20; color: #eee; }
 .cut-details-dialog[open] { display: grid; grid-template-columns: minmax(300px, 42%) minmax(0, 1fr); }
+.person-analysis-dialog { width:min(760px,96vw); height:min(80vh,720px); }
+.person-analysis-dialog[open] { grid-template-columns:minmax(220px,38%) minmax(0,1fr); }
 .cut-details-preview { min-height: 0; overflow: auto; padding: 24px; border-right: 1px solid #33353b; background: #15161a; }
 .cut-details-preview h2 { font-size: 16px; margin: 0 0 14px; }
 .cut-details-preview canvas { display: block; width: 100%; height: auto; background: #000; border-radius: 6px; }
