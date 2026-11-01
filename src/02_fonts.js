@@ -190,7 +190,8 @@ J.ensureFonts = async (text, keys) => {
 const _mc = document.createElement('canvas').getContext('2d');
 J.metrics = {
   m: new Map(),
-  clear() { this.m.clear(); },
+  revision: 0,
+  clear() { this.m.clear(); this.revision++; },
   adv(fontKey, ch) {               // advance in em
     const k = fontKey + '\u0000' + ch;
     let v = this.m.get(k);
@@ -203,6 +204,9 @@ J.metrics = {
     return v;
   },
 };
+
+// Late font loads change both glyph decomposition and measurements.
+document.fonts?.addEventListener('loadingdone', () => { J.glyphs.clear(); J.metrics.clear(); });
 
 /* ---------- glyph decomposition (raster connected components) ----------
    A glyph is rasterised once per (font, char, resolution bucket); its alpha

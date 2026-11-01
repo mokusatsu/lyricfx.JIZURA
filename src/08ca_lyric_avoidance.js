@@ -1872,7 +1872,15 @@
     if (cut.circleNativeParams) cut.params = cut.circleNativeParams;
 
     try {
-      const cacheKey = `${W}x${H}|${circle.cx},${circle.cy},${circle.r},${circle.pad},${circle.avoidEmphasis ? 1 : 0}|${cut.layout}|${cut.seed}|${cut.text}`;
+      // Snapshot the inputs consumed by native layout measurement, not the live frame time.
+      // Params are already swapped to circleNativeParams when those take precedence.
+      const cacheKey = JSON.stringify([
+        W, H, circle.cx, circle.cy, circle.r, circle.pad, circle.avoidEmphasis,
+        cut.layout, cut.seed, cut.text, cut.lineText, cut.words, cut.note, cut.n,
+        cut.line, cut.index, cut.start, cut.end, cut.dur, cut.inDur, cut.outDur,
+        cut.stagger, cut.enter, cut.exit, cut.hold, cut.params,
+        env.st?.fonts, J.lang, J.metrics?.revision,
+      ]);
       if (!cut._circleSol || cut._circleSolKey !== cacheKey) {
         cut._circleSol = solveCutAvoidance(env, cut, circle);
         cut._circleSolKey = cacheKey;

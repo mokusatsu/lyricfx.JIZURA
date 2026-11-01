@@ -1853,7 +1853,8 @@ J.ensureFonts = async (text, keys) => {
 const _mc = document.createElement('canvas').getContext('2d');
 J.metrics = {
   m: new Map(),
-  clear() { this.m.clear(); },
+  revision: 0,
+  clear() { this.m.clear(); this.revision++; },
   adv(fontKey, ch) {               // advance in em
     const k = fontKey + '\u0000' + ch;
     let v = this.m.get(k);
@@ -1866,6 +1867,9 @@ J.metrics = {
     return v;
   },
 };
+
+// Late font loads change both glyph decomposition and measurements.
+document.fonts?.addEventListener('loadingdone', () => { J.glyphs.clear(); J.metrics.clear(); });
 
 /* ---------- glyph decomposition (raster connected components) ----------
    A glyph is rasterised once per (font, char, resolution bucket); its alpha
@@ -7522,7 +7526,15 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
     if (cut.circleNativeParams) cut.params = cut.circleNativeParams;
 
     try {
-      const cacheKey = `${W}x${H}|${circle.cx},${circle.cy},${circle.r},${circle.pad},${circle.avoidEmphasis ? 1 : 0}|${cut.layout}|${cut.seed}|${cut.text}`;
+      // Snapshot the inputs consumed by native layout measurement, not the live frame time.
+      // Params are already swapped to circleNativeParams when those take precedence.
+      const cacheKey = JSON.stringify([
+        W, H, circle.cx, circle.cy, circle.r, circle.pad, circle.avoidEmphasis,
+        cut.layout, cut.seed, cut.text, cut.lineText, cut.words, cut.note, cut.n,
+        cut.line, cut.index, cut.start, cut.end, cut.dur, cut.inDur, cut.outDur,
+        cut.stagger, cut.enter, cut.exit, cut.hold, cut.params,
+        env.st?.fonts, J.lang, J.metrics?.revision,
+      ]);
       if (!cut._circleSol || cut._circleSolKey !== cacheKey) {
         cut._circleSol = solveCutAvoidance(env, cut, circle);
         cut._circleSolKey = cacheKey;
@@ -48960,7 +48972,7 @@ function bind() {
   $('shortPreviewSeek').addEventListener('input',e=>prepareShortPreview(Number(e.target.value)));
   $('shortSetStart').addEventListener('click',()=>setShortBoundary('shortStart'));
   $('shortSetEnd').addEventListener('click',()=>setShortBoundary('shortEnd'));
-  document.fonts?.addEventListener('loadingdone',()=>{if(shortPreview)shortPreview.need=true;});
+  document.fonts?.addEventListener('loadingdone',()=>{S.need=true;if(shortPreview)shortPreview.need=true;});
   // 統一感重視 / にぎやかさ重視: the note shows the side that is switched on.
   const themeBalanceNote = () => {
     const L = J.mediaLabel, unified = document.querySelector('#themesDlg input[name=themeBalance]:checked')?.value === 'unified';
