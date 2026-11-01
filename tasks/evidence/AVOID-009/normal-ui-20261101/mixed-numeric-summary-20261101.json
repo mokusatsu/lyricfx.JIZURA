@@ -1319,5 +1319,60 @@
     },
     "fallbackReachability": "For the fixed UI sample, static code analysis says that when Memphis is visible a live character bbox exists, including direct seeks; past valid BBC bbox remains possible and must be represented. This has not been generalized or implemented.",
     "lateStill": "Unaccepted WIP extends tyStrike last-owner static bound from pOut .301 to .601; not yet UI tested."
+  },
+  "combinedIntegration20261101": {
+    "scope": "normal UI sample, first lyric cut; local uncommitted source, not Pages and not all effects/inputs",
+    "sample": "夜明けの色を",
+    "seed": 20260922,
+    "firstHold": {
+      "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-combined-first-hold-actual-20261101-01/result.json",
+      "displayTime": 0.854145,
+      "motionTime": 0.8333333333333333,
+      "targetCutABChangedInside": {
+        "mixed": 0,
+        "scatter": 0
+      }
+    },
+    "lastHold": {
+      "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-combined-last-hold-actual-20261101-01/result.json",
+      "displayTime": 1.0206,
+      "motionTime": 1.0,
+      "targetCutABChangedInside": {
+        "mixed": 0,
+        "scatter": 0,
+        "center": 0,
+        "ticket": 0
+      },
+      "mainAndExtraTextCalls": {
+        "mixed": 6,
+        "scatter": 60
+      },
+      "textMetricBoundsFullyInStageAndNativeClip": {
+        "mixed": 6,
+        "scatter": 60
+      },
+      "scopeLimit": "Canvas text metric rectangles transformed using observed native matrices; one time and excluding post blur tails; no complete decoration/clip proof"
+    },
+    "fontSize": {
+      "mixedExampleOriginal": 147.3433577796701,
+      "mixedExampleAutoAdjusted": 105.84,
+      "scatterExampleOriginal": 123.874,
+      "scatterExampleAutoAdjusted": 77.856,
+      "note": "automatic area fallback surfaced by existing warning; explicit size fallback blocked by tested branch"
+    },
+    "tests": [
+      "mixed-visibility-test PASS",
+      "scatter-source-items-test PASS",
+      "center-hold-boundary-test PASS 73 cases, geometry stub",
+      "center-circle-support-test PASS, synthetic metrics, earlier mixed integration",
+      "lyric_test PASS"
+    ],
+    "limits": [
+      "POST_BLOOM_NOT_OBSERVED",
+      "light beyond 4.5 sigma not certified",
+      "full clip/decoration equivalence unresolved",
+      "changed input recorded, stale/complete acceptance unresolved",
+      "local build only, no commit/deploy"
+    ]
   }
 }
