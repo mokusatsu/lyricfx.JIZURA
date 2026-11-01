@@ -1,0 +1,831 @@
+{
+  "scope": "Normal UI-generated mixed first cut, direct diagnostic solver. Candidate logs do not establish actual raster clearance or physical infeasibility. Timing is instrumented and not product performance.",
+  "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-mixed-numeric-full-actual-20261101-02/result.json",
+  "complete": true,
+  "errors": [],
+  "text": "夜明けの色を",
+  "seed": 20260922,
+  "stage": [
+    1920,
+    1080
+  ],
+  "circle": {
+    "cx": 960,
+    "cy": 453.6,
+    "radius": 216,
+    "padding": 6.4
+  },
+  "params": {
+    "fontBig": "mincho_light",
+    "fontSmall": "gothic_med",
+    "mode": "stair",
+    "rotAmp": 8.146376207470894,
+    "smallK": 0.5382350225793198,
+    "accentIdx": 2
+  },
+  "holdRange": {
+    "native": {
+      "start": 0.7986013986013987,
+      "end": 1.02004662004662
+    },
+    "real": {
+      "start": 0.7152680652680653,
+      "end": 1.17004662004662
+    },
+    "step": 0.08333333333333333
+  },
+  "instrumentationFailedRun": "/workspace/jizura-logic-evidence-20261027/normal-ui-mixed-numeric-full-actual-20261101-01/result.json (sideLog scope error; excluded)",
+  "cases": [
+    {
+      "name": "unshrunk",
+      "area": {
+        "x": 0.4592177363720801,
+        "y": 0.5501903622230285,
+        "w": 0.41489786058917316,
+        "h": 0.3898096377769716,
+        "angle": 0,
+        "lockAspect": true
+      },
+      "sourceWH": [
+        796.6038923312125,
+        420.9944087991293
+      ],
+      "diagnostic": {
+        "cut": 1,
+        "status": "unsupported",
+        "reason": "PRIMARY_STAGE_OWNER_CANDIDATES_EXHAUSTED"
+      },
+      "prefixStatuses": {
+        "safe": 12,
+        "insufficient-space": 28
+      },
+      "numericTraceEntries": 534,
+      "numericTraceCap": 1000,
+      "sideTraceEntries": 224,
+      "sideTraceDropped": 0,
+      "sideEventCounts": {
+        "sameLineCandidates": 12,
+        "sameLineOrder": 60,
+        "sameLineGeometry": 36,
+        "noPrefix": 28,
+        "twoRowCandidates": 8,
+        "twoRowGeometry": 72,
+        "sideExhausted": 4,
+        "twoRowNoSpace": 4
+      },
+      "sideGeometryConditionFailuresNonexclusive": {
+        "sameLineGeometry": {
+          "orderOK": 0,
+          "regionOK": 29,
+          "frameOK": 13,
+          "circleOK": 8
+        },
+        "twoRowGeometry": {
+          "orderOK": 51,
+          "regionOK": 32,
+          "frameOK": 45,
+          "circleOK": 6
+        }
+      },
+      "owners": [
+        {
+          "mi": 0,
+          "glyphSize": [
+            169.573,
+            167.179
+          ],
+          "staticPlateSize": [
+            218.325,
+            218.325
+          ]
+        },
+        {
+          "mi": 1,
+          "glyphSize": [
+            153.026,
+            157.281
+          ],
+          "staticPlateSize": [
+            212.849,
+            212.849
+          ]
+        },
+        {
+          "mi": 2,
+          "glyphSize": [
+            85.531,
+            88.323
+          ],
+          "staticPlateSize": [
+            120.858,
+            120.858
+          ]
+        },
+        {
+          "mi": 3,
+          "glyphSize": [
+            86.984,
+            80.693
+          ],
+          "staticPlateSize": [
+            130.396,
+            130.396
+          ]
+        },
+        {
+          "mi": 4,
+          "glyphSize": [
+            161.627,
+            158.05
+          ],
+          "staticPlateSize": [
+            210.742,
+            210.742
+          ]
+        },
+        {
+          "mi": 5,
+          "glyphSize": [
+            87.107,
+            93.789
+          ],
+          "staticPlateSize": [
+            131.613,
+            131.613
+          ]
+        }
+      ],
+      "notes": [
+        "No candidate reached certify; Memphis and final clip cannot be concluded from this run.",
+        "Source coordinate dimensions; screen support includes camera, ghost and post.",
+        "Each prefix/side selects only its first accepted prefix before suffix tests; failure is not proof of no viable placement."
+      ]
+    },
+    {
+      "name": "legacy-auto",
+      "area": {
+        "x": 0.4592177363720801,
+        "y": 0.72,
+        "w": 0.41489786058917316,
+        "h": 0.245,
+        "angle": 0,
+        "lockAspect": true
+      },
+      "sourceWH": [
+        796.6038923312125,
+        264.6
+      ],
+      "diagnostic": {
+        "cut": 1,
+        "status": "unsupported",
+        "reason": "PRIMARY_STAGE_OWNER_CANDIDATES_EXHAUSTED"
+      },
+      "prefixStatuses": {
+        "safe": 18,
+        "insufficient-space": 22
+      },
+      "numericTraceEntries": 718,
+      "numericTraceCap": 1000,
+      "sideTraceEntries": 314,
+      "sideTraceDropped": 0,
+      "sideEventCounts": {
+        "sameLineCandidates": 18,
+        "sameLineOrder": 87,
+        "sameLineGeometry": 53,
+        "noPrefix": 22,
+        "overlapReject": 4,
+        "twoRowCandidates": 12,
+        "twoRowGeometry": 108,
+        "sideExhausted": 4,
+        "twoRowNoSpace": 6
+      },
+      "sideGeometryConditionFailuresNonexclusive": {
+        "sameLineGeometry": {
+          "orderOK": 0,
+          "regionOK": 31,
+          "frameOK": 25,
+          "circleOK": 0
+        },
+        "twoRowGeometry": {
+          "orderOK": 75,
+          "regionOK": 81,
+          "frameOK": 90,
+          "circleOK": 0
+        }
+      },
+      "owners": [
+        {
+          "mi": 0,
+          "glyphSize": [
+            124.023,
+            122.452
+          ],
+          "staticPlateSize": [
+            156.828,
+            156.828
+          ]
+        },
+        {
+          "mi": 1,
+          "glyphSize": [
+            112.678,
+            115.186
+          ],
+          "staticPlateSize": [
+            152.894,
+            152.894
+          ]
+        },
+        {
+          "mi": 2,
+          "glyphSize": [
+            63.414,
+            66.255
+          ],
+          "staticPlateSize": [
+            86.815,
+            86.815
+          ]
+        },
+        {
+          "mi": 3,
+          "glyphSize": [
+            65.528,
+            61.079
+          ],
+          "staticPlateSize": [
+            93.666,
+            93.666
+          ]
+        },
+        {
+          "mi": 4,
+          "glyphSize": [
+            117.664,
+            115.859
+          ],
+          "staticPlateSize": [
+            151.381,
+            151.381
+          ]
+        },
+        {
+          "mi": 5,
+          "glyphSize": [
+            64.759,
+            69.713
+          ],
+          "staticPlateSize": [
+            94.541,
+            94.541
+          ]
+        }
+      ],
+      "notes": [
+        "No candidate reached certify; Memphis and final clip cannot be concluded from this run.",
+        "Source coordinate dimensions; screen support includes camera, ghost and post.",
+        "Each prefix/side selects only its first accepted prefix before suffix tests; failure is not proof of no viable placement."
+      ]
+    }
+  ],
+  "afterPrefixFix": {
+    "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-mixed-certify-numeric-actual-20261101-01/result.json",
+    "directDiagnostic": true,
+    "candidateCount": 6,
+    "reasons": {
+      "glyph.circle": 6
+    },
+    "first": {
+      "layout": "mixed",
+      "area": {
+        "x": 0.4592177363720801,
+        "y": 0.72,
+        "w": 0.41489786058917316,
+        "h": 0.245,
+        "angle": 0,
+        "lockAspect": true
+      },
+      "offsets": [
+        [
+          -800.4381869946019,
+          9.802540636182497e-14
+        ],
+        [
+          -800.4381869946019,
+          9.802540636182497e-14
+        ],
+        [
+          0,
+          9.802540636182497e-14
+        ],
+        [
+          0,
+          9.802540636182497e-14
+        ],
+        [
+          0,
+          9.802540636182497e-14
+        ],
+        [
+          0,
+          9.802540636182497e-14
+        ]
+      ],
+      "stage": {
+        "W": 1920,
+        "H": 1080,
+        "circle": {
+          "cx": 960,
+          "cy": 453.59999999999997,
+          "r": 216
+        },
+        "pad": 6.4
+      },
+      "failure": {
+        "reason": "glyph.circle",
+        "owner": "mixed.main.2.glyph",
+        "support": {
+          "owner": "mixed.main.2.glyph",
+          "bounds": {
+            "x0": 940.2394334234807,
+            "y0": 600.2132002285641,
+            "x1": 1598.87897498761,
+            "y1": 1225.6919344413845
+          },
+          "body": {
+            "x0": 1212.861615075756,
+            "y0": 870.8314782107179,
+            "x1": 1326.2567933353348,
+            "y1": 955.0736564592305
+          },
+          "ink": {
+            "x0": 1176.4794334234807,
+            "y0": 836.4532002285641,
+            "x1": 1362.63897498761,
+            "y1": 989.4519344413844
+          }
+        },
+        "offset": [
+          0,
+          9.802540636182497e-14
+        ]
+      }
+    },
+    "timeCaveat": "instrumentation affects wall-time budget; count is not exhaustive",
+    "legacyDiagnostic": {
+      "cut": 1,
+      "status": "unsupported",
+      "reason": "PRIMARY_STAGE_CANDIDATE_BUDGET"
+    }
+  },
+  "observedPad": {
+    "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-mixed-glyphpad-actual-20261101-01/result.json",
+    "records": [
+      {
+        "area": {
+          "x": 0.4592177363720801,
+          "y": 0.72,
+          "w": 0.41489786058917316,
+          "h": 0.245,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "offset": [
+          0,
+          9.802540636182497e-14
+        ],
+        "owner": "mixed.main.2.glyph",
+        "bounds": {
+          "x0": 940.2394334234807,
+          "y0": 600.2132002285641,
+          "x1": 1598.87897498761,
+          "y1": 1225.6919344413845
+        },
+        "body": {
+          "x0": 1212.861615075756,
+          "y0": 870.8314782107179,
+          "x1": 1326.2567933353348,
+          "y1": 955.0736564592305
+        },
+        "ink": {
+          "x0": 1176.4794334234807,
+          "y0": 836.4532002285641,
+          "x1": 1362.63897498761,
+          "y1": 989.4519344413844
+        },
+        "projector": {
+          "activeRange": {
+            "start": 0.7862445719112532,
+            "end": 1.2024476524477214
+          },
+          "sourceMotionRange": {
+            "start": 0.7862445719112532,
+            "end": 1.2024476524477214
+          },
+          "bloom": 144,
+          "cameraBlur": 0,
+          "rgb": 0,
+          "rgbX": 0,
+          "rgbY": 0,
+          "post": {
+            "x": 92.24,
+            "y": 92.24
+          },
+          "sourceEvents": [
+            {
+              "type": "chroma",
+              "t": 0.4,
+              "amp": 0.008479685829955477
+            }
+          ],
+          "outerEvents": [
+            {
+              "type": "whipBlur",
+              "amp": 0.975,
+              "dur": 0.20833333333333331,
+              "t": 1.2024475524475526,
+              "cutOwner": "0:1"
+            }
+          ],
+          "scale": 0.25,
+          "preClip": false,
+          "primaryStageClip": true,
+          "allCutsBloom": true,
+          "allCutsChroma": true
+        }
+      },
+      {
+        "area": {
+          "x": 0.4592177363720801,
+          "y": 0.72,
+          "w": 0.41489786058917316,
+          "h": 0.245,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "offset": [
+          5.839570415714998,
+          9.802540636182497e-14
+        ],
+        "owner": "mixed.main.2.glyph",
+        "bounds": {
+          "x0": 946.2541909516672,
+          "y0": 600.2132002285641,
+          "x1": 1604.8937325157965,
+          "y1": 1225.6919344413845
+        },
+        "body": {
+          "x0": 1218.8763726039424,
+          "y0": 870.8314782107179,
+          "x1": 1332.271550863521,
+          "y1": 955.0736564592305
+        },
+        "ink": {
+          "x0": 1182.4941909516672,
+          "y0": 836.4532002285641,
+          "x1": 1368.6537325157965,
+          "y1": 989.4519344413844
+        },
+        "projector": {
+          "activeRange": {
+            "start": 0.7862445719112532,
+            "end": 1.2024476524477214
+          },
+          "sourceMotionRange": {
+            "start": 0.7862445719112532,
+            "end": 1.2024476524477214
+          },
+          "bloom": 144,
+          "cameraBlur": 0,
+          "rgb": 0,
+          "rgbX": 0,
+          "rgbY": 0,
+          "post": {
+            "x": 92.24,
+            "y": 92.24
+          },
+          "sourceEvents": [
+            {
+              "type": "chroma",
+              "t": 0.4,
+              "amp": 0.008479685829955477
+            }
+          ],
+          "outerEvents": [
+            {
+              "type": "whipBlur",
+              "amp": 0.975,
+              "dur": 0.20833333333333331,
+              "t": 1.2024475524475526,
+              "cutOwner": "0:1"
+            }
+          ],
+          "scale": 0.25,
+          "preClip": false,
+          "primaryStageClip": true,
+          "allCutsBloom": true,
+          "allCutsChroma": true
+        }
+      }
+    ],
+    "analysis": "First rejected glyph full bounds add 144 px bloom and 92.24 px whipBlur post. The guarded segment extends only around 1e-7 s beyond whipBlur start; actual cover(k,.4) starts at zero. Full peak is a conservative bound, not observed ink collision. Analytic time-specific upper bound requires review and testing."
+  },
+  "afterWhipTimeBound": {
+    "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-mixed-certify-numeric-actual-20261101-02/result.json",
+    "unshrunk": {
+      "cut": 1,
+      "status": "unsupported",
+      "reason": "PRIMARY_STAGE_OWNER_CANDIDATES_EXHAUSTED"
+    },
+    "legacyAuto": {
+      "cut": 1,
+      "status": "unsupported",
+      "reason": "PRIMARY_STAGE_OWNER_CANDIDATES_EXHAUSTED"
+    },
+    "candidateCount": 22,
+    "firstFailureCounts": {
+      "glyph.circle": 9,
+      "exit.circle": 9,
+      "memphis.circle": 2,
+      "entry.ink-frame": 2
+    },
+    "examples": {
+      "glyph.circle": {
+        "area": {
+          "x": 0.4592177363720801,
+          "y": 0.72,
+          "w": 0.41489786058917316,
+          "h": 0.245,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "offsets": [
+          [
+            -800.4381869946019,
+            9.802540636182497e-14
+          ],
+          [
+            -800.4381869946019,
+            9.802540636182497e-14
+          ],
+          [
+            0,
+            9.802540636182497e-14
+          ],
+          [
+            0,
+            9.802540636182497e-14
+          ],
+          [
+            0,
+            9.802540636182497e-14
+          ],
+          [
+            0,
+            9.802540636182497e-14
+          ]
+        ],
+        "failure": {
+          "reason": "glyph.circle",
+          "owner": "mixed.main.2.glyph",
+          "support": {
+            "owner": "mixed.main.2.glyph",
+            "bounds": {
+              "x0": 1008.8148763352806,
+              "y0": 668.7797394702425,
+              "x1": 1530.3035320758102,
+              "y1": 1157.125395199706
+            },
+            "body": {
+              "x0": 1212.861615075756,
+              "y0": 870.8314782107179,
+              "x1": 1326.2567933353348,
+              "y1": 955.0736564592305
+            },
+            "ink": {
+              "x0": 1176.499615075756,
+              "y0": 836.464478210718,
+              "x1": 1362.6187933353347,
+              "y1": 989.4406564592306
+            }
+          },
+          "offset": [
+            0,
+            9.802540636182497e-14
+          ]
+        }
+      },
+      "exit.circle": {
+        "area": {
+          "x": 0.4592177363720801,
+          "y": 0.72,
+          "w": 0.41489786058917316,
+          "h": 0.245,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "offsets": [
+          [
+            -856.2251486252089,
+            1.048573387613329e-13
+          ],
+          [
+            -856.2251486252089,
+            1.048573387613329e-13
+          ],
+          [
+            -856.2251486252089,
+            1.048573387613329e-13
+          ],
+          [
+            0,
+            1.048573387613329e-13
+          ],
+          [
+            0,
+            1.048573387613329e-13
+          ],
+          [
+            0,
+            1.048573387613329e-13
+          ]
+        ],
+        "failure": {
+          "reason": "exit.circle",
+          "owner": "mixed.main.3.exit",
+          "support": {
+            "owner": "mixed.main.3.exit",
+            "bounds": {
+              "x0": 989.9517990277368,
+              "y0": 639.722134588038,
+              "x1": 1675.5923072491091,
+              "y1": 1213.6799852158895
+            },
+            "body": {
+              "x0": 1265.9393663867631,
+              "y0": 912.2210692886705,
+              "x1": 1399.6047398900828,
+              "y1": 941.1810505152571
+            },
+            "ink": {
+              "x0": 1226.1917990277368,
+              "y0": 875.962134588038,
+              "x1": 1439.3523072491091,
+              "y1": 977.4399852158895
+            }
+          },
+          "offset": [
+            0,
+            1.048573387613329e-13
+          ]
+        }
+      },
+      "memphis.circle": {
+        "area": {
+          "x": 0.4592177363720801,
+          "y": 0.72,
+          "w": 0.41489786058917316,
+          "h": 0.245,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "offsets": [
+          [
+            592.9559693714394,
+            -104.55413577232699
+          ],
+          [
+            -943.1945454135031,
+            14.24370445159367
+          ],
+          [
+            -943.1945454135031,
+            14.24370445159367
+          ],
+          [
+            -943.1945454135031,
+            14.24370445159367
+          ],
+          [
+            -943.1945454135031,
+            14.24370445159367
+          ],
+          [
+            -943.1945454135031,
+            14.24370445159367
+          ]
+        ],
+        "failure": {
+          "reason": "memphis.circle",
+          "support": {
+            "owner": "decorB:memphis:0",
+            "bounds": {
+              "x0": 573.957535537965,
+              "y0": 526.3111644401929,
+              "x1": 1979.7676387222755,
+              "y1": 1158.7311654375028
+            },
+            "body": {
+              "x0": 861.0689845642963,
+              "y0": 768.2057977196133,
+              "x1": 1692.6561896959442,
+              "y1": 916.8365321580824
+            }
+          },
+          "bb": {
+            "x0": [
+              -691.4569309067183,
+              743.0872769016618
+            ],
+            "x1": [
+              -585.6170278061322,
+              848.9271800022477
+            ],
+            "y0": [
+              -75.58834980308828,
+              150.27961524276762
+            ],
+            "y1": [
+              30.251650196911754,
+              214.90397549491368
+            ]
+          }
+        }
+      },
+      "entry.ink-frame": {
+        "area": {
+          "x": 0.4592177363720801,
+          "y": 0.72,
+          "w": 0.41489786058917316,
+          "h": 0.245,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "offsets": [
+          [
+            592.9559693714394,
+            -104.55413577232699
+          ],
+          [
+            -943.1945454135031,
+            50.246926303782516
+          ],
+          [
+            -943.1945454135031,
+            50.246926303782516
+          ],
+          [
+            -943.1945454135031,
+            50.246926303782516
+          ],
+          [
+            -943.1945454135031,
+            50.246926303782516
+          ],
+          [
+            -943.1945454135031,
+            50.246926303782516
+          ]
+        ],
+        "failure": {
+          "reason": "entry.ink-frame",
+          "owner": "mixed.main.4.entry",
+          "support": {
+            "owner": "mixed.main.4.entry",
+            "bounds": {
+              "x0": 163.24264736051725,
+              "y0": 707.0802336255697,
+              "x1": 750.2207743539184,
+              "y1": 1235.8619835574393
+            },
+            "body": {
+              "x0": 343.717129488904,
+              "y0": 885.5100912855505,
+              "x1": 569.7462922255318,
+              "y1": 1057.4321258974585
+            },
+            "ink": {
+              "x0": 307.24264736051725,
+              "y0": 851.0802336255697,
+              "x1": 606.2207743539184,
+              "y1": 1091.8619835574393
+            }
+          },
+          "offset": [
+            -943.1945454135031,
+            50.246926303782516
+          ]
+        }
+      }
+    },
+    "scope": "Direct solver with UI-generated fixed input; instrumented runtime may affect candidate budget; not an actual render or exhaustive feasibility test."
+  },
+  "latestUi": {
+    "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-primary-stage-trace-mixed-actual-20261101-02/result.json",
+    "status": "insufficient-space / NO_SAFE_NATIVE_VIEWPORT",
+    "provider": "both attempted sources reported bounded candidate exhaustion",
+    "preparedElapsedMs": 1203,
+    "raster": "not-evaluable; no hold placement",
+    "scope": "real UI selection; uncommitted trial build"
+  }
+}
