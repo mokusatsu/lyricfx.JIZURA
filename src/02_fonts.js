@@ -205,8 +205,8 @@ J.metrics = {
   },
 };
 
-// Late font loads can change measurements even when the selected font key is unchanged.
-document.fonts?.addEventListener('loadingdone', () => J.metrics.clear());
+// Late font loads change both glyph decomposition and measurements.
+document.fonts?.addEventListener('loadingdone', () => { J.glyphs.clear(); J.metrics.clear(); });
 
 /* ---------- glyph decomposition (raster connected components) ----------
    A glyph is rasterised once per (font, char, resolution bucket); its alpha

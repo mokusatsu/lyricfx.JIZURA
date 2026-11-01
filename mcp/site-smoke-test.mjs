@@ -132,6 +132,43 @@ try {
         rendered.hasColorVariation,
       `${language}: rendered canvas`,
     );
+    // Simulate a delayed font-set completion after fallback glyphs were cached.
+    // The paused preview must redraw once, and normal frames must reuse placement.
+    const fontRefresh = await page.evaluate(async () => {
+      J.uiApi.pause();
+      await new Promise(requestAnimationFrame);
+      const glyph = J.glyphs.get('gothic_bold', 'A', 64);
+      const revision = J.metrics.revision;
+      const oldCircle = J.circleAvoidanceForCut, oldItemBox = J.itemBox, oldMainDraw = J.mainDraw;
+      const ctx = document.createElement('canvas').getContext('2d');
+      const cut = { layout: 'fontRefreshTest', seed: 1, text: 'A', params: { size: 20 }, dur: 2 };
+      const env = { cut, plan: { W: 1000, H: 1000 }, W: 1000, H: 1000, t: 0, ctx, st: { fonts: {} } };
+      J.circleAvoidanceForCut = () => ({ enabled: true, cx: 500, cy: 500, r: 100, pad: 0, R: 100 });
+      J.itemBox = it => ({ x0: it.x, y0: it.y, x1: it.x + it.size, y1: it.y + it.size });
+      J.mainDraw = () => null;
+      J.LAYOUTS.fontRefreshTest = { render: e => J.mainDraw(e, { x: 20, y: 20, size: e.cut.params.size }) };
+      const draw = () => J.drawCutWithCircleAvoidance({}, env);
+      draw();
+      const placement = cut._circleSol;
+      J.ui.need = false;
+      document.fonts.dispatchEvent(new Event('loadingdone'));
+      const requested = J.ui.need;
+      const updatedGlyph = J.glyphs.get('gothic_bold', 'A', 64);
+      const updatedRevision = J.metrics.revision;
+      draw();
+      const updatedPlacement = cut._circleSol;
+      env.t = 1; draw();
+      const placementReused = cut._circleSol === updatedPlacement;
+      delete J.LAYOUTS.fontRefreshTest;
+      J.circleAvoidanceForCut = oldCircle; J.itemBox = oldItemBox; J.mainDraw = oldMainDraw;
+      await new Promise(requestAnimationFrame);
+      await new Promise(requestAnimationFrame);
+      return { requested, glyphChanged: glyph !== updatedGlyph,
+        revisionChanged: updatedRevision > revision, placementChanged: placement !== updatedPlacement,
+        placementReused, drawn: !J.ui.need };
+    });
+    assert.deepEqual(fontRefresh, { requested: true, glyphChanged: true,
+      revisionChanged: true, placementChanged: true, placementReused: true, drawn: true }, `${language}: delayed font refresh`);
     assert.deepEqual(errors, [], `${language}: JavaScript errors`);
     console.log(
       JSON.stringify({

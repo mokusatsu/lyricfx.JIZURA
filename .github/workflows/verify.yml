@@ -39,8 +39,10 @@ jobs:
         run: |
           python3 build.py
           git diff --exit-code -- index.html en/index.html
-      - name: Verify lyric parser
-        run: node dev/lyric_test.js
+      - name: Verify lyric parser and avoidance cache
+        run: |
+          node dev/lyric_test.js
+          node dev/avoidance_unit_test.cjs
       - name: Verify both browser editions
         run: node mcp/site-smoke-test.mjs --local
       - name: Verify special cuts in Japanese and English

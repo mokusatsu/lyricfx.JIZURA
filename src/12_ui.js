@@ -4479,7 +4479,7 @@ function bind() {
   $('shortPreviewSeek').addEventListener('input',e=>prepareShortPreview(Number(e.target.value)));
   $('shortSetStart').addEventListener('click',()=>setShortBoundary('shortStart'));
   $('shortSetEnd').addEventListener('click',()=>setShortBoundary('shortEnd'));
-  document.fonts?.addEventListener('loadingdone',()=>{if(shortPreview)shortPreview.need=true;});
+  document.fonts?.addEventListener('loadingdone',()=>{S.need=true;if(shortPreview)shortPreview.need=true;});
   // 統一感重視 / にぎやかさ重視: the note shows the side that is switched on.
   const themeBalanceNote = () => {
     const L = J.mediaLabel, unified = document.querySelector('#themesDlg input[name=themeBalance]:checked')?.value === 'unified';
