@@ -2587,6 +2587,7 @@ function showAreaDraft() {
       const offset = Math.round(+edit.maskRadiusOffset || 0);
       const feather = Math.max(0, Math.round(+edit.maskFeather ?? 60));
       const curve = edit.maskCurve || 'smooth';
+      $('avoidanceEditCenterX').value=String(Math.round((area.x+area.w/2)*1000)/10);$('avoidanceEditCenterY').value=String(Math.round((area.y+area.h/2)*1000)/10);
       $('avoidanceEditLock').checked=edit.lock;$('avoidanceEditEnabled').checked=edit.enabled;$('avoidanceEditPlacement').value=edit.placement?'move':'stay';$('avoidanceEditEmphasis').checked=edit.avoidEmphasis;$('avoidanceEditOcclusion').value=edit.occlusion;$('avoidanceEditForeground').checked=edit.behindForeground;$('avoidanceEditGuide').checked=edit.guide;
       $('avoidanceEditStart').value=edit.start;$('avoidanceEditStart').disabled=!edit.group;$('avoidanceEditStart').min=edit.group?.min??0;$('avoidanceEditStart').max=edit.group?.max??S.plan.duration;
       $('avoidanceEditUntilNext').checked=edit.untilNext;$('avoidanceEditEnd').value=edit.end;$('avoidanceEditEnd').disabled=edit.untilNext;
@@ -4715,7 +4716,9 @@ function bind() {
   // Avoidance controls use the same labels in both generated editions.
   $('addAvoidanceCircle').textContent=J.mediaLabel('円形領域を追加','Add circle');
   $('addAvoidancePerson').textContent=J.mediaLabel('人物マスクを追加','Add person mask');
+  $('avoidanceDiameterHint').textContent=J.mediaLabel('幅・高さは円の直径です。','Width and height describe the circle diameter.');
   for(const [id,ja,en,after] of [
+    ['avoidanceEditCenterX','中心 X（画面比％）','Center X (% of screen)',false],['avoidanceEditCenterY','中心 Y（画面比％）','Center Y (% of screen)',false],
     ['avoidanceEditEnabled','有効','Enabled',true],['avoidanceEditPlacement','文字の配置','Text placement',false],
     ['avoidanceEditEmphasis','強調も避ける','Avoid emphasis',true],['avoidanceEditOcclusion','重なった部分','Overlap',false],
     ['avoidanceEditLock','ロック','Lock',true],['avoidanceEditForeground','前景も背後に隠す','Hide foreground behind',true],['avoidanceEditGuide','プレビューに領域ガイドを表示','Show region guide in preview',true],
@@ -4802,6 +4805,7 @@ function bind() {
   });
   areaOverlay.addEventListener('pointercancel', () => { if (!S.areaEdit) return; if (S.areaEdit.drag) { S.areaEdit.draft = S.areaEdit.drag.previous; S.areaEdit.angle = S.areaEdit.drag.previousAngle; } S.areaEdit.drag = null; areaOverlay.style.cursor = ''; $('areaEditRect').style.cursor = ''; showAreaDraft(); });
   $('mediaAreaAspectLock').addEventListener('change', e => { if (!S.areaEdit) return; S.areaEdit.lockAspect = e.target.checked; if (e.target.checked) S.areaEdit.ratio = S.areaEdit.draft.h / S.areaEdit.draft.w; showAreaDraft(); });
+  for(const [id,axis] of [['avoidanceEditCenterX','x'],['avoidanceEditCenterY','y']])$(id).addEventListener('change',e=>{const edit=S.areaEdit;if(!edit || edit.kind!=='avoidance' || e.target.value==='')return;const center=J.clamp(+e.target.value/100,0,1);edit.draft[axis]=center-(axis==='x'?edit.draft.w:edit.draft.h)/2;showAreaDraft();});
   $('mediaAreaWidth').addEventListener('change', e => { if (!S.areaEdit) return; const w = J.clamp(+e.target.value / 100, 0.005, 4); setMediaDraftSize(w, S.areaEdit.lockAspect ? w * S.areaEdit.ratio : S.areaEdit.draft.h); });
   $('mediaAreaHeight').addEventListener('change', e => { if (!S.areaEdit) return; const h = J.clamp(+e.target.value / 100, 0.005, 4); setMediaDraftSize(S.areaEdit.lockAspect ? h / S.areaEdit.ratio : S.areaEdit.draft.w, h); });
   document.addEventListener('scroll',()=>{if(S.areaEdit)positionAreaEditor();},{capture:true,passive:true});
