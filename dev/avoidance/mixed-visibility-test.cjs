@@ -25,4 +25,7 @@ const atThreshold=run([0,.1],threshold,threshold,.4,[threshold,.8]);
 assert(Array.from(atThreshold.sets,x=>Array.from(x).join(',')).includes('1'));
 const atEmpty=run([0],.3,.3,.4,[.3]);
 assert.equal(atEmpty.fallback,true);
+sandbox.window.J.glyphCount=t=>[...t.replace(/\s/g,'')].length;
+const tied=sandbox.window.J.placement.centerCircle.singleGlyphVisibility([{mi:0},{mi:2},{mi:3}],{text:'abc',dur:1,outDur:.4,stagger:.1},.2,.9);
+assert(tied&&tied.sets.length>0,'coincident clamped exit boundaries are handled together');
 console.log('PASS: visibility events, direct-seek cache prefixes and empty fallback');

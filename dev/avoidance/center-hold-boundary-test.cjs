@@ -115,4 +115,11 @@ for(const layout of ['mixed','scatter'])for(const explicit of [false,true]){
  const d=S.prepare(plan).diagnostics[0];A.centerCircle=saved;
  assert.equal(attempts,explicit?1:2);assert.equal(d.status,explicit?'insufficient-space':'safe');if(!explicit)assert.equal(d.sourceAreaFallback,'legacy-auto-area');cases++;
 }
+// The new correlated multirow retry also respects explicit typography.
+for(const explicit of [false,true]){
+ J.LAYOUTS.staircase={render(){}};const {plan,cut}=fixture({layout:'staircase',areaMode:'auto',...(explicit?{lyricSize:1}: {})});
+ const original={...cut};cut.circleSource={area:{...cut.area,y:.2},params:cut.params,pattern:cut.lyricPattern,fingerprint:JSON.stringify(original)};plan.circleSourceContext={W:plan.W,H:plan.H};
+ const attempts=[];const saved=A.centerCircle;A.centerCircle={...saved,prepareViewport(_plan,c,opt){attempts.push([c.area.y,!!opt.correlatedFallback]);return opt.correlatedFallback&&c.area.y===.6?{area:{...c.area},recipe:{nativeIdentity:true},diagnostic:{cut:c.index,status:'safe',safety:'safe-hold',holdWindow:opt.holdRange,supportInfo:{scope:'multirow-hold-reachable-sets'}}}:{diagnostic:{cut:c.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT'}};}};
+ const d=S.prepare(plan).diagnostics[0];A.centerCircle=saved;assert.equal(d.status,explicit?'insufficient-space':'safe');assert.equal(attempts.filter(a=>a[1]).length,explicit?1:2);if(!explicit)assert.equal(d.sourceAreaFallback,'legacy-auto-area');cases++;
+}
 console.log(JSON.stringify({status:'PASS',cases,viewportCalls,scope:'pure native timing, post/admission boundaries and preserved-cut exclusions; geometry stub; no raster/UI acceptance'}));

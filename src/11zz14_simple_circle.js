@@ -114,6 +114,13 @@ function prepare(plan,previous=null,{scale=1,noPost=false}={}){
     const retry=A.centerCircle.prepareViewport(plan,legacyCut,{scale,previous,region:regions[0],holdRange});
     if(retry.recipe){const first=result.diagnostic;result={...retry,diagnostic:{...retry.diagnostic,sourceAreaFallback:'legacy-auto-area',unshrunkCandidate:{status:first.status,reason:first.reason??null}}};Object.assign(cut,{area:legacyCut.area,params:legacyCut.params,lyricPattern:legacyCut.lyricPattern});source=legacySource;}
    }
+   // Preserve the established unshrunk and legacy successes. Only when both
+   // fail, retry the source-supported single-glyph multirow correlation model.
+   if(!result.recipe&&holdRange&&['corners','staircase','zigzag','gridCells','genkou'].includes(cut.layout)){
+    const alternatives=[{value:cut,source:nativeSource,legacy:false}];
+    if(unchanged&&A.placementExplicitSize(plan,original)===false&&JSON.stringify([candidate.area,candidate.params])!==JSON.stringify([legacySource.area,legacySource.params]))alternatives.push({value:{...cut,area:legacySource.area,params:legacySource.params,lyricPattern:legacySource.lyricPattern},source:legacySource,legacy:true});
+    for(const alt of alternatives){const trial=A.centerCircle.prepareViewport(plan,alt.value,{scale,previous,region:regions[0],holdRange,correlatedFallback:true});if(!trial.recipe||trial.diagnostic.supportInfo?.scope!=='multirow-hold-reachable-sets')continue;result=alt.legacy?{...trial,diagnostic:{...trial.diagnostic,sourceAreaFallback:'legacy-auto-area'}}:trial;source=alt.source;Object.assign(cut,{area:alt.value.area,params:alt.value.params,lyricPattern:alt.value.lyricPattern});break;}
+   }
    if(result.recipe){diagnostics.push(result.diagnostic);cut.area=result.area;cut.simpleCircleRecipe={sourceCut:source,...result.recipe,renderScale:scale,policy};continue;}
    const auxiliary=cut.layout==='center'&&!centerSupport&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text),newPost=post.events.some(e=>['splitSlide','whipBlur','zoomPunch','heartbeat'].includes(e.type)),legacyPost=holdRange?eventPolicy(plan,original):post,legacyReason=extension?.provider.preflight?.(plan,original);if(cut.layout==='bubbles'&&cut.params.motes||motionUnsupported||auxiliary||newPost||legacyPost.unsupported.length||legacyReason||!legacyTarget(plan,original,{noPost})||cut.layout==='vcols'&&cut.params.variant==='repeat'){diagnostics.push(result.diagnostic);continue;}
   }

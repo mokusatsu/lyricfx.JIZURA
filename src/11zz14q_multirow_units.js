@@ -1,7 +1,15 @@
 /* A26 multi-block/character native hold supports. */
 (()=>{'use strict';
 const A=J.placement,ID=[1,0,0,1,0,0],layouts=new Set(['corners','staircase','zigzag','gridCells','genkou']),keys=['x0','x1','y0','y1'];
-function multirowUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+function correlatedRanges(mains,sets,fallback){
+ if(!(fallback.x1>fallback.x0&&fallback.y1>fallback.y0))return null;
+ const ranges=sets.map(indices=>{const bs=indices.map(i=>mains[i].bbRangesAny),r={};for(const k of ['x0','y0'])r[k]=[Math.min(...bs.map(b=>b[k][0])),Math.min(...bs.map(b=>b[k][1]))];for(const k of ['x1','y1'])r[k]=[Math.max(...bs.map(b=>b[k][0])),Math.max(...bs.map(b=>b[k][1]))];return r;});
+ // Account for floating-point reconstruction of the source fallback box.
+ const guard=1e-7*Math.max(1,...keys.map(k=>Math.abs(fallback[k])));
+ ranges.push(Object.fromEntries(keys.map(k=>[k,[fallback[k]-guard,fallback[k]+guard]])));
+ return ranges;
+}
+function multirowUnits({W,H,cut,plan,st,holdOnly=true,holdWindow,correlated=false}){
  const p=cut.params;
  if(!layouts.has(cut.layout)||!holdOnly||!holdWindow||cut.layoutARecipe||
     (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
@@ -17,13 +25,14 @@ function multirowUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  const renderer=Object.create(J.Renderer.prototype),time=Math.max(2,cut.inDur*2+.7),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},cut,{W,H,time,pass:'main'}),events=program.events,
        mainEvents=events.filter(e=>e.kind==='item'&&e.args[0].placementMain),norm=x=>String(x??'').replace(/\s/g,'');
  if(mainEvents.length<2||mainEvents.length>16||events.some(e=>e.role!=='primary'||e.clips?.length)||norm(mainEvents.map(e=>e.args[0].text).join(''))!==norm(cut.text))return null;
+ if(correlated&&(cut.enter!=='invertBox'||cut.exit!=='tyStrike'||cut.hold!=='knCounterRock'||mainEvents.some(e=>{const it=e.args[0];return [...norm(it.text)].length!==1||!Number.isInteger(it.mi)||it.mi<0||!(it.size>.5)||(it.alpha??1)!==1||it.charFn||it.pieceFn||(it.enter&&it.enter!==cut.enter)||(it.exit&&it.exit!==cut.exit)||(it.hold&&it.hold!==cut.hold);})))return null;
  const units=[],mains=[],items=[],source={...cut,layout:'center',area:null,params:{}};
  for(let i=0;i<mainEvents.length;i++){
   const e=mainEvents[i],item=e.args[0],angle=item.rot||0;
   if(e.matrix.some((v,j)=>Math.abs(v-ID[j])>1e-9)||item.skew||item.vertical||!Number.isFinite(angle)||Math.abs(angle)>90)return null;
   const unrotated={...item,rot:0},part=A.centerCircle.sourceUnits(unrotated,source,{...plan,W,H},{holdOnly:true});if(!part)return null;
   const ready=cut.start+(item.mi|0)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
-  if(cut.enter==='invertBox'&&earliest<ready){
+  if(!correlated&&cut.enter==='invertBox'&&earliest<ready){
    const entry=A.centerCircle.sourceUnits(unrotated,{...source,hold:'still',exit:'cut'},{...plan,W,H},{holdOnly:false});if(!entry)return null;
    part.units.push(...entry.units.filter(u=>u.owner==='center.invertBox'));
   }
@@ -60,9 +69,16 @@ function multirowUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
  // Every possible nonempty subset can become the bbox; the fallback is
  // separately included for a frame with no drawn main. The full-range box is
  // conservative without allocating exponential subset combinations.
- const ranges=Object.fromEntries(keys.map(k=>[k,[Math.min(fallback[k],...mains.map(m=>m.bbRangesAny[k][0])),Math.max(fallback[k],...mains.map(m=>m.bbRangesAny[k][1]))]]));
- for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[ranges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
- return {units,bbRanges:ranges,scope:'native-hold'};
+ let bbRanges,eventCount=0,cacheEventCount=0;
+ if(correlated){
+  const v=A.centerCircle.singleGlyphVisibility(items,cut,holdWindow.real.start-cut.start,holdWindow.real.end-cut.start);if(!v)return null;
+  eventCount=v.times.length;cacheEventCount=v.cacheEventCount;bbRanges=correlatedRanges(mains,v.sets,fallback);if(!bbRanges)return null;
+  // This layout returns its own nonempty bbox when no item returned one.
+  // It is also reachable via the decor cache after a direct seek.
+ }else bbRanges=[Object.fromEntries(keys.map(k=>[k,[Math.min(fallback[k],...mains.map(m=>m.bbRangesAny[k][0])),Math.max(fallback[k],...mains.map(m=>m.bbRangesAny[k][1]))]]))];
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges,includeFallback:!correlated},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ return {units,bbRanges,scope:correlated?'multirow-hold-reachable-sets':'native-hold',eventCount,cacheEventCount,rangeCount:bbRanges.length};
 }
 A.multirowUnits=args=>{try{return multirowUnits(args);}catch(e){if(e.code&&(e.code.startsWith('UNSUPPORTED_')||e.code.startsWith('SOURCE_FORMULA_')||e.code==='GEOMETRY_LIMIT'))return null;throw e;}};
+A.multirowCorrelatedRanges=correlatedRanges;
 })();

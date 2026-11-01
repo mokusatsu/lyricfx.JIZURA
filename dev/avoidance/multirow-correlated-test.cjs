@@ -1,0 +1,14 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+const root=path.resolve(__dirname,'../..'),sandbox={window:{},console};vm.createContext(sandbox);
+vm.runInContext(fs.readFileSync(path.join(root,'src/01_util.js'),'utf8'),sandbox);
+sandbox.window.J.placement={};vm.runInContext(fs.readFileSync(path.join(root,'src/11zz14q_multirow_units.js'),'utf8'),sandbox);
+const ranges=sandbox.window.J.placement.multirowCorrelatedRanges;
+const mains=[{bbRangesAny:{x0:[1,2],x1:[3,4],y0:[5,6],y1:[7,8]}},{bbRangesAny:{x0:[10,11],x1:[12,13],y0:[14,15],y1:[16,17]}}],fallback={x0:0,y0:0,x1:20,y1:20};
+const out=ranges(mains,[[0],[0,1]],fallback);
+assert.equal(out.length,3);
+assert.deepEqual(Array.from(out[0].x1),[3,4]);
+assert.deepEqual(Array.from(out[1].x1),[12,13]);
+assert(out[2].x0[0]<fallback.x0&&out[2].x0[1]>fallback.x0,'native fallback is retained with rounding guard');
+assert.equal(ranges(mains,[[0]],{x0:1,y0:0,x1:1,y1:1}),null,'invalid source fallback is not certified');
+console.log('PASS: simultaneous owner sets and native fallback remain separate');

@@ -124,6 +124,15 @@ function mixedVisibilityRanges(delays,start,end,out,hidden){
  let cacheEventCount=0;if(end>out){const all=[...new Set([0,...delays,...hidden].sort((a,b)=>a-b))];cacheEventCount=all.length;for(let i=0;i<all.length;i++){add(liveAt(all[i]));if(i+1<all.length)add(liveAt((all[i]+all[i+1])/2));}}
  return {times,sets,fallback,cacheEventCount};
 }
+// Reachable native single-glyph sets, including direct-seek BBC histories.
+function singleGlyphVisibility(items,cut,start,end){
+ const out=cut.dur-cut.outDur,n=Math.max(1,J.glyphCount(cut.text)),alphaEnd=Math.pow(.998,1/6),hidden=items.map(it=>out+(.3+.3*(n>1?J.clamp((+it.mi||0)/(n-1)):0)+.4*alphaEnd)*cut.outDur),delays=items.map(it=>(it.mi|0)*(cut.stagger||0)),guard=1e-7*Math.max(1,Math.abs(out),Math.abs(cut.outDur)),ordered=[...new Set(hidden)].sort((a,b)=>a-b);
+ // drawItem drops bbox when alpha <= .002, before tyStrike's HIDE.
+ // Bound each distinct event on both sides; coincident events stay grouped.
+ if(!(cut.outDur>0)||ordered.some((h,i)=>i&&h-ordered[i-1]<=2*guard))return null;
+ const early=mixedVisibilityRanges(delays,start,end,out,hidden.map(h=>h-guard)),late=mixedVisibilityRanges(delays,start,end,out,hidden.map(h=>h+guard)),seen=new Set(),sets=[...early.sets,...late.sets].filter(v=>{const k=v.join(',');if(seen.has(k))return false;seen.add(k);return true;});
+ return {sets,fallback:early.fallback||late.fallback,times:early.times,cacheEventCount:early.cacheEventCount};
+}
 function scatterSourceItems({W,H,cut,st}){
  const chars=[...cut.text.replace(/\s+/g,'')],n=chars.length,p=cut.params,s=cut.seed,base=Math.min(H*.3,W*.9/n*1.15),items=chars.map((text,i)=>({text,font:i%3===1?p.fontB:p.font,size:base*(.62+J.r(s,i,73)*.85*(J.isKanji(text)?1:.7)),x:W*(.1+.8*(i+.5)/n)+J.rs(s,i,71)*W*.035,y:H/2+J.rs(s,i,72)*H*.18,rot:J.rs(s,i,74)*24,mi:i})),extras=[];
  if(p.extras)for(let k=0;k<9;k++){const top=J.r(s,k,82)<.5;extras.push({text:cut.text,font:st.fonts.body[0],size:J.rr(H*.022,H*.045,s,k,83),x:J.rr(W*.08,W*.92,s,k,84),y:top?J.rr(H*.08,H*.26,s,k,85):J.rr(H*.74,H*.92,s,k,85),rot:J.rs(s,k,86)*18,appear:J.r(s,k,81)*cut.dur*.5});}
@@ -145,12 +154,8 @@ function mixedHoldUnits({W,H,cut,plan,st,holdWindow}){
   part.units=[{owner:cut.layout+'.item.'+item.mi,kind:'primary',bounds:A.bounds([points])}];parts.push(part);
  }
  if(!parts.length)return null;
- const start=holdWindow.real.start-cut.start,end=holdWindow.real.end-cut.start,out=cut.dur-cut.outDur,n=Math.max(1,J.glyphCount(cut.text)),alphaEnd=Math.pow(.998,1/6),hidden=items.map(it=>out+(.3+.3*(n>1?J.clamp((+it.mi||0)/(n-1)):0)+.4*alphaEnd)*cut.outDur),delays=items.map(it=>(it.mi|0)*(cut.stagger||0)),guard=1e-7*Math.max(1,Math.abs(out),Math.abs(cut.outDur));
- // drawItem drops bbox as soon as alpha <= .002, before tyStrike's HIDE.
- // Bound floating-point threshold uncertainty on both sides. Distinct exit
- // windows must not overlap, so those two alternatives cover each event.
- if(!(cut.outDur>0)||hidden.some((h,i)=>i&&h-hidden[i-1]<=2*guard))return null;
- const early=mixedVisibilityRanges(delays,start,end,out,hidden.map(h=>h-guard)),late=mixedVisibilityRanges(delays,start,end,out,hidden.map(h=>h+guard)),seen=new Set(),sets=[...early.sets,...late.sets].filter(v=>{const k=v.join(',');if(seen.has(k))return false;seen.add(k);return true;}),visibility={sets,fallback:early.fallback||late.fallback,times:early.times,cacheEventCount:early.cacheEventCount},ranges=[],units=parts.flatMap((part,i)=>part.units.map(u=>({...u,owner:cut.layout+'.'+i+'.'+u.owner})));
+ const visibility=singleGlyphVisibility(items,cut,holdWindow.real.start-cut.start,holdWindow.real.end-cut.start);if(!visibility)return null;
+ const ranges=[],units=parts.flatMap((part,i)=>part.units.map(u=>({...u,owner:cut.layout+'.'+i+'.'+u.owner})));
  // Extras use env.draw, never enter the returned main bbox, and are not ghosted.
  // Retain every native extra, even if it has not appeared at the hold start.
  if(scatter)for(let k=0;k<scatter.extras.length;k++){
@@ -161,7 +166,7 @@ function mixedHoldUnits({W,H,cut,plan,st,holdWindow}){
  for(const d of cut.decor||[]){const more=A.memphisUnits?.({W,H,P:d,cut,st,bbRanges:ranges,includeFallback:visibility.fallback});if(!more?.length)return null;units.push(...more);}
  return {units,eventCount:visibility.times.length,cacheEventCount:visibility.cacheEventCount,rangeCount:ranges.length,scope:cut.layout+'-hold-reachable-sets'};
 }
-function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null,reflowItem=null,nativeDims=null}){
+function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null,reflowItem=null,nativeDims=null,correlatedFallback=false}){
  const S=A.simpleCircle,activeHold=providedHoldRange||S.centerHoldInterval?.(plan,cut)||null,a=cut.area,W=plan.W,H=plan.H,st=cut.effectStyle||plan.style,fx=cut.effectFx||plan.fx,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter;
  // The hold-only path retains the native glow and uses a practical 4.5-sigma
  // support; faint bloom tails beyond that support are not certified.
@@ -224,9 +229,9 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
   }
  }
  if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['mixed','scatter','pill','neon','magazine','type','condensed','stack','marquee','tile','headlineDeck','dictionary','contents','footnote','proofread','poster','numbered','vcols','ticket','labels','swissGrid','lowerThird','frameBox','quote','ruler','tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps','corners','staircase','zigzag','gridCells','genkou','typeSpecimen','kanjiFocus','searchBar','notification','chat'].includes(cut.layout)){
-  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
+  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow,correlated:correlatedFallback};
   const parts=['mixed','scatter'].includes(cut.layout)?mixedHoldUnits(args):cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):cut.layout==='lowerThird'?A.lowerThirdUnits?.(args):['frameBox','quote','ruler'].includes(cut.layout)?A.framedUnits?.(args):['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)?A.typoStaticUnits?.(args):['corners','staircase','zigzag','gridCells','genkou'].includes(cut.layout)?A.multirowUnits?.(args):['typeSpecimen','kanjiFocus'].includes(cut.layout)?A.bSpecimenFocusUnits?.(args):['searchBar','notification','chat'].includes(cut.layout)?A.uiUnits?.(args):roleSeparated?A.repeatedUnits?.(args):['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)?A.editorialUnits?.(args):A.basicUnits?.(args);
-  if(parts?.units?.length){if(['mixed-hold-reachable-sets','scatter-hold-reachable-sets'].includes(parts.scope))supportInfo={scope:parts.scope,eventCount:parts.eventCount,cacheEventCount:parts.cacheEventCount,rangeCount:parts.rangeCount,unitCount:parts.units.length};const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  if(parts?.units?.length){if(['mixed-hold-reachable-sets','scatter-hold-reachable-sets','multirow-hold-reachable-sets'].includes(parts.scope))supportInfo={scope:parts.scope,eventCount:parts.eventCount,cacheEventCount:parts.cacheEventCount,rangeCount:parts.rangeCount,unitCount:parts.units.length};const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
  // The nativeIdentity viewport would also move tiledAux; never use it here.
  if(roleSeparated&&!partSupports){const unchanged=S.nativeViewportIdentity(plan,cut,scale,region,previous);return unchanged?{area:{...a},...unchanged}:{diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_ROLE_SEPARATED_UNITS'}};}
@@ -290,5 +295,5 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
  }
  return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:roleSeparated?{sourceFormula:{layout:cut.layout,W:W*a.w,H:H*a.h,offset:win.offset.slice(),nativeViewport:true,sourceArea:{...a},roleSeparated:true},holdWindow}:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(reflowItem?{centerViewportItem:reflowItem,...(nativeDims?{centerNativeDims:nativeDims}:{})}:{}),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),...(supportInfo?{supportInfo}:{}),nativeSourcePreserved:!reflowItem,...(reflowItem?{reflowText:reflowItem.text,nativeSize:reflowItem.size}:{}),sourceArea:nativeDims?{...cut.simpleCircleSourceArea}: {...a},offset:win.offset.slice(),allClockGeneration:false}};
 }
-A.centerCircle=Object.freeze({handles,envelope,stageBounds,render,viewportHandles,prepareViewport,sourceUnits,mixedVisibilityRanges,scatterSourceItems});
+A.centerCircle=Object.freeze({handles,envelope,stageBounds,render,viewportHandles,prepareViewport,sourceUnits,mixedVisibilityRanges,singleGlyphVisibility,scatterSourceItems});
 })();
