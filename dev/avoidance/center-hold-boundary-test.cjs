@@ -107,4 +107,12 @@ for(const change of [{areaMode:'manual'},{areaMode:'notation'},{placementLocked:
 for(const area of [null,{x:.2,y:.6,w:.4,h:.3,angle:5},{x:-.01,y:.6,w:.4,h:.3,angle:0}]){
  const {plan,cut}=fixture({area});assert(!actualCenter.viewportHandles(cut));assert.equal(S.centerHoldInterval(plan,cut),null);cases++;
 }
+// Explicit typography must not retry the smaller automatic source area.
+for(const layout of ['mixed','scatter'])for(const explicit of [false,true]){
+ J.LAYOUTS[layout]={render(){}};const {plan,cut}=fixture({layout,areaMode:'auto',...(explicit?{lyricSize:1}: {})});
+ const original={...cut};cut.circleSource={area:{...cut.area,y:.2},params:cut.params,pattern:cut.lyricPattern,fingerprint:JSON.stringify(original)};plan.circleSourceContext={W:plan.W,H:plan.H};
+ let attempts=0;const saved=A.centerCircle;A.centerCircle={...saved,prepareViewport(_plan,c,opt){attempts++;return c.area.y===.2?{diagnostic:{cut:c.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT'}}:{area:{...c.area},recipe:{nativeIdentity:true},diagnostic:{cut:c.index,status:'safe',safety:'safe-hold',holdWindow:opt.holdRange}};}};
+ const d=S.prepare(plan).diagnostics[0];A.centerCircle=saved;
+ assert.equal(attempts,explicit?1:2);assert.equal(d.status,explicit?'insufficient-space':'safe');if(!explicit)assert.equal(d.sourceAreaFallback,'legacy-auto-area');cases++;
+}
 console.log(JSON.stringify({status:'PASS',cases,viewportCalls,scope:'pure native timing, post/admission boundaries and preserved-cut exclusions; geometry stub; no raster/UI acceptance'}));

@@ -412,6 +412,7 @@ function placementCutPreserved86cm(plan,cut,lineage=sources.get(plan)){
 }
 Object.defineProperty(A,'placementSourceCut86cm',{value:(plan,cut)=>{const origin=A.simpleCircle?.origin(plan,cut),lineage=sources.get(origin?.plan||plan);return lineage?.originalCuts?.find(c=>c.index===cut.index)||origin?.cut||cut;}});
 Object.defineProperty(A,'placementCutPreserved86cm',{value:(plan,cut)=>{if(!Array.isArray(plan?.cuts)||!plan.cuts.includes(cut))return null;const origin=A.simpleCircle?.origin(plan,cut);return origin?placementCutPreserved86cm(origin.plan,origin.cut):placementCutPreserved86cm(plan,cut);}});
+Object.defineProperty(A,'placementExplicitSize',{value:(plan,cut)=>{const origin=A.simpleCircle?.origin(plan,cut),lineage=sources.get(origin?.plan||plan);return lineage?lineage.explicitSizes?.includes(cut.index)??null:null;}});
 let layoutsCFinalCache=null;
 A.installLayoutsCFinalCache=hooks=>{if(layoutsCFinalCache||!hooks||!['begin','read','keep'].every(k=>typeof hooks[k]==='function'))fail('INVALID_C_CACHE_HOOKS','Single C cache installation required');layoutsCFinalCache=Object.freeze({...hooks});delete A.installLayoutsCFinalCache;return {stats:nativeLocalBoundsStats,clear:clearNativeLocalBounds};};
 const oldPlan=J.plan;

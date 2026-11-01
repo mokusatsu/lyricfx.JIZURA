@@ -109,7 +109,7 @@ function prepare(plan,previous=null,{scale=1,noPost=false}={}){
    let result=A.centerCircle.prepareViewport(plan,cut,{scale,previous,region:regions[0],holdRange}),source=nativeSource;
    // Keep the previously working automatic layout when the unshrunk input
    // cannot be placed. Both candidates use the same owned-part checks.
-   if(!result.recipe&&unchanged&&!['marquee','tile'].includes(cut.layout)&&!(cut.layout==='bubbles'&&cut.params.motes)&&JSON.stringify([candidate.area,candidate.params])!==JSON.stringify([legacySource.area,legacySource.params])){
+   if(!result.recipe&&unchanged&&(!['mixed','scatter'].includes(cut.layout)||A.placementExplicitSize(plan,original)===false)&&!['marquee','tile'].includes(cut.layout)&&!(cut.layout==='bubbles'&&cut.params.motes)&&JSON.stringify([candidate.area,candidate.params])!==JSON.stringify([legacySource.area,legacySource.params])){
     const legacyCut={...cut,area:legacySource.area,params:legacySource.params,lyricPattern:legacySource.lyricPattern};
     const retry=A.centerCircle.prepareViewport(plan,legacyCut,{scale,previous,region:regions[0],holdRange});
     if(retry.recipe){const first=result.diagnostic;result={...retry,diagnostic:{...retry.diagnostic,sourceAreaFallback:'legacy-auto-area',unshrunkCandidate:{status:first.status,reason:first.reason??null}}};Object.assign(cut,{area:legacyCut.area,params:legacyCut.params,lyricPattern:legacyCut.lyricPattern});source=legacySource;}

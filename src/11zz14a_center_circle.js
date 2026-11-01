@@ -109,6 +109,58 @@ function render(env,item){
 // Moving only its origin retains every internal coordinate, size and clock.
 // The caller remains responsible for layout targeting and motion/post preflight.
 const viewportHandles=cut=>!!cut.area&&!(cut.area.angle||0)&&[cut.area.x,cut.area.y,cut.area.w,cut.area.h].every(Number.isFinite)&&cut.area.x>=0&&cut.area.y>=0&&cut.area.w>0&&cut.area.h>0&&cut.area.x+cut.area.w<=1&&cut.area.y+cut.area.h<=1&&!cut.drawing&&!cut.effectsOnly;
+// mixed calls mainDraw once per character. Its returned bbox is the union of
+// characters whose stagger has started and which tyStrike has not hidden.
+// Keep each reachable set as a separate getBB input: combining edge ranges
+// from different sets invents boxes that never existed. During exit BBC
+// may contain any previously sought set, including on a backwards seek.
+function mixedVisibilityRanges(delays,start,end,out,hidden){
+ const times=[...new Set([start,end,out,...hidden,...delays].filter(t=>t>=start&&t<=end).sort((a,b)=>a-b))],sets=[],keys=new Set();let fallback=false;
+ function add(indices){if(!indices.length)return;const key=indices.join(',');if(!keys.has(key)){keys.add(key);sets.push(indices);}}
+ const liveAt=t=>delays.map((d,j)=>d<=t&&t<hidden[j]?j:-1).filter(j=>j>=0);
+ for(let i=0;i<times.length;i++){const at=liveAt(times[i]);add(at);if(!at.length)fallback=true;if(i+1<times.length){const live=liveAt((times[i]+times[i+1])/2);add(live);if(!live.length)fallback=true;}}
+ // A direct seek can populate BBC at any earlier or later source time and
+ // then seek back into exit. Include event boundaries as well as intervals.
+ let cacheEventCount=0;if(end>out){const all=[...new Set([0,...delays,...hidden].sort((a,b)=>a-b))];cacheEventCount=all.length;for(let i=0;i<all.length;i++){add(liveAt(all[i]));if(i+1<all.length)add(liveAt((all[i]+all[i+1])/2));}}
+ return {times,sets,fallback,cacheEventCount};
+}
+function scatterSourceItems({W,H,cut,st}){
+ const chars=[...cut.text.replace(/\s+/g,'')],n=chars.length,p=cut.params,s=cut.seed,base=Math.min(H*.3,W*.9/n*1.15),items=chars.map((text,i)=>({text,font:i%3===1?p.fontB:p.font,size:base*(.62+J.r(s,i,73)*.85*(J.isKanji(text)?1:.7)),x:W*(.1+.8*(i+.5)/n)+J.rs(s,i,71)*W*.035,y:H/2+J.rs(s,i,72)*H*.18,rot:J.rs(s,i,74)*24,mi:i})),extras=[];
+ if(p.extras)for(let k=0;k<9;k++){const top=J.r(s,k,82)<.5;extras.push({text:cut.text,font:st.fonts.body[0],size:J.rr(H*.022,H*.045,s,k,83),x:J.rr(W*.08,W*.92,s,k,84),y:top?J.rr(H*.08,H*.26,s,k,85):J.rr(H*.74,H*.92,s,k,85),rot:J.rs(s,k,86)*18,appear:J.r(s,k,81)*cut.dur*.5});}
+ return {items,extras};
+}
+function mixedHoldUnits({W,H,cut,plan,st,holdWindow}){
+ if(!['mixed','scatter'].includes(cut.layout)||cut.enter!=='invertBox'||cut.exit!=='tyStrike'||cut.hold!=='knCounterRock'||(cut.treat||'none')!=='none'||!(cut.decor||[]).every(d=>d.id==='memphis')||!Number.isFinite(cut.stagger||0)||(cut.stagger||0)<0||/[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text))return null;
+ const env={W,H,cut,plan,st,sc:cut.palette||st.schemes[cut.scheme%st.schemes.length]},scatter=cut.layout==='scatter'?scatterSourceItems({W,H,cut,st}):null,items=scatter?scatter.items:A.nativeBlockCircle.geometry(env).items,source={...cut,layout:'center',area:null,params:{}},parts=[];
+ if(items.length<2||items.length>(cut.layout==='mixed'?16:14))return null; // native layout admission bounds
+ for(const item of items){
+  const part=sourceUnits(item,source,plan,{holdOnly:false});if(!part)return null;
+  // sourceUnits' center path assumes an unrotated main item. mixed has a
+  // native per-item rotation, so bound its complete paint in item space and
+  // rotate the box once. Keep mixed's existing conservative plate/line bound.
+  // invertBox's plate exists only while this item is entering, and tyStrike's
+  // line only while it exits. The scatter hold model must not require either
+  // entry/exit-only paint to avoid the circle during its own relaxed phase.
+  const local=A.simpleCircle.itemEnvelope(item,cut),native=J.itemBox({...item,x:0,y:0,rot:0}),raw=union(local.bounds,cut.layout==='scatter'?native:grow(native,item.size*.3)),rock=2*Math.hypot(raw.x1-raw.x0,raw.y1-raw.y0)*Math.sin(Math.min(Math.PI,4*(.4+((cut.effectFx||plan.fx).motion??.7))*J.DEG)/2),b=grow(raw,rock),angle=(item.rot||0)*J.DEG,cs=Math.cos(angle),sn=Math.sin(angle),points=[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]].map(([x,y])=>[item.x+x*cs-y*sn,item.y+x*sn+y*cs]);
+  part.units=[{owner:cut.layout+'.item.'+item.mi,kind:'primary',bounds:A.bounds([points])}];parts.push(part);
+ }
+ if(!parts.length)return null;
+ const start=holdWindow.real.start-cut.start,end=holdWindow.real.end-cut.start,out=cut.dur-cut.outDur,n=Math.max(1,J.glyphCount(cut.text)),alphaEnd=Math.pow(.998,1/6),hidden=items.map(it=>out+(.3+.3*(n>1?J.clamp((+it.mi||0)/(n-1)):0)+.4*alphaEnd)*cut.outDur),delays=items.map(it=>(it.mi|0)*(cut.stagger||0)),guard=1e-7*Math.max(1,Math.abs(out),Math.abs(cut.outDur));
+ // drawItem drops bbox as soon as alpha <= .002, before tyStrike's HIDE.
+ // Bound floating-point threshold uncertainty on both sides. Distinct exit
+ // windows must not overlap, so those two alternatives cover each event.
+ if(!(cut.outDur>0)||hidden.some((h,i)=>i&&h-hidden[i-1]<=2*guard))return null;
+ const early=mixedVisibilityRanges(delays,start,end,out,hidden.map(h=>h-guard)),late=mixedVisibilityRanges(delays,start,end,out,hidden.map(h=>h+guard)),seen=new Set(),sets=[...early.sets,...late.sets].filter(v=>{const k=v.join(',');if(seen.has(k))return false;seen.add(k);return true;}),visibility={sets,fallback:early.fallback||late.fallback,times:early.times,cacheEventCount:early.cacheEventCount},ranges=[],units=parts.flatMap((part,i)=>part.units.map(u=>({...u,owner:cut.layout+'.'+i+'.'+u.owner})));
+ // Extras use env.draw, never enter the returned main bbox, and are not ghosted.
+ // Retain every native extra, even if it has not appeared at the hold start.
+ if(scatter)for(let k=0;k<scatter.extras.length;k++){
+  const item=scatter.extras[k];
+  for(const glyph of A.itemGeometry(item,ID,{pass:'main',scale:1}).glyphs)units.push({owner:'scatter.extra.'+k+'.'+glyph.index,kind:'extra',ghost:false,bounds:A.bounds([glyph.polygon])});
+ }
+ for(const indices of visibility.sets){const bb=indices.map(i=>parts[i].bbRangesAny),r={};for(const k of ['x0','y0'])r[k]=[Math.min(...bb.map(b=>b[k][0])),Math.min(...bb.map(b=>b[k][1]))];for(const k of ['x1','y1'])r[k]=[Math.max(...bb.map(b=>b[k][0])),Math.max(...bb.map(b=>b[k][1]))];ranges.push(r);}
+ for(const d of cut.decor||[]){const more=A.memphisUnits?.({W,H,P:d,cut,st,bbRanges:ranges,includeFallback:visibility.fallback});if(!more?.length)return null;units.push(...more);}
+ return {units,eventCount:visibility.times.length,cacheEventCount:visibility.cacheEventCount,rangeCount:ranges.length,scope:cut.layout+'-hold-reachable-sets'};
+}
 function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null,reflowItem=null,nativeDims=null}){
  const S=A.simpleCircle,activeHold=providedHoldRange||S.centerHoldInterval?.(plan,cut)||null,a=cut.area,W=plan.W,H=plan.H,st=cut.effectStyle||plan.style,fx=cut.effectFx||plan.fx,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter;
  // The hold-only path retains the native glow and uses a practical 4.5-sigma
@@ -116,7 +168,7 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
  const bloomSigma=activeHold?4.5:6,bloom=((plan.style.glow??.6)*.5*(plan.fx.texture??.6)>.05||(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05))?bloomSigma*Math.max(2,Math.round(quarter/160))*up/scale:0,cameraBlur=cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,J.clamp((fx.motion??.7)*1.25,0,1.25))*(cut.motionScale??1):0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((v,e)=>v+J.clamp(e.amp??1,.3,1.6),0),post=S.postMotion(plan,W,H,scale,cut,activeHold?.real),pad=bloom+cameraBlur+(2+2*up)/scale;
  const native={x0:a.x*W,y0:a.y*H,x1:(a.x+a.w)*W,y1:(a.y+a.h)*H};let local={bounds:native,body:native,renderScale:scale};
  let project=(_local,item,_plan,_cut,bodyOnly)=>{const x=bodyOnly?0:pad+W*.016*rgb+post.x,y=bodyOnly?0:pad+H*.004*rgb+post.y;return [[native.x0+item.x-x,native.y0+item.y-y],[native.x1+item.x+x,native.y0+item.y-y],[native.x1+item.x+x,native.y1+item.y+y],[native.x0+item.x-x,native.y1+item.y+y]];};
- let sourceItem=null,partSupports=null,holdWindow=activeHold,usedJellyUnits=false;
+ let sourceItem=null,partSupports=null,holdWindow=activeHold,usedJellyUnits=false,supportInfo=null;
  const roleSeparated=['marquee','tile'].includes(cut.layout);
  // Bubble motes are an independent background. The whole viewport may only
  // remain unchanged until a role-separated move is available.
@@ -171,10 +223,10 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
    if(complete)partSupports=units.filter(u=>!nativeDims||intersects(box(u,preClip),native)).map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost},bounds=A.bounds([project(local,{x:0,y:0},plan,cut)]),rawBody=A.bounds([preClip(local,{x:0,y:0},plan,cut,true)]),body=nativeDims&&!intersects(rawBody,native)?bounds:A.bounds([project(local,{x:0,y:0},plan,cut,true)]);return {owner:u.owner,bounds,body};});
   }
  }
- if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','stack','marquee','tile','headlineDeck','dictionary','contents','footnote','proofread','poster','numbered','vcols','ticket','labels','swissGrid','lowerThird','frameBox','quote','ruler','tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps','corners','staircase','zigzag','gridCells','genkou','typeSpecimen','kanjiFocus','searchBar','notification','chat'].includes(cut.layout)){
+ if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['mixed','scatter','pill','neon','magazine','type','condensed','stack','marquee','tile','headlineDeck','dictionary','contents','footnote','proofread','poster','numbered','vcols','ticket','labels','swissGrid','lowerThird','frameBox','quote','ruler','tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps','corners','staircase','zigzag','gridCells','genkou','typeSpecimen','kanjiFocus','searchBar','notification','chat'].includes(cut.layout)){
   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
-  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):cut.layout==='lowerThird'?A.lowerThirdUnits?.(args):['frameBox','quote','ruler'].includes(cut.layout)?A.framedUnits?.(args):['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)?A.typoStaticUnits?.(args):['corners','staircase','zigzag','gridCells','genkou'].includes(cut.layout)?A.multirowUnits?.(args):['typeSpecimen','kanjiFocus'].includes(cut.layout)?A.bSpecimenFocusUnits?.(args):['searchBar','notification','chat'].includes(cut.layout)?A.uiUnits?.(args):roleSeparated?A.repeatedUnits?.(args):['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)?A.editorialUnits?.(args):A.basicUnits?.(args);
-  if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  const parts=['mixed','scatter'].includes(cut.layout)?mixedHoldUnits(args):cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):cut.layout==='lowerThird'?A.lowerThirdUnits?.(args):['frameBox','quote','ruler'].includes(cut.layout)?A.framedUnits?.(args):['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)?A.typoStaticUnits?.(args):['corners','staircase','zigzag','gridCells','genkou'].includes(cut.layout)?A.multirowUnits?.(args):['typeSpecimen','kanjiFocus'].includes(cut.layout)?A.bSpecimenFocusUnits?.(args):['searchBar','notification','chat'].includes(cut.layout)?A.uiUnits?.(args):roleSeparated?A.repeatedUnits?.(args):['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)?A.editorialUnits?.(args):A.basicUnits?.(args);
+  if(parts?.units?.length){if(['mixed-hold-reachable-sets','scatter-hold-reachable-sets'].includes(parts.scope))supportInfo={scope:parts.scope,eventCount:parts.eventCount,cacheEventCount:parts.cacheEventCount,rangeCount:parts.rangeCount,unitCount:parts.units.length};const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
  // The nativeIdentity viewport would also move tiledAux; never use it here.
  if(roleSeparated&&!partSupports){const unchanged=S.nativeViewportIdentity(plan,cut,scale,region,previous);return unchanged?{area:{...a},...unchanged}:{diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_ROLE_SEPARATED_UNITS'}};}
@@ -234,9 +286,9 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
    }
    results.sort((a,b)=>{const x=a.diagnostic,y=b.diagnostic;return y.score-x.score||fitness(x.envelope,x.region)-fitness(y.envelope,y.region)||Math.hypot(x.offset[0]/W,x.offset[1]/H)-Math.hypot(y.offset[0]/W,y.offset[1]/H)||Number(y.direction===old?.direction)-Number(x.direction===old?.direction);});if(results.length)return results[0];
   }
-  return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT'}};
+  return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT',...(supportInfo?{supportInfo}:{})}};
  }
- return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:roleSeparated?{sourceFormula:{layout:cut.layout,W:W*a.w,H:H*a.h,offset:win.offset.slice(),nativeViewport:true,sourceArea:{...a},roleSeparated:true},holdWindow}:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(reflowItem?{centerViewportItem:reflowItem,...(nativeDims?{centerNativeDims:nativeDims}:{})}:{}),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),nativeSourcePreserved:!reflowItem,...(reflowItem?{reflowText:reflowItem.text,nativeSize:reflowItem.size}:{}),sourceArea:nativeDims?{...cut.simpleCircleSourceArea}: {...a},offset:win.offset.slice(),allClockGeneration:false}};
+ return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:roleSeparated?{sourceFormula:{layout:cut.layout,W:W*a.w,H:H*a.h,offset:win.offset.slice(),nativeViewport:true,sourceArea:{...a},roleSeparated:true},holdWindow}:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(reflowItem?{centerViewportItem:reflowItem,...(nativeDims?{centerNativeDims:nativeDims}:{})}:{}),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),...(supportInfo?{supportInfo}:{}),nativeSourcePreserved:!reflowItem,...(reflowItem?{reflowText:reflowItem.text,nativeSize:reflowItem.size}:{}),sourceArea:nativeDims?{...cut.simpleCircleSourceArea}: {...a},offset:win.offset.slice(),allClockGeneration:false}};
 }
-A.centerCircle=Object.freeze({handles,envelope,stageBounds,render,viewportHandles,prepareViewport,sourceUnits});
+A.centerCircle=Object.freeze({handles,envelope,stageBounds,render,viewportHandles,prepareViewport,sourceUnits,mixedVisibilityRanges,scatterSourceItems});
 })();
