@@ -15,3 +15,7 @@
 同一版の通常 UI で固定サンプル・先頭行の最初のカットを全184演出について一括走査した。中心軌道の例外7件を除く177件の内訳は、配置計算が成立9件、広い viewport の支持範囲では配置を見つけられない163件、条件未対応2件、20秒以内に準備状態を観測できなかった3件。9件は配置計算の結果であり、実描画の円外確認や全文字表示の合格数ではない。中断した前半92件と残り92件の記録はそれぞれ Git 外の `normal-ui-all-layouts-actual-20261101-01`、`normal-ui-all-layouts-resume-actual-20261101-01`。一時的な容量不足による前半の停止後、試験側の作業用コピーを保全の上で整理し、再開分では重複走査していない。
 
 全 viewport の対角候補と mixed の文字別支持の試作を6演出でまとめて確認したが、いずれも通常サンプルで配置不成立のままだったため採用せず戻した。mixed の追加診断では、所有する装飾の保守範囲と光の余白が配置を制約していた。記録は Git 外の `normal-ui-e2e-local-part0-six-hold-actual-20261101-01` と `normal-ui-mixed-diagnostic-actual-20261101-01`。係数や所有物を削って合格にはしていない。
+
+追加のローカル試作 `f8a51ded` は stack の文字・輪郭・装飾を個別に扱う。通常 UI の先頭カットと、歌詞を「明日へ続く道」に変更した後の先頭カットで、それぞれ文字描画を観測し、対象 cut を除いた円内画素差0を確認した。記録は Git 外の `normal-ui-e2e-local-part0-stack-headlinedeck-hold-actual-20261101-01` と `normal-ui-e2e-local-part0-stack-replace-prefix-hold-actual-20261101-01`。保持期の代表時刻だけの確認で、全歌詞・全時刻の合格ではない。未 push・未公開。
+
+通常 UI の ON/OFF を比較すると、同じ tile の source area は ON で高さ0.245、OFF で0.3898096377769716となった。旧自動配置の中央 blocker が新しい円回避より前に適用されるためで、字号や反復背景の維持を評価する際に無視できない。記録は Git 外の `normal-ui-e2e-local-part0-tile-source-area-compare-actual-20261101-01`。反復背景の位置を保つ role 別描画と OFF 相当領域を使う試作は、通常サンプルの marquee/tile の双方で配置不成立だったため製品へ採用せず戻した（`normal-ui-e2e-local-part0-marquee-tile-sourcearea-actual-20261101-01`）。stack についても OFF 相当の字号維持は未確認。
