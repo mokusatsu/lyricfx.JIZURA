@@ -123,12 +123,12 @@ const decodeFrame = (entry,i) => {
   }
   return entry.pending.get(i);
 };
-J.preparePersonMask = async (cut,t,strict=false) => {
-  const ref=J.personCutout(cut);if(!ref)return;
+J.preparePersonMask = async (cut,t,strict=false,required=false) => {
+  const ref=J.personCutout(cut);if(!ref){if(strict && required)throw new Error(L('人物マスクが見つかりません：','Person mask is missing: ')+cut.name);return;}
   const entry=await J.loadPersonMask(ref);
-  if(!entry){if(strict && (ref.display!=='none'||ref.behindLyrics||ref.behindForeground))throw new Error(L('人物マスクが見つかりません。人物切り抜きで再作成してください：','Person mask is missing. Generate it again: ')+cut.name);return;}
+  if(!entry){if(strict && (required||ref.display!=='none'||ref.behindLyrics||ref.behindForeground))throw new Error(L('人物マスクが見つかりません。人物切り抜きで再作成してください：','Person mask is missing. Generate it again: ')+cut.name);return;}
   const i=frameIndex(entry,cut,t);
-  if(i===undefined){if(strict && (ref.display!=='none'||ref.behindLyrics||ref.behindForeground))throw new Error(L('再生範囲の人物マスクが不足しています。人物切り抜きを再実行してください：','Person masks are missing for this playback range. Run person cutout again: ')+cut.name);return;}
+  if(i===undefined){if(strict && (required||ref.display!=='none'||ref.behindLyrics||ref.behindForeground))throw new Error(L('再生範囲の人物マスクが不足しています。人物切り抜きを再実行してください：','Person masks are missing for this playback range. Run person cutout again: ')+cut.name);return;}
   const img=await decodeFrame(entry,i);
   if(strict)holdFrame(entry,cut,i,img);
 };
@@ -163,14 +163,16 @@ J.personMaskSource = (source,cut,t) => {
   const x=c.getContext('2d');x.drawImage(source,0,0,c.width,c.height);x.globalCompositeOperation='destination-in';x.drawImage(matte,0,0,c.width,c.height);x.globalCompositeOperation='source-over';return c;
 };
 const occlusionCanvas=canvas(1,1),occlusionLayer=canvas(1,1),occlusionOwner={ensure(c,w,h){if(c.width!==w)c.width=w;if(c.height!==h)c.height=h;return c;},personMaskPass:true};
-J.personOccluders = (plan,t,mode,exclude) => ['media','foreground'].flatMap(layer=>plan.layerVisibility?.[layer]===false?[]:J.mediaCutsAt(plan,t,layer).filter(c=>{
-  if(c===exclude || c.opacity<=0)return false;
-  const enabled=c=>J.personCutout(c)?.[mode],prev=plan[layer].cuts[c.index-1];
-  return enabled(c) || prev && c.trans && t-c.start<c.transDur && Math.abs(prev.end-c.start)<.06 && enabled(prev);
-}).map(c=>({layer,cut:c})));
+J.personOccluders = (plan,t,mode,exclude) => {
+  const active = plan.layerVisibility?.avoidance === false ? [] : (plan.avoidance?.cuts || []).filter(a => a.kind === 'person' && a.enabled !== false && t >= a.start && t < a.end && (mode === 'behindLyrics' ? a.occlusion === 'all' : mode === 'behindAux' ? a.occlusion === 'aux' : a.behindForeground));
+  return ['media','foreground'].flatMap(layer => plan.layerVisibility?.[layer] === false ? [] : J.mediaCutsAt(plan,t,layer).filter(c => {
+    if (c === exclude || c.opacity <= 0) return false;
+    return active.some(a => a.source?.layer === layer && a.source.index === c.index && (!a.source.itemId || a.source.itemId === c.itemId)) || !!J.personCutout(c)?.[mode];
+  }).map(c => ({layer,cut:c})));
+};
 J.maskBehindPersons = (target,plan,t,mode,exclude) => {
   const cuts=J.personOccluders(plan,t,mode,exclude);if(!cuts.length)return;
-  occlusionOwner.personMaskMode=mode;
+  occlusionOwner.personMaskMode=null;
   const w=target.width,h=target.height;occlusionOwner.ensure(occlusionCanvas,w,h);occlusionOwner.ensure(occlusionLayer,w,h);
   const mx=occlusionCanvas.getContext('2d'),lx=occlusionLayer.getContext('2d');mx.clearRect(0,0,w,h);
   for(const {layer,cut} of cuts){
@@ -188,7 +190,8 @@ J.prepareMediaFrame=async (plan,t,signal) => {
   await prepareMedia(plan,t,signal);
   for(const layer of ['media','foreground'])if(plan.layerVisibility?.[layer]!==false)for(const cut of J.mediaCutsAt(plan,t,layer)){
     if(signal?.aborted)throw new DOMException('Cancelled','AbortError');
-    await J.preparePersonMask(cut,t,true);
+    const required=['behindLyrics','behindAux','behindForeground'].some(mode=>J.personOccluders(plan,t,mode).some(x=>x.cut===cut));
+    await J.preparePersonMask(cut,t,true,required);
     const prev=plan[layer].cuts[cut.index-1];
     if(prev && cut.trans && t-cut.start<cut.transDur && Math.abs(prev.end-cut.start)<.06)await J.preparePersonMask(prev,prev.end-.001,true);
   }

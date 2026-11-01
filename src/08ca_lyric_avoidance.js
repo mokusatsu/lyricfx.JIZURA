@@ -131,6 +131,12 @@
         if (Number.isFinite(+ov.feather)) copy.feather = J.clamp(+ov.feather, 0, 0.3);
         if (ov.enabled !== undefined) copy.enabled = !!ov.enabled;
         if (ov.avoidEmphasis !== undefined) copy.avoidEmphasis = !!ov.avoidEmphasis;
+        if (ov.kind === 'person') copy.kind = 'person';
+        if (ov.source && ['media','foreground'].includes(ov.source.layer) && Number.isInteger(ov.source.index)) copy.source = {layer:ov.source.layer,index:ov.source.index,itemId:String(ov.source.itemId || '')};
+        if (ov.placement === false) copy.placement = false;
+        if (['none','aux','all'].includes(ov.occlusion)) copy.occlusion = ov.occlusion;
+        if (ov.behindForeground) copy.behindForeground = true;
+        if (ov.guide === false) copy.guide = false;
         normalizeMaskFields(ov, copy, false);
         if (ov.lock) copy.lock = true;
         if (ov.untilNext === false && Number.isFinite(+ov.endTime)) {
@@ -175,7 +181,7 @@
     });
     const lastTail = count ? Math.max(0.04, duration - starts[count - 1]) : 0;
     for (let i = 1; i < starts.length; i++) {
-      starts[i] = Math.max(starts[i], starts[i - 1] + 0.04);
+      starts[i] = Math.max(starts[i], starts[i - 1] + (a.timing.lineTimes[i] != null ? 0 : 0.04));
       if (fixedDuration != null && a.timing.lineTimes[i] == null) {
         starts[i] = Math.max(starts[i - 1] + 0.04, Math.min(starts[i], duration - (count - i) * 0.04));
       }
@@ -192,6 +198,10 @@
       const avoidEmphasis = ov.avoidEmphasis !== undefined ? !!ov.avoidEmphasis : !!a.avoidEmphasis;
       return {
         index: i,
+        kind: ov.kind || 'circle', source: ov.source || null,
+        placement: ov.placement !== false,
+        occlusion: ov.occlusion || (ov.maskAvoidance ?? a.maskAvoidance ? 'aux' : 'none'),
+        behindForeground: !!ov.behindForeground, guide: ov.guide !== false,
         name: `(${Math.round(cx * 100)}%, ${Math.round(cy * 100)}%) r=${Math.round(r * 100)}%`,
         start: starts[i],
         end: manualEndVal != null ? Math.max(starts[i] + 0.04, Math.min(manualEndVal, duration)) : nextStart,
@@ -259,7 +269,7 @@
     if (base.hasExplicitPixelCircle) {
       return base;
     }
-    const cuts = plan?.avoidance?.cuts;
+    const cuts = plan?.avoidance?.cuts?.filter(c => c.kind !== 'person');
     if (!cuts) {
       return base;
     }
@@ -268,12 +278,12 @@
     }
     let acut = null;
     if (t != null && Number.isFinite(+t)) {
-      acut = J.avoidanceAt(plan, +t);
+      acut = [...cuts].reverse().find(c => +t >= c.start && +t < c.end);
     }
     if (!acut && cut) {
       const cStart = Number.isFinite(+cut.start) ? +cut.start : 0;
       const cEnd = Number.isFinite(+cut.end) ? +cut.end : cStart + 0.04;
-      acut = J.avoidanceAt(plan, cStart);
+      acut = [...cuts].reverse().find(c => cStart >= c.start && cStart < c.end);
       if (!acut) {
         let bestOverlap = 0;
         for (const c of cuts) {
@@ -288,7 +298,7 @@
         acut = cuts[0];
       }
     }
-    if (!acut || acut.enabled === false) {
+    if (!acut || acut.enabled === false || acut.kind === 'person') {
       return { enabled: false };
     }
     const W = plan.W || 1920;
@@ -301,6 +311,7 @@
     const feather = acut.feather != null ? acut.feather * minWH : base.feather;
     return {
       enabled: true,
+      placement: acut.placement, occlusion: acut.occlusion, behindForeground: acut.behindForeground,
       cx,
       cy,
       r,
@@ -308,7 +319,7 @@
       R: r + pad,
       feather,
       avoidEmphasis: !!acut.avoidEmphasis,
-      maskAvoidance: !!acut.maskAvoidance,
+      maskAvoidance: acut.occlusion === 'aux',
       maskRadiusOffset: Number.isFinite(+acut.maskRadiusOffset) ? +acut.maskRadiusOffset : 0,
       maskFeather: Number.isFinite(+acut.maskFeather) ? +acut.maskFeather : 60,
       maskCurve: acut.maskCurve || 'smooth',
@@ -318,7 +329,10 @@
 
   // Circle (with mask settings) of the avoidance cut showing at time t, for layers drawn outside the lyric
   // avoidance pass (line background effects, cuts that keep their native place such as *emphasis*).
-  J.activeAvoidanceAtTime = (plan, t) => J.circleAvoidanceForCut(plan, null, t);
+  J.activeAvoidanceAtTime = (plan, t) => {
+    if (J.personOccluders?.(plan,t,'behindAux').length) return {enabled:true,maskAvoidance:true,person:true,plan,time:t};
+    return J.circleAvoidanceForCut(plan, null, t);
+  };
   J.avoidanceMaskActive = circle => !!(circle && circle.enabled && circle.maskAvoidance);
 
   // Radial gradient knockout (destination-out) of the mask circle, in stage coordinates.
@@ -378,7 +392,8 @@
     sx.setTransform(m.a, m.b, m.c, m.d, m.e, m.f);
     let result;
     try { result = paint(sx); } finally {
-      J.applyAvoidanceCircleMask(sx, stageMatrix || m, circle, W, H);
+      if (circle.person) J.maskBehindPersons(sx.canvas, circle.plan, circle.time, circle.personMode || 'behindAux');
+      else J.applyAvoidanceCircleMask(sx, stageMatrix || m, circle, W, H);
       const op = ctx.globalCompositeOperation;
       ctx.save();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -455,7 +470,7 @@
     if (cut.areaMode === 'manual') return false;
     if (plan.lockedLines && plan.lockedLines[cut.line]) return false;
     const circle = J.circleAvoidanceForCut(plan, cut, t);
-    if (!circle || !circle.enabled) return false;
+    if (!circle || !circle.enabled || circle.placement === false) return false;
     if (cut.emphasis && !circle.avoidEmphasis) return false;
     return true;
   };
