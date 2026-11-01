@@ -1374,5 +1374,60 @@
       "changed input recorded, stale/complete acceptance unresolved",
       "local build only, no commit/deploy"
     ]
+  },
+  "publicMixedScatter20261101": {
+    "commit": "bc46abba01340f1f33ce39cd48c981bc0ba636f2",
+    "url": "https://mokusatsu.github.io/lyricfx.JIZURA/",
+    "pagesRun": "https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/41285270896",
+    "guardRun": "https://github.com/mokusatsu/lyricfx.JIZURA/actions/runs/41285271814",
+    "uiRaw": "/workspace/jizura-logic-evidence-20261027/normal-ui-release-public-e2e-actual-20261101-03/result.json",
+    "ticketRaw": "/workspace/jizura-logic-evidence-20261027/normal-ui-release-public-e2e-actual-20261101-02/result.json",
+    "verifiedDocumentSha256": "a5550ed92e6473a72199d6e728f9a8ee2b51a1911c86710b0ca13c8f00ddd6f8",
+    "normalUiHeldFrame": {
+      "mixed": {
+        "changedInside": 0,
+        "textCalls": 6
+      },
+      "scatter": {
+        "changedInside": 0,
+        "textCalls": 60
+      },
+      "center": {
+        "changedInside": 0,
+        "textCalls": 6
+      },
+      "ticket": {
+        "changedInside": 0,
+        "textCalls": 57
+      }
+    },
+    "conditions": "sample 夜明けの色を, seed 20260922, first lyric cut, fixed circle, real UI selection, t=1.0206 / motion=1.0, 480x270 output; ON actual vs target cut removed AB; not all times/inputs; clips and bloom not exhaustively observed",
+    "olderPublicChecks": "-01 misclassified informational auto-size; -02 observer whitelist omitted mixed/scatter; not counted as pass for those layouts"
+  },
+  "localMultirow20261101": {
+    "incomingPatchBytes": 15099,
+    "incomingPatchSha256": "e13374b1666e9818c7349b3832d2529fcd9fd3ff6356e060cdcc5131db35c020",
+    "scope": "correlated single-glyph layouts only, native furniture and explicit-size handling retained",
+    "localCommit": "31b800d7c03b58a187867dc6992b85dcb00c89f1",
+    "published": false,
+    "staircaseLastHoldRaw": "/workspace/jizura-logic-evidence-20261027/normal-ui-staircase-correlated-actual-20261101-02/result.json",
+    "firstHoldFiveRaw": "/workspace/jizura-logic-evidence-20261027/normal-ui-multirow-first-hold-actual-20261101-01/result.json",
+    "result": "WIP real UI sample staircase: target-cut AB circle changed 0 at first and last observed hold frames; six lyric chars and six labels plus source strokes observed; no whole-input/clip/post-bloom acceptance",
+    "notes": "Previous 36px outside-circle A/B control mismatch did not reproduce in current same-UI-gated last-frame run; literal full A/B control gates passed. Retain entry/exit exception; do not assert full hold or original glyph equivalence from sampled frames.",
+    "candidateArchive": "https://github.com/mokusatsu/lyricfx.JIZURA/tree/archive/avoidance-multirow-candidate-20261101",
+    "exactCommitFirstHoldRaw": "/workspace/jizura-logic-evidence-20261027/normal-ui-multirow-release-first-actual-20261101-01/result.json",
+    "exactCommitLastHoldRaw": "/workspace/jizura-logic-evidence-20261027/normal-ui-staircase-release-last-actual-20261101-01/result.json",
+    "exactCommitResults": {
+      "firstHoldABZero": [
+        "mixed",
+        "scatter",
+        "staircase",
+        "center",
+        "ticket"
+      ],
+      "staircaseLastHoldABChangedInside": 0,
+      "staircaseLastHoldControlGates": "all true",
+      "unresolved": "POST_BLOOM_NOT_OBSERVED; input-change recorded not accepted; all-times/clip completeness unproven"
+    }
   }
 }
