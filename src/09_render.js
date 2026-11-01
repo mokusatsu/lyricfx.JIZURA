@@ -176,8 +176,9 @@ class Renderer {
     // ---------- background graphic (per line) ----------
     if (hidden.lyrics!==false && hidden.media!==false && (opt.copyLyrics || plan.media?.applyLyricBackground !== false && !opt.transparent) && !key && mainCut && mainCut.bg && mainCut.bg !== 'none' && J.BG[mainCut.bg]) {
       let avoidCircle = J.activeAvoidanceAtTime ? J.activeAvoidanceAtTime(plan, tq) : null;
-      if (J.personOccluders?.(plan,tq,'behindLyrics').length) avoidCircle = {enabled:true,maskAvoidance:true,person:true,personMode:'behindLyrics',plan,time:tq};
-      else if (avoidCircle?.occlusion === 'all') avoidCircle = {...avoidCircle,maskAvoidance:true};
+      const allPerson = J.personOccluders?.(plan,tq,'behindLyrics').length;
+      if (avoidCircle?.occlusion === 'all') avoidCircle = {...avoidCircle,maskAvoidance:true,circleMask:true};
+      if (allPerson) avoidCircle = {...avoidCircle,enabled:true,maskAvoidance:true,circleMask:avoidCircle?.person ? avoidCircle.circleMask : !!avoidCircle?.maskAvoidance,person:true,personModes:[...(avoidCircle?.personModes || []),'behindLyrics'],plan,time:tq};
       const drawBg = targetCtx => {
         const env = this.makeEnv(targetCtx, plan, mainCut, sc, { pass: 'main', t: tq, lt: tq - mainCut.start, ltb: tq - mainCut.start, step, scale, allowFilter, energy, beat: beatInfo, bgOnly: true });
         targetCtx.save();

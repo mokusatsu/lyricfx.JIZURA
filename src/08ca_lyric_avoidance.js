@@ -330,8 +330,9 @@
   // Circle (with mask settings) of the avoidance cut showing at time t, for layers drawn outside the lyric
   // avoidance pass (line background effects, cuts that keep their native place such as *emphasis*).
   J.activeAvoidanceAtTime = (plan, t) => {
-    if (J.personOccluders?.(plan,t,'behindAux').length) return {enabled:true,maskAvoidance:true,person:true,plan,time:t};
-    return J.circleAvoidanceForCut(plan, null, t);
+    const circle = J.circleAvoidanceForCut(plan, null, t);
+    if (!J.personOccluders?.(plan,t,'behindAux').length) return circle;
+    return {...circle, enabled:true, maskAvoidance:true, circleMask:!!circle.maskAvoidance, person:true, personModes:['behindAux'], plan, time:t};
   };
   J.avoidanceMaskActive = circle => !!(circle && circle.enabled && circle.maskAvoidance);
 
@@ -392,8 +393,8 @@
     sx.setTransform(m.a, m.b, m.c, m.d, m.e, m.f);
     let result;
     try { result = paint(sx); } finally {
-      if (circle.person) J.maskBehindPersons(sx.canvas, circle.plan, circle.time, circle.personMode || 'behindAux');
-      else J.applyAvoidanceCircleMask(sx, stageMatrix || m, circle, W, H);
+      if (!circle.person || circle.circleMask) J.applyAvoidanceCircleMask(sx, stageMatrix || m, circle, W, H);
+      if (circle.person) for (const mode of circle.personModes || [circle.personMode || 'behindAux']) J.maskBehindPersons(sx.canvas, circle.plan, circle.time, mode);
       const op = ctx.globalCompositeOperation;
       ctx.save();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -1841,8 +1842,9 @@
   // ----------------------------------------------------------------------------
   J.drawCutWithCircleAvoidance = (renderer, env) => {
     const { cut, plan, W, H } = env;
-    const circle = J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut, env.t) : plan.lyricAvoidance;
+    let circle = J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut, env.t) : plan.lyricAvoidance;
     if (!circle || !circle.enabled) return renderer.drawCutDirect(env);
+    if (J.personOccluders?.(plan,env.t,'behindAux').length) circle = {...circle, circleMask:!!circle.maskAvoidance, maskAvoidance:true, person:true, personModes:['behindAux'], plan, time:env.t};
 
     // Temporarily swap in full-stage native layout params while rendering under circle avoidance
     const savedParams = cut.params;

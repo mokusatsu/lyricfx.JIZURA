@@ -1789,6 +1789,19 @@ function openCutDetails(layer,index,part=0) {
 let itemFrameSignature = '';
 function drawItemFrames() {
   const overlay=$('itemFrames'), view=$('view').getBoundingClientRect(), host=$('viewport').getBoundingClientRect();
+  const guide=$('personGuide'), preview=$('view');
+  const persons=(S.plan.avoidance?.cuts || []).filter(c=>c.kind==='person' && c.guide && c.enabled!==false && S.t>=c.start && S.t<c.end);
+  guide.hidden=!!S.exporting || S.plan.layerVisibility?.avoidance===false || !persons.length;
+  if(!guide.hidden) {
+    Object.assign(guide.style,{left:`${view.left-host.left}px`,top:`${view.top-host.top}px`,width:`${view.width}px`,height:`${view.height}px`});
+    if(guide.width!==preview.width)guide.width=preview.width;if(guide.height!==preview.height)guide.height=preview.height;
+    const gx=guide.getContext('2d'), scratch=drawItemFrames.guideScratch ||= document.createElement('canvas');
+    if(scratch.width!==guide.width)scratch.width=guide.width;if(scratch.height!==guide.height)scratch.height=guide.height;
+    const sx=scratch.getContext('2d');sx.setTransform(1,0,0,1,0,0);sx.globalCompositeOperation='source-over';sx.clearRect(0,0,scratch.width,scratch.height);sx.fillStyle='#fff';sx.fillRect(0,0,scratch.width,scratch.height);
+    const guidePlan={...S.plan,avoidance:{...S.plan.avoidance,cuts:persons.map(c=>({...c,occlusion:'all'}))}};
+    J.maskBehindPersons(scratch,guidePlan,S.t,'behindLyrics');
+    gx.setTransform(1,0,0,1,0,0);gx.globalCompositeOperation='source-over';gx.clearRect(0,0,guide.width,guide.height);gx.fillStyle='#ff6f9c';gx.fillRect(0,0,guide.width,guide.height);gx.globalCompositeOperation='destination-out';gx.drawImage(scratch,0,0);gx.globalCompositeOperation='source-over';
+  }
   overlay.hidden=!$('showItemFrames').checked || !!S.exporting;
   if(overlay.hidden) { itemFrameSignature=''; return; }
   Object.assign(overlay.style,{left:`${view.left-host.left}px`,top:`${view.top-host.top}px`,width:`${view.width}px`,height:`${view.height}px`});
@@ -1798,16 +1811,9 @@ function drawItemFrames() {
     if(layer==='avoidance') {
       const cut=J.avoidanceAt(S.plan,S.t);
       if(!cut || !cut.guide || cut.enabled===false)continue;
-      if(cut.kind==='person') {
-        const source=S.plan[cut.source?.layer]?.cuts[cut.source?.index];
-        if(!source || cut.source.itemId && source.itemId!==cut.source.itemId)continue;
-        const dim=J.mediaSourceDimensions(S.plan,source,S.t);if(!dim)continue;
-        const area=J.mediaPlacementRect(source.placement,dim.width,dim.height,S.plan.W,S.plan.H);
-        if(area)items.push({layer,cut,index:cut.index,area:{...area,angle:source.placement?.angle||0}});
-      } else {
-        if(!S.plan.lyricAvoidance?.enabled && S.areaEdit?.kind!=='avoidance' && S.sourceTab!=='avoidance')continue;
-        items.push({layer,cut,index:cut.index,area:{...avoidanceCircleToDraft(cut),angle:0}});
-      }
+      if(cut.kind==='person') continue; // The matte overlay above is the guide; no source bounding box.
+      if(!S.plan.lyricAvoidance?.enabled && S.areaEdit?.kind!=='avoidance' && S.sourceTab!=='avoidance')continue;
+      items.push({layer,cut,index:cut.index,area:{...avoidanceCircleToDraft(cut),angle:0}});
     } else if(layer==='lyrics') {
       for(const cut of J.lyricCutsAt(S.plan,S.t)) if(cut.line>=0) items.push({layer,cut,index:cut.line,area:cut.area||{x:0,y:0,w:1,h:1}});
     } else {

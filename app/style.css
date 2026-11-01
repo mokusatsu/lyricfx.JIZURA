@@ -593,6 +593,8 @@ dialog.terms .terms-fork h3 { color: var(--cyan); }
 
 /* Preview-only item boundaries and editing controls. */
 .item-frame-toggle { display:flex; align-items:center; gap:6px; padding:6px 0; font-size:12px; }
+.person-guide { position:absolute; pointer-events:none; z-index:2; opacity:.45; }
+.person-guide[hidden] { display:none; }
 .item-frames { position:absolute; pointer-events:none; overflow:hidden; z-index:3; }
 .item-frames[hidden] { display:none; }
 .item-frames.selecting { z-index:5; overflow:visible; }
