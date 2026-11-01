@@ -1,0 +1,7 @@
+# 通常 UI の保持時点観測（保存用）
+
+`cadd216f` の試行に使った13演出の probe source と Qt CDP helper のコピー。QtWebEngine / pywebview を使い、同じセッションで UI の演出切替と歌詞変更、対象 cut の描画呼出し、対象 cut を除いた A/B の円内画素差を記録した。呼出しや画素差は clip 後の全文字・付属物の完全性、全保持時刻、全入力を証明しない。独立背景や対象 cut 全体を消す A/B の限界も結果で区別する。観測結果の要約は `tasks/reviews/AVOID-009-circle-normal-ui-20261101.md`。
+
+原本の `probe.cjs` は実行環境に依存するパス `/workspace/jizura-bulbs-product-20261029` と `/workspace/jizura-browser-runtime-20261027/qt-page.cjs` を固定し、`qt-service-visible.py` は同 runtime の logs と `/workspace/jizura-regen-20261027` の font manifest を使う。別環境で動かすにはこれらを適切に設定し、Node の WebSocket、PyQt6 / QtWebEngine、pywebview、8字体を準備する。コピーした `qt-page.cjs` は同 helper の原本である。環境や入力が異なる場合は過去結果を合格として流用しない。
+
+実行は `dev/avoidance/qt-resource-runtime/README.md` に従い容量確認・同時1件・終了回収を行う。出力はリポジトリ外に置く。対応状況を示す診断、描画あり、円内差、clip 可視性は別の結果として扱う。

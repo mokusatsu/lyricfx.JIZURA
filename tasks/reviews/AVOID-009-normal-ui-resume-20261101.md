@@ -10,4 +10,6 @@
 
 再開時はこの保存 branch を別 worktree で開き、`AGENTS.md` と上記レビュー記録を読む。作業先に既存の未コミット差分がある場合は上書きしない。`python3 build.py` は日英の製品用 index を生成する。Qt は `dev/avoidance/qt-resource-runtime/README.md` に従い、空き容量と同時実行を確認して管理 runner で実行し、作成した子プロセスを回収する。動画・PNG・閲覧用比較 HTML・大きな raw は GitHub に追加しない。公開前には同一 commit の Pages と通常 UI を確認する。
 
+実行した13演出の観測 source と Qt helper は `dev/avoidance/normal-ui-circle-observer-20261101/`、直近2回の条件・source hash・演出別結果の縮約は `tasks/evidence/AVOID-009/normal-ui-20261101/held-observations.json` に保全する。後者の11演出試験は不採用試作を含むため、保存 commit の実装そのものの評価ではない。元の詳細 raw がない環境では縮約だけで clip 後の可視性を再判定できない。
+
 残作業は、中心固定例外を除く大半の配置不成立、bulbs / burst / dominoes の通常経路、別 cut の全画面効果、clip 後の文字と所有物の可視性、実出力など。既存 09d recipe は画面座標で camera 適用済みの支持と旧 renderer に結び付く一方、新経路は viewport 内の支持を後から投影する。recipe だけを移すと二重変換や異なる clip の描画になるため、同じ recipe・所有物・固定 clip・保持窓を判定と描画へ渡す接続が必要。枠の寸法や関係を変える recipe は、元の構図維持条件との整合なしに採用しない。全画面巻戻し等の効果も、単一の小さな移動範囲として扱わない。
