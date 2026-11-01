@@ -6940,6 +6940,7 @@ J.finishLyricPlan = (project, plan, audio) => {
     if (Number.isFinite(placementSeed)) cut.placementSeed = placementSeed;
     cut.areaMode = cut.area ? 'manual' : 'default';
     if (cut.area || !settings.autoPlacement) continue;
+    let circleSource = null;
     const locked = project.overrides?.[cut.line];
     const lockedArea = locked?.lock && locked.lockedAreas?.[cut.part];
     if (lockedArea !== undefined && lockedArea !== false) {
@@ -6961,6 +6962,11 @@ J.finishLyricPlan = (project, plan, audio) => {
         ...bounds.filter(({ cut: f, box }) => box && f.start < cut.end && f.end + .6 > cut.start).map(({ box }) => padded(box)),
         ...bgScenes.filter(b => b.start < cut.end && b.end + .6 > cut.start).flatMap(b => b.boxes).map(padded),
       ];
+      if (settings.avoidCenter && !locked?.lock && cut.group == null && !cut.emphasis &&
+          !cut.drawing && !cut.effectsOnly && cut.lyricSize == null) {
+        circleSource = { ...cut };
+        circleSource.area = J.autoLyricArea(circleSource, plan, obstacles, { ...settings, avoidCenter: false }, scene);
+      }
       cut.area = J.autoLyricArea(cut, plan, obstacles, settings, scene);
       cut.areaMode = 'auto';
     }
@@ -6974,6 +6980,16 @@ J.finishLyricPlan = (project, plan, audio) => {
         W: plan.W * cut.area.w, H: plan.H * cut.area.h, dur: cut.dur,
       }, plan.style);
       if (cut.text.includes('\n')) cut.params.sx = 1;
+    }
+    if (circleSource) {
+      if (circleSource.area && J.LAYOUTS[circleSource.layout]?.plan) {
+        circleSource.params = J.LAYOUTS[circleSource.layout].plan(J.rng(J.h(circleSource.seed, 318)), {
+          text: circleSource.text, n: [...circleSource.text.replace(/\s/g, '')].length,
+          W: plan.W * circleSource.area.w, H: plan.H * circleSource.area.h, dur: circleSource.dur,
+        }, plan.style);
+        if (circleSource.text.includes('\n')) circleSource.params.sx = 1;
+      }
+      cut.circleSource = {area:circleSource.area,params:circleSource.params,pattern:circleSource.lyricPattern??null};
     }
   }
   for (const index of plan.retainedCutIndices) {
@@ -8834,7 +8850,13 @@ J.plan = function(project, ...args) {
   for (const cut of plan.cuts) if (Number.isInteger(cut.part) && cut.line >= 0) {
     const options=project.lyricCutOptions?.[`${cut.line}:${cut.part}`],details=options?.details;
     const locked=project.overrides?.[cut.line]?.lock ? project.overrides[cut.line].lockedEffects?.[cut.part] : null;
-    J.applyCutDetails(cut,{...stableDetails(project,'lyrics',cut,options,locked),...(locked||{}),...(details||{})},plan,'lyrics');
+    const resolved={...stableDetails(project,'lyrics',cut,options,locked),...(locked||{}),...(details||{})};
+    if(cut.circleSource){
+      const {circleSource,...base}=cut, source={...base,area:circleSource.area,params:circleSource.params,lyricPattern:circleSource.pattern};
+      J.applyCutDetails(source,resolved,plan,'lyrics');
+      cut.circleSource={area:source.area,params:source.params,pattern:source.lyricPattern};
+    }
+    J.applyCutDetails(cut,resolved,plan,'lyrics');
   }
   // Events belong to their originating cut, including accents before its boundary.
   for (const cut of plan.cuts) if (Array.isArray(cut.effectEvents)) {
@@ -8862,6 +8884,11 @@ J.plan = function(project, ...args) {
     J.applyCutDetails(cut,{area},plan,'lyrics');
     cut.areaMode='notation';
   }
+  for(const cut of plan.cuts)if(cut.circleSource){
+    if(cut.areaMode!=='auto'||cut.group!=null||cut.emphasis||cut.drawing||cut.effectsOnly||cut.lyricSize!=null||Object.hasOwn(project.lyricCutOptions?.[`${cut.line}:${cut.part}`]?.details||{},'contentScale')||project.overrides?.[cut.line]?.lock)delete cut.circleSource;
+    else {const {circleSource,...state}=cut;circleSource.fingerprint=JSON.stringify(state);}
+  }
+  if(plan.cuts.some(c=>c.circleSource))plan.circleSourceContext={W:plan.W,H:plan.H};
   return plan;
 };
 const planMedia = J.planMedia;
@@ -10550,10 +10577,12 @@ class Renderer {
   drawCut(env) {
     const cut = env.cut, L = J.LAYOUTS[cut.layout] || J.LAYOUTS.center;
     const decor = cut.decor || [];
-    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { D.draw(env, null, d); } catch (e) { console.warn(e); } }
+    const dims=cut.simpleCircleRecipe?.centerNativeDims,dx=dims?(env.W-dims.W)/2:0,dy=dims?(env.H-dims.H)/2:0;
+    const drawDecor=(d,bb)=>{const D=J.DECOR[d.id];if(!D)return;if(!dims){D.draw(env,bb,d);return;}const b=bb?{...bb,x0:bb.x0-dx,x1:bb.x1-dx,y0:bb.y0-dy,y1:bb.y1-dy,cx:bb.cx-dx,cy:bb.cy-dy}:bb;env.ctx.save();try{env.ctx.translate(dx,dy);D.draw({...env,W:dims.W,H:dims.H},b,d);}finally{env.ctx.restore();}};
+    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { drawDecor(d, null); } catch (e) { console.warn(e); } }
     let bb = null;
     try { if (!cut.effectsOnly) bb = L.render(env); } catch (e) { if (env.placementRecording) throw e; console.warn('layout', cut.layout, e); }
-    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { D.draw(env, bb, d); } catch (e) { console.warn(e); } }
+    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { drawDecor(d, bb); } catch (e) { console.warn(e); } }
     return bb;
   }
 
@@ -15303,7 +15332,7 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   J.assertPlanOutputSupported(plan);
   if(short)project=J.shortExportProject(project,short);
   if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){if(!await J.placement.finalFontsCurrent(plan,project.lyrics))await J.ensureFonts(project.lyrics+plan.cuts.map(c=>c.text||'').join('')+J.drawingText(plan),J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
-  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)onWarning?.(plan.circleAvoidanceStatus);
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length||plan.circleAvoidanceStatus?.autoSizeCuts?.length)onWarning?.(plan.circleAvoidanceStatus);
   if (J.pauseAllVideos) J.pauseAllVideos();
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
   J.mediaTransitionFrame = null;
@@ -15417,7 +15446,7 @@ class ZipWriter {
 J.exportPNGZip = async ({ plan, project, transparent, onProgress, onWarning, signal, every = 1 }) => {
   J.assertPlanOutputSupported(plan);
   if(plan.cuts.some(c=>J.placement.simpleCircle?.targets(plan,c))){if(!await J.placement.finalFontsCurrent(plan,project.lyrics))await J.ensureFonts(project.lyrics+plan.cuts.map(c=>c.text||'').join('')+J.drawingText(plan),J.fontsOfPlan(plan));await document.fonts.ready;plan=J.placement.simpleCircle.outputPlan(plan,{scale:J.outputSize(project)[0]/plan.W});}
-  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)onWarning?.(plan.circleAvoidanceStatus);
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length||plan.circleAvoidanceStatus?.autoSizeCuts?.length)onWarning?.(plan.circleAvoidanceStatus);
   if (J.pauseAllVideos) J.pauseAllVideos();
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
@@ -15427,7 +15456,7 @@ J.exportPNGZip = async ({ plan, project, transparent, onProgress, onWarning, sig
   const R = new J.Renderer();
   const fps = plan.fps, total = Math.max(1, Math.round(plan.duration * fps));
   const zip = new ZipWriter();
-  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length)zip.add('circle-avoidance.json',new TextEncoder().encode(JSON.stringify(plan.circleAvoidanceStatus)));
+  if(plan.circleAvoidanceStatus?.status==='partial'||plan.circleAvoidanceStatus?.holdOnlyCuts?.length||plan.circleAvoidanceStatus?.autoSizeCuts?.length)zip.add('circle-avoidance.json',new TextEncoder().encode(JSON.stringify(plan.circleAvoidanceStatus)));
   const scale = w / plan.W;
   for (let i = 0; i < total; i += every) {
     if (signal && signal.aborted) throw new Error('キャンセルしました');
@@ -50810,17 +50839,22 @@ function domain(plan,cut,region,project=stageEnvelope){
 // replacement for the source geometry needed by other candidates.
 function nativeViewportIdentity(plan,cut,scale,region,previous){
  const a=cut.area;if(!a||a.angle||a.x<0||a.y<0||a.x+a.w>1||a.y+a.h>1)return null;
- const W=plan.W,H=plan.H,fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,bloom=(st.glow??.6)*.5*(fx.texture??.6)>.05?6*Math.max(2,Math.round(quarter/160))*up/scale:0,K=J.clamp((fx.motion??.7)*1.25,0,1.25),cameraBlur=cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,K)*(cut.motionScale??1):0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((v,e)=>v+J.clamp(e.amp??1,.3,1.6),0),post=postMotion(plan,W,H,scale,cut),pad=bloom+cameraBlur+(2+2*up)/scale,b={x0:Math.max(0,a.x*W-pad-post.x-W*.016*rgb),y0:Math.max(0,a.y*H-pad-post.y-H*.004*rgb),x1:Math.min(W,(a.x+a.w)*W+pad+post.x+W*.016*rgb),y1:Math.min(H,(a.y+a.h)*H+pad+post.y+H*.004*rgb)},domain=domainForNative(plan,cut,region),maxScore=Math.max(...domain.regions.map(r=>r.score));
+ const W=plan.W,H=plan.H,fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,hasBloom=(st.glow??.6)*.5*(fx.texture??.6)>.05||(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05),bloom=hasBloom?6*Math.max(2,Math.round(quarter/160))*up/scale:0,K=J.clamp((fx.motion??.7)*1.25,0,1.25),cameraBlur=cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,K)*(cut.motionScale??1):0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((v,e)=>v+J.clamp(e.amp??1,.3,1.6),0),post=postMotion(plan,W,H,scale,cut),pad=bloom+cameraBlur+(2+2*up)/scale,b={x0:Math.max(0,a.x*W-pad-post.x-W*.016*rgb),y0:Math.max(0,a.y*H-pad-post.y-H*.004*rgb),x1:Math.min(W,(a.x+a.w)*W+pad+post.x+W*.016*rgb),y1:Math.min(H,(a.y+a.h)*H+pad+post.y+H*.004*rgb)},domain=domainForNative(plan,cut,region),maxScore=Math.max(...domain.regions.map(r=>r.score));
  const fits=domain.regions.filter(r=>r.score===maxScore&&b.x0>=r.x0&&b.y0>=r.y0&&b.x1<=r.x1&&b.y1<=r.y1&&A.clear([rectangle(b)],domain.circle,domain.pad));if(!fits.length)return null;const old=previous?.policy===policy?previous.diagnostics.find(d=>d.cut===cut.index&&d.status==='safe'):null,fitness=r=>Math.abs(Math.log(((b.x1-b.x0)/(b.y1-b.y0))/((r.x1-r.x0)/(r.y1-r.y0))));fits.sort((a,b)=>fitness(a)-fitness(b)||Number(b.direction===old?.direction)-Number(a.direction===old?.direction));const r=fits[0];return {diagnostic:{cut:cut.index,status:'safe',method:'unchanged-native-viewport',direction:r.direction,score:r.score,region:r,envelope:rectangle(b),nativeSourcePreserved:true,allClockGeneration:false},recipe:{nativeIdentity:true}};
 }
 const domainForNative=domain;
 function prepare(plan,previous=null,{scale=1,noPost=false}={}){
  if(!Number.isFinite(scale)||scale<=0||scale>4)throw Object.assign(Error('Positive render scale through4 required'),{code:'UNSUPPORTED_RENDER_SCALE'});
+ const context=plan.circleSourceContext,contextUnchanged=!!context&&context.W===plan.W&&context.H===plan.H;
  const started=performance.now(),cuts=plan.cuts.map(c=>({... (targets(plan,c,{noPost})?A.placementSourceCut86cm(plan,c):c)})),diagnostics=[],processed=new Set(),origins=new Map();for(let i=0;i<cuts.length;i++)origins.set(cuts[i],origin(plan,plan.cuts[i])||{plan,cut:plan.cuts[i]});
- for(const cut of cuts){const original=plan.cuts.find(c=>c.index===cut.index),nativeSource=A.placementSourceCut86cm(plan,original);if(!targets(plan,original,{noPost}))continue;processed.add(cut);for(const key of ['placementTrajectory','fullStagePlacement','placementUnits','placementGlyphs','placementLayoutsA','placementLayoutsB','placementLayoutsC','placementLayoutsD','layoutARecipe','layoutBRecipe','layoutCRecipe','layoutDRecipe','layoutAHoldRange','layoutAEvaluationRange','layoutBEvaluationRange'])delete cut[key];
+ for(const cut of cuts){const original=plan.cuts.find(c=>c.index===cut.index),legacySource=A.placementSourceCut86cm(plan,original);if(!targets(plan,original,{noPost}))continue;
+  const candidate=legacySource.circleSource,{circleSource:ignored,...sourceState}=legacySource;
+  const unchanged=contextUnchanged&&candidate&&legacySource===original&&candidate.fingerprint===JSON.stringify(sourceState);
+  const nativeSource=unchanged?{...legacySource,area:candidate.area,params:candidate.params,lyricPattern:candidate.pattern}:legacySource;
+  if(unchanged)Object.assign(cut,{area:candidate.area,params:candidate.params,lyricPattern:candidate.pattern});processed.add(cut);for(const key of ['placementTrajectory','fullStagePlacement','placementUnits','placementGlyphs','placementLayoutsA','placementLayoutsB','placementLayoutsC','placementLayoutsD','layoutARecipe','layoutBRecipe','layoutCRecipe','layoutDRecipe','layoutAHoldRange','layoutAEvaluationRange','layoutBEvaluationRange'])delete cut[key];
   let reason=null;
   const fx=cut.effectFx||plan.fx,st=cut.effectStyle||plan.style,extension=providerFor(plan,original,{noPost}),formulaSource=!!extension||A.sourceFormulaCircle?.handles(plan,original)||A.nativeBlockCircle?.handles(plan,original);
-  const numeric=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fx.motion??.7,fx.chroma??.7,st.ghost??1,cut.camP?.a??0,cut.camP?.dir??1,cut.treatP?.d??0,...(cut.treatP?.dir||[]),...Object.values(cut.camP||{}).filter(v=>typeof v==='number'),...Object.values(cut.params).filter(v=>typeof v==='number')];if(!numeric.every(Number.isFinite)||plan.W<=0||plan.H<=0||(cut.contentScale??1)<=0||(cut.motionScale??1)<0||(cut.motionScale??1)>1||(fx.motion??.7)<0||(fx.motion??.7)>1||(fx.chroma??.7)<0||(st.ghost??1)<0||cut.text.length===0||(cut.camP?.a??0)<0||Math.abs(cut.camP?.dir??1)>1||(cut.treatP?.d??0)<0)reason='UNSUPPORTED_PARAMETER_RANGE';
+  const numeric=[plan.W,plan.H,cut.contentScale??1,cut.motionScale??1,fx.motion??.7,fx.chroma??.7,st.ghost??1,cut.camP?.a??0,cut.camP?.dir??1,cut.treatP?.d??0,...(Array.isArray(cut.treatP?.dir)?cut.treatP.dir:cut.treatP?.dir!=null&&['hardShadow','outlineOffset'].includes(cut.treat)?[NaN]:[]),...Object.values(cut.camP||{}).filter(v=>typeof v==='number'),...Object.values(cut.params).filter(v=>typeof v==='number')];if(!numeric.every(Number.isFinite)||plan.W<=0||plan.H<=0||(cut.contentScale??1)<=0||(cut.motionScale??1)<0||(cut.motionScale??1)>1||(fx.motion??.7)<0||(fx.motion??.7)>1||(fx.chroma??.7)<0||(st.ghost??1)<0||cut.text.length===0||(cut.camP?.a??0)<0||Math.abs(cut.camP?.dir??1)>1||(cut.treatP?.d??0)<0)reason='UNSUPPORTED_PARAMETER_RANGE';
   const centerSupport=A.centerCircle?.handles(cut),viewportSupport=viewportAllowed(plan,cut),holdRange=viewportSupport?centerHoldInterval(plan,cut):null;
   const motionUnsupported=!['cut','flicker','inkBleed','magnet',...(['bulbs','burst'].includes(cut.layout)||formulaSource?['neonOn','cursorSweep','resolve']:[])].includes(cut.enter)&&!centerSupport||!['cut','overexposeOut'].includes(cut.exit)&&!centerSupport||(cut.groupExit??cut.exit)!==cut.exit||!['still','flashBox'].includes(cut.hold)&&!centerSupport||!['none','hardShadow',...(formulaSource?['outlineOffset','kerningWide']:[])].includes(cut.treat||'none')||(cut.decor||[]).some(d=>!(formulaSource)&&!['verticalStrip','dataColumns','sonarArcs'].includes(d.id)&&!(['headlineDeck','bulbs','burst','vcols'].includes(cut.layout)&&d.id==='romajiLine')&&!(centerSupport&&d.id==='memphis'))||!(formulaSource?cameraIds:['push','panL','panR','dutch','dollyIn','beatPunch']).includes(cut.cam);
   if(!viewportSupport&&motionUnsupported||cut.drawing||cut.effectsOnly||J.activeMask?.(cut))reason='UNSUPPORTED_MOTION';
@@ -50830,11 +50864,22 @@ function prepare(plan,previous=null,{scale=1,noPost=false}={}){
   if(!viewportSupport&&!legacyTarget(plan,original,{noPost}))reason='UNSUPPORTED_SOURCE_VIEWPORT';
   const regions=intervals(plan,original).regions;
   if(regions.length!==1)reason='UNSUPPORTED_REGION_CHANGE';
-  if(cut.layout==='numbered'&&((cut.decor||[]).length||cut.params.chunks?.length>3))reason='UNSUPPORTED_NUMBERED_COLUMNS';
+  if(cut.layout==='numbered'&&!viewportSupport&&((cut.decor||[]).length||cut.params.chunks?.length>3))reason='UNSUPPORTED_NUMBERED_COLUMNS';
   if(cut.layout==='bulbs'&&(cut.decor||[]).some(d=>d.id!=='romajiLine'))reason='UNSUPPORTED_BULBS_DECOR';
   if(!reason&&!viewportSupport&&extension?.provider.preflight)reason=extension.provider.preflight(plan,original);
   if(reason){diagnostics.push({cut:cut.index,status:'unsupported',reason,...(post.unsupported.length?{globalEffects:post.unsupported}:{})});continue;}
-  if(viewportSupport){const result=A.centerCircle.prepareViewport(plan,cut,{scale,previous,region:regions[0],holdRange});if(result.recipe){diagnostics.push(result.diagnostic);cut.area=result.area;cut.simpleCircleRecipe={sourceCut:nativeSource,...result.recipe,renderScale:scale,policy};continue;}const auxiliary=cut.layout==='center'&&!centerSupport&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text),newPost=post.events.some(e=>['splitSlide','whipBlur','zoomPunch','heartbeat'].includes(e.type)),legacyPost=holdRange?eventPolicy(plan,original):post,legacyReason=extension?.provider.preflight?.(plan,original);if(motionUnsupported||auxiliary||newPost||legacyPost.unsupported.length||legacyReason||!legacyTarget(plan,original,{noPost})||cut.layout==='vcols'&&cut.params.variant==='repeat'){diagnostics.push(result.diagnostic);continue;}}
+  if(viewportSupport){
+   let result=A.centerCircle.prepareViewport(plan,cut,{scale,previous,region:regions[0],holdRange}),source=nativeSource;
+   // Keep the previously working automatic layout when the unshrunk input
+   // cannot be placed. Both candidates use the same owned-part checks.
+   if(!result.recipe&&unchanged&&!['marquee','tile'].includes(cut.layout)&&!(cut.layout==='bubbles'&&cut.params.motes)&&JSON.stringify([candidate.area,candidate.params])!==JSON.stringify([legacySource.area,legacySource.params])){
+    const legacyCut={...cut,area:legacySource.area,params:legacySource.params,lyricPattern:legacySource.lyricPattern};
+    const retry=A.centerCircle.prepareViewport(plan,legacyCut,{scale,previous,region:regions[0],holdRange});
+    if(retry.recipe){const first=result.diagnostic;result={...retry,diagnostic:{...retry.diagnostic,sourceAreaFallback:'legacy-auto-area',unshrunkCandidate:{status:first.status,reason:first.reason??null}}};Object.assign(cut,{area:legacyCut.area,params:legacyCut.params,lyricPattern:legacyCut.lyricPattern});source=legacySource;}
+   }
+   if(result.recipe){diagnostics.push(result.diagnostic);cut.area=result.area;cut.simpleCircleRecipe={sourceCut:source,...result.recipe,renderScale:scale,policy};continue;}
+   const auxiliary=cut.layout==='center'&&!centerSupport&&(cut.params.under||cut.params.sub&&cut.lineText!==cut.text),newPost=post.events.some(e=>['splitSlide','whipBlur','zoomPunch','heartbeat'].includes(e.type)),legacyPost=holdRange?eventPolicy(plan,original):post,legacyReason=extension?.provider.preflight?.(plan,original);if(cut.layout==='bubbles'&&cut.params.motes||motionUnsupported||auxiliary||newPost||legacyPost.unsupported.length||legacyReason||!legacyTarget(plan,original,{noPost})||cut.layout==='vcols'&&cut.params.variant==='repeat'){diagnostics.push(result.diagnostic);continue;}
+  }
   const identity=extension?nativeViewportIdentity(plan,cut,scale,regions[0],previous):null;if(identity){diagnostics.push(identity.diagnostic);cut.simpleCircleRecipe={sourceCut:nativeSource,nativeIdentity:true,renderScale:scale,policy};continue;}
   if(extension){const result=extension.provider.prepare(plan,cut,{scale,previous,region:regions[0],noPost});if(result.recipe?.requiresNoPost&&!noPost){diagnostics.push({cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_POSTPROCESSING',layout:cut.layout,requiresNoPost:true});continue;}diagnostics.push(result.diagnostic);if(result.sceneRecipe){cut.area=result.area??null;cut.simpleCircleRecipe={sourceCut:nativeSource,scene:result.sceneRecipe,renderScale:scale,policy};}else if(result.recipe){cut.area=result.area??null;cut.simpleCircleRecipe={sourceCut:nativeSource,[extension.key]:result.recipe,renderScale:scale,policy};}continue;}
   if(A.nativeBlockCircle?.handles(plan,original)){const result=A.nativeBlockCircle.prepare(plan,cut,{scale,previous,region:regions[0]});diagnostics.push(result.diagnostic);if(result.recipe){cut.area=result.area;cut.simpleCircleRecipe={sourceCut:nativeSource,nativeBlock:result.recipe,renderScale:scale,policy};}continue;}
@@ -50883,7 +50928,11 @@ function prepare(plan,previous=null,{scale=1,noPost=false}={}){
 function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
  if(cut.layout==='center'&&cut.simpleCircleRecipe?.item&&A.centerCircle?.handles(cut))return;
  const source=cut.simpleCircleRecipe.sourceCut;if(source.layout==='numbered'||!(source.decor||[]).some(d=>J.DECOR[d.id]?.layer===layer))return;const env=renderer.makeEnv(ctx,plan,source,sc,options),area=source.area,W=env.W,H=env.H,ax=area?area.x*plan.W:0,ay=area?area.y*plan.H:0,motion=source.motionScale??1,cam=J.CAMERA[source.cam].get(env,source.camP||{}),scale=J.lerp(1,cam.s??1,motion)*(source.contentScale??1);
- ctx.save();try{if(area){ctx.translate(ax+W/2,ay+H/2);ctx.rotate((area.angle||0)*J.DEG);ctx.translate(-ax-W/2,-ay-H/2);ctx.beginPath();ctx.rect(ax,ay,W,H);ctx.clip();}ctx.translate(ax+W/2+(root.x+(cam.x||0))*motion,ay+H/2+(root.y+(cam.y||0))*motion);if(cam.rot)ctx.rotate(cam.rot*J.DEG*motion);ctx.scale(scale,scale);ctx.translate(-W/2,-H/2);ctx.globalCompositeOperation=root.blend;
+ ctx.save();try{
+  // Offset is in stage design units; the existing CTM applies render scale.
+  // Move the decor clip and camera together, leaving the returned bb local.
+  const separated=cut.simpleCircleRecipe.sourceFormula;if(separated?.roleSeparated)ctx.translate(...separated.offset);
+  if(area){ctx.translate(ax+W/2,ay+H/2);ctx.rotate((area.angle||0)*J.DEG);ctx.translate(-ax-W/2,-ay-H/2);ctx.beginPath();ctx.rect(ax,ay,W,H);ctx.clip();}ctx.translate(ax+W/2+(root.x+(cam.x||0))*motion,ay+H/2+(root.y+(cam.y||0))*motion);if(cam.rot)ctx.rotate(cam.rot*J.DEG*motion);ctx.scale(scale,scale);ctx.translate(-W/2,-H/2);ctx.globalCompositeOperation=root.blend;
   if(cut.simpleCircleRecipe.scene){let bb=root.bb??null;if(source.layout==='billboard'){const G=A.billboardNativeGeometry81,g=G.initial(env),it=J.animateMainItem(env,G.mainItem(env,g,G.mainSize(env,g)));if(it)bb=J.itemBox(it);}for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,bb,d);}return;}
   if(providers.has(source.layout)){for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,root.bb??null,d);}return;}
   if(cut.simpleCircleRecipe.sourceFormula||cut.simpleCircleRecipe.nativeBlock){for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,root.bb??null,d);}return;}
@@ -50892,9 +50941,9 @@ function drawDecor(renderer,ctx,plan,cut,sc,options,root,layer){
   for(const d of source.decor||[]){const D=J.DECOR[d.id];if(D?.layer===layer)D.draw(env,bb,d);}
  }finally{ctx.restore();}
 }
-function outputPlan(plan,{scale=1,noPost=false}={}){if(!plan.cuts.some(c=>targets(plan,c,{noPost})))return plan;const prepared=prepare(plan,null,{scale,noPost}),failed=prepared.diagnostics.find(d=>d.status==='insufficient-space');if(failed)throw Object.assign(Error(J.mediaLabel('この条件では回避配置を出力できません。演出や歌詞を変更するか、中央回避をオフにしてください。','Avoidance cannot be exported for these conditions. Change the effect or lyrics, or turn off center avoidance.')),{code:'SIMPLE_CIRCLE_'+failed.status.toUpperCase().replaceAll('-','_'),details:failed});const unsupported=prepared.diagnostics.filter(d=>d.status==='unsupported'),holdOnly=prepared.diagnostics.filter(d=>d.status==='safe'&&d.safety==='safe-hold');for(const d of unsupported){const cut=prepared.plan.cuts.find(c=>c.index===d.cut),legacy=origin(prepared.plan,cut);if(cut.fullStagePlacement&&cut.placementTrajectory&&legacy)A.validateFinal(legacy.plan);}prepared.plan.circleAvoidanceStatus={status:unsupported.length?'partial':'applied',safety:unsupported.length?'partial':holdOnly.length?'safe-hold':'all-native-clocks',holdOnlyCuts:holdOnly.map(d=>d.cut),noPost,unsupportedCuts:unsupported.map(d=>d.cut),diagnostics:prepared.diagnostics};return prepared.plan;}
+function outputPlan(plan,{scale=1,noPost=false}={}){if(!plan.cuts.some(c=>targets(plan,c,{noPost})))return plan;const prepared=prepare(plan,null,{scale,noPost}),failed=prepared.diagnostics.find(d=>d.status==='insufficient-space');if(failed)throw Object.assign(Error(J.mediaLabel('この条件では回避配置を出力できません。演出や歌詞を変更するか、中央回避をオフにしてください。','Avoidance cannot be exported for these conditions. Change the effect or lyrics, or turn off center avoidance.')),{code:'SIMPLE_CIRCLE_'+failed.status.toUpperCase().replaceAll('-','_'),details:failed});const unsupported=prepared.diagnostics.filter(d=>d.status==='unsupported'),holdOnly=prepared.diagnostics.filter(d=>d.status==='safe'&&d.safety==='safe-hold');for(const d of unsupported){const cut=prepared.plan.cuts.find(c=>c.index===d.cut),legacy=origin(prepared.plan,cut);if(cut.fullStagePlacement&&cut.placementTrajectory&&legacy)A.validateFinal(legacy.plan);}prepared.plan.circleAvoidanceStatus={status:unsupported.length?'partial':'applied',safety:unsupported.length?'partial':holdOnly.length?'safe-hold':'all-native-clocks',holdOnlyCuts:holdOnly.map(d=>d.cut),autoSizeCuts:prepared.diagnostics.filter(d=>d.status==='safe'&&d.sourceAreaFallback==='legacy-auto-area').map(d=>d.cut),noPost,unsupportedCuts:unsupported.map(d=>d.cut),diagnostics:prepared.diagnostics};return prepared.plan;}
 A.simpleCircle=Object.freeze({targets,active,activeCut,preparedCut,origin,domain,nativeViewportIdentity,eventPolicy,cameraIds,registerProvider,prepare,drawDecor,outputPlan,itemEnvelope:localEnvelope,stageEnvelope,postMotion,centerHoldInterval,policy});
-for(const name of ['center','vcols']){const render=J.LAYOUTS[name].render;J.LAYOUTS[name].render=function(env){const recipe=env.cut.simpleCircleRecipe;if(!recipe?.item)return render(env);if(name==='center'&&A.centerCircle?.handles(env.cut)){for(const d of env.cut.decor||[]){const D=J.DECOR[d.id];if(D?.layer==='back')D.draw(env,null,d);}const bb=A.centerCircle.render(env,recipe.item);for(const d of env.cut.decor||[]){const D=J.DECOR[d.id];if(D?.layer==='front')D.draw(env,bb,d);}return bb;}return J.mainDraw(env,{...recipe.item,color:env.cut.params.accent?env.sc.accent:env.sc.fg});};}
+for(const name of ['center','vcols']){const render=J.LAYOUTS[name].render;J.LAYOUTS[name].render=function(env){const recipe=env.cut.simpleCircleRecipe;if(name==='center'&&recipe?.centerViewportItem)return A.centerCircle.render(env,recipe.centerViewportItem);if(!recipe?.item)return render(env);if(name==='center'&&A.centerCircle?.handles(env.cut)){for(const d of env.cut.decor||[]){const D=J.DECOR[d.id];if(D?.layer==='back')D.draw(env,null,d);}const bb=A.centerCircle.render(env,recipe.item);for(const d of env.cut.decor||[]){const D=J.DECOR[d.id];if(D?.layer==='front')D.draw(env,bb,d);}return bb;}return J.mainDraw(env,{...recipe.item,color:env.cut.params.accent?env.sc.accent:env.sc.fg});};}
 })();
 
 /* Center composition: retain native attached ink and bound every source clock. */
@@ -50998,7 +51047,7 @@ function stageBounds(local,item,plan,cut,bodyOnly=false){
  return union(b,...decor);
 }
 function render(env,item){
- const P=env.cut.params,{W,H,sc}=env,bb=J.mainDraw(env,{...item,color:P.accent?sc.accent:sc.fg});
+ const P=env.cut.params,{W,sc}=env,H=env.cut.simpleCircleRecipe?.centerNativeDims?.H??env.H,bb=J.mainDraw(env,{...item,color:P.accent?sc.accent:sc.fg});
  if(bb&&P.sub&&env.cut.lineText!==env.cut.text)env.draw({text:env.cut.lineText,font:env.st.fonts.body[0],size:J.clamp(H*.026,16,34),x:item.x,y:bb.y1+H*.07,track:.22,color:sc.sub,alpha:J.E.outCubic(env.pIn),ghost:false});
  if(bb&&P.under){const e=J.E.outExpo(env.pIn*1.2-.2),o=J.E.inCubic(env.pOut);if(e>0&&o<1)env.line([[J.lerp(bb.x0,bb.x1,o),bb.y1+item.size*.14],[J.lerp(bb.x0,bb.x1,e),bb.y1+item.size*.14]],sc.accent,Math.max(2,item.size*.03),1);}
  return bb;
@@ -51008,7 +51057,7 @@ function render(env,item){
 // Moving only its origin retains every internal coordinate, size and clock.
 // The caller remains responsible for layout targeting and motion/post preflight.
 const viewportHandles=cut=>!!cut.area&&!(cut.area.angle||0)&&[cut.area.x,cut.area.y,cut.area.w,cut.area.h].every(Number.isFinite)&&cut.area.x>=0&&cut.area.y>=0&&cut.area.w>0&&cut.area.h>0&&cut.area.x+cut.area.w<=1&&cut.area.y+cut.area.h<=1&&!cut.drawing&&!cut.effectsOnly;
-function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null}){
+function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null,reflowItem=null,nativeDims=null}){
  const S=A.simpleCircle,activeHold=providedHoldRange||S.centerHoldInterval?.(plan,cut)||null,a=cut.area,W=plan.W,H=plan.H,st=cut.effectStyle||plan.style,fx=cut.effectFx||plan.fx,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter;
  // The hold-only path retains the native glow and uses a practical 4.5-sigma
  // support; faint bloom tails beyond that support are not certified.
@@ -51016,9 +51065,13 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
  const native={x0:a.x*W,y0:a.y*H,x1:(a.x+a.w)*W,y1:(a.y+a.h)*H};let local={bounds:native,body:native,renderScale:scale};
  let project=(_local,item,_plan,_cut,bodyOnly)=>{const x=bodyOnly?0:pad+W*.016*rgb+post.x,y=bodyOnly?0:pad+H*.004*rgb+post.y;return [[native.x0+item.x-x,native.y0+item.y-y],[native.x1+item.x+x,native.y0+item.y-y],[native.x1+item.x+x,native.y1+item.y+y],[native.x0+item.x-x,native.y1+item.y+y]];};
  let sourceItem=null,partSupports=null,holdWindow=activeHold,usedJellyUnits=false;
+ const roleSeparated=['marquee','tile'].includes(cut.layout);
+ // Bubble motes are an independent background. The whole viewport may only
+ // remain unchanged until a role-separated move is available.
+ if(cut.layout==='bubbles'&&cut.params.motes){const unchanged=S.nativeViewportIdentity(plan,cut,scale,region,previous);return unchanged?{area:{...a},...unchanged}:{diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_INDEPENDENT_MOTES'}};}
  const sourceCut=J.lyricRenderCut?.({...cut,area:null})||{...cut,area:null},jellyClock=cut.cam==='jelly'&&activeHold&&activeHold.native.start-activeHold.step-1.6/24>=cut.start,jellyHold=jellyClock&&holdHandles(sourceCut),centerSource=(handles(sourceCut)||activeHold&&holdHandles(sourceCut))&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyHold)&&(cut.decor||[]).every(d=>d.id==='memphis'||activeHold&&d.id==='starburst');
  if(centerSource){
-  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},env={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc:cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length]},item=J.basicMainItem(env);
+  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},env={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc:cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length]},item=reflowItem||J.basicMainItem(env);
   // Measure the exact native item in its original viewport, including its
   // original subtitle scale, attached rule and native Memphis coordinates.
   holdWindow=activeHold;const holdOnly=!!holdWindow;
@@ -51034,15 +51087,47 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
    local={bounds:absolute(false),body:absolute(true),renderScale:scale};
   }
   project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma,jellyHoldOnly:!!jellyHold});
-  if(sourceItem.unitSupport){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),bbRanges=[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges];let complete=true;for(const d of cut.decor||[]){const args={W:sw,H:sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges,includeFallback:!holdOnly||cachedPartial,random:J.r},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  if(reflowItem){
+   // Reflow must not create new clip loss in primary source ink. Unlike
+   // decoration, these units represent the legible text, rule and subtitle.
+   if(!sourceItem.unitSupport||item.shadow||item.blur||item.extrude)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'UNMEASURED_REFLOW_INK'}};
+   const preClip=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsChroma:true,activeRange:holdWindow.real,jellyHoldOnly:!!jellyHold,preClip:true});
+   for(const u of sourceItem.unitSupport.units){const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost},b=A.bounds([preClip(local,{x:0,y:0},plan,cut)]);if(b.x0<native.x0||b.y0<native.y0||b.x1>native.x1||b.y1>native.y1)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'REFLOW_CLIPS_PRIMARY_INK'}};}
+  }
+  if(sourceItem.unitSupport){
+   const units=sourceItem.unitSupport.units.slice(),shiftX=nativeDims?(sw-nativeDims.W)/2:0,shiftY=nativeDims?(sh-nativeDims.H)/2:0,cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),baseRanges=cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges,bbRanges=[Object.fromEntries(Object.entries(baseRanges).map(([k,v])=>[k,v.map(x=>x-(k[0]==='x'?shiftX:shiftY))]))];
+   const preClip=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsChroma:true,activeRange:holdWindow?.real,jellyHoldOnly:!!jellyHold,preClip:true}),intersects=(b,clip)=>b.x0<clip.x1&&b.x1>clip.x0&&b.y0<clip.y1&&b.y1>clip.y0,box=(u,projector)=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return A.bounds([projector(local,{x:0,y:0},plan,cut)]);};
+   let original=null,originalProject=null,originalClip=null,complete=true;
+   if(nativeDims&&(cut.decor||[]).length){
+    const oldArea=cut.simpleCircleSourceArea,oldCut={...cut,area:oldArea},oldItem=J.basicMainItem({W:nativeDims.W,H:nativeDims.H,cut:sourceCut,sc:env.sc});
+    original=sourceUnits(oldItem,sourceCut,sourcePlan,{holdOnly});
+    if(!original||!oldArea)complete=false;
+    else{originalProject=A.nativeBlockCircle.viewportProject(plan,oldCut,scale,{allCutsChroma:true,activeRange:holdWindow.real,jellyHoldOnly:!!jellyHold,preClip:true});originalClip={x0:oldArea.x*W,y0:oldArea.y*H,x1:(oldArea.x+oldArea.w)*W,y1:(oldArea.y+oldArea.h)*H};}
+   }
+   for(const d of cut.decor||[]){
+    if(!complete)break;
+    const make=(ranges)=>{const args={W:nativeDims?.W??sw,H:nativeDims?.H??sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges:[ranges],includeFallback:!holdOnly||cachedPartial,random:J.r};return d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);},parts=make(bbRanges[0]);
+    if(!parts?.length){complete=false;break;}
+    const shifted=parts.map(u=>({...u,bounds:{x0:u.bounds.x0+shiftX,x1:u.bounds.x1+shiftX,y0:u.bounds.y0+shiftY,y1:u.bounds.y1+shiftY}}));
+    if(nativeDims){
+     const oldParts=make(cachedPartial?original.bbRangesAny:original.bbRanges);if(!oldParts?.length){complete=false;break;}
+     const oldMayAppear=oldParts.some(u=>intersects(box(u,originalProject),originalClip)),newMayAppear=shifted.some(u=>intersects(box(u,preClip),native));
+     if(oldMayAppear&&!newMayAppear){complete=false;break;}
+    }
+    units.push(...shifted);
+   }
+   if(complete)partSupports=units.filter(u=>!nativeDims||intersects(box(u,preClip),native)).map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost},bounds=A.bounds([project(local,{x:0,y:0},plan,cut)]),rawBody=A.bounds([preClip(local,{x:0,y:0},plan,cut,true)]),body=nativeDims&&!intersects(rawBody,native)?bounds:A.bounds([project(local,{x:0,y:0},plan,cut,true)]);return {owner:u.owner,bounds,body};});
+  }
  }
- if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','stack','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
-  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
-  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):A.basicUnits?.(args);
+ if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','stack','marquee','tile','headlineDeck','dictionary','contents','footnote','proofread','poster','numbered','vcols','ticket','labels','swissGrid','lowerThird','frameBox','quote','ruler','tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps','corners','staircase','zigzag','gridCells','genkou','typeSpecimen','kanjiFocus','searchBar','notification','chat'].includes(cut.layout)){
+  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
+  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):cut.layout==='lowerThird'?A.lowerThirdUnits?.(args):['frameBox','quote','ruler'].includes(cut.layout)?A.framedUnits?.(args):['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)?A.typoStaticUnits?.(args):['corners','staircase','zigzag','gridCells','genkou'].includes(cut.layout)?A.multirowUnits?.(args):['typeSpecimen','kanjiFocus'].includes(cut.layout)?A.bSpecimenFocusUnits?.(args):['searchBar','notification','chat'].includes(cut.layout)?A.uiUnits?.(args):roleSeparated?A.repeatedUnits?.(args):['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)?A.editorialUnits?.(args):A.basicUnits?.(args);
   if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
+ // The nativeIdentity viewport would also move tiledAux; never use it here.
+ if(roleSeparated&&!partSupports){const unchanged=S.nativeViewportIdentity(plan,cut,scale,region,previous);return unchanged?{area:{...a},...unchanged}:{diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_ROLE_SEPARATED_UNITS'}};}
  const domain=S.domain(plan,{...cut,simpleCircleClip:true},region,project),candidates=[];
- if(!jellyHold&&!usedJellyUnits&&!(partSupports&&!centerSource)&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
+ if(!reflowItem&&!jellyHold&&!usedJellyUnits&&!(partSupports&&!centerSource)&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
  if(!candidates.length&&partSupports){
   const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]],body=union(...partSupports.map(p=>p.body)),xmin=-body.x0,xmax=W-body.x1,ymin=-body.y0,ymax=H-body.y1,c=domain.circle,R=c.r+domain.pad;
   if(xmin<=xmax&&ymin<=ymax){
@@ -51051,6 +51136,15 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
    // Merge owner branches only to schedule candidates. Acceptance retains each
    // primitive, so empty spaces between native objects remain empty.
    const owners=new Map();for(const p of partSupports)owners.set(p.owner,owners.has(p.owner)?union(owners.get(p.owner),p.bounds):p.bounds);
+   // Include side-tangent placements at the natural/centered coordinates.
+   // Existing endpoint-only pairs can miss clear placements in the middle.
+   if(cut.layout==='center'){
+    const all=union(...partSupports.map(p=>p.bounds));
+    for(const b of [...owners.values(),all]){
+     for(const x of xs)for(const y of [clampY(c.cy-R-b.y1-1e-5),clampY(c.cy+R-b.y0+1e-5)])offsets.push([x,y]);
+     for(const y of ys)for(const x of [clampX(c.cx-R-b.x1-1e-5),clampX(c.cx+R-b.x0+1e-5)])offsets.push([x,y]);
+    }
+   }
    for(const b of owners.values()){
     for(const x of [clampX(c.cx-R-b.x1-1e-5),clampX(c.cx+R-b.x0+1e-5)])for(const y of [ymin,ymax])offsets.push([x,y]);
     for(const y of [clampY(c.cy-R-b.y1-1e-5),clampY(c.cy+R-b.y0+1e-5)])for(const x of [xmin,xmax])offsets.push([x,y]);
@@ -51068,9 +51162,29 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
   }
  }
  const old=previous?.policy===S.policy?previous.diagnostics.find(d=>d.cut===cut.index&&d.status==='safe'):null;
- candidates.sort((a,b)=>b.region.score-a.region.score||a.distance-b.distance||Number(b.region.direction===old?.direction)-Number(a.region.direction===old?.direction));
- const win=candidates[0];if(!win)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT'}};
- return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),nativeSourcePreserved:true,sourceArea:{...a},offset:win.offset.slice(),allClockGeneration:false}};
+ const fitness=(envelope,r)=>{const b=A.bounds([envelope]),w=b.x1-b.x0,h=b.y1-b.y0,rw=r.x1-r.x0,rh=r.y1-r.y0;return w>0&&h>0&&rw>0&&rh>0?Math.abs(Math.log((w/h)/(rw/rh))):Infinity;};
+ candidates.sort((a,b)=>b.region.score-a.region.score||fitness(a.envelope,a.region)-fitness(b.envelope,b.region)||a.distance-b.distance||Number(b.region.direction===old?.direction)-Number(a.region.direction===old?.direction));
+ const win=candidates[0];if(!win){
+  if(!reflowItem&&centerSource&&holdWindow&&sourceItem?.unitSupport&&!cut.text.includes('\n')&&typeof Intl.Segmenter==='function'){
+   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],native=J.basicMainItem({W:sw,H:sh,cut:sourceCut,sc}),chars=[...cut.text],n=chars.length,step=native.size*(native.lead||1.2),advance=Math.max(...chars.map(c=>J.metrics.adv(native.font,c)*native.size))+native.size*Math.max(0,native.track||0),boundaries=new Set([...new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(cut.text)].map(x=>x.index)),results=[];
+   const graphemes=[...new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(cut.text)],wordSegments=[...new Intl.Segmenter(undefined,{granularity:'word'}).segment(cut.text)],balanced=(per,front)=>{
+    const n=graphemes.length,rows=Math.ceil(n/per),base=Math.floor(n/rows),extra=n%rows,lines=[];let i=0;
+    for(let row=0;row<rows;row++){const len=base+(front?row<extra:row>=rows-extra?1:0),end=i+len;if(end<n){const next=graphemes[end],pos=next.index;if(/^[\s\p{P}ぁぃぅぇぉっゃゅょゎゕゖァィゥェォッャュョヮヵヶㇰ-ㇿー]/u.test(next.segment)||wordSegments.some(w=>w.isWordLike&&/[\p{Script=Latin}0-9]/u.test(w.segment)&&pos>w.index&&pos<w.index+w.segment.length))return null;}lines.push(graphemes.slice(i,end).map(g=>g.segment).join(''));i=end;}
+    return lines.join('\n');
+   };
+   for(const r of [...domain.regions].sort((a,b)=>b.score-a.score)){
+    if(results.length&&r.score<results[0].diagnostic.score)break;
+    const rw=r.x1-r.x0,rh=r.y1-r.y0,ratio=rw/rh;if(!(rw>0&&rh>0))continue;
+    const ideal=Math.sqrt(n*step*ratio/Math.max(1,advance)),variants=new Set([Math.max(1,Math.min(n,Math.floor(ideal))),Math.max(1,Math.min(n,Math.ceil(ideal)))]),seenTexts=new Set();
+    for(const per of variants)for(const text of [J.splitLines(cut.text,per),balanced(per,true),balanced(per,false)]){if(text==null||seenTexts.has(text)||text.replaceAll('\n','')!==cut.text)continue;seenTexts.add(text);let pos=0,valid=true;const lines=text.split('\n');for(let i=0;i<lines.length-1;i++){pos+=lines[i].length;if(!boundaries.has(pos)||/[A-Za-z0-9]/.test(cut.text[pos-1])&&/[A-Za-z0-9]/.test(cut.text[pos])){valid=false;break;}}if(!valid)continue;
+     const area={x:r.x0/W,y:r.y0/H,w:rw/W,h:rh/H},item={...native,text,x:native.x+(rw-sw)/2,y:native.y+(rh-sh)/2};delete item._lay;delete item._m;const result=prepareViewport(plan,{...cut,area,simpleCircleSourceArea:{...a}},{scale,region,previous,holdRange:holdWindow,reflowItem:item,nativeDims:{W:sw,H:sh}});if(result.recipe&&result.diagnostic.direction===r.direction)results.push(result);
+    }
+   }
+   results.sort((a,b)=>{const x=a.diagnostic,y=b.diagnostic;return y.score-x.score||fitness(x.envelope,x.region)-fitness(y.envelope,y.region)||Math.hypot(x.offset[0]/W,x.offset[1]/H)-Math.hypot(y.offset[0]/W,y.offset[1]/H)||Number(y.direction===old?.direction)-Number(x.direction===old?.direction);});if(results.length)return results[0];
+  }
+  return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT'}};
+ }
+ return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:roleSeparated?{sourceFormula:{layout:cut.layout,W:W*a.w,H:H*a.h,offset:win.offset.slice(),nativeViewport:true,sourceArea:{...a},roleSeparated:true},holdWindow}:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(reflowItem?{centerViewportItem:reflowItem,...(nativeDims?{centerNativeDims:nativeDims}:{})}:{}),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),nativeSourcePreserved:!reflowItem,...(reflowItem?{reflowText:reflowItem.text,nativeSize:reflowItem.size}:{}),sourceArea:nativeDims?{...cut.simpleCircleSourceArea}: {...a},offset:win.offset.slice(),allClockGeneration:false}};
 }
 A.centerCircle=Object.freeze({handles,envelope,stageBounds,render,viewportHandles,prepareViewport,sourceUnits});
 })();
@@ -51770,6 +51884,537 @@ function stackUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
 A.stackUnits=stackUnits;
 })();
 
+/* Native marquee/tile main text with separately classified tiledAux output. */
+(() => {
+'use strict';
+const A=J.placement;
+function repeatedUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ const p=cut.params;
+ if(!['marquee','tile'].includes(cut.layout)||!holdOnly||!holdWindow||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'||d.id==='starburst')||
+    /[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text))return null;
+ const earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(!Number.isFinite(earliest)||holdWindow.native.start<cut.start||
+    holdWindow.native.end>cut.start+cut.dur-(cut.exit==='cut'?0:cut.outDur))return null;
+ let item;
+ if(cut.layout==='marquee'){
+  if(![2,4].includes(p.rows)||!['outline','dim','box'].includes(p.rowStyle)||!(p.sx>0))return null;
+  const size=Math.min(J.fitSize(cut.text,p.font,W*.84,H*.3,{sx:p.sx,track:.05}),H*.3);
+  item={text:cut.text,font:p.font,size,x:W/2,y:H/2,sx:p.sx,track:.05};
+ }else{
+  if(!['box','stroke'].includes(p.knock))return null;
+  const text=W<H?J.splitLines(cut.text,5):cut.text;
+  const size=Math.min(J.fitSize(text,p.font,W*.8,H*.34,{track:.04,lead:1.15}),H*.3);
+  item={text,font:p.font,size,x:W/2,y:H/2,track:.04,lead:1.15};
+ }
+ const source={...cut,layout:'center',area:null,params:{}},units=[];
+ function addMain(it,owner){
+  const part=A.centerCircle.sourceUnits(it,source,plan,{holdOnly:true});
+  if(!part)return null;
+  const ready=cut.start+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
+  if(earliest<ready&&cut.enter==='invertBox'){
+   const entry=A.centerCircle.sourceUnits(it,{...source,hold:'still',exit:'cut'},plan,{holdOnly:false});
+   if(!entry)return null;
+   part.units.push(...entry.units.filter(u=>u.owner==='center.invertBox'));
+  }
+  units.push(...part.units.map(u=>({...u,owner:owner+'.'+u.owner})));
+  return part;
+ }
+ if(cut.layout==='tile'){
+  if(p.knock==='box'){
+   // The native width grows from zero to the final width; pOut=0 in hold.
+   const m=J.measure(item),z=item.size;
+   units.push({owner:'tile.knock.box',kind:'plate',ghost:false,bounds:{x0:W/2-m.w/2-z*.35-2,y0:H/2-m.h/2-z*.28-2,x1:W/2+m.w/2+z*.35+2,y1:H/2+m.h/2+z*.28+2}});
+  }else{
+   // This is a distinct mainDraw call, including its own entrance plate.
+   if(!addMain({...item,fill:false,stroke:item.size*.16,ghost:false},'tile.knock.stroke'))return null;
+  }
+ }
+ const main=addMain(item,cut.layout+'.main');if(!main)return null;
+ // The native returned bbox is only the final mainDraw. Retain all visible
+ // subsets and the fresh fallback for getBB's seek-dependent cache.
+ const bbRanges=main.bbRangesAny;
+ for(const d of cut.decor||[]){
+  const args={W,H,P:d,cut,st,bbRanges:[bbRanges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);
+  if(!parts?.length)return null;
+  units.push(...parts);
+ }
+ return {units,bbRanges,scope:'native-hold'};
+}
+A.repeatedUnits=repeatedUnits;
+})();
+
+/* Headline/deck native supports across entrance and hold.
+ * Candidate only: caller must opt in and validate against native rendering. */
+(() => {
+'use strict';
+const A=J.placement, ID=[1,0,0,1,0,0];
+function editorialUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ if(!['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)||!holdOnly||!holdWindow||cut.placementLayoutsC||cut.layoutCRecipe||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id)))return null;
+ // Build once at the declared settled layout clock, then analytically
+ // enlarge moving owners for the whole entrance. The native hold must end
+ // before pOut begins; entry is allowed to overlap the hold window.
+ const notes=['footnote','proofread'].includes(cut.layout),framed=['poster','numbered'].includes(cut.layout);
+ if(framed&&(!Number.isFinite(cut.stagger??0)||(cut.stagger??0)<0||/[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text)))return null;
+ if(notes){
+  try{A.layoutsCEditorialSource.domain(cut);}
+  catch(e){if(['SOURCE_COVERAGE','UNSUPPORTED_PARAMETER_RANGE'].includes(e?.code))return null;throw e;}
+  if(J.glyphCount(cut.text)>256)return null;
+ }
+ const k=(cut.params.chunks?.length?cut.params.chunks:[cut.text.trim()]).filter(Boolean).length;
+ if(!k)return null;
+ const sourcePlan={...plan,W,H};
+ const ready=notes||framed?A.layoutsCEditorialSource.clock(cut,sourcePlan):cut.layout==='contents'?Math.max(.8,.1+k*.1+.5):cut.layout==='dictionary'?Math.max(.8,cut.inDur*.8+.62):Math.max(.8,cut.inDur+.55,cut.inDur*.6+.64,cut.inDur*.8+.45);
+ if(holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+ const source={...cut,area:null,simpleCircleRecipe:null,enter:'cut',exit:'cut',hold:'still'},renderer=Object.create(J.Renderer.prototype);
+ if(framed){try{A.layoutsCEditorialSource.domain(source);}catch(e){if(['SOURCE_COVERAGE','UNSUPPORTED_PARAMETER_RANGE'].includes(e?.code))return null;throw e;}}
+ let programs;
+ try{programs=['main','A','B'].map(pass=>A.sourceFormulaBase.construct(renderer,sourcePlan,source,{W,H,time:ready+.01,pass}));}
+ catch(e){
+  if(['SOURCE_FORMULA_CLIP','SOURCE_FORMULA_COUPLED_FIELD_CLIP','SOURCE_FORMULA_FILTER','SOURCE_FORMULA_GEOMETRY_BUDGET','SOURCE_FORMULA_ITEM_SHADER','SOURCE_FORMULA_NATIVE_RASTER','SOURCE_FORMULA_PATH'].includes(e?.code))return null;
+  throw e;
+ }
+ const mains=programs.flatMap(p=>p.events.filter(e=>e.kind==='item'&&e.args[0].placementMain));
+ if(!mains.length||mains.some(e=>e.matrix.some((v,i)=>v!==ID[i])||e.args[0].rot||e.args[0].skew)||programs.some(p=>p.events.some(e=>e.clips.length&&!(cut.layout==='numbered'&&e.kind==='item'&&!e.args[0].placementMain))))return null;
+ if(framed){const norm=t=>String(t??'').replace(/\s/g,''),items=programs[0].events.filter(e=>e.kind==='item'&&e.args[0].placementMain);if(items.length>8||norm(items.map(e=>e.args[0].text).join(''))!==norm(cut.text))return null;}
+ if(notes&&programs[0].events.filter(e=>e.kind==='item'&&e.args[0].placementMain).length!==1)return null;
+ const units=[],ranges=[],first=mains[0].args[0],ds=J.clamp(Math.min(W,H)*.032,16,44);
+ // Non-main owners move only along their source entrance axes. Keep
+ // each owned primitive, extending only its own motion rather than adding
+ // the maximum tab/definition travel to every rule and body glyph.
+ for(const [pass,program] of programs.entries())for(const [i,e] of program.events.entries()){
+  if(e.kind==='item'&&e.args[0].placementMain){
+   const item=e.args[0],earliest=holdWindow.native.start-holdWindow.step-1.6/24,readyAt=cut.start+(item.mi|0)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur)),partial=cut.enter==='invertBox'&&earliest<readyAt,main=framed&&item.vertical?A.verticalSourceUnits?.(item,cut,sourcePlan,{partial}):A.centerCircle.sourceUnits(item,{...cut,layout:'center',area:null,params:{}},sourcePlan,{holdOnly:false});
+   if(!main)return null;
+   units.push(...main.units.map(u=>({...u,owner:'headline.'+pass+'.'+u.owner})));
+   if(pass===0)ranges.push(main.bbRangesAny);
+  }else {
+   const polygons=notes||framed?A.layoutsCEditorialSource.envelopes({events:[e]},sourcePlan,source):e.polygons;
+   // The source helper clips before sweeping; an empty settled numeral
+   // cannot certify its partially entering pixels.
+   if(cut.layout==='numbered'&&e.clips?.length&&!polygons.length)return null;
+   for(const polygon of polygons){
+   const b=A.bounds([polygon]),owner=e.nativeCBody?.dictionaryCopy?.owner;
+   if(cut.layout==='dictionary'){
+    if(owner==='definition')b.x1+=J.clamp(Math.min(W,H)*.028,14,36);
+    if(owner==='thumb-plate'||owner==='thumb-glyph')b.x1+=Math.min(W,H)*.075;
+   }else if(cut.layout==='headlineDeck'){
+    if(e.nativeCBody?.kind==='editorial-phase'&&e.kind==='item')b.y1+=ds*.5;
+    if(e.kind==='circle'){const extra=first.size*.012;b.x0-=extra;b.x1+=extra;b.y0-=extra;b.y1+=extra;}
+   }
+   if(notes&&e.nativeCBody?.proofOwner?.owner==='trim-marks'){const d=first.size*.55;b.x0-=d;b.x1+=d;b.y0-=d;b.y1+=d;}
+   units.push({owner:'headline.'+pass+'.part.'+i,kind:e.kind,bounds:b,...(!notes&&!framed?{ghost:false}:{})});
+   }
+  }
+ }
+ // Native fallback uses the nominal measured block whenever mainDraw returns
+ // no visible box. Include both that box and every possible visible subset:
+ // decor may cache a box from a preceding entrance or exit frame.
+ let fallback=null;
+ if(cut.layout==='headlineDeck'){const m=J.measure(first);fallback={x0:first.x,x1:first.x+m.w,y0:first.y-m.h/2,y1:first.y+m.h/2};}
+ if(cut.layout==='poster'){const ls=J.clamp(Math.min(W,H)*.024,14,34),my=H*.07;fallback={x0:W*.07,x1:W*.93,y0:my+ls*2.6,y1:H-my-ls*5};}
+ if(cut.layout==='contents'){
+  const ls=J.clamp(Math.min(W,H)*.024,14,34);
+  if(cut.params.variant==='tate'){
+   const cols=k+(cut.params.ctx?2:0),colW=Math.min(W*.86/(cols+1),Math.min(W,H)*.22),hTop=H*.14,hBot=H*.86,x0=W/2+(cols+1.2)*colW/2;
+   fallback={x0:x0-colW*1.2-(cols-.5)*colW-colW/2,x1:x0,y0:hTop,y1:hBot};
+   for(const e of mains.slice(0,k)){const x=e.args[0].x;units.push({owner:'contents.possible-marker',kind:'marker',bounds:{x0:x-colW*.5-2,x1:x+colW*.5+2,y0:hTop-ls*1.6-2,y1:hTop-ls*1.25+2}});}
+  }else{
+   const bw=W*(H>W*1.08?.84:.66),bx=(W-bw)/2,cxH=ls*2.6,rowH=Math.max(first.size*1.62,ls*2.4),blockH=k*rowH+(cut.params.ctx?cxH*2:0),y0=H/2-blockH/2+ls*1.8;
+   fallback={x0:bx,x1:bx+bw,y0,y1:y0+blockH};
+   // cur changes with the native clock; include a marker at every row.
+   for(const e of mains.slice(0,k)){const y=e.args[0].y,z=e.args[0].size;units.push({owner:'contents.possible-marker',kind:'marker',bounds:{x0:bx-ls*1.35-2,x1:bx+2,y0:y-Math.max(z*.45,ls*.5)-2,y1:y+Math.max(z*.45,ls*.5)+2}});}
+  }
+ }
+ // A returned contents bbox is the union of a nonempty subset of rows.
+ // Keep each subset separately; combining unrelated x/y edge extrema into one
+ // box invents decoration positions that no native row selection can produce.
+ const keys=['x0','x1','y0','y1'],decorRanges=[];
+ if(!ranges.length||ranges.length>8)return null;
+ for(let mask=1;mask<(1<<ranges.length);mask++){
+  const rs=ranges.filter((_,i)=>mask&(1<<i));
+  decorRanges.push(Object.fromEntries(keys.map(key=>[key,[
+   (key.endsWith('0')?Math.min:Math.max)(...rs.map(r=>r[key][0])),
+   (key.endsWith('0')?Math.min:Math.max)(...rs.map(r=>r[key][1]))]])));
+ }
+ if(fallback)decorRanges.push(Object.fromEntries(keys.map(key=>[key,[fallback[key],fallback[key]]])));
+ const bbRanges=Object.fromEntries(keys.map(key=>[key,[Math.min(...decorRanges.map(r=>r[key][0])),Math.max(...decorRanges.map(r=>r[key][1]))]]));
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:decorRanges,includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ return units.length?{units,bbRanges,scope:'native-hold',sourceConstructionTime:ready+.01}:null;
+}
+A.editorialUnits=args=>{try{return editorialUnits(args);}catch(e){if(['poster','numbered'].includes(args?.cut?.layout)&&(e?.code?.startsWith('UNSUPPORTED_')||e?.code?.startsWith('SOURCE_FORMULA_')||['GEOMETRY_LIMIT','UNMEASURED_INK','SOURCE_COVERAGE'].includes(e?.code)))return null;throw e;}};
+})();
+
+/* Native lower-third hold supports: main, its bar/label and attached decor. */
+(() => {
+'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0];
+function lowerThirdUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ const p=cut.params;
+ if(cut.layout!=='lowerThird'||!holdOnly||!holdWindow||cut.layoutARecipe||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !['left','right'].includes(p.side)||!['line','tab'].includes(p.bar)||
+    !['romaji','no','copy'].includes(p.label)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'||d.id==='starburst')||
+    /[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text))return null;
+ const earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(!Number.isFinite(earliest)||holdWindow.native.start<cut.start||
+    holdWindow.native.end>cut.start+cut.dur-(cut.exit==='cut'?0:cut.outDur))return null;
+ A.layoutsAFormulaDomain({...plan,W,H},cut,true);
+ // Construct the known source primitive structure; time is not a frame proof.
+ // 09c supplies the analytic lowerThird sweep for each captured auxiliary.
+ const renderer=Object.create(J.Renderer.prototype),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},cut,{W,H,time:1.5,pass:'main'}),events=program.events,
+       mains=events.filter(e=>e.kind==='item'&&e.args[0].placementMain);
+ if(mains.length!==1||events.some(e=>e.clips?.length))return null;
+ const event=mains[0],item=event.args[0];
+ if(event.matrix.some((v,i)=>Math.abs(v-ID[i])>1e-9)||item.rot||item.skew||item.vertical)return null;
+ const source={...cut,layout:'center',area:null,params:{}},main=A.centerCircle.sourceUnits(item,source,{...plan,W,H},{holdOnly:true});
+ if(!main)return null;
+ const ready=cut.start+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
+ if(earliest<ready&&cut.enter==='invertBox'){
+  const entry=A.centerCircle.sourceUnits(item,{...source,hold:'still',exit:'cut'},{...plan,W,H},{holdOnly:false});
+  if(!entry)return null;
+  main.units.push(...entry.units.filter(u=>u.owner==='center.invertBox'));
+ }
+ const units=main.units.map(u=>({...u,owner:'lowerThird.main.'+u.owner}));
+ const others={...program,events:events.filter(e=>e!==event)};
+ if(others.events.length){
+  const sweeps=A.layoutsASourceEnvelopes(others,{...plan,W,H},program.sourceCut,true);
+  for(let i=0;i<sweeps.length;i++)units.push({owner:'lowerThird.aux.'+i,kind:'native-sweep',bounds:A.bounds([sweeps[i]])});
+ }
+ // The leading square follows the extending bar. Its full path between the
+ // edge and final reach is not covered by the endpoint square's 09c sweep.
+ const m=J.measure(item),th=Math.max(3,item.size*.055),reach=W*.07+m.w+item.size*.45,
+       by=H*((H>W*1.08?.8:.83)-p.lift),r=th*1.3+2;
+ units.push({owner:'lowerThird.bar-path',kind:'native-sweep',bounds:p.side==='left'?{x0:-r,x1:reach+r,y0:by-r,y1:by+th+r}:{x0:W-reach-r,x1:W+r,y0:by-r,y1:by+th+r}});
+ // Native returns its own nominal box when no glyph bbox exists, not centerBB.
+ // Remember any partial bbox after a seek as well as that fallback.
+ const fallback=J.itemBox(item),bbRanges=Object.fromEntries(['x0','x1','y0','y1'].map(k=>[k,[Math.min(main.bbRangesAny[k][0],fallback[k]),Math.max(main.bbRangesAny[k][1],fallback[k])]]));
+ for(const d of cut.decor||[]){
+  const args={W,H,P:d,cut,st,bbRanges:[bbRanges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);
+  if(!parts?.length)return null;
+  units.push(...parts);
+ }
+ return {units,bbRanges,scope:'native-hold'};
+}
+A.lowerThirdUnits=args=>{try{return lowerThirdUnits(args);}catch(e){if(e.code&&(e.code.startsWith('UNSUPPORTED_')||e.code.startsWith('SOURCE_FORMULA_')||e.code==='GEOMETRY_LIMIT'))return null;throw e;}};
+})();
+
+/* Native single-block framed typography and its static/line furniture. */
+(()=>{'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],layouts=new Set(['frameBox','quote','ruler']);
+function framedUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ if(!layouts.has(cut.layout)||!holdOnly||!holdWindow||cut.layoutARecipe||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    (cut.groupExit??cut.exit)!==cut.exit||!(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'||d.id==='starburst')||
+    /[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text))return null;
+ const earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(!Number.isFinite(earliest)||earliest<cut.start||
+    holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+ A.layoutsAFormulaDomain({...plan,W,H},cut,true);
+ const renderer=Object.create(J.Renderer.prototype),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},cut,{W,H,time:1.5,pass:'main'}),events=program.events,
+       mains=events.filter(e=>e.kind==='item'&&e.args[0].placementMain);
+ // Both sources have exactly one untransformed main block and return its bbox
+ // or its nominal J.measure box. Other painted objects are retained below.
+ if(mains.length!==1||events.some(e=>e.role!=='primary'||e.clips?.length))return null;
+ const e=mains[0],item=e.args[0],norm=x=>String(x??'').replace(/\s/g,'');
+ if(e.matrix.some((v,i)=>Math.abs(v-ID[i])>1e-9)||item.rot||item.skew||item.vertical||norm(item.text)!==norm(cut.text))return null;
+ const source={...cut,layout:'center',area:null,params:{}},main=A.centerCircle.sourceUnits(item,source,{...plan,W,H},{holdOnly:false});
+ if(!main)return null;
+ const units=main.units.map(u=>({...u,owner:cut.layout+'.main.'+u.owner})),other={...program,events:events.filter(x=>x!==e)};
+ if(other.events.length){
+  // The existing A26 source sweep covers quote mark travel and complete
+  // partial frame paths, without enumerating frames. Full source travel is
+  // conservative for the requested hold, including lagged ghost passes.
+  const sweeps=A.layoutsASourceEnvelopes(other,{...plan,W,H},program.sourceCut,false);
+  for(let i=0;i<sweeps.length;i++)units.push({owner:cut.layout+'.furniture.'+i,kind:'native-sweep',bounds:A.bounds([sweeps[i]])});
+ }
+ const fallback=J.itemBox(item),ranges=Object.fromEntries(['x0','x1','y0','y1'].map(k=>[k,[Math.min(main.bbRangesAny[k][0],fallback[k]),Math.max(main.bbRangesAny[k][1],fallback[k])]]));
+ for(const d of cut.decor||[]){
+  const args={W,H,P:d,cut,st,bbRanges:[ranges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);
+  if(!parts?.length)return null;units.push(...parts);
+ }
+ return {units,bbRanges:ranges,scope:'native-hold'};
+}
+A.framedUnits=args=>{try{return framedUnits(args);}catch(e){if(e.code&&(e.code.startsWith('UNSUPPORTED_')||e.code.startsWith('SOURCE_FORMULA_')||e.code==='GEOMETRY_LIMIT'))return null;throw e;}};
+})();
+
+/* A26 multi-block/character native hold supports. */
+(()=>{'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],layouts=new Set(['corners','staircase','zigzag','gridCells','genkou']),keys=['x0','x1','y0','y1'];
+function multirowUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ const p=cut.params;
+ if(!layouts.has(cut.layout)||!holdOnly||!holdWindow||cut.layoutARecipe||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    (cut.groupExit??cut.exit)!==cut.exit||!(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'||d.id==='starburst')||
+    /[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text))return null;
+ const earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(!Number.isFinite(earliest)||earliest<cut.start||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+ A.layoutsAFormulaDomain({...plan,W,H},cut,true);
+ // Construct the complete source furniture once after its deterministic reveal.
+ // pOut remains zero; the time is not treated as a frame-by-frame certificate.
+ const renderer=Object.create(J.Renderer.prototype),time=Math.max(2,cut.inDur*2+.7),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},cut,{W,H,time,pass:'main'}),events=program.events,
+       mainEvents=events.filter(e=>e.kind==='item'&&e.args[0].placementMain),norm=x=>String(x??'').replace(/\s/g,'');
+ if(mainEvents.length<2||mainEvents.length>16||events.some(e=>e.role!=='primary'||e.clips?.length)||norm(mainEvents.map(e=>e.args[0].text).join(''))!==norm(cut.text))return null;
+ const units=[],mains=[],items=[],source={...cut,layout:'center',area:null,params:{}};
+ for(let i=0;i<mainEvents.length;i++){
+  const e=mainEvents[i],item=e.args[0],angle=item.rot||0;
+  if(e.matrix.some((v,j)=>Math.abs(v-ID[j])>1e-9)||item.skew||item.vertical||!Number.isFinite(angle)||Math.abs(angle)>90)return null;
+  const unrotated={...item,rot:0},part=A.centerCircle.sourceUnits(unrotated,source,{...plan,W,H},{holdOnly:true});if(!part)return null;
+  const ready=cut.start+(item.mi|0)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
+  if(cut.enter==='invertBox'&&earliest<ready){
+   const entry=A.centerCircle.sourceUnits(unrotated,{...source,hold:'still',exit:'cut'},{...plan,W,H},{holdOnly:false});if(!entry)return null;
+   part.units.push(...entry.units.filter(u=>u.owner==='center.invertBox'));
+  }
+  // drawItem bbox ignores outer item rotation; owned paint does not.
+  const c=Math.cos(angle*J.DEG),s=Math.sin(angle*J.DEG),rot=b=>A.bounds([[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]].map(([x,y])=>[item.x+(x-item.x)*c-(y-item.y)*s,item.y+(x-item.x)*s+(y-item.y)*c])]);
+  units.push(...part.units.map(u=>({...u,owner:cut.layout+'.main.'+i+'.'+u.owner,bounds:rot(u.bounds)})));
+  mains.push(part);items.push(item);
+ }
+ // 09c retains partial connectors/rails, marks, captions and their fixed
+ // source coordinates; never merge unrelated owners into the main bbox.
+ const others={...program,events:events.filter(e=>!mainEvents.includes(e))};
+ if(others.events.length){
+  const sweeps=A.layoutsASourceEnvelopes(others,{...plan,W,H},program.sourceCut,false);
+  for(let i=0;i<sweeps.length;i++)units.push({owner:cut.layout+'.furniture.'+i,kind:'native-sweep',bounds:A.bounds([sweeps[i]])});
+ }
+ // Actual native fallback when no mainDraw returns a bbox.
+ let fallback;
+ if(cut.layout==='corners'){
+  if(items.length!==2)return null;
+  const a=J.itemBox(items[0]),b=J.itemBox(items[1]);fallback={x0:Math.min(a.x0,b.x0),x1:Math.max(a.x1,b.x1),y0:a.y0,y1:b.y1};
+ }else if(cut.layout==='staircase'){
+  const boxes=items.map(it=>J.itemBox(it));
+  fallback={x0:Math.min(...boxes.map(b=>b.x0)),x1:Math.max(...boxes.map(b=>b.x1)),y0:Math.min(...items.map(it=>it.y-it.size*.5)),y1:Math.max(...items.map(it=>it.y+it.size*.62))};
+ }else if(cut.layout==='gridCells'){
+  const n=[...cut.text.replace(/\s+/g,'')].length,port=H>W*1.08,maxCols=port?(n<=8?4:5):(n<=10?10:8),rows=Math.ceil(n/Math.min(n,maxCols)),cols=Math.ceil(n/rows),gap=p.gap||0,cell=Math.min(W*.86/(cols+(cols-1)*gap),H*.72/(rows+(rows-1)*gap),Math.min(W,H)*.3),gw=cols*cell+(cols-1)*cell*gap,gh=rows*cell+(rows-1)*cell*gap;
+  fallback={x0:W/2-gw/2,x1:W/2+gw/2,y0:H/2-gh/2,y1:H/2+gh/2};
+ }else if(cut.layout==='genkou'){
+  const n=[...cut.text.replace(/\s+/g,'')].length,ind=p.indent?1:0,maxR=H>W*1.08?14:10,used=Math.ceil((n+ind)/maxR),R=Math.max(7,Math.ceil((n+ind)/used)+(used===1&&n+ind<maxR?1:0)),gap=.3,cell=Math.min(H*.78/R,W*.9/((used+2)*(1+gap))),colW=cell*(1+gap),C=Math.max(used+2,Math.min(Math.floor(W*.92/colW),used+p.pad*2)),gw=C*colW-cell*gap,gh=R*cell,gx0=W/2-gw/2,gy0=H/2-gh/2,cStart=Math.floor((C-used)/2),colX=c=>gx0+gw-cell-c*colW;
+  fallback={x0:colX(cStart+used-1),x1:colX(cStart)+cell,y0:gy0,y1:gy0+gh};
+ }else{
+  const chars=/[A-Za-z]/.test(cut.text)?[...cut.text.trim().replace(/\s+/g,' ')]:[...cut.text.replace(/\s+/g,'')],n=chars.length,z=items[0].size,step=z*1.08,amp=z*p.amp;
+  fallback=p.orient==='v'?{x0:W/2-amp-z/2,x1:W/2+amp+z/2,y0:H/2-step*n/2,y1:H/2+step*n/2}:{x0:W/2-step*n/2,x1:W/2+step*n/2,y0:H/2-amp-z/2,y1:H/2+amp+z/2};
+ }
+ // Every possible nonempty subset can become the bbox; the fallback is
+ // separately included for a frame with no drawn main. The full-range box is
+ // conservative without allocating exponential subset combinations.
+ const ranges=Object.fromEntries(keys.map(k=>[k,[Math.min(fallback[k],...mains.map(m=>m.bbRangesAny[k][0])),Math.max(fallback[k],...mains.map(m=>m.bbRangesAny[k][1]))]]));
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[ranges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ return {units,bbRanges:ranges,scope:'native-hold'};
+}
+A.multirowUnits=args=>{try{return multirowUnits(args);}catch(e){if(e.code&&(e.code.startsWith('UNSUPPORTED_')||e.code.startsWith('SOURCE_FORMULA_')||e.code==='GEOMETRY_LIMIT'))return null;throw e;}};
+})();
+
+/* Native typography text, growing rules and labels in the hold interval. */
+(()=>{'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],keys=['x0','x1','y0','y1'];
+function typoStaticUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ if(!['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)||!holdOnly||!holdWindow||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>['memphis','starburst'].includes(d.id))||
+    holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+ const extra=['tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout),earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(extra&&((cut.groupExit??cut.exit)!==cut.exit||!Number.isFinite(cut.stagger??0)||(cut.stagger??0)<0||!Number.isFinite(cut.outDur)||!Number.isFinite(earliest)||earliest<cut.start||/[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text)))return null;
+ const source={...cut,area:null,simpleCircleRecipe:null,enter:'cut',exit:'cut',hold:'still'},renderer=Object.create(J.Renderer.prototype);
+ // Bound the last source glyph's annotation clock, and construct once per pass.
+ const count=J.glyphCount(cut.text);if(count>256||extra&&(count<1||count>6))return null;
+ let programs;
+ const time=['tyMargin','tyBaseline'].includes(cut.layout)?1.4:2+count*.08;
+ try{programs=['main','A','B'].map(pass=>A.sourceFormulaBase.construct(renderer,{...plan,W,H},source,{W,H,time,pass}));}
+ catch(e){if(['SOURCE_FORMULA_CLIP','SOURCE_FORMULA_COUPLED_FIELD_CLIP','SOURCE_FORMULA_FILTER','SOURCE_FORMULA_GEOMETRY_BUDGET','SOURCE_FORMULA_ITEM_SHADER','SOURCE_FORMULA_NATIVE_RASTER','SOURCE_FORMULA_PATH'].includes(e?.code))return null;throw e;}
+ const units=[],ranges=[],mainItems=programs[0].events.filter(e=>e.kind==='item'&&e.args[0].placementMain);
+ if(!mainItems.length)return null;
+ if(extra){const norm=t=>String(t??'').replace(/\s/g,'');if(mainItems.length>6||norm(mainItems.map(e=>e.args[0].text).join(''))!==norm(cut.text))return null;}
+ const rubyRise=cut.layout==='tyRuby'?Math.max(10,mainItems[0].args[0].size*.3)/2:0;
+ for(const [pass,program] of programs.entries()){
+  if(program.events.some(e=>e.clips.length))return null;
+  // tyMargin's accent square follows the rule endpoint from either end.
+  const lines=program.events.filter(e=>e.kind==='line').flatMap(e=>e.polygons),line=lines.length?A.bounds(lines):null;
+  for(const [i,e] of program.events.entries()){
+   // Every counter value is a distinct static label, not a clock sample.
+   if(cut.layout==='tyStatCount'&&e.kind==='item'&&!e.args[0].placementMain&&e.args[0].font===cut.params.nf&&/^\d{2,}$/.test(e.args[0].text)){
+    for(let value=0;value<=count;value++)for(const poly of A.itemGeometry({...e.args[0],text:String(value).padStart(2,'0'),_lay:null,_m:null},ID,{pass:'main',scale:1}).polygons)units.push({owner:cut.layout+'.counter.'+value,kind:'item',bounds:A.bounds([poly])});
+    continue;
+   }
+   if(e.kind==='item'&&e.args[0].placementMain){
+    const it=e.args[0];if(it.rot||it.skew||extra&&it.noHold||e.matrix.some((v,j)=>v!==ID[j]))return null;
+    const ready=cut.start+(it.mi|0)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur)),partial=extra&&cut.enter==='invertBox'&&earliest<ready;
+    const main=extra&&it.vertical?A.verticalSourceUnits?.(it,cut,{...plan,W,H},{partial}):A.centerCircle.sourceUnits(it,{...cut,layout:'center',area:null,params:{}},{...plan,W,H},{holdOnly:false});
+    if(!main)return null;
+    units.push(...main.units.map(u=>({...u,owner:cut.layout+'.'+pass+'.'+u.owner})));
+    if(pass===0)ranges.push(main.bbRangesAny);
+   }else for(const poly of e.polygons){
+    const b=A.bounds([poly]);
+    // Native playhead sweeps between the first and last glyph center.
+    if(cut.layout==='tyVRuler'&&e.kind==='poly'){
+     const it=mainItems[0].args[0],ys=J.layoutText(it).filter(g=>g.ch.trim()).map(g=>it.y+g.y*(it.sy||1));
+     if(!ys.length)return null;
+     const y=e.args[0][0][1];b.y0+=Math.min(...ys)-y;b.y1+=Math.max(...ys)-y;
+    }
+    // Ruby annotations rise from rest+rs/2; growing brackets stay inside
+    // their settled rectangles. Enclosing every annotation is conservative.
+    if(rubyRise&&e.kind==='item')b.y1+=rubyRise;
+    if(cut.layout==='tyMargin'&&e.kind==='rect'&&line){const half=(b.x1-b.x0)/2;b.x0=Math.min(b.x0,line.x0-half);b.x1=Math.max(b.x1,line.x1+half);}
+    if(cut.layout==='tySquare'&&e.kind==='line'){const dx=(b.x1-b.x0)*.14,dy=(b.y1-b.y0)*.14;b.x0-=dx;b.x1+=dx;b.y0-=dy;b.y1+=dy;}
+    units.push({owner:cut.layout+'.'+pass+'.part.'+i,kind:e.kind,bounds:b});
+   }
+  }
+ }
+ if(!ranges.length||ranges.length>6)return null;
+ // Native mainDraw returns a union of the visible rows; preserve each possible
+ // subset for decoration rather than one unrelated edge-wise bounding box.
+ const decorRanges=[];
+ for(let mask=1;mask<(1<<ranges.length);mask++){
+  const rs=ranges.filter((_,i)=>mask&(1<<i));
+  decorRanges.push(Object.fromEntries(keys.map(k=>[k,[(k.endsWith('0')?Math.min:Math.max)(...rs.map(r=>r[k][0])),(k.endsWith('0')?Math.min:Math.max)(...rs.map(r=>r[k][1]))]])));
+ }
+ if(cut.layout==='tyLineFocus')decorRanges.push({x0:[W*.3,W*.3],x1:[W*.7,W*.7],y0:[H*.4,H*.4],y1:[H*.6,H*.6]});
+ const bbRanges=Object.fromEntries(keys.map(k=>[k,[Math.min(...decorRanges.map(r=>r[k][0])),Math.max(...decorRanges.map(r=>r[k][1]))]]));
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:decorRanges,includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ return {units,bbRanges,scope:'native-hold'};
+}
+A.typoStaticUnits=args=>{try{return typoStaticUnits(args);}catch(e){if(['tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(args?.cut?.layout)&&(e.code==='UNMEASURED_INK'||e.code==='GEOMETRY_LIMIT'||e.code?.startsWith('UNSUPPORTED_')))return null;throw e;}};
+})();
+
+/* Native B specimen and focus compositions, owned supports during hold. */
+(()=>{'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],ids=new Set(['typeSpecimen','kanjiFocus']),keys=['x0','x1','y0','y1'];
+function bSpecimenFocusUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ if(!ids.has(cut.layout)||!holdOnly||!holdWindow||cut.layoutBRecipe||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    (cut.groupExit??cut.exit)!==cut.exit||!(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'||d.id==='starburst')||
+    /[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text))return null;
+ const earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(!Number.isFinite(earliest)||earliest<cut.start||!Number.isFinite(cut.outDur)||
+    holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+ const smallPlan={...plan,W,H,style:st};A.layoutsBFormulaDomain(smallPlan,cut,true);
+ const renderer=Object.create(J.Renderer.prototype),time=Math.max(A.layoutsBSourceRestTime(cut)-cut.start,2),program=A.sourceFormulaBase.construct(renderer,smallPlan,cut,{W,H,time,pass:'main'}),events=program.events,
+       mainEvents=events.filter(e=>e.kind==='item'&&e.args[0].placementMain),norm=t=>String(t??'').replace(/\s/g,'');
+ if(mainEvents.length<1||mainEvents.length>16||cut.layout==='typeSpecimen'&&mainEvents.length!==1||
+    events.some(e=>e.role!=='primary'||e.clips?.length)||norm(mainEvents.map(e=>e.args[0].text).join(''))!==norm(cut.text))return null;
+ const source={...cut,layout:'center',area:null,params:{}},units=[],mains=[];
+ for(let i=0;i<mainEvents.length;i++){
+  const e=mainEvents[i],item=e.args[0];
+  if(e.matrix.some((v,j)=>Math.abs(v-ID[j])>1e-9)||item.rot||item.skew||item.vertical||item.noHold)return null;
+  const main=A.centerCircle.sourceUnits(item,source,smallPlan,{holdOnly:true});if(!main)return null;
+  const ready=cut.start+(item.mi|0)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
+  if(cut.enter==='invertBox'&&earliest<ready){const entry=A.centerCircle.sourceUnits(item,{...source,hold:'still',exit:'cut'},smallPlan,{holdOnly:false});if(!entry)return null;main.units.push(...entry.units.filter(u=>u.owner==='center.invertBox'));}
+  units.push(...main.units.map(u=>({...u,owner:cut.layout+'.main.'+i+'.'+u.owner})));mains.push(main);
+ }
+ // Retain the 09e/09f source bounds for every primary object, including the
+ // specimen copies/labels/rules or the independently scaling focus glyph.
+ // The duplicated native-main bounds are conservative; animated main units
+ // above still supply the hold and stagger support.
+ const shapes=A.layoutsBSourceEnvelopes(program,smallPlan,program.sourceCut);
+ for(let i=0;i<shapes.length;i++)units.push({owner:cut.layout+'.source.'+i,kind:'native-sweep',bounds:A.bounds([shapes[i]])});
+ const bbRanges=Object.fromEntries(keys.map(k=>[k,[Math.min(...mains.map(m=>m.bbRangesAny[k][0])),Math.max(...mains.map(m=>m.bbRangesAny[k][1]))]]));
+ if(cut.layout==='kanjiFocus'){
+  // The underline follows the live union bbox, including partial entrances.
+  const size=program.nativeGeometry?.base?.size;if(!(size>0))return null;
+  const pad=Math.max(1,Math.min(W,H)*.0013)*5+2;
+  units.push({owner:'kanjiFocus.live-underline',kind:'line',bounds:{x0:bbRanges.x0[0]-pad,x1:bbRanges.x1[1]+pad,y0:bbRanges.y1[0]+size*.7-pad,y1:bbRanges.y1[1]+size*.7+pad}});
+ }
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[bbRanges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ return {units,bbRanges,scope:'native-hold'};
+}
+A.bSpecimenFocusUnits=args=>{try{return bSpecimenFocusUnits(args);}catch(e){if(e.code&&(e.code.startsWith('UNSUPPORTED_')||e.code.startsWith('SOURCE_FORMULA_')||e.code.startsWith('EDITORIAL_')||e.code==='GEOMETRY_LIMIT'||e.code==='B_INTERVAL_ADAPTER_PENDING'||e.code==='SOURCE_COVERAGE'))return null;throw e;}};
+})();
+
+/* Native A26 UI objects and their one returned main text block. */
+(()=>{'use strict';
+const A=J.placement,ID=[1,0,0,1,0,0],ids=new Set(['searchBar','notification','chat']),keys=['x0','x1','y0','y1'];
+function uiUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ const p=cut.params;
+ if(!ids.has(cut.layout)||!holdOnly||!holdWindow||cut.layoutARecipe||
+    (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+    !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+    (cut.groupExit??cut.exit)!==cut.exit||!(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'||d.id==='starburst')||
+    /[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text))return null;
+ // Search's native cut entrance is replaced by typewriter; it needs its own
+ // glyph-prefix model rather than the ordinary mainDraw treatment here.
+ if(cut.layout==='searchBar'&&cut.enter==='cut')return null;
+ const earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(!Number.isFinite(earliest)||earliest<cut.start||holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
+ A.layoutsAFormulaDomain({...plan,W,H},cut,true);
+ if(cut.layout==='chat')return chatUnits({W,H,cut,plan,st,holdWindow,earliest});
+ // Capture the complete fixed UI and all candidate rows after their individual
+ // reveals, not an assertion that this source clock is a hold frame.
+ const time=Math.max(2,cut.inDur*2+.7,cut.inDur+.05+(p.sugg||0)*.07+.7),renderer=Object.create(J.Renderer.prototype),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},cut,{W,H,time,pass:'main'}),events=program.events,
+       mains=events.filter(e=>e.kind==='item'&&e.args[0].placementMain),norm=x=>String(x??'').replace(/\s/g,'');
+ if(mains.length!==1||events.some(e=>e.role!=='primary'||e.clips?.length))return null;
+ const mainEvent=mains[0],item=mainEvent.args[0];
+ if(mainEvent.matrix.some((v,i)=>Math.abs(v-ID[i])>1e-9)||item.rot||item.skew||item.vertical||item.enter||norm(item.text)!==norm(cut.text))return null;
+ const source={...cut,layout:'center',area:null,params:{}},main=A.centerCircle.sourceUnits(item,source,{...plan,W,H},{holdOnly:true});if(!main)return null;
+ const ready=cut.start+(item.mi|0)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
+ if(cut.enter==='invertBox'&&earliest<ready){const entry=A.centerCircle.sourceUnits(item,{...source,hold:'still',exit:'cut'},{...plan,W,H},{holdOnly:false});if(!entry)return null;main.units.push(...entry.units.filter(u=>u.owner==='center.invertBox'));}
+ let dy0=0,dy1=0;
+ if(cut.layout==='notification'){
+  const d=mainEvent.nativeSweep?.dy/2;if(!(d>0&&Number.isFinite(d)))return null;
+  const t=J.clamp((earliest-cut.start)/.45),a=J.E.outBack(t,1.1),peak=1-2*1.1/(3*2.1),qmax=t<=peak?1+4*1.1**3/(27*2.1**2):Math.max(a,1);
+  dy0=(Math.min(a,1)-1)*d;dy1=(qmax-1)*d;
+ }
+ const units=main.units.map(u=>({...u,owner:cut.layout+'.main.'+u.owner,bounds:{...u.bounds,y0:u.bounds.y0+dy0,y1:u.bounds.y1+dy1}}));
+ const others={...program,events:events.filter(e=>e!==mainEvent)};
+ if(others.events.length){
+  // 09c supplies the notification's source motion and all complete UI rows.
+  // A search box's leading/trailing icons move as its width grows. Expanding
+  // their x support by .35*bw covers their full travel; static text is kept.
+  const sweeps=A.layoutsASourceEnvelopes(others,{...plan,W,H},program.sourceCut,false),pad=cut.layout==='searchBar'?W*(H>W*1.08?.9:.7)*.35:0;
+  for(let i=0;i<sweeps.length;i++){const b=A.bounds([sweeps[i]]);units.push({owner:cut.layout+'.ui.'+i,kind:'native-sweep',bounds:{x0:b.x0-pad,x1:b.x1+pad,y0:b.y0,y1:b.y1}});}
+ }
+ let fallback;
+ if(cut.layout==='searchBar'){
+  const bw=W*(H>W*1.08?.9:.7),bh=item.size*2.1,by=H*(p.pos==='upper'?.28:.38);
+  fallback={x0:W/2-bw/2,x1:W/2+bw/2,y0:by-bh/2,y1:by+bh/2};
+ }else {fallback=J.itemBox(item);fallback={...fallback,y0:fallback.y0+dy0,y1:fallback.y1+dy1};}
+ const ranges=Object.fromEntries(keys.map(k=>{const delta=k==='y0'||k==='y1'?[dy0,dy1]:[0,0],r=main.bbRangesAny[k];return [k,[Math.min(fallback[k],r[0]+delta[0]),Math.max(fallback[k],r[1]+delta[1])]];}));
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[ranges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ return {units,bbRanges:ranges,scope:'native-hold'};
+}
+function chatUnits({W,H,cut,plan,st,holdWindow,earliest}){
+ const time=Math.max(2,cut.inDur*2+.7,cut.dur*.45+.8),renderer=Object.create(J.Renderer.prototype),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},cut,{W,H,time,pass:'main'}),events=program.events,mains=events.filter(e=>e.kind==='item'&&e.args[0].placementMain),norm=x=>String(x??'').replace(/\s/g,'');
+ if(!mains.length||mains.length>8||events.some(e=>e.role!=='primary'||e.clips?.length)||norm(mains.map(e=>e.args[0].text).join(''))!==norm(cut.text))return null;
+ const units=[],ranges=[],source={...cut,layout:'center',area:null,params:{}};
+ for(let i=0;i<mains.length;i++){
+  const event=mains[i],item=event.args[0],sweep=event.nativeSweep;
+  if(event.matrix.some((v,j)=>Math.abs(v-ID[j])>1e-9)||item.rot||item.skew||item.vertical||!sweep?.pivot||!Array.isArray(sweep.scale)||!Number.isFinite(sweep.positiveY)||sweep.positiveY<0)return null;
+  const part=A.centerCircle.sourceUnits(item,source,{...plan,W,H},{holdOnly:true});if(!part)return null;
+  const ready=cut.start+(item.mi|0)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
+  if(cut.enter==='invertBox'&&earliest<ready){const entry=A.centerCircle.sourceUnits(item,{...source,hold:'still',exit:'cut'},{...plan,W,H},{holdOnly:false});if(!entry)return null;part.units.push(...entry.units.filter(u=>u.owner==='center.invertBox'));}
+  for(const u of part.units){const b=u.bounds,poly=[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]];units.push({...u,owner:'chat.main.'+i+'.'+u.owner,bounds:A.bounds([A.layoutsASweep(poly,sweep)])});}
+  // Native returned glyph bbox is not transformed by the outer Canvas pop,
+  // but the bubble's anchor rises as later messages appear.
+  ranges.push(Object.fromEntries(keys.map(k=>[k,[part.bbRangesAny[k][0],part.bbRangesAny[k][1]+(k[0]==='y'?sweep.positiveY:0)]])));
+ }
+ const others={...program,events:events.filter(e=>!mains.includes(e))};
+ if(others.events.length){const sweeps=A.layoutsASourceEnvelopes(others,{...plan,W,H},program.sourceCut,false);for(let i=0;i<sweeps.length;i++)units.push({owner:'chat.ui.'+i,kind:'native-sweep',bounds:A.bounds([sweeps[i]])});}
+ const colW=W*(H>W*1.08?.86:W/H<1.5?.66:.52),bottom=H*(H>W*1.08?.78:.8),fallback={x0:W/2-colW/2,x1:W/2+colW/2,y0:bottom-H*.3,y1:bottom};
+ const bbRanges=Object.fromEntries(keys.map(k=>[k,[Math.min(fallback[k],...ranges.map(r=>r[k][0])),Math.max(fallback[k],...ranges.map(r=>r[k][1]))]]));
+ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[bbRanges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
+ return {units,bbRanges,scope:'native-hold'};
+}
+A.uiUnits=args=>{try{return uiUnits(args);}catch(e){if(e.code&&(e.code.startsWith('UNSUPPORTED_')||e.code.startsWith('SOURCE_FORMULA_')||e.code==='GEOMETRY_LIMIT'||e.code==='UNMEASURED_INK'))return null;throw e;}};
+})();
+
 /* Numbered columns: preserve each native number/label/lyric/clip as one unit. */
 (() => {
 'use strict';
@@ -51959,7 +52604,7 @@ function geometry(env){
  return {items,plain,shapes,bodies};
 }
 const handles=(plan,cut)=>ids.has(cut.layout)&&(S.preparedCut(plan,cut)||A.placementCutPreserved86cm(plan,cut)===false);
-function viewportProject(plan,cut,scale,{fixedViewport=false,allCutsBloom=false,allCutsChroma=false,activeRange=null,bloomSigma=6,jellyHoldOnly=false}={}){
+function viewportProject(plan,cut,scale,{fixedViewport=false,allCutsBloom=false,allCutsChroma=false,activeRange=null,bloomSigma=6,jellyHoldOnly=false,preClip=false}={}){
  const area=cut.area,W=plan.W,H=plan.H,sw=area?W*area.w:W,sh=area?H*area.h:H,st=cut.effectStyle||plan.style;
  // frame() uses real time and ignores chroma/shake events before their start
  // and more than 14/24 seconds after it. Bound each remaining decay by its
@@ -51967,7 +52612,7 @@ function viewportProject(plan,cut,scale,{fixedViewport=false,allCutsBloom=false,
  const events=(plan.events||[]).filter(e=>!['rgbSplit','slice','block','zoom','splitSlide','whipBlur','zoomPunch','heartbeat','edgeDetect'].includes(e.type)).filter(e=>!activeRange||!['chroma','shake'].includes(e.type)||e.t<=activeRange.end&&(activeRange.start-e.t)*24<=14).map(e=>{const decay=e.type==='chroma'?.55:e.type==='shake'?.62:null,amp=activeRange&&decay?Math.abs(e.amp)*Math.pow(decay,Math.max(0,(activeRange.start-e.t)*24)):e.amp;return e.type==='shake'?{...e,amp:amp*H/sh}:activeRange&&decay?{...e,amp}:e;});
  const fx=cut.effectFx||plan.fx,maxChroma=allCutsChroma?Math.max((plan.fx.chroma??.7)*(plan.style.ghost??1),...(plan.cuts||[]).map(c=>((c.effectFx||plan.fx).chroma??.7)*((c.effectStyle||plan.style).ghost??1))):(fx.chroma??.7),smallFx={...fx,texture:0,chroma:maxChroma*H/sh},smallStyle={...st,glow:0,...(allCutsChroma?{ghost:1}:{})},smallPlan={...plan,W:sw,H:sh,fx:smallFx,style:smallStyle,events},smallCut={...cut,layout:'bulbs',effectFx:smallFx,effectStyle:smallStyle,sourceExcludeCameraBlur:!!area,jellyHoldOnly},cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter,bloomEnabled=allCutsBloom?((plan.style.glow??.6)*.5*(plan.fx.texture??.6)>.05||(plan.cuts||[]).some(c=>((c.effectStyle||plan.style).glow??.6)*.5*((c.effectFx||plan.fx).texture??.6)>.05)):(st.glow??.6)*.5*(fx.texture??.6)>.05,bloom=bloomEnabled?bloomSigma*Math.max(2,Math.round(quarter/160))*up/scale:0,rgb=(plan.events||[]).filter(e=>e.type==='rgbSplit').reduce((a,e)=>a+J.clamp(e.amp??1,.3,1.6),0);
  const post=S.postMotion(plan,W,H,scale,cut,activeRange),cameraBlur=area&&cut.cam==='rackFocus'?6*(cut.camP?.b||6.5)*Math.min(1,J.clamp((fx.motion??.7)*1.25,0,1.25))*(cut.motionScale??1):0;
- const project=(local,item,plan,cut,body)=>{let b=A.bounds([S.stageEnvelope(local,area&&!fixedViewport?{x:0,y:0}:item,smallPlan,smallCut,body)]);if(area)b={x0:Math.max(0,b.x0),y0:Math.max(0,b.y0),x1:Math.min(sw,b.x1),y1:Math.min(sh,b.y1)};const x=area?area.x*W+(fixedViewport?0:item.x):0,y=area?area.y*H+(fixedViewport?0:item.y):0,tx=body?0:bloom+cameraBlur+W*.016*rgb+post.x,ty=body?0:bloom+cameraBlur+H*.004*rgb+post.y;return rect({x0:b.x0+x-tx,y0:b.y0+y-ty,x1:b.x1+x+tx,y1:b.y1+y+ty});};
+ const project=(local,item,plan,cut,body)=>{let b=A.bounds([S.stageEnvelope(local,area&&!fixedViewport?{x:0,y:0}:item,smallPlan,smallCut,body)]);if(area&&!preClip)b={x0:Math.max(0,b.x0),y0:Math.max(0,b.y0),x1:Math.min(sw,b.x1),y1:Math.min(sh,b.y1)};const x=area?area.x*W+(fixedViewport?0:item.x):0,y=area?area.y*H+(fixedViewport?0:item.y):0,tx=body||preClip?0:bloom+cameraBlur+W*.016*rgb+post.x,ty=body||preClip?0:bloom+cameraBlur+H*.004*rgb+post.y;return rect({x0:b.x0+x-tx,y0:b.y0+y-ty,x1:b.x1+x+tx,y1:b.y1+y+ty});};
  return project;
 }
 function prepare(plan,cut,{scale,region,previous}){
@@ -52038,7 +52683,7 @@ function render(renderer,env,recipe){
  const paint=(key,args)=>{setRole(proxyEnv.drawOwnership?.role||'primary');if(!clips)return target[key](...args);const m=matrix(target);target.save();try{target.setTransform(1,0,0,1,0,0);target.clip(clips[Number(shifted)]);target.setTransform(...m);return target[key](...args);}finally{target.restore();}};
  const proxy=new Proxy(target,{get(t,k){if(k==='save')return()=>{states.push(shifted);t.save();};if(k==='restore')return()=>{t.restore();shifted=states.pop()??false;};if(k==='beginPath')return(...args)=>{setRole(proxyEnv.drawOwnership?.role||'primary');return t[k](...args);};if(['fill','stroke','fillRect','strokeRect','fillText','strokeText','drawImage'].includes(k))return(...args)=>paint(k,args);const v=t[k];return typeof v==='function'?v.bind(t):v;},set(t,k,v){t[k]=v;return true;}});
  const isD=!!A.sourceFormulaD?.[env.cut.layout],cut={...env.cut,fullStagePlacement:true,placementUnits:true,placementLayoutsD:isD,placementLayoutsA:!isD,placementLayoutsB:A.layoutsB25?.includes(env.cut.layout)||A.layoutsC34?.includes(env.cut.layout),placementLayoutsC:A.layoutsC34?.includes(env.cut.layout)};
- const source=renderer.makeEnv(proxy,env.plan,cut,env.sc,{...env,ctx:proxy,cut,W:recipe.W,H:recipe.H});source.W=recipe.W;source.H=recipe.H;source.sourceFormulaNeonNative=cut.layout==='neon';
+ const source=renderer.makeEnv(proxy,env.plan,cut,env.sc,{...env,ctx:proxy,cut,W:recipe.W,H:recipe.H});source.W=recipe.W;source.H=recipe.H;if(recipe.roleSeparated)source.fx=env.fx;source.sourceFormulaNeonNative=cut.layout==='neon';
  proxyEnv=new Proxy(source,{set(t,k,v){if(k==='drawOwnership')setRole(v?.role||'primary');t[k]=v;return true;}});proxyEnv.withDProjectedText=(kind,fn)=>fn();proxyEnv.formulaRole=setRole;proxyEnv.withDrawRole=(r,key,fn)=>{const old=proxyEnv.drawOwnership;proxyEnv.drawOwnership={role:r};try{return fn();}finally{proxyEnv.drawOwnership=old;}};
  target.save();try{setRole('primary');return J.LAYOUTS[cut.layout].render(proxyEnv);}finally{target.restore();}
 }
@@ -53121,9 +53766,9 @@ function beginSimpleCircle(){
 }
 function drawSimpleCircle(ctx,renderer,fast){
  if(simplePrepared&&simplePrepared.revision!==(J.metrics.revision||0))invalidateSimpleCircle();beginSimpleCircle();
- const active=diagnostic=>S.plan.cuts.some(c=>c.index===diagnostic.cut&&simpleCircle.activeCut(S.plan,c,S.t)),insufficient=simplePrepared?.diagnostics.find(d=>d.status==='insufficient-space'&&active(d)),unsupported=simpleError||simplePrepared?.diagnostics.find(d=>d.status==='unsupported'&&active(d)),holdOnly=simplePrepared?.diagnostics.find(d=>d.status==='safe'&&d.safety==='safe-hold'&&active(d));
+ const active=diagnostic=>S.plan.cuts.some(c=>c.index===diagnostic.cut&&simpleCircle.activeCut(S.plan,c,S.t)),insufficient=simplePrepared?.diagnostics.find(d=>d.status==='insufficient-space'&&active(d)),unsupported=simpleError||simplePrepared?.diagnostics.find(d=>d.status==='unsupported'&&active(d)),holdOnly=simplePrepared?.diagnostics.find(d=>d.status==='safe'&&d.safety==='safe-hold'&&active(d)),autoSize=simplePrepared?.diagnostics.find(d=>d.status==='safe'&&d.sourceAreaFallback==='legacy-auto-area'&&active(d));
  if(simpleDirty||!simplePrepared&&!simpleError||insufficient){simpleMessage.hidden=false;simpleMessage.textContent=simpleDirty||simplePending?J.mediaLabel('回避配置を準備中…','Preparing avoidance…'):J.mediaLabel('この条件では回避配置を見つけられませんでした。演出や歌詞を変更するか、中央回避をオフにしてください。','No avoidance placement was found. Change the effect or lyrics, or turn off center avoidance.');clearBulbsView86ci(ctx);return;}
- simpleMessage.hidden=!(unsupported||holdOnly);if(unsupported)simpleMessage.textContent=J.mediaLabel('円回避未対応・元の配置','Circle avoidance unsupported · original placement');else if(holdOnly)simpleMessage.textContent=J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.');
+ simpleMessage.hidden=!(unsupported||holdOnly||autoSize);if(unsupported)simpleMessage.textContent=J.mediaLabel('円回避未対応・元の配置','Circle avoidance unsupported · original placement');else{simpleMessage.textContent=holdOnly?J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.'):'';if(autoSize)simpleMessage.textContent+=(holdOnly?' ':'')+J.mediaLabel('自動調整した配置・文字サイズで表示しています。','Using automatically adjusted placement and text size.');}
  renderer.frame(ctx,simplePrepared?.plan||S.plan,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false});
 }
 
@@ -56926,7 +57571,7 @@ async function runExport(kind) {
   const boxes = [...document.querySelectorAll('.exp-box')];
   let circleWarning='';
   const setText = m => boxes.forEach(b => { b.querySelector('.exp-text').textContent = m+(circleWarning?' '+circleWarning:''); });
-  const onWarning=status=>{const messages=[];if(status?.status==='partial')messages.push(J.mediaLabel('円回避未対応の演出は元の配置で出力','Unsupported effects keep their original placement'));if(status?.holdOnlyCuts?.length)messages.push(J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.'));circleWarning=messages.join(' ');if(circleWarning)toast(circleWarning);};
+  const onWarning=status=>{const messages=[];if(status?.status==='partial')messages.push(J.mediaLabel('円回避未対応の演出は元の配置で出力','Unsupported effects keep their original placement'));if(status?.holdOnlyCuts?.length)messages.push(J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.'));if(status?.autoSizeCuts?.length)messages.push(J.mediaLabel('一部の演出は自動調整した配置・文字サイズで出力します。','Some effects use automatically adjusted placement and text size.'));circleWarning=messages.join(' ');if(circleWarning)toast(circleWarning);};
   const txt = { set textContent(m) { setText(m); }, get textContent() { return boxes[0].querySelector('.exp-text').textContent; } };
   boxes.forEach(b => { b.hidden = false; b.querySelector('.exp-bar').style.width = '0%'; });
   setText('準備中…');

@@ -253,6 +253,7 @@ J.finishLyricPlan = (project, plan, audio) => {
     if (Number.isFinite(placementSeed)) cut.placementSeed = placementSeed;
     cut.areaMode = cut.area ? 'manual' : 'default';
     if (cut.area || !settings.autoPlacement) continue;
+    let circleSource = null;
     const locked = project.overrides?.[cut.line];
     const lockedArea = locked?.lock && locked.lockedAreas?.[cut.part];
     if (lockedArea !== undefined && lockedArea !== false) {
@@ -274,6 +275,11 @@ J.finishLyricPlan = (project, plan, audio) => {
         ...bounds.filter(({ cut: f, box }) => box && f.start < cut.end && f.end + .6 > cut.start).map(({ box }) => padded(box)),
         ...bgScenes.filter(b => b.start < cut.end && b.end + .6 > cut.start).flatMap(b => b.boxes).map(padded),
       ];
+      if (settings.avoidCenter && !locked?.lock && cut.group == null && !cut.emphasis &&
+          !cut.drawing && !cut.effectsOnly && cut.lyricSize == null) {
+        circleSource = { ...cut };
+        circleSource.area = J.autoLyricArea(circleSource, plan, obstacles, { ...settings, avoidCenter: false }, scene);
+      }
       cut.area = J.autoLyricArea(cut, plan, obstacles, settings, scene);
       cut.areaMode = 'auto';
     }
@@ -287,6 +293,16 @@ J.finishLyricPlan = (project, plan, audio) => {
         W: plan.W * cut.area.w, H: plan.H * cut.area.h, dur: cut.dur,
       }, plan.style);
       if (cut.text.includes('\n')) cut.params.sx = 1;
+    }
+    if (circleSource) {
+      if (circleSource.area && J.LAYOUTS[circleSource.layout]?.plan) {
+        circleSource.params = J.LAYOUTS[circleSource.layout].plan(J.rng(J.h(circleSource.seed, 318)), {
+          text: circleSource.text, n: [...circleSource.text.replace(/\s/g, '')].length,
+          W: plan.W * circleSource.area.w, H: plan.H * circleSource.area.h, dur: circleSource.dur,
+        }, plan.style);
+        if (circleSource.text.includes('\n')) circleSource.params.sx = 1;
+      }
+      cut.circleSource = {area:circleSource.area,params:circleSource.params,pattern:circleSource.lyricPattern??null};
     }
   }
   for (const index of plan.retainedCutIndices) {

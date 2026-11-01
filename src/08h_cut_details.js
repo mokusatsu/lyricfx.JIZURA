@@ -109,7 +109,13 @@ J.plan = function(project, ...args) {
   for (const cut of plan.cuts) if (Number.isInteger(cut.part) && cut.line >= 0) {
     const options=project.lyricCutOptions?.[`${cut.line}:${cut.part}`],details=options?.details;
     const locked=project.overrides?.[cut.line]?.lock ? project.overrides[cut.line].lockedEffects?.[cut.part] : null;
-    J.applyCutDetails(cut,{...stableDetails(project,'lyrics',cut,options,locked),...(locked||{}),...(details||{})},plan,'lyrics');
+    const resolved={...stableDetails(project,'lyrics',cut,options,locked),...(locked||{}),...(details||{})};
+    if(cut.circleSource){
+      const {circleSource,...base}=cut, source={...base,area:circleSource.area,params:circleSource.params,lyricPattern:circleSource.pattern};
+      J.applyCutDetails(source,resolved,plan,'lyrics');
+      cut.circleSource={area:source.area,params:source.params,pattern:source.lyricPattern};
+    }
+    J.applyCutDetails(cut,resolved,plan,'lyrics');
   }
   // Events belong to their originating cut, including accents before its boundary.
   for (const cut of plan.cuts) if (Array.isArray(cut.effectEvents)) {
@@ -137,6 +143,11 @@ J.plan = function(project, ...args) {
     J.applyCutDetails(cut,{area},plan,'lyrics');
     cut.areaMode='notation';
   }
+  for(const cut of plan.cuts)if(cut.circleSource){
+    if(cut.areaMode!=='auto'||cut.group!=null||cut.emphasis||cut.drawing||cut.effectsOnly||cut.lyricSize!=null||Object.hasOwn(project.lyricCutOptions?.[`${cut.line}:${cut.part}`]?.details||{},'contentScale')||project.overrides?.[cut.line]?.lock)delete cut.circleSource;
+    else {const {circleSource,...state}=cut;circleSource.fingerprint=JSON.stringify(state);}
+  }
+  if(plan.cuts.some(c=>c.circleSource))plan.circleSourceContext={W:plan.W,H:plan.H};
   return plan;
 };
 const planMedia = J.planMedia;

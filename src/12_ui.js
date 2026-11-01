@@ -35,9 +35,9 @@ function beginSimpleCircle(){
 }
 function drawSimpleCircle(ctx,renderer,fast){
  if(simplePrepared&&simplePrepared.revision!==(J.metrics.revision||0))invalidateSimpleCircle();beginSimpleCircle();
- const active=diagnostic=>S.plan.cuts.some(c=>c.index===diagnostic.cut&&simpleCircle.activeCut(S.plan,c,S.t)),insufficient=simplePrepared?.diagnostics.find(d=>d.status==='insufficient-space'&&active(d)),unsupported=simpleError||simplePrepared?.diagnostics.find(d=>d.status==='unsupported'&&active(d)),holdOnly=simplePrepared?.diagnostics.find(d=>d.status==='safe'&&d.safety==='safe-hold'&&active(d));
+ const active=diagnostic=>S.plan.cuts.some(c=>c.index===diagnostic.cut&&simpleCircle.activeCut(S.plan,c,S.t)),insufficient=simplePrepared?.diagnostics.find(d=>d.status==='insufficient-space'&&active(d)),unsupported=simpleError||simplePrepared?.diagnostics.find(d=>d.status==='unsupported'&&active(d)),holdOnly=simplePrepared?.diagnostics.find(d=>d.status==='safe'&&d.safety==='safe-hold'&&active(d)),autoSize=simplePrepared?.diagnostics.find(d=>d.status==='safe'&&d.sourceAreaFallback==='legacy-auto-area'&&active(d));
  if(simpleDirty||!simplePrepared&&!simpleError||insufficient){simpleMessage.hidden=false;simpleMessage.textContent=simpleDirty||simplePending?J.mediaLabel('回避配置を準備中…','Preparing avoidance…'):J.mediaLabel('この条件では回避配置を見つけられませんでした。演出や歌詞を変更するか、中央回避をオフにしてください。','No avoidance placement was found. Change the effect or lyrics, or turn off center avoidance.');clearBulbsView86ci(ctx);return;}
- simpleMessage.hidden=!(unsupported||holdOnly);if(unsupported)simpleMessage.textContent=J.mediaLabel('円回避未対応・元の配置','Circle avoidance unsupported · original placement');else if(holdOnly)simpleMessage.textContent=J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.');
+ simpleMessage.hidden=!(unsupported||holdOnly||autoSize);if(unsupported)simpleMessage.textContent=J.mediaLabel('円回避未対応・元の配置','Circle avoidance unsupported · original placement');else{simpleMessage.textContent=holdOnly?J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.'):'';if(autoSize)simpleMessage.textContent+=(holdOnly?' ':'')+J.mediaLabel('自動調整した配置・文字サイズで表示しています。','Using automatically adjusted placement and text size.');}
  renderer.frame(ctx,simplePrepared?.plan||S.plan,S.t,{scale:ctx.canvas.width/S.plan.W,fast,noTrans:false,noPost:false});
 }
 
@@ -3840,7 +3840,7 @@ async function runExport(kind) {
   const boxes = [...document.querySelectorAll('.exp-box')];
   let circleWarning='';
   const setText = m => boxes.forEach(b => { b.querySelector('.exp-text').textContent = m+(circleWarning?' '+circleWarning:''); });
-  const onWarning=status=>{const messages=[];if(status?.status==='partial')messages.push(J.mediaLabel('円回避未対応の演出は元の配置で出力','Unsupported effects keep their original placement'));if(status?.holdOnlyCuts?.length)messages.push(J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.'));circleWarning=messages.join(' ');if(circleWarning)toast(circleWarning);};
+  const onWarning=status=>{const messages=[];if(status?.status==='partial')messages.push(J.mediaLabel('円回避未対応の演出は元の配置で出力','Unsupported effects keep their original placement'));if(status?.holdOnlyCuts?.length)messages.push(J.mediaLabel('保持中は円を回避します。入退場中は円を通過することがあります。','The circle is avoided while the lyrics are held; entrance and exit may cross it.'));if(status?.autoSizeCuts?.length)messages.push(J.mediaLabel('一部の演出は自動調整した配置・文字サイズで出力します。','Some effects use automatically adjusted placement and text size.'));circleWarning=messages.join(' ');if(circleWarning)toast(circleWarning);};
   const txt = { set textContent(m) { setText(m); }, get textContent() { return boxes[0].querySelector('.exp-text').textContent; } };
   boxes.forEach(b => { b.hidden = false; b.querySelector('.exp-bar').style.width = '0%'; });
   setText('準備中…');

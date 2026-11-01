@@ -503,10 +503,12 @@ class Renderer {
   drawCut(env) {
     const cut = env.cut, L = J.LAYOUTS[cut.layout] || J.LAYOUTS.center;
     const decor = cut.decor || [];
-    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { D.draw(env, null, d); } catch (e) { console.warn(e); } }
+    const dims=cut.simpleCircleRecipe?.centerNativeDims,dx=dims?(env.W-dims.W)/2:0,dy=dims?(env.H-dims.H)/2:0;
+    const drawDecor=(d,bb)=>{const D=J.DECOR[d.id];if(!D)return;if(!dims){D.draw(env,bb,d);return;}const b=bb?{...bb,x0:bb.x0-dx,x1:bb.x1-dx,y0:bb.y0-dy,y1:bb.y1-dy,cx:bb.cx-dx,cy:bb.cy-dy}:bb;env.ctx.save();try{env.ctx.translate(dx,dy);D.draw({...env,W:dims.W,H:dims.H},b,d);}finally{env.ctx.restore();}};
+    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { drawDecor(d, null); } catch (e) { console.warn(e); } }
     let bb = null;
     try { if (!cut.effectsOnly) bb = L.render(env); } catch (e) { if (env.placementRecording) throw e; console.warn('layout', cut.layout, e); }
-    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { D.draw(env, bb, d); } catch (e) { console.warn(e); } }
+    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { drawDecor(d, bb); } catch (e) { console.warn(e); } }
     return bb;
   }
 

@@ -99,7 +99,7 @@ function stageBounds(local,item,plan,cut,bodyOnly=false){
  return union(b,...decor);
 }
 function render(env,item){
- const P=env.cut.params,{W,H,sc}=env,bb=J.mainDraw(env,{...item,color:P.accent?sc.accent:sc.fg});
+ const P=env.cut.params,{W,sc}=env,H=env.cut.simpleCircleRecipe?.centerNativeDims?.H??env.H,bb=J.mainDraw(env,{...item,color:P.accent?sc.accent:sc.fg});
  if(bb&&P.sub&&env.cut.lineText!==env.cut.text)env.draw({text:env.cut.lineText,font:env.st.fonts.body[0],size:J.clamp(H*.026,16,34),x:item.x,y:bb.y1+H*.07,track:.22,color:sc.sub,alpha:J.E.outCubic(env.pIn),ghost:false});
  if(bb&&P.under){const e=J.E.outExpo(env.pIn*1.2-.2),o=J.E.inCubic(env.pOut);if(e>0&&o<1)env.line([[J.lerp(bb.x0,bb.x1,o),bb.y1+item.size*.14],[J.lerp(bb.x0,bb.x1,e),bb.y1+item.size*.14]],sc.accent,Math.max(2,item.size*.03),1);}
  return bb;
@@ -109,7 +109,7 @@ function render(env,item){
 // Moving only its origin retains every internal coordinate, size and clock.
 // The caller remains responsible for layout targeting and motion/post preflight.
 const viewportHandles=cut=>!!cut.area&&!(cut.area.angle||0)&&[cut.area.x,cut.area.y,cut.area.w,cut.area.h].every(Number.isFinite)&&cut.area.x>=0&&cut.area.y>=0&&cut.area.w>0&&cut.area.h>0&&cut.area.x+cut.area.w<=1&&cut.area.y+cut.area.h<=1&&!cut.drawing&&!cut.effectsOnly;
-function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null}){
+function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldRange=null,reflowItem=null,nativeDims=null}){
  const S=A.simpleCircle,activeHold=providedHoldRange||S.centerHoldInterval?.(plan,cut)||null,a=cut.area,W=plan.W,H=plan.H,st=cut.effectStyle||plan.style,fx=cut.effectFx||plan.fx,cw=Math.round(W*scale),quarter=Math.max(1,Math.round(cw/4)),up=cw/quarter;
  // The hold-only path retains the native glow and uses a practical 4.5-sigma
  // support; faint bloom tails beyond that support are not certified.
@@ -117,9 +117,13 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
  const native={x0:a.x*W,y0:a.y*H,x1:(a.x+a.w)*W,y1:(a.y+a.h)*H};let local={bounds:native,body:native,renderScale:scale};
  let project=(_local,item,_plan,_cut,bodyOnly)=>{const x=bodyOnly?0:pad+W*.016*rgb+post.x,y=bodyOnly?0:pad+H*.004*rgb+post.y;return [[native.x0+item.x-x,native.y0+item.y-y],[native.x1+item.x+x,native.y0+item.y-y],[native.x1+item.x+x,native.y1+item.y+y],[native.x0+item.x-x,native.y1+item.y+y]];};
  let sourceItem=null,partSupports=null,holdWindow=activeHold,usedJellyUnits=false;
+ const roleSeparated=['marquee','tile'].includes(cut.layout);
+ // Bubble motes are an independent background. The whole viewport may only
+ // remain unchanged until a role-separated move is available.
+ if(cut.layout==='bubbles'&&cut.params.motes){const unchanged=S.nativeViewportIdentity(plan,cut,scale,region,previous);return unchanged?{area:{...a},...unchanged}:{diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_INDEPENDENT_MOTES'}};}
  const sourceCut=J.lyricRenderCut?.({...cut,area:null})||{...cut,area:null},jellyClock=cut.cam==='jelly'&&activeHold&&activeHold.native.start-activeHold.step-1.6/24>=cut.start,jellyHold=jellyClock&&holdHandles(sourceCut),centerSource=(handles(sourceCut)||activeHold&&holdHandles(sourceCut))&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyHold)&&(cut.decor||[]).every(d=>d.id==='memphis'||activeHold&&d.id==='starburst');
  if(centerSource){
-  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},env={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc:cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length]},item=J.basicMainItem(env);
+  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},env={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc:cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length]},item=reflowItem||J.basicMainItem(env);
   // Measure the exact native item in its original viewport, including its
   // original subtitle scale, attached rule and native Memphis coordinates.
   holdWindow=activeHold;const holdOnly=!!holdWindow;
@@ -135,15 +139,47 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
    local={bounds:absolute(false),body:absolute(true),renderScale:scale};
   }
   project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma,jellyHoldOnly:!!jellyHold});
-  if(sourceItem.unitSupport){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),bbRanges=[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges];let complete=true;for(const d of cut.decor||[]){const args={W:sw,H:sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges,includeFallback:!holdOnly||cachedPartial,random:J.r},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  if(reflowItem){
+   // Reflow must not create new clip loss in primary source ink. Unlike
+   // decoration, these units represent the legible text, rule and subtitle.
+   if(!sourceItem.unitSupport||item.shadow||item.blur||item.extrude)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'UNMEASURED_REFLOW_INK'}};
+   const preClip=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsChroma:true,activeRange:holdWindow.real,jellyHoldOnly:!!jellyHold,preClip:true});
+   for(const u of sourceItem.unitSupport.units){const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost},b=A.bounds([preClip(local,{x:0,y:0},plan,cut)]);if(b.x0<native.x0||b.y0<native.y0||b.x1>native.x1||b.y1>native.y1)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'REFLOW_CLIPS_PRIMARY_INK'}};}
+  }
+  if(sourceItem.unitSupport){
+   const units=sourceItem.unitSupport.units.slice(),shiftX=nativeDims?(sw-nativeDims.W)/2:0,shiftY=nativeDims?(sh-nativeDims.H)/2:0,cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),baseRanges=cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges,bbRanges=[Object.fromEntries(Object.entries(baseRanges).map(([k,v])=>[k,v.map(x=>x-(k[0]==='x'?shiftX:shiftY))]))];
+   const preClip=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsChroma:true,activeRange:holdWindow?.real,jellyHoldOnly:!!jellyHold,preClip:true}),intersects=(b,clip)=>b.x0<clip.x1&&b.x1>clip.x0&&b.y0<clip.y1&&b.y1>clip.y0,box=(u,projector)=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return A.bounds([projector(local,{x:0,y:0},plan,cut)]);};
+   let original=null,originalProject=null,originalClip=null,complete=true;
+   if(nativeDims&&(cut.decor||[]).length){
+    const oldArea=cut.simpleCircleSourceArea,oldCut={...cut,area:oldArea},oldItem=J.basicMainItem({W:nativeDims.W,H:nativeDims.H,cut:sourceCut,sc:env.sc});
+    original=sourceUnits(oldItem,sourceCut,sourcePlan,{holdOnly});
+    if(!original||!oldArea)complete=false;
+    else{originalProject=A.nativeBlockCircle.viewportProject(plan,oldCut,scale,{allCutsChroma:true,activeRange:holdWindow.real,jellyHoldOnly:!!jellyHold,preClip:true});originalClip={x0:oldArea.x*W,y0:oldArea.y*H,x1:(oldArea.x+oldArea.w)*W,y1:(oldArea.y+oldArea.h)*H};}
+   }
+   for(const d of cut.decor||[]){
+    if(!complete)break;
+    const make=(ranges)=>{const args={W:nativeDims?.W??sw,H:nativeDims?.H??sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges:[ranges],includeFallback:!holdOnly||cachedPartial,random:J.r};return d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);},parts=make(bbRanges[0]);
+    if(!parts?.length){complete=false;break;}
+    const shifted=parts.map(u=>({...u,bounds:{x0:u.bounds.x0+shiftX,x1:u.bounds.x1+shiftX,y0:u.bounds.y0+shiftY,y1:u.bounds.y1+shiftY}}));
+    if(nativeDims){
+     const oldParts=make(cachedPartial?original.bbRangesAny:original.bbRanges);if(!oldParts?.length){complete=false;break;}
+     const oldMayAppear=oldParts.some(u=>intersects(box(u,originalProject),originalClip)),newMayAppear=shifted.some(u=>intersects(box(u,preClip),native));
+     if(oldMayAppear&&!newMayAppear){complete=false;break;}
+    }
+    units.push(...shifted);
+   }
+   if(complete)partSupports=units.filter(u=>!nativeDims||intersects(box(u,preClip),native)).map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost},bounds=A.bounds([project(local,{x:0,y:0},plan,cut)]),rawBody=A.bounds([preClip(local,{x:0,y:0},plan,cut,true)]),body=nativeDims&&!intersects(rawBody,native)?bounds:A.bounds([project(local,{x:0,y:0},plan,cut,true)]);return {owner:u.owner,bounds,body};});
+  }
  }
- if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','stack','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
-  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
-  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):A.basicUnits?.(args);
+ if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','stack','marquee','tile','headlineDeck','dictionary','contents','footnote','proofread','poster','numbered','vcols','ticket','labels','swissGrid','lowerThird','frameBox','quote','ruler','tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps','corners','staircase','zigzag','gridCells','genkou','typeSpecimen','kanjiFocus','searchBar','notification','chat'].includes(cut.layout)){
+  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
+  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):cut.layout==='lowerThird'?A.lowerThirdUnits?.(args):['frameBox','quote','ruler'].includes(cut.layout)?A.framedUnits?.(args):['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)?A.typoStaticUnits?.(args):['corners','staircase','zigzag','gridCells','genkou'].includes(cut.layout)?A.multirowUnits?.(args):['typeSpecimen','kanjiFocus'].includes(cut.layout)?A.bSpecimenFocusUnits?.(args):['searchBar','notification','chat'].includes(cut.layout)?A.uiUnits?.(args):roleSeparated?A.repeatedUnits?.(args):['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)?A.editorialUnits?.(args):A.basicUnits?.(args);
   if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
+ // The nativeIdentity viewport would also move tiledAux; never use it here.
+ if(roleSeparated&&!partSupports){const unchanged=S.nativeViewportIdentity(plan,cut,scale,region,previous);return unchanged?{area:{...a},...unchanged}:{diagnostic:{cut:cut.index,status:'unsupported',reason:'UNSUPPORTED_ROLE_SEPARATED_UNITS'}};}
  const domain=S.domain(plan,{...cut,simpleCircleClip:true},region,project),candidates=[];
- if(!jellyHold&&!usedJellyUnits&&!(partSupports&&!centerSource)&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
+ if(!reflowItem&&!jellyHold&&!usedJellyUnits&&!(partSupports&&!centerSource)&&!(centerSource&&(cut.decor||[]).some(d=>d.id==='starburst')))for(const r of domain.regions){const placed=domain.place(local,r);if(placed)candidates.push({...placed,region:r,distance:Math.hypot(placed.offset[0]/W,placed.offset[1]/H)});}
  if(!candidates.length&&partSupports){
   const rectangle=b=>[[b.x0,b.y0],[b.x1,b.y0],[b.x1,b.y1],[b.x0,b.y1]],body=union(...partSupports.map(p=>p.body)),xmin=-body.x0,xmax=W-body.x1,ymin=-body.y0,ymax=H-body.y1,c=domain.circle,R=c.r+domain.pad;
   if(xmin<=xmax&&ymin<=ymax){
@@ -152,6 +188,15 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
    // Merge owner branches only to schedule candidates. Acceptance retains each
    // primitive, so empty spaces between native objects remain empty.
    const owners=new Map();for(const p of partSupports)owners.set(p.owner,owners.has(p.owner)?union(owners.get(p.owner),p.bounds):p.bounds);
+   // Include side-tangent placements at the natural/centered coordinates.
+   // Existing endpoint-only pairs can miss clear placements in the middle.
+   if(cut.layout==='center'){
+    const all=union(...partSupports.map(p=>p.bounds));
+    for(const b of [...owners.values(),all]){
+     for(const x of xs)for(const y of [clampY(c.cy-R-b.y1-1e-5),clampY(c.cy+R-b.y0+1e-5)])offsets.push([x,y]);
+     for(const y of ys)for(const x of [clampX(c.cx-R-b.x1-1e-5),clampX(c.cx+R-b.x0+1e-5)])offsets.push([x,y]);
+    }
+   }
    for(const b of owners.values()){
     for(const x of [clampX(c.cx-R-b.x1-1e-5),clampX(c.cx+R-b.x0+1e-5)])for(const y of [ymin,ymax])offsets.push([x,y]);
     for(const y of [clampY(c.cy-R-b.y1-1e-5),clampY(c.cy+R-b.y0+1e-5)])for(const x of [xmin,xmax])offsets.push([x,y]);
@@ -169,9 +214,29 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
   }
  }
  const old=previous?.policy===S.policy?previous.diagnostics.find(d=>d.cut===cut.index&&d.status==='safe'):null;
- candidates.sort((a,b)=>b.region.score-a.region.score||a.distance-b.distance||Number(b.region.direction===old?.direction)-Number(a.region.direction===old?.direction));
- const win=candidates[0];if(!win)return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT'}};
- return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),nativeSourcePreserved:true,sourceArea:{...a},offset:win.offset.slice(),allClockGeneration:false}};
+ const fitness=(envelope,r)=>{const b=A.bounds([envelope]),w=b.x1-b.x0,h=b.y1-b.y0,rw=r.x1-r.x0,rh=r.y1-r.y0;return w>0&&h>0&&rw>0&&rh>0?Math.abs(Math.log((w/h)/(rw/rh))):Infinity;};
+ candidates.sort((a,b)=>b.region.score-a.region.score||fitness(a.envelope,a.region)-fitness(b.envelope,b.region)||a.distance-b.distance||Number(b.region.direction===old?.direction)-Number(a.region.direction===old?.direction));
+ const win=candidates[0];if(!win){
+  if(!reflowItem&&centerSource&&holdWindow&&sourceItem?.unitSupport&&!cut.text.includes('\n')&&typeof Intl.Segmenter==='function'){
+   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],native=J.basicMainItem({W:sw,H:sh,cut:sourceCut,sc}),chars=[...cut.text],n=chars.length,step=native.size*(native.lead||1.2),advance=Math.max(...chars.map(c=>J.metrics.adv(native.font,c)*native.size))+native.size*Math.max(0,native.track||0),boundaries=new Set([...new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(cut.text)].map(x=>x.index)),results=[];
+   const graphemes=[...new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(cut.text)],wordSegments=[...new Intl.Segmenter(undefined,{granularity:'word'}).segment(cut.text)],balanced=(per,front)=>{
+    const n=graphemes.length,rows=Math.ceil(n/per),base=Math.floor(n/rows),extra=n%rows,lines=[];let i=0;
+    for(let row=0;row<rows;row++){const len=base+(front?row<extra:row>=rows-extra?1:0),end=i+len;if(end<n){const next=graphemes[end],pos=next.index;if(/^[\s\p{P}ぁぃぅぇぉっゃゅょゎゕゖァィゥェォッャュョヮヵヶㇰ-ㇿー]/u.test(next.segment)||wordSegments.some(w=>w.isWordLike&&/[\p{Script=Latin}0-9]/u.test(w.segment)&&pos>w.index&&pos<w.index+w.segment.length))return null;}lines.push(graphemes.slice(i,end).map(g=>g.segment).join(''));i=end;}
+    return lines.join('\n');
+   };
+   for(const r of [...domain.regions].sort((a,b)=>b.score-a.score)){
+    if(results.length&&r.score<results[0].diagnostic.score)break;
+    const rw=r.x1-r.x0,rh=r.y1-r.y0,ratio=rw/rh;if(!(rw>0&&rh>0))continue;
+    const ideal=Math.sqrt(n*step*ratio/Math.max(1,advance)),variants=new Set([Math.max(1,Math.min(n,Math.floor(ideal))),Math.max(1,Math.min(n,Math.ceil(ideal)))]),seenTexts=new Set();
+    for(const per of variants)for(const text of [J.splitLines(cut.text,per),balanced(per,true),balanced(per,false)]){if(text==null||seenTexts.has(text)||text.replaceAll('\n','')!==cut.text)continue;seenTexts.add(text);let pos=0,valid=true;const lines=text.split('\n');for(let i=0;i<lines.length-1;i++){pos+=lines[i].length;if(!boundaries.has(pos)||/[A-Za-z0-9]/.test(cut.text[pos-1])&&/[A-Za-z0-9]/.test(cut.text[pos])){valid=false;break;}}if(!valid)continue;
+     const area={x:r.x0/W,y:r.y0/H,w:rw/W,h:rh/H},item={...native,text,x:native.x+(rw-sw)/2,y:native.y+(rh-sh)/2};delete item._lay;delete item._m;const result=prepareViewport(plan,{...cut,area,simpleCircleSourceArea:{...a}},{scale,region,previous,holdRange:holdWindow,reflowItem:item,nativeDims:{W:sw,H:sh}});if(result.recipe&&result.diagnostic.direction===r.direction)results.push(result);
+    }
+   }
+   results.sort((a,b)=>{const x=a.diagnostic,y=b.diagnostic;return y.score-x.score||fitness(x.envelope,x.region)-fitness(y.envelope,y.region)||Math.hypot(x.offset[0]/W,x.offset[1]/H)-Math.hypot(y.offset[0]/W,y.offset[1]/H)||Number(y.direction===old?.direction)-Number(x.direction===old?.direction);});if(results.length)return results[0];
+  }
+  return {diagnostic:{cut:cut.index,status:'insufficient-space',reason:'NO_SAFE_NATIVE_VIEWPORT'}};
+ }
+ return {area:{...a,x:a.x+win.offset[0]/W,y:a.y+win.offset[1]/H},recipe:roleSeparated?{sourceFormula:{layout:cut.layout,W:W*a.w,H:H*a.h,offset:win.offset.slice(),nativeViewport:true,sourceArea:{...a},roleSeparated:true},holdWindow}:{nativeIdentity:true,nativeViewportOffset:win.offset.slice(),...(reflowItem?{centerViewportItem:reflowItem,...(nativeDims?{centerNativeDims:nativeDims}:{})}:{}),...(holdWindow?{holdWindow}: {})},diagnostic:{cut:cut.index,status:'safe',safety:holdWindow?'safe-hold':'all-native-clocks',...(holdWindow?{holdWindow,bloomSigma,lightTailBeyondSupport:'not-certified'}:{}),method:win.unitEnvelopes?'translated-native-owned-units':centerSource?'translated-native-center-support':'translated-native-viewport',direction:win.region.direction,score:win.region.score,region:win.region,envelope:win.envelope,...(win.unitEnvelopes?{unitEnvelopes:win.unitEnvelopes}:{}),nativeSourcePreserved:!reflowItem,...(reflowItem?{reflowText:reflowItem.text,nativeSize:reflowItem.size}:{}),sourceArea:nativeDims?{...cut.simpleCircleSourceArea}: {...a},offset:win.offset.slice(),allClockGeneration:false}};
 }
 A.centerCircle=Object.freeze({handles,envelope,stageBounds,render,viewportHandles,prepareViewport,sourceUnits});
 })();
