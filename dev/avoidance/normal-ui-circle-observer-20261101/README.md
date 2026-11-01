@@ -7,3 +7,5 @@
 実行は `dev/avoidance/qt-resource-runtime/README.md` に従い容量確認・同時1件・終了回収を行う。出力はリポジトリ外に置く。対応状況を示す診断、描画あり、円内差、clip 可視性は別の結果として扱う。
 
 `boundary-probe-trial.patch` はこの source から、不採用の保持期試作を観測した5演出・開始/終了境界用 source への差分。適用先はこのディレクトリ内のコピーであり、製品ソースへの patch ではない。
+
+`memphis-input/` の3ファイルは別の取得 probe。通常 UI の corners / staircase / mixed について最初に一致した `memphisUnits` 入力を記録し、元関数の戻値を変えない。mixed は未採用 provider の試作を含む。実行時には、このディレクトリの `qt-service-visible.py` を probe と同じディレクトリへコピーするほか、上記の固定パス・runtime 条件を満たす必要がある。入力の保存は全候補や描画合格を示さない。

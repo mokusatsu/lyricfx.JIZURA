@@ -1,0 +1,33 @@
+--- a/src/11zz14q_multirow_units.js
++++ b/src/11zz14q_multirow_units.js
+@@ -1,6 +1,6 @@
+ /* A26 multi-block/character native hold supports. */
+ (()=>{'use strict';
+-const A=J.placement,ID=[1,0,0,1,0,0],layouts=new Set(['corners','staircase','zigzag','gridCells','genkou']),keys=['x0','x1','y0','y1'];
++const A=J.placement,ID=[1,0,0,1,0,0],layouts=new Set(['corners','staircase','zigzag','gridCells','genkou','mixed']),keys=['x0','x1','y0','y1'];
+ function multirowUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+  const p=cut.params;
+  if(!layouts.has(cut.layout)||!holdOnly||!holdWindow||cut.layoutARecipe||
+@@ -41,7 +41,7 @@
+  }
+  // Actual native fallback when no mainDraw returns a bbox.
+  let fallback;
+- if(cut.layout==='corners'){
++ if(cut.layout==='mixed'){fallback={x0:W*.35,x1:W*.65,y0:H*.4,y1:H*.6};}else if(cut.layout==='corners'){
+   if(items.length!==2)return null;
+   const a=J.itemBox(items[0]),b=J.itemBox(items[1]);fallback={x0:Math.min(a.x0,b.x0),x1:Math.max(a.x1,b.x1),y0:a.y0,y1:b.y1};
+  }else if(cut.layout==='staircase'){
+--- a/src/11zz14a_center_circle.js
++++ b/src/11zz14a_center_circle.js
+@@ -171,9 +171,9 @@
+    if(complete)partSupports=units.filter(u=>!nativeDims||intersects(box(u,preClip),native)).map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost},bounds=A.bounds([project(local,{x:0,y:0},plan,cut)]),rawBody=A.bounds([preClip(local,{x:0,y:0},plan,cut,true)]),body=nativeDims&&!intersects(rawBody,native)?bounds:A.bounds([project(local,{x:0,y:0},plan,cut,true)]);return {owner:u.owner,bounds,body};});
+   }
+  }
+- if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','stack','marquee','tile','headlineDeck','dictionary','contents','footnote','proofread','poster','numbered','vcols','ticket','labels','swissGrid','lowerThird','frameBox','quote','ruler','tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps','corners','staircase','zigzag','gridCells','genkou','typeSpecimen','kanjiFocus','searchBar','notification','chat'].includes(cut.layout)){
++ if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','stack','marquee','tile','headlineDeck','dictionary','contents','footnote','proofread','poster','numbered','vcols','ticket','labels','swissGrid','lowerThird','frameBox','quote','ruler','tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps','corners','staircase','zigzag','gridCells','genkou','mixed','typeSpecimen','kanjiFocus','searchBar','notification','chat'].includes(cut.layout)){
+   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:nativeDims?.W??sw,H:nativeDims?.H??sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
+-  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):cut.layout==='lowerThird'?A.lowerThirdUnits?.(args):['frameBox','quote','ruler'].includes(cut.layout)?A.framedUnits?.(args):['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)?A.typoStaticUnits?.(args):['corners','staircase','zigzag','gridCells','genkou'].includes(cut.layout)?A.multirowUnits?.(args):['typeSpecimen','kanjiFocus'].includes(cut.layout)?A.bSpecimenFocusUnits?.(args):['searchBar','notification','chat'].includes(cut.layout)?A.uiUnits?.(args):roleSeparated?A.repeatedUnits?.(args):['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)?A.editorialUnits?.(args):A.basicUnits?.(args);
++  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):cut.layout==='lowerThird'?A.lowerThirdUnits?.(args):['frameBox','quote','ruler'].includes(cut.layout)?A.framedUnits?.(args):['tyMargin','tyBaseline','tyJustify','tyRuby','tyIndexTable','tySquare','tyLineFocus','tyVRuler','tyFullTrack','tyStatCount','tyScaleSteps'].includes(cut.layout)?A.typoStaticUnits?.(args):['corners','staircase','zigzag','gridCells','genkou','mixed'].includes(cut.layout)?A.multirowUnits?.(args):['typeSpecimen','kanjiFocus'].includes(cut.layout)?A.bSpecimenFocusUnits?.(args):['searchBar','notification','chat'].includes(cut.layout)?A.uiUnits?.(args):roleSeparated?A.repeatedUnits?.(args):['headlineDeck','dictionary','contents','footnote','proofread','poster','numbered'].includes(cut.layout)?A.editorialUnits?.(args):A.basicUnits?.(args);
+   if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
+  }
+  // The nativeIdentity viewport would also move tiledAux; never use it here.
