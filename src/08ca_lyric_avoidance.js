@@ -790,7 +790,8 @@
       const finalTX = verticalOnly ? 0 : tx;
       const sbb = scaleAndShiftBB(bb, bb.cx, bb.cy, s, finalTX, ty);
       const clearance = rectCircleDist(sbb, circle.cx, circle.cy, circle.R);
-      if (clearance < -2) continue;
+      if (clearance < 0 || sbb.x0 < 0 || sbb.y0 < 0 || sbb.x1 > W || sbb.y1 > H ||
+          sbb.x0 < reg.x0 || sbb.y0 < reg.y0 || sbb.x1 > reg.x1 || sbb.y1 > reg.y1) continue;
       const dist = Math.hypot(finalTX, ty);
       // Prefer larger scale (closer to 1.0) and smaller shift distance
       const score = s * 1000 - dist * 0.35 + Math.min(20, clearance);
@@ -807,6 +808,38 @@
           bb: sbb,
         };
       }
+    }
+    return best;
+  }
+
+  // Last resort: corner-anchored rectangles are nested as their scale grows.
+  // Search each corner, then prefer the largest fit and the shortest move on ties.
+  function solveCornerFallback(bb, W, H, circle) {
+    if (![bb.x0, bb.y0, bb.x1, bb.y1, bb.cx, bb.cy, bb.w, bb.h, W, H, circle.cx, circle.cy, circle.R].every(Number.isFinite) ||
+        bb.w <= 0 || bb.h <= 0 || W <= 0 || H <= 0 || circle.R < 0) return null;
+    let best = null;
+    for (const right of [false, true]) for (const bottom of [false, true]) {
+      const at = s => {
+        const x0 = right ? W - bb.w * s : 0;
+        const y0 = bottom ? H - bb.h * s : 0;
+        const tx = x0 + bb.w * s / 2 - bb.cx;
+        const ty = y0 + bb.h * s / 2 - bb.cy;
+        return { tx, ty, scale: s, bb: scaleAndShiftBB(bb, bb.cx, bb.cy, s, tx, ty) };
+      };
+      let lo = 0, hi = Math.min(1, W / bb.w, H / bb.h);
+      if (rectCircleDist(at(0).bb, circle.cx, circle.cy, circle.R) < 0) continue;
+      for (let i = 0; i < 40; i++) {
+        const mid = (lo + hi) / 2;
+        if (rectCircleDist(at(mid).bb, circle.cx, circle.cy, circle.R) < 0) hi = mid;
+        else lo = mid;
+      }
+      if (lo <= 1e-9) continue;
+      const candidate = at(lo);
+      const b = candidate.bb;
+      if (b.x0 < -1e-7 || b.y0 < -1e-7 || b.x1 > W + 1e-7 || b.y1 > H + 1e-7 ||
+          rectCircleDist(b, circle.cx, circle.cy, circle.R) < 0) continue;
+      if (!best || candidate.scale > best.scale + 1e-9 ||
+          (Math.abs(candidate.scale - best.scale) <= 1e-9 && Math.hypot(candidate.tx, candidate.ty) < Math.hypot(best.tx, best.ty))) best = candidate;
     }
     return best;
   }
@@ -1208,14 +1241,15 @@
       if (pushV) {
         return { mode: 'transform', tx: 0, ty: pushV.ty, scale: 1, pivotX: fullBB.cx, pivotY: fullBB.cy, mainBB, fullBB, shiftedBB: pushV.bb };
       }
-      const fitV = solveScaledRegionFit(fullBB, W, H, circle, { verticalOnly: true, minScale: 0.35 });
+      const fitV = solveScaledRegionFit(fullBB, W, H, circle, { verticalOnly: true, minScale: 0.35 })
+        || solveCornerFallback(mainBB, W, H, circle);
       return {
         mode: 'transform',
-        tx: 0,
-        ty: fitV ? fitV.ty : (circle.cy - circle.R - fullBB.y1),
-        scale: fitV ? fitV.scale : 0.45,
-        pivotX: fullBB.cx,
-        pivotY: fullBB.cy,
+        tx: fitV ? fitV.tx : 0,
+        ty: fitV ? fitV.ty : 0,
+        scale: fitV ? fitV.scale : 1,
+        pivotX: fitV && fitV.pivotX !== undefined ? fitV.pivotX : mainBB.cx,
+        pivotY: fitV && fitV.pivotY !== undefined ? fitV.pivotY : mainBB.cy,
         mainBB,
         fullBB,
         shiftedBB: fitV ? fitV.bb : fullBB,
@@ -1250,12 +1284,13 @@
           shiftedBB: push.bb,
         };
       }
-      const scaled = solveScaledRegionFit(targetBB, W, H, circle, { minScale: 0.45 });
+      const scaled = solveScaledRegionFit(targetBB, W, H, circle, { minScale: 0.45 })
+        || solveCornerFallback(targetBB, W, H, circle);
       return {
         mode: 'tiledAux',
         tx: scaled ? scaled.tx : 0,
-        ty: scaled ? scaled.ty : (circle.cy - circle.R - targetBB.y1),
-        scale: scaled ? scaled.scale : 0.65,
+        ty: scaled ? scaled.ty : 0,
+        scale: scaled ? scaled.scale : 1,
         pivotX: targetBB.cx,
         pivotY: targetBB.cy,
         mainBB: targetBB,
@@ -1289,14 +1324,15 @@
         if (pushV) {
           return { mode: 'transform', tx: 0, ty: pushV.ty, scale: 1, pivotX: fullBB.cx, pivotY: fullBB.cy, mainBB, fullBB, shiftedBB: pushV.bb };
         }
-        const fitV = solveScaledRegionFit(fullBB, W, H, circle, { verticalOnly: true, minScale: 0.48 });
+        const fitV = solveScaledRegionFit(fullBB, W, H, circle, { verticalOnly: true, minScale: 0.48 })
+          || solveCornerFallback(mainBB, W, H, circle);
         return {
           mode: 'transform',
-          tx: 0,
-          ty: fitV ? fitV.ty : (circle.cy - circle.R - fullBB.y1),
-          scale: fitV ? fitV.scale : 0.6,
-          pivotX: fullBB.cx,
-          pivotY: fullBB.cy,
+          tx: fitV ? fitV.tx : 0,
+          ty: fitV ? fitV.ty : 0,
+          scale: fitV ? fitV.scale : 1,
+          pivotX: fitV && fitV.pivotX !== undefined ? fitV.pivotX : mainBB.cx,
+          pivotY: fitV && fitV.pivotY !== undefined ? fitV.pivotY : mainBB.cy,
           mainBB,
           fullBB,
           shiftedBB: fitV ? fitV.bb : fullBB,
@@ -1350,14 +1386,15 @@
       if (pushC) {
         return { mode: 'transform', tx: pushC.tx, ty: pushC.ty, scale: 1, pivotX: boxToClear.cx, pivotY: boxToClear.cy, mainBB, fullBB, shiftedBB: pushC.bb };
       }
-      const fitC = solveScaledRegionFit(boxToClear, W, H, circle, { minScale: 0.42 });
+      const fitC = solveScaledRegionFit(boxToClear, W, H, circle, { minScale: 0.42 })
+        || solveCornerFallback(mainBB, W, H, circle);
       return {
         mode: 'transform',
         tx: fitC ? fitC.tx : 0,
-        ty: fitC ? fitC.ty : (circle.cy - circle.R - boxToClear.y1),
-        scale: fitC ? fitC.scale : 0.55,
-        pivotX: boxToClear.cx,
-        pivotY: boxToClear.cy,
+        ty: fitC ? fitC.ty : 0,
+        scale: fitC ? fitC.scale : 1,
+        pivotX: fitC && fitC.pivotX !== undefined ? fitC.pivotX : mainBB.cx,
+        pivotY: fitC && fitC.pivotY !== undefined ? fitC.pivotY : mainBB.cy,
         mainBB,
         fullBB,
         shiftedBB: fitC ? fitC.bb : boxToClear,
@@ -1402,12 +1439,13 @@
     }
 
     // Fallback Policy B: uniform scale around primary bbox center + shift into best safe region
-    const fit = solveScaledRegionFit(mainBB, W, H, circle, { minScale: 0.42 });
+    const fit = solveScaledRegionFit(mainBB, W, H, circle, { minScale: 0.42 })
+      || solveCornerFallback(mainBB, W, H, circle);
     return {
       mode: 'transform',
       tx: fit ? fit.tx : 0,
-      ty: fit ? fit.ty : (circle.cy - circle.R - mainBB.y1),
-      scale: fit ? fit.scale : 0.55,
+      ty: fit ? fit.ty : 0,
+      scale: fit ? fit.scale : 1,
       pivotX: mainBB.cx,
       pivotY: mainBB.cy,
       mainBB,
