@@ -1282,5 +1282,42 @@
     },
     "scope": "Direct current solver with UI-generated first-cut input. Counts aggregate both source areas and are instrumented; not exhaustive physical feasibility or raster acceptance.",
     "diagnosticPatch": "--- a/src/11zz14y_primary_stage_owners.js\n+++ b/src/11zz14y_primary_stage_owners.js\n@@ -218,7 +218,16 @@\n     anchors.sort((a,b)=>Math.hypot(a[0]/W,a[1]/H)-Math.hypot(b[0]/W,b[1]/H));\n     return {firstBottom,anchors};\n    };\n-   const allOwnedSafe=(it,d)=>[['glyph',it.itemBounds],['entry',it.entryBounds],['exit',it.exitBounds]].every(([kind,b])=>!b||primarySupport(it,kind,b,d).every(p=>inside(p.body)&&inside(p.ink)&&clear(p.bounds)));\n+   const allOwnedSafe=(it,d,phase)=>[['glyph',it.itemBounds],['entry',it.entryBounds],['exit',it.exitBounds]].every(([kind,b])=>!b||primarySupport(it,kind,b,d).every((p,i)=>{\n+    const body=inside(p.body),ink=body&&inside(p.ink),circleOK=ink&&clear(p.bounds),ok=body&&ink&&circleOK;\n+    if(!ok&&cut.layout==='mixed'&&cut.line===0&&cut.part===0){\n+     const trace=window.__ownedPreflightTrace||(window.__ownedPreflightTrace={counts:{},examples:{},wallBudgetAffected:true});\n+     const reason=!body?'body-frame':!ink?'ink-frame':'circle',key=phase+'.'+kind+'.'+reason;\n+     trace.counts[key]=(trace.counts[key]||0)+1;\n+     if(!trace.examples[key]){const ranges=kind==='glyph'?holdRanges:kind==='entry'?rangesBySpan[items.indexOf(it)]:rangesBySpan[rangesBySpan.length-1];trace.examples[key]={owner:p.owner,mi:it.mi,offset:d,range:ranges[i],segment:i,support:p,area:a,circle,pad,W,H};}\n+    }\n+    return ok;\n+   }));\n    const validSuffix=(fixed,d1,firstBottom=null)=>{\n     const second=rest.map(it=>shift(it.itemBounds,d1));\n     if(firstBottom===null&&(second[0].x0+second[0].x1)<=(fixed[fixed.length-1].x0+fixed[fixed.length-1].x1))return false;\n@@ -226,7 +235,7 @@\n      const u={bounds:second[i]},body=stage(u,primary,true);\n      if(firstBottom!==null&&body.y0<=firstBottom||!fits(body,side)||!inside(stage(u,ink))||!clear(stage(u,primary)))return false;\n      for(let j=0;j<fixed.length;j++)if(overlap(second[i],fixed[j])>overlap(rest[i].itemBounds,first[j].itemBounds)+1e-6)return false;\n-     if(!allOwnedSafe(rest[i],d1))return false;\n+     if(!allOwnedSafe(rest[i],d1,'suffix'))return false;\n     }\n     return true;\n    };\n@@ -245,7 +254,7 @@\n     if(!fits(stage(u,primary,true),main)||!inside(stage(u,ink))||!clear(stage(u,primary)))return false;\n     // These are exactly certify's existing per-owner tests; reject an invalid\n     // static plate before selecting a prefix, without omitting any support.\n-    return allOwnedSafe(it,d);\n+    return allOwnedSafe(it,d,'prefix');\n    })&&suffixPossible(d);};\n    let firstResult=A.solveBasic(front.map(u=>rect(u.bounds)),{...circle,r:circle.r+1},W,H,J.h(cut.seed,581,split),{accept:acceptFirst,fitBounds:frontInk});\n    if(firstResult.status!=='safe'){\n"
+  },
+  "laterFollowup20261101": {
+    "scope": "same normal UI source; source-support diagnostics, not accepted candidate or raster proof",
+    "coordinateCorrection": {
+      "stageDx": -7.8968,
+      "referenceCameraScale": 1.02,
+      "sourceDx": -7.7419607843,
+      "conservativeEntryDistanceAfter": 222.2625,
+      "effectiveRadius": 222.4,
+      "note": "reference inverse is consistent; projection scale varies over support window; remaining rectangle shortfall is not pixel-intersection proof"
+    },
+    "decor": {
+      "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-one-tangent-memphis-actual-20261101-01/result.json",
+      "sourceSupportOnly": true,
+      "dynamicRangeCountCoarse": 1120,
+      "fixedCacheFallbackCount": 140,
+      "fallbackOwner0MinClearance": -222.4,
+      "note": "independent edge ranges and fallback create broad conservative supports; actual pixel collision is unproven"
+    },
+    "existingUnifiedSolverTrial": {
+      "result": "mixed failed; no accepted candidate",
+      "preparedMs": 1449,
+      "baselinePreparedMs": 1123.5,
+      "raw": "/workspace/jizura-logic-evidence-20261027/normal-ui-primary-stage-trace-mixed-actual-20261101-04/result.json",
+      "disposition": "reverted"
+    },
+    "pairedEdgeFallbackTrial": {
+      "scope": "one actual normal UI fixed input; strict time cutoff; no result",
+      "firstResult": "interrupted after >30 seconds",
+      "firstRuntime": "/workspace/jizura-logic-evidence-20261027/normal-ui-mixed-paired-fallback-actual-20261101-01-runtime/host.json",
+      "secondResult": "timeout after 25 seconds despite short-circuit",
+      "secondRuntime": "/workspace/jizura-logic-evidence-20261027/normal-ui-mixed-paired-shortcircuit-actual-20261101-01-runtime/host.json",
+      "disposition": "reverted",
+      "notProof": "no placement and no physical impossibility conclusion"
+    },
+    "fallbackReachability": "For the fixed UI sample, static code analysis says that when Memphis is visible a live character bbox exists, including direct seeks; past valid BBC bbox remains possible and must be represented. This has not been generalized or implemented.",
+    "lateStill": "Unaccepted WIP extends tyStrike last-owner static bound from pOut .301 to .601; not yet UI tested."
   }
 }
