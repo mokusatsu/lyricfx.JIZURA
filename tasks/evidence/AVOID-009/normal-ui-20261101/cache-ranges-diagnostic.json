@@ -1,0 +1,188 @@
+{
+  "scope": "Diagnostic direct prepareViewport on original full UI plan; preflight, legacy fallback, other cuts and UI acceptance were not assessed. Baseline comparison and memory peak were not measured.",
+  "complete": true,
+  "errors": [],
+  "head": "9a4d94aefaeee6552a8d6d6b7a0811b534641586",
+  "buildSha256": "a5cbfae353a3236ca4882eb00256b5963dd467c72bc9ea63dcf719ce0eef799a",
+  "pins": [
+    {
+      "file": "probe.cjs",
+      "sha256": "ec036482387e0019ae93dd7b1c854a1a412627d07c0a64484f152f2efb1cd517"
+    },
+    {
+      "file": "qt-service-visible.py",
+      "sha256": "6b4faf3d16ae3187be043ecbedc89f0c240bb050d7df52f9dc2a448eeef4d25e"
+    },
+    {
+      "file": "observe.cjs",
+      "sha256": "89abe58e5d2ce4833e154ca2dcc615fd8921a3c73c9bd7cee9299e61e1852371"
+    },
+    {
+      "file": "viewport-diagnostic.js",
+      "sha256": "96574674422c935046a3058bd56691f654c25290ae0590a860a8cc95e5ced751"
+    }
+  ],
+  "cases": [
+    {
+      "id": "mixed",
+      "result": {
+        "status": "returned",
+        "selection": "mixed",
+        "id": "mixed",
+        "sourceIdentity": "original",
+        "fingerprintMatched": true,
+        "sourceArea": {
+          "x": 0.4592177363720801,
+          "y": 0.72,
+          "w": 0.41489786058917316,
+          "h": 0.245,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "viewportArea": {
+          "x": 0.4592177363720801,
+          "y": 0.5501903622230285,
+          "w": 0.41489786058917316,
+          "h": 0.3898096377769716,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "params": {
+          "fontBig": "mincho_light",
+          "fontSmall": "gothic_med",
+          "mode": "stair",
+          "rotAmp": 8.146376207470894,
+          "smallK": 0.5382350225793198,
+          "accentIdx": 2
+        },
+        "holdRange": {
+          "native": {
+            "start": 0.7986013986013987,
+            "end": 1.02004662004662
+          },
+          "real": {
+            "start": 0.7152680652680653,
+            "end": 1.17004662004662
+          },
+          "step": 0.08333333333333333
+        },
+        "region": {
+          "id": "avoid-default",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "scale": 0.25,
+        "elapsedMs": 920.3000000007451,
+        "memoryBefore": {
+          "usedJSHeapSize": 35100000,
+          "totalJSHeapSize": 53500000,
+          "jsHeapSizeLimit": 3760000000
+        },
+        "memoryAfter": {
+          "usedJSHeapSize": 35100000,
+          "totalJSHeapSize": 53500000,
+          "jsHeapSizeLimit": 3760000000
+        },
+        "memoryMeasurement": "performance.memory snapshot; not peak",
+        "diagnostic": {
+          "cut": 1,
+          "status": "insufficient-space",
+          "reason": "NO_SAFE_NATIVE_VIEWPORT"
+        },
+        "recipePresent": false,
+        "error": null,
+        "samePlan": true,
+        "metricsRevisionBefore": 17,
+        "metricsRevisionAfter": 17,
+        "preflight": "not-assessed",
+        "previous": "null; may differ from UI history",
+        "coarseBaseline": "not-run; needs a separately pinned baseline build",
+        "scope": "direct prepareViewport on original full UI plan with reconstructed first-cut input; not normal prepare, UI acceptance or safety claim"
+      }
+    },
+    {
+      "id": "scatter",
+      "result": {
+        "status": "returned",
+        "selection": "scatter",
+        "id": "scatter",
+        "sourceIdentity": "original",
+        "fingerprintMatched": true,
+        "sourceArea": {
+          "x": 0.4592177363720801,
+          "y": 0.72,
+          "w": 0.41489786058917316,
+          "h": 0.245,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "viewportArea": {
+          "x": 0.4592177363720801,
+          "y": 0.5501903622230285,
+          "w": 0.41489786058917316,
+          "h": 0.3898096377769716,
+          "angle": 0,
+          "lockAspect": true
+        },
+        "params": {
+          "font": "dela",
+          "fontB": "zenkaku",
+          "extras": true
+        },
+        "holdRange": {
+          "native": {
+            "start": 0.7986013986013987,
+            "end": 1.02004662004662
+          },
+          "real": {
+            "start": 0.7152680652680653,
+            "end": 1.17004662004662
+          },
+          "step": 0.08333333333333333
+        },
+        "region": {
+          "id": "avoid-default",
+          "start": 0,
+          "end": null,
+          "center": {
+            "x": 0.5,
+            "y": 0.42
+          },
+          "radius": 0.2
+        },
+        "scale": 0.25,
+        "elapsedMs": 698.2000000011176,
+        "memoryBefore": {
+          "usedJSHeapSize": 35100000,
+          "totalJSHeapSize": 53500000,
+          "jsHeapSizeLimit": 3760000000
+        },
+        "memoryAfter": {
+          "usedJSHeapSize": 35100000,
+          "totalJSHeapSize": 53500000,
+          "jsHeapSizeLimit": 3760000000
+        },
+        "memoryMeasurement": "performance.memory snapshot; not peak",
+        "diagnostic": {
+          "cut": 1,
+          "status": "insufficient-space",
+          "reason": "NO_SAFE_NATIVE_VIEWPORT"
+        },
+        "recipePresent": false,
+        "error": null,
+        "samePlan": true,
+        "metricsRevisionBefore": 18,
+        "metricsRevisionAfter": 18,
+        "preflight": "not-assessed",
+        "previous": "null; may differ from UI history",
+        "coarseBaseline": "not-run; needs a separately pinned baseline build",
+        "scope": "direct prepareViewport on original full UI plan with reconstructed first-cut input; not normal prepare, UI acceptance or safety claim"
+      }
+    }
+  ]
+}

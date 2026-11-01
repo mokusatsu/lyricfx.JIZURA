@@ -1,0 +1,59 @@
+--- a/src/11zz14a_center_circle.js
++++ b/src/11zz14a_center_circle.js
+@@ -182,0 +183,11 @@
++ // Retain every existing coarse winner. Only a failed mixed/scatter coarse
++ // search builds the bounded cache-range supports and retries this same search.
++ for(let trial=0;trial<2;trial++){
++ if(trial===1){
++  if(candidates.length||centerSource||!holdWindow||!['mixed','scatter'].includes(cut.layout)||!['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam))break;
++  const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length];
++  const parts=A.multirowUnits?.({W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow,cacheRanges:true});
++  if(!parts?.units?.length)break;
++  project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:false});
++  partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});
++ }
+@@ -214,0 +226 @@
++ }
+--- a/src/11zz14q_multirow_units.js
++++ b/src/11zz14q_multirow_units.js
+@@ -3,2 +3,2 @@
+-const A=J.placement,ID=[1,0,0,1,0,0],layouts=new Set(['corners','staircase','zigzag','gridCells','genkou']),keys=['x0','x1','y0','y1'];
+-function multirowUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
++const A=J.placement,ID=[1,0,0,1,0,0],layouts=new Set(['corners','staircase','zigzag','gridCells','genkou','mixed','scatter']),keys=['x0','x1','y0','y1'];
++function multirowUnits({W,H,cut,plan,st,holdOnly=true,holdWindow,cacheRanges=false}){
+@@ -5,0 +6 @@
++ if(cacheRanges&&(!['mixed','scatter'].includes(cut.layout)||cut.enter!=='invertBox'||cut.exit!=='tyStrike'||!Number.isFinite(cut.stagger??0)||(cut.stagger??0)<0||!(cut.outDur>0)))return null;
+@@ -44 +45,2 @@
+- if(cut.layout==='corners'){
++ if(['mixed','scatter'].includes(cut.layout)){fallback={x0:W*.35,x1:W*.65,y0:H*.4,y1:H*.6};}
++ else if(cut.layout==='corners'){
+@@ -64 +66,28 @@
+- for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:[ranges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
++ let decorRanges=[ranges];
++ if(cacheRanges){
++  // Every native glyph has exactly one start and one common-exit threshold.
++  // q=0 and q=1 give guaranteed and possible visibility without rounding an
++  // alpha threshold. Adjacent intervals overlap by a conservative time guard.
++  const count=Math.max(1,J.glyphCount(String(cut.text||''))),outStart=cut.dur-cut.outDur,
++        guard=1e-7+1024*Number.EPSILON*(1+Math.abs(cut.start)+Math.abs(cut.dur)+Math.abs(cut.stagger||0)*256);
++  if(!Number.isFinite(guard)||!Number.isFinite(outStart)||!Number.isFinite(cut.dur)||cut.dur<=0||!(cut.decor||[]).length)return null;
++  const meta=items.map((it,i)=>{
++   const glyphs=J.layoutText({...it,_lay:null,_m:null}).filter(g=>g.ch!==' '&&g.ch!=='　');
++   if(glyphs.length!==1||!glyphs[0].ch.trim()||it.size<=.5||!Number.isFinite(it.size)||(it.alpha??1)<=.002||(!it.enter||it.enter===cut.enter)===false||(!it.exit||it.exit===cut.exit)===false||(!it.hold||it.hold===cut.hold)===false)return null;
++   const ord=count>1?J.clamp((+it.mi||0)/(count-1)):0,start=(it.mi|0)*(cut.stagger||0),q0=outStart+cut.outDur*(.3+.3*ord),q1=outStart+cut.outDur*(.7+.3*ord);
++   return [start,q0,q1].every(Number.isFinite)?{start,q0,q1,r:mains[i].bbRangesAny}:null;
++  });
++  if(meta.some(x=>!x))return null;
++  const edges=[0,cut.dur,...meta.flatMap(m=>[m.start,m.q0,m.q1]).filter(t=>t>0&&t<cut.dur)].sort((a,b)=>a-b);
++  const distinct=[...new Set(edges)];
++  if(distinct.length-1>32)return null;
++  decorRanges=[];
++  for(let i=0;i+1<distinct.length;i++){
++   const lo=distinct[i]-guard,hi=distinct[i+1]+guard,possible=meta.filter(m=>m.start<=hi&&m.q1>=lo),guaranteed=meta.filter(m=>m.start<=lo&&m.q0>=hi);
++   if(!possible.length)continue;
++   const values={};for(const k of keys){const is0=k.endsWith('0'),outer=is0?Math.min(...possible.map(m=>m.r[k][0])):Math.max(...possible.map(m=>m.r[k][1])),inner=guaranteed.length?(is0?Math.min(...guaranteed.map(m=>m.r[k][1])):Math.max(...guaranteed.map(m=>m.r[k][0]))):(is0?Math.max(...possible.map(m=>m.r[k][1])):Math.min(...possible.map(m=>m.r[k][0])));values[k]=is0?[outer,inner]:[inner,outer];}decorRanges.push(values);
++  }
++  // Native layouts can return a fixed fallback; getBB may also use centerBB.
++  decorRanges.push(fallback);
++ }
++ for(const d of cut.decor||[]){const args={W,H,P:d,cut,st,bbRanges:decorRanges,includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length)return null;units.push(...parts);}
