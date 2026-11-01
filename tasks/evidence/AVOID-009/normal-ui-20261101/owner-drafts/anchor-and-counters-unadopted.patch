@@ -1,0 +1,70 @@
+--- a/11zz14x_owner_side_solver.js
++++ b/11zz14x_owner_side_solver.js
+@@ -6 +6,5 @@
+- if(items.length<2||!holdWindow||!a||a.angle)return null;
++ // Diagnostic only: first invocation for the selected first-cut layout.
++ const registry=globalThis.__ownerSideCounters||(globalThis.__ownerSideCounters=Object.create(null)),key=cut.layout;
++ const trace=cut.line===0&&cut.part===0&&['mixed','scatter'].includes(key)&&!registry[key]?(registry[key]={invoked:1,input:0,itemOrder:0,furniture:0,regionList:0,candidates:0,regionIntersection:0,anchorBounds:0,anchorEmpty:0,anchorVariants:0,offset:0,readOrder:0,overlapItems:0,overlapFurniture:0,regionFit:0,preclip:0,frame:0,circle:0,cheapPass:0,finalAttempts:0,finalSupport:0,finalFrameOrCircle:0,budget:0,accepted:0}):null;
++
++ if(items.length<2||!holdWindow||!a||a.angle){if(trace)trace.input++;return null;}
+@@ -8 +12 @@
+- if(items.some((v,i)=>v.mi!==i||i&&(v.itemBounds.x0+v.itemBounds.x1)<=items[i-1].itemBounds.x0+items[i-1].itemBounds.x1))return null;
++ if(items.some((v,i)=>v.mi!==i||i&&(v.itemBounds.x0+v.itemBounds.x1)<=items[i-1].itemBounds.x0+items[i-1].itemBounds.x1)){if(trace)trace.itemOrder++;return null;}
+@@ -15,2 +19,2 @@
+- if(!furniture.every(u=>inFrame(stage(u,project,true))&&clear(stage(u))))return null;
+- const regions=domain.regions.filter(r=>r.x0<r.x1&&r.y0<r.y1).sort((x,y)=>y.score-x.score);if(!regions.length)return null;
++ if(!furniture.every(u=>inFrame(stage(u,project,true))&&clear(stage(u)))){if(trace)trace.furniture++;return null;}
++ const regions=domain.regions.filter(r=>r.x0<r.x1&&r.y0<r.y1).sort((x,y)=>y.score-x.score);if(!regions.length){if(trace)trace.regionList++;return null;}
+@@ -24,4 +28,20 @@
+-  const rs=[intersect(main),...(sr?[intersect(sr)]:[])];if(rs.some(r=>r.x0>=r.x1||r.y0>=r.y1))continue;
+-  const groups=[items.map((_,i)=>i).slice(0,split),...(sr?[items.map((_,i)=>i).slice(split)]:[])],offsets=Array(items.length);
+-  for(let g=0;g<groups.length;g++){const b=groupBounds(groups[g]),p=center(b),t=center(rs[g]),d=[t[0]-native.x0-p[0],t[1]-native.y0-p[1]];for(const i of groups[g])offsets[i]=d;}
+-  if(offsets.length!==items.length||!items.every((_,i)=>Array.isArray(offsets[i])&&offsets[i].length===2&&offsets[i].every(Number.isFinite)))continue;
++  if(trace)trace.candidates++;
++  const rs=[intersect(main),...(sr?[intersect(sr)]:[])];if(rs.some(r=>r.x0>=r.x1||r.y0>=r.y1)){if(trace)trace.regionIntersection++;continue;}
++  const groups=[items.map((_,i)=>i).slice(0,split),...(sr?[items.map((_,i)=>i).slice(split)]:[])],boxes=groups.map(groupBounds),clamp=(x,lo,hi)=>Math.max(lo,Math.min(hi,x));
++  // These anchors only propose source offsets: the existing full projected
++  // camera, viewport, owner and decor checks below remain authoritative.
++  const dx=groups.map((_,g)=>center(rs[g])[0]-native.x0-center(boxes[g])[0]),ys=groups.map((_,g)=>[rs[g].y0-native.y0-boxes[g].y0,rs[g].y1-native.y0-boxes[g].y1]);
++  if(ys.some(([lo,hi])=>lo>hi)){if(trace)trace.anchorBounds++;continue;}
++  const variants=[];
++  if(groups.length===1)variants.push([(ys[0][0]+ys[0][1])/2]);
++  else {
++   const lo=Math.max(ys[0][0],ys[1][0]),hi=Math.min(ys[0][1],ys[1][1]);
++   if(lo<=hi){variants.push([clamp(0,lo,hi),clamp(0,lo,hi)]);const mid=(lo+hi)/2;if(mid!==variants[0][0])variants.push([mid,mid]);}
++   // Native glyph bounds in the second run must start strictly below the
++   // first; choose the nearest available source-local ordered pair.
++   const gap=boxes[0].y1-boxes[1].y0+1e-5,hi0=Math.min(ys[0][1],ys[1][1]-gap);
++   if(ys[0][0]<=hi0){const y0=clamp(0,ys[0][0],hi0),y1=clamp(Math.max(0,y0+gap),ys[1][0],ys[1][1]);variants.push([y0,y1]);}
++  }
++  if(trace){trace.anchorVariants+=variants.length;if(!variants.length)trace.anchorEmpty++;}
++  for(const dy of variants){const offsets=Array(items.length);for(let g=0;g<groups.length;g++)for(const i of groups[g])offsets[i]=[dx[g],dy[g]];
++  if(offsets.length!==items.length||!items.every((_,i)=>Array.isArray(offsets[i])&&offsets[i].length===2&&offsets[i].every(Number.isFinite))){if(trace)trace.offset++;continue;}
+@@ -33,0 +54,2 @@
++  if(!valid&&trace)trace.readOrder++;
++  let rejected=null;
+@@ -35,2 +57,2 @@
+-   for(let j=0;j<i;j++)if(overlap(moved[i],moved[j])>overlap(items[i].itemBounds,items[j].itemBounds)+1e-6){valid=false;break;}
+-   for(const f of furniture)if(overlap(moved[i],f.bounds)>overlap(items[i].itemBounds,f.bounds)+1e-6){valid=false;break;}
++   for(let j=0;j<i;j++)if(overlap(moved[i],moved[j])>overlap(items[i].itemBounds,items[j].itemBounds)+1e-6){valid=false;rejected='overlapItems';break;}
++   for(const f of furniture)if(overlap(moved[i],f.bounds)>overlap(items[i].itemBounds,f.bounds)+1e-6){valid=false;rejected=rejected||'overlapFurniture';break;}
+@@ -38 +60 @@
+-   if(valid&&(!inRect(body,r)||!inRect(local,native)||!inFrame(body)||!clear(stage(u))))valid=false;
++   if(valid){if(!inRect(body,r)){valid=false;rejected='regionFit';}else if(!inRect(local,native)){valid=false;rejected='preclip';}else if(!inFrame(body)){valid=false;rejected='frame';}else if(!clear(stage(u))){valid=false;rejected='circle';}}
+@@ -40 +62,2 @@
+-  if(!valid)continue;
++  if(!valid){if(trace&&rejected)trace[rejected]++;continue;}
++  if(trace)trace.cheapPass++;
+@@ -43,0 +67 @@
++  }
+@@ -51 +75 @@
+-  if(expensive++>=3)return {exhausted:true};
++  if(expensive++>=3){if(trace)trace.budget++;return {exhausted:true};}
+@@ -52,0 +77 @@
++  if(trace)trace.finalAttempts++;
+@@ -54 +79,2 @@
+-  if(!complete||!complete.units.every(u=>inFrame(u.body)&&clear(u.bounds)))continue;
++  if(!complete){if(trace)trace.finalSupport++;continue;}
++  if(!complete.units.every(u=>inFrame(u.body)&&clear(u.bounds))){if(trace)trace.finalFrameOrCircle++;continue;}
+@@ -55,0 +82 @@
++  if(trace)trace.accepted++;

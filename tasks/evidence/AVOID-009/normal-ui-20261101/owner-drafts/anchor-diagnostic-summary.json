@@ -1,0 +1,164 @@
+{
+  "scope": "Unadopted anchor and counter instrumentation; default sample, first cut only; counter reasons are first failure per candidate and no physical impossibility proof.",
+  "head": "c63a408f2d7f15226819c2625c1779491a6278d5",
+  "document": {
+    "url": "http://127.0.0.1:38973/",
+    "status": 200,
+    "bytes": 6794167,
+    "sha256": "72de7b0c722455f25afc8bcb0baa1c238c2f19fbbb6d9c655d91fa841fe08a3a",
+    "source": "127.0.0.1 checkout build"
+  },
+  "pins": [
+    {
+      "file": "probe.cjs",
+      "sha256": "1a64962c68e078f23f199552d91e953bb6a4bbfe2b0c458fea1fb05e4670c30b"
+    },
+    {
+      "file": "qt-service-visible.py",
+      "sha256": "6b4faf3d16ae3187be043ecbedc89f0c240bb050d7df52f9dc2a448eeef4d25e"
+    },
+    {
+      "file": "observer81.js",
+      "sha256": "9d07bc6f5b1cf9fbfc94e6dec960bff2476dd968a69848c9306da515bca01f4a"
+    },
+    {
+      "file": "support.js",
+      "sha256": "09185bdef37e50c05243dd325f72301222e7e76df243836697864c9b909042d4"
+    },
+    {
+      "file": "capture.js",
+      "sha256": "133966d4076ff7d963044413a4285db1ad34ebdd99863acadbb9b1c880fcf253"
+    },
+    {
+      "file": "analyze.js",
+      "sha256": "e966796294b3a875726b20fc82e55d964ab5abdb65e97a276a625905ef873750"
+    },
+    {
+      "file": "pixel-ab.js",
+      "sha256": "5e2f75000e4c1397f127e899b20d39da23af84900e8a2aa36b95763032341afa"
+    },
+    {
+      "file": "batch.js",
+      "sha256": "22e8d8183542ef88c4f8a66e6664c956da62c7decf57a4228ea75a248f266e52"
+    },
+    {
+      "file": "neon-diagnostic.js",
+      "sha256": "4a04642e2137c580037d78c4bccdaf7f2543c28a29b55d2eedba5c4beb46fcf9"
+    },
+    {
+      "file": "owner-side-observer.js",
+      "sha256": "5f9caa2b46faf356eddfe26fcd6e78c08ebd5bfb3c9d8a271acbf45cb16a7af6"
+    }
+  ],
+  "complete": true,
+  "errors": [],
+  "cases": [
+    {
+      "id": "mixed",
+      "status": "insufficient-space",
+      "reason": "NO_SAFE_NATIVE_VIEWPORT",
+      "elapsed_ms": 29.700000001117587,
+      "counters": {
+        "mixed": {
+          "invoked": 1,
+          "input": 0,
+          "itemOrder": 0,
+          "furniture": 0,
+          "regionList": 0,
+          "candidates": 44,
+          "regionIntersection": 32,
+          "anchorBounds": 0,
+          "anchorEmpty": 0,
+          "anchorVariants": 28,
+          "offset": 0,
+          "readOrder": 20,
+          "overlapItems": 0,
+          "overlapFurniture": 0,
+          "regionFit": 4,
+          "preclip": 2,
+          "frame": 0,
+          "circle": 2,
+          "cheapPass": 0,
+          "finalAttempts": 0,
+          "finalSupport": 0,
+          "finalFrameOrCircle": 0,
+          "budget": 0,
+          "accepted": 0
+        }
+      },
+      "pixel_status": "not-evaluable",
+      "circle_changed": null
+    },
+    {
+      "id": "scatter",
+      "status": "insufficient-space",
+      "reason": "NO_SAFE_NATIVE_VIEWPORT",
+      "elapsed_ms": 364.59999999962747,
+      "counters": {
+        "mixed": {
+          "invoked": 1,
+          "input": 0,
+          "itemOrder": 0,
+          "furniture": 0,
+          "regionList": 0,
+          "candidates": 44,
+          "regionIntersection": 32,
+          "anchorBounds": 0,
+          "anchorEmpty": 0,
+          "anchorVariants": 28,
+          "offset": 0,
+          "readOrder": 20,
+          "overlapItems": 0,
+          "overlapFurniture": 0,
+          "regionFit": 4,
+          "preclip": 2,
+          "frame": 0,
+          "circle": 2,
+          "cheapPass": 0,
+          "finalAttempts": 0,
+          "finalSupport": 0,
+          "finalFrameOrCircle": 0,
+          "budget": 0,
+          "accepted": 0
+        },
+        "scatter": {
+          "invoked": 1,
+          "input": 0,
+          "itemOrder": 0,
+          "furniture": 1,
+          "regionList": 0,
+          "candidates": 0,
+          "regionIntersection": 0,
+          "anchorBounds": 0,
+          "anchorEmpty": 0,
+          "anchorVariants": 0,
+          "offset": 0,
+          "readOrder": 0,
+          "overlapItems": 0,
+          "overlapFurniture": 0,
+          "regionFit": 0,
+          "preclip": 0,
+          "frame": 0,
+          "circle": 0,
+          "cheapPass": 0,
+          "finalAttempts": 0,
+          "finalSupport": 0,
+          "finalFrameOrCircle": 0,
+          "budget": 0,
+          "accepted": 0
+        }
+      },
+      "pixel_status": "not-evaluable",
+      "circle_changed": null
+    },
+    {
+      "id": "center",
+      "status": "safe",
+      "reason": null,
+      "elapsed_ms": 285.09999999962747,
+      "counters": null,
+      "pixel_status": "measured",
+      "circle_changed": 0
+    }
+  ]
+}

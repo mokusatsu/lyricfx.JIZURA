@@ -15,3 +15,5 @@
 `viewport-diagnostic/units-observer.patch` は、この限定診断に unit 出力観測だけを加えた差分。観測のため関数を一時的にラップし、結果記録にはその処理時間も含まれる。
 
 `owner-candidate-probe.patch` は、このディレクトリの原本から mixed / scatter と対照 center を観測した未採用 owner 試作の probe への差分。診断と実描画は分けて記録する。
+
+`anchor-counters-probe.patch` は同じ原本から、後続の未採用 anchor 試作で候補ごとの最初の不成立理由を集計した probe への差分である。
