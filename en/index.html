@@ -51036,9 +51036,9 @@ function prepareViewport(plan,cut,{scale,region,previous,holdRange:providedHoldR
   project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow?.real,bloomSigma,jellyHoldOnly:!!jellyHold});
   if(sourceItem.unitSupport){const units=sourceItem.unitSupport.units.slice(),cachedPartial=holdOnly&&(sourceCut.enter==='tyRubyDrop'||sourceCut.exit==='cut'&&sourceCut.outDur>0),bbRanges=[cachedPartial?sourceItem.unitSupport.bbRangesAny:sourceItem.unitSupport.bbRanges];let complete=true;for(const d of cut.decor||[]){const args={W:sw,H:sh,P:d,cut:sourceCut,st:sourceStyle,bbRanges,includeFallback:!holdOnly||cachedPartial,random:J.r},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);if(!parts?.length){complete=false;break;}units.push(...parts);}if(complete)partSupports=units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
- if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
+ if(!centerSource&&holdWindow&&(['push','panL','panR','dutch','dollyIn','beatPunch'].includes(cut.cam)||jellyClock&&['pill','neon','magazine','vcols','ticket','labels','swissGrid'].includes(cut.layout))&&['pill','neon','magazine','type','condensed','stack','vcols','ticket','labels','swissGrid'].includes(cut.layout)){
   const sw=W*a.w,sh=H*a.h,sourceStyle={...st,...(cut.fonts?{fonts:cut.fonts}:{})},sourcePlan={...plan,W:sw,H:sh,style:sourceStyle},sc=cut.palette||sourceStyle.schemes[cut.scheme%sourceStyle.schemes.length],args={W:sw,H:sh,cut:sourceCut,plan:sourcePlan,st:sourceStyle,sc,holdOnly:true,holdWindow};
-  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):A.basicUnits?.(args);
+  const parts=cut.layout==='pill'?A.pillUnits?.(args):['neon','magazine'].includes(cut.layout)?A.neonMagazineUnits?.(args):cut.layout==='vcols'?A.verticalUnits?.(args):['ticket','labels'].includes(cut.layout)?A.cardsUnits?.(args):cut.layout==='swissGrid'?A.gridUnits?.(args):cut.layout==='stack'?A.stackUnits?.(args):A.basicUnits?.(args);
   if(parts?.units?.length){const box={x0:0,y0:0,x1:sw,y1:sh};local={bounds:box,body:box,renderScale:scale};usedJellyUnits=!!jellyClock;project=A.nativeBlockCircle.viewportProject(plan,cut,scale,{allCutsBloom:true,allCutsChroma:true,activeRange:holdWindow.real,bloomSigma,jellyHoldOnly:usedJellyUnits});partSupports=parts.units.map(u=>{const local={bounds:u.bounds,body:u.bounds,renderScale:scale,ghost:u.ghost};return {owner:u.owner,bounds:A.bounds([project(local,{x:0,y:0},plan,cut)]),body:A.bounds([project(local,{x:0,y:0},plan,cut,true)])};});}
  }
  const domain=S.domain(plan,{...cut,simpleCircleClip:true},region,project),candidates=[];
@@ -51721,6 +51721,53 @@ function starburstUnits({W,H,P,cut,st,bbRanges,includeFallback=true}){
  return out.length?out:null;
 }
 A.starburstUnits=starburstUnits;
+})();
+
+/* Native stack: separate mainDraw supports; only copy zero returns decor bb. */
+(() => {
+'use strict';
+const A=J.placement;
+function stackUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+ const p=cut.params;
+ if(cut.layout!=='stack'||!holdOnly||!holdWindow||(cut.treat||'none')!=='none'||
+    !['cut','flicker','invertBox'].includes(cut.enter)||!['cut','tyStrike'].includes(cut.exit)||
+    !['still','knCounterRock'].includes(cut.hold)||
+    !(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+    !Number.isInteger(p.copies)||p.copies<1||p.copies>5||![1,-1].includes(p.dir)||
+    !['fade','outline'].includes(p.style)||!Number.isFinite(p.gap+p.xs)||
+    !(cut.decor||[]).every(d=>d.id==='memphis'||d.id==='starburst')||
+    /[\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text))return null;
+ const earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+ if(!Number.isFinite(earliest)||holdWindow.native.start<cut.start||
+    holdWindow.native.end>cut.start+cut.dur-(cut.exit==='cut'?0:cut.outDur))return null;
+ const size=Math.min(J.fitSize(cut.text,p.font,W*.8,H*.22,{track:.03}),H*.19),step=size*p.gap,
+       y0=H/2-p.dir*(p.copies-1)*step/2,source={...cut,layout:'center',area:null,params:{}},units=[];
+ let main;
+ for(let k=p.copies-1;k>=0;k--){
+  const item={text:cut.text,font:p.font,size,x:W/2+p.xs*W*k,y:y0+p.dir*k*step,track:.03,mi:k*1.2};
+  if(k>0&&p.style==='outline')Object.assign(item,{fill:false,stroke:Math.max(1.2,size*.014)});
+  const part=A.centerCircle.sourceUnits(item,source,plan,{holdOnly:true});
+  if(!part)return null;
+  const ready=cut.start+(item.mi|0)*(cut.stagger||0)+(cut.enter==='cut'?0:Math.max(.01,cut.inDur));
+  if(earliest<ready&&cut.enter==='invertBox'){
+   const entry=A.centerCircle.sourceUnits(item,{...source,hold:'still',exit:'cut'},plan,{holdOnly:false});
+   if(!entry)return null;
+   part.units.push(...entry.units.filter(u=>u.owner==='center.invertBox'));
+  }
+  units.push(...part.units.map(u=>({...u,owner:'stack.'+k+'.'+u.owner})));
+  if(k===0)main=part;
+ }
+ // Only k=0 is returned by the native layout. A cached partial bbox or the
+ // fresh fallback may survive a seek even after the current hold starts.
+ const bbRanges=main.bbRangesAny;
+ for(const d of cut.decor||[]){
+  const args={W,H,P:d,cut,st,bbRanges:[bbRanges],includeFallback:true},parts=d.id==='memphis'?A.memphisUnits?.(args):A.starburstUnits?.(args);
+  if(!parts?.length)return null;
+  units.push(...parts);
+ }
+ return {units,bbRanges,scope:'native-hold'};
+}
+A.stackUnits=stackUnits;
 })();
 
 /* Numbered columns: preserve each native number/label/lyric/clip as one unit. */
