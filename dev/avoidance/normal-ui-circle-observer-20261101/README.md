@@ -13,3 +13,5 @@
 `viewport-diagnostic/` は通常 UI の完全 plan を読み、mixed / scatter の先頭 cut に `prepareViewport` を直接呼ぶ限定診断。実行環境と shared Qt service の前提は同じ。通常 prepare 全体や実描画の受入とは区別する。
 
 `viewport-diagnostic/units-observer.patch` は、この限定診断に unit 出力観測だけを加えた差分。観測のため関数を一時的にラップし、結果記録にはその処理時間も含まれる。
+
+`owner-candidate-probe.patch` は、このディレクトリの原本から mixed / scatter と対照 center を観測した未採用 owner 試作の probe への差分。診断と実描画は分けて記録する。

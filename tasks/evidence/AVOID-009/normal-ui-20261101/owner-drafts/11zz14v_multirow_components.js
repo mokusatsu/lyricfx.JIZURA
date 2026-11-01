@@ -7,7 +7,7 @@ const union=xs=>xs.length?{x0:Math.min(...xs.map(b=>b.x0)),y0:Math.min(...xs.map
 function multirowSourceComponents({W,H,cut,plan,st,holdWindow}){
  if(!['mixed','scatter'].includes(cut.layout)||!holdWindow||cut.layoutARecipe||
     !(W>0&&H>0&&Number.isFinite(W+H))||typeof cut.text!=='string'||
-    /[\s\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text)||
+    /[\s\p{Mark}\p{Extended_Pictographic}\u200d\ufe0f]/u.test(cut.text)||
     (cut.treat||'none')!=='none'||cut.enter!=='invertBox'||cut.exit!=='tyStrike'||
     !['still','knCounterRock'].includes(cut.hold)||
     (cut.groupExit??cut.exit)!==cut.exit||!(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||

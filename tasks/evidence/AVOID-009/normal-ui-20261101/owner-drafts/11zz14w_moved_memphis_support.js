@@ -21,7 +21,7 @@ function movedMemphisSupport({components,offsets,cacheRanges,plan,cut,scale,hold
   const d=offsets[it.mi];if(!Array.isArray(d)||d.length!==2||!d.every(Number.isFinite))return null;
   ranges.push(shiftedRange(it.bbRangesAny,d));
   for(const [kind,b] of [['glyph',it.itemBounds],['entry',it.entryBounds],['exit',it.exitBounds]])if(b){
-   const u={owner:cut.layout+'.main.'+it.mi+'.'+kind,kind,bounds:shift(b,d)},before=projected(u,preClip,true);
+   const u={owner:cut.layout+'.main.'+it.mi+'.'+kind,kind,bounds:shift(b,d)},before=projected(u,preClip,false);
    // Require all moved owned ink to remain in the existing viewport, even if
    // source already had clip loss. This never admits additional truncation.
    if(before.x0<native.x0||before.y0<native.y0||before.x1>native.x1||before.y1>native.y1)return null;
