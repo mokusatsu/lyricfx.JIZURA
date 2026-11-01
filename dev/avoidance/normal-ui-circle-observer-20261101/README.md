@@ -5,3 +5,5 @@
 原本の `probe.cjs` は実行環境に依存するパス `/workspace/jizura-bulbs-product-20261029` と `/workspace/jizura-browser-runtime-20261027/qt-page.cjs` を固定し、`qt-service-visible.py` は同 runtime の logs と `/workspace/jizura-regen-20261027` の font manifest を使う。別環境で動かすにはこれらを適切に設定し、Node の WebSocket、PyQt6 / QtWebEngine、pywebview、8字体を準備する。コピーした `qt-page.cjs` は同 helper の原本である。環境や入力が異なる場合は過去結果を合格として流用しない。
 
 実行は `dev/avoidance/qt-resource-runtime/README.md` に従い容量確認・同時1件・終了回収を行う。出力はリポジトリ外に置く。対応状況を示す診断、描画あり、円内差、clip 可視性は別の結果として扱う。
+
+`boundary-probe-trial.patch` はこの source から、不採用の保持期試作を観測した5演出・開始/終了境界用 source への差分。適用先はこのディレクトリ内のコピーであり、製品ソースへの patch ではない。

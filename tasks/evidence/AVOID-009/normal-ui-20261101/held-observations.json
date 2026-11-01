@@ -418,6 +418,195 @@
           "circle_tiles": null
         }
       ]
+    },
+    {
+      "name": "main_hold_decor_trial",
+      "source_folder": "normal-ui-e2e-local-part0-decor-hold-boundaries-actual-20261101-01",
+      "complete": true,
+      "errors": [],
+      "document": {
+        "url": "http://127.0.0.1:39563/",
+        "status": 200,
+        "bytes": 6777449,
+        "sha256": "fb4bf2b4e8c831b5a88daba83bf8dbd499da5c8c832639642c0b0a59e4fb32e5",
+        "source": "127.0.0.1 checkout build"
+      },
+      "pins": [
+        {
+          "file": "probe.cjs",
+          "sha256": "bd090810eb1b9e1d05e1e1fe5f4100ecacb8e477821e94acdf20a72249bd3f54"
+        },
+        {
+          "file": "qt-service-visible.py",
+          "sha256": "6b4faf3d16ae3187be043ecbedc89f0c240bb050d7df52f9dc2a448eeef4d25e"
+        },
+        {
+          "file": "observer81.js",
+          "sha256": "9d07bc6f5b1cf9fbfc94e6dec960bff2476dd968a69848c9306da515bca01f4a"
+        },
+        {
+          "file": "support.js",
+          "sha256": "09185bdef37e50c05243dd325f72301222e7e76df243836697864c9b909042d4"
+        },
+        {
+          "file": "capture.js",
+          "sha256": "8837b2845dd4fcb058b37ef84b0d406b45792d4fa206386f0a1758b9bae42e86"
+        },
+        {
+          "file": "analyze.js",
+          "sha256": "e966796294b3a875726b20fc82e55d964ab5abdb65e97a276a625905ef873750"
+        },
+        {
+          "file": "pixel-ab.js",
+          "sha256": "5e2f75000e4c1397f127e899b20d39da23af84900e8a2aa36b95763032341afa"
+        },
+        {
+          "file": "batch.js",
+          "sha256": "22e8d8183542ef88c4f8a66e6664c956da62c7decf57a4228ea75a248f266e52"
+        },
+        {
+          "file": "neon-diagnostic.js",
+          "sha256": "4a04642e2137c580037d78c4bccdaf7f2543c28a29b55d2eedba5c4beb46fcf9"
+        }
+      ],
+      "cases": [
+        {
+          "id": "corners",
+          "status": "insufficient-space",
+          "reason": "NO_SAFE_NATIVE_VIEWPORT",
+          "error": null,
+          "elapsed_ms": 443.80000000074506,
+          "midpoint": {
+            "status": "not-evaluable",
+            "reason": "HOLD_SEEK_NOT_CONFIRMED",
+            "circle_changed": null,
+            "circle_tiles": null
+          },
+          "boundaries": {
+            "start": {
+              "status": "not-evaluable",
+              "reason": "HOLD_SEEK_NOT_CONFIRMED",
+              "circle_changed": null,
+              "circle_tiles": null
+            },
+            "end": {
+              "status": "not-evaluable",
+              "reason": "HOLD_SEEK_NOT_CONFIRMED",
+              "circle_changed": null,
+              "circle_tiles": null
+            }
+          }
+        },
+        {
+          "id": "staircase",
+          "status": "insufficient-space",
+          "reason": "NO_SAFE_NATIVE_VIEWPORT",
+          "error": null,
+          "elapsed_ms": 273.59999999962747,
+          "midpoint": {
+            "status": "not-evaluable",
+            "reason": "HOLD_SEEK_NOT_CONFIRMED",
+            "circle_changed": null,
+            "circle_tiles": null
+          },
+          "boundaries": {
+            "start": {
+              "status": "not-evaluable",
+              "reason": "HOLD_SEEK_NOT_CONFIRMED",
+              "circle_changed": null,
+              "circle_tiles": null
+            },
+            "end": {
+              "status": "not-evaluable",
+              "reason": "HOLD_SEEK_NOT_CONFIRMED",
+              "circle_changed": null,
+              "circle_tiles": null
+            }
+          }
+        },
+        {
+          "id": "mixed",
+          "status": "insufficient-space",
+          "reason": "NO_SAFE_NATIVE_VIEWPORT",
+          "error": null,
+          "elapsed_ms": 290.90000000037253,
+          "midpoint": {
+            "status": "not-evaluable",
+            "reason": "HOLD_SEEK_NOT_CONFIRMED",
+            "circle_changed": null,
+            "circle_tiles": null
+          },
+          "boundaries": {
+            "start": {
+              "status": "not-evaluable",
+              "reason": "HOLD_SEEK_NOT_CONFIRMED",
+              "circle_changed": null,
+              "circle_tiles": null
+            },
+            "end": {
+              "status": "not-evaluable",
+              "reason": "HOLD_SEEK_NOT_CONFIRMED",
+              "circle_changed": null,
+              "circle_tiles": null
+            }
+          }
+        },
+        {
+          "id": "scatter",
+          "status": "insufficient-space",
+          "reason": "NO_SAFE_NATIVE_VIEWPORT",
+          "error": null,
+          "elapsed_ms": 985,
+          "midpoint": {
+            "status": "not-evaluable",
+            "reason": "HOLD_SEEK_NOT_CONFIRMED",
+            "circle_changed": null,
+            "circle_tiles": null
+          },
+          "boundaries": {
+            "start": {
+              "status": "not-evaluable",
+              "reason": "HOLD_SEEK_NOT_CONFIRMED",
+              "circle_changed": null,
+              "circle_tiles": null
+            },
+            "end": {
+              "status": "not-evaluable",
+              "reason": "HOLD_SEEK_NOT_CONFIRMED",
+              "circle_changed": null,
+              "circle_tiles": null
+            }
+          }
+        },
+        {
+          "id": "zigzag",
+          "status": "safe",
+          "reason": null,
+          "error": null,
+          "elapsed_ms": 134.09999999962747,
+          "midpoint": {
+            "status": "measured",
+            "reason": null,
+            "circle_changed": 0,
+            "circle_tiles": 9364
+          },
+          "boundaries": {
+            "start": {
+              "status": "measured",
+              "reason": null,
+              "circle_changed": 0,
+              "circle_tiles": 9364
+            },
+            "end": {
+              "status": "measured",
+              "reason": null,
+              "circle_changed": 0,
+              "circle_tiles": 9364
+            }
+          }
+        }
+      ],
+      "limitation": "Unadopted trial; build used an inaccurate real-time range annotation. Recorded A/B gates use actual main motionTime; metadata fix was drafted after the build and is untested."
     }
   ]
 }

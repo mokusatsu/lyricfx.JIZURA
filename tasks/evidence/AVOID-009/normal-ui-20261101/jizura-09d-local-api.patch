@@ -1,0 +1,30 @@
+--- src/09d_adaptive_placement.js	2026-10-28 09:54:56.747539581 +0000
++++ /tmp/jizura-09d-local-api.js	2026-11-01 04:28:52.304756966 +0000
+@@ -104,6 +104,27 @@
+ }
+ function actualCoverage(cut,program){const source=flat(cut.text),copies=cut.layout==='subtitleBar'?['huge','subtitle']:cut.layout==='splitScreen'?['off','on']:['main'],ranges=program.events.filter(e=>e.kind==='item'&&e.args[0].placementSource).map(e=>e.args[0].placementSource);for(const copy of copies){const rs=ranges.filter(r=>r.copy===copy).sort((a,b)=>a.start-b.start);let pos=0;for(const r of rs){if(r.start!==pos||r.text!==source.slice(r.start,r.end).join(''))fail('SOURCE_COVERAGE','Observed source range/order mismatch '+copy);pos=r.end;}if(pos!==source.length)fail('SOURCE_COVERAGE','Observed missing source '+copy);}return {source,expectedCopies:copies,ranges,complete:true};}
+ function metadataCoverage(native,prepared,cut){const norm=t=>flat(t).join(''),nativeItems=native.events.filter(e=>e.role==='primary'&&e.kind==='item').map(e=>e.args[0]),huge=cut.layout==='subtitleBar'?nativeItems.find(i=>!i.placementMain&&i.font===cut.params.bigFont):null,expected=nativeItems.filter(i=>!i.placementMain&&i!==huge).map(i=>({text:norm(i.text),font:i.font})),actual=prepared.events.filter(e=>e.role==='primary'&&e.kind==='item'&&!e.args[0].placementMain&&!e.args[0].placementSource).map(e=>({text:norm(e.args[0].text),font:e.args[0].font}));const canonical=a=>a.map(x=>JSON.stringify(x)).sort();if(JSON.stringify(canonical(expected))!==JSON.stringify(canonical(actual)))fail('METADATA_COVERAGE','Native meaningful metadata text/font/count changed');return {expected,actual,complete:true};}
++// Viewport-local quote/ticket recipe helpers. They neither apply a camera nor
++// alter a cut; callers must provide programs measured in the same local W/H.
++A.localAdaptiveRecipe=Object.freeze({
++ nativeInfo(program,cut,plan){
++  if(!['quote','ticket'].includes(cut.layout)||cut.area!=null||cut.layoutARecipe||program.events.some(e=>e.role!=='primary'||e.clips?.length))fail('UNSUPPORTED_LOCAL_RECIPE','Unadapted local primary source required');
++  const info=nativeInfo(program,cut,plan);if(info.main.length!==1||info.main[0].font!==cut.params.font)fail('SOURCE_COVERAGE','Single native lyric font required');
++  return info;
++ },
++ create(plan,cut,info,box){
++  if(!['quote','ticket'].includes(cut.layout)||cut.area!=null||cut.layoutARecipe||![plan.W,plan.H,box.x,box.y,box.w,box.h].every(Number.isFinite)||plan.W<=0||plan.H<=0||box.x<0||box.y<0||box.w<=0||box.h<=0||box.x+box.w>plan.W||box.y+box.h>plan.H)fail('UNSUPPORTED_LOCAL_RECIPE','Finite viewport-local measure required');
++  if(info.main.length!==1||info.font!==cut.params.font||!(info.size>0)||info.main[0].size!==info.size)fail('SOURCE_COVERAGE','Native measured font and size required');
++  // Scale 1 is mandatory, including explicit lyric-size requests.
++  return recipeFor(cut.layout,plan,cut,info,box,1,cut.layout==='quote'?'quote-local-wrap-path':'attached-ticket-wrap-path');
++ },
++ verify(nativeProgram,preparedProgram,cut,info,recipe){
++  if(!['quote','ticket'].includes(cut.layout)||cut.area!=null||!recipe||recipe.fontScale!==1||recipe.mainFont!==info.font||recipe.mainSizes.length!==1||recipe.mainSizes[0]!==info.size||preparedProgram.events.some(e=>e.role!=='primary'||e.clips?.length))fail('UNSUPPORTED_LOCAL_RECIPE','Local single-size composition required');
++  const main=preparedProgram.events.filter(e=>e.kind==='item'&&e.args[0].placementMain);
++  if(main.length!==1||main[0].args[0].font!==info.font||main[0].args[0].size!==info.size)fail('SOURCE_COVERAGE','Rendered lyric font or size changed');
++  return {glyphCoverage:actualCoverage(cut,preparedProgram),meaningfulMetadata:metadataCoverage(nativeProgram,preparedProgram,cut),...ownedInkQuality(preparedProgram)};
++ }
++});
+ const motionEntries={'film-strip':.6,'quote-marks':.52,'ticket-body':.5,'ticket-stub':.5,'side-companion':.65};
+ A.layoutsAMotionPhase=(cut,event,motionTime)=>{if(!event.nativeMotion)return 'strict';const lt=motionTime-cut.start,entry=motionEntries[event.nativeMotion];if(lt<entry)return 'entry';if(motionTime>cut.end-cut.outDur&&cut.outDur>0){if(event.nativeMotion==='ticket-body'&&!cut.params.tilt)return 'strict';return 'exit';}return 'hold';};
+ A.layoutsAHoldWindow=cut=>{const entry={filmstrip:.6,quote:.52,ticket:.5,sideways:.65}[cut.layout];return entry==null?null:{start:cut.start+entry,end:cut.end-cut.outDur,clock:'native motionTime; each event/pass independently',entryMotionSeconds:entry,source:'src/11p_layoutsA.js native geometric motion; fades/reveal alone do not relax'};};

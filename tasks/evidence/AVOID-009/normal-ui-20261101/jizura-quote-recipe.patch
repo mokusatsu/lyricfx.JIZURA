@@ -1,0 +1,19 @@
+--- src/11zz14p_framed_units.js	2026-11-01 04:01:33.779773140 +0000
++++ /tmp/jizura-quote-recipe-units.js	2026-11-01 04:27:38.061674337 +0000
+@@ -2,7 +2,7 @@
+ (()=>{'use strict';
+ const A=J.placement,ID=[1,0,0,1,0,0],layouts=new Set(['frameBox','quote','ruler']);
+ function framedUnits({W,H,cut,plan,st,holdOnly=true,holdWindow}){
+- if(!layouts.has(cut.layout)||!holdOnly||!holdWindow||cut.layoutARecipe||
++ if(!layouts.has(cut.layout)||!holdOnly||!holdWindow||(cut.layoutARecipe&&cut.layout!=='quote')||
+     (cut.treat||'none')!=='none'||!['cut','flicker','invertBox'].includes(cut.enter)||
+     !['cut','tyStrike'].includes(cut.exit)||!['still','knCounterRock'].includes(cut.hold)||
+     (cut.groupExit??cut.exit)!==cut.exit||!(cut.motionScale==null||cut.motionScale>=0&&cut.motionScale<=1)||
+@@ -11,6 +11,7 @@
+  const earliest=holdWindow.native.start-holdWindow.step-1.6/24;
+  if(!Number.isFinite(earliest)||earliest<cut.start||
+     holdWindow.native.end>cut.start+cut.dur-cut.outDur)return null;
++ if(cut.layoutARecipe){const r=cut.layoutARecipe;if(r.mainFont!==cut.params.font||!Array.isArray(r.mainSizes)||r.mainSizes.length!==1||!(r.mainSizes[0]>0)||!Array.isArray(r.center)||r.center.length!==2||!r.center.every(Number.isFinite)||!Number.isFinite(r.markScale)||r.markScale<=0||!Number.isFinite(r.markTravel)||r.markTravel<0)return null;}
+  A.layoutsAFormulaDomain({...plan,W,H},cut,true);
+  const renderer=Object.create(J.Renderer.prototype),program=A.sourceFormulaBase.construct(renderer,{...plan,W,H},cut,{W,H,time:1.5,pass:'main'}),events=program.events,
+        mains=events.filter(e=>e.kind==='item'&&e.args[0].placementMain);
