@@ -148,7 +148,8 @@ J.autoLyricArea = (cut, plan, obstacles = [], settings = J.lyricEffectSettings({
   const rng = J.rng(J.h(J.placementSeed ? J.placementSeed(cut) : cut.seed, 947));
   delete cut.lyricPattern;
   // 「画面中央を避ける」 keeps the stage centre clear like an obstacle; *emphasis* may still use it.
-  const avoidCenter = settings.avoidCenter && !cut.emphasis && J.CENTER_AVOID;
+  const avoidEmphasis = !!(plan?.avoidance && J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut)?.avoidEmphasis : plan?.lyricAvoidance?.avoidEmphasis);
+  const avoidCenter = settings.avoidCenter && (!cut.emphasis || avoidEmphasis) && J.CENTER_AVOID;
   const blockers = avoidCenter ? [...obstacles, J.CENTER_AVOID] : obstacles;
   if(cut.lyricSize != null){
     const size=Math.max(.04,cut.lyricSize/100),candidates=[];
@@ -235,6 +236,14 @@ J.finishLyricPlan = (project, plan, audio) => {
     }
   }
   const settings = J.lyricEffectSettings(project);
+  plan.lyricAvoidance = J.circleAvoidanceConfig ? J.circleAvoidanceConfig(project, plan) : null;
+  plan.avoidance = J.planAvoidance ? J.planAvoidance(project, plan, audio?.duration) : null;
+  plan.lockedLines = {};
+  if (project.overrides) {
+    for (const [k, v] of Object.entries(project.overrides)) {
+      if (v && v.lock && v.lockedAreas) plan.lockedLines[k] = true;
+    }
+  }
   // The foreground's composition guides lyric placement; avoidance additionally turns it into obstacles.
   const foreground = settings.autoPlacement && J.planMedia
     ? J.planMedia(project, plan, audio?.duration, 'foreground') : null;
@@ -276,6 +285,7 @@ J.finishLyricPlan = (project, plan, audio) => {
     // Some layouts choose columns or orientation during planning. Give those
     // choices the resolved area dimensions as well as using them at render time.
     if (cut.area && J.LAYOUTS[cut.layout]?.plan) {
+      if (cut.params && !cut.circleNativeParams) cut.circleNativeParams = JSON.parse(JSON.stringify(cut.params));
       cut.params = J.LAYOUTS[cut.layout].plan(J.rng(J.h(cut.seed, 318)), {
         text: cut.text, n: [...cut.text.replace(/\s/g, '')].length,
         W: plan.W * cut.area.w, H: plan.H * cut.area.h, dur: cut.dur,

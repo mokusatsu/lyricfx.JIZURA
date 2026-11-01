@@ -86,7 +86,7 @@ h3 { font-size: 11px; letter-spacing: 0.14em; color: var(--muted); margin-top: 1
 .col-right { border-left: 1px solid var(--line); }
 .sec { padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
 .sec-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.source-tabs { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--line); }
+.source-tabs { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
 .source-tabs button { border: 0; border-radius: 0; background: transparent; color: var(--muted); padding: 11px; border-bottom: 2px solid transparent; }
 .source-tabs button[aria-selected=true] { color: var(--text); border-bottom-color: var(--amber); }
 .media-list { display: grid; gap: 7px; }
@@ -113,7 +113,7 @@ h3 { font-size: 11px; letter-spacing: 0.14em; color: var(--muted); margin-top: 1
 button.tap { font: 700 18px/1 var(--mono); letter-spacing: 0.2em; padding: 16px; background: var(--amber); color: #120c00; border-color: var(--amber); }
 
 /* line list */
-#lineList, #mediaLineList { list-style: none; margin: 0; padding: 0 6px 0 0; display: grid; align-content: start; gap: 6px; max-height: min(55vh, 640px); overflow-y: auto; overscroll-behavior: contain; }
+#lineList, #mediaLineList, #avoidanceLineList { list-style: none; margin: 0; padding: 0 6px 0 0; display: grid; align-content: start; gap: 6px; max-height: min(55vh, 640px); overflow-y: auto; overscroll-behavior: contain; }
 .media-ln-thumb { grid-column: 3; grid-row: 1; width: 34px; height: 26px; justify-self: end; }
 .media-ln > .missing { grid-column: 3; grid-row: 1; justify-self: end; display: grid; place-items: center; width: 34px; height: 26px; border: 1px solid var(--line2); background: #0e1015; color: var(--muted); font-size: 12px; }
 .media-ln .no { grid-column: 1; grid-row: 1; }
@@ -184,6 +184,16 @@ button.remove-media-cut:hover, button.remove-media-cut:focus-visible { color: #f
 :root { --rotate-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M25 13a10 10 0 1 0 1 7' fill='none' stroke='%23ffffff' stroke-width='4'/%3E%3Cpath d='M25 13a10 10 0 1 0 1 7' fill='none' stroke='%23101620' stroke-width='2'/%3E%3Cpath d='M23 4v10h8' fill='none' stroke='%23ffffff' stroke-width='4'/%3E%3Cpath d='M23 4v10h8' fill='none' stroke='%23101620' stroke-width='2'/%3E%3C/svg%3E") 16 16, crosshair; }
 .area-edit-overlay.media-edit { background: transparent; cursor: default; }
 .area-edit-overlay.media-edit .area-edit-rect { background: rgba(245,165,12,0.04); pointer-events: auto; cursor: move; }
+.area-edit-overlay.avoidance-edit .area-edit-rect { border-radius: 50%; border-color: var(--rose); background: rgba(255,111,156,0.12); }
+.area-edit-overlay.avoidance-edit .area-rotate-handle { display: none !important; }
+.area-edit-overlay.avoidance-edit .area-edit-handle { background: var(--rose); }
+.foreground-placement-thumb.avoidance-circle-thumb i { border-radius: 50%; border-color: var(--rose); background: rgba(255,111,156,0.32); }
+.avoidance-mask-ring { position: absolute; left: 50%; top: 50%; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); box-sizing: border-box; }
+.avoidance-mask-ring.inner { border: 1.5px dashed var(--cyan); }
+.avoidance-mask-ring.outer { border: 1.5px dotted rgba(22,244,212,0.7); background: radial-gradient(circle, rgba(22,244,212,0.08) 0%, rgba(22,244,212,0.02) 65%, transparent 100%); }
+.avoidance-mask-controls { border-top: 1px solid var(--line); padding-top: 6px; }
+.avoidance-mask-controls input[type=range] { width: 96px; accent-color: var(--cyan); }
+.avoidance-mask-controls select { width: auto; padding: 3px 6px; }
 .area-rotate-handle { position: absolute; width: 16px; height: 16px; border: 2px solid #111; border-radius: 50%; background: var(--amber); transform: translate(-50%,-50%); cursor: var(--rotate-cursor); touch-action: none; }
 .area-rotate-handle::before { content: ''; position: absolute; background: var(--amber); pointer-events: none; }
 .area-rotate-handle.n { left: 50%; top: -32px; }
@@ -232,6 +242,7 @@ button.remove-media-cut:hover, button.remove-media-cut:focus-visible { color: #f
 button.play { width: 40px; height: 34px; padding: 0; font-size: 14px; }
 #timeline { width: 100%; height: 76px; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; touch-action: none; }
 #mediaTimeline { width: 100%; height: 52px; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; touch-action: none; }
+#avoidanceTimeline { width: 100%; height: 52px; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; touch-action: none; }
 #foregroundTimeline { width: 100%; height: 52px; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; touch-action: none; }
 .timeline-stack { position: relative; display: grid; gap: 6px; min-width: 0; }
 .timeline-scroll { width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; overflow-y: hidden; box-sizing: border-box; padding-right: 8px; padding-bottom: 6px; }
@@ -590,6 +601,7 @@ dialog.terms .terms-fork h3 { color: var(--cyan); }
 .item-frame-outline polygon { fill:transparent; pointer-events:all; cursor:pointer; stroke:currentColor; stroke-width:1.5; stroke-dasharray:5 3; filter:drop-shadow(0 0 1px #000); }
 .item-frame-outline.selected { color: var(--amber); }
 .item-frame-outline.selected polygon { stroke-dasharray:none; stroke-width:2; }
+.item-frames .avoidance { color:var(--rose); }
 .item-frames .foreground { color:#f5bd65; }
 .item-frames .lyrics { color:#68e3ca; }
 .item-frames .media { color:#95baff; }
@@ -643,7 +655,7 @@ dialog.terms .terms-fork h3 { color: var(--cyan); }
   .col-stage .transport { gap: 5px; }
   .col-stage .timeline-split button { padding: 4px 6px; font-size: 11px; }
   .col-stage .timeline-position-label { margin: 2px 0; }
-  .col-stage #foregroundTimeline, .col-stage #mediaTimeline { height: 44px; }
+  .col-stage #avoidanceTimeline, .col-stage #foregroundTimeline, .col-stage #mediaTimeline { height: 44px; }
   .col-stage #timeline { height: 58px; }
 }
 

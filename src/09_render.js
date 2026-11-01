@@ -173,10 +173,18 @@ class Renderer {
     const energy = plan.energy ? plan.energy[Math.min(plan.energy.length - 1, Math.max(0, Math.floor(t * plan.energyRate)))] : null;
     // ---------- background graphic (per line) ----------
     if (hidden.lyrics!==false && hidden.media!==false && (opt.copyLyrics || plan.media?.applyLyricBackground !== false && !opt.transparent) && !key && mainCut && mainCut.bg && mainCut.bg !== 'none' && J.BG[mainCut.bg]) {
-      const env = this.makeEnv(ctx, plan, mainCut, sc, { pass: 'main', t: tq, lt: tq - mainCut.start, ltb: tq - mainCut.start, step, scale, allowFilter, energy, beat: beatInfo, bgOnly: true });
-      ctx.save();
-      try { J.BG[mainCut.bg].draw(env, mainCut.bgP || {}); } catch (e) { console.warn('bg', mainCut.bg, e); }
-      ctx.restore();
+      const avoidCircle = J.activeAvoidanceAtTime ? J.activeAvoidanceAtTime(plan, tq) : null;
+      const drawBg = targetCtx => {
+        const env = this.makeEnv(targetCtx, plan, mainCut, sc, { pass: 'main', t: tq, lt: tq - mainCut.start, ltb: tq - mainCut.start, step, scale, allowFilter, energy, beat: beatInfo, bgOnly: true });
+        targetCtx.save();
+        try { J.BG[mainCut.bg].draw(env, mainCut.bgP || {}); } catch (e) { console.warn('bg', mainCut.bg, e); }
+        targetCtx.restore();
+      };
+      if (J.avoidanceMaskActive && J.avoidanceMaskActive(avoidCircle) && J.drawWithAvoidanceMask) {
+        J.drawWithAvoidanceMask(this, ctx, avoidCircle, W, H, drawBg, { a: scale, b: 0, c: 0, d: scale, e: 0, f: 0 }, 'avoidBgScratch');
+      } else {
+        drawBg(ctx);
+      }
       ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none';
     }
     const shx = J.rs(step, 71) * shake * 16 * u, shy = J.rs(step, 72) * shake * 11 * u;
@@ -234,7 +242,8 @@ class Renderer {
         }
         const blend = P.pass !== 'main' && J.lum(csc.bg) > .55 ? 'multiply' : 'source-over';
         X.save();
-        const area = cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
+        const useCircleAvoid = J.usesCircleAvoidance && J.usesCircleAvoidance(plan, cut, tp);
+        const area = useCircleAvoid ? null : cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
         const contentW = env.W, contentH = env.H;
         if (area) {
           X.translate(areaX + contentW / 2, areaY + contentH / 2);
@@ -326,7 +335,8 @@ class Renderer {
   }
 
   makeEnv(ctx, plan, cut, sc, o) {
-    const area = cut && cut.area && !o.bgOnly && !o.fullFrame ? cut.area : null;
+    const useCircleAvoid = cut && J.usesCircleAvoidance && J.usesCircleAvoidance(plan, cut, o?.t);
+    const area = cut && cut.area && !useCircleAvoid && !o.bgOnly && !o.fullFrame ? cut.area : null;
     const W = area ? plan.W * area.w : plan.W, H = area ? plan.H * area.h : plan.H;
     const env = Object.assign({ ctx, W, H, sc: cut?.palette || sc, st: {...(cut?.effectStyle || plan.style),...(cut?.fonts ? {fonts:cut.fonts} : {})}, fx: cut?.effectFx || plan.fx, fps: plan.fps, cut, plan }, o);
     if (cut && cut.motionScale < 1) env.fx = Object.assign({}, env.fx, { motion: env.fx.motion * cut.motionScale });
@@ -405,13 +415,27 @@ class Renderer {
   }
 
   drawCut(env) {
+    if (env.cut && J.usesCircleAvoidance && J.usesCircleAvoidance(env.plan, env.cut, env.t) && J.drawCutWithCircleAvoidance) {
+      return J.drawCutWithCircleAvoidance(this, env);
+    }
+    return this.drawCutDirect(env);
+  }
+
+  drawCutDirect(env) {
     const cut = env.cut, L = J.LAYOUTS[cut.layout] || J.LAYOUTS.center;
-    const decor = cut.decor || [];
-    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { D.draw(env, null, d); } catch (e) { console.warn(e); } }
-    let bb = null;
-    try { if (!cut.effectsOnly) bb = L.render(env); } catch (e) { console.warn('layout', cut.layout, e); }
-    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { D.draw(env, bb, d); } catch (e) { console.warn(e); } }
-    return bb;
+    const runDirect = targetEnv => {
+      const decor = cut.decor || [];
+      for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { D.draw(targetEnv, null, d); } catch (e) { console.warn(e); } }
+      let bb = null;
+      try { if (!cut.effectsOnly) bb = L.render(targetEnv); } catch (e) { console.warn('layout', cut.layout, e); }
+      for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { D.draw(targetEnv, bb, d); } catch (e) { console.warn(e); } }
+      return bb;
+    };
+    const circle = cut && J.avoidMaskPhase == null && J.activeAvoidanceAtTime ? J.activeAvoidanceAtTime(env.plan, env.t) : null;
+    if (J.avoidanceMaskActive && J.avoidanceMaskActive(circle) && J.drawCutMaskedAux) {
+      return J.drawCutMaskedAux(this, env, runDirect, circle);
+    }
+    return runDirect(env);
   }
 
   post(ctx, plan, t, tq, step, sc, scale, opt, allowFilter) {

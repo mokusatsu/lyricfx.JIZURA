@@ -70,11 +70,18 @@ J.applyCutDetails = (cut, details, plan, layer) => {
         text: details.text ?? cut.text, n: [...(details.text ?? cut.text).replace(/\s/g,'')].length,
         W: plan.W * (area?.w ?? 1), H: plan.H * (area?.h ?? 1), dur: cut.dur,
       }, cutStyle) : def.plan(rng, cutStyle)) : {};
+      if (key === 'layout' && def?.plan) {
+        cut.circleNativeParams = def.plan(J.rng(cut.seed), {
+          text: details.text ?? cut.text, n: [...(details.text ?? cut.text).replace(/\s/g,'')].length,
+          W: plan.W, H: plan.H, dur: cut.dur,
+        }, cutStyle);
+        if ((details.text ?? cut.text).includes('\n')) cut.circleNativeParams.sx = 1;
+      }
     }
   }
   for (const key of J.cutDetailKeys[layer === 'lyrics' ? 'lyrics' : 'media']) {
     if (Object.prototype.hasOwnProperty.call(details,key)) {
-      if (layer === 'lyrics' && key === 'params') cut.params = {...cut.params,...copy(details.params)};
+      if (layer === 'lyrics' && key === 'params') { cut.params = {...cut.params,...copy(details.params)}; if (cut.circleNativeParams) cut.circleNativeParams = {...cut.circleNativeParams,...copy(details.params)}; }
       else if(layer==='lyrics' && ['effectStyle','effectFx'].includes(key))continue;
       else cut[key] = copy(details[key]);
     }
@@ -82,10 +89,13 @@ J.applyCutDetails = (cut, details, plan, layer) => {
   if (layer === 'lyrics' && Array.isArray(details.fontParams)) {
     for (const entry of details.fontParams) {
       if (!Array.isArray(entry.path) || !J.FONTS[entry.font] || entry.path.some(k=>['__proto__','constructor','prototype'].includes(k))) continue;
-      let parent=cut.params;
-      for (const key of entry.path.slice(0,-1)) parent=parent?.[key];
-      const key=entry.path.at(-1);
-      if (parent && Object.hasOwn(parent,key) && typeof parent[key]==='string') parent[key]=entry.font;
+      for (const root of [cut.params, cut.circleNativeParams]) {
+        if (!root) continue;
+        let parent=root;
+        for (const key of entry.path.slice(0,-1)) parent=parent?.[key];
+        const key=entry.path.at(-1);
+        if (parent && Object.hasOwn(parent,key) && typeof parent[key]==='string') parent[key]=entry.font;
+      }
     }
   }
   // Imported favorites and older projects can contain empty/partial parameter

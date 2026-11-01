@@ -20,12 +20,14 @@ J.projectSettings = project => {
   const result = {};
   for (const key of settingKeys) if (project[key] !== undefined) result[key] = clone(project[key]);
   for (const layer of ['media','foreground']) result[layer] = { effects: clone(J.mediaEffectSettings(project,layer)), opacity: project[layer]?.opacity ?? 100, blend: project[layer]?.blend ?? 'normal' };
+  result.avoidance = { avoidEmphasis: !!project.avoidance?.avoidEmphasis, ...J.normalizeAvoidanceMask(project.avoidance) };
   return result;
 };
 J.settingsProject = project => {
   const settings = J.projectSettings(project), result = Object.assign(J.defaultProject(),settings);
   result.lyrics = ''; result.title = ''; result.artist = '';
   for (const layer of ['media','foreground']) result[layer] = Object.assign(J.normalizeMedia(null),settings[layer]);
+  result.avoidance = Object.assign(J.normalizeAvoidance(null), settings.avoidance);
   return result;
 };
 J.applyProjectSettings = (current, source) => {
@@ -39,6 +41,7 @@ J.applyProjectSettings = (current, source) => {
   });
   for (const key of settingKeys) if (settings[key] !== undefined) result[key] = settings[key];
   for (const layer of ['media','foreground']) Object.assign(result[layer],settings[layer]);
+  if (settings.avoidance) Object.assign(result.avoidance ||= J.normalizeAvoidance(null), settings.avoidance);
   // Retained cuts still need their custom component definitions.
   result.customEffects=clone(current.customEffects||[]);J.importCustomEffects(result,settings.customEffects||[]);
   // Existing cuts may still refer to fonts absent from the preset.

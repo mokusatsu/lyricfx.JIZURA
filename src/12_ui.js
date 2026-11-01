@@ -22,7 +22,7 @@ const ICON = {
   frontmost: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 2h9v8M8 4l2 2 2-2"/></svg>',
 };
 
-const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
+const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], avoidanceLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
 
 /* WebAudio player (works inside sandboxed pages where blob media may be blocked) */
 const AP = {
@@ -135,6 +135,8 @@ function mergeProject(p) {
   o.customEffects=J.combineCustomEffects(o.customEffects,...o.effectFavorites.map(f=>f.payload.components||[]));J.activateCustomEffects(o);
   o.favoriteSequence = Math.max(o.effectFavorites.length,Math.floor(+o.favoriteSequence)||0);
   o.timelineLinks = Array.isArray(p && p.timelineLinks) ? p.timelineLinks : [];
+  o.layerVisibility = Object.assign({avoidance:true,foreground:true,lyrics:true,media:true}, (p && p.layerVisibility) || {});
+  o.avoidance = J.normalizeAvoidance(p && p.avoidance);
   o.media = J.normalizeMedia(p && p.media);
   o.foreground = J.normalizeMedia(p && p.foreground);
   for (const layer of ['media', 'foreground']) o[layer].effects = J.mediaEffectSettings(o, layer);
@@ -262,21 +264,22 @@ function langNote() {
 // The full plan (lyrics + media layers) for a project; also used by the cut details preview.
 function composePlan(project) {
   const plan = J.plan(project, audioLike());
+  plan.avoidance = J.planAvoidance(project, plan, S.audio && S.audio.duration);
   plan.media = J.planMedia(project, plan, S.audio && S.audio.duration);
   plan.foreground = J.planMedia(project, plan, S.audio && S.audio.duration, 'foreground');
-  plan.duration = Math.max(plan.media.duration, plan.foreground.duration);
+  plan.duration = Math.max(plan.media.duration, plan.foreground.duration, plan.avoidance.duration);
   // An explicit output length also caps existing cuts extending past the song.
   if(Number.isFinite(+project.durationOverride)&&+project.durationOverride>0){
     plan.duration=+project.durationOverride;
     plan.cuts=plan.cuts.filter(c=>c.start<plan.duration);
     for(const cut of plan.cuts){cut.end=Math.min(cut.end,plan.duration);cut.dur=cut.end-cut.start;}
     plan.events=plan.events.filter(event=>event.t<plan.duration);
-    for(const layer of ['media','foreground']){
+    for(const layer of ['media','foreground','avoidance']){
       plan[layer].cuts=plan[layer].cuts.filter(c=>c.start<plan.duration);
       for(const cut of plan[layer].cuts)cut.end=Math.min(cut.end,plan.duration);
     }
   }
-  for (const layer of ['media', 'foreground']) {
+  for (const layer of ['media', 'foreground', 'avoidance']) {
     plan[layer].duration = plan.duration;
     const last = plan[layer].cuts.at(-1); if (last && !last.manualEnd && last.videoDuration == null) last.end = plan.duration;
   }
@@ -291,10 +294,10 @@ function replan() {
   if (S.t > S.plan.duration) S.t = Math.max(0, S.plan.duration - 1e-3);
   const temporarilyHidden = ref => S.project.durationOverride != null && (
     /^l:\d+:\d+$/.test(ref) && +ref.split(':')[1] < S.plan.lines.length ||
-    /^[fm]:\d+$/.test(ref) && +ref.slice(2) < S.project[ref[0]==='f'?'foreground':'media'].cutCount);
+    /^[fma]:\d+$/.test(ref) && +ref.slice(2) < S.project[ref[0]==='f'?'foreground':ref[0]==='a'?'avoidance':'media'].cutCount);
   S.project.timelineLinks = S.project.timelineLinks.filter(link => link && link.a !== link.b && (boundaryCut(link.a) || temporarilyHidden(link.a)) && (boundaryCut(link.b) || temporarilyHidden(link.b)));
   lastCutIdx = null;
-  renderLines(); renderMediaList(); renderMediaLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
+  renderLines(); renderMediaList(); renderMediaLines(); renderAvoidanceLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
   S.need = true; autosave(); ensureFonts(); drawSwatch(); showNow();
   clearTimeout(warmTimer); warmTimer = setTimeout(warm, 450);
 }
@@ -385,11 +388,25 @@ function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
   const previewCuts = S.areaEdit && S.areaEdit.kind === 'lyric' && S.areaEdit.draft ? S.plan.cuts.filter(cut => cut.line === S.areaEdit.index) : [];
   const previousAreas = previewCuts.map(cut => cut.area);
   previewCuts.forEach(cut => { cut.area = { ...S.areaEdit.draft, angle: S.areaEdit.angle }; });
-  const edit = S.areaEdit, mediaCut = edit && edit.kind !== 'lyric' && S.plan[edit.kind].cuts[edit.index];
+  const edit = S.areaEdit;
+  const mediaCut = edit && (edit.kind === 'media' || edit.kind === 'foreground') && S.plan[edit.kind].cuts[edit.index];
   const previousMedia = mediaCut && { placement: mediaCut.placement, zoom: mediaCut.zoom, hold: mediaCut.hold, enter: mediaCut.enter, exit: mediaCut.exit, trans: mediaCut.trans };
   if (mediaCut) Object.assign(mediaCut, { placement: { cx: edit.draft.x + edit.draft.w / 2, cy: edit.draft.y + edit.draft.h / 2, w: edit.draft.w, h: edit.draft.h, lockAspect: edit.lockAspect, angle: edit.angle }, zoom: 100, hold: 'still', enter: 'cut', exit: 'cut', trans: undefined });
-  try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric', noForeground: !!edit && edit.kind === 'media' }); }
-  finally { previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; }); if (mediaCut) Object.assign(mediaCut, previousMedia); }
+  const avoidanceCut = edit && edit.kind === 'avoidance' && S.plan.avoidance?.cuts[edit.index];
+  const previousAvoidance = avoidanceCut && { cx: avoidanceCut.cx, cy: avoidanceCut.cy, r: avoidanceCut.r, enabled: avoidanceCut.enabled, maskAvoidance: avoidanceCut.maskAvoidance, maskRadiusOffset: avoidanceCut.maskRadiusOffset, maskFeather: avoidanceCut.maskFeather, maskCurve: avoidanceCut.maskCurve, planEnabled: S.plan.lyricAvoidance?.enabled };
+  if (avoidanceCut && edit.draft) {
+    Object.assign(avoidanceCut, draftToAvoidanceCircle(edit.draft), { enabled: true, maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: edit.maskRadiusOffset ?? 0, maskFeather: edit.maskFeather ?? 60, maskCurve: edit.maskCurve || 'smooth' });
+    if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = true;
+  }
+  try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance', noForeground: !!edit && edit.kind === 'media' }); }
+  finally {
+    previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; });
+    if (mediaCut) Object.assign(mediaCut, previousMedia);
+    if (avoidanceCut && previousAvoidance) {
+      Object.assign(avoidanceCut, { cx: previousAvoidance.cx, cy: previousAvoidance.cy, r: previousAvoidance.r, enabled: previousAvoidance.enabled, maskAvoidance: previousAvoidance.maskAvoidance, maskRadiusOffset: previousAvoidance.maskRadiusOffset, maskFeather: previousAvoidance.maskFeather, maskCurve: previousAvoidance.maskCurve });
+      if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = previousAvoidance.planEnabled;
+    }
+  }
 }
 function draw() {
   const c = $('view'), ctx = c.getContext('2d');
@@ -481,7 +498,7 @@ function updateTimeUI() {
 function minimumProjectDuration() {
   let minimum = 0.1;
   for (const line of S.plan.lines) minimum = Math.max(minimum, line.start + 0.04);
-  for (const layer of ['media', 'foreground']) {
+  for (const layer of ['media', 'foreground', 'avoidance']) {
     minimum = Math.max(minimum, S.plan[layer].cuts.length * 0.04);
     for (const [index, time] of Object.entries(S.project[layer].timing.lineTimes)) {
       if (+index < S.plan[layer].cuts.length && Number.isFinite(+time)) minimum = Math.max(minimum, +time + (S.plan[layer].cuts.length - +index) * 0.04);
@@ -590,7 +607,7 @@ function timelineLanes(layer) {
   }
   return { lanes, count: Math.max(1, ends.length) };
 }
-function timelineCanvas(layer) { return $(layer === 'lyrics' ? 'timeline' : layer === 'media' ? 'mediaTimeline' : 'foregroundTimeline'); }
+function timelineCanvas(layer) { return $(layer === 'lyrics' ? 'timeline' : layer === 'media' ? 'mediaTimeline' : layer === 'avoidance' ? 'avoidanceTimeline' : 'foregroundTimeline'); }
 function fitTimelineHeight(canvas, count, step, free = 2) {
   const extra = Math.max(0, count - free) * step;
   if (+canvas.dataset.extra === extra) return;
@@ -659,13 +676,14 @@ function drawTimeline() {
   const px = X(S.t);
   x.fillStyle = '#f5a50c'; x.fillRect(Math.round(px) - dpr, 0, 2 * dpr, h);
   drawTimelineDragGuide(x, w, h, dpr, 'lyrics');
+  drawAvoidanceTimeline();
   drawMediaTimeline();
   drawMediaTimeline('foreground');
 }
 function extendTapPreview(t) {
   const end = Math.max(S.plan.duration, t + 10);
   S.plan.duration = end;
-  for (const layer of ['media', 'foreground']) {
+  for (const layer of ['media', 'foreground', 'avoidance']) {
     S.plan[layer].duration = end;
     const last = S.plan[layer].cuts.at(-1); if (last && last.videoDuration == null) last.end = end;
   }
@@ -674,6 +692,38 @@ function extendTapPreview(t) {
 function drawTimelineEndHandle(x, px, y0, height, dpr) {
   x.fillStyle = '#ece7e1'; x.fillRect(px - 2 * dpr, y0, 2 * dpr, height);
   x.beginPath(); x.moveTo(px - 2 * dpr, y0); x.lineTo(px - 8 * dpr, y0); x.lineTo(px - 2 * dpr, y0 + 6 * dpr); x.closePath(); x.fill();
+}
+function drawAvoidanceTimeline() {
+  const c = $('avoidanceTimeline'); if (!c || !S.plan?.avoidance) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const lanesInfo = timelineLanes('avoidance'), overlapping = lanesInfo.count > 1;
+  fitTimelineHeight(c, lanesInfo.count, 24, 1);
+  const w = Math.max(10, Math.round(c.clientWidth * dpr)), h = Math.max(10, Math.round(c.clientHeight * dpr));
+  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+  const x = c.getContext('2d'), D = Math.max(0.001, S.plan.duration), X = t => t / D * w;
+  x.fillStyle = '#131316'; x.fillRect(0, 0, w, h);
+  x.fillStyle = '#8e8a94'; x.font = `${10 * dpr}px monospace`; x.fillText(J.mediaLabel('回避', 'Avoidance'), 6 * dpr, 12 * dpr);
+  const globalOn = !!(S.plan.lyricAvoidance?.enabled && S.plan.layerVisibility?.avoidance !== false);
+  const mono = getComputedStyle(document.body).getPropertyValue('--mono') || 'monospace';
+  for (const cut of S.plan.avoidance.cuts) {
+    const a = X(cut.start), b = X(cut.end), lane = laneBox('avoidance', lanesInfo.lanes.get(cut), lanesInfo.count, c);
+    const y0 = lane.top * dpr, lh = Math.max(2, lane.height * dpr - (overlapping ? 1 : 0));
+    const active = globalOn && cut.enabled !== false;
+    const rgb = active ? '255,111,156' : '142,138,148';
+    x.fillStyle = `rgba(${rgb},${overlapping ? 0.2 : 0.28})`; x.fillRect(a, y0, Math.max(1, b - a - 1), lh);
+    if (overlapping) { x.strokeStyle = `rgba(${rgb},0.55)`; x.lineWidth = dpr; x.strokeRect(a + .5, y0 + .5, Math.max(1, b - a - 1), lh - 1); }
+    x.fillStyle = `rgba(${rgb},${overlapping ? 0.8 : 1})`; x.fillRect(a, y0, 2 * dpr, lh);
+    x.fillRect(a - 2 * dpr, 14 * dpr, 6 * dpr, 6 * dpr);
+    if (cut.manualEnd) drawTimelineEndHandle(x, b, y0, lh, dpr);
+    if (b - a > 42 * dpr) {
+      x.fillStyle = active ? 'rgba(236,231,225,0.88)' : 'rgba(180,175,186,0.7)'; x.font = `${10 * dpr}px ${mono}`;
+      x.save(); x.beginPath(); x.rect(a, y0, b - a - 3, lh); x.clip();
+      const label = (cut.enabled === false ? J.mediaLabel('[OFF] ', '[OFF] ') : '') + cut.name + (cut.avoidEmphasis ? J.mediaLabel(' [強調回避]', ' [Emphasis]') : '') + (cut.maskAvoidance ? J.mediaLabel(' [マスク]', ' [Mask]') : '');
+      x.fillText(label, a + 26 * dpr, y0 + Math.min(14 * dpr, lh - 3 * dpr)); x.restore();
+    }
+  }
+  x.fillStyle = '#f5a50c'; x.fillRect(Math.round(X(S.t)) - dpr, 0, 2 * dpr, h);
+  drawTimelineDragGuide(x, w, h, dpr, 'avoidance');
 }
 function drawMediaTimeline(layer = 'media') {
   const c = $(layer === 'media' ? 'mediaTimeline' : 'foregroundTimeline'), dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -710,11 +760,12 @@ function timelineSeek(ev) {
   seek((ev.clientX - r.left) / r.width * S.plan.duration);
 }
 function boundaryRef(layer, cut) {
+  if (layer === 'avoidance') return `a:${cut.index}`;
   if (layer === 'foreground') return `f:${cut.index}`;
   if (layer === 'media') return `m:${cut.index}`;
   return `l:${cut.line}:${cut.part}`;
 }
-function boundaryLayer(ref) { return ref[0] === 'f' ? 'foreground' : ref[0] === 'm' ? 'media' : 'lyrics'; }
+function boundaryLayer(ref) { return ref[0] === 'a' ? 'avoidance' : ref[0] === 'f' ? 'foreground' : ref[0] === 'm' ? 'media' : 'lyrics'; }
 function boundaryCut(ref) {
   if (typeof ref !== 'string' || !S.plan) return null;
   const layer = boundaryLayer(ref);
@@ -734,7 +785,7 @@ function linkedRefs(ref) {
 }
 function timelineMarkers() {
   const stack = $('timelineStack'), D = Math.max(0.001, S.plan.duration), markers = [];
-  for (const [layer, id] of [['foreground', 'foregroundTimeline'], ['lyrics', 'timeline'], ['media', 'mediaTimeline']]) {
+  for (const [layer, id] of [['avoidance', 'avoidanceTimeline'], ['foreground', 'foregroundTimeline'], ['lyrics', 'timeline'], ['media', 'mediaTimeline']]) {
     const canvas = $(id), cuts = layer === 'lyrics' ? S.plan.cuts.filter(c => c.line >= 0) : S.plan[layer].cuts;
     const y = canvas.offsetTop + 11;
     for (const cut of cuts) markers.push({ ref: boundaryRef(layer, cut), layer, x: canvas.offsetLeft + cut.start / D * canvas.clientWidth, y });
@@ -1722,9 +1773,14 @@ function drawItemFrames() {
   if(overlay.hidden) { itemFrameSignature=''; return; }
   Object.assign(overlay.style,{left:`${view.left-host.left}px`,top:`${view.top-host.top}px`,width:`${view.width}px`,height:`${view.height}px`});
   const items=[];
-  for(const layer of ['media','lyrics','foreground']) {
+  for(const layer of ['media','lyrics','foreground','avoidance']) {
     if(S.plan.layerVisibility?.[layer]===false)continue;
-    if(layer==='lyrics') {
+    if(layer==='avoidance') {
+      if(!S.plan.lyricAvoidance?.enabled && S.areaEdit?.kind!=='avoidance' && S.sourceTab!=='avoidance')continue;
+      const cut=J.avoidanceAt(S.plan,S.t);
+      if(!cut || cut.enabled===false && S.areaEdit?.kind!=='avoidance' && S.sourceTab!=='avoidance')continue;
+      items.push({layer,cut,index:cut.index,area:{...avoidanceCircleToDraft(cut),angle:0}});
+    } else if(layer==='lyrics') {
       for(const cut of J.lyricCutsAt(S.plan,S.t)) if(cut.line>=0) items.push({layer,cut,index:cut.line,area:cut.area||{x:0,y:0,w:1,h:1}});
     } else {
       const cut=J.mediaAt(S.plan,S.t,layer),dimensions=J.mediaSourceDimensions(S.plan,cut,S.t);
@@ -1737,18 +1793,18 @@ function drawItemFrames() {
     }
   }
   const L=J.mediaLabel,labels={copy:L('演出をお気に入りに追加','Add effects to favorites'),paste:L('お気に入りから演出を適用','Apply favorite effects'),dice:L('再抽選','Randomize'),disableReroll:L('この演出をOFFにして再抽選','Disable current effects and randomize'),lock:L('ロック','Lock'),area:L('表示範囲','Display area'),details:L('詳細編集','Edit details'),remove:L('削除','Delete'),frontmost:L('最前に表示','Frontmost')};
-  const layerNames={foreground:L('前景','Foreground'),lyrics:L('歌詞','Lyrics'),media:L('背景','Background')};
+  const layerNames={avoidance:L('回避','Avoidance'),foreground:L('前景','Foreground'),lyrics:L('歌詞','Lyrics'),media:L('背景','Background')};
   overlay.classList.toggle('selecting',!!S.areaEdit);
   const occupied=[];
   const html=items.map(({layer,cut,index,area})=>{
     const selected=S.areaEdit && (S.areaEdit.kind==='lyric'?'lyrics':S.areaEdit.kind)===layer && S.areaEdit.index===index;
     if(S.areaEdit&&!selected)return '';
     if(selected)area={...S.areaEdit.draft,angle:S.areaEdit.angle};
-    const locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
+    const locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:layer==='avoidance'?!!S.project.avoidance?.cutOverrides?.[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
     const cx=(area.x+area.w/2)*view.width,cy=(area.y+area.h/2)*view.height,a=(area.angle||0)*Math.PI/180;
     const points=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,y])=>{x*=area.w*view.width/2;y*=area.h*view.height/2;return [cx+x*Math.cos(a)-y*Math.sin(a),cy+x*Math.sin(a)+y*Math.cos(a)];});
-    const actions=S.areaEdit&&!selected?[]:['lock','dice','disableReroll','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'details'];
-    const frameName=layer==='lyrics'?(String(cut.text||'').trim()||L('空の歌詞','Empty lyrics')):(cut.name||L('画像無し','No image'));
+    const actions=S.areaEdit&&!selected?[]:layer==='avoidance'?['lock','area','remove']:['lock','dice','disableReroll','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'details'];
+    const frameName=layer==='avoidance'?(L('回避円 ','Avoidance ')+cut.name):layer==='lyrics'?(String(cut.text||'').trim()||L('空の歌詞','Empty lyrics')):(cut.name||L('画像無し','No image'));
     const labelWidth=Math.min(160,Math.max(36,[...frameName].length*10+8));
     const width=Math.min(view.width,actions.length*25+labelWidth),x=J.clamp(points[0][0],0,Math.max(0,view.width-width));
     let y=J.clamp(points[0][1],0,Math.max(0,view.height-26));
@@ -1770,7 +1826,8 @@ function drawItemFrames() {
       const active=action==='lock'?locked:action==='frontmost'?!!cut.frontmost:false;
       return `<button type="button" class="item-frame-action ${active?'active':''}" data-action="${action}" data-layer="${layer}" data-index="${index}" data-part="${cut.part??0}" title="${labels[action]}" aria-label="${layerNames[layer]} ${labels[action]}" ${['lock','frontmost'].includes(action)?`aria-pressed="${active}"`:''} ${S.playing?'disabled':''}>${ICON[action]}</button>`;
     }).join('');
-    return `<svg class="item-frame-outline ${layer} ${selected?'selected':''}" data-select-layer="${layer}" data-select-index="${index}" width="100%" height="100%" aria-hidden="true"><polygon points="${points.map(p=>p.join(',')).join(' ')}"/></svg><div class="item-frame-tools ${layer}" style="left:${x}px;top:${y}px;width:${width}px;max-width:${view.width}px" data-layer="${layer}"><button type="button" class="item-frame-name" data-select-layer="${layer}" data-select-index="${index}" title="${escapeHtml(frameName)}" ${S.playing?'disabled':''}>${escapeHtml(frameName)}</button>${controls}</div>`;
+    const shapeSvg=layer==='avoidance'?`<ellipse cx="${cx}" cy="${cy}" rx="${area.w*view.width/2}" ry="${area.h*view.height/2}"/>`:`<polygon points="${points.map(p=>p.join(',')).join(' ')}"/>`;
+    return `<svg class="item-frame-outline ${layer} ${selected?'selected':''}" data-select-layer="${layer}" data-select-index="${index}" width="100%" height="100%" aria-hidden="true">${shapeSvg}</svg><div class="item-frame-tools ${layer}" style="left:${x}px;top:${y}px;width:${width}px;max-width:${view.width}px" data-layer="${layer}"><button type="button" class="item-frame-name" data-select-layer="${layer}" data-select-index="${index}" title="${escapeHtml(frameName)}" ${S.playing?'disabled':''}>${escapeHtml(frameName)}</button>${controls}</div>`;
   }).join('');
   if(itemFrameSignature!==html){overlay.innerHTML=html;itemFrameSignature=html;}
 }
@@ -1845,14 +1902,15 @@ function openTimelineCutMenu(trigger) {
   const layer=trigger.dataset.layer,index=+trigger.dataset.index,part=+trigger.dataset.part||0;
   const cut=layer==='lyrics'?S.plan.cuts.find(c=>c.line===index&&c.part===part):S.plan[layer].cuts[index];
   if(!cut)return;
-  const L=J.mediaLabel,locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
-  const labels={dice:L('再抽選','Randomize'),disableReroll:L('この演出をOFFにして再抽選','Disable current effects and randomize'),lock:L(locked?'ロック解除':'ロック',locked?'Unlock':'Lock'),area:L('表示範囲','Display area'),details:L('詳細編集','Edit details'),copy:L('演出をお気に入りに追加','Add effects to favorites'),paste:L('お気に入りから演出を適用','Apply favorite effects'),remove:L('削除','Delete'),frontmost:L('最前に表示','Frontmost')};
-  const actions=['dice','disableReroll','lock',...(layer==='lyrics'||J.mediaSourceAvailable(cut)?['area']:[]),'details','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'remove'];
+  const L=J.mediaLabel,locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:layer==='avoidance'?!!S.project.avoidance?.cutOverrides?.[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
+  const labels={dice:L('再抽選','Randomize'),disableReroll:L('この演出をOFFにして再抽選','Disable current effects and randomize'),lock:L(locked?'ロック解除':'ロック',locked?'Unlock':'Lock'),area:layer==='avoidance'?L('回避円の位置・サイズ','Circle position & size'):L('表示範囲','Display area'),avoidEmphasis:L('強調も避ける','Avoid emphasis too'),maskAvoidance:L('回避部分をマスク','Mask avoidance region'),details:L('詳細編集','Edit details'),copy:L('演出をお気に入りに追加','Add effects to favorites'),paste:L('お気に入りから演出を適用','Apply favorite effects'),remove:L('削除','Delete'),frontmost:L('最前に表示','Frontmost')};
+  const actions=layer==='avoidance'?['area','avoidEmphasis','maskAvoidance','lock','remove']:['dice','disableReroll','lock',...(layer==='lyrics'||J.mediaSourceAvailable(cut)?['area']:[]),'details','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'remove'];
   const menu=document.createElement('div'),controller=new AbortController(),signal=controller.signal;
   menu.id='timelineCutMenu';menu.className='timeline-cut-menu';menu.setAttribute('role','menu');menu.setAttribute('aria-label',L('カットの操作','Cut actions'));
   menu.innerHTML=actions.map(action=>{
-    const toggle=['lock','frontmost'].includes(action),active=action==='lock'?locked:action==='frontmost'?!!cut.frontmost:false;
-    return `<button type="button" role="${toggle?'menuitemcheckbox':'menuitem'}" ${toggle?`aria-checked="${active}"`:''} data-action="${action}" data-layer="${layer}" data-index="${index}" data-part="${part}">${ICON[action]}<span>${labels[action]}</span>${active?'<span class="menu-check" aria-hidden="true">✓</span>':''}</button>`;
+    const toggle=['lock','frontmost','avoidEmphasis','maskAvoidance'].includes(action),active=action==='lock'?locked:action==='frontmost'?!!cut.frontmost:action==='avoidEmphasis'?!!cut.avoidEmphasis:action==='maskAvoidance'?!!cut.maskAvoidance:false;
+    const icon=ICON[action]||'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.5"/></svg>';
+    return `<button type="button" role="${toggle?'menuitemcheckbox':'menuitem'}" ${toggle?`aria-checked="${active}"`:''} data-action="${action}" data-layer="${layer}" data-index="${index}" data-part="${part}">${icon}<span>${labels[action]}</span>${active?'<span class="menu-check" aria-hidden="true">✓</span>':''}</button>`;
   }).join('');
   document.body.append(menu);timelineCutMenu={menu,controller,trigger};trigger.setAttribute('aria-expanded','true');
   const r=trigger.getBoundingClientRect(),box=menu.getBoundingClientRect();
@@ -1881,7 +1939,18 @@ function performTimelineAction(control) {
   if (control.dataset.action === 'details') { openCutDetails(layer,index,+control.dataset.part || 0); return; }
   if (control.dataset.action === 'area') {
     if (layer === 'lyrics') openAreaEditor(index);
+    else if (layer === 'avoidance') openAvoidanceEditor(index);
     else if (layer === 'foreground' || layer === 'media') openMediaEditor(index, layer);
+    return;
+  }
+  if (control.dataset.action === 'avoidEmphasis' && layer === 'avoidance') {
+    const cut = S.plan.avoidance?.cuts[index];
+    if (cut) { avoidanceOv(index, { avoidEmphasis: !cut.avoidEmphasis }); replan(); }
+    return;
+  }
+  if (control.dataset.action === 'maskAvoidance' && layer === 'avoidance') {
+    const cut = S.plan.avoidance?.cuts[index];
+    if (cut) { avoidanceOv(index, { maskAvoidance: !cut.maskAvoidance }); replan(); }
     return;
   }
   if (control.dataset.action === 'frontmost' && layer === 'lyrics') {
@@ -1892,6 +1961,9 @@ function performTimelineAction(control) {
     if (control.dataset.action === 'remove') removeLyricCut(index,+control.dataset.part||0);
     else if (control.dataset.action === 'dice') rerollLyricLine(index);
     else toggleLyricLineLock(index);
+  } else if (layer === 'avoidance') {
+    if (control.dataset.action === 'remove') removeAvoidanceCut(index);
+    else toggleAvoidanceCutLock(index);
   } else if (layer === 'foreground' || layer === 'media') {
     if (control.dataset.action === 'dice') rerollMediaCut(layer, index);
     else if (control.dataset.action === 'remove') removeMediaCut(index, layer);
@@ -1901,14 +1973,14 @@ function performTimelineAction(control) {
 function drawTimelineLinks() {
   const svg = $('timelineLinks'), stack = $('timelineStack');
   if (!svg || !S.plan) return;
-  for(const [layer,id] of [['foreground','foregroundTimeline'],['lyrics','timeline'],['media','mediaTimeline']]){
+  for(const [layer,id] of [['avoidance','avoidanceTimeline'],['foreground','foregroundTimeline'],['lyrics','timeline'],['media','mediaTimeline']]){
     const canvas=$(id),button=$('layerVisibilityControls').querySelector(`[data-layer="${layer}"]`);
-    if(!button)continue;
+    if(!button||!canvas)continue;
     const visible=S.project.layerVisibility?.[layer]!==false;
     button.style.top=(canvas.offsetTop+(canvas.clientHeight-30)/2)+'px';
     button.setAttribute('aria-pressed',String(visible));
     button.querySelector('.eye-slash').style.display=visible?'none':'';
-    button.title=J.mediaLabel({foreground:'前景',lyrics:'歌詞',media:'背景'}[layer],{foreground:'Foreground',lyrics:'Lyrics',media:'Background'}[layer])+': '+J.mediaLabel(visible?'非表示にする':'表示する',visible?'Hide':'Show');
+    button.title=J.mediaLabel({avoidance:'回避',foreground:'前景',lyrics:'歌詞',media:'背景'}[layer],{avoidance:'Avoidance',foreground:'Foreground',lyrics:'Lyrics',media:'Background'}[layer])+': '+J.mediaLabel(visible?'非表示にする':'表示する',visible?'Hide':'Show');
     button.setAttribute('aria-label',button.title);
   }
   const width = stack.clientWidth, height = stack.clientHeight;
@@ -1917,7 +1989,7 @@ function drawTimelineLinks() {
   if (S.timelineDrag && S.timelineDrag.moved) {
     const moving = new Set(linkedRefs(S.timelineDrag.ref));
     for (const marker of markers) if (moving.has(marker.ref)) {
-      const canvas = $(marker.layer === 'lyrics' ? 'timeline' : marker.layer === 'media' ? 'mediaTimeline' : 'foregroundTimeline');
+      const canvas = timelineCanvas(marker.layer);
       marker.x = canvas.offsetLeft + S.timelineDrag.preview / Math.max(0.001, S.plan.duration) * canvas.clientWidth;
     }
   }
@@ -1930,7 +2002,7 @@ function drawTimelineLinks() {
   }).join('');
   const preview = S.linkDrag ? `<line class="link-preview" x1="${S.linkDrag.sourceX}" y1="${S.linkDrag.sourceY}" x2="${S.linkDrag.x}" y2="${S.linkDrag.y}"/>` : '';
   const handles = markers.map(m => `<g class="link-handle ${linkedRefs(m.ref).length > 1 ? 'linked' : ''}" data-ref="${escapeHtml(m.ref)}" role="button" aria-label="境界をリンク"><circle cx="${m.x}" cy="${m.y}" r="9"/><text x="${m.x}" y="${m.y + 0.5}">🔗</text></g>`).join('');
-  const menus = ['foreground','lyrics','media'].map(layer => {
+  const menus = ['avoidance','foreground','lyrics','media'].map(layer => {
     const canvas=timelineCanvas(layer), lanes=timelineLanes(layer);
     const list=layer==='lyrics'?S.plan.cuts.filter(c=>c.line>=0&&Number.isInteger(c.part)):S.plan[layer].cuts;
     return list.map(cut=>{
@@ -1980,6 +2052,8 @@ function setCutEnd(layer, key, time) {
     const options = S.project.lyricCutOptions, next = { ...options[key], ...patch };
     for (const k of Object.keys(next)) if (next[k] === undefined) delete next[k];
     if (Object.keys(next).length) options[key] = next; else delete options[key];
+  } else if (layer === 'avoidance') {
+    avoidanceOv(key, patch);
   } else mediaOv(key, patch, layer);
 }
 function timelineBoundaryForCut(chosen, layer) {
@@ -2067,8 +2141,10 @@ function updateCutInfo() {
   const idx = `${cut ? cut.index : -1}/${mc ? mc.index : -1}/${fc ? fc.index : -1}`;
   const li = cut ? cut.line : -1;
   if (li !== S.curLine) { S.lineEls.forEach((el, i) => el.classList.toggle('cur', i === li)); S.curLine = li; }
+  const ac = J.avoidanceAt(S.plan, S.t);
   const active = S.sourceTab === 'foreground' ? fc : mc;
   S.mediaLineEls.forEach((el, i) => el.classList.toggle('cur', !!active && i === active.index));
+  S.avoidanceLineEls.forEach((el, i) => el.classList.toggle('cur', !!ac && i === ac.index));
   if (idx === lastCutIdx) return;
   lastCutIdx = idx;
 
@@ -2112,6 +2188,19 @@ function openInsertAtPlayhead(layer) {
   const start=S.t,lyric=layer==='lyrics',cuts=lyric?S.plan.cuts:S.plan[layer].cuts;
   const end=lyric?lyricInsertRange(start).end:cuts.filter(c=>c.start>start+1e-6).reduce((end,c)=>Math.min(end,c.start),S.plan.duration);
   if(end-start<.04)return;
+  if(layer==='avoidance'){
+    const a=S.project.avoidance,index=cuts.filter(c=>c.start<start-1e-6).length,overrides={},times={};
+    const prev=cuts[Math.max(0,index-1)]||{cx:0.5,cy:0.5,r:0.25,avoidEmphasis:a.avoidEmphasis,maskAvoidance:a.maskAvoidance,maskRadiusOffset:a.maskRadiusOffset,maskFeather:a.maskFeather,maskCurve:a.maskCurve};
+    cuts.forEach((cut,i)=>{const n=i>=index?i+1:i;overrides[n]={...a.cutOverrides[i]};times[n]=cut.start;});
+    const replacing=cuts[index] && Math.abs(cuts[index].start-start)<1e-6;
+    if(replacing){delete overrides[index+1];delete times[index+1];for(let i=index+2;i<=cuts.length;i++){overrides[i-1]=overrides[i];times[i-1]=times[i];delete overrides[i];delete times[i];}}
+    overrides[index]={cx:prev.cx,cy:prev.cy,r:prev.r,avoidEmphasis:prev.avoidEmphasis,maskAvoidance:prev.maskAvoidance,maskRadiusOffset:prev.maskRadiusOffset,maskFeather:prev.maskFeather,maskCurve:prev.maskCurve};times[index]=start;
+    a.manualCuts=true;a.cutCount=cuts.length+(replacing?0:1);a.cutOverrides=overrides;a.timing.lineTimes=times;
+    if(!replacing){for(const link of S.project.timelineLinks)for(const side of ['a','b'])if(link[side].startsWith('a:')&&+link[side].slice(2)>=index)link[side]='a:'+(+link[side].slice(2)+1);}
+    S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+    S.project.durationOverride=S.plan.duration;renderTech();replan();seek(start);openAvoidanceEditor(index,true);
+    return;
+  }
   const L=J.mediaLabel,dialog=document.createElement('dialog');dialog.className='insert-cut-dialog';dialog.id='insertCutDialog';
   const name=lyric?L('歌詞を挿入','Insert lyrics'):layer==='foreground'?L('前景を挿入','Insert foreground'):L('背景を挿入','Insert background');
   dialog.innerHTML=`<form><h2>${name}</h2><label>${lyric?L('歌詞','Lyrics'):L('素材','Asset')}${lyric?'<textarea rows="3" required></textarea>':`<select><option value="">${L('画像無し','No image')}</option>${[...J.mediaCopyItems(layer),...S.project[layer].items].map(item=>`<option value="${escapeHtml(item.id)}">${escapeHtml(item.name)}</option>`).join('')}</select>`}</label><p class="hint">${J.fmtTime(start)} ～ ${J.fmtTime(end)}</p><div class="row"><button type="button" data-cancel>${L('キャンセル','Cancel')}</button><button type="submit">${L('挿入','Insert')}</button></div></form>`;
@@ -2397,18 +2486,61 @@ function positionAreaEditor() {
     shade.querySelector('path').setAttribute('d',`M0,0H${innerWidth}V${innerHeight}H0Z`+rect(viewport)+rect($('areaEditControls').getBoundingClientRect()));
   }
 }
+function avoidanceCircleToDraft(cut, W = S.plan.W, H = S.plan.H) {
+  const d = 2 * (cut?.r ?? 0.25) * Math.min(W, H), w = d / W, h = d / H;
+  const cx = cut?.cx ?? 0.5, cy = cut?.cy ?? 0.5;
+  return { x: cx - w / 2, y: cy - h / 2, w, h };
+}
+function draftToAvoidanceCircle(draft, W = S.plan.W, H = S.plan.H) {
+  const cx = J.clamp(draft.x + draft.w / 2, 0, 1), cy = J.clamp(draft.y + draft.h / 2, 0, 1);
+  const d = ((draft.w * W) + (draft.h * H)) * 0.5;
+  const r = J.clamp(d / (2 * Math.min(W, H)), 0.03, 0.85);
+  return { cx: +cx.toFixed(4), cy: +cy.toFixed(4), r: +r.toFixed(4) };
+}
+function avoidanceEditDraftKey(edit) {
+  if (!edit || !edit.draft) return '';
+  return JSON.stringify({ area: J.lyricArea({ ...edit.draft, angle: 0, lockAspect: true }), maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: Math.round(+edit.maskRadiusOffset || 0), maskFeather: Math.round(+edit.maskFeather || 0), maskCurve: edit.maskCurve || 'smooth' });
+}
 function showAreaDraft() {
-  const edit = S.areaEdit, area = edit && edit.draft, rect = $('areaEditRect'), media = !!edit && edit.kind !== 'lyric';
+  const edit = S.areaEdit, area = edit && edit.draft, rect = $('areaEditRect'), isAvoidance = edit?.kind === 'avoidance';
   rect.hidden = !area;
   if (area) Object.assign(rect.style, { left: `${area.x * 100}%`, top: `${area.y * 100}%`, width: `${area.w * 100}%`, height: `${area.h * 100}%`, transform: `rotate(${edit.angle}deg)` });
   $('areaEditOverlay').classList.toggle('media-edit', !!edit);
+  $('areaEditOverlay').classList.toggle('avoidance-edit', !!isAvoidance);
   $('mediaAreaSizeControls').hidden = !edit;
-  if (area) { $('mediaAreaAspectLock').checked = edit.lockAspect; $('mediaAreaWidth').value = String(Math.round(area.w * 1000) / 10); $('mediaAreaHeight').value = String(Math.round(area.h * 1000) / 10); }
-  $('mediaAreaAngleField').hidden = !edit;
+  if (area) { $('mediaAreaAspectLock').checked = edit.lockAspect; $('mediaAreaAspectLock').disabled = !!isAvoidance; $('mediaAreaWidth').value = String(Math.round(area.w * 1000) / 10); $('mediaAreaHeight').value = String(Math.round(area.h * 1000) / 10); }
+  $('mediaAreaAngleField').hidden = !edit || !!isAvoidance;
   if (edit) $('mediaAreaAngle').value = String(edit.angle);
-  $('areaResetFull').hidden = !edit;
+  if ($('avoidanceMaskControls')) {
+    $('avoidanceMaskControls').hidden = !isAvoidance;
+    const innerRing = $('avoidanceMaskInnerRing'), outerRing = $('avoidanceMaskOuterRing');
+    if (isAvoidance && area) {
+      const maskOn = !!edit.maskAvoidance;
+      const offset = Math.round(+edit.maskRadiusOffset || 0);
+      const feather = Math.max(0, Math.round(+edit.maskFeather ?? 60));
+      const curve = edit.maskCurve || 'smooth';
+      $('avoidanceEditMask').checked = maskOn;
+      $('avoidanceEditMaskOffset').value = String(offset);
+      $('avoidanceEditMaskOffsetRange').value = String(J.clamp(offset, -240, 240));
+      $('avoidanceEditMaskFeather').value = String(feather);
+      $('avoidanceEditMaskFeatherRange').value = String(J.clamp(feather, 0, 300));
+      $('avoidanceEditMaskCurve').value = curve;
+      for (const id of ['avoidanceEditMaskOffset', 'avoidanceEditMaskOffsetRange', 'avoidanceEditMaskFeather', 'avoidanceEditMaskFeatherRange', 'avoidanceEditMaskCurve']) $(id).disabled = !maskOn;
+      const circle = draftToAvoidanceCircle(area);
+      const basePx = Math.max(1, circle.r * 1080);
+      const rInnerPx = Math.max(0, basePx + offset);
+      const rOuterPx = rInnerPx + feather;
+      if (innerRing) { innerRing.hidden = !maskOn || Math.abs(offset) < 1; innerRing.style.width = `${(rInnerPx / basePx) * 100}%`; innerRing.style.height = `${(rInnerPx / basePx) * 100}%`; }
+      if (outerRing) { outerRing.hidden = !maskOn || rOuterPx <= 0; outerRing.style.width = `${(rOuterPx / basePx) * 100}%`; outerRing.style.height = `${(rOuterPx / basePx) * 100}%`; }
+    } else {
+      if (innerRing) innerRing.hidden = true;
+      if (outerRing) outerRing.hidden = true;
+    }
+  }
+  $('areaResetFull').hidden = !edit || !!isAvoidance;
   $('areaResetAuto').hidden = !edit;
-  $('areaResetAuto').disabled = !edit || edit.autoDraft===JSON.stringify(J.lyricArea({...area,angle:edit.angle,lockAspect:edit.lockAspect}));
+  const currentDraftKey = isAvoidance ? avoidanceEditDraftKey(edit) : (area ? JSON.stringify(J.lyricArea({ ...area, angle: edit.angle, lockAspect: edit.lockAspect })) : '');
+  $('areaResetAuto').disabled = !edit || edit.autoDraft === currentDraftKey;
   $('areaApplyOne').textContent = J.mediaLabel('配置決定','Set placement');
   $('areaApplyOne').disabled = !area;
   $('areaApplyFollowing').disabled = !area;
@@ -2428,6 +2560,21 @@ function openAreaEditor(index,fromPreview=false) {
   if(!fromPreview)seek(cut ? cut.start + Math.min(cut.dur * 0.6, cut.inDur + 0.25) : line.start);
   $('areaEditOverlay').hidden = false; $('areaEditControls').hidden = false;
   beginAreaSelection();positionAreaEditor(); showAreaDraft();
+}
+function openAvoidanceEditor(index, fromPreview=false) {
+  if (S.exporting || S.tap) return;
+  if (S.areaEdit) cancelAreaEditor();
+  const cut = S.plan.avoidance?.cuts[index]; if (!cut) return;
+  pause();
+  clearTimeout(warmTimer); ++warmJob;
+  const draft = avoidanceCircleToDraft(cut);
+  const autoDraftRect = avoidanceCircleToDraft({ cx: 0.5, cy: 0.5, r: 0.25 });
+  const defMask = J.normalizeAvoidanceMask(S.project.avoidance);
+  const autoDraft = avoidanceEditDraftKey({ draft: autoDraftRect, ...defMask });
+  S.areaEdit = { kind: 'avoidance', index, oldTime: S.t, draft, ratio: S.plan.W / S.plan.H, lockAspect: true, angle: 0, drag: null, maskAvoidance: !!cut.maskAvoidance, maskRadiusOffset: cut.maskRadiusOffset ?? defMask.maskRadiusOffset, maskFeather: cut.maskFeather ?? defMask.maskFeather, maskCurve: cut.maskCurve || defMask.maskCurve, autoDraft };
+  if (!fromPreview) seek(cut.start + Math.min(0.5, Math.max(0.001, (cut.end - cut.start) / 2)));
+  $('areaEditOverlay').hidden = false; $('areaEditControls').hidden = false;
+  beginAreaSelection(); positionAreaEditor(); showAreaDraft();
 }
 function openMediaEditor(index, layer,fromPreview=false) {
   if (S.exporting || S.tap) return;
@@ -2463,7 +2610,23 @@ function applyAreaEditor(following) {
   const { kind, index, draft } = S.areaEdit;
   remember();
   // 「以降にも適用」 leaves other locked cuts alone; the edited cut itself stays locked with its new place.
-  if (kind !== 'lyric') {
+  if (kind === 'avoidance') {
+    const circle = draftToAvoidanceCircle(draft);
+    const autoRect = avoidanceCircleToDraft({ cx: 0.5, cy: 0.5, r: 0.25 });
+    const autoGeom = JSON.stringify(J.lyricArea({ ...autoRect, angle: 0, lockAspect: true })) === JSON.stringify(J.lyricArea({ ...draft, angle: 0, lockAspect: true }));
+    const defMask = J.normalizeAvoidanceMask(S.project.avoidance);
+    const maskPatch = J.normalizeAvoidanceMask(S.areaEdit, defMask);
+    const autoMask = maskPatch.maskAvoidance === defMask.maskAvoidance && maskPatch.maskRadiusOffset === defMask.maskRadiusOffset && maskPatch.maskFeather === defMask.maskFeather && maskPatch.maskCurve === defMask.maskCurve;
+    S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+    for (let i = index; i < (following ? S.plan.avoidance.cuts.length : index + 1); i++) {
+      if (i !== index && S.project.avoidance.cutOverrides[i]?.lock) continue;
+      avoidanceOv(i, {
+        ...(autoGeom ? { cx: undefined, cy: undefined, r: undefined } : circle),
+        ...(autoMask ? { maskAvoidance: undefined, maskRadiusOffset: undefined, maskFeather: undefined, maskCurve: undefined } : maskPatch),
+      });
+    }
+    renderTech();
+  } else if (kind !== 'lyric') {
     for (let i = index; i < (following ? S.plan[kind].cuts.length : index + 1); i++) {
       if (i !== index && S.project[kind].cutOverrides[i]?.lock) continue;
       const automatic=S.areaEdit.autoDraft===JSON.stringify(J.lyricArea({...draft,angle:S.areaEdit.angle,lockAspect:S.areaEdit.lockAspect}));
@@ -2543,19 +2706,42 @@ function moveMediaDraft(ev) {
   showAreaDraft();
 }
 function syncSourceTab() {
+  const avoidance = S.sourceTab === 'avoidance';
   const layer = activeMediaLayer(), media = !!layer, m = media && S.project[layer];
-  $('sourceLyrics').setAttribute('aria-selected', String(!media)); $('sourceMedia').setAttribute('aria-selected', String(layer === 'media'));
+  $('sourceAvoidance')?.setAttribute('aria-selected', String(avoidance));
+  $('sourceLyrics').setAttribute('aria-selected', String(!media && !avoidance));
+  $('sourceMedia').setAttribute('aria-selected', String(layer === 'media'));
   $('sourceForeground').setAttribute('aria-selected', String(layer === 'foreground'));
-  $('lyricsPane').hidden = media; $('mediaPane').hidden = !media;
-  $('lineList').hidden = media; $('mediaLineList').hidden = !media;
-  $('cutsHeading').textContent = media ? J.mediaLabel('カット', 'Cuts') : J.mediaLabel('行とカット', 'Lines and cuts');
+  if ($('avoidancePane')) $('avoidancePane').hidden = !avoidance;
+  $('lyricsPane').hidden = media || avoidance; $('mediaPane').hidden = !media;
+  if ($('avoidanceLineList')) $('avoidanceLineList').hidden = !avoidance;
+  $('lineList').hidden = media || avoidance; $('mediaLineList').hidden = !media;
+  $('cutsHeading').textContent = (media || avoidance) ? J.mediaLabel('カット', 'Cuts') : J.mediaLabel('行とカット', 'Lines and cuts');
   $('mediaPaneTitle').textContent = layer === 'foreground' ? '前景' : '背景';
-  $('linesInfo').textContent = media ? `${m.items.length}素材 / ${S.plan[layer].cuts.length}カット` : `${S.plan.lines.length}行 / ${S.plan.cuts.length}カット`;
+  $('linesInfo').textContent = avoidance ? `${S.plan.avoidance?.cuts.length || 0}カット` : media ? `${m.items.length}素材 / ${S.plan[layer].cuts.length}カット` : `${S.plan.lines.length}行 / ${S.plan.cuts.length}カット`;
   $('mediaRandom').disabled = !media || (m.items.length < 2 && !m.randomOrder);
   $('mediaRandom').title = media && m.items.length < 2 && !m.randomOrder ? J.mediaLabel('素材を2つ以上追加すると選択できます', 'Add at least two files to enable random order') : '';
   $('mediaLoop').disabled = !media || (m.items.length === 0 && S.plan[layer].cuts.length === 0);
   $('mediaGroupLyrics').checked = !media || m.groupLyricsAsOneCut !== false;
-  $('audioTimingSection').hidden = media;
+  $('audioTimingSection').hidden = media || avoidance;
+  if ($('avoidancePane')) {
+    const a = S.project.avoidance || J.normalizeAvoidance(null);
+    const lyricEffects = J.lyricEffectSettings(S.project);
+    $('avoidanceEnable').checked = !!(lyricEffects.avoidCenter && lyricEffects.autoPlacement);
+    $('avoidanceEmphasis').checked = !!a.avoidEmphasis;
+    if ($('avoidanceMask')) $('avoidanceMask').checked = !!a.maskAvoidance;
+    if ($('avoidanceDefaultMaskFields')) {
+      $('avoidanceDefaultMaskFields').hidden = !a.maskAvoidance;
+      $('avoidanceMaskOffset').value = String(a.maskRadiusOffset ?? 0);
+      $('avoidanceMaskFeather').value = String(a.maskFeather ?? 60);
+      $('avoidanceMaskCurve').value = a.maskCurve || 'smooth';
+    }
+    $('avoidanceLyricInsertMode').value = a.lyricInsertMode === 'cut' ? 'cut' : 'line';
+    $('avoidanceGroupLyrics').checked = a.groupLyricsAsOneCut !== false;
+    const aTargets = avoidanceLyricTargets();
+    $('btnAvoidanceFromLyrics').disabled = !aTargets.length;
+    $('btnTapAvoidance').disabled = !S.tap && !S.plan?.lines?.length && !S.audio;
+  }
   const targets = mediaLyricTargets(layer);
   $('mediaLyricInsertMode').value = media && m.lyricInsertMode === 'cut' ? 'cut' : 'line';
   const sourceBox=$('backgroundInsertSources');sourceBox.hidden=layer!=='media';
@@ -2706,7 +2892,7 @@ function relayoutTargets() {
 const PLAYHEAD_LABELS = {
   insert: ['挿入', 'Insert'], split: ['分割', 'Split'], endHere: ['ここまで再生', 'Play until here'], untilNext: ['次カットまで再生', 'Play until the next cut'],
 };
-const LAYER_LABELS = { foreground: ['前景', 'Foreground'], lyrics: ['歌詞', 'Lyrics'], media: ['背景', 'Background'] };
+const LAYER_LABELS = { avoidance: ['回避', 'Avoidance'], foreground: ['前景', 'Foreground'], lyrics: ['歌詞', 'Lyrics'], media: ['背景', 'Background'] };
 const PLAYHEAD_TITLES = {
   insert: ['を再生位置に挿入', ': insert at the playhead'], split: ['を再生位置で分割', ': split at the playhead'],
   endHere: ['のカットを再生位置で終わらせる', ': end the cut at the playhead'], untilNext: ['のカットを次のカットの開始まで表示', ': show the cut until the next cut starts'],
@@ -2733,7 +2919,7 @@ function initPlayheadMenu() {
   }
   for (const button of document.querySelectorAll('[data-playhead-action]')) {
     const [layerJa, layerEn] = LAYER_LABELS[button.dataset.layer], [ja, en] = PLAYHEAD_TITLES[button.dataset.playheadAction];
-    const y={foreground:2,lyrics:6,media:10}[button.dataset.layer];
+    const y={avoidance:1,foreground:4,lyrics:8,media:11}[button.dataset.layer] ?? 6;
     button.innerHTML=`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 3h12M2 8h12M2 13h12" opacity=".35"/><rect x="2" y="${y}" width="12" height="4" rx="1" fill="currentColor"/></svg><span>${L(layerJa, layerEn)}</span>`;button.setAttribute('role','menuitem'); button.title = L(layerJa + ja, layerEn + en); button.setAttribute('aria-label', button.title);
   }
   $('relayoutAtPlayhead').textContent = L('配置をシャッフル', 'Shuffle layout');
@@ -2754,7 +2940,7 @@ function playheadEndTarget(layer, manualOnly) {
 function playheadActionEnabled(action, layer) {
   const busy = S.exporting || S.tap || !S.plan;
   if (action === 'insert') return !busy && S.t < S.plan.duration - .04;
-  if (action === 'split') return !!mediaSplitTarget(layer);
+  if (action === 'split') return layer === 'avoidance' ? !!avoidanceSplitTarget() : !!mediaSplitTarget(layer);
   return !!playheadEndTarget(layer, action === 'untilNext');
 }
 function syncPlayheadMenu() {
@@ -2974,6 +3160,181 @@ const MEDIA_EFFECT_GROUPS = {
   graphic: J.mediaLabel('分割・残像・グリッチ', 'Panels / echoes / glitch'), maskFx: J.mediaLabel('マスク', 'Masks'),
   transition: J.mediaLabel('カット間のつなぎ', 'Cut transitions'),
 };
+function avoidanceOv(index, patch) {
+  const a = S.project.avoidance ||= J.normalizeAvoidance(null);
+  const o = Object.assign({}, a.cutOverrides[index] || {}, patch);
+  for (const k of Object.keys(o)) if (o[k] === undefined || o[k] === '') delete o[k];
+  if (Object.keys(o).length) a.cutOverrides[index] = o; else delete a.cutOverrides[index];
+}
+function toggleAvoidanceCutLock(index) {
+  const cut = S.plan.avoidance?.cuts[index]; if (!cut) return;
+  const ov = S.project.avoidance?.cutOverrides?.[index] || {};
+  avoidanceOv(index, { lock: !ov.lock || undefined });
+  replan();
+}
+function avoidanceLyricTargets() {
+  const a = S.project.avoidance;
+  if (!a || !S.plan) return [];
+  let targets = S.plan.cuts.filter(cut => a.lyricInsertMode === 'cut' ? cut.line >= 0 : cut.line >= 0 && cut.part === 0);
+  if (a.groupLyricsAsOneCut !== false) {
+    const seen = new Set();
+    targets = targets.filter(cut => {
+      const group = cut.line >= 0 ? S.plan.lines[cut.line]?.group : null;
+      if (group == null) return true;
+      if (seen.has(group)) return false;
+      seen.add(group); return true;
+    });
+  }
+  return targets.slice(0, 1000);
+}
+function insertAvoidanceFromLyrics() {
+  if (S.exporting || S.tap) return;
+  pause(); cancelAreaEditor();
+  clearTimeout(replanTimer); replan();
+  const targets = avoidanceLyricTargets(), a = S.project.avoidance;
+  if (!targets.length) return;
+  const prevCuts = S.plan.avoidance?.cuts || [];
+  a.manualCuts = true;
+  a.cutCount = targets.length;
+  a.cutOverrides = {};
+  a.timing.lineTimes = {};
+  S.project.timelineLinks = S.project.timelineLinks.filter(link => !link.a.startsWith('a:') && !link.b.startsWith('a:'));
+  targets.forEach((cut, index) => {
+    const refCut = prevCuts[Math.min(index, Math.max(0, prevCuts.length - 1))];
+    const baseOv = refCut && refCut.customCircle ? { cx: refCut.cx, cy: refCut.cy, r: refCut.r } : {};
+    if (refCut && refCut.customMask) Object.assign(baseOv, { maskAvoidance: refCut.maskAvoidance, maskRadiusOffset: refCut.maskRadiusOffset, maskFeather: refCut.maskFeather, maskCurve: refCut.maskCurve });
+    a.cutOverrides[index] = baseOv;
+    a.timing.lineTimes[index] = cut.start;
+    if (a.lyricInsertMode === 'cut' && cut.line >= 0 && cut.part !== 0) S.project.timing.cutTimes[`${cut.line}:${cut.part}`] = cut.start;
+    S.project.timelineLinks.push({ a: 'a:' + index, b: boundaryRef('lyrics', cut) });
+  });
+  S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+  renderTech(); replan(); seek(targets[0].start);
+  toast(J.mediaLabel(`${targets.length}個の回避カットを歌詞に合わせて挿入しました`, `Inserted ${targets.length} avoidance cuts aligned to lyrics`));
+}
+function insertAvoidanceCut(index) {
+  const a = S.project.avoidance, cuts = S.plan.avoidance.cuts;
+  if (cuts.length >= 1000) { toast('カット数の上限に達しました'); return; }
+  const starts = cuts.map(cut => cut.start);
+  const overrides = {};
+  cuts.forEach((cut, i) => {
+    overrides[i >= index ? i + 1 : i] = Object.assign({}, a.cutOverrides[i] || {});
+  });
+  const ref = cuts[Math.max(0, Math.min(index - 1, cuts.length - 1))];
+  const refOv = ref && ref.customCircle ? { cx: ref.cx, cy: ref.cy, r: ref.r } : {};
+  if (ref && ref.customMask) Object.assign(refOv, { maskAvoidance: ref.maskAvoidance, maskRadiusOffset: ref.maskRadiusOffset, maskFeather: ref.maskFeather, maskCurve: ref.maskCurve });
+  overrides[index] = refOv;
+  let start;
+  if (!cuts.length) start = 0;
+  else if (index === 0) {
+    start = 0;
+    starts[0] = Math.max(starts[0], Math.min(cuts[0].end, starts[0] + Math.max(0.04, (cuts[0].end - starts[0]) / 2)));
+  } else if (index === cuts.length) {
+    start = Math.max(cuts[index - 1].start + 0.04, (cuts[index - 1].start + S.plan.duration) / 2);
+  } else start = (cuts[index - 1].start + cuts[index].start) / 2;
+  const times = {};
+  starts.forEach((time, i) => { times[i >= index ? i + 1 : i] = +time.toFixed(3); });
+  times[index] = +start.toFixed(3);
+  a.manualCuts = true;
+  a.cutCount = cuts.length + 1;
+  a.cutOverrides = overrides;
+  a.timing.lineTimes = times;
+  for (const link of S.project.timelineLinks) for (const end of ['a', 'b']) {
+    if (link[end].startsWith('a:') && +link[end].slice(2) >= index) link[end] = 'a:' + (+link[end].slice(2) + 1);
+  }
+  S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+  renderTech(); replan(); seek(start);
+}
+function removeAvoidanceCut(index) {
+  const a = S.project.avoidance, cuts = S.plan.avoidance.cuts;
+  if (!Number.isInteger(index) || index < 0 || index >= cuts.length) return;
+  cancelAreaEditor();
+  if (S.tap) stopTap();
+  const overrides = {}, times = {};
+  cuts.forEach((cut, oldIndex) => {
+    if (oldIndex === index) return;
+    const newIndex = oldIndex > index ? oldIndex - 1 : oldIndex;
+    overrides[newIndex] = Object.assign({}, a.cutOverrides[oldIndex] || {});
+    times[newIndex] = +cut.start.toFixed(3);
+  });
+  a.manualCuts = true;
+  a.cutCount = cuts.length - 1;
+  a.cutOverrides = overrides;
+  a.timing.lineTimes = times;
+  const remapRef = ref => {
+    if (typeof ref !== 'string' || !ref.startsWith('a:')) return ref;
+    const oldIndex = +ref.slice(2);
+    if (!Number.isInteger(oldIndex)) return ref;
+    return oldIndex === index ? null : 'a:' + (oldIndex > index ? oldIndex - 1 : oldIndex);
+  };
+  S.project.timelineLinks = S.project.timelineLinks.flatMap(link => {
+    const la = remapRef(link.a), lb = remapRef(link.b);
+    return la && lb ? [{ a: la, b: lb }] : [];
+  });
+  replan();
+}
+function avoidanceSplitTarget() {
+  if (!S.plan?.avoidance || S.exporting || S.tap || S.plan.avoidance.cuts.length >= 1000) return null;
+  const cut = J.avoidanceAt(S.plan, S.t);
+  return cut && S.t - cut.start >= 0.04 - 1e-7 && cut.end - S.t >= 0.04 - 1e-7 ? cut : null;
+}
+function splitAvoidanceCut() {
+  const cut = avoidanceSplitTarget(); if (!cut) return;
+  pause();
+  const time = S.t, a = S.project.avoidance, cuts = S.plan.avoidance.cuts, index = cut.index;
+  const clone = v => JSON.parse(JSON.stringify(v)), overrides = {}, times = {};
+  const baseOv = clone(a.cutOverrides[index] || {});
+  const first = { ...baseOv }, second = { ...baseOv, lock: false };
+  if (first.untilNext === false) { delete first.untilNext; delete first.endTime; }
+  cuts.forEach((c, i) => {
+    const next = i > index ? i + 1 : i;
+    overrides[next] = i === index ? first : clone(a.cutOverrides[i] || {});
+    times[next] = c.start;
+  });
+  overrides[index + 1] = second; times[index + 1] = +time.toFixed(3);
+  a.manualCuts = true; a.cutCount = cuts.length + 1; a.cutOverrides = overrides; a.timing.lineTimes = times;
+  S.project.durationOverride = S.plan.duration;
+  for (const link of S.project.timelineLinks) for (const end of ['a', 'b']) {
+    if (link[end].startsWith('a:') && +link[end].slice(2) > index) link[end] = 'a:' + (+link[end].slice(2) + 1);
+  }
+  replan(); seek(time);
+}
+function renderAvoidanceLines() {
+  const ol = $('avoidanceLineList'); if (!ol || !S.plan?.avoidance) return;
+  ol.innerHTML = ''; S.avoidanceLineEls = [];
+  const a = S.project.avoidance, L = J.mediaLabel;
+  const addButton = index => {
+    const row = document.createElement('li'); row.className = 'media-cut-insert';
+    row.innerHTML = `<button class="ghost small" type="button" aria-label="${index + 1}番目に回避カットを追加">＋ ${L('カットを追加', 'Add cut')}</button>`;
+    row.querySelector('button').addEventListener('click', () => insertAvoidanceCut(index));
+    ol.appendChild(row);
+  };
+  S.plan.avoidance.cuts.forEach((cut, i) => {
+    addButton(i);
+    const ov = a.cutOverrides[i] || {};
+    const draft = avoidanceCircleToDraft(cut);
+    const placementControl = `<span class="foreground-placement-controls"><button class="foreground-placement-open ghost" type="button" aria-label="${i + 1}カット目の回避円を編集"><span class="foreground-placement-thumb avoidance-circle-thumb"><i style="left:${draft.x * 100}%;top:${draft.y * 100}%;width:${draft.w * 100}%;height:${draft.h * 100}%"></i></span>${L('位置・サイズを編集', 'Edit circle')}</button>${!cut.customCircle ? `<span class="tagl">${L('中央・既定', 'Center default')}</span>` : `<button class="foreground-placement-reset ghost" type="button">${L('中央に戻す', 'Reset to center')}</button>`}</span>`;
+    const li = document.createElement('li'); li.className = 'ln media-ln avoidance-ln';
+    li.innerHTML = `<span class="no">${String(i + 1).padStart(2, '0')}</span><input class="time mono" type="number" step="0.01" min="0" value="${cut.start.toFixed(2)}" aria-label="${i + 1}カット目の開始秒"><span class="txt">${escapeHtml(cut.name)}</span><div class="meta"><span class="tools"><label class="check" style="margin:0"><input type="checkbox" class="avoidance-cut-enable" ${cut.enabled !== false ? 'checked' : ''}><span>${L('有効', 'Enabled')}</span></label><label class="check" style="margin:0"><input type="checkbox" class="avoidance-cut-emphasis" ${cut.avoidEmphasis ? 'checked' : ''}><span>${L('強調も避ける', 'Avoid emphasis')}</span></label><label class="check" style="margin:0"><input type="checkbox" class="avoidance-cut-mask" ${cut.maskAvoidance ? 'checked' : ''}><span>${L('回避部分をマスク', 'Mask avoidance')}</span></label><button class="icon ghost lock" title="${L('このカットをロック', 'Lock cut')}" aria-pressed="${ov.lock ? 'true' : 'false'}">${ICON.lock}</button><button class="ghost small remove-avoidance-cut" type="button" aria-label="${i + 1}カット目を削除">${L('削除', 'Delete')}</button></span>${placementControl}</div>`;
+    li.querySelector('.time').addEventListener('change', e => {
+      const v = parseFloat(e.target.value);
+      if (isFinite(v)) a.timing.lineTimes[i] = Math.max(0, v); else delete a.timing.lineTimes[i];
+      replan();
+    });
+    li.querySelector('.txt').addEventListener('click', () => seek(cut.start + 0.001));
+    li.querySelector('.foreground-placement-open').addEventListener('click', () => openAvoidanceEditor(i));
+    const reset = li.querySelector('.foreground-placement-reset');
+    if (reset) reset.addEventListener('click', () => { avoidanceOv(i, { cx: undefined, cy: undefined, r: undefined }); replan(); });
+    li.querySelector('.avoidance-cut-enable').addEventListener('change', e => { avoidanceOv(i, { enabled: e.target.checked ? undefined : false }); replan(); });
+    li.querySelector('.avoidance-cut-emphasis').addEventListener('change', e => { avoidanceOv(i, { avoidEmphasis: e.target.checked }); replan(); });
+    li.querySelector('.avoidance-cut-mask').addEventListener('change', e => { avoidanceOv(i, { maskAvoidance: e.target.checked }); replan(); });
+    li.querySelector('.lock').addEventListener('click', () => toggleAvoidanceCutLock(i));
+    li.querySelector('.remove-avoidance-cut').addEventListener('click', () => removeAvoidanceCut(i));
+    ol.appendChild(li); S.avoidanceLineEls.push(li);
+  });
+  addButton(S.plan.avoidance.cuts.length);
+  syncSourceTab();
+}
 function renderMediaLines() {
   const layer = activeMediaLayer() || 'media', m = S.project[layer];
   const ol = $('mediaLineList'); ol.innerHTML = ''; S.mediaLineEls = [];
@@ -3319,11 +3680,11 @@ function initOutsideDismiss() {
 function syncSourceDrawer() {
   const compact=$('app').classList.contains('compact-ui'),panel=document.querySelector('.col-left');
   panel.classList.toggle('source-open',compact&&!!S.sourceOpen);
-  for(const [id,tab]of [['sourceForeground','foreground'],['sourceLyrics','lyrics'],['sourceMedia','media']]){
-    $(id).setAttribute('aria-expanded',String(!compact||!!S.sourceOpen&&S.sourceTab===tab));
+  for(const [id,tab]of [['sourceAvoidance','avoidance'],['sourceForeground','foreground'],['sourceLyrics','lyrics'],['sourceMedia','media']]){
+    $(id)?.setAttribute('aria-expanded',String(!compact||!!S.sourceOpen&&S.sourceTab===tab));
   }
   $('closeSourceDrawer').setAttribute('aria-label',J.mediaLabel('素材設定を閉じる','Close source settings'));
-  $('sourceDrawerTitle').textContent=J.mediaLabel(...({foreground:['前景','Foreground'],lyrics:['歌詞・曲','Lyrics / Audio'],media:['背景','Background']}[S.sourceTab]||['歌詞・曲','Lyrics / Audio']));
+  $('sourceDrawerTitle').textContent=J.mediaLabel(...({avoidance:['回避','Avoidance'],foreground:['前景','Foreground'],lyrics:['歌詞・曲','Lyrics / Audio'],media:['背景','Background']}[S.sourceTab]||['歌詞・曲','Lyrics / Audio']));
 }
 function selectSourceDrawer(tab) {
   if($('app').classList.contains('compact-ui')){
@@ -3331,9 +3692,11 @@ function selectSourceDrawer(tab) {
     if(S.sourceOpen){S.settingsOpen=false;syncSettingsDrawer();}
   }
   cancelAreaEditor();S.sourceTab=tab;syncSourceTab();
-  if(tab!=='lyrics'){renderMediaList();renderMediaLines();}
+  if(tab==='avoidance')renderAvoidanceLines();
+  else if(tab!=='lyrics'){renderMediaList();renderMediaLines();}
   syncSourceDrawer();
 }
+
 function positionSettingsDrawer() {
   const top=Math.max(0,document.querySelector('.bar').getBoundingClientRect().bottom);
   $('app').style.setProperty('--settings-top',Math.min(top,innerHeight-100)+'px');
@@ -3759,8 +4122,9 @@ async function runExport(kind) {
 
 /* ---------------- tap sync ---------------- */
 function startTap(fromIndex = 0) {
-  const layer = activeMediaLayer();
-  if (!(layer ? J.mediaInsertChoices(S.project,layer).length : S.plan.lines.length)) return;
+  const avoidance = S.sourceTab === 'avoidance';
+  const layer = avoidance ? 'avoidance' : activeMediaLayer();
+  if (!avoidance && !(layer ? J.mediaInsertChoices(S.project,layer).length : S.plan.lines.length)) return;
   pause();
   fromIndex = Math.max(0, Math.min(fromIndex, (layer ? S.plan[layer].cuts.length : S.plan.lines.length) - 1));
   S.tap = { i: fromIndex, layer, append: !!layer, fileIndex: 0, countingDown: true, fromIndex };
@@ -3791,6 +4155,23 @@ function tapNow() {
   if (S.tap.append) {
     const i = S.tap.i;
     const m = S.project[S.tap.layer];
+    if (S.tap.layer === 'avoidance') {
+      const prev = S.plan.avoidance?.cuts[Math.max(0, i - 1)];
+      const firstCircle = prev && prev.customCircle ? { cx: prev.cx, cy: prev.cy, r: prev.r } : {};
+      if (i === 0) {
+        m.timing.lineTimes = {}; m.cutOverrides = {}; m.manualCuts = true;
+        S.project.timelineLinks = S.project.timelineLinks.filter(link => !link.a.startsWith('a:') && !link.b.startsWith('a:'));
+      }
+      m.cutCount = i + 1;
+      m.cutOverrides[i] = firstCircle;
+      m.timing.lineTimes[i] = +S.t.toFixed(3);
+      S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+      S.tap.i++;
+      renderTech(); replan();
+      if (S.tap.i >= 1000) { pause(); stopTap(); toast('カット数の上限に達しました'); }
+      else updateTap();
+      return;
+    }
     if(!S.tap.nextItem)return;
     if (i === 0) {
       m.timing.lineTimes = {}; m.cutOverrides = {}; m.manualCuts = true;
@@ -3818,13 +4199,17 @@ function stopTap() { clearTimeout(S.tap?.timer); $('tapCountdown').hidden=true; 
 function syncTapButtons() {
   $('tapBtn').disabled=!!S.tap?.countingDown;
   if(!S.tap)$('tapCountdown').hidden=true;
-  for (const id of ['btnTap', 'btnTapMedia']) $(id).setAttribute('aria-pressed', String(!!S.tap));
+  for (const id of ['btnTap', 'btnTapMedia', 'btnTapAvoidance']) $(id)?.setAttribute('aria-pressed', String(!!S.tap));
 }
 function updateTap() {
   const lyricQueue=!S.tap.layer,rows=[$('tapLine').parentElement,$('tapLineAhead1').parentElement,$('tapLineAhead2').parentElement];
   for(const row of rows)for(const animation of row.getAnimations())animation.cancel();
   rows[1].hidden=rows[2].hidden=!lyricQueue;
   if (S.tap.append) {
+    if (S.tap.layer === 'avoidance') {
+      const label = J.mediaLabel(`${S.tap.i + 1}. 回避カット`, `${S.tap.i + 1}. Avoidance cut`);
+      $('tapLine').textContent = label; $('tapLine').title = label; return;
+    }
     const m=S.project[S.tap.layer],order=J.mediaOrder(S.project,S.tap.layer);
     if(!S.tap.nextItem){
       const choices=J.mediaInsertChoices(S.project,S.tap.layer).filter(id=>id!=='files'||m.loop||S.tap.fileIndex<m.items.length);
@@ -4039,7 +4424,7 @@ function bind() {
     if(button){e.stopPropagation();performTimelineAction(button);if(S.areaEdit)showAreaDraft();return;}
     const target=e.target.closest('[data-select-layer]');if(!target)return;
     const layer=target.dataset.selectLayer,index=Number(target.dataset.selectIndex);
-    if(layer==='lyrics')openAreaEditor(index,true);else openMediaEditor(index,layer,true);
+    if(layer==='lyrics')openAreaEditor(index,true);else if(layer==='avoidance')openAvoidanceEditor(index,true);else openMediaEditor(index,layer,true);
   });
 
   $('saveFilename').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('filenameDlg').querySelector('button[value="save"]').click();}});
@@ -4166,18 +4551,19 @@ function bind() {
       S.project.lyricEffects = settings; renderTech(); replan();
     });
   }
-  for(const [id,layer] of [['insertLyricAtPlayhead','lyrics'],['insertForegroundAtPlayhead','foreground'],['insertBackgroundAtPlayhead','media']])$(id).addEventListener('click',()=>openInsertAtPlayhead(layer));
-  for(const layer of ['foreground','lyrics','media']){
+  for(const [id,layer] of [['insertAvoidanceAtPlayhead','avoidance'],['insertLyricAtPlayhead','lyrics'],['insertForegroundAtPlayhead','foreground'],['insertBackgroundAtPlayhead','media']])$(id)?.addEventListener('click',()=>openInsertAtPlayhead(layer));
+  for(const layer of ['avoidance','foreground','lyrics','media']){
     const button=document.createElement('button');button.type='button';button.dataset.layer=layer;
     button.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18"/></svg>';
     button.addEventListener('click',()=>{if(S.exporting)return;S.project.layerVisibility ||= {};S.project.layerVisibility[layer]=S.project.layerVisibility[layer]===false;replan();});
     $('layerVisibilityControls').append(button);
   }
+  $('splitAvoidanceCut')?.addEventListener('click',()=>splitAvoidanceCut());
   $('splitForegroundCut').addEventListener('click',()=>openSplitMediaCut('foreground'));
   $('splitBackgroundCut').addEventListener('click',()=>openSplitMediaCut('media'));
   $('relayoutAtPlayhead').addEventListener('click',()=>{S.playheadMenu=null;relayoutAtPlayhead();syncPlayheadMenu();});
-  for(const [id,layer] of [['endForegroundHere','foreground'],['endLyricHere','lyrics'],['endBackgroundHere','media']])$(id).addEventListener('click',()=>playheadEnd(layer,false));
-  for(const [id,layer] of [['untilNextForeground','foreground'],['untilNextLyric','lyrics'],['untilNextBackground','media']])$(id).addEventListener('click',()=>playheadEnd(layer,true));
+  for(const [id,layer] of [['endAvoidanceHere','avoidance'],['endForegroundHere','foreground'],['endLyricHere','lyrics'],['endBackgroundHere','media']])$(id)?.addEventListener('click',()=>playheadEnd(layer,false));
+  for(const [id,layer] of [['untilNextAvoidance','avoidance'],['untilNextForeground','foreground'],['untilNextLyric','lyrics'],['untilNextBackground','media']])$(id)?.addEventListener('click',()=>playheadEnd(layer,true));
   document.querySelector('.playhead-secondary').addEventListener('click',e=>{if(e.target.closest('[data-playhead-action]')){S.playheadMenu=null;syncPlayheadMenu();}});
   initPlayheadMenu();
   $('timelineZoomOut').addEventListener('click', () => setTimelineZoom(S.timelineZoom / 1.5));
@@ -4213,9 +4599,47 @@ function bind() {
   },{capture:true});
   for(const type of ['wheel','pointerdown','touchstart'])$('timelineScroll').addEventListener(type,()=>{timelineUserScroll=performance.now();},{passive:true});
   $('timelinePan')?.addEventListener('pointerdown',()=>{timelineUserScroll=performance.now();});
+  $('sourceAvoidance')?.addEventListener('click',()=>selectSourceDrawer('avoidance'));
   $('sourceLyrics').addEventListener('click',()=>selectSourceDrawer('lyrics'));
   $('sourceMedia').addEventListener('click',()=>selectSourceDrawer('media'));
   $('sourceForeground').addEventListener('click',()=>selectSourceDrawer('foreground'));
+  $('avoidanceEmphasis')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.avoidEmphasis = e.target.checked;
+    replan();
+  });
+  $('avoidanceMask')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.maskAvoidance = e.target.checked;
+    replan();
+  });
+  $('avoidanceMaskOffset')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.maskRadiusOffset = J.clamp(Math.round(+e.target.value || 0), -500, 500);
+    replan();
+  });
+  $('avoidanceMaskFeather')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.maskFeather = J.clamp(Math.round(+e.target.value || 0), 0, 300);
+    replan();
+  });
+  $('avoidanceMaskCurve')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.maskCurve = e.target.value || 'smooth';
+    replan();
+  });
+  $('avoidanceLyricInsertMode')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.lyricInsertMode = e.target.value;
+    syncSourceTab(); autosave();
+  });
+  $('avoidanceGroupLyrics')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.groupLyricsAsOneCut = e.target.checked;
+    syncSourceTab(); autosave();
+  });
+  $('btnAvoidanceFromLyrics')?.addEventListener('click', insertAvoidanceFromLyrics);
+  $('btnTapAvoidance')?.addEventListener('click', () => (S.tap ? stopTap() : startTap()));
   $('closeSourceDrawer').addEventListener('click',()=>{S.sourceOpen=false;syncSourceDrawer();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.sourceOpen&&!document.querySelector('dialog[open]')){S.sourceOpen=false;syncSourceDrawer();}});
   $('btnMediaFromLyrics').addEventListener('click', insertMediaFromLyrics);
@@ -4257,6 +4681,16 @@ function bind() {
   $('mediaAreaHeight').addEventListener('change', e => { if (!S.areaEdit) return; const h = J.clamp(+e.target.value / 100, 0.005, 4); setMediaDraftSize(S.areaEdit.lockAspect ? h / S.areaEdit.ratio : S.areaEdit.draft.w, h); });
   document.addEventListener('scroll',()=>{if(S.areaEdit)positionAreaEditor();},{capture:true,passive:true});
   $('mediaAreaAngle').addEventListener('input', e => { if (!S.areaEdit || e.target.value === '') return; S.areaEdit.angle = J.clamp(+e.target.value || 0, -180, 180); showAreaDraft(); });
+  $('avoidanceEditMask')?.addEventListener('change', e => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskAvoidance = e.target.checked; showAreaDraft(); });
+  const syncEditMaskOffset = v => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskRadiusOffset = J.clamp(Math.round(+v || 0), -500, 500); showAreaDraft(); };
+  $('avoidanceEditMaskOffsetRange')?.addEventListener('input', e => syncEditMaskOffset(e.target.value));
+  $('avoidanceEditMaskOffset')?.addEventListener('input', e => { if (e.target.value !== '' && e.target.value !== '-') syncEditMaskOffset(e.target.value); });
+  $('avoidanceEditMaskOffset')?.addEventListener('change', e => syncEditMaskOffset(e.target.value));
+  const syncEditMaskFeather = v => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskFeather = J.clamp(Math.round(+v || 0), 0, 300); showAreaDraft(); };
+  $('avoidanceEditMaskFeatherRange')?.addEventListener('input', e => syncEditMaskFeather(e.target.value));
+  $('avoidanceEditMaskFeather')?.addEventListener('input', e => { if (e.target.value !== '') syncEditMaskFeather(e.target.value); });
+  $('avoidanceEditMaskFeather')?.addEventListener('change', e => syncEditMaskFeather(e.target.value));
+  $('avoidanceEditMaskCurve')?.addEventListener('change', e => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskCurve = e.target.value || 'smooth'; showAreaDraft(); });
   $('areaResetFull').addEventListener('click',()=>{
     const edit=S.areaEdit;if(!edit)return;
     edit.autoDraft=null;edit.angle=0;
@@ -4269,6 +4703,14 @@ function bind() {
   });
   $('areaResetAuto').addEventListener('click', () => {
     const edit = S.areaEdit; if (!edit) return;
+    if(edit.kind==='avoidance'){
+      const area=avoidanceCircleToDraft({cx:0.5,cy:0.5,r:0.25});
+      const defMask=J.normalizeAvoidanceMask(S.project.avoidance);
+      edit.draft=area;edit.ratio=S.plan.W/S.plan.H;edit.angle=0;edit.lockAspect=true;
+      Object.assign(edit, defMask);
+      edit.autoDraft=avoidanceEditDraftKey({draft:area,...defMask});
+      showAreaDraft();return;
+    }
     if(edit.kind!=='lyric'){
       const {area,cut}=automaticMediaArea(edit.kind,edit.index);if(!area)return;
       edit.draft=area;edit.ratio=area.h/area.w;edit.angle=cut.placement?.angle||0;edit.lockAspect=cut.placement?.lockAspect!==false;
@@ -4294,7 +4736,7 @@ function bind() {
       const remove=dialog.returnValue==='delete';dialog.remove();
       if(!remove || S.areaEdit!==edit)return;
       cancelAreaEditor();
-      if(kind==='lyric')removeLyricCut(index,part);else removeMediaCut(index,kind);
+      if(kind==='lyric')removeLyricCut(index,part);else if(kind==='avoidance')removeAvoidanceCut(index);else removeMediaCut(index,kind);
     },{once:true});
     dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close('cancel');}});
     document.body.append(dialog);dialog.showModal();dialog.querySelector('[value="cancel"]').focus();
@@ -4481,8 +4923,8 @@ function bind() {
   durationHandle.addEventListener('pointercancel', () => {
     S.durationDrag = null; durationHandle.classList.remove('dragging'); durationHandle.style.transform = ''; updateTimeUI();
   });
-  for (const tl of [$('timeline'), $('mediaTimeline'), $('foregroundTimeline')]) {
-    const layer = tl.id === 'timeline' ? 'lyrics' : tl.id === 'foregroundTimeline' ? 'foreground' : 'media';
+  for (const tl of [$('avoidanceTimeline'), $('timeline'), $('mediaTimeline'), $('foregroundTimeline')].filter(Boolean)) {
+    const layer = tl.id === 'avoidanceTimeline' ? 'avoidance' : tl.id === 'timeline' ? 'lyrics' : tl.id === 'foregroundTimeline' ? 'foreground' : 'media';
     let drag = null;
     tl.addEventListener('pointerdown', e => {
       const boundary = !S.exporting && !S.tap && timelineBoundaryAt(e, layer);

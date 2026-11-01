@@ -104,7 +104,7 @@ h3 { font-size: 11px; letter-spacing: 0.14em; color: var(--muted); margin-top: 1
 .col-right { border-left: 1px solid var(--line); }
 .sec { padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
 .sec-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.source-tabs { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--line); }
+.source-tabs { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
 .source-tabs button { border: 0; border-radius: 0; background: transparent; color: var(--muted); padding: 11px; border-bottom: 2px solid transparent; }
 .source-tabs button[aria-selected=true] { color: var(--text); border-bottom-color: var(--amber); }
 .media-list { display: grid; gap: 7px; }
@@ -131,7 +131,7 @@ h3 { font-size: 11px; letter-spacing: 0.14em; color: var(--muted); margin-top: 1
 button.tap { font: 700 18px/1 var(--mono); letter-spacing: 0.2em; padding: 16px; background: var(--amber); color: #120c00; border-color: var(--amber); }
 
 /* line list */
-#lineList, #mediaLineList { list-style: none; margin: 0; padding: 0 6px 0 0; display: grid; align-content: start; gap: 6px; max-height: min(55vh, 640px); overflow-y: auto; overscroll-behavior: contain; }
+#lineList, #mediaLineList, #avoidanceLineList { list-style: none; margin: 0; padding: 0 6px 0 0; display: grid; align-content: start; gap: 6px; max-height: min(55vh, 640px); overflow-y: auto; overscroll-behavior: contain; }
 .media-ln-thumb { grid-column: 3; grid-row: 1; width: 34px; height: 26px; justify-self: end; }
 .media-ln > .missing { grid-column: 3; grid-row: 1; justify-self: end; display: grid; place-items: center; width: 34px; height: 26px; border: 1px solid var(--line2); background: #0e1015; color: var(--muted); font-size: 12px; }
 .media-ln .no { grid-column: 1; grid-row: 1; }
@@ -202,6 +202,16 @@ button.remove-media-cut:hover, button.remove-media-cut:focus-visible { color: #f
 :root { --rotate-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M25 13a10 10 0 1 0 1 7' fill='none' stroke='%23ffffff' stroke-width='4'/%3E%3Cpath d='M25 13a10 10 0 1 0 1 7' fill='none' stroke='%23101620' stroke-width='2'/%3E%3Cpath d='M23 4v10h8' fill='none' stroke='%23ffffff' stroke-width='4'/%3E%3Cpath d='M23 4v10h8' fill='none' stroke='%23101620' stroke-width='2'/%3E%3C/svg%3E") 16 16, crosshair; }
 .area-edit-overlay.media-edit { background: transparent; cursor: default; }
 .area-edit-overlay.media-edit .area-edit-rect { background: rgba(245,165,12,0.04); pointer-events: auto; cursor: move; }
+.area-edit-overlay.avoidance-edit .area-edit-rect { border-radius: 50%; border-color: var(--rose); background: rgba(255,111,156,0.12); }
+.area-edit-overlay.avoidance-edit .area-rotate-handle { display: none !important; }
+.area-edit-overlay.avoidance-edit .area-edit-handle { background: var(--rose); }
+.foreground-placement-thumb.avoidance-circle-thumb i { border-radius: 50%; border-color: var(--rose); background: rgba(255,111,156,0.32); }
+.avoidance-mask-ring { position: absolute; left: 50%; top: 50%; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); box-sizing: border-box; }
+.avoidance-mask-ring.inner { border: 1.5px dashed var(--cyan); }
+.avoidance-mask-ring.outer { border: 1.5px dotted rgba(22,244,212,0.7); background: radial-gradient(circle, rgba(22,244,212,0.08) 0%, rgba(22,244,212,0.02) 65%, transparent 100%); }
+.avoidance-mask-controls { border-top: 1px solid var(--line); padding-top: 6px; }
+.avoidance-mask-controls input[type=range] { width: 96px; accent-color: var(--cyan); }
+.avoidance-mask-controls select { width: auto; padding: 3px 6px; }
 .area-rotate-handle { position: absolute; width: 16px; height: 16px; border: 2px solid #111; border-radius: 50%; background: var(--amber); transform: translate(-50%,-50%); cursor: var(--rotate-cursor); touch-action: none; }
 .area-rotate-handle::before { content: ''; position: absolute; background: var(--amber); pointer-events: none; }
 .area-rotate-handle.n { left: 50%; top: -32px; }
@@ -250,6 +260,7 @@ button.remove-media-cut:hover, button.remove-media-cut:focus-visible { color: #f
 button.play { width: 40px; height: 34px; padding: 0; font-size: 14px; }
 #timeline { width: 100%; height: 76px; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; touch-action: none; }
 #mediaTimeline { width: 100%; height: 52px; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; touch-action: none; }
+#avoidanceTimeline { width: 100%; height: 52px; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; touch-action: none; }
 #foregroundTimeline { width: 100%; height: 52px; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; touch-action: none; }
 .timeline-stack { position: relative; display: grid; gap: 6px; min-width: 0; }
 .timeline-scroll { width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; overflow-y: hidden; box-sizing: border-box; padding-right: 8px; padding-bottom: 6px; }
@@ -608,6 +619,7 @@ dialog.terms .terms-fork h3 { color: var(--cyan); }
 .item-frame-outline polygon { fill:transparent; pointer-events:all; cursor:pointer; stroke:currentColor; stroke-width:1.5; stroke-dasharray:5 3; filter:drop-shadow(0 0 1px #000); }
 .item-frame-outline.selected { color: var(--amber); }
 .item-frame-outline.selected polygon { stroke-dasharray:none; stroke-width:2; }
+.item-frames .avoidance { color:var(--rose); }
 .item-frames .foreground { color:#f5bd65; }
 .item-frames .lyrics { color:#68e3ca; }
 .item-frames .media { color:#95baff; }
@@ -661,7 +673,7 @@ dialog.terms .terms-fork h3 { color: var(--cyan); }
   .col-stage .transport { gap: 5px; }
   .col-stage .timeline-split button { padding: 4px 6px; font-size: 11px; }
   .col-stage .timeline-position-label { margin: 2px 0; }
-  .col-stage #foregroundTimeline, .col-stage #mediaTimeline { height: 44px; }
+  .col-stage #avoidanceTimeline, .col-stage #foregroundTimeline, .col-stage #mediaTimeline { height: 44px; }
   .col-stage #timeline { height: 58px; }
 }
 
@@ -985,7 +997,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   <main class="work">
     <!-- ================= left: lyrics & timing ================= -->
     <section id="sourceDrawer" class="col col-left" aria-label="Lyrics and timing">
-      <nav class="source-tabs" role="tablist" aria-label="Source"><button id="sourceForeground" role="tab" aria-selected="false">Foreground</button><button id="sourceLyrics" role="tab" aria-selected="true">Lyrics & music</button><button id="sourceMedia" role="tab" aria-selected="false">Background</button></nav>
+      <nav class="source-tabs" role="tablist" aria-label="Source"><button id="sourceAvoidance" role="tab" aria-selected="false">Avoidance</button><button id="sourceForeground" role="tab" aria-selected="false">Foreground</button><button id="sourceLyrics" role="tab" aria-selected="true">Lyrics & music</button><button id="sourceMedia" role="tab" aria-selected="false">Background</button></nav>
       <div class="source-drawer-heading"><strong id="sourceDrawerTitle"></strong><button id="closeSourceDrawer" type="button">×</button></div>
       <div class="sec" id="lyricsPane">
         <div class="sec-h"><h2>Lyrics</h2><button id="btnSyntax" class="ghost small" aria-expanded="false">Syntax</button></div>
@@ -1014,6 +1026,27 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
             <li><code>#</code> starts a comment (ignored)</li>
             <li>Place <code>\</code> before a control character to display it literally: <code>\*</code>, <code>\~</code>, <code>\{</code>, <code>\}</code>, <code>\/</code>, <code>\|</code>, <code>\!</code>, <code>\#</code>, <code>\[</code>, <code>\\</code>.</li>
           </ul>
+        </div>
+      </div>
+
+      <div class="sec" id="avoidancePane" hidden>
+        <div class="sec-h media-pane-heading"><h2 id="avoidancePaneTitle">Avoidance (circular area avoidance)</h2></div>
+        <div class="pick-sets" style="margin-bottom:10px">
+          <label class="check"><input id="avoidanceEnable" class="avoid-center-toggle" type="checkbox"><span>Lyrics avoid the circle (keep out of center)<small>Edit the position and radius of the avoidance circle for each cut on the timeline.</small></span></label>
+          <label class="check"><input id="avoidanceEmphasis" type="checkbox"><span>Also avoid *emphasized* lyrics<small>When enabled, cuts with *emphasis* also avoid the circle (can also be configured per cut).</small></span></label>
+          <label class="check"><input id="avoidanceMask" type="checkbox"><span>Mask avoidance region<small>Punches out non-main lyric decorations and auxiliary effects (borders, shapes, echoes, background effects, etc.) with a radial gradient.</small></span></label>
+        </div>
+        <div id="avoidanceDefaultMaskFields" class="fields" style="margin-bottom:10px" hidden>
+          <label class="field">Mask radius offset (px)<input id="avoidanceMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label>
+          <label class="field">Feather width (px)<input id="avoidanceMaskFeather" type="number" min="0" max="300" step="1" value="60"></label>
+          <label class="field field-wide">Gradient curve<select id="avoidanceMaskCurve"><option value="smooth">Smooth (default)</option><option value="linear">Linear</option><option value="steep">Steep</option><option value="soft">Soft</option></select></label>
+        </div>
+        <div id="avoidanceCutInsert" class="media-lyric-insert">
+          <div class="sec-h"><h2>Insert cuts</h2></div>
+          <label class="field">Align inserted cuts to<select id="avoidanceLyricInsertMode"><option value="line">Lyric lines</option><option value="cut">Lyric cuts</option></select></label>
+          <label class="check"><input id="avoidanceGroupLyrics" type="checkbox" checked><span>Treat lyrics enclosed in { } as one cut</span></label>
+          <button id="btnAvoidanceFromLyrics" type="button">Insert cuts aligned to lyrics</button>
+          <button id="btnTapAvoidance" type="button" title="Tap when each cut should start while watching the video">Tap while watching the video to insert</button>
         </div>
       </div>
 
@@ -1059,13 +1092,14 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
         <div class="sec-h"><h2 id="cutsHeading">Lines and cuts</h2><span id="linesInfo" class="muted mono"></span></div>
         <ol id="lineList"></ol>
         <ol id="mediaLineList" hidden></ol>
+        <ol id="avoidanceLineList" hidden></ol>
       </div>
     </section>
 
     <!-- ================= center: stage ================= -->
     <section class="col col-stage" aria-label="Preview">
-      <div class="viewport" id="viewport"><button id="exitPreviewFullscreen" class="fullscreen-exit" type="button">Exit fullscreen</button><div class="fullscreen-transport"><button id="fullscreenPlay" type="button" aria-label="Play">▶</button><span id="fullscreenTime" class="tc"></span><input id="fullscreenScrub" type="range" min="0" max="10000" value="0" aria-label="Playback position"></div><canvas id="view" width="1280" height="720"></canvas><div id="itemFrames" class="item-frames"></div><div id="areaEditOverlay" class="area-edit-overlay" aria-label="Edit position and size" hidden><div id="areaEditRect" class="area-edit-rect"><span class="area-edit-handle nw" data-handle="nw"></span><span class="area-edit-handle ne" data-handle="ne"></span><span class="area-edit-handle sw" data-handle="sw"></span><span class="area-edit-handle se" data-handle="se"></span><span class="area-rotate-handle n" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle e" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle s" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle w" data-handle="rotate" role="button" aria-label="回転"></span></div></div><div id="viewMsg" class="overlay-msg" hidden></div><div id="keyBadge" class="key-badge" hidden></div><div id="toast" class="toast" role="status" aria-live="polite" hidden></div></div>
-      <div id="areaEditControls" class="area-edit-controls" hidden><div id="mediaAreaSizeControls" class="media-area-size-controls" hidden><label><input id="mediaAreaAspectLock" type="checkbox" checked>Lock aspect ratio</label><label>Width (% of canvas)<input id="mediaAreaWidth" type="number" min="0.5" max="400" step="0.5"></label><label>Height (% of canvas)<input id="mediaAreaHeight" type="number" min="0.5" max="400" step="0.5"></label><label id="mediaAreaAngleField">Rotation (°)<input id="mediaAreaAngle" type="number" min="-180" max="180" step="0.1"></label></div><div class="area-edit-actions"><button id="areaResetAuto" class="ghost" type="button">Auto配置</button><button id="areaResetFull" class="ghost" type="button">Full area</button><button id="areaDelete" type="button">削除</button></div><div class="area-edit-confirm"><button id="areaApplyOne" class="primary" disabled>Set placement</button><button id="areaApplyFollowing" disabled>Use this placement from here onward</button><button id="areaCancel" class="ghost">キャンセル</button></div></div>
+      <div class="viewport" id="viewport"><button id="exitPreviewFullscreen" class="fullscreen-exit" type="button">Exit fullscreen</button><div class="fullscreen-transport"><button id="fullscreenPlay" type="button" aria-label="Play">▶</button><span id="fullscreenTime" class="tc"></span><input id="fullscreenScrub" type="range" min="0" max="10000" value="0" aria-label="Playback position"></div><canvas id="view" width="1280" height="720"></canvas><div id="itemFrames" class="item-frames"></div><div id="areaEditOverlay" class="area-edit-overlay" aria-label="Edit position and size" hidden><div id="areaEditRect" class="area-edit-rect"><span id="avoidanceMaskInnerRing" class="avoidance-mask-ring inner" hidden></span><span id="avoidanceMaskOuterRing" class="avoidance-mask-ring outer" hidden></span><span class="area-edit-handle nw" data-handle="nw"></span><span class="area-edit-handle ne" data-handle="ne"></span><span class="area-edit-handle sw" data-handle="sw"></span><span class="area-edit-handle se" data-handle="se"></span><span class="area-rotate-handle n" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle e" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle s" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle w" data-handle="rotate" role="button" aria-label="回転"></span></div></div><div id="viewMsg" class="overlay-msg" hidden></div><div id="keyBadge" class="key-badge" hidden></div><div id="toast" class="toast" role="status" aria-live="polite" hidden></div></div>
+      <div id="areaEditControls" class="area-edit-controls" hidden><div id="mediaAreaSizeControls" class="media-area-size-controls" hidden><label><input id="mediaAreaAspectLock" type="checkbox" checked>Lock aspect ratio</label><label>Width (% of canvas)<input id="mediaAreaWidth" type="number" min="0.5" max="400" step="0.5"></label><label>Height (% of canvas)<input id="mediaAreaHeight" type="number" min="0.5" max="400" step="0.5"></label><label id="mediaAreaAngleField">Rotation (°)<input id="mediaAreaAngle" type="number" min="-180" max="180" step="0.1"></label></div><div id="avoidanceMaskControls" class="media-area-size-controls avoidance-mask-controls" hidden><label><input id="avoidanceEditMask" type="checkbox">Mask avoidance region (punch out decorations/auxiliary effects)</label><label>Mask radius offset (px)<input id="avoidanceEditMaskOffsetRange" type="range" min="-240" max="240" step="1" value="0" aria-label="Mask radius offset slider"><input id="avoidanceEditMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label><label>Feather width (px)<input id="avoidanceEditMaskFeatherRange" type="range" min="0" max="300" step="1" value="60" aria-label="Feather width slider"><input id="avoidanceEditMaskFeather" type="number" min="0" max="300" step="1" value="60"></label><label>Gradient curve<select id="avoidanceEditMaskCurve"><option value="smooth">Smooth (default)</option><option value="linear">Linear</option><option value="steep">Steep</option><option value="soft">Soft</option></select></label></div><div class="area-edit-actions"><button id="areaResetAuto" class="ghost" type="button">Auto配置</button><button id="areaResetFull" class="ghost" type="button">Full area</button><button id="areaDelete" type="button">削除</button></div><div class="area-edit-confirm"><button id="areaApplyOne" class="primary" disabled>Set placement</button><button id="areaApplyFollowing" disabled>Use this placement from here onward</button><button id="areaCancel" class="ghost">キャンセル</button></div></div>
       <div id="tapPanel" class="tapbox" hidden>
         <div class="hint" id="tapHint">Click the button (or press Space) at the moment you want to insert.</div>
         <div class="tap-queue">
@@ -1097,12 +1131,13 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
       <div class="timeline-position-label" id="playheadMenuLabel">Edit at playhead:</div>
       <div class="timeline-split playhead-menu" id="playheadMenu">
         <div class="playhead-primary" role="group" aria-labelledby="playheadMenuLabel"><button type="button" data-playhead-menu="insert" aria-expanded="false"></button><button type="button" data-playhead-menu="split" aria-expanded="false"></button><button type="button" data-playhead-menu="endHere" aria-expanded="false"></button><button type="button" data-playhead-menu="untilNext" aria-expanded="false"></button><button id="relayoutAtPlayhead" type="button" disabled></button></div>
-        <div class="playhead-secondary" role="group" hidden><button id="insertForegroundAtPlayhead" type="button" data-playhead-action="insert" data-layer="foreground" disabled></button><button id="insertLyricAtPlayhead" type="button" data-playhead-action="insert" data-layer="lyrics" disabled></button><button id="insertBackgroundAtPlayhead" type="button" data-playhead-action="insert" data-layer="media" disabled></button><button id="splitForegroundCut" type="button" data-playhead-action="split" data-layer="foreground" disabled></button><button id="splitBackgroundCut" type="button" data-playhead-action="split" data-layer="media" disabled></button><button id="endForegroundHere" type="button" data-playhead-action="endHere" data-layer="foreground" disabled></button><button id="endLyricHere" type="button" data-playhead-action="endHere" data-layer="lyrics" disabled></button><button id="endBackgroundHere" type="button" data-playhead-action="endHere" data-layer="media" disabled></button><button id="untilNextForeground" type="button" data-playhead-action="untilNext" data-layer="foreground" disabled></button><button id="untilNextLyric" type="button" data-playhead-action="untilNext" data-layer="lyrics" disabled></button><button id="untilNextBackground" type="button" data-playhead-action="untilNext" data-layer="media" disabled></button></div>
+        <div class="playhead-secondary" role="group" hidden><button id="insertAvoidanceAtPlayhead" type="button" data-playhead-action="insert" data-layer="avoidance" disabled></button><button id="insertForegroundAtPlayhead" type="button" data-playhead-action="insert" data-layer="foreground" disabled></button><button id="insertLyricAtPlayhead" type="button" data-playhead-action="insert" data-layer="lyrics" disabled></button><button id="insertBackgroundAtPlayhead" type="button" data-playhead-action="insert" data-layer="media" disabled></button><button id="splitAvoidanceCut" type="button" data-playhead-action="split" data-layer="avoidance" disabled></button><button id="splitForegroundCut" type="button" data-playhead-action="split" data-layer="foreground" disabled></button><button id="splitBackgroundCut" type="button" data-playhead-action="split" data-layer="media" disabled></button><button id="endAvoidanceHere" type="button" data-playhead-action="endHere" data-layer="avoidance" disabled></button><button id="endForegroundHere" type="button" data-playhead-action="endHere" data-layer="foreground" disabled></button><button id="endLyricHere" type="button" data-playhead-action="endHere" data-layer="lyrics" disabled></button><button id="endBackgroundHere" type="button" data-playhead-action="endHere" data-layer="media" disabled></button><button id="untilNextAvoidance" type="button" data-playhead-action="untilNext" data-layer="avoidance" disabled></button><button id="untilNextForeground" type="button" data-playhead-action="untilNext" data-layer="foreground" disabled></button><button id="untilNextLyric" type="button" data-playhead-action="untilNext" data-layer="lyrics" disabled></button><button id="untilNextBackground" type="button" data-playhead-action="untilNext" data-layer="media" disabled></button></div>
       </div>
       <div class="timeline-volume"><button id="volumeMuteBtn" type="button" aria-label="Toggle mute" title="Toggle mute">🔊</button><input id="timelineVolume" type="range" min="0" max="100" value="100" title="Volume"><span id="timelineVolumeValue" aria-live="polite">100%</span></div>
       <div class="timeline-zoom"><button id="timelineZoomOut" type="button" aria-label="Zoom timeline out">−</button><span id="timelineZoomValue" aria-live="polite">100%</span><button id="timelineZoomIn" type="button" aria-label="Zoom timeline in">＋</button></div>
       </div>
       <div class="timeline-with-visibility"><div id="layerVisibilityControls" class="layer-visibility-controls"></div><div id="timelineScroll" class="timeline-scroll"><div id="timelineStack" class="timeline-stack">
+        <canvas id="avoidanceTimeline" aria-label="Avoidance timeline (drag a cut boundary to change its start time; drag elsewhere to seek)"></canvas>
         <canvas id="foregroundTimeline" aria-label="Foreground timeline (drag a cut boundary to change its start time; drag elsewhere to seek)"></canvas>
         <canvas id="timeline" aria-label="Lyrics timeline (drag a cut boundary to change its start time; drag elsewhere to seek)"></canvas>
         <canvas id="mediaTimeline" aria-label="Background timeline (drag a cut boundary to change its start time; drag elsewhere to seek)"></canvas>
@@ -4463,7 +4498,8 @@ J.defaultProject = () => ({
   effectFavorites: [], favoriteSequence: 0, customEffects: [],
   lyricEffects: { autoPlacement: true, avoidForeground: true, avoidanceStrength: 1, lyricAvoidanceStrength: 1, randomBlend: false, randomOpacity: false, opacityMin: 0, opacityMax: 100 },
   timelineLinks: [],
-  layerVisibility: {foreground:true,lyrics:true,media:true},
+  layerVisibility: {avoidance:true,foreground:true,lyrics:true,media:true},
+  avoidance: { cutCount: 1, manualCuts: false, avoidEmphasis: false, maskAvoidance: false, maskRadiusOffset: 0, maskFeather: 60, maskCurve: 'smooth', lyricInsertMode: 'line', groupLyricsAsOneCut: true, timing: { lineTimes: {} }, cutOverrides: {} },
   media: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
   foreground: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
   colors: { enabled: false },
@@ -5612,6 +5648,1990 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
 };
 })();
 
+(() => {
+  'use strict';
+  const J = window.J || (window.J = {});
+
+  /* ============================================================================
+   * Circular Avoidance System (円形領域回避アルゴリズム)
+   * Activated when "歌詞が画面中央を避ける" (lyricEffects.avoidCenter) is ON.
+   * Implements the 8-group, 184-layout specification from jizura-algorithm-design.html.
+   * ============================================================================ */
+
+  // ----------------------------------------------------------------------------
+  // 1. 184-Layout Classification Table (LAYOUT_AVOID)
+  // ----------------------------------------------------------------------------
+  const LAYOUT_AVOID = {
+    // Group 1: Orbit / Ring-compatible (7) — recenter on (cx, cy)
+    ring:        { mode: 'orbit',     aux: 'none',   notes: 'recenter(cx,cy)' },
+    orbit:       { mode: 'orbit',     aux: 'none',   notes: 'recenter(cx,cy)' },
+    spiral:      { mode: 'orbit',     aux: 'none',   notes: 'recenter(cx,cy)' },
+    arcTop:      { mode: 'orbit',     aux: 'none',   notes: 'recenter(cx,cy)' },
+    circleWords: { mode: 'orbit',     aux: 'none',   notes: 'recenter(cx,cy)' },
+    knPathRide:  { mode: 'orbit',     aux: 'none',   notes: 'recenter(cx,cy)' },
+    knGearWords: { mode: 'orbit',     aux: 'none',   notes: 'recenter(cx,cy)' },
+
+    // Group 2: Tiled / Full-screen aux + Hero primary (14) — radial feather mask on aux + shift primary
+    marquee:       { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    tile:          { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    gloss:         { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    diag:          { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    hrRedacted:    { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    justified:     { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    edgeFrame:     { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    crossBands:    { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    tyBandHide:    { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    tyCropGiant:   { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    hrWallScrawl:  { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    echo:          { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    verticalRiver: { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+    scroll:        { mode: 'tiledAux', aux: 'mask',  notes: 'dual-pass mask+shift' },
+
+    // Group 3: Policy A — Re-wrap at same font size + shift (2)
+    center: { mode: 'policyA', aux: 'none',  notes: 'rewrap at native size' },
+    vcols:  { mode: 'policyA', aux: 'shift', notes: 'split variant: adjust perCol at native size' },
+
+    // Group 4: Policy C — Coupled frame/plate/column layouts (8)
+    headlineDeck: { mode: 'policyC', aux: 'shift', notes: 'fit fullBB or shift' },
+    columnsBig:   { mode: 'policyC', aux: 'shift', notes: 'fit fullBB or shift' },
+    bulbs:        { mode: 'policyC', aux: 'shift', notes: 'fit fullBB or shift' },
+    numbered:     { mode: 'policyC', aux: 'shift', notes: 'cols variant: fit fullBB' },
+    crossword:    { mode: 'policyC', aux: 'shift', notes: 'scale 0.58 + shift' },
+    contour:      { mode: 'policyC', aux: 'split', notes: 'split rings(left 0.5x) & text(right)' },
+    dominoes:     { mode: 'policyC', aux: 'shift', notes: 'vertical shift only (tx=0)' },
+    splitScreen:  { mode: 'policyC', aux: 'clip',  notes: 'clip & shift to safe region' },
+
+    // Group 5: Corner / Edge / Already-Clear layouts (9) — measure & shift if needed
+    lowerThird: { mode: 'shift', aux: 'shift' },
+    corners:    { mode: 'shift', aux: 'shift' },
+    hanko:      { mode: 'shift', aux: 'shift' },
+    subtitleBar:{ mode: 'shift', aux: 'shift' },
+    ticker:     { mode: 'shift', aux: 'shift' },
+    searchBar:  { mode: 'shift', aux: 'shift' },
+    footnote:   { mode: 'shift', aux: 'shift' },
+    tyMargin:   { mode: 'shift', aux: 'shift' },
+    hrCctv:     { mode: 'shift', aux: 'shift' },
+
+    // Group 6: Multi-Time Sampled Dynamic Layouts (2)
+    wave:     { mode: 'shift', aux: 'shift', sampleMulti: true },
+    knReflow: { mode: 'shift', aux: 'shift', sampleMulti: true },
+  };
+
+  const ORBIT_IDS = new Set([
+    'ring', 'orbit', 'spiral', 'arcTop', 'circleWords', 'knPathRide', 'knGearWords',
+  ]);
+
+  const TILED_AUX_IDS = new Set([
+    'marquee', 'tile', 'gloss', 'diag', 'hrRedacted', 'justified', 'edgeFrame',
+    'crossBands', 'tyBandHide', 'tyCropGiant', 'hrWallScrawl', 'echo', 'verticalRiver', 'scroll',
+  ]);
+
+  const MULTI_SAMPLE_TIMES = [0.18, 0.35, 0.55, 0.75, 0.90];
+
+  J.LAYOUT_AVOID = LAYOUT_AVOID;
+
+  // ----------------------------------------------------------------------------
+  // 2. Circle Avoidance Settings, Timeline Planning & Circle Resolution
+  // ----------------------------------------------------------------------------
+  J.normalizeAvoidanceCircle = c => {
+    if (!c || typeof c !== 'object') return null;
+    const hasAny = Number.isFinite(+c.cx) || Number.isFinite(+c.cy) || Number.isFinite(+c.r);
+    if (!hasAny) return null;
+    return {
+      cx: Number.isFinite(+c.cx) ? J.clamp(+c.cx, 0, 1) : 0.5,
+      cy: Number.isFinite(+c.cy) ? J.clamp(+c.cy, 0, 1) : 0.5,
+      r: Number.isFinite(+c.r) ? J.clamp(+c.r, 0.03, 0.85) : 0.25,
+    };
+  };
+
+  // 「回避部分をマスク」: decorations / auxiliary effects (not the main lyric) are punched out with a radial
+  // gradient. Radius offset and feather are stage px on a 1080px short edge.
+  J.AVOID_MASK_CURVES = ['smooth', 'linear', 'steep', 'soft'];
+  J.AVOID_MASK_DEFAULTS = { maskAvoidance: false, maskRadiusOffset: 0, maskFeather: 60, maskCurve: 'smooth' };
+  const normalizeMaskFields = (src, out, withDefaults) => {
+    const d = J.AVOID_MASK_DEFAULTS;
+    if (src.maskAvoidance !== undefined) out.maskAvoidance = !!src.maskAvoidance; else if (withDefaults) out.maskAvoidance = d.maskAvoidance;
+    if (Number.isFinite(+src.maskRadiusOffset) && src.maskRadiusOffset !== null && src.maskRadiusOffset !== '') out.maskRadiusOffset = J.clamp(Math.round(+src.maskRadiusOffset), -500, 500); else if (withDefaults) out.maskRadiusOffset = d.maskRadiusOffset;
+    if (Number.isFinite(+src.maskFeather) && src.maskFeather !== null && src.maskFeather !== '') out.maskFeather = J.clamp(Math.round(+src.maskFeather), 0, 300); else if (withDefaults) out.maskFeather = d.maskFeather;
+    if (J.AVOID_MASK_CURVES.includes(src.maskCurve)) out.maskCurve = src.maskCurve; else if (withDefaults) out.maskCurve = d.maskCurve;
+    return out;
+  };
+  J.normalizeAvoidanceMask = (src, withDefaults = true) => normalizeMaskFields(src && typeof src === 'object' ? src : {}, {}, withDefaults);
+
+  J.normalizeAvoidance = a => {
+    a = a && typeof a === 'object' ? a : {};
+    const manualCuts = !!a.manualCuts;
+    const rawCount = Number.isFinite(+a.cutCount) ? J.clamp(+a.cutCount | 0, 0, 1000) : (manualCuts ? 0 : 1);
+    const cutCount = manualCuts ? rawCount : Math.max(1, rawCount || 1);
+    const lineTimes = {};
+    if (a.timing && a.timing.lineTimes && typeof a.timing.lineTimes === 'object') {
+      for (const [k, v] of Object.entries(a.timing.lineTimes)) {
+        if (v != null && Number.isFinite(+v)) lineTimes[k] = Math.max(0, +v);
+      }
+    }
+    const cutOverrides = {};
+    if (a.cutOverrides && typeof a.cutOverrides === 'object') {
+      for (const [k, ov] of Object.entries(a.cutOverrides)) {
+        if (!ov || typeof ov !== 'object') continue;
+        const copy = {};
+        if (Number.isFinite(+ov.cx)) copy.cx = J.clamp(+ov.cx, 0, 1);
+        if (Number.isFinite(+ov.cy)) copy.cy = J.clamp(+ov.cy, 0, 1);
+        if (Number.isFinite(+ov.r)) copy.r = J.clamp(+ov.r, 0.03, 0.85);
+        if (Number.isFinite(+ov.pad)) copy.pad = J.clamp(+ov.pad, 0, 0.2);
+        if (Number.isFinite(+ov.feather)) copy.feather = J.clamp(+ov.feather, 0, 0.3);
+        if (ov.enabled !== undefined) copy.enabled = !!ov.enabled;
+        if (ov.avoidEmphasis !== undefined) copy.avoidEmphasis = !!ov.avoidEmphasis;
+        normalizeMaskFields(ov, copy, false);
+        if (ov.lock) copy.lock = true;
+        if (ov.untilNext === false && Number.isFinite(+ov.endTime)) {
+          copy.untilNext = false;
+          copy.endTime = Math.max(0, +ov.endTime);
+        }
+        cutOverrides[k] = copy;
+      }
+    }
+    return {
+      cutCount,
+      manualCuts,
+      avoidEmphasis: !!a.avoidEmphasis,
+      ...normalizeMaskFields(a, {}, true),
+      lyricInsertMode: a.lyricInsertMode === 'cut' ? 'cut' : 'line',
+      groupLyricsAsOneCut: a.groupLyricsAsOneCut !== false,
+      timing: { lineTimes },
+      cutOverrides,
+    };
+  };
+
+  J.planAvoidance = (project, lyricPlan, audioDuration) => {
+    const a = J.normalizeAvoidance(project?.avoidance);
+    const fixedDuration = Number.isFinite(+project?.durationOverride) && +project.durationOverride > 0 ? +project.durationOverride : null;
+    const count = a.manualCuts ? a.cutCount : Math.max(1, a.cutCount || 1);
+    const lines = lyricPlan?.lines || [];
+    const baseDur = lyricPlan?.duration || 3;
+    const manualEntries = Object.entries(a.timing.lineTimes).filter(([i, t]) => +i < count && Number.isFinite(+t));
+    const manualEnd = Math.max(0, ...manualEntries.map(([, t]) => +t + 4));
+    const fixedMinimum = Math.max(count * 0.04, ...manualEntries.map(([i, t]) => +t + (count - +i) * 0.04));
+    let duration = fixedDuration != null
+      ? Math.max(fixedDuration, baseDur, fixedMinimum)
+      : Math.max(baseDur, audioDuration || 0, manualEnd, lines.length ? 0 : count * 4);
+    const lyricCount = Math.min(count, lines.length);
+    const starts = Array.from({ length: count }, (_, i) => {
+      const v = a.timing.lineTimes[i];
+      if (v != null && Number.isFinite(+v)) return J.clamp(+v, 0, duration);
+      if (i === 0 && count === 1) return 0;
+      if (lines[i]) return lines[i].start;
+      if (lyricCount) return lines[lyricCount - 1].start + (duration - lines[lyricCount - 1].start) * (i - lyricCount + 1) / (count - lyricCount + 1);
+      return i * duration / Math.max(1, count);
+    });
+    const lastTail = count ? Math.max(0.04, duration - starts[count - 1]) : 0;
+    for (let i = 1; i < starts.length; i++) {
+      starts[i] = Math.max(starts[i], starts[i - 1] + 0.04);
+      if (fixedDuration != null && a.timing.lineTimes[i] == null) {
+        starts[i] = Math.max(starts[i - 1] + 0.04, Math.min(starts[i], duration - (count - i) * 0.04));
+      }
+    }
+    if (count) duration = Math.max(duration, starts[count - 1] + (fixedDuration == null ? lastTail : 0.04));
+    const cuts = Array.from({ length: count }, (_, i) => {
+      const ov = a.cutOverrides[i] || {};
+      const nextStart = i + 1 < count ? starts[i + 1] : duration;
+      const manualEndVal = J.cutEndTime ? J.cutEndTime(ov) : null;
+      const customCircle = Number.isFinite(+ov.cx) || Number.isFinite(+ov.cy) || Number.isFinite(+ov.r);
+      const cx = Number.isFinite(+ov.cx) ? J.clamp(+ov.cx, 0, 1) : 0.5;
+      const cy = Number.isFinite(+ov.cy) ? J.clamp(+ov.cy, 0, 1) : 0.5;
+      const r = Number.isFinite(+ov.r) ? J.clamp(+ov.r, 0.03, 0.85) : 0.25;
+      const avoidEmphasis = ov.avoidEmphasis !== undefined ? !!ov.avoidEmphasis : !!a.avoidEmphasis;
+      return {
+        index: i,
+        name: `(${Math.round(cx * 100)}%, ${Math.round(cy * 100)}%) r=${Math.round(r * 100)}%`,
+        start: starts[i],
+        end: manualEndVal != null ? Math.max(starts[i] + 0.04, Math.min(manualEndVal, duration)) : nextStart,
+        manualEnd: manualEndVal != null,
+        cx,
+        cy,
+        r,
+        pad: Number.isFinite(+ov.pad) ? J.clamp(+ov.pad, 0, 0.2) : null,
+        feather: Number.isFinite(+ov.feather) ? J.clamp(+ov.feather, 0, 0.3) : null,
+        enabled: ov.enabled !== false,
+        avoidEmphasis,
+        maskAvoidance: ov.maskAvoidance !== undefined ? !!ov.maskAvoidance : !!a.maskAvoidance,
+        maskRadiusOffset: ov.maskRadiusOffset ?? a.maskRadiusOffset,
+        maskFeather: ov.maskFeather ?? a.maskFeather,
+        maskCurve: ov.maskCurve ?? a.maskCurve,
+        lock: !!ov.lock,
+        customCircle,
+      };
+    });
+    return { cuts, duration, avoidEmphasis: a.avoidEmphasis, maskAvoidance: a.maskAvoidance };
+  };
+
+  J.avoidanceAt = (plan, t) => {
+    const cuts = plan?.avoidance?.cuts || [];
+    for (let i = cuts.length - 1; i >= 0; i--) {
+      if (t >= cuts[i].start && t < cuts[i].end) return cuts[i];
+    }
+    return null;
+  };
+
+  J.avoidanceCutsAt = (plan, t) => (plan?.avoidance?.cuts || []).filter(c => t >= c.start && t < c.end);
+
+  J.circleAvoidanceConfig = (project, plan) => {
+    const W = plan?.W || 1920;
+    const H = plan?.H || 1080;
+    const settings = J.lyricEffectSettings ? J.lyricEffectSettings(project) : {};
+    const enabled = !!(settings.autoPlacement && settings.avoidCenter);
+    const custom = project?.lyricEffects?.avoidCircle || project?.avoidCircle || null;
+    const cx = Number.isFinite(custom?.cx) ? custom.cx : W * 0.5;
+    const cy = Number.isFinite(custom?.cy) ? custom.cy : H * 0.5;
+    const defaultR = Math.min(W, H) * 0.25; // 270px on 1920x1080 (diameter 540 = 50% of H)
+    const r = Number.isFinite(custom?.r) ? custom.r : defaultR;
+    const pad = Number.isFinite(custom?.pad) ? custom.pad : Math.round(Math.min(W, H) * (20 / 1080));
+    const feather = Number.isFinite(custom?.feather) ? custom.feather : Math.round(Math.min(W, H) * (40 / 1080));
+    const avoidEmphasis = !!(project?.avoidance?.avoidEmphasis || custom?.avoidEmphasis);
+    return {
+      enabled,
+      cx,
+      cy,
+      r,
+      pad,
+      R: r + pad,
+      feather,
+      avoidEmphasis,
+      ...J.normalizeAvoidanceMask({ ...(project?.avoidance || {}), ...(custom || {}) }),
+      hasExplicitPixelCircle: !!(custom && (Number.isFinite(custom.cx) || Number.isFinite(custom.cy) || Number.isFinite(custom.r))),
+    };
+  };
+
+  J.circleAvoidanceForCut = (plan, cut, t) => {
+    const base = plan?.lyricAvoidance;
+    if (!base || !base.enabled || plan?.layerVisibility?.avoidance === false) {
+      return { enabled: false };
+    }
+    if (base.hasExplicitPixelCircle) {
+      return base;
+    }
+    const cuts = plan?.avoidance?.cuts;
+    if (!cuts) {
+      return base;
+    }
+    if (!cuts.length) {
+      return { enabled: false };
+    }
+    let acut = null;
+    if (t != null && Number.isFinite(+t)) {
+      acut = J.avoidanceAt(plan, +t);
+    }
+    if (!acut && cut) {
+      const cStart = Number.isFinite(+cut.start) ? +cut.start : 0;
+      const cEnd = Number.isFinite(+cut.end) ? +cut.end : cStart + 0.04;
+      acut = J.avoidanceAt(plan, cStart);
+      if (!acut) {
+        let bestOverlap = 0;
+        for (const c of cuts) {
+          const ov = Math.min(cEnd, c.end) - Math.max(cStart, c.start);
+          if (ov > bestOverlap) {
+            bestOverlap = ov;
+            acut = c;
+          }
+        }
+      }
+      if (!acut && cStart < cuts[0].start && cuts.length === 1 && cuts[0].start <= 0.5) {
+        acut = cuts[0];
+      }
+    }
+    if (!acut || acut.enabled === false) {
+      return { enabled: false };
+    }
+    const W = plan.W || 1920;
+    const H = plan.H || 1080;
+    const minWH = Math.min(W, H);
+    const cx = acut.cx * W;
+    const cy = acut.cy * H;
+    const r = acut.r * minWH;
+    const pad = acut.pad != null ? acut.pad * minWH : base.pad;
+    const feather = acut.feather != null ? acut.feather * minWH : base.feather;
+    return {
+      enabled: true,
+      cx,
+      cy,
+      r,
+      pad,
+      R: r + pad,
+      feather,
+      avoidEmphasis: !!acut.avoidEmphasis,
+      maskAvoidance: !!acut.maskAvoidance,
+      maskRadiusOffset: Number.isFinite(+acut.maskRadiusOffset) ? +acut.maskRadiusOffset : 0,
+      maskFeather: Number.isFinite(+acut.maskFeather) ? +acut.maskFeather : 60,
+      maskCurve: acut.maskCurve || 'smooth',
+      cutIndex: acut.index,
+    };
+  };
+
+  // Circle (with mask settings) of the avoidance cut showing at time t, for layers drawn outside the lyric
+  // avoidance pass (line background effects, cuts that keep their native place such as *emphasis*).
+  J.activeAvoidanceAtTime = (plan, t) => J.circleAvoidanceForCut(plan, null, t);
+  J.avoidanceMaskActive = circle => !!(circle && circle.enabled && circle.maskAvoidance);
+
+  // Radial gradient knockout (destination-out) of the mask circle, in stage coordinates.
+  // Inside rInner = r + offset is fully cleared; the clearing fades out over `feather` px with the chosen curve.
+  const MASK_CURVE_FN = {
+    smooth: t => 1 - t * t * (3 - 2 * t),
+    linear: t => 1 - t,
+    steep: t => (1 - t * t) ** 2,
+    soft: t => (1 - t) ** 2,
+  };
+  J.avoidanceMaskRadii = (circle, W, H) => {
+    const scale = Math.min(W || 1920, H || 1080) / 1080;
+    const rInner = Math.max(0, (circle.r || 0) + (circle.maskRadiusOffset || 0) * scale);
+    const feather = Math.max(0, (circle.maskFeather ?? 60) * scale);
+    return { rInner, rOuter: rInner + feather, feather };
+  };
+  J.applyAvoidanceCircleMask = (ctx, stageTransform, circle, W, H) => {
+    if (!ctx || !circle) return;
+    const { rInner, rOuter, feather } = J.avoidanceMaskRadii(circle, W, H);
+    if (rOuter <= 0.5) return;
+    ctx.save();
+    if (stageTransform) ctx.setTransform(stageTransform.a, stageTransform.b, stageTransform.c, stageTransform.d, stageTransform.e, stageTransform.f);
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.globalAlpha = 1;
+    ctx.filter = 'none';
+    if (feather <= 0.5) {
+      ctx.fillStyle = 'rgba(0,0,0,1)';
+    } else {
+      const fn = MASK_CURVE_FN[circle.maskCurve] || MASK_CURVE_FN.smooth;
+      const grad = ctx.createRadialGradient(circle.cx, circle.cy, rInner, circle.cx, circle.cy, rOuter);
+      const steps = 12;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        grad.addColorStop(t, `rgba(0,0,0,${J.clamp(fn(t), 0, 1).toFixed(4)})`);
+      }
+      ctx.fillStyle = grad;
+    }
+    ctx.beginPath();
+    ctx.arc(circle.cx, circle.cy, rOuter + (feather <= 0.5 ? 0 : 1), 0, J.TAU);
+    ctx.fill();
+    ctx.restore();
+  };
+  // Draw `paint(ctx2)` on a scratch canvas sharing ctx's transform, punch the mask (in stage coordinates,
+  // `stageMatrix` = stage → canvas pixels), then composite onto ctx with ctx's current blend mode.
+  J.drawWithAvoidanceMask = (renderer, ctx, circle, W, H, paint, stageMatrix, key = 'avoidMaskScratch') => {
+    const cw = ctx.canvas.width, ch = ctx.canvas.height;
+    const make = () => (typeof document !== 'undefined' ? document.createElement('canvas') : null);
+    let scratch = renderer && renderer[key];
+    if (!scratch) { scratch = make(); if (!scratch) return paint(ctx); if (renderer) renderer[key] = scratch; }
+    if (renderer && renderer.ensure) renderer.ensure(scratch, cw, ch);
+    else if (scratch.width !== cw || scratch.height !== ch) { scratch.width = cw; scratch.height = ch; }
+    const sx = scratch.getContext('2d');
+    const m = ctx.getTransform();
+    sx.setTransform(1, 0, 0, 1, 0, 0);
+    sx.globalAlpha = 1; sx.globalCompositeOperation = 'source-over'; sx.filter = 'none';
+    sx.clearRect(0, 0, cw, ch);
+    sx.setTransform(m.a, m.b, m.c, m.d, m.e, m.f);
+    let result;
+    try { result = paint(sx); } finally {
+      J.applyAvoidanceCircleMask(sx, stageMatrix || m, circle, W, H);
+      const op = ctx.globalCompositeOperation;
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = op;
+      ctx.filter = 'none';
+      ctx.drawImage(scratch, 0, 0);
+      ctx.restore();
+    }
+    return result;
+  };
+
+  function isAuxMainCall(id, idx, it) {
+    return (
+      (id === 'echo' && idx < 4) ||
+      (id === 'verticalRiver' && it && it.alpha !== undefined && it.alpha < 0.75) ||
+      (id === 'scroll' && it && it.alpha !== undefined && it.alpha < 0.85) ||
+      (id === 'hrWallScrawl' && it && it.alpha !== undefined && it.alpha < 0.85) ||
+      (id === 'tyCropGiant' && it && it.alpha !== undefined && it.alpha < 0.5)
+    );
+  }
+
+  // Lyric cut with 「回避部分をマスク」: everything except the main lyric glyphs (decorations, layout plates,
+  // lines, shapes, echo text …) is drawn on a scratch canvas and punched out with the mask circle; the main
+  // lyric (J.mainDraw) is then drawn on top, unmasked. `run(env)` draws the cut as usual.
+  J.avoidMaskPhase = null;
+  const ENV_PRIMITIVES = ['draw', 'rect', 'line', 'polyPartial', 'circle', 'arc', 'rrect', 'poly', 'blob'];
+  J.drawCutMaskedAux = (renderer, env, run, circle) => {
+    const { cut, plan } = env;
+    const W = plan.W, H = plan.H, scale = env.scale || 1;
+    const stageMatrix = { a: scale, b: 0, c: 0, d: scale, e: 0, f: 0 };
+    const id = cut.layout;
+    const auxMain = () => { let i = 0; return it => isAuxMainCall(id, i++, it); };
+    const origMainDraw = J.mainDraw;
+    const prevPhase = J.avoidMaskPhase;
+    // 1. Decorations + auxiliary layout drawing on the scratch canvas, then the radial knockout.
+    J.drawWithAvoidanceMask(renderer, env.ctx, circle, W, H, sx => {
+      const auxEnv = renderer.makeEnv(sx, plan, cut, env.sc, Object.assign({}, env, { ctx: sx }));
+      const isAux = auxMain();
+      J.avoidMaskPhase = 'aux';
+      J.mainDraw = (envArg, it) => (isAux(it) ? origMainDraw(envArg, it) : (J.itemBox ? J.itemBox(it) : null) || { x0: 0, y0: 0, x1: 0, y1: 0, cx: W / 2, cy: H / 2, boxes: [] });
+      try { run(auxEnv); } catch (e) { console.warn('avoid mask aux', id, e); }
+      finally { J.mainDraw = origMainDraw; J.avoidMaskPhase = prevPhase; }
+    }, stageMatrix, 'avoidAuxScratch');
+    if (cut.effectsOnly) return null;
+    // 2. Main lyric only, unmasked: env primitives are silenced except inside J.mainDraw.
+    const mainEnv = Object.assign({}, env, Object.fromEntries(ENV_PRIMITIVES.map(k => [k, () => {}])), { __real: env });
+    const isAux = auxMain();
+    const savedDecor = cut.decor;
+    let bb = null;
+    J.avoidMaskPhase = 'main';
+    J.mainDraw = (envArg, it) => (isAux(it) ? (J.itemBox ? J.itemBox(it) : null) : origMainDraw((envArg && envArg.__real) || env, it));
+    cut.decor = [];
+    const origFillRect = env.ctx.fillRect.bind(env.ctx);
+    const origStrokeRect = env.ctx.strokeRect.bind(env.ctx);
+    if (id === 'hrRedacted' || id === 'tyBandHide') {
+      env.ctx.fillRect = () => {};
+      env.ctx.strokeRect = () => {};
+    }
+    try { bb = run(mainEnv); } catch (e) { console.warn('avoid mask main', id, e); }
+    finally {
+      env.ctx.fillRect = origFillRect;
+      env.ctx.strokeRect = origStrokeRect;
+      cut.decor = savedDecor;
+      J.mainDraw = origMainDraw;
+      J.avoidMaskPhase = prevPhase;
+    }
+    return bb;
+  };
+
+  J.usesCircleAvoidance = (plan, cut, t) => {
+    if (!plan?.lyricAvoidance?.enabled || plan?.layerVisibility?.avoidance === false || !cut) return false;
+    if (cut.line < 0 || !Number.isInteger(cut.part) || cut.effectsOnly) return false;
+    if (cut.areaMode === 'manual') return false;
+    if (plan.lockedLines && plan.lockedLines[cut.line]) return false;
+    const circle = J.circleAvoidanceForCut(plan, cut, t);
+    if (!circle || !circle.enabled) return false;
+    if (cut.emphasis && !circle.avoidEmphasis) return false;
+    return true;
+  };
+
+  // ----------------------------------------------------------------------------
+  // 3. Geometric Helpers (Circle-Rect Intersection & Safe Candidate Regions)
+  // ----------------------------------------------------------------------------
+  function rectCircleDist(bb, cx, cy, R) {
+    if (!bb || !Number.isFinite(bb.x0)) return Infinity;
+    const nx = J.clamp(cx, bb.x0, bb.x1);
+    const ny = J.clamp(cy, bb.y0, bb.y1);
+    return Math.hypot(cx - nx, cy - ny) - R;
+  }
+
+  function rectHitsCircle(bb, cx, cy, R) {
+    return rectCircleDist(bb, cx, cy, R) < -0.5;
+  }
+
+  function unionBB(a, b) {
+    if (!b || !Number.isFinite(b.x0) || !Number.isFinite(b.y0) || !Number.isFinite(b.x1) || !Number.isFinite(b.y1)) return a;
+    if (b.x1 <= b.x0 && b.y1 <= b.y0) return a;
+    if (!a || !Number.isFinite(a.x0)) {
+      return { x0: b.x0, y0: b.y0, x1: b.x1, y1: b.y1 };
+    }
+    return {
+      x0: Math.min(a.x0, b.x0),
+      y0: Math.min(a.y0, b.y0),
+      x1: Math.max(a.x1, b.x1),
+      y1: Math.max(a.y1, b.y1),
+    };
+  }
+
+  function finalizeBB(bb) {
+    if (!bb || !Number.isFinite(bb.x0)) return null;
+    const w = Math.max(1, bb.x1 - bb.x0);
+    const h = Math.max(1, bb.y1 - bb.y0);
+    return {
+      x0: bb.x0,
+      y0: bb.y0,
+      x1: bb.x1,
+      y1: bb.y1,
+      w,
+      h,
+      cx: (bb.x0 + bb.x1) * 0.5,
+      cy: (bb.y0 + bb.y1) * 0.5,
+    };
+  }
+
+  function shiftBB(bb, tx, ty) {
+    if (!bb) return null;
+    return finalizeBB({
+      x0: bb.x0 + tx,
+      y0: bb.y0 + ty,
+      x1: bb.x1 + tx,
+      y1: bb.y1 + ty,
+    });
+  }
+
+  function scaleAndShiftBB(bb, pivotX, pivotY, s, tx, ty) {
+    if (!bb) return null;
+    return finalizeBB({
+      x0: pivotX + (bb.x0 - pivotX) * s + tx,
+      y0: pivotY + (bb.y0 - pivotY) * s + ty,
+      x1: pivotX + (bb.x1 - pivotX) * s + tx,
+      y1: pivotY + (bb.y1 - pivotY) * s + ty,
+    });
+  }
+
+  // Build candidate safe rectangular regions around the avoidance circle,
+  // plus compute directional priority tiers from circle offset scores:
+  // dx = 2*cx/W - 1, dy = 2*cy/H - 1
+  // down = -dy, up = +dy, right = -dx, left = +dx
+  function getDirectionScores(W, H, circle) {
+    const dx = (2 * circle.cx) / W - 1;
+    const dy = (2 * circle.cy) / H - 1;
+    return {
+      down:  -dy,
+      up:     dy,
+      right: -dx,
+      left:   dx,
+      tl:    (dy + dx) * 0.5,
+      tr:    (dy - dx) * 0.5,
+      bl:    (-dy + dx) * 0.5,
+      br:    (-dy - dx) * 0.5,
+    };
+  }
+
+  function getSafeRegions(W, H, circle) {
+    const mx = Math.round(W * (48 / 1920));
+    const my = Math.round(H * (38 / 1080));
+    const { cx, cy, R } = circle;
+    const dirScores = getDirectionScores(W, H, circle);
+    const raw = [
+      // 4 cardinal bands:
+      // Down = [m, W-m] x [max(m, cy+R), H-m]
+      // Up   = [m, W-m] x [m, min(H-m, cy-R)]
+      // Left = [m, min(W-m, cx-R)] x [m, H-m]
+      // Right= [max(m, cx+R), W-m] x [m, H-m]
+      { name: 'down',  dir: 'down',  x0: mx,          y0: Math.max(my, cy + R), x1: W - mx,      y1: H - my },
+      { name: 'up',    dir: 'up',    x0: mx,          y0: my,                   x1: W - mx,      y1: Math.min(H - my, cy - R) },
+      { name: 'left',  dir: 'left',  x0: mx,          y0: my,                   x1: Math.min(W - mx, cx - R), y1: H - my },
+      { name: 'right', dir: 'right', x0: Math.max(mx, cx + R), y0: my,          x1: W - mx,      y1: H - my },
+      // 4 diagonal quadrants (bounded by R / sqrt(2) tangent lines)
+      { name: 'tl',    dir: 'tl',    x0: mx,          y0: my,          x1: cx - R * 0.7071, y1: cy - R * 0.25 },
+      { name: 'tr',    dir: 'tr',    x0: cx + R * 0.7071, y0: my,      x1: W - mx,      y1: cy - R * 0.25 },
+      { name: 'bl',    dir: 'bl',    x0: mx,          y0: cy + R * 0.25, x1: cx - R * 0.7071, y1: H - my },
+      { name: 'br',    dir: 'br',    x0: cx + R * 0.7071, y0: cy + R * 0.25, x1: W - mx, y1: H - my },
+      // Wide corner shelves
+      { name: 'topLeftWide',  dir: 'up',   x0: mx,   y0: my,          x1: cx - R * 0.35, y1: cy - R * 0.88 },
+      { name: 'topRightWide', dir: 'up',   x0: cx + R * 0.35, y0: my, x1: W - mx,      y1: cy - R * 0.88 },
+      { name: 'botLeftWide',  dir: 'down', x0: mx,   y0: cy + R * 0.88, x1: cx - R * 0.35, y1: H - my },
+      { name: 'botRightWide', dir: 'down', x0: cx + R * 0.35, y0: cy + R * 0.88, x1: W - mx, y1: H - my },
+    ];
+    const out = [];
+    for (const r of raw) {
+      const x0 = Math.max(mx, Math.min(W - mx, r.x0));
+      const y0 = Math.max(my, Math.min(H - my, r.y0));
+      const x1 = Math.max(mx, Math.min(W - mx, r.x1));
+      const y1 = Math.max(my, Math.min(H - my, r.y1));
+      const w = x1 - x0;
+      const h = y1 - y0;
+      if (w >= 80 && h >= 44) {
+        const bb = {
+          x0, y0, x1, y1, w, h,
+          cx: (x0 + x1) * 0.5,
+          cy: (y0 + y1) * 0.5,
+          name: r.name,
+          dir: r.dir,
+          dirScore: dirScores[r.dir] ?? 0,
+        };
+        if (!rectHitsCircle(bb, cx, cy, R - 1)) out.push(bb);
+      }
+    }
+    return out;
+  }
+
+  // Non-overlapping auxiliary regions per Section 05 Step 2:
+  // If primary direction is up/down, left/right auxiliary regions are restricted to the middle vertical band [cy - R, cy + R].
+  // If primary direction is left/right, up/down auxiliary regions are restricted to the middle horizontal band [cx - R, cx + R].
+  function getDisjointAuxiliaryRegions(W, H, circle, primaryDir) {
+    const mx = Math.round(W * (48 / 1920));
+    const my = Math.round(H * (38 / 1080));
+    const { cx, cy, R } = circle;
+    const dirScores = getDirectionScores(W, H, circle);
+    const raw = (primaryDir === 'up' || primaryDir === 'down')
+      ? [
+          { name: 'auxLeft',  dir: 'left',  x0: mx, y0: Math.max(my, cy - R), x1: Math.min(W - mx, cx - R), y1: Math.min(H - my, cy + R) },
+          { name: 'auxRight', dir: 'right', x0: Math.max(mx, cx + R), y0: Math.max(my, cy - R), x1: W - mx, y1: Math.min(H - my, cy + R) },
+        ]
+      : [
+          { name: 'auxDown',  dir: 'down',  x0: Math.max(mx, cx - R), y0: Math.max(my, cy + R), x1: Math.min(W - mx, cx + R), y1: H - my },
+          { name: 'auxUp',    dir: 'up',    x0: Math.max(mx, cx - R), y0: my, x1: Math.min(W - mx, cx + R), y1: Math.min(H - my, cy - R) },
+        ];
+    return raw
+      .map(r => {
+        const w = r.x1 - r.x0, h = r.y1 - r.y0;
+        return w > 40 && h > 40
+          ? { ...r, w, h, cx: (r.x0 + r.x1) * 0.5, cy: (r.y0 + r.y1) * 0.5, dirScore: dirScores[r.dir] ?? 0 }
+          : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.dirScore - a.dirScore);
+  }
+
+  // Compare two candidate placements according to Section 05 Step 5:
+  // 1) Higher direction score (`dirScore`) wins first (rounded to 1e-4 so ties are grouped into same-score tiers).
+  // 2) Shape compatibility: horizontal box (w > h * 1.15) prefers up/down; vertical box (h > w * 1.15) prefers left/right.
+  // 3) Smaller normalized displacement: sqrt((tx/W)^2 + (ty/H)^2).
+  // 4) Previous cut direction (`prevDir`) if tied.
+  function rankCandidate(cand, bb, W, H, dirScores, prevDir, seedDir) {
+    const dir = cand.dir || cand.name || 'down';
+    const dScore = Math.round((dirScores[dir] ?? 0) * 10000) / 10000;
+    const isHorizBox = bb.w > bb.h * 1.15;
+    const isVertBox = bb.h > bb.w * 1.15;
+    const isVertBand = dir === 'up' || dir === 'down' || dir === 'topLeftWide' || dir === 'topRightWide' || dir === 'botLeftWide' || dir === 'botRightWide';
+    const isHorizBand = dir === 'left' || dir === 'right';
+    const shapeFit = (isHorizBox && isVertBand) || (isVertBox && isHorizBand) ? 1 : ((isHorizBox && isHorizBand) || (isVertBox && isVertBand) ? -1 : 0);
+    const normMove = Math.hypot((cand.tx || 0) / W, (cand.ty || 0) / H);
+    const prevBonus = prevDir && dir === prevDir ? 1 : 0;
+    const seedBonus = seedDir && dir === seedDir ? 1 : 0;
+    return (
+      dScore * 1e6 +
+      shapeFit * 1e4 -
+      normMove * 1e2 +
+      prevBonus * 10 +
+      seedBonus * 0.5
+    );
+  }
+
+  // Find optimal (tx, ty) inside a safe region that keeps shifted BB inside region
+  // while minimizing shift distance from original position
+  function clampBoxToRegion(bb, reg) {
+    const halfW = bb.w * 0.5;
+    const halfH = bb.h * 0.5;
+    let cx1, cy1;
+    if (bb.w <= reg.w) {
+      cx1 = J.clamp(bb.cx, reg.x0 + halfW, reg.x1 - halfW);
+    } else {
+      cx1 = reg.cx;
+    }
+    if (bb.h <= reg.h) {
+      cy1 = J.clamp(bb.cy, reg.y0 + halfH, reg.y1 - halfH);
+    } else {
+      cy1 = reg.cy;
+    }
+    return { tx: cx1 - bb.cx, ty: cy1 - bb.cy, cx1, cy1 };
+  }
+
+  // Minimum push vector in 8 directions so that bb clears circle(cx, cy, R)
+  // while staying inside stage margins [mx..W-mx, my..H-my].
+  function solveDirectionalPush(bb, W, H, circle, opts = {}) {
+    const mx = Math.round(W * (44 / 1920));
+    const my = Math.round(H * (34 / 1080));
+    const { cx, cy, R } = circle;
+    const verticalOnly = !!opts.verticalOnly;
+    const preferDir = opts.preferDir || null;
+    const candidates = [];
+
+    // Pure cardinal pushes
+    // Up: bb.y1 + ty <= cy - R  => ty = (cy - R) - bb.y1
+    const tyUp = (cy - R) - bb.y1;
+    if (bb.y0 + tyUp >= my) {
+      const tx = J.clamp(0, mx - bb.x0, (W - mx) - bb.x1);
+      candidates.push({ name: 'up', tx, ty: tyUp });
+    }
+    // Down: bb.y0 + ty >= cy + R => ty = (cy + R) - bb.y0
+    const tyDown = (cy + R) - bb.y0;
+    if (bb.y1 + tyDown <= H - my) {
+      const tx = J.clamp(0, mx - bb.x0, (W - mx) - bb.x1);
+      candidates.push({ name: 'down', tx, ty: tyDown });
+    }
+
+    if (!verticalOnly) {
+      // Left: bb.x1 + tx <= cx - R => tx = (cx - R) - bb.x1
+      const txLeft = (cx - R) - bb.x1;
+      if (bb.x0 + txLeft >= mx) {
+        const ty = J.clamp(0, my - bb.y0, (H - my) - bb.y1);
+        candidates.push({ name: 'left', tx: txLeft, ty });
+      }
+      // Right: bb.x0 + tx >= cx + R => tx = (cx + R) - bb.x0
+      const txRight = (cx + R) - bb.x0;
+      if (bb.x1 + txRight <= W - mx) {
+        const ty = J.clamp(0, my - bb.y0, (H - my) - bb.y1);
+        candidates.push({ name: 'right', tx: txRight, ty });
+      }
+
+      // Diagonal pushes along angle theta where circle boundary point is (cx + R cos a, cy + R sin a)
+      const angles = [
+        { name: 'tl', ax: -1, ay: -1 },
+        { name: 'tr', ax:  1, ay: -1 },
+        { name: 'bl', ax: -1, ay:  1 },
+        { name: 'br', ax:  1, ay:  1 },
+      ];
+      const ratios = [0.35, 0.5, 0.65, 0.7071, 0.82];
+      for (const d of angles) {
+        for (const kx of ratios) {
+          const ky = Math.sqrt(Math.max(0.05, 1 - kx * kx));
+          const boundX = cx + d.ax * R * kx;
+          const boundY = cy + d.ay * R * ky;
+          const tx = d.ax < 0 ? (boundX - bb.x1) : (boundX - bb.x0);
+          const ty = d.ay < 0 ? (boundY - bb.y1) : (boundY - bb.y0);
+          const sbb = shiftBB(bb, tx, ty);
+          if (
+            sbb.x0 >= mx - 4 && sbb.x1 <= W - mx + 4 &&
+            sbb.y0 >= my - 4 && sbb.y1 <= H - my + 4 &&
+            !rectHitsCircle(sbb, cx, cy, R - 0.5)
+          ) {
+            candidates.push({ name: d.name, tx, ty });
+          }
+        }
+      }
+    }
+
+    // Also include safe region placements for regions where bb fits without scaling
+    const regions = getSafeRegions(W, H, circle);
+    for (const reg of regions) {
+      if (verticalOnly && reg.name !== 'up' && reg.name !== 'down') continue;
+      if (bb.w <= reg.w + 2 && bb.h <= reg.h + 2) {
+        const { tx, ty } = clampBoxToRegion(bb, reg);
+        const sbb = shiftBB(bb, tx, ty);
+        if (!rectHitsCircle(sbb, cx, cy, R - 0.5)) {
+          candidates.push({ name: reg.name, tx: verticalOnly ? 0 : tx, ty, region: reg });
+        }
+      }
+    }
+
+    if (!candidates.length) return null;
+
+    // Score candidates using Section 05 5-Step Priority:
+    // 1) Direction score (circle offset) -> 2) Shape compatibility -> 3) Normalized move -> 4) Previous/seed direction
+    const dirScores = getDirectionScores(W, H, circle);
+    let best = null;
+    let bestRank = -Infinity;
+    for (const c of candidates) {
+      const sbb = shiftBB(bb, c.tx, c.ty);
+      if (rectHitsCircle(sbb, cx, cy, R - 1)) continue;
+      const rank = rankCandidate(c, bb, W, H, dirScores, opts.prevDir, preferDir);
+      if (rank > bestRank) {
+        bestRank = rank;
+        best = { ...c, scale: 1, bb: sbb };
+      }
+    }
+    return best;
+  }
+
+  // Fit bb into the best safe region when it cannot fit at scale 1.0
+  function solveScaledRegionFit(bb, W, H, circle, opts = {}) {
+    const regions = getSafeRegions(W, H, circle);
+    const verticalOnly = !!opts.verticalOnly;
+    const minScale = opts.minScale || 0.38;
+    const fixedScale = opts.fixedScale || null;
+    let best = null;
+    let bestScore = -Infinity;
+
+    for (const reg of regions) {
+      if (verticalOnly && reg.name !== 'up' && reg.name !== 'down') continue;
+      const sFit = Math.min(1, (reg.w * 0.94) / Math.max(1, bb.w), (reg.h * 0.92) / Math.max(1, bb.h));
+      const s = fixedScale ? Math.min(fixedScale, sFit) : Math.max(minScale, sFit);
+      const scaledW = bb.w * s;
+      const scaledH = bb.h * s;
+      const tempBB = {
+        x0: bb.cx - scaledW * 0.5,
+        y0: bb.cy - scaledH * 0.5,
+        x1: bb.cx + scaledW * 0.5,
+        y1: bb.cy + scaledH * 0.5,
+        w: scaledW,
+        h: scaledH,
+        cx: bb.cx,
+        cy: bb.cy,
+      };
+      const { tx, ty } = clampBoxToRegion(tempBB, reg);
+      const finalTX = verticalOnly ? 0 : tx;
+      const sbb = scaleAndShiftBB(bb, bb.cx, bb.cy, s, finalTX, ty);
+      const clearance = rectCircleDist(sbb, circle.cx, circle.cy, circle.R);
+      if (clearance < -2) continue;
+      const dist = Math.hypot(finalTX, ty);
+      // Prefer larger scale (closer to 1.0) and smaller shift distance
+      const score = s * 1000 - dist * 0.35 + Math.min(20, clearance);
+      if (score > bestScore) {
+        bestScore = score;
+        best = {
+          name: reg.name,
+          tx: finalTX,
+          ty,
+          scale: s,
+          pivotX: bb.cx,
+          pivotY: bb.cy,
+          region: reg,
+          bb: sbb,
+        };
+      }
+    }
+    return best;
+  }
+
+  // ----------------------------------------------------------------------------
+  // 4. Layout Measurement Pass (Captures Main Lyric BB, Aux BB, and Plate BB)
+  // ----------------------------------------------------------------------------
+  function createMeasureCtx(onRect) {
+    let mat = [1, 0, 0, 1, 0, 0];
+    const stack = [];
+    const mul = (m1, m2) => [
+      m1[0] * m2[0] + m1[2] * m2[1],
+      m1[1] * m2[0] + m1[3] * m2[1],
+      m1[0] * m2[2] + m1[2] * m2[3],
+      m1[1] * m2[2] + m1[3] * m2[3],
+      m1[0] * m2[4] + m1[2] * m2[5] + m1[4],
+      m1[1] * m2[4] + m1[3] * m2[5] + m1[5],
+    ];
+    const txPt = (x, y) => [
+      mat[0] * x + mat[2] * y + mat[4],
+      mat[1] * x + mat[3] * y + mat[5],
+    ];
+    const recordBox = (x0, y0, x1, y1, kind) => {
+      if (!Number.isFinite(x0) || !Number.isFinite(y0) || !Number.isFinite(x1) || !Number.isFinite(y1)) return null;
+      const pts = [
+        txPt(x0, y0),
+        txPt(x1, y0),
+        txPt(x1, y1),
+        txPt(x0, y1),
+      ];
+      let bx0 = Infinity, by0 = Infinity, bx1 = -Infinity, by1 = -Infinity;
+      for (const [px, py] of pts) {
+        if (px < bx0) bx0 = px;
+        if (py < by0) by0 = py;
+        if (px > bx1) bx1 = px;
+        if (py > by1) by1 = py;
+      }
+      const res = { x0: bx0, y0: by0, x1: bx1, y1: by1 };
+      onRect(res, kind);
+      return res;
+    };
+
+    let pathBB = null;
+    const addPathPt = (x, y) => {
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+      const [px, py] = txPt(x, y);
+      if (!pathBB) pathBB = { x0: px, y0: py, x1: px, y1: py };
+      else {
+        if (px < pathBB.x0) pathBB.x0 = px;
+        if (py < pathBB.y0) pathBB.y0 = py;
+        if (px > pathBB.x1) pathBB.x1 = px;
+        if (py > pathBB.y1) pathBB.y1 = py;
+      }
+    };
+
+    const ctx = {
+      canvas: { width: 1920, height: 1080 },
+      fillStyle: '#fff',
+      strokeStyle: '#fff',
+      lineWidth: 1,
+      globalAlpha: 1,
+      globalCompositeOperation: 'source-over',
+      filter: 'none',
+      font: '48px sans-serif',
+      textAlign: 'center',
+      textBaseline: 'middle',
+      lineJoin: 'miter',
+      lineCap: 'butt',
+      lineDashOffset: 0,
+      shadowColor: 'transparent',
+      shadowBlur: 0,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      setLineDash() {},
+      getLineDash() { return []; },
+      save() {
+        stack.push({
+          mat: mat.slice(),
+          globalAlpha: this.globalAlpha,
+          font: this.font,
+          textAlign: this.textAlign,
+          textBaseline: this.textBaseline,
+          lineWidth: this.lineWidth,
+        });
+      },
+      restore() {
+        const s = stack.pop();
+        if (s) {
+          mat = s.mat;
+          this.globalAlpha = s.globalAlpha;
+          this.font = s.font;
+          this.textAlign = s.textAlign;
+          this.textBaseline = s.textBaseline;
+          this.lineWidth = s.lineWidth;
+        }
+      },
+      translate(tx, ty) { mat = mul(mat, [1, 0, 0, 1, tx || 0, ty || 0]); },
+      rotate(rad) {
+        const c = Math.cos(rad || 0), s = Math.sin(rad || 0);
+        mat = mul(mat, [c, s, -s, c, 0, 0]);
+      },
+      scale(sx, sy) { mat = mul(mat, [sx ?? 1, 0, 0, sy ?? sx ?? 1, 0, 0]); },
+      transform(a, b, c, d, e, f) { mat = mul(mat, [a, b, c, d, e, f]); },
+      setTransform(a, b, c, d, e, f) {
+        if (typeof a === 'number') mat = [a, b, c, d, e, f];
+        else mat = [1, 0, 0, 1, 0, 0];
+      },
+      getTransform() {
+        const makeDOMMat = (m) => ({
+          a: m[0], b: m[1], c: m[2], d: m[3], e: m[4], f: m[5],
+          translate(tx, ty) { return makeDOMMat(mul(m, [1, 0, 0, 1, tx || 0, ty || 0])); },
+          rotate(deg) {
+            const rad = (deg || 0) * Math.PI / 180;
+            const c = Math.cos(rad), s = Math.sin(rad);
+            return makeDOMMat(mul(m, [c, s, -s, c, 0, 0]));
+          },
+          scale(sx, sy) { return makeDOMMat(mul(m, [sx ?? 1, 0, 0, sy ?? sx ?? 1, 0, 0])); },
+        });
+        return makeDOMMat(mat);
+      },
+      beginPath() { pathBB = null; },
+      closePath() {},
+      moveTo(x, y) { addPathPt(x, y); },
+      lineTo(x, y) { addPathPt(x, y); },
+      quadraticCurveTo(cpx, cpy, x, y) { addPathPt(cpx, cpy); addPathPt(x, y); },
+      bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) { addPathPt(cp1x, cp1y); addPathPt(cp2x, cp2y); addPathPt(x, y); },
+      arc(cx, cy, r) {
+        if (r > 0) {
+          addPathPt(cx - r, cy - r);
+          addPathPt(cx + r, cy + r);
+        }
+      },
+      arcTo(x1, y1, x2, y2) { addPathPt(x1, y1); addPathPt(x2, y2); },
+      rect(x, y, w, h) {
+        addPathPt(x, y);
+        addPathPt(x + w, y + h);
+      },
+      clip() {},
+      fill() {
+        if (pathBB && this.globalAlpha > 0.02) onRect({ ...pathBB }, 'aux');
+      },
+      stroke() {
+        if (pathBB && this.globalAlpha > 0.02) {
+          const pad = (this.lineWidth || 1) * 0.5;
+          onRect({ x0: pathBB.x0 - pad, y0: pathBB.y0 - pad, x1: pathBB.x1 + pad, y1: pathBB.y1 + pad }, 'aux');
+        }
+      },
+      clearRect() {},
+      fillRect(x, y, w, h) {
+        if (w > 0 && h > 0 && this.globalAlpha > 0.02) recordBox(x, y, x + w, y + h, 'rect');
+      },
+      strokeRect(x, y, w, h) {
+        if (w > 0 && h > 0 && this.globalAlpha > 0.02) recordBox(x, y, x + w, y + h, 'rect');
+      },
+      fillText(str, x, y) {
+        if (!str || this.globalAlpha <= 0.02) return;
+        const m = /(\d+(?:\.\d+)?)px/.exec(this.font || '');
+        const sz = m ? parseFloat(m[1]) : 24;
+        const w = String(str).length * sz * 0.75;
+        const h = sz * 1.15;
+        let x0 = x - w * 0.5;
+        if (this.textAlign === 'left' || this.textAlign === 'start') x0 = x;
+        else if (this.textAlign === 'right' || this.textAlign === 'end') x0 = x - w;
+        let y0 = y - h * 0.5;
+        if (this.textBaseline === 'top' || this.textBaseline === 'hanging') y0 = y;
+        else if (this.textBaseline === 'bottom' || this.textBaseline === 'alphabetic') y0 = y - h;
+        recordBox(x0, y0, x0 + w, y0 + h, 'auxText');
+      },
+      strokeText(str, x, y) { this.fillText(str, x, y); },
+      measureText(str) {
+        const m = /(\d+(?:\.\d+)?)px/.exec(this.font || '');
+        const sz = m ? parseFloat(m[1]) : 24;
+        return { width: String(str || '').length * sz * 0.72 };
+      },
+      createLinearGradient() { return { addColorStop() {} }; },
+      createRadialGradient() { return { addColorStop() {} }; },
+      drawImage() {},
+      _recordBox: recordBox,
+    };
+    return ctx;
+  }
+
+  function itemLocalBounds(it) {
+    if (!it || (it.alpha !== undefined && it.alpha <= 0.02) || (it.scale !== undefined && it.scale <= 0.02)) return null;
+    const b = J.itemBox ? J.itemBox(it) : null;
+    if (!b || !Number.isFinite(b.x0)) return null;
+    return b;
+  }
+
+  // Run L.render(mEnv) at specific local time `lt` and collect:
+  // - mainBB: bounding box of primary lyric (`J.mainDraw` hero calls + returned `bb`)
+  // - fullBB: union of mainBB and non-background auxiliary drawings
+  function measureCutAtTime(baseEnv, cut, lt) {
+    const W = baseEnv.plan.W;
+    const H = baseEnv.plan.H;
+    const L = J.LAYOUTS[cut.layout] || J.LAYOUTS.center;
+    let mainBB = null;
+    let auxBB = null;
+    const mainCallBoxes = [];
+
+    const isFullBgRect = (bb) => {
+      const rw = bb.x1 - bb.x0;
+      const rh = bb.y1 - bb.y0;
+      return rw >= W * 0.90 && rh >= H * 0.90;
+    };
+
+    const mctx = createMeasureCtx((bb, kind) => {
+      if (isFullBgRect(bb)) return;
+      if (kind === 'main') {
+        mainBB = unionBB(mainBB, bb);
+      } else {
+        auxBB = unionBB(auxBB, bb);
+      }
+    });
+
+    const mEnv = Object.assign({}, baseEnv, {
+      ctx: mctx,
+      W,
+      H,
+      pass: 'main',
+      lt,
+      ltb: lt,
+      t: cut.start + lt,
+      pIn: 1,
+      pOut: 0,
+      draw(it) {
+        const lb = itemLocalBounds(it);
+        if (lb) mctx._recordBox(lb.x0, lb.y0, lb.x1, lb.y1, 'aux');
+      },
+      rect(x, y, w, h, c, a = 1) {
+        if (!c || a <= 0.02 || w <= 0 || h <= 0) return;
+        mctx._recordBox(x, y, x + w, y + h, 'rect');
+      },
+      rrect(x, y, w, h, r, fill, a = 1, g = true, stroke) {
+        if ((!fill && !stroke) || a <= 0.02 || w <= 0 || h <= 0) return;
+        mctx._recordBox(x, y, x + w, y + h, 'rrect');
+      },
+      circle(cx, cy, r, fill, stroke, lw = 1, a = 1) {
+        if ((!fill && !stroke) || a <= 0.02 || r <= 0) return;
+        mctx._recordBox(cx - r, cy - r, cx + r, cy + r, 'circle');
+      },
+      arc(cx, cy, r, a0, a1, c, lw = 1, a = 1) {
+        if (!c || a <= 0.02 || r <= 0) return;
+        mctx._recordBox(cx - r, cy - r, cx + r, cy + r, 'arc');
+      },
+      line(pts, c, lw = 1, a = 1) {
+        if (!c || a <= 0.02 || !pts || pts.length < 2) return;
+        let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+        for (const p of pts) {
+          if (p[0] < x0) x0 = p[0];
+          if (p[1] < y0) y0 = p[1];
+          if (p[0] > x1) x1 = p[0];
+          if (p[1] > y1) y1 = p[1];
+        }
+        mctx._recordBox(x0 - lw, y0 - lw, x1 + lw, y1 + lw, 'line');
+      },
+      polyPartial(pts, e, c, lw = 1, a = 1) {
+        if (e <= 0) return;
+        this.line(pts, c, lw, a);
+      },
+      poly(pts, c, a = 1) {
+        if (!c || a <= 0.02 || !pts || !pts.length) return;
+        let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+        for (const p of pts) {
+          if (p[0] < x0) x0 = p[0];
+          if (p[1] < y0) y0 = p[1];
+          if (p[0] > x1) x1 = p[0];
+          if (p[1] > y1) y1 = p[1];
+        }
+        mctx._recordBox(x0, y0, x1, y1, 'poly');
+      },
+      blob(pts, c, a = 1) { this.poly(pts, c, a); },
+    });
+
+    const origMainDraw = J.mainDraw;
+    let callIndex = 0;
+    try {
+      J.mainDraw = (envArg, it) => {
+        const idx = callIndex++;
+        const lb = itemLocalBounds(it) || (J.itemBox ? J.itemBox({ ...it, alpha: 1, scale: it?.scale || 1 }) : null);
+        let tbb = null;
+        if (lb) {
+          const isGhostMain = (
+            (cut.layout === 'echo' && idx < 4) ||
+            (cut.layout === 'verticalRiver' && it.alpha !== undefined && it.alpha < 0.75) ||
+            (cut.layout === 'scroll' && it.alpha !== undefined && it.alpha < 0.85) ||
+            (cut.layout === 'hrWallScrawl' && it.alpha !== undefined && it.alpha < 0.85) ||
+            (cut.layout === 'tyCropGiant' && it.alpha !== undefined && it.alpha < 0.5)
+          );
+          tbb = mctx._recordBox(lb.x0, lb.y0, lb.x1, lb.y1, isGhostMain ? 'aux' : 'main');
+          if (!isGhostMain && tbb) mainCallBoxes.push(tbb);
+        }
+        return lb || { x0: W * 0.35, y0: H * 0.4, x1: W * 0.65, y1: H * 0.6, cx: W * 0.5, cy: H * 0.5, boxes: [] };
+      };
+      const retBB = L.render(mEnv);
+      if (retBB && Number.isFinite(retBB.x0) && Number.isFinite(retBB.x1)) {
+        if (!mainBB || TILED_AUX_IDS.has(cut.layout)) {
+          const rbb = mctx._recordBox(retBB.x0, retBB.y0, retBB.x1, retBB.y1, 'main');
+          if (TILED_AUX_IDS.has(cut.layout) && rbb) mainBB = rbb;
+        }
+      }
+    } catch (e) {
+      // Fallback if measurement hits an edge case
+    } finally {
+      J.mainDraw = origMainDraw;
+    }
+
+    if (!mainBB && auxBB) mainBB = { ...auxBB };
+    if (!mainBB) {
+      mainBB = { x0: W * 0.3, y0: H * 0.4, x1: W * 0.7, y1: H * 0.6 };
+    }
+    const fullBB = unionBB(mainBB, auxBB) || mainBB;
+    return {
+      mainBB: finalizeBB(mainBB),
+      auxBB: finalizeBB(auxBB),
+      fullBB: finalizeBB(fullBB),
+      mainCallBoxes: mainCallBoxes.map(finalizeBB).filter(Boolean),
+    };
+  }
+
+  function measureCutBounds(baseEnv, cut) {
+    const rule = LAYOUT_AVOID[cut.layout] || { mode: 'shift', aux: 'shift' };
+    const dur = Math.max(0.4, cut.dur || 2.0);
+    if (rule.sampleMulti || cut.layout === 'wave' || cut.layout === 'knReflow') {
+      let mainBB = null, auxBB = null, fullBB = null;
+      for (const frac of MULTI_SAMPLE_TIMES) {
+        const m = measureCutAtTime(baseEnv, cut, dur * frac);
+        mainBB = unionBB(mainBB, m.mainBB);
+        auxBB = unionBB(auxBB, m.auxBB);
+        fullBB = unionBB(fullBB, m.fullBB);
+      }
+      return {
+        mainBB: finalizeBB(mainBB),
+        auxBB: finalizeBB(auxBB),
+        fullBB: finalizeBB(fullBB),
+      };
+    }
+    const settledLT = Math.min(dur * 0.55, Math.max(0.65, (cut.inDur || 0.3) + 0.45));
+    return measureCutAtTime(baseEnv, cut, settledLT);
+  }
+
+  // ----------------------------------------------------------------------------
+  // 5. Solver: Resolve Placement Per Layout Group
+  // ----------------------------------------------------------------------------
+  const DIR_NAMES = ['up', 'down', 'left', 'right', 'tl', 'tr', 'bl', 'br'];
+
+  function solveCutAvoidance(baseEnv, cut, circle) {
+    const W = baseEnv.plan.W;
+    const H = baseEnv.plan.H;
+    const id = cut.layout;
+    const rule = LAYOUT_AVOID[id] || { mode: 'shift', aux: 'shift' };
+    const P = cut.circleNativeParams || cut.params || {};
+
+    // Group 1: Orbit / Ring-compatible (7)
+    if (ORBIT_IDS.has(id) || rule.mode === 'orbit') {
+      return {
+        mode: 'orbit',
+        tx: circle.cx - W * 0.5,
+        ty: circle.cy - H * 0.5,
+        scale: 1,
+      };
+    }
+
+    // Group 3: Policy A — Re-wrap at native font size (`center`, `vcols` split variant)
+    if (id === 'center' || (id === 'vcols' && P.variant === 'split')) {
+      const policyASol = solvePolicyA(baseEnv, cut, circle, P);
+      if (policyASol) return policyASol;
+    }
+
+    // Measure native full-stage bounds
+    const { mainBB, auxBB, fullBB, mainCallBoxes } = measureCutBounds(baseEnv, cut);
+    const seedDir = DIR_NAMES[J.h(cut.seed || 1, 701) % DIR_NAMES.length];
+
+    // Special case: `corners` places two separate text boxes in opposite corners of the stage;
+    // their union spans the center, so check if the individual corner text boxes clear the circle!
+    if (id === 'corners' && Array.isArray(mainCallBoxes) && mainCallBoxes.length >= 2) {
+      const anyCornerHits = mainCallBoxes.some(b => rectHitsCircle(b, circle.cx, circle.cy, circle.R));
+      if (!anyCornerHits) {
+        return {
+          mode: 'transform',
+          tx: 0,
+          ty: 0,
+          scale: 1,
+          pivotX: mainBB.cx,
+          pivotY: mainBB.cy,
+          mainBB,
+          fullBB,
+          shiftedBB: mainCallBoxes[0],
+        };
+      }
+    }
+
+    // Special case: `ledScroll` — horizontal LED board spans W*0.94 across the stage, so shift vertically (up/down) like `dominoes`!
+    if (id === 'ledScroll') {
+      if (!rectHitsCircle(fullBB, circle.cx, circle.cy, circle.R)) {
+        return { mode: 'transform', tx: 0, ty: 0, scale: 1, pivotX: fullBB.cx, pivotY: fullBB.cy, mainBB, fullBB, shiftedBB: fullBB };
+      }
+      const pushV = solveDirectionalPush(fullBB, W, H, circle, { verticalOnly: true });
+      if (pushV) {
+        return { mode: 'transform', tx: 0, ty: pushV.ty, scale: 1, pivotX: fullBB.cx, pivotY: fullBB.cy, mainBB, fullBB, shiftedBB: pushV.bb };
+      }
+      const fitV = solveScaledRegionFit(fullBB, W, H, circle, { verticalOnly: true, minScale: 0.35 });
+      return {
+        mode: 'transform',
+        tx: 0,
+        ty: fitV ? fitV.ty : (circle.cy - circle.R - fullBB.y1),
+        scale: fitV ? fitV.scale : 0.45,
+        pivotX: fullBB.cx,
+        pivotY: fullBB.cy,
+        mainBB,
+        fullBB,
+        shiftedBB: fitV ? fitV.bb : fullBB,
+      };
+    }
+
+    // Group 2: Tiled / Full-screen aux + Hero primary (14)
+    if (TILED_AUX_IDS.has(id) || rule.mode === 'tiledAux') {
+      const targetBB = mainBB;
+      if (!rectHitsCircle(targetBB, circle.cx, circle.cy, circle.R)) {
+        return {
+          mode: 'tiledAux',
+          tx: 0,
+          ty: 0,
+          scale: 1,
+          pivotX: targetBB.cx,
+          pivotY: targetBB.cy,
+          mainBB: targetBB,
+          shiftedBB: targetBB,
+        };
+      }
+      const push = solveDirectionalPush(targetBB, W, H, circle, { preferDir: seedDir });
+      if (push) {
+        return {
+          mode: 'tiledAux',
+          tx: push.tx,
+          ty: push.ty,
+          scale: 1,
+          pivotX: targetBB.cx,
+          pivotY: targetBB.cy,
+          mainBB: targetBB,
+          shiftedBB: push.bb,
+        };
+      }
+      const scaled = solveScaledRegionFit(targetBB, W, H, circle, { minScale: 0.45 });
+      return {
+        mode: 'tiledAux',
+        tx: scaled ? scaled.tx : 0,
+        ty: scaled ? scaled.ty : (circle.cy - circle.R - targetBB.y1),
+        scale: scaled ? scaled.scale : 0.65,
+        pivotX: targetBB.cx,
+        pivotY: targetBB.cy,
+        mainBB: targetBB,
+        shiftedBB: scaled ? scaled.bb : targetBB,
+      };
+    }
+
+    // Group 4: Policy C — Coupled frame/plate/column layouts (8)
+    if (rule.mode === 'policyC') {
+      if (id === 'crossword') {
+        const fit = solveScaledRegionFit(fullBB, W, H, circle, { fixedScale: 0.58 });
+        if (fit) {
+          return {
+            mode: 'transform',
+            tx: fit.tx,
+            ty: fit.ty,
+            scale: fit.scale,
+            pivotX: fullBB.cx,
+            pivotY: fullBB.cy,
+            mainBB,
+            fullBB,
+            shiftedBB: fit.bb,
+          };
+        }
+      }
+      if (id === 'dominoes') {
+        if (!rectHitsCircle(fullBB, circle.cx, circle.cy, circle.R)) {
+          return { mode: 'transform', tx: 0, ty: 0, scale: 1, pivotX: fullBB.cx, pivotY: fullBB.cy, mainBB, fullBB, shiftedBB: fullBB };
+        }
+        const pushV = solveDirectionalPush(fullBB, W, H, circle, { verticalOnly: true });
+        if (pushV) {
+          return { mode: 'transform', tx: 0, ty: pushV.ty, scale: 1, pivotX: fullBB.cx, pivotY: fullBB.cy, mainBB, fullBB, shiftedBB: pushV.bb };
+        }
+        const fitV = solveScaledRegionFit(fullBB, W, H, circle, { verticalOnly: true, minScale: 0.48 });
+        return {
+          mode: 'transform',
+          tx: 0,
+          ty: fitV ? fitV.ty : (circle.cy - circle.R - fullBB.y1),
+          scale: fitV ? fitV.scale : 0.6,
+          pivotX: fullBB.cx,
+          pivotY: fullBB.cy,
+          mainBB,
+          fullBB,
+          shiftedBB: fitV ? fitV.bb : fullBB,
+        };
+      }
+      if (id === 'contour') {
+        const regions = getSafeRegions(W, H, circle);
+        const leftReg = regions.find(r => r.name === 'left') || regions[0];
+        const rightReg = regions.find(r => r.name === 'right') || regions[1] || leftReg;
+        const fitText = solveScaledRegionFit(mainBB, W, H, circle, { minScale: 0.55 });
+        return {
+          mode: 'contourSplit',
+          leftReg,
+          rightReg,
+          auxTX: leftReg ? (leftReg.cx - W * 0.5) : -W * 0.28,
+          auxTY: leftReg ? (leftReg.cy - H * 0.5) : 0,
+          auxScale: 0.5,
+          tx: rightReg ? clampBoxToRegion(mainBB, rightReg).tx : (fitText ? fitText.tx : W * 0.25),
+          ty: rightReg ? clampBoxToRegion(mainBB, rightReg).ty : (fitText ? fitText.ty : 0),
+          scale: rightReg && mainBB.w <= rightReg.w ? 1 : (fitText ? fitText.scale : 0.72),
+          pivotX: mainBB.cx,
+          pivotY: mainBB.cy,
+          mainBB,
+          fullBB,
+        };
+      }
+      if (id === 'splitScreen') {
+        const fit = solveDirectionalPush(mainBB, W, H, circle, { preferDir: seedDir })
+          || solveScaledRegionFit(mainBB, W, H, circle, { minScale: 0.5 });
+        const regions = getSafeRegions(W, H, circle);
+        const reg = fit?.region || regions.find(r => r.name === fit?.name) || regions[0];
+        return {
+          mode: 'splitScreenClip',
+          tx: fit ? fit.tx : 0,
+          ty: fit ? fit.ty : (circle.cy - circle.R - mainBB.y1),
+          scale: fit?.scale || 1,
+          pivotX: mainBB.cx,
+          pivotY: mainBB.cy,
+          region: reg,
+          mainBB,
+          fullBB,
+        };
+      }
+      // headlineDeck, columnsBig, bulbs, numbered (cols):
+      // Measure coupled fullBB; if already clear, no shift; else push or fit fullBB
+      const boxToClear = (id === 'numbered' && P.variant !== 'cols') ? mainBB : fullBB;
+      if (!rectHitsCircle(boxToClear, circle.cx, circle.cy, circle.R)) {
+        return { mode: 'transform', tx: 0, ty: 0, scale: 1, pivotX: boxToClear.cx, pivotY: boxToClear.cy, mainBB, fullBB, shiftedBB: boxToClear };
+      }
+      const pushC = solveDirectionalPush(boxToClear, W, H, circle, { preferDir: seedDir });
+      if (pushC) {
+        return { mode: 'transform', tx: pushC.tx, ty: pushC.ty, scale: 1, pivotX: boxToClear.cx, pivotY: boxToClear.cy, mainBB, fullBB, shiftedBB: pushC.bb };
+      }
+      const fitC = solveScaledRegionFit(boxToClear, W, H, circle, { minScale: 0.42 });
+      return {
+        mode: 'transform',
+        tx: fitC ? fitC.tx : 0,
+        ty: fitC ? fitC.ty : (circle.cy - circle.R - boxToClear.y1),
+        scale: fitC ? fitC.scale : 0.55,
+        pivotX: boxToClear.cx,
+        pivotY: boxToClear.cy,
+        mainBB,
+        fullBB,
+        shiftedBB: fitC ? fitC.bb : boxToClear,
+      };
+    }
+
+    // Group 5, 6, 7, 8: Standard Shift (153 layouts + corner/edge + wave/knReflow)
+    // Prefer checking mainBB against the avoidance circle, and if fullBB isn't fullscreen,
+    // check whether fullBB also fits cleanly when shifted by the same vector.
+    const fullIsCompact = fullBB.w <= W * 0.78 && fullBB.h <= H * 0.78;
+    const checkBB = (fullIsCompact && fullBB.w <= mainBB.w * 1.45 && fullBB.h <= mainBB.h * 1.45) ? fullBB : mainBB;
+
+    if (!rectHitsCircle(checkBB, circle.cx, circle.cy, circle.R) && !rectHitsCircle(mainBB, circle.cx, circle.cy, circle.R)) {
+      return {
+        mode: 'transform',
+        tx: 0,
+        ty: 0,
+        scale: 1,
+        pivotX: mainBB.cx,
+        pivotY: mainBB.cy,
+        mainBB,
+        fullBB,
+        shiftedBB: mainBB,
+      };
+    }
+
+    // First try pure translation without any scaling
+    const push = solveDirectionalPush(checkBB, W, H, circle, { preferDir: seedDir })
+      || (checkBB !== mainBB ? solveDirectionalPush(mainBB, W, H, circle, { preferDir: seedDir }) : null);
+    if (push) {
+      return {
+        mode: 'transform',
+        tx: push.tx,
+        ty: push.ty,
+        scale: 1,
+        pivotX: mainBB.cx,
+        pivotY: mainBB.cy,
+        mainBB,
+        fullBB,
+        shiftedBB: shiftBB(mainBB, push.tx, push.ty),
+      };
+    }
+
+    // Fallback Policy B: uniform scale around primary bbox center + shift into best safe region
+    const fit = solveScaledRegionFit(mainBB, W, H, circle, { minScale: 0.42 });
+    return {
+      mode: 'transform',
+      tx: fit ? fit.tx : 0,
+      ty: fit ? fit.ty : (circle.cy - circle.R - mainBB.y1),
+      scale: fit ? fit.scale : 0.55,
+      pivotX: mainBB.cx,
+      pivotY: mainBB.cy,
+      mainBB,
+      fullBB,
+      shiftedBB: fit ? fit.bb : mainBB,
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // 6. Policy A Solver & Renderer (`center` and `vcols` split variant)
+  // ----------------------------------------------------------------------------
+  function wrapCharsToWidth(text, maxCharsPerLine) {
+    const rawLines = String(text || '').split('\n');
+    const out = [];
+    const cap = Math.max(1, Math.floor(maxCharsPerLine));
+    for (const line of rawLines) {
+      const chars = [...line];
+      if (chars.length <= cap) {
+        out.push(line);
+      } else {
+        for (let i = 0; i < chars.length; i += cap) {
+          out.push(chars.slice(i, i + cap).join(''));
+        }
+      }
+    }
+    return out.join('\n');
+  }
+
+  function solvePolicyA(baseEnv, cut, circle, P) {
+    const W = baseEnv.plan.W;
+    const H = baseEnv.plan.H;
+    const regions = getSafeRegions(W, H, circle);
+    if (!regions.length) return null;
+
+    if (cut.layout === 'center') {
+      const nativeText = J.splitLines ? J.splitLines(cut.text, W < H ? 5 : 11) : cut.text;
+      const size = Math.min(J.fitSize(nativeText, P.font, W * 0.84, H * 0.5, { sx: P.sx, track: P.track, lead: 1.2 }), H * 0.33);
+      const track = P.track || 0;
+      const charStep = size * (P.sx || 1) * (1 + track);
+
+      const nativeM = J.measure({
+        text: nativeText,
+        font: P.font,
+        size,
+        sx: P.sx,
+        track,
+        lead: 1.2,
+      });
+      const nativeCX = W * 0.5 + (P.ox || 0) * W;
+      const nativeCY = H * 0.5 + (P.oy || 0) * H;
+      const nativeBB = finalizeBB({
+        x0: nativeCX - nativeM.w * 0.5,
+        y0: nativeCY - nativeM.h * 0.5,
+        x1: nativeCX + nativeM.w * 0.5,
+        y1: nativeCY + nativeM.h * 0.5,
+      });
+
+      if (!rectHitsCircle(nativeBB, circle.cx, circle.cy, circle.R)) {
+        return {
+          mode: 'policyA_center',
+          wrappedText: nativeText,
+          size,
+          cx1: nativeCX,
+          cy1: nativeCY,
+          scale: 1,
+          bb: nativeBB,
+        };
+      }
+
+      // Try each safe region ordered by direction score, shape compatibility, and normalized displacement
+      const dirScores = getDirectionScores(W, H, circle);
+      let best = null;
+      let bestScore = -Infinity;
+      for (const reg of regions) {
+        const maxChars = Math.max(2, Math.floor((reg.w * 0.92) / Math.max(8, charStep)));
+        // Preserve explicit newlines and short lines per Section 03 Policy A
+        const wrappedText = cut.text.includes('\n')
+          ? wrapCharsToWidth(cut.text, maxChars)
+          : (J.splitLines ? J.splitLines(cut.text, maxChars) : wrapCharsToWidth(cut.text, maxChars));
+        const m = J.measure({
+          text: wrappedText,
+          font: P.font,
+          size,
+          sx: P.sx,
+          track,
+          lead: 1.2,
+        });
+        if (m.w <= reg.w * 0.98 && m.h <= reg.h * 0.98) {
+          const tempBB = finalizeBB({
+            x0: nativeCX - m.w * 0.5,
+            y0: nativeCY - m.h * 0.5,
+            x1: nativeCX + m.w * 0.5,
+            y1: nativeCY + m.h * 0.5,
+          });
+          const { cx1, cy1, tx, ty } = clampBoxToRegion(tempBB, reg);
+          const placedBB = finalizeBB({
+            x0: cx1 - m.w * 0.5,
+            y0: cy1 - m.h * 0.5,
+            x1: cx1 + m.w * 0.5,
+            y1: cy1 + m.h * 0.5,
+          });
+          if (!rectHitsCircle(placedBB, circle.cx, circle.cy, circle.R - 1)) {
+            const score = rankCandidate({ dir: reg.dir || reg.name, tx, ty }, nativeBB, W, H, dirScores, null, null);
+            if (score > bestScore) {
+              bestScore = score;
+              best = {
+                mode: 'policyA_center',
+                dir: reg.dir || reg.name,
+                wrappedText,
+                size,
+                cx1,
+                cy1,
+                scale: 1,
+                bb: placedBB,
+              };
+            }
+          }
+        }
+      }
+      if (best) return best;
+    }
+
+    if (cut.layout === 'vcols' && P.variant === 'split') {
+      const text = (cut.text || '').replace(/\s+/g, '');
+      const n = [...text].length;
+      const origPer = Math.max(2, Math.min((P.perCol || 4) + 1, Math.ceil(n / Math.ceil(n / 7))));
+      const origCols = Math.ceil(n / origPer);
+      const size = Math.min(H * 0.78 / (origPer * 1.03), W * 0.8 / (origCols * 1.4));
+      const dirScores = getDirectionScores(W, H, circle);
+      let bestV = null;
+      let bestVScore = -Infinity;
+
+      for (const reg of regions) {
+        // Section 04: In vertical writing Policy A, left/right regions use long columns & fewer columns;
+        // up/down regions use short columns & more columns.
+        const perCol = Math.max(2, Math.floor((reg.h * 0.88) / (size * 1.03)));
+        const chars = [...text];
+        const cols = [];
+        for (let i = 0; i < chars.length; i += perCol) cols.push(chars.slice(i, i + perCol).join(''));
+        const gap = size * 1.4;
+        const totalW = cols.length * gap;
+        const totalH = Math.min(chars.length, perCol) * size * 1.03;
+        if (totalW <= reg.w * 0.96 && totalH <= reg.h * 0.96) {
+          const placedBB = finalizeBB({
+            x0: reg.cx - totalW * 0.5,
+            y0: reg.cy - totalH * 0.5,
+            x1: reg.cx + totalW * 0.5,
+            y1: reg.cy + totalH * 0.5,
+          });
+          if (!rectHitsCircle(placedBB, circle.cx, circle.cy, circle.R - 1)) {
+            const tx = reg.cx - W * 0.5, ty = reg.cy - H * 0.5;
+            const origVBB = { w: origCols * gap, h: origPer * size * 1.03 };
+            const score = rankCandidate({ dir: reg.dir || reg.name, tx, ty }, origVBB, W, H, dirScores, null, null);
+            if (score > bestVScore) {
+              bestVScore = score;
+              bestV = {
+                mode: 'policyA_vcols',
+                dir: reg.dir || reg.name,
+                perCol,
+                size,
+                cx1: reg.cx,
+                cy1: reg.cy,
+                bb: placedBB,
+              };
+            }
+          }
+        }
+      }
+      if (bestV) return bestV;
+    }
+
+    return null;
+  }
+
+  function renderPolicyACenter(env, sol) {
+    const { W, H, cut, sc, pIn, pOut } = env;
+    const P = cut.circleNativeParams || cut.params || {};
+    const bb = J.mainDraw(env, {
+      text: sol.wrappedText,
+      font: P.font,
+      size: sol.size,
+      x: sol.cx1,
+      y: sol.cy1,
+      sx: P.sx,
+      track: P.track,
+      lead: 1.2,
+      color: P.accent ? sc.accent : sc.fg,
+    });
+    if (bb && P.sub && cut.lineText !== cut.text) {
+      env.draw({
+        text: cut.lineText,
+        font: env.st.fonts.body[0],
+        size: J.clamp(H * 0.026, 16, 34),
+        x: sol.cx1,
+        y: bb.y1 + H * 0.05,
+        track: 0.22,
+        color: sc.sub,
+        alpha: J.E.outCubic(pIn),
+        ghost: false,
+      });
+    }
+    if (bb && P.under) {
+      const e = J.E.outExpo(pIn * 1.2 - 0.2), o = J.E.inCubic(pOut);
+      if (e > 0 && o < 1) {
+        env.line(
+          [[J.lerp(bb.x0, bb.x1, o), bb.y1 + sol.size * 0.14], [J.lerp(bb.x0, bb.x1, e), bb.y1 + sol.size * 0.14]],
+          sc.accent,
+          Math.max(2, sol.size * 0.03),
+          1
+        );
+      }
+    }
+    return bb;
+  }
+
+  function renderPolicyAVcols(env, sol) {
+    const { cut, sc } = env;
+    const P = cut.circleNativeParams || cut.params || {};
+    const text = (cut.text || '').replace(/\s+/g, '');
+    const chars = [...text];
+    const perCol = sol.perCol;
+    const cols = [];
+    for (let i = 0; i < chars.length; i += perCol) cols.push(chars.slice(i, i + perCol).join(''));
+    const size = sol.size;
+    const colH = Math.min(chars.length, perCol) * size * 1.03;
+    const t2 = cols.join('\n');
+    return J.mainDraw(env, {
+      text: t2,
+      font: P.font,
+      size,
+      x: sol.cx1,
+      y: sol.cy1 - colH * 0.5,
+      vertical: true,
+      lead: 1.4,
+      align: 'left',
+      track: 0.03,
+      color: sc.fg,
+    });
+  }
+
+  // ----------------------------------------------------------------------------
+  // 7. Dual-Pass Renderer for Group 2 (`tiledAux`: 14 Layouts)
+  // ----------------------------------------------------------------------------
+  function applyRadialCirclePunch(ctx, stageTransform, circle, W, H) {
+    if (J.avoidanceMaskActive && J.avoidanceMaskActive(circle)) {
+      J.applyAvoidanceCircleMask(ctx, stageTransform, circle, W, H);
+      return;
+    }
+    ctx.save();
+    ctx.setTransform(
+      stageTransform.a, stageTransform.b,
+      stageTransform.c, stageTransform.d,
+      stageTransform.e, stageTransform.f
+    );
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.globalAlpha = 1;
+    const rInner = Math.max(1, circle.R);
+    const rOuter = Math.max(rInner + 1, circle.R + circle.feather);
+    const grad = ctx.createRadialGradient(circle.cx, circle.cy, rInner, circle.cx, circle.cy, rOuter);
+    grad.addColorStop(0, 'rgba(0,0,0,1)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(circle.cx, circle.cy, rOuter + 2, 0, J.TAU);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function renderTiledAuxLayout(renderer, env, sol, circle) {
+    const { ctx, cut, W, H } = env;
+    const id = cut.layout;
+    const L = J.LAYOUTS[id] || J.LAYOUTS.center;
+    const scale = env.scale || 1;
+    const stageMatrix = { a: scale, b: 0, c: 0, d: scale, e: 0, f: 0 };
+    const camMatrix = ctx.getTransform();
+    const cw = ctx.canvas.width;
+    const ch = ctx.canvas.height;
+
+    // 1. Auxiliary Pass (on main pass only so ghosts don't duplicate tiled backgrounds)
+    if (env.pass === 'main' && J.avoidMaskPhase !== 'main') {
+      const scratch = renderer.ensure(
+        renderer.avoidScratch || (renderer.avoidScratch = document.createElement('canvas')),
+        cw,
+        ch
+      );
+      const sx = scratch.getContext('2d');
+      sx.setTransform(1, 0, 0, 1, 0, 0);
+      sx.globalAlpha = 1;
+      sx.globalCompositeOperation = 'source-over';
+      sx.filter = 'none';
+      sx.clearRect(0, 0, cw, ch);
+      sx.setTransform(camMatrix.a, camMatrix.b, camMatrix.c, camMatrix.d, camMatrix.e, camMatrix.f);
+
+      const auxEnv = Object.assign({}, env, { ctx: sx });
+      // Suppress center knockout plate on aux pass for layouts that draw one immediately before J.mainDraw
+      if (id === 'tile' || id === 'crossBands' || id === 'justified' || id === 'edgeFrame' || id === 'tyBandHide') {
+        const origRect = auxEnv.rect;
+        auxEnv.rect = (x, y, w, h, c, a = 1, g = true) => {
+          // Skip background knockout plates that use sc.bg near stage center
+          if (c === env.sc.bg && w < W * 0.95 && h < H * 0.95) return;
+          origRect(x, y, w, h, c, a, g);
+        };
+      }
+
+      const origMainDraw = J.mainDraw;
+      let mainIdx = 0;
+      try {
+        J.mainDraw = (envArg, it) => {
+          const idx = mainIdx++;
+          const isAuxMain = (
+            (id === 'echo' && idx < 4) ||
+            (id === 'verticalRiver' && it.alpha !== undefined && it.alpha < 0.75) ||
+            (id === 'scroll' && it.alpha !== undefined && it.alpha < 0.85) ||
+            (id === 'hrWallScrawl' && it.alpha !== undefined && it.alpha < 0.85) ||
+            (id === 'tyCropGiant' && it.alpha !== undefined && it.alpha < 0.5)
+          );
+          if (isAuxMain) return origMainDraw(envArg, it);
+          return J.itemBox ? J.itemBox(it) : { x0: 0, y0: 0, x1: 0, y1: 0, cx: W * 0.5, cy: H * 0.5, boxes: [] };
+        };
+        L.render(auxEnv);
+      } catch (e) {
+        console.warn('tiledAux pass1', id, e);
+      } finally {
+        J.mainDraw = origMainDraw;
+      }
+
+      // Punch radial feather hole around (circle.cx, circle.cy)
+      applyRadialCirclePunch(sx, stageMatrix, circle, W, H);
+
+      // Composite auxiliary layer onto target ctx
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.globalAlpha = 1;
+      ctx.drawImage(scratch, 0, 0);
+      ctx.restore();
+    }
+
+    if (J.avoidMaskPhase === 'aux') {
+      return sol.shiftedBB || sol.mainBB;
+    }
+
+    // 2. Primary Hero Pass: shift (and scale if needed) into safe region
+    ctx.save();
+    ctx.translate(sol.tx || 0, sol.ty || 0);
+    if (sol.scale && sol.scale < 0.999) {
+      ctx.translate(sol.pivotX, sol.pivotY);
+      ctx.scale(sol.scale, sol.scale);
+      ctx.translate(-sol.pivotX, -sol.pivotY);
+    }
+
+    const realEnv = (env && env.__real) || env;
+    const primEnv = Object.assign({}, env, {
+      draw() {}, // suppress tiled env.draw items in primary pass
+      line() {},
+      circle() {},
+      arc() {},
+      poly() {},
+      blob() {},
+      rrect() {},
+      rect(x, y, w, h, c, a = 1, g = true) {
+        // Keep the immediate knockout plate behind the hero text for tile/crossBands/justified/edgeFrame/tyBandHide
+        if (
+          (id === 'tile' || id === 'crossBands' || id === 'justified' || id === 'edgeFrame' || id === 'tyBandHide') &&
+          c === env.sc.bg && w < W * 0.95 && h < H * 0.95
+        ) {
+          realEnv.rect(x, y, w, h, c, a, g);
+        }
+      },
+    });
+
+    const origMainDraw = J.mainDraw;
+    let mainIdx = 0;
+    let heroBB = null;
+    try {
+      J.mainDraw = (envArg, it) => {
+        const idx = mainIdx++;
+        const isAuxMain = (
+          (id === 'echo' && idx < 4) ||
+          (id === 'verticalRiver' && it.alpha !== undefined && it.alpha < 0.75) ||
+          (id === 'scroll' && it.alpha !== undefined && it.alpha < 0.85) ||
+          (id === 'hrWallScrawl' && it.alpha !== undefined && it.alpha < 0.85) ||
+          (id === 'tyCropGiant' && it.alpha !== undefined && it.alpha < 0.5)
+        );
+        if (isAuxMain) {
+          return J.itemBox ? J.itemBox(it) : { x0: 0, y0: 0, x1: 0, y1: 0, cx: W * 0.5, cy: H * 0.5, boxes: [] };
+        }
+        // Restore real env methods when inside hero mainDraw
+        heroBB = origMainDraw(realEnv, it);
+        return heroBB;
+      };
+      // Suppress direct ctx.fillRect / ctx.strokeRect calls produced by hrRedacted / tyBandHide during primary pass
+      const origFillRect = ctx.fillRect.bind(ctx);
+      const origStrokeRect = ctx.strokeRect.bind(ctx);
+      if (id === 'hrRedacted' || id === 'tyBandHide') {
+        ctx.fillRect = () => {};
+        ctx.strokeRect = () => {};
+      }
+      try {
+        L.render(primEnv);
+      } finally {
+        ctx.fillRect = origFillRect;
+        ctx.strokeRect = origStrokeRect;
+      }
+    } catch (e) {
+      console.warn('tiledAux pass2', id, e);
+    } finally {
+      J.mainDraw = origMainDraw;
+    }
+    ctx.restore();
+
+    return sol.shiftedBB || heroBB || sol.mainBB;
+  }
+
+  // ----------------------------------------------------------------------------
+  // 8. Main Entry Point: `J.drawCutWithCircleAvoidance(renderer, env)`
+  // ----------------------------------------------------------------------------
+  J.drawCutWithCircleAvoidance = (renderer, env) => {
+    const { cut, plan, W, H } = env;
+    const circle = J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut, env.t) : plan.lyricAvoidance;
+    if (!circle || !circle.enabled) return renderer.drawCutDirect(env);
+
+    // Temporarily swap in full-stage native layout params while rendering under circle avoidance
+    const savedParams = cut.params;
+    if (cut.circleNativeParams) cut.params = cut.circleNativeParams;
+
+    try {
+      const cacheKey = `${W}x${H}|${circle.cx},${circle.cy},${circle.r},${circle.pad},${circle.avoidEmphasis ? 1 : 0}|${cut.layout}|${cut.seed}|${cut.text}`;
+      if (!cut._circleSol || cut._circleSolKey !== cacheKey) {
+        cut._circleSol = solveCutAvoidance(env, cut, circle);
+        cut._circleSolKey = cacheKey;
+      }
+      const sol = cut._circleSol;
+
+      const runCut = targetEnv => {
+        const tctx = targetEnv.ctx;
+        const decor = cut.decor || [];
+        for (const d of decor) {
+          const D = J.DECOR[d.id];
+          if (D && D.layer === 'back') {
+            try { D.draw(targetEnv, null, d); } catch (e) { console.warn(e); }
+          }
+        }
+
+        let bb = null;
+        if (!cut.effectsOnly) {
+          const L = J.LAYOUTS[cut.layout] || J.LAYOUTS.center;
+
+          if (sol.mode === 'orbit') {
+            tctx.save();
+            tctx.translate(sol.tx || 0, sol.ty || 0);
+            bb = L.render(targetEnv);
+            tctx.restore();
+            if (bb) bb = shiftBB(bb, sol.tx || 0, sol.ty || 0);
+          } else if (sol.mode === 'policyA_center') {
+            bb = renderPolicyACenter(targetEnv, sol);
+          } else if (sol.mode === 'policyA_vcols') {
+            bb = renderPolicyAVcols(targetEnv, sol);
+          } else if (sol.mode === 'tiledAux') {
+            bb = renderTiledAuxLayout(renderer, targetEnv, sol, circle);
+          } else if (sol.mode === 'contourSplit') {
+            // 1) Contour rings in left safe region at 0.5x scale
+            if (targetEnv.pass === 'main' && J.avoidMaskPhase !== 'main') {
+              tctx.save();
+              tctx.translate(sol.auxTX, sol.auxTY);
+              tctx.translate(W * 0.5, H * 0.5);
+              tctx.scale(sol.auxScale, sol.auxScale);
+              tctx.translate(-W * 0.5, -H * 0.5);
+              const origMainDraw = J.mainDraw;
+              try {
+                J.mainDraw = () => ({ x0: 0, y0: 0, x1: 0, y1: 0, cx: W * 0.5, cy: H * 0.5, boxes: [] });
+                const ringEnv = Object.assign({}, targetEnv, { line() {} });
+                L.render(ringEnv);
+              } finally {
+                J.mainDraw = origMainDraw;
+              }
+              tctx.restore();
+            }
+            // 2) Main lyric in right safe region
+            tctx.save();
+            tctx.translate(sol.tx || 0, sol.ty || 0);
+            if (sol.scale && sol.scale < 0.999) {
+              tctx.translate(sol.pivotX, sol.pivotY);
+              tctx.scale(sol.scale, sol.scale);
+              tctx.translate(-sol.pivotX, -sol.pivotY);
+            }
+            const textEnv = Object.assign({}, targetEnv, {
+              draw(it) {
+                // Keep the small elevation label if it's not one of the giant contour rings
+                if (it && it.size < Math.min(W, H) * 0.04) targetEnv.draw(it);
+              },
+            });
+            bb = L.render(textEnv);
+            tctx.restore();
+            bb = sol.bb || bb;
+          } else if (sol.mode === 'splitScreenClip') {
+            tctx.save();
+            if (sol.region) {
+              tctx.beginPath();
+              tctx.rect(sol.region.x0, sol.region.y0, sol.region.w, sol.region.h);
+              tctx.clip();
+            }
+            tctx.translate(sol.tx || 0, sol.ty || 0);
+            if (sol.scale && sol.scale < 0.999) {
+              tctx.translate(sol.pivotX, sol.pivotY);
+              tctx.scale(sol.scale, sol.scale);
+              tctx.translate(-sol.pivotX, -sol.pivotY);
+            }
+            bb = L.render(targetEnv);
+            tctx.restore();
+            bb = sol.bb || bb;
+          } else {
+            // Standard transform (pure shift or Policy B/C shift+scale)
+            // Note: For layouts that draw a full-stage background fill (e.g. comic, diagonalSplit, noiseGrid),
+            // keep full-stage background fills unshifted so the stage stays covered.
+            tctx.save();
+            const tx = sol.tx || 0;
+            const ty = sol.ty || 0;
+            const sc = sol.scale || 1;
+            const px = sol.pivotX ?? W * 0.5;
+            const py = sol.pivotY ?? H * 0.5;
+
+            tctx.translate(tx, ty);
+            if (sc < 0.999) {
+              tctx.translate(px, py);
+              tctx.scale(sc, sc);
+              tctx.translate(-px, -py);
+            }
+
+            const origRect = targetEnv.rect;
+            const shiftedEnv = Object.assign({}, targetEnv, {
+              rect(x, y, w, h, c, a = 1, g = true) {
+                if (w >= W * 0.92 && h >= H * 0.92) {
+                  tctx.save();
+                  if (sc < 0.999) {
+                    tctx.translate(px, py);
+                    tctx.scale(1 / sc, 1 / sc);
+                    tctx.translate(-px, -py);
+                  }
+                  tctx.translate(-tx, -ty);
+                  origRect(x, y, w, h, c, a, g);
+                  tctx.restore();
+                  return;
+                }
+                origRect(x, y, w, h, c, a, g);
+              },
+            });
+
+            bb = L.render(shiftedEnv);
+            tctx.restore();
+            if (sol.shiftedBB) bb = sol.shiftedBB;
+            else if (bb) bb = scaleAndShiftBB(bb, px, py, sc, tx, ty);
+          }
+        }
+
+        const bbForFront = bb || sol.shiftedBB || sol.bb || sol.mainBB;
+        for (const d of decor) {
+          const D = J.DECOR[d.id];
+          if (D && D.layer === 'front') {
+            try { D.draw(targetEnv, bbForFront, d); } catch (e) { console.warn(e); }
+          }
+        }
+        return bbForFront;
+      };
+
+      if (J.avoidanceMaskActive && J.avoidanceMaskActive(circle)) {
+        return J.drawCutMaskedAux(renderer, env, runCut, circle);
+      }
+      return runCut(env);
+    } finally {
+      cut.params = savedParams;
+    }
+  };
+})();
+
 /* Dynamic background layouts (詳細 → 背景 → 背景をダイナミックに配置).
    A layout frames the background through a mask window (circle, half, band, frame…) on the STAGE and
    places the source to fill that window. Lyrics and the foreground then compose around it: each layout
@@ -6712,7 +8732,8 @@ J.autoLyricArea = (cut, plan, obstacles = [], settings = J.lyricEffectSettings({
   const rng = J.rng(J.h(J.placementSeed ? J.placementSeed(cut) : cut.seed, 947));
   delete cut.lyricPattern;
   // 「画面中央を避ける」 keeps the stage centre clear like an obstacle; *emphasis* may still use it.
-  const avoidCenter = settings.avoidCenter && !cut.emphasis && J.CENTER_AVOID;
+  const avoidEmphasis = !!(plan?.avoidance && J.circleAvoidanceForCut ? J.circleAvoidanceForCut(plan, cut)?.avoidEmphasis : plan?.lyricAvoidance?.avoidEmphasis);
+  const avoidCenter = settings.avoidCenter && (!cut.emphasis || avoidEmphasis) && J.CENTER_AVOID;
   const blockers = avoidCenter ? [...obstacles, J.CENTER_AVOID] : obstacles;
   if(cut.lyricSize != null){
     const size=Math.max(.04,cut.lyricSize/100),candidates=[];
@@ -6799,6 +8820,14 @@ J.finishLyricPlan = (project, plan, audio) => {
     }
   }
   const settings = J.lyricEffectSettings(project);
+  plan.lyricAvoidance = J.circleAvoidanceConfig ? J.circleAvoidanceConfig(project, plan) : null;
+  plan.avoidance = J.planAvoidance ? J.planAvoidance(project, plan, audio?.duration) : null;
+  plan.lockedLines = {};
+  if (project.overrides) {
+    for (const [k, v] of Object.entries(project.overrides)) {
+      if (v && v.lock && v.lockedAreas) plan.lockedLines[k] = true;
+    }
+  }
   // The foreground's composition guides lyric placement; avoidance additionally turns it into obstacles.
   const foreground = settings.autoPlacement && J.planMedia
     ? J.planMedia(project, plan, audio?.duration, 'foreground') : null;
@@ -6840,6 +8869,7 @@ J.finishLyricPlan = (project, plan, audio) => {
     // Some layouts choose columns or orientation during planning. Give those
     // choices the resolved area dimensions as well as using them at render time.
     if (cut.area && J.LAYOUTS[cut.layout]?.plan) {
+      if (cut.params && !cut.circleNativeParams) cut.circleNativeParams = JSON.parse(JSON.stringify(cut.params));
       cut.params = J.LAYOUTS[cut.layout].plan(J.rng(J.h(cut.seed, 318)), {
         text: cut.text, n: [...cut.text.replace(/\s/g, '')].length,
         W: plan.W * cut.area.w, H: plan.H * cut.area.h, dur: cut.dur,
@@ -8666,11 +10696,18 @@ J.applyCutDetails = (cut, details, plan, layer) => {
         text: details.text ?? cut.text, n: [...(details.text ?? cut.text).replace(/\s/g,'')].length,
         W: plan.W * (area?.w ?? 1), H: plan.H * (area?.h ?? 1), dur: cut.dur,
       }, cutStyle) : def.plan(rng, cutStyle)) : {};
+      if (key === 'layout' && def?.plan) {
+        cut.circleNativeParams = def.plan(J.rng(cut.seed), {
+          text: details.text ?? cut.text, n: [...(details.text ?? cut.text).replace(/\s/g,'')].length,
+          W: plan.W, H: plan.H, dur: cut.dur,
+        }, cutStyle);
+        if ((details.text ?? cut.text).includes('\n')) cut.circleNativeParams.sx = 1;
+      }
     }
   }
   for (const key of J.cutDetailKeys[layer === 'lyrics' ? 'lyrics' : 'media']) {
     if (Object.prototype.hasOwnProperty.call(details,key)) {
-      if (layer === 'lyrics' && key === 'params') cut.params = {...cut.params,...copy(details.params)};
+      if (layer === 'lyrics' && key === 'params') { cut.params = {...cut.params,...copy(details.params)}; if (cut.circleNativeParams) cut.circleNativeParams = {...cut.circleNativeParams,...copy(details.params)}; }
       else if(layer==='lyrics' && ['effectStyle','effectFx'].includes(key))continue;
       else cut[key] = copy(details[key]);
     }
@@ -8678,10 +10715,13 @@ J.applyCutDetails = (cut, details, plan, layer) => {
   if (layer === 'lyrics' && Array.isArray(details.fontParams)) {
     for (const entry of details.fontParams) {
       if (!Array.isArray(entry.path) || !J.FONTS[entry.font] || entry.path.some(k=>['__proto__','constructor','prototype'].includes(k))) continue;
-      let parent=cut.params;
-      for (const key of entry.path.slice(0,-1)) parent=parent?.[key];
-      const key=entry.path.at(-1);
-      if (parent && Object.hasOwn(parent,key) && typeof parent[key]==='string') parent[key]=entry.font;
+      for (const root of [cut.params, cut.circleNativeParams]) {
+        if (!root) continue;
+        let parent=root;
+        for (const key of entry.path.slice(0,-1)) parent=parent?.[key];
+        const key=entry.path.at(-1);
+        if (parent && Object.hasOwn(parent,key) && typeof parent[key]==='string') parent[key]=entry.font;
+      }
     }
   }
   // Imported favorites and older projects can contain empty/partial parameter
@@ -10091,10 +12131,18 @@ class Renderer {
     const energy = plan.energy ? plan.energy[Math.min(plan.energy.length - 1, Math.max(0, Math.floor(t * plan.energyRate)))] : null;
     // ---------- background graphic (per line) ----------
     if (hidden.lyrics!==false && hidden.media!==false && (opt.copyLyrics || plan.media?.applyLyricBackground !== false && !opt.transparent) && !key && mainCut && mainCut.bg && mainCut.bg !== 'none' && J.BG[mainCut.bg]) {
-      const env = this.makeEnv(ctx, plan, mainCut, sc, { pass: 'main', t: tq, lt: tq - mainCut.start, ltb: tq - mainCut.start, step, scale, allowFilter, energy, beat: beatInfo, bgOnly: true });
-      ctx.save();
-      try { J.BG[mainCut.bg].draw(env, mainCut.bgP || {}); } catch (e) { console.warn('bg', mainCut.bg, e); }
-      ctx.restore();
+      const avoidCircle = J.activeAvoidanceAtTime ? J.activeAvoidanceAtTime(plan, tq) : null;
+      const drawBg = targetCtx => {
+        const env = this.makeEnv(targetCtx, plan, mainCut, sc, { pass: 'main', t: tq, lt: tq - mainCut.start, ltb: tq - mainCut.start, step, scale, allowFilter, energy, beat: beatInfo, bgOnly: true });
+        targetCtx.save();
+        try { J.BG[mainCut.bg].draw(env, mainCut.bgP || {}); } catch (e) { console.warn('bg', mainCut.bg, e); }
+        targetCtx.restore();
+      };
+      if (J.avoidanceMaskActive && J.avoidanceMaskActive(avoidCircle) && J.drawWithAvoidanceMask) {
+        J.drawWithAvoidanceMask(this, ctx, avoidCircle, W, H, drawBg, { a: scale, b: 0, c: 0, d: scale, e: 0, f: 0 }, 'avoidBgScratch');
+      } else {
+        drawBg(ctx);
+      }
       ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none';
     }
     const shx = J.rs(step, 71) * shake * 16 * u, shy = J.rs(step, 72) * shake * 11 * u;
@@ -10152,7 +12200,8 @@ class Renderer {
         }
         const blend = P.pass !== 'main' && J.lum(csc.bg) > .55 ? 'multiply' : 'source-over';
         X.save();
-        const area = cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
+        const useCircleAvoid = J.usesCircleAvoidance && J.usesCircleAvoidance(plan, cut, tp);
+        const area = useCircleAvoid ? null : cut.area, areaX = area ? area.x * W : 0, areaY = area ? area.y * H : 0;
         const contentW = env.W, contentH = env.H;
         if (area) {
           X.translate(areaX + contentW / 2, areaY + contentH / 2);
@@ -10244,7 +12293,8 @@ class Renderer {
   }
 
   makeEnv(ctx, plan, cut, sc, o) {
-    const area = cut && cut.area && !o.bgOnly && !o.fullFrame ? cut.area : null;
+    const useCircleAvoid = cut && J.usesCircleAvoidance && J.usesCircleAvoidance(plan, cut, o?.t);
+    const area = cut && cut.area && !useCircleAvoid && !o.bgOnly && !o.fullFrame ? cut.area : null;
     const W = area ? plan.W * area.w : plan.W, H = area ? plan.H * area.h : plan.H;
     const env = Object.assign({ ctx, W, H, sc: cut?.palette || sc, st: {...(cut?.effectStyle || plan.style),...(cut?.fonts ? {fonts:cut.fonts} : {})}, fx: cut?.effectFx || plan.fx, fps: plan.fps, cut, plan }, o);
     if (cut && cut.motionScale < 1) env.fx = Object.assign({}, env.fx, { motion: env.fx.motion * cut.motionScale });
@@ -10323,13 +12373,27 @@ class Renderer {
   }
 
   drawCut(env) {
+    if (env.cut && J.usesCircleAvoidance && J.usesCircleAvoidance(env.plan, env.cut, env.t) && J.drawCutWithCircleAvoidance) {
+      return J.drawCutWithCircleAvoidance(this, env);
+    }
+    return this.drawCutDirect(env);
+  }
+
+  drawCutDirect(env) {
     const cut = env.cut, L = J.LAYOUTS[cut.layout] || J.LAYOUTS.center;
-    const decor = cut.decor || [];
-    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { D.draw(env, null, d); } catch (e) { console.warn(e); } }
-    let bb = null;
-    try { if (!cut.effectsOnly) bb = L.render(env); } catch (e) { console.warn('layout', cut.layout, e); }
-    for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { D.draw(env, bb, d); } catch (e) { console.warn(e); } }
-    return bb;
+    const runDirect = targetEnv => {
+      const decor = cut.decor || [];
+      for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'back') try { D.draw(targetEnv, null, d); } catch (e) { console.warn(e); } }
+      let bb = null;
+      try { if (!cut.effectsOnly) bb = L.render(targetEnv); } catch (e) { console.warn('layout', cut.layout, e); }
+      for (const d of decor) { const D = J.DECOR[d.id]; if (D && D.layer === 'front') try { D.draw(targetEnv, bb, d); } catch (e) { console.warn(e); } }
+      return bb;
+    };
+    const circle = cut && J.avoidMaskPhase == null && J.activeAvoidanceAtTime ? J.activeAvoidanceAtTime(env.plan, env.t) : null;
+    if (J.avoidanceMaskActive && J.avoidanceMaskActive(circle) && J.drawCutMaskedAux) {
+      return J.drawCutMaskedAux(this, env, runDirect, circle);
+    }
+    return runDirect(env);
   }
 
   post(ctx, plan, t, tq, step, sc, scale, opt, allowFilter) {
@@ -10906,12 +12970,14 @@ J.projectSettings = project => {
   const result = {};
   for (const key of settingKeys) if (project[key] !== undefined) result[key] = clone(project[key]);
   for (const layer of ['media','foreground']) result[layer] = { effects: clone(J.mediaEffectSettings(project,layer)), opacity: project[layer]?.opacity ?? 100, blend: project[layer]?.blend ?? 'normal' };
+  result.avoidance = { avoidEmphasis: !!project.avoidance?.avoidEmphasis, ...J.normalizeAvoidanceMask(project.avoidance) };
   return result;
 };
 J.settingsProject = project => {
   const settings = J.projectSettings(project), result = Object.assign(J.defaultProject(),settings);
   result.lyrics = ''; result.title = ''; result.artist = '';
   for (const layer of ['media','foreground']) result[layer] = Object.assign(J.normalizeMedia(null),settings[layer]);
+  result.avoidance = Object.assign(J.normalizeAvoidance(null), settings.avoidance);
   return result;
 };
 J.applyProjectSettings = (current, source) => {
@@ -10925,6 +12991,7 @@ J.applyProjectSettings = (current, source) => {
   });
   for (const key of settingKeys) if (settings[key] !== undefined) result[key] = settings[key];
   for (const layer of ['media','foreground']) Object.assign(result[layer],settings[layer]);
+  if (settings.avoidance) Object.assign(result.avoidance ||= J.normalizeAvoidance(null), settings.avoidance);
   // Retained cuts still need their custom component definitions.
   result.customEffects=clone(current.customEffects||[]);J.importCustomEffects(result,settings.customEffects||[]);
   // Existing cuts may still refer to fonts absent from the preset.
@@ -42641,7 +44708,7 @@ const ICON = {
   frontmost: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 2h9v8M8 4l2 2 2-2"/></svg>',
 };
 
-const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
+const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], avoidanceLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
 
 /* WebAudio player (works inside sandboxed pages where blob media may be blocked) */
 const AP = {
@@ -42754,6 +44821,8 @@ function mergeProject(p) {
   o.customEffects=J.combineCustomEffects(o.customEffects,...o.effectFavorites.map(f=>f.payload.components||[]));J.activateCustomEffects(o);
   o.favoriteSequence = Math.max(o.effectFavorites.length,Math.floor(+o.favoriteSequence)||0);
   o.timelineLinks = Array.isArray(p && p.timelineLinks) ? p.timelineLinks : [];
+  o.layerVisibility = Object.assign({avoidance:true,foreground:true,lyrics:true,media:true}, (p && p.layerVisibility) || {});
+  o.avoidance = J.normalizeAvoidance(p && p.avoidance);
   o.media = J.normalizeMedia(p && p.media);
   o.foreground = J.normalizeMedia(p && p.foreground);
   for (const layer of ['media', 'foreground']) o[layer].effects = J.mediaEffectSettings(o, layer);
@@ -42881,21 +44950,22 @@ function langNote() {
 // The full plan (lyrics + media layers) for a project; also used by the cut details preview.
 function composePlan(project) {
   const plan = J.plan(project, audioLike());
+  plan.avoidance = J.planAvoidance(project, plan, S.audio && S.audio.duration);
   plan.media = J.planMedia(project, plan, S.audio && S.audio.duration);
   plan.foreground = J.planMedia(project, plan, S.audio && S.audio.duration, 'foreground');
-  plan.duration = Math.max(plan.media.duration, plan.foreground.duration);
+  plan.duration = Math.max(plan.media.duration, plan.foreground.duration, plan.avoidance.duration);
   // An explicit output length also caps existing cuts extending past the song.
   if(Number.isFinite(+project.durationOverride)&&+project.durationOverride>0){
     plan.duration=+project.durationOverride;
     plan.cuts=plan.cuts.filter(c=>c.start<plan.duration);
     for(const cut of plan.cuts){cut.end=Math.min(cut.end,plan.duration);cut.dur=cut.end-cut.start;}
     plan.events=plan.events.filter(event=>event.t<plan.duration);
-    for(const layer of ['media','foreground']){
+    for(const layer of ['media','foreground','avoidance']){
       plan[layer].cuts=plan[layer].cuts.filter(c=>c.start<plan.duration);
       for(const cut of plan[layer].cuts)cut.end=Math.min(cut.end,plan.duration);
     }
   }
-  for (const layer of ['media', 'foreground']) {
+  for (const layer of ['media', 'foreground', 'avoidance']) {
     plan[layer].duration = plan.duration;
     const last = plan[layer].cuts.at(-1); if (last && !last.manualEnd && last.videoDuration == null) last.end = plan.duration;
   }
@@ -42910,10 +44980,10 @@ function replan() {
   if (S.t > S.plan.duration) S.t = Math.max(0, S.plan.duration - 1e-3);
   const temporarilyHidden = ref => S.project.durationOverride != null && (
     /^l:\d+:\d+$/.test(ref) && +ref.split(':')[1] < S.plan.lines.length ||
-    /^[fm]:\d+$/.test(ref) && +ref.slice(2) < S.project[ref[0]==='f'?'foreground':'media'].cutCount);
+    /^[fma]:\d+$/.test(ref) && +ref.slice(2) < S.project[ref[0]==='f'?'foreground':ref[0]==='a'?'avoidance':'media'].cutCount);
   S.project.timelineLinks = S.project.timelineLinks.filter(link => link && link.a !== link.b && (boundaryCut(link.a) || temporarilyHidden(link.a)) && (boundaryCut(link.b) || temporarilyHidden(link.b)));
   lastCutIdx = null;
-  renderLines(); renderMediaList(); renderMediaLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
+  renderLines(); renderMediaList(); renderMediaLines(); renderAvoidanceLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
   S.need = true; autosave(); ensureFonts(); drawSwatch(); showNow();
   clearTimeout(warmTimer); warmTimer = setTimeout(warm, 450);
 }
@@ -43004,11 +45074,25 @@ function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
   const previewCuts = S.areaEdit && S.areaEdit.kind === 'lyric' && S.areaEdit.draft ? S.plan.cuts.filter(cut => cut.line === S.areaEdit.index) : [];
   const previousAreas = previewCuts.map(cut => cut.area);
   previewCuts.forEach(cut => { cut.area = { ...S.areaEdit.draft, angle: S.areaEdit.angle }; });
-  const edit = S.areaEdit, mediaCut = edit && edit.kind !== 'lyric' && S.plan[edit.kind].cuts[edit.index];
+  const edit = S.areaEdit;
+  const mediaCut = edit && (edit.kind === 'media' || edit.kind === 'foreground') && S.plan[edit.kind].cuts[edit.index];
   const previousMedia = mediaCut && { placement: mediaCut.placement, zoom: mediaCut.zoom, hold: mediaCut.hold, enter: mediaCut.enter, exit: mediaCut.exit, trans: mediaCut.trans };
   if (mediaCut) Object.assign(mediaCut, { placement: { cx: edit.draft.x + edit.draft.w / 2, cy: edit.draft.y + edit.draft.h / 2, w: edit.draft.w, h: edit.draft.h, lockAspect: edit.lockAspect, angle: edit.angle }, zoom: 100, hold: 'still', enter: 'cut', exit: 'cut', trans: undefined });
-  try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric', noForeground: !!edit && edit.kind === 'media' }); }
-  finally { previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; }); if (mediaCut) Object.assign(mediaCut, previousMedia); }
+  const avoidanceCut = edit && edit.kind === 'avoidance' && S.plan.avoidance?.cuts[edit.index];
+  const previousAvoidance = avoidanceCut && { cx: avoidanceCut.cx, cy: avoidanceCut.cy, r: avoidanceCut.r, enabled: avoidanceCut.enabled, maskAvoidance: avoidanceCut.maskAvoidance, maskRadiusOffset: avoidanceCut.maskRadiusOffset, maskFeather: avoidanceCut.maskFeather, maskCurve: avoidanceCut.maskCurve, planEnabled: S.plan.lyricAvoidance?.enabled };
+  if (avoidanceCut && edit.draft) {
+    Object.assign(avoidanceCut, draftToAvoidanceCircle(edit.draft), { enabled: true, maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: edit.maskRadiusOffset ?? 0, maskFeather: edit.maskFeather ?? 60, maskCurve: edit.maskCurve || 'smooth' });
+    if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = true;
+  }
+  try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance', noForeground: !!edit && edit.kind === 'media' }); }
+  finally {
+    previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; });
+    if (mediaCut) Object.assign(mediaCut, previousMedia);
+    if (avoidanceCut && previousAvoidance) {
+      Object.assign(avoidanceCut, { cx: previousAvoidance.cx, cy: previousAvoidance.cy, r: previousAvoidance.r, enabled: previousAvoidance.enabled, maskAvoidance: previousAvoidance.maskAvoidance, maskRadiusOffset: previousAvoidance.maskRadiusOffset, maskFeather: previousAvoidance.maskFeather, maskCurve: previousAvoidance.maskCurve });
+      if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = previousAvoidance.planEnabled;
+    }
+  }
 }
 function draw() {
   const c = $('view'), ctx = c.getContext('2d');
@@ -43100,7 +45184,7 @@ function updateTimeUI() {
 function minimumProjectDuration() {
   let minimum = 0.1;
   for (const line of S.plan.lines) minimum = Math.max(minimum, line.start + 0.04);
-  for (const layer of ['media', 'foreground']) {
+  for (const layer of ['media', 'foreground', 'avoidance']) {
     minimum = Math.max(minimum, S.plan[layer].cuts.length * 0.04);
     for (const [index, time] of Object.entries(S.project[layer].timing.lineTimes)) {
       if (+index < S.plan[layer].cuts.length && Number.isFinite(+time)) minimum = Math.max(minimum, +time + (S.plan[layer].cuts.length - +index) * 0.04);
@@ -43209,7 +45293,7 @@ function timelineLanes(layer) {
   }
   return { lanes, count: Math.max(1, ends.length) };
 }
-function timelineCanvas(layer) { return $(layer === 'lyrics' ? 'timeline' : layer === 'media' ? 'mediaTimeline' : 'foregroundTimeline'); }
+function timelineCanvas(layer) { return $(layer === 'lyrics' ? 'timeline' : layer === 'media' ? 'mediaTimeline' : layer === 'avoidance' ? 'avoidanceTimeline' : 'foregroundTimeline'); }
 function fitTimelineHeight(canvas, count, step, free = 2) {
   const extra = Math.max(0, count - free) * step;
   if (+canvas.dataset.extra === extra) return;
@@ -43278,13 +45362,14 @@ function drawTimeline() {
   const px = X(S.t);
   x.fillStyle = '#f5a50c'; x.fillRect(Math.round(px) - dpr, 0, 2 * dpr, h);
   drawTimelineDragGuide(x, w, h, dpr, 'lyrics');
+  drawAvoidanceTimeline();
   drawMediaTimeline();
   drawMediaTimeline('foreground');
 }
 function extendTapPreview(t) {
   const end = Math.max(S.plan.duration, t + 10);
   S.plan.duration = end;
-  for (const layer of ['media', 'foreground']) {
+  for (const layer of ['media', 'foreground', 'avoidance']) {
     S.plan[layer].duration = end;
     const last = S.plan[layer].cuts.at(-1); if (last && last.videoDuration == null) last.end = end;
   }
@@ -43293,6 +45378,38 @@ function extendTapPreview(t) {
 function drawTimelineEndHandle(x, px, y0, height, dpr) {
   x.fillStyle = '#ece7e1'; x.fillRect(px - 2 * dpr, y0, 2 * dpr, height);
   x.beginPath(); x.moveTo(px - 2 * dpr, y0); x.lineTo(px - 8 * dpr, y0); x.lineTo(px - 2 * dpr, y0 + 6 * dpr); x.closePath(); x.fill();
+}
+function drawAvoidanceTimeline() {
+  const c = $('avoidanceTimeline'); if (!c || !S.plan?.avoidance) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const lanesInfo = timelineLanes('avoidance'), overlapping = lanesInfo.count > 1;
+  fitTimelineHeight(c, lanesInfo.count, 24, 1);
+  const w = Math.max(10, Math.round(c.clientWidth * dpr)), h = Math.max(10, Math.round(c.clientHeight * dpr));
+  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+  const x = c.getContext('2d'), D = Math.max(0.001, S.plan.duration), X = t => t / D * w;
+  x.fillStyle = '#131316'; x.fillRect(0, 0, w, h);
+  x.fillStyle = '#8e8a94'; x.font = `${10 * dpr}px monospace`; x.fillText(J.mediaLabel('回避', 'Avoidance'), 6 * dpr, 12 * dpr);
+  const globalOn = !!(S.plan.lyricAvoidance?.enabled && S.plan.layerVisibility?.avoidance !== false);
+  const mono = getComputedStyle(document.body).getPropertyValue('--mono') || 'monospace';
+  for (const cut of S.plan.avoidance.cuts) {
+    const a = X(cut.start), b = X(cut.end), lane = laneBox('avoidance', lanesInfo.lanes.get(cut), lanesInfo.count, c);
+    const y0 = lane.top * dpr, lh = Math.max(2, lane.height * dpr - (overlapping ? 1 : 0));
+    const active = globalOn && cut.enabled !== false;
+    const rgb = active ? '255,111,156' : '142,138,148';
+    x.fillStyle = `rgba(${rgb},${overlapping ? 0.2 : 0.28})`; x.fillRect(a, y0, Math.max(1, b - a - 1), lh);
+    if (overlapping) { x.strokeStyle = `rgba(${rgb},0.55)`; x.lineWidth = dpr; x.strokeRect(a + .5, y0 + .5, Math.max(1, b - a - 1), lh - 1); }
+    x.fillStyle = `rgba(${rgb},${overlapping ? 0.8 : 1})`; x.fillRect(a, y0, 2 * dpr, lh);
+    x.fillRect(a - 2 * dpr, 14 * dpr, 6 * dpr, 6 * dpr);
+    if (cut.manualEnd) drawTimelineEndHandle(x, b, y0, lh, dpr);
+    if (b - a > 42 * dpr) {
+      x.fillStyle = active ? 'rgba(236,231,225,0.88)' : 'rgba(180,175,186,0.7)'; x.font = `${10 * dpr}px ${mono}`;
+      x.save(); x.beginPath(); x.rect(a, y0, b - a - 3, lh); x.clip();
+      const label = (cut.enabled === false ? J.mediaLabel('[OFF] ', '[OFF] ') : '') + cut.name + (cut.avoidEmphasis ? J.mediaLabel(' [強調回避]', ' [Emphasis]') : '') + (cut.maskAvoidance ? J.mediaLabel(' [Mask]', ' [Mask]') : '');
+      x.fillText(label, a + 26 * dpr, y0 + Math.min(14 * dpr, lh - 3 * dpr)); x.restore();
+    }
+  }
+  x.fillStyle = '#f5a50c'; x.fillRect(Math.round(X(S.t)) - dpr, 0, 2 * dpr, h);
+  drawTimelineDragGuide(x, w, h, dpr, 'avoidance');
 }
 function drawMediaTimeline(layer = 'media') {
   const c = $(layer === 'media' ? 'mediaTimeline' : 'foregroundTimeline'), dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -43329,11 +45446,12 @@ function timelineSeek(ev) {
   seek((ev.clientX - r.left) / r.width * S.plan.duration);
 }
 function boundaryRef(layer, cut) {
+  if (layer === 'avoidance') return `a:${cut.index}`;
   if (layer === 'foreground') return `f:${cut.index}`;
   if (layer === 'media') return `m:${cut.index}`;
   return `l:${cut.line}:${cut.part}`;
 }
-function boundaryLayer(ref) { return ref[0] === 'f' ? 'foreground' : ref[0] === 'm' ? 'media' : 'lyrics'; }
+function boundaryLayer(ref) { return ref[0] === 'a' ? 'avoidance' : ref[0] === 'f' ? 'foreground' : ref[0] === 'm' ? 'media' : 'lyrics'; }
 function boundaryCut(ref) {
   if (typeof ref !== 'string' || !S.plan) return null;
   const layer = boundaryLayer(ref);
@@ -43353,7 +45471,7 @@ function linkedRefs(ref) {
 }
 function timelineMarkers() {
   const stack = $('timelineStack'), D = Math.max(0.001, S.plan.duration), markers = [];
-  for (const [layer, id] of [['foreground', 'foregroundTimeline'], ['lyrics', 'timeline'], ['media', 'mediaTimeline']]) {
+  for (const [layer, id] of [['avoidance', 'avoidanceTimeline'], ['foreground', 'foregroundTimeline'], ['lyrics', 'timeline'], ['media', 'mediaTimeline']]) {
     const canvas = $(id), cuts = layer === 'lyrics' ? S.plan.cuts.filter(c => c.line >= 0) : S.plan[layer].cuts;
     const y = canvas.offsetTop + 11;
     for (const cut of cuts) markers.push({ ref: boundaryRef(layer, cut), layer, x: canvas.offsetLeft + cut.start / D * canvas.clientWidth, y });
@@ -44341,9 +46459,14 @@ function drawItemFrames() {
   if(overlay.hidden) { itemFrameSignature=''; return; }
   Object.assign(overlay.style,{left:`${view.left-host.left}px`,top:`${view.top-host.top}px`,width:`${view.width}px`,height:`${view.height}px`});
   const items=[];
-  for(const layer of ['media','lyrics','foreground']) {
+  for(const layer of ['media','lyrics','foreground','avoidance']) {
     if(S.plan.layerVisibility?.[layer]===false)continue;
-    if(layer==='lyrics') {
+    if(layer==='avoidance') {
+      if(!S.plan.lyricAvoidance?.enabled && S.areaEdit?.kind!=='avoidance' && S.sourceTab!=='avoidance')continue;
+      const cut=J.avoidanceAt(S.plan,S.t);
+      if(!cut || cut.enabled===false && S.areaEdit?.kind!=='avoidance' && S.sourceTab!=='avoidance')continue;
+      items.push({layer,cut,index:cut.index,area:{...avoidanceCircleToDraft(cut),angle:0}});
+    } else if(layer==='lyrics') {
       for(const cut of J.lyricCutsAt(S.plan,S.t)) if(cut.line>=0) items.push({layer,cut,index:cut.line,area:cut.area||{x:0,y:0,w:1,h:1}});
     } else {
       const cut=J.mediaAt(S.plan,S.t,layer),dimensions=J.mediaSourceDimensions(S.plan,cut,S.t);
@@ -44356,18 +46479,18 @@ function drawItemFrames() {
     }
   }
   const L=J.mediaLabel,labels={copy:L('Effectsをお気に入りにNew','Add effects to favorites'),paste:L('お気に入りからEffectsを適用','Apply favorite effects'),dice:L('再抽選','Randomize'),disableReroll:L('このEffectsをOFFにして再抽選','Disable current effects and randomize'),lock:L('ロック','Lock'),area:L('表示範囲','Display area'),details:L('詳細編集','Edit details'),remove:L('削除','Delete'),frontmost:L('Show above foreground','Frontmost')};
-  const layerNames={foreground:L('Foreground','Foreground'),lyrics:L('歌詞','Lyrics'),media:L('Background','Background')};
+  const layerNames={avoidance:L('回避','Avoidance'),foreground:L('Foreground','Foreground'),lyrics:L('歌詞','Lyrics'),media:L('Background','Background')};
   overlay.classList.toggle('selecting',!!S.areaEdit);
   const occupied=[];
   const html=items.map(({layer,cut,index,area})=>{
     const selected=S.areaEdit && (S.areaEdit.kind==='lyric'?'lyrics':S.areaEdit.kind)===layer && S.areaEdit.index===index;
     if(S.areaEdit&&!selected)return '';
     if(selected)area={...S.areaEdit.draft,angle:S.areaEdit.angle};
-    const locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
+    const locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:layer==='avoidance'?!!S.project.avoidance?.cutOverrides?.[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
     const cx=(area.x+area.w/2)*view.width,cy=(area.y+area.h/2)*view.height,a=(area.angle||0)*Math.PI/180;
     const points=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,y])=>{x*=area.w*view.width/2;y*=area.h*view.height/2;return [cx+x*Math.cos(a)-y*Math.sin(a),cy+x*Math.sin(a)+y*Math.cos(a)];});
-    const actions=S.areaEdit&&!selected?[]:['lock','dice','disableReroll','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'details'];
-    const frameName=layer==='lyrics'?(String(cut.text||'').trim()||L('空の歌詞','Empty lyrics')):(cut.name||L('No image','No image'));
+    const actions=S.areaEdit&&!selected?[]:layer==='avoidance'?['lock','area','remove']:['lock','dice','disableReroll','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'details'];
+    const frameName=layer==='avoidance'?(L('回避円 ','Avoidance ')+cut.name):layer==='lyrics'?(String(cut.text||'').trim()||L('空の歌詞','Empty lyrics')):(cut.name||L('No image','No image'));
     const labelWidth=Math.min(160,Math.max(36,[...frameName].length*10+8));
     const width=Math.min(view.width,actions.length*25+labelWidth),x=J.clamp(points[0][0],0,Math.max(0,view.width-width));
     let y=J.clamp(points[0][1],0,Math.max(0,view.height-26));
@@ -44389,7 +46512,8 @@ function drawItemFrames() {
       const active=action==='lock'?locked:action==='frontmost'?!!cut.frontmost:false;
       return `<button type="button" class="item-frame-action ${active?'active':''}" data-action="${action}" data-layer="${layer}" data-index="${index}" data-part="${cut.part??0}" title="${labels[action]}" aria-label="${layerNames[layer]} ${labels[action]}" ${['lock','frontmost'].includes(action)?`aria-pressed="${active}"`:''} ${S.playing?'disabled':''}>${ICON[action]}</button>`;
     }).join('');
-    return `<svg class="item-frame-outline ${layer} ${selected?'selected':''}" data-select-layer="${layer}" data-select-index="${index}" width="100%" height="100%" aria-hidden="true"><polygon points="${points.map(p=>p.join(',')).join(' ')}"/></svg><div class="item-frame-tools ${layer}" style="left:${x}px;top:${y}px;width:${width}px;max-width:${view.width}px" data-layer="${layer}"><button type="button" class="item-frame-name" data-select-layer="${layer}" data-select-index="${index}" title="${escapeHtml(frameName)}" ${S.playing?'disabled':''}>${escapeHtml(frameName)}</button>${controls}</div>`;
+    const shapeSvg=layer==='avoidance'?`<ellipse cx="${cx}" cy="${cy}" rx="${area.w*view.width/2}" ry="${area.h*view.height/2}"/>`:`<polygon points="${points.map(p=>p.join(',')).join(' ')}"/>`;
+    return `<svg class="item-frame-outline ${layer} ${selected?'selected':''}" data-select-layer="${layer}" data-select-index="${index}" width="100%" height="100%" aria-hidden="true">${shapeSvg}</svg><div class="item-frame-tools ${layer}" style="left:${x}px;top:${y}px;width:${width}px;max-width:${view.width}px" data-layer="${layer}"><button type="button" class="item-frame-name" data-select-layer="${layer}" data-select-index="${index}" title="${escapeHtml(frameName)}" ${S.playing?'disabled':''}>${escapeHtml(frameName)}</button>${controls}</div>`;
   }).join('');
   if(itemFrameSignature!==html){overlay.innerHTML=html;itemFrameSignature=html;}
 }
@@ -44464,14 +46588,15 @@ function openTimelineCutMenu(trigger) {
   const layer=trigger.dataset.layer,index=+trigger.dataset.index,part=+trigger.dataset.part||0;
   const cut=layer==='lyrics'?S.plan.cuts.find(c=>c.line===index&&c.part===part):S.plan[layer].cuts[index];
   if(!cut)return;
-  const L=J.mediaLabel,locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
-  const labels={dice:L('再抽選','Randomize'),disableReroll:L('このEffectsをOFFにして再抽選','Disable current effects and randomize'),lock:L(locked?'ロック解除':'ロック',locked?'Unlock':'Lock'),area:L('表示範囲','Display area'),details:L('詳細編集','Edit details'),copy:L('Effectsをお気に入りにNew','Add effects to favorites'),paste:L('お気に入りからEffectsを適用','Apply favorite effects'),remove:L('削除','Delete'),frontmost:L('Show above foreground','Frontmost')};
-  const actions=['dice','disableReroll','lock',...(layer==='lyrics'||J.mediaSourceAvailable(cut)?['area']:[]),'details','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'remove'];
+  const L=J.mediaLabel,locked=layer==='lyrics'?!!S.project.overrides[index]?.lock:layer==='avoidance'?!!S.project.avoidance?.cutOverrides?.[index]?.lock:!!mediaCutOptions(layer,index)?.lock;
+  const labels={dice:L('再抽選','Randomize'),disableReroll:L('このEffectsをOFFにして再抽選','Disable current effects and randomize'),lock:L(locked?'ロック解除':'ロック',locked?'Unlock':'Lock'),area:layer==='avoidance'?L('回避円の位置 · サイズ','Circle position & size'):L('表示範囲','Display area'),avoidEmphasis:L('強調も避ける','Avoid emphasis too'),maskAvoidance:L('Mask avoidance','Mask avoidance region'),details:L('詳細編集','Edit details'),copy:L('Effectsをお気に入りにNew','Add effects to favorites'),paste:L('お気に入りからEffectsを適用','Apply favorite effects'),remove:L('削除','Delete'),frontmost:L('Show above foreground','Frontmost')};
+  const actions=layer==='avoidance'?['area','avoidEmphasis','maskAvoidance','lock','remove']:['dice','disableReroll','lock',...(layer==='lyrics'||J.mediaSourceAvailable(cut)?['area']:[]),'details','copy','paste',...(layer==='lyrics'?['frontmost']:[]),'remove'];
   const menu=document.createElement('div'),controller=new AbortController(),signal=controller.signal;
   menu.id='timelineCutMenu';menu.className='timeline-cut-menu';menu.setAttribute('role','menu');menu.setAttribute('aria-label',L('cutsの操作','Cut actions'));
   menu.innerHTML=actions.map(action=>{
-    const toggle=['lock','frontmost'].includes(action),active=action==='lock'?locked:action==='frontmost'?!!cut.frontmost:false;
-    return `<button type="button" role="${toggle?'menuitemcheckbox':'menuitem'}" ${toggle?`aria-checked="${active}"`:''} data-action="${action}" data-layer="${layer}" data-index="${index}" data-part="${part}">${ICON[action]}<span>${labels[action]}</span>${active?'<span class="menu-check" aria-hidden="true">✓</span>':''}</button>`;
+    const toggle=['lock','frontmost','avoidEmphasis','maskAvoidance'].includes(action),active=action==='lock'?locked:action==='frontmost'?!!cut.frontmost:action==='avoidEmphasis'?!!cut.avoidEmphasis:action==='maskAvoidance'?!!cut.maskAvoidance:false;
+    const icon=ICON[action]||'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.5"/></svg>';
+    return `<button type="button" role="${toggle?'menuitemcheckbox':'menuitem'}" ${toggle?`aria-checked="${active}"`:''} data-action="${action}" data-layer="${layer}" data-index="${index}" data-part="${part}">${icon}<span>${labels[action]}</span>${active?'<span class="menu-check" aria-hidden="true">✓</span>':''}</button>`;
   }).join('');
   document.body.append(menu);timelineCutMenu={menu,controller,trigger};trigger.setAttribute('aria-expanded','true');
   const r=trigger.getBoundingClientRect(),box=menu.getBoundingClientRect();
@@ -44500,7 +46625,18 @@ function performTimelineAction(control) {
   if (control.dataset.action === 'details') { openCutDetails(layer,index,+control.dataset.part || 0); return; }
   if (control.dataset.action === 'area') {
     if (layer === 'lyrics') openAreaEditor(index);
+    else if (layer === 'avoidance') openAvoidanceEditor(index);
     else if (layer === 'foreground' || layer === 'media') openMediaEditor(index, layer);
+    return;
+  }
+  if (control.dataset.action === 'avoidEmphasis' && layer === 'avoidance') {
+    const cut = S.plan.avoidance?.cuts[index];
+    if (cut) { avoidanceOv(index, { avoidEmphasis: !cut.avoidEmphasis }); replan(); }
+    return;
+  }
+  if (control.dataset.action === 'maskAvoidance' && layer === 'avoidance') {
+    const cut = S.plan.avoidance?.cuts[index];
+    if (cut) { avoidanceOv(index, { maskAvoidance: !cut.maskAvoidance }); replan(); }
     return;
   }
   if (control.dataset.action === 'frontmost' && layer === 'lyrics') {
@@ -44511,6 +46647,9 @@ function performTimelineAction(control) {
     if (control.dataset.action === 'remove') removeLyricCut(index,+control.dataset.part||0);
     else if (control.dataset.action === 'dice') rerollLyricLine(index);
     else toggleLyricLineLock(index);
+  } else if (layer === 'avoidance') {
+    if (control.dataset.action === 'remove') removeAvoidanceCut(index);
+    else toggleAvoidanceCutLock(index);
   } else if (layer === 'foreground' || layer === 'media') {
     if (control.dataset.action === 'dice') rerollMediaCut(layer, index);
     else if (control.dataset.action === 'remove') removeMediaCut(index, layer);
@@ -44520,14 +46659,14 @@ function performTimelineAction(control) {
 function drawTimelineLinks() {
   const svg = $('timelineLinks'), stack = $('timelineStack');
   if (!svg || !S.plan) return;
-  for(const [layer,id] of [['foreground','foregroundTimeline'],['lyrics','timeline'],['media','mediaTimeline']]){
+  for(const [layer,id] of [['avoidance','avoidanceTimeline'],['foreground','foregroundTimeline'],['lyrics','timeline'],['media','mediaTimeline']]){
     const canvas=$(id),button=$('layerVisibilityControls').querySelector(`[data-layer="${layer}"]`);
-    if(!button)continue;
+    if(!button||!canvas)continue;
     const visible=S.project.layerVisibility?.[layer]!==false;
     button.style.top=(canvas.offsetTop+(canvas.clientHeight-30)/2)+'px';
     button.setAttribute('aria-pressed',String(visible));
     button.querySelector('.eye-slash').style.display=visible?'none':'';
-    button.title=J.mediaLabel({foreground:'Foreground',lyrics:'歌詞',media:'Background'}[layer],{foreground:'Foreground',lyrics:'Lyrics',media:'Background'}[layer])+': '+J.mediaLabel(visible?'非表示にする':'表示する',visible?'Hide':'Show');
+    button.title=J.mediaLabel({avoidance:'回避',foreground:'Foreground',lyrics:'歌詞',media:'Background'}[layer],{avoidance:'Avoidance',foreground:'Foreground',lyrics:'Lyrics',media:'Background'}[layer])+': '+J.mediaLabel(visible?'非表示にする':'表示する',visible?'Hide':'Show');
     button.setAttribute('aria-label',button.title);
   }
   const width = stack.clientWidth, height = stack.clientHeight;
@@ -44536,7 +46675,7 @@ function drawTimelineLinks() {
   if (S.timelineDrag && S.timelineDrag.moved) {
     const moving = new Set(linkedRefs(S.timelineDrag.ref));
     for (const marker of markers) if (moving.has(marker.ref)) {
-      const canvas = $(marker.layer === 'lyrics' ? 'timeline' : marker.layer === 'media' ? 'mediaTimeline' : 'foregroundTimeline');
+      const canvas = timelineCanvas(marker.layer);
       marker.x = canvas.offsetLeft + S.timelineDrag.preview / Math.max(0.001, S.plan.duration) * canvas.clientWidth;
     }
   }
@@ -44549,7 +46688,7 @@ function drawTimelineLinks() {
   }).join('');
   const preview = S.linkDrag ? `<line class="link-preview" x1="${S.linkDrag.sourceX}" y1="${S.linkDrag.sourceY}" x2="${S.linkDrag.x}" y2="${S.linkDrag.y}"/>` : '';
   const handles = markers.map(m => `<g class="link-handle ${linkedRefs(m.ref).length > 1 ? 'linked' : ''}" data-ref="${escapeHtml(m.ref)}" role="button" aria-label="Link boundary"><circle cx="${m.x}" cy="${m.y}" r="9"/><text x="${m.x}" y="${m.y + 0.5}">🔗</text></g>`).join('');
-  const menus = ['foreground','lyrics','media'].map(layer => {
+  const menus = ['avoidance','foreground','lyrics','media'].map(layer => {
     const canvas=timelineCanvas(layer), lanes=timelineLanes(layer);
     const list=layer==='lyrics'?S.plan.cuts.filter(c=>c.line>=0&&Number.isInteger(c.part)):S.plan[layer].cuts;
     return list.map(cut=>{
@@ -44599,6 +46738,8 @@ function setCutEnd(layer, key, time) {
     const options = S.project.lyricCutOptions, next = { ...options[key], ...patch };
     for (const k of Object.keys(next)) if (next[k] === undefined) delete next[k];
     if (Object.keys(next).length) options[key] = next; else delete options[key];
+  } else if (layer === 'avoidance') {
+    avoidanceOv(key, patch);
   } else mediaOv(key, patch, layer);
 }
 function timelineBoundaryForCut(chosen, layer) {
@@ -44686,8 +46827,10 @@ function updateCutInfo() {
   const idx = `${cut ? cut.index : -1}/${mc ? mc.index : -1}/${fc ? fc.index : -1}`;
   const li = cut ? cut.line : -1;
   if (li !== S.curLine) { S.lineEls.forEach((el, i) => el.classList.toggle('cur', i === li)); S.curLine = li; }
+  const ac = J.avoidanceAt(S.plan, S.t);
   const active = S.sourceTab === 'foreground' ? fc : mc;
   S.mediaLineEls.forEach((el, i) => el.classList.toggle('cur', !!active && i === active.index));
+  S.avoidanceLineEls.forEach((el, i) => el.classList.toggle('cur', !!ac && i === ac.index));
   if (idx === lastCutIdx) return;
   lastCutIdx = idx;
 
@@ -44731,6 +46874,19 @@ function openInsertAtPlayhead(layer) {
   const start=S.t,lyric=layer==='lyrics',cuts=lyric?S.plan.cuts:S.plan[layer].cuts;
   const end=lyric?lyricInsertRange(start).end:cuts.filter(c=>c.start>start+1e-6).reduce((end,c)=>Math.min(end,c.start),S.plan.duration);
   if(end-start<.04)return;
+  if(layer==='avoidance'){
+    const a=S.project.avoidance,index=cuts.filter(c=>c.start<start-1e-6).length,overrides={},times={};
+    const prev=cuts[Math.max(0,index-1)]||{cx:0.5,cy:0.5,r:0.25,avoidEmphasis:a.avoidEmphasis,maskAvoidance:a.maskAvoidance,maskRadiusOffset:a.maskRadiusOffset,maskFeather:a.maskFeather,maskCurve:a.maskCurve};
+    cuts.forEach((cut,i)=>{const n=i>=index?i+1:i;overrides[n]={...a.cutOverrides[i]};times[n]=cut.start;});
+    const replacing=cuts[index] && Math.abs(cuts[index].start-start)<1e-6;
+    if(replacing){delete overrides[index+1];delete times[index+1];for(let i=index+2;i<=cuts.length;i++){overrides[i-1]=overrides[i];times[i-1]=times[i];delete overrides[i];delete times[i];}}
+    overrides[index]={cx:prev.cx,cy:prev.cy,r:prev.r,avoidEmphasis:prev.avoidEmphasis,maskAvoidance:prev.maskAvoidance,maskRadiusOffset:prev.maskRadiusOffset,maskFeather:prev.maskFeather,maskCurve:prev.maskCurve};times[index]=start;
+    a.manualCuts=true;a.cutCount=cuts.length+(replacing?0:1);a.cutOverrides=overrides;a.timing.lineTimes=times;
+    if(!replacing){for(const link of S.project.timelineLinks)for(const side of ['a','b'])if(link[side].startsWith('a:')&&+link[side].slice(2)>=index)link[side]='a:'+(+link[side].slice(2)+1);}
+    S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+    S.project.durationOverride=S.plan.duration;renderTech();replan();seek(start);openAvoidanceEditor(index,true);
+    return;
+  }
   const L=J.mediaLabel,dialog=document.createElement('dialog');dialog.className='insert-cut-dialog';dialog.id='insertCutDialog';
   const name=lyric?L('歌詞を挿入','Insert lyrics'):layer==='foreground'?L('Foregroundを挿入','Insert foreground'):L('Backgroundを挿入','Insert background');
   dialog.innerHTML=`<form><h2>${name}</h2><label>${lyric?L('歌詞','Lyrics'):L('素材','Asset')}${lyric?'<textarea rows="3" required></textarea>':`<select><option value="">${L('No image','No image')}</option>${[...J.mediaCopyItems(layer),...S.project[layer].items].map(item=>`<option value="${escapeHtml(item.id)}">${escapeHtml(item.name)}</option>`).join('')}</select>`}</label><p class="hint">${J.fmtTime(start)} ～ ${J.fmtTime(end)}</p><div class="row"><button type="button" data-cancel>${L('キャンセル','Cancel')}</button><button type="submit">${L('挿入','Insert')}</button></div></form>`;
@@ -45016,18 +47172,61 @@ function positionAreaEditor() {
     shade.querySelector('path').setAttribute('d',`M0,0H${innerWidth}V${innerHeight}H0Z`+rect(viewport)+rect($('areaEditControls').getBoundingClientRect()));
   }
 }
+function avoidanceCircleToDraft(cut, W = S.plan.W, H = S.plan.H) {
+  const d = 2 * (cut?.r ?? 0.25) * Math.min(W, H), w = d / W, h = d / H;
+  const cx = cut?.cx ?? 0.5, cy = cut?.cy ?? 0.5;
+  return { x: cx - w / 2, y: cy - h / 2, w, h };
+}
+function draftToAvoidanceCircle(draft, W = S.plan.W, H = S.plan.H) {
+  const cx = J.clamp(draft.x + draft.w / 2, 0, 1), cy = J.clamp(draft.y + draft.h / 2, 0, 1);
+  const d = ((draft.w * W) + (draft.h * H)) * 0.5;
+  const r = J.clamp(d / (2 * Math.min(W, H)), 0.03, 0.85);
+  return { cx: +cx.toFixed(4), cy: +cy.toFixed(4), r: +r.toFixed(4) };
+}
+function avoidanceEditDraftKey(edit) {
+  if (!edit || !edit.draft) return '';
+  return JSON.stringify({ area: J.lyricArea({ ...edit.draft, angle: 0, lockAspect: true }), maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: Math.round(+edit.maskRadiusOffset || 0), maskFeather: Math.round(+edit.maskFeather || 0), maskCurve: edit.maskCurve || 'smooth' });
+}
 function showAreaDraft() {
-  const edit = S.areaEdit, area = edit && edit.draft, rect = $('areaEditRect'), media = !!edit && edit.kind !== 'lyric';
+  const edit = S.areaEdit, area = edit && edit.draft, rect = $('areaEditRect'), isAvoidance = edit?.kind === 'avoidance';
   rect.hidden = !area;
   if (area) Object.assign(rect.style, { left: `${area.x * 100}%`, top: `${area.y * 100}%`, width: `${area.w * 100}%`, height: `${area.h * 100}%`, transform: `rotate(${edit.angle}deg)` });
   $('areaEditOverlay').classList.toggle('media-edit', !!edit);
+  $('areaEditOverlay').classList.toggle('avoidance-edit', !!isAvoidance);
   $('mediaAreaSizeControls').hidden = !edit;
-  if (area) { $('mediaAreaAspectLock').checked = edit.lockAspect; $('mediaAreaWidth').value = String(Math.round(area.w * 1000) / 10); $('mediaAreaHeight').value = String(Math.round(area.h * 1000) / 10); }
-  $('mediaAreaAngleField').hidden = !edit;
+  if (area) { $('mediaAreaAspectLock').checked = edit.lockAspect; $('mediaAreaAspectLock').disabled = !!isAvoidance; $('mediaAreaWidth').value = String(Math.round(area.w * 1000) / 10); $('mediaAreaHeight').value = String(Math.round(area.h * 1000) / 10); }
+  $('mediaAreaAngleField').hidden = !edit || !!isAvoidance;
   if (edit) $('mediaAreaAngle').value = String(edit.angle);
-  $('areaResetFull').hidden = !edit;
+  if ($('avoidanceMaskControls')) {
+    $('avoidanceMaskControls').hidden = !isAvoidance;
+    const innerRing = $('avoidanceMaskInnerRing'), outerRing = $('avoidanceMaskOuterRing');
+    if (isAvoidance && area) {
+      const maskOn = !!edit.maskAvoidance;
+      const offset = Math.round(+edit.maskRadiusOffset || 0);
+      const feather = Math.max(0, Math.round(+edit.maskFeather ?? 60));
+      const curve = edit.maskCurve || 'smooth';
+      $('avoidanceEditMask').checked = maskOn;
+      $('avoidanceEditMaskOffset').value = String(offset);
+      $('avoidanceEditMaskOffsetRange').value = String(J.clamp(offset, -240, 240));
+      $('avoidanceEditMaskFeather').value = String(feather);
+      $('avoidanceEditMaskFeatherRange').value = String(J.clamp(feather, 0, 300));
+      $('avoidanceEditMaskCurve').value = curve;
+      for (const id of ['avoidanceEditMaskOffset', 'avoidanceEditMaskOffsetRange', 'avoidanceEditMaskFeather', 'avoidanceEditMaskFeatherRange', 'avoidanceEditMaskCurve']) $(id).disabled = !maskOn;
+      const circle = draftToAvoidanceCircle(area);
+      const basePx = Math.max(1, circle.r * 1080);
+      const rInnerPx = Math.max(0, basePx + offset);
+      const rOuterPx = rInnerPx + feather;
+      if (innerRing) { innerRing.hidden = !maskOn || Math.abs(offset) < 1; innerRing.style.width = `${(rInnerPx / basePx) * 100}%`; innerRing.style.height = `${(rInnerPx / basePx) * 100}%`; }
+      if (outerRing) { outerRing.hidden = !maskOn || rOuterPx <= 0; outerRing.style.width = `${(rOuterPx / basePx) * 100}%`; outerRing.style.height = `${(rOuterPx / basePx) * 100}%`; }
+    } else {
+      if (innerRing) innerRing.hidden = true;
+      if (outerRing) outerRing.hidden = true;
+    }
+  }
+  $('areaResetFull').hidden = !edit || !!isAvoidance;
   $('areaResetAuto').hidden = !edit;
-  $('areaResetAuto').disabled = !edit || edit.autoDraft===JSON.stringify(J.lyricArea({...area,angle:edit.angle,lockAspect:edit.lockAspect}));
+  const currentDraftKey = isAvoidance ? avoidanceEditDraftKey(edit) : (area ? JSON.stringify(J.lyricArea({ ...area, angle: edit.angle, lockAspect: edit.lockAspect })) : '');
+  $('areaResetAuto').disabled = !edit || edit.autoDraft === currentDraftKey;
   $('areaApplyOne').textContent = J.mediaLabel('配置決定','Set placement');
   $('areaApplyOne').disabled = !area;
   $('areaApplyFollowing').disabled = !area;
@@ -45047,6 +47246,21 @@ function openAreaEditor(index,fromPreview=false) {
   if(!fromPreview)seek(cut ? cut.start + Math.min(cut.dur * 0.6, cut.inDur + 0.25) : line.start);
   $('areaEditOverlay').hidden = false; $('areaEditControls').hidden = false;
   beginAreaSelection();positionAreaEditor(); showAreaDraft();
+}
+function openAvoidanceEditor(index, fromPreview=false) {
+  if (S.exporting || S.tap) return;
+  if (S.areaEdit) cancelAreaEditor();
+  const cut = S.plan.avoidance?.cuts[index]; if (!cut) return;
+  pause();
+  clearTimeout(warmTimer); ++warmJob;
+  const draft = avoidanceCircleToDraft(cut);
+  const autoDraftRect = avoidanceCircleToDraft({ cx: 0.5, cy: 0.5, r: 0.25 });
+  const defMask = J.normalizeAvoidanceMask(S.project.avoidance);
+  const autoDraft = avoidanceEditDraftKey({ draft: autoDraftRect, ...defMask });
+  S.areaEdit = { kind: 'avoidance', index, oldTime: S.t, draft, ratio: S.plan.W / S.plan.H, lockAspect: true, angle: 0, drag: null, maskAvoidance: !!cut.maskAvoidance, maskRadiusOffset: cut.maskRadiusOffset ?? defMask.maskRadiusOffset, maskFeather: cut.maskFeather ?? defMask.maskFeather, maskCurve: cut.maskCurve || defMask.maskCurve, autoDraft };
+  if (!fromPreview) seek(cut.start + Math.min(0.5, Math.max(0.001, (cut.end - cut.start) / 2)));
+  $('areaEditOverlay').hidden = false; $('areaEditControls').hidden = false;
+  beginAreaSelection(); positionAreaEditor(); showAreaDraft();
 }
 function openMediaEditor(index, layer,fromPreview=false) {
   if (S.exporting || S.tap) return;
@@ -45082,7 +47296,23 @@ function applyAreaEditor(following) {
   const { kind, index, draft } = S.areaEdit;
   remember();
   // 「以降にも適用」 leaves other locked cuts alone; the edited cut itself stays locked with its new place.
-  if (kind !== 'lyric') {
+  if (kind === 'avoidance') {
+    const circle = draftToAvoidanceCircle(draft);
+    const autoRect = avoidanceCircleToDraft({ cx: 0.5, cy: 0.5, r: 0.25 });
+    const autoGeom = JSON.stringify(J.lyricArea({ ...autoRect, angle: 0, lockAspect: true })) === JSON.stringify(J.lyricArea({ ...draft, angle: 0, lockAspect: true }));
+    const defMask = J.normalizeAvoidanceMask(S.project.avoidance);
+    const maskPatch = J.normalizeAvoidanceMask(S.areaEdit, defMask);
+    const autoMask = maskPatch.maskAvoidance === defMask.maskAvoidance && maskPatch.maskRadiusOffset === defMask.maskRadiusOffset && maskPatch.maskFeather === defMask.maskFeather && maskPatch.maskCurve === defMask.maskCurve;
+    S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+    for (let i = index; i < (following ? S.plan.avoidance.cuts.length : index + 1); i++) {
+      if (i !== index && S.project.avoidance.cutOverrides[i]?.lock) continue;
+      avoidanceOv(i, {
+        ...(autoGeom ? { cx: undefined, cy: undefined, r: undefined } : circle),
+        ...(autoMask ? { maskAvoidance: undefined, maskRadiusOffset: undefined, maskFeather: undefined, maskCurve: undefined } : maskPatch),
+      });
+    }
+    renderTech();
+  } else if (kind !== 'lyric') {
     for (let i = index; i < (following ? S.plan[kind].cuts.length : index + 1); i++) {
       if (i !== index && S.project[kind].cutOverrides[i]?.lock) continue;
       const automatic=S.areaEdit.autoDraft===JSON.stringify(J.lyricArea({...draft,angle:S.areaEdit.angle,lockAspect:S.areaEdit.lockAspect}));
@@ -45162,19 +47392,42 @@ function moveMediaDraft(ev) {
   showAreaDraft();
 }
 function syncSourceTab() {
+  const avoidance = S.sourceTab === 'avoidance';
   const layer = activeMediaLayer(), media = !!layer, m = media && S.project[layer];
-  $('sourceLyrics').setAttribute('aria-selected', String(!media)); $('sourceMedia').setAttribute('aria-selected', String(layer === 'media'));
+  $('sourceAvoidance')?.setAttribute('aria-selected', String(avoidance));
+  $('sourceLyrics').setAttribute('aria-selected', String(!media && !avoidance));
+  $('sourceMedia').setAttribute('aria-selected', String(layer === 'media'));
   $('sourceForeground').setAttribute('aria-selected', String(layer === 'foreground'));
-  $('lyricsPane').hidden = media; $('mediaPane').hidden = !media;
-  $('lineList').hidden = media; $('mediaLineList').hidden = !media;
-  $('cutsHeading').textContent = media ? J.mediaLabel('cuts', 'Cuts') : J.mediaLabel('line とcuts', 'Lines and cuts');
+  if ($('avoidancePane')) $('avoidancePane').hidden = !avoidance;
+  $('lyricsPane').hidden = media || avoidance; $('mediaPane').hidden = !media;
+  if ($('avoidanceLineList')) $('avoidanceLineList').hidden = !avoidance;
+  $('lineList').hidden = media || avoidance; $('mediaLineList').hidden = !media;
+  $('cutsHeading').textContent = (media || avoidance) ? J.mediaLabel('cuts', 'Cuts') : J.mediaLabel('line とcuts', 'Lines and cuts');
   $('mediaPaneTitle').textContent = layer === 'foreground' ? 'Foreground' : 'Background';
-  $('linesInfo').textContent = media ? `${m.items.length}files / ${S.plan[layer].cuts.length}cuts` : `${S.plan.lines.length} lines / ${S.plan.cuts.length} cuts`;
+  $('linesInfo').textContent = avoidance ? `${S.plan.avoidance?.cuts.length || 0}cuts` : media ? `${m.items.length}files / ${S.plan[layer].cuts.length}cuts` : `${S.plan.lines.length} lines / ${S.plan.cuts.length} cuts`;
   $('mediaRandom').disabled = !media || (m.items.length < 2 && !m.randomOrder);
   $('mediaRandom').title = media && m.items.length < 2 && !m.randomOrder ? J.mediaLabel('素材を2つ以上Newすると選択できます', 'Add at least two files to enable random order') : '';
   $('mediaLoop').disabled = !media || (m.items.length === 0 && S.plan[layer].cuts.length === 0);
   $('mediaGroupLyrics').checked = !media || m.groupLyricsAsOneCut !== false;
-  $('audioTimingSection').hidden = media;
+  $('audioTimingSection').hidden = media || avoidance;
+  if ($('avoidancePane')) {
+    const a = S.project.avoidance || J.normalizeAvoidance(null);
+    const lyricEffects = J.lyricEffectSettings(S.project);
+    $('avoidanceEnable').checked = !!(lyricEffects.avoidCenter && lyricEffects.autoPlacement);
+    $('avoidanceEmphasis').checked = !!a.avoidEmphasis;
+    if ($('avoidanceMask')) $('avoidanceMask').checked = !!a.maskAvoidance;
+    if ($('avoidanceDefaultMaskFields')) {
+      $('avoidanceDefaultMaskFields').hidden = !a.maskAvoidance;
+      $('avoidanceMaskOffset').value = String(a.maskRadiusOffset ?? 0);
+      $('avoidanceMaskFeather').value = String(a.maskFeather ?? 60);
+      $('avoidanceMaskCurve').value = a.maskCurve || 'smooth';
+    }
+    $('avoidanceLyricInsertMode').value = a.lyricInsertMode === 'cut' ? 'cut' : 'line';
+    $('avoidanceGroupLyrics').checked = a.groupLyricsAsOneCut !== false;
+    const aTargets = avoidanceLyricTargets();
+    $('btnAvoidanceFromLyrics').disabled = !aTargets.length;
+    $('btnTapAvoidance').disabled = !S.tap && !S.plan?.lines?.length && !S.audio;
+  }
   const targets = mediaLyricTargets(layer);
   $('mediaLyricInsertMode').value = media && m.lyricInsertMode === 'cut' ? 'cut' : 'line';
   const sourceBox=$('backgroundInsertSources');sourceBox.hidden=layer!=='media';
@@ -45325,7 +47578,7 @@ function relayoutTargets() {
 const PLAYHEAD_LABELS = {
   insert: ['挿入', 'Insert'], split: ['分割', 'Split'], endHere: ['ここまでPlay', 'Play until here'], untilNext: ['次cutsまでPlay', 'Play until the next cut'],
 };
-const LAYER_LABELS = { foreground: ['Foreground', 'Foreground'], lyrics: ['歌詞', 'Lyrics'], media: ['Background', 'Background'] };
+const LAYER_LABELS = { avoidance: ['回避', 'Avoidance'], foreground: ['Foreground', 'Foreground'], lyrics: ['歌詞', 'Lyrics'], media: ['Background', 'Background'] };
 const PLAYHEAD_TITLES = {
   insert: ['をPlay位置に挿入', ': insert at the playhead'], split: ['をPlay位置で分割', ': split at the playhead'],
   endHere: ['のcutsをPlay位置で終わらせる', ': end the cut at the playhead'], untilNext: ['のcutsを次のcutsの開始まで表示', ': show the cut until the next cut starts'],
@@ -45352,7 +47605,7 @@ function initPlayheadMenu() {
   }
   for (const button of document.querySelectorAll('[data-playhead-action]')) {
     const [layerJa, layerEn] = LAYER_LABELS[button.dataset.layer], [ja, en] = PLAYHEAD_TITLES[button.dataset.playheadAction];
-    const y={foreground:2,lyrics:6,media:10}[button.dataset.layer];
+    const y={avoidance:1,foreground:4,lyrics:8,media:11}[button.dataset.layer] ?? 6;
     button.innerHTML=`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 3h12M2 8h12M2 13h12" opacity=".35"/><rect x="2" y="${y}" width="12" height="4" rx="1" fill="currentColor"/></svg><span>${L(layerJa, layerEn)}</span>`;button.setAttribute('role','menuitem'); button.title = L(layerJa + ja, layerEn + en); button.setAttribute('aria-label', button.title);
   }
   $('relayoutAtPlayhead').textContent = L('配置をシャッフル', 'Shuffle layout');
@@ -45373,7 +47626,7 @@ function playheadEndTarget(layer, manualOnly) {
 function playheadActionEnabled(action, layer) {
   const busy = S.exporting || S.tap || !S.plan;
   if (action === 'insert') return !busy && S.t < S.plan.duration - .04;
-  if (action === 'split') return !!mediaSplitTarget(layer);
+  if (action === 'split') return layer === 'avoidance' ? !!avoidanceSplitTarget() : !!mediaSplitTarget(layer);
   return !!playheadEndTarget(layer, action === 'untilNext');
 }
 function syncPlayheadMenu() {
@@ -45593,6 +47846,181 @@ const MEDIA_EFFECT_GROUPS = {
   graphic: J.mediaLabel('分割 · 残像 · Glitch', 'Panels / echoes / glitch'), maskFx: J.mediaLabel('マスク', 'Masks'),
   transition: J.mediaLabel('Transitions', 'Cut transitions'),
 };
+function avoidanceOv(index, patch) {
+  const a = S.project.avoidance ||= J.normalizeAvoidance(null);
+  const o = Object.assign({}, a.cutOverrides[index] || {}, patch);
+  for (const k of Object.keys(o)) if (o[k] === undefined || o[k] === '') delete o[k];
+  if (Object.keys(o).length) a.cutOverrides[index] = o; else delete a.cutOverrides[index];
+}
+function toggleAvoidanceCutLock(index) {
+  const cut = S.plan.avoidance?.cuts[index]; if (!cut) return;
+  const ov = S.project.avoidance?.cutOverrides?.[index] || {};
+  avoidanceOv(index, { lock: !ov.lock || undefined });
+  replan();
+}
+function avoidanceLyricTargets() {
+  const a = S.project.avoidance;
+  if (!a || !S.plan) return [];
+  let targets = S.plan.cuts.filter(cut => a.lyricInsertMode === 'cut' ? cut.line >= 0 : cut.line >= 0 && cut.part === 0);
+  if (a.groupLyricsAsOneCut !== false) {
+    const seen = new Set();
+    targets = targets.filter(cut => {
+      const group = cut.line >= 0 ? S.plan.lines[cut.line]?.group : null;
+      if (group == null) return true;
+      if (seen.has(group)) return false;
+      seen.add(group); return true;
+    });
+  }
+  return targets.slice(0, 1000);
+}
+function insertAvoidanceFromLyrics() {
+  if (S.exporting || S.tap) return;
+  pause(); cancelAreaEditor();
+  clearTimeout(replanTimer); replan();
+  const targets = avoidanceLyricTargets(), a = S.project.avoidance;
+  if (!targets.length) return;
+  const prevCuts = S.plan.avoidance?.cuts || [];
+  a.manualCuts = true;
+  a.cutCount = targets.length;
+  a.cutOverrides = {};
+  a.timing.lineTimes = {};
+  S.project.timelineLinks = S.project.timelineLinks.filter(link => !link.a.startsWith('a:') && !link.b.startsWith('a:'));
+  targets.forEach((cut, index) => {
+    const refCut = prevCuts[Math.min(index, Math.max(0, prevCuts.length - 1))];
+    const baseOv = refCut && refCut.customCircle ? { cx: refCut.cx, cy: refCut.cy, r: refCut.r } : {};
+    if (refCut && refCut.customMask) Object.assign(baseOv, { maskAvoidance: refCut.maskAvoidance, maskRadiusOffset: refCut.maskRadiusOffset, maskFeather: refCut.maskFeather, maskCurve: refCut.maskCurve });
+    a.cutOverrides[index] = baseOv;
+    a.timing.lineTimes[index] = cut.start;
+    if (a.lyricInsertMode === 'cut' && cut.line >= 0 && cut.part !== 0) S.project.timing.cutTimes[`${cut.line}:${cut.part}`] = cut.start;
+    S.project.timelineLinks.push({ a: 'a:' + index, b: boundaryRef('lyrics', cut) });
+  });
+  S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+  renderTech(); replan(); seek(targets[0].start);
+  toast(J.mediaLabel(`${targets.length}個の回避cutsを歌詞に合わせて挿入しました`, `Inserted ${targets.length} avoidance cuts aligned to lyrics`));
+}
+function insertAvoidanceCut(index) {
+  const a = S.project.avoidance, cuts = S.plan.avoidance.cuts;
+  if (cuts.length >= 1000) { toast('Maximum number of cuts reached'); return; }
+  const starts = cuts.map(cut => cut.start);
+  const overrides = {};
+  cuts.forEach((cut, i) => {
+    overrides[i >= index ? i + 1 : i] = Object.assign({}, a.cutOverrides[i] || {});
+  });
+  const ref = cuts[Math.max(0, Math.min(index - 1, cuts.length - 1))];
+  const refOv = ref && ref.customCircle ? { cx: ref.cx, cy: ref.cy, r: ref.r } : {};
+  if (ref && ref.customMask) Object.assign(refOv, { maskAvoidance: ref.maskAvoidance, maskRadiusOffset: ref.maskRadiusOffset, maskFeather: ref.maskFeather, maskCurve: ref.maskCurve });
+  overrides[index] = refOv;
+  let start;
+  if (!cuts.length) start = 0;
+  else if (index === 0) {
+    start = 0;
+    starts[0] = Math.max(starts[0], Math.min(cuts[0].end, starts[0] + Math.max(0.04, (cuts[0].end - starts[0]) / 2)));
+  } else if (index === cuts.length) {
+    start = Math.max(cuts[index - 1].start + 0.04, (cuts[index - 1].start + S.plan.duration) / 2);
+  } else start = (cuts[index - 1].start + cuts[index].start) / 2;
+  const times = {};
+  starts.forEach((time, i) => { times[i >= index ? i + 1 : i] = +time.toFixed(3); });
+  times[index] = +start.toFixed(3);
+  a.manualCuts = true;
+  a.cutCount = cuts.length + 1;
+  a.cutOverrides = overrides;
+  a.timing.lineTimes = times;
+  for (const link of S.project.timelineLinks) for (const end of ['a', 'b']) {
+    if (link[end].startsWith('a:') && +link[end].slice(2) >= index) link[end] = 'a:' + (+link[end].slice(2) + 1);
+  }
+  S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+  renderTech(); replan(); seek(start);
+}
+function removeAvoidanceCut(index) {
+  const a = S.project.avoidance, cuts = S.plan.avoidance.cuts;
+  if (!Number.isInteger(index) || index < 0 || index >= cuts.length) return;
+  cancelAreaEditor();
+  if (S.tap) stopTap();
+  const overrides = {}, times = {};
+  cuts.forEach((cut, oldIndex) => {
+    if (oldIndex === index) return;
+    const newIndex = oldIndex > index ? oldIndex - 1 : oldIndex;
+    overrides[newIndex] = Object.assign({}, a.cutOverrides[oldIndex] || {});
+    times[newIndex] = +cut.start.toFixed(3);
+  });
+  a.manualCuts = true;
+  a.cutCount = cuts.length - 1;
+  a.cutOverrides = overrides;
+  a.timing.lineTimes = times;
+  const remapRef = ref => {
+    if (typeof ref !== 'string' || !ref.startsWith('a:')) return ref;
+    const oldIndex = +ref.slice(2);
+    if (!Number.isInteger(oldIndex)) return ref;
+    return oldIndex === index ? null : 'a:' + (oldIndex > index ? oldIndex - 1 : oldIndex);
+  };
+  S.project.timelineLinks = S.project.timelineLinks.flatMap(link => {
+    const la = remapRef(link.a), lb = remapRef(link.b);
+    return la && lb ? [{ a: la, b: lb }] : [];
+  });
+  replan();
+}
+function avoidanceSplitTarget() {
+  if (!S.plan?.avoidance || S.exporting || S.tap || S.plan.avoidance.cuts.length >= 1000) return null;
+  const cut = J.avoidanceAt(S.plan, S.t);
+  return cut && S.t - cut.start >= 0.04 - 1e-7 && cut.end - S.t >= 0.04 - 1e-7 ? cut : null;
+}
+function splitAvoidanceCut() {
+  const cut = avoidanceSplitTarget(); if (!cut) return;
+  pause();
+  const time = S.t, a = S.project.avoidance, cuts = S.plan.avoidance.cuts, index = cut.index;
+  const clone = v => JSON.parse(JSON.stringify(v)), overrides = {}, times = {};
+  const baseOv = clone(a.cutOverrides[index] || {});
+  const first = { ...baseOv }, second = { ...baseOv, lock: false };
+  if (first.untilNext === false) { delete first.untilNext; delete first.endTime; }
+  cuts.forEach((c, i) => {
+    const next = i > index ? i + 1 : i;
+    overrides[next] = i === index ? first : clone(a.cutOverrides[i] || {});
+    times[next] = c.start;
+  });
+  overrides[index + 1] = second; times[index + 1] = +time.toFixed(3);
+  a.manualCuts = true; a.cutCount = cuts.length + 1; a.cutOverrides = overrides; a.timing.lineTimes = times;
+  S.project.durationOverride = S.plan.duration;
+  for (const link of S.project.timelineLinks) for (const end of ['a', 'b']) {
+    if (link[end].startsWith('a:') && +link[end].slice(2) > index) link[end] = 'a:' + (+link[end].slice(2) + 1);
+  }
+  replan(); seek(time);
+}
+function renderAvoidanceLines() {
+  const ol = $('avoidanceLineList'); if (!ol || !S.plan?.avoidance) return;
+  ol.innerHTML = ''; S.avoidanceLineEls = [];
+  const a = S.project.avoidance, L = J.mediaLabel;
+  const addButton = index => {
+    const row = document.createElement('li'); row.className = 'media-cut-insert';
+    row.innerHTML = `<button class="ghost small" type="button" aria-label="Insert avoidance cut at position ${index + 1}">＋ ${L('cutsをNew', 'Add cut')}</button>`;
+    row.querySelector('button').addEventListener('click', () => insertAvoidanceCut(index));
+    ol.appendChild(row);
+  };
+  S.plan.avoidance.cuts.forEach((cut, i) => {
+    addButton(i);
+    const ov = a.cutOverrides[i] || {};
+    const draft = avoidanceCircleToDraft(cut);
+    const placementControl = `<span class="foreground-placement-controls"><button class="foreground-placement-open ghost" type="button" aria-label="Edit avoidance circle for cut ${i + 1}"><span class="foreground-placement-thumb avoidance-circle-thumb"><i style="left:${draft.x * 100}%;top:${draft.y * 100}%;width:${draft.w * 100}%;height:${draft.h * 100}%"></i></span>${L('位置 · サイズを編集', 'Edit circle')}</button>${!cut.customCircle ? `<span class="tagl">${L('中央 · 既定', 'Center default')}</span>` : `<button class="foreground-placement-reset ghost" type="button">${L('中央に戻す', 'Reset to center')}</button>`}</span>`;
+    const li = document.createElement('li'); li.className = 'ln media-ln avoidance-ln';
+    li.innerHTML = `<span class="no">${String(i + 1).padStart(2, '0')}</span><input class="time mono" type="number" step="0.01" min="0" value="${cut.start.toFixed(2)}" aria-label="${i + 1} cut start time (s)"><span class="txt">${escapeHtml(cut.name)}</span><div class="meta"><span class="tools"><label class="check" style="margin:0"><input type="checkbox" class="avoidance-cut-enable" ${cut.enabled !== false ? 'checked' : ''}><span>${L('有効', 'Enabled')}</span></label><label class="check" style="margin:0"><input type="checkbox" class="avoidance-cut-emphasis" ${cut.avoidEmphasis ? 'checked' : ''}><span>${L('強調も避ける', 'Avoid emphasis')}</span></label><label class="check" style="margin:0"><input type="checkbox" class="avoidance-cut-mask" ${cut.maskAvoidance ? 'checked' : ''}><span>${L('Mask avoidance', 'Mask avoidance')}</span></label><button class="icon ghost lock" title="${L('Lock this cut', 'Lock cut')}" aria-pressed="${ov.lock ? 'true' : 'false'}">${ICON.lock}</button><button class="ghost small remove-avoidance-cut" type="button" aria-label="Remove cut ${i + 1}">${L('削除', 'Delete')}</button></span>${placementControl}</div>`;
+    li.querySelector('.time').addEventListener('change', e => {
+      const v = parseFloat(e.target.value);
+      if (isFinite(v)) a.timing.lineTimes[i] = Math.max(0, v); else delete a.timing.lineTimes[i];
+      replan();
+    });
+    li.querySelector('.txt').addEventListener('click', () => seek(cut.start + 0.001));
+    li.querySelector('.foreground-placement-open').addEventListener('click', () => openAvoidanceEditor(i));
+    const reset = li.querySelector('.foreground-placement-reset');
+    if (reset) reset.addEventListener('click', () => { avoidanceOv(i, { cx: undefined, cy: undefined, r: undefined }); replan(); });
+    li.querySelector('.avoidance-cut-enable').addEventListener('change', e => { avoidanceOv(i, { enabled: e.target.checked ? undefined : false }); replan(); });
+    li.querySelector('.avoidance-cut-emphasis').addEventListener('change', e => { avoidanceOv(i, { avoidEmphasis: e.target.checked }); replan(); });
+    li.querySelector('.avoidance-cut-mask').addEventListener('change', e => { avoidanceOv(i, { maskAvoidance: e.target.checked }); replan(); });
+    li.querySelector('.lock').addEventListener('click', () => toggleAvoidanceCutLock(i));
+    li.querySelector('.remove-avoidance-cut').addEventListener('click', () => removeAvoidanceCut(i));
+    ol.appendChild(li); S.avoidanceLineEls.push(li);
+  });
+  addButton(S.plan.avoidance.cuts.length);
+  syncSourceTab();
+}
 function renderMediaLines() {
   const layer = activeMediaLayer() || 'media', m = S.project[layer];
   const ol = $('mediaLineList'); ol.innerHTML = ''; S.mediaLineEls = [];
@@ -45938,11 +48366,11 @@ function initOutsideDismiss() {
 function syncSourceDrawer() {
   const compact=$('app').classList.contains('compact-ui'),panel=document.querySelector('.col-left');
   panel.classList.toggle('source-open',compact&&!!S.sourceOpen);
-  for(const [id,tab]of [['sourceForeground','foreground'],['sourceLyrics','lyrics'],['sourceMedia','media']]){
-    $(id).setAttribute('aria-expanded',String(!compact||!!S.sourceOpen&&S.sourceTab===tab));
+  for(const [id,tab]of [['sourceAvoidance','avoidance'],['sourceForeground','foreground'],['sourceLyrics','lyrics'],['sourceMedia','media']]){
+    $(id)?.setAttribute('aria-expanded',String(!compact||!!S.sourceOpen&&S.sourceTab===tab));
   }
   $('closeSourceDrawer').setAttribute('aria-label',J.mediaLabel('素材設定を閉じる','Close source settings'));
-  $('sourceDrawerTitle').textContent=J.mediaLabel(...({foreground:['Foreground','Foreground'],lyrics:['歌詞 · 曲','Lyrics / Audio'],media:['Background','Background']}[S.sourceTab]||['歌詞 · 曲','Lyrics / Audio']));
+  $('sourceDrawerTitle').textContent=J.mediaLabel(...({avoidance:['回避','Avoidance'],foreground:['Foreground','Foreground'],lyrics:['歌詞 · 曲','Lyrics / Audio'],media:['Background','Background']}[S.sourceTab]||['歌詞 · 曲','Lyrics / Audio']));
 }
 function selectSourceDrawer(tab) {
   if($('app').classList.contains('compact-ui')){
@@ -45950,9 +48378,11 @@ function selectSourceDrawer(tab) {
     if(S.sourceOpen){S.settingsOpen=false;syncSettingsDrawer();}
   }
   cancelAreaEditor();S.sourceTab=tab;syncSourceTab();
-  if(tab!=='lyrics'){renderMediaList();renderMediaLines();}
+  if(tab==='avoidance')renderAvoidanceLines();
+  else if(tab!=='lyrics'){renderMediaList();renderMediaLines();}
   syncSourceDrawer();
 }
+
 function positionSettingsDrawer() {
   const top=Math.max(0,document.querySelector('.bar').getBoundingClientRect().bottom);
   $('app').style.setProperty('--settings-top',Math.min(top,innerHeight-100)+'px');
@@ -46378,8 +48808,9 @@ async function runExport(kind) {
 
 /* ---------------- tap sync ---------------- */
 function startTap(fromIndex = 0) {
-  const layer = activeMediaLayer();
-  if (!(layer ? J.mediaInsertChoices(S.project,layer).length : S.plan.lines.length)) return;
+  const avoidance = S.sourceTab === 'avoidance';
+  const layer = avoidance ? 'avoidance' : activeMediaLayer();
+  if (!avoidance && !(layer ? J.mediaInsertChoices(S.project,layer).length : S.plan.lines.length)) return;
   pause();
   fromIndex = Math.max(0, Math.min(fromIndex, (layer ? S.plan[layer].cuts.length : S.plan.lines.length) - 1));
   S.tap = { i: fromIndex, layer, append: !!layer, fileIndex: 0, countingDown: true, fromIndex };
@@ -46410,6 +48841,23 @@ function tapNow() {
   if (S.tap.append) {
     const i = S.tap.i;
     const m = S.project[S.tap.layer];
+    if (S.tap.layer === 'avoidance') {
+      const prev = S.plan.avoidance?.cuts[Math.max(0, i - 1)];
+      const firstCircle = prev && prev.customCircle ? { cx: prev.cx, cy: prev.cy, r: prev.r } : {};
+      if (i === 0) {
+        m.timing.lineTimes = {}; m.cutOverrides = {}; m.manualCuts = true;
+        S.project.timelineLinks = S.project.timelineLinks.filter(link => !link.a.startsWith('a:') && !link.b.startsWith('a:'));
+      }
+      m.cutCount = i + 1;
+      m.cutOverrides[i] = firstCircle;
+      m.timing.lineTimes[i] = +S.t.toFixed(3);
+      S.project.lyricEffects = { ...J.lyricEffectSettings(S.project), avoidCenter: true, autoPlacement: true };
+      S.tap.i++;
+      renderTech(); replan();
+      if (S.tap.i >= 1000) { pause(); stopTap(); toast('Maximum number of cuts reached'); }
+      else updateTap();
+      return;
+    }
     if(!S.tap.nextItem)return;
     if (i === 0) {
       m.timing.lineTimes = {}; m.cutOverrides = {}; m.manualCuts = true;
@@ -46437,13 +48885,17 @@ function stopTap() { clearTimeout(S.tap?.timer); $('tapCountdown').hidden=true; 
 function syncTapButtons() {
   $('tapBtn').disabled=!!S.tap?.countingDown;
   if(!S.tap)$('tapCountdown').hidden=true;
-  for (const id of ['btnTap', 'btnTapMedia']) $(id).setAttribute('aria-pressed', String(!!S.tap));
+  for (const id of ['btnTap', 'btnTapMedia', 'btnTapAvoidance']) $(id)?.setAttribute('aria-pressed', String(!!S.tap));
 }
 function updateTap() {
   const lyricQueue=!S.tap.layer,rows=[$('tapLine').parentElement,$('tapLineAhead1').parentElement,$('tapLineAhead2').parentElement];
   for(const row of rows)for(const animation of row.getAnimations())animation.cancel();
   rows[1].hidden=rows[2].hidden=!lyricQueue;
   if (S.tap.append) {
+    if (S.tap.layer === 'avoidance') {
+      const label = J.mediaLabel(`${S.tap.i + 1}. 回避cuts`, `${S.tap.i + 1}. Avoidance cut`);
+      $('tapLine').textContent = label; $('tapLine').title = label; return;
+    }
     const m=S.project[S.tap.layer],order=J.mediaOrder(S.project,S.tap.layer);
     if(!S.tap.nextItem){
       const choices=J.mediaInsertChoices(S.project,S.tap.layer).filter(id=>id!=='files'||m.loop||S.tap.fileIndex<m.items.length);
@@ -46658,7 +49110,7 @@ function bind() {
     if(button){e.stopPropagation();performTimelineAction(button);if(S.areaEdit)showAreaDraft();return;}
     const target=e.target.closest('[data-select-layer]');if(!target)return;
     const layer=target.dataset.selectLayer,index=Number(target.dataset.selectIndex);
-    if(layer==='lyrics')openAreaEditor(index,true);else openMediaEditor(index,layer,true);
+    if(layer==='lyrics')openAreaEditor(index,true);else if(layer==='avoidance')openAvoidanceEditor(index,true);else openMediaEditor(index,layer,true);
   });
 
   $('saveFilename').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('filenameDlg').querySelector('button[value="save"]').click();}});
@@ -46785,18 +49237,19 @@ function bind() {
       S.project.lyricEffects = settings; renderTech(); replan();
     });
   }
-  for(const [id,layer] of [['insertLyricAtPlayhead','lyrics'],['insertForegroundAtPlayhead','foreground'],['insertBackgroundAtPlayhead','media']])$(id).addEventListener('click',()=>openInsertAtPlayhead(layer));
-  for(const layer of ['foreground','lyrics','media']){
+  for(const [id,layer] of [['insertAvoidanceAtPlayhead','avoidance'],['insertLyricAtPlayhead','lyrics'],['insertForegroundAtPlayhead','foreground'],['insertBackgroundAtPlayhead','media']])$(id)?.addEventListener('click',()=>openInsertAtPlayhead(layer));
+  for(const layer of ['avoidance','foreground','lyrics','media']){
     const button=document.createElement('button');button.type='button';button.dataset.layer=layer;
     button.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18"/></svg>';
     button.addEventListener('click',()=>{if(S.exporting)return;S.project.layerVisibility ||= {};S.project.layerVisibility[layer]=S.project.layerVisibility[layer]===false;replan();});
     $('layerVisibilityControls').append(button);
   }
+  $('splitAvoidanceCut')?.addEventListener('click',()=>splitAvoidanceCut());
   $('splitForegroundCut').addEventListener('click',()=>openSplitMediaCut('foreground'));
   $('splitBackgroundCut').addEventListener('click',()=>openSplitMediaCut('media'));
   $('relayoutAtPlayhead').addEventListener('click',()=>{S.playheadMenu=null;relayoutAtPlayhead();syncPlayheadMenu();});
-  for(const [id,layer] of [['endForegroundHere','foreground'],['endLyricHere','lyrics'],['endBackgroundHere','media']])$(id).addEventListener('click',()=>playheadEnd(layer,false));
-  for(const [id,layer] of [['untilNextForeground','foreground'],['untilNextLyric','lyrics'],['untilNextBackground','media']])$(id).addEventListener('click',()=>playheadEnd(layer,true));
+  for(const [id,layer] of [['endAvoidanceHere','avoidance'],['endForegroundHere','foreground'],['endLyricHere','lyrics'],['endBackgroundHere','media']])$(id)?.addEventListener('click',()=>playheadEnd(layer,false));
+  for(const [id,layer] of [['untilNextAvoidance','avoidance'],['untilNextForeground','foreground'],['untilNextLyric','lyrics'],['untilNextBackground','media']])$(id)?.addEventListener('click',()=>playheadEnd(layer,true));
   document.querySelector('.playhead-secondary').addEventListener('click',e=>{if(e.target.closest('[data-playhead-action]')){S.playheadMenu=null;syncPlayheadMenu();}});
   initPlayheadMenu();
   $('timelineZoomOut').addEventListener('click', () => setTimelineZoom(S.timelineZoom / 1.5));
@@ -46832,9 +49285,47 @@ function bind() {
   },{capture:true});
   for(const type of ['wheel','pointerdown','touchstart'])$('timelineScroll').addEventListener(type,()=>{timelineUserScroll=performance.now();},{passive:true});
   $('timelinePan')?.addEventListener('pointerdown',()=>{timelineUserScroll=performance.now();});
+  $('sourceAvoidance')?.addEventListener('click',()=>selectSourceDrawer('avoidance'));
   $('sourceLyrics').addEventListener('click',()=>selectSourceDrawer('lyrics'));
   $('sourceMedia').addEventListener('click',()=>selectSourceDrawer('media'));
   $('sourceForeground').addEventListener('click',()=>selectSourceDrawer('foreground'));
+  $('avoidanceEmphasis')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.avoidEmphasis = e.target.checked;
+    replan();
+  });
+  $('avoidanceMask')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.maskAvoidance = e.target.checked;
+    replan();
+  });
+  $('avoidanceMaskOffset')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.maskRadiusOffset = J.clamp(Math.round(+e.target.value || 0), -500, 500);
+    replan();
+  });
+  $('avoidanceMaskFeather')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.maskFeather = J.clamp(Math.round(+e.target.value || 0), 0, 300);
+    replan();
+  });
+  $('avoidanceMaskCurve')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.maskCurve = e.target.value || 'smooth';
+    replan();
+  });
+  $('avoidanceLyricInsertMode')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.lyricInsertMode = e.target.value;
+    syncSourceTab(); autosave();
+  });
+  $('avoidanceGroupLyrics')?.addEventListener('change', e => {
+    S.project.avoidance ||= J.normalizeAvoidance(null);
+    S.project.avoidance.groupLyricsAsOneCut = e.target.checked;
+    syncSourceTab(); autosave();
+  });
+  $('btnAvoidanceFromLyrics')?.addEventListener('click', insertAvoidanceFromLyrics);
+  $('btnTapAvoidance')?.addEventListener('click', () => (S.tap ? stopTap() : startTap()));
   $('closeSourceDrawer').addEventListener('click',()=>{S.sourceOpen=false;syncSourceDrawer();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.sourceOpen&&!document.querySelector('dialog[open]')){S.sourceOpen=false;syncSourceDrawer();}});
   $('btnMediaFromLyrics').addEventListener('click', insertMediaFromLyrics);
@@ -46876,6 +49367,16 @@ function bind() {
   $('mediaAreaHeight').addEventListener('change', e => { if (!S.areaEdit) return; const h = J.clamp(+e.target.value / 100, 0.005, 4); setMediaDraftSize(S.areaEdit.lockAspect ? h / S.areaEdit.ratio : S.areaEdit.draft.w, h); });
   document.addEventListener('scroll',()=>{if(S.areaEdit)positionAreaEditor();},{capture:true,passive:true});
   $('mediaAreaAngle').addEventListener('input', e => { if (!S.areaEdit || e.target.value === '') return; S.areaEdit.angle = J.clamp(+e.target.value || 0, -180, 180); showAreaDraft(); });
+  $('avoidanceEditMask')?.addEventListener('change', e => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskAvoidance = e.target.checked; showAreaDraft(); });
+  const syncEditMaskOffset = v => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskRadiusOffset = J.clamp(Math.round(+v || 0), -500, 500); showAreaDraft(); };
+  $('avoidanceEditMaskOffsetRange')?.addEventListener('input', e => syncEditMaskOffset(e.target.value));
+  $('avoidanceEditMaskOffset')?.addEventListener('input', e => { if (e.target.value !== '' && e.target.value !== '-') syncEditMaskOffset(e.target.value); });
+  $('avoidanceEditMaskOffset')?.addEventListener('change', e => syncEditMaskOffset(e.target.value));
+  const syncEditMaskFeather = v => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskFeather = J.clamp(Math.round(+v || 0), 0, 300); showAreaDraft(); };
+  $('avoidanceEditMaskFeatherRange')?.addEventListener('input', e => syncEditMaskFeather(e.target.value));
+  $('avoidanceEditMaskFeather')?.addEventListener('input', e => { if (e.target.value !== '') syncEditMaskFeather(e.target.value); });
+  $('avoidanceEditMaskFeather')?.addEventListener('change', e => syncEditMaskFeather(e.target.value));
+  $('avoidanceEditMaskCurve')?.addEventListener('change', e => { if (!S.areaEdit || S.areaEdit.kind !== 'avoidance') return; S.areaEdit.maskCurve = e.target.value || 'smooth'; showAreaDraft(); });
   $('areaResetFull').addEventListener('click',()=>{
     const edit=S.areaEdit;if(!edit)return;
     edit.autoDraft=null;edit.angle=0;
@@ -46888,6 +49389,14 @@ function bind() {
   });
   $('areaResetAuto').addEventListener('click', () => {
     const edit = S.areaEdit; if (!edit) return;
+    if(edit.kind==='avoidance'){
+      const area=avoidanceCircleToDraft({cx:0.5,cy:0.5,r:0.25});
+      const defMask=J.normalizeAvoidanceMask(S.project.avoidance);
+      edit.draft=area;edit.ratio=S.plan.W/S.plan.H;edit.angle=0;edit.lockAspect=true;
+      Object.assign(edit, defMask);
+      edit.autoDraft=avoidanceEditDraftKey({draft:area,...defMask});
+      showAreaDraft();return;
+    }
     if(edit.kind!=='lyric'){
       const {area,cut}=automaticMediaArea(edit.kind,edit.index);if(!area)return;
       edit.draft=area;edit.ratio=area.h/area.w;edit.angle=cut.placement?.angle||0;edit.lockAspect=cut.placement?.lockAspect!==false;
@@ -46913,7 +49422,7 @@ function bind() {
       const remove=dialog.returnValue==='delete';dialog.remove();
       if(!remove || S.areaEdit!==edit)return;
       cancelAreaEditor();
-      if(kind==='lyric')removeLyricCut(index,part);else removeMediaCut(index,kind);
+      if(kind==='lyric')removeLyricCut(index,part);else if(kind==='avoidance')removeAvoidanceCut(index);else removeMediaCut(index,kind);
     },{once:true});
     dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close('cancel');}});
     document.body.append(dialog);dialog.showModal();dialog.querySelector('[value="cancel"]').focus();
@@ -47100,8 +49609,8 @@ function bind() {
   durationHandle.addEventListener('pointercancel', () => {
     S.durationDrag = null; durationHandle.classList.remove('dragging'); durationHandle.style.transform = ''; updateTimeUI();
   });
-  for (const tl of [$('timeline'), $('mediaTimeline'), $('foregroundTimeline')]) {
-    const layer = tl.id === 'timeline' ? 'lyrics' : tl.id === 'foregroundTimeline' ? 'foreground' : 'media';
+  for (const tl of [$('avoidanceTimeline'), $('timeline'), $('mediaTimeline'), $('foregroundTimeline')].filter(Boolean)) {
+    const layer = tl.id === 'avoidanceTimeline' ? 'avoidance' : tl.id === 'timeline' ? 'lyrics' : tl.id === 'foregroundTimeline' ? 'foreground' : 'media';
     let drag = null;
     tl.addEventListener('pointerdown', e => {
       const boundary = !S.exporting && !S.tap && timelineBoundaryAt(e, layer);
