@@ -1,0 +1,12 @@
+--- a/src/06_layouts.js
++++ b/src/06_layouts.js
+@@ -11,0 +12,9 @@
++  // Offsets use native source-content units, indexed by the item's mi.
++  // The item, its hooks and returned bbox move together before front decor.
++  // The native area/camera clip remains unchanged; scatter extras use env.draw.
++  const recipe=env.cut.simpleCircleRecipe;
++  if(recipe?.nativeIdentity&&recipe.primaryOwnerOffsets&&['mixed','scatter'].includes(env.cut.layout)&&!env.cut.fullStagePlacement){
++    const i=it.mi,d=recipe.primaryOwnerOffsets[i];
++    if(!Number.isInteger(i)||i<0||!Array.isArray(d)||d.length!==2||!d.every(Number.isFinite))throw Object.assign(Error('Unmeasured owner offset'),{code:'UNSUPPORTED_PRIMARY_OWNER_OFFSET'});
++    it={...it,x:it.x+d[0],y:it.y+d[1]};
++  }
