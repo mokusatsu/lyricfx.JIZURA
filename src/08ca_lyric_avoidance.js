@@ -165,11 +165,11 @@
     const lines = lyricPlan?.lines || [];
     const baseDur = lyricPlan?.duration || 3;
     const manualEntries = Object.entries(a.timing.lineTimes).filter(([i, t]) => +i < count && Number.isFinite(+t));
-    const manualEnd = Math.max(0, ...manualEntries.map(([, t]) => +t + 4));
-    const fixedMinimum = Math.max(count * 0.04, ...manualEntries.map(([i, t]) => +t + (count - +i) * 0.04));
+    const manualEnd = Math.max(0, ...manualEntries.map(([i, t]) => {const end=J.cutEndTime?.(a.cutOverrides[i]);return end == null ? +t + 4 : Math.max(+t+.04,end);}));
+    const fixedMinimum = Math.max(0, ...manualEntries.map(([i, t]) => +t + (J.cutEndTime?.(a.cutOverrides[i]) != null ? .04 : (count - +i) * .04)));
     let duration = fixedDuration != null
       ? Math.max(fixedDuration, baseDur, fixedMinimum)
-      : Math.max(baseDur, audioDuration || 0, manualEnd, lines.length ? 0 : count * 4);
+      : Math.max(baseDur, audioDuration || 0, manualEnd, lines.length || (a.timelineMode && manualEntries.length === count && manualEntries.every(([i]) => J.cutEndTime?.(a.cutOverrides[i]) != null)) ? 0 : count * 4);
     const lyricCount = Math.min(count, lines.length);
     const starts = Array.from({ length: count }, (_, i) => {
       const v = a.timing.lineTimes[i];
