@@ -342,7 +342,7 @@ function replan() {
     /^[fma]:\d+$/.test(ref) && +ref.slice(2) < S.project[ref[0]==='f'?'foreground':ref[0]==='a'?'avoidance':'media'].cutCount);
   S.project.timelineLinks = S.project.timelineLinks.filter(link => link && link.a !== link.b && (boundaryCut(link.a) || temporarilyHidden(link.a)) && (boundaryCut(link.b) || temporarilyHidden(link.b)));
   lastCutIdx = null;
-  renderLines(); renderMediaList(); renderMediaLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
+  renderLines(); renderMediaList(); renderMediaLines(); renderAvoidanceLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
   S.need = true; autosave(); ensureFonts(); drawSwatch(); showNow();
   clearTimeout(warmTimer); warmTimer = setTimeout(warm, 450);
 }
@@ -2857,8 +2857,8 @@ function syncSourceTab() {
   $('sourceForeground').setAttribute('aria-selected', String(layer === 'foreground'));
   if ($('avoidancePane')) $('avoidancePane').hidden = !avoidance;
   $('lyricsPane').hidden = media || avoidance; $('mediaPane').hidden = !media;
-  if ($('avoidanceLineList')) $('avoidanceLineList').hidden = true;
-  if ($('cutsHeadingRow')) $('cutsHeadingRow').hidden = avoidance;
+  if ($('avoidanceLineList')) $('avoidanceLineList').hidden = !avoidance;
+  if ($('cutsHeadingRow')) $('cutsHeadingRow').hidden = false;
   $('lineList').hidden = media || avoidance; $('mediaLineList').hidden = !media;
   $('cutsHeading').textContent = (media || avoidance) ? J.mediaLabel('カット', 'Cuts') : J.mediaLabel('行とカット', 'Lines and cuts');
   $('mediaPaneTitle').textContent = layer === 'foreground' ? '前景' : '背景';
@@ -3472,6 +3472,23 @@ function splitAvoidanceCut() {
   }
   replan(); seek(time);
 }
+// The restored cut list shares the same model and editors as the timeline.
+function renderAvoidanceLines() {
+  const ol=$('avoidanceLineList');if(!ol || !S.plan?.avoidance)return;
+  ol.replaceChildren();S.avoidanceLineEls=[];const L=J.mediaLabel;
+  S.plan.avoidance.cuts.forEach((cut,i)=>{
+    const li=document.createElement('li');li.className='ln media-ln avoidance-ln';li.dataset.index=i;
+    const name=cut.kind==='person'?L('人物マスク','Person mask'):L('円形領域','Circle');
+    li.innerHTML=`<span class="no">${String(i+1).padStart(2,'0')}</span><input class="time mono" type="number" step="any" min="0" value="${cut.start}" aria-label="${L('開始秒','Start time')}"><span class="txt">${escapeHtml(name)}${cut.name?': '+escapeHtml(cut.name.replace(/^(?:人物：|Person:\s*)/,'')):''}</span><div class="meta"><span class="avoidance-end muted mono">${L('終了','End')}: ${cut.end.toFixed(2)}s</span><span class="tools"><label class="check"><input type="checkbox" class="avoidance-cut-enable" ${cut.enabled?'checked':''}>${L('有効','Enabled')}</label><button class="icon ghost lock" type="button" aria-label="${L('ロック','Lock')}" aria-pressed="${cut.lock?'true':'false'}">${ICON.lock}</button><button class="ghost small edit-avoidance-cut" type="button">${L('編集','Edit')}</button><button class="ghost small remove-avoidance-cut" type="button">${L('削除','Delete')}</button></span></div>`;
+    li.querySelector('.txt').onclick=()=>seek(Math.min(cut.end-.001,cut.start+.001));
+    li.querySelector('.time').onchange=e=>{const v=Number(e.target.value),group=boundaryGroupLimits('a:'+i);if(!e.target.value||!Number.isFinite(v)||!group||v<group.min||v>group.max){e.target.value=cut.start;return;}if(v===cut.start)return;remember();commitTimelineBoundary({ref:'a:'+i,preview:v});commit();};
+    li.querySelector('.avoidance-cut-enable').onchange=e=>{remember();avoidanceOv(i,{enabled:e.target.checked});replan();commit();};
+    li.querySelector('.lock').onclick=()=>{remember();toggleAvoidanceCutLock(i);commit();};
+    li.querySelector('.edit-avoidance-cut').onclick=()=>cut.kind==='person'?openAvoidancePersonEditor(i):openAvoidanceEditor(i);
+    li.querySelector('.remove-avoidance-cut').onclick=()=>{remember();removeAvoidanceCut(i);commit();};
+    ol.append(li);S.avoidanceLineEls.push(li);
+  });
+}
 function renderMediaLines() {
   const layer = activeMediaLayer() || 'media', m = S.project[layer];
   const ol = $('mediaLineList'); ol.innerHTML = ''; S.mediaLineEls = [];
@@ -3830,6 +3847,7 @@ function selectSourceDrawer(tab) {
   }
   cancelAreaEditor();S.sourceTab=tab;syncSourceTab();
 
+  if(tab==='avoidance')renderAvoidanceLines();
   if(tab!=='lyrics' && tab!=='avoidance'){renderMediaList();renderMediaLines();}
   syncSourceDrawer();
 }
