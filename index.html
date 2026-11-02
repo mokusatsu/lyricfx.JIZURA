@@ -47143,6 +47143,7 @@ function showAreaDraft() {
   $('areaResetAuto').hidden = !edit;
   const currentDraftKey = isAvoidance ? avoidanceEditDraftKey(edit) : (area ? JSON.stringify(J.lyricArea({ ...area, angle: edit.angle, lockAspect: edit.lockAspect })) : '');
   $('areaResetAuto').disabled = !edit || edit.autoDraft === currentDraftKey;
+  $('areaResetAuto').textContent=J.mediaLabel('自動配置','Auto placement');$('areaCancel').textContent=J.mediaLabel('キャンセル','Cancel');
   $('areaApplyOne').textContent = isAvoidance && edit.newCut ? J.mediaLabel('追加','Add') : J.mediaLabel('配置決定','Set placement');
   $('areaApplyFollowing').hidden = !!(isAvoidance && edit.newCut);$('areaDelete').hidden = !!(isAvoidance && edit.newCut);
   $('areaApplyOne').disabled = !area;
@@ -47194,7 +47195,7 @@ function openAvoidancePersonEditor(index,isNew=false) {
     const x=preview.getContext('2d');x.clearRect(0,0,preview.width,preview.height);x.fillStyle='#18181c';x.fillRect(0,0,preview.width,preview.height);
     if(!choice?.cut.itemId){previewNote.textContent=L('素材を選択するとプレビューを表示します。','Select a source to show a preview.');return;}
     const sourceCut={...choice.cut,personCutout:ref}, t=J.clamp(S.t,sourceCut.start,Math.max(sourceCut.start,sourceCut.end-.001));
-    try{if(sourceCut.type==='video')await J.prepareMediaFrame(S.plan,t);if(ref)await J.preparePersonMask(sourceCut,t,true);if(token!==statusToken||!dialog.open)return;
+    try{if(sourceCut.type==='video'){const asset=J.mediaAssets.get(sourceCut.itemId);if(asset)await J.seekMediaVideo(asset.element,J.mediaVideoTime(sourceCut,t,asset.element.duration),undefined,sourceCut.name);}if(ref)await J.preparePersonMask(sourceCut,t,true);if(token!==statusToken||!dialog.open)return;
       J.drawMediaCut(x,sourceCut,t,{noEnter:true,noExit:true});
       const matte=J.personMaskFrame(sourceCut,t);if(matte && form.elements.guide.checked){const mask=document.createElement('canvas');mask.width=preview.width;mask.height=preview.height;const mx=mask.getContext('2d');J.drawMediaCut(mx,sourceCut,t,{personPass:true,noEnter:true,noExit:true});mx.globalCompositeOperation='source-in';mx.fillStyle='#ff6f9c';mx.fillRect(0,0,mask.width,mask.height);x.globalAlpha=.45;x.drawImage(mask,0,0);x.globalAlpha=1;}
       previewNote.textContent=L('素材：','Source: ')+(sourceCut.name||'')+` — ${t.toFixed(2)} s`+(matte?'':L('（この時刻のマスクなし）',' (no mask at this time)'));
@@ -48742,13 +48743,14 @@ async function runExport(kind) {
     // Ask while the export click still has user activation. Stream large MP4s
     // straight to this file instead of holding the whole movie in browser RAM.
     if(mp4&&typeof window.showSaveFilePicker==='function'){
-      try{
-        const handle=await window.showSaveFilePicker({suggestedName:filename,types:[{description:'MP4',accept:{'video/mp4':['.mp4']}}]});
-        fileStream=await handle.createWritable();
-      }catch(e){
-        // Embedded pages can expose the API while disallowing its picker.
-        if(e?.name!=='SecurityError')throw e;
+      let handle;
+      try{handle=await window.showSaveFilePicker({suggestedName:filename,types:[{description:'MP4',accept:{'video/mp4':['.mp4']}}]});}
+      catch(e){
+        // The API may exist even when this browser or embedded host refuses it.
+        if(e?.name!=='SecurityError' && e?.name!=='NotAllowedError')throw e;
       }
+      // Write failures are real export errors, not picker availability failures.
+      if(handle)fileStream=await handle.createWritable();
     }
     await J.ensureFonts(S.project.lyrics + (S.project.title || '') + (S.project.artist || '') + HUD_CHARS + J.drawingText(S.plan), J.fontsOfPlan(S.plan));
     if (mp4) {
