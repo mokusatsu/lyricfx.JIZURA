@@ -46728,6 +46728,7 @@ function sortAvoidanceBoundaries() {
   });
   a.cutOverrides=overrides;a.timing.lineTimes=times;
   for(const link of S.project.timelineLinks)for(const side of ['a','b'])if(/^a:\d+$/.test(link[side]))link[side]='a:'+indexes[+link[side].slice(2)];
+  return indexes;
 }
 function commitTimelineBoundary(drag) {
   const t = +drag.preview.toFixed(3);
@@ -47192,10 +47193,13 @@ function addAvoidanceRange(start,end,patch) {
   for(const link of S.project.timelineLinks)for(const side of ['a','b'])if(/^a:\d+$/.test(link[side]) && +link[side].slice(2)>=at)link[side]='a:'+(+link[side].slice(2)+1);
   return at;
 }
+function seekInsideAvoidanceCut(cut) {
+  if(cut && (S.t<cut.start || S.t>=cut.end))seek(cut.start+Math.min(.01,(cut.end-cut.start)/2));
+}
 function openAvoidancePersonEditor(index,isNew=false) {
   if(S.exporting || S.tap)return;
   const cut=isNew?{kind:'person',start:0,end:S.plan.duration,enabled:true,guide:true,occlusion:'all',behindForeground:false,manualEnd:true}:S.plan.avoidance?.cuts[index];if(!cut || cut.kind!=='person')return;
-  if(S.areaEdit)cancelAreaEditor();pause();
+  if(S.areaEdit)cancelAreaEditor();pause();const oldTime=S.t;seekInsideAvoidanceCut(cut);
   const L=J.mediaLabel, dialog=document.createElement('dialog');dialog.id='avoidancePersonDialog';dialog.className='insert-cut-dialog avoidance-person-dialog avoidance-inline-dialog';
   dialog.setAttribute('aria-label',L('人物マスクの編集','Edit person mask'));
   const sources=['media','foreground'].flatMap(layer=>S.plan[layer].cuts.map(c=>({layer,cut:c})));
@@ -47207,7 +47211,7 @@ function openAvoidancePersonEditor(index,isNew=false) {
   const makeGroup=(title,nodes)=>{const section=document.createElement('section');section.className='avoidance-control-group';const heading=document.createElement('strong');heading.textContent=title;section.append(heading,...nodes);return section;};
   const field=name=>form.elements[name].closest('label');const hints=[...form.querySelectorAll('p.hint')].filter(el=>!el.closest('.person-preview'));const previewBlock=form.querySelector('.person-preview');const actions=form.querySelector('.row');
   form.append(makeGroup(L('時間・有効化','Time and activation'),[field('enabled'),field('lock'),field('guide'),field('start'),field('untilNext'),field('end')]),makeGroup(L('人物素材','Person source'),[field('source'),hints[0],status,hints[1],generate,previewBlock]),makeGroup(L('マスク・重なり','Mask and overlap'),[field('occlusion'),field('foreground')]),actions);
-  actions.className='area-edit-confirm';S.areaEdit={kind:'person',oldTime:S.t};$('viewport').classList.add('person-area-selection');beginAreaSelection();positionAreaEditor();
+  actions.className='area-edit-confirm';S.areaEdit={kind:'person',oldTime};$('viewport').classList.add('person-area-selection');beginAreaSelection();positionAreaEditor();
 
   const selected=()=>{const [layer,n]=source.value.split(':');const c=source.value && S.plan[layer]?.cuts[+n];return c?{layer,cut:c}:null;};
   let statusToken=0, endChanged=false, startChanged=false,pendingMask=null,preparedPreview=null;
@@ -47238,16 +47242,16 @@ function openAvoidancePersonEditor(index,isNew=false) {
   };
   source.onchange=()=>{preparedPreview=null;syncStatus();};form.elements.guide.onchange=paintPersonPreview;form.elements.start.oninput=()=>{startChanged=true;form.elements.end.setCustomValidity('');};form.elements.end.oninput=()=>{endChanged=true;form.elements.end.setCustomValidity('');};form.elements.untilNext.onchange=()=>{endChanged=true;form.elements.end.disabled=form.elements.untilNext.checked;form.elements.end.setCustomValidity('');};
   generate.onclick=()=>{const choice=selected();if(!choice)return;openCutDetails(choice.layer,choice.cut.index,0,{personOnly:true,deferApply:ref=>{pendingMask={layer:choice.layer,index:choice.cut.index,ref};}});const nested=document.querySelector('#cutDetailsDialog');if(nested)nested.addEventListener('close',()=>{if(dialog.open)syncStatus();},{once:true});};
-  form.onsubmit=e=>{e.preventDefault();const start=form.elements.start.disabled?cut.start:+form.elements.start.value, end=+form.elements.end.value;
+  let applied=false;form.onsubmit=e=>{e.preventDefault();const start=form.elements.start.disabled?cut.start:+form.elements.start.value, end=+form.elements.end.value;
     if(!form.elements.untilNext.checked && end<start+.04-1e-7){form.elements.end.setCustomValidity(L('終了位置は開始位置より後にしてください','End must be after start'));form.reportValidity();return;}
     form.elements.end.setCustomValidity('');if(!form.reportValidity())return;
     const choice=selected();remember();if(pendingMask && choice && pendingMask.layer===choice.layer && pendingMask.index===choice.cut.index)mediaOv(choice.cut.index,{personCutout:pendingMask.ref},choice.layer);if(!isNew && group && startChanged && start!==cut.start)for(const member of group.members)setTimelineBoundaryTime(member,start);
     const patch={kind:'person',source:choice?{layer:choice.layer,index:choice.cut.index,itemId:choice.cut.itemId}:undefined,enabled:form.elements.enabled.checked,lock:form.elements.lock.checked,guide:form.elements.guide.checked,occlusion:form.elements.occlusion.value,behindForeground:form.elements.foreground.checked,...(endChanged?(form.elements.untilNext.checked?{untilNext:undefined,endTime:undefined}:{untilNext:false,endTime:end}):{})};
     if(isNew)index=addAvoidanceRange(start,end,{...patch,untilNext:form.elements.untilNext.checked});else avoidanceOv(index,patch);
-    if(!isNew && startChanged)sortAvoidanceBoundaries();replan();const updated=S.plan.avoidance.cuts[index];if(updated && (S.t<updated.start || S.t>=updated.end))seek(updated.start+Math.min(.01,(updated.end-updated.start)/2));dialog.close();
+    if(!isNew && startChanged){const indexes=sortAvoidanceBoundaries();if(indexes)index=indexes[index];}replan();seekInsideAvoidanceCut(S.plan.avoidance.cuts[index]);applied=true;dialog.close();
   };
   const onEscape=e=>{if(e.key==='Escape'&&!document.querySelector('dialog[open]:not(.avoidance-inline-dialog)')){e.preventDefault();dialog.close();}};document.addEventListener('keydown',onEscape);
-  dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{document.removeEventListener('keydown',onEscape);statusToken++;endAreaSelection();$('viewport').classList.remove('person-area-selection');S.areaEdit=null;dialog.remove();for(const [el,hidden] of existing)el.hidden=hidden;controls.classList.remove('avoidance-controls');controls.hidden=true;J.syncMediaPreview(S.plan,S.t,false);S.need=true;});dialog.show();dialog.querySelector('[data-cancel]').focus({preventScroll:true});syncStatus();
+  dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{document.removeEventListener('keydown',onEscape);statusToken++;endAreaSelection();$('viewport').classList.remove('person-area-selection');S.areaEdit=null;dialog.remove();for(const [el,hidden] of existing)el.hidden=hidden;controls.classList.remove('avoidance-controls');controls.hidden=true;if(!applied)seek(oldTime);J.syncMediaPreview(S.plan,S.t,false);S.need=true;});dialog.show();dialog.querySelector('[data-cancel]').focus({preventScroll:true});syncStatus();
 }
 function openAvoidanceEditor(index, fromPreview=false, isNew=false) {
   if (S.exporting || S.tap) return;
@@ -47261,7 +47265,7 @@ function openAvoidanceEditor(index, fromPreview=false, isNew=false) {
   const defMask = J.normalizeAvoidanceMask(S.project.avoidance);
   const autoDraft = avoidanceEditDraftKey({ draft: autoDraftRect, ...defMask });
   S.areaEdit = { kind: 'avoidance', index, newCut:isNew, oldTime: S.t, draft, ratio: S.plan.W / S.plan.H, lockAspect: true, angle: 0, drag: null, enabled:cut.enabled,lock:!!cut.lock,placement:cut.placement,avoidEmphasis:cut.avoidEmphasis,occlusion:cut.occlusion,behindForeground:cut.behindForeground,guide:cut.guide,start:cut.start,end:cut.end,untilNext:!cut.manualEnd,initialUntilNext:!cut.manualEnd,initialEnd:cut.end,group:isNew?{members:[],min:0,max:S.plan.duration-.04}:boundaryGroupLimits('a:'+index),maskAvoidance: cut.occlusion !== 'none', maskRadiusOffset: cut.maskRadiusOffset ?? defMask.maskRadiusOffset, maskFeather: cut.maskFeather ?? defMask.maskFeather, maskCurve: cut.maskCurve || defMask.maskCurve, autoDraft };
-  if (!fromPreview) seek(cut.start + Math.min(0.5, Math.max(0.001, (cut.end - cut.start) / 2)));
+  seekInsideAvoidanceCut(cut);
   $('areaEditOverlay').hidden = false; $('areaEditControls').hidden = false;
   beginAreaSelection(); positionAreaEditor(); showAreaDraft();
 }
@@ -47297,7 +47301,7 @@ function automaticMediaArea(layer,index) {
 }
 function applyAreaEditor(following) {
   if (!S.areaEdit || !S.areaEdit.draft) return;
-  const { kind, index, draft } = S.areaEdit;
+  const { kind, index, draft } = S.areaEdit;let editedAvoidanceIndex=index;
   if(kind==='avoidance' && (!Number.isFinite(S.areaEdit.start) || !S.areaEdit.untilNext && (!Number.isFinite(S.areaEdit.end) || S.areaEdit.end<S.areaEdit.start+.04-1e-7) || S.areaEdit.group && (S.areaEdit.start<S.areaEdit.group.min || S.areaEdit.start>S.areaEdit.group.max))){toast(J.mediaLabel('開始・終了位置を確認してください','Check the start and end times'));return;}
   remember();
   // 「以降にも適用」 leaves other locked cuts alone; the edited cut itself stays locked with its new place.
@@ -47308,7 +47312,7 @@ function applyAreaEditor(following) {
     const defMask = J.normalizeAvoidanceMask(S.project.avoidance);
     const maskPatch = J.normalizeAvoidanceMask(S.areaEdit, defMask);
     if(!S.areaEdit.newCut && S.areaEdit.group && S.areaEdit.start!==S.plan.avoidance.cuts[index].start)for(const member of S.areaEdit.group.members)setTimelineBoundaryTime(member,S.areaEdit.start);
-    if(S.areaEdit.newCut) addAvoidanceRange(S.areaEdit.start,S.areaEdit.end,{...circle,lock:S.areaEdit.lock,enabled:S.areaEdit.enabled,placement:S.areaEdit.placement,avoidEmphasis:S.areaEdit.avoidEmphasis,occlusion:S.areaEdit.occlusion,behindForeground:S.areaEdit.behindForeground,guide:S.areaEdit.guide,untilNext:S.areaEdit.untilNext,maskRadiusOffset:maskPatch.maskRadiusOffset,maskFeather:maskPatch.maskFeather,maskCurve:maskPatch.maskCurve});
+    if(S.areaEdit.newCut) editedAvoidanceIndex=addAvoidanceRange(S.areaEdit.start,S.areaEdit.end,{...circle,lock:S.areaEdit.lock,enabled:S.areaEdit.enabled,placement:S.areaEdit.placement,avoidEmphasis:S.areaEdit.avoidEmphasis,occlusion:S.areaEdit.occlusion,behindForeground:S.areaEdit.behindForeground,guide:S.areaEdit.guide,untilNext:S.areaEdit.untilNext,maskRadiusOffset:maskPatch.maskRadiusOffset,maskFeather:maskPatch.maskFeather,maskCurve:maskPatch.maskCurve});
     else for (let i = index; i < (following ? S.plan.avoidance.cuts.length : index + 1); i++) {
       if (i !== index && (S.project.avoidance.cutOverrides[i]?.lock || S.plan.avoidance.cuts[i]?.kind==='person')) continue;
       avoidanceOv(i, {
@@ -47342,9 +47346,9 @@ function applyAreaEditor(following) {
     }
     relock('lyrics', index);
   }
-  if(kind==='avoidance' && !S.areaEdit.newCut)sortAvoidanceBoundaries();
+  if(kind==='avoidance' && !S.areaEdit.newCut){const indexes=sortAvoidanceBoundaries();if(indexes)editedAvoidanceIndex=indexes[index];}
   endAreaSelection();S.areaEdit = null; $('areaEditOverlay').hidden = true; $('areaEditControls').hidden = true;
-  replan(); commit();
+  replan();if(kind==='avoidance')seekInsideAvoidanceCut(S.plan.avoidance.cuts[editedAvoidanceIndex]);commit();
 }
 function areaPointer(ev) {
   const box = $('areaEditOverlay').getBoundingClientRect();
