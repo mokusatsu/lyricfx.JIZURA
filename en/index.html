@@ -47453,15 +47453,22 @@ function openAvoidancePersonEditor(index,isNew=false) {
   actions.className='area-edit-confirm';S.areaEdit={kind:'person',oldTime:S.t};$('viewport').classList.add('person-area-selection');beginAreaSelection();positionAreaEditor();
 
   const selected=()=>{const [layer,n]=source.value.split(':');const c=source.value && S.plan[layer]?.cuts[+n];return c?{layer,cut:c}:null;};
-  let statusToken=0, endChanged=false, startChanged=false,pendingMask=null;
+  let statusToken=0, endChanged=false, startChanged=false,pendingMask=null,preparedPreview=null;
   const preview=dialog.querySelector('[data-person-preview]'),previewNote=dialog.querySelector('[data-person-preview-note]');
+  const paintPersonPreview=()=>{
+    if(!preparedPreview)return;
+    const x=preview.getContext('2d');x.clearRect(0,0,preview.width,preview.height);x.drawImage(preparedPreview.base,0,0);
+    if(preparedPreview.overlay && form.elements.guide.checked){x.globalAlpha=.45;x.drawImage(preparedPreview.overlay,0,0);x.globalAlpha=1;}
+  };
   const drawPersonPreview=async(choice,ref,token)=>{
-    preview.hidden=!choice?.cut.itemId;const x=preview.getContext('2d');x.clearRect(0,0,preview.width,preview.height);x.fillStyle='#18181c';x.fillRect(0,0,preview.width,preview.height);
+    preparedPreview=null;preview.hidden=!choice?.cut.itemId;const x=preview.getContext('2d');x.clearRect(0,0,preview.width,preview.height);x.fillStyle='#18181c';x.fillRect(0,0,preview.width,preview.height);
     if(!choice?.cut.itemId){previewNote.textContent=L('素材を選択するとプレビューを表示します。','Select a source to show a preview.');return;}
     const sourceCut={...choice.cut,personCutout:ref}, t=J.clamp(S.t,sourceCut.start,Math.max(sourceCut.start,sourceCut.end-.001));
     try{if(sourceCut.type==='video'){const asset=J.mediaAssets.get(sourceCut.itemId);if(asset)await J.seekMediaVideo(asset.element,J.mediaVideoTime(sourceCut,t,asset.element.duration),undefined,sourceCut.name);}if(ref)await J.preparePersonMask(sourceCut,t,true);if(token!==statusToken||!dialog.open)return;
-      J.drawMediaCut(x,sourceCut,t,{noEnter:true,noExit:true});
-      const matte=J.personMaskFrame(sourceCut,t);if(matte && form.elements.guide.checked){const mask=document.createElement('canvas');mask.width=preview.width;mask.height=preview.height;const mx=mask.getContext('2d');J.drawMediaCut(mx,sourceCut,t,{personPass:true,noEnter:true,noExit:true});mx.globalCompositeOperation='source-in';mx.fillStyle='#ff6f9c';mx.fillRect(0,0,mask.width,mask.height);x.globalAlpha=.45;x.drawImage(mask,0,0);x.globalAlpha=1;}
+      const base=document.createElement('canvas');base.width=preview.width;base.height=preview.height;const bx=base.getContext('2d');bx.fillStyle='#18181c';bx.fillRect(0,0,base.width,base.height);J.drawMediaCut(bx,sourceCut,t,{noEnter:true,noExit:true});
+      const matte=J.personMaskFrame(sourceCut,t);let overlay=null;
+      if(matte){overlay=document.createElement('canvas');overlay.width=preview.width;overlay.height=preview.height;const mx=overlay.getContext('2d');J.drawMediaCut(mx,sourceCut,t,{personPass:true,noEnter:true,noExit:true});mx.globalCompositeOperation='source-in';mx.fillStyle='#ff6f9c';mx.fillRect(0,0,overlay.width,overlay.height);}
+      preparedPreview={base,overlay};paintPersonPreview();
       previewNote.textContent=L('素材：','Source: ')+(sourceCut.name||'')+` — ${t.toFixed(2)} s`+(matte?'':L('（この時刻のマスクNone）',' (no mask at this time)'));
     }catch(error){if(token===statusToken)previewNote.textContent=L('プレビューを表示できません：','Cannot show preview: ')+error.message;}
   };
@@ -47472,7 +47479,7 @@ function openAvoidancePersonEditor(index,isNew=false) {
     const ref=J.personCutout({...choice.cut,personCutout:pendingMask?.layer===choice.layer && pendingMask.index===choice.cut.index?pendingMask.ref:choice.cut.personCutout});if(!ref){drawPersonPreview(choice,null,token);status.textContent=L(`未解析：${target}`,`Not analyzed: ${target}`);return;}
     status.textContent=L(`解析状態を確認中：${target}`,`Checking analysis: ${target}`);try{const entry=await J.loadPersonMask(ref);if(token!==statusToken || !dialog.open)return;drawPersonPreview(choice,entry?ref:null,token);status.textContent=!entry?L(`未解析：${target}`,`Not analyzed: ${target}`):J.personMaskCoverage(choice.cut,entry).missing?L(`解析範囲不足：${target}`,`Analysis range incomplete: ${target}`):L(`解析済み：${target}`,`Analyzed: ${target}`);}catch(error){if(token===statusToken)status.textContent=L(`解析状態を確認できません：${target}`,`Cannot check analysis: ${target}`);}
   };
-  source.onchange=syncStatus;form.elements.guide.onchange=syncStatus;form.elements.start.oninput=()=>{startChanged=true;form.elements.end.setCustomValidity('');};form.elements.end.oninput=()=>{endChanged=true;form.elements.end.setCustomValidity('');};form.elements.untilNext.onchange=()=>{endChanged=true;form.elements.end.disabled=form.elements.untilNext.checked;form.elements.end.setCustomValidity('');};
+  source.onchange=()=>{preparedPreview=null;syncStatus();};form.elements.guide.onchange=paintPersonPreview;form.elements.start.oninput=()=>{startChanged=true;form.elements.end.setCustomValidity('');};form.elements.end.oninput=()=>{endChanged=true;form.elements.end.setCustomValidity('');};form.elements.untilNext.onchange=()=>{endChanged=true;form.elements.end.disabled=form.elements.untilNext.checked;form.elements.end.setCustomValidity('');};
   generate.onclick=()=>{const choice=selected();if(!choice)return;openCutDetails(choice.layer,choice.cut.index,0,{personOnly:true,deferApply:ref=>{pendingMask={layer:choice.layer,index:choice.cut.index,ref};}});const nested=document.querySelector('#cutDetailsDialog');if(nested)nested.addEventListener('close',()=>{if(dialog.open)syncStatus();},{once:true});};
   form.onsubmit=e=>{e.preventDefault();const start=form.elements.start.disabled?cut.start:+form.elements.start.value, end=+form.elements.end.value;
     if(!form.elements.untilNext.checked && end<start+.04-1e-7){form.elements.end.setCustomValidity(L('終了位置は開始位置より後にしてください','End must be after start'));form.reportValidity();return;}

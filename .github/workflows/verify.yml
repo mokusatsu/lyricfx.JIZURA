@@ -61,6 +61,7 @@ jobs:
         env:
           NODE_PATH: ${{ github.workspace }}/mcp/node_modules
         run: |
+          node dev/avoidance_guide_toggle_test.cjs
           node dev/avoidance_cut_list_test.cjs
           node dev/avoidance_editor_layout_test.cjs
           node dev/avoidance_preview_recovery_test.cjs
