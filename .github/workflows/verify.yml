@@ -61,6 +61,7 @@ jobs:
         env:
           NODE_PATH: ${{ github.workspace }}/mcp/node_modules
         run: |
+          node dev/avoidance_editor_layout_test.cjs
           node dev/avoidance_preview_recovery_test.cjs
           node dev/export_picker_recovery_test.cjs
       - name: Verify person cutout and export

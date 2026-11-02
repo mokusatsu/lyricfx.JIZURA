@@ -443,7 +443,7 @@ function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
     Object.assign(avoidanceCut, draftToAvoidanceCircle(edit.draft), { enabled:edit.enabled, placement:edit.placement, avoidEmphasis:edit.avoidEmphasis, occlusion:edit.occlusion, behindForeground:edit.behindForeground, maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: edit.maskRadiusOffset ?? 0, maskFeather: edit.maskFeather ?? 60, maskCurve: edit.maskCurve || 'smooth' });
     if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = true;
   }
-  try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance', noForeground: !!edit && edit.kind === 'media' }); }
+  try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance' && edit.kind !== 'person', noForeground: !!edit && edit.kind === 'media' }); }
   finally {
     previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; });
     if (mediaCut) Object.assign(mediaCut, previousMedia);
@@ -2547,6 +2547,8 @@ function positionAreaEditor() {
   if (!S.areaEdit) return;
   const view = $('view').getBoundingClientRect(), viewport = $('viewport').getBoundingClientRect(), overlay = $('areaEditOverlay');
   Object.assign(overlay.style, { left: `${view.left - viewport.left}px`, top: `${view.top - viewport.top}px`, width: `${view.width}px`, height: `${view.height}px` });
+  const personPreview=document.querySelector('#avoidancePersonDialog [data-person-preview]');
+  if(personPreview)Object.assign(personPreview.style,{left:`${view.left}px`,top:`${view.top}px`,width:`${view.width}px`,height:`${view.height}px`});
   const shade=$('areaSelectionShade');
   if(shade){
     shade.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);
@@ -2575,6 +2577,7 @@ function showAreaDraft() {
   if (area) Object.assign(rect.style, { left: `${area.x * 100}%`, top: `${area.y * 100}%`, width: `${area.w * 100}%`, height: `${area.h * 100}%`, transform: `rotate(${edit.angle}deg)` });
   $('areaEditOverlay').classList.toggle('media-edit', !!edit);
   $('areaEditOverlay').classList.toggle('avoidance-edit', !!isAvoidance);$('areaEditControls').classList.toggle('avoidance-controls',!!isAvoidance);
+  $('avoidanceEditorHeading').hidden=!isAvoidance;if(isAvoidance)$('avoidanceEditorHeading').textContent=edit.newCut?J.mediaLabel('円形領域を追加','Add circle'):J.mediaLabel('円形領域の編集','Edit circle');
   $('mediaAreaSizeControls').hidden = !edit;
   if (area) { $('mediaAreaAspectLock').checked = edit.lockAspect; $('mediaAreaAspectLock').disabled = !!isAvoidance; $('mediaAreaWidth').value = String(Math.round(area.w * 1000) / 10); $('mediaAreaHeight').value = String(Math.round(area.h * 1000) / 10); }
   $('mediaAreaAngleField').hidden = !edit || !!isAvoidance;
@@ -2650,18 +2653,24 @@ function openAvoidancePersonEditor(index,isNew=false) {
   if(S.exporting || S.tap)return;
   const cut=isNew?{kind:'person',start:0,end:S.plan.duration,enabled:true,guide:true,occlusion:'all',behindForeground:false,manualEnd:true}:S.plan.avoidance?.cuts[index];if(!cut || cut.kind!=='person')return;
   if(S.areaEdit)cancelAreaEditor();pause();
-  const L=J.mediaLabel, dialog=document.createElement('dialog');dialog.id='avoidancePersonDialog';dialog.className='insert-cut-dialog avoidance-person-dialog';
+  const L=J.mediaLabel, dialog=document.createElement('dialog');dialog.id='avoidancePersonDialog';dialog.className='insert-cut-dialog avoidance-person-dialog avoidance-inline-dialog';
   dialog.setAttribute('aria-label',L('人物マスクの編集','Edit person mask'));
   const sources=['media','foreground'].flatMap(layer=>S.plan[layer].cuts.map(c=>({layer,cut:c})));
   const options=sources.map(({layer,cut:c})=>`<option value="${layer}:${c.index}" ${cut.source?.layer===layer && cut.source.index===c.index && (!cut.source.itemId || cut.source.itemId===c.itemId)?'selected':''}>${L(layer==='media'?'背景':'前景',layer==='media'?'Background':'Foreground')}: ${escapeHtml(c.name)} (${c.start.toFixed(2)} – ${c.end.toFixed(2)} s)</option>`).join('');
   const group=isNew?{members:[],min:0,max:S.plan.duration-.04}:boundaryGroupLimits('a:'+index);
-  dialog.innerHTML=`<form><h2>${isNew?L('人物マスクを追加','Add person mask'):L('人物マスクの編集','Edit person mask')}</h2><div class="person-preview"><canvas width="640" height="360" data-person-preview></canvas><p data-person-preview-note class="hint"></p></div><label class="check"><input name="enabled" type="checkbox" ${cut.enabled?'checked':''}>${L('有効','Enabled')}</label><label class="field">${L('開始位置（秒・リンク先も移動）','Start (s; linked cuts move together)')}<input name="start" type="number" step="any" min="${group?.min??0}" max="${group?.max??S.plan.duration}" value="${cut.start}" ${group?'':'disabled'} required></label><label class="check"><input name="untilNext" type="checkbox" ${cut.manualEnd?'':'checked'}>${L('次カットまで','Until the next cut')}</label><label class="field">${L('終了位置（秒）','End time (s)')}<input name="end" type="number" step="any" min="0" max="${S.plan.duration}" value="${cut.end}" ${cut.manualEnd?'':'disabled'} required></label><label class="field">${L('人物素材','Person source')}<select name="source"><option value="">${L('選択してください','Select source')}</option>${options}</select></label><p class="hint">${L('人物の遮蔽は、この区間と素材カットが重なる時間に適用されます。','Occlusion applies where this interval overlaps the source cut.')}</p><p data-person-status role="status"></p><p class="hint">${L('解析は選択した背景・前景の素材に保存されます。','Analysis is saved to the selected background or foreground source.')}</p><button type="button" data-person-generate>${L('人物マスクを作成・更新','Create or update person mask')}</button><label class="check"><input name="lock" type="checkbox" ${cut.lock?'checked':''}>${L('ロック','Lock')}</label><label class="check"><input name="guide" type="checkbox" ${cut.guide?'checked':''}>${L('プレビューに領域ガイドを表示','Show region guide in preview')}</label><label class="field">${L('重なった部分','Overlap')}<select name="occlusion"><option value="none" ${cut.occlusion==='none'?'selected':''}>${L('そのまま表示','Show normally')}</option><option value="aux" ${cut.occlusion==='aux'?'selected':''}>${L('装飾・補助描画だけ隠す','Hide decorations and auxiliary drawings')}</option><option value="all" ${cut.occlusion==='all'?'selected':''}>${L('歌詞全体を背後に隠す','Hide all lyrics behind')}</option></select></label><label class="check"><input name="foreground" type="checkbox" ${cut.behindForeground?'checked':''}>${L('前景を人物の後ろへ','Place foreground behind person')}</label><div class="row"><button type="submit" class="primary">${isNew?L('追加','Add'):L('適用','Apply')}</button><button type="button" data-cancel>${L('キャンセル','Cancel')}</button></div></form>`;
-  document.body.append(dialog);const form=dialog.querySelector('form'), source=form.elements.source, status=dialog.querySelector('[data-person-status]'), generate=dialog.querySelector('[data-person-generate]');
+  dialog.innerHTML=`<form><h2>${isNew?L('人物マスクを追加','Add person mask'):L('人物マスクの編集','Edit person mask')}</h2><div class="person-preview"><canvas width="640" height="360" data-person-preview></canvas><p data-person-preview-note class="hint"></p></div><label class="check"><input name="enabled" type="checkbox" ${cut.enabled?'checked':''}>${L('有効','Enabled')}</label><label class="field">${L('開始位置（秒・リンク先も移動）','Start (s; linked cuts move together)')}<input name="start" type="number" step="any" min="${group?.min??0}" max="${group?.max??S.plan.duration}" value="${cut.start}" ${group?'':'disabled'} required></label><label class="check"><input name="untilNext" type="checkbox" ${cut.manualEnd?'':'checked'}>${L('次カットまで','Until the next cut')}</label><label class="field">${L('終了位置（秒）','End time (s)')}<input name="end" type="number" step="any" min="0" max="${S.plan.duration}" value="${cut.end}" ${cut.manualEnd?'':'disabled'} required></label><label class="field">${L('人物素材','Person source')}<select name="source"><option value="">${L('選択してください','Select source')}</option>${options}</select></label><p class="hint">${L('人物の遮蔽は、この区間と素材カットが重なる時間に適用されます。','Occlusion applies where this interval overlaps the source cut.')}</p><p data-person-status role="status"></p><p class="hint">${L('解析は選択した背景・前景の素材に保存されます。','Analysis is saved to the selected background or foreground source.')}</p><button type="button" data-person-generate>${L('人物マスクを作成・更新','Create or update person mask')}</button><label class="check"><input name="lock" type="checkbox" ${cut.lock?'checked':''}>${L('ロック','Lock')}</label><label class="check"><input name="guide" type="checkbox" ${cut.guide?'checked':''}>${L('プレビューに領域ガイドを表示','Show region guide in preview')}</label><label class="field">${L('重なった部分','Overlap')}<select name="occlusion"><option value="none" ${cut.occlusion==='none'?'selected':''}>${L('そのまま表示','Show normally')}</option><option value="aux" ${cut.occlusion==='aux'?'selected':''}>${L('装飾・補助描画だけ隠す','Hide decorations and auxiliary drawings')}</option><option value="all" ${cut.occlusion==='all'?'selected':''}>${L('歌詞全体を背後に隠す','Hide all lyrics behind')}</option></select></label><label class="check"><input name="foreground" type="checkbox" ${cut.behindForeground?'checked':''}>${L('前景を人物の後ろへ','Place foreground behind person')}</label><div class="row"><button type="submit" class="primary">${isNew?L('追加','Add'):L('適用','Apply')}</button><button type="button" class="ghost" data-cancel>${L('キャンセル','Cancel')}</button></div></form>`;
+  const controls=$('areaEditControls'),existing=[...controls.children].map(el=>[el,el.hidden]);for(const [el] of existing)el.hidden=true;controls.append(dialog);controls.classList.add('avoidance-controls');controls.hidden=false;
+  const form=dialog.querySelector('form'), source=form.elements.source, status=dialog.querySelector('[data-person-status]'), generate=dialog.querySelector('[data-person-generate]');
+  const makeGroup=(title,nodes)=>{const section=document.createElement('section');section.className='avoidance-control-group';const heading=document.createElement('strong');heading.textContent=title;section.append(heading,...nodes);return section;};
+  const field=name=>form.elements[name].closest('label');const hints=[...form.querySelectorAll('p.hint')].filter(el=>!el.closest('.person-preview'));const previewBlock=form.querySelector('.person-preview');const actions=form.querySelector('.row');
+  form.append(makeGroup(L('時間・有効化','Time and activation'),[field('enabled'),field('lock'),field('guide'),field('start'),field('untilNext'),field('end')]),makeGroup(L('人物素材','Person source'),[field('source'),hints[0],status,hints[1],generate,previewBlock]),makeGroup(L('マスク・重なり','Mask and overlap'),[field('occlusion'),field('foreground')]),actions);
+  actions.className='area-edit-confirm';S.areaEdit={kind:'person',oldTime:S.t};$('viewport').classList.add('person-area-selection');beginAreaSelection();positionAreaEditor();
+
   const selected=()=>{const [layer,n]=source.value.split(':');const c=source.value && S.plan[layer]?.cuts[+n];return c?{layer,cut:c}:null;};
   let statusToken=0, endChanged=false, startChanged=false,pendingMask=null;
   const preview=dialog.querySelector('[data-person-preview]'),previewNote=dialog.querySelector('[data-person-preview-note]');
   const drawPersonPreview=async(choice,ref,token)=>{
-    const x=preview.getContext('2d');x.clearRect(0,0,preview.width,preview.height);x.fillStyle='#18181c';x.fillRect(0,0,preview.width,preview.height);
+    preview.hidden=!choice?.cut.itemId;const x=preview.getContext('2d');x.clearRect(0,0,preview.width,preview.height);x.fillStyle='#18181c';x.fillRect(0,0,preview.width,preview.height);
     if(!choice?.cut.itemId){previewNote.textContent=L('素材を選択するとプレビューを表示します。','Select a source to show a preview.');return;}
     const sourceCut={...choice.cut,personCutout:ref}, t=J.clamp(S.t,sourceCut.start,Math.max(sourceCut.start,sourceCut.end-.001));
     try{if(sourceCut.type==='video'){const asset=J.mediaAssets.get(sourceCut.itemId);if(asset)await J.seekMediaVideo(asset.element,J.mediaVideoTime(sourceCut,t,asset.element.duration),undefined,sourceCut.name);}if(ref)await J.preparePersonMask(sourceCut,t,true);if(token!==statusToken||!dialog.open)return;
@@ -2687,7 +2696,8 @@ function openAvoidancePersonEditor(index,isNew=false) {
     if(isNew)index=addAvoidanceRange(start,end,{...patch,untilNext:form.elements.untilNext.checked});else avoidanceOv(index,patch);
     if(!isNew && startChanged)sortAvoidanceBoundaries();replan();const updated=S.plan.avoidance.cuts[index];if(updated && (S.t<updated.start || S.t>=updated.end))seek(updated.start+Math.min(.01,(updated.end-updated.start)/2));dialog.close();
   };
-  dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{statusToken++;dialog.remove();J.syncMediaPreview(S.plan,S.t,false);S.need=true;});dialog.showModal();syncStatus();
+  const onEscape=e=>{if(e.key==='Escape'&&!document.querySelector('dialog[open]:not(.avoidance-inline-dialog)')){e.preventDefault();dialog.close();}};document.addEventListener('keydown',onEscape);
+  dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{document.removeEventListener('keydown',onEscape);statusToken++;endAreaSelection();$('viewport').classList.remove('person-area-selection');S.areaEdit=null;dialog.remove();for(const [el,hidden] of existing)el.hidden=hidden;controls.classList.remove('avoidance-controls');controls.hidden=true;J.syncMediaPreview(S.plan,S.t,false);S.need=true;});dialog.show();dialog.querySelector('[data-cancel]').focus({preventScroll:true});syncStatus();
 }
 function openAvoidanceEditor(index, fromPreview=false, isNew=false) {
   if (S.exporting || S.tap) return;
@@ -2723,6 +2733,7 @@ function openMediaEditor(index, layer,fromPreview=false) {
 }
 function cancelAreaEditor() {
   if (!S.areaEdit) return;
+  if(S.areaEdit.kind==='person'){document.querySelector('#avoidancePersonDialog')?.close();return;}
   const oldTime = S.areaEdit.oldTime;
   endAreaSelection();S.areaEdit = null; $('areaEditOverlay').hidden = true; $('areaEditControls').hidden = true;
   seek(oldTime);
@@ -4539,7 +4550,7 @@ function bind() {
     });
   }
   document.addEventListener('click',e=>{
-    if(S.exporting || S.tap || document.querySelector('dialog[open]'))return;
+    if(S.exporting || S.tap || document.querySelector('dialog[open]:not(.avoidance-inline-dialog)'))return;
     if(e.target.closest('.item-frame-toggle,#areaEditControls'))return;
     const inside=$('viewport').contains(e.target);
     if(!inside && S.areaEdit)cancelAreaEditor();
@@ -4739,6 +4750,7 @@ function bind() {
   ]){const label=$(id).parentNode,nodes=[...label.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE);const node=after?nodes.at(-1):nodes[0];if(node)node.nodeValue=J.mediaLabel(ja,en);}
   for(const [id,labels] of [['avoidanceEditPlacement',[[ '領域の外へ配置','Move outside' ],['そのまま','Keep position']]],['avoidanceEditOcclusion',[[ 'そのまま表示','Show normally' ],['装飾・補助描画だけ隠す','Hide decorations and auxiliary drawings'],['歌詞全体を背後に隠す','Hide all lyrics behind']]]]) [...$(id).options].forEach((option,i)=>option.textContent=J.mediaLabel(...labels[i]));
 
+  const circleHeading=document.createElement('h2');circleHeading.id='avoidanceEditorHeading';circleHeading.className='avoidance-editor-heading';circleHeading.hidden=true;$('areaEditControls').prepend(circleHeading);
   const sizeHeading=document.createElement('strong');sizeHeading.className='avoidance-size-heading';sizeHeading.textContent=J.mediaLabel('位置・サイズ','Position and size');$('mediaAreaSizeControls').prepend(sizeHeading);
   const maskControls=$('avoidanceMaskControls');
   for(const [ja,en,ids] of [

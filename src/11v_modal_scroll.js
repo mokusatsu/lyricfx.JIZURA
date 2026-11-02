@@ -4,7 +4,7 @@
 if(typeof MutationObserver==='undefined'||typeof document==='undefined'||!document.getElementById?.('app'))return;
 let saved=null;
 const sync=()=>{
-  const open=!!document.querySelector('dialog[open]');
+  const open=!!document.querySelector('dialog[open]:not(.avoidance-inline-dialog)');
   if(open===!!saved)return;
   const body=document.body;
   if(open){
