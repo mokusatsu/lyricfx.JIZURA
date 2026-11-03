@@ -24594,6 +24594,9 @@ fx('edgeDetect', { name: '輪郭抽出', tags: ['graphic', 'glitch', 'editorial'
     y.globalCompositeOperation = 'multiply'; y.fillStyle = dk ? edge : invHex(edge); y.fillRect(0, 0, w, h);
     if (dk) { y.globalCompositeOperation = 'screen'; y.fillStyle = J.mix(sc.bg, '#000000', 0.6); y.fillRect(0, 0, w, h); }
     else { y.globalCompositeOperation = 'difference'; y.fillStyle = '#ffffff'; y.fillRect(0, 0, w, h); y.globalCompositeOperation = 'multiply'; y.fillStyle = sc.bg; y.fillRect(0, 0, w, h); }
+    // This effect can run on a transparent lyric layer over a video. Keep its
+    // output inside that layer instead of covering the video with its ground.
+    if (I.opt?.transparent) { y.globalCompositeOperation = 'destination-in'; y.drawImage(S, 0, 0, w, h); }
     ctx.globalAlpha = a; ctx.drawImage(T2, 0, 0, w, h, 0, 0, cw, ch);
   } });
 
