@@ -437,7 +437,9 @@ function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
   const mediaCut = edit && (edit.kind === 'media' || edit.kind === 'foreground') && S.plan[edit.kind].cuts[edit.index];
   const previousMedia = mediaCut && { placement: mediaCut.placement, zoom: mediaCut.zoom, hold: mediaCut.hold, enter: mediaCut.enter, exit: mediaCut.exit, trans: mediaCut.trans };
   if (mediaCut) Object.assign(mediaCut, { placement: { cx: edit.draft.x + edit.draft.w / 2, cy: edit.draft.y + edit.draft.h / 2, w: edit.draft.w, h: edit.draft.h, lockAspect: edit.lockAspect, angle: edit.angle }, zoom: 100, hold: 'still', enter: 'cut', exit: 'cut', trans: undefined });
-  const avoidanceCut = edit && edit.kind === 'avoidance' && S.plan.avoidance?.cuts[edit.index];
+  const draftAvoidance = edit?.kind === 'avoidance' && edit.newCut && S.plan.avoidance?.cuts;
+  const avoidanceCut = draftAvoidance ? {kind:'circle', index:draftAvoidance.length, start:edit.start, end:edit.untilNext ? S.plan.duration : edit.end} : edit && edit.kind === 'avoidance' && S.plan.avoidance?.cuts[edit.index];
+  if (draftAvoidance) draftAvoidance.push(avoidanceCut);
   const previousAvoidance = avoidanceCut && { cx: avoidanceCut.cx, cy: avoidanceCut.cy, r: avoidanceCut.r, enabled: avoidanceCut.enabled, placement:avoidanceCut.placement, avoidEmphasis:avoidanceCut.avoidEmphasis, occlusion:avoidanceCut.occlusion, behindForeground:avoidanceCut.behindForeground, maskAvoidance: avoidanceCut.maskAvoidance, maskRadiusOffset: avoidanceCut.maskRadiusOffset, maskFeather: avoidanceCut.maskFeather, maskCurve: avoidanceCut.maskCurve, planEnabled: S.plan.lyricAvoidance?.enabled };
   if (avoidanceCut && edit.draft) {
     Object.assign(avoidanceCut, draftToAvoidanceCircle(edit.draft), { enabled:edit.enabled, placement:edit.placement, avoidEmphasis:edit.avoidEmphasis, occlusion:edit.occlusion, behindForeground:edit.behindForeground, maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: edit.maskRadiusOffset ?? 0, maskFeather: edit.maskFeather ?? 60, maskCurve: edit.maskCurve || 'smooth' });
@@ -445,6 +447,7 @@ function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
   }
   try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance' && edit.kind !== 'person', noForeground: !!edit && edit.kind === 'media' }); }
   finally {
+    if (draftAvoidance) draftAvoidance.pop();
     previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; });
     if (mediaCut) Object.assign(mediaCut, previousMedia);
     if (avoidanceCut && previousAvoidance) {
@@ -2262,7 +2265,9 @@ function insertLyricAtPlayhead(text) {
 function openInsertAtPlayhead(layer, avoidKind) {
   if(layer==='avoidance') {
     if(S.exporting || S.tap || !S.plan || S.plan.duration<.04 || S.plan.avoidance.cuts.length>=1000)return;
-    if(!avoidKind){const dialog=document.createElement('dialog');dialog.className='insert-cut-dialog';dialog.innerHTML=`<p>${J.mediaLabel('回避の種類','Avoidance type')}</p><button type="button" data-kind="circle">${J.mediaLabel('円形領域','Circle')}</button> <button type="button" data-kind="person">${J.mediaLabel('人物マスク','Person mask')}</button> <button type="button" data-cancel>${J.mediaLabel('キャンセル','Cancel')}</button>`;document.body.append(dialog);dialog.querySelectorAll('[data-kind]').forEach(button=>button.onclick=()=>{const kind=button.dataset.kind;dialog.close();openInsertAtPlayhead(layer,kind);});dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();return;}
+    const hasCircle=S.plan.avoidance.cuts.some(c=>c.kind!=='person');
+    if(!avoidKind){const dialog=document.createElement('dialog');dialog.className='insert-cut-dialog';dialog.innerHTML=`<p>${J.mediaLabel('回避の種類','Avoidance type')}</p><button type="button" data-kind="circle" ${hasCircle?'disabled':''}>${J.mediaLabel('円形領域','Circle')}</button> <button type="button" data-kind="person">${J.mediaLabel('人物マスク','Person mask')}</button>${hasCircle?`<p class="hint">${J.mediaLabel('円形領域は1件までです。既存の円を編集してください。','Only one circle is allowed. Edit the existing circle.')}</p>`:''} <button type="button" data-cancel>${J.mediaLabel('キャンセル','Cancel')}</button>`;document.body.append(dialog);dialog.querySelectorAll('[data-kind]').forEach(button=>button.onclick=()=>{const kind=button.dataset.kind;dialog.close();openInsertAtPlayhead(layer,kind);});dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();return;}
+    if(avoidKind==='circle' && hasCircle)return;
     if(avoidKind==='person')openAvoidancePersonEditor(null,true);else openAvoidanceEditor(null,false,true);return;
   }
   if(S.exporting || S.tap || S.t>=S.plan.duration-.04)return;
@@ -3460,7 +3465,7 @@ function removeAvoidanceCut(index) {
 function avoidanceSplitTarget() {
   if (!S.plan?.avoidance || S.exporting || S.tap || S.plan.avoidance.cuts.length >= 1000) return null;
   const cut = J.avoidanceAt(S.plan, S.t);
-  return cut && S.t - cut.start >= 0.04 - 1e-7 && cut.end - S.t >= 0.04 - 1e-7 ? cut : null;
+  return cut && cut.kind==='person' && S.t - cut.start >= 0.04 - 1e-7 && cut.end - S.t >= 0.04 - 1e-7 ? cut : null;
 }
 function splitAvoidanceCut() {
   const cut = avoidanceSplitTarget(); if (!cut) return;
@@ -3486,6 +3491,10 @@ function splitAvoidanceCut() {
 // The restored cut list shares the same model and editors as the timeline.
 function renderAvoidanceLines() {
   const ol=$('avoidanceLineList');if(!ol || !S.plan?.avoidance)return;
+  const hasCircle=S.plan.avoidance.cuts.some(c=>c.kind!=='person');
+  $('addAvoidanceCircle').disabled=hasCircle;
+  $('avoidanceCircleLimit').hidden=!hasCircle;
+  $('avoidanceCircleLimit').textContent=J.mediaLabel('円形領域は1件までです。既存の円を編集してください。','Only one circle is allowed. Edit the existing circle.');
   ol.replaceChildren();S.avoidanceLineEls=[];const L=J.mediaLabel;
   S.plan.avoidance.cuts.forEach((cut,i)=>{
     const li=document.createElement('li');li.className='ln media-ln avoidance-ln';li.dataset.index=i;

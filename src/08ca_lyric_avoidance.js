@@ -269,7 +269,7 @@
     if (base.hasExplicitPixelCircle) {
       return base;
     }
-    const cuts = plan?.avoidance?.cuts?.filter(c => c.kind !== 'person');
+    const cuts = plan?.avoidance?.cuts?.filter(c => c.kind !== 'person' && c.enabled !== false);
     if (!cuts) {
       return base;
     }
