@@ -790,16 +790,18 @@ J.LAYOUTS = {
       if (P.variant === 'quiet') {                        // [間奏]: nothing but the song title on long interludes
         if (P.showTitle && P.titleText) {
           const a = J.clamp(env.lt / 0.8) * J.clamp((env.cut.dur - env.lt) / 0.8);
-          env.draw({ text: P.titleText, font: env.st.fonts.body[0], size: fs * 1.1, x: W / 2, y: H * 0.88, track: 0.3, color: sc.sub, alpha: a, ghost: false });
+          J.mainDraw(env, { text: P.titleText, font: env.st.fonts.body[0], size: fs * 1.1, x: W / 2, y: H * 0.88, track: 0.3, color: sc.sub, alpha: a, ghost: false, enter: 'cut', exit: 'cut', noHold: true, plain: true });
         }
         return { x0: W * 0.3, x1: W * 0.7, y0: H * 0.3, y1: H * 0.7, cx: W / 2, cy: H / 2, boxes: [] };
       }
       if (P.variant === 'counter') {
         const remain = Math.max(0, env.cut.dur - env.lt);
-        env.draw({ text: remain.toFixed(1), font: env.st.fonts.display[0], size: H * 0.36, x: W / 2, y: H / 2, color: sc.fg, alpha: 0.9 });
+        J.mainDraw(env, { text: remain.toFixed(1), font: env.st.fonts.display[0], size: H * 0.36, x: W / 2, y: H / 2, color: sc.fg, alpha: 0.9, enter: 'cut', exit: 'cut', noHold: true, plain: true });
       }
       for (let k = 0; k < 3; k++) env.circle(W / 2, H / 2, H * (0.2 + k * 0.1) * (1 + 0.04 * Math.sin(lb * 2 + k)), null, sc.sub, 1.2, 0.5, false);
-      env.draw({ text: env.cut.text || '— interlude —', font: env.st.fonts.body[0], size: fs, x: W / 2, y: H * 0.82, track: 0.4, color: sc.sub, ghost: false });
+      const label = { text: env.cut.text || '— interlude —', font: env.st.fonts.body[0], size: fs, x: W / 2, y: H * 0.82, track: 0.4, color: sc.sub, ghost: false };
+      if (P.variant === 'counter') env.draw(label);
+      else J.mainDraw(env, { ...label, enter: 'cut', exit: 'cut', noHold: true, plain: true });
       return { x0: W * 0.35, x1: W * 0.65, y0: H * 0.3, y1: H * 0.7, cx: W / 2, cy: H / 2, boxes: [] };
     },
   },
