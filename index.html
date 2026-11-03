@@ -8393,7 +8393,22 @@ const seekMediaVideo = async (v, target, signal, name = '') => {
     const finish = () => {done=true;clearTimeout(timer);clearTimeout(wakeTimer);clearInterval(poll);v.pause();v.removeEventListener('seeked',ok);v.removeEventListener('loadeddata',ok);v.removeEventListener('canplay',ok);v.removeEventListener('error',fail);if(signal)signal.removeEventListener('abort',abort);};
     // Mobile decoders may need playback through the rewind too. Pause only
     // after the requested frame is available, otherwise the seek can stall.
-    const ok = () => {if(done||v.readyState<2||v.seeking)return;if(Math.abs(v.currentTime-target)>.02){v.currentTime=target;return;}finish();resolve();};
+    const ok = () => {
+      if(done||v.readyState<2||v.seeking)return;
+      if(Math.abs(v.currentTime-target)>.02){
+        // A decoder started to obtain its first frame may already have run
+        // past the target. Stop it before seeking back, or every seek can
+        // overshoot again and playback preparation never completes.
+        v.pause();
+        try { v.currentTime=target; } catch(error) { fail(); return; }
+        clearTimeout(wakeTimer);
+        // Some mobile decoders only complete a seek while playing. Wake a
+        // stalled seek and reissue its target while the decoder is running.
+        wakeTimer=setTimeout(()=>{if(!done&&v.seeking)wakeDecoder();},500);
+        return;
+      }
+      finish();resolve();
+    };
     const fail = () => {if(done)return;finish();reject(new Error(J.mediaLabel('動画の再生位置を準備できませんでした','Could not prepare video playback position') + (name ? '：' + name : '') + ` (${target.toFixed(3)}s; readyState=${v.readyState}; mediaError=${v.error?.code || 0})`));};
     const abort = () => {if(done)return;finish();reject(new Error('Cancelled'));};
     const timer=setTimeout(fail,15000);
@@ -8409,7 +8424,11 @@ const seekMediaVideo = async (v, target, signal, name = '') => {
     // An interrupted play() (e.g. the preview sync pausing the element) is not
     // fatal: the seeked/canplay events or the timeout still settle the seek.
     // A late play() promise must not pause a newer playback request.
-    const wakeDecoder=()=>{if(!done&&(v.readyState<2||v.seeking))v.play().then(()=>{if(!done)ok();}).catch(()=>{if(!done)ok();});};
+    const wakeDecoder=()=>{if(!done&&(v.readyState<2||v.seeking)){
+      const stalledSeek=v.seeking&&v.readyState>=2,pending=v.play();
+      if(stalledSeek)try{v.currentTime=target;}catch(error){fail();return;}
+      pending.then(()=>{if(!done)ok();}).catch(()=>{if(!done)ok();});
+    }};
     // A decoded video usually seeks while paused. Starting it immediately can
     // overshoot the target before iOS delivers seeked, causing endless rewinds.
     // Only start playback if no frame exists or the paused seek has stalled.
