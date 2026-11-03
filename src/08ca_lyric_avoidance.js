@@ -277,10 +277,13 @@
       return { enabled: false };
     }
     let acut = null;
-    if (t != null && Number.isFinite(+t)) {
+    const hasTime = t != null && Number.isFinite(+t);
+    if (hasTime) {
       acut = [...cuts].reverse().find(c => +t >= c.start && +t < c.end);
     }
-    if (!acut && cut) {
+    // At a known timeline time, a cut outside the circle interval must not
+    // inherit a circle merely because their overall durations overlap.
+    if (!acut && cut && !(plan.avoidance?.timelineMode && hasTime)) {
       const cStart = Number.isFinite(+cut.start) ? +cut.start : 0;
       const cEnd = Number.isFinite(+cut.end) ? +cut.end : cStart + 0.04;
       acut = [...cuts].reverse().find(c => cStart >= c.start && cStart < c.end);
