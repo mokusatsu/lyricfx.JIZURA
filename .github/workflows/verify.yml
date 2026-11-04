@@ -57,6 +57,17 @@ jobs:
         env:
           NODE_PATH: ${{ github.workspace }}/mcp/node_modules
         run: node dev/avoidance_timeline_person_test.cjs
+      - name: Verify mask preview recovery and picker fallback
+        env:
+          NODE_PATH: ${{ github.workspace }}/mcp/node_modules
+        run: |
+          node dev/avoidance_editor_cursor_test.cjs
+          node dev/avoidance_review_test.cjs
+          node dev/avoidance_guide_toggle_test.cjs
+          node dev/avoidance_cut_list_test.cjs
+          node dev/avoidance_editor_layout_test.cjs
+          node dev/avoidance_preview_recovery_test.cjs
+          node dev/export_picker_recovery_test.cjs
       - name: Verify person cutout and export
         env:
           NODE_PATH: ${{ github.workspace }}/mcp/node_modules
@@ -65,6 +76,13 @@ jobs:
         env:
           NODE_PATH: ${{ github.workspace }}/mcp/node_modules
         run: node dev/person_mask_playback_test.cjs
+      - name: Verify video background under lyric effects
+        env:
+          NODE_PATH: ${{ github.workspace }}/mcp/node_modules
+        run: |
+          node dev/media_video_edge_test.cjs
+          node dev/mobile_video_seek_test.cjs
+          node dev/video_omakase_play_test.cjs
       - name: Verify MCP integration and audio MP4 export
         working-directory: mcp
         run: pnpm test

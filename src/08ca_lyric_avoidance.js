@@ -148,7 +148,7 @@
     }
     return {
       cutCount,
-      manualCuts,
+      manualCuts, timelineMode: !!a.timelineMode,
       avoidEmphasis: !!a.avoidEmphasis,
       ...normalizeMaskFields(a, {}, true),
       lyricInsertMode: a.lyricInsertMode === 'cut' ? 'cut' : 'line',
@@ -165,11 +165,11 @@
     const lines = lyricPlan?.lines || [];
     const baseDur = lyricPlan?.duration || 3;
     const manualEntries = Object.entries(a.timing.lineTimes).filter(([i, t]) => +i < count && Number.isFinite(+t));
-    const manualEnd = Math.max(0, ...manualEntries.map(([, t]) => +t + 4));
-    const fixedMinimum = Math.max(count * 0.04, ...manualEntries.map(([i, t]) => +t + (count - +i) * 0.04));
+    const manualEnd = Math.max(0, ...manualEntries.map(([i, t]) => {const end=J.cutEndTime?.(a.cutOverrides[i]);return end == null ? +t + 4 : Math.max(+t+.04,end);}));
+    const fixedMinimum = Math.max(0, ...manualEntries.map(([i, t]) => +t + (J.cutEndTime?.(a.cutOverrides[i]) != null ? .04 : (count - +i) * .04)));
     let duration = fixedDuration != null
       ? Math.max(fixedDuration, baseDur, fixedMinimum)
-      : Math.max(baseDur, audioDuration || 0, manualEnd, lines.length ? 0 : count * 4);
+      : Math.max(baseDur, audioDuration || 0, manualEnd, lines.length || (a.timelineMode && manualEntries.length === count && manualEntries.every(([i]) => J.cutEndTime?.(a.cutOverrides[i]) != null)) ? 0 : count * 4);
     const lyricCount = Math.min(count, lines.length);
     const starts = Array.from({ length: count }, (_, i) => {
       const v = a.timing.lineTimes[i];
@@ -221,7 +221,7 @@
         customCircle,
       };
     });
-    return { cuts, duration, avoidEmphasis: a.avoidEmphasis, maskAvoidance: a.maskAvoidance };
+    return { cuts, duration, timelineMode:a.timelineMode, avoidEmphasis: a.avoidEmphasis, maskAvoidance: a.maskAvoidance };
   };
 
   J.avoidanceAt = (plan, t) => {
@@ -238,7 +238,7 @@
     const W = plan?.W || 1920;
     const H = plan?.H || 1080;
     const settings = J.lyricEffectSettings ? J.lyricEffectSettings(project) : {};
-    const enabled = !!(settings.autoPlacement && settings.avoidCenter);
+    const enabled = !!(project?.avoidance?.timelineMode || settings.autoPlacement && settings.avoidCenter);
     const custom = project?.lyricEffects?.avoidCircle || project?.avoidCircle || null;
     const cx = Number.isFinite(custom?.cx) ? custom.cx : W * 0.5;
     const cy = Number.isFinite(custom?.cy) ? custom.cy : H * 0.5;
@@ -257,7 +257,7 @@
       feather,
       avoidEmphasis,
       ...J.normalizeAvoidanceMask({ ...(project?.avoidance || {}), ...(custom || {}) }),
-      hasExplicitPixelCircle: !!(custom && (Number.isFinite(custom.cx) || Number.isFinite(custom.cy) || Number.isFinite(custom.r))),
+      hasExplicitPixelCircle: !!(!project?.avoidance?.timelineMode && custom && (Number.isFinite(custom.cx) || Number.isFinite(custom.cy) || Number.isFinite(custom.r))),
     };
   };
 
@@ -269,7 +269,7 @@
     if (base.hasExplicitPixelCircle) {
       return base;
     }
-    const cuts = plan?.avoidance?.cuts?.filter(c => c.kind !== 'person');
+    const cuts = plan?.avoidance?.cuts?.filter(c => c.kind !== 'person' && c.enabled !== false);
     if (!cuts) {
       return base;
     }
@@ -277,10 +277,13 @@
       return { enabled: false };
     }
     let acut = null;
-    if (t != null && Number.isFinite(+t)) {
+    const hasTime = t != null && Number.isFinite(+t);
+    if (hasTime) {
       acut = [...cuts].reverse().find(c => +t >= c.start && +t < c.end);
     }
-    if (!acut && cut) {
+    // At a known timeline time, a cut outside the circle interval must not
+    // inherit a circle merely because their overall durations overlap.
+    if (!acut && cut && !(plan.avoidance?.timelineMode && hasTime)) {
       const cStart = Number.isFinite(+cut.start) ? +cut.start : 0;
       const cEnd = Number.isFinite(+cut.end) ? +cut.end : cStart + 0.04;
       acut = [...cuts].reverse().find(c => cStart >= c.start && cStart < c.end);
