@@ -7,6 +7,7 @@ J.PERSON_MODEL = {
   id:'rvm',
   url:'https://raw.githubusercontent.com/PeterL1n/RobustVideoMatting/72ed518756950796f10eea6eb6b301df97cef277/model/model.json',
 };
+J.personModelProfile = () => (J.platform && typeof J.platform.personModelProfile === 'function' ? J.platform.personModelProfile() : J.PERSON_MODEL.id);
 const canvas = (w, h) => { const c = document.createElement('canvas'); c.width=w; c.height=h; return c; };
 const dims = s => [s.videoWidth || s.naturalWidth || s.width, s.videoHeight || s.naturalHeight || s.height];
 J.personCutout = cut => {
@@ -252,6 +253,7 @@ const makeWorker=report=>{
   return {request(message,transfer=[]){return new Promise((resolve,reject)=>{pending={resolve,reject};refreshTimeout();worker.postMessage(message,transfer);});},stop(){fail(new DOMException('Cancelled','AbortError'));worker.terminate();}};
 };
 J.generatePersonMask = async (cut,{fps=24,signal,onProgress=()=>{}}={}) => {
+  if (J.platform && J.platform.nativeMatting) return J.platform.generatePersonMask(cut, { fps, signal, onProgress });
   const asset=J.mediaAssets.get(cut.itemId),def=J.PERSON_MODEL,modelId=def.id;
   if(!asset || J.isMediaCopy(cut.itemId))throw new Error(L('画像・動画素材を指定してください','Select an image or video asset'));
   let worker;const abort=()=>worker?.stop();signal?.addEventListener('abort',abort,{once:true});

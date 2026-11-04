@@ -4166,6 +4166,20 @@ let codecNoteVersion=0;
 async function codecNote() {
   const version=++codecNoteVersion,isQP=S.project.quality==='qp';
   const project=activeExportProject(),[w, h] = J.outputSize(project);
+  if (J.platform && J.platform.nativeExport) {
+    let caps = { encoders: ['libx264'], backends: ['cpu'] };
+    try { caps = await J.platform.capabilities(); } catch (e) {}
+    if (version !== codecNoteVersion || S.exporting) return;
+    const encoder = (caps.encoders && caps.encoders[0]) || 'libx264';
+    const backend = (caps.backends && caps.backends[0]) || 'cpu';
+    $('codecNote').textContent = J.mediaLabel(
+      `デスクトップ版（FFmpeg / ${encoder} / ${backend.toUpperCase()}）で書き出します（${w}×${h} / ${S.project.fps}fps）。`,
+      `Exporting via Desktop (FFmpeg / ${encoder} / ${backend.toUpperCase()}) (${w}×${h} / ${S.project.fps}fps).`
+    );
+    $('btnMP4').disabled = false; $('eMP4').disabled = false;
+    $('btnShort').disabled = shortExportActive() && !shortRangeValid();
+    return;
+  }
   let bitrate;try{if(isQP)J.videoQuantizer(project);else bitrate=J.videoBitrate(project);}catch(err){$('codecNote').textContent=err.message;$('btnMP4').disabled=true;$('btnShort').disabled=true;$('eMP4').disabled=true;return;}
   const vc = await J.pickVideoCodec(w, h, S.project.fps, bitrate,{bitrateMode:isQP?'quantizer':'variable'});
   if(version!==codecNoteVersion||S.exporting)return;
@@ -4260,7 +4274,12 @@ async function runExport(kind) {
   try {
     // Ask while the export click still has user activation. Stream large MP4s
     // straight to this file instead of holding the whole movie in browser RAM.
-    if(mp4&&typeof window.showSaveFilePicker==='function'){
+    let outputToken = null;
+    if (mp4 && J.platform && J.platform.nativeExport) {
+      const target = await J.platform.pickExportTarget(filename);
+      if (target.cancelled) return;
+      outputToken = target.outputToken;
+    } else if (mp4 && typeof window.showSaveFilePicker === 'function') {
       let handle;
       try{handle=await window.showSaveFilePicker({suggestedName:filename,types:[{description:'MP4',accept:{'video/mp4':['.mp4']}}]});}
       catch(e){
@@ -4272,7 +4291,7 @@ async function runExport(kind) {
     }
     await J.ensureFonts(S.project.lyrics + (S.project.title || '') + (S.project.artist || '') + HUD_CHARS + J.drawingText(S.plan), J.fontsOfPlan(S.plan));
     if (mp4) {
-      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream,short:kind==='short'?{...S.project.shortExport}:null });
+      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream, short: kind==='short'?{...S.project.shortExport}:null, outputToken });
       fileStream=null;
       txt.textContent = `完成 ${(r.size / 1048576).toFixed(1)}MB・${r.codec}${r.audio ? ' + ' + r.audio.toUpperCase() : ''}・${((performance.now() - t0) / 1000).toFixed(0)}秒`;
       const res = r.saved?'saved':await J.saveFile(filename, r.blob);
@@ -4945,7 +4964,20 @@ function bind() {
     dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close('cancel');}});
     document.body.append(dialog);dialog.showModal();dialog.querySelector('[value="cancel"]').focus();
   });
-  $('mediaFiles').addEventListener('change', async e => { const files = Array.from(e.target.files || []); e.target.value = ''; await addMediaFiles(files, activeMediaLayer() || 'media'); });
+  const mediaFileInput = $('mediaFiles');
+  if (mediaFileInput && mediaFileInput.parentElement) {
+    mediaFileInput.parentElement.addEventListener('click', async e => {
+      if (J.platform && typeof J.platform.pickMedia === 'function') {
+        e.preventDefault();
+        e.stopPropagation();
+        const files = await J.platform.pickMedia({ layer: activeMediaLayer() || 'media' });
+        if (files && files.length) {
+          await addMediaFiles(files, activeMediaLayer() || 'media');
+        }
+      }
+    });
+  }
+  mediaFileInput.addEventListener('change', async e => { const files = Array.from(e.target.files || []); e.target.value = ''; await addMediaFiles(files, activeMediaLayer() || 'media'); });
   if ($('btnSpriteExtract')) {
     $('btnSpriteExtract').addEventListener('click', () => {
       if (window.SpriteExtractor) window.SpriteExtractor.open(activeMediaLayer() || 'foreground');

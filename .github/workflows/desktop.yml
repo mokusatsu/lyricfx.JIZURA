@@ -1,0 +1,56 @@
+name: Desktop Build and Smoke Test
+
+on:
+  push:
+    branches:
+      - gemini
+      - 'feature/**'
+      - 'codex/**'
+  pull_request:
+
+jobs:
+  build-desktop:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r native/requirements-cpu.lock
+
+      - name: Build Web and Electron Assets
+        run: |
+          python build.py
+          python build.py --target electron --out desktop/web
+
+      - name: Run Desktop & Native unit tests
+        run: |
+          python dev/desktop_build_test.py
+          node dev/platform_web_test.cjs
+          python native/tests/test_matte_format.py
+          node dev/native_matte_compat_test.cjs
+          python native/tests/test_matting_slots.py
+          python native/tests/test_job_recovery.py
+          node desktop/test/native_dialog.test.cjs
+          node desktop/test/ipc_security.test.cjs
+          node desktop/test/person_native_e2e.cjs
+          node desktop/test/export_native_e2e.cjs
+          node dev/portable_project_test.cjs
+
+      - name: Package Desktop smoke (unpackaged)
+        working-directory: desktop
+        run: |
+          npm install
+          npm run package

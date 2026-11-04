@@ -1,0 +1,24 @@
+appId: ws.okamoto.jizura
+productName: lyricfx.JIZURA
+directories:
+  output: dist
+  buildResources: build
+files:
+  - "main.cjs"
+  - "preload.cjs"
+  - "native-jobs.cjs"
+  - "web/**/*"
+extraResources:
+  - from: "../native"
+    to: "native"
+    filter:
+      - "**/*"
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: "${productName}-Setup-${version}.${ext}"
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true

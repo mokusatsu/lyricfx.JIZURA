@@ -1687,6 +1687,36 @@ J.fmtTime = (t, fps) => {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}${fps ? ':' + String(f).padStart(2, '0') : '.' + String(f).padStart(2, '0')}`;
 };
 
+/* Platform abstraction for Web (browser) and Electron (desktop) environments.
+   Default implementation provides Web-safe fallback without Node.js dependencies. */
+(() => {
+  'use strict';
+  window.J = window.J || {};
+
+  J.platform = {
+    name: 'browser',
+    nativeMatting: false,
+    nativeExport: false,
+    capabilities: async () => ({
+      version: 1,
+      name: 'browser',
+      nativeMatting: false,
+      nativeExport: false,
+      backends: ['browser'],
+      encoders: [],
+    }),
+    pickMedia: null,
+    ensureNativeAsset: null,
+    generatePersonMask: null,
+    pickExportTarget: null,
+    startExport: null,
+    writeFrame: null,
+    finishExport: null,
+    cancelJob: null,
+    personModelProfile: () => (J.PERSON_MODEL && J.PERSON_MODEL.id) || 'rvm',
+  };
+})();
+
 /* ============================================================
    JIZURA — fonts: catalogue, loading, glyph decomposition
    ============================================================ */
@@ -11845,6 +11875,7 @@ J.PERSON_MODEL = {
   id:'rvm',
   url:'https://raw.githubusercontent.com/PeterL1n/RobustVideoMatting/72ed518756950796f10eea6eb6b301df97cef277/model/model.json',
 };
+J.personModelProfile = () => (J.platform && typeof J.platform.personModelProfile === 'function' ? J.platform.personModelProfile() : J.PERSON_MODEL.id);
 const canvas = (w, h) => { const c = document.createElement('canvas'); c.width=w; c.height=h; return c; };
 const dims = s => [s.videoWidth || s.naturalWidth || s.width, s.videoHeight || s.naturalHeight || s.height];
 J.personCutout = cut => {
@@ -12090,6 +12121,7 @@ const makeWorker=report=>{
   return {request(message,transfer=[]){return new Promise((resolve,reject)=>{pending={resolve,reject};refreshTimeout();worker.postMessage(message,transfer);});},stop(){fail(new DOMException('Cancelled','AbortError'));worker.terminate();}};
 };
 J.generatePersonMask = async (cut,{fps=24,signal,onProgress=()=>{}}={}) => {
+  if (J.platform && J.platform.nativeMatting) return J.platform.generatePersonMask(cut, { fps, signal, onProgress });
   const asset=J.mediaAssets.get(cut.itemId),def=J.PERSON_MODEL,modelId=def.id;
   if(!asset || J.isMediaCopy(cut.itemId))throw new Error(L('画像・動画素材を指定してください','Select an image or video asset'));
   let worker;const abort=()=>worker?.stop();signal?.addEventListener('abort',abort,{once:true});
@@ -12973,7 +13005,7 @@ J.createMP4Output = fileStream => {
     async abort(){parts=[];await queue;if(fileStream)try{await fileStream.abort();}catch{}}
   };
 };
-J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, signal, fileStream, short }) => {
+J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken }) => {
   if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
@@ -12983,20 +13015,41 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   const fps = plan.fps;
   const qp=quality==='qp'?J.videoQuantizer(project):null;
   const bitrate = qp==null ? J.videoBitrate(project,quality,fps) : undefined;
-  const vc = await J.pickVideoCodec(w, h, fps, bitrate,{bitrateMode:qp==null?'variable':'quantizer'});
-  if(!vc&&qp!=null)throw new Error(J.mediaLabel('このブラウザは画質優先（QP指定）に対応していません。別の画質設定または連番PNGを使用してください。','This browser does not support QP encoding. Choose another quality setting or a PNG sequence.'));
-  if (!vc) throw new Error('Video encoding (WebCodecs) is unavailable. Open in the latest Chrome or Edge.');
-  let ac = null;
-  if (audio && audio.buffer && project.includeAudio !== false) ac = await J.pickAudioCodec(48000, Math.min(2, audio.buffer.numberOfChannels));
-  const output=J.createMP4Output(fileStream);
-  let venc,aenc,completed=false;
+  const isNative = Boolean(outputToken && J.platform && J.platform.nativeExport);
+  let vc = null, ac = null, output = null, venc = null, aenc = null, completed = false, expJob = null, err = null, muxer = null;
+  if (!isNative) {
+    vc = await J.pickVideoCodec(w, h, fps, bitrate,{bitrateMode:qp==null?'variable':'quantizer'});
+    if(!vc&&qp!=null)throw new Error(J.mediaLabel('このブラウザは画質優先（QP指定）に対応していません。別の画質設定または連番PNGを使用してください。','This browser does not support QP encoding. Choose another quality setting or a PNG sequence.'));
+    if (!vc) throw new Error('Video encoding (WebCodecs) is unavailable. Open in the latest Chrome or Edge.');
+    if (audio && audio.buffer && project.includeAudio !== false) ac = await J.pickAudioCodec(48000, Math.min(2, audio.buffer.numberOfChannels));
+    output = J.createMP4Output(fileStream);
+  }
   try {
-  const muxOpts = { target:output.target, video: { codec: vc.mux, width: w, height: h, frameRate: fps }, fastStart: false, firstTimestampBehavior: 'offset' };
-  if (ac) muxOpts.audio = { codec: ac.mux, numberOfChannels: Math.min(2, audio.buffer.numberOfChannels), sampleRate: ac.sr };
-  const muxer = new Mp4Muxer.Muxer(muxOpts);
-  let err = null;
-  venc = new VideoEncoder({ output: (chunk, meta) => {try{muxer.addVideoChunk(chunk,meta);}catch(e){err=e;}}, error: e => { err = e; } });
-  venc.configure(Object.assign({}, vc.cfg, { latencyMode: 'quality' }));
+  if (isNative) {
+    let audioWavBuffer = null;
+    if (audio && audio.buffer && project.includeAudio !== false) {
+      const wavBlob = J.audioWav(audio.buffer, duration, range.start);
+      audioWavBuffer = await wavBlob.arrayBuffer();
+    }
+    const totalFrames = Math.max(1, Math.round(duration * fps));
+    expJob = await J.platform.startExport({
+      outputToken,
+      width: w,
+      height: h,
+      fps,
+      frameCount: totalFrames,
+      qualityMode: quality,
+      bitrate,
+      qp,
+      audioBuffer: audioWavBuffer
+    });
+  } else {
+    const muxOpts = { target:output.target, video: { codec: vc.mux, width: w, height: h, frameRate: fps }, fastStart: false, firstTimestampBehavior: 'offset' };
+    if (ac) muxOpts.audio = { codec: ac.mux, numberOfChannels: Math.min(2, audio.buffer.numberOfChannels), sampleRate: ac.sr };
+    muxer = new Mp4Muxer.Muxer(muxOpts);
+    venc = new VideoEncoder({ output: (chunk, meta) => {try{muxer.addVideoChunk(chunk,meta);}catch(e){err=e;}}, error: e => { err = e; } });
+    venc.configure(Object.assign({}, vc.cfg, { latencyMode: 'quality' }));
+  }
   const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
   const ctx = canvas.getContext('2d', { alpha: false });
   const R = new J.Renderer();
@@ -13008,20 +13061,35 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   const prevRes = J.glyphs.maxRes; J.glyphs.maxRes = h >= 1000 ? 768 : 512;
   try {
   for (let i = 0; i < total; i++) {
-    if (signal && signal.aborted) { try { venc.close(); } catch (e) {} throw new Error('Canceled'); }
+    if (signal && signal.aborted) {
+      if (expJob) J.platform.cancelJob(expJob.jobId);
+      if (venc) try { venc.close(); } catch (e) {}
+      throw new Error('Canceled');
+    }
     if (err) throw err;
     const time=range.start+i/fps;
     await J.prepareMediaFrame(plan, time, signal);
     R.frame(sourceCtx, plan, time, { scale });
     if(portrait)portrait.frame(ctx,source,short);
-    const vf = new VideoFrame(canvas, { timestamp: Math.round(i * 1e6 / fps), duration: Math.round(1e6 / fps) });
-    try{venc.encode(vf, { keyFrame: i % (fps * 2) === 0,...(qp==null?{}:{avc:{quantizer:qp}}) });}
-    finally{vf.close();}
-    while (venc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 2));
-    await output.drain();
-    if (i % 3 === 0) { onProgress && onProgress(i / total, `Frame ${i + 1}/${total}`); await new Promise(r => setTimeout(r, 0)); }
+    if (isNative) {
+      const imgData = ctx.getImageData(0, 0, w, h);
+      await J.platform.writeFrame(expJob.jobId, i, imgData.data);
+    } else {
+      const vf = new VideoFrame(canvas, { timestamp: Math.round(i * 1e6 / fps), duration: Math.round(1e6 / fps) });
+      try{venc.encode(vf, { keyFrame: i % (fps * 2) === 0,...(qp==null?{}:{avc:{quantizer:qp}}) });}
+      finally{vf.close();}
+      while (venc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 2));
+      await output.drain();
+    }
+    if (i % 3 === 0) { onProgress && onProgress(i / total, Frame /); await new Promise(r => setTimeout(r, 0)); }
   }
   } finally { J.glyphs.maxRes = prevRes; }
+  if (isNative) {
+    const saved = await J.platform.finishExport(expJob.jobId);
+    completed = true;
+    onProgress && onProgress(1, 'Done');
+    return { ...saved, codec: 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? 'AAC' : null, width: w, height: h };
+  }
   await venc.flush(); venc.close();
   if(err)throw err;
   await output.drain();
@@ -13052,9 +13120,10 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   onProgress && onProgress(1, 'Done');
   return { ...saved, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
   } finally {
+    if(expJob&&!completed)try{J.platform.cancelJob(expJob.jobId);}catch{}
     if(venc&&venc.state!=='closed')try{venc.close();}catch{}
     if(aenc&&aenc.state!=='closed')try{aenc.close();}catch{}
-    if(!completed)await output.abort();
+    if(!completed&&output)await output.abort();
   }
 };
 
@@ -49049,6 +49118,20 @@ let codecNoteVersion=0;
 async function codecNote() {
   const version=++codecNoteVersion,isQP=S.project.quality==='qp';
   const project=activeExportProject(),[w, h] = J.outputSize(project);
+  if (J.platform && J.platform.nativeExport) {
+    let caps = { encoders: ['libx264'], backends: ['cpu'] };
+    try { caps = await J.platform.capabilities(); } catch (e) {}
+    if (version !== codecNoteVersion || S.exporting) return;
+    const encoder = (caps.encoders && caps.encoders[0]) || 'libx264';
+    const backend = (caps.backends && caps.backends[0]) || 'cpu';
+    $('codecNote').textContent = J.mediaLabel(
+      `デスクトップ版（FFmpeg / ${encoder} / ${backend.toUpperCase()}）at (${w}×${h} / ${S.project.fps}fps). `,
+      `Exporting via Desktop (FFmpeg / ${encoder} / ${backend.toUpperCase()}) (${w}×${h} / ${S.project.fps}fps).`
+    );
+    $('btnMP4').disabled = false; $('eMP4').disabled = false;
+    $('btnShort').disabled = shortExportActive() && !shortRangeValid();
+    return;
+  }
   let bitrate;try{if(isQP)J.videoQuantizer(project);else bitrate=J.videoBitrate(project);}catch(err){$('codecNote').textContent=err.message;$('btnMP4').disabled=true;$('btnShort').disabled=true;$('eMP4').disabled=true;return;}
   const vc = await J.pickVideoCodec(w, h, S.project.fps, bitrate,{bitrateMode:isQP?'quantizer':'variable'});
   if(version!==codecNoteVersion||S.exporting)return;
@@ -49143,7 +49226,12 @@ async function runExport(kind) {
   try {
     // Ask while the export click still has user activation. Stream large MP4s
     // straight to this file instead of holding the whole movie in browser RAM.
-    if(mp4&&typeof window.showSaveFilePicker==='function'){
+    let outputToken = null;
+    if (mp4 && J.platform && J.platform.nativeExport) {
+      const target = await J.platform.pickExportTarget(filename);
+      if (target.cancelled) return;
+      outputToken = target.outputToken;
+    } else if (mp4 && typeof window.showSaveFilePicker === 'function') {
       let handle;
       try{handle=await window.showSaveFilePicker({suggestedName:filename,types:[{description:'MP4',accept:{'video/mp4':['.mp4']}}]});}
       catch(e){
@@ -49155,7 +49243,7 @@ async function runExport(kind) {
     }
     await J.ensureFonts(S.project.lyrics + (S.project.title || '') + (S.project.artist || '') + HUD_CHARS + J.drawingText(S.plan), J.fontsOfPlan(S.plan));
     if (mp4) {
-      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream,short:kind==='short'?{...S.project.shortExport}:null });
+      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream, short: kind==='short'?{...S.project.shortExport}:null, outputToken });
       fileStream=null;
       txt.textContent = `Done: ${(r.size / 1048576).toFixed(1)}MB · ${r.codec}${r.audio ? ' + ' + r.audio.toUpperCase() : ''} · ${((performance.now() - t0) / 1000).toFixed(0)}s`;
       const res = r.saved?'saved':await J.saveFile(filename, r.blob);
@@ -49828,7 +49916,20 @@ function bind() {
     dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close('cancel');}});
     document.body.append(dialog);dialog.showModal();dialog.querySelector('[value="cancel"]').focus();
   });
-  $('mediaFiles').addEventListener('change', async e => { const files = Array.from(e.target.files || []); e.target.value = ''; await addMediaFiles(files, activeMediaLayer() || 'media'); });
+  const mediaFileInput = $('mediaFiles');
+  if (mediaFileInput && mediaFileInput.parentElement) {
+    mediaFileInput.parentElement.addEventListener('click', async e => {
+      if (J.platform && typeof J.platform.pickMedia === 'function') {
+        e.preventDefault();
+        e.stopPropagation();
+        const files = await J.platform.pickMedia({ layer: activeMediaLayer() || 'media' });
+        if (files && files.length) {
+          await addMediaFiles(files, activeMediaLayer() || 'media');
+        }
+      }
+    });
+  }
+  mediaFileInput.addEventListener('change', async e => { const files = Array.from(e.target.files || []); e.target.value = ''; await addMediaFiles(files, activeMediaLayer() || 'media'); });
   if ($('btnSpriteExtract')) {
     $('btnSpriteExtract').addEventListener('click', () => {
       if (window.SpriteExtractor) window.SpriteExtractor.open(activeMediaLayer() || 'foreground');

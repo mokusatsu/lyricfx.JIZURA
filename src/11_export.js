@@ -112,7 +112,7 @@ J.createMP4Output = fileStream => {
     async abort(){parts=[];await queue;if(fileStream)try{await fileStream.abort();}catch{}}
   };
 };
-J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, signal, fileStream, short }) => {
+J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken }) => {
   if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
@@ -122,20 +122,41 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   const fps = plan.fps;
   const qp=quality==='qp'?J.videoQuantizer(project):null;
   const bitrate = qp==null ? J.videoBitrate(project,quality,fps) : undefined;
-  const vc = await J.pickVideoCodec(w, h, fps, bitrate,{bitrateMode:qp==null?'variable':'quantizer'});
-  if(!vc&&qp!=null)throw new Error(J.mediaLabel('このブラウザは画質優先（QP指定）に対応していません。別の画質設定または連番PNGを使用してください。','This browser does not support QP encoding. Choose another quality setting or a PNG sequence.'));
-  if (!vc) throw new Error('このブラウザは動画エンコード（WebCodecs）に対応していません。Chrome か Edge の最新版で開いてください。');
-  let ac = null;
-  if (audio && audio.buffer && project.includeAudio !== false) ac = await J.pickAudioCodec(48000, Math.min(2, audio.buffer.numberOfChannels));
-  const output=J.createMP4Output(fileStream);
-  let venc,aenc,completed=false;
+  const isNative = Boolean(outputToken && J.platform && J.platform.nativeExport);
+  let vc = null, ac = null, output = null, venc = null, aenc = null, completed = false, expJob = null, err = null, muxer = null;
+  if (!isNative) {
+    vc = await J.pickVideoCodec(w, h, fps, bitrate,{bitrateMode:qp==null?'variable':'quantizer'});
+    if(!vc&&qp!=null)throw new Error(J.mediaLabel('このブラウザは画質優先（QP指定）に対応していません。別の画質設定または連番PNGを使用してください。','This browser does not support QP encoding. Choose another quality setting or a PNG sequence.'));
+    if (!vc) throw new Error('このブラウザは動画エンコード（WebCodecs）に対応していません。Chrome か Edge の最新版で開いてください。');
+    if (audio && audio.buffer && project.includeAudio !== false) ac = await J.pickAudioCodec(48000, Math.min(2, audio.buffer.numberOfChannels));
+    output = J.createMP4Output(fileStream);
+  }
   try {
-  const muxOpts = { target:output.target, video: { codec: vc.mux, width: w, height: h, frameRate: fps }, fastStart: false, firstTimestampBehavior: 'offset' };
-  if (ac) muxOpts.audio = { codec: ac.mux, numberOfChannels: Math.min(2, audio.buffer.numberOfChannels), sampleRate: ac.sr };
-  const muxer = new Mp4Muxer.Muxer(muxOpts);
-  let err = null;
-  venc = new VideoEncoder({ output: (chunk, meta) => {try{muxer.addVideoChunk(chunk,meta);}catch(e){err=e;}}, error: e => { err = e; } });
-  venc.configure(Object.assign({}, vc.cfg, { latencyMode: 'quality' }));
+  if (isNative) {
+    let audioWavBuffer = null;
+    if (audio && audio.buffer && project.includeAudio !== false) {
+      const wavBlob = J.audioWav(audio.buffer, duration, range.start);
+      audioWavBuffer = await wavBlob.arrayBuffer();
+    }
+    const totalFrames = Math.max(1, Math.round(duration * fps));
+    expJob = await J.platform.startExport({
+      outputToken,
+      width: w,
+      height: h,
+      fps,
+      frameCount: totalFrames,
+      qualityMode: quality,
+      bitrate,
+      qp,
+      audioBuffer: audioWavBuffer
+    });
+  } else {
+    const muxOpts = { target:output.target, video: { codec: vc.mux, width: w, height: h, frameRate: fps }, fastStart: false, firstTimestampBehavior: 'offset' };
+    if (ac) muxOpts.audio = { codec: ac.mux, numberOfChannels: Math.min(2, audio.buffer.numberOfChannels), sampleRate: ac.sr };
+    muxer = new Mp4Muxer.Muxer(muxOpts);
+    venc = new VideoEncoder({ output: (chunk, meta) => {try{muxer.addVideoChunk(chunk,meta);}catch(e){err=e;}}, error: e => { err = e; } });
+    venc.configure(Object.assign({}, vc.cfg, { latencyMode: 'quality' }));
+  }
   const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
   const ctx = canvas.getContext('2d', { alpha: false });
   const R = new J.Renderer();
@@ -147,20 +168,35 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   const prevRes = J.glyphs.maxRes; J.glyphs.maxRes = h >= 1000 ? 768 : 512;
   try {
   for (let i = 0; i < total; i++) {
-    if (signal && signal.aborted) { try { venc.close(); } catch (e) {} throw new Error('キャンセルしました'); }
+    if (signal && signal.aborted) {
+      if (expJob) J.platform.cancelJob(expJob.jobId);
+      if (venc) try { venc.close(); } catch (e) {}
+      throw new Error('キャンセルしました');
+    }
     if (err) throw err;
     const time=range.start+i/fps;
     await J.prepareMediaFrame(plan, time, signal);
     R.frame(sourceCtx, plan, time, { scale });
     if(portrait)portrait.frame(ctx,source,short);
-    const vf = new VideoFrame(canvas, { timestamp: Math.round(i * 1e6 / fps), duration: Math.round(1e6 / fps) });
-    try{venc.encode(vf, { keyFrame: i % (fps * 2) === 0,...(qp==null?{}:{avc:{quantizer:qp}}) });}
-    finally{vf.close();}
-    while (venc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 2));
-    await output.drain();
-    if (i % 3 === 0) { onProgress && onProgress(i / total, `フレーム ${i + 1}/${total}`); await new Promise(r => setTimeout(r, 0)); }
+    if (isNative) {
+      const imgData = ctx.getImageData(0, 0, w, h);
+      await J.platform.writeFrame(expJob.jobId, i, imgData.data);
+    } else {
+      const vf = new VideoFrame(canvas, { timestamp: Math.round(i * 1e6 / fps), duration: Math.round(1e6 / fps) });
+      try{venc.encode(vf, { keyFrame: i % (fps * 2) === 0,...(qp==null?{}:{avc:{quantizer:qp}}) });}
+      finally{vf.close();}
+      while (venc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 2));
+      await output.drain();
+    }
+    if (i % 3 === 0) { onProgress && onProgress(i / total, フレーム /); await new Promise(r => setTimeout(r, 0)); }
   }
   } finally { J.glyphs.maxRes = prevRes; }
+  if (isNative) {
+    const saved = await J.platform.finishExport(expJob.jobId);
+    completed = true;
+    onProgress && onProgress(1, '完了');
+    return { ...saved, codec: 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? 'AAC' : null, width: w, height: h };
+  }
   await venc.flush(); venc.close();
   if(err)throw err;
   await output.drain();
@@ -191,9 +227,10 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   onProgress && onProgress(1, '完了');
   return { ...saved, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
   } finally {
+    if(expJob&&!completed)try{J.platform.cancelJob(expJob.jobId);}catch{}
     if(venc&&venc.state!=='closed')try{venc.close();}catch{}
     if(aenc&&aenc.state!=='closed')try{aenc.close();}catch{}
-    if(!completed)await output.abort();
+    if(!completed&&output)await output.abort();
   }
 };
 

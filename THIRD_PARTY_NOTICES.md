@@ -1,5 +1,14 @@
 # Third-party notices
 
+## Desktop (Electron) edition components
+
+When packaged or executed in the desktop edition, the application utilizes the following native libraries and runtime dependencies:
+
+- **FFmpeg & libx264**: Licensed under **GPL-3.0-or-later** (when compiled with `--enable-gpl --enable-libx264`). [FFmpeg legal notices](https://www.ffmpeg.org/legal.html). Source: https://github.com/FFmpeg/FFmpeg.
+- **ONNX Runtime** (1.18+), by Microsoft Corporation. Licensed under the **MIT License**. [Source](https://github.com/microsoft/onnxruntime).
+- **Pillow** (10.4+), by Jeffrey A. Clark and contributors. Licensed under the **HPND License**. [Source](https://github.com/python-pillow/Pillow).
+- **Electron** (33+), by the Electron authors and OpenJS Foundation. Licensed under the **MIT License**. [Source](https://github.com/electron/electron).
+
 ## Optional person segmentation (downloaded at runtime)
 
 Images, videos and generated masks are processed locally. RVM model weights and the TensorFlow.js runtime are fetched only when the user generates a mask; pretrained weights are not bundled in this repository.

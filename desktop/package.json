@@ -1,0 +1,19 @@
+{
+  "name": "lyricfx-jizura",
+  "version": "1.0.0",
+  "description": "lyricfx.JIZURA - Lyric Motion Video Maker (Desktop Edition)",
+  "main": "main.cjs",
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder --dir",
+    "dist": "electron-builder",
+    "test": "node test/native_dialog.test.cjs && node test/ipc_security.test.cjs && node test/person_native_e2e.cjs && node test/export_native_e2e.cjs"
+  },
+  "author": "Keiji Okamoto",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}

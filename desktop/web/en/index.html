@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: https:; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; media-src 'self' blob: data: jizura-asset:;">
+<title>lyricfx.JIZURA</title>
+<meta name="description" content="Turn lyrics into animated lyric videos in your browser and export MP4.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../app.css">
+</head>
+<body>
+<div id="app">
+  <header class="bar">
+    <div class="brand"><svg class="brand-title" viewBox="0 0 220 30" preserveAspectRatio="none" role="img" aria-label="lyricfx.JIZURA"><text x="0" y="24" textLength="220" lengthAdjust="spacingAndGlyphs">lyricfx.JIZURA</text></svg></div>
+    <div class="proj">
+      <input id="songTitle" type="text" placeholder="Song title (shown on title cards and HUD)" aria-label="Song title">
+      <input id="songArtist" type="text" placeholder="Artist" aria-label="Artist">
+      <input id="projectName" type="text" placeholder="Project name" aria-label="Project name" title="File name for saving the project; updated when you save">
+    </div>
+    <nav class="lang-switch" aria-label="Language"><a href="../index.html" lang="ja">日本語</a><span aria-current="page">English</span></nav>
+    <div class="acts">
+      <details class="header-menu" id="projectMenu">
+        <summary>Project</summary><div class="header-menu-items">
+          <button id="btnNew">New</button>
+          <label class="file" tabindex="0" title="Open a portable project (.jizuraichi)">Open<input id="fileProject" type="file" accept=".jizuraichi,.jizura,.json"></label>
+          <button id="btnSave" title="Save project with images, videos and audio">Save</button>
+          <button id="btnSaveSettings">Export settings only</button>
+          <label class="file" tabindex="0">Import settings only<input id="fileSettings" type="file" accept=".jizuraichi,.json"></label>
+        </div>
+      </details>
+      <details class="header-menu" id="outputMenu">
+        <summary>Export</summary><div class="header-menu-items">
+          <button id="menuMP4" data-export-dialog="mp4">Export MP4</button>
+          <button id="menuShort" data-export-dialog="short">Export for Shorts</button>
+          <button id="menuPNG" data-export-dialog="png">PNG sequence (ZIP)</button>
+          <button id="menuPNGA" data-export-dialog="pnga">Transparent PNG (ZIP)</button>
+          <button id="btnAE" title="Export project data for the After Effects panel">Export for AE</button>
+        </div>
+      </details>
+      <button id="btnTerms" class="ghost terms-open" title="Rights and licenses for your exports">About / rights</button>
+    </div>
+  </header>
+
+  <main class="work">
+    <!-- ================= left: lyrics & timing ================= -->
+    <section id="sourceDrawer" class="col col-left" aria-label="Lyrics and timing">
+      <nav class="source-tabs" role="tablist" aria-label="Source"><button id="sourceAvoidance" role="tab" aria-selected="false">Avoidance</button><button id="sourceForeground" role="tab" aria-selected="false">Foreground</button><button id="sourceLyrics" role="tab" aria-selected="true">Lyrics & music</button><button id="sourceMedia" role="tab" aria-selected="false">Background</button></nav>
+      <div class="source-drawer-heading"><strong id="sourceDrawerTitle"></strong><button id="closeSourceDrawer" type="button">×</button></div>
+      <div class="sec" id="lyricsPane">
+        <div class="sec-h"><h2>Lyrics</h2><button id="btnSyntax" class="ghost small" aria-expanded="false">Syntax</button></div>
+        <div class="lyrics-editor">
+        <textarea id="lyrics" rows="9" spellcheck="false" aria-label="Lyrics (one phrase per line)"></textarea>
+          <div id="lyricPlaybackHighlight" class="lyric-playback-highlight" aria-hidden="true" hidden><div></div></div>
+        </div>
+        <div id="lyricInputTools" class="lyric-input-tools" role="group" aria-label="Lyric input tools">
+          <button type="button" data-lyric-insert="cut">Cut</button><button type="button" data-lyric-insert="break">Line break</button><button type="button" data-lyric-insert="strong">Emphasize</button><button type="button" data-lyric-insert="soft">Subdue</button><button type="button" data-lyric-insert="scene">One scene</button><button type="button" data-lyric-insert="separate">Non-overlapping scene</button><button type="button" data-lyric-insert="empty">Empty lyric</button>
+        </div>
+        <label class="lang-row">Lyrics language<select id="lyricLang"><option value="auto">Auto-detect</option><option value="ja">日本語</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ko">한국어</option></select><span id="langNote" class="muted"></span></label>
+        <div id="syntax" class="syntax" hidden>
+          <ul>
+            <li>One phrase per line. A blank line adds a short pause.</li>
+            <li><code>｜　　　｜</code> … Spaces between full-width vertical bars create a lyric line with effects only and no text</li>
+            <li><code>I remember/the dawn</code> … <code>/</code> marks a cut boundary</li>
+            <li>Wrap multiple lines in <code>{</code> and <code>}</code> to stack them until the final cut disappears.</li>
+            <li><code>{-</code> and <code>-}</code> around lines … retain successive lyrics while avoiding overlaps.</li>
+            <li><code>First line\nSecond line</code> … <code>\n</code> adds a line break within one cut (use <code>\\n</code> to display it literally).</li>
+            <li><code>*emphasis*</code> … a larger automatic area, displayed above the foreground without avoiding it.</li>
+            <li><code>~whisper~</code> … a smaller display with gentler motion.</li>
+            <li>A trailing <code>!</code> … adds a flash and shake</li>
+            <li><code>50:Lyrics</code> … Cut placement size (100 = full frame, 50 = half width and height; overrides automatic size limits). To display the number and colon, use <code>50\:Lyrics</code></li>
+            <li><code>lyrics|reading or note</code> … Smaller text in annotation layouts (supported effects only)</li>
+            <li><code>[01:23.45]Lyrics</code> … uses an LRC timestamp</li>
+            <li><code>#</code> starts a comment (ignored)</li>
+            <li>Place <code>\</code> before a control character to display it literally: <code>\*</code>, <code>\~</code>, <code>\{</code>, <code>\}</code>, <code>\/</code>, <code>\|</code>, <code>\!</code>, <code>\#</code>, <code>\[</code>, <code>\\</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sec" id="avoidancePane" hidden>
+        <div class="sec-h media-pane-heading"><h2 id="avoidancePaneTitle">Avoidance</h2></div>
+        <button id="addAvoidanceCircle" type="button">円形領域をNew</button>
+        <button id="addAvoidancePerson" type="button">人物マスクをNew</button>
+        <p id="avoidanceCircleLimit" class="hint" hidden></p>
+      </div>
+
+      <div class="sec" id="mediaPane" hidden>
+        <div class="sec-h media-pane-heading"><h2 id="mediaPaneTitle">Background</h2></div>
+        <div class="media-upload-row"><p class="hint">Drop images or videos here, or use Add to select files. Files are stored in this browser.</p><label class="file">New<input id="mediaFiles" type="file" accept="image/*,video/*" multiple></label><button type="button" id="btnSpriteExtract" class="ghost" style="margin-left:6px;white-space:nowrap" title="グリーンバック等の複数ポーズ画像から一括切り出し">✂️ Extract sheet</button></div>
+        <div id="mediaList" class="media-list"></div>
+        <div id="mediaCutInsert" class="media-lyric-insert">
+          <fieldset id="backgroundInsertSources" hidden><legend>Items to insert in bulk</legend></fieldset>
+          <div class="sec-h"><h2>Insert cuts</h2></div>
+          <label class="field">Align inserted cuts to<select id="mediaLyricInsertMode"><option value="line">Lyric lines</option><option value="cut">Lyric cuts</option></select></label>
+          <label class="check"><input id="mediaGroupLyrics" type="checkbox" checked><span>Treat lyrics enclosed in { } as one cut</span></label>
+          <button id="btnMediaFromLyrics" type="button" aria-describedby="mediaLyricInsertHint">Insert cuts aligned to lyrics</button>
+          <button id="btnTapMedia" type="button" title="Tap when each cut should start while watching the video">Tap while watching the video to insert</button>
+          <p id="mediaLyricInsertHint" class="hint"></p>
+          <label class="check"><input id="mediaRandom" type="checkbox"><span>Insert in random order</span></label>
+          <label class="check"><input id="mediaLoop" type="checkbox"><span>Loop<small>If there are more cuts than files, the files are inserted in a loop.</small></span></label>
+        </div>
+      </div>
+
+      <div class="sec" id="audioTimingSection">
+        <div class="sec-h"><h2>Audio and timing</h2></div>
+        <div id="audioName" class="muted audio-name">No audio. Import a song to detect beats and align cuts.</div>
+        <div class="row">
+          <label class="file" title="MP3, WAV, M4A, MP4, WebM and more">Import audio / video<input id="audioFile" type="file" accept="audio/*,video/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.mp4,.m4v,.mov,.webm,.ogv,.mkv"></label>
+          <button id="btnRemoveAudio" class="ghost" type="button" hidden>Remove audio</button>
+          <button id="btnTap" title="Tap at the start of each line while the song plays">Tap to sync</button>
+        </div>
+        <div class="theme-settings"><button id="btnThemes" type="button">Theme settings</button><div id="themeLabels" aria-live="polite"></div></div>
+        <div class="fields pro-only">
+          <label class="field">BPM<input id="bpm" type="number" min="0" max="300" step="0.1" placeholder="Auto"></label>
+          <label class="field">Start (s)<input id="offset" type="number" min="0" step="0.05"></label>
+          <label class="field">Line duration<input id="lineScale" type="number" min="0.4" max="3" step="0.05"></label>
+        </div>
+        <div class="row pro-only">
+          <label class="row" style="gap:6px"><input id="snap" type="checkbox"> Snap to beat</label>
+          <button id="btnResetTimes" class="ghost small">Clear manual timing</button>
+        </div>
+      </div>
+
+
+      <div class="sec">
+        <div class="sec-h" id="cutsHeadingRow"><h2 id="cutsHeading">Lines and cuts</h2><span id="linesInfo" class="muted mono"></span></div>
+        <ol id="lineList"></ol>
+        <ol id="mediaLineList" hidden></ol>
+        <ol id="avoidanceLineList" hidden></ol>
+      </div>
+    </section>
+
+    <!-- ================= center: stage ================= -->
+    <section class="col col-stage" aria-label="Preview">
+      <div class="viewport" id="viewport"><button id="exitPreviewFullscreen" class="fullscreen-exit" type="button">Exit fullscreen</button><div class="fullscreen-transport"><button id="fullscreenPlay" type="button" aria-label="Play">▶</button><span id="fullscreenTime" class="tc"></span><input id="fullscreenScrub" type="range" min="0" max="10000" value="0" aria-label="Playback position"></div><canvas id="view" width="1280" height="720"></canvas><canvas id="personGuide" class="person-guide" aria-hidden="true" hidden></canvas><div id="itemFrames" class="item-frames"></div><div id="areaEditOverlay" class="area-edit-overlay" aria-label="Edit position and size" hidden><div id="areaEditRect" class="area-edit-rect"><span id="avoidanceMaskInnerRing" class="avoidance-mask-ring inner" hidden></span><span id="avoidanceMaskOuterRing" class="avoidance-mask-ring outer" hidden></span><span class="area-edit-handle nw" data-handle="nw"></span><span class="area-edit-handle ne" data-handle="ne"></span><span class="area-edit-handle sw" data-handle="sw"></span><span class="area-edit-handle se" data-handle="se"></span><span class="area-rotate-handle n" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle e" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle s" data-handle="rotate" role="button" aria-label="回転"></span><span class="area-rotate-handle w" data-handle="rotate" role="button" aria-label="回転"></span></div></div><div id="viewMsg" class="overlay-msg" hidden></div><div id="keyBadge" class="key-badge" hidden></div><div id="toast" class="toast" role="status" aria-live="polite" hidden></div></div>
+      <div id="areaEditControls" class="area-edit-controls" hidden><div id="mediaAreaSizeControls" class="media-area-size-controls" hidden><label><input id="mediaAreaAspectLock" type="checkbox" checked>Lock aspect ratio</label><label>Width (% of canvas)<input id="mediaAreaWidth" type="number" min="0.5" max="400" step="0.5"></label><label>Height (% of canvas)<input id="mediaAreaHeight" type="number" min="0.5" max="400" step="0.5"></label><label id="mediaAreaAngleField">Rotation (°)<input id="mediaAreaAngle" type="number" min="-180" max="180" step="0.1"></label></div><div id="avoidanceMaskControls" class="media-area-size-controls avoidance-mask-controls" hidden><label>中心 X（Aspect ratio％）<input id="avoidanceEditCenterX" type="number" min="0" max="100" step="0.1"></label><label>中心 Y（Aspect ratio％）<input id="avoidanceEditCenterY" type="number" min="0" max="100" step="0.1"></label><p id="avoidanceDiameterHint" class="hint">幅・Highさは円の直径です。</p><label><input id="avoidanceEditEnabled" type="checkbox">有効</label><label>文字の配置<select id="avoidanceEditPlacement"><option value="move">領域の外へ配置</option><option value="stay">そのまま</option></select></label><label><input id="avoidanceEditEmphasis" type="checkbox">強調も避ける</label><label>重なった部分<select id="avoidanceEditOcclusion"><option value="none">そのまま表示</option><option value="aux">装飾・補助描画だけ隠す</option><option value="all">Lyrics全体を背後に隠す</option></select></label><label><input id="avoidanceEditForeground" type="checkbox">Foregroundも背後に隠す</label><label><input id="avoidanceEditLock" type="checkbox">ロック</label><label><input id="avoidanceEditGuide" type="checkbox">Previewに領域ガイドを表示</label><label>開始位置（秒）<input id="avoidanceEditStart" type="number" step="any" min="0"></label><label><input id="avoidanceEditUntilNext" type="checkbox">次カットまで</label><label>終了位置（秒）<input id="avoidanceEditEnd" type="number" step="any" min="0"></label><label>Mask radius offset (px)<input id="avoidanceEditMaskOffsetRange" type="range" min="-240" max="240" step="1" value="0" aria-label="Mask radius offset slider"><input id="avoidanceEditMaskOffset" type="number" min="-500" max="500" step="1" value="0"></label><label>Feather width (px)<input id="avoidanceEditMaskFeatherRange" type="range" min="0" max="300" step="1" value="60" aria-label="Feather width slider"><input id="avoidanceEditMaskFeather" type="number" min="0" max="300" step="1" value="60"></label><label>Gradient curve<select id="avoidanceEditMaskCurve"><option value="smooth">Smooth (default)</option><option value="linear">Linear</option><option value="steep">Steep</option><option value="soft">Soft</option></select></label></div><div class="area-edit-actions"><button id="areaResetAuto" class="ghost" type="button">Auto配置</button><button id="areaResetFull" class="ghost" type="button">Full area</button><button id="areaDelete" type="button">削除</button></div><div class="area-edit-confirm"><button id="areaApplyOne" class="primary" disabled>Set placement</button><button id="areaApplyFollowing" disabled>Use this placement from here onward</button><button id="areaCancel" class="ghost">キャンセル</button></div></div>
+      <div id="tapPanel" class="tapbox" hidden>
+        <div class="hint" id="tapHint">Click the button (or press Space) at the moment you want to insert.</div>
+        <div class="tap-queue">
+          <div class="tap-queue-line tap-future-two" hidden><span class="tap-marker" aria-hidden="true"></span><span id="tapLineAhead2"></span></div>
+          <div class="tap-queue-line tap-future-one" hidden><span class="tap-marker" aria-hidden="true"></span><span id="tapLineAhead1"></span></div>
+          <div class="next tap-queue-line tap-current" aria-live="polite"><span class="tap-marker" aria-hidden="true">▶</span><b id="tapLine">—</b></div>
+        </div>
+        <div class="tap-button-wrap">
+          <button id="tapBtn" class="tap">TAP</button>
+          <div id="tapCountdown" role="status" aria-live="polite" hidden></div>
+        </div>
+        <button id="tapStop" class="ghost">Finish</button>
+      </div>
+      <div class="preview-options"><label class="item-frame-toggle"><input id="showItemFrames" type="checkbox" checked><span id="showItemFramesLabel">Edit mode</span></label><label class="ghost-toggle" title="Show subtle preview of lyrics before singing begins"><input id="showGhostPreRoll" type="checkbox"><span id="showGhostPreRollLabel">Anticipation</span></label><button id="effectFavorites" type="button" class="ghost small">☆お気に入りEffects</button><button id="previewScreenshot" type="button" class="ghost small" title="Save preview as PNG">Screenshot</button><button id="previewFullscreen" type="button" class="ghost small">Fullscreen preview</button></div>
+      <div class="transport">
+        <button id="btnPlay" class="play" aria-label="Play">▶</button>
+        <span id="timeNow" class="tc">00:00.00</span><span class="tc muted">/</span><button id="timeDur" class="tc muted duration-value" type="button" title="Enter total video duration (blank for auto)" aria-label="Enter total video duration">00:00.00</button><input id="timeDurInput" class="tc duration-input" type="text" inputmode="decimal" aria-label="Total video duration (seconds or mm:ss; blank for auto)" hidden>
+        <input id="scrub" type="range" min="0" max="10000" value="0" aria-label="Playback position">
+        <button id="btnLoop" class="ghost small" aria-pressed="true">Loop</button>
+        <span class="undo-btns"><button id="btnUndo" class="ghost small" type="button" title="Undo (Ctrl+Z)" disabled>↶ Undo</button><button id="btnRedo" class="ghost small" type="button" title="Redo (Ctrl+Shift+Z)" disabled>↷ Redo</button></span>
+        <span class="hist-btns">
+          <button id="btnPrev" class="ghost small icon-txt" title="Previous variation" aria-label="Previous">◀</button>
+          <button id="btnNext" class="ghost small icon-txt" title="Next variation" aria-label="Next">▶</button>
+        </span>
+        <button id="btnShuffle" class="accent" title="Shuffle the arrangement, keeping locked lines">Shuffle</button>
+        <button id="btnOmakase" class="primary" title="Randomize style, mood, effects and colors (R)">Randomize</button>
+      </div>
+      <div class="timeline-toolbar">
+      <div class="timeline-position-label" id="playheadMenuLabel">Edit at playhead:</div>
+      <div class="timeline-split playhead-menu" id="playheadMenu">
+        <div class="playhead-primary" role="group" aria-labelledby="playheadMenuLabel"><button type="button" data-playhead-menu="insert" aria-expanded="false"></button><button type="button" data-playhead-menu="split" aria-expanded="false"></button><button type="button" data-playhead-menu="endHere" aria-expanded="false"></button><button type="button" data-playhead-menu="untilNext" aria-expanded="false"></button><button id="relayoutAtPlayhead" type="button" disabled></button></div>
+        <div class="playhead-secondary" role="group" hidden><button id="insertAvoidanceAtPlayhead" type="button" data-playhead-action="insert" data-layer="avoidance" disabled></button><button id="insertForegroundAtPlayhead" type="button" data-playhead-action="insert" data-layer="foreground" disabled></button><button id="insertLyricAtPlayhead" type="button" data-playhead-action="insert" data-layer="lyrics" disabled></button><button id="insertBackgroundAtPlayhead" type="button" data-playhead-action="insert" data-layer="media" disabled></button><button id="splitAvoidanceCut" type="button" data-playhead-action="split" data-layer="avoidance" disabled></button><button id="splitForegroundCut" type="button" data-playhead-action="split" data-layer="foreground" disabled></button><button id="splitBackgroundCut" type="button" data-playhead-action="split" data-layer="media" disabled></button><button id="endAvoidanceHere" type="button" data-playhead-action="endHere" data-layer="avoidance" disabled></button><button id="endForegroundHere" type="button" data-playhead-action="endHere" data-layer="foreground" disabled></button><button id="endLyricHere" type="button" data-playhead-action="endHere" data-layer="lyrics" disabled></button><button id="endBackgroundHere" type="button" data-playhead-action="endHere" data-layer="media" disabled></button><button id="untilNextAvoidance" type="button" data-playhead-action="untilNext" data-layer="avoidance" disabled></button><button id="untilNextForeground" type="button" data-playhead-action="untilNext" data-layer="foreground" disabled></button><button id="untilNextLyric" type="button" data-playhead-action="untilNext" data-layer="lyrics" disabled></button><button id="untilNextBackground" type="button" data-playhead-action="untilNext" data-layer="media" disabled></button></div>
+      </div>
+      <div class="timeline-volume"><button id="volumeMuteBtn" type="button" aria-label="Toggle mute" title="Toggle mute">🔊</button><input id="timelineVolume" type="range" min="0" max="100" value="100" title="Volume"><span id="timelineVolumeValue" aria-live="polite">100%</span></div>
+      <div class="timeline-zoom"><button id="timelineZoomOut" type="button" aria-label="Zoom timeline out">−</button><span id="timelineZoomValue" aria-live="polite">100%</span><button id="timelineZoomIn" type="button" aria-label="Zoom timeline in">＋</button></div>
+      </div>
+      <div class="timeline-with-visibility"><div id="layerVisibilityControls" class="layer-visibility-controls"></div><div id="timelineScroll" class="timeline-scroll"><div id="timelineStack" class="timeline-stack">
+        <canvas id="avoidanceTimeline" aria-label="Avoidance timeline (drag a cut boundary to change its start time; drag elsewhere to seek)"></canvas>
+        <canvas id="foregroundTimeline" aria-label="Foreground timeline (drag a cut boundary to change its start time; drag elsewhere to seek)"></canvas>
+        <canvas id="timeline" aria-label="Lyrics timeline (drag a cut boundary to change its start time; drag elsewhere to seek)"></canvas>
+        <canvas id="mediaTimeline" aria-label="Background timeline (drag a cut boundary to change its start time; drag elsewhere to seek)"></canvas>
+        <svg id="timelineLinks" class="timeline-links" aria-label="Timeline boundary links"></svg>
+        <button id="timelineDurationHandle" class="timeline-duration-handle" type="button" title="Drag to change total video duration" aria-label="Drag to change total video duration"><span aria-hidden="true">◀▶</span></button>
+      </div></div>
+      </div>
+    </section>
+
+    <!-- ================= right: look & output ================= -->
+    <div class="modes settings-rail" role="group" aria-label="Editor mode">
+      <button id="modeEasy" aria-pressed="false" aria-expanded="false" aria-controls="settingsDrawer" title="A simple workspace focused on automatic creation">Simple</button>
+      <button id="modePro" aria-pressed="false" aria-expanded="false" aria-controls="settingsDrawer" title="Show all settings">Advanced</button>
+    </div>
+    <section id="settingsDrawer" class="col col-right" aria-label="Style and export" hidden>
+      <div class="settings-drawer-heading"><strong id="settingsDrawerTitle"></strong><button id="closeSettingsDrawer" type="button">×</button></div>
+      <div id="easyPanel" class="easy" hidden>
+        <div class="easy-hero">
+          <button id="btnOmakaseBig" class="omakase">Create a variation</button>
+          <p class="hint">Each click changes the style, mood, motion, colors and arrangement. Press <span class="kbd">R</span> to do the same.</p>
+          <div class="hist-row">
+            <button id="btnPrev2" class="ghost">◀ Previous</button>
+            <span id="histPos" class="muted mono"></span>
+            <button id="btnNext2" class="ghost">Next ▶</button>
+          </div>
+          <div class="pick-sets">
+          </div>
+        </div>
+        <div class="easy-sec">
+          <h3>Current variation</h3>
+          <div id="easyNow" class="now"></div>
+        </div>
+        <div class="easy-sec">
+          <h3>Change one thing</h3>
+          <div class="easy-grid">
+            <button id="eStyle" title="Change the style only">Style</button>
+            <button id="ePalette" title="Randomize accent and offset colors">Palette</button>
+            <button id="eMood" title="Change motion, glitch and technique mood">Mood</button>
+            <button id="eCut" title="Change the arrangement and motion only">Arrangement</button>
+          </div>
+        </div>
+        <div class="easy-sec">
+          <h3>Export</h3>
+          <div class="fields">
+            <label class="field">Aspect ratio<select id="eAspect"><option value="16:9">16:9</option><option value="9:16">9:16 portrait</option><option value="4:3">4:3</option><option value="3:4">3:4 portrait</option><option value="1:1">1:1</option><option value="4:5">4:5 portrait</option><option value="21:9">21:9</option></select></label>
+            <label class="field">Resolution<select id="eRes"><option value="720">720p</option><option value="1080">1080p</option><option value="1440">1440p</option><option value="2160">4K</option></select></label>
+            <label class="field field-wide">Video size<select id="eVideoSize"><option value="legacy">Use aspect ratio and resolution</option><option value="1920x1080">1920 × 1080（Full HD）</option><option value="1280x720">1280 × 720（HD）</option><option value="3840x2160">3840 × 2160（4K）</option><option value="1080x1920">1080 × 1920（Portrait）</option><option value="1080x1080">1080 × 1080（Square）</option><option value="1080x1350">1080 × 1350（4:5）</option><option value="custom">Custom size</option></select></label>
+            <label class="field video-size-custom" hidden>Width (px)<input id="eVideoWidth" type="number" min="16" max="8192" step="2"></label><label class="field video-size-custom" hidden>Height (px)<input id="eVideoHeight" type="number" min="16" max="8192" step="2"></label>
+            <label class="field">fps<select id="eFps"><option>24</option><option>30</option><option>60</option></select></label>
+            <label class="field field-wide">Background<select id="eKey"><option value="off">Style background</option><option value="green">Green screen (compositing)</option><option value="black">Black background (compositing)</option></select></label>
+          </div>
+          <div class="outbtns"><button id="eMP4" class="primary">Export MP4</button></div>
+          <button class="terms-open linkish">Rights to exported videos</button>
+          <div class="exp-box" hidden>
+            <div class="progress"><i class="exp-bar"></i></div>
+            <div class="row" style="justify-content:space-between;margin-top:6px"><span class="exp-text muted mono">—</span><button class="exp-cancel ghost small">Cancel</button></div>
+          </div>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="style" aria-selected="true">Style</button>
+        <button role="tab" data-tab="fx" aria-selected="false">Effects</button>
+        <button role="tab" data-tab="tech" aria-selected="false">Techniques</button>
+        <button role="tab" data-tab="foregroundFx" aria-selected="false">Foreground</button>
+        <button role="tab" data-tab="mediaFx" aria-selected="false">Background</button>
+        <button role="tab" data-tab="out" aria-selected="false">Export</button>
+      </nav>
+
+      <div class="tabpane" data-pane="style">
+        <div id="styleGrid" class="style-grid"></div>
+        <h3>Font roles</h3>
+        <div id="fontRoles"></div>
+        <div class="row" style="margin-top:8px">
+          <input id="localFont" type="text" placeholder="Installed font name (e.g. Arial)" style="flex:1">
+          <button id="btnAddFont">Add</button>
+        </div>
+        <div class="row" style="margin-top:8px"><label class="file">Font file (.ttf/.otf)<input id="fontFile" type="file" accept=".ttf,.otf,.woff,.woff2"></label></div>
+        <div class="row font-import" style="margin-top:8px"><button id="btnListFonts" type="button">List installed fonts</button><select id="installedFonts" aria-label="Installed fonts" hidden></select><button id="btnImportFont" type="button" hidden>Import selected font</button></div>
+        <h3>Composite fonts</h3><div class="composite-font"><label>Name<input id="compositeName" type="text" maxlength="60"></label><label>Base font<select id="compositeBase"></select></label><div id="compositeParts"></div><button id="btnSaveComposite" type="button">Save composite font</button><div id="compositeList"></div></div>
+        <h3>Accent and offset colors</h3>
+        <label class="check"><input id="accentOn" type="checkbox"><span>Use custom colors<small>Applies to every scene. Brightness adapts to the background.</small></span></label>
+        <div class="color-row" id="colorRowAccent"></div>
+        <div class="row" style="margin-top:10px">
+          <button id="btnRandPalette" class="accent">Randomize palette</button>
+          <div id="paletteSwatch" class="swatches" aria-hidden="true"></div>
+        </div>
+        <h3>Background and text colors</h3>
+        <label class="check"><input id="colorOn" type="checkbox"><span>Use custom background and text colors</span></label>
+        <div class="color-row" id="colorRow"></div>
+      </div>
+
+      <div class="tabpane" data-pane="fx" hidden>
+        <div id="fxSliders"></div>
+        <div class="row" style="margin-top:6px">
+          <label class="row" style="gap:6px"><input id="fxFlash" type="checkbox"> Flash</label>
+          <label class="row" style="gap:6px">Frame stepping <select id="fxKoma" title="Motion drawings per second (independent of export fps)"><option value="0">Full (export fps)</option><option value="12">On twos (12 drawings/s)</option><option value="8">On threes (8 drawings/s)</option></select></label>
+        </div>
+        <div class="fields" style="margin-top:12px">
+          <label class="field">HUD<select id="fxHud"><option value="auto">Auto (by style)</option><option value="on">Always show</option><option value="off">Hide</option></select></label>
+          <label class="field">Seed<input id="seed" type="number" step="1"></label>
+          <label class="field">&nbsp;<button id="btnSeed" class="ghost">New seed</button></label>
+        </div>
+        <p class="note">The same seed produces the same arrangement. Reroll or lock individual lines in the list on the left.</p>
+      </div>
+
+      <div class="tabpane" data-pane="tech" hidden>
+        <div class="pick-sets">
+          <label class="check"><input id="lyricAutoPlacement" type="checkbox"><span>Vary lyric position and size automatically<small>When off, use the full stage. Manual areas are preserved; use Reset automatic placement to clear them.</small></span></label>
+          <label class="check"><input id="lyricAvoidForeground" type="checkbox" checked><span>Avoid overlapping the foreground<small>Automatic areas avoid foreground placement. Cuts marked with *emphasis* are exempt.</small></span></label>
+          <label class="slider"><span>Foreground avoidance strength</span><input id="lyricAvoidanceStrength" type="range" min="0" max="1" step="0.05" value="1"><output id="lyricAvoidanceStrengthValue">1.00</output></label>
+          <p class="note">At 1, avoid the foreground bounds. Lower values allow overlap around its edges; 0 disables avoidance. If no free region exists, use the least overlapping placement.</p>
+          <label class="slider"><span>Lyric overlap avoidance strength</span><input id="lyricGroupAvoidanceStrength" type="range" min="0" max="1" step="0.05" value="1"><output id="lyricGroupAvoidanceStrengthValue">1.00</output></label>
+          <p class="note">Applies to <code>{- … -}</code> groups. At 1, lyric areas are arranged without overlaps; at 0, use ordinary retained layering. Works even with automatic placement off.</p>
+          <label class="check"><input id="lyricRandomBlend" type="checkbox"><span>Randomize lyric blend modes<small>Choose Normal, Multiply, Screen or Overlay for each cut.</small></span></label>
+          <label class="check"><input id="lyricRandomOpacity" type="checkbox"><span>Randomize lyric opacity<small>Within the range, *emphasis* is more opaque and ~suppression~ is less opaque. Manual values and locks take priority.</small></span></label>
+          <div class="fields lyric-opacity-range" id="lyricOpacityRange" hidden>
+            <label class="field">Minimum opacity (%)<input id="lyricOpacityMin" type="number" min="0" max="100" step="1" value="0"></label>
+            <label class="field">Maximum opacity (%)<input id="lyricOpacityMax" type="number" min="0" max="100" step="1" value="100"></label>
+          </div>
+        </div>
+        <div class="pick-sets">
+        </div>
+        <div class="row" style="margin-bottom:10px"><input id="techFilter" type="search" placeholder="Fuzzy search" style="flex:1;min-width:0" aria-label="Fuzzy search"><span id="techTotal" class="muted mono"></span></div>
+        <div id="techLists"></div>
+      </div>
+
+      <div class="tabpane" data-pane="foregroundFx" hidden><div class="row" style="margin-bottom:10px"><input id="foregroundEffectFilter" type="search" placeholder="Fuzzy search" aria-label="Fuzzy search" style="flex:1;min-width:0"></div><div id="foregroundEffectsPanel" class="media-effects-panel"></div></div>
+      <div class="tabpane" data-pane="mediaFx" hidden><div class="row" style="margin-bottom:10px"><input id="mediaEffectFilter" type="search" placeholder="Fuzzy search" aria-label="Fuzzy search" style="flex:1;min-width:0"></div><div id="mediaEffectsPanel" class="media-effects-panel"></div></div>
+
+      <div class="tabpane" data-pane="out" hidden><div id="exportSettingsHome"><div id="exportSettings">
+        <div class="fields">
+          <label class="field">Aspect ratio<select id="outAspect"><option value="16:9">16:9</option><option value="9:16">9:16 portrait</option><option value="4:3">4:3</option><option value="3:4">3:4 portrait</option><option value="1:1">1:1</option><option value="4:5">4:5 portrait</option><option value="21:9">21:9</option></select></label>
+          <label class="field">Resolution<select id="outRes"><option value="720">720p</option><option value="1080">1080p</option><option value="1440">1440p</option><option value="2160">4K</option></select></label>
+          <label class="field field-wide">Video size<select id="outVideoSize"><option value="legacy">Use aspect ratio and resolution</option><option value="1920x1080">1920 × 1080（Full HD）</option><option value="1280x720">1280 × 720（HD）</option><option value="3840x2160">3840 × 2160（4K）</option><option value="1080x1920">1080 × 1920（Portrait）</option><option value="1080x1080">1080 × 1080（Square）</option><option value="1080x1350">1080 × 1350（4:5）</option><option value="custom">Custom size</option></select></label>
+          <label class="field video-size-custom" hidden>Width (px)<input id="outVideoWidth" type="number" min="16" max="8192" step="2"></label><label class="field video-size-custom" hidden>Height (px)<input id="outVideoHeight" type="number" min="16" max="8192" step="2"></label>
+          <label class="field">fps<select id="outFps"><option>24</option><option>30</option><option>60</option></select></label>
+          <label class="field">Quality<select id="outQuality"><option value="standard">Standard</option><option value="high">High</option><option value="max">Maximum</option><option value="custom">Custom bitrate</option><option value="qp">Quality priority (QP)</option></select><span id="outQPNote" class="note" style="margin:0" hidden>Lower values mean higher quality; higher values mean smaller files. A PC is recommended for low QP.</span></label>
+          <label class="field" hidden>Bitrate (Mbps)<input id="outBitrate" type="number" min="0.001" step="any" required></label>
+          <label class="field" hidden>Compression (QP)<input id="outQP" type="number" min="0" max="51" step="1" required></label>
+          <label class="field field-wide">Background<select id="outKey"><option value="off">Style background</option><option value="green">Green screen (compositing)</option><option value="black">Black background (compositing)</option></select></label>
+        </div>
+        <p class="note key-note">Green screen and black background render white text and effects over a solid color, without background patterns, paper texture, particles or vignette. The preview shows the export. Use a chroma key for green or Screen blending / a luma key for black to composite over footage.</p>
+        <label class="row" style="gap:6px;margin-top:10px"><input id="outAudio" type="checkbox" checked> Include audio in video</label>
+        <div class="outbtns">
+          <button id="btnMP4" class="primary">Export MP4</button>
+          <button id="btnShort" class="primary" hidden>Export Shorts MP4</button>
+          <button id="btnPNG">PNG sequence (ZIP)</button>
+          <button id="btnPNGA">Transparent PNG (ZIP)</button>
+        </div>
+        <div class="exp-box" hidden style="margin-top:12px">
+          <div class="progress"><i class="exp-bar"></i></div>
+          <div class="row" style="justify-content:space-between;margin-top:6px"><span class="exp-text muted mono">—</span><button class="exp-cancel ghost small">Cancel</button></div>
+        </div>
+        <button class="terms-open linkish" style="margin-top:10px">Rights and licenses for exported videos and images</button>
+        <p class="note" id="codecNote">Export runs in your browser (Chrome or Edge recommended).</p></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="termsDlg" class="terms" aria-labelledby="termsTitle">
+  <form method="dialog">
+    <h2 id="termsTitle">About / rights</h2>
+    <details class="terms-section">
+      <summary>Original edition (852wa/JIZURA)</summary>
+    <div class="terms-main">
+      <p class="terms-big">You own the <strong>videos and images you create</strong>.</p>
+      <p class="terms-sub">Lyrics and music remain the property of their respective rights holders.</p>
+    </div>
+    <p>The tool is released under the <strong>MIT license</strong>. See the license at:</p>
+    <p><a href="https://github.com/852wa/JIZURA" target="_blank" rel="noopener">https://github.com/852wa/JIZURA</a></p>
+    <p class="muted terms-note">Your lyrics and audio are processed in this browser and are not sent to a server.</p>
+    <details class="terms-oss"><summary>Open source software</summary>
+      <p>MP4 export: mp4-muxer（MIT License）<br>Fonts: Google Fonts typefaces（SIL Open Font License 1.1）</p>
+    </details>
+    <p class="muted mono">© 2026 hakoniwa · MIT</p>
+    </details>
+    <details class="terms-section terms-fork">
+      <summary>字面一 JIZURA ONE STOP EDITION</summary>
+      <p>This fork adds features to the original JIZURA<br>based on the concept of one-stop lyric video creation.<br>Editing and export run in your browser.</p>
+      <p>Fork source code: <a href="https://github.com/hirazisora/JIZURA" target="_blank" rel="noopener">https://github.com/hirazisora/JIZURA</a></p>
+      <p>External person-cutout model: RVM (GPL-3.0). <a href="../THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener">Model and library licenses</a></p>
+      <p class="muted mono">© 2026 hirazisora · MIT</p>
+    </details>
+    <details class="terms-section">
+      <summary>Forked from (JIZURA.for.hakase)</summary>
+      <p>This app is a modified fork of the following repository.</p>
+      <p><a href="https://github.com/HAKASEes-ToyBox/JIZURA.for.hakase" target="_blank" rel="noopener">https://github.com/HAKASEes-ToyBox/JIZURA.for.hakase</a></p>
+    </details>
+    <details class="terms-section">
+      <summary>lyricfx.JIZURA</summary>
+      <p>Modified by: Keiji Okamoto</p>
+    </details>
+    <div class="terms-foot"><button value="close" class="primary" autofocus>Close</button></div>
+  </form>
+</dialog>
+
+<dialog id="newProjectDlg" class="terms" aria-labelledby="newProjectTitle">
+ <form method="dialog">
+  <h2 id="newProjectTitle">New project</h2>
+  <p>Save first if you want to keep your current work.</p>
+  <label class="field">Aspect ratio<select id="newProjectAspect"><option>16:9</option><option>9:16</option><option>4:3</option><option>3:4</option><option>1:1</option><option>4:5</option><option>21:9</option></select></label>
+  <div class="acts"><button value="cancel">Cancel</button><button id="btnCreateProject" type="button">Create</button></div>
+ </form>
+</dialog>
+
+<dialog id="themesDlg" class="terms" aria-labelledby="themesTitle">
+ <form method="dialog"><h2 id="themesTitle">Theme settings</h2>
+ <div class="theme-balance" role="radiogroup" aria-label="Unified or lively">
+  <label><input type="radio" name="themeBalance" value="unified"><span>Unified look</span></label>
+  <label><input type="radio" name="themeBalance" value="lively"><span>Lively look</span></label>
+ </div>
+ <p id="themeBalanceNote" class="note" aria-live="polite"></p>
+ <div id="themeChoices"></div>
+ <div class="acts"><button id="btnClearThemes" type="button">Clear selection</button><button value="cancel">Cancel</button><button id="btnApplyThemes" type="button">Apply</button></div>
+ </form>
+</dialog>
+
+<dialog id="exportDlg" class="terms export-dialog" aria-labelledby="exportDlgTitle">
+ <h2 id="exportDlgTitle">出力</h2>
+ <p id="shortExportDescription" class="note" hidden>Keep the original composition centered and fill the space above and below in a 9:16 portrait video.</p>
+ <label class="field filename-field">File name<input id="exportFilename" type="text" maxlength="180" autocomplete="off"></label>
+ <p class="note">The file extension is added automatically. Unsupported characters are replaced.</p>
+ <section id="shortExportOptions" class="short-export-options" hidden>
+  <div class="short-preview">
+   <canvas id="shortExportPreview" width="234" height="416" aria-label="Shorts export preview"></canvas>
+  </div>
+  <div class="short-timeline">
+     <div class="short-range-values"><label for="shortStartValue">Start (seconds) <input id="shortStartValue" type="number" min="0" step="any" inputmode="decimal" value="0.000" required></label><label for="shortEndValue">End (seconds) <input id="shortEndValue" type="number" min="0" step="any" inputmode="decimal" value="0.000" required></label></div>
+     <div id="shortRange" class="short-range">
+      <span class="short-range-track"><span class="short-range-selection"></span></span>
+      <input id="shortStart" type="range" min="0" max="1" step="0.001" value="0" aria-label="Start (seconds)">
+      <input id="shortEnd" type="range" min="0" max="1" step="0.001" value="1" aria-label="End (seconds)">
+      <input id="shortPreviewSeek" type="range" min="0" max="1" step="0.001" value="0" aria-label="Shorts preview position">
+     </div>
+     <div class="short-timeline-transport">
+      <div class="short-preview-transport"><button id="shortPreviewPlay" type="button" class="ghost small" aria-label="Play preview">▶</button><span id="shortPreviewTime" class="tc">00:00.00</span></div>
+      <div class="short-preview-markers"><button id="shortSetStart" type="button" class="ghost small">Start here</button><button id="shortSetEnd" type="button" class="ghost small">End here</button></div>
+     </div>
+  </div>
+  <div class="short-fill-settings">
+   <div class="fields">
+    <label class="field field-wide">Portrait video size<select id="shortRes"><option value="720">720 × 1280</option><option value="1080" selected>1080 × 1920</option><option value="1440">1440 × 2560</option><option value="2160">2160 × 3840</option></select></label>
+    <label class="field field-wide">Fill above and below<select id="shortFill"><option value="zoom">Enlarged original video</option><option value="tile">Repeat the original above and below</option><option value="ambient">Ambient diffusion (spread edge colors)</option></select></label>
+    <label class="field field-wide">Blur amount <output id="shortBlurValue">35</output><input id="shortBlur" type="range" min="0" max="100" value="35"></label>
+   </div>
+   <p id="shortExportError" class="short-export-error" role="status"></p>
+  </div>
+ </section>
+ <div id="exportDialogContent"></div>
+ <div class="terms-foot"><button id="btnCloseExport" type="button">Close</button></div>
+</dialog>
+<dialog id="filenameDlg" class="terms" aria-labelledby="filenameDlgTitle">
+ <form method="dialog">
+  <h2 id="filenameDlgTitle">File name</h2>
+  <label class="field filename-field">File name<input id="saveFilename" type="text" maxlength="180" autocomplete="off"></label>
+  <label class="check"><input id="saveFilenameDate" type="checkbox"><span>Add date and time to the file name<small id="saveFilenamePreview"></small></span></label>
+  <p class="note">The file extension is added automatically. Unsupported characters are replaced.</p>
+  <div class="terms-foot"><button value="cancel">Cancel</button><button value="save" class="primary">Save</button></div>
+ </form>
+</dialog>
+
+<dialog id="spriteExtractDlg" class="terms sprite-extract-dialog" aria-labelledby="spriteExtractTitle">
+  <div class="se-header">
+    <h2 id="spriteExtractTitle">Character Sheet Extraction</h2>
+    <button type="button" class="btn-close" id="btnCloseSpriteExtract" aria-label="Close">×</button>
+  </div>
+  <div class="se-body">
+    <div class="se-left">
+      <div class="se-canvas-wrap">
+        <canvas id="sePreview"></canvas>
+        <div id="seDropzone" class="se-dropzone">
+          <p>Drag and drop character sheet image here<br>or click to select</p>
+          <input type="file" id="seFileInput" accept="image/*" hidden>
+        </div>
+      </div>
+      <div class="se-canvas-hint">※ Click anywhere on image to sample that pixel as the key color (Eye dropper)</div>
+    </div>
+    <div class="se-right">
+      <fieldset class="se-group">
+        <legend>Splitting method</legend>
+        <div class="se-mode-row">
+          <label><input type="radio" name="seMode" value="ccl" checked> Auto-detect (CCL)</label>
+          <label><input type="radio" name="seMode" value="grid"> Equal grid</label>
+        </div>
+        <div id="seGridOpts" class="se-grid-opts" hidden>
+          <label>行 <input type="number" id="seRows" value="2" min="1" max="20" class="se-num"></label>
+          <span>×</span>
+          <label>列 <input type="number" id="seCols" value="5" min="1" max="20" class="se-num"></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="se-group">
+        <legend>Chroma key (Transparency)</legend>
+        <div class="se-row">
+          <label class="se-color-label">Key color: <input type="color" id="seKeyColor" value="#00ff00"></label>
+          <button type="button" id="seBtnPick" class="ghost small">Eye dropper</button>
+          <button type="button" id="seBtnAutoColor" class="ghost small">Auto color</button>
+        </div>
+        <div class="se-slider-row">
+          <label for="seThreshold">Tolerance: <span id="seThresholdVal">45</span></label>
+          <input type="range" id="seThreshold" min="5" max="150" value="45">
+        </div>
+        <div class="se-slider-row">
+          <label for="seFeather">Feather: <span id="seFeatherVal">2</span>px</label>
+          <input type="range" id="seFeather" min="0" max="15" value="2">
+        </div>
+      </fieldset>
+
+      <div class="se-action-row">
+        <button type="button" id="seBtnAnalyze" class="primary" style="width:100%">Re-detect / Update</button>
+      </div>
+
+      <div class="se-thumb-header">
+        <strong>Detected: <span id="seCount">0</span>件</strong>
+        <div class="se-thumb-btns">
+          <button type="button" id="seCheckAll" class="ghost small">Select all</button>
+          <button type="button" id="seUncheckAll" class="ghost small">Deselect all</button>
+        </div>
+      </div>
+      <div id="seThumbList" class="se-thumb-list"></div>
+
+      <div class="se-footer">
+        <label class="field se-target-field">Destination:
+          <select id="seTargetLayer">
+            <option value="foreground" selected>Foreground layer</option>
+            <option value="media">Background layer</option>
+          </select>
+        </label>
+        <div class="se-footer-btns">
+          <button type="button" id="seBtnCancel">キャンセル</button>
+          <button type="button" id="seBtnRegister" class="primary">Import selected</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+
+<script src="../vendor/mp4-muxer.min.js"></script>
+<script src="../app.en.js"></script>
+</body>
+</html>
