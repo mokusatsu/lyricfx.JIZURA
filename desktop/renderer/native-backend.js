@@ -5,11 +5,14 @@
   if (!window.jizuraDesktop) return;
 
   const desktop = window.jizuraDesktop;
-  const fileToToken = new WeakMap();
-  const itemToToken = new Map();
+  const blobToToken = new WeakMap();
+  const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
 
-  J.getNativeAssetToken = (file) => fileToToken.get(file) || null;
-  J.getItemAssetToken = (itemId) => itemToToken.get(itemId) || null;
+  J.getNativeAssetToken = (file) => fileToToken.get(file) || blobToToken.get(file) || null;
+  J.getItemAssetToken = (itemId) => itemToAssetInfo.get(itemId)?.token || null;
+  J.clearNativeAssetCache = () => {
+    itemToAssetInfo.clear();
+  };
 
   J.platform = {
     name: 'desktop',
@@ -53,10 +56,19 @@
     },
 
     ensureNativeAsset: async (itemId, blob) => {
-      if (itemToToken.has(itemId)) return itemToToken.get(itemId);
+      if (blob && blobToToken.has(blob)) return blobToToken.get(blob);
+      const cached = itemToAssetInfo.get(itemId);
+      if (cached && blob && cached.size === blob.size && cached.lastModified === (blob.lastModified || 0)) {
+        return cached.token;
+      }
       const buffer = await blob.arrayBuffer();
       const desc = await desktop.ensureNativeAsset(itemId, buffer);
-      itemToToken.set(itemId, desc.assetToken);
+      if (blob) blobToToken.set(blob, desc.assetToken);
+      itemToAssetInfo.set(itemId, {
+        token: desc.assetToken,
+        size: blob ? blob.size : buffer.byteLength,
+        lastModified: (blob && blob.lastModified) || 0
+      });
       return desc.assetToken;
     },
 
@@ -64,7 +76,7 @@
       const asset = J.mediaAssets.get(cut.itemId);
       if (!asset) throw new Error(J.mediaLabel('画像・動画素材を指定してください', 'Select an image or video asset'));
 
-      let assetToken = (asset.file && fileToToken.get(asset.file)) || itemToToken.get(cut.itemId);
+      let assetToken = (asset.file && fileToToken.get(asset.file)) || (asset.file && blobToToken.get(asset.file)) || itemToAssetInfo.get(cut.itemId)?.token;
       if (!assetToken && asset.file) {
         onProgress({ phase: 'upload', loaded: 0, total: 1 });
         assetToken = await J.platform.ensureNativeAsset(cut.itemId, asset.file);
@@ -78,7 +90,7 @@
 
       onProgress({ phase: 'plan', total: targets.length, reused: 0, missing: targets.length });
 
-      let currentJobId = null;
+      let currentJobId = 'matte_' + crypto.randomUUID();
       const unsubs = desktop.onMatteProgress((msg) => {
         if (msg.jobId && currentJobId && msg.jobId !== currentJobId) return;
         onProgress({
@@ -101,13 +113,14 @@
         if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
 
         const res = await desktop.startMatteJob({
+          jobId: currentJobId,
           assetToken,
           sourceId: cut.itemId,
           profile,
           fps,
-          slots: targets
+          slots: targets,
+          duration
         });
-        currentJobId = res.jobId;
 
         if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
         onProgress({ phase: 'save' });

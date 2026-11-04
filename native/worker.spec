@@ -5,7 +5,7 @@ block_cipher = None
 
 a = Analysis(
     ['worker.py'],
-    pathex=[],
+    pathex=['.'],
     binaries=[],
     datas=[
         ('models', 'models'),
@@ -15,6 +15,9 @@ a = Analysis(
         'onnxruntime',
         'PIL',
         'numpy',
+        'matting',
+        'export_video',
+        'matte_format',
     ],
     hookspath=[],
     hooksconfig={},

@@ -11,10 +11,14 @@ const { NativeJobs } = require('../native-jobs.cjs');
   try {
     const jobs = new NativeJobs({ appDataDir: tempDir });
 
-    // 1. Create a dummy test video / image file
-    const samplePath = path.join(tempDir, 'sample_video.mp4');
-    fs.writeFileSync(samplePath, Buffer.from('dummy video for matting test'));
-    const assetDesc = jobs.registerAssetFile(samplePath, 'video/mp4');
+    // 1. Create a REAL valid PNG image with distinct red content
+    const samplePngPath = path.join(tempDir, 'sample_source.png');
+    // 1x1 Red PNG
+    const redPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'base64');
+    fs.writeFileSync(samplePngPath, redPng);
+
+    const assetDesc = jobs.registerAssetFile(samplePngPath, 'image/png');
+    const sourceId = 'real-item-uuid-777';
 
     const progressLogs = [];
     const fakeWebContents = {
@@ -26,29 +30,53 @@ const { NativeJobs } = require('../native-jobs.cjs');
       }
     };
 
-    console.log('Starting native matte job...');
+    console.log('Starting native matte job with real image input...');
     const result = await jobs.startMatteJob(fakeWebContents, {
+      jobId: 'matte_test_123',
       assetToken: assetDesc.assetToken,
-      sourceId: 'item-person-test',
+      sourceId: sourceId,
       profile: 'rvm-mobilenetv3-fp32-p512-r05-v1',
       fps: 24,
-      slots: [0, 1, 2]
+      slots: [0],
+      duration: 5.0
     });
 
-    assert.ok(result.jobId);
+    assert.equal(result.jobId, 'matte_test_123');
     assert.ok(result.maskToken);
     assert.equal(result.meta.model, 'rvm-mobilenetv3-fp32-p512-r05-v1');
-    assert.equal(result.meta.slotsCount, 3);
+    assert.equal(result.meta.slotsCount, 1);
 
-    // Verify progress events received
+    // Verify progress events
     const analyzeEvents = progressLogs.filter(e => e.phase === 'analyze');
-    assert.ok(analyzeEvents.length >= 3, 'Should have received progress for each slot');
-    assert.equal(analyzeEvents[analyzeEvents.length - 1].completed, 3);
+    assert.ok(analyzeEvents.length >= 1, 'Should have received analyze progress');
+    assert.equal(analyzeEvents[0].completed, 1);
 
     // Verify JIZMAT01 binary result
     const matteBytes = jobs.getMatteResultBlob(result.maskToken);
     assert.ok(matteBytes.length > 12);
     assert.equal(matteBytes.subarray(0, 8).toString(), 'JIZMAT01');
+
+    // Parse manifest from JIZMAT01 and assert sourceId and duration
+    const jsonLen = matteBytes.readUInt32LE(8);
+    const manifest = JSON.parse(matteBytes.subarray(12, 12 + jsonLen).toString('utf-8'));
+    assert.equal(manifest.sourceId, sourceId, 'sourceId in JIZMAT01 must match request.sourceId');
+    assert.equal(manifest.duration, 5.0, 'duration in JIZMAT01 must preserve full source duration');
+    assert.equal(manifest.frames.length, 1);
+
+    // 2. Test cancellation before finish
+    console.log('Testing matte job cancellation...');
+    const cancelPromise = jobs.startMatteJob(fakeWebContents, {
+      jobId: 'cancel_matte_456',
+      assetToken: assetDesc.assetToken,
+      sourceId: 'cancel-item',
+      slots: [0, 1, 2, 3, 4]
+    });
+    // Immediately cancel
+    jobs.cancelJob('cancel_matte_456');
+
+    await assert.rejects(async () => {
+      await cancelPromise;
+    }, /Cancelled/);
 
     jobs.cleanupAll();
     console.log('Person native matting E2E test passed successfully.');

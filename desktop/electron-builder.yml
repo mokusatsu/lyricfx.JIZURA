@@ -9,8 +9,12 @@ files:
   - "native-jobs.cjs"
   - "web/**/*"
 extraResources:
-  - from: "../native"
+  - from: "resources/native"
     to: "native"
+    filter:
+      - "**/*"
+  - from: "../native/models"
+    to: "native/models"
     filter:
       - "**/*"
 win:

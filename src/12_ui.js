@@ -4291,7 +4291,7 @@ async function runExport(kind) {
     }
     await J.ensureFonts(S.project.lyrics + (S.project.title || '') + (S.project.artist || '') + HUD_CHARS + J.drawingText(S.plan), J.fontsOfPlan(S.plan));
     if (mp4) {
-      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream, short: kind==='short'?{...S.project.shortExport}:null, outputToken });
+      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, audioFile: S.project.includeAudio !== false ? S.audioFile : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream, short: kind==='short'?{...S.project.shortExport}:null, outputToken });
       fileStream=null;
       txt.textContent = `完成 ${(r.size / 1048576).toFixed(1)}MB・${r.codec}${r.audio ? ' + ' + r.audio.toUpperCase() : ''}・${((performance.now() - t0) / 1000).toFixed(0)}秒`;
       const res = r.saved?'saved':await J.saveFile(filename, r.blob);

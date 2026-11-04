@@ -24,51 +24,77 @@ class NativeJobs {
     if (process.env.JIZURA_PYTHON && fs.existsSync(process.env.JIZURA_PYTHON)) {
       return process.env.JIZURA_PYTHON;
     }
-    // Check bundled resources path
     const resourcesPath = process.resourcesPath || path.join(__dirname, '..');
     const bundledNative = path.join(resourcesPath, 'native', process.platform === 'win32' ? 'python.exe' : 'python3');
     if (fs.existsSync(bundledNative)) {
       return bundledNative;
     }
-    // Fall back to system python
     return process.platform === 'win32' ? 'python' : 'python3';
   }
 
-  async getCapabilities() {
-    const python = this.pythonPath;
-    const workerScript = path.join(__dirname, '..', 'native', 'worker.py');
+  _resolveWorker() {
+    const exeName = process.platform === 'win32' ? 'worker.exe' : 'worker';
+    const candidates = [
+      process.env.JIZURA_WORKER,
+      process.resourcesPath ? path.join(process.resourcesPath, 'native', 'worker', exeName) : null,
+      path.join(__dirname, 'resources', 'native', 'worker', exeName),
+      path.join(__dirname, '..', 'desktop', 'resources', 'native', 'worker', exeName),
+      path.join(__dirname, '..', 'native', 'dist', 'worker', exeName)
+    ].filter(Boolean);
 
-    if (!fs.existsSync(workerScript)) {
-      return {
-        version: 1,
-        name: 'desktop',
-        nativeMatting: false,
-        nativeExport: false,
-        backends: ['cpu'],
-        encoders: ['libx264']
-      };
+    for (const p of candidates) {
+      if (fs.existsSync(p)) {
+        return { isBinary: true, command: p, argsPrefix: [] };
+      }
     }
 
+    // Python script fallback
+    const python = this._resolvePython();
+    const workerScript = path.join(__dirname, '..', 'native', 'worker.py');
+    return { isBinary: false, command: python, argsPrefix: [workerScript] };
+  }
+
+  spawnWorker(args, options = {}) {
+    const worker = this._resolveWorker();
+    const fullArgs = [...worker.argsPrefix, ...args];
+    return spawn(worker.command, fullArgs, {
+      stdio: ['pipe', 'pipe', 'pipe'],
+      windowsHide: true,
+      ...options
+    });
+  }
+
+  execWorker(args, options = {}, callback) {
+    const worker = this._resolveWorker();
+    const fullArgs = [...worker.argsPrefix, ...args];
+    return execFile(worker.command, fullArgs, {
+      windowsHide: true,
+      ...options
+    }, callback);
+  }
+
+  async getCapabilities() {
     return new Promise((resolve) => {
-      execFile(python, [workerScript, 'probe'], { timeout: 10000 }, (err, stdout) => {
+      this.execWorker(['probe'], { timeout: 10000 }, (err, stdout) => {
         if (err) {
-          console.warn('Worker probe failed, falling back to CPU defaults:', err.message);
+          console.warn('Worker probe failed:', err.message);
           return resolve({
             version: 1,
             name: 'desktop',
             nativeMatting: true,
-            nativeExport: true,
+            nativeExport: false,
             backends: ['cpu'],
-            encoders: ['libx264']
+            encoders: []
           });
         }
         try {
           const res = JSON.parse(stdout.trim());
+          const hasEncoders = Array.isArray(res.encoders) && res.encoders.length > 0;
           resolve({
             version: 1,
             name: 'desktop',
             nativeMatting: true,
-            nativeExport: true,
+            nativeExport: hasEncoders,
             ...res
           });
         } catch (e) {
@@ -76,9 +102,9 @@ class NativeJobs {
             version: 1,
             name: 'desktop',
             nativeMatting: true,
-            nativeExport: true,
+            nativeExport: false,
             backends: ['cpu'],
-            encoders: ['libx264']
+            encoders: []
           });
         }
       });
@@ -155,7 +181,7 @@ class NativeJobs {
       throw new Error(`Invalid asset token: ${request.assetToken}`);
     }
 
-    const jobId = crypto.randomUUID();
+    const jobId = request.jobId || crypto.randomUUID();
     const jobDir = path.join(this.tempDir, jobId);
     fs.mkdirSync(jobDir, { recursive: true });
 
@@ -164,19 +190,17 @@ class NativeJobs {
 
     const config = {
       jobId,
+      sourceId: request.sourceId,
       sourceVideo: asset.filePath,
       outputFile,
       profile: request.profile || 'rvm-mobilenetv3-fp32-p512-r05-v1',
       fps: request.fps || 24,
-      slots: request.slots || []
+      slots: request.slots || [],
+      duration: request.duration
     };
     fs.writeFileSync(configFile, JSON.stringify(config), 'utf-8');
 
-    const workerScript = path.join(__dirname, '..', 'native', 'worker.py');
-    const child = spawn(this.pythonPath, [workerScript, 'matte', configFile], {
-      stdio: ['pipe', 'pipe', 'pipe'],
-      windowsHide: true
-    });
+    const child = this.spawnWorker(['matte', configFile]);
 
     const job = {
       id: jobId,
@@ -262,11 +286,12 @@ class NativeJobs {
     fs.mkdirSync(jobDir, { recursive: true });
 
     const tempPartFile = path.join(jobDir, 'output.part.mp4');
-    let audioWavFile = null;
+    let audioFile = null;
 
     if (settings.audioBuffer && settings.audioBuffer.byteLength > 0) {
-      audioWavFile = path.join(jobDir, 'audio.wav');
-      fs.writeFileSync(audioWavFile, Buffer.from(settings.audioBuffer));
+      const ext = settings.audioExt || '.wav';
+      audioFile = path.join(jobDir, `audio${ext}`);
+      fs.writeFileSync(audioFile, Buffer.from(settings.audioBuffer));
     }
 
     const exportConfig = {
@@ -280,14 +305,12 @@ class NativeJobs {
       qualityMode: settings.qualityMode,
       bitrate: settings.bitrate,
       qp: settings.qp,
-      audioFile: audioWavFile
+      audioFile,
+      audioOffset: settings.audioOffset || 0,
+      audioDuration: settings.audioDuration
     };
 
-    const workerScript = path.join(__dirname, '..', 'native', 'worker.py');
-    const child = spawn(this.pythonPath, [workerScript, 'export'], {
-      stdio: ['pipe', 'pipe', 'pipe'],
-      windowsHide: true
-    });
+    const child = this.spawnWorker(['export']);
 
     const job = {
       id: jobId,
@@ -309,6 +332,21 @@ class NativeJobs {
     job.readyPromise = new Promise((resolve, reject) => {
       job.readyResolve = resolve;
       job.readyReject = reject;
+    });
+
+    job.exitPromise = new Promise((resolve) => {
+      child.on('close', (code) => {
+        job.exitCode = code;
+        if (job.status === 'preparing') {
+          job.status = 'failed';
+          job.readyReject && job.readyReject(new Error(`Export worker exited before ready with code ${code}`));
+        }
+        resolve(code);
+      });
+    });
+
+    child.stdin.on('error', (err) => {
+      job.status = 'failed';
     });
 
     this.jobs.set(jobId, job);
@@ -363,12 +401,29 @@ class NativeJobs {
       throw new Error(`Frame buffer length ${buffer.byteLength} does not match expected size ${job.frameSize}`);
     }
 
-    const nodeBuffer = Buffer.from(buffer);
     const stdin = job.child.stdin;
+    if (!stdin || stdin.destroyed || !stdin.writable) {
+      job.status = 'failed';
+      throw new Error('Export worker stdin is not writable (EPIPE/closed)');
+    }
 
-    // Backpressure handling: if stdin.write returns false, wait for drain
+    const nodeBuffer = Buffer.from(buffer);
+
+    // Backpressure handling: if stdin.write returns false, wait for drain or error
     if (!stdin.write(nodeBuffer)) {
-      await new Promise((resolve) => stdin.once('drain', resolve));
+      await new Promise((resolve, reject) => {
+        const onDrain = () => { cleanup(); resolve(); };
+        const onError = (e) => { cleanup(); reject(e); };
+        const onClose = () => { cleanup(); reject(new Error('stdin closed while waiting for drain')); };
+        const cleanup = () => {
+          stdin.removeListener('drain', onDrain);
+          stdin.removeListener('error', onError);
+          stdin.removeListener('close', onClose);
+        };
+        stdin.once('drain', onDrain);
+        stdin.once('error', onError);
+        stdin.once('close', onClose);
+      });
     }
     job.framesWritten++;
     return { ok: true, index };
@@ -380,56 +435,61 @@ class NativeJobs {
       throw new Error(`Export job not found: ${jobId}`);
     }
 
+    if (job.status === 'cancelled') {
+      throw new Error('Export cancelled');
+    }
+
     job.status = 'finalizing';
-    // Close stdin to signal EOF to Python worker
-    job.child.stdin.end();
+    try {
+      if (job.child.stdin && !job.child.stdin.destroyed) {
+        job.child.stdin.end();
+      }
+    } catch (e) {}
 
-    return new Promise((resolve, reject) => {
-      job.child.on('close', (code) => {
-        if (job.status === 'cancelled') {
-          return reject(new Error('Export cancelled'));
-        }
-        if (code !== 0) {
-          job.status = 'failed';
-          return reject(new Error(`Export worker exited with code ${code}`));
-        }
+    const code = await job.exitPromise;
+    if (job.status === 'cancelled') {
+      throw new Error('Export cancelled');
+    }
+    if (code !== 0) {
+      job.status = 'failed';
+      throw new Error(`Export worker exited with code ${code}`);
+    }
 
-        if (!fs.existsSync(job.tempPartFile)) {
-          return reject(new Error('Export finished but output part file is missing'));
-        }
+    if (!fs.existsSync(job.tempPartFile)) {
+      throw new Error('Export finished but output part file is missing');
+    }
 
-        try {
-          // Atomic move/rename to final output target
-          fs.renameSync(job.tempPartFile, job.finalPath);
-          const stat = fs.statSync(job.finalPath);
-          job.status = 'completed';
-
-          resolve({
-            saved: true,
-            size: stat.size,
-            path: job.finalPath
-          });
-        } catch (err) {
-          // If cross-device move fails, copy and unlink
-          try {
-            fs.copyFileSync(job.tempPartFile, job.finalPath);
-            fs.unlinkSync(job.tempPartFile);
-            const stat = fs.statSync(job.finalPath);
-            job.status = 'completed';
-            resolve({
-              saved: true,
-              size: stat.size,
-              path: job.finalPath
-            });
-          } catch (copyErr) {
-            job.status = 'failed';
-            reject(copyErr);
-          }
-        } finally {
-          this._cleanupJobDir(job.dir);
+    try {
+      // Safe cross-device copy using temporary file in target directory to protect existing file
+      const targetDir = path.dirname(job.finalPath);
+      const stagingFile = path.join(targetDir, `.tmp_${job.id}_${Date.now()}.mp4`);
+      try {
+        fs.renameSync(job.tempPartFile, job.finalPath);
+      } catch (renameErr) {
+        // Cross-device move: copy to staging file in destination dir first
+        fs.copyFileSync(job.tempPartFile, stagingFile);
+        const srcStat = fs.statSync(job.tempPartFile);
+        const stageStat = fs.statSync(stagingFile);
+        if (stageStat.size !== srcStat.size) {
+          try { fs.unlinkSync(stagingFile); } catch (e) {}
+          throw new Error('Staging file size mismatch during copy');
         }
-      });
-    });
+        // Atomic rename within target directory
+        fs.renameSync(stagingFile, job.finalPath);
+        try { fs.unlinkSync(job.tempPartFile); } catch (e) {}
+      }
+
+      const stat = fs.statSync(job.finalPath);
+      job.status = 'completed';
+
+      return {
+        saved: true,
+        size: stat.size,
+        path: job.finalPath
+      };
+    } finally {
+      this._cleanupJobDir(job.dir);
+    }
   }
 
   cancelJob(jobId) {

@@ -24,6 +24,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install Python dependencies for native tests
+        run: |
+          python3 -m pip install -r native/requirements-cpu.lock
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -41,6 +44,7 @@ jobs:
           git diff --exit-code -- index.html en/index.html
       - name: Verify platform web regression and desktop build separation
         run: |
+          node dev/check_syntax.cjs
           node dev/platform_web_test.cjs
           python3 dev/desktop_build_test.py
           python3 native/tests/test_matte_format.py

@@ -11498,7 +11498,7 @@ J.createMP4Output = fileStream => {
     async abort(){parts=[];await queue;if(fileStream)try{await fileStream.abort();}catch{}}
   };
 };
-J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken }) => {
+J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken }) => {
   if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
@@ -11519,10 +11519,29 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
   }
   try {
   if (isNative) {
-    let audioWavBuffer = null;
+    let rawAudioBuffer = null, rawAudioExt = '.wav';
     if (audio && audio.buffer && project.includeAudio !== false) {
-      const wavBlob = J.audioWav(audio.buffer, duration, range.start);
-      audioWavBuffer = await wavBlob.arrayBuffer();
+      if (audioFile && audioFile.size) {
+        rawAudioBuffer = await audioFile.arrayBuffer();
+        const m = (audioFile.name || '').match(/\.([a-zA-Z0-9]+)$/);
+        rawAudioExt = m ? '.' + m[1].toLowerCase() : '.mp3';
+      } else {
+        const sr = audio.buffer.sampleRate, chn = audio.buffer.numberOfChannels;
+        const n = Math.max(1, Math.round((duration > 0 ? duration : audio.buffer.duration) * sr));
+        const bytes = n * chn * 2, ab = new ArrayBuffer(44 + bytes), v = new DataView(ab);
+        const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+        str(0, 'RIFF'); v.setUint32(4, 36 + bytes, true); str(8, 'WAVE'); str(12, 'fmt ');
+        v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, chn, true); v.setUint32(24, sr, true);
+        v.setUint32(28, sr * chn * 2, true); v.setUint16(32, chn * 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, bytes, true);
+        const ch = []; for (let c = 0; c < chn; c++) ch.push(audio.buffer.getChannelData(c));
+        const L = audio.buffer.length, i0 = Math.max(0, Math.round(range.start * sr)); let o = 44;
+        for (let i = 0; i < n; i++) for (let c = 0; c < chn; c++) {
+          const j = i + i0, x = j < L ? Math.max(-1, Math.min(1, ch[c][j])) : 0;
+          v.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7fff, true); o += 2;
+        }
+        rawAudioBuffer = ab;
+        rawAudioExt = '.wav';
+      }
     }
     const totalFrames = Math.max(1, Math.round(duration * fps));
     expJob = await J.platform.startExport({
@@ -11534,7 +11553,10 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
       qualityMode: quality,
       bitrate,
       qp,
-      audioBuffer: audioWavBuffer
+      audioBuffer: rawAudioBuffer,
+      audioExt: rawAudioExt,
+      audioOffset: audioFile ? range.start : 0,
+      audioDuration: duration
     });
   } else {
     const muxOpts = { target:output.target, video: { codec: vc.mux, width: w, height: h, frameRate: fps }, fastStart: false, firstTimestampBehavior: 'offset' };
@@ -11574,14 +11596,27 @@ J.exportMP4 = async ({ plan, project, audio, quality = project.quality||'high', 
       while (venc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 2));
       await output.drain();
     }
-    if (i % 3 === 0) { onProgress && onProgress(i / total, フレーム /); await new Promise(r => setTimeout(r, 0)); }
+    if (i % 3 === 0) { onProgress && onProgress(i / total, `フレーム ${i + 1}/${total}`); await new Promise(r => setTimeout(r, 0)); }
   }
   } finally { J.glyphs.maxRes = prevRes; }
   if (isNative) {
-    const saved = await J.platform.finishExport(expJob.jobId);
-    completed = true;
-    onProgress && onProgress(1, '完了');
-    return { ...saved, codec: 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? 'AAC' : null, width: w, height: h };
+    if (signal && signal.aborted) {
+      if (expJob) try { J.platform.cancelJob(expJob.jobId); } catch (e) {}
+      throw new Error('キャンセルしました');
+    }
+    const abortNative = () => {
+      if (expJob) try { J.platform.cancelJob(expJob.jobId); } catch (e) {}
+    };
+    signal?.addEventListener('abort', abortNative, { once: true });
+    try {
+      const saved = await J.platform.finishExport(expJob.jobId);
+      if (signal?.aborted) throw new Error('キャンセルしました');
+      completed = true;
+      onProgress && onProgress(1, '完了');
+      return { ...saved, codec: 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? 'AAC' : null, width: w, height: h };
+    } finally {
+      signal?.removeEventListener('abort', abortNative);
+    }
   }
   await venc.flush(); venc.close();
   if(err)throw err;
@@ -43207,11 +43242,14 @@ J.ShortFrameRenderer=ShortFrameRenderer;
   if (!window.jizuraDesktop) return;
 
   const desktop = window.jizuraDesktop;
-  const fileToToken = new WeakMap();
-  const itemToToken = new Map();
+  const blobToToken = new WeakMap();
+  const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
 
-  J.getNativeAssetToken = (file) => fileToToken.get(file) || null;
-  J.getItemAssetToken = (itemId) => itemToToken.get(itemId) || null;
+  J.getNativeAssetToken = (file) => fileToToken.get(file) || blobToToken.get(file) || null;
+  J.getItemAssetToken = (itemId) => itemToAssetInfo.get(itemId)?.token || null;
+  J.clearNativeAssetCache = () => {
+    itemToAssetInfo.clear();
+  };
 
   J.platform = {
     name: 'desktop',
@@ -43255,10 +43293,19 @@ J.ShortFrameRenderer=ShortFrameRenderer;
     },
 
     ensureNativeAsset: async (itemId, blob) => {
-      if (itemToToken.has(itemId)) return itemToToken.get(itemId);
+      if (blob && blobToToken.has(blob)) return blobToToken.get(blob);
+      const cached = itemToAssetInfo.get(itemId);
+      if (cached && blob && cached.size === blob.size && cached.lastModified === (blob.lastModified || 0)) {
+        return cached.token;
+      }
       const buffer = await blob.arrayBuffer();
       const desc = await desktop.ensureNativeAsset(itemId, buffer);
-      itemToToken.set(itemId, desc.assetToken);
+      if (blob) blobToToken.set(blob, desc.assetToken);
+      itemToAssetInfo.set(itemId, {
+        token: desc.assetToken,
+        size: blob ? blob.size : buffer.byteLength,
+        lastModified: (blob && blob.lastModified) || 0
+      });
       return desc.assetToken;
     },
 
@@ -43266,7 +43313,7 @@ J.ShortFrameRenderer=ShortFrameRenderer;
       const asset = J.mediaAssets.get(cut.itemId);
       if (!asset) throw new Error(J.mediaLabel('画像・動画素材を指定してください', 'Select an image or video asset'));
 
-      let assetToken = (asset.file && fileToToken.get(asset.file)) || itemToToken.get(cut.itemId);
+      let assetToken = (asset.file && fileToToken.get(asset.file)) || (asset.file && blobToToken.get(asset.file)) || itemToAssetInfo.get(cut.itemId)?.token;
       if (!assetToken && asset.file) {
         onProgress({ phase: 'upload', loaded: 0, total: 1 });
         assetToken = await J.platform.ensureNativeAsset(cut.itemId, asset.file);
@@ -43280,7 +43327,7 @@ J.ShortFrameRenderer=ShortFrameRenderer;
 
       onProgress({ phase: 'plan', total: targets.length, reused: 0, missing: targets.length });
 
-      let currentJobId = null;
+      let currentJobId = 'matte_' + crypto.randomUUID();
       const unsubs = desktop.onMatteProgress((msg) => {
         if (msg.jobId && currentJobId && msg.jobId !== currentJobId) return;
         onProgress({
@@ -43303,13 +43350,14 @@ J.ShortFrameRenderer=ShortFrameRenderer;
         if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
 
         const res = await desktop.startMatteJob({
+          jobId: currentJobId,
           assetToken,
           sourceId: cut.itemId,
           profile,
           fps,
-          slots: targets
+          slots: targets,
+          duration
         });
-        currentJobId = res.jobId;
 
         if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
         onProgress({ phase: 'save' });
@@ -47658,7 +47706,7 @@ async function runExport(kind) {
     }
     await J.ensureFonts(S.project.lyrics + (S.project.title || '') + (S.project.artist || '') + HUD_CHARS + J.drawingText(S.plan), J.fontsOfPlan(S.plan));
     if (mp4) {
-      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream, short: kind==='short'?{...S.project.shortExport}:null, outputToken });
+      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, audioFile: S.project.includeAudio !== false ? S.audioFile : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream, short: kind==='short'?{...S.project.shortExport}:null, outputToken });
       fileStream=null;
       txt.textContent = `完成 ${(r.size / 1048576).toFixed(1)}MB・${r.codec}${r.audio ? ' + ' + r.audio.toUpperCase() : ''}・${((performance.now() - t0) / 1000).toFixed(0)}秒`;
       const res = r.saved?'saved':await J.saveFile(filename, r.blob);

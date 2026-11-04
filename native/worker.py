@@ -1,11 +1,18 @@
 import os, sys, json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HERE = os.path.dirname(os.path.abspath(__file__))
+if HERE not in sys.path:
+    sys.path.insert(0, HERE)
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from native.matting import run_matting, get_ort_session
-from native.export_video import run_export_worker, probe_encoders
+try:
+    from matting import run_matting, get_ort_session
+    from export_video import run_export_worker, probe_encoders
+except ImportError:
+    from native.matting import run_matting, get_ort_session
+    from native.export_video import run_export_worker, probe_encoders
 
 def do_probe():
     _, backend = get_ort_session()

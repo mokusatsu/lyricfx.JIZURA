@@ -40,10 +40,12 @@ const jizuraDesktop = {
     }
     return await ipcRenderer.invoke('desktop:startMatte', {
       version: 1,
+      jobId: request.jobId ? String(request.jobId) : null,
       assetToken: String(request.assetToken),
       sourceId: String(request.sourceId),
       profile: String(request.profile),
       fps: Number(request.fps) || 24,
+      duration: request.duration != null ? Number(request.duration) : null,
       slots: Array.isArray(request.slots) ? request.slots.map(Number) : [],
       priorMaskToken: request.priorMaskToken ? String(request.priorMaskToken) : null
     });
@@ -85,7 +87,10 @@ const jizuraDesktop = {
       qualityMode: String(settings.qualityMode || 'high'),
       bitrate: settings.bitrate != null ? Number(settings.bitrate) : null,
       qp: settings.qp != null ? Number(settings.qp) : null,
-      audioBuffer: settings.audioBuffer instanceof ArrayBuffer ? settings.audioBuffer : null
+      audioBuffer: settings.audioBuffer instanceof ArrayBuffer ? settings.audioBuffer : null,
+      audioExt: settings.audioExt ? String(settings.audioExt) : null,
+      audioOffset: Number(settings.audioOffset) || 0,
+      audioDuration: settings.audioDuration != null ? Number(settings.audioDuration) : null
     });
   },
 

@@ -1,24 +1,22 @@
-import os, sys, json, subprocess, shutil
+import os, sys, json, subprocess, shutil, threading
 
-def resolve_ffmpeg():
+def resolve_system_ffmpeg():
+    """
+    Finds system FFmpeg or raises RuntimeError if missing.
+    """
     if os.environ.get("JIZURA_FFMPEG") and os.path.exists(os.environ["JIZURA_FFMPEG"]):
         return os.environ["JIZURA_FFMPEG"]
-    # Check bundled native directory
-    bundled = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bin", "ffmpeg.exe" if sys.platform == "win32" else "ffmpeg")
-    if os.path.exists(bundled):
-        return bundled
-    # Check PATH
     found = shutil.which("ffmpeg")
     if found:
         return found
-    return "ffmpeg"
+    raise RuntimeError("FFmpeg not found on system PATH. Please install FFmpeg or set JIZURA_FFMPEG environment variable.")
 
 def probe_encoders():
     """
-    Returns list of available h264 encoders.
+    Returns list of available h264 encoders from system FFmpeg.
     """
-    ffmpeg = resolve_ffmpeg()
     try:
+        ffmpeg = resolve_system_ffmpeg()
         res = subprocess.run([ffmpeg, "-encoders"], capture_output=True, text=True, timeout=5)
         encoders = []
         for line in res.stdout.splitlines():
@@ -27,8 +25,9 @@ def probe_encoders():
                 if len(parts) >= 2:
                     encoders.append(parts[1])
         return encoders if encoders else ["libx264"]
-    except Exception:
-        return ["libx264"]
+    except Exception as e:
+        sys.stderr.write(f"Warning: probe_encoders failed ({e})\n")
+        return []
 
 def read_exact(stream, n):
     """
@@ -47,6 +46,28 @@ def read_exact(stream, n):
         view[pos : pos + chunk_len] = chunk
         pos += chunk_len
     return bytes(buf)
+
+def drain_stream_thread(stream, max_keep=65536):
+    """
+    Continuously reads stream in a background thread to prevent pipe deadlock.
+    Keeps the latest max_keep bytes for error diagnostics.
+    """
+    recent_bytes = bytearray()
+    lock = threading.Lock()
+
+    def worker():
+        while True:
+            chunk = stream.read(4096)
+            if not chunk:
+                break
+            with lock:
+                recent_bytes.extend(chunk)
+                if len(recent_bytes) > max_keep * 2:
+                    del recent_bytes[: len(recent_bytes) - max_keep]
+
+    t = threading.Thread(target=worker, daemon=True)
+    t.start()
+    return lambda: bytes(recent_bytes)
 
 def run_export_worker():
     """
@@ -69,10 +90,17 @@ def run_export_worker():
     frame_count = int(config["frameCount"])
     output_file = config["outputFile"]
     audio_file = config.get("audioFile")
+    audio_offset = float(config.get("audioOffset", 0))
+    audio_duration = config.get("audioDuration")
     bitrate = config.get("bitrate")
     qp = config.get("qp")
 
-    ffmpeg_bin = resolve_ffmpeg()
+    try:
+        ffmpeg_bin = resolve_system_ffmpeg()
+    except RuntimeError as err:
+        sys.stderr.write(f"Error: {err}\n")
+        sys.exit(2)
+
     frame_bytes = width * height * 4
 
     cmd = [
@@ -86,7 +114,13 @@ def run_export_worker():
 
     has_audio = audio_file and os.path.exists(audio_file)
     if has_audio:
-        cmd.extend(["-i", audio_file, "-map", "0:v:0", "-map", "1:a:0"])
+        # Seek and duration on input audio to mux without re-encoding
+        audio_args = []
+        if audio_offset > 0:
+            audio_args.extend(["-ss", f"{audio_offset:.4f}"])
+        if audio_duration is not None and float(audio_duration) > 0:
+            audio_args.extend(["-t", f"{float(audio_duration):.4f}"])
+        cmd.extend(audio_args + ["-i", audio_file, "-map", "0:v:0", "-map", "1:a:0"])
     else:
         cmd.extend(["-map", "0:v:0"])
 
@@ -101,20 +135,27 @@ def run_export_worker():
     else:
         cmd.extend(["-crf", "18"])
 
-    # Audio codec if present
+    # Pass audio without re-encoding (-c:a copy if container compatible, fallback to aac)
     if has_audio:
-        cmd.extend(["-c:a", "aac", "-ar", "48000", "-ac", "2", "-b:a", "192k"])
+        ext = os.path.splitext(audio_file)[1].lower()
+        if ext in [".aac", ".m4a", ".mp3", ".mp4"]:
+            cmd.extend(["-c:a", "copy"])
+        else:
+            # WAV or other audio container: encode with aac (multi-channel preserved)
+            cmd.extend(["-c:a", "aac", "-b:a", "320k"])
 
     cmd.extend(["-movflags", "+faststart", "-f", "mp4", output_file])
 
     os.makedirs(os.path.dirname(os.path.abspath(output_file)), exist_ok=True)
 
-    # Launch FFmpeg
+    # Launch FFmpeg with background stderr draining to prevent pipe deadlock
     try:
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     except Exception as e:
         sys.stderr.write(f"Failed to spawn ffmpeg: {e}\n")
         sys.exit(2)
+
+    get_recent_stderr = drain_stream_thread(proc.stderr)
 
     # Signal ready to Electron parent process
     sys.stdout.write(json.dumps({"type": "ready"}) + "\n")
@@ -126,7 +167,10 @@ def run_export_worker():
             rgba = read_exact(sys.stdin.buffer, frame_bytes)
             if not rgba:
                 break
-            proc.stdin.write(rgba)
+            try:
+                proc.stdin.write(rgba)
+            except BrokenPipeError:
+                break
             frames_read += 1
             if frames_read % 10 == 0 or frames_read == frame_count:
                 sys.stdout.write(json.dumps({
@@ -150,7 +194,7 @@ def run_export_worker():
 
     ret = proc.wait()
     if ret != 0:
-        err_msg = proc.stderr.read().decode('utf-8', errors='replace')
+        err_msg = get_recent_stderr().decode('utf-8', errors='replace')
         sys.stderr.write(f"FFmpeg exited with code {ret}:\n{err_msg}\n")
         sys.exit(ret)
 

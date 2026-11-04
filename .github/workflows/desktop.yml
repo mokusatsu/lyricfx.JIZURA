@@ -25,15 +25,30 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Set up FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r native/requirements-cpu.lock
+          pip install -r native/requirements-cpu.lock pyinstaller
+
+      - name: Prepare AI models and verify runtime resources
+        run: |
+          python tools/build_desktop_runtime.py
+
+      - name: Build native worker binary with PyInstaller
+        run: |
+          pyinstaller native/worker.spec --distpath desktop/resources/native --workpath desktop/build/worker --clean -y
 
       - name: Build Web and Electron Assets
         run: |
           python build.py
           python build.py --target electron --out desktop/web
+
+      - name: Syntax Check on all JS files
+        run: |
+          node dev/check_syntax.cjs
 
       - name: Run Desktop & Native unit tests
         run: |
