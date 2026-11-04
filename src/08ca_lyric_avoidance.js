@@ -470,9 +470,10 @@
 
   J.usesCircleAvoidance = (plan, cut, t) => {
     if (!plan?.lyricAvoidance?.enabled || plan?.layerVisibility?.avoidance === false || !cut) return false;
-    if (cut.line < 0 || !Number.isInteger(cut.part) || cut.effectsOnly) return false;
+    const interlude = cut.part === 'interlude' && cut.layout === 'interlude';
+    if (cut.line < 0 || !Number.isInteger(cut.part) && !interlude || cut.effectsOnly) return false;
     if (cut.areaMode === 'manual') return false;
-    if (plan.lockedLines && plan.lockedLines[cut.line]) return false;
+    if (!interlude && plan.lockedLines && plan.lockedLines[cut.line]) return false;
     const circle = J.circleAvoidanceForCut(plan, cut, t);
     if (!circle || !circle.enabled || circle.placement === false) return false;
     if (cut.emphasis && !circle.avoidEmphasis) return false;
@@ -863,6 +864,30 @@
     return best;
   }
 
+  // When the circle leaves no readable fully clear area, retain at least half
+  // the original size and choose the visible candidate with least overlap.
+  function solveInterludeOverlapFit(bb, W, H, circle) {
+    const maxScale = Math.min(1, W / bb.w, H / bb.h);
+    const minScale = Math.min(.5, maxScale), scales = [maxScale, Math.max(minScale, maxScale * .75), minScale];
+    let best = null;
+    for (const scale of scales) {
+      const w = bb.w * scale, h = bb.h * scale;
+      const xs = [bb.cx - w / 2, 0, W - w, circle.cx - circle.R - w, circle.cx + circle.R];
+      const ys = [bb.cy - h / 2, 0, H - h, circle.cy - circle.R - h, circle.cy + circle.R];
+      for (const x of xs) for (const y of ys) {
+        const x0 = J.clamp(x, 0, W - w), y0 = J.clamp(y, 0, H - h);
+        const overlapW = Math.max(0, Math.min(x0 + w, circle.cx + circle.R) - Math.max(x0, circle.cx - circle.R));
+        const overlapH = Math.max(0, Math.min(y0 + h, circle.cy + circle.R) - Math.max(y0, circle.cy - circle.R));
+        const overlap = overlapW * overlapH / Math.max(1, w * h);
+        const tx = x0 + w / 2 - bb.cx, ty = y0 + h / 2 - bb.cy, distance = Math.hypot(tx, ty);
+        if (!best || overlap < best.overlap - 1e-8 || Math.abs(overlap - best.overlap) <= 1e-8 && (scale > best.scale + 1e-8 || Math.abs(scale - best.scale) <= 1e-8 && distance < best.distance)) {
+          best = { tx, ty, scale, distance, overlap, bb: scaleAndShiftBB(bb, bb.cx, bb.cy, scale, tx, ty) };
+        }
+      }
+    }
+    return best;
+  }
+
   // ----------------------------------------------------------------------------
   // 4. Layout Measurement Pass (Captures Main Lyric BB, Aux BB, and Plate BB)
   // ----------------------------------------------------------------------------
@@ -1231,6 +1256,17 @@
     // Measure native full-stage bounds
     const { mainBB, auxBB, fullBB, mainCallBoxes } = measureCutBounds(baseEnv, cut);
     const seedDir = DIR_NAMES[J.h(cut.seed || 1, 701) % DIR_NAMES.length];
+
+    if (cut.part === 'interlude' && id === 'interlude') {
+      if (P.variant === 'quiet' && !(P.showTitle && P.titleText) || !rectHitsCircle(mainBB, circle.cx, circle.cy, circle.R)) {
+        return {mode:'transform',tx:0,ty:0,scale:1,pivotX:mainBB.cx,pivotY:mainBB.cy,mainBB,fullBB,shiftedBB:mainBB};
+      }
+      const corner = () => { const fit=solveCornerFallback(mainBB,W,H,circle); return fit && fit.scale>=.5 ? fit : null; };
+      const fit = solveDirectionalPush(mainBB,W,H,circle,{preferDir:seedDir})
+        || solveScaledRegionFit(mainBB,W,H,circle,{minScale:.5}) || corner()
+        || solveInterludeOverlapFit(mainBB,W,H,circle);
+      return {mode:'transform',tx:fit.tx,ty:fit.ty,scale:fit.scale ?? 1,pivotX:mainBB.cx,pivotY:mainBB.cy,mainBB,fullBB,shiftedBB:fit.bb};
+    }
 
     // Special case: `corners` places two separate text boxes in opposite corners of the stage;
     // their union spans the center, so check if the individual corner text boxes clear the circle!
@@ -1921,7 +1957,25 @@
         if (!cut.effectsOnly) {
           const L = J.LAYOUTS[cut.layout] || J.LAYOUTS.center;
 
-          if (sol.mode === 'orbit') {
+          if (cut.part === 'interlude' && cut.layout === 'interlude') {
+            // Keep the decoration in its own place; only the interlude's
+            // primary text follows the shared circle-placement solution.
+            const mainDraw = J.mainDraw;
+            J.mainDraw = (mainEnv, item) => {
+              tctx.save();
+              try {
+                tctx.translate(sol.tx || 0, sol.ty || 0);
+                if (sol.scale != null && sol.scale < .999) {
+                  tctx.translate(sol.pivotX, sol.pivotY);
+                  tctx.scale(sol.scale, sol.scale);
+                  tctx.translate(-sol.pivotX, -sol.pivotY);
+                }
+                return mainDraw(mainEnv, item);
+              } finally { tctx.restore(); }
+            };
+            try { bb = L.render(targetEnv); } finally { J.mainDraw = mainDraw; }
+            if (sol.shiftedBB) bb = sol.shiftedBB;
+          } else if (sol.mode === 'orbit') {
             tctx.save();
             tctx.translate(sol.tx || 0, sol.ty || 0);
             bb = L.render(targetEnv);

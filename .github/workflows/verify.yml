@@ -49,6 +49,10 @@ jobs:
         run: |
           node mcp/special-cuts-test.mjs
           node mcp/special-cuts-test.mjs en
+      - name: Verify interlude circle avoidance
+        env:
+          NODE_PATH: ${{ github.workspace }}/mcp/node_modules
+        run: node dev/interlude_circle_test.cjs
       - name: Verify favorites and custom effects
         run: |
           node mcp/favorites-test.mjs
