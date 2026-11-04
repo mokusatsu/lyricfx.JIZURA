@@ -1,6 +1,6 @@
 <div id="app">
   <header class="bar">
-    <div class="brand"><span class="mark">字面一</span> <span class="word">JIZURA</span> <span class="tag">ONE STOP EDITION</span></div>
+    <div class="brand"><svg class="brand-title" viewBox="0 0 220 30" preserveAspectRatio="none" role="img" aria-label="lyricfx.JIZURA"><text x="0" y="24" textLength="220" lengthAdjust="spacingAndGlyphs">lyricfx.JIZURA</text></svg></div>
     <div class="proj">
       <input id="songTitle" type="text" placeholder="曲名（タイトルカード・HUDに表示）" aria-label="曲名">
       <input id="songArtist" type="text" placeholder="アーティスト" aria-label="アーティスト">
@@ -322,8 +322,8 @@
 <dialog id="termsDlg" class="terms" aria-labelledby="termsTitle">
   <form method="dialog">
     <h2 id="termsTitle">利用について</h2>
-    <section class="terms-section" aria-labelledby="termsOriginalTitle">
-      <h3 id="termsOriginalTitle">オリジナル版（852wa/JIZURA）</h3>
+    <details class="terms-section" open>
+      <summary>オリジナル版（852wa/JIZURA）</summary>
     <div class="terms-main">
       <p class="terms-big">このツールで作った<strong>動画や画像（出力物）の権利は、作った人</strong>に帰属します。</p>
       <p class="terms-sub">※ 使った歌詞や曲の権利は、それぞれの権利者に帰属します。</p>
@@ -335,14 +335,23 @@
       <p>MP4 書き出し：mp4-muxer（MIT License）<br>フォント：Google Fonts 配布の各書体（SIL Open Font License 1.1）</p>
     </details>
     <p class="muted mono">© 2026 hakoniwa · MIT</p>
-    </section>
-    <section class="terms-section terms-fork" aria-labelledby="termsForkTitle">
-      <h3 id="termsForkTitle">字面一 JIZURA ONE STOP EDITION</h3>
+    </details>
+    <details class="terms-section terms-fork" open>
+      <summary>字面一 JIZURA ONE STOP EDITION</summary>
       <p>このfork版は、ワンストップでのリリックビデオ作成をコンセプトに<br>オリジナル版JIZURAに機能を追加したものです。<br>編集・書き出しはブラウザ内で処理します。</p>
       <p>fork版のソースコード：<a href="https://github.com/hirazisora/JIZURA" target="_blank" rel="noopener">https://github.com/hirazisora/JIZURA</a></p>
       <p>人物切り抜きの外部モデル：RVM（GPL-3.0）。<a href="THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener">モデル・ライブラリの利用条件</a></p>
       <p class="muted mono">© 2026 hirazisora · MIT</p>
-    </section>
+    </details>
+    <details class="terms-section" open>
+      <summary>フォーク元（JIZURA.for.hakase）</summary>
+      <p>このアプリは、以下のリポジトリをフォークして変更したものです。</p>
+      <p><a href="https://github.com/HAKASEes-ToyBox/JIZURA.for.hakase" target="_blank" rel="noopener">https://github.com/HAKASEes-ToyBox/JIZURA.for.hakase</a></p>
+    </details>
+    <details class="terms-section" open>
+      <summary>lyricfx.JIZURA</summary>
+      <p>変更者：Keiji Okamoto</p>
+    </details>
     <div class="terms-foot"><button value="close" class="primary" autofocus>閉じる</button></div>
   </form>
 </dialog>

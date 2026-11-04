@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>字面一 JIZURA ONE STOP EDITION</title>
+<title>lyricfx.JIZURA</title>
 <meta name="description" content="歌詞を入れると文字PV（リリックモーション）を自動で組み立てて MP4 に書き出すブラウザアプリ">
 <link rel="canonical" href="https://hirazisora.github.io/JIZURA/">
 <link rel="alternate" hreflang="ja" href="https://hirazisora.github.io/JIZURA/">
 <link rel="alternate" hreflang="en" href="https://hirazisora.github.io/JIZURA/en/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="字面一 JIZURA ONE STOP EDITION">
+<meta property="og:title" content="lyricfx.JIZURA">
 <meta property="og:description" content="歌詞を入れると文字PV（リリックモーション）を自動で組み立てて MP4 に書き出すブラウザアプリ">
 <meta property="og:url" content="https://hirazisora.github.io/JIZURA/">
 <meta name="twitter:card" content="summary">
@@ -48,10 +48,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* ---------- top bar ---------- */
 .bar { display: flex; align-items: center; gap: 16px; padding-block: 10px; padding-inline: 16px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
-.brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
-.brand .mark { font: 900 26px/1 var(--brand); letter-spacing: 0.02em; color: var(--text); text-shadow: -2px -1px 0 rgba(22,244,212,0.85), 2px 1px 0 rgba(245,165,12,0.9); }
-.brand .word { font: 600 12px/1 var(--mono); letter-spacing: 0.34em; color: var(--text); }
-.brand .tag { font: 400 11px/1 var(--mono); color: var(--muted); letter-spacing: 0; margin-left: -10px; }
+.brand { flex: 0 1 220px; min-width: 0; max-width: 100%; }
+.brand-title { display: block; width: 100%; height: 30px; overflow: visible; fill: var(--text); font: 900 26px var(--mono); }
 .proj { display: flex; gap: 8px; flex: 1 1 280px; min-width: 0; }
 .proj input { flex: 1 1 0; min-width: 0; }
 .acts { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -417,9 +415,10 @@ dialog.terms h2 { font-size: 15px; letter-spacing: 0.08em; color: var(--text); m
 dialog.terms h3 { font-size: 13px; color: var(--text); margin: 0 0 10px; }
 dialog.terms p { margin: 0 0 10px; line-height: 1.75; font-size: 13px; }
 dialog.terms a { color: var(--cyan); word-break: break-all; }
+.terms-section { padding-bottom: 12px; }
 .terms-section + .terms-section { border-top: 1px solid var(--line2); padding-top: 16px; }
-.terms-fork { margin-bottom: 16px; }
-dialog.terms .terms-fork h3 { color: var(--cyan); }
+.terms-section > summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.terms-section.terms-fork > summary { color: var(--cyan); }
 .terms-main { border-left: 3px solid var(--amber); background: var(--raised); padding: 12px 14px 4px; border-radius: 0 var(--r) var(--r) 0; margin-bottom: 14px; }
 .terms-main .terms-big { font-size: 15px; }
 .terms-main strong { color: var(--amber); font-weight: 700; }
@@ -727,9 +726,6 @@ body.preview-fullscreen-open { overflow: hidden; }
 }
 @media (max-width: 760px) {
   .bar { padding: 10px; }
-  .brand { flex-wrap: wrap; row-gap: 6px; }
-  .brand .word { letter-spacing: .15em; }
-  .brand .tag { margin-left: 0; }
   .col-left, .col-right { overflow: visible; }
   .sec, .easy { padding: 12px; }
   .transport .hist-btns { display: inline-flex; flex-wrap: wrap; }
@@ -1001,7 +997,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 <body>
 <div id="app">
   <header class="bar">
-    <div class="brand"><span class="mark">字面一</span> <span class="word">JIZURA</span> <span class="tag">ONE STOP EDITION</span></div>
+    <div class="brand"><svg class="brand-title" viewBox="0 0 220 30" preserveAspectRatio="none" role="img" aria-label="lyricfx.JIZURA"><text x="0" y="24" textLength="220" lengthAdjust="spacingAndGlyphs">lyricfx.JIZURA</text></svg></div>
     <div class="proj">
       <input id="songTitle" type="text" placeholder="曲名（タイトルカード・HUDに表示）" aria-label="曲名">
       <input id="songArtist" type="text" placeholder="アーティスト" aria-label="アーティスト">
@@ -1324,8 +1320,8 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 <dialog id="termsDlg" class="terms" aria-labelledby="termsTitle">
   <form method="dialog">
     <h2 id="termsTitle">利用について</h2>
-    <section class="terms-section" aria-labelledby="termsOriginalTitle">
-      <h3 id="termsOriginalTitle">オリジナル版（852wa/JIZURA）</h3>
+    <details class="terms-section" open>
+      <summary>オリジナル版（852wa/JIZURA）</summary>
     <div class="terms-main">
       <p class="terms-big">このツールで作った<strong>動画や画像（出力物）の権利は、作った人</strong>に帰属します。</p>
       <p class="terms-sub">※ 使った歌詞や曲の権利は、それぞれの権利者に帰属します。</p>
@@ -1337,14 +1333,23 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
       <p>MP4 書き出し：mp4-muxer（MIT License）<br>フォント：Google Fonts 配布の各書体（SIL Open Font License 1.1）</p>
     </details>
     <p class="muted mono">© 2026 hakoniwa · MIT</p>
-    </section>
-    <section class="terms-section terms-fork" aria-labelledby="termsForkTitle">
-      <h3 id="termsForkTitle">字面一 JIZURA ONE STOP EDITION</h3>
+    </details>
+    <details class="terms-section terms-fork" open>
+      <summary>字面一 JIZURA ONE STOP EDITION</summary>
       <p>このfork版は、ワンストップでのリリックビデオ作成をコンセプトに<br>オリジナル版JIZURAに機能を追加したものです。<br>編集・書き出しはブラウザ内で処理します。</p>
       <p>fork版のソースコード：<a href="https://github.com/hirazisora/JIZURA" target="_blank" rel="noopener">https://github.com/hirazisora/JIZURA</a></p>
       <p>人物切り抜きの外部モデル：RVM（GPL-3.0）。<a href="THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener">モデル・ライブラリの利用条件</a></p>
       <p class="muted mono">© 2026 hirazisora · MIT</p>
-    </section>
+    </details>
+    <details class="terms-section" open>
+      <summary>フォーク元（JIZURA.for.hakase）</summary>
+      <p>このアプリは、以下のリポジトリをフォークして変更したものです。</p>
+      <p><a href="https://github.com/HAKASEes-ToyBox/JIZURA.for.hakase" target="_blank" rel="noopener">https://github.com/HAKASEes-ToyBox/JIZURA.for.hakase</a></p>
+    </details>
+    <details class="terms-section" open>
+      <summary>lyricfx.JIZURA</summary>
+      <p>変更者：Keiji Okamoto</p>
+    </details>
     <div class="terms-foot"><button value="close" class="primary" autofocus>閉じる</button></div>
   </form>
 </dialog>
