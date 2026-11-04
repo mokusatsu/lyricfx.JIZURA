@@ -2,6 +2,9 @@
 
 BODY = {
     'href="THIRD_PARTY_NOTICES.md"': 'href="../THIRD_PARTY_NOTICES.md"',
+    'フォーク元（JIZURA.for.hakase）': 'Forked from (JIZURA.for.hakase)',
+    'このアプリは、以下のリポジトリをフォークして変更したものです。': 'This app is a modified fork of the following repository.',
+    '変更者：Keiji Okamoto': 'Modified by: Keiji Okamoto',
     '人物切り抜きの外部モデル：RVM（GPL-3.0）。': 'External person-cutout model: RVM (GPL-3.0). ',
     'モデル・ライブラリの利用条件': 'Model and library licenses',
     '設定のみ書き出し': 'Export settings only',

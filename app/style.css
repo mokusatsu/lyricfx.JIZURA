@@ -30,10 +30,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* ---------- top bar ---------- */
 .bar { display: flex; align-items: center; gap: 16px; padding-block: 10px; padding-inline: 16px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
-.brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
-.brand .mark { font: 900 26px/1 var(--brand); letter-spacing: 0.02em; color: var(--text); text-shadow: -2px -1px 0 rgba(22,244,212,0.85), 2px 1px 0 rgba(245,165,12,0.9); }
-.brand .word { font: 600 12px/1 var(--mono); letter-spacing: 0.34em; color: var(--text); }
-.brand .tag { font: 400 11px/1 var(--mono); color: var(--muted); letter-spacing: 0; margin-left: -10px; }
+.brand { flex: 0 1 220px; min-width: 0; max-width: 100%; }
+.brand-title { display: block; width: 100%; height: 30px; overflow: visible; fill: var(--text); font: 900 26px var(--mono); }
 .proj { display: flex; gap: 8px; flex: 1 1 280px; min-width: 0; }
 .proj input { flex: 1 1 0; min-width: 0; }
 .acts { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -399,9 +397,10 @@ dialog.terms h2 { font-size: 15px; letter-spacing: 0.08em; color: var(--text); m
 dialog.terms h3 { font-size: 13px; color: var(--text); margin: 0 0 10px; }
 dialog.terms p { margin: 0 0 10px; line-height: 1.75; font-size: 13px; }
 dialog.terms a { color: var(--cyan); word-break: break-all; }
+.terms-section { padding-bottom: 12px; }
 .terms-section + .terms-section { border-top: 1px solid var(--line2); padding-top: 16px; }
-.terms-fork { margin-bottom: 16px; }
-dialog.terms .terms-fork h3 { color: var(--cyan); }
+.terms-section > summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.terms-section.terms-fork > summary { color: var(--cyan); }
 .terms-main { border-left: 3px solid var(--amber); background: var(--raised); padding: 12px 14px 4px; border-radius: 0 var(--r) var(--r) 0; margin-bottom: 14px; }
 .terms-main .terms-big { font-size: 15px; }
 .terms-main strong { color: var(--amber); font-weight: 700; }
@@ -709,9 +708,6 @@ body.preview-fullscreen-open { overflow: hidden; }
 }
 @media (max-width: 760px) {
   .bar { padding: 10px; }
-  .brand { flex-wrap: wrap; row-gap: 6px; }
-  .brand .word { letter-spacing: .15em; }
-  .brand .tag { margin-left: 0; }
   .col-left, .col-right { overflow: visible; }
   .sec, .easy { padding: 12px; }
   .transport .hist-btns { display: inline-flex; flex-wrap: wrap; }
