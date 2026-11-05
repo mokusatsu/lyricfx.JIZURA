@@ -134,6 +134,7 @@ subprocess.run([
       const vFinish = await jobs.finishExport(vJob.jobId);
       assert.equal(vFinish.saved, true);
       assert.equal(vFinish.audioCodec, 'AAC', 'Video audio codec should be detected as AAC');
+      assert.equal(vFinish.audioMuxMode, 'copy', 'Lossless audio input must be muxed via copy mode');
       assert.ok(fs.existsSync(videoOutPath));
 
       // Inspect final MP4 container with FFmpeg to confirm Audio stream presence and codec
@@ -144,27 +145,45 @@ res = subprocess.run([ffmpeg, '-hide_banner', '-i', sys.argv[1]], stdout=subproc
 sys.stdout.buffer.write(res.stderr)
 `, videoOutPath]).toString('utf-8');
       assert.ok(probeOutput.includes('Audio: aac'), 'Output MP4 must contain an AAC audio stream');
-      console.log('Video MP4 audio pass-through export verified successfully (Stream: AAC).');
+
+      // Verify bit-exact audio packet stream copy by comparing input and output audio MD5
+      const inputAudioMd5 = execFileSync(jobs._resolvePython(), ['-c', `
+import subprocess, sys
+ffmpeg = '${jobs.pythonPath}'.replace('python.exe', 'ffmpeg.exe') if 'python.exe' in '${jobs.pythonPath}' else 'ffmpeg'
+res = subprocess.run([ffmpeg, '-y', '-hide_banner', '-nostdin', '-i', sys.argv[1], '-vn', '-c:a', 'copy', '-f', 'md5', '-'], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+sys.stdout.buffer.write(res.stdout)
+`, dummyVideoPath]).toString('utf-8').trim();
+
+      const outputAudioMd5 = execFileSync(jobs._resolvePython(), ['-c', `
+import subprocess, sys
+ffmpeg = '${jobs.pythonPath}'.replace('python.exe', 'ffmpeg.exe') if 'python.exe' in '${jobs.pythonPath}' else 'ffmpeg'
+res = subprocess.run([ffmpeg, '-y', '-hide_banner', '-nostdin', '-i', sys.argv[1], '-vn', '-c:a', 'copy', '-f', 'md5', '-'], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+sys.stdout.buffer.write(res.stdout)
+`, videoOutPath]).toString('utf-8').trim();
+
+      assert.ok(inputAudioMd5.startsWith('MD5='), 'Input audio MD5 must be valid');
+      assert.equal(outputAudioMd5, inputAudioMd5, 'Output audio packet MD5 must match input audio packet MD5 exactly (proving bit-exact lossless streamcopy)');
+      console.log('Video MP4 audio pass-through verified: bit-exact copy matches (MD5: ' + inputAudioMd5 + ').');
     }
 
-    // 6. Test fallback to AAC re-encoding when direct copy mux is not possible
+    // 6. Test fallback to AAC re-encoding when direct copy mux is not possible (e.g. WMA format)
     console.log('Testing fallback to AAC re-encoding when audio requires conversion...');
-    const oggAudioPath = path.join(tempDir, 'test_audio.ogg');
+    const wmaAudioPath = path.join(tempDir, 'test_audio.wma');
     execFileSync(jobs._resolvePython(), ['-c', `
 import subprocess, sys
 ffmpeg = '${jobs.pythonPath}'.replace('python.exe', 'ffmpeg.exe') if 'python.exe' in '${jobs.pythonPath}' else 'ffmpeg'
 subprocess.run([
     ffmpeg, '-y',
     '-f', 'lavfi', '-i', 'sine=frequency=880:duration=1',
-    '-c:a', 'libvorbis',
+    '-c:a', 'wmav2',
     sys.argv[1]
 ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-`, oggAudioPath]);
+`, wmaAudioPath]);
 
-    if (fs.existsSync(oggAudioPath)) {
+    if (fs.existsSync(wmaAudioPath)) {
       const fbOutPath = path.join(tempDir, 'test_export_fallback.mp4');
       const fbOutputToken = jobs.registerOutput(fbOutPath);
-      const oggAudioBuf = fs.readFileSync(oggAudioPath);
+      const wmaAudioBuf = fs.readFileSync(wmaAudioPath);
       const fbJob = await jobs.startExportJob(fakeWebContents, {
         outputToken: fbOutputToken,
         width,
@@ -173,8 +192,8 @@ subprocess.run([
         frameCount,
         qualityMode: 'high',
         bitrate: 500000,
-        audioBuffer: oggAudioBuf.buffer.slice(oggAudioBuf.byteOffset, oggAudioBuf.byteOffset + oggAudioBuf.byteLength),
-        audioExt: '.ogg'
+        audioBuffer: wmaAudioBuf.buffer.slice(wmaAudioBuf.byteOffset, wmaAudioBuf.byteOffset + wmaAudioBuf.byteLength),
+        audioExt: '.wma'
       });
       assert.equal(fbJob.status, 'ready');
       for (let i = 0; i < frameCount; i++) {
@@ -183,8 +202,9 @@ subprocess.run([
       const fbFinish = await jobs.finishExport(fbJob.jobId);
       assert.equal(fbFinish.saved, true);
       assert.equal(fbFinish.audioCodec, 'AAC', 'Fallback audio codec must be AAC');
+      assert.equal(fbFinish.audioMuxMode, 'reencode', 'Non-MP4 audio must trigger fallback reencode mode');
       assert.ok(fs.existsSync(fbOutPath));
-      console.log('Fallback to AAC re-encode export verified successfully.');
+      console.log('Fallback to AAC re-encode export verified successfully (MuxMode: reencode).');
     }
 
     jobs.cleanupAll();

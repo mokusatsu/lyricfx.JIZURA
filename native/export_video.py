@@ -224,6 +224,7 @@ def run_export_worker():
 
     # Phase 2: Audio multiplexing with automatic fallback to AAC re-encoding
     final_audio_codec = expected_audio_codec
+    audio_mux_mode = None
     if has_audio:
         audio_args = []
         if audio_offset > 0:
@@ -251,6 +252,7 @@ def run_export_worker():
             if res.returncode == 0:
                 mux_success = True
                 final_audio_codec = detected_codec
+                audio_mux_mode = "copy"
             else:
                 err_detail = res.stderr.decode('utf-8', errors='replace')
                 sys.stderr.write(f"Warning: -c:a copy mux failed in production, falling back to AAC re-encode:\n{err_detail}\n")
@@ -272,6 +274,7 @@ def run_export_worker():
             if res_fb.returncode == 0:
                 mux_success = True
                 final_audio_codec = "AAC"
+                audio_mux_mode = "reencode"
             else:
                 err_fb = res_fb.stderr.decode('utf-8', errors='replace')
                 sys.stderr.write(f"Error: Fallback AAC audio mux failed:\n{err_fb}\n")
@@ -288,6 +291,7 @@ def run_export_worker():
         "type": "finished",
         "outputFile": output_file,
         "frames": frames_read,
-        "audioCodec": final_audio_codec
+        "audioCodec": final_audio_codec,
+        "audioMuxMode": audio_mux_mode
     }) + "\n")
     sys.stdout.flush()
