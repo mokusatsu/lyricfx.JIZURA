@@ -95,13 +95,20 @@ const { NativeJobs } = require('../native-jobs.cjs');
     const cancelRes = jobs.cancelJob(cancelStart.jobId);
     assert.equal(cancelRes.ok, true);
 
-    // 5. Test native export with video-container audio (.mp4) pass-through
+    // 5. Test native export with video-container audio (.mp4) pass-through (both video + audio tracks)
     const { execFileSync } = require('node:child_process');
-    const dummyVideoPath = path.join(tempDir, 'source_audio.mp4');
+    const dummyVideoPath = path.join(tempDir, 'source_video_with_audio.mp4');
     execFileSync(jobs._resolvePython(), ['-c', `
 import subprocess, sys
 ffmpeg = '${jobs.pythonPath}'.replace('python.exe', 'ffmpeg.exe') if 'python.exe' in '${jobs.pythonPath}' else 'ffmpeg'
-subprocess.run(['ffmpeg', '-y', '-f', 'lavfi', '-i', 'sine=frequency=440:duration=1', '-c:a', 'aac', '-b:a', '128k', sys.argv[1]], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+subprocess.run([
+    ffmpeg, '-y',
+    '-f', 'lavfi', '-i', 'testsrc=duration=1:size=64x64:rate=10',
+    '-f', 'lavfi', '-i', 'sine=frequency=440:duration=1',
+    '-c:v', 'libx264', '-pix_fmt', 'yuv420p',
+    '-c:a', 'aac', '-b:a', '128k',
+    sys.argv[1]
+], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
 `, dummyVideoPath]);
 
     if (fs.existsSync(dummyVideoPath)) {
@@ -126,9 +133,58 @@ subprocess.run(['ffmpeg', '-y', '-f', 'lavfi', '-i', 'sine=frequency=440:duratio
       }
       const vFinish = await jobs.finishExport(vJob.jobId);
       assert.equal(vFinish.saved, true);
-      assert.ok(vFinish.audioCodec, 'Audio codec must be detected and reported');
+      assert.equal(vFinish.audioCodec, 'AAC', 'Video audio codec should be detected as AAC');
       assert.ok(fs.existsSync(videoOutPath));
-      console.log('Video MP4 audio pass-through export succeeded. Codec:', vFinish.audioCodec);
+
+      // Inspect final MP4 container with FFmpeg to confirm Audio stream presence and codec
+      const probeOutput = execFileSync(jobs._resolvePython(), ['-c', `
+import subprocess, sys
+ffmpeg = '${jobs.pythonPath}'.replace('python.exe', 'ffmpeg.exe') if 'python.exe' in '${jobs.pythonPath}' else 'ffmpeg'
+res = subprocess.run([ffmpeg, '-hide_banner', '-i', sys.argv[1]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+sys.stdout.buffer.write(res.stderr)
+`, videoOutPath]).toString('utf-8');
+      assert.ok(probeOutput.includes('Audio: aac'), 'Output MP4 must contain an AAC audio stream');
+      console.log('Video MP4 audio pass-through export verified successfully (Stream: AAC).');
+    }
+
+    // 6. Test fallback to AAC re-encoding when direct copy mux is not possible
+    console.log('Testing fallback to AAC re-encoding when audio requires conversion...');
+    const oggAudioPath = path.join(tempDir, 'test_audio.ogg');
+    execFileSync(jobs._resolvePython(), ['-c', `
+import subprocess, sys
+ffmpeg = '${jobs.pythonPath}'.replace('python.exe', 'ffmpeg.exe') if 'python.exe' in '${jobs.pythonPath}' else 'ffmpeg'
+subprocess.run([
+    ffmpeg, '-y',
+    '-f', 'lavfi', '-i', 'sine=frequency=880:duration=1',
+    '-c:a', 'libvorbis',
+    sys.argv[1]
+], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+`, oggAudioPath]);
+
+    if (fs.existsSync(oggAudioPath)) {
+      const fbOutPath = path.join(tempDir, 'test_export_fallback.mp4');
+      const fbOutputToken = jobs.registerOutput(fbOutPath);
+      const oggAudioBuf = fs.readFileSync(oggAudioPath);
+      const fbJob = await jobs.startExportJob(fakeWebContents, {
+        outputToken: fbOutputToken,
+        width,
+        height,
+        fps,
+        frameCount,
+        qualityMode: 'high',
+        bitrate: 500000,
+        audioBuffer: oggAudioBuf.buffer.slice(oggAudioBuf.byteOffset, oggAudioBuf.byteOffset + oggAudioBuf.byteLength),
+        audioExt: '.ogg'
+      });
+      assert.equal(fbJob.status, 'ready');
+      for (let i = 0; i < frameCount; i++) {
+        await jobs.writeFrame(fbJob.jobId, i, frameData.buffer.slice(frameData.byteOffset, frameData.byteOffset + frameData.byteLength));
+      }
+      const fbFinish = await jobs.finishExport(fbJob.jobId);
+      assert.equal(fbFinish.saved, true);
+      assert.equal(fbFinish.audioCodec, 'AAC', 'Fallback audio codec must be AAC');
+      assert.ok(fs.existsSync(fbOutPath));
+      console.log('Fallback to AAC re-encode export verified successfully.');
     }
 
     jobs.cleanupAll();

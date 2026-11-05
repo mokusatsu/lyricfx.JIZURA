@@ -386,6 +386,8 @@ class NativeJobs {
             job.status = 'running';
             job.audioCodec = msg.audioCodec;
             job.readyResolve && job.readyResolve(msg);
+          } else if (msg.type === 'finished') {
+            if (msg.audioCodec) job.audioCodec = msg.audioCodec;
           }
         } catch (e) {}
       }

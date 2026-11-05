@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 // Mock browser globals for Node.js test environment
 global.TextEncoder = TextEncoder;
@@ -10,17 +11,75 @@ global.File = File;
 
 const mediaStore = new Map();
 
-global.J = {
+// Load real project pack/unpack implementation from src/11b_project_file.js
+const projectFileCode = fs.readFileSync(path.join(__dirname, '..', 'src', '11b_project_file.js'), 'utf-8');
+
+// Load src/12_ui.js to extract real undo, project, and audio restore functions
+const uiCode = fs.readFileSync(path.join(__dirname, '..', 'src', '12_ui.js'), 'utf-8');
+
+// Create test environment
+const domElements = new Map();
+function getEl(id) {
+  if (!domElements.has(id)) {
+    domElements.set(id, {
+      value: '',
+      textContent: '',
+      hidden: false,
+      setAttribute: () => {},
+      addEventListener: () => {},
+      closest: () => ({ addEventListener: () => {} })
+    });
+  }
+  return domElements.get(id);
+}
+
+const sandbox = {
+  window: {
+    addEventListener: () => {},
+    localStorage: { setItem: () => {}, getItem: () => null }
+  },
+  document: {
+    getElementById: getEl,
+    querySelector: () => null,
+    querySelectorAll: () => []
+  },
+  $: getEl,
+  console,
+  Math,
+  Number,
+  Object,
+  Array,
+  JSON,
+  TextEncoder,
+  TextDecoder,
+  Blob,
+  File,
+  Uint8Array,
+  DataView,
+  setTimeout,
+  clearTimeout,
+  performance: { now: () => Date.now() },
+  crypto: { randomUUID: () => 'uuid-' + Math.random().toString(36).slice(2) }
+};
+
+const context = vm.createContext(sandbox);
+
+// Setup J namespace and minimal mocks required by 12_ui.js audio and undo functions
+context.J = {
   mediaLabel: (ja, en) => ja,
   mediaAssets: new Map(),
   loadMedia: async (id) => mediaStore.get(id) || null,
   storeMedia: async (id, blob) => { mediaStore.set(id, blob); },
   snapshotMediaFile: async (file) => file,
-  personMaskReferences: (project) => [],
+  personMaskReferences: () => [],
   personMaskBlob: async () => null,
   readFontFile: async () => null,
   defaultProject: () => ({
+    title: '',
+    artist: '',
     lyrics: '',
+    timing: {},
+    enabled: {},
     media: { items: [], cutOverrides: {} },
     foreground: { items: [], cutOverrides: {} },
     fx: {}
@@ -31,106 +90,192 @@ global.J = {
   mediaEffectSettings: () => ({}),
   parseLyrics: () => ({ lines: [] }),
   importCustomEffects: () => {},
+  shortExportSettings: (s) => s || {},
+  validateCustomEffects: (c) => c || [],
+  activateCustomEffects: () => {},
+  lyricEffectSettings: () => ({}),
+  themeIds: () => [],
+  normalizeEffectFavorites: (f) => f || [],
+  combineCustomEffects: (a, b) => a || [],
+  plan: () => ({ duration: 10, media: { cuts: [] } }),
+  normalizeColorTheme: (t) => t || {},
+  setCompositeFonts: () => {},
+  migrateLyricCompositing: () => {},
+  addUserFont: () => {},
+  clamp: (v, min, max) => Math.max(min, Math.min(max, v)),
+  outputSize: () => [1920, 1080],
+  fmtTime: () => '00:00',
   analyzeAudio: async (file) => ({
     duration: 10.0,
     bpm: 120,
     buffer: { numberOfChannels: 2, sampleRate: 48000, duration: 10.0 }
-  })
+  }),
+  FONTS: {}
 };
 
-// Load src/11b_project_file.js
-const projectFileCode = fs.readFileSync(path.join(__dirname, '..', 'src', '11b_project_file.js'), 'utf-8');
-new Function(projectFileCode)();
+// Execute src/11b_project_file.js in context
+vm.runInContext(projectFileCode, context);
+
+// Extract and bind real UI helper functions from src/12_ui.js
+// 1. mergeProject
+const mergeProjectMatch = uiCode.match(/function mergeProject\([a-zA-Z0-9_]*\) \{[\s\S]*?\n\}/);
+assert.ok(mergeProjectMatch, 'mergeProject must exist in src/12_ui.js');
+vm.runInContext(mergeProjectMatch[0], context);
+
+// 2. Global state S, U (Undo), H (History)
+vm.runInContext(`
+globalThis.NO_AUDIO_LABEL = '曲なし';
+globalThis.LS_KEY = 'jizura_test_project';
+globalThis.fontKey = '';
+globalThis.replanTimer = 0;
+globalThis.saveTimer = 0;
+globalThis.S = {
+  project: J.defaultProject(),
+  audio: null,
+  audioFile: null,
+  audioAssetId: null,
+  audioLoad: 0,
+  plan: { duration: 10 },
+  areaEdit: false
+};
+globalThis.U = { list: [], i: -1, restoring: false, pendingGroup: null, lastGroup: null };
+globalThis.H = { list: [], i: -1 };
+
+globalThis.migrateLyricBlankCuts = function(p) { return p; };
+globalThis.pause = function() {};
+globalThis.syncTapButtons = function() {};
+globalThis.cancelAreaEditor = function() {};
+globalThis.restoreMediaElements = function() {};
+globalThis.syncUI = function() {};
+globalThis.replan = function() {};
+globalThis.flushSave = function() {};
+globalThis.updateUndoButtons = function() {};
+globalThis.ensureFonts = function() {};
+globalThis.setTimelineZoom = function() {};
+globalThis.toast = function() {};
+globalThis.cleanupDeletedMedia = function() {};
+globalThis.releaseProjectAssets = function() {};
+
+globalThis.initUndo = function() {
+  U.list = [JSON.stringify(S.project)];
+  U.i = 0;
+  updateUndoButtons();
+};
+
+globalThis.recordUndoState = function() {
+  if (U.restoring) return;
+  const snap = JSON.stringify(S.project);
+  if (U.list[U.i] === snap) return;
+  U.list = U.list.slice(0, U.i + 1);
+  U.list.push(snap);
+  if (U.list.length > 50) U.list.shift();
+  U.i = U.list.length - 1;
+  updateUndoButtons();
+};
+
+globalThis.commit = function() {
+  recordUndoState();
+};
+`, context);
+
+// 3. Bind real undoMove, refreshAudioName, replaceProject, restoreAudioAsset directly from 12_ui.js
+const undoMoveMatch = uiCode.match(/function undoMove\(direction\) \{[\s\S]*?\n\}/);
+const refreshAudioNameMatch = uiCode.match(/function refreshAudioName\(\) \{[\s\S]*?\n\}/);
+const restoreAudioAssetMatch = uiCode.match(/async function restoreAudioAsset\(\) \{[\s\S]*?\n\}/);
+const replaceProjectMatch = uiCode.match(/function replaceProject\(project, audio, audioFile, assets\) \{[\s\S]*?\n\}/);
+
+assert.ok(undoMoveMatch, 'undoMove must exist in src/12_ui.js');
+assert.ok(refreshAudioNameMatch, 'refreshAudioName must exist in src/12_ui.js');
+assert.ok(restoreAudioAssetMatch, 'restoreAudioAsset must exist in src/12_ui.js');
+assert.ok(replaceProjectMatch, 'replaceProject must exist in src/12_ui.js');
+
+vm.runInContext(undoMoveMatch[0], context);
+vm.runInContext(refreshAudioNameMatch[0], context);
+vm.runInContext(restoreAudioAssetMatch[0], context);
+vm.runInContext(replaceProjectMatch[0], context);
 
 async function runTest() {
-  console.log('Testing Audio Lifecycle: Undo/Redo tracking and portable persistence...');
+  console.log('Testing Audio Lifecycle: real undoMove and restoreAudioAsset integration...');
 
-  // 1. Simulate video A import
-  const videoA = new File([Buffer.from('VIDEO_A_ORIGINAL_CONTAINER_STREAM')], 'videoA.mp4', { type: 'video/mp4' });
+  // Initialize Project with initial state
+  context.initUndo();
+  assert.equal(context.U.i, 0);
+
+  // 1. Simulate import of Video A as song
+  const videoA = new File([Buffer.from('VIDEO_A_ORIGINAL_CONTAINER_STREAM_BYTES')], 'videoA.mp4', { type: 'video/mp4' });
   const audioAssetA = { id: 'audio_1', name: videoA.name, type: videoA.type };
-  await global.J.storeMedia(audioAssetA.id, videoA);
+  await context.J.storeMedia(audioAssetA.id, videoA);
 
-  const projectA = {
-    version: 1,
+  const projectA = context.mergeProject({
     title: 'Song A',
     lyrics: '[00:00]Song A',
-    audioAsset: audioAssetA,
-    media: { items: [], cutOverrides: {} },
-    foreground: { items: [], cutOverrides: {} }
-  };
+    audioAsset: audioAssetA
+  });
 
-  // State after importing video A
-  const S = {
-    project: JSON.parse(JSON.stringify(projectA)),
-    audio: await global.J.analyzeAudio(videoA),
-    audioFile: videoA,
-    audioAssetId: audioAssetA.id
-  };
+  const audioA = await context.J.analyzeAudio(videoA);
+  context.replaceProject(projectA, audioA, videoA, new Map());
 
-  const undoList = [JSON.stringify(S.project)];
-  let undoIndex = 0;
+  assert.equal(context.S.project.title, 'Song A');
+  assert.equal(context.S.project.audioAsset.id, 'audio_1');
+  assert.equal(context.S.audioFile.name, 'videoA.mp4');
+  assert.equal(context.S.audioAssetId, 'audio_1');
 
-  // 2. Simulate video B import
-  const videoB = new File([Buffer.from('VIDEO_B_ORIGINAL_CONTAINER_STREAM')], 'videoB.mp4', { type: 'video/mp4' });
+  // 2. Next, import Video B as song (user replaces song)
+  const videoB = new File([Buffer.from('VIDEO_B_ORIGINAL_CONTAINER_STREAM_BYTES')], 'videoB.mp4', { type: 'video/mp4' });
   const audioAssetB = { id: 'audio_2', name: videoB.name, type: videoB.type };
-  await global.J.storeMedia(audioAssetB.id, videoB);
+  await context.J.storeMedia(audioAssetB.id, videoB);
 
-  const projectB = {
-    version: 1,
-    title: 'Song B',
-    lyrics: '[00:00]Song B',
-    audioAsset: audioAssetB,
-    media: { items: [], cutOverrides: {} },
-    foreground: { items: [], cutOverrides: {} }
-  };
+  const audioB = await context.J.analyzeAudio(videoB);
+  context.S.project.title = 'Song B';
+  context.S.project.audioAsset = audioAssetB;
+  context.S.audio = audioB;
+  context.S.audioFile = videoB;
+  context.refreshAudioName();
+  context.commit(); // record in undo stack
 
-  S.project = JSON.parse(JSON.stringify(projectB));
-  S.audio = await global.J.analyzeAudio(videoB);
-  S.audioFile = videoB;
-  S.audioAssetId = audioAssetB.id;
+  assert.equal(context.S.project.title, 'Song B');
+  assert.equal(context.S.project.audioAsset.id, 'audio_2');
+  assert.equal(context.S.audioFile.name, 'videoB.mp4');
+  assert.equal(context.S.audioAssetId, 'audio_2');
+  assert.equal(context.U.i, 1);
 
-  undoList.push(JSON.stringify(S.project));
-  undoIndex = 1;
+  // 3. User clicks Undo -> call real undoMove(-1)
+  console.log('Executing real undoMove(-1)...');
+  context.undoMove(-1);
+  assert.equal(context.U.i, 0);
+  assert.equal(context.S.project.title, 'Song A');
+  assert.equal(context.S.project.audioAsset.id, 'audio_1');
 
-  assert.equal(S.audioFile.name, 'videoB.mp4');
-  assert.equal(S.project.audioAsset.id, 'audio_2');
+  // Wait for async restoreAudioAsset to finish
+  await new Promise(resolve => setTimeout(resolve, 50));
 
-  // 3. Test Undo back to Song A (Simulating restoreAudioAsset on undoMove)
-  undoIndex = 0;
-  S.project = JSON.parse(undoList[undoIndex]);
+  // Verify that S.audioFile is restored to Video A original File!
+  assert.ok(context.S.audioFile, 'S.audioFile must be restored after Undo');
+  assert.equal(context.S.audioFile.name, 'videoA.mp4', 'Restored audioFile must be videoA.mp4');
+  assert.equal(context.S.audioAssetId, 'audio_1');
 
-  // When project.audioAsset.id !== S.audioAssetId, restoreAudioAsset is called
-  if (S.project.audioAsset?.id !== S.audioAssetId) {
-    const restoredFile = await global.J.loadMedia(S.project.audioAsset.id);
-    assert.ok(restoredFile, 'Restored file must exist in media storage');
-    S.audioFile = restoredFile;
-    S.audio = await global.J.analyzeAudio(restoredFile);
-    S.audioAssetId = S.project.audioAsset.id;
-  }
+  const restoredBytesA = Buffer.from(await context.S.audioFile.arrayBuffer()).toString('utf-8');
+  assert.equal(restoredBytesA, 'VIDEO_A_ORIGINAL_CONTAINER_STREAM_BYTES', 'Audio stream must match original Video A bytes');
 
-  // Verify that after Undo, the export target audioFile is exactly videoA!
-  assert.equal(S.audioFile.name, 'videoA.mp4', 'Undo must restore original audioFile A');
-  const bufferA = Buffer.from(await S.audioFile.arrayBuffer());
-  assert.equal(bufferA.toString(), 'VIDEO_A_ORIGINAL_CONTAINER_STREAM', 'Undo must restore original stream A bytes');
+  // 4. Test Portable Project pack & unpack with Video A as original audio
+  console.log('Testing packProject / unpackProject with video-derived audio...');
+  const packedBlob = await context.J.packProject(context.S.project, context.S.audioFile);
+  assert.ok(packedBlob instanceof Blob);
 
-  // 4. Test Persistence: Save project with video-derived audio and unpack it
-  const packedBlob = await global.J.packProject(S.project, S.audioFile);
-  assert.ok(packedBlob instanceof Blob, 'packProject must return Blob');
-
-  const unpacked = await global.J.unpackProject(packedBlob);
+  const unpacked = await context.J.unpackProject(packedBlob);
   assert.equal(unpacked.project.title, 'Song A');
   assert.equal(unpacked.files.length, 1);
   assert.equal(unpacked.files[0].kind, 'audio');
   assert.equal(unpacked.files[0].name, 'videoA.mp4');
   assert.equal(unpacked.files[0].type, 'video/mp4');
 
-  const unpackedBuffer = Buffer.from(await unpacked.files[0].file.arrayBuffer());
-  assert.equal(unpackedBuffer.toString(), 'VIDEO_A_ORIGINAL_CONTAINER_STREAM', 'Unpacked audio file must preserve original MP4 bytes');
+  const unpackedBytes = Buffer.from(await unpacked.files[0].file.arrayBuffer()).toString('utf-8');
+  assert.equal(unpackedBytes, 'VIDEO_A_ORIGINAL_CONTAINER_STREAM_BYTES', 'Portable unpack must restore exact original MP4 container');
 
-  console.log('Audio lifecycle test passed successfully.');
+  console.log('Real undoMove & audio lifecycle integration test passed successfully.');
 }
 
 runTest().catch(err => {
-  console.error(err);
+  console.error('Test failed:', err);
   process.exit(1);
 });

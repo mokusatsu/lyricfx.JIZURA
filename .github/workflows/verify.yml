@@ -55,6 +55,7 @@ jobs:
           node desktop/test/ipc_security.test.cjs
           node desktop/test/person_native_e2e.cjs
           node desktop/test/export_native_e2e.cjs
+          node dev/audio_lifecycle_test.cjs
           node dev/portable_project_test.cjs
       - name: Verify lyric parser and avoidance cache
         run: |

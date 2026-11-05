@@ -26,7 +26,7 @@ jobs:
           node-version: '20'
 
       - name: Set up FFmpeg
-        uses: FedericoCarboni/setup-ffmpeg@v3
+        run: choco install ffmpeg --no-progress
 
       - name: Install Python dependencies
         run: |
@@ -54,6 +54,7 @@ jobs:
         run: |
           python dev/desktop_build_test.py
           node dev/platform_web_test.cjs
+          node dev/audio_lifecycle_test.cjs
           python native/tests/test_matte_format.py
           node dev/native_matte_compat_test.cjs
           python native/tests/test_matting_slots.py

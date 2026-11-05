@@ -93,16 +93,22 @@ class TestMattingSlots(unittest.TestCase):
         from native.matting import decode_source_frame, resolve_system_ffmpeg
         ffmpeg = resolve_system_ffmpeg()
         test_video = os.path.join(self.tmp_dir, "seek_test.mp4")
+        # Generate video: 0.0s..1.0s is pure blue, 1.0s..2.0s is pure red
         subprocess.run([
-            ffmpeg, "-y", "-f", "lavfi",
-            "-i", "testsrc=duration=3:size=64x64:rate=30",
-            "-c:v", "libx264", "-pix_fmt", "yuv420p", test_video
+            ffmpeg, "-y",
+            "-f", "lavfi", "-i", "color=c=blue:s=64x64:d=1:r=30",
+            "-f", "lavfi", "-i", "color=c=red:s=64x64:d=1:r=30",
+            "-filter_complex", "[0:v][1:v]concat=n=2:v=1:a=0[v]",
+            "-map", "[v]", "-pix_fmt", "yuv420p", test_video
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
 
-        # Calling decode_source_frame with target_time=1.0 and fps=1 must not seek to 0.5s
-        # and must return raw rgb24 bytes of 64x64
+        # Calling decode_source_frame with target_time=1.0 and fps=1 must accurately extract the 1.0s frame (red),
+        # not the 0.5s frame (blue) from dt=0.5/fps subtraction!
         buf = decode_source_frame(test_video, target_time=1.0, width=64, height=64, fps=1)
         self.assertEqual(len(buf), 64 * 64 * 3)
+        r, g, b = buf[0], buf[1], buf[2]
+        self.assertGreater(r, 200, f"Expected red pixel at 1.0s, but got R={r}, G={g}, B={b}")
+        self.assertLess(b, 50, f"Expected red pixel at 1.0s, but got R={r}, G={g}, B={b}")
 
     def test_missing_input_file_raises_error(self):
         out_file = os.path.join(self.tmp_dir, "missing.jizmat")

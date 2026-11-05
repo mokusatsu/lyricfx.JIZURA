@@ -134,6 +134,11 @@ def run_export_worker():
         sys.exit(2)
 
     frame_bytes = width * height * 4
+    has_audio = bool(audio_file and os.path.exists(audio_file))
+
+    # When audio is present, encode video stream to an intermediate file first
+    # so that if production -c:a copy fails, it can fall back to AAC re-encode without re-rendering frames.
+    temp_video = (output_file + ".video.mp4") if has_audio else output_file
 
     cmd = [
         ffmpeg_bin, "-y", "-hide_banner", "-nostdin",
@@ -141,25 +146,12 @@ def run_export_worker():
         "-pixel_format", "rgba",
         "-video_size", f"{width}x{height}",
         "-framerate", str(fps),
-        "-i", "pipe:0"
+        "-i", "pipe:0",
+        "-frames:v", str(frame_count),
+        "-c:v", "libx264", "-pix_fmt", "yuv420p"
     ]
 
-    has_audio = audio_file and os.path.exists(audio_file)
-    if has_audio:
-        # Seek and duration on input audio to mux without re-encoding
-        audio_args = []
-        if audio_offset > 0:
-            audio_args.extend(["-ss", f"{audio_offset:.4f}"])
-        if audio_duration is not None and float(audio_duration) > 0:
-            audio_args.extend(["-t", f"{float(audio_duration):.4f}"])
-        cmd.extend(audio_args + ["-i", audio_file, "-map", "0:v:0", "-map", "1:a:0?"])
-    else:
-        cmd.extend(["-map", "0:v:0"])
-
-    cmd.extend(["-frames:v", str(frame_count)])
-
     # Video codec and quality
-    cmd.extend(["-c:v", "libx264", "-pix_fmt", "yuv420p"])
     if qp is not None:
         cmd.extend(["-qp", str(int(qp))])
     elif bitrate:
@@ -167,22 +159,20 @@ def run_export_worker():
     else:
         cmd.extend(["-crf", "18"])
 
-    # Pass audio: try copy mux first; re-encode only if muxing fails
-    audio_codec_name = None
-    if has_audio:
-        can_copy, detected_codec = probe_audio_format_and_copy(ffmpeg_bin, audio_file, audio_offset)
-        if can_copy:
-            cmd.extend(["-c:a", "copy"])
-            audio_codec_name = detected_codec
-        else:
-            cmd.extend(["-c:a", "aac", "-b:a", "320k"])
-            audio_codec_name = "AAC"
-
-    cmd.extend(["-movflags", "+faststart", "-f", "mp4", output_file])
+    cmd.extend(["-an"])
+    if not has_audio:
+        cmd.extend(["-movflags", "+faststart"])
+    cmd.extend(["-f", "mp4", temp_video])
 
     os.makedirs(os.path.dirname(os.path.abspath(output_file)), exist_ok=True)
 
-    # Launch FFmpeg with background stderr draining to prevent pipe deadlock
+    # Initial probe for expected audio codec
+    expected_audio_codec = None
+    if has_audio:
+        can_copy, detected_codec = probe_audio_format_and_copy(ffmpeg_bin, audio_file, audio_offset)
+        expected_audio_codec = detected_codec if can_copy else "AAC"
+
+    # Launch FFmpeg video encoding process with background stderr draining
     try:
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     except Exception as e:
@@ -192,7 +182,7 @@ def run_export_worker():
     get_recent_stderr = drain_stream_thread(proc.stderr)
 
     # Signal ready to Electron parent process
-    sys.stdout.write(json.dumps({"type": "ready", "audioCodec": audio_codec_name}) + "\n")
+    sys.stdout.write(json.dumps({"type": "ready", "audioCodec": expected_audio_codec}) + "\n")
     sys.stdout.flush()
 
     frames_read = 0
@@ -229,12 +219,75 @@ def run_export_worker():
     ret = proc.wait()
     if ret != 0:
         err_msg = get_recent_stderr().decode('utf-8', errors='replace')
-        sys.stderr.write(f"FFmpeg exited with code {ret}:\n{err_msg}\n")
+        sys.stderr.write(f"FFmpeg video encoding exited with code {ret}:\n{err_msg}\n")
         sys.exit(ret)
+
+    # Phase 2: Audio multiplexing with automatic fallback to AAC re-encoding
+    final_audio_codec = expected_audio_codec
+    if has_audio:
+        audio_args = []
+        if audio_offset > 0:
+            audio_args.extend(["-ss", f"{audio_offset:.4f}"])
+        if audio_duration is not None and float(audio_duration) > 0:
+            audio_args.extend(["-t", f"{float(audio_duration):.4f}"])
+
+        can_copy, detected_codec = probe_audio_format_and_copy(ffmpeg_bin, audio_file, audio_offset)
+        mux_success = False
+
+        if can_copy:
+            # Step 2A: Try lossless copy muxing
+            mux_cmd = [
+                ffmpeg_bin, "-y", "-hide_banner", "-nostdin",
+                "-i", temp_video
+            ] + audio_args + [
+                "-i", audio_file,
+                "-map", "0:v:0", "-map", "1:a:0?",
+                "-c:v", "copy",
+                "-c:a", "copy",
+                "-movflags", "+faststart",
+                "-f", "mp4", output_file
+            ]
+            res = subprocess.run(mux_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            if res.returncode == 0:
+                mux_success = True
+                final_audio_codec = detected_codec
+            else:
+                err_detail = res.stderr.decode('utf-8', errors='replace')
+                sys.stderr.write(f"Warning: -c:a copy mux failed in production, falling back to AAC re-encode:\n{err_detail}\n")
+
+        if not mux_success:
+            # Step 2B: Fallback to AAC re-encoding
+            fallback_cmd = [
+                ffmpeg_bin, "-y", "-hide_banner", "-nostdin",
+                "-i", temp_video
+            ] + audio_args + [
+                "-i", audio_file,
+                "-map", "0:v:0", "-map", "1:a:0?",
+                "-c:v", "copy",
+                "-c:a", "aac", "-b:a", "320k",
+                "-movflags", "+faststart",
+                "-f", "mp4", output_file
+            ]
+            res_fb = subprocess.run(fallback_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            if res_fb.returncode == 0:
+                mux_success = True
+                final_audio_codec = "AAC"
+            else:
+                err_fb = res_fb.stderr.decode('utf-8', errors='replace')
+                sys.stderr.write(f"Error: Fallback AAC audio mux failed:\n{err_fb}\n")
+                sys.exit(res_fb.returncode)
+
+        # Cleanup intermediate video file
+        try:
+            if os.path.exists(temp_video):
+                os.remove(temp_video)
+        except Exception:
+            pass
 
     sys.stdout.write(json.dumps({
         "type": "finished",
         "outputFile": output_file,
-        "frames": frames_read
+        "frames": frames_read,
+        "audioCodec": final_audio_codec
     }) + "\n")
     sys.stdout.flush()
