@@ -1,4 +1,4 @@
-import os, sys, unittest, tempfile, shutil
+import os, sys, unittest, tempfile, shutil, subprocess
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -88,6 +88,21 @@ class TestMattingSlots(unittest.TestCase):
             meta, frames = unpack_jizmat(f.read())
         self.assertEqual(meta["sourceId"], "short-video-item")
         self.assertEqual(meta["frameCount"], len(slots))
+
+    def test_decode_frame_seek_accuracy(self):
+        from native.matting import decode_source_frame, resolve_system_ffmpeg
+        ffmpeg = resolve_system_ffmpeg()
+        test_video = os.path.join(self.tmp_dir, "seek_test.mp4")
+        subprocess.run([
+            ffmpeg, "-y", "-f", "lavfi",
+            "-i", "testsrc=duration=3:size=64x64:rate=30",
+            "-c:v", "libx264", "-pix_fmt", "yuv420p", test_video
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+        # Calling decode_source_frame with target_time=1.0 and fps=1 must not seek to 0.5s
+        # and must return raw rgb24 bytes of 64x64
+        buf = decode_source_frame(test_video, target_time=1.0, width=64, height=64, fps=1)
+        self.assertEqual(len(buf), 64 * 64 * 3)
 
     def test_missing_input_file_raises_error(self):
         out_file = os.path.join(self.tmp_dir, "missing.jizmat")

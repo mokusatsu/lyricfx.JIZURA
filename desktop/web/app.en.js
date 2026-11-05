@@ -43294,10 +43294,6 @@ J.ShortFrameRenderer=ShortFrameRenderer;
 
     ensureNativeAsset: async (itemId, blob) => {
       if (blob && blobToToken.has(blob)) return blobToToken.get(blob);
-      const cached = itemToAssetInfo.get(itemId);
-      if (cached && blob && cached.size === blob.size && cached.lastModified === (blob.lastModified || 0)) {
-        return cached.token;
-      }
       const buffer = await blob.arrayBuffer();
       const desc = await desktop.ensureNativeAsset(itemId, buffer);
       if (blob) blobToToken.set(blob, desc.assetToken);
@@ -47949,7 +47945,7 @@ async function runExport(kind) {
     }
     await J.ensureFonts(S.project.lyrics + (S.project.title || '') + (S.project.artist || '') + HUD_CHARS + J.drawingText(S.plan), J.fontsOfPlan(S.plan));
     if (mp4) {
-      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, audioFile: S.project.includeAudio !== false ? (S.audioSourceFile || S.audioFile) : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream, short: kind==='short'?{...S.project.shortExport}:null, outputToken });
+      const r = await J.exportMP4({ plan: S.plan, project: activeExportProject(), audio: S.project.includeAudio !== false ? S.audio : null, audioFile: S.project.includeAudio !== false ? S.audioFile : null, quality: S.project.quality || 'high', onProgress, signal: ac.signal, fileStream, short: kind==='short'?{...S.project.shortExport}:null, outputToken });
       fileStream=null;
       txt.textContent = `Done: ${(r.size / 1048576).toFixed(1)}MB · ${r.codec}${r.audio ? ' + ' + r.audio.toUpperCase() : ''} · ${((performance.now() - t0) / 1000).toFixed(0)}s`;
       const res = r.saved?'saved':await J.saveFile(filename, r.blob);
@@ -49165,8 +49161,7 @@ async function loadAudioFile(f,options={matchDuration:true,background:false}) {
     if(audio){
       report(J.mediaLabel('音声を保存する準備中','Preparing audio for saving'));
       await new Promise(resolve=>setTimeout(resolve,0));
-      audioFile=await J.snapshotMediaFile(video?J.audioWaveFile(audio.buffer,f.name):sourceFile);
-      if(video)S.audioSourceFile=sourceFile;else delete S.audioSourceFile;
+      audioFile=await J.snapshotMediaFile(sourceFile);
     }
     let item=null;
     if(video&&options.background){
@@ -49227,7 +49222,7 @@ function replaceProject(project, audio, audioFile, assets) {
   J.clearNativeAssetCache?.();
   for (const [id,asset] of assets) { J.mediaAssets.set(id,asset); asset.element.addEventListener('seeked',()=>{S.need=true}); }
   for (const font of S.project.userFonts || []) delete J.FONTS[font.key];
-  S.project = mergeProject(project); S.audio = audio; S.audioFile = audioFile; delete S.audioSourceFile;
+  S.project = mergeProject(project); S.audio = audio; S.audioFile = audioFile;
   S.t = 0; S.sourceTab = 'lyrics'; S.timelineZoom = 1; S.loop = true;
   $('btnLoop').setAttribute('aria-pressed','true'); $('mediaFiles').value = '';
   J.mediaTransitionFrame = null; J.foregroundTransitionFrame = null;

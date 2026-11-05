@@ -57,10 +57,6 @@
 
     ensureNativeAsset: async (itemId, blob) => {
       if (blob && blobToToken.has(blob)) return blobToToken.get(blob);
-      const cached = itemToAssetInfo.get(itemId);
-      if (cached && blob && cached.size === blob.size && cached.lastModified === (blob.lastModified || 0)) {
-        return cached.token;
-      }
       const buffer = await blob.arrayBuffer();
       const desc = await desktop.ensureNativeAsset(itemId, buffer);
       if (blob) blobToToken.set(blob, desc.assetToken);

@@ -295,7 +295,7 @@ class NativeJobs {
     let audioFile = null;
 
     if (settings.audioBuffer && settings.audioBuffer.byteLength > 0) {
-      const ALLOWED_AUDIO_EXTS = new Set(['.wav', '.mp3', '.m4a', '.aac', '.ogg', '.flac', '.mp4']);
+      const ALLOWED_AUDIO_EXTS = new Set(['.wav', '.mp3', '.m4a', '.aac', '.ogg', '.flac', '.mp4', '.mov', '.webm', '.mkv']);
       const rawExt = String(settings.audioExt || '').toLowerCase();
       const ext = ALLOWED_AUDIO_EXTS.has(rawExt) ? rawExt : '.wav';
       audioFile = path.join(jobDir, `audio${ext}`);

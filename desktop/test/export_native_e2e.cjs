@@ -95,6 +95,42 @@ const { NativeJobs } = require('../native-jobs.cjs');
     const cancelRes = jobs.cancelJob(cancelStart.jobId);
     assert.equal(cancelRes.ok, true);
 
+    // 5. Test native export with video-container audio (.mp4) pass-through
+    const { execFileSync } = require('node:child_process');
+    const dummyVideoPath = path.join(tempDir, 'source_audio.mp4');
+    execFileSync(jobs._resolvePython(), ['-c', `
+import subprocess, sys
+ffmpeg = '${jobs.pythonPath}'.replace('python.exe', 'ffmpeg.exe') if 'python.exe' in '${jobs.pythonPath}' else 'ffmpeg'
+subprocess.run(['ffmpeg', '-y', '-f', 'lavfi', '-i', 'sine=frequency=440:duration=1', '-c:a', 'aac', '-b:a', '128k', sys.argv[1]], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+`, dummyVideoPath]);
+
+    if (fs.existsSync(dummyVideoPath)) {
+      console.log('Testing native export with video-derived MP4 audio pass-through...');
+      const videoOutPath = path.join(tempDir, 'test_export_from_video.mp4');
+      const videoOutputToken = jobs.registerOutput(videoOutPath);
+      const videoAudioBuf = fs.readFileSync(dummyVideoPath);
+      const vJob = await jobs.startExportJob(fakeWebContents, {
+        outputToken: videoOutputToken,
+        width,
+        height,
+        fps,
+        frameCount,
+        qualityMode: 'high',
+        bitrate: 500000,
+        audioBuffer: videoAudioBuf.buffer.slice(videoAudioBuf.byteOffset, videoAudioBuf.byteOffset + videoAudioBuf.byteLength),
+        audioExt: '.mp4'
+      });
+      assert.equal(vJob.status, 'ready');
+      for (let i = 0; i < frameCount; i++) {
+        await jobs.writeFrame(vJob.jobId, i, frameData.buffer.slice(frameData.byteOffset, frameData.byteOffset + frameData.byteLength));
+      }
+      const vFinish = await jobs.finishExport(vJob.jobId);
+      assert.equal(vFinish.saved, true);
+      assert.ok(vFinish.audioCodec, 'Audio codec must be detected and reported');
+      assert.ok(fs.existsSync(videoOutPath));
+      console.log('Video MP4 audio pass-through export succeeded. Codec:', vFinish.audioCodec);
+    }
+
     jobs.cleanupAll();
     console.log('Native export E2E test passed successfully.');
   } finally {

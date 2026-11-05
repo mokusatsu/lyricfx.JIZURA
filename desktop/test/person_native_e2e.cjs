@@ -123,14 +123,20 @@ const { NativeJobs } = require('../native-jobs.cjs');
     const token1 = global.J.getNativeAssetToken(pickedFiles[0]);
     assert.ok(token1, 'Token must be retrieved from blobToToken');
 
-    // Test asset replacement for same itemId
+    // Test asset replacement for same itemId with SAME size and SAME lastModified
     const file1 = new global.File([Buffer.from('content1')], 'f1.png', { type: 'image/png' });
     const tokenA = await global.J.platform.ensureNativeAsset('item-X', file1);
     assert.ok(tokenA);
 
-    const file2 = new global.File([Buffer.from('content2_different')], 'f2.png', { type: 'image/png' });
-    const tokenB = await global.J.platform.ensureNativeAsset('item-X', file2);
-    assert.notEqual(tokenA, tokenB, 'Different file on same itemId must produce new token');
+    // Same instance should return same token
+    const tokenA_cached = await global.J.platform.ensureNativeAsset('item-X', file1);
+    assert.equal(tokenA, tokenA_cached, 'Same file instance must return cached token');
+
+    // Different file instance with EXACTLY THE SAME size (8 bytes) and lastModified
+    const file2_same_size = new global.File([Buffer.from('content2')], 'f2.png', { type: 'image/png' });
+    assert.equal(file1.size, file2_same_size.size, 'Test setup precondition: files must have identical size');
+    const tokenB = await global.J.platform.ensureNativeAsset('item-X', file2_same_size);
+    assert.notEqual(tokenA, tokenB, 'Different file object with same size on same itemId must produce new token');
 
     // Test clearNativeAssetCache
     global.J.clearNativeAssetCache();

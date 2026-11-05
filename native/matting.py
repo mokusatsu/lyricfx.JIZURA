@@ -115,9 +115,8 @@ def decode_source_frame(source_path, target_time, width, height, fps=24, fallbac
 
     ffmpeg = resolve_system_ffmpeg()
 
-    # Seek slightly before target_time so that the frame covering target_time is selected
-    dt = 0.5 / max(1.0, float(fps))
-    seek_time = max(0.0, target_time - dt)
+    # Target frame seek time based on presentation timestamp
+    seek_time = max(0.0, float(target_time))
 
     cmd = [
         ffmpeg, "-y", "-hide_banner", "-nostdin",
