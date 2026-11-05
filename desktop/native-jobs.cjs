@@ -328,6 +328,7 @@ class NativeJobs {
       config: exportConfig,
       finalPath: outInfo.targetPath,
       tempPartFile,
+      hasAudio: Boolean(audioFile),
       status: 'preparing',
       frameSize: settings.width * settings.height * 4,
       framesWritten: 0,
