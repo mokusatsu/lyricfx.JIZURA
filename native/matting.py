@@ -76,10 +76,27 @@ def resolve_system_ffmpeg():
         return found
     raise RuntimeError("FFmpeg not found on system PATH. Please install FFmpeg or set JIZURA_FFMPEG environment variable.")
 
-def decode_source_frame(source_path, target_time, width, height):
+def probe_backends():
+    """
+    Probes available hardware execution providers without requiring an ONNX model file.
+    """
+    backends = ["cpu"]
+    try:
+        import onnxruntime as ort
+        available = ort.get_available_providers()
+        if "DmlExecutionProvider" in available:
+            backends.insert(0, "directml")
+        elif "CUDAExecutionProvider" in available:
+            backends.insert(0, "cuda")
+    except Exception:
+        pass
+    return backends
+
+def decode_source_frame(source_path, target_time, width, height, fps=24, fallback_frame=None):
     """
     Decodes a single frame at target_time (seconds) from video or image file as RGB bytes.
     Uses Pillow for images if possible, otherwise system FFmpeg.
+    Ensures that the frame covering target_time is returned and falls back gracefully on short videos.
     """
     if not os.path.exists(source_path):
         raise FileNotFoundError(f"Source media file not found: {source_path}")
@@ -97,9 +114,14 @@ def decode_source_frame(source_path, target_time, width, height):
             pass
 
     ffmpeg = resolve_system_ffmpeg()
+
+    # Seek slightly before target_time so that the frame covering target_time is selected
+    dt = 0.5 / max(1.0, float(fps))
+    seek_time = max(0.0, target_time - dt)
+
     cmd = [
         ffmpeg, "-y", "-hide_banner", "-nostdin",
-        "-ss", f"{target_time:.4f}",
+        "-ss", f"{seek_time:.4f}",
         "-i", source_path,
         "-vframes", "1",
         "-f", "rawvideo",
@@ -108,14 +130,51 @@ def decode_source_frame(source_path, target_time, width, height):
         "pipe:1"
     ]
     proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15)
-    if proc.returncode != 0 or len(proc.stdout) != width * height * 3:
-        err = proc.stderr.decode('utf-8', errors='replace')
-        raise RuntimeError(f"Failed to decode frame at {target_time}s from {source_path}:\n{err}")
+    if proc.returncode == 0 and len(proc.stdout) == width * height * 3:
+        return proc.stdout
 
-    return proc.stdout
+    # If seeking at target_time returned 0 frames (e.g. at or near end of short video)
+    if fallback_frame is not None and len(fallback_frame) == width * height * 3:
+        return fallback_frame
 
-def get_ort_session(model_path, prefer_gpu=True):
+    # Try fallback to video tail frame or start frame
+    tail_cmd = [
+        ffmpeg, "-y", "-hide_banner", "-nostdin",
+        "-sseof", "-0.5",
+        "-i", source_path,
+        "-vframes", "1",
+        "-f", "rawvideo",
+        "-pix_fmt", "rgb24",
+        "-s", f"{width}x{height}",
+        "pipe:1"
+    ]
+    proc_tail = subprocess.run(tail_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15)
+    if proc_tail.returncode == 0 and len(proc_tail.stdout) == width * height * 3:
+        return proc_tail.stdout
+
+    # Last resort: try first frame
+    first_cmd = [
+        ffmpeg, "-y", "-hide_banner", "-nostdin",
+        "-ss", "0",
+        "-i", source_path,
+        "-vframes", "1",
+        "-f", "rawvideo",
+        "-pix_fmt", "rgb24",
+        "-s", f"{width}x{height}",
+        "pipe:1"
+    ]
+    proc_first = subprocess.run(first_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15)
+    if proc_first.returncode == 0 and len(proc_first.stdout) == width * height * 3:
+        return proc_first.stdout
+
+    err = proc.stderr.decode('utf-8', errors='replace')
+    raise RuntimeError(f"Failed to decode frame at {target_time}s from {source_path}:\n{err}")
+
+def get_ort_session(model_path=None, prefer_gpu=True):
     import onnxruntime as ort
+    if model_path is None:
+        model_path = ensure_model_file()
+
     available = ort.get_available_providers()
     providers = []
     backend = "CPU"
@@ -198,6 +257,7 @@ def run_matting(config, progress_cb=None):
 
     r1, r2, r3, r4 = None, None, None, None
     last_slot = -999
+    last_valid_frame = None
 
     for idx, slot in enumerate(slots):
         t0 = time.perf_counter()
@@ -208,8 +268,9 @@ def run_matting(config, progress_cb=None):
             r1, r2, r3, r4 = None, None, None, None
         last_slot = slot
 
-        # Decode actual video/image frame
-        rgb_bytes = decode_source_frame(source_video, target_time, width, height)
+        # Decode actual video/image frame with fallback for short videos
+        rgb_bytes = decode_source_frame(source_video, target_time, width, height, fps=fps, fallback_frame=last_valid_frame)
+        last_valid_frame = rgb_bytes
 
         # Prepare float32 tensor [1, 3, H, W] normalized to [0, 1]
         rgb_arr = np.frombuffer(rgb_bytes, dtype=np.uint8).reshape((height, width, 3))

@@ -8,7 +8,7 @@
   const blobToToken = new WeakMap();
   const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
 
-  J.getNativeAssetToken = (file) => fileToToken.get(file) || blobToToken.get(file) || null;
+  J.getNativeAssetToken = (file) => (file && blobToToken.get(file)) || null;
   J.getItemAssetToken = (itemId) => itemToAssetInfo.get(itemId)?.token || null;
   J.clearNativeAssetCache = () => {
     itemToAssetInfo.clear();
@@ -46,7 +46,7 @@
         try {
           const buffer = await desktop.fetchAssetData(desc.assetToken);
           const file = new File([buffer], desc.name, { type: desc.type });
-          fileToToken.set(file, desc.assetToken);
+          blobToToken.set(file, desc.assetToken);
           files.push(file);
         } catch (err) {
           console.error('Failed to materialize asset for picker:', desc.name, err);
@@ -76,7 +76,7 @@
       const asset = J.mediaAssets.get(cut.itemId);
       if (!asset) throw new Error(J.mediaLabel('画像・動画素材を指定してください', 'Select an image or video asset'));
 
-      let assetToken = (asset.file && fileToToken.get(asset.file)) || (asset.file && blobToToken.get(asset.file)) || itemToAssetInfo.get(cut.itemId)?.token;
+      let assetToken = (asset.file && blobToToken.get(asset.file)) || null;
       if (!assetToken && asset.file) {
         onProgress({ phase: 'upload', loaded: 0, total: 1 });
         assetToken = await J.platform.ensureNativeAsset(cut.itemId, asset.file);

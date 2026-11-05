@@ -78,6 +78,7 @@ const { NativeJobs } = require('../native-jobs.cjs');
     const finishRes = await jobs.finishExport(jobId);
     assert.equal(finishRes.saved, true);
     assert.ok(finishRes.size > 0);
+    assert.ok(finishRes.audioCodec, 'audioCodec must be reported');
     assert.ok(fs.existsSync(outPath), 'Final MP4 output must exist');
     assert.ok(fs.statSync(outPath).size > 1000, 'MP4 file should be non-trivial');
 

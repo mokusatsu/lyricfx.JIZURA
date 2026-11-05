@@ -78,6 +78,64 @@ const { NativeJobs } = require('../native-jobs.cjs');
       await cancelPromise;
     }, /Cancelled/);
 
+    // 3. Test renderer adapter cache and fileToToken bug fix
+    console.log('Testing native-backend adapter caching and replacement...');
+    global.window = {
+      jizuraDesktop: {
+        capabilities: async () => ({ nativeMatting: true }),
+        pickMedia: async () => [{ assetToken: assetDesc.assetToken, name: 'sample.png', type: 'image/png' }],
+        fetchAssetData: async () => redPng,
+        ensureNativeAsset: async (itemId, buffer) => {
+          return jobs.ensureNativeAsset(itemId, buffer);
+        },
+        startMatteJob: async (req) => jobs.startMatteJob(fakeWebContents, req),
+        onMatteProgress: () => () => {},
+        cancelJob: (id) => jobs.cancelJob(id)
+      }
+    };
+    global.File = class MockFile {
+      constructor(parts, name, opts) {
+        this.parts = parts;
+        this.name = name;
+        this.type = opts?.type || '';
+        this.size = parts.reduce((acc, p) => acc + (p.byteLength || p.length || 0), 0);
+      }
+      async arrayBuffer() {
+        return this.parts[0];
+      }
+    };
+    global.Blob = global.File;
+    global.crypto = { randomUUID: () => 'uuid-' + Math.random().toString(36).slice(2) };
+    global.J = {
+      mediaLabel: (ja) => ja,
+      clamp: (v, min, max) => Math.max(min, Math.min(max, v)),
+      mediaAssets: new Map(),
+      personMaskTargets: () => [{ time: 0, index: 0 }]
+    };
+
+    // Load native-backend.js
+    const backendCode = fs.readFileSync(path.join(__dirname, '..', 'renderer', 'native-backend.js'), 'utf-8');
+    new Function(backendCode)();
+
+    // Verify pickMedia works and fileToToken is defined (does not throw)
+    const pickedFiles = await global.J.platform.pickMedia();
+    assert.equal(pickedFiles.length, 1);
+    const token1 = global.J.getNativeAssetToken(pickedFiles[0]);
+    assert.ok(token1, 'Token must be retrieved from blobToToken');
+
+    // Test asset replacement for same itemId
+    const file1 = new global.File([Buffer.from('content1')], 'f1.png', { type: 'image/png' });
+    const tokenA = await global.J.platform.ensureNativeAsset('item-X', file1);
+    assert.ok(tokenA);
+
+    const file2 = new global.File([Buffer.from('content2_different')], 'f2.png', { type: 'image/png' });
+    const tokenB = await global.J.platform.ensureNativeAsset('item-X', file2);
+    assert.notEqual(tokenA, tokenB, 'Different file on same itemId must produce new token');
+
+    // Test clearNativeAssetCache
+    global.J.clearNativeAssetCache();
+    assert.equal(global.J.getItemAssetToken('item-X'), null);
+
     jobs.cleanupAll();
     console.log('Person native matting E2E test passed successfully.');
   } finally {

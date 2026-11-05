@@ -53,6 +53,42 @@ class TestMattingSlots(unittest.TestCase):
         unpacked_indices = [idx for idx, _ in frames]
         self.assertEqual(unpacked_indices, slots)
 
+    def test_short_video_fallback_succeeds(self):
+        # Create a short 2s, 2fps video (4 frames total at 0.0, 0.5, 1.0, 1.5s)
+        short_video = os.path.join(self.tmp_dir, "short_2fps.mp4")
+        import subprocess
+        from native.matting import resolve_system_ffmpeg
+        ffmpeg = resolve_system_ffmpeg()
+        subprocess.run([
+            ffmpeg, "-y", "-f", "lavfi",
+            "-i", "testsrc=duration=2:size=64x64:rate=2",
+            "-c:v", "libx264", "-pix_fmt", "yuv420p", short_video
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+        out_file = os.path.join(self.tmp_dir, "short_out.jizmat")
+        # Request slots including 1.75s (slot 7 at 4fps) and beyond video end
+        slots = [0, 1, 2, 7, 8, 9]
+
+        config = {
+            "sourceVideo": short_video,
+            "outputFile": out_file,
+            "profile": "rvm-mobilenetv3-fp32-p512-r05-v1",
+            "fps": 4, # 0.25s interval: slot 7 is 1.75s, slot 8 is 2.0s
+            "duration": 2.0,
+            "slots": slots,
+            "sourceId": "short-video-item"
+        }
+
+        # Must succeed gracefully without crashing
+        res = run_matting(config)
+        self.assertEqual(res["status"], "completed")
+        self.assertTrue(os.path.exists(out_file))
+
+        with open(out_file, "rb") as f:
+            meta, frames = unpack_jizmat(f.read())
+        self.assertEqual(meta["sourceId"], "short-video-item")
+        self.assertEqual(meta["frameCount"], len(slots))
+
     def test_missing_input_file_raises_error(self):
         out_file = os.path.join(self.tmp_dir, "missing.jizmat")
         config = {

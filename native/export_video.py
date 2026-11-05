@@ -69,6 +69,38 @@ def drain_stream_thread(stream, max_keep=65536):
     t.start()
     return lambda: bytes(recent_bytes)
 
+def probe_audio_format_and_copy(ffmpeg_bin, audio_path, offset=0):
+    """
+    Checks if input audio can be copied into MP4 container without re-encoding.
+    Returns (can_copy: bool, detected_codec: str).
+    """
+    detected_codec = "AAC"
+    ext = os.path.splitext(audio_path)[1].lower()
+    if ext == ".mp3": detected_codec = "MP3"
+    elif ext in [".m4a", ".aac"]: detected_codec = "AAC"
+    elif ext == ".wav": detected_codec = "PCM"
+    elif ext == ".flac": detected_codec = "FLAC"
+
+    null_sink = "NUL" if sys.platform == "win32" else "/dev/null"
+    test_cmd = [
+        ffmpeg_bin, "-y", "-hide_banner", "-nostdin",
+        "-ss", f"{offset:.4f}",
+        "-t", "0.1",
+        "-i", audio_path,
+        "-vn", "-map", "0:a:0?",
+        "-c:a", "copy",
+        "-f", "mp4",
+        null_sink
+    ]
+    try:
+        res = subprocess.run(test_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, timeout=5)
+        if res.returncode == 0:
+            return True, detected_codec
+    except Exception:
+        pass
+
+    return False, "AAC"
+
 def run_export_worker():
     """
     Worker running via stdin/stdout:
@@ -120,7 +152,7 @@ def run_export_worker():
             audio_args.extend(["-ss", f"{audio_offset:.4f}"])
         if audio_duration is not None and float(audio_duration) > 0:
             audio_args.extend(["-t", f"{float(audio_duration):.4f}"])
-        cmd.extend(audio_args + ["-i", audio_file, "-map", "0:v:0", "-map", "1:a:0"])
+        cmd.extend(audio_args + ["-i", audio_file, "-map", "0:v:0", "-map", "1:a:0?"])
     else:
         cmd.extend(["-map", "0:v:0"])
 
@@ -135,14 +167,16 @@ def run_export_worker():
     else:
         cmd.extend(["-crf", "18"])
 
-    # Pass audio without re-encoding (-c:a copy if container compatible, fallback to aac)
+    # Pass audio: try copy mux first; re-encode only if muxing fails
+    audio_codec_name = None
     if has_audio:
-        ext = os.path.splitext(audio_file)[1].lower()
-        if ext in [".aac", ".m4a", ".mp3", ".mp4"]:
+        can_copy, detected_codec = probe_audio_format_and_copy(ffmpeg_bin, audio_file, audio_offset)
+        if can_copy:
             cmd.extend(["-c:a", "copy"])
+            audio_codec_name = detected_codec
         else:
-            # WAV or other audio container: encode with aac (multi-channel preserved)
             cmd.extend(["-c:a", "aac", "-b:a", "320k"])
+            audio_codec_name = "AAC"
 
     cmd.extend(["-movflags", "+faststart", "-f", "mp4", output_file])
 
@@ -158,7 +192,7 @@ def run_export_worker():
     get_recent_stderr = drain_stream_thread(proc.stderr)
 
     # Signal ready to Electron parent process
-    sys.stdout.write(json.dumps({"type": "ready"}) + "\n")
+    sys.stdout.write(json.dumps({"type": "ready", "audioCodec": audio_codec_name}) + "\n")
     sys.stdout.flush()
 
     frames_read = 0

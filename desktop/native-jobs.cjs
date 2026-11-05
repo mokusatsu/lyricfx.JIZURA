@@ -16,6 +16,7 @@ class NativeJobs {
     this.outputs = new Map(); // token -> { targetPath }
     this.mattes = new Map(); // maskToken -> { filePath, meta }
     this.jobs = new Map(); // jobId -> jobState
+    this.clientToInternalJob = new Map(); // clientJobId -> internalJobId
 
     this.pythonPath = this._resolvePython();
   }
@@ -181,15 +182,19 @@ class NativeJobs {
       throw new Error(`Invalid asset token: ${request.assetToken}`);
     }
 
-    const jobId = request.jobId || crypto.randomUUID();
-    const jobDir = path.join(this.tempDir, jobId);
+    const internalJobId = crypto.randomUUID();
+    const clientJobId = request.jobId ? String(request.jobId) : internalJobId;
+    this.clientToInternalJob.set(clientJobId, internalJobId);
+
+    const jobDir = path.join(this.tempDir, internalJobId);
     fs.mkdirSync(jobDir, { recursive: true });
 
     const outputFile = path.join(jobDir, 'matte.jizmat');
     const configFile = path.join(jobDir, 'config.json');
 
     const config = {
-      jobId,
+      jobId: internalJobId,
+      clientJobId,
       sourceId: request.sourceId,
       sourceVideo: asset.filePath,
       outputFile,
@@ -203,13 +208,14 @@ class NativeJobs {
     const child = this.spawnWorker(['matte', configFile]);
 
     const job = {
-      id: jobId,
+      id: internalJobId,
+      clientJobId,
       type: 'matte',
       child,
       dir: jobDir,
       status: 'running'
     };
-    this.jobs.set(jobId, job);
+    this.jobs.set(internalJobId, job);
 
     let stdoutBuffer = '';
     child.stdout.on('data', (chunk) => {
@@ -221,7 +227,7 @@ class NativeJobs {
         try {
           const msg = JSON.parse(line);
           if (webContents && !webContents.isDestroyed()) {
-            webContents.send('desktop:matteProgress', { jobId, ...msg });
+            webContents.send('desktop:matteProgress', { jobId: clientJobId, ...msg });
           }
         } catch (e) {}
       }
@@ -229,7 +235,7 @@ class NativeJobs {
 
     child.stderr.on('data', (chunk) => {
       // Worker logs
-      process.stderr.write(`[Worker ${jobId}] ${chunk}`);
+      process.stderr.write(`[Worker ${clientJobId}] ${chunk}`);
     });
 
     return new Promise((resolve, reject) => {
@@ -255,7 +261,7 @@ class NativeJobs {
         const maskToken = crypto.randomUUID();
         this.mattes.set(maskToken, { filePath: outputFile });
         resolve({
-          jobId,
+          jobId: clientJobId,
           maskToken,
           meta: {
             model: config.profile,
@@ -289,7 +295,9 @@ class NativeJobs {
     let audioFile = null;
 
     if (settings.audioBuffer && settings.audioBuffer.byteLength > 0) {
-      const ext = settings.audioExt || '.wav';
+      const ALLOWED_AUDIO_EXTS = new Set(['.wav', '.mp3', '.m4a', '.aac', '.ogg', '.flac', '.mp4']);
+      const rawExt = String(settings.audioExt || '').toLowerCase();
+      const ext = ALLOWED_AUDIO_EXTS.has(rawExt) ? rawExt : '.wav';
       audioFile = path.join(jobDir, `audio${ext}`);
       fs.writeFileSync(audioFile, Buffer.from(settings.audioBuffer));
     }
@@ -329,17 +337,28 @@ class NativeJobs {
       readyReject: null
     };
 
+    job.isReadyResolved = false;
     job.readyPromise = new Promise((resolve, reject) => {
-      job.readyResolve = resolve;
-      job.readyReject = reject;
+      job.readyResolve = (val) => {
+        if (!job.isReadyResolved) {
+          job.isReadyResolved = true;
+          resolve(val);
+        }
+      };
+      job.readyReject = (err) => {
+        if (!job.isReadyResolved) {
+          job.isReadyResolved = true;
+          reject(err);
+        }
+      };
     });
 
     job.exitPromise = new Promise((resolve) => {
       child.on('close', (code) => {
         job.exitCode = code;
-        if (job.status === 'preparing') {
+        if (!job.isReadyResolved) {
           job.status = 'failed';
-          job.readyReject && job.readyReject(new Error(`Export worker exited before ready with code ${code}`));
+          job.readyReject(new Error(`Export worker exited before ready with code ${code}`));
         }
         resolve(code);
       });
@@ -347,6 +366,9 @@ class NativeJobs {
 
     child.stdin.on('error', (err) => {
       job.status = 'failed';
+      if (!job.isReadyResolved) {
+        job.readyReject(new Error(`Export worker stdin error: ${err.message}`));
+      }
     });
 
     this.jobs.set(jobId, job);
@@ -362,6 +384,7 @@ class NativeJobs {
           const msg = JSON.parse(line);
           if (msg.type === 'ready') {
             job.status = 'running';
+            job.audioCodec = msg.audioCodec;
             job.readyResolve && job.readyResolve(msg);
           }
         } catch (e) {}
@@ -459,12 +482,14 @@ class NativeJobs {
       throw new Error('Export finished but output part file is missing');
     }
 
+    let stagingFile = null;
     try {
       // Safe cross-device copy using temporary file in target directory to protect existing file
       const targetDir = path.dirname(job.finalPath);
-      const stagingFile = path.join(targetDir, `.tmp_${job.id}_${Date.now()}.mp4`);
+      stagingFile = path.join(targetDir, `.tmp_${job.id}_${Date.now()}.mp4`);
       try {
         fs.renameSync(job.tempPartFile, job.finalPath);
+        stagingFile = null;
       } catch (renameErr) {
         // Cross-device move: copy to staging file in destination dir first
         fs.copyFileSync(job.tempPartFile, stagingFile);
@@ -472,10 +497,12 @@ class NativeJobs {
         const stageStat = fs.statSync(stagingFile);
         if (stageStat.size !== srcStat.size) {
           try { fs.unlinkSync(stagingFile); } catch (e) {}
+          stagingFile = null;
           throw new Error('Staging file size mismatch during copy');
         }
         // Atomic rename within target directory
         fs.renameSync(stagingFile, job.finalPath);
+        stagingFile = null;
         try { fs.unlinkSync(job.tempPartFile); } catch (e) {}
       }
 
@@ -485,15 +512,20 @@ class NativeJobs {
       return {
         saved: true,
         size: stat.size,
-        path: job.finalPath
+        path: job.finalPath,
+        audioCodec: job.audioCodec || 'AAC'
       };
     } finally {
+      if (stagingFile && fs.existsSync(stagingFile)) {
+        try { fs.unlinkSync(stagingFile); } catch (e) {}
+      }
       this._cleanupJobDir(job.dir);
     }
   }
 
   cancelJob(jobId) {
-    const job = this.jobs.get(jobId);
+    const actualId = this.clientToInternalJob.get(jobId) || jobId;
+    const job = this.jobs.get(actualId);
     if (!job) return { ok: false };
 
     job.status = 'cancelled';
@@ -515,15 +547,21 @@ class NativeJobs {
       }
     }
     this._cleanupJobDir(job.dir);
-    this.jobs.delete(jobId);
+    this.jobs.delete(actualId);
+    this.clientToInternalJob.delete(jobId);
     return { ok: true, jobId };
   }
 
   _cleanupJobDir(dir) {
     if (!dir || typeof dir !== 'string') return;
     try {
-      if (fs.existsSync(dir)) {
-        fs.rmSync(dir, { recursive: true, force: true });
+      const resolvedDir = path.resolve(dir);
+      const resolvedTemp = path.resolve(this.tempDir);
+      // Strictly prevent deleting anything outside this.tempDir
+      if (resolvedDir !== resolvedTemp && resolvedDir.startsWith(resolvedTemp + path.sep)) {
+        if (fs.existsSync(resolvedDir)) {
+          fs.rmSync(resolvedDir, { recursive: true, force: true });
+        }
       }
     } catch (e) {}
   }

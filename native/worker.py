@@ -8,24 +8,21 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 try:
-    from matting import run_matting, get_ort_session
+    from matting import run_matting, get_ort_session, probe_backends
     from export_video import run_export_worker, probe_encoders
 except ImportError:
-    from native.matting import run_matting, get_ort_session
+    from native.matting import run_matting, get_ort_session, probe_backends
     from native.export_video import run_export_worker, probe_encoders
 
 def do_probe():
-    _, backend = get_ort_session()
+    backends = probe_backends()
     encoders = probe_encoders()
-    backends = ["cpu"]
-    if backend.lower() != "cpu" and backend.lower() != "none" and backend.lower() != "mock-cpu":
-        backends.insert(0, backend.lower())
 
     result = {
         "version": 1,
         "name": "desktop",
         "nativeMatting": True,
-        "nativeExport": True,
+        "nativeExport": len(encoders) > 0,
         "backends": backends,
         "encoders": encoders
     }
