@@ -43573,8 +43573,7 @@ J.ShortFrameRenderer=ShortFrameRenderer;
   // Synchronize unsaved dirty state with main process
   let isSavingAndClosing = false;
 
-  window.jizuraDesktop = window.jizuraDesktop || {};
-  window.jizuraDesktop.notifyProjectSaved = () => {
+  const notifyProjectSaved = () => {
     if (typeof desktop.setDirtyState === 'function') {
       desktop.setDirtyState(false);
     }
@@ -43586,9 +43585,18 @@ J.ShortFrameRenderer=ShortFrameRenderer;
     }
   };
 
-  window.jizuraDesktop.cancelSaveAndClose = () => {
+  const cancelSaveAndClose = () => {
     isSavingAndClosing = false;
   };
+
+  J.platform.saveProjectFile = async (defaultName, arrayBuffer) => {
+    if (typeof desktop.saveProjectFile === 'function') {
+      return await desktop.saveProjectFile(defaultName, arrayBuffer);
+    }
+    return null;
+  };
+  J.platform.notifyProjectSaved = notifyProjectSaved;
+  J.platform.cancelSaveAndClose = cancelSaveAndClose;
 
   if (typeof desktop.onRequestSaveAndClose === 'function') {
     desktop.onRequestSaveAndClose(async () => {
@@ -49076,8 +49084,8 @@ function bind() {
     if (S.projectBusy) return;
     const request = await requestFilename('project');
     if (!request) {
-      if (window.jizuraDesktop && typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
-        window.jizuraDesktop.cancelSaveAndClose();
+      if (typeof J.platform?.cancelSaveAndClose === 'function') {
+        J.platform.cancelSaveAndClose();
       }
       return;
     }
@@ -49088,12 +49096,13 @@ function bind() {
     const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
     try {
       const packed = await J.packProject(project, audio);
-      if (window.jizuraDesktop && typeof window.jizuraDesktop.saveProjectFile === 'function') {
-        const res = await window.jizuraDesktop.saveProjectFile(request.filename, packed);
+      const saveProjectFile = J.platform?.saveProjectFile || (typeof window.jizuraDesktop?.saveProjectFile === 'function' ? (name, buf) => window.jizuraDesktop.saveProjectFile(name, buf) : null);
+      if (saveProjectFile) {
+        const res = await saveProjectFile(request.filename, packed);
         if (!res || res.canceled) {
           S.project.projectName = previousName; $('projectName').value = previousName || '';
-          if (typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
-            window.jizuraDesktop.cancelSaveAndClose();
+          if (typeof J.platform?.cancelSaveAndClose === 'function') {
+            J.platform.cancelSaveAndClose();
           }
           return;
         }
@@ -49107,15 +49116,15 @@ function bind() {
         await J.saveFile(request.filename, packed);
       }
       flushSave();
-      if (window.jizuraDesktop && typeof window.jizuraDesktop.notifyProjectSaved === 'function') {
-        window.jizuraDesktop.notifyProjectSaved();
+      if (typeof J.platform?.notifyProjectSaved === 'function') {
+        J.platform.notifyProjectSaved();
       }
     }
     catch (err) {
       S.project.projectName = previousName; $('projectName').value = previousName || '';
       toast(J.mediaLabel('保存できませんでした：', 'Could not save: ') + err.message);
-      if (window.jizuraDesktop && typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
-        window.jizuraDesktop.cancelSaveAndClose();
+      if (typeof J.platform?.cancelSaveAndClose === 'function') {
+        J.platform.cancelSaveAndClose();
       }
     }
     finally { S.projectBusy = false; $('btnSave').disabled = false; }

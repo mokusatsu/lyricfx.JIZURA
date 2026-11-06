@@ -133,6 +133,13 @@ function createWindow() {
     }
   });
 
+  // Relay renderer errors to terminal for debugging
+  mainWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    if (level >= 3) {
+      console.error(`[Renderer Error] ${message} (${sourceId}:${line})`);
+    }
+  });
+
   // Secure navigation: reject arbitrary navigation and window.open
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:') || url.startsWith('http:')) {

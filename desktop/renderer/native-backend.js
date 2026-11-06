@@ -244,8 +244,7 @@
   // Synchronize unsaved dirty state with main process
   let isSavingAndClosing = false;
 
-  window.jizuraDesktop = window.jizuraDesktop || {};
-  window.jizuraDesktop.notifyProjectSaved = () => {
+  const notifyProjectSaved = () => {
     if (typeof desktop.setDirtyState === 'function') {
       desktop.setDirtyState(false);
     }
@@ -257,9 +256,18 @@
     }
   };
 
-  window.jizuraDesktop.cancelSaveAndClose = () => {
+  const cancelSaveAndClose = () => {
     isSavingAndClosing = false;
   };
+
+  J.platform.saveProjectFile = async (defaultName, arrayBuffer) => {
+    if (typeof desktop.saveProjectFile === 'function') {
+      return await desktop.saveProjectFile(defaultName, arrayBuffer);
+    }
+    return null;
+  };
+  J.platform.notifyProjectSaved = notifyProjectSaved;
+  J.platform.cancelSaveAndClose = cancelSaveAndClose;
 
   if (typeof desktop.onRequestSaveAndClose === 'function') {
     desktop.onRequestSaveAndClose(async () => {
