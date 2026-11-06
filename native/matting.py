@@ -122,9 +122,15 @@ def _init_openvino_ep():
                 ort.register_execution_provider_library(ep.get_ep_name(), lib_path)
                 if "OpenVINOExecutionProvider" in ort.get_available_providers():
                     return True
+                else:
+                    sys.stderr.write(f"[OpenVINO-EP] Registered {lib_path} but OpenVINOExecutionProvider not in available: {ort.get_available_providers()}\n")
+                    sys.stderr.flush()
+            else:
+                sys.stderr.write(f"[OpenVINO-EP] Plugin file not found: {lib_path}\n")
+                sys.stderr.flush()
         except Exception as e:
-            if os.environ.get("JIZURA_DEBUG") == "1":
-                sys.stderr.write(f"[OpenVINO-EP] Modular plugin registration warning: {e}\n")
+            sys.stderr.write(f"[OpenVINO-EP] Modular plugin registration failed: {e}\n")
+            sys.stderr.flush()
 
         # Try bundled frozen location fallback
         if getattr(sys, 'frozen', False):
@@ -143,11 +149,11 @@ def _init_openvino_ep():
                         if "OpenVINOExecutionProvider" in ort.get_available_providers():
                             return True
                     except Exception as e:
-                        if os.environ.get("JIZURA_DEBUG") == "1":
-                            sys.stderr.write(f"[OpenVINO-EP] Frozen plugin registration warning: {e}\n")
+                        sys.stderr.write(f"[OpenVINO-EP] Frozen plugin registration warning: {e}\n")
+                        sys.stderr.flush()
     except Exception as e:
-        if os.environ.get("JIZURA_DEBUG") == "1":
-            sys.stderr.write(f"[OpenVINO-EP] Global init warning: {e}\n")
+        sys.stderr.write(f"[OpenVINO-EP] Global init warning: {e}\n")
+        sys.stderr.flush()
     return False
 
 def probe_backends():

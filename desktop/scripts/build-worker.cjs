@@ -37,44 +37,68 @@ const workPath = path.resolve(desktopDir, 'build/worker');
 const reqFile = path.resolve(repoRoot, `native/requirements-${selectedBackend}.lock`);
 
 // Helper to check if current python environment satisfies backend
-function checkPythonBackend(backend, verbose = false) {
+function checkPythonBackend(backend) {
   const code = `
-import sys
+import sys, os
 sys.path.insert(0, 'native')
-try:
-    from matting import probe_backends
-    backends = probe_backends()
-    sys.stdout.write(','.join(backends))
-except Exception as e:
-    sys.stderr.write(f"probe_backends failed: {e}\\n")
-    import traceback
-    traceback.print_exc()
+
+def verify(backend):
+    backend = backend.lower()
+    import onnxruntime as ort
+
+    if backend == 'cpu':
+        return True
+
+    if backend == 'directml':
+        return 'DmlExecutionProvider' in ort.get_available_providers()
+
+    if backend == 'cuda':
+        return 'CUDAExecutionProvider' in ort.get_available_providers()
+
+    if backend == 'openvino':
+        try:
+            import onnxruntime_ep_openvino as ep
+            lib_path = ep.get_library_path()
+            if not os.path.exists(lib_path):
+                sys.stderr.write(f"[OpenVINO-EP] Plugin library file not found: {lib_path}\\n")
+                sys.stderr.flush()
+                return False
+        except ImportError as e:
+            sys.stderr.write(f"[OpenVINO-EP] ImportError onnxruntime_ep_openvino: {e}\\n")
+            sys.stderr.flush()
+            return False
+
+        from matting import _init_openvino_ep
+        ok = _init_openvino_ep()
+        if not ok:
+            sys.stderr.write(f"[OpenVINO-EP] _init_openvino_ep() returned False. Available providers: {ort.get_available_providers()}\\n")
+            sys.stderr.flush()
+        return ok
+
+    return False
+
+backend_arg = sys.argv[1] if len(sys.argv) > 1 else 'openvino'
+if verify(backend_arg):
+    sys.stdout.write('OK')
+    sys.exit(0)
+else:
     sys.exit(1)
 `;
   try {
-    const res = spawnSync('python', ['-c', code], {
+    const res = spawnSync('python', ['-c', code, backend], {
       cwd: repoRoot,
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'pipe'],
       env: { ...process.env, JIZURA_DEBUG: '1' }
     });
     if (res.stderr && res.stderr.trim()) {
-      if (verbose || res.status !== 0) {
-        console.warn(`[JIZURA-PROBE] Python stderr:\n${res.stderr.trim()}`);
-      }
+      console.warn(`[JIZURA-PROBE] Python stderr:\n${res.stderr.trim()}`);
     }
-    if (res.status === 0 && res.stdout) {
-      const available = res.stdout.trim().split(',').map(s => s.trim().toLowerCase());
-      return available.includes(backend);
-    } else if (verbose || res.status !== 0) {
-      console.warn(`[JIZURA-PROBE] Python probe status: ${res.status}, stdout: '${res.stdout ? res.stdout.trim() : ''}'`);
-    }
+    return res.status === 0 && res.stdout.trim() === 'OK';
   } catch (e) {
-    if (verbose) {
-      console.warn(`[JIZURA-PROBE] Exception running python probe: ${e.message}`);
-    }
+    console.warn(`[JIZURA-PROBE] Exception running python probe: ${e.message}`);
+    return false;
   }
-  return false;
 }
 
 // 1. Pre-build validation & optional auto-installation
@@ -93,14 +117,11 @@ if (!isReady) {
         console.error(`[!] Failed to install dependencies for ${selectedBackend}.`);
         process.exit(1);
       }
-      isReady = checkPythonBackend(selectedBackend, true);
+      isReady = checkPythonBackend(selectedBackend);
     } else {
       console.error(`[!] Requirements file not found: ${reqFile}`);
       process.exit(1);
     }
-  } else {
-    // Probe with verbose=true to display diagnostic output before exiting
-    checkPythonBackend(selectedBackend, true);
   }
 
   if (!isReady) {

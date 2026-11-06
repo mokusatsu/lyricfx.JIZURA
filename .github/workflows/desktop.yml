@@ -37,6 +37,10 @@ jobs:
         run: |
           python tools/build_desktop_runtime.py
 
+      - name: Diagnose OpenVINO runtime environment
+        run: |
+          python -c "import sys, os; sys.path.insert(0, 'native'); import onnxruntime as ort; print('[DIAG] ORT version:', ort.__version__); print('[DIAG] Initial providers:', ort.get_available_providers()); import onnxruntime_ep_openvino as ep; lib = ep.get_library_path(); print('[DIAG] Plugin lib path:', lib, 'exists:', os.path.exists(lib)); from matting import _init_openvino_ep; print('[DIAG] _init_openvino_ep():', _init_openvino_ep()); print('[DIAG] After init providers:', ort.get_available_providers())"
+
       - name: Build and verify native worker binary (OpenVINO)
         run: |
           node desktop/scripts/build-worker.cjs openvino --install
