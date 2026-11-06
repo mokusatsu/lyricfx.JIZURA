@@ -15,14 +15,87 @@ const jizuraDesktop = {
     return await ipcRenderer.invoke('desktop:getInitialProjectData');
   },
 
-  saveProjectFile: async (defaultName, arrayBuffer) => {
-    if (!(arrayBuffer instanceof ArrayBuffer)) {
-      throw new TypeError('Invalid arguments for saveProjectFile: arrayBuffer must be an ArrayBuffer');
+  saveProjectFile: async (defaultName, data) => {
+    const isBlob = typeof Blob !== 'undefined' && data instanceof Blob;
+    const isBuffer = data instanceof ArrayBuffer;
+    if (!isBlob && !isBuffer) {
+      throw new TypeError('Invalid arguments for saveProjectFile: data must be a Blob or an ArrayBuffer');
     }
-    return await ipcRenderer.invoke('desktop:saveProjectFile', {
-      defaultName: String(defaultName || 'project.lyricfx'),
-      buffer: arrayBuffer
+
+    const totalSize = isBlob ? data.size : data.byteLength;
+    const startRes = await ipcRenderer.invoke('desktop:saveProjectStart', {
+      defaultName: String(defaultName || 'project.lyricfx')
     });
+
+    if (startRes.canceled || !startRes.saveToken) {
+      return { canceled: true };
+    }
+    if (startRes.error) {
+      return { canceled: false, error: startRes.error };
+    }
+
+    const saveToken = startRes.saveToken;
+    const CHUNK_SIZE = 8 * 1024 * 1024; // 8MB chunks to prevent huge single IPC buffer
+    try {
+      if (isBlob) {
+        for (let offset = 0; offset < totalSize; offset += CHUNK_SIZE) {
+          const slice = data.slice(offset, Math.min(offset + CHUNK_SIZE, totalSize));
+          const chunkBuf = await slice.arrayBuffer();
+          const chunkRes = await ipcRenderer.invoke('desktop:saveProjectChunk', {
+            saveToken,
+            buffer: chunkBuf
+          });
+          if (chunkRes.error) throw new Error(chunkRes.error);
+        }
+      } else {
+        for (let offset = 0; offset < totalSize; offset += CHUNK_SIZE) {
+          const chunkBuf = data.slice(offset, Math.min(offset + CHUNK_SIZE, totalSize));
+          const chunkRes = await ipcRenderer.invoke('desktop:saveProjectChunk', {
+            saveToken,
+            buffer: chunkBuf
+          });
+          if (chunkRes.error) throw new Error(chunkRes.error);
+        }
+      }
+
+      return await ipcRenderer.invoke('desktop:saveProjectFinish', {
+        saveToken,
+        expectedSize: totalSize
+      });
+    } catch (err) {
+      await ipcRenderer.invoke('desktop:saveProjectCancel', { saveToken });
+      return { canceled: false, error: err.message };
+    }
+  },
+
+  uploadChunkedAsset: async (name, mimeType, blob) => {
+    const isBlob = typeof Blob !== 'undefined' && blob instanceof Blob;
+    const isBuffer = blob instanceof ArrayBuffer;
+    if (!isBlob && !isBuffer) {
+      throw new TypeError('Invalid arguments for uploadChunkedAsset: blob must be a Blob or ArrayBuffer');
+    }
+
+    const totalSize = isBlob ? blob.size : blob.byteLength;
+    const token = await ipcRenderer.invoke('desktop:startChunkedAsset', { name, mimeType });
+    const CHUNK_SIZE = 8 * 1024 * 1024;
+    try {
+      if (isBlob) {
+        for (let offset = 0; offset < totalSize; offset += CHUNK_SIZE) {
+          const slice = blob.slice(offset, Math.min(offset + CHUNK_SIZE, totalSize));
+          const chunkBuf = await slice.arrayBuffer();
+          await ipcRenderer.invoke('desktop:appendAssetChunk', { token, buffer: chunkBuf });
+        }
+      } else {
+        for (let offset = 0; offset < totalSize; offset += CHUNK_SIZE) {
+          const chunkBuf = blob.slice(offset, Math.min(offset + CHUNK_SIZE, totalSize));
+          await ipcRenderer.invoke('desktop:appendAssetChunk', { token, buffer: chunkBuf });
+        }
+      }
+      return await ipcRenderer.invoke('desktop:finishChunkedAsset', { token });
+    } catch (err) {
+      await ipcRenderer.invoke('desktop:cancelChunkedAsset', { token });
+      throw err;
+    }
   },
 
   setDirtyState: async (dirty) => {

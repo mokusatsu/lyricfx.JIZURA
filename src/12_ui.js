@@ -4166,10 +4166,18 @@ let codecNoteVersion=0;
 async function codecNote() {
   const version=++codecNoteVersion,isQP=S.project.quality==='qp';
   const project=activeExportProject(),[w, h] = J.outputSize(project);
-  if (J.platform && J.platform.nativeExport) {
-    let caps = { encoders: ['libx264'], backends: ['cpu'], ffmpegAvailable: true };
+  if (J.platform && J.platform.name === 'desktop') {
+    let caps = { encoders: ['libx264'], backends: ['cpu'], ffmpegAvailable: true, workerAvailable: true };
     try { caps = await J.platform.capabilities(); } catch (e) {}
     if (version !== codecNoteVersion || S.exporting) return;
+    if (!caps.workerAvailable) {
+      $('codecNote').textContent = J.mediaLabel(
+        'ネイティブワーカーが見つかりません。動画出力は利用できません。',
+        'Native worker is not available. Video export is disabled.'
+      );
+      $('btnMP4').disabled = true; $('eMP4').disabled = true; $('btnShort').disabled = true;
+      return;
+    }
     const hasFFmpeg = caps.ffmpegAvailable !== false && Array.isArray(caps.encoders) && caps.encoders.length > 0;
     if (!hasFFmpeg) {
       $('codecNote').textContent = J.mediaLabel(

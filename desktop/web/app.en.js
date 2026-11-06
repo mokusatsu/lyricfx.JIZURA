@@ -43438,8 +43438,14 @@ J.ShortFrameRenderer=ShortFrameRenderer;
         blobToToken.set(blob, blob.__assetToken);
         return blob.__assetToken;
       }
-      const buffer = await blob.arrayBuffer();
-      const desc = await desktop.ensureNativeAsset(itemId, buffer);
+      let desc;
+      if (typeof desktop.uploadChunkedAsset === 'function' && blob instanceof Blob && blob.size > 2 * 1024 * 1024) {
+        // Stream large blobs in chunks to avoid single massive IPC buffer allocation
+        desc = await desktop.uploadChunkedAsset(blob.name || `asset_${itemId}`, blob.type || 'application/octet-stream', blob);
+      } else {
+        const buffer = await blob.arrayBuffer();
+        desc = await desktop.ensureNativeAsset(itemId, buffer);
+      }
       if (blob) {
         blob.__assetToken = desc.assetToken;
         blobToToken.set(blob, desc.assetToken);
@@ -43628,7 +43634,11 @@ J.ShortFrameRenderer=ShortFrameRenderer;
       }
 
       let parsedLrc = null;
-      if (data.lrc) {
+      if (data.lrc !== null && data.lrc !== undefined) {
+        if (!data.lrc.trim()) {
+          alert('LRC ファイルが空です。有効な歌詞データを含むファイルを指定してください。');
+          return;
+        }
         parsedLrc = J.parseSongcutLRC(data.lrc);
         if (!parsedLrc.ok) {
           alert(`LRC の取り込みに失敗しました:\n${parsedLrc.error}`);
@@ -48094,10 +48104,18 @@ let codecNoteVersion=0;
 async function codecNote() {
   const version=++codecNoteVersion,isQP=S.project.quality==='qp';
   const project=activeExportProject(),[w, h] = J.outputSize(project);
-  if (J.platform && J.platform.nativeExport) {
-    let caps = { encoders: ['libx264'], backends: ['cpu'], ffmpegAvailable: true };
+  if (J.platform && J.platform.name === 'desktop') {
+    let caps = { encoders: ['libx264'], backends: ['cpu'], ffmpegAvailable: true, workerAvailable: true };
     try { caps = await J.platform.capabilities(); } catch (e) {}
     if (version !== codecNoteVersion || S.exporting) return;
+    if (!caps.workerAvailable) {
+      $('codecNote').textContent = J.mediaLabel(
+        'ネイティブワーカーが見つかりません。動画出力は利用できません。',
+        'Native worker is not available. Video export is disabled.'
+      );
+      $('btnMP4').disabled = true; $('eMP4').disabled = true; $('btnShort').disabled = true;
+      return;
+    }
     const hasFFmpeg = caps.ffmpegAvailable !== false && Array.isArray(caps.encoders) && caps.encoders.length > 0;
     if (!hasFFmpeg) {
       $('codecNote').textContent = J.mediaLabel(

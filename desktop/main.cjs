@@ -212,6 +212,87 @@ function setupAssetProtocol() {
 
 // Setup IPC handlers
 function setupIpcHandlers() {
+  const activeProjectSaves = new Map();
+
+  ipcMain.handle('desktop:saveProjectStart', async (event, { defaultName }) => {
+    const result = await dialog.showSaveDialog(mainWindow, {
+      title: 'プロジェクトを保存',
+      defaultPath: defaultName || 'project.lyricfx',
+      filters: [
+        { name: 'lyricfx Project (*.lyricfx)', extensions: ['lyricfx'] },
+        { name: 'Legacy Project (*.jizuraichi)', extensions: ['jizuraichi'] },
+        { name: 'All Files (*.*)', extensions: ['*'] }
+      ]
+    });
+
+    if (result.canceled || !result.filePath) {
+      return { canceled: true };
+    }
+
+    const targetPath = result.filePath;
+    const targetDir = path.dirname(targetPath);
+    const saveToken = crypto.randomUUID();
+    const tmpPath = path.join(targetDir, `.tmp_proj_${saveToken}_${Date.now()}.part`);
+
+    try {
+      fs.writeFileSync(tmpPath, Buffer.alloc(0));
+      activeProjectSaves.set(saveToken, { targetPath, tmpPath, size: 0 });
+      return { canceled: false, saveToken, targetPath };
+    } catch (err) {
+      return { canceled: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('desktop:saveProjectChunk', async (event, { saveToken, buffer }) => {
+    const save = activeProjectSaves.get(saveToken);
+    if (!save) return { error: 'Invalid save token' };
+    try {
+      fs.appendFileSync(save.tmpPath, Buffer.from(buffer));
+      save.size += buffer.byteLength;
+      return { ok: true, size: save.size };
+    } catch (err) {
+      return { error: err.message };
+    }
+  });
+
+  ipcMain.handle('desktop:saveProjectFinish', async (event, { saveToken, expectedSize }) => {
+    const save = activeProjectSaves.get(saveToken);
+    if (!save) return { error: 'Invalid save token' };
+    activeProjectSaves.delete(saveToken);
+
+    try {
+      const stat = fs.statSync(save.tmpPath);
+      if (expectedSize !== undefined && expectedSize !== null && stat.size !== expectedSize) {
+        try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+        return { error: `File size mismatch (expected ${expectedSize}, got ${stat.size})` };
+      }
+
+      // Safe atomic replacement preserving existing file on write failure
+      try {
+        fs.renameSync(save.tmpPath, save.targetPath);
+      } catch (renameErr) {
+        fs.copyFileSync(save.tmpPath, save.targetPath);
+        try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+      }
+
+      isProjectDirty = false;
+      const base = path.basename(save.targetPath, path.extname(save.targetPath));
+      return { canceled: false, filePath: save.targetPath, name: base };
+    } catch (err) {
+      try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+      return { error: err.message };
+    }
+  });
+
+  ipcMain.handle('desktop:saveProjectCancel', async (event, { saveToken }) => {
+    const save = activeProjectSaves.get(saveToken);
+    if (save) {
+      activeProjectSaves.delete(saveToken);
+      try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+    }
+    return { ok: true };
+  });
+
   ipcMain.handle('desktop:saveProjectFile', async (event, { defaultName, buffer }) => {
     const result = await dialog.showSaveDialog(mainWindow, {
       title: 'プロジェクトを保存',
@@ -227,14 +308,41 @@ function setupIpcHandlers() {
       return { canceled: true };
     }
 
+    const targetPath = result.filePath;
+    const targetDir = path.dirname(targetPath);
+    const tmpPath = path.join(targetDir, `.tmp_proj_${Date.now()}_${process.pid}.part`);
+
     try {
-      fs.writeFileSync(result.filePath, Buffer.from(buffer));
+      fs.writeFileSync(tmpPath, Buffer.from(buffer));
+      try {
+        fs.renameSync(tmpPath, targetPath);
+      } catch (renameErr) {
+        fs.copyFileSync(tmpPath, targetPath);
+        try { fs.unlinkSync(tmpPath); } catch (e) {}
+      }
       isProjectDirty = false;
-      const base = path.basename(result.filePath, path.extname(result.filePath));
-      return { canceled: false, filePath: result.filePath, name: base };
+      const base = path.basename(targetPath, path.extname(targetPath));
+      return { canceled: false, filePath: targetPath, name: base };
     } catch (err) {
+      try { fs.unlinkSync(tmpPath); } catch (e) {}
       return { canceled: false, error: err.message };
     }
+  });
+
+  ipcMain.handle('desktop:startChunkedAsset', async (event, { name, mimeType }) => {
+    return nativeJobs.startChunkedAsset(name, mimeType);
+  });
+
+  ipcMain.handle('desktop:appendAssetChunk', async (event, { token, buffer }) => {
+    return nativeJobs.appendAssetChunk(token, buffer);
+  });
+
+  ipcMain.handle('desktop:finishChunkedAsset', async (event, { token }) => {
+    return nativeJobs.finishChunkedAsset(token);
+  });
+
+  ipcMain.handle('desktop:cancelChunkedAsset', async (event, { token }) => {
+    return nativeJobs.cancelChunkedAsset(token);
   });
 
   ipcMain.handle('desktop:capabilities', async () => {
@@ -276,7 +384,11 @@ function setupIpcHandlers() {
           if (raw.charCodeAt(0) === 0xFEFF) {
             raw = raw.slice(1);
           }
-          lrcContent = raw;
+          if (!raw.trim()) {
+            lrcError = `LRC ファイルが空です: ${cliOptions.lrcPath}`;
+          } else {
+            lrcContent = raw;
+          }
         } catch (err) {
           lrcError = `LRC ファイルの読み込みに失敗しました: ${err.message}`;
         }

@@ -17,6 +17,7 @@ class NativeJobs {
     this.mattes = new Map(); // maskToken -> { filePath, meta }
     this.jobs = new Map(); // jobId -> jobState
     this.clientToInternalJob = new Map(); // clientJobId -> internalJobId
+    this.uploadingAssets = new Map(); // token -> uploadState
 
     this.pythonPath = this._resolvePython();
   }
@@ -167,8 +168,8 @@ class NativeJobs {
     const isVideo = mimeType ? mimeType.startsWith('video/') : /\.(mp4|webm|mov)$/i.test(sourcePath);
 
     let assetFilePath = sourcePath;
-    if (!isVideo && !options.noCopy) {
-      const ext = path.extname(sourcePath) || '.png';
+    if (!options.noCopy) {
+      const ext = path.extname(sourcePath) || (isVideo ? '.mp4' : '.png');
       const cacheFile = path.join(this.cacheDir, `${token}${ext}`);
       fs.copyFileSync(sourcePath, cacheFile);
       assetFilePath = cacheFile;
@@ -182,6 +183,52 @@ class NativeJobs {
     };
     this.assets.set(token, { filePath: assetFilePath, ...descriptor });
     return descriptor;
+  }
+
+  startChunkedAsset(name, mimeType) {
+    const token = crypto.randomUUID();
+    const isVideo = mimeType ? mimeType.startsWith('video/') : false;
+    const ext = path.extname(name || '') || (isVideo ? '.mp4' : '.bin');
+    const tempFile = path.join(this.cacheDir, `${token}${ext}`);
+    fs.writeFileSync(tempFile, Buffer.alloc(0));
+    this.uploadingAssets.set(token, {
+      token,
+      filePath: tempFile,
+      name: name || `asset_${token}`,
+      type: mimeType || 'application/octet-stream',
+      size: 0
+    });
+    return token;
+  }
+
+  appendAssetChunk(token, buffer) {
+    const info = this.uploadingAssets.get(token);
+    if (!info) throw new Error(`Upload not found for token: ${token}`);
+    fs.appendFileSync(info.filePath, Buffer.from(buffer));
+    info.size += buffer.byteLength;
+    return { ok: true, size: info.size };
+  }
+
+  finishChunkedAsset(token) {
+    const info = this.uploadingAssets.get(token);
+    if (!info) throw new Error(`Upload not found for token: ${token}`);
+    this.uploadingAssets.delete(token);
+    const descriptor = {
+      assetToken: token,
+      name: info.name,
+      type: info.type,
+      size: info.size
+    };
+    this.assets.set(token, { filePath: info.filePath, ...descriptor });
+    return descriptor;
+  }
+
+  cancelChunkedAsset(token) {
+    const info = this.uploadingAssets.get(token);
+    if (info) {
+      this.uploadingAssets.delete(token);
+      try { fs.unlinkSync(info.filePath); } catch (e) {}
+    }
   }
 
   ensureNativeAsset(itemId, arrayBuffer) {

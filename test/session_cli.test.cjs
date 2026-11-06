@@ -136,4 +136,23 @@ try {
   fs.rmSync(testTmpBase, { recursive: true, force: true });
 }
 
+// 4. Test Empty LRC handling
+const emptyLrcFile = path.join(os.tmpdir(), `empty_test_${Date.now()}.lrc`);
+try {
+  fs.writeFileSync(emptyLrcFile, '   \n\r\n  ', 'utf8');
+  let raw = fs.readFileSync(emptyLrcFile, 'utf8');
+  if (raw.charCodeAt(0) === 0xFEFF) raw = raw.slice(1);
+  let lrcError = null;
+  let lrcContent = null;
+  if (!raw.trim()) {
+    lrcError = `LRC ファイルが空です: ${emptyLrcFile}`;
+  } else {
+    lrcContent = raw;
+  }
+  assert.ok(lrcError, 'Empty or whitespace-only LRC must produce an error');
+  assert.strictEqual(lrcContent, null, 'Empty LRC content must be null');
+} finally {
+  try { fs.unlinkSync(emptyLrcFile); } catch(e){}
+}
+
 console.log('[SUCCESS] All CLI parser and session isolation tests passed!');

@@ -109,8 +109,14 @@
         blobToToken.set(blob, blob.__assetToken);
         return blob.__assetToken;
       }
-      const buffer = await blob.arrayBuffer();
-      const desc = await desktop.ensureNativeAsset(itemId, buffer);
+      let desc;
+      if (typeof desktop.uploadChunkedAsset === 'function' && blob instanceof Blob && blob.size > 2 * 1024 * 1024) {
+        // Stream large blobs in chunks to avoid single massive IPC buffer allocation
+        desc = await desktop.uploadChunkedAsset(blob.name || `asset_${itemId}`, blob.type || 'application/octet-stream', blob);
+      } else {
+        const buffer = await blob.arrayBuffer();
+        desc = await desktop.ensureNativeAsset(itemId, buffer);
+      }
       if (blob) {
         blob.__assetToken = desc.assetToken;
         blobToToken.set(blob, desc.assetToken);
@@ -299,7 +305,11 @@
       }
 
       let parsedLrc = null;
-      if (data.lrc) {
+      if (data.lrc !== null && data.lrc !== undefined) {
+        if (!data.lrc.trim()) {
+          alert('LRC ファイルが空です。有効な歌詞データを含むファイルを指定してください。');
+          return;
+        }
         parsedLrc = J.parseSongcutLRC(data.lrc);
         if (!parsedLrc.ok) {
           alert(`LRC の取り込みに失敗しました:\n${parsedLrc.error}`);
