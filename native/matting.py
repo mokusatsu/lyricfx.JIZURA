@@ -1,4 +1,5 @@
-import os, sys, time, json, math, subprocess, hashlib, urllib.request
+import os, sys, time, json, math, subprocess, hashlib, urllib.request, queue, threading
+from concurrent.futures import ThreadPoolExecutor
 
 MODEL_URL = "https://github.com/PeterL1n/RobustVideoMatting/releases/download/v1.0.0/rvm_mobilenetv3_fp32.onnx"
 MODEL_SHA256 = "88d4531297118f595bf2fd60f6f566aec2e559393802d1f436c380f0cbbd2828"
@@ -209,6 +210,103 @@ def decode_source_frame(source_path, target_time, width, height, fps=24, fallbac
     err = proc.stderr.decode('utf-8', errors='replace')
     raise RuntimeError(f"Failed to decode frame at {target_time}s from {source_path}:\n{err}")
 
+class FFmpegStreamDecoder:
+    """
+    Decodes video frames sequentially via a single persistent FFmpeg pipe.
+    """
+    def __init__(self, source_path, width=512, height=512, fps=24, start_time=0.0):
+        self.source_path = source_path
+        self.width = width
+        self.height = height
+        self.fps = fps
+        self.start_time = max(0.0, float(start_time))
+        self.frame_size = width * height * 3
+        self.proc = None
+        self.last_valid_frame = None
+        self._start_ffmpeg()
+
+    def _start_ffmpeg(self):
+        ffmpeg = resolve_system_ffmpeg()
+        cmd = [ffmpeg, "-y", "-hide_banner", "-nostdin"]
+        if self.start_time > 0.001:
+            cmd.extend(["-ss", f"{self.start_time:.4f}"])
+        cmd.extend([
+            "-i", self.source_path,
+            "-vf", f"fps={self.fps},scale={self.width}:{self.height}",
+            "-f", "rawvideo",
+            "-pix_fmt", "rgb24",
+            "pipe:1"
+        ])
+        self.proc = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL
+        )
+
+    def read_frame(self):
+        if not self.proc or not self.proc.stdout:
+            return None
+        try:
+            buf = self.proc.stdout.read(self.frame_size)
+            if len(buf) == self.frame_size:
+                self.last_valid_frame = buf
+                return buf
+        except Exception:
+            pass
+        return None
+
+    def close(self):
+        if self.proc:
+            try:
+                if self.proc.stdout:
+                    self.proc.stdout.close()
+                self.proc.terminate()
+                self.proc.wait(timeout=1)
+            except Exception:
+                pass
+            self.proc = None
+
+class FramePrefetcher:
+    """
+    Asynchronous frame prefetcher using a background reader thread.
+    Keeps a small queue of decoded frames ahead of the GPU inference pipeline.
+    """
+    def __init__(self, decoder, maxsize=4):
+        self.decoder = decoder
+        self.queue = queue.Queue(maxsize=maxsize)
+        self.stop_event = threading.Event()
+        self.thread = threading.Thread(target=self._worker, daemon=True)
+        self.thread.start()
+
+    def _worker(self):
+        while not self.stop_event.is_set():
+            frame = self.decoder.read_frame()
+            if frame is None:
+                self.queue.put(None)
+                break
+            while not self.stop_event.is_set():
+                try:
+                    self.queue.put(frame, timeout=0.1)
+                    break
+                except queue.Full:
+                    continue
+
+    def get_frame(self, timeout=2.0):
+        try:
+            return self.queue.get(timeout=timeout)
+        except queue.Empty:
+            return None
+
+    def close(self):
+        self.stop_event.set()
+        try:
+            while not self.queue.empty():
+                self.queue.get_nowait()
+        except Exception:
+            pass
+        self.decoder.close()
+        self.thread.join(timeout=1)
+
 def get_ort_session(model_path=None, prefer_gpu=True, preferred_backend=None):
     import onnxruntime as ort
     if model_path is None:
@@ -295,7 +393,8 @@ def encode_white_alpha_png(width, height, alpha_bytes):
         alpha_img = Image.frombytes("L", (width, height), alpha_bytes)
         img.putalpha(alpha_img)
         buf = io.BytesIO()
-        img.save(buf, format="PNG")
+        # compress_level=1 provides ultra-fast PNG encoding while keeping fully standard PNG output
+        img.save(buf, format="PNG", compress_level=1, optimize=False)
         return buf.getvalue()
     except ImportError:
         import zlib, struct
@@ -306,7 +405,7 @@ def encode_white_alpha_png(width, height, alpha_bytes):
             for x in range(width):
                 raw_rows.extend((255, 255, 255, alpha_bytes[row_start + x]))
 
-        compressed = zlib.compress(bytes(raw_rows), 6)
+        compressed = zlib.compress(bytes(raw_rows), 1)
         png = bytearray(b'\x89PNG\r\n\x1a\n')
 
         ihdr = struct.pack('>IIBBBBB', width, height, 8, 6, 0, 0, 0)
@@ -339,73 +438,127 @@ def run_matting(config, progress_cb=None):
 
     width = 512
     height = 512
-    frames_data = []
+
+    # Check if media is static image
+    ext = os.path.splitext(source_video)[1].lower()
+    is_image = ext in [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"]
+    cached_image_frame = None
+    if is_image:
+        cached_image_frame = decode_source_frame(source_video, 0.0, width, height, fps=fps)
+
+    # Multi-worker parallel PNG encoding pipeline (2-4 workers)
+    num_encode_workers = min(4, max(2, (os.cpu_count() or 4) // 2))
+    encode_executor = ThreadPoolExecutor(max_workers=num_encode_workers)
+    encode_futures = []
+
+    def _encode_worker(slot_num, alpha_bytes):
+        return (slot_num, encode_white_alpha_png(width, height, alpha_bytes))
+
+    # Streaming video decoder & prefetcher
+    prefetcher = None
+    stream_decoder = None
+
+    def start_stream_at_slot(slot_num):
+        nonlocal stream_decoder, prefetcher
+        if prefetcher:
+            prefetcher.close()
+            prefetcher = None
+        start_sec = max(0.0, float(slot_num) / fps)
+        stream_decoder = FFmpegStreamDecoder(source_video, width, height, fps=fps, start_time=start_sec)
+        prefetcher = FramePrefetcher(stream_decoder, maxsize=4)
+
+    if not is_image and len(slots) >= 1:
+        start_stream_at_slot(slots[0])
 
     r1, r2, r3, r4 = None, None, None, None
     last_slot = -999
-    last_valid_frame = None
+    last_valid_frame = cached_image_frame
 
-    for idx, slot in enumerate(slots):
-        t0 = time.perf_counter()
-        target_time = slot / fps
+    try:
+        for idx, slot in enumerate(slots):
+            t0 = time.perf_counter()
+            target_time = slot / fps
 
-        # Reset recurrent state if discontinuous
-        if slot != last_slot + 1:
-            r1, r2, r3, r4 = None, None, None, None
-        last_slot = slot
+            # Reset recurrent state if discontinuous
+            is_continuous = (slot == last_slot + 1)
+            if not is_continuous:
+                r1, r2, r3, r4 = None, None, None, None
+                # If gap between slots is more than 1 frame, restart stream decoder at target_time
+                if not is_image and last_slot != -999:
+                    start_stream_at_slot(slot)
+            last_slot = slot
 
-        # Decode actual video/image frame with fallback for short videos
-        rgb_bytes = decode_source_frame(source_video, target_time, width, height, fps=fps, fallback_frame=last_valid_frame)
-        last_valid_frame = rgb_bytes
+            # Obtain decoded frame (Image cache -> Prefetched stream -> Individual seek fallback)
+            rgb_bytes = None
+            if is_image:
+                rgb_bytes = cached_image_frame
+            elif prefetcher and is_continuous:
+                rgb_bytes = prefetcher.get_frame(timeout=1.0)
 
-        # Prepare float32 tensor [1, 3, H, W] normalized to [0, 1]
-        rgb_arr = np.frombuffer(rgb_bytes, dtype=np.uint8).reshape((height, width, 3))
-        src = (rgb_arr.astype(np.float32) / 255.0).transpose((2, 0, 1))[np.newaxis, ...]
+            # Fallback to precise frame decode if stream ran out or missed
+            if rgb_bytes is None or len(rgb_bytes) != width * height * 3:
+                rgb_bytes = decode_source_frame(source_video, target_time, width, height, fps=fps, fallback_frame=last_valid_frame)
+            last_valid_frame = rgb_bytes
 
-        if r1 is None:
-            r1 = np.zeros((1, 1, 1, 1), dtype=np.float32)
-            r2 = np.zeros((1, 1, 1, 1), dtype=np.float32)
-            r3 = np.zeros((1, 1, 1, 1), dtype=np.float32)
-            r4 = np.zeros((1, 1, 1, 1), dtype=np.float32)
+            # Prepare float32 tensor [1, 3, H, W] normalized to [0, 1]
+            rgb_arr = np.frombuffer(rgb_bytes, dtype=np.uint8).reshape((height, width, 3))
+            src = (rgb_arr.astype(np.float32) / 255.0).transpose((2, 0, 1))[np.newaxis, ...]
 
-        inputs = {
-            "src": src,
-            "r1i": r1,
-            "r2i": r2,
-            "r3i": r3,
-            "r4i": r4,
-            "downsample_ratio": np.array([0.5], dtype=np.float32)
-        }
+            if r1 is None:
+                r1 = np.zeros((1, 1, 1, 1), dtype=np.float32)
+                r2 = np.zeros((1, 1, 1, 1), dtype=np.float32)
+                r3 = np.zeros((1, 1, 1, 1), dtype=np.float32)
+                r4 = np.zeros((1, 1, 1, 1), dtype=np.float32)
 
-        # Run inference with GPU -> CPU fallback on error
-        try:
-            out = sess.run(None, inputs)
-            fgr, pha, r1, r2, r3, r4 = out
-        except Exception as e:
-            sys.stderr.write(f"Inference failed with {backend} ({e}), retrying with CPU session...\n")
-            import onnxruntime as ort
-            sess = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
-            backend = "CPU"
-            out = sess.run(None, inputs)
-            fgr, pha, r1, r2, r3, r4 = out
+            inputs = {
+                "src": src,
+                "r1i": r1,
+                "r2i": r2,
+                "r3i": r3,
+                "r4i": r4,
+                "downsample_ratio": np.array([0.5], dtype=np.float32)
+            }
 
-        # Extract alpha channel
-        alpha_u8 = (np.clip(pha[0, 0], 0.0, 1.0) * 255).astype(np.uint8).tobytes()
-        png_bytes = encode_white_alpha_png(width, height, alpha_u8)
-        frames_data.append((slot, png_bytes))
+            # Run GPU inference (continuous without encode/decode stall)
+            try:
+                out = sess.run(None, inputs)
+                fgr, pha, r1, r2, r3, r4 = out
+            except Exception as e:
+                sys.stderr.write(f"Inference failed with {backend} ({e}), retrying with CPU session...\n")
+                import onnxruntime as ort
+                sess = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
+                backend = "CPU"
+                out = sess.run(None, inputs)
+                fgr, pha, r1, r2, r3, r4 = out
 
-        elapsed_ms = int((time.perf_counter() - t0) * 1000)
+            # Extract alpha channel bytes and dispatch to parallel encode worker
+            alpha_u8 = (np.clip(pha[0, 0], 0.0, 1.0) * 255).astype(np.uint8).tobytes()
+            fut = encode_executor.submit(_encode_worker, slot, alpha_u8)
+            encode_futures.append((slot, fut))
 
-        if progress_cb:
-            progress_cb({
-                "phase": "analyze",
-                "completed": idx + 1,
-                "total": total_slots,
-                "reused": 0,
-                "sourceFrame": slot,
-                "backend": backend,
-                "inferenceMs": elapsed_ms
-            })
+            elapsed_ms = int((time.perf_counter() - t0) * 1000)
+
+            if progress_cb:
+                progress_cb({
+                    "phase": "analyze",
+                    "completed": idx + 1,
+                    "total": total_slots,
+                    "reused": 0,
+                    "sourceFrame": slot,
+                    "backend": backend,
+                    "inferenceMs": elapsed_ms
+                })
+
+        # Collect all parallel encoded PNG frames in chronological order
+        frames_data = []
+        for slot, fut in encode_futures:
+            _, png_bytes = fut.result()
+            frames_data.append((slot, png_bytes))
+
+    finally:
+        encode_executor.shutdown(wait=True)
+        if prefetcher:
+            prefetcher.close()
 
     try:
         from matte_format import write_jizmat_file
