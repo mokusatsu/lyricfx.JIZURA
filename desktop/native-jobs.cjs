@@ -283,8 +283,9 @@ class NativeJobs {
       }
     });
 
+    let stderrOutput = '';
     child.stderr.on('data', (chunk) => {
-      // Worker logs
+      stderrOutput += chunk.toString('utf-8');
       process.stderr.write(`[Worker ${clientJobId}] ${chunk}`);
     });
 
@@ -300,7 +301,8 @@ class NativeJobs {
         }
         if (code !== 0) {
           job.status = 'failed';
-          return reject(new Error(`Matte worker exited with code ${code}`));
+          const errMsg = stderrOutput.trim() || `Matte worker exited with code ${code}`;
+          return reject(new Error(errMsg));
         }
 
         job.status = 'completed';
@@ -404,12 +406,15 @@ class NativeJobs {
       };
     });
 
+    let stderrOutput = '';
+    job.stderrOutput = '';
     job.exitPromise = new Promise((resolve) => {
       child.on('close', (code) => {
         job.exitCode = code;
         if (!job.isReadyResolved) {
           job.status = 'failed';
-          job.readyReject(new Error(`Export worker exited before ready with code ${code}`));
+          const errMsg = (job.stderrOutput && job.stderrOutput.trim()) || `Export worker exited before ready with code ${code}`;
+          job.readyReject(new Error(errMsg));
         }
         resolve(code);
       });
@@ -446,6 +451,8 @@ class NativeJobs {
     });
 
     child.stderr.on('data', (chunk) => {
+      stderrOutput += chunk.toString('utf-8');
+      job.stderrOutput = stderrOutput;
       process.stderr.write(`[Export ${jobId}] ${chunk}`);
     });
 
@@ -529,7 +536,8 @@ class NativeJobs {
     }
     if (code !== 0) {
       job.status = 'failed';
-      throw new Error(`Export worker exited with code ${code}`);
+      const errMsg = (job.stderrOutput && job.stderrOutput.trim()) || `Export worker exited with code ${code}`;
+      throw new Error(errMsg);
     }
 
     if (!fs.existsSync(job.tempPartFile)) {

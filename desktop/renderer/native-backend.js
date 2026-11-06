@@ -8,11 +8,39 @@
   const blobToToken = new WeakMap();
   const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
 
-  J.getNativeAssetToken = (file) => (file && blobToToken.get(file)) || null;
+  J.getNativeAssetToken = (file) => (file && (blobToToken.get(file) || file.__assetToken)) || null;
   J.getItemAssetToken = (itemId) => itemToAssetInfo.get(itemId)?.token || null;
   J.clearNativeAssetCache = () => {
     itemToAssetInfo.clear();
   };
+
+  // Wrap J.snapshotMediaFile to preserve asset tokens across file cloning
+  const origSnapshot = J.snapshotMediaFile;
+  if (typeof origSnapshot === 'function') {
+    J.snapshotMediaFile = async (file, onProgress) => {
+      const copy = await origSnapshot(file, onProgress);
+      const token = (file && (blobToToken.get(file) || file.__assetToken));
+      if (token && copy) {
+        copy.__assetToken = token;
+        blobToToken.set(copy, token);
+      }
+      return copy;
+    };
+  }
+
+  // Helper to fetch asset either via custom protocol (in browser) or fallback to desktop API (in Node unit tests)
+  async function fetchAssetBlob(assetToken, mimeType) {
+    try {
+      const resp = await fetch(`jizura-asset://${assetToken}`);
+      return await resp.blob();
+    } catch (e) {
+      if (typeof desktop.fetchAssetData === 'function') {
+        const buffer = await desktop.fetchAssetData(assetToken);
+        return new Blob([buffer], { type: mimeType });
+      }
+      throw e;
+    }
+  }
 
   J.platform = {
     name: 'desktop',
@@ -63,8 +91,9 @@
       const files = [];
       for (const desc of descriptors) {
         try {
-          const buffer = await desktop.fetchAssetData(desc.assetToken);
-          const file = new File([buffer], desc.name, { type: desc.type });
+          const blob = await fetchAssetBlob(desc.assetToken, desc.type);
+          const file = new File([blob], desc.name, { type: desc.type });
+          file.__assetToken = desc.assetToken;
           blobToToken.set(file, desc.assetToken);
           files.push(file);
         } catch (err) {
@@ -76,9 +105,16 @@
 
     ensureNativeAsset: async (itemId, blob) => {
       if (blob && blobToToken.has(blob)) return blobToToken.get(blob);
+      if (blob && blob.__assetToken) {
+        blobToToken.set(blob, blob.__assetToken);
+        return blob.__assetToken;
+      }
       const buffer = await blob.arrayBuffer();
       const desc = await desktop.ensureNativeAsset(itemId, buffer);
-      if (blob) blobToToken.set(blob, desc.assetToken);
+      if (blob) {
+        blob.__assetToken = desc.assetToken;
+        blobToToken.set(blob, desc.assetToken);
+      }
       itemToAssetInfo.set(itemId, {
         token: desc.assetToken,
         size: blob ? blob.size : buffer.byteLength,
@@ -96,7 +132,7 @@
       const asset = J.mediaAssets.get(cut.itemId);
       if (!asset) throw new Error(J.mediaLabel('画像・動画素材を指定してください', 'Select an image or video asset'));
 
-      let assetToken = (asset.file && blobToToken.get(asset.file)) || null;
+      let assetToken = (asset.file && blobToToken.get(asset.file)) || (asset.file && asset.file.__assetToken) || null;
       if (!assetToken && asset.file) {
         onProgress({ phase: 'upload', loaded: 0, total: 1 });
         assetToken = await J.platform.ensureNativeAsset(cut.itemId, asset.file);
@@ -207,32 +243,34 @@
 
   // Synchronize unsaved dirty state with main process
   let isSavingAndClosing = false;
+
+  window.jizuraDesktop = window.jizuraDesktop || {};
+  window.jizuraDesktop.notifyProjectSaved = () => {
+    if (typeof desktop.setDirtyState === 'function') {
+      desktop.setDirtyState(false);
+    }
+    if (isSavingAndClosing) {
+      isSavingAndClosing = false;
+      if (typeof desktop.confirmQuit === 'function') {
+        desktop.confirmQuit();
+      }
+    }
+  };
+
+  window.jizuraDesktop.cancelSaveAndClose = () => {
+    isSavingAndClosing = false;
+  };
+
   if (typeof desktop.onRequestSaveAndClose === 'function') {
     desktop.onRequestSaveAndClose(async () => {
       isSavingAndClosing = true;
       const saveBtn = document.getElementById('btnSave');
       if (saveBtn) {
         saveBtn.click();
+      } else {
+        isSavingAndClosing = false;
       }
     });
-  }
-
-  // Intercept save success to notify main process
-  const originalSaveFile = J.saveFile;
-  if (originalSaveFile) {
-    J.saveFile = async function (...args) {
-      const res = await originalSaveFile.apply(this, args);
-      if (typeof desktop.setDirtyState === 'function') {
-        desktop.setDirtyState(false);
-      }
-      if (isSavingAndClosing) {
-        isSavingAndClosing = false;
-        if (typeof desktop.confirmQuit === 'function') {
-          desktop.confirmQuit();
-        }
-      }
-      return res;
-    };
   }
 
   // Initial Project Handoff from Songcut CLI arguments
@@ -264,13 +302,17 @@
       // Load video asset into background
       if (data.video && data.video.assetToken) {
         try {
-          const resp = await fetch(`jizura-asset://${data.video.assetToken}`);
-          const blob = await resp.blob();
+          const blob = await fetchAssetBlob(data.video.assetToken, data.video.type);
           const file = new File([blob], data.video.name, { type: data.video.type });
+          file.__assetToken = data.video.assetToken;
           blobToToken.set(file, data.video.assetToken);
 
           if (typeof window.loadAudioFile === 'function') {
-            await window.loadAudioFile(file, { matchDuration: true, background: true });
+            const ok = await window.loadAudioFile(file, { matchDuration: true, background: true });
+            if (ok === false) {
+              alert('動画の読み込みに失敗しました。');
+              return;
+            }
           }
         } catch (err) {
           alert(`動画素材の準備に失敗しました: ${err.message}`);
@@ -280,7 +322,7 @@
 
       // Apply lyrics
       if (parsedLrc && parsedLrc.rawLrcText) {
-        const lyricInput = document.getElementById('lyricInput');
+        const lyricInput = document.getElementById('lyrics');
         if (lyricInput) {
           lyricInput.value = parsedLrc.rawLrcText;
           lyricInput.dispatchEvent(new Event('input', { bubbles: true }));
@@ -288,7 +330,9 @@
       }
 
       // Mark project as dirty (unsaved) immediately after Songcut handoff
-      desktop.setDirtyState(true);
+      if (typeof desktop.setDirtyState === 'function') {
+        desktop.setDirtyState(true);
+      }
     } catch (e) {
       console.warn('Initial project handoff failed:', e);
     }

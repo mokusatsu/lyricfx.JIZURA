@@ -3127,13 +3127,16 @@ J.parseSongcutLRC = (raw) => {
     // Strip trailing <mm:ss.xx> tag if present (value ignored per specification)
     body = body.replace(/<(\d+):(\d+(?:[.:]\d+)?)>$/, '');
 
-    // Restore escapes: \n -> newline, \\ -> backslash
-    body = body.replace(/\\\\/g, '\uE000').replace(/\\n/g, '\n');
+    // Songcut escapes: \n means newline within phrase, \\ means literal backslash.
+    // In JIZURA's lyric editor (where 1 physical line = 1 phrase), a newline within a phrase
+    // is represented as the escape sequence '\n' (backslash + 'n').
+    // Emitting a real newline would split the phrase across lines and break timestamping.
+    body = body.replace(/\\\\/g, '\uE000').replace(/\\n/g, '\uE00D');
     const specialChars = ['#', '[', ']', '|', '!', '！', '*', '/', '{', '}', '~', ':'];
     for (const ch of specialChars) {
       body = body.split(ch).join('\\' + ch);
     }
-    body = body.replace(/\uE000/g, '\\\\');
+    body = body.replace(/\uE00D/g, '\\n').replace(/\uE000/g, '\\\\');
 
     parsedEntries.push({
       startTime,
@@ -43334,11 +43337,39 @@ J.ShortFrameRenderer=ShortFrameRenderer;
   const blobToToken = new WeakMap();
   const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
 
-  J.getNativeAssetToken = (file) => (file && blobToToken.get(file)) || null;
+  J.getNativeAssetToken = (file) => (file && (blobToToken.get(file) || file.__assetToken)) || null;
   J.getItemAssetToken = (itemId) => itemToAssetInfo.get(itemId)?.token || null;
   J.clearNativeAssetCache = () => {
     itemToAssetInfo.clear();
   };
+
+  // Wrap J.snapshotMediaFile to preserve asset tokens across file cloning
+  const origSnapshot = J.snapshotMediaFile;
+  if (typeof origSnapshot === 'function') {
+    J.snapshotMediaFile = async (file, onProgress) => {
+      const copy = await origSnapshot(file, onProgress);
+      const token = (file && (blobToToken.get(file) || file.__assetToken));
+      if (token && copy) {
+        copy.__assetToken = token;
+        blobToToken.set(copy, token);
+      }
+      return copy;
+    };
+  }
+
+  // Helper to fetch asset either via custom protocol (in browser) or fallback to desktop API (in Node unit tests)
+  async function fetchAssetBlob(assetToken, mimeType) {
+    try {
+      const resp = await fetch(`jizura-asset://${assetToken}`);
+      return await resp.blob();
+    } catch (e) {
+      if (typeof desktop.fetchAssetData === 'function') {
+        const buffer = await desktop.fetchAssetData(assetToken);
+        return new Blob([buffer], { type: mimeType });
+      }
+      throw e;
+    }
+  }
 
   J.platform = {
     name: 'desktop',
@@ -43389,8 +43420,9 @@ J.ShortFrameRenderer=ShortFrameRenderer;
       const files = [];
       for (const desc of descriptors) {
         try {
-          const buffer = await desktop.fetchAssetData(desc.assetToken);
-          const file = new File([buffer], desc.name, { type: desc.type });
+          const blob = await fetchAssetBlob(desc.assetToken, desc.type);
+          const file = new File([blob], desc.name, { type: desc.type });
+          file.__assetToken = desc.assetToken;
           blobToToken.set(file, desc.assetToken);
           files.push(file);
         } catch (err) {
@@ -43402,9 +43434,16 @@ J.ShortFrameRenderer=ShortFrameRenderer;
 
     ensureNativeAsset: async (itemId, blob) => {
       if (blob && blobToToken.has(blob)) return blobToToken.get(blob);
+      if (blob && blob.__assetToken) {
+        blobToToken.set(blob, blob.__assetToken);
+        return blob.__assetToken;
+      }
       const buffer = await blob.arrayBuffer();
       const desc = await desktop.ensureNativeAsset(itemId, buffer);
-      if (blob) blobToToken.set(blob, desc.assetToken);
+      if (blob) {
+        blob.__assetToken = desc.assetToken;
+        blobToToken.set(blob, desc.assetToken);
+      }
       itemToAssetInfo.set(itemId, {
         token: desc.assetToken,
         size: blob ? blob.size : buffer.byteLength,
@@ -43422,7 +43461,7 @@ J.ShortFrameRenderer=ShortFrameRenderer;
       const asset = J.mediaAssets.get(cut.itemId);
       if (!asset) throw new Error(J.mediaLabel('画像・動画素材を指定してください', 'Select an image or video asset'));
 
-      let assetToken = (asset.file && blobToToken.get(asset.file)) || null;
+      let assetToken = (asset.file && blobToToken.get(asset.file)) || (asset.file && asset.file.__assetToken) || null;
       if (!assetToken && asset.file) {
         onProgress({ phase: 'upload', loaded: 0, total: 1 });
         assetToken = await J.platform.ensureNativeAsset(cut.itemId, asset.file);
@@ -43533,32 +43572,34 @@ J.ShortFrameRenderer=ShortFrameRenderer;
 
   // Synchronize unsaved dirty state with main process
   let isSavingAndClosing = false;
+
+  window.jizuraDesktop = window.jizuraDesktop || {};
+  window.jizuraDesktop.notifyProjectSaved = () => {
+    if (typeof desktop.setDirtyState === 'function') {
+      desktop.setDirtyState(false);
+    }
+    if (isSavingAndClosing) {
+      isSavingAndClosing = false;
+      if (typeof desktop.confirmQuit === 'function') {
+        desktop.confirmQuit();
+      }
+    }
+  };
+
+  window.jizuraDesktop.cancelSaveAndClose = () => {
+    isSavingAndClosing = false;
+  };
+
   if (typeof desktop.onRequestSaveAndClose === 'function') {
     desktop.onRequestSaveAndClose(async () => {
       isSavingAndClosing = true;
       const saveBtn = document.getElementById('btnSave');
       if (saveBtn) {
         saveBtn.click();
+      } else {
+        isSavingAndClosing = false;
       }
     });
-  }
-
-  // Intercept save success to notify main process
-  const originalSaveFile = J.saveFile;
-  if (originalSaveFile) {
-    J.saveFile = async function (...args) {
-      const res = await originalSaveFile.apply(this, args);
-      if (typeof desktop.setDirtyState === 'function') {
-        desktop.setDirtyState(false);
-      }
-      if (isSavingAndClosing) {
-        isSavingAndClosing = false;
-        if (typeof desktop.confirmQuit === 'function') {
-          desktop.confirmQuit();
-        }
-      }
-      return res;
-    };
   }
 
   // Initial Project Handoff from Songcut CLI arguments
@@ -43590,13 +43631,17 @@ J.ShortFrameRenderer=ShortFrameRenderer;
       // Load video asset into background
       if (data.video && data.video.assetToken) {
         try {
-          const resp = await fetch(`jizura-asset://${data.video.assetToken}`);
-          const blob = await resp.blob();
+          const blob = await fetchAssetBlob(data.video.assetToken, data.video.type);
           const file = new File([blob], data.video.name, { type: data.video.type });
+          file.__assetToken = data.video.assetToken;
           blobToToken.set(file, data.video.assetToken);
 
           if (typeof window.loadAudioFile === 'function') {
-            await window.loadAudioFile(file, { matchDuration: true, background: true });
+            const ok = await window.loadAudioFile(file, { matchDuration: true, background: true });
+            if (ok === false) {
+              alert('動画の読み込みに失敗しました。');
+              return;
+            }
           }
         } catch (err) {
           alert(`動画素材の準備に失敗しました: ${err.message}`);
@@ -43606,7 +43651,7 @@ J.ShortFrameRenderer=ShortFrameRenderer;
 
       // Apply lyrics
       if (parsedLrc && parsedLrc.rawLrcText) {
-        const lyricInput = document.getElementById('lyricInput');
+        const lyricInput = document.getElementById('lyrics');
         if (lyricInput) {
           lyricInput.value = parsedLrc.rawLrcText;
           lyricInput.dispatchEvent(new Event('input', { bubbles: true }));
@@ -43614,7 +43659,9 @@ J.ShortFrameRenderer=ShortFrameRenderer;
       }
 
       // Mark project as dirty (unsaved) immediately after Songcut handoff
-      desktop.setDirtyState(true);
+      if (typeof desktop.setDirtyState === 'function') {
+        desktop.setDirtyState(true);
+      }
     } catch (e) {
       console.warn('Initial project handoff failed:', e);
     }
@@ -48040,9 +48087,18 @@ async function codecNote() {
   const version=++codecNoteVersion,isQP=S.project.quality==='qp';
   const project=activeExportProject(),[w, h] = J.outputSize(project);
   if (J.platform && J.platform.nativeExport) {
-    let caps = { encoders: ['libx264'], backends: ['cpu'] };
+    let caps = { encoders: ['libx264'], backends: ['cpu'], ffmpegAvailable: true };
     try { caps = await J.platform.capabilities(); } catch (e) {}
     if (version !== codecNoteVersion || S.exporting) return;
+    const hasFFmpeg = caps.ffmpegAvailable !== false && Array.isArray(caps.encoders) && caps.encoders.length > 0;
+    if (!hasFFmpeg) {
+      $('codecNote').textContent = J.mediaLabel(
+        'FFmpeg が見つかりません。動画出力には FFmpeg が必要です。システム PATH に FFmpeg をNewしてください。',
+        'FFmpeg is required for video export. Please install FFmpeg on system PATH.'
+      );
+      $('btnMP4').disabled = true; $('eMP4').disabled = true; $('btnShort').disabled = true;
+      return;
+    }
     const encoder = (caps.encoders && caps.encoders[0]) || 'libx264';
     const backend = (caps.backends && caps.backends[0]) || 'cpu';
     $('codecNote').textContent = J.mediaLabel(
@@ -48095,12 +48151,12 @@ function baseName() {
 const fileStamp = (d = new Date()) => '_' + [d.getFullYear(), d.getMonth() + 1, d.getDate(), d.getHours(), d.getMinutes()].map((v, i) => String(v).padStart(i ? 2 : 4, '0')).join('');
 function withFileStamp(filename) { const dot = filename.lastIndexOf('.'); return filename.slice(0, dot) + fileStamp() + filename.slice(dot); }
 function syncFilenamePreview() {
-  const ext = $('filenameDlg').dataset.ext || '.jizuraichi', name = J.exportFilename($('saveFilename').value, ext, baseName());
+  const ext = $('filenameDlg').dataset.ext || '.lyricfx', name = J.exportFilename($('saveFilename').value, ext, baseName());
   $('saveFilenamePreview').textContent = $('saveFilenameDate').checked ? J.mediaLabel('保存名：', 'Saved as: ') + withFileStamp(name) : '';
 }
 // Resolves { filename, name }: the file name to write, and its name without extension or added date.
 function requestFilename(kind) {
-  const dlg = $('filenameDlg'), project = kind === 'project' || kind === 'settings', ext = project ? '.jizuraichi' : '.json';
+  const dlg = $('filenameDlg'), ext = kind === 'project' ? '.lyricfx' : kind === 'settings' ? '.jizuraichi' : '.json', project = kind === 'project' || kind === 'settings';
   $('filenameDlgTitle').textContent = J.mediaLabel(project ? 'プロジェクトを保存' : 'AE用に書き出し', project ? 'Save project' : 'Export for AE');
   if (kind === 'settings') $('filenameDlgTitle').textContent = J.mediaLabel('設定のみ書き出し', 'Export settings only');
   // A saved project's name is the next project save's default.
@@ -49261,14 +49317,50 @@ function bind() {
   });
   $('btnSave').addEventListener('click', async () => {
     if (S.projectBusy) return;
-    const request = await requestFilename('project'); if (!request) return;
+    const request = await requestFilename('project');
+    if (!request) {
+      if (window.jizuraDesktop && typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
+        window.jizuraDesktop.cancelSaveAndClose();
+      }
+      return;
+    }
     S.projectBusy = true; $('btnSave').disabled = true;
     // The saved name (without an added date) becomes the project name, stored in the file too.
     const previousName = S.project.projectName;
     S.project.projectName = request.name; $('projectName').value = request.name;
     const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
-    try { await J.saveFile(request.filename, await J.packProject(project, audio)); autosave(); }
-    catch (err) { S.project.projectName = previousName; $('projectName').value = previousName || ''; toast(J.mediaLabel('保存できませんでした：', 'Could not save: ') + err.message); }
+    try {
+      const packed = await J.packProject(project, audio);
+      if (window.jizuraDesktop && typeof window.jizuraDesktop.saveProjectFile === 'function') {
+        const res = await window.jizuraDesktop.saveProjectFile(request.filename, packed);
+        if (!res || res.canceled) {
+          S.project.projectName = previousName; $('projectName').value = previousName || '';
+          if (typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
+            window.jizuraDesktop.cancelSaveAndClose();
+          }
+          return;
+        }
+        if (res.error) {
+          throw new Error(res.error);
+        }
+        if (res.name) {
+          S.project.projectName = res.name; $('projectName').value = res.name;
+        }
+      } else {
+        await J.saveFile(request.filename, packed);
+      }
+      flushSave();
+      if (window.jizuraDesktop && typeof window.jizuraDesktop.notifyProjectSaved === 'function') {
+        window.jizuraDesktop.notifyProjectSaved();
+      }
+    }
+    catch (err) {
+      S.project.projectName = previousName; $('projectName').value = previousName || '';
+      toast(J.mediaLabel('保存できませんでした：', 'Could not save: ') + err.message);
+      if (window.jizuraDesktop && typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
+        window.jizuraDesktop.cancelSaveAndClose();
+      }
+    }
     finally { S.projectBusy = false; $('btnSave').disabled = false; }
   });
   $('btnSaveSettings').addEventListener('click', async () => {

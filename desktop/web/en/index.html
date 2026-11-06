@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: https:; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; media-src 'self' blob: data: jizura-asset:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: https:; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; media-src 'self' blob: data: jizura-asset:; connect-src 'self' data: blob: https: jizura-asset:;">
 <title>lyricfx.JIZURA</title>
 <meta name="description" content="Turn lyrics into animated lyric videos in your browser and export MP4.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,10 +24,10 @@
       <details class="header-menu" id="projectMenu">
         <summary>Project</summary><div class="header-menu-items">
           <button id="btnNew">New</button>
-          <label class="file" tabindex="0" title="Open a portable project (.jizuraichi)">Open<input id="fileProject" type="file" accept=".jizuraichi,.jizura,.json"></label>
+          <label class="file" tabindex="0" title="Source入りプロジェクト（.lyricfx / .jizuraichi）をOpen">Open<input id="fileProject" type="file" accept=".lyricfx,.jizuraichi,.jizura,.json"></label>
           <button id="btnSave" title="Save project with images, videos and audio">Save</button>
           <button id="btnSaveSettings">Export settings only</button>
-          <label class="file" tabindex="0">Import settings only<input id="fileSettings" type="file" accept=".jizuraichi,.json"></label>
+          <label class="file" tabindex="0">Import settings only<input id="fileSettings" type="file" accept=".lyricfx,.jizuraichi,.json"></label>
         </div>
       </details>
       <details class="header-menu" id="outputMenu">

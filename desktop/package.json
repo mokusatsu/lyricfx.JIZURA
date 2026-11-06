@@ -13,8 +13,8 @@
     "build:worker:cpu": "node scripts/build-worker.cjs cpu",
     "prepare:resources": "node scripts/prepare-resources.cjs",
     "build:all": "node scripts/build-all.cjs",
-    "package": "node scripts/prepare-resources.cjs && electron-builder --dir",
-    "dist": "node scripts/prepare-resources.cjs && electron-builder",
+    "package": "node scripts/build-all.cjs",
+    "dist": "node scripts/build-all.cjs --dist",
     "test": "node ../test/songcut_lrc.test.cjs && node ../test/session_cli.test.cjs && node test/native_dialog.test.cjs && node test/ipc_security.test.cjs && node test/person_native_e2e.cjs && node test/export_native_e2e.cjs"
   },
   "author": "Keiji Okamoto",

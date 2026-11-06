@@ -4167,9 +4167,18 @@ async function codecNote() {
   const version=++codecNoteVersion,isQP=S.project.quality==='qp';
   const project=activeExportProject(),[w, h] = J.outputSize(project);
   if (J.platform && J.platform.nativeExport) {
-    let caps = { encoders: ['libx264'], backends: ['cpu'] };
+    let caps = { encoders: ['libx264'], backends: ['cpu'], ffmpegAvailable: true };
     try { caps = await J.platform.capabilities(); } catch (e) {}
     if (version !== codecNoteVersion || S.exporting) return;
+    const hasFFmpeg = caps.ffmpegAvailable !== false && Array.isArray(caps.encoders) && caps.encoders.length > 0;
+    if (!hasFFmpeg) {
+      $('codecNote').textContent = J.mediaLabel(
+        'FFmpeg が見つかりません。動画出力には FFmpeg が必要です。システム PATH に FFmpeg を追加してください。',
+        'FFmpeg is required for video export. Please install FFmpeg on system PATH.'
+      );
+      $('btnMP4').disabled = true; $('eMP4').disabled = true; $('btnShort').disabled = true;
+      return;
+    }
     const encoder = (caps.encoders && caps.encoders[0]) || 'libx264';
     const backend = (caps.backends && caps.backends[0]) || 'cpu';
     $('codecNote').textContent = J.mediaLabel(
@@ -4222,12 +4231,12 @@ function baseName() {
 const fileStamp = (d = new Date()) => '_' + [d.getFullYear(), d.getMonth() + 1, d.getDate(), d.getHours(), d.getMinutes()].map((v, i) => String(v).padStart(i ? 2 : 4, '0')).join('');
 function withFileStamp(filename) { const dot = filename.lastIndexOf('.'); return filename.slice(0, dot) + fileStamp() + filename.slice(dot); }
 function syncFilenamePreview() {
-  const ext = $('filenameDlg').dataset.ext || '.jizuraichi', name = J.exportFilename($('saveFilename').value, ext, baseName());
+  const ext = $('filenameDlg').dataset.ext || '.lyricfx', name = J.exportFilename($('saveFilename').value, ext, baseName());
   $('saveFilenamePreview').textContent = $('saveFilenameDate').checked ? J.mediaLabel('保存名：', 'Saved as: ') + withFileStamp(name) : '';
 }
 // Resolves { filename, name }: the file name to write, and its name without extension or added date.
 function requestFilename(kind) {
-  const dlg = $('filenameDlg'), project = kind === 'project' || kind === 'settings', ext = project ? '.jizuraichi' : '.json';
+  const dlg = $('filenameDlg'), ext = kind === 'project' ? '.lyricfx' : kind === 'settings' ? '.jizuraichi' : '.json', project = kind === 'project' || kind === 'settings';
   $('filenameDlgTitle').textContent = J.mediaLabel(project ? 'プロジェクトを保存' : 'AE用に書き出し', project ? 'Save project' : 'Export for AE');
   if (kind === 'settings') $('filenameDlgTitle').textContent = J.mediaLabel('設定のみ書き出し', 'Export settings only');
   // A saved project's name is the next project save's default.
@@ -5388,14 +5397,50 @@ function bind() {
   });
   $('btnSave').addEventListener('click', async () => {
     if (S.projectBusy) return;
-    const request = await requestFilename('project'); if (!request) return;
+    const request = await requestFilename('project');
+    if (!request) {
+      if (window.jizuraDesktop && typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
+        window.jizuraDesktop.cancelSaveAndClose();
+      }
+      return;
+    }
     S.projectBusy = true; $('btnSave').disabled = true;
     // The saved name (without an added date) becomes the project name, stored in the file too.
     const previousName = S.project.projectName;
     S.project.projectName = request.name; $('projectName').value = request.name;
     const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
-    try { await J.saveFile(request.filename, await J.packProject(project, audio)); autosave(); }
-    catch (err) { S.project.projectName = previousName; $('projectName').value = previousName || ''; toast(J.mediaLabel('保存できませんでした：', 'Could not save: ') + err.message); }
+    try {
+      const packed = await J.packProject(project, audio);
+      if (window.jizuraDesktop && typeof window.jizuraDesktop.saveProjectFile === 'function') {
+        const res = await window.jizuraDesktop.saveProjectFile(request.filename, packed);
+        if (!res || res.canceled) {
+          S.project.projectName = previousName; $('projectName').value = previousName || '';
+          if (typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
+            window.jizuraDesktop.cancelSaveAndClose();
+          }
+          return;
+        }
+        if (res.error) {
+          throw new Error(res.error);
+        }
+        if (res.name) {
+          S.project.projectName = res.name; $('projectName').value = res.name;
+        }
+      } else {
+        await J.saveFile(request.filename, packed);
+      }
+      flushSave();
+      if (window.jizuraDesktop && typeof window.jizuraDesktop.notifyProjectSaved === 'function') {
+        window.jizuraDesktop.notifyProjectSaved();
+      }
+    }
+    catch (err) {
+      S.project.projectName = previousName; $('projectName').value = previousName || '';
+      toast(J.mediaLabel('保存できませんでした：', 'Could not save: ') + err.message);
+      if (window.jizuraDesktop && typeof window.jizuraDesktop.cancelSaveAndClose === 'function') {
+        window.jizuraDesktop.cancelSaveAndClose();
+      }
+    }
     finally { S.projectBusy = false; $('btnSave').disabled = false; }
   });
   $('btnSaveSettings').addEventListener('click', async () => {

@@ -15,6 +15,16 @@ const jizuraDesktop = {
     return await ipcRenderer.invoke('desktop:getInitialProjectData');
   },
 
+  saveProjectFile: async (defaultName, arrayBuffer) => {
+    if (!(arrayBuffer instanceof ArrayBuffer)) {
+      throw new TypeError('Invalid arguments for saveProjectFile: arrayBuffer must be an ArrayBuffer');
+    }
+    return await ipcRenderer.invoke('desktop:saveProjectFile', {
+      defaultName: String(defaultName || 'project.lyricfx'),
+      buffer: arrayBuffer
+    });
+  },
+
   setDirtyState: async (dirty) => {
     return await ipcRenderer.invoke('desktop:setDirtyState', !!dirty);
   },

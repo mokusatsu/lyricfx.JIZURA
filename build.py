@@ -141,7 +141,7 @@ def build_electron(out_dir):
 
         # Content-Security-Policy for Electron:
         # script-src 'self' with local external scripts
-        csp = "default-src 'self' data: blob: https:; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; media-src 'self' blob: data: jizura-asset:;"
+        csp = "default-src 'self' data: blob: https:; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; media-src 'self' blob: data: jizura-asset:; connect-src 'self' data: blob: https: jizura-asset:;"
 
         html = f'''<!doctype html>
 <html lang="{lang}">

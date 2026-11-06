@@ -1,5 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain, protocol, shell, net } = require('electron');
 const path = require('node:path');
+const { pathToFileURL } = require('node:url');
 const fs = require('node:fs');
 const os = require('node:os');
 const crypto = require('node:crypto');
@@ -53,7 +54,7 @@ function cleanupStaleSessions() {
         try {
           const stat = fs.statSync(dirPath);
           const ageMs = now - stat.mtimeMs;
-          if ((isDead && ageMs > 600000) || ageMs > 86400000) {
+          if (isDead && ageMs > 600000) {
             fs.rmSync(dirPath, { recursive: true, force: true });
           }
         } catch (e) {}
@@ -194,7 +195,8 @@ function setupAssetProtocol() {
       if (!asset) {
         return new Response('Asset not found', { status: 404 });
       }
-      return net.fetch(`file:///${asset.filePath.replace(/\\/g, '/')}`);
+      const fileUrl = pathToFileURL(asset.filePath).toString();
+      return net.fetch(fileUrl);
     } catch (e) {
       return new Response(e.message, { status: 500 });
     }
@@ -203,6 +205,31 @@ function setupAssetProtocol() {
 
 // Setup IPC handlers
 function setupIpcHandlers() {
+  ipcMain.handle('desktop:saveProjectFile', async (event, { defaultName, buffer }) => {
+    const result = await dialog.showSaveDialog(mainWindow, {
+      title: 'プロジェクトを保存',
+      defaultPath: defaultName || 'project.lyricfx',
+      filters: [
+        { name: 'lyricfx Project (*.lyricfx)', extensions: ['lyricfx'] },
+        { name: 'Legacy Project (*.jizuraichi)', extensions: ['jizuraichi'] },
+        { name: 'All Files (*.*)', extensions: ['*'] }
+      ]
+    });
+
+    if (result.canceled || !result.filePath) {
+      return { canceled: true };
+    }
+
+    try {
+      fs.writeFileSync(result.filePath, Buffer.from(buffer));
+      isProjectDirty = false;
+      const base = path.basename(result.filePath, path.extname(result.filePath));
+      return { canceled: false, filePath: result.filePath, name: base };
+    } catch (err) {
+      return { canceled: false, error: err.message };
+    }
+  });
+
   ipcMain.handle('desktop:capabilities', async () => {
     return await nativeJobs.getCapabilities();
   });

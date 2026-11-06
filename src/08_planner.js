@@ -125,13 +125,16 @@ J.parseSongcutLRC = (raw) => {
     // Strip trailing <mm:ss.xx> tag if present (value ignored per specification)
     body = body.replace(/<(\d+):(\d+(?:[.:]\d+)?)>$/, '');
 
-    // Restore escapes: \n -> newline, \\ -> backslash
-    body = body.replace(/\\\\/g, '\uE000').replace(/\\n/g, '\n');
+    // Songcut escapes: \n means newline within phrase, \\ means literal backslash.
+    // In JIZURA's lyric editor (where 1 physical line = 1 phrase), a newline within a phrase
+    // is represented as the escape sequence '\n' (backslash + 'n').
+    // Emitting a real newline would split the phrase across lines and break timestamping.
+    body = body.replace(/\\\\/g, '\uE000').replace(/\\n/g, '\uE00D');
     const specialChars = ['#', '[', ']', '|', '!', '！', '*', '/', '{', '}', '~', ':'];
     for (const ch of specialChars) {
       body = body.split(ch).join('\\' + ch);
     }
-    body = body.replace(/\uE000/g, '\\\\');
+    body = body.replace(/\uE00D/g, '\\n').replace(/\uE000/g, '\\\\');
 
     parsedEntries.push({
       startTime,

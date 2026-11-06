@@ -45,8 +45,16 @@ assert.strictEqual(res1.entries[1].startTime, 5.50, 'Entry 1 start time should b
 assert.strictEqual(res1.entries[0].body.includes('<00:03.45>'), false, 'End tag should be stripped from body');
 // Verify internal < 2 > in lyric text is preserved
 assert.strictEqual(res1.entries[1].body.includes('< 2 >'), true, 'Internal bracket-like text should be preserved');
-// Verify newlines and backslashes are properly restored/escaped
-assert.strictEqual(res1.entries[0].body.includes('\n'), true, 'Escaped newline should be converted to literal newline');
+// In rawLrcText, \n is represented as \n escape so it doesn't split lines in JIZURA editor
+assert.strictEqual(res1.rawLrcText.split('\n').length, 2, 'rawLrcText should contain exactly 2 physical lines');
+
+// Now verify downstream J.parseLyrics(res1.rawLrcText)
+const downstream = J.parseLyrics(res1.rawLrcText);
+assert.strictEqual(downstream.lines.length, 2, 'downstream J.parseLyrics should produce exactly 2 phrase lines');
+assert.strictEqual(downstream.lines[0].lrc, 1.23, 'Phrase 0 must keep timestamp 1.23');
+assert.strictEqual(downstream.lines[0].text, 'Hello World\nNext Line', 'Phrase 0 text should contain restored newline');
+assert.strictEqual(downstream.lines[1].lrc, 5.50, 'Phrase 1 must keep timestamp 5.50');
+assert.strictEqual(downstream.lines[1].text.includes('\\ escaped'), true, 'Phrase 1 text should contain literal backslash');
 
 // 2. End tag with time EARLIER than start time: per specification, must NOT be rejected!
 const lrcSample2 = `[00:10.00]<00:10.00>Backward end time<00:02.00>`;
@@ -63,6 +71,10 @@ assert.strictEqual(res3.ok, true);
 // In the raw compiled lyric text, markup characters should be escaped with backslash
 assert.strictEqual(res3.entries[0].body.includes('\\*Not Emphasized\\*'), true, 'Asterisks should be escaped');
 assert.strictEqual(res3.entries[0].body.includes('\\|Not Note\\|'), true, 'Pipe should be escaped');
+
+const downstreamMarkup = J.parseLyrics(res3.rawLrcText);
+assert.strictEqual(downstreamMarkup.lines[0].text, '*Not Emphasized* and ~Not Soft~ and |Not Note|! and {Not Group}');
+assert.strictEqual(downstreamMarkup.lines[0].emph.length, 0, 'Should not produce emphasis');
 
 // 4. All-or-nothing validation on invalid format: 1 broken line halts entire parse
 const lrcInvalid = `[00:01.00]<00:01.00>Line 1<00:02.00>

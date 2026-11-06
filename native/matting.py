@@ -83,7 +83,7 @@ def ensure_model_file(model_dir=None):
                 owner_pid = data.get("pid", 0)
                 owner_time = data.get("time", 0)
                 age = time.time() - owner_time
-                if not is_pid_alive(owner_pid) or age > 600:
+                if not is_pid_alive(owner_pid):
                     is_stale = True
             except Exception:
                 is_stale = True

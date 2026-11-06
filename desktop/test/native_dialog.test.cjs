@@ -11,12 +11,12 @@ try {
   const jobs = new NativeJobs({ appDataDir: tempDir });
 
   // 1. Unicode & special characters in filename
-  const unicodeFile = path.join(tempDir, 'テスト 動画_sample 🚀.mp4');
+  const unicodeFile = path.join(tempDir, 'テスト #1 100% 動画_sample 🚀.mp4');
   fs.writeFileSync(unicodeFile, Buffer.from('dummy video content for testing'));
 
-  const desc1 = jobs.registerAssetFile(unicodeFile, 'video/mp4', 'テスト 動画_sample 🚀.mp4');
+  const desc1 = jobs.registerAssetFile(unicodeFile, 'video/mp4', 'テスト #1 100% 動画_sample 🚀.mp4');
   assert.ok(desc1.assetToken, 'assetToken must be generated');
-  assert.equal(desc1.name, 'テスト 動画_sample 🚀.mp4');
+  assert.equal(desc1.name, 'テスト #1 100% 動画_sample 🚀.mp4');
   assert.equal(desc1.type, 'video/mp4');
   assert.equal(desc1.size, 31);
 
@@ -25,6 +25,9 @@ try {
   assert.ok(asset1, 'Asset must be found by token');
   assert.ok(fs.existsSync(asset1.filePath), 'Cached file must exist');
   assert.equal(fs.readFileSync(asset1.filePath).toString(), 'dummy video content for testing');
+  const fileUrl = require('url').pathToFileURL(asset1.filePath).toString();
+  assert.ok(fileUrl.includes('%23'), 'Hash (#) must be URL-escaped to %23');
+  assert.ok(fileUrl.includes('%25'), 'Percent (%) must be URL-escaped to %25');
 
   // 2. Fallback MIME detection from extension
   const imageFile = path.join(tempDir, 'image.PNG');
