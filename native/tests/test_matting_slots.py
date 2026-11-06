@@ -110,6 +110,59 @@ class TestMattingSlots(unittest.TestCase):
         self.assertGreater(r, 200, f"Expected red pixel at 1.0s, but got R={r}, G={g}, B={b}")
         self.assertLess(b, 50, f"Expected red pixel at 1.0s, but got R={r}, G={g}, B={b}")
 
+    def test_streaming_frame_sequence_accuracy(self):
+        # Regression test for 1-frame offset bug in streaming decoder
+        from native.matting import resolve_system_ffmpeg, run_matting
+        from native.matte_format import unpack_jizmat
+        ffmpeg = resolve_system_ffmpeg()
+        test_video = os.path.join(self.tmp_dir, "stream_seq_test.mp4")
+
+        # 2-second video at 2fps:
+        # Slot 0 (0.0s), Slot 1 (0.5s): Pure RED
+        # Slot 2 (1.0s), Slot 3 (1.5s): Pure BLUE
+        subprocess.run([
+            ffmpeg, "-y",
+            "-f", "lavfi", "-i", "color=c=red:s=64x64:d=1:r=2",
+            "-f", "lavfi", "-i", "color=c=blue:s=64x64:d=1:r=2",
+            "-filter_complex", "[0:v][1:v]concat=n=2:v=1:a=0[v]",
+            "-map", "[v]", "-pix_fmt", "yuv420p", test_video
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+        # Hook or capture intermediate frames
+        out_file = os.path.join(self.tmp_dir, "stream_seq.jizmat")
+        config = {
+            "sourceVideo": test_video,
+            "outputFile": out_file,
+            "profile": "rvm-mobilenetv3-fp32-p512-r05-v1",
+            "fps": 2,
+            "duration": 2.0,
+            "slots": [0, 1, 2, 3],
+            "sourceId": "seq-test"
+        }
+
+        # Also directly test streaming decoder sequential frames
+        from native.matting import FFmpegStreamDecoder
+        dec = FFmpegStreamDecoder(test_video, 64, 64, fps=2, start_time=0.0)
+        frames = [dec.read_frame() for _ in range(4)]
+        dec.close()
+
+        self.assertEqual(len(frames), 4)
+        # Frame 0 (0.0s) & 1 (0.5s) must be RED
+        self.assertGreater(frames[0][0], 200, "Frame 0 must be red")
+        self.assertLess(frames[0][2], 50, "Frame 0 must not be blue")
+        self.assertGreater(frames[1][0], 200, "Frame 1 must be red")
+        self.assertLess(frames[1][2], 50, "Frame 1 must not be blue")
+
+        # Frame 2 (1.0s) & 3 (1.5s) must be BLUE
+        self.assertGreater(frames[2][2], 200, "Frame 2 must be blue")
+        self.assertLess(frames[2][0], 50, "Frame 2 must not be red")
+        self.assertGreater(frames[3][2], 200, "Frame 3 must be blue")
+        self.assertLess(frames[3][0], 50, "Frame 3 must not be red")
+
+        # Verify run_matting completes without error
+        res = run_matting(config)
+        self.assertEqual(res["status"], "completed")
+
     def test_missing_input_file_raises_error(self):
         out_file = os.path.join(self.tmp_dir, "missing.jizmat")
         config = {

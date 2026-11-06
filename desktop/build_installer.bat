@@ -17,8 +17,8 @@ call npm install
 if errorlevel 1 goto :install_error
 
 :build_worker
-echo [INFO] ネイティブワーカーをビルド中 (npm run build:worker -- --backend=%TARGET_BACKEND%)...
-call npm run build:worker -- --backend=%TARGET_BACKEND%
+echo [INFO] ネイティブワーカーをビルド中 (npm run build:worker -- --backend=%TARGET_BACKEND% --install)...
+call npm run build:worker -- --backend=%TARGET_BACKEND% --install
 if errorlevel 1 goto :worker_error
 
 :build_dist

@@ -282,7 +282,12 @@ class FramePrefetcher:
         while not self.stop_event.is_set():
             frame = self.decoder.read_frame()
             if frame is None:
-                self.queue.put(None)
+                while not self.stop_event.is_set():
+                    try:
+                        self.queue.put(None, timeout=0.1)
+                        break
+                    except queue.Full:
+                        continue
                 break
             while not self.stop_event.is_set():
                 try:
@@ -299,13 +304,15 @@ class FramePrefetcher:
 
     def close(self):
         self.stop_event.set()
+        # Drain queue so worker thread doesn't block on full queue
         try:
             while not self.queue.empty():
                 self.queue.get_nowait()
         except Exception:
             pass
         self.decoder.close()
-        self.thread.join(timeout=1)
+        if self.thread.is_alive():
+            self.thread.join(timeout=1.0)
 
 def get_ort_session(model_path=None, prefer_gpu=True, preferred_backend=None):
     import onnxruntime as ort
@@ -457,15 +464,17 @@ def run_matting(config, progress_cb=None):
     # Streaming video decoder & prefetcher
     prefetcher = None
     stream_decoder = None
+    stream_expected_slot = None
 
     def start_stream_at_slot(slot_num):
-        nonlocal stream_decoder, prefetcher
+        nonlocal stream_decoder, prefetcher, stream_expected_slot
         if prefetcher:
             prefetcher.close()
             prefetcher = None
         start_sec = max(0.0, float(slot_num) / fps)
         stream_decoder = FFmpegStreamDecoder(source_video, width, height, fps=fps, start_time=start_sec)
         prefetcher = FramePrefetcher(stream_decoder, maxsize=4)
+        stream_expected_slot = slot_num
 
     if not is_image and len(slots) >= 1:
         start_stream_at_slot(slots[0])
@@ -483,8 +492,8 @@ def run_matting(config, progress_cb=None):
             is_continuous = (slot == last_slot + 1)
             if not is_continuous:
                 r1, r2, r3, r4 = None, None, None, None
-                # If gap between slots is more than 1 frame, restart stream decoder at target_time
-                if not is_image and last_slot != -999:
+                # If discontinuous gap occurred and stream is out of sync, restart stream at slot
+                if not is_image and stream_expected_slot != slot:
                     start_stream_at_slot(slot)
             last_slot = slot
 
@@ -492,8 +501,13 @@ def run_matting(config, progress_cb=None):
             rgb_bytes = None
             if is_image:
                 rgb_bytes = cached_image_frame
-            elif prefetcher and is_continuous:
+            elif prefetcher and slot == stream_expected_slot:
                 rgb_bytes = prefetcher.get_frame(timeout=1.0)
+                if rgb_bytes is not None and len(rgb_bytes) == width * height * 3:
+                    stream_expected_slot += 1
+                else:
+                    rgb_bytes = None
+                    stream_expected_slot = None
 
             # Fallback to precise frame decode if stream ran out or missed
             if rgb_bytes is None or len(rgb_bytes) != width * height * 3:
