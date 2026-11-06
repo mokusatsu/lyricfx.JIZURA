@@ -51,12 +51,13 @@ cd desktop
 npm install
 npm start
 ```
+または、`desktop/start.bat` をダブルクリックしてワンクリック起動できます（初回起動時は自動で `npm install` も実行されます）。
 
 ### パッケージング・配布用バイナリ生成
 ```bash
 cd desktop
-npm run package   # 展開版ディレクトリの作成
-npm run dist      # NSIS インストーラー / 配布パッケージの生成
+npm run package   # 展開版ディレクトリの作成（desktop/package_and_run.bat でもビルド＆起動可能）
+npm run dist      # NSIS インストーラー生成（desktop/build_installer.bat でも生成可能）
 ```
 
 ---
