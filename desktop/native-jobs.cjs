@@ -159,6 +159,33 @@ class NativeJobs {
     });
   }
 
+  async registerAssetFileAsync(sourcePath, mimeType, displayName, options = {}) {
+    if (!fs.existsSync(sourcePath)) {
+      throw new Error(`File does not exist: ${sourcePath}`);
+    }
+    const stat = await fs.promises.stat(sourcePath);
+    const token = crypto.randomUUID();
+    const isVideo = mimeType ? mimeType.startsWith('video/') : /\.(mp4|webm|mov)$/i.test(sourcePath);
+
+    let assetFilePath = sourcePath;
+    if (!options.noCopy) {
+      const ext = path.extname(sourcePath) || (isVideo ? '.mp4' : '.png');
+      const cacheFile = path.join(this.cacheDir, `${token}${ext}`);
+      // Non-blocking async copy to prevent freezing Electron main thread on large video files
+      await fs.promises.copyFile(sourcePath, cacheFile);
+      assetFilePath = cacheFile;
+    }
+
+    const descriptor = {
+      assetToken: token,
+      name: displayName || path.basename(sourcePath),
+      type: mimeType || (isVideo ? 'video/mp4' : 'image/png'),
+      size: stat.size
+    };
+    this.assets.set(token, { filePath: assetFilePath, ...descriptor });
+    return descriptor;
+  }
+
   registerAssetFile(sourcePath, mimeType, displayName, options = {}) {
     if (!fs.existsSync(sourcePath)) {
       throw new Error(`File does not exist: ${sourcePath}`);

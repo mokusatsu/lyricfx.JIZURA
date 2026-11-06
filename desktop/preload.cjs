@@ -27,11 +27,11 @@ const jizuraDesktop = {
       defaultName: String(defaultName || 'project.lyricfx')
     });
 
-    if (startRes.canceled || !startRes.saveToken) {
-      return { canceled: true };
-    }
     if (startRes.error) {
       return { canceled: false, error: startRes.error };
+    }
+    if (startRes.canceled || !startRes.saveToken) {
+      return { canceled: true };
     }
 
     const saveToken = startRes.saveToken;

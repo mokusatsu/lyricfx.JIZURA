@@ -44217,8 +44217,8 @@ function undoMove(direction) {
   U.list[U.i] = JSON.stringify(S.project);
   U.restoring = false; updateUndoButtons();
 }
-let saveTimer = 0;
-function autosave() { recordUndoState(); clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
+let saveTimer = 0, projectRevision = 0;
+function autosave() { projectRevision++; recordUndoState(); clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
 function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
 
@@ -49350,6 +49350,7 @@ function bind() {
       }
       return;
     }
+    const saveRevision = projectRevision;
     S.projectBusy = true; $('btnSave').disabled = true;
     // The saved name (without an added date) becomes the project name, stored in the file too.
     const previousName = S.project.projectName;
@@ -49377,8 +49378,15 @@ function bind() {
         await J.saveFile(request.filename, packed);
       }
       flushSave();
-      if (typeof J.platform?.notifyProjectSaved === 'function') {
-        J.platform.notifyProjectSaved();
+      if (projectRevision === saveRevision) {
+        if (typeof J.platform?.notifyProjectSaved === 'function') {
+          J.platform.notifyProjectSaved();
+        }
+      } else {
+        if (typeof J.platform?.cancelSaveAndClose === 'function') {
+          J.platform.cancelSaveAndClose();
+        }
+        toast(J.mediaLabel('保存中にNewの変更がありました。変更を再度保存してください。', 'Additional changes were made during save. Please save again.'));
       }
     }
     catch (err) {

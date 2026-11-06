@@ -103,6 +103,7 @@ let mainWindow = null;
 let nativeJobs = null;
 let isPickerOpen = false;
 let isProjectDirty = !!(cliOptions.newProject || cliOptions.videoPath || cliOptions.lrcPath);
+let dirtySequence = 0;
 let isQuittingConfirmed = false;
 
 function detectVideoMime(filePath) {
@@ -236,7 +237,7 @@ function setupIpcHandlers() {
 
     try {
       fs.writeFileSync(tmpPath, Buffer.alloc(0));
-      activeProjectSaves.set(saveToken, { targetPath, tmpPath, size: 0 });
+      activeProjectSaves.set(saveToken, { targetPath, tmpPath, size: 0, startDirtySeq: dirtySequence });
       return { canceled: false, saveToken, targetPath };
     } catch (err) {
       return { canceled: false, error: err.message };
@@ -267,15 +268,52 @@ function setupIpcHandlers() {
         return { error: `File size mismatch (expected ${expectedSize}, got ${stat.size})` };
       }
 
-      // Safe atomic replacement preserving existing file on write failure
-      try {
-        fs.renameSync(save.tmpPath, save.targetPath);
-      } catch (renameErr) {
-        fs.copyFileSync(save.tmpPath, save.targetPath);
-        try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+      // Safe atomic replacement with rollback to protect existing file
+      const backupPath = `${save.targetPath}.bak.${Date.now()}_${process.pid}`;
+      let hasBackup = false;
+      if (fs.existsSync(save.targetPath)) {
+        try {
+          fs.copyFileSync(save.targetPath, backupPath);
+          hasBackup = true;
+        } catch (bakErr) {
+          try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+          return { error: `バックアップの作成に失敗しました: ${bakErr.message}` };
+        }
       }
 
-      isProjectDirty = false;
+      try {
+        try {
+          fs.renameSync(save.tmpPath, save.targetPath);
+        } catch (renameErr) {
+          fs.copyFileSync(save.tmpPath, save.targetPath);
+          try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+        }
+
+        const finalStat = fs.statSync(save.targetPath);
+        if (expectedSize !== undefined && expectedSize !== null && finalStat.size !== expectedSize) {
+          throw new Error('書き込み後のファイルサイズが一致しません');
+        }
+
+        // Success: remove backup
+        if (hasBackup && fs.existsSync(backupPath)) {
+          try { fs.unlinkSync(backupPath); } catch (e) {}
+        }
+      } catch (replaceErr) {
+        // Rollback on failure: restore original file from backup!
+        if (hasBackup && fs.existsSync(backupPath)) {
+          try {
+            fs.copyFileSync(backupPath, save.targetPath);
+            fs.unlinkSync(backupPath);
+          } catch (rbErr) {}
+        }
+        try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+        return { error: `保存先ファイルの更新に失敗しました: ${replaceErr.message}` };
+      }
+
+      // Only clear dirty state if NO additional edits were made while save was in progress!
+      if (dirtySequence === save.startDirtySeq) {
+        isProjectDirty = false;
+      }
       const base = path.basename(save.targetPath, path.extname(save.targetPath));
       return { canceled: false, filePath: save.targetPath, name: base };
     } catch (err) {
@@ -365,7 +403,7 @@ function setupIpcHandlers() {
           videoError = `対応していない動画形式です: ${path.extname(cliOptions.videoPath)} (.mp4, .webm, .mov のみ対応)`;
         } else {
           try {
-            videoAsset = nativeJobs.registerAssetFile(cliOptions.videoPath, mime, path.basename(cliOptions.videoPath), { noCopy: true });
+            videoAsset = await nativeJobs.registerAssetFileAsync(cliOptions.videoPath, mime, path.basename(cliOptions.videoPath));
           } catch (err) {
             videoError = `動画の登録に失敗しました: ${err.message}`;
           }
@@ -406,6 +444,7 @@ function setupIpcHandlers() {
   });
 
   ipcMain.handle('desktop:setDirtyState', async (event, dirty) => {
+    dirtySequence++;
     isProjectDirty = !!dirty;
     return true;
   });
@@ -444,7 +483,7 @@ function setupIpcHandlers() {
         try {
           const ext = path.extname(filePath).toLowerCase();
           const mimeType = detectVideoMime(filePath) || 'image/png';
-          const desc = nativeJobs.registerAssetFile(filePath, mimeType);
+          const desc = await nativeJobs.registerAssetFileAsync(filePath, mimeType);
           descriptors.push(desc);
         } catch (err) {
           console.error(`Failed to register asset ${filePath}:`, err);
@@ -523,16 +562,25 @@ app.whenReady().then(() => {
 });
 
 app.on('will-quit', () => {
+  if (nativeJobs) {
+    try {
+      nativeJobs.cleanupAll();
+    } catch (e) {}
+  }
   if (currentSessionDir && fs.existsSync(currentSessionDir)) {
     try {
       fs.rmSync(currentSessionDir, { recursive: true, force: true });
-    } catch (e) {}
-  }
-});
-
-app.on('before-quit', () => {
-  if (nativeJobs) {
-    nativeJobs.cleanupAll();
+    } catch (e) {
+      // Windows lock release fallback: launch detached background cleanup
+      try {
+        const { spawn } = require('child_process');
+        spawn('cmd.exe', ['/c', 'timeout /t 1 /nobreak >nul & rmdir /s /q "' + currentSessionDir + '"'], {
+          detached: true,
+          stdio: 'ignore',
+          windowsHide: true
+        }).unref();
+      } catch (spawnErr) {}
+    }
   }
 });
 

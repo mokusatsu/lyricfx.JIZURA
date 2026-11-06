@@ -1,4 +1,4 @@
-import os, sys, time, json, math, subprocess, hashlib, urllib.request, queue, threading
+import os, sys, time, json, math, subprocess, hashlib, urllib.request, queue, threading, atexit
 from concurrent.futures import ThreadPoolExecutor
 
 MODEL_URL = "https://github.com/PeterL1n/RobustVideoMatting/releases/download/v1.0.0/rvm_mobilenetv3_fp32.onnx"
@@ -52,6 +52,28 @@ def ensure_model_file(model_dir=None):
     os.makedirs(model_dir, exist_ok=True)
     model_path = os.path.join(model_dir, "rvm_mobilenetv3_fp32.onnx")
     lock_path = os.path.join(model_dir, "rvm_mobilenetv3_fp32.onnx.lock")
+
+    # Clean up any leftover stale .tmp files from previous killed processes
+    try:
+        for fname in os.listdir(model_dir):
+            if fname.startswith("rvm_mobilenetv3_fp32.onnx.tmp."):
+                tmp_file = os.path.join(model_dir, fname)
+                try:
+                    parts = fname.split(".")
+                    stale = True
+                    if len(parts) >= 5:
+                        try:
+                            candidate_pid = int(parts[3])
+                            if is_pid_alive(candidate_pid):
+                                stale = False
+                        except Exception:
+                            stale = True
+                    if stale:
+                        os.remove(tmp_file)
+                except Exception:
+                    pass
+    except Exception:
+        pass
 
     # 1. Quick check: already downloaded and valid?
     if os.path.exists(model_path):
@@ -109,28 +131,40 @@ def ensure_model_file(model_dir=None):
             return model_path
         raise RuntimeError("モデル取得のロック待機がタイムアウトしました。先行プロセスの完了をお待ちいただくか再試行してください。")
 
+    # Double check after acquiring lock in case previous process finished downloading
+    if os.path.exists(model_path):
+        try:
+            if sha256_file(model_path).lower() == MODEL_SHA256.lower():
+                if os.path.exists(lock_path):
+                    try: os.remove(lock_path)
+                    except Exception: pass
+                return model_path
+        except Exception:
+            pass
+
     # 3. Download to process-specific temporary file
     temp_path = os.path.join(model_dir, f"rvm_mobilenetv3_fp32.onnx.tmp.{os.getpid()}.{time.time_ns()}")
+    def _cleanup_temp():
+        if os.path.exists(temp_path):
+            try: os.remove(temp_path)
+            except Exception: pass
+    atexit.register(_cleanup_temp)
+
     sys.stderr.write(f"Downloading RVM ONNX model from {MODEL_URL} to {model_path}...\n")
     try:
         urllib.request.urlretrieve(MODEL_URL, temp_path)
         download_hash = sha256_file(temp_path)
         if download_hash.lower() != MODEL_SHA256.lower():
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
+            _cleanup_temp()
             raise ValueError(f"Downloaded model checksum mismatch: expected {MODEL_SHA256}, got {download_hash}")
         # Atomic promotion to final model path
         os.replace(temp_path, model_path)
         return model_path
     except urllib.error.URLError as e:
-        if os.path.exists(temp_path):
-            try: os.remove(temp_path)
-            except Exception: pass
+        _cleanup_temp()
         raise RuntimeError(f"AI モデルのダウンロードに失敗しました。インターネット接続を確認してください: {e}")
     except Exception as e:
-        if os.path.exists(temp_path):
-            try: os.remove(temp_path)
-            except Exception: pass
+        _cleanup_temp()
         raise RuntimeError(f"AI モデルの準備中にエラーが発生しました: {e}")
     finally:
         # Release lock
@@ -139,6 +173,10 @@ def ensure_model_file(model_dir=None):
                 os.remove(lock_path)
             except Exception:
                 pass
+        try:
+            atexit.unregister(_cleanup_temp)
+        except Exception:
+            pass
 
 def resolve_system_ffmpeg():
     """
