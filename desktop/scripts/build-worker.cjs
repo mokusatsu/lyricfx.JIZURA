@@ -37,26 +37,42 @@ const workPath = path.resolve(desktopDir, 'build/worker');
 const reqFile = path.resolve(repoRoot, `native/requirements-${selectedBackend}.lock`);
 
 // Helper to check if current python environment satisfies backend
-function checkPythonBackend(backend) {
+function checkPythonBackend(backend, verbose = false) {
   const code = `
 import sys
 sys.path.insert(0, 'native')
-from matting import probe_backends
-backends = probe_backends()
-sys.stdout.write(','.join(backends))
+try:
+    from matting import probe_backends
+    backends = probe_backends()
+    sys.stdout.write(','.join(backends))
+except Exception as e:
+    sys.stderr.write(f"probe_backends failed: {e}\\n")
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
 `;
   try {
     const res = spawnSync('python', ['-c', code], {
       cwd: repoRoot,
       encoding: 'utf-8',
-      stdio: ['pipe', 'pipe', 'ignore']
+      stdio: ['pipe', 'pipe', 'pipe'],
+      env: { ...process.env, JIZURA_DEBUG: '1' }
     });
+    if (res.stderr && res.stderr.trim()) {
+      if (verbose || res.status !== 0) {
+        console.warn(`[JIZURA-PROBE] Python stderr:\n${res.stderr.trim()}`);
+      }
+    }
     if (res.status === 0 && res.stdout) {
       const available = res.stdout.trim().split(',').map(s => s.trim().toLowerCase());
       return available.includes(backend);
+    } else if (verbose || res.status !== 0) {
+      console.warn(`[JIZURA-PROBE] Python probe status: ${res.status}, stdout: '${res.stdout ? res.stdout.trim() : ''}'`);
     }
   } catch (e) {
-    // python invocation failed
+    if (verbose) {
+      console.warn(`[JIZURA-PROBE] Exception running python probe: ${e.message}`);
+    }
   }
   return false;
 }
@@ -77,11 +93,14 @@ if (!isReady) {
         console.error(`[!] Failed to install dependencies for ${selectedBackend}.`);
         process.exit(1);
       }
-      isReady = checkPythonBackend(selectedBackend);
+      isReady = checkPythonBackend(selectedBackend, true);
     } else {
       console.error(`[!] Requirements file not found: ${reqFile}`);
       process.exit(1);
     }
+  } else {
+    // Probe with verbose=true to display diagnostic output before exiting
+    checkPythonBackend(selectedBackend, true);
   }
 
   if (!isReady) {

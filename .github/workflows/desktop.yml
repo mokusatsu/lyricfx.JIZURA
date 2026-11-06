@@ -39,7 +39,7 @@ jobs:
 
       - name: Build and verify native worker binary (OpenVINO)
         run: |
-          node desktop/scripts/build-worker.cjs openvino
+          node desktop/scripts/build-worker.cjs openvino --install
 
       - name: Verify built worker reports OpenVINO backend
         run: |

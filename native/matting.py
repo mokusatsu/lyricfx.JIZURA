@@ -77,6 +77,22 @@ def resolve_system_ffmpeg():
         return found
     raise RuntimeError("FFmpeg not found on system PATH. Please install FFmpeg or set JIZURA_FFMPEG environment variable.")
 
+def _add_windows_dll_dir(path_dir):
+    """
+    Registers a DLL directory on Windows to allow dependency resolution for dynamically loaded plugins.
+    """
+    if not path_dir or not os.path.isdir(path_dir):
+        return
+    if sys.platform == "win32":
+        try:
+            if hasattr(os, "add_dll_directory"):
+                os.add_dll_directory(path_dir)
+        except Exception:
+            pass
+        curr_path = os.environ.get("PATH", "")
+        if path_dir not in curr_path:
+            os.environ["PATH"] = path_dir + os.pathsep + curr_path
+
 def _init_openvino_ep():
     """
     Ensures OpenVINO EP is registered if available (modular plugin or built-in).
@@ -85,15 +101,30 @@ def _init_openvino_ep():
         import onnxruntime as ort
         if "OpenVINOExecutionProvider" in ort.get_available_providers():
             return True
+
         # Try modular plugin EP
         try:
             import onnxruntime_ep_openvino as ep
             lib_path = ep.get_library_path()
             if os.path.exists(lib_path):
+                ep_dir = os.path.dirname(os.path.abspath(lib_path))
+                _add_windows_dll_dir(ep_dir)
+
+                # Also add openvino package libs if installed
+                try:
+                    import openvino
+                    ov_dir = os.path.dirname(os.path.abspath(openvino.__file__))
+                    _add_windows_dll_dir(ov_dir)
+                    _add_windows_dll_dir(os.path.join(ov_dir, "libs"))
+                except Exception:
+                    pass
+
                 ort.register_execution_provider_library(ep.get_ep_name(), lib_path)
-                return "OpenVINOExecutionProvider" in ort.get_available_providers()
-        except Exception:
-            pass
+                if "OpenVINOExecutionProvider" in ort.get_available_providers():
+                    return True
+        except Exception as e:
+            if os.environ.get("JIZURA_DEBUG") == "1":
+                sys.stderr.write(f"[OpenVINO-EP] Modular plugin registration warning: {e}\n")
 
         # Try bundled frozen location fallback
         if getattr(sys, 'frozen', False):
@@ -104,10 +135,19 @@ def _init_openvino_ep():
             ]
             for c in candidates:
                 if os.path.exists(c):
-                    ort.register_execution_provider_library("OpenVINOExecutionProvider", c)
-                    return "OpenVINOExecutionProvider" in ort.get_available_providers()
-    except Exception:
-        pass
+                    plugin_dir = os.path.dirname(os.path.abspath(c))
+                    _add_windows_dll_dir(plugin_dir)
+                    _add_windows_dll_dir(base_dir)
+                    try:
+                        ort.register_execution_provider_library("OpenVINOExecutionProvider", c)
+                        if "OpenVINOExecutionProvider" in ort.get_available_providers():
+                            return True
+                    except Exception as e:
+                        if os.environ.get("JIZURA_DEBUG") == "1":
+                            sys.stderr.write(f"[OpenVINO-EP] Frozen plugin registration warning: {e}\n")
+    except Exception as e:
+        if os.environ.get("JIZURA_DEBUG") == "1":
+            sys.stderr.write(f"[OpenVINO-EP] Global init warning: {e}\n")
     return False
 
 def probe_backends():
