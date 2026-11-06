@@ -6,7 +6,12 @@
   "type": "commonjs",
   "scripts": {
     "start": "electron .",
-    "build:worker": "pyinstaller ../native/worker.spec --distpath resources/native --workpath build/worker --clean -y",
+    "build:worker": "node scripts/build-worker.cjs",
+    "build:worker:openvino": "node scripts/build-worker.cjs openvino",
+    "build:worker:directml": "node scripts/build-worker.cjs directml",
+    "build:worker:cuda": "node scripts/build-worker.cjs cuda",
+    "build:worker:rocm": "node scripts/build-worker.cjs rocm",
+    "build:worker:cpu": "node scripts/build-worker.cjs cpu",
     "package": "electron-builder --dir",
     "dist": "electron-builder",
     "test": "node test/native_dialog.test.cjs && node test/ipc_security.test.cjs && node test/person_native_e2e.cjs && node test/export_native_e2e.cjs"

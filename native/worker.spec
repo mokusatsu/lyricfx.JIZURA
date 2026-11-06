@@ -1,24 +1,58 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os, sys
+from PyInstaller.utils.hooks import collect_all
 
 block_cipher = None
+
+backend = os.environ.get('JIZURA_BACKEND', 'openvino').lower()
+print(f"[*] Building native worker targeting backend: {backend}")
+
+extra_datas = [
+    ('models', 'models'),
+    ('resources-manifest.json', '.'),
+]
+extra_binaries = []
+extra_hiddenimports = [
+    'onnxruntime',
+    'PIL',
+    'numpy',
+    'matting',
+    'export_video',
+    'matte_format',
+]
+
+if backend == 'openvino':
+    for pkg in ['onnxruntime_ep_openvino', 'openvino']:
+        try:
+            d, b, h = collect_all(pkg)
+            extra_datas.extend(d)
+            extra_binaries.extend(b)
+            extra_hiddenimports.extend(h)
+        except Exception as e:
+            print(f"[!] Warning: failed to collect {pkg}: {e}")
+elif backend == 'directml':
+    try:
+        d, b, h = collect_all('onnxruntime')
+        extra_datas.extend(d)
+        extra_binaries.extend(b)
+        extra_hiddenimports.extend(h)
+    except Exception as e:
+        print(f"[!] Warning: failed to collect onnxruntime: {e}")
+elif backend in ('cuda', 'rocm'):
+    try:
+        d, b, h = collect_all('onnxruntime')
+        extra_datas.extend(d)
+        extra_binaries.extend(b)
+        extra_hiddenimports.extend(h)
+    except Exception as e:
+        print(f"[!] Warning: failed to collect onnxruntime: {e}")
 
 a = Analysis(
     ['worker.py'],
     pathex=['.'],
-    binaries=[],
-    datas=[
-        ('models', 'models'),
-        ('resources-manifest.json', '.'),
-    ],
-    hiddenimports=[
-        'onnxruntime',
-        'PIL',
-        'numpy',
-        'matting',
-        'export_video',
-        'matte_format',
-    ],
+    binaries=extra_binaries,
+    datas=extra_datas,
+    hiddenimports=extra_hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

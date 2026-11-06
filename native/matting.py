@@ -76,18 +76,60 @@ def resolve_system_ffmpeg():
         return found
     raise RuntimeError("FFmpeg not found on system PATH. Please install FFmpeg or set JIZURA_FFMPEG environment variable.")
 
+def _init_openvino_ep():
+    """
+    Ensures OpenVINO EP is registered if available (modular plugin or built-in).
+    """
+    try:
+        import onnxruntime as ort
+        if "OpenVINOExecutionProvider" in ort.get_available_providers():
+            return True
+        # Try modular plugin EP
+        try:
+            import onnxruntime_ep_openvino as ep
+            lib_path = ep.get_library_path()
+            if os.path.exists(lib_path):
+                ort.register_execution_provider_library(ep.get_ep_name(), lib_path)
+                return "OpenVINOExecutionProvider" in ort.get_available_providers()
+        except Exception:
+            pass
+
+        # Try bundled frozen location fallback
+        if getattr(sys, 'frozen', False):
+            base_dir = getattr(sys, '_MEIPASS', os.path.dirname(sys.executable))
+            candidates = [
+                os.path.join(base_dir, "onnxruntime_ep_openvino", "onnxruntime_providers_openvino_plugin.dll"),
+                os.path.join(base_dir, "onnxruntime_providers_openvino_plugin.dll"),
+            ]
+            for c in candidates:
+                if os.path.exists(c):
+                    ort.register_execution_provider_library("OpenVINOExecutionProvider", c)
+                    return "OpenVINOExecutionProvider" in ort.get_available_providers()
+    except Exception:
+        pass
+    return False
+
 def probe_backends():
     """
     Probes available hardware execution providers without requiring an ONNX model file.
+    Returns ordered list of available backends.
+    Priority order: openvino (default) -> directml -> cuda -> rocm -> cpu.
     """
     backends = ["cpu"]
     try:
         import onnxruntime as ort
+        _init_openvino_ep()
         available = ort.get_available_providers()
+
+        # Insert in ascending priority so highest priority ends up at index 0
+        if "ROCMExecutionProvider" in available:
+            backends.insert(0, "rocm")
+        if "CUDAExecutionProvider" in available:
+            backends.insert(0, "cuda")
         if "DmlExecutionProvider" in available:
             backends.insert(0, "directml")
-        elif "CUDAExecutionProvider" in available:
-            backends.insert(0, "cuda")
+        if "OpenVINOExecutionProvider" in available:
+            backends.insert(0, "openvino")
     except Exception:
         pass
     return backends
@@ -169,36 +211,79 @@ def decode_source_frame(source_path, target_time, width, height, fps=24, fallbac
     err = proc.stderr.decode('utf-8', errors='replace')
     raise RuntimeError(f"Failed to decode frame at {target_time}s from {source_path}:\n{err}")
 
-def get_ort_session(model_path=None, prefer_gpu=True):
+def get_ort_session(model_path=None, prefer_gpu=True, preferred_backend=None):
     import onnxruntime as ort
     if model_path is None:
         model_path = ensure_model_file()
 
+    _init_openvino_ep()
     available = ort.get_available_providers()
-    providers = []
-    backend = "CPU"
+
+    target_backend = (preferred_backend or os.environ.get("JIZURA_MATTE_BACKEND") or "").lower()
+
+    # Determine order of backends to try
+    candidate_backends = []
+    if target_backend:
+        candidate_backends.append(target_backend)
 
     if prefer_gpu:
-        if "DmlExecutionProvider" in available:
-            providers.append("DmlExecutionProvider")
-            backend = "DirectML"
-        elif "CUDAExecutionProvider" in available:
-            providers.append("CUDAExecutionProvider")
-            backend = "CUDA"
+        # Default priority: openvino -> directml -> cuda -> rocm
+        for b in ["openvino", "directml", "cuda", "rocm"]:
+            if b not in candidate_backends:
+                candidate_backends.append(b)
+    if "cpu" not in candidate_backends:
+        candidate_backends.append("cpu")
 
-    providers.append("CPUExecutionProvider")
+    for candidate in candidate_backends:
+        try:
+            if candidate == "openvino" and "OpenVINOExecutionProvider" in available:
+                # OpenVINO can target GPU or CPU devices via OrtEpDevice if available
+                if hasattr(ort, "get_ep_devices"):
+                    try:
+                        all_devices = ort.get_ep_devices()
+                        # Prefer GPU device (e.g. Intel Arc), then CPU (avoids dynamic shape compilation error on NPU)
+                        gpu_devs = [d for d in all_devices if d.ep_name == "OpenVINOExecutionProvider" and "GPU" in str(getattr(d.device, 'type', ''))]
+                        if gpu_devs:
+                            so = ort.SessionOptions()
+                            so.add_provider_for_devices(gpu_devs, {})
+                            sess = ort.InferenceSession(model_path, so)
+                            return sess, "OpenVINO (GPU)"
 
-    try:
-        sess = ort.InferenceSession(model_path, providers=providers)
-        actual = sess.get_providers()[0]
-        if "Dml" in actual: backend = "DirectML"
-        elif "CUDA" in actual: backend = "CUDA"
-        else: backend = "CPU"
-        return sess, backend
-    except Exception as e:
-        sys.stderr.write(f"GPU session creation failed ({e}), falling back to CPU...\n")
-        sess = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
-        return sess, "CPU"
+                        cpu_devs = [d for d in all_devices if d.ep_name == "OpenVINOExecutionProvider" and "CPU" in str(getattr(d.device, 'type', ''))]
+                        if cpu_devs:
+                            so = ort.SessionOptions()
+                            so.add_provider_for_devices(cpu_devs, {})
+                            sess = ort.InferenceSession(model_path, so)
+                            return sess, "OpenVINO (CPU)"
+                    except Exception as dev_err:
+                        sys.stderr.write(f"OpenVINO device targeting failed ({dev_err}), trying standard provider...\n")
+
+                # Fallback to standard provider list
+                sess = ort.InferenceSession(model_path, providers=["OpenVINOExecutionProvider", "CPUExecutionProvider"])
+                return sess, "OpenVINO"
+
+            elif candidate == "directml" and "DmlExecutionProvider" in available:
+                sess = ort.InferenceSession(model_path, providers=["DmlExecutionProvider", "CPUExecutionProvider"])
+                return sess, "DirectML"
+
+            elif candidate == "cuda" and "CUDAExecutionProvider" in available:
+                sess = ort.InferenceSession(model_path, providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
+                return sess, "CUDA"
+
+            elif candidate == "rocm" and "ROCMExecutionProvider" in available:
+                sess = ort.InferenceSession(model_path, providers=["ROCMExecutionProvider", "CPUExecutionProvider"])
+                return sess, "ROCm"
+
+            elif candidate == "cpu":
+                sess = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
+                return sess, "CPU"
+
+        except Exception as e:
+            sys.stderr.write(f"Session creation with {candidate} failed ({e}), trying next fallback...\n")
+
+    # Final fallback: pure CPU
+    sess = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
+    return sess, "CPU"
 
 def encode_white_alpha_png(width, height, alpha_bytes):
     try:
@@ -248,7 +333,7 @@ def run_matting(config, progress_cb=None):
 
     # 2. Setup Inference Session
     import numpy as np
-    sess, backend = get_ort_session(model_path, prefer_gpu=True)
+    sess, backend = get_ort_session(model_path, prefer_gpu=True, preferred_backend=config.get("backend"))
 
     width = 512
     height = 512

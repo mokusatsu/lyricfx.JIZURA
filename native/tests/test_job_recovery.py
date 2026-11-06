@@ -18,11 +18,21 @@ class TestJobRecovery(unittest.TestCase):
         shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
     def test_gpu_unavailable_falls_back_to_cpu(self):
-        # With real model, prefer_gpu should return either GPU backend or CPU fallback
+        # With real model, prefer_gpu should return either hardware backend (OpenVINO, DirectML, CUDA, ROCm) or CPU fallback
         model_path = ensure_model_file()
         sess, backend = get_ort_session(model_path, prefer_gpu=True)
         self.assertIsNotNone(sess)
-        self.assertIn(backend.lower(), ["cpu", "directml", "cuda"])
+        valid_backends = [
+            "cpu", "directml", "cuda", "rocm",
+            "openvino", "openvino (gpu)", "openvino (cpu)"
+        ]
+        self.assertIn(backend.lower(), valid_backends)
+
+    def test_explicit_backend_selection(self):
+        model_path = ensure_model_file()
+        sess_cpu, backend_cpu = get_ort_session(model_path, preferred_backend="cpu")
+        self.assertIsNotNone(sess_cpu)
+        self.assertEqual(backend_cpu.lower(), "cpu")
 
     def test_matting_completes_with_real_input(self):
         out_file = os.path.join(self.tmp_dir, "fallback_test.jizmat")
