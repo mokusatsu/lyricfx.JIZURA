@@ -7,7 +7,7 @@ if "%TARGET_BACKEND%"=="" set "TARGET_BACKEND=openvino"
 
 echo [JIZURA Desktop] 配布用インストーラー（Setup.exe）を生成します...
 echo [JIZURA Desktop] 対象バックエンド: %TARGET_BACKEND%
-echo   (変更例: build_installer.bat directml / cuda / rocm / cpu)
+echo   (変更例: build_installer.bat directml / cuda / cpu)
 echo.
 
 if exist "node_modules\electron-builder" goto :build_worker

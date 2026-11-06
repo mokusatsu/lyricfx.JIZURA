@@ -31,15 +31,23 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r native/requirements-cpu.lock pyinstaller
+          pip install -r native/requirements-openvino.lock pyinstaller
 
       - name: Prepare AI models and verify runtime resources
         run: |
           python tools/build_desktop_runtime.py
 
-      - name: Build native worker binary with PyInstaller
+      - name: Build and verify native worker binary (OpenVINO)
         run: |
-          pyinstaller native/worker.spec --distpath desktop/resources/native --workpath desktop/build/worker --clean -y
+          node desktop/scripts/build-worker.cjs openvino
+
+      - name: Verify built worker reports OpenVINO backend
+        run: |
+          $probe = & desktop/resources/native/worker/worker.exe probe | ConvertFrom-Json
+          if (-not ($probe.backends -contains "openvino")) {
+            throw "Worker failed to report 'openvino' in backends: $($probe.backends)"
+          }
+          Write-Host "[CI] Verified worker probe backends: $($probe.backends -join ', ')"
 
       - name: Build Web and Electron Assets
         run: |

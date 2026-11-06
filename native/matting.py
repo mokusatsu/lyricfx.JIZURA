@@ -113,7 +113,7 @@ def probe_backends():
     """
     Probes available hardware execution providers without requiring an ONNX model file.
     Returns ordered list of available backends.
-    Priority order: openvino (default) -> directml -> cuda -> rocm -> cpu.
+    Priority order: openvino (default) -> directml -> cuda -> cpu.
     """
     backends = ["cpu"]
     try:
@@ -122,8 +122,6 @@ def probe_backends():
         available = ort.get_available_providers()
 
         # Insert in ascending priority so highest priority ends up at index 0
-        if "ROCMExecutionProvider" in available:
-            backends.insert(0, "rocm")
         if "CUDAExecutionProvider" in available:
             backends.insert(0, "cuda")
         if "DmlExecutionProvider" in available:
@@ -227,8 +225,8 @@ def get_ort_session(model_path=None, prefer_gpu=True, preferred_backend=None):
         candidate_backends.append(target_backend)
 
     if prefer_gpu:
-        # Default priority: openvino -> directml -> cuda -> rocm
-        for b in ["openvino", "directml", "cuda", "rocm"]:
+        # Default priority: openvino -> directml -> cuda
+        for b in ["openvino", "directml", "cuda"]:
             if b not in candidate_backends:
                 candidate_backends.append(b)
     if "cpu" not in candidate_backends:
@@ -237,22 +235,30 @@ def get_ort_session(model_path=None, prefer_gpu=True, preferred_backend=None):
     for candidate in candidate_backends:
         try:
             if candidate == "openvino" and "OpenVINOExecutionProvider" in available:
-                # OpenVINO can target GPU or CPU devices via OrtEpDevice if available
+                # OpenVINO targets GPU or CPU devices via official OrtEpDevice metadata API
                 if hasattr(ort, "get_ep_devices"):
                     try:
                         all_devices = ort.get_ep_devices()
-                        # Prefer GPU device (e.g. Intel Arc), then CPU (avoids dynamic shape compilation error on NPU)
-                        gpu_devs = [d for d in all_devices if d.ep_name == "OpenVINOExecutionProvider" and "GPU" in str(getattr(d.device, 'type', ''))]
+                        openvino_devices = [d for d in all_devices if d.ep_name == "OpenVINOExecutionProvider"]
+
+                        # Check using official ep_metadata["ov_device"] with device.type fallback
+                        def is_device_match(dev, target_type):
+                            ov_dev = getattr(dev, "ep_metadata", {}).get("ov_device", "")
+                            if ov_dev.upper() == target_type:
+                                return True
+                            return target_type in str(getattr(getattr(dev, "device", None), "type", "")).upper()
+
+                        gpu_devs = [d for d in openvino_devices if is_device_match(d, "GPU")]
                         if gpu_devs:
                             so = ort.SessionOptions()
-                            so.add_provider_for_devices(gpu_devs, {})
+                            so.add_provider_for_devices([gpu_devs[0]], {})
                             sess = ort.InferenceSession(model_path, so)
                             return sess, "OpenVINO (GPU)"
 
-                        cpu_devs = [d for d in all_devices if d.ep_name == "OpenVINOExecutionProvider" and "CPU" in str(getattr(d.device, 'type', ''))]
+                        cpu_devs = [d for d in openvino_devices if is_device_match(d, "CPU")]
                         if cpu_devs:
                             so = ort.SessionOptions()
-                            so.add_provider_for_devices(cpu_devs, {})
+                            so.add_provider_for_devices([cpu_devs[0]], {})
                             sess = ort.InferenceSession(model_path, so)
                             return sess, "OpenVINO (CPU)"
                     except Exception as dev_err:
@@ -269,10 +275,6 @@ def get_ort_session(model_path=None, prefer_gpu=True, preferred_backend=None):
             elif candidate == "cuda" and "CUDAExecutionProvider" in available:
                 sess = ort.InferenceSession(model_path, providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
                 return sess, "CUDA"
-
-            elif candidate == "rocm" and "ROCMExecutionProvider" in available:
-                sess = ort.InferenceSession(model_path, providers=["ROCMExecutionProvider", "CPUExecutionProvider"])
-                return sess, "ROCm"
 
             elif candidate == "cpu":
                 sess = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])

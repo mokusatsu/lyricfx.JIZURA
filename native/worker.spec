@@ -38,7 +38,7 @@ elif backend == 'directml':
         extra_hiddenimports.extend(h)
     except Exception as e:
         print(f"[!] Warning: failed to collect onnxruntime: {e}")
-elif backend in ('cuda', 'rocm'):
+elif backend == 'cuda':
     try:
         d, b, h = collect_all('onnxruntime')
         extra_datas.extend(d)

@@ -18,12 +18,12 @@ class TestJobRecovery(unittest.TestCase):
         shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
     def test_gpu_unavailable_falls_back_to_cpu(self):
-        # With real model, prefer_gpu should return either hardware backend (OpenVINO, DirectML, CUDA, ROCm) or CPU fallback
+        # With real model, prefer_gpu should return either hardware backend (OpenVINO, DirectML, CUDA) or CPU fallback
         model_path = ensure_model_file()
         sess, backend = get_ort_session(model_path, prefer_gpu=True)
         self.assertIsNotNone(sess)
         valid_backends = [
-            "cpu", "directml", "cuda", "rocm",
+            "cpu", "directml", "cuda",
             "openvino", "openvino (gpu)", "openvino (cpu)"
         ]
         self.assertIn(backend.lower(), valid_backends)
