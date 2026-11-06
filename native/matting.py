@@ -96,6 +96,7 @@ def _add_windows_dll_dir(path_dir):
 def _init_openvino_ep():
     """
     Ensures OpenVINO EP is registered if available (modular plugin or built-in).
+    Returns True if OpenVINO EP is available or successfully registered.
     """
     try:
         import onnxruntime as ort
@@ -110,26 +111,18 @@ def _init_openvino_ep():
                 ep_dir = os.path.dirname(os.path.abspath(lib_path))
                 _add_windows_dll_dir(ep_dir)
 
-                # Also add openvino package libs if installed
                 try:
-                    import openvino
-                    ov_dir = os.path.dirname(os.path.abspath(openvino.__file__))
-                    _add_windows_dll_dir(ov_dir)
-                    _add_windows_dll_dir(os.path.join(ov_dir, "libs"))
-                except Exception:
-                    pass
-
-                ort.register_execution_provider_library(ep.get_ep_name(), lib_path)
-                if "OpenVINOExecutionProvider" in ort.get_available_providers():
+                    ort.register_execution_provider_library(ep.get_ep_name(), lib_path)
+                    # Succeeded registration without exception means OpenVINO plugin is validly loaded
                     return True
-                else:
-                    sys.stderr.write(f"[OpenVINO-EP] Registered {lib_path} but OpenVINOExecutionProvider not in available: {ort.get_available_providers()}\n")
+                except Exception as e:
+                    sys.stderr.write(f"[OpenVINO-EP] Modular plugin registration failed: {e}\n")
                     sys.stderr.flush()
             else:
                 sys.stderr.write(f"[OpenVINO-EP] Plugin file not found: {lib_path}\n")
                 sys.stderr.flush()
         except Exception as e:
-            sys.stderr.write(f"[OpenVINO-EP] Modular plugin registration failed: {e}\n")
+            sys.stderr.write(f"[OpenVINO-EP] Modular plugin import failed: {e}\n")
             sys.stderr.flush()
 
         # Try bundled frozen location fallback
@@ -146,8 +139,7 @@ def _init_openvino_ep():
                     _add_windows_dll_dir(base_dir)
                     try:
                         ort.register_execution_provider_library("OpenVINOExecutionProvider", c)
-                        if "OpenVINOExecutionProvider" in ort.get_available_providers():
-                            return True
+                        return True
                     except Exception as e:
                         sys.stderr.write(f"[OpenVINO-EP] Frozen plugin registration warning: {e}\n")
                         sys.stderr.flush()
@@ -165,7 +157,7 @@ def probe_backends():
     backends = ["cpu"]
     try:
         import onnxruntime as ort
-        _init_openvino_ep()
+        has_openvino = _init_openvino_ep()
         available = ort.get_available_providers()
 
         # Insert in ascending priority so highest priority ends up at index 0
@@ -173,7 +165,7 @@ def probe_backends():
             backends.insert(0, "cuda")
         if "DmlExecutionProvider" in available:
             backends.insert(0, "directml")
-        if "OpenVINOExecutionProvider" in available:
+        if has_openvino or "OpenVINOExecutionProvider" in available:
             backends.insert(0, "openvino")
     except Exception:
         pass
