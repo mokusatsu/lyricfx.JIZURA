@@ -35,28 +35,47 @@ class NativeJobs {
 
   _resolveWorker() {
     const exeName = process.platform === 'win32' ? 'worker.exe' : 'worker';
-    const candidates = [
-      process.env.JIZURA_WORKER,
-      process.resourcesPath ? path.join(process.resourcesPath, 'native', 'worker', exeName) : null,
-      path.join(__dirname, 'resources', 'native', 'worker', exeName),
-      path.join(__dirname, '..', 'desktop', 'resources', 'native', 'worker', exeName),
-      path.join(__dirname, '..', 'native', 'dist', 'worker', exeName)
-    ].filter(Boolean);
+    let appPath = null;
+    try {
+      const electron = require('electron');
+      if (electron && electron.app) {
+        appPath = electron.app.getAppPath();
+      }
+    } catch (e) {}
 
-    for (const p of candidates) {
+    const candidates = [];
+    if (process.env.JIZURA_WORKER) {
+      candidates.push(process.env.JIZURA_WORKER);
+    }
+    if (appPath) {
+      candidates.push(path.join(path.dirname(appPath), 'native', 'worker', exeName));
+      candidates.push(path.join(appPath, 'resources', 'native', 'worker', exeName));
+      candidates.push(path.join(appPath, 'desktop', 'resources', 'native', 'worker', exeName));
+    }
+    candidates.push(path.join(__dirname, 'resources', 'native', 'worker', exeName));
+    candidates.push(path.join(__dirname, '..', 'desktop', 'resources', 'native', 'worker', exeName));
+    candidates.push(path.join(__dirname, '..', 'native', 'dist', 'worker', exeName));
+
+    for (const p of candidates.filter(Boolean)) {
       if (fs.existsSync(p)) {
         return { isBinary: true, command: p, argsPrefix: [] };
       }
     }
 
-    // Python script fallback
     const python = this._resolvePython();
     const workerScript = path.join(__dirname, '..', 'native', 'worker.py');
-    return { isBinary: false, command: python, argsPrefix: [workerScript] };
+    if (fs.existsSync(workerScript)) {
+      return { isBinary: false, command: python, argsPrefix: [workerScript] };
+    }
+
+    return { isBinary: false, command: null, argsPrefix: [] };
   }
 
   spawnWorker(args, options = {}) {
     const worker = this._resolveWorker();
+    if (!worker.command) {
+      throw new Error('Native worker executable or script not found.');
+    }
     const fullArgs = [...worker.argsPrefix, ...args];
     return spawn(worker.command, fullArgs, {
       stdio: ['pipe', 'pipe', 'pipe'],
@@ -67,6 +86,9 @@ class NativeJobs {
 
   execWorker(args, options = {}, callback) {
     const worker = this._resolveWorker();
+    if (!worker.command) {
+      return callback(new Error('Native worker executable or script not found.'));
+    }
     const fullArgs = [...worker.argsPrefix, ...args];
     return execFile(worker.command, fullArgs, {
       windowsHide: true,
@@ -76,15 +98,33 @@ class NativeJobs {
 
   async getCapabilities() {
     return new Promise((resolve) => {
+      const worker = this._resolveWorker();
+      if (!worker.command) {
+        return resolve({
+          version: 1,
+          name: 'desktop',
+          workerAvailable: false,
+          nativeMatting: false,
+          nativeExport: false,
+          ffmpegAvailable: false,
+          reason: 'ネイティブワーカーが見つかりません。人物切り抜きと動画出力は利用できません。',
+          backends: [],
+          encoders: []
+        });
+      }
+
       this.execWorker(['probe'], { timeout: 10000 }, (err, stdout) => {
         if (err) {
           console.warn('Worker probe failed:', err.message);
           return resolve({
             version: 1,
             name: 'desktop',
-            nativeMatting: true,
+            workerAvailable: false,
+            nativeMatting: false,
             nativeExport: false,
-            backends: ['cpu'],
+            ffmpegAvailable: false,
+            reason: `ネイティブワーカーの初期化プローブに失敗しました: ${err.message}`,
+            backends: [],
             encoders: []
           });
         }
@@ -94,17 +134,23 @@ class NativeJobs {
           resolve({
             version: 1,
             name: 'desktop',
+            workerAvailable: true,
             nativeMatting: true,
             nativeExport: hasEncoders,
+            ffmpegAvailable: hasEncoders,
+            ffmpegReason: hasEncoders ? null : 'FFmpeg が見つかりません。動画出力には FFmpeg が必要です。',
             ...res
           });
         } catch (e) {
           resolve({
             version: 1,
             name: 'desktop',
-            nativeMatting: true,
+            workerAvailable: false,
+            nativeMatting: false,
             nativeExport: false,
-            backends: ['cpu'],
+            ffmpegAvailable: false,
+            reason: `ネイティブワーカーの応答解析に失敗しました: ${e.message}`,
+            backends: [],
             encoders: []
           });
         }
@@ -112,25 +158,29 @@ class NativeJobs {
     });
   }
 
-  registerAssetFile(sourcePath, mimeType, displayName) {
+  registerAssetFile(sourcePath, mimeType, displayName, options = {}) {
     if (!fs.existsSync(sourcePath)) {
       throw new Error(`File does not exist: ${sourcePath}`);
     }
     const stat = fs.statSync(sourcePath);
     const token = crypto.randomUUID();
-    const ext = path.extname(sourcePath) || (mimeType.startsWith('video/') ? '.mp4' : '.png');
-    const cacheFile = path.join(this.cacheDir, `${token}${ext}`);
+    const isVideo = mimeType ? mimeType.startsWith('video/') : /\.(mp4|webm|mov)$/i.test(sourcePath);
 
-    // Copy to cache directory so source mutations or moving does not corrupt ongoing jobs
-    fs.copyFileSync(sourcePath, cacheFile);
+    let assetFilePath = sourcePath;
+    if (!isVideo && !options.noCopy) {
+      const ext = path.extname(sourcePath) || '.png';
+      const cacheFile = path.join(this.cacheDir, `${token}${ext}`);
+      fs.copyFileSync(sourcePath, cacheFile);
+      assetFilePath = cacheFile;
+    }
 
     const descriptor = {
       assetToken: token,
       name: displayName || path.basename(sourcePath),
-      type: mimeType || (sourcePath.match(/\.(mp4|webm|mov)$/i) ? 'video/mp4' : 'image/png'),
+      type: mimeType || (isVideo ? 'video/mp4' : 'image/png'),
       size: stat.size
     };
-    this.assets.set(token, { filePath: cacheFile, ...descriptor });
+    this.assets.set(token, { filePath: assetFilePath, ...descriptor });
     return descriptor;
   }
 

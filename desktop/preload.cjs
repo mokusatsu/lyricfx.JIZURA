@@ -11,6 +11,27 @@ const jizuraDesktop = {
     return await ipcRenderer.invoke('desktop:capabilities');
   },
 
+  getInitialProjectData: async () => {
+    return await ipcRenderer.invoke('desktop:getInitialProjectData');
+  },
+
+  setDirtyState: async (dirty) => {
+    return await ipcRenderer.invoke('desktop:setDirtyState', !!dirty);
+  },
+
+  confirmQuit: async () => {
+    return await ipcRenderer.invoke('desktop:confirmQuit');
+  },
+
+  onRequestSaveAndClose: (callback) => {
+    if (typeof callback !== 'function') return () => {};
+    const listener = () => callback();
+    ipcRenderer.on('desktop:requestSaveAndClose', listener);
+    return () => {
+      ipcRenderer.removeListener('desktop:requestSaveAndClose', listener);
+    };
+  },
+
   pickMedia: async (options = {}) => {
     return await ipcRenderer.invoke('desktop:pickMedia', {
       layer: String(options?.layer || 'media')

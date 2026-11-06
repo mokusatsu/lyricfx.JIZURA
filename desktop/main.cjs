@@ -1,6 +1,88 @@
 const { app, BrowserWindow, dialog, ipcMain, protocol, shell, net } = require('electron');
 const path = require('node:path');
+const fs = require('node:fs');
+const os = require('node:os');
+const crypto = require('node:crypto');
 const { NativeJobs } = require('./native-jobs.cjs');
+
+// Parse CLI options (handles shared Electron entrypoint and direct invocation)
+function parseCliArgs(argv) {
+  let args = argv.slice(1);
+  if (args.length > 0) {
+    const first = args[0].toLowerCase();
+    if (first.endsWith('.asar') || first.endsWith('main.cjs') || first === '.' || first.endsWith('electron.exe') || first.endsWith('lyricfx-jizura.exe')) {
+      args = args.slice(1);
+    }
+  }
+  const opts = { newProject: false, videoPath: null, lrcPath: null };
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (a === '--new-project') {
+      opts.newProject = true;
+    } else if (a === '--video' && i + 1 < args.length) {
+      opts.videoPath = path.resolve(args[++i]);
+    } else if (a === '--lrc' && i + 1 < args.length) {
+      opts.lrcPath = path.resolve(args[++i]);
+    }
+  }
+  return opts;
+}
+
+const cliOptions = parseCliArgs(process.argv);
+let currentSessionDir = null;
+
+// Clean up dead session directories without touching active sessions or user data
+function cleanupStaleSessions() {
+  try {
+    const tmp = os.tmpdir();
+    const entries = fs.readdirSync(tmp);
+    const now = Date.now();
+    for (const name of entries) {
+      if (name.startsWith('lyricfx-session-')) {
+        const parts = name.split('-');
+        const pid = parseInt(parts[2], 10);
+        const dirPath = path.join(tmp, name);
+        let isDead = false;
+        if (!isNaN(pid)) {
+          try {
+            process.kill(pid, 0);
+          } catch (e) {
+            if (e.code === 'ESRCH') isDead = true;
+          }
+        }
+        try {
+          const stat = fs.statSync(dirPath);
+          const ageMs = now - stat.mtimeMs;
+          if ((isDead && ageMs > 600000) || ageMs > 86400000) {
+            fs.rmSync(dirPath, { recursive: true, force: true });
+          }
+        } catch (e) {}
+      }
+    }
+  } catch (e) {}
+}
+
+// Ensure isolated userData and sessionData for --new-project before app is ready
+if (cliOptions.newProject) {
+  cleanupStaleSessions();
+  const sessionId = `${process.pid}-${crypto.randomUUID().slice(0, 8)}`;
+  currentSessionDir = path.join(os.tmpdir(), `lyricfx-session-${sessionId}`);
+  try {
+    fs.mkdirSync(currentSessionDir, { recursive: true });
+    const userDataDir = path.join(currentSessionDir, 'userData');
+    const sessionDataDir = path.join(currentSessionDir, 'sessionData');
+    fs.mkdirSync(userDataDir, { recursive: true });
+    fs.mkdirSync(sessionDataDir, { recursive: true });
+    app.setPath('userData', userDataDir);
+    app.setPath('sessionData', sessionDataDir);
+  } catch (err) {
+    dialog.showErrorBox(
+      '初期化エラー',
+      `作業用セッションディレクトリの作成に失敗しました: ${err.message}\n起動を中止します。`
+    );
+    app.exit(1);
+  }
+}
 
 // Register custom protocol scheme privileges before app is ready
 protocol.registerSchemesAsPrivileged([
@@ -19,6 +101,18 @@ protocol.registerSchemesAsPrivileged([
 let mainWindow = null;
 let nativeJobs = null;
 let isPickerOpen = false;
+let isProjectDirty = !!(cliOptions.newProject || cliOptions.videoPath || cliOptions.lrcPath);
+let isQuittingConfirmed = false;
+
+function detectVideoMime(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  switch (ext) {
+    case '.mp4': return 'video/mp4';
+    case '.webm': return 'video/webm';
+    case '.mov': return 'video/quicktime';
+    default: return null;
+  }
+}
 
 function createWindow() {
   nativeJobs = new NativeJobs();
@@ -55,6 +149,33 @@ function createWindow() {
     }
   });
 
+  // Synchronously intercept close event when project is unsaved
+  mainWindow.on('close', (e) => {
+    if (isQuittingConfirmed) return;
+
+    if (isProjectDirty) {
+      e.preventDefault();
+
+      const choice = dialog.showMessageBoxSync(mainWindow, {
+        type: 'question',
+        buttons: ['保存する', '破棄して終了', 'キャンセル'],
+        defaultId: 0,
+        cancelId: 2,
+        noLink: true,
+        title: '未保存のプロジェクト',
+        message: 'プロジェクトはまだファイルに保存されていません。',
+        detail: '変更を保存しますか？ 保存せずに終了すると編集内容は失われます。'
+      });
+
+      if (choice === 0) {
+        mainWindow.webContents.send('desktop:requestSaveAndClose');
+      } else if (choice === 1) {
+        isQuittingConfirmed = true;
+        mainWindow.destroy();
+      }
+    }
+  });
+
   const entryHtml = path.join(__dirname, 'web', 'index.html');
   mainWindow.loadFile(entryHtml);
 
@@ -86,6 +207,71 @@ function setupIpcHandlers() {
     return await nativeJobs.getCapabilities();
   });
 
+  ipcMain.handle('desktop:getInitialProjectData', async () => {
+    if (!cliOptions.videoPath && !cliOptions.lrcPath && !cliOptions.newProject) {
+      return { hasInitialProject: false };
+    }
+
+    let videoAsset = null;
+    let videoError = null;
+    if (cliOptions.videoPath) {
+      if (!fs.existsSync(cliOptions.videoPath)) {
+        videoError = `動画ファイルが見つかりません: ${cliOptions.videoPath}`;
+      } else {
+        const mime = detectVideoMime(cliOptions.videoPath);
+        if (!mime) {
+          videoError = `対応していない動画形式です: ${path.extname(cliOptions.videoPath)} (.mp4, .webm, .mov のみ対応)`;
+        } else {
+          try {
+            videoAsset = nativeJobs.registerAssetFile(cliOptions.videoPath, mime, path.basename(cliOptions.videoPath), { noCopy: true });
+          } catch (err) {
+            videoError = `動画の登録に失敗しました: ${err.message}`;
+          }
+        }
+      }
+    }
+
+    let lrcContent = null;
+    let lrcError = null;
+    if (cliOptions.lrcPath) {
+      if (!fs.existsSync(cliOptions.lrcPath)) {
+        lrcError = `LRC ファイルが見つかりません: ${cliOptions.lrcPath}`;
+      } else {
+        try {
+          let raw = fs.readFileSync(cliOptions.lrcPath, 'utf8');
+          if (raw.charCodeAt(0) === 0xFEFF) {
+            raw = raw.slice(1);
+          }
+          lrcContent = raw;
+        } catch (err) {
+          lrcError = `LRC ファイルの読み込みに失敗しました: ${err.message}`;
+        }
+      }
+    }
+
+    return {
+      hasInitialProject: true,
+      newProject: cliOptions.newProject,
+      video: videoAsset,
+      videoError,
+      lrc: lrcContent,
+      lrcError
+    };
+  });
+
+  ipcMain.handle('desktop:setDirtyState', async (event, dirty) => {
+    isProjectDirty = !!dirty;
+    return true;
+  });
+
+  ipcMain.handle('desktop:confirmQuit', async () => {
+    isQuittingConfirmed = true;
+    if (mainWindow) {
+      mainWindow.close();
+    }
+    return true;
+  });
+
   ipcMain.handle('desktop:pickMedia', async (event, { layer }) => {
     if (isPickerOpen) {
       return [];
@@ -111,8 +297,7 @@ function setupIpcHandlers() {
       for (const filePath of result.filePaths) {
         try {
           const ext = path.extname(filePath).toLowerCase();
-          const isVideo = ['.mp4', '.webm', '.mov'].includes(ext);
-          const mimeType = isVideo ? 'video/mp4' : 'image/png';
+          const mimeType = detectVideoMime(filePath) || 'image/png';
           const desc = nativeJobs.registerAssetFile(filePath, mimeType);
           descriptors.push(desc);
         } catch (err) {
@@ -189,6 +374,14 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+app.on('will-quit', () => {
+  if (currentSessionDir && fs.existsSync(currentSessionDir)) {
+    try {
+      fs.rmSync(currentSessionDir, { recursive: true, force: true });
+    } catch (e) {}
+  }
 });
 
 app.on('before-quit', () => {

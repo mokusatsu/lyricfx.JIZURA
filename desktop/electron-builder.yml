@@ -1,5 +1,6 @@
 appId: ws.okamoto.jizura
 productName: lyricfx.JIZURA
+executableName: lyricfx-jizura
 directories:
   output: dist
   buildResources: build
@@ -13,12 +14,18 @@ extraResources:
     to: "native"
     filter:
       - "**/*"
-  - from: "../native/models"
-    to: "native/models"
+  - from: "resources/app-build.json"
+    to: "app-build.json"
+  - from: "resources/licenses"
+    to: "licenses"
     filter:
       - "**/*"
 win:
+  signAndEditExecutable: false
   target:
+    - target: dir
+      arch:
+        - x64
     - target: nsis
       arch:
         - x64

@@ -8,7 +8,6 @@ backend = os.environ.get('JIZURA_BACKEND', 'openvino').lower()
 print(f"[*] Building native worker targeting backend: {backend}")
 
 extra_datas = [
-    ('models', 'models'),
     ('resources-manifest.json', '.'),
 ]
 extra_binaries = []

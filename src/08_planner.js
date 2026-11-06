@@ -71,6 +71,95 @@ const lyricEscapes = { '\\': '\uE000', '#': '\uE001', '[': '\uE002', ']': '\uE00
 const lyricUnescapes = Object.fromEntries(Object.entries(lyricEscapes).map(([literal, token]) => [token, literal]));
 const protectLyricEscapes = s => s.replace(/\\([\\#\[\]|!！*\/{}~:n])/g, (_, literal) => literal === 'n' ? '\n' : lyricEscapes[literal]);
 const restoreLyricEscapes = s => String(s).replace(/[\uE000-\uE00C]/g, token => lyricUnescapes[token]);
+/**
+ * Validates and parses Songcut-extended LRC format.
+ * Format: [mm:ss.xx]<mm:ss.xx>LyricText<mm:ss.xx>
+ * Rules:
+ * - Only line start timestamp is used.
+ * - Trailing timestamp tag <mm:ss.xx> is stripped from lyric text, but its value is ignored and never compared with start.
+ * - Symbols, <tags> inside lyric text, escaped newlines (\n), and backslashes (\\) are preserved.
+ * - All-or-nothing validation: Any invalid start timestamp or format error halts entire parsing and returns an error.
+ */
+J.parseSongcutLRC = (raw) => {
+  if (typeof raw !== 'string') {
+    return { ok: false, error: 'LRC の内容が空または不正です。' };
+  }
+
+  const rawLines = raw.replace(/\r/g, '').split('\n');
+  const parsedEntries = [];
+  const meta = {};
+
+  for (let i = 0; i < rawLines.length; i++) {
+    const lineNum = i + 1;
+    const originalLine = rawLines[i].trim();
+    if (!originalLine) continue;
+    if (originalLine.startsWith('#')) continue;
+
+    const metaMatch = originalLine.match(/^\[(ti|ar|al|by|offset):(.*)\]$/i);
+    if (metaMatch) {
+      meta[metaMatch[1].toLowerCase()] = metaMatch[2].trim();
+      continue;
+    }
+
+    // Start tag: [mm:ss.xx] optionally followed by <mm:ss.xx>
+    const startMatch = originalLine.match(/^\[(\d+):(\d+(?:[.:]\d+)?)\](?:<(\d+):(\d+(?:[.:]\d+)?)>)?/);
+    if (!startMatch) {
+      return {
+        ok: false,
+        error: `${lineNum}行目の形式が不正です（開始時刻タグ [mm:ss.xx] が見つかりません）: "${originalLine}"`
+      };
+    }
+
+    const mins = parseInt(startMatch[1], 10);
+    const secs = parseFloat(startMatch[2].replace(':', '.'));
+    if (!Number.isFinite(mins) || !Number.isFinite(secs) || mins < 0 || secs < 0 || secs >= 60) {
+      return {
+        ok: false,
+        error: `${lineNum}行目の開始時刻が無効です: "${startMatch[0]}"`
+      };
+    }
+    const startTime = mins * 60 + secs;
+
+    let body = originalLine.slice(startMatch[0].length);
+
+    // Strip trailing <mm:ss.xx> tag if present (value ignored per specification)
+    body = body.replace(/<(\d+):(\d+(?:[.:]\d+)?)>$/, '');
+
+    // Restore escapes: \n -> newline, \\ -> backslash
+    body = body.replace(/\\\\/g, '\uE000').replace(/\\n/g, '\n');
+    const specialChars = ['#', '[', ']', '|', '!', '！', '*', '/', '{', '}', '~', ':'];
+    for (const ch of specialChars) {
+      body = body.split(ch).join('\\' + ch);
+    }
+    body = body.replace(/\uE000/g, '\\\\');
+
+    parsedEntries.push({
+      startTime,
+      body,
+      sourceLine: i
+    });
+  }
+
+  if (parsedEntries.length === 0) {
+    return { ok: false, error: '有効な歌詞行が含まれていません。' };
+  }
+
+  const jizuraLines = [];
+  for (const entry of parsedEntries) {
+    const m = Math.floor(entry.startTime / 60);
+    const s = (entry.startTime % 60).toFixed(2).padStart(5, '0');
+    const timeTag = `[${String(m).padStart(2, '0')}:${s}]`;
+    jizuraLines.push(`${timeTag} ${entry.body}`);
+  }
+
+  return {
+    ok: true,
+    rawLrcText: jizuraLines.join('\n'),
+    entries: parsedEntries,
+    meta
+  };
+};
+
 J.parseLyrics = (raw) => {
   const lines = []; const meta = {};
   let pendingGap = false, group = null, nextGroup = 0, avoidOverlap = false;
@@ -95,8 +184,8 @@ J.parseLyrics = (raw) => {
     s0 = openGroup(readSize(s0));
     let s = s0; const times = [];
     let m;
-    while ((m = s.match(/^\[(\d+):(\d+(?:[.:]\d+)?)\]/))) { times.push(+m[1] * 60 + parseFloat(m[2].replace(':', '.'))); s = s.slice(m[0].length); }
-    s = s.trim();
+    while ((m = s.match(/^\[(\d+):(\d+(?:[.:]\d+)?)\](?:<(\d+):(\d+(?:[.:]\d+)?)>)?/))) { times.push(+m[1] * 60 + parseFloat(m[2].replace(':', '.'))); s = s.slice(m[0].length); }
+    s = s.replace(/<(\d+):(\d+(?:[.:]\d+)?)>$/, '').trim();
     s = readSize(openGroup(readSize(s)));
     const closeGroup = s.endsWith(avoidOverlap ? '-}' : '}');
     if (closeGroup) s = s.slice(0, avoidOverlap ? -2 : -1).trim();

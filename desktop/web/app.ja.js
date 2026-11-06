@@ -3073,6 +3073,95 @@ const lyricEscapes = { '\\': '\uE000', '#': '\uE001', '[': '\uE002', ']': '\uE00
 const lyricUnescapes = Object.fromEntries(Object.entries(lyricEscapes).map(([literal, token]) => [token, literal]));
 const protectLyricEscapes = s => s.replace(/\\([\\#\[\]|!！*\/{}~:n])/g, (_, literal) => literal === 'n' ? '\n' : lyricEscapes[literal]);
 const restoreLyricEscapes = s => String(s).replace(/[\uE000-\uE00C]/g, token => lyricUnescapes[token]);
+/**
+ * Validates and parses Songcut-extended LRC format.
+ * Format: [mm:ss.xx]<mm:ss.xx>LyricText<mm:ss.xx>
+ * Rules:
+ * - Only line start timestamp is used.
+ * - Trailing timestamp tag <mm:ss.xx> is stripped from lyric text, but its value is ignored and never compared with start.
+ * - Symbols, <tags> inside lyric text, escaped newlines (\n), and backslashes (\\) are preserved.
+ * - All-or-nothing validation: Any invalid start timestamp or format error halts entire parsing and returns an error.
+ */
+J.parseSongcutLRC = (raw) => {
+  if (typeof raw !== 'string') {
+    return { ok: false, error: 'LRC の内容が空または不正です。' };
+  }
+
+  const rawLines = raw.replace(/\r/g, '').split('\n');
+  const parsedEntries = [];
+  const meta = {};
+
+  for (let i = 0; i < rawLines.length; i++) {
+    const lineNum = i + 1;
+    const originalLine = rawLines[i].trim();
+    if (!originalLine) continue;
+    if (originalLine.startsWith('#')) continue;
+
+    const metaMatch = originalLine.match(/^\[(ti|ar|al|by|offset):(.*)\]$/i);
+    if (metaMatch) {
+      meta[metaMatch[1].toLowerCase()] = metaMatch[2].trim();
+      continue;
+    }
+
+    // Start tag: [mm:ss.xx] optionally followed by <mm:ss.xx>
+    const startMatch = originalLine.match(/^\[(\d+):(\d+(?:[.:]\d+)?)\](?:<(\d+):(\d+(?:[.:]\d+)?)>)?/);
+    if (!startMatch) {
+      return {
+        ok: false,
+        error: `${lineNum}行目の形式が不正です（開始時刻タグ [mm:ss.xx] が見つかりません）: "${originalLine}"`
+      };
+    }
+
+    const mins = parseInt(startMatch[1], 10);
+    const secs = parseFloat(startMatch[2].replace(':', '.'));
+    if (!Number.isFinite(mins) || !Number.isFinite(secs) || mins < 0 || secs < 0 || secs >= 60) {
+      return {
+        ok: false,
+        error: `${lineNum}行目の開始時刻が無効です: "${startMatch[0]}"`
+      };
+    }
+    const startTime = mins * 60 + secs;
+
+    let body = originalLine.slice(startMatch[0].length);
+
+    // Strip trailing <mm:ss.xx> tag if present (value ignored per specification)
+    body = body.replace(/<(\d+):(\d+(?:[.:]\d+)?)>$/, '');
+
+    // Restore escapes: \n -> newline, \\ -> backslash
+    body = body.replace(/\\\\/g, '\uE000').replace(/\\n/g, '\n');
+    const specialChars = ['#', '[', ']', '|', '!', '！', '*', '/', '{', '}', '~', ':'];
+    for (const ch of specialChars) {
+      body = body.split(ch).join('\\' + ch);
+    }
+    body = body.replace(/\uE000/g, '\\\\');
+
+    parsedEntries.push({
+      startTime,
+      body,
+      sourceLine: i
+    });
+  }
+
+  if (parsedEntries.length === 0) {
+    return { ok: false, error: '有効な歌詞行が含まれていません。' };
+  }
+
+  const jizuraLines = [];
+  for (const entry of parsedEntries) {
+    const m = Math.floor(entry.startTime / 60);
+    const s = (entry.startTime % 60).toFixed(2).padStart(5, '0');
+    const timeTag = `[${String(m).padStart(2, '0')}:${s}]`;
+    jizuraLines.push(`${timeTag} ${entry.body}`);
+  }
+
+  return {
+    ok: true,
+    rawLrcText: jizuraLines.join('\n'),
+    entries: parsedEntries,
+    meta
+  };
+};
+
 J.parseLyrics = (raw) => {
   const lines = []; const meta = {};
   let pendingGap = false, group = null, nextGroup = 0, avoidOverlap = false;
@@ -3097,8 +3186,8 @@ J.parseLyrics = (raw) => {
     s0 = openGroup(readSize(s0));
     let s = s0; const times = [];
     let m;
-    while ((m = s.match(/^\[(\d+):(\d+(?:[.:]\d+)?)\]/))) { times.push(+m[1] * 60 + parseFloat(m[2].replace(':', '.'))); s = s.slice(m[0].length); }
-    s = s.trim();
+    while ((m = s.match(/^\[(\d+):(\d+(?:[.:]\d+)?)\](?:<(\d+):(\d+(?:[.:]\d+)?)>)?/))) { times.push(+m[1] * 60 + parseFloat(m[2].replace(':', '.'))); s = s.slice(m[0].length); }
+    s = s.replace(/<(\d+):(\d+(?:[.:]\d+)?)>$/, '').trim();
     s = readSize(openGroup(readSize(s)));
     const closeGroup = s.endsWith(avoidOverlap ? '-}' : '}');
     if (closeGroup) s = s.slice(0, avoidOverlap ? -2 : -1).trim();
@@ -43253,21 +43342,40 @@ J.ShortFrameRenderer=ShortFrameRenderer;
 
   J.platform = {
     name: 'desktop',
+    workerAvailable: true,
     nativeMatting: true,
     nativeExport: true,
+    ffmpegAvailable: true,
+    workerReason: null,
+    ffmpegReason: null,
 
     capabilities: async () => {
       try {
-        return await desktop.capabilities();
+        const caps = await desktop.capabilities();
+        J.platform.workerAvailable = !!caps.workerAvailable;
+        J.platform.nativeMatting = !!(caps.workerAvailable && caps.nativeMatting);
+        J.platform.nativeExport = !!(caps.workerAvailable && caps.nativeExport);
+        J.platform.ffmpegAvailable = !!caps.ffmpegAvailable;
+        J.platform.workerReason = caps.reason || null;
+        J.platform.ffmpegReason = caps.ffmpegReason || null;
+        return caps;
       } catch (e) {
         console.warn('Failed to query desktop capabilities:', e);
+        J.platform.workerAvailable = false;
+        J.platform.nativeMatting = false;
+        J.platform.nativeExport = false;
+        J.platform.ffmpegAvailable = false;
+        J.platform.workerReason = e.message;
         return {
           version: 1,
           name: 'desktop',
-          nativeMatting: true,
-          nativeExport: true,
+          workerAvailable: false,
+          nativeMatting: false,
+          nativeExport: false,
+          ffmpegAvailable: false,
+          reason: e.message,
           backends: ['cpu'],
-          encoders: ['libx264']
+          encoders: []
         };
       }
     },
@@ -43306,6 +43414,11 @@ J.ShortFrameRenderer=ShortFrameRenderer;
     },
 
     generatePersonMask: async (cut, { fps = 24, signal, onProgress = () => {} } = {}) => {
+      if (!J.platform.nativeMatting) {
+        const msg = J.platform.workerReason || '人物切り抜き機能が利用できません。';
+        throw new Error(msg);
+      }
+
       const asset = J.mediaAssets.get(cut.itemId);
       if (!asset) throw new Error(J.mediaLabel('画像・動画素材を指定してください', 'Select an image or video asset'));
 
@@ -43380,6 +43493,12 @@ J.ShortFrameRenderer=ShortFrameRenderer;
         await J.storeMedia(maskId, containerBlob);
 
         return ref;
+      } catch (err) {
+        // Human-friendly error handling for model download or worker crash
+        if (err.message && err.message.includes('AI model')) {
+          throw new Error('AI モデルのダウンロードまたは初期化に失敗しました。インターネット接続を確認して再試行してください。');
+        }
+        throw err;
       } finally {
         unsubs();
         signal?.removeEventListener('abort', abortHandler);
@@ -43391,6 +43510,10 @@ J.ShortFrameRenderer=ShortFrameRenderer;
     },
 
     startExport: async (settings) => {
+      if (!J.platform.nativeExport) {
+        const msg = J.platform.ffmpegReason || '動画出力機能が利用できません（FFmpeg が必要です）。';
+        throw new Error(msg);
+      }
       return await desktop.startExport(settings);
     },
 
@@ -43407,6 +43530,102 @@ J.ShortFrameRenderer=ShortFrameRenderer;
       return await desktop.cancelJob(jobId);
     }
   };
+
+  // Synchronize unsaved dirty state with main process
+  let isSavingAndClosing = false;
+  if (typeof desktop.onRequestSaveAndClose === 'function') {
+    desktop.onRequestSaveAndClose(async () => {
+      isSavingAndClosing = true;
+      const saveBtn = document.getElementById('btnSave');
+      if (saveBtn) {
+        saveBtn.click();
+      }
+    });
+  }
+
+  // Intercept save success to notify main process
+  const originalSaveFile = J.saveFile;
+  if (originalSaveFile) {
+    J.saveFile = async function (...args) {
+      const res = await originalSaveFile.apply(this, args);
+      if (typeof desktop.setDirtyState === 'function') {
+        desktop.setDirtyState(false);
+      }
+      if (isSavingAndClosing) {
+        isSavingAndClosing = false;
+        if (typeof desktop.confirmQuit === 'function') {
+          desktop.confirmQuit();
+        }
+      }
+      return res;
+    };
+  }
+
+  // Initial Project Handoff from Songcut CLI arguments
+  async function applyInitialHandoff() {
+    try {
+      if (typeof desktop.getInitialProjectData !== 'function') return;
+      const data = await desktop.getInitialProjectData();
+      if (!data || !data.hasInitialProject) return;
+
+      // If there are errors in video or lrc files, report and abort without touching existing project
+      if (data.videoError) {
+        alert(`動画の読み込みに失敗しました:\n${data.videoError}`);
+        return;
+      }
+      if (data.lrcError) {
+        alert(`LRC の読み込みに失敗しました:\n${data.lrcError}`);
+        return;
+      }
+
+      let parsedLrc = null;
+      if (data.lrc) {
+        parsedLrc = J.parseSongcutLRC(data.lrc);
+        if (!parsedLrc.ok) {
+          alert(`LRC の取り込みに失敗しました:\n${parsedLrc.error}`);
+          return;
+        }
+      }
+
+      // Load video asset into background
+      if (data.video && data.video.assetToken) {
+        try {
+          const resp = await fetch(`jizura-asset://${data.video.assetToken}`);
+          const blob = await resp.blob();
+          const file = new File([blob], data.video.name, { type: data.video.type });
+          blobToToken.set(file, data.video.assetToken);
+
+          if (typeof window.loadAudioFile === 'function') {
+            await window.loadAudioFile(file, { matchDuration: true, background: true });
+          }
+        } catch (err) {
+          alert(`動画素材の準備に失敗しました: ${err.message}`);
+          return;
+        }
+      }
+
+      // Apply lyrics
+      if (parsedLrc && parsedLrc.rawLrcText) {
+        const lyricInput = document.getElementById('lyricInput');
+        if (lyricInput) {
+          lyricInput.value = parsedLrc.rawLrcText;
+          lyricInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }
+
+      // Mark project as dirty (unsaved) immediately after Songcut handoff
+      desktop.setDirtyState(true);
+    } catch (e) {
+      console.warn('Initial project handoff failed:', e);
+    }
+  }
+
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('DOMContentLoaded', () => {
+      // Wait for JIZURA UI initialization before applying handoff
+      setTimeout(applyInitialHandoff, 200);
+    });
+  }
 })();
 
 /* ============================================================
@@ -43691,7 +43910,7 @@ function undoMove(direction) {
   U.restoring = false; updateUndoButtons();
 }
 let saveTimer = 0;
-function autosave() { recordUndoState(); clearTimeout(saveTimer); saveTimer = setTimeout(flushSave, 700); }
+function autosave() { recordUndoState(); clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
 function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
 
@@ -48895,6 +49114,7 @@ function openAudioImport(file) {
   dialog.querySelector('form').onsubmit=e=>{e.preventDefault();const options={matchDuration:dialog.querySelector('[name=matchDuration]').checked,background:!!dialog.querySelector('[name=background]')?.checked};dialog.close();loadAudioFile(file,options);};
   dialog.addEventListener('close',()=>dialog.remove(),{once:true});document.body.append(dialog);dialog.showModal();
 }
+J.loadAudioFile = loadAudioFile; window.loadAudioFile = loadAudioFile;
 async function loadAudioFile(f,options={matchDuration:true,background:false}) {
   if(S.projectBusy||S.exporting)return false;
   S.projectBusy=true;

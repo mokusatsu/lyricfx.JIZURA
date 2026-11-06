@@ -11,44 +11,107 @@ def sha256_file(filepath):
             h.update(chunk)
     return h.hexdigest()
 
+def is_pid_alive(pid):
+    if pid <= 0:
+        return False
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            kernel32 = ctypes.windll.kernel32
+            handle = kernel32.OpenProcess(0x1000, False, pid)
+            if handle:
+                kernel32.CloseHandle(handle)
+                return True
+        except Exception:
+            pass
+        return False
+    else:
+        try:
+            os.kill(pid, 0)
+            return True
+        except OSError:
+            return False
+
+def get_user_models_dir():
+    if os.environ.get("JIZURA_MODELS_DIR"):
+        return os.environ["JIZURA_MODELS_DIR"]
+    if sys.platform == "win32":
+        base = os.environ.get("LOCALAPPDATA") or os.path.expanduser("~\\AppData\\Local")
+    else:
+        base = os.path.expanduser("~/.local/share")
+    return os.path.join(base, "lyricfx-jizura", "models")
+
 def ensure_model_file(model_dir=None):
     """
-    Ensures that RVM ONNX model is available and verified.
-    Downloads from official release if missing (like Web version).
+    Ensures that RVM ONNX model is available and verified in user local storage.
+    Downloads from official release on demand with cross-process locking and crash recovery.
     """
     if model_dir is None:
-        candidates = []
-        if getattr(sys, 'frozen', False):
-            base_dir = getattr(sys, '_MEIPASS', os.path.dirname(sys.executable))
-            candidates.append(os.path.join(base_dir, "models"))
-            candidates.append(os.path.join(os.path.dirname(sys.executable), "models"))
-            candidates.append(os.path.join(os.path.dirname(os.path.dirname(sys.executable)), "models"))
-        candidates.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "models"))
-
-        found_dir = None
-        for c in candidates:
-            p = os.path.join(c, "rvm_mobilenetv3_fp32.onnx")
-            if os.path.exists(p):
-                found_dir = c
-                break
-        model_dir = found_dir or candidates[-1]
+        model_dir = get_user_models_dir()
 
     os.makedirs(model_dir, exist_ok=True)
     model_path = os.path.join(model_dir, "rvm_mobilenetv3_fp32.onnx")
+    lock_path = os.path.join(model_dir, "rvm_mobilenetv3_fp32.onnx.lock")
 
+    # 1. Quick check: already downloaded and valid?
     if os.path.exists(model_path):
-        current_hash = sha256_file(model_path)
-        if current_hash.lower() == MODEL_SHA256.lower():
-            return model_path
-        sys.stderr.write(f"Model hash mismatch ({current_hash}), re-downloading...\n")
         try:
+            current_hash = sha256_file(model_path)
+            if current_hash.lower() == MODEL_SHA256.lower():
+                return model_path
+            sys.stderr.write(f"Model hash mismatch ({current_hash}), re-downloading...\n")
             os.remove(model_path)
-        except Exception:
-            pass
+        except Exception as e:
+            sys.stderr.write(f"Warning checking model file: {e}\n")
 
-    # Download to temporary file
-    temp_path = model_path + ".download"
-    sys.stderr.write(f"Downloading RVM ONNX model from {MODEL_URL}...\n")
+    # 2. Acquire lock with crash recovery
+    acquired = False
+    for attempt in range(120): # up to 60 seconds of waiting
+        try:
+            fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_RDWR)
+            lock_info = json.dumps({"pid": os.getpid(), "time": time.time()})
+            os.write(fd, lock_info.encode("utf-8"))
+            os.close(fd)
+            acquired = True
+            break
+        except FileExistsError:
+            # Check existing lock owner
+            is_stale = False
+            try:
+                with open(lock_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                owner_pid = data.get("pid", 0)
+                owner_time = data.get("time", 0)
+                age = time.time() - owner_time
+                if not is_pid_alive(owner_pid) or age > 600:
+                    is_stale = True
+            except Exception:
+                is_stale = True
+
+            if is_stale:
+                try:
+                    os.remove(lock_path)
+                    continue
+                except Exception:
+                    pass
+
+            # Another active process is downloading: check if model became ready
+            if os.path.exists(model_path):
+                try:
+                    if sha256_file(model_path).lower() == MODEL_SHA256.lower():
+                        return model_path
+                except Exception:
+                    pass
+            time.sleep(0.5)
+
+    if not acquired:
+        if os.path.exists(model_path) and sha256_file(model_path).lower() == MODEL_SHA256.lower():
+            return model_path
+        raise RuntimeError("モデル取得のロック待機がタイムアウトしました。先行プロセスの完了をお待ちいただくか再試行してください。")
+
+    # 3. Download to process-specific temporary file
+    temp_path = os.path.join(model_dir, f"rvm_mobilenetv3_fp32.onnx.tmp.{os.getpid()}.{time.time_ns()}")
+    sys.stderr.write(f"Downloading RVM ONNX model from {MODEL_URL} to {model_path}...\n")
     try:
         urllib.request.urlretrieve(MODEL_URL, temp_path)
         download_hash = sha256_file(temp_path)
@@ -56,14 +119,26 @@ def ensure_model_file(model_dir=None):
             if os.path.exists(temp_path):
                 os.remove(temp_path)
             raise ValueError(f"Downloaded model checksum mismatch: expected {MODEL_SHA256}, got {download_hash}")
-        # Atomic rename
+        # Atomic promotion to final model path
         os.replace(temp_path, model_path)
         return model_path
+    except urllib.error.URLError as e:
+        if os.path.exists(temp_path):
+            try: os.remove(temp_path)
+            except Exception: pass
+        raise RuntimeError(f"AI モデルのダウンロードに失敗しました。インターネット接続を確認してください: {e}")
     except Exception as e:
         if os.path.exists(temp_path):
             try: os.remove(temp_path)
             except Exception: pass
-        raise RuntimeError(f"Failed to download and prepare AI model: {e}")
+        raise RuntimeError(f"AI モデルの準備中にエラーが発生しました: {e}")
+    finally:
+        # Release lock
+        if os.path.exists(lock_path):
+            try:
+                os.remove(lock_path)
+            except Exception:
+                pass
 
 def resolve_system_ffmpeg():
     """

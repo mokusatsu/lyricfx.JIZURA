@@ -280,7 +280,7 @@ function undoMove(direction) {
   U.restoring = false; updateUndoButtons();
 }
 let saveTimer = 0;
-function autosave() { recordUndoState(); clearTimeout(saveTimer); saveTimer = setTimeout(flushSave, 700); }
+function autosave() { recordUndoState(); clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
 function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
 
@@ -5484,6 +5484,7 @@ function openAudioImport(file) {
   dialog.querySelector('form').onsubmit=e=>{e.preventDefault();const options={matchDuration:dialog.querySelector('[name=matchDuration]').checked,background:!!dialog.querySelector('[name=background]')?.checked};dialog.close();loadAudioFile(file,options);};
   dialog.addEventListener('close',()=>dialog.remove(),{once:true});document.body.append(dialog);dialog.showModal();
 }
+J.loadAudioFile = loadAudioFile; window.loadAudioFile = loadAudioFile;
 async function loadAudioFile(f,options={matchDuration:true,background:false}) {
   if(S.projectBusy||S.exporting)return false;
   S.projectBusy=true;
