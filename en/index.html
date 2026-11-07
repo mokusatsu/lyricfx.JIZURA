@@ -45109,6 +45109,8 @@ const AP = {
   ensureContext() {
     if (!this.ctx) {
       this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (!this.gain && this.ctx) {
       this.gain = this.ctx.createGain();
       this.gain.gain.value = this.muted ? 0 : this.volume;
       this.gain.connect(this.ctx.destination);
@@ -45149,7 +45151,8 @@ const AP = {
     const off = end==null ? Math.max(0, Math.min(offset, buffer.duration - 0.01)) : Math.max(0,offset);
     this.startAt = this.ctx.currentTime - off;
     if(end!=null&&(off>=buffer.duration||end<=off))return;
-    const s = this.ctx.createBufferSource(); s.buffer = buffer; s.connect(this.gain);
+    const s = this.ctx.createBufferSource(); s.buffer = buffer;
+    if (this.gain) s.connect(this.gain); else s.connect(this.ctx.destination);
     if(end==null)s.start(0,off);else s.start(0,off,Math.min(end,buffer.duration)-off);
     this.src = s;
   },
@@ -45664,7 +45667,7 @@ async function play() {
     const controller=new AbortController();S.playPreparing=controller;
     $('btnPlay').textContent='…';$('btnPlay').setAttribute('aria-label',J.mediaLabel('動画を準備中（押すと中止）','Preparing video (press to cancel)'));
     // Unlock audio during the original tap before awaiting the video decoder.
-    if(S.audio){if(!AP.ctx)AP.ctx=new (window.AudioContext||window.webkitAudioContext)();if(AP.ctx.state==='suspended')AP.ctx.resume();}
+    if(S.audio){AP.ensureContext();if(AP.ctx.state==='suspended')AP.ctx.resume();}
     try{await J.prepareMediaFrame(S.plan,S.t,controller.signal);}
     catch(error){if(!controller.signal.aborted)toast(error.message);if(S.playPreparing===controller)pause();return;}
     if(S.playPreparing!==controller||controller.signal.aborted)return;
