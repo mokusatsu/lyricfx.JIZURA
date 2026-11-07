@@ -3,9 +3,6 @@ import os, sys, json, subprocess, shutil, threading
 NO_WINDOW_FLAG = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" and hasattr(subprocess, "CREATE_NO_WINDOW") else 0
 
 def resolve_system_ffmpeg():
-    """
-    Finds system FFmpeg or raises RuntimeError if missing.
-    """
     if os.environ.get("JIZURA_FFMPEG") and os.path.exists(os.environ["JIZURA_FFMPEG"]):
         return os.environ["JIZURA_FFMPEG"]
     found = shutil.which("ffmpeg")
@@ -14,9 +11,6 @@ def resolve_system_ffmpeg():
     raise RuntimeError("FFmpeg not found on system PATH. Please install FFmpeg or set JIZURA_FFMPEG environment variable.")
 
 def probe_encoders():
-    """
-    Returns list of available h264 encoders from system FFmpeg.
-    """
     try:
         ffmpeg = resolve_system_ffmpeg()
         res = subprocess.run([ffmpeg, "-encoders"], capture_output=True, text=True, timeout=5, creationflags=NO_WINDOW_FLAG)
@@ -31,29 +25,22 @@ def probe_encoders():
         sys.stderr.write(f"Warning: probe_encoders failed ({e})\n")
         return []
 
-def read_exact(stream, n):
+def stream_frame_into(stream, view, n):
     """
-    Reads exactly n bytes from stream. Returns b'' on clean EOF.
+    Reads exactly n bytes from stream into pre-allocated memoryview without intermediate allocations.
+    Returns False on clean EOF, True on success.
     """
-    buf = bytearray(n)
-    view = memoryview(buf)
     pos = 0
     while pos < n:
-        chunk = stream.read(n - pos)
-        if not chunk:
+        read_bytes = stream.readinto(view[pos : n])
+        if not read_bytes:
             if pos == 0:
-                return b''
+                return False
             raise EOFError(f"Unexpected EOF: expected {n} bytes, got {pos}")
-        chunk_len = len(chunk)
-        view[pos : pos + chunk_len] = chunk
-        pos += chunk_len
-    return bytes(buf)
+        pos += read_bytes
+    return True
 
 def drain_stream_thread(stream, max_keep=65536):
-    """
-    Continuously reads stream in a background thread to prevent pipe deadlock.
-    Keeps the latest max_keep bytes for error diagnostics.
-    """
     recent_bytes = bytearray()
     lock = threading.Lock()
 
@@ -72,10 +59,6 @@ def drain_stream_thread(stream, max_keep=65536):
     return lambda: bytes(recent_bytes)
 
 def probe_audio_format_and_copy(ffmpeg_bin, audio_path, offset=0):
-    """
-    Checks if input audio can be copied into MP4 container without re-encoding.
-    Returns (can_copy: bool, detected_codec: str).
-    """
     detected_codec = "AAC"
     ext = os.path.splitext(audio_path)[1].lower()
     if ext == ".mp3": detected_codec = "MP3"
@@ -104,14 +87,6 @@ def probe_audio_format_and_copy(ffmpeg_bin, audio_path, offset=0):
     return False, "AAC"
 
 def run_export_worker():
-    """
-    Worker running via stdin/stdout:
-    1. Reads 1 line of JSON configuration from stdin.buffer.
-    2. Emits {"type": "ready"} on stdout.
-    3. Sequentially reads N * (width * height * 4) raw RGBA bytes from stdin.buffer.
-    4. Streams them to ffmpeg stdin pipe.
-    5. Finalizes MP4 and prints {"type": "finished"}.
-    """
     line = sys.stdin.buffer.readline().decode('utf-8').strip()
     if not line:
         sys.stderr.write("No configuration received on stdin\n")
@@ -138,8 +113,6 @@ def run_export_worker():
     frame_bytes = width * height * 4
     has_audio = bool(audio_file and os.path.exists(audio_file))
 
-    # When audio is present, encode video stream to an intermediate file first
-    # so that if production -c:a copy fails, it can fall back to AAC re-encode without re-rendering frames.
     temp_video = (output_file + ".video.mp4") if has_audio else output_file
 
     cmd = [
@@ -150,7 +123,7 @@ def run_export_worker():
         "-framerate", str(fps),
         "-i", "pipe:0",
         "-frames:v", str(frame_count),
-        "-c:v", "libx264", "-pix_fmt", "yuv420p"
+        "-c:v", "libx264", "-preset", "veryfast", "-threads", "0", "-pix_fmt", "yuv420p"
     ]
 
     # Video codec and quality
@@ -168,13 +141,11 @@ def run_export_worker():
 
     os.makedirs(os.path.dirname(os.path.abspath(output_file)), exist_ok=True)
 
-    # Initial probe for expected audio codec
     expected_audio_codec = None
     if has_audio:
         can_copy, detected_codec = probe_audio_format_and_copy(ffmpeg_bin, audio_file, audio_offset)
         expected_audio_codec = detected_codec if can_copy else "AAC"
 
-    # Launch FFmpeg video encoding process with background stderr draining
     try:
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, creationflags=NO_WINDOW_FLAG)
     except Exception as e:
@@ -183,18 +154,20 @@ def run_export_worker():
 
     get_recent_stderr = drain_stream_thread(proc.stderr)
 
-    # Signal ready to Electron parent process
     sys.stdout.write(json.dumps({"type": "ready", "audioCodec": expected_audio_codec}) + "\n")
     sys.stdout.flush()
+
+    # Pre-allocate a single reusable buffer for all frame streaming (zero-copy memoryview)
+    reusable_buf = bytearray(frame_bytes)
+    view = memoryview(reusable_buf)
 
     frames_read = 0
     try:
         while frames_read < frame_count:
-            rgba = read_exact(sys.stdin.buffer, frame_bytes)
-            if not rgba:
+            if not stream_frame_into(sys.stdin.buffer, view, frame_bytes):
                 break
             try:
-                proc.stdin.write(rgba)
+                proc.stdin.write(view)
             except BrokenPipeError:
                 break
             frames_read += 1
@@ -224,7 +197,7 @@ def run_export_worker():
         sys.stderr.write(f"FFmpeg video encoding exited with code {ret}:\n{err_msg}\n")
         sys.exit(ret)
 
-    # Phase 2: Audio multiplexing with automatic fallback to AAC re-encoding
+    # Audio muxing
     final_audio_codec = expected_audio_codec
     audio_mux_mode = None
     if has_audio:
@@ -238,7 +211,6 @@ def run_export_worker():
         mux_success = False
 
         if can_copy:
-            # Step 2A: Try lossless copy muxing
             mux_cmd = [
                 ffmpeg_bin, "-y", "-hide_banner", "-nostdin",
                 "-i", temp_video
@@ -260,7 +232,6 @@ def run_export_worker():
                 sys.stderr.write(f"Warning: -c:a copy mux failed in production, falling back to AAC re-encode:\n{err_detail}\n")
 
         if not mux_success:
-            # Step 2B: Fallback to AAC re-encoding
             fallback_cmd = [
                 ffmpeg_bin, "-y", "-hide_banner", "-nostdin",
                 "-i", temp_video
@@ -282,7 +253,6 @@ def run_export_worker():
                 sys.stderr.write(f"Error: Fallback AAC audio mux failed:\n{err_fb}\n")
                 sys.exit(res_fb.returncode)
 
-        # Cleanup intermediate video file
         try:
             if os.path.exists(temp_video):
                 os.remove(temp_video)
@@ -297,3 +267,6 @@ def run_export_worker():
         "audioMuxMode": audio_mux_mode
     }) + "\n")
     sys.stdout.flush()
+
+if __name__ == "__main__":
+    run_export_worker()

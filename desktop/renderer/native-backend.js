@@ -256,7 +256,9 @@
     },
 
     writeFrame: async (jobId, index, rgba) => {
-      const buffer = rgba.buffer.slice(rgba.byteOffset, rgba.byteOffset + rgba.byteLength);
+      const buffer = (rgba.byteOffset === 0 && rgba.byteLength === rgba.buffer.byteLength)
+        ? rgba.buffer
+        : rgba.buffer.slice(rgba.byteOffset, rgba.byteOffset + rgba.byteLength);
       return await desktop.writeFrame(jobId, index, buffer);
     },
 

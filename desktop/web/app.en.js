@@ -11658,7 +11658,7 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     venc.configure(Object.assign({}, vc.cfg, { latencyMode: 'quality' }));
   }
   const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
-  const ctx = canvas.getContext('2d', { alpha: false });
+  const ctx = canvas.getContext('2d', { alpha: false, willReadFrequently: isNative });
   const R = new J.Renderer();
   const total = Math.max(1, Math.round(duration * fps));
   const source=short?document.createElement('canvas'):canvas;
@@ -11666,6 +11666,9 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   const sourceCtx=short?source.getContext('2d',{alpha:false}):ctx,portrait=short?new J.ShortFrameRenderer():null;
   const scale = source.width / plan.W;
   const prevRes = J.glyphs.maxRes; J.glyphs.maxRes = h >= 1000 ? 768 : 512;
+  const nativeInFlight = isNative ? [] : null;
+  const MAX_NATIVE_IN_FLIGHT = 4;
+  let lastProgressTime = 0;
   try {
   for (let i = 0; i < total; i++) {
     if (signal && signal.aborted) {
@@ -11680,7 +11683,11 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     if(portrait)portrait.frame(ctx,source,short);
     if (isNative) {
       const imgData = ctx.getImageData(0, 0, w, h);
-      await J.platform.writeFrame(expJob.jobId, i, imgData.data);
+      const p = J.platform.writeFrame(expJob.jobId, i, imgData.data).catch(e => { err = e; });
+      nativeInFlight.push(p);
+      if (nativeInFlight.length >= MAX_NATIVE_IN_FLIGHT) {
+        await nativeInFlight.shift();
+      }
     } else {
       const vf = new VideoFrame(canvas, { timestamp: Math.round(i * 1e6 / fps), duration: Math.round(1e6 / fps) });
       try{venc.encode(vf, { keyFrame: i % (fps * 2) === 0,...(qp==null?{}:{avc:{quantizer:qp}}) });}
@@ -11688,8 +11695,17 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
       while (venc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 2));
       await output.drain();
     }
-    if (i % 3 === 0) { onProgress && onProgress(i / total, `Frame ${i + 1}/${total}`); await new Promise(r => setTimeout(r, 0)); }
+    const now = performance.now();
+    if (now - lastProgressTime >= 100 || i === total - 1) {
+      lastProgressTime = now;
+      onProgress && onProgress(i / total, `Frame ${i + 1}/${total}`);
+      await new Promise(r => setTimeout(r, 0));
+    }
   }
+  if (isNative && nativeInFlight && nativeInFlight.length > 0) {
+    await Promise.all(nativeInFlight);
+  }
+  if (err) throw err;
   } finally { J.glyphs.maxRes = prevRes; }
   if (isNative) {
     if (signal && signal.aborted) {
@@ -43585,7 +43601,9 @@ J.ShortFrameRenderer=ShortFrameRenderer;
     },
 
     writeFrame: async (jobId, index, rgba) => {
-      const buffer = rgba.buffer.slice(rgba.byteOffset, rgba.byteOffset + rgba.byteLength);
+      const buffer = (rgba.byteOffset === 0 && rgba.byteLength === rgba.buffer.byteLength)
+        ? rgba.buffer
+        : rgba.buffer.slice(rgba.byteOffset, rgba.byteOffset + rgba.byteLength);
       return await desktop.writeFrame(jobId, index, buffer);
     },
 
