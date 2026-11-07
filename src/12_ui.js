@@ -371,7 +371,7 @@ function warm() {
   idle(step);
 }
 let replanTimer = 0;
-const replanSoon = (ms = 220) => { clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
+const replanSoon = (ms = 220) => { markProjectDirty(); clearTimeout(replanTimer); replanTimer = setTimeout(replan, ms); };
 let fontKey = '';
 let thumbFonts = null;
 async function ensureFonts() {
@@ -3963,11 +3963,12 @@ function renderTech() {
       l.title = k + (tbl[k].tags && tbl[k].tags.length ? '（' + tbl[k].tags.map(t => (J.MOODS[t] ? J.MOODS[t].name : t)).join('・') + '）' : '');
       if (!J.randomOk(S.project, g, k)) { l.classList.add('set-off'); l.title += tbl[k].set ? J.mediaLabel('（演出セットがオフ）',' (Part set is off)') : tbl[k].extra && S.project.extra !== true ? '（追加分がオフのため、自動では選ばれません）' : '（和風の演出がオフのため、自動では選ばれません）'; }
       l.innerHTML = `<input type="checkbox" ${en[k] !== false ? 'checked' : ''}> ${escapeHtml(tbl[k].name)}${setBadges(tbl[k])}`;
-      l.querySelector('input').addEventListener('change', e => { en[k] = e.target.checked; S.project.mood = null; d.querySelector('.tg-cnt').textContent = `${items.filter(x => en[x] !== false).length}/${items.length}`; replanSoon(60); });
+      l.querySelector('input').addEventListener('change', e => { markProjectDirty(); en[k] = e.target.checked; S.project.mood = null; d.querySelector('.tg-cnt').textContent = `${items.filter(x => en[x] !== false).length}/${items.length}`; replanSoon(60); });
       l.appendChild(J.effectPreviewButton(g,k));
       list.appendChild(l);
     });
     d.querySelectorAll('.tg-tools button').forEach(b => b.addEventListener('click', () => {
+      markProjectDirty();
       const a = b.dataset.a;
       shown.forEach(k => { en[k] = a === 'on' ? true : a === 'off' ? false : en[k] === false; });
       // keep a fallback so the planner always has something to use

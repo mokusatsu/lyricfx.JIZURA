@@ -56,25 +56,23 @@ assert.strictEqual(parsedB.newProject, true);
 assert.strictEqual(parsedB.videoPath, path.resolve('D:\\videos\\test.webm'));
 assert.strictEqual(parsedB.lrcPath, null);
 
-// 2. Test Session Temp Directory Isolation
-const sessionId1 = `${process.pid}-${crypto.randomUUID().slice(0, 8)}`;
-const sessionDir1 = path.join(os.tmpdir(), `lyricfx-session-${sessionId1}`);
-fs.mkdirSync(path.join(sessionDir1, 'userData'), { recursive: true });
-fs.mkdirSync(path.join(sessionDir1, 'sessionData'), { recursive: true });
+// 2. Test In-Memory Partition Isolation for --new-project
+// Must NOT start with 'persist:' to guarantee pure RAM storage without creating disk profile files
+function createSessionPartition(opts) {
+  return opts.newProject
+    ? `temp-project-${process.pid}-${crypto.randomUUID().slice(0, 8)}`
+    : null;
+}
 
-assert.strictEqual(fs.existsSync(path.join(sessionDir1, 'userData')), true);
-assert.strictEqual(fs.existsSync(path.join(sessionDir1, 'sessionData')), true);
+const partA = createSessionPartition(parsedA);
+assert.ok(partA, 'Partition should be created for --new-project');
+assert.ok(!partA.startsWith('persist:'), 'Partition must NOT start with persist: so it remains purely in-memory');
+assert.ok(partA.startsWith(`temp-project-${process.pid}-`), 'Partition should contain process pid for identification');
 
-// Verify another session gets a completely separate directory
-const sessionId2 = `${process.pid}-${crypto.randomUUID().slice(0, 8)}`;
-const sessionDir2 = path.join(os.tmpdir(), `lyricfx-session-${sessionId2}`);
-assert.notStrictEqual(sessionDir1, sessionDir2);
+const partNormal = createSessionPartition({ newProject: false });
+assert.strictEqual(partNormal, null, 'Normal runs should not use temporary in-memory partition');
 
-// Clean up
-fs.rmSync(sessionDir1, { recursive: true, force: true });
-assert.strictEqual(fs.existsSync(sessionDir1), false);
-
-// 3. Test Stale Session Cleanup: Must NEVER delete directories of active/running PIDs, even if older than 24h
+// 3. Test Stale Session Cleanup: Must NEVER delete directories of active/running PIDs
 function isPidAlive(pid) {
   try {
     process.kill(pid, 0);
@@ -98,13 +96,11 @@ function cleanupStaleSessions(tmpBase) {
             isDead = true;
           }
         }
-        try {
-          const stat = fs.statSync(fullPath);
-          const ageMs = Date.now() - stat.mtimeMs;
-          if (isDead && ageMs > 600000) {
+        if (isDead) {
+          try {
             fs.rmSync(fullPath, { recursive: true, force: true });
-          }
-        } catch (e) {}
+          } catch (e) {}
+        }
       }
     }
   } catch (e) {}

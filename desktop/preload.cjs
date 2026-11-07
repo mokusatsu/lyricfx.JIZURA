@@ -98,8 +98,13 @@ const jizuraDesktop = {
     }
   },
 
-  setDirtyState: async (dirty) => {
-    return await ipcRenderer.invoke('desktop:setDirtyState', !!dirty);
+  setDirtyState: (dirty) => {
+    try {
+      ipcRenderer.sendSync('desktop:setDirtyStateSync', !!dirty);
+      return true;
+    } catch (e) {
+      return ipcRenderer.invoke('desktop:setDirtyState', !!dirty);
+    }
   },
 
   confirmQuit: async () => {

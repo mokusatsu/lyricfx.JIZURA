@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain, protocol, shell, net } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, protocol, shell, net, session } = require('electron');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const fs = require('node:fs');
@@ -30,14 +30,12 @@ function parseCliArgs(argv) {
 }
 
 const cliOptions = parseCliArgs(process.argv);
-let currentSessionDir = null;
 
 // Clean up dead session directories without touching active sessions or user data
 function cleanupStaleSessions() {
   try {
     const tmp = os.tmpdir();
     const entries = fs.readdirSync(tmp);
-    const now = Date.now();
     for (const name of entries) {
       if (name.startsWith('lyricfx-session-')) {
         const parts = name.split('-');
@@ -51,39 +49,25 @@ function cleanupStaleSessions() {
             if (e.code === 'ESRCH') isDead = true;
           }
         }
-        try {
-          const stat = fs.statSync(dirPath);
-          const ageMs = now - stat.mtimeMs;
-          if (isDead && ageMs > 600000) {
+        if (isDead) {
+          try {
             fs.rmSync(dirPath, { recursive: true, force: true });
-          }
-        } catch (e) {}
+          } catch (e) {}
+        }
       }
     }
   } catch (e) {}
 }
 
-// Ensure isolated userData and sessionData for --new-project before app is ready
-if (cliOptions.newProject) {
-  cleanupStaleSessions();
-  const sessionId = `${process.pid}-${crypto.randomUUID().slice(0, 8)}`;
-  currentSessionDir = path.join(os.tmpdir(), `lyricfx-session-${sessionId}`);
-  try {
-    fs.mkdirSync(currentSessionDir, { recursive: true });
-    const userDataDir = path.join(currentSessionDir, 'userData');
-    const sessionDataDir = path.join(currentSessionDir, 'sessionData');
-    fs.mkdirSync(userDataDir, { recursive: true });
-    fs.mkdirSync(sessionDataDir, { recursive: true });
-    app.setPath('userData', userDataDir);
-    app.setPath('sessionData', sessionDataDir);
-  } catch (err) {
-    dialog.showErrorBox(
-      '初期化エラー',
-      `作業用セッションディレクトリの作成に失敗しました: ${err.message}\n起動を中止します。`
-    );
-    app.exit(1);
-  }
-}
+// Clean up any stale session directories left behind from dead processes
+cleanupStaleSessions();
+
+// For --new-project, use an isolated in-memory partition instead of creating a disk-based userData directory.
+// In Electron, partition names without the "persist:" prefix are purely in-memory.
+// This completely avoids creating ~150 Chromium profile/cache files (11-12MB) on disk and prevents cleanup failures on quit.
+const inMemorySessionPartition = cliOptions.newProject
+  ? `temp-project-${process.pid}-${crypto.randomUUID().slice(0, 8)}`
+  : null;
 
 // Register custom protocol scheme privileges before app is ready
 protocol.registerSchemesAsPrivileged([
@@ -119,6 +103,16 @@ function detectVideoMime(filePath) {
 function createWindow() {
   nativeJobs = new NativeJobs();
 
+  const webPreferences = {
+    nodeIntegration: false,
+    contextIsolation: true,
+    sandbox: true,
+    preload: path.join(__dirname, 'preload.cjs')
+  };
+  if (inMemorySessionPartition) {
+    webPreferences.partition = inMemorySessionPartition;
+  }
+
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
@@ -126,12 +120,7 @@ function createWindow() {
     minHeight: 600,
     title: 'lyricfx.JIZURA',
     backgroundColor: '#0c0d10',
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      sandbox: true,
-      preload: path.join(__dirname, 'preload.cjs')
-    }
+    webPreferences
   });
 
   // Relay renderer errors to terminal for debugging
@@ -194,8 +183,8 @@ function createWindow() {
 }
 
 // Setup custom streaming protocol for assets
-function setupAssetProtocol() {
-  protocol.handle('jizura-asset', async (request) => {
+function setupAssetProtocol(targetSession = session.defaultSession) {
+  targetSession.protocol.handle('jizura-asset', async (request) => {
     try {
       if (request.method === 'OPTIONS') {
         return new Response(null, {
@@ -494,6 +483,12 @@ function setupIpcHandlers() {
     };
   });
 
+  ipcMain.on('desktop:setDirtyStateSync', (event, dirty) => {
+    dirtySequence++;
+    isProjectDirty = !!dirty;
+    event.returnValue = true;
+  });
+
   ipcMain.handle('desktop:setDirtyState', async (event, dirty) => {
     dirtySequence++;
     isProjectDirty = !!dirty;
@@ -621,7 +616,11 @@ function setupIpcHandlers() {
 }
 
 app.whenReady().then(() => {
-  setupAssetProtocol();
+  setupAssetProtocol(session.defaultSession);
+  if (inMemorySessionPartition) {
+    const memSession = session.fromPartition(inMemorySessionPartition);
+    setupAssetProtocol(memSession);
+  }
   setupIpcHandlers();
   createWindow();
 
@@ -638,28 +637,11 @@ app.on('will-quit', () => {
       nativeJobs.cleanupAll();
     } catch (e) {}
   }
-  if (currentSessionDir && fs.existsSync(currentSessionDir)) {
+  if (inMemorySessionPartition) {
     try {
-      fs.rmSync(currentSessionDir, { recursive: true, force: true });
-    } catch (e) {
-      // Windows lock release fallback: launch detached background cleanup with retry
-      try {
-        const { spawn } = require('child_process');
-        if (process.platform === 'win32') {
-          const psScript = `for ($i = 0; $i -lt 15; $i++) { Start-Sleep -Milliseconds 500; if (-not (Test-Path -LiteralPath '${currentSessionDir}')) { break }; try { Remove-Item -LiteralPath '${currentSessionDir}' -Recurse -Force -ErrorAction Stop; break } catch {} }`;
-          spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-ExecutionPolicy', 'Bypass', '-Command', psScript], {
-            detached: true,
-            stdio: 'ignore',
-            windowsHide: true
-          }).unref();
-        } else {
-          spawn('sh', ['-c', `sleep 1 && rm -rf "${currentSessionDir}"`], {
-            detached: true,
-            stdio: 'ignore'
-          }).unref();
-        }
-      } catch (spawnErr) {}
-    }
+      const memSession = session.fromPartition(inMemorySessionPartition);
+      memSession.clearStorageData().catch(() => {});
+    } catch (e) {}
   }
 });
 
