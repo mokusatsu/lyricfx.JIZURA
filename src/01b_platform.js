@@ -26,4 +26,8 @@
     cancelJob: null,
     personModelProfile: () => (J.PERSON_MODEL && J.PERSON_MODEL.id) || 'rvm',
   };
+
+  if (typeof document !== 'undefined' && document.documentElement) {
+    document.documentElement.classList.add(J.platform?.name === 'desktop' ? 'is-desktop' : 'is-web');
+  }
 })();

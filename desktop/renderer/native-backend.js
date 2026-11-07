@@ -4,6 +4,11 @@
   'use strict';
   if (!window.jizuraDesktop) return;
 
+  if (typeof document !== 'undefined' && document.documentElement) {
+    document.documentElement.classList.remove('is-web');
+    document.documentElement.classList.add('is-desktop');
+  }
+
   const desktop = window.jizuraDesktop;
   const blobToToken = new WeakMap();
   const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }

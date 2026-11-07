@@ -346,6 +346,11 @@ label.check small { display: block; font-size: 11px; color: var(--muted); }
 .modes button + button { border-left: 1px solid var(--line2); }
 .modes button[aria-pressed=true] { background: var(--raised2); color: var(--text); box-shadow: inset 0 -2px 0 var(--amber); }
 #app.is-easy .tabs, #app.is-easy .tabpane, #app.is-easy .pro-only { display: none !important; }
+
+/* ---------- platform display control (Web vs Desktop) ---------- */
+html.is-web .desktop-only,
+html:not(.is-desktop) .desktop-only { display: none !important; }
+html.is-desktop .web-only { display: none !important; }
 .hist-btns { display: inline-flex; gap: 4px; }
 button.icon-txt { font-size: 10px; min-width: 28px; }
 .transport #btnOmakase { letter-spacing: 0.08em; }

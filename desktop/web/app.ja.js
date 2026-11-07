@@ -208,6 +208,10 @@ J.fmtTime = (t, fps) => {
     cancelJob: null,
     personModelProfile: () => (J.PERSON_MODEL && J.PERSON_MODEL.id) || 'rvm',
   };
+
+  if (typeof document !== 'undefined' && document.documentElement) {
+    document.documentElement.classList.add(J.platform?.name === 'desktop' ? 'is-desktop' : 'is-web');
+  }
 })();
 
 /* ============================================================
@@ -43350,6 +43354,11 @@ J.ShortFrameRenderer=ShortFrameRenderer;
   'use strict';
   if (!window.jizuraDesktop) return;
 
+  if (typeof document !== 'undefined' && document.documentElement) {
+    document.documentElement.classList.remove('is-web');
+    document.documentElement.classList.add('is-desktop');
+  }
+
   const desktop = window.jizuraDesktop;
   const blobToToken = new WeakMap();
   const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
@@ -47867,9 +47876,7 @@ function syncExportSettingsVisibility() {
   $('outQP').closest('label').hidden=$('outQPNote').hidden=!mp4||S.project.quality!=='qp';
   $('outKey').closest('label').hidden=transparent||short;
   $('exportSettings').querySelector('.key-note').hidden=transparent||short;
-  const isNative = Boolean(J.platform && J.platform.nativeExport);
-  if ($('outEncoderField')) $('outEncoderField').hidden = !isNative || !mp4;
-  if ($('eEncoderField')) $('eEncoderField').hidden = !isNative;
+  if ($('outEncoderField')) $('outEncoderField').hidden = !mp4;
   $('codecNote').hidden=!mp4;
 }
 function syncQuality() {

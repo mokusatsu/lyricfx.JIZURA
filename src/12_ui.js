@@ -4131,9 +4131,7 @@ function syncExportSettingsVisibility() {
   $('outQP').closest('label').hidden=$('outQPNote').hidden=!mp4||S.project.quality!=='qp';
   $('outKey').closest('label').hidden=transparent||short;
   $('exportSettings').querySelector('.key-note').hidden=transparent||short;
-  const isNative = Boolean(J.platform && J.platform.nativeExport);
-  if ($('outEncoderField')) $('outEncoderField').hidden = !isNative || !mp4;
-  if ($('eEncoderField')) $('eEncoderField').hidden = !isNative;
+  if ($('outEncoderField')) $('outEncoderField').hidden = !mp4;
   $('codecNote').hidden=!mp4;
 }
 function syncQuality() {

@@ -40,7 +40,7 @@ def build_web(out_dir, dev=False):
             script = script.replace(marker, read('app/english.js') + '\n' + marker, 1)
         script = script.replace('__EFFECT_PREVIEW_IMAGE__', 'data:image/png;base64,' + base64.b64encode(open('assets/effect-preview.png', 'rb').read()).decode('ascii'))
         html = f'''<!doctype html>
-<html lang="{lang}">
+<html lang="{lang}" class="is-web">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -144,7 +144,7 @@ def build_electron(out_dir):
         csp = "default-src 'self' data: blob: https:; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; media-src 'self' blob: data: jizura-asset:; connect-src 'self' data: blob: https: jizura-asset:;"
 
         html = f'''<!doctype html>
-<html lang="{lang}">
+<html lang="{lang}" class="is-desktop">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
