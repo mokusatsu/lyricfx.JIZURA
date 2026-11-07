@@ -211,6 +211,41 @@ fs.mkdirSync(tempDir, { recursive: true });
     assert.equal(testProjectRev, 1, 'projectRevision must bump immediately on input');
     assert.equal(desktopDirtyNotified, true, 'Desktop dirty state must be notified immediately on input');
 
+    // 17. Clean state preservation when opening an existing project file
+    let simDirtyState = false;
+    let simSuppressDirty = false;
+    function simMarkDirty() {
+      if (simSuppressDirty) return;
+      simDirtyState = true;
+    }
+    function simMarkClean() {
+      simDirtyState = false;
+    }
+    function simReplaceProject(isSaved = false) {
+      if (isSaved) simSuppressDirty = true;
+      try {
+        // replan() inside replaceProject attempts to autosave -> markProjectDirty
+        simMarkDirty();
+      } finally {
+        if (isSaved) {
+          simSuppressDirty = false;
+          simMarkClean();
+        }
+      }
+    }
+
+    // Step A: Open saved project file
+    simReplaceProject(true);
+    assert.equal(simDirtyState, false, 'Project opened from file must remain clean without prompt');
+
+    // Step B: User edits project
+    simMarkDirty();
+    assert.equal(simDirtyState, true, 'Editing project must mark it dirty');
+
+    // Step C: User saves project
+    simMarkClean();
+    assert.equal(simDirtyState, false, 'Saving project must clear dirty state');
+
     // Clean up
     jobs.cleanupAll();
     console.log('Native dialog and asset tests passed successfully.');

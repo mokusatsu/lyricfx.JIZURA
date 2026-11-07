@@ -43982,7 +43982,7 @@ const ICON = {
   frontmost: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 2h9v8M8 4l2 2 2-2"/></svg>',
 };
 
-const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], avoidanceLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1 };
+const S = { project: null, plan: null, audio: null, renderer: new J.Renderer(), playing: false, t: 0, t0: 0, loop: true, need: true, exporting: null, tap: null, linkDrag: null, slow: false, lineEls: [], mediaLineEls: [], avoidanceLineEls: [], sourceTab: 'lyrics', curLine: -2, timelineZoom: 1, suppressDirty: false };
 
 /* WebAudio player (works inside sandboxed pages where blob media may be blocked) */
 const AP = {
@@ -44240,7 +44240,8 @@ function undoMove(direction) {
   U.restoring = false; updateUndoButtons();
 }
 let saveTimer = 0, projectRevision = 0;
-function markProjectDirty() { projectRevision++; clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
+function markProjectDirty() { if (S.suppressDirty) return; projectRevision++; clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
+function markProjectClean() { clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(false); if (typeof J.platform?.notifyProjectSaved === 'function') J.platform.notifyProjectSaved(); }
 function autosave() { markProjectDirty(); recordUndoState(); }
 function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
@@ -49363,7 +49364,7 @@ function bind() {
   $('btnNew').addEventListener('click', () => { if (!S.exporting && !S.projectBusy) $('newProjectDlg').showModal(); });
   $('btnCreateProject').addEventListener('click', () => {
     const project = J.defaultProject(); project.lyrics = ''; project.aspect = $('newProjectAspect').value;
-    replaceProject(project, null, null, new Map()); $('newProjectDlg').close();
+    replaceProject(project, null, null, new Map(), false); $('newProjectDlg').close(); markProjectDirty();
     $('btnThemes').click();
   });
   $('btnSave').addEventListener('click', async () => {
@@ -49405,9 +49406,7 @@ function bind() {
       }
       flushSave();
       if (projectRevision === saveRevision) {
-        if (typeof J.platform?.notifyProjectSaved === 'function') {
-          J.platform.notifyProjectSaved();
-        }
+        markProjectClean();
       } else {
         if (typeof J.platform?.cancelSaveAndClose === 'function') {
           J.platform.cancelSaveAndClose();
@@ -49585,7 +49584,7 @@ function refreshAudioName() {
   $('audioName').textContent = S.audio ? `${S.project.audioAsset?.name || ''}（${J.fmtTime(S.audio.duration)} · about ${S.audio.bpm}BPM）` : NO_AUDIO_LABEL;
   $('btnRemoveAudio').hidden = !S.audio;
 }
-function replaceProject(project, audio, audioFile, assets) {
+function replaceProject(project, audio, audioFile, assets, isSaved = false) {
   S.audioLoad = (S.audioLoad || 0) + 1;
   pause(); clearTimeout(replanTimer); clearTimeout(saveTimer);
   if (S.areaEdit) cancelAreaEditor();
@@ -49600,7 +49599,15 @@ function replaceProject(project, audio, audioFile, assets) {
   $('btnLoop').setAttribute('aria-pressed','true'); $('mediaFiles').value = '';
   J.mediaTransitionFrame = null; J.foregroundTransitionFrame = null;
   H.list = []; H.i = -1; fontKey = ''; initUndo();
-  refreshAudioName(); syncUI(); replan(); setTimelineZoom(1); commit(); flushSave(); ensureFonts();
+  if (isSaved) S.suppressDirty = true;
+  try {
+    refreshAudioName(); syncUI(); replan(); setTimelineZoom(1); commit(); flushSave(); ensureFonts();
+  } finally {
+    if (isSaved) {
+      S.suppressDirty = false;
+      markProjectClean();
+    }
+  }
 }
 async function restoreAudioAsset() {
   const project = S.project, info = project.audioAsset;
@@ -49643,25 +49650,31 @@ async function openProjectFile(file,report=()=>{}) {
       const blob=files.get('person:'+ref.maskId) || await J.loadMedia(ref.maskId);
       if(blob)await J.attachPersonMask(ref,blob);
     }
-    replaceProject(project,audio,audioFile,assets);
+    replaceProject(project,audio,audioFile,assets,true);
+    markProjectClean();
   } catch (err) { releaseProjectAssets(assets); throw err; }
 }
 
 /* ---------------- boot ---------------- */
 function boot() {
-  S.project = loadLocal();
-  cleanupDeletedMedia();
-  initUndo();
-  bind(); syncUI(); replan();
-  restoreMediaAssets();
-  restoreAudioAsset();
-  J.restoreFontFiles(S.project.userFonts).then(() => { fontKey = ''; ensureFonts(); S.need = true; }).catch(() => {});
-  let mode = 'easy'; try { mode = localStorage.getItem('jizura.mode') || 'easy'; } catch (e) {}
-  setMode(mode); commit();
-  // open on a representative frame (end of the first cut's entrance)
-  const c0 = S.plan.cuts.find(c => c.line >= 0);
-  if (c0) seek(c0.start + Math.min(c0.dur * 0.6, c0.inDur + 0.25));
-  requestAnimationFrame(tick);
+  S.suppressDirty = true;
+  try {
+    S.project = loadLocal();
+    cleanupDeletedMedia();
+    initUndo();
+    bind(); syncUI(); replan();
+    restoreMediaAssets();
+    restoreAudioAsset();
+    J.restoreFontFiles(S.project.userFonts).then(() => { fontKey = ''; ensureFonts(); S.need = true; }).catch(() => {});
+    let mode = 'easy'; try { mode = localStorage.getItem('jizura.mode') || 'easy'; } catch (e) {}
+    setMode(mode); commit();
+    // open on a representative frame (end of the first cut's entrance)
+    const c0 = S.plan.cuts.find(c => c.line >= 0);
+    if (c0) seek(c0.start + Math.min(c0.dur * 0.6, c0.inDur + 0.25));
+    requestAnimationFrame(tick);
+  } finally {
+    S.suppressDirty = false;
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 J.ui = S;
@@ -49670,7 +49683,7 @@ J.addMediaFiles = addMediaFiles;
 J.activeMediaLayer = activeMediaLayer;
 // hooks for hosts that embed the app (the After Effects CEP panel)
 J.uiApi = { toast, replan, syncUI, pause, seek, setTimelineZoom, flushSave, loadAudioFile, restartPreview,
-  openProjectFile, replaceProject, ensureFonts, splitMediaCut, insertLyricAtPlayhead,
+  openProjectFile, replaceProject, markProjectDirty, markProjectClean, ensureFonts, splitMediaCut, insertLyricAtPlayhead,
   removeLyricCut, removeMediaCut, connectTimelineBoundaries,
   boundaryGroupLimits, commitTimelineBoundary, addMediaFiles, activeMediaLayer };
 })();
