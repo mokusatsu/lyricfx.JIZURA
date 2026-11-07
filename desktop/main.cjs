@@ -300,7 +300,6 @@ function setupIpcHandlers() {
       defaultPath: defaultName || 'project.lyricfx',
       filters: [
         { name: 'lyricfx Project (*.lyricfx)', extensions: ['lyricfx'] },
-        { name: 'Legacy Project (*.jizuraichi)', extensions: ['jizuraichi'] },
         { name: 'All Files (*.*)', extensions: ['*'] }
       ]
     });
@@ -440,7 +439,6 @@ function setupIpcHandlers() {
       defaultPath: defaultName || 'project.lyricfx',
       filters: [
         { name: 'lyricfx Project (*.lyricfx)', extensions: ['lyricfx'] },
-        { name: 'Legacy Project (*.jizuraichi)', extensions: ['jizuraichi'] },
         { name: 'All Files (*.*)', extensions: ['*'] }
       ]
     });

@@ -1,16 +1,14 @@
-const {chromium}=require('playwright');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
-const assert=require('node:assert/strict'), fs=require('node:fs'), path=require('node:path');
+const assert=require('node:assert/strict');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await launchBrowser();
  try { for(const locale of ['', 'en/']) for(const viewport of [{width:1500,height:900},{width:720,height:820}]) {
   const page=await browser.newPage({viewport}),errors=[],narrow=viewport.width<860;
   page.on('pageerror',e=>errors.push(e.message));
-  const url='http://127.0.0.1:8765/'+locale;
-  await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());
-  await page.goto(url);
+  await loadApp(page,{locale});
   await page.evaluate(()=>{
-    const p=J.defaultProject();p.lyrics='[00:00]最初の歌詞/次の歌詞\n[00:04]最後の歌詞';p.durationOverride=8;
+    const p=J.defaultProject();p.title='';p.lyrics='[00:00]最初の歌詞/次の歌詞\n[00:04]最後の歌詞';p.durationOverride=8;p.overrides={0:{single:true}};
     // Foreground: a small green block (transparent elsewhere); background: solid blue.
     for(const [id,color,rect] of [['fg','#0c0',[20,30,40,30]],['bg','#00d',[0,0,160,90]]]){const img=document.createElement('canvas');img.width=160;img.height=90;const g=img.getContext('2d');g.fillStyle=color;g.fillRect(...rect);J.mediaAssets.set(id,{element:img,type:'image'});}
     for(const [layer,id] of [['foreground','fg'],['media','bg']])p[layer]={...p[layer],items:[{id,name:id+'.png',type:'image',width:160,height:90}],manualCuts:true,cutCount:2,timing:{lineTimes:{0:0,1:4}},cutOverrides:{0:{itemId:id,technique:'none'},1:{itemId:id,technique:'none'}}};
@@ -80,6 +78,13 @@ const assert=require('node:assert/strict'), fs=require('node:fs'), path=require(
   assert.equal(await focus.isChecked(),false);const wide=await share();assert.ok(wide.green>.02&&wide.green<.15,'foreground unfocused '+JSON.stringify(wide));
   await focus.check();await page.waitForTimeout(300);const close_=await share();assert.ok(close_.green>.4&&close_.green>wide.green*4,'foreground focused '+JSON.stringify(close_));await close();
   await open('media');assert.equal(await focus.isChecked(),true);const full=await share();assert.ok(full.blue>.6,'full-frame background '+JSON.stringify(full));await close();
+  // Use a small, static lyric area so animation cannot mask the focus magnification.
+  await page.evaluate(()=>{
+    const cut=J.ui.plan.cuts.find(c=>c.line>=0&&Number.isInteger(c.part)),key=`${cut.line}:${cut.part}`;
+    const options=J.ui.project.lyricCutOptions[key] ||= {};
+    options.details={...options.details,layout:'center',enter:'cut',hold:'still',exit:'cut',decor:[],area:{x:.4,y:.4,w:.2,h:.2,angle:0}};
+    J.uiApi.replan();
+  });
   await open('lyrics');await modal.locator('[data-preview-solo]').check();await focus.uncheck();await page.waitForTimeout(300);
   let small=0,large=0;for(let i=0;i<6;i++){small=Math.max(small,(await share()).bright);await page.waitForTimeout(60);}
   await focus.check();await page.waitForTimeout(300);for(let i=0;i<6;i++){large=Math.max(large,(await share()).bright);await page.waitForTimeout(60);}

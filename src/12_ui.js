@@ -102,99 +102,7 @@ function removeAudio() {
 }
 
 /* ---------------- project persistence ---------------- */
-// 無表示カット (retired): the lyric showing when a blank began now ends there (カットの終了時間).
-function migrateLyricBlankCuts(project) {
-  const blanks = (Array.isArray(project.lyricBlankCuts) ? project.lyricBlankCuts : []).filter(b => b && Number.isFinite(+b.start)).sort((a, b) => a.start - b.start);
-  delete project.lyricBlankCuts;
-  if (!blanks.length) return;
-  const plan = J.plan(project), done = new Set();
-  for (const blank of blanks) for (const cut of plan.cuts) {
-    const key = `${cut.line}:${cut.part}`;
-    if (cut.line < 0 || !Number.isInteger(cut.part) || done.has(key) || !(cut.start < +blank.start && cut.end > +blank.start)) continue;
-    project.lyricCutOptions[key] = { ...project.lyricCutOptions[key], untilNext: false, endTime: +(+blank.start).toFixed(3) };
-    done.add(key);
-  }
-}
-function mergeProject(p) {
-  const d = J.defaultProject();
-  const o = Object.assign(d, p || {});
-  if (o.videoSize) { const [w, h] = J.outputSize(o); o.videoSize = { w, h }; }
-  o.shortExport=J.shortExportSettings(o.shortExport);
-  o.fx = Object.assign(J.defaultProject().fx, (p && p.fx) || {});
-  o.timing = Object.assign(J.defaultProject().timing, (p && p.timing) || {});
-  o.timing.cutTimes = o.timing.cutTimes || {};
-  o.customEffects=J.validateCustomEffects(o.customEffects||[]);J.activateCustomEffects(o);
-  const en = J.defaultProject().enabled;
-  for (const g of Object.keys(en)) en[g] = Object.assign(en[g], ((p && p.enabled) || {})[g] || {});
-  o.enabled = en;
-  o.overrides = (p && p.overrides) || {};
-  o.lyricCutOptions = (p && p.lyricCutOptions) || {};
-  o.lyricEffects = J.lyricEffectSettings(o);
-  o.themes = J.themeIds(o);
-  o.themeBalance = o.themeBalance === 'unified' ? 'unified' : 'lively';
-  delete o.jevPrompt;
-  migrateLyricBlankCuts(o);
-  o.effectFavorites = J.normalizeEffectFavorites(o.effectFavorites);
-  o.customEffects=J.combineCustomEffects(o.customEffects,...o.effectFavorites.map(f=>f.payload.components||[]));J.activateCustomEffects(o);
-  o.favoriteSequence = Math.max(o.effectFavorites.length,Math.floor(+o.favoriteSequence)||0);
-  o.timelineLinks = Array.isArray(p && p.timelineLinks) ? p.timelineLinks : [];
-  o.layerVisibility = Object.assign({avoidance:true,foreground:true,lyrics:true,media:true}, (p && p.layerVisibility) || {});
-  o.avoidance = J.normalizeAvoidance(p ? p.avoidance : J.defaultProject().avoidance);
-  o.media = J.normalizeMedia(p && p.media);
-  o.foreground = J.normalizeMedia(p && p.foreground);
-  for (const layer of ['media', 'foreground']) o[layer].effects = J.mediaEffectSettings(o, layer);
-  // Convert the former per-source occlusion switches once, preserving their active intervals.
-  const legacy = [];
-  for (const layer of ['media','foreground']) for (const [key, options] of Object.entries(o[layer].cutOverrides || {})) {
-    const ref=options.personCutout;
-    if (ref && (ref.behindLyrics || ref.behindForeground)) legacy.push({layer,index:+key,lyrics:!!ref.behindLyrics,foreground:!!ref.behindForeground});
-  }
-  if (legacy.length) {
-    const lp=J.plan(o), ap=J.planAvoidance(o,lp), media={media:J.planMedia(o,lp),foreground:J.planMedia(o,lp,null,'foreground')};
-    const entries=ap.cuts.map(c=>({start:c.start,end:c.end,oldIndex:c.index,ov:{...(o.avoidance.cutOverrides[c.index]||{})}}));
-    for (const old of legacy) {
-      const c=media[old.layer].cuts[old.index];
-      if (!c) continue;
-      entries.push({start:c.start,end:c.end,ov:{kind:'person',source:{layer:old.layer,index:old.index,itemId:c.itemId},placement:false,occlusion:old.lyrics?'all':'none',behindForeground:old.foreground}});
-      const ref=o[old.layer].cutOverrides[old.index].personCutout; delete ref.behindLyrics;delete ref.behindForeground;
-    }
-    entries.sort((a,b)=>a.start-b.start);
-    o.avoidance.manualCuts=true;o.avoidance.cutCount=entries.length;o.avoidance.cutOverrides={};o.avoidance.timing.lineTimes={};
-    const remap=new Map();
-    entries.forEach((e,i)=>{if(e.oldIndex!=null)remap.set(e.oldIndex,i);o.avoidance.timing.lineTimes[i]=e.start;o.avoidance.cutOverrides[i]={...e.ov,untilNext:false,endTime:e.end};});
-    for(const link of o.timelineLinks)for(const side of ['a','b'])if(/^a:\d+$/.test(link[side])){const old=+link[side].slice(2);if(remap.has(old))link[side]='a:'+remap.get(old);}
-  }
-  // Materialize the old circle-wide switch and inherited defaults once per cut.
-  if(!o.avoidance.timelineMode) {
-    const a=o.avoidance,settings=J.lyricEffectSettings(o),on=!!(settings.autoPlacement && settings.avoidCenter);
-    const oldPlan=J.plan(o),custom=o.lyricEffects?.avoidCircle || o.avoidCircle;
-    for(let i=0;i<a.cutCount;i++){
-      const ov=a.cutOverrides[i] ||= {};if(ov.kind==='person')continue;
-      ov.enabled=on && ov.enabled!==false;
-      ov.avoidEmphasis=ov.avoidEmphasis ?? a.avoidEmphasis;
-      ov.occlusion=ov.occlusion || ((ov.maskAvoidance ?? a.maskAvoidance)?'aux':'none');
-      for(const key of ['maskRadiusOffset','maskFeather','maskCurve'])if(ov[key]===undefined)ov[key]=a[key];
-      if(custom && [custom.cx,custom.cy,custom.r].some(Number.isFinite)){
-        if(Number.isFinite(custom.cx))ov.cx=J.clamp(custom.cx/oldPlan.W,0,1);
-        if(Number.isFinite(custom.cy))ov.cy=J.clamp(custom.cy/oldPlan.H,0,1);
-        if(Number.isFinite(custom.r))ov.r=J.clamp(custom.r/Math.min(oldPlan.W,oldPlan.H),.03,.85);
-        if(Number.isFinite(custom.pad))ov.pad=J.clamp(custom.pad/Math.min(oldPlan.W,oldPlan.H),0,.2);
-        if(Number.isFinite(custom.feather))ov.feather=J.clamp(custom.feather/Math.min(oldPlan.W,oldPlan.H),0,.3);
-      }
-    }
-    a.timelineMode=true;
-  }
-  delete o.mediaEffects;
-  o.colors = Object.assign({ enabled: false }, (p && p.colors) || {});
-  o.colorTheme = J.normalizeColorTheme(p && p.colorTheme);
-  o.fonts = (p && p.fonts) || {};
-  o.userFonts = (p && p.userFonts) || [];
-  for (const uf of o.userFonts) if (!J.FONTS[uf.key]) J.addUserFont(uf.key, uf.label, uf.family, uf.weight || 400);
-  o.compositeFonts = Array.isArray(p && p.compositeFonts) ? p.compositeFonts : [];
-  J.setCompositeFonts(o.compositeFonts);
-  J.migrateLyricCompositing(o);
-  return o;
-}
+const mergeProject = J.normalizeProject;
 function setBadges(d) {
   return d && d.custom ? '<span class="set-badge ex" title="'+J.mediaLabel('取り込んだ独自演出','Imported custom effect')+'">'+J.mediaLabel('追加','Added')+'</span>' : '';
 }
@@ -283,8 +191,8 @@ function undoMove(direction) {
   U.restoring = false; updateUndoButtons();
 }
 let saveTimer = 0, projectRevision = 0;
-function markProjectDirty() { if (S.suppressDirty) return; projectRevision++; clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
-function markProjectClean() { clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(false); if (typeof J.platform?.notifyProjectSaved === 'function') J.platform.notifyProjectSaved(); }
+function markProjectDirty() { if (S.suppressDirty) return; projectRevision++; clearTimeout(saveTimer); J.platform?.setDirtyState?.(true); saveTimer = setTimeout(flushSave, 700); }
+function markProjectClean() { clearTimeout(saveTimer); J.platform?.setDirtyState?.(false); if (typeof J.platform?.notifyProjectSaved === 'function') J.platform.notifyProjectSaved(); }
 function autosave() { markProjectDirty(); recordUndoState(); }
 function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
@@ -435,31 +343,8 @@ function syncMainMediaPreview() {
   if(!$('cutDetailsDialog')?.open&&!$('effectFavoritesDialog')?.open&&!($('exportDlg')?.open&&S.exportKind==='short'))J.syncMediaPreview(S.plan,S.t,S.playing);
 }
 function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
-  const previewCuts = S.areaEdit && S.areaEdit.kind === 'lyric' && S.areaEdit.draft ? S.plan.cuts.filter(cut => cut.line === S.areaEdit.index) : [];
-  const previousAreas = previewCuts.map(cut => cut.area);
-  previewCuts.forEach(cut => { cut.area = { ...S.areaEdit.draft, angle: S.areaEdit.angle }; });
-  const edit = S.areaEdit;
-  const mediaCut = edit && (edit.kind === 'media' || edit.kind === 'foreground') && S.plan[edit.kind].cuts[edit.index];
-  const previousMedia = mediaCut && { placement: mediaCut.placement, zoom: mediaCut.zoom, hold: mediaCut.hold, enter: mediaCut.enter, exit: mediaCut.exit, trans: mediaCut.trans };
-  if (mediaCut) Object.assign(mediaCut, { placement: { cx: edit.draft.x + edit.draft.w / 2, cy: edit.draft.y + edit.draft.h / 2, w: edit.draft.w, h: edit.draft.h, lockAspect: edit.lockAspect, angle: edit.angle }, zoom: 100, hold: 'still', enter: 'cut', exit: 'cut', trans: undefined });
-  const draftAvoidance = edit?.kind === 'avoidance' && edit.newCut && S.plan.avoidance?.cuts;
-  const avoidanceCut = draftAvoidance ? {kind:'circle', index:draftAvoidance.length, start:edit.start, end:edit.untilNext ? S.plan.duration : edit.end} : edit && edit.kind === 'avoidance' && S.plan.avoidance?.cuts[edit.index];
-  if (draftAvoidance) draftAvoidance.push(avoidanceCut);
-  const previousAvoidance = avoidanceCut && { cx: avoidanceCut.cx, cy: avoidanceCut.cy, r: avoidanceCut.r, enabled: avoidanceCut.enabled, placement:avoidanceCut.placement, avoidEmphasis:avoidanceCut.avoidEmphasis, occlusion:avoidanceCut.occlusion, behindForeground:avoidanceCut.behindForeground, maskAvoidance: avoidanceCut.maskAvoidance, maskRadiusOffset: avoidanceCut.maskRadiusOffset, maskFeather: avoidanceCut.maskFeather, maskCurve: avoidanceCut.maskCurve, planEnabled: S.plan.lyricAvoidance?.enabled };
-  if (avoidanceCut && edit.draft) {
-    Object.assign(avoidanceCut, draftToAvoidanceCircle(edit.draft), { enabled:edit.enabled, placement:edit.placement, avoidEmphasis:edit.avoidEmphasis, occlusion:edit.occlusion, behindForeground:edit.behindForeground, maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: edit.maskRadiusOffset ?? 0, maskFeather: edit.maskFeather ?? 60, maskCurve: edit.maskCurve || 'smooth' });
-    if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = true;
-  }
-  try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance' && edit.kind !== 'person', noForeground: !!edit && edit.kind === 'media' }); }
-  finally {
-    if (draftAvoidance) draftAvoidance.pop();
-    previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; });
-    if (mediaCut) Object.assign(mediaCut, previousMedia);
-    if (avoidanceCut && previousAvoidance) {
-      Object.assign(avoidanceCut, { cx: previousAvoidance.cx, cy: previousAvoidance.cy, r: previousAvoidance.r, enabled: previousAvoidance.enabled, placement:previousAvoidance.placement, avoidEmphasis:previousAvoidance.avoidEmphasis, occlusion:previousAvoidance.occlusion, behindForeground:previousAvoidance.behindForeground, maskAvoidance: previousAvoidance.maskAvoidance, maskRadiusOffset: previousAvoidance.maskRadiusOffset, maskFeather: previousAvoidance.maskFeather, maskCurve: previousAvoidance.maskCurve });
-      if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = previousAvoidance.planEnabled;
-    }
-  }
+  const edit = S.areaEdit, plan = J.previewRenderPlan(S.plan,edit);
+  renderer.frame(ctx, plan, S.t, { scale: ctx.canvas.width / plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance' && edit.kind !== 'person', noForeground: !!edit && edit.kind === 'media' });
 }
 function draw() {
   const c = $('view'), ctx = c.getContext('2d');
@@ -2573,10 +2458,7 @@ function avoidanceCircleToDraft(cut, W = S.plan.W, H = S.plan.H) {
   return { x: cx - w / 2, y: cy - h / 2, w, h };
 }
 function draftToAvoidanceCircle(draft, W = S.plan.W, H = S.plan.H) {
-  const cx = J.clamp(draft.x + draft.w / 2, 0, 1), cy = J.clamp(draft.y + draft.h / 2, 0, 1);
-  const d = ((draft.w * W) + (draft.h * H)) * 0.5;
-  const r = J.clamp(d / (2 * Math.min(W, H)), 0.03, 0.85);
-  return { cx: +cx.toFixed(4), cy: +cy.toFixed(4), r: +r.toFixed(4) };
+  return J.avoidanceCircleFromArea(draft,W,H);
 }
 function avoidanceEditDraftKey(edit) {
   if (!edit || !edit.draft) return '';
@@ -4254,7 +4136,7 @@ function syncFilenamePreview() {
 }
 // Resolves { filename, name }: the file name to write, and its name without extension or added date.
 function requestFilename(kind) {
-  const dlg = $('filenameDlg'), ext = kind === 'project' ? '.lyricfx' : kind === 'settings' ? '.jizuraichi' : '.json', project = kind === 'project' || kind === 'settings';
+  const dlg = $('filenameDlg'), ext = kind === 'project' || kind === 'settings' ? J.PROJECT_EXTENSION : '.json', project = kind === 'project' || kind === 'settings';
   $('filenameDlgTitle').textContent = J.mediaLabel(project ? 'プロジェクトを保存' : 'AE用に書き出し', project ? 'Save project' : 'Export for AE');
   if (kind === 'settings') $('filenameDlgTitle').textContent = J.mediaLabel('設定のみ書き出し', 'Export settings only');
   // A saved project's name is the next project save's default.
@@ -5441,7 +5323,7 @@ function bind() {
     const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
     try {
       const packed = await J.packProject(project, audio);
-      const saveProjectFile = J.platform?.saveProjectFile || (typeof window.jizuraDesktop?.saveProjectFile === 'function' ? (name, buf) => window.jizuraDesktop.saveProjectFile(name, buf) : null);
+      const saveProjectFile = J.platform?.saveProjectFile;
       if (saveProjectFile) {
         const res = await saveProjectFile(request.filename, packed);
         if (!res || res.canceled) {
@@ -5648,7 +5530,7 @@ function replaceProject(project, audio, audioFile, assets, isSaved = false) {
   S.tap = null; S.timelineDrag = null; S.linkDrag = null; S.scrubbing = false;
   $('tapPanel').hidden = true; syncTapButtons();
   releaseProjectAssets(J.mediaAssets);
-  J.clearNativeAssetCache?.();
+  J.platform?.clearNativeAssetCache?.();
   for (const [id,asset] of assets) { J.mediaAssets.set(id,asset); asset.element.addEventListener('seeked',()=>{S.need=true}); }
   for (const font of S.project.userFonts || []) delete J.FONTS[font.key];
   S.project = mergeProject(project); S.audio = audio; S.audioFile = audioFile;
@@ -5690,11 +5572,11 @@ async function openProjectFile(file,report=()=>{}) {
     const files = new Map(loaded.files.map(entry=>[entry.kind+':'+entry.id,entry.file]));
     for (const item of [...(project.media?.items || []),...(project.foreground?.items || [])]) {
       if (assets.has(item.id)) continue;
-      const blob = files.get('media:'+item.id) || await J.loadMedia(item.id);
+      const blob = files.get('media:'+item.id);
       if (blob) await step(L('素材を復元しています：','Restoring asset: ')+item.name,()=>J.attachMedia(item,blob,assets));
     }
     if (project.audioAsset) {
-      audioFile = files.get('audio:'+project.audioAsset.id) || await J.loadMedia(project.audioAsset.id);
+      audioFile = files.get('audio:'+project.audioAsset.id);
       if (audioFile) audioFile = await J.snapshotMediaFile(audioFile);
       if (audioFile) audio = await step(L('音声を解析しています','Analyzing audio'),()=>J.analyzeAudio(audioFile));
     }
@@ -5704,7 +5586,7 @@ async function openProjectFile(file,report=()=>{}) {
     }
     await step(L('フォントを復元しています','Restoring fonts'),()=>J.restoreFontFiles(project.userFonts));
     for(const ref of J.personMaskReferences(project).values()){
-      const blob=files.get('person:'+ref.maskId) || await J.loadMedia(ref.maskId);
+      const blob=files.get('person:'+ref.maskId);
       if(blob)await J.attachPersonMask(ref,blob);
     }
     replaceProject(project,audio,audioFile,assets,true);

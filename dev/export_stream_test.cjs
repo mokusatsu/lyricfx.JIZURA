@@ -1,8 +1,9 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const {launchBrowser,loadApp}=require('./test_helpers.cjs');
+const assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();
 try{for(const lang of ['', 'en/']){
  const page=await browser.newPage();
- await page.route('**/*',r=>r.request().url()==='http://127.0.0.1/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await page.goto('http://127.0.0.1/');
+ await loadApp(page,{locale:lang});
  const result=await page.evaluate(async()=>{
   const project=J.defaultProject();Object.assign(project,{lyrics:'stream',videoSize:{w:480,h:270},fps:60,durationOverride:1.2,quality:'qp',exportQP:0});J.ui.project=project;J.uiApi.replan();const plan=J.ui.plan;
   const originalRenderer=J.Renderer,originalTarget=Mp4Muxer.ArrayBufferTarget,previousRes=J.glyphs.maxRes,originalNow=Date.now;const fixedNow=Date.now();Date.now=()=>fixedNow;

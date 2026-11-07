@@ -24,6 +24,14 @@
     writeFrame: null,
     finishExport: null,
     cancelJob: null,
+    saveProjectFile: null,
+    setDirtyState: () => {},
+    notifyProjectSaved: () => {},
+    cancelSaveAndClose: () => {},
+    retainMediaReference: () => {},
+    getNativeAssetToken: () => null,
+    getItemAssetToken: () => null,
+    clearNativeAssetCache: () => {},
     personModelProfile: () => (J.PERSON_MODEL && J.PERSON_MODEL.id) || 'rvm',
   };
 

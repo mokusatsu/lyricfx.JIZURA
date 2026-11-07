@@ -7,8 +7,8 @@ import { randomUUID } from "node:crypto";
 import { chromium } from "playwright";
 // Same extensions the JIZURA app uses when saving/exporting each kind.
 const EXPORT_EXT = {
-  project: ".jizuraichi",
-  settings: ".jizuraichi",
+  project: ".lyricfx",
+  settings: ".lyricfx",
   favorites: ".jizuraichifav",
   mp4: ".mp4",
   png: ".zip",
@@ -18,7 +18,7 @@ const EXPORT_EXT = {
 export function exportName(filename, kind) {
   const ext = EXPORT_EXT[kind];
   if (!ext || filename.toLowerCase().endsWith(ext)) return filename;
-  return filename.replace(/\.(jizuraichifav|jizuraichi|jizura|mp4|zip|json)$/i, "") + ext;
+  return filename.replace(/\.(lyricfx|jizuraichifav|jizuraichi|jizura|mp4|zip|json)$/i, "") + ext;
 }
 const here = path.dirname(fileURLToPath(import.meta.url)),
   root = path.dirname(here);

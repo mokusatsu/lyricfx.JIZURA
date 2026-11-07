@@ -11,46 +11,6 @@ J.configurePortableFileInput = input => {
 };
 const magic = 'JIZURA01', text = new TextEncoder(), decode = new TextDecoder();
 const fail = () => new Error(J.mediaLabel('プロジェクトファイルが不正または未対応の形式です', 'Invalid or unsupported project file'));
-// Explicit settings allowlist keeps song content and future asset fields out of presets.
-const settingKeys = ['themes','themeBalance','style','mood','extra','wa','horror','typo','kinetic','keyBg',
-  'seed','aspect','res','fps','videoSize','videoSizeMode','quality','exportBitrate','exportQP','includeAudio','exportEncoder','shortExport','fx','enabled',
-  'lyricEffects','colors','colorTheme','fonts','userFonts','compositeFonts','effectFavorites','favoriteSequence','customEffects'];
-const clone = value => JSON.parse(JSON.stringify(value));
-J.projectSettings = project => {
-  const result = {};
-  for (const key of settingKeys) if (project[key] !== undefined) result[key] = clone(project[key]);
-  for (const layer of ['media','foreground']) result[layer] = { effects: clone(J.mediaEffectSettings(project,layer)), opacity: project[layer]?.opacity ?? 100, blend: project[layer]?.blend ?? 'normal' };
-  result.avoidance = { avoidEmphasis: !!project.avoidance?.avoidEmphasis, ...J.normalizeAvoidanceMask(project.avoidance) };
-  return result;
-};
-J.settingsProject = project => {
-  const settings = J.projectSettings(project), result = Object.assign(J.defaultProject(),settings);
-  result.lyrics = ''; result.title = ''; result.artist = '';
-  for (const layer of ['media','foreground']) result[layer] = Object.assign(J.normalizeMedia(null),settings[layer]);
-  result.avoidance = Object.assign(J.normalizeAvoidance(null), settings.avoidance);
-  return result;
-};
-J.applyProjectSettings = (current, source) => {
-  const settings = J.projectSettings(source), result = clone(current);
-  // Density is also an automatic cut splitter. Retain existing line divisions while
-  // accepting the preset density for new lines and future explicit density edits.
-  result.overrides ||= {};
-  J.parseLyrics(current.lyrics).lines.forEach((line,index) => {
-    const ov = result.overrides[index] ||= {};
-    ov.divisionDensity ??= current.fx?.density ?? J.defaultProject().fx.density;
-  });
-  for (const key of settingKeys) if (settings[key] !== undefined) result[key] = settings[key];
-  for (const layer of ['media','foreground']) Object.assign(result[layer],settings[layer]);
-  if (settings.avoidance) Object.assign(result.avoidance ||= J.normalizeAvoidance(null), settings.avoidance);
-  // Retained cuts still need their custom component definitions.
-  result.customEffects=clone(current.customEffects||[]);J.importCustomEffects(result,settings.customEffects||[]);
-  // Existing cuts may still refer to fonts absent from the preset.
-  for (const key of ['userFonts','compositeFonts']) {
-    const imported = result[key] || [];
-    result[key] = [...(current[key] || []).filter(f => !imported.some(g => g.key === f.key)),...imported];
-  }
-  return result;
-};
 J.packProject = async (project, audioFile) => {
   const entries = [], parts = []; let offset = 0;
   const add = async (kind, id, file, name) => {
@@ -72,16 +32,10 @@ J.packProject = async (project, audioFile) => {
   const header = new Uint8Array(12); header.set(text.encode(magic)); new DataView(header.buffer).setUint32(8,manifest.length,true);
   return new Blob([header,manifest,...parts],{type:'application/octet-stream'});
 };
-J.unpackProject = async file => {
+J.unpackProject = async (file, extensions = [J.PROJECT_EXTENSION]) => {
+  if (typeof file.name === 'string' && !extensions.some(ext => ext && file.name.toLowerCase().endsWith(ext))) throw fail();
   const header = new Uint8Array(await file.slice(0,12).arrayBuffer());
-  if (decode.decode(header.slice(0,8)) !== magic) {
-    // Only legacy JSON may use the text path; never decode a video-sized binary.
-    if (file.size > 32 * 1024 * 1024 || !/^\s*\{/.test(decode.decode(header))) throw fail();
-    const project = JSON.parse(await file.text());
-    if (!project || typeof project !== 'object' || typeof project.lyrics !== 'string') throw fail();
-    return {project,files:[],portable:false};
-  }
-  if (header.length !== 12) throw fail();
+  if (header.length !== 12 || decode.decode(header.slice(0,8)) !== magic) throw fail();
   const length = new DataView(header.buffer).getUint32(8,true), start = 12 + length;
   if (length > 32 * 1024 * 1024 || start > file.size) throw fail();
   const manifest = JSON.parse(await file.slice(12,start).text());

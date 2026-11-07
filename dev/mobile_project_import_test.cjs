@@ -22,7 +22,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
    };
    return [...new Uint8Array(await blob.arrayBuffer())];
   }));
-  await page.locator('#fileProject').setInputFiles({name:'pc.jizuraichi',mimeType:'application/octet-stream',buffer:fixture});
+  await page.locator('#fileProject').setInputFiles({name:'pc.lyricfx',mimeType:'application/octet-stream',buffer:fixture});
   await page.waitForFunction(()=>J.ui.project.title==='Metadata-only video'&&!J.ui.projectBusy,null,{timeout:5000});
   assert.equal(await page.locator('#projectLoadingDialog').count(),0);
   assert.equal(await page.evaluate(()=>J.mediaAssets.get('metadata-video').element.readyState),1);
@@ -37,7 +37,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   });
   await page.waitForFunction(()=>{const img=document.querySelector('#mediaList img[data-media-thumb="metadata-video"]');return img?.src.startsWith('data:image/png')&&img.complete&&img.naturalWidth===96;});
   assert.equal(await page.locator('.media-ln-thumb[data-media-thumb="metadata-video"]').getAttribute('src'),await page.locator('#mediaList img').getAttribute('src'));
-  await page.locator('#fileProject').setInputFiles({name:'broken.jizuraichi',mimeType:'application/octet-stream',buffer:fixture.subarray(0,10)});
+  await page.locator('#fileProject').setInputFiles({name:'broken.lyricfx',mimeType:'application/octet-stream',buffer:fixture.subarray(0,10)});
   await page.waitForFunction(()=>!J.ui.projectBusy);
   assert(await page.locator('#projectLoadingDialog').isVisible());
   assert.equal(await page.evaluate(()=>J.ui.project.title),'Metadata-only video');

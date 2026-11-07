@@ -13,26 +13,6 @@
   const blobToToken = new WeakMap();
   const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
 
-  J.getNativeAssetToken = (file) => (file && (blobToToken.get(file) || file.__assetToken)) || null;
-  J.getItemAssetToken = (itemId) => itemToAssetInfo.get(itemId)?.token || null;
-  J.clearNativeAssetCache = () => {
-    itemToAssetInfo.clear();
-  };
-
-  // Wrap J.snapshotMediaFile to preserve asset tokens across file cloning
-  const origSnapshot = J.snapshotMediaFile;
-  if (typeof origSnapshot === 'function') {
-    J.snapshotMediaFile = async (file, onProgress) => {
-      const copy = await origSnapshot(file, onProgress);
-      const token = (file && (blobToToken.get(file) || file.__assetToken));
-      if (token && copy) {
-        copy.__assetToken = token;
-        blobToToken.set(copy, token);
-      }
-      return copy;
-    };
-  }
-
   // Helper to fetch asset either via custom protocol (in browser) or fallback to desktop API (in Node unit tests)
   async function fetchAssetBlob(assetToken, mimeType) {
     try {
@@ -77,6 +57,18 @@
     ffmpegAvailable: true,
     workerReason: null,
     ffmpegReason: null,
+
+    setDirtyState: dirty => desktop.setDirtyState?.(dirty),
+    getNativeAssetToken: file => (file && (blobToToken.get(file) || file.__assetToken)) || null,
+    getItemAssetToken: itemId => itemToAssetInfo.get(itemId)?.token || null,
+    clearNativeAssetCache: () => itemToAssetInfo.clear(),
+    retainMediaReference: (file, copy) => {
+      const token = file && (blobToToken.get(file) || file.__assetToken);
+      if (token && copy) {
+        copy.__assetToken = token;
+        blobToToken.set(copy, token);
+      }
+    },
 
     capabilities: async () => {
       try {

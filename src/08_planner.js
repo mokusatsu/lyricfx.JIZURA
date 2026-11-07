@@ -26,39 +26,6 @@ J.SAMPLE_LYRICS = `夜明けの色を/覚えてる
 ねえ、まだ間に合うかな
 *透明*なままじゃ終われない!`;
 
-J.defaultProject = () => ({
-  version: 1,
-  title: '夜明けの色', artist: 'JIZURA',
-  projectName: '',                // set when the project is saved; the next save's default file name
-  durationOverride: null,         // null = automatic; otherwise total video length in seconds
-  lyrics: J.SAMPLE_LYRICS,
-  themes: [],
-  themeBalance: 'lively',         // テーマ設定: 'lively' (にぎやかさ重視, standard) | 'unified' (統一感重視)
-  style: 'noir', mood: null,
-  extra: false,                   // random picks may use the parts added after the first version (追加分)
-  wa: true,                       // …and the 和風 motifs (提灯・障子・家紋…) — applied after 'extra'
-  lang: 'auto',                   // 歌詞の言語: 'auto' | 'ja' | 'zh-Hant' | 'zh-Hans' | 'ko' — picks the faces each font key is drawn with
-  keyBg: 'off',                   // 合成用の背景: 'off' | 'green' (グリーンバック) | 'black' (ブラックバック)
-  seed: 20260922,
-  aspect: '16:9', res: 1080, fps: 24,
-  shortExport: {start:0,end:null,mode:'zoom',blur:35,res:1080},
-  fx: { motion: 0.7, glitch: 0.55, chroma: 0.7, decor: 0.5, density: 0.55, texture: 0.6, flash: true, onTwos: true, koma: 12, hud: 'auto', bgSwitch: 0.35 },
-  enabled: Object.fromEntries(J.GROUP_KEYS.map(g => [g, Object.fromEntries(J.order(g).map(k => [k, true]))])),
-  timing: { bpm: 0, offset: 0.4, snap: true, tail: 0.9, lineTimes: {}, cutTimes: {}, lineScale: 1 },
-  overrides: {},
-  lyricCutOptions: {},
-  effectFavorites: [], favoriteSequence: 0, customEffects: [],
-  lyricEffects: { autoPlacement: true, avoidForeground: true, avoidanceStrength: 1, lyricAvoidanceStrength: 1, randomBlend: false, randomOpacity: false, opacityMin: 0, opacityMax: 100 },
-  timelineLinks: [],
-  layerVisibility: {avoidance:true,foreground:true,lyrics:true,media:true},
-  avoidance: { timelineMode: true, cutCount: 0, manualCuts: true, avoidEmphasis: false, maskAvoidance: false, maskRadiusOffset: 0, maskFeather: 60, maskCurve: 'smooth', lyricInsertMode: 'line', groupLyricsAsOneCut: true, timing: { lineTimes: {} }, cutOverrides: {} },
-  media: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
-  foreground: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
-  colors: { enabled: false },
-  colorTheme: { genre: 'auto', color: null },
-  fonts: {},
-});
-
 /* the original (After Effects-implemented) sets, captured before any expression pack registers */
 J.CORE_ORDER = { layout: J.LAYOUT_ORDER.slice(), enter: J.ENTER_ORDER.slice(), exit: J.EXIT_ORDER.slice(), hold: J.HOLD_ORDER.slice(), decor: J.DECOR_ORDER.slice() };
 
@@ -521,7 +488,7 @@ J.plan = (project, audio, chain) => {
       const share = unified ? (blockLooks.get(shareKey) || (blockLooks.set(shareKey, {}), blockLooks.get(shareKey))) : {};
       const shareable = unified && !ln.effectsOnly && !txt.includes('\n') && !rerolled(li);
       const sharedLayout = shareable && share.layout && J.LAYOUTS[share.layout] && en.layout[share.layout] && J.LAYOUTS[share.layout].fits(nn)
-        && !(dur < 0.5 && ['wave', 'ring', 'labels', 'gloss', 'type', 'tile'].includes(share.layout)) ? share.layout : null;
+        && J.layoutAllowsSharing(share.layout, dur) ? share.layout : null;
       const layout = ln.effectsOnly || txt.includes('\n') ? 'center' : ov.layout && J.LAYOUTS[ov.layout] ? ov.layout : sharedLayout || pickLayout(rng, st, en, nn, dur, history, emph, u.recap, layoutH > layoutW, ln.note);
       if (shareable && !share.layout && !ov.layout) share.layout = layout;
       const enterOk = shareable && share.enter && J.ENTER[share.enter] && en.enter[share.enter] !== false && !(J.ENTER[share.enter].minDur && dur < J.ENTER[share.enter].minDur) && !(J.ENTER[share.enter].maxChars && nn > J.ENTER[share.enter].maxChars);
@@ -533,12 +500,8 @@ J.plan = (project, audio, chain) => {
       const hold = ov.hold && J.HOLD[ov.hold] ? ov.hold : shareable && share.hold && J.HOLD[share.hold] && en.hold[share.hold] !== false ? share.hold : pickHold(rng, en, fx, history);
       if (shareable && !share.hold && !ov.hold) share.hold = hold;
       let inDur = J.clamp(dur * 0.36, 0.12, 0.6);
-      if (enter === 'type') inDur = J.clamp(nn * 0.055 + 0.1, 0.15, dur * 0.65);
-      if (enter === 'assemble') inDur = J.clamp(dur * 0.45, 0.22, 0.75);
       if (J.ENTER[enter] && J.ENTER[enter].inDur) inDur = J.ENTER[enter].inDur(dur, nn);
-      if (enter === 'cut') inDur = 0.12;
-      let outDur = exit === 'cut' ? 0 : J.clamp(dur * 0.3, 0.14, 0.55);
-      if (['explode', 'fall', 'drift'].includes(exit)) outDur = J.clamp(dur * 0.38, 0.25, 0.7);
+      let outDur = J.clamp(dur * 0.3, 0.14, 0.55);
       if (J.EXIT[exit] && J.EXIT[exit].outDur) outDur = J.EXIT[exit].outDur(dur, nn);
       if (inDur + outDur > dur * 0.92) { const f = dur * 0.92 / (inDur + outDur); inDur *= f; outDur *= f; }
       let sch = schemeIdx;
@@ -632,8 +595,8 @@ J.plan = (project, audio, chain) => {
     for (const [cut, info] of cutBlock) (groups.get(info.key) || groups.set(info.key, []).get(info.key)).push(cut);
     for (const [key, cuts] of groups) {
       if (cuts.length < 2) continue;
-      const nOf = c => [...c.text.replace(/\s+/g, '')].length, shortBad = ['wave', 'ring', 'labels', 'gloss', 'type', 'tile'];
-      const fitsAll = k => en.layout[k] && J.LAYOUTS[k] && cuts.every(c => J.LAYOUTS[k].fits(nOf(c)) && !(c.dur < 0.5 && shortBad.includes(k)));
+      const nOf = c => [...c.text.replace(/\s+/g, '')].length;
+      const fitsAll = k => en.layout[k] && J.LAYOUTS[k] && cuts.every(c => J.LAYOUTS[k].fits(nOf(c)) && J.layoutAllowsSharing(k, c.dur));
       if (new Set(cuts.map(c => c.layout)).size > 1) {
         const counts = new Map(); for (const c of cuts) counts.set(c.layout, (counts.get(c.layout) || 0) + 1);
         let pick = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(e => e[0]).find(fitsAll);
@@ -812,44 +775,36 @@ function novelty(history, key, val) {
   for (let i = history.length - 1, d = 0; i >= 0 && d < 6; i--, d++) if (history[i][key] === val) w *= UNITY ? (d < 2 ? 2.6 : 1.5) : (d < 2 ? 0.2 : 0.6);
   return w;
 }
-const PORTRAIT_W = { vcols: 1.9, condensed: 1.3, huge: 1.3, center: 1.2, stack: 1.1, mixed: 0.7, marquee: 0.6, wave: 0.6, diag: 0.8, type: 0.8, gloss: 0.5 };
 function pickLayout(rng, st, en, n, dur, history, emph, recap, portrait, note) {
   const cands = [];
   for (const k of J.LAYOUT_ORDER) {
     const L = J.LAYOUTS[k];
     if (!en.layout[k] || !L.fits(n)) continue;
     let w = wkey(st.bias.layout, k, L.w ?? 1) * novelty(history, 'layout', k);
-    if (portrait) w *= L.portrait != null ? L.portrait : wkey(PORTRAIT_W, k, 1);
+    if (portrait) w *= L.portrait ?? 1;
     if (emph && L.emph) w *= L.emph;
-    if (emph && ['huge', 'center', 'tile', 'marquee', 'condensed'].includes(k)) w *= 2;
-    if (recap && ['center', 'stack', 'marquee', 'tile', 'mixed', 'type', 'gloss'].includes(k)) w *= 1.8;
-    if (dur < 0.5 && ['wave', 'ring', 'labels', 'gloss', 'type', 'tile'].includes(k)) w *= 0.3;
-    if (dur < 0.5 && ['center', 'huge', 'condensed', 'vcols'].includes(k)) w *= 1.4;
+    if (emph && L.selection?.emphasis) w *= L.selection.emphasis;
+    if (recap && L.selection?.recap) w *= L.selection.recap;
+    if (dur < 0.5 && L.selection?.short) w *= L.selection.short;
     cands.push([k, w]);
   }
   if (!cands.length) return 'center';
   const withNote=note ? cands.filter(([key])=>J.LAYOUTS[key].supportsNote) : [];
   return rng.wpick(withNote.length ? withNote : cands);
 }
-const LAYOUT_ENTER = {
-  type: { type: 4, scramble: 1.5 }, ring: { pop: 2, spin: 2, cut: 1, assemble: 0.4, slice: 0.2, wipe: 0.2 }, labels: { cut: 3, pop: 1 },
-  wave: { pop: 1.5, drop: 1.5, blur: 1, slice: 0.3 }, tile: { assemble: 1.3, slice: 1.4, zoom: 1.4 }, huge: { zoom: 1.5, wipe: 1.5, slice: 1.4, stretch: 1.3, type: 0.2 },
-  mixed: { pop: 1.6, drop: 1.6, spin: 1.3 }, scatter: { pop: 1.5, spin: 1.5, drop: 1.2, assemble: 1.3 }, vcols: { assemble: 1.8, type: 1.2 }, pill: { wipe: 1.8, type: 1.2 },
-};
 function pickEnter(rng, st, en, layout, dur, history, emph, n) {
   const cands = [];
   for (const k of J.ENTER_ORDER) {
     if (!en.enter[k]) continue;
     const D = J.ENTER[k]; if (!D) continue;
     const LD = J.LAYOUTS[layout] || {};
-    let w = wkey(st.bias.enter, k, D.w ?? 1) * novelty(history, 'enter', k) * wkey(LAYOUT_ENTER[layout] || LD.enterBias, k, 1);
+    let w = wkey(st.bias.enter, k, D.w ?? 1) * novelty(history, 'enter', k) * wkey(LD.enterBias, k, 1);
     if (D.minDur && dur < D.minDur) w *= 0.15;
     if (D.maxChars && n > D.maxChars) w *= 0.2;
-    if (k === 'cut') w *= 0.5;
-    if (dur < 0.45 && ['type', 'assemble', 'drop', 'spin', 'pop', 'flicker'].includes(k)) w *= 0.25;
-    if (dur < 0.45 && ['cut', 'slice', 'zoom', 'stretch'].includes(k)) w *= 1.8;
-    if (k === 'type' && n > 18) w *= 0.3;
-    if (emph && ['zoom', 'assemble', 'slice'].includes(k)) w *= 1.8;
+    if (D.selection?.weight) w *= D.selection.weight;
+    if (dur < 0.45 && D.selection?.short) w *= D.selection.short;
+    if (D.selection?.longTextAfter != null && n > D.selection.longTextAfter) w *= D.selection.longText;
+    if (emph && D.selection?.emphasis) w *= D.selection.emphasis;
     cands.push([k, w]);
   }
   return cands.length ? rng.wpick(cands) : 'cut';
@@ -861,26 +816,25 @@ function pickExit(rng, st, en, layout, dur, lastOfLine, history) {
     const D = J.EXIT[k]; if (!D) continue;
     let w = wkey(st.bias.exit, k, D.w ?? 1) * novelty(history, 'exit', k);
     if (D.minDur && dur < D.minDur) w *= 0.15;
-    if (k === 'cut') w *= dur < 0.6 ? 4 : lastOfLine ? 1.2 : 2.2;
-    if (dur < 0.6 && k !== 'cut') w *= 0.4;
-    if (['labels', 'ring', 'tile'].includes(layout) && ['explode', 'fall', 'drift'].includes(k)) w *= 0.3;
+    if (D.selection?.weight) w *= D.selection.weight(dur,lastOfLine);
+    else if (dur < 0.6) w *= 0.4;
+    w *= wkey(J.LAYOUTS[layout]?.exitBias,k,1);
     cands.push([k, w]);
   }
   return cands.length ? rng.wpick(cands) : 'cut';
 }
-const HOLD_W = { still: 1, jitter: 1.2, drift: 1, breathe: 0.7, wave: 0.4, glitchtick: 0.9 };
 function pickHold(rng, en, fx, history) {
   const cands = J.HOLD_ORDER.filter(k => en.hold[k] !== false && J.HOLD[k]).map(k => {
     const D = J.HOLD[k];
-    let w = HOLD_W[k] != null ? HOLD_W[k] : (D.w ?? 0.8);
-    if (k === 'jitter' || (D.tags && D.tags.includes('glitch'))) w *= 0.4 + fx.motion;
-    if (k === 'glitchtick') w *= fx.glitch;
+    let w = D.selection?.weight ?? D.w ?? 0.8;
+    if (D.selection?.motion || (D.tags && D.tags.includes('glitch'))) w *= 0.4 + fx.motion;
+    if (D.selection?.glitch) w *= fx.glitch;
     return [k, w * novelty(history, 'hold', k)];
   });
   return cands.length ? rng.wpick(cands) : 'still';
 }
 function decorParams(rng, k) {
-  return { id: k, seed: rng.int(1, 1e9), n: rng.int(1, 3) + (k === 'shapes' ? 3 : 0) + (k === 'sparks' ? 4 : 0), right: rng.chance(0.5), low: rng.chance(0.5), accent: rng.chance(0.4), corner: rng.chance(0.5), big: rng.chance(0.4), mode: rng.pick(['count', 'index']), from: rng.int(0, 20), to: rng.int(30, 999), v: rng.int(0, 5), r: rng() };
+  return { id: k, seed: rng.int(1, 1e9), n: rng.int(1, 3) + (J.DECOR[k]?.countBonus || 0), right: rng.chance(0.5), low: rng.chance(0.5), accent: rng.chance(0.4), corner: rng.chance(0.5), big: rng.chance(0.4), mode: rng.pick(['count', 'index']), from: rng.int(0, 20), to: rng.int(30, 999), v: rng.int(0, 5), r: rng() };
 }
 function pickDecor(rng, st, en, fx, layout, history = []) {
   const count = Math.round(fx.decor * 2.8 * rng.range(0.45, 1.15));

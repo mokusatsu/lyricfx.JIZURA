@@ -33,7 +33,7 @@ J.exportEffectFavorites=project=>{
   return J.packProject(preset,null);
 };
 J.readEffectFavorites=async file=>{
-  const loaded=await J.unpackProject(file),raw=loaded.project.effectFavorites||[];
+  const loaded=await J.unpackProject(file,[J.PROJECT_EXTENSION,'.jizuraichifav']),raw=loaded.project.effectFavorites||[];
   if(!Array.isArray(raw))throw Error(J.mediaLabel('お気に入りの形式が不正です','Invalid favorites format'));
   const components=J.validateCustomEffects(loaded.project.customEffects||[]);
   const favorites=J.withCustomEffects(components,()=>J.normalizeEffectFavorites(raw));
@@ -81,7 +81,7 @@ J.settingsFromFavorites=project=>{
 };
 J.openEffectFavorites=({project,target,compose,changed,configure,apply,closed})=>{
   const L=J.mediaLabel,dialog=document.createElement('dialog');dialog.id='effectFavoritesDialog';
-  dialog.innerHTML='<header><h2></h2><button type="button" class="favorite-import"></button><button type="button" class="favorite-export"></button><button type="button" class="favorite-configure"></button><input type="file" class="favorite-file" hidden accept=".jizuraichifav,.jizuraichi,.json"><button type="button" class="favorite-close">×</button></header><p class="favorite-help"></p><div class="favorite-groups"></div>';
+  dialog.innerHTML='<header><h2></h2><button type="button" class="favorite-import"></button><button type="button" class="favorite-export"></button><button type="button" class="favorite-configure"></button><input type="file" class="favorite-file" hidden accept=".jizuraichifav,.lyricfx"><button type="button" class="favorite-close">×</button></header><p class="favorite-help"></p><div class="favorite-groups"></div>';
   J.configurePortableFileInput(dialog.querySelector('.favorite-file'));
   dialog.querySelector('h2').textContent=L('お気に入り演出','Favorite effects');
   dialog.setAttribute('aria-label',L('お気に入り演出','Favorite effects'));
@@ -147,7 +147,7 @@ J.openEffectFavorites=({project,target,compose,changed,configure,apply,closed})=
     dragDepth=0;dialog.classList.remove('favorite-drop-active');if(busy)return;
     const files=Array.from(event.dataTransfer.files);
     if(files.length!==1){status.textContent=L('ファイルを1つずつドロップしてください。','Drop one file at a time.');return;}
-    if(!/\.(jizuraichifav|jizuraichi|json)$/i.test(files[0].name)){status.textContent=L('お気に入りファイルまたはプロジェクトファイルを指定してください。','Choose a favorites or project file.');return;}
+    if(!/\.(jizuraichifav|lyricfx)$/i.test(files[0].name)){status.textContent=L('お気に入りファイルまたはプロジェクトファイルを指定してください。','Choose a favorites or project file.');return;}
     importFile(files[0]);
   });
   async function ensureSample(){

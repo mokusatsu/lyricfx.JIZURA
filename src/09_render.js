@@ -7,6 +7,51 @@ const E = J.E;
 
 const mk = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, w | 0); c.height = Math.max(1, h | 0); return c; };
 
+J.avoidanceCircleFromArea = (draft, W, H) => {
+  const cx = J.clamp(draft.x + draft.w / 2, 0, 1), cy = J.clamp(draft.y + draft.h / 2, 0, 1);
+  const d = ((draft.w * W) + (draft.h * H)) * 0.5;
+  const r = J.clamp(d / (2 * Math.min(W, H)), 0.03, 0.85);
+  return { cx: +cx.toFixed(4), cy: +cy.toFixed(4), r: +r.toFixed(4) };
+};
+
+// Copy only the edited branch. Other renderers keep seeing the committed plan.
+J.previewRenderPlan = (plan, edit) => {
+  if (!edit) return plan;
+  const preview = { ...plan };
+  Object.defineProperty(preview, 'previewSource', { value: plan.previewSource || plan });
+  if (edit.kind === 'lyric' && edit.draft) {
+    preview.cuts = plan.cuts.map(cut => cut.line === edit.index
+      ? { ...cut, area: { ...edit.draft, angle: edit.angle } } : cut);
+  }
+  if ((edit.kind === 'media' || edit.kind === 'foreground') && plan[edit.kind]?.cuts[edit.index]) {
+    const cuts = plan[edit.kind].cuts.slice();
+    cuts[edit.index] = { ...cuts[edit.index], placement: {
+      cx: edit.draft.x + edit.draft.w / 2, cy: edit.draft.y + edit.draft.h / 2,
+      w: edit.draft.w, h: edit.draft.h, lockAspect: edit.lockAspect, angle: edit.angle,
+    }, zoom: 100, hold: 'still', enter: 'cut', exit: 'cut', trans: undefined };
+    preview[edit.kind] = { ...plan[edit.kind], cuts };
+  }
+  if (edit.kind === 'avoidance' && plan.avoidance?.cuts) {
+    const cuts = plan.avoidance.cuts.slice();
+    const cut = edit.newCut
+      ? {kind:'circle', index:cuts.length, start:edit.start, end:edit.untilNext ? plan.duration : edit.end}
+      : cuts[edit.index] && { ...cuts[edit.index] };
+    if (cut) {
+      if (edit.draft) {
+        Object.assign(cut, J.avoidanceCircleFromArea(edit.draft,plan.W,plan.H), {
+          enabled:edit.enabled, placement:edit.placement, avoidEmphasis:edit.avoidEmphasis,
+          occlusion:edit.occlusion, behindForeground:edit.behindForeground, maskAvoidance:!!edit.maskAvoidance,
+          maskRadiusOffset:edit.maskRadiusOffset ?? 0, maskFeather:edit.maskFeather ?? 60, maskCurve:edit.maskCurve || 'smooth',
+        });
+        if (plan.lyricAvoidance) preview.lyricAvoidance = { ...plan.lyricAvoidance, enabled:true };
+      }
+      cuts[edit.newCut ? cuts.length : edit.index] = cut;
+      preview.avoidance = { ...plan.avoidance, cuts };
+    }
+  }
+  return preview;
+};
+
 // The latest-starting cut still showing at t (cuts may overlap).
 J.cutAt = (plan, t) => {
   const cs = plan.cuts; let lo = 0, hi = cs.length - 1, ans = -1;

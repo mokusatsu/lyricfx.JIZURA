@@ -117,10 +117,11 @@ context.J = {
 vm.runInContext(projectFileCode, context);
 
 // Extract and bind real UI helper functions from src/12_ui.js
-// 1. mergeProject
-const mergeProjectMatch = uiCode.match(/function mergeProject\([a-zA-Z0-9_]*\) \{[\s\S]*?\n\}/);
-assert.ok(mergeProjectMatch, 'mergeProject must exist in src/12_ui.js');
-vm.runInContext(mergeProjectMatch[0], context);
+// Load the shared normalizer, retaining this audio test's small project fixture.
+const defaultProject = context.J.defaultProject;
+vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'src', '08a_project.js'), 'utf8'), context);
+context.J.defaultProject = defaultProject;
+context.mergeProject = context.J.normalizeProject;
 
 // 2. Global state S, U (Undo), H (History)
 vm.runInContext(`

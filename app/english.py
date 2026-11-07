@@ -53,7 +53,7 @@ BODY = {
     '<code>{- … -}</code> のグループに適用。1で歌詞の表示領域を重ならないように配置し、0では通常の重ね表示になります。自動配置がオフでも適用します。': 'Applies to <code>{- … -}</code> groups. At 1, lyric areas are arranged without overlaps; at 0, use ordinary retained layering. Works even with automatic placement off.',
     '重なり回避の強度': 'Foreground avoidance strength',
     '1で前景の範囲を避け、下げると周辺の重なりを許容します。0では回避しません。空き領域がない場合は最も重なりの少ない配置を使います。': 'At 1, avoid the foreground bounds. Lower values allow overlap around its edges; 0 disables avoidance. If no free region exists, use the least overlapping placement.',
-    '素材入りプロジェクト（.jizuraichi）を開く': 'Open a portable project (.jizuraichi)',
+    '素材入りプロジェクト（.lyricfx）を開く': 'Open a portable project (.lyricfx)',
     '画像・動画・音声を含むプロジェクトを保存': 'Save project with images, videos and audio',
     '新規プロジェクト': 'New project', '新規': 'New', '<button value="cancel">キャンセル</button>': '<button value="cancel">Cancel</button>',
     '現在の編集内容を残す場合は、先に保存してください。': 'Save first if you want to keep your current work.',

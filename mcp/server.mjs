@@ -304,7 +304,7 @@ tool(
 );
 tool(
   "export_start",
-  "Save project/settings (.jizuraichi), favorites (.jizuraichifav) or export MP4, PNG ZIP, transparent PNG ZIP, AE plan JSON. The extension is set from kind. Returns async job; poll status (path has the final name). Final renders require quality approval. Existing files never overwritten.",
+  "Save project/settings (.lyricfx), favorites (.jizuraichifav) or export MP4, PNG ZIP, transparent PNG ZIP, AE plan JSON. The extension is set from kind. Returns async job; poll status (path has the final name). Final renders require quality approval. Existing files never overwritten.",
   {
     session,
     kind: z.enum([

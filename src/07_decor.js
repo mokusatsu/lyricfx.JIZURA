@@ -68,6 +68,7 @@ J.DECOR = {
     },
   },
   shapes: {
+    countBonus: 3,
     name: '図形', layer: 'back',
     draw(env, bb, P) {
       const { W, H, sc, ctx } = env, s = P.seed, n = P.n || 5;
@@ -180,6 +181,7 @@ J.DECOR = {
     },
   },
   sparks: {
+    countBonus: 4,
     name: 'スパーク', layer: 'front',
     draw(env, bb, P) {
       const { W, H, sc } = env, s = P.seed;

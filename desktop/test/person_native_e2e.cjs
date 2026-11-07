@@ -120,7 +120,7 @@ const { NativeJobs } = require('../native-jobs.cjs');
     // Verify pickMedia works and fileToToken is defined (does not throw)
     const pickedFiles = await global.J.platform.pickMedia();
     assert.equal(pickedFiles.length, 1);
-    const token1 = global.J.getNativeAssetToken(pickedFiles[0]);
+    const token1 = global.J.platform.getNativeAssetToken(pickedFiles[0]);
     assert.ok(token1, 'Token must be retrieved from blobToToken');
 
     // Test asset replacement for same itemId with SAME size and SAME lastModified
@@ -139,8 +139,8 @@ const { NativeJobs } = require('../native-jobs.cjs');
     assert.notEqual(tokenA, tokenB, 'Different file object with same size on same itemId must produce new token');
 
     // Test clearNativeAssetCache
-    global.J.clearNativeAssetCache();
-    assert.equal(global.J.getItemAssetToken('item-X'), null);
+    global.J.platform.clearNativeAssetCache();
+    assert.equal(global.J.platform.getItemAssetToken('item-X'), null);
 
     jobs.cleanupAll();
     console.log('Person native matting E2E test passed successfully.');

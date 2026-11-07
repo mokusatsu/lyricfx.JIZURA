@@ -22,24 +22,24 @@ try{for(const lang of ['','en/']){
   return {shown,preview,file:await page.evaluate(()=>window.__saves.at(-1)),projectName:await page.evaluate(()=>J.ui.project.projectName),header:await page.locator('#projectName').inputValue(),packed:await page.evaluate(()=>window.__packedName)};};
  // First save: the default comes from the song title; the date is added but not kept in the name.
  let r=await save({name:'my-project',date:true});
- assert.equal(r.shown,'夜明けの歌.jizuraichi');
- assert.match(r.file,/^my-project_\d{12}\.jizuraichi$/);assert.match(r.preview,/my-project_\d{12}\.jizuraichi/);
+ assert.equal(r.shown,'夜明けの歌.lyricfx');
+ assert.match(r.file,/^my-project_\d{12}\.lyricfx$/);assert.match(r.preview,/my-project_\d{12}\.lyricfx/);
  const stamp=r.file.match(/_(\d{12})\./)[1],now=new Date();assert.equal(stamp.slice(0,8),`${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`);
  assert.equal(r.projectName,'my-project');assert.equal(r.header,'my-project');assert.equal(r.packed,'my-project','saved file carries the name');
  // Next save: the project name is the default and the date option is remembered.
  r=await save({name:null,date:false});
- assert.equal(r.shown,'my-project.jizuraichi');assert.equal(r.file,'my-project.jizuraichi');assert.equal(r.preview,'');
+ assert.equal(r.shown,'my-project.lyricfx');assert.equal(r.file,'my-project.lyricfx');assert.equal(r.preview,'');
  await page.locator('#projectMenu summary').click();await page.locator('#btnSave').click();
  assert.equal(await page.locator('#saveFilenameDate').isChecked(),false,'remembered off');await page.keyboard.press('Escape');
  // Editing the header name changes the default; cancelling a save keeps everything.
  await page.locator('#projectName').fill('renamed');
  assert.equal(await page.evaluate(()=>J.ui.project.projectName),'renamed');
  await page.locator('#projectMenu summary').click();await page.locator('#btnSave').click();
- assert.equal(await page.locator('#saveFilename').inputValue(),'renamed.jizuraichi');await page.keyboard.press('Escape');await page.waitForTimeout(200);
+ assert.equal(await page.locator('#saveFilename').inputValue(),'renamed.lyricfx');await page.keyboard.press('Escape');await page.waitForTimeout(200);
  assert.equal(await page.evaluate(()=>window.__saves.length),2);
  // Settings export still works and does not rename the project.
  await page.locator('#projectMenu summary').click();await page.locator('#btnSaveSettings').click();await page.locator('#filenameDlg button[value="save"]').click();await page.waitForTimeout(300);
- assert.match(await page.evaluate(()=>window.__saves.at(-1)),/_settings\.jizuraichi$/);assert.equal(await page.evaluate(()=>J.ui.project.projectName),'renamed');
+ assert.match(await page.evaluate(()=>window.__saves.at(-1)),/_settings\.lyricfx$/);assert.equal(await page.evaluate(()=>J.ui.project.projectName),'renamed');
  // A new project starts without a name.
  await page.evaluate(()=>{J.ui.project.projectName='x';});
  await page.locator('#projectMenu summary').click();await page.locator('#btnNew').click();await page.locator('#btnCreateProject').click();await page.waitForTimeout(300);

@@ -301,7 +301,8 @@ const dbOp = async (mode, cb) => {
 const mediaSnapshots = new WeakMap();
 J.snapshotMediaFile = (file, onProgress = () => {}) => {
   if (!(file instanceof Blob)) return Promise.reject(new Error('Missing media file'));
-  if (mediaSnapshots.has(file)) return mediaSnapshots.get(file).then(copy=>{onProgress(file.size,file.size);return copy;});
+  const retain = copy => { J.platform?.retainMediaReference?.(file,copy); return copy; };
+  if (mediaSnapshots.has(file)) return mediaSnapshots.get(file).then(copy=>{onProgress(file.size,file.size);return retain(copy);});
   const task = (async () => {
     const parts = [], chunk = 4 * 1024 * 1024;
     onProgress(0,file.size);
@@ -317,7 +318,7 @@ J.snapshotMediaFile = (file, onProgress = () => {}) => {
   })();
   mediaSnapshots.set(file, task);
   task.catch(() => mediaSnapshots.delete(file));
-  return task;
+  return task.then(retain);
 };
 // If browser storage is unavailable, keep newly imported bytes for this session.
 // Never delete/reset an existing database to recover: it may contain user assets.
@@ -657,7 +658,7 @@ J.drawMedia = (ctx, plan, t, owner, layer = 'media', previewEdit = false, cut = 
   const clear = c => { const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.filter = 'none'; x.clearRect(0, 0, w, h); if (layer === 'media' && !personAlpha) { x.fillStyle = bg; x.fillRect(0, 0, w, h); } return x; };
   const snapshot = transitionFrame(layer);
   const priorAsset = J.mediaAssets.get(prev.itemId);
-  const prevSource = prev.type === 'video' ? (snapshot && snapshot.plan === plan && snapshot.index === prev.index ? snapshot.canvas : prev.itemId === cut.itemId && priorAsset.posterElement && priorAsset.posterElement.complete ? priorAsset.posterElement : null) : null;
+  const prevSource = prev.type === 'video' ? (snapshot && snapshot.plan === (plan.previewSource || plan) && snapshot.index === prev.index ? snapshot.canvas : prev.itemId === cut.itemId && priorAsset.posterElement && priorAsset.posterElement.complete ? priorAsset.posterElement : null) : null;
   J.drawMediaCut(clear(A), prev, Math.max(prev.start, prev.end - 0.001), { noExit: true, source: sourceFor(prev) || prevSource,personPass:owner?.personMaskPass,personMode:owner?.personMaskMode });
   J.drawMediaCut(clear(B), cut, t, { noEnter: !cut.independentPhases, source:sourceFor(cut),personPass:owner?.personMaskPass,personMode:owner?.personMaskMode });
   const p = J.clamp((t - cut.start) / cut.transDur);

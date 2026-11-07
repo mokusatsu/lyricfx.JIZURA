@@ -137,9 +137,15 @@ const fontsOf = (st, roles) => { const f = roles.flatMap(r => st.fonts[r] || [])
 J.glyphCount = glyphCount; J.fontsOf = fontsOf; J.unionBB = unionBB;
 J.centerBB = (env, bb) => bb || { x0: env.W * 0.35, x1: env.W * 0.65, y0: env.H * 0.4, y1: env.H * 0.6, cx: env.W / 2, cy: env.H / 2, boxes: [] };
 
+J.layoutAllowsSharing = (key, duration) => {
+  const minimum = J.LAYOUTS[key]?.selection?.minShareDuration;
+  return minimum == null || !(duration < minimum);
+};
+
 J.LAYOUTS = {
   /* ------------------------------------------------ */
   center: {
+    portrait: 1.2, selection: {emphasis: 2, recap: 1.8, short: 1.4},
     name: '中央', fits: n => true,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, rng.chance(0.7) ? ['display'] : ['serif'])), sx: rng.pick([1, 1, 1, 1.25, 1.45, 0.78]), track: rng.range(0.02, 0.14), sub: rng.chance(0.45), under: rng.chance(0.3), accent: rng.chance(0.18), ox: rng.range(-0.05, 0.05), oy: rng.range(-0.06, 0.06) }),
     render(env) {
@@ -159,6 +165,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   mixed: {
+    portrait: 0.7, enterBias: {pop: 1.6, drop: 1.6, spin: 1.3}, selection: {recap: 1.8},
     name: '大小ミックス', fits: n => n >= 2 && n <= 16,
     plan: (rng, cut, st) => ({ fontBig: rng.pick(fontsOf(st, ['display', 'serif'])), fontSmall: rng.pick(fontsOf(st, ['serif', 'body'])), mode: rng.pick(['line', 'stair', 'line', 'wave']), rotAmp: rng.range(2, 10), smallK: rng.range(0.42, 0.6), accentIdx: rng.int(0, 20) }),
     render(env) {
@@ -197,6 +204,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   vcols: {
+    portrait: 1.9, enterBias: {assemble: 1.8, type: 1.2}, selection: {short: 1.4},
     name: '縦書き', fits: n => n <= 18,
     plan: (rng, cut, st) => {
       const n = glyphCount(cut.text);
@@ -231,6 +239,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   marquee: {
+    portrait: 0.6, selection: {emphasis: 2, recap: 1.8},
     name: '流れる帯', fits: n => n <= 12,
     plan: (rng, cut, st) => ({ rows: rng.pick([2, 4, 4, 2]), rowStyle: rng.pick(['outline', 'dim', 'box']), speed: rng.range(0.5, 1.2), font: rng.pick(fontsOf(st, ['display'])), sx: rng.pick([1.25, 1.45, 1.6]) }),
     render(env) {
@@ -259,6 +268,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   tile: {
+    enterBias: {assemble: 1.3, slice: 1.4, zoom: 1.4}, selection: {emphasis: 2, recap: 1.8, short: 0.3, minShareDuration: 0.5}, exitBias: {explode:.3,fall:.3,drift:.3},
     name: '敷き詰め', fits: n => n <= 12,
     plan: (rng, cut, st) => ({ unit: rng.pick(['chunk', 'line', 'chunk']), knock: rng.pick(['stroke', 'box']), flicker: rng.chance(0.6), font: rng.pick(fontsOf(st, ['display'])), tileFont: rng.pick(fontsOf(st, ['serif', 'body', 'display'])), rowsN: rng.pick([12, 14, 16, 18]) }),
     render(env) {
@@ -290,6 +300,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   scatter: {
+    enterBias: {pop: 1.5, spin: 1.5, drop: 1.2, assemble: 1.3},
     name: '散らし', fits: n => n >= 2 && n <= 14,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['display'])), fontB: rng.pick(fontsOf(st, ['serif', 'display'])), extras: rng.chance(0.65) }),
     render(env) {
@@ -317,6 +328,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   ring: {
+    enterBias: {pop: 2, spin: 2, cut: 1, assemble: 0.4, slice: 0.2, wipe: 0.2}, selection: {short: 0.3, minShareDuration: 0.5}, exitBias: {explode:.3,fall:.3,drift:.3},
     name: '円環', fits: n => n >= 2 && n <= 16,
     plan: (rng, cut, st) => ({ orient: rng.pick(['tangent', 'tangent', 'upright']), center: rng.pick(['word', 'disc', 'word', 'none']), speed: rng.range(4, 12) * rng.pick([1, -1]), R: rng.range(0.28, 0.35), font: rng.pick(fontsOf(st, ['display', 'serif'])), fontC: rng.pick(fontsOf(st, ['display', 'serif'])) }),
     render(env) {
@@ -352,6 +364,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   wave: {
+    portrait: 0.6, enterBias: {pop: 1.5, drop: 1.5, blur: 1, slice: 0.3}, selection: {short: 0.3, minShareDuration: 0.5},
     name: '波の軌跡', fits: n => n >= 2 && n <= 16,
     plan: (rng, cut, st) => ({ amp: rng.range(0.08, 0.17), freq: rng.range(0.8, 1.6), trail: rng.pick([5, 7, 9]), font: rng.pick(fontsOf(st, ['display'])), travel: rng.range(0.25, 0.5) * rng.pick([1, -1]) }),
     render(env) {
@@ -379,6 +392,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   huge: {
+    portrait: 1.3, enterBias: {zoom: 1.5, wipe: 1.5, slice: 1.4, stretch: 1.3, type: 0.2}, selection: {emphasis: 2, short: 1.4},
     name: '画面突き抜け', fits: n => n <= 8,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['display'])), grad: !!st.useGrad && rng.chance(0.75), dir: rng.pick([1, -1]), label: rng.chance(0.8) }),
     render(env) {
@@ -402,6 +416,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   labels: {
+    enterBias: {cut: 3, pop: 1}, selection: {short: 0.3, minShareDuration: 0.5}, exitBias: {explode:.3,fall:.3,drift:.3},
     name: 'ラベル貼り', fits: n => n >= 1 && n <= 16,
     plan: (rng, cut, st) => ({ variant: rng.pick(['radial', 'rows', 'scatter']), unit: glyphCount(cut.text) <= 6 ? 'char' : rng.pick(['char', 'word']), center: rng.pick(['orb', 'word', 'none']), font: rng.pick(fontsOf(st, ['display', 'body'])), fontC: rng.pick(fontsOf(st, ['display'])) }),
     render(env) {
@@ -450,6 +465,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   condensed: {
+    portrait: 1.3, selection: {emphasis: 2, short: 1.4},
     name: '縦長圧縮', fits: n => n <= 10,
     plan: (rng, cut, st) => { const n = glyphCount(cut.text); return { count: n <= 4 ? rng.pick([3, 2, 1]) : n <= 7 ? rng.pick([2, 1]) : 1, sx: rng.range(0.42, 0.58), sy: rng.range(1.1, 1.3), font: rng.pick(fontsOf(st, ['display', 'body'])) }; },
     render(env) {
@@ -467,6 +483,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   gloss: {
+    portrait: 0.5, selection: {recap: 1.8, short: 0.3, minShareDuration: 0.5},
     name: '注釈', fits: n => n <= 12,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['serif', 'display'])), side: rng.pick(['right', 'left']), bgText: rng.chance(0.6), vertNote: rng.chance(0.45) }),
     render(env) {
@@ -502,6 +519,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   type: {
+    portrait: 0.8, enterBias: {type: 4, scramble: 1.5}, selection: {recap: 1.8, short: 0.3, minShareDuration: 0.5},
     name: 'タイプ', fits: n => n <= 28,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['body', 'serif', 'mono'])), align: rng.pick(['left', 'center']), prompt: rng.chance(0.6) }),
     render(env) {
@@ -520,6 +538,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   diag: {
+    portrait: 0.8,
     name: '斜め帯', fits: n => n <= 14,
     plan: (rng, cut, st) => ({ ang: rng.range(10, 22) * rng.pick([1, -1]), band: rng.pick(['accent', 'ink']), second: rng.chance(0.7), font: rng.pick(fontsOf(st, ['display'])) }),
     render(env) {
@@ -574,6 +593,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   stack: {
+    portrait: 1.1, selection: {recap: 1.8},
     name: '残像スタック', fits: n => n <= 12,
     plan: (rng, cut, st) => ({ copies: rng.pick([3, 4, 5]), dir: rng.pick([1, -1]), style: rng.pick(['fade', 'outline', 'fade']), font: rng.pick(fontsOf(st, ['display', 'serif'])), gap: rng.range(0.82, 1.02), xs: rng.range(-0.04, 0.04) }),
     render(env) {
@@ -593,6 +613,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   pill: {
+    enterBias: {wipe: 1.8, type: 1.2},
     name: 'カプセル', fits: n => n <= 14,
     plan: (rng, cut, st) => ({ grad: !!st.useGrad || rng.chance(0.35), font: rng.pick(fontsOf(st, ['display', 'body'])), smalls: rng.chance(0.75) }),
     render(env) {

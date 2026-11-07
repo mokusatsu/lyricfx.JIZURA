@@ -24,6 +24,6 @@ try{
  const file=await save(session,'favorites','custom-components.jizuraichifav'),fresh=json(await call('session_create')).session;
  await call('asset_import',{session:fresh,kind:'favorites',path:file,mode:'replace'});assert.deepEqual(json(await call('custom_effect_list',{session:fresh})),components);
  const loaded=json(await call('favorite_list',{session:fresh}));assert.equal(loaded[0].payload.details.hold,'custom_sway');assert.equal((await call('custom_effect_preview',{session:fresh,id:'custom_sway',time:1})).content[1].type,'image');
- const project=await save(session,'project','custom-project.jizuraichi');await call('asset_import',{session:fresh,kind:'project',path:project});assert.equal(json(await call('project_get',{session:fresh})).cuts.lyrics[0].holdP.amount,22);
+ const project=await save(session,'project','custom-project.lyricfx');await call('asset_import',{session:fresh,kind:'project',path:project});assert.equal(json(await call('project_get',{session:fresh})).cuts.lyrics[0].holdP.amount,22);
  await call('session_close',{session});await call('session_close',{session:fresh});console.log('PASS MCP custom components author/import/preview/export:',output);
 }finally{await client.close();await transport.close();}

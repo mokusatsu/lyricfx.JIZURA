@@ -9,6 +9,7 @@ global.Blob = Blob;
 global.File = File;
 
 global.J = {
+  PROJECT_EXTENSION: '.lyricfx',
   mediaLabel: (ja, en) => ja,
   mediaAssets: new Map(),
   loadMedia: async () => null,
@@ -95,6 +96,13 @@ async function runTest() {
   assert.equal(unpacked.files.length, 2);
   assert.equal(unpacked.files[0].name, 'video.mp4');
   assert.equal(unpacked.files[1].name, 'music.wav');
+
+  const named = await J.unpackProject(new File([packedBlob], 'project.lyricfx'));
+  assert.deepEqual(named.project, sampleProject);
+  for (const name of ['project.json', 'project.jizura', 'project.jizuraichi']) {
+    await assert.rejects(J.unpackProject(new File([packedBlob], name)), /不正|unsupported/);
+  }
+  await assert.rejects(J.unpackProject(new File([JSON.stringify(sampleProject)], 'project.lyricfx')), /不正|unsupported/);
 
   console.log('Portable project pack/unpack and token isolation tests passed successfully.');
 }

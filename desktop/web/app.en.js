@@ -206,6 +206,14 @@ J.fmtTime = (t, fps) => {
     writeFrame: null,
     finishExport: null,
     cancelJob: null,
+    saveProjectFile: null,
+    setDirtyState: () => {},
+    notifyProjectSaved: () => {},
+    cancelSaveAndClose: () => {},
+    retainMediaReference: () => {},
+    getNativeAssetToken: () => null,
+    getItemAssetToken: () => null,
+    clearNativeAssetCache: () => {},
     personModelProfile: () => (J.PERSON_MODEL && J.PERSON_MODEL.id) || 'rvm',
   };
 
@@ -1301,9 +1309,14 @@ J.itemBox = (it) => {
 
 /* ---------------- ENTRANCES ---------------- */
 J.ENTER = {
-  cut: { name: 'カット', apply() {} },
+  cut: {
+    inDur: () => .12,
+    selection: {weight: 0.5, short: 1.8},
+    name: 'カット', apply() {} },
 
   assemble: {
+    inDur: dur => J.clamp(dur * .45, .22, .75),
+    selection: {short: 0.25, emphasis: 1.8},
     name: '分解→集合', pieces: true,
     apply(env, it, p, ctx) {
       const dur = ctx.inDur, lt = env.lt - (it.delay || 0);
@@ -1324,6 +1337,7 @@ J.ENTER = {
   },
 
   slice: {
+    selection: {short: 1.8, emphasis: 1.8},
     name: 'スライス',
     apply(env, it, p) {
       const W = env.W;
@@ -1332,6 +1346,8 @@ J.ENTER = {
   },
 
   type: {
+    inDur: (dur,n) => J.clamp(n * .055 + .1, .15, dur * .65),
+    selection: {short: 0.25, longTextAfter: 18, longText: 0.3},
     name: 'タイプ', cursor: true,
     apply(env, it, p, ctx) {
       const n = (it._m || (it._m = J.measure(it))).lay.N;
@@ -1342,6 +1358,7 @@ J.ENTER = {
   },
 
   pop: {
+    selection: {short: 0.25},
     name: 'ポップ',
     apply(env, it, p) {
       const seed = it.seed | 0;
@@ -1355,6 +1372,7 @@ J.ENTER = {
   },
 
   drop: {
+    selection: {short: 0.25},
     name: '落下',
     apply(env, it, p) {
       const size = it.size, seed = it.seed | 0;
@@ -1369,6 +1387,7 @@ J.ENTER = {
   },
 
   stretch: {
+    selection: {short: 1.8},
     name: '伸縮',
     apply(env, it, p) {
       const e = E.outExpo(p);
@@ -1403,6 +1422,7 @@ J.ENTER = {
   },
 
   spin: {
+    selection: {short: 0.25},
     name: '回転',
     apply(env, it, p) {
       const seed = it.seed | 0;
@@ -1417,6 +1437,7 @@ J.ENTER = {
   },
 
   flicker: {
+    selection: {short: 0.25},
     name: '点滅',
     apply(env, it, p) {
       const seed = it.seed | 0, step = env.step;
@@ -1439,6 +1460,7 @@ J.ENTER = {
   },
 
   zoom: {
+    selection: {short: 1.8, emphasis: 1.8},
     name: 'ズーム',
     apply(env, it, p) {
       const e = E.outExpo(p);
@@ -1458,8 +1480,11 @@ function bounce(x) {
 
 /* ---------------- HOLDS (whole cut; amplitude eased in) ---------------- */
 J.HOLD = {
-  still: { name: '静止', apply() {} },
+  still: {
+    selection: {weight: 1},
+    name: '静止', apply() {} },
   jitter: {
+    selection: {weight: 1.2, motion: true},
     name: 'ジッター',
     apply(env, it, amt) {
       const seed = it.seed | 0, step = env.step, a = it.size * 0.025 * amt * env.fx.motion;
@@ -1468,6 +1493,7 @@ J.HOLD = {
     },
   },
   drift: {
+    selection: {weight: 1},
     name: 'ドリフト',
     apply(env, it, amt, ctx) {
       const u = env.lt / Math.max(0.3, ctx.dur);
@@ -1477,6 +1503,7 @@ J.HOLD = {
     },
   },
   breathe: {
+    selection: {weight: 0.7},
     name: '呼吸',
     apply(env, it, amt) {
       it.size *= 1 + 0.035 * Math.sin(env.lt * J.TAU * 0.9) * amt;
@@ -1484,6 +1511,7 @@ J.HOLD = {
     },
   },
   wave: {
+    selection: {weight: 0.4},
     name: 'ウェーブ',
     apply(env, it, amt) {
       const size = it.size, t = env.lt;
@@ -1491,6 +1519,7 @@ J.HOLD = {
     },
   },
   glitchtick: {
+    selection: {weight: 0.9, glitch: true},
     name: 'グリッチ',
     apply(env, it, amt) {
       const seed = it.seed | 0, step = env.step;
@@ -1503,9 +1532,11 @@ J.HOLD = {
 
 /* ---------------- EXITS ---------------- */
 J.EXIT = {
-  cut: { name: 'カット', apply() {} },
+  cut: {
+    selection: {weight: (dur,lastOfLine) => dur < .6 ? 4 : lastOfLine ? 1.2 : 2.2}, outDur: () => 0, name: 'カット', apply() {} },
 
   explode: {
+    outDur: dur => J.clamp(dur * .38, .25, .7),
     name: '爆散', pieces: true, shatter: true,
     apply(env, it, p, ctx) {
       const seed = it.seed | 0, dur = ctx.outDur, lt = env.lt - (ctx.dur - ctx.outDur);
@@ -1527,6 +1558,7 @@ J.EXIT = {
   },
 
   fall: {
+    outDur: dur => J.clamp(dur * .38, .25, .7),
     name: '崩落', pieces: true, shatter: true,
     apply(env, it, p, ctx) {
       const seed = it.seed | 0, lt = env.lt - (ctx.dur - ctx.outDur), g = env.H * 5.5;
@@ -1545,6 +1577,7 @@ J.EXIT = {
   },
 
   drift: {
+    outDur: dur => J.clamp(dur * .38, .25, .7),
     name: '霧散', pieces: true, shatter: true,
     apply(env, it, p, ctx) {
       const seed = it.seed | 0, dur = ctx.outDur, lt = env.lt - (ctx.dur - ctx.outDur), dist0 = it.size * 1.6;
@@ -1888,9 +1921,15 @@ const fontsOf = (st, roles) => { const f = roles.flatMap(r => st.fonts[r] || [])
 J.glyphCount = glyphCount; J.fontsOf = fontsOf; J.unionBB = unionBB;
 J.centerBB = (env, bb) => bb || { x0: env.W * 0.35, x1: env.W * 0.65, y0: env.H * 0.4, y1: env.H * 0.6, cx: env.W / 2, cy: env.H / 2, boxes: [] };
 
+J.layoutAllowsSharing = (key, duration) => {
+  const minimum = J.LAYOUTS[key]?.selection?.minShareDuration;
+  return minimum == null || !(duration < minimum);
+};
+
 J.LAYOUTS = {
   /* ------------------------------------------------ */
   center: {
+    portrait: 1.2, selection: {emphasis: 2, recap: 1.8, short: 1.4},
     name: '中央', fits: n => true,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, rng.chance(0.7) ? ['display'] : ['serif'])), sx: rng.pick([1, 1, 1, 1.25, 1.45, 0.78]), track: rng.range(0.02, 0.14), sub: rng.chance(0.45), under: rng.chance(0.3), accent: rng.chance(0.18), ox: rng.range(-0.05, 0.05), oy: rng.range(-0.06, 0.06) }),
     render(env) {
@@ -1910,6 +1949,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   mixed: {
+    portrait: 0.7, enterBias: {pop: 1.6, drop: 1.6, spin: 1.3}, selection: {recap: 1.8},
     name: '大小ミックス', fits: n => n >= 2 && n <= 16,
     plan: (rng, cut, st) => ({ fontBig: rng.pick(fontsOf(st, ['display', 'serif'])), fontSmall: rng.pick(fontsOf(st, ['serif', 'body'])), mode: rng.pick(['line', 'stair', 'line', 'wave']), rotAmp: rng.range(2, 10), smallK: rng.range(0.42, 0.6), accentIdx: rng.int(0, 20) }),
     render(env) {
@@ -1948,6 +1988,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   vcols: {
+    portrait: 1.9, enterBias: {assemble: 1.8, type: 1.2}, selection: {short: 1.4},
     name: '縦書き', fits: n => n <= 18,
     plan: (rng, cut, st) => {
       const n = glyphCount(cut.text);
@@ -1982,6 +2023,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   marquee: {
+    portrait: 0.6, selection: {emphasis: 2, recap: 1.8},
     name: '流れる帯', fits: n => n <= 12,
     plan: (rng, cut, st) => ({ rows: rng.pick([2, 4, 4, 2]), rowStyle: rng.pick(['outline', 'dim', 'box']), speed: rng.range(0.5, 1.2), font: rng.pick(fontsOf(st, ['display'])), sx: rng.pick([1.25, 1.45, 1.6]) }),
     render(env) {
@@ -2010,6 +2052,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   tile: {
+    enterBias: {assemble: 1.3, slice: 1.4, zoom: 1.4}, selection: {emphasis: 2, recap: 1.8, short: 0.3, minShareDuration: 0.5}, exitBias: {explode:.3,fall:.3,drift:.3},
     name: '敷き詰め', fits: n => n <= 12,
     plan: (rng, cut, st) => ({ unit: rng.pick(['chunk', 'line', 'chunk']), knock: rng.pick(['stroke', 'box']), flicker: rng.chance(0.6), font: rng.pick(fontsOf(st, ['display'])), tileFont: rng.pick(fontsOf(st, ['serif', 'body', 'display'])), rowsN: rng.pick([12, 14, 16, 18]) }),
     render(env) {
@@ -2041,6 +2084,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   scatter: {
+    enterBias: {pop: 1.5, spin: 1.5, drop: 1.2, assemble: 1.3},
     name: '散らし', fits: n => n >= 2 && n <= 14,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['display'])), fontB: rng.pick(fontsOf(st, ['serif', 'display'])), extras: rng.chance(0.65) }),
     render(env) {
@@ -2068,6 +2112,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   ring: {
+    enterBias: {pop: 2, spin: 2, cut: 1, assemble: 0.4, slice: 0.2, wipe: 0.2}, selection: {short: 0.3, minShareDuration: 0.5}, exitBias: {explode:.3,fall:.3,drift:.3},
     name: '円環', fits: n => n >= 2 && n <= 16,
     plan: (rng, cut, st) => ({ orient: rng.pick(['tangent', 'tangent', 'upright']), center: rng.pick(['word', 'disc', 'word', 'none']), speed: rng.range(4, 12) * rng.pick([1, -1]), R: rng.range(0.28, 0.35), font: rng.pick(fontsOf(st, ['display', 'serif'])), fontC: rng.pick(fontsOf(st, ['display', 'serif'])) }),
     render(env) {
@@ -2103,6 +2148,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   wave: {
+    portrait: 0.6, enterBias: {pop: 1.5, drop: 1.5, blur: 1, slice: 0.3}, selection: {short: 0.3, minShareDuration: 0.5},
     name: '波の軌跡', fits: n => n >= 2 && n <= 16,
     plan: (rng, cut, st) => ({ amp: rng.range(0.08, 0.17), freq: rng.range(0.8, 1.6), trail: rng.pick([5, 7, 9]), font: rng.pick(fontsOf(st, ['display'])), travel: rng.range(0.25, 0.5) * rng.pick([1, -1]) }),
     render(env) {
@@ -2130,6 +2176,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   huge: {
+    portrait: 1.3, enterBias: {zoom: 1.5, wipe: 1.5, slice: 1.4, stretch: 1.3, type: 0.2}, selection: {emphasis: 2, short: 1.4},
     name: '画面突き抜け', fits: n => n <= 8,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['display'])), grad: !!st.useGrad && rng.chance(0.75), dir: rng.pick([1, -1]), label: rng.chance(0.8) }),
     render(env) {
@@ -2153,6 +2200,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   labels: {
+    enterBias: {cut: 3, pop: 1}, selection: {short: 0.3, minShareDuration: 0.5}, exitBias: {explode:.3,fall:.3,drift:.3},
     name: 'ラベル貼り', fits: n => n >= 1 && n <= 16,
     plan: (rng, cut, st) => ({ variant: rng.pick(['radial', 'rows', 'scatter']), unit: glyphCount(cut.text) <= 6 ? 'char' : rng.pick(['char', 'word']), center: rng.pick(['orb', 'word', 'none']), font: rng.pick(fontsOf(st, ['display', 'body'])), fontC: rng.pick(fontsOf(st, ['display'])) }),
     render(env) {
@@ -2201,6 +2249,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   condensed: {
+    portrait: 1.3, selection: {emphasis: 2, short: 1.4},
     name: '縦長圧縮', fits: n => n <= 10,
     plan: (rng, cut, st) => { const n = glyphCount(cut.text); return { count: n <= 4 ? rng.pick([3, 2, 1]) : n <= 7 ? rng.pick([2, 1]) : 1, sx: rng.range(0.42, 0.58), sy: rng.range(1.1, 1.3), font: rng.pick(fontsOf(st, ['display', 'body'])) }; },
     render(env) {
@@ -2218,6 +2267,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   gloss: {
+    portrait: 0.5, selection: {recap: 1.8, short: 0.3, minShareDuration: 0.5},
     name: '注釈', fits: n => n <= 12,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['serif', 'display'])), side: rng.pick(['right', 'left']), bgText: rng.chance(0.6), vertNote: rng.chance(0.45) }),
     render(env) {
@@ -2253,6 +2303,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   type: {
+    portrait: 0.8, enterBias: {type: 4, scramble: 1.5}, selection: {recap: 1.8, short: 0.3, minShareDuration: 0.5},
     name: 'タイプ', fits: n => n <= 28,
     plan: (rng, cut, st) => ({ font: rng.pick(fontsOf(st, ['body', 'serif', 'mono'])), align: rng.pick(['left', 'center']), prompt: rng.chance(0.6) }),
     render(env) {
@@ -2271,6 +2322,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   diag: {
+    portrait: 0.8,
     name: '斜め帯', fits: n => n <= 14,
     plan: (rng, cut, st) => ({ ang: rng.range(10, 22) * rng.pick([1, -1]), band: rng.pick(['accent', 'ink']), second: rng.chance(0.7), font: rng.pick(fontsOf(st, ['display'])) }),
     render(env) {
@@ -2325,6 +2377,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   stack: {
+    portrait: 1.1, selection: {recap: 1.8},
     name: '残像スタック', fits: n => n <= 12,
     plan: (rng, cut, st) => ({ copies: rng.pick([3, 4, 5]), dir: rng.pick([1, -1]), style: rng.pick(['fade', 'outline', 'fade']), font: rng.pick(fontsOf(st, ['display', 'serif'])), gap: rng.range(0.82, 1.02), xs: rng.range(-0.04, 0.04) }),
     render(env) {
@@ -2344,6 +2397,7 @@ J.LAYOUTS = {
 
   /* ------------------------------------------------ */
   pill: {
+    enterBias: {wipe: 1.8, type: 1.2},
     name: 'カプセル', fits: n => n <= 14,
     plan: (rng, cut, st) => ({ grad: !!st.useGrad || rng.chance(0.35), font: rng.pick(fontsOf(st, ['display', 'body'])), smalls: rng.chance(0.75) }),
     render(env) {
@@ -2813,6 +2867,7 @@ J.DECOR = {
     },
   },
   shapes: {
+    countBonus: 3,
     name: '図形', layer: 'back',
     draw(env, bb, P) {
       const { W, H, sc, ctx } = env, s = P.seed, n = P.n || 5;
@@ -2925,6 +2980,7 @@ J.DECOR = {
     },
   },
   sparks: {
+    countBonus: 4,
     name: 'スパーク', layer: 'front',
     draw(env, bb, P) {
       const { W, H, sc } = env, s = P.seed;
@@ -3031,39 +3087,6 @@ J.SAMPLE_LYRICS = `夜明けの色を/覚えてる
 ほどけた声が遠くで鳴った
 ねえ、まだ間に合うかな
 *透明*なままじゃ終われない!`;
-
-J.defaultProject = () => ({
-  version: 1,
-  title: '夜明けの色', artist: 'JIZURA',
-  projectName: '',                // set when the project is saved; the next save's default file name
-  durationOverride: null,         // null = automatic; otherwise total video length in seconds
-  lyrics: J.SAMPLE_LYRICS,
-  themes: [],
-  themeBalance: 'lively',         // テーマ設定: 'lively' (にぎやかさ重視, standard) | 'unified' (統一感重視)
-  style: 'noir', mood: null,
-  extra: false,                   // random picks may use the parts added after the first version (追加分)
-  wa: true,                       // …and the 和風 motifs (提灯・障子・家紋…) — applied after 'extra'
-  lang: 'auto',                   // 歌詞の言語: 'auto' | 'ja' | 'zh-Hant' | 'zh-Hans' | 'ko' — picks the faces each font key is drawn with
-  keyBg: 'off',                   // 合成用の背景: 'off' | 'green' (グリーンバック) | 'black' (ブラックバック)
-  seed: 20260922,
-  aspect: '16:9', res: 1080, fps: 24,
-  shortExport: {start:0,end:null,mode:'zoom',blur:35,res:1080},
-  fx: { motion: 0.7, glitch: 0.55, chroma: 0.7, decor: 0.5, density: 0.55, texture: 0.6, flash: true, onTwos: true, koma: 12, hud: 'auto', bgSwitch: 0.35 },
-  enabled: Object.fromEntries(J.GROUP_KEYS.map(g => [g, Object.fromEntries(J.order(g).map(k => [k, true]))])),
-  timing: { bpm: 0, offset: 0.4, snap: true, tail: 0.9, lineTimes: {}, cutTimes: {}, lineScale: 1 },
-  overrides: {},
-  lyricCutOptions: {},
-  effectFavorites: [], favoriteSequence: 0, customEffects: [],
-  lyricEffects: { autoPlacement: true, avoidForeground: true, avoidanceStrength: 1, lyricAvoidanceStrength: 1, randomBlend: false, randomOpacity: false, opacityMin: 0, opacityMax: 100 },
-  timelineLinks: [],
-  layerVisibility: {avoidance:true,foreground:true,lyrics:true,media:true},
-  avoidance: { timelineMode: true, cutCount: 0, manualCuts: true, avoidEmphasis: false, maskAvoidance: false, maskRadiusOffset: 0, maskFeather: 60, maskCurve: 'smooth', lyricInsertMode: 'line', groupLyricsAsOneCut: true, timing: { lineTimes: {} }, cutOverrides: {} },
-  media: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
-  foreground: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
-  colors: { enabled: false },
-  colorTheme: { genre: 'auto', color: null },
-  fonts: {},
-});
 
 /* the original (After Effects-implemented) sets, captured before any expression pack registers */
 J.CORE_ORDER = { layout: J.LAYOUT_ORDER.slice(), enter: J.ENTER_ORDER.slice(), exit: J.EXIT_ORDER.slice(), hold: J.HOLD_ORDER.slice(), decor: J.DECOR_ORDER.slice() };
@@ -3527,7 +3550,7 @@ J.plan = (project, audio, chain) => {
       const share = unified ? (blockLooks.get(shareKey) || (blockLooks.set(shareKey, {}), blockLooks.get(shareKey))) : {};
       const shareable = unified && !ln.effectsOnly && !txt.includes('\n') && !rerolled(li);
       const sharedLayout = shareable && share.layout && J.LAYOUTS[share.layout] && en.layout[share.layout] && J.LAYOUTS[share.layout].fits(nn)
-        && !(dur < 0.5 && ['wave', 'ring', 'labels', 'gloss', 'type', 'tile'].includes(share.layout)) ? share.layout : null;
+        && J.layoutAllowsSharing(share.layout, dur) ? share.layout : null;
       const layout = ln.effectsOnly || txt.includes('\n') ? 'center' : ov.layout && J.LAYOUTS[ov.layout] ? ov.layout : sharedLayout || pickLayout(rng, st, en, nn, dur, history, emph, u.recap, layoutH > layoutW, ln.note);
       if (shareable && !share.layout && !ov.layout) share.layout = layout;
       const enterOk = shareable && share.enter && J.ENTER[share.enter] && en.enter[share.enter] !== false && !(J.ENTER[share.enter].minDur && dur < J.ENTER[share.enter].minDur) && !(J.ENTER[share.enter].maxChars && nn > J.ENTER[share.enter].maxChars);
@@ -3539,12 +3562,8 @@ J.plan = (project, audio, chain) => {
       const hold = ov.hold && J.HOLD[ov.hold] ? ov.hold : shareable && share.hold && J.HOLD[share.hold] && en.hold[share.hold] !== false ? share.hold : pickHold(rng, en, fx, history);
       if (shareable && !share.hold && !ov.hold) share.hold = hold;
       let inDur = J.clamp(dur * 0.36, 0.12, 0.6);
-      if (enter === 'type') inDur = J.clamp(nn * 0.055 + 0.1, 0.15, dur * 0.65);
-      if (enter === 'assemble') inDur = J.clamp(dur * 0.45, 0.22, 0.75);
       if (J.ENTER[enter] && J.ENTER[enter].inDur) inDur = J.ENTER[enter].inDur(dur, nn);
-      if (enter === 'cut') inDur = 0.12;
-      let outDur = exit === 'cut' ? 0 : J.clamp(dur * 0.3, 0.14, 0.55);
-      if (['explode', 'fall', 'drift'].includes(exit)) outDur = J.clamp(dur * 0.38, 0.25, 0.7);
+      let outDur = J.clamp(dur * 0.3, 0.14, 0.55);
       if (J.EXIT[exit] && J.EXIT[exit].outDur) outDur = J.EXIT[exit].outDur(dur, nn);
       if (inDur + outDur > dur * 0.92) { const f = dur * 0.92 / (inDur + outDur); inDur *= f; outDur *= f; }
       let sch = schemeIdx;
@@ -3638,8 +3657,8 @@ J.plan = (project, audio, chain) => {
     for (const [cut, info] of cutBlock) (groups.get(info.key) || groups.set(info.key, []).get(info.key)).push(cut);
     for (const [key, cuts] of groups) {
       if (cuts.length < 2) continue;
-      const nOf = c => [...c.text.replace(/\s+/g, '')].length, shortBad = ['wave', 'ring', 'labels', 'gloss', 'type', 'tile'];
-      const fitsAll = k => en.layout[k] && J.LAYOUTS[k] && cuts.every(c => J.LAYOUTS[k].fits(nOf(c)) && !(c.dur < 0.5 && shortBad.includes(k)));
+      const nOf = c => [...c.text.replace(/\s+/g, '')].length;
+      const fitsAll = k => en.layout[k] && J.LAYOUTS[k] && cuts.every(c => J.LAYOUTS[k].fits(nOf(c)) && J.layoutAllowsSharing(k, c.dur));
       if (new Set(cuts.map(c => c.layout)).size > 1) {
         const counts = new Map(); for (const c of cuts) counts.set(c.layout, (counts.get(c.layout) || 0) + 1);
         let pick = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(e => e[0]).find(fitsAll);
@@ -3818,44 +3837,36 @@ function novelty(history, key, val) {
   for (let i = history.length - 1, d = 0; i >= 0 && d < 6; i--, d++) if (history[i][key] === val) w *= UNITY ? (d < 2 ? 2.6 : 1.5) : (d < 2 ? 0.2 : 0.6);
   return w;
 }
-const PORTRAIT_W = { vcols: 1.9, condensed: 1.3, huge: 1.3, center: 1.2, stack: 1.1, mixed: 0.7, marquee: 0.6, wave: 0.6, diag: 0.8, type: 0.8, gloss: 0.5 };
 function pickLayout(rng, st, en, n, dur, history, emph, recap, portrait, note) {
   const cands = [];
   for (const k of J.LAYOUT_ORDER) {
     const L = J.LAYOUTS[k];
     if (!en.layout[k] || !L.fits(n)) continue;
     let w = wkey(st.bias.layout, k, L.w ?? 1) * novelty(history, 'layout', k);
-    if (portrait) w *= L.portrait != null ? L.portrait : wkey(PORTRAIT_W, k, 1);
+    if (portrait) w *= L.portrait ?? 1;
     if (emph && L.emph) w *= L.emph;
-    if (emph && ['huge', 'center', 'tile', 'marquee', 'condensed'].includes(k)) w *= 2;
-    if (recap && ['center', 'stack', 'marquee', 'tile', 'mixed', 'type', 'gloss'].includes(k)) w *= 1.8;
-    if (dur < 0.5 && ['wave', 'ring', 'labels', 'gloss', 'type', 'tile'].includes(k)) w *= 0.3;
-    if (dur < 0.5 && ['center', 'huge', 'condensed', 'vcols'].includes(k)) w *= 1.4;
+    if (emph && L.selection?.emphasis) w *= L.selection.emphasis;
+    if (recap && L.selection?.recap) w *= L.selection.recap;
+    if (dur < 0.5 && L.selection?.short) w *= L.selection.short;
     cands.push([k, w]);
   }
   if (!cands.length) return 'center';
   const withNote=note ? cands.filter(([key])=>J.LAYOUTS[key].supportsNote) : [];
   return rng.wpick(withNote.length ? withNote : cands);
 }
-const LAYOUT_ENTER = {
-  type: { type: 4, scramble: 1.5 }, ring: { pop: 2, spin: 2, cut: 1, assemble: 0.4, slice: 0.2, wipe: 0.2 }, labels: { cut: 3, pop: 1 },
-  wave: { pop: 1.5, drop: 1.5, blur: 1, slice: 0.3 }, tile: { assemble: 1.3, slice: 1.4, zoom: 1.4 }, huge: { zoom: 1.5, wipe: 1.5, slice: 1.4, stretch: 1.3, type: 0.2 },
-  mixed: { pop: 1.6, drop: 1.6, spin: 1.3 }, scatter: { pop: 1.5, spin: 1.5, drop: 1.2, assemble: 1.3 }, vcols: { assemble: 1.8, type: 1.2 }, pill: { wipe: 1.8, type: 1.2 },
-};
 function pickEnter(rng, st, en, layout, dur, history, emph, n) {
   const cands = [];
   for (const k of J.ENTER_ORDER) {
     if (!en.enter[k]) continue;
     const D = J.ENTER[k]; if (!D) continue;
     const LD = J.LAYOUTS[layout] || {};
-    let w = wkey(st.bias.enter, k, D.w ?? 1) * novelty(history, 'enter', k) * wkey(LAYOUT_ENTER[layout] || LD.enterBias, k, 1);
+    let w = wkey(st.bias.enter, k, D.w ?? 1) * novelty(history, 'enter', k) * wkey(LD.enterBias, k, 1);
     if (D.minDur && dur < D.minDur) w *= 0.15;
     if (D.maxChars && n > D.maxChars) w *= 0.2;
-    if (k === 'cut') w *= 0.5;
-    if (dur < 0.45 && ['type', 'assemble', 'drop', 'spin', 'pop', 'flicker'].includes(k)) w *= 0.25;
-    if (dur < 0.45 && ['cut', 'slice', 'zoom', 'stretch'].includes(k)) w *= 1.8;
-    if (k === 'type' && n > 18) w *= 0.3;
-    if (emph && ['zoom', 'assemble', 'slice'].includes(k)) w *= 1.8;
+    if (D.selection?.weight) w *= D.selection.weight;
+    if (dur < 0.45 && D.selection?.short) w *= D.selection.short;
+    if (D.selection?.longTextAfter != null && n > D.selection.longTextAfter) w *= D.selection.longText;
+    if (emph && D.selection?.emphasis) w *= D.selection.emphasis;
     cands.push([k, w]);
   }
   return cands.length ? rng.wpick(cands) : 'cut';
@@ -3867,26 +3878,25 @@ function pickExit(rng, st, en, layout, dur, lastOfLine, history) {
     const D = J.EXIT[k]; if (!D) continue;
     let w = wkey(st.bias.exit, k, D.w ?? 1) * novelty(history, 'exit', k);
     if (D.minDur && dur < D.minDur) w *= 0.15;
-    if (k === 'cut') w *= dur < 0.6 ? 4 : lastOfLine ? 1.2 : 2.2;
-    if (dur < 0.6 && k !== 'cut') w *= 0.4;
-    if (['labels', 'ring', 'tile'].includes(layout) && ['explode', 'fall', 'drift'].includes(k)) w *= 0.3;
+    if (D.selection?.weight) w *= D.selection.weight(dur,lastOfLine);
+    else if (dur < 0.6) w *= 0.4;
+    w *= wkey(J.LAYOUTS[layout]?.exitBias,k,1);
     cands.push([k, w]);
   }
   return cands.length ? rng.wpick(cands) : 'cut';
 }
-const HOLD_W = { still: 1, jitter: 1.2, drift: 1, breathe: 0.7, wave: 0.4, glitchtick: 0.9 };
 function pickHold(rng, en, fx, history) {
   const cands = J.HOLD_ORDER.filter(k => en.hold[k] !== false && J.HOLD[k]).map(k => {
     const D = J.HOLD[k];
-    let w = HOLD_W[k] != null ? HOLD_W[k] : (D.w ?? 0.8);
-    if (k === 'jitter' || (D.tags && D.tags.includes('glitch'))) w *= 0.4 + fx.motion;
-    if (k === 'glitchtick') w *= fx.glitch;
+    let w = D.selection?.weight ?? D.w ?? 0.8;
+    if (D.selection?.motion || (D.tags && D.tags.includes('glitch'))) w *= 0.4 + fx.motion;
+    if (D.selection?.glitch) w *= fx.glitch;
     return [k, w * novelty(history, 'hold', k)];
   });
   return cands.length ? rng.wpick(cands) : 'still';
 }
 function decorParams(rng, k) {
-  return { id: k, seed: rng.int(1, 1e9), n: rng.int(1, 3) + (k === 'shapes' ? 3 : 0) + (k === 'sparks' ? 4 : 0), right: rng.chance(0.5), low: rng.chance(0.5), accent: rng.chance(0.4), corner: rng.chance(0.5), big: rng.chance(0.4), mode: rng.pick(['count', 'index']), from: rng.int(0, 20), to: rng.int(30, 999), v: rng.int(0, 5), r: rng() };
+  return { id: k, seed: rng.int(1, 1e9), n: rng.int(1, 3) + (J.DECOR[k]?.countBonus || 0), right: rng.chance(0.5), low: rng.chance(0.5), accent: rng.chance(0.4), corner: rng.chance(0.5), big: rng.chance(0.4), mode: rng.pick(['count', 'index']), from: rng.int(0, 20), to: rng.int(30, 999), v: rng.int(0, 5), r: rng() };
 }
 function pickDecor(rng, st, en, fx, layout, history = []) {
   const count = Math.round(fx.decor * 2.8 * rng.range(0.45, 1.15));
@@ -3965,6 +3975,181 @@ J.outputSize = (project) => {
   const [W, H] = J.designSize(project.aspect);
   const k = (project.res || 1080) / Math.min(W, H);
   return [Math.round(W * k / 2) * 2, Math.round(H * k / 2) * 2];
+};
+})();
+
+/* Project defaults, normalization and settings-only transfer. */
+(() => {
+'use strict';
+
+J.PROJECT_EXTENSION = '.lyricfx';
+
+J.defaultProject = () => ({
+  version: 1,
+  title: '夜明けの色', artist: 'JIZURA',
+  projectName: '',                // set when the project is saved; the next save's default file name
+  durationOverride: null,         // null = automatic; otherwise total video length in seconds
+  lyrics: J.SAMPLE_LYRICS,
+  themes: [],
+  themeBalance: 'lively',         // テーマ設定: 'lively' (にぎやかさ重視, standard) | 'unified' (統一感重視)
+  style: 'noir', mood: null,
+  extra: false,                   // random picks may use the parts added after the first version (追加分)
+  wa: true,                       // …and the 和風 motifs (提灯・障子・家紋…) — applied after 'extra'
+  lang: 'auto',                   // 歌詞の言語: 'auto' | 'ja' | 'zh-Hant' | 'zh-Hans' | 'ko' — picks the faces each font key is drawn with
+  keyBg: 'off',                   // 合成用の背景: 'off' | 'green' (グリーンバック) | 'black' (ブラックバック)
+  seed: 20260922,
+  aspect: '16:9', res: 1080, fps: 24,
+  shortExport: {start:0,end:null,mode:'zoom',blur:35,res:1080},
+  fx: { motion: 0.7, glitch: 0.55, chroma: 0.7, decor: 0.5, density: 0.55, texture: 0.6, flash: true, onTwos: true, koma: 12, hud: 'auto', bgSwitch: 0.35 },
+  enabled: Object.fromEntries(J.GROUP_KEYS.map(g => [g, Object.fromEntries(J.order(g).map(k => [k, true]))])),
+  timing: { bpm: 0, offset: 0.4, snap: true, tail: 0.9, lineTimes: {}, cutTimes: {}, lineScale: 1 },
+  overrides: {},
+  lyricCutOptions: {},
+  effectFavorites: [], favoriteSequence: 0, customEffects: [],
+  lyricEffects: { autoPlacement: true, avoidForeground: true, avoidanceStrength: 1, lyricAvoidanceStrength: 1, randomBlend: false, randomOpacity: false, opacityMin: 0, opacityMax: 100 },
+  timelineLinks: [],
+  layerVisibility: {avoidance:true,foreground:true,lyrics:true,media:true},
+  avoidance: { timelineMode: true, cutCount: 0, manualCuts: true, avoidEmphasis: false, maskAvoidance: false, maskRadiusOffset: 0, maskFeather: 60, maskCurve: 'smooth', lyricInsertMode: 'line', groupLyricsAsOneCut: true, timing: { lineTimes: {} }, cutOverrides: {} },
+  media: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
+  foreground: { items: [], randomOrder: false, loop: false, cutCount: 0, seed: 1, timing: { lineTimes: {} }, overrides: {}, cutOverrides: {}, blend: 'normal', opacity: 100 },
+  colors: { enabled: false },
+  colorTheme: { genre: 'auto', color: null },
+  fonts: {},
+});
+
+// 無表示カット (retired): the lyric showing when a blank began now ends there (カットの終了時間).
+function migrateLyricBlankCuts(project) {
+  const blanks = (Array.isArray(project.lyricBlankCuts) ? project.lyricBlankCuts : []).filter(b => b && Number.isFinite(+b.start)).sort((a, b) => a.start - b.start);
+  delete project.lyricBlankCuts;
+  if (!blanks.length) return;
+  const plan = J.plan(project), done = new Set();
+  for (const blank of blanks) for (const cut of plan.cuts) {
+    const key = `${cut.line}:${cut.part}`;
+    if (cut.line < 0 || !Number.isInteger(cut.part) || done.has(key) || !(cut.start < +blank.start && cut.end > +blank.start)) continue;
+    project.lyricCutOptions[key] = { ...project.lyricCutOptions[key], untilNext: false, endTime: +(+blank.start).toFixed(3) };
+    done.add(key);
+  }
+}
+J.normalizeProject = p => {
+  const d = J.defaultProject();
+  const o = Object.assign(d, p || {});
+  if (o.videoSize) { const [w, h] = J.outputSize(o); o.videoSize = { w, h }; }
+  o.shortExport=J.shortExportSettings(o.shortExport);
+  o.fx = Object.assign(J.defaultProject().fx, (p && p.fx) || {});
+  o.timing = Object.assign(J.defaultProject().timing, (p && p.timing) || {});
+  o.timing.cutTimes = o.timing.cutTimes || {};
+  o.customEffects=J.validateCustomEffects(o.customEffects||[]);J.activateCustomEffects(o);
+  const en = J.defaultProject().enabled;
+  for (const g of Object.keys(en)) en[g] = Object.assign(en[g], ((p && p.enabled) || {})[g] || {});
+  o.enabled = en;
+  o.overrides = (p && p.overrides) || {};
+  o.lyricCutOptions = (p && p.lyricCutOptions) || {};
+  o.lyricEffects = J.lyricEffectSettings(o);
+  o.themes = J.themeIds(o);
+  o.themeBalance = o.themeBalance === 'unified' ? 'unified' : 'lively';
+  delete o.jevPrompt;
+  migrateLyricBlankCuts(o);
+  o.effectFavorites = J.normalizeEffectFavorites(o.effectFavorites);
+  o.customEffects=J.combineCustomEffects(o.customEffects,...o.effectFavorites.map(f=>f.payload.components||[]));J.activateCustomEffects(o);
+  o.favoriteSequence = Math.max(o.effectFavorites.length,Math.floor(+o.favoriteSequence)||0);
+  o.timelineLinks = Array.isArray(p && p.timelineLinks) ? p.timelineLinks : [];
+  o.layerVisibility = Object.assign({avoidance:true,foreground:true,lyrics:true,media:true}, (p && p.layerVisibility) || {});
+  o.avoidance = J.normalizeAvoidance(p ? p.avoidance : J.defaultProject().avoidance);
+  o.media = J.normalizeMedia(p && p.media);
+  o.foreground = J.normalizeMedia(p && p.foreground);
+  for (const layer of ['media', 'foreground']) o[layer].effects = J.mediaEffectSettings(o, layer);
+  // Convert the former per-source occlusion switches once, preserving their active intervals.
+  const legacy = [];
+  for (const layer of ['media','foreground']) for (const [key, options] of Object.entries(o[layer].cutOverrides || {})) {
+    const ref=options.personCutout;
+    if (ref && (ref.behindLyrics || ref.behindForeground)) legacy.push({layer,index:+key,lyrics:!!ref.behindLyrics,foreground:!!ref.behindForeground});
+  }
+  if (legacy.length) {
+    const lp=J.plan(o), ap=J.planAvoidance(o,lp), media={media:J.planMedia(o,lp),foreground:J.planMedia(o,lp,null,'foreground')};
+    const entries=ap.cuts.map(c=>({start:c.start,end:c.end,oldIndex:c.index,ov:{...(o.avoidance.cutOverrides[c.index]||{})}}));
+    for (const old of legacy) {
+      const c=media[old.layer].cuts[old.index];
+      if (!c) continue;
+      entries.push({start:c.start,end:c.end,ov:{kind:'person',source:{layer:old.layer,index:old.index,itemId:c.itemId},placement:false,occlusion:old.lyrics?'all':'none',behindForeground:old.foreground}});
+      const ref=o[old.layer].cutOverrides[old.index].personCutout; delete ref.behindLyrics;delete ref.behindForeground;
+    }
+    entries.sort((a,b)=>a.start-b.start);
+    o.avoidance.manualCuts=true;o.avoidance.cutCount=entries.length;o.avoidance.cutOverrides={};o.avoidance.timing.lineTimes={};
+    const remap=new Map();
+    entries.forEach((e,i)=>{if(e.oldIndex!=null)remap.set(e.oldIndex,i);o.avoidance.timing.lineTimes[i]=e.start;o.avoidance.cutOverrides[i]={...e.ov,untilNext:false,endTime:e.end};});
+    for(const link of o.timelineLinks)for(const side of ['a','b'])if(/^a:\d+$/.test(link[side])){const old=+link[side].slice(2);if(remap.has(old))link[side]='a:'+remap.get(old);}
+  }
+  // Materialize the old circle-wide switch and inherited defaults once per cut.
+  if(!o.avoidance.timelineMode) {
+    const a=o.avoidance,settings=J.lyricEffectSettings(o),on=!!(settings.autoPlacement && settings.avoidCenter);
+    const oldPlan=J.plan(o),custom=o.lyricEffects?.avoidCircle || o.avoidCircle;
+    for(let i=0;i<a.cutCount;i++){
+      const ov=a.cutOverrides[i] ||= {};if(ov.kind==='person')continue;
+      ov.enabled=on && ov.enabled!==false;
+      ov.avoidEmphasis=ov.avoidEmphasis ?? a.avoidEmphasis;
+      ov.occlusion=ov.occlusion || ((ov.maskAvoidance ?? a.maskAvoidance)?'aux':'none');
+      for(const key of ['maskRadiusOffset','maskFeather','maskCurve'])if(ov[key]===undefined)ov[key]=a[key];
+      if(custom && [custom.cx,custom.cy,custom.r].some(Number.isFinite)){
+        if(Number.isFinite(custom.cx))ov.cx=J.clamp(custom.cx/oldPlan.W,0,1);
+        if(Number.isFinite(custom.cy))ov.cy=J.clamp(custom.cy/oldPlan.H,0,1);
+        if(Number.isFinite(custom.r))ov.r=J.clamp(custom.r/Math.min(oldPlan.W,oldPlan.H),.03,.85);
+        if(Number.isFinite(custom.pad))ov.pad=J.clamp(custom.pad/Math.min(oldPlan.W,oldPlan.H),0,.2);
+        if(Number.isFinite(custom.feather))ov.feather=J.clamp(custom.feather/Math.min(oldPlan.W,oldPlan.H),0,.3);
+      }
+    }
+    a.timelineMode=true;
+  }
+  delete o.mediaEffects;
+  o.colors = Object.assign({ enabled: false }, (p && p.colors) || {});
+  o.colorTheme = J.normalizeColorTheme(p && p.colorTheme);
+  o.fonts = (p && p.fonts) || {};
+  o.userFonts = (p && p.userFonts) || [];
+  for (const uf of o.userFonts) if (!J.FONTS[uf.key]) J.addUserFont(uf.key, uf.label, uf.family, uf.weight || 400);
+  o.compositeFonts = Array.isArray(p && p.compositeFonts) ? p.compositeFonts : [];
+  J.setCompositeFonts(o.compositeFonts);
+  J.migrateLyricCompositing(o);
+  return o;
+};
+
+// Explicit settings allowlist keeps song content and future asset fields out of presets.
+const settingKeys = ['themes','themeBalance','style','mood','extra','wa','horror','typo','kinetic','keyBg',
+  'seed','aspect','res','fps','videoSize','videoSizeMode','quality','exportBitrate','exportQP','includeAudio','exportEncoder','shortExport','fx','enabled',
+  'lyricEffects','colors','colorTheme','fonts','userFonts','compositeFonts','effectFavorites','favoriteSequence','customEffects'];
+const clone = value => JSON.parse(JSON.stringify(value));
+J.projectSettings = project => {
+  const result = {};
+  for (const key of settingKeys) if (project[key] !== undefined) result[key] = clone(project[key]);
+  for (const layer of ['media','foreground']) result[layer] = { effects: clone(J.mediaEffectSettings(project,layer)), opacity: project[layer]?.opacity ?? 100, blend: project[layer]?.blend ?? 'normal' };
+  result.avoidance = { avoidEmphasis: !!project.avoidance?.avoidEmphasis, ...J.normalizeAvoidanceMask(project.avoidance) };
+  return result;
+};
+J.settingsProject = project => {
+  const settings = J.projectSettings(project), result = Object.assign(J.defaultProject(),settings);
+  result.lyrics = ''; result.title = ''; result.artist = '';
+  for (const layer of ['media','foreground']) result[layer] = Object.assign(J.normalizeMedia(null),settings[layer]);
+  result.avoidance = Object.assign(J.normalizeAvoidance(null), settings.avoidance);
+  return result;
+};
+J.applyProjectSettings = (current, source) => {
+  const settings = J.projectSettings(source), result = clone(current);
+  // Density is also an automatic cut splitter. Retain existing line divisions while
+  // accepting the preset density for new lines and future explicit density edits.
+  result.overrides ||= {};
+  J.parseLyrics(current.lyrics).lines.forEach((line,index) => {
+    const ov = result.overrides[index] ||= {};
+    ov.divisionDensity ??= current.fx?.density ?? J.defaultProject().fx.density;
+  });
+  for (const key of settingKeys) if (settings[key] !== undefined) result[key] = settings[key];
+  for (const layer of ['media','foreground']) Object.assign(result[layer],settings[layer]);
+  if (settings.avoidance) Object.assign(result.avoidance ||= J.normalizeAvoidance(null), settings.avoidance);
+  // Retained cuts still need their custom component definitions.
+  result.customEffects=clone(current.customEffects||[]);J.importCustomEffects(result,settings.customEffects||[]);
+  // Existing cuts may still refer to fonts absent from the preset.
+  for (const key of ['userFonts','compositeFonts']) {
+    const imported = result[key] || [];
+    result[key] = [...(current[key] || []).filter(f => !imported.some(g => g.key === f.key)),...imported];
+  }
+  return result;
 };
 })();
 
@@ -6970,7 +7155,8 @@ const dbOp = async (mode, cb) => {
 const mediaSnapshots = new WeakMap();
 J.snapshotMediaFile = (file, onProgress = () => {}) => {
   if (!(file instanceof Blob)) return Promise.reject(new Error('Missing media file'));
-  if (mediaSnapshots.has(file)) return mediaSnapshots.get(file).then(copy=>{onProgress(file.size,file.size);return copy;});
+  const retain = copy => { J.platform?.retainMediaReference?.(file,copy); return copy; };
+  if (mediaSnapshots.has(file)) return mediaSnapshots.get(file).then(copy=>{onProgress(file.size,file.size);return retain(copy);});
   const task = (async () => {
     const parts = [], chunk = 4 * 1024 * 1024;
     onProgress(0,file.size);
@@ -6986,7 +7172,7 @@ J.snapshotMediaFile = (file, onProgress = () => {}) => {
   })();
   mediaSnapshots.set(file, task);
   task.catch(() => mediaSnapshots.delete(file));
-  return task;
+  return task.then(retain);
 };
 // If browser storage is unavailable, keep newly imported bytes for this session.
 // Never delete/reset an existing database to recover: it may contain user assets.
@@ -7326,7 +7512,7 @@ J.drawMedia = (ctx, plan, t, owner, layer = 'media', previewEdit = false, cut = 
   const clear = c => { const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.filter = 'none'; x.clearRect(0, 0, w, h); if (layer === 'media' && !personAlpha) { x.fillStyle = bg; x.fillRect(0, 0, w, h); } return x; };
   const snapshot = transitionFrame(layer);
   const priorAsset = J.mediaAssets.get(prev.itemId);
-  const prevSource = prev.type === 'video' ? (snapshot && snapshot.plan === plan && snapshot.index === prev.index ? snapshot.canvas : prev.itemId === cut.itemId && priorAsset.posterElement && priorAsset.posterElement.complete ? priorAsset.posterElement : null) : null;
+  const prevSource = prev.type === 'video' ? (snapshot && snapshot.plan === (plan.previewSource || plan) && snapshot.index === prev.index ? snapshot.canvas : prev.itemId === cut.itemId && priorAsset.posterElement && priorAsset.posterElement.complete ? priorAsset.posterElement : null) : null;
   J.drawMediaCut(clear(A), prev, Math.max(prev.start, prev.end - 0.001), { noExit: true, source: sourceFor(prev) || prevSource,personPass:owner?.personMaskPass,personMode:owner?.personMaskMode });
   J.drawMediaCut(clear(B), cut, t, { noEnter: !cut.independentPhases, source:sourceFor(cut),personPass:owner?.personMaskPass,personMode:owner?.personMaskMode });
   const p = J.clamp((t - cut.start) / cut.transDur);
@@ -10772,6 +10958,51 @@ const E = J.E;
 
 const mk = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, w | 0); c.height = Math.max(1, h | 0); return c; };
 
+J.avoidanceCircleFromArea = (draft, W, H) => {
+  const cx = J.clamp(draft.x + draft.w / 2, 0, 1), cy = J.clamp(draft.y + draft.h / 2, 0, 1);
+  const d = ((draft.w * W) + (draft.h * H)) * 0.5;
+  const r = J.clamp(d / (2 * Math.min(W, H)), 0.03, 0.85);
+  return { cx: +cx.toFixed(4), cy: +cy.toFixed(4), r: +r.toFixed(4) };
+};
+
+// Copy only the edited branch. Other renderers keep seeing the committed plan.
+J.previewRenderPlan = (plan, edit) => {
+  if (!edit) return plan;
+  const preview = { ...plan };
+  Object.defineProperty(preview, 'previewSource', { value: plan.previewSource || plan });
+  if (edit.kind === 'lyric' && edit.draft) {
+    preview.cuts = plan.cuts.map(cut => cut.line === edit.index
+      ? { ...cut, area: { ...edit.draft, angle: edit.angle } } : cut);
+  }
+  if ((edit.kind === 'media' || edit.kind === 'foreground') && plan[edit.kind]?.cuts[edit.index]) {
+    const cuts = plan[edit.kind].cuts.slice();
+    cuts[edit.index] = { ...cuts[edit.index], placement: {
+      cx: edit.draft.x + edit.draft.w / 2, cy: edit.draft.y + edit.draft.h / 2,
+      w: edit.draft.w, h: edit.draft.h, lockAspect: edit.lockAspect, angle: edit.angle,
+    }, zoom: 100, hold: 'still', enter: 'cut', exit: 'cut', trans: undefined };
+    preview[edit.kind] = { ...plan[edit.kind], cuts };
+  }
+  if (edit.kind === 'avoidance' && plan.avoidance?.cuts) {
+    const cuts = plan.avoidance.cuts.slice();
+    const cut = edit.newCut
+      ? {kind:'circle', index:cuts.length, start:edit.start, end:edit.untilNext ? plan.duration : edit.end}
+      : cuts[edit.index] && { ...cuts[edit.index] };
+    if (cut) {
+      if (edit.draft) {
+        Object.assign(cut, J.avoidanceCircleFromArea(edit.draft,plan.W,plan.H), {
+          enabled:edit.enabled, placement:edit.placement, avoidEmphasis:edit.avoidEmphasis,
+          occlusion:edit.occlusion, behindForeground:edit.behindForeground, maskAvoidance:!!edit.maskAvoidance,
+          maskRadiusOffset:edit.maskRadiusOffset ?? 0, maskFeather:edit.maskFeather ?? 60, maskCurve:edit.maskCurve || 'smooth',
+        });
+        if (plan.lyricAvoidance) preview.lyricAvoidance = { ...plan.lyricAvoidance, enabled:true };
+      }
+      cuts[edit.newCut ? cuts.length : edit.index] = cut;
+      preview.avoidance = { ...plan.avoidance, cuts };
+    }
+  }
+  return preview;
+};
+
 // The latest-starting cut still showing at t (cuts may overlap).
 J.cutAt = (plan, t) => {
   const cs = plan.cuts; let lo = 0, hi = cs.length - 1, ans = -1;
@@ -11595,6 +11826,14 @@ J.createMP4Output = fileStream => {
   };
 };
 J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken }) => {
+  let vc = null, ac = null, output = null, venc = null, aenc = null, completed = false, expJob = null, err = null, muxer = null;
+  let cancellation = null;
+  const cancelNative = () => {
+    if (!expJob) return;
+    cancellation ||= Promise.resolve().then(() => J.platform.cancelJob(expJob.jobId)).catch(() => {});
+    return cancellation;
+  };
+  try {
   if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
   const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
@@ -11605,7 +11844,6 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   const qp=quality==='qp'?J.videoQuantizer(project):null;
   const bitrate = qp==null ? J.videoBitrate(project,quality,fps) : undefined;
   const isNative = Boolean(outputToken && J.platform && J.platform.nativeExport);
-  let vc = null, ac = null, output = null, venc = null, aenc = null, completed = false, expJob = null, err = null, muxer = null;
   if (!isNative) {
     vc = await J.pickVideoCodec(w, h, fps, bitrate,{bitrateMode:qp==null?'variable':'quantizer'});
     if(!vc&&qp!=null)throw new Error(J.mediaLabel('このブラウザは画質優先（QP指定）に対応していません。別の画質設定または連番PNGを使用してください。','This browser does not support QP encoding. Choose another quality setting or a PNG sequence.'));
@@ -11613,7 +11851,6 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     if (audio && audio.buffer && project.includeAudio !== false) ac = await J.pickAudioCodec(48000, Math.min(2, audio.buffer.numberOfChannels));
     output = J.createMP4Output(fileStream);
   }
-  try {
   if (isNative) {
     let rawAudioBuffer = null, rawAudioExt = '.wav';
     if (audio && audio.buffer && project.includeAudio !== false) {
@@ -11655,6 +11892,7 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
       audioOffset: audioFile ? range.start : 0,
       audioDuration: duration
     });
+    signal?.addEventListener('abort', cancelNative, { once: true });
   } else {
     const muxOpts = { target:output.target, video: { codec: vc.mux, width: w, height: h, frameRate: fps }, fastStart: false, firstTimestampBehavior: 'offset' };
     if (ac) muxOpts.audio = { codec: ac.mux, numberOfChannels: Math.min(2, audio.buffer.numberOfChannels), sampleRate: ac.sr };
@@ -11677,8 +11915,6 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   try {
   for (let i = 0; i < total; i++) {
     if (signal && signal.aborted) {
-      if (expJob) J.platform.cancelJob(expJob.jobId);
-      if (venc) try { venc.close(); } catch (e) {}
       throw new Error('Canceled');
     }
     if (err) throw err;
@@ -11714,22 +11950,13 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   } finally { J.glyphs.maxRes = prevRes; }
   if (isNative) {
     if (signal && signal.aborted) {
-      if (expJob) try { J.platform.cancelJob(expJob.jobId); } catch (e) {}
       throw new Error('Canceled');
     }
-    const abortNative = () => {
-      if (expJob) try { J.platform.cancelJob(expJob.jobId); } catch (e) {}
-    };
-    signal?.addEventListener('abort', abortNative, { once: true });
-    try {
-      const saved = await J.platform.finishExport(expJob.jobId);
-      if (signal?.aborted) throw new Error('Canceled');
-      completed = true;
-      onProgress && onProgress(1, 'Done');
-      return { ...saved, codec: saved.videoEncoder ? ('FFmpeg (' + saved.videoEncoder + ')') : 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h };
-    } finally {
-      signal?.removeEventListener('abort', abortNative);
-    }
+    const saved = await J.platform.finishExport(expJob.jobId);
+    if (signal?.aborted) throw new Error('Canceled');
+    completed = true;
+    onProgress && onProgress(1, 'Done');
+    return { ...saved, codec: saved.videoEncoder ? ('FFmpeg (' + saved.videoEncoder + ')') : 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h };
   }
   await venc.flush(); venc.close();
   if(err)throw err;
@@ -11761,10 +11988,13 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   onProgress && onProgress(1, 'Done');
   return { ...saved, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
   } finally {
-    if(expJob&&!completed)try{J.platform.cancelJob(expJob.jobId);}catch{}
-    if(venc&&venc.state!=='closed')try{venc.close();}catch{}
-    if(aenc&&aenc.state!=='closed')try{aenc.close();}catch{}
-    if(!completed&&output)await output.abort();
+    signal?.removeEventListener('abort', cancelNative);
+    if(!completed)await cancelNative();
+    for(const encoder of [venc,aenc])if(encoder&&encoder.state!=='closed')try{encoder.close();}catch{}
+    if(!completed){
+      if(output)await output.abort();
+      else if(fileStream)try{await fileStream.abort();}catch{}
+    }
   }
 };
 
@@ -11865,46 +12095,6 @@ J.configurePortableFileInput = input => {
 };
 const magic = 'JIZURA01', text = new TextEncoder(), decode = new TextDecoder();
 const fail = () => new Error(J.mediaLabel('プロジェクトファイルが不正または未対応の形式です', 'Invalid or unsupported project file'));
-// Explicit settings allowlist keeps song content and future asset fields out of presets.
-const settingKeys = ['themes','themeBalance','style','mood','extra','wa','horror','typo','kinetic','keyBg',
-  'seed','aspect','res','fps','videoSize','videoSizeMode','quality','exportBitrate','exportQP','includeAudio','exportEncoder','shortExport','fx','enabled',
-  'lyricEffects','colors','colorTheme','fonts','userFonts','compositeFonts','effectFavorites','favoriteSequence','customEffects'];
-const clone = value => JSON.parse(JSON.stringify(value));
-J.projectSettings = project => {
-  const result = {};
-  for (const key of settingKeys) if (project[key] !== undefined) result[key] = clone(project[key]);
-  for (const layer of ['media','foreground']) result[layer] = { effects: clone(J.mediaEffectSettings(project,layer)), opacity: project[layer]?.opacity ?? 100, blend: project[layer]?.blend ?? 'normal' };
-  result.avoidance = { avoidEmphasis: !!project.avoidance?.avoidEmphasis, ...J.normalizeAvoidanceMask(project.avoidance) };
-  return result;
-};
-J.settingsProject = project => {
-  const settings = J.projectSettings(project), result = Object.assign(J.defaultProject(),settings);
-  result.lyrics = ''; result.title = ''; result.artist = '';
-  for (const layer of ['media','foreground']) result[layer] = Object.assign(J.normalizeMedia(null),settings[layer]);
-  result.avoidance = Object.assign(J.normalizeAvoidance(null), settings.avoidance);
-  return result;
-};
-J.applyProjectSettings = (current, source) => {
-  const settings = J.projectSettings(source), result = clone(current);
-  // Density is also an automatic cut splitter. Retain existing line divisions while
-  // accepting the preset density for new lines and future explicit density edits.
-  result.overrides ||= {};
-  J.parseLyrics(current.lyrics).lines.forEach((line,index) => {
-    const ov = result.overrides[index] ||= {};
-    ov.divisionDensity ??= current.fx?.density ?? J.defaultProject().fx.density;
-  });
-  for (const key of settingKeys) if (settings[key] !== undefined) result[key] = settings[key];
-  for (const layer of ['media','foreground']) Object.assign(result[layer],settings[layer]);
-  if (settings.avoidance) Object.assign(result.avoidance ||= J.normalizeAvoidance(null), settings.avoidance);
-  // Retained cuts still need their custom component definitions.
-  result.customEffects=clone(current.customEffects||[]);J.importCustomEffects(result,settings.customEffects||[]);
-  // Existing cuts may still refer to fonts absent from the preset.
-  for (const key of ['userFonts','compositeFonts']) {
-    const imported = result[key] || [];
-    result[key] = [...(current[key] || []).filter(f => !imported.some(g => g.key === f.key)),...imported];
-  }
-  return result;
-};
 J.packProject = async (project, audioFile) => {
   const entries = [], parts = []; let offset = 0;
   const add = async (kind, id, file, name) => {
@@ -11926,16 +12116,10 @@ J.packProject = async (project, audioFile) => {
   const header = new Uint8Array(12); header.set(text.encode(magic)); new DataView(header.buffer).setUint32(8,manifest.length,true);
   return new Blob([header,manifest,...parts],{type:'application/octet-stream'});
 };
-J.unpackProject = async file => {
+J.unpackProject = async (file, extensions = [J.PROJECT_EXTENSION]) => {
+  if (typeof file.name === 'string' && !extensions.some(ext => ext && file.name.toLowerCase().endsWith(ext))) throw fail();
   const header = new Uint8Array(await file.slice(0,12).arrayBuffer());
-  if (decode.decode(header.slice(0,8)) !== magic) {
-    // Only legacy JSON may use the text path; never decode a video-sized binary.
-    if (file.size > 32 * 1024 * 1024 || !/^\s*\{/.test(decode.decode(header))) throw fail();
-    const project = JSON.parse(await file.text());
-    if (!project || typeof project !== 'object' || typeof project.lyrics !== 'string') throw fail();
-    return {project,files:[],portable:false};
-  }
-  if (header.length !== 12) throw fail();
+  if (header.length !== 12 || decode.decode(header.slice(0,8)) !== magic) throw fail();
   const length = new DataView(header.buffer).getUint32(8,true), start = 12 + length;
   if (length > 32 * 1024 * 1024 || start > file.size) throw fail();
   const manifest = JSON.parse(await file.slice(12,start).text());
@@ -42673,7 +42857,7 @@ J.exportEffectFavorites=project=>{
   return J.packProject(preset,null);
 };
 J.readEffectFavorites=async file=>{
-  const loaded=await J.unpackProject(file),raw=loaded.project.effectFavorites||[];
+  const loaded=await J.unpackProject(file,[J.PROJECT_EXTENSION,'.jizuraichifav']),raw=loaded.project.effectFavorites||[];
   if(!Array.isArray(raw))throw Error(J.mediaLabel('お気に入りの形式が不正です','Invalid favorites format'));
   const components=J.validateCustomEffects(loaded.project.customEffects||[]);
   const favorites=J.withCustomEffects(components,()=>J.normalizeEffectFavorites(raw));
@@ -42721,7 +42905,7 @@ J.settingsFromFavorites=project=>{
 };
 J.openEffectFavorites=({project,target,compose,changed,configure,apply,closed})=>{
   const L=J.mediaLabel,dialog=document.createElement('dialog');dialog.id='effectFavoritesDialog';
-  dialog.innerHTML='<header><h2></h2><button type="button" class="favorite-import"></button><button type="button" class="favorite-export"></button><button type="button" class="favorite-configure"></button><input type="file" class="favorite-file" hidden accept=".jizuraichifav,.jizuraichi,.json"><button type="button" class="favorite-close">×</button></header><p class="favorite-help"></p><div class="favorite-groups"></div>';
+  dialog.innerHTML='<header><h2></h2><button type="button" class="favorite-import"></button><button type="button" class="favorite-export"></button><button type="button" class="favorite-configure"></button><input type="file" class="favorite-file" hidden accept=".jizuraichifav,.lyricfx"><button type="button" class="favorite-close">×</button></header><p class="favorite-help"></p><div class="favorite-groups"></div>';
   J.configurePortableFileInput(dialog.querySelector('.favorite-file'));
   dialog.querySelector('h2').textContent=L('お気に入り演出','Favorite effects');
   dialog.setAttribute('aria-label',L('お気に入り演出','Favorite effects'));
@@ -42787,7 +42971,7 @@ J.openEffectFavorites=({project,target,compose,changed,configure,apply,closed})=
     dragDepth=0;dialog.classList.remove('favorite-drop-active');if(busy)return;
     const files=Array.from(event.dataTransfer.files);
     if(files.length!==1){status.textContent=L('ファイルを1つずつドロップしてください。','Drop one file at a time.');return;}
-    if(!/\.(jizuraichifav|jizuraichi|json)$/i.test(files[0].name)){status.textContent=L('お気に入りファイルまたはプロジェクトファイルを指定してください。','Choose a favorites or project file.');return;}
+    if(!/\.(jizuraichifav|lyricfx)$/i.test(files[0].name)){status.textContent=L('お気に入りファイルまたはプロジェクトファイルを指定してください。','Choose a favorites or project file.');return;}
     importFile(files[0]);
   });
   async function ensureSample(){
@@ -43363,26 +43547,6 @@ J.ShortFrameRenderer=ShortFrameRenderer;
   const blobToToken = new WeakMap();
   const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
 
-  J.getNativeAssetToken = (file) => (file && (blobToToken.get(file) || file.__assetToken)) || null;
-  J.getItemAssetToken = (itemId) => itemToAssetInfo.get(itemId)?.token || null;
-  J.clearNativeAssetCache = () => {
-    itemToAssetInfo.clear();
-  };
-
-  // Wrap J.snapshotMediaFile to preserve asset tokens across file cloning
-  const origSnapshot = J.snapshotMediaFile;
-  if (typeof origSnapshot === 'function') {
-    J.snapshotMediaFile = async (file, onProgress) => {
-      const copy = await origSnapshot(file, onProgress);
-      const token = (file && (blobToToken.get(file) || file.__assetToken));
-      if (token && copy) {
-        copy.__assetToken = token;
-        blobToToken.set(copy, token);
-      }
-      return copy;
-    };
-  }
-
   // Helper to fetch asset either via custom protocol (in browser) or fallback to desktop API (in Node unit tests)
   async function fetchAssetBlob(assetToken, mimeType) {
     try {
@@ -43427,6 +43591,18 @@ J.ShortFrameRenderer=ShortFrameRenderer;
     ffmpegAvailable: true,
     workerReason: null,
     ffmpegReason: null,
+
+    setDirtyState: dirty => desktop.setDirtyState?.(dirty),
+    getNativeAssetToken: file => (file && (blobToToken.get(file) || file.__assetToken)) || null,
+    getItemAssetToken: itemId => itemToAssetInfo.get(itemId)?.token || null,
+    clearNativeAssetCache: () => itemToAssetInfo.clear(),
+    retainMediaReference: (file, copy) => {
+      const token = file && (blobToToken.get(file) || file.__assetToken);
+      if (token && copy) {
+        copy.__assetToken = token;
+        blobToToken.set(copy, token);
+      }
+    },
 
     capabilities: async () => {
       try {
@@ -44090,99 +44266,7 @@ function removeAudio() {
 }
 
 /* ---------------- project persistence ---------------- */
-// 無表示cuts (retired): the lyric showing when a blank began now ends there (cutsの終了時間).
-function migrateLyricBlankCuts(project) {
-  const blanks = (Array.isArray(project.lyricBlankCuts) ? project.lyricBlankCuts : []).filter(b => b && Number.isFinite(+b.start)).sort((a, b) => a.start - b.start);
-  delete project.lyricBlankCuts;
-  if (!blanks.length) return;
-  const plan = J.plan(project), done = new Set();
-  for (const blank of blanks) for (const cut of plan.cuts) {
-    const key = `${cut.line}:${cut.part}`;
-    if (cut.line < 0 || !Number.isInteger(cut.part) || done.has(key) || !(cut.start < +blank.start && cut.end > +blank.start)) continue;
-    project.lyricCutOptions[key] = { ...project.lyricCutOptions[key], untilNext: false, endTime: +(+blank.start).toFixed(3) };
-    done.add(key);
-  }
-}
-function mergeProject(p) {
-  const d = J.defaultProject();
-  const o = Object.assign(d, p || {});
-  if (o.videoSize) { const [w, h] = J.outputSize(o); o.videoSize = { w, h }; }
-  o.shortExport=J.shortExportSettings(o.shortExport);
-  o.fx = Object.assign(J.defaultProject().fx, (p && p.fx) || {});
-  o.timing = Object.assign(J.defaultProject().timing, (p && p.timing) || {});
-  o.timing.cutTimes = o.timing.cutTimes || {};
-  o.customEffects=J.validateCustomEffects(o.customEffects||[]);J.activateCustomEffects(o);
-  const en = J.defaultProject().enabled;
-  for (const g of Object.keys(en)) en[g] = Object.assign(en[g], ((p && p.enabled) || {})[g] || {});
-  o.enabled = en;
-  o.overrides = (p && p.overrides) || {};
-  o.lyricCutOptions = (p && p.lyricCutOptions) || {};
-  o.lyricEffects = J.lyricEffectSettings(o);
-  o.themes = J.themeIds(o);
-  o.themeBalance = o.themeBalance === 'unified' ? 'unified' : 'lively';
-  delete o.jevPrompt;
-  migrateLyricBlankCuts(o);
-  o.effectFavorites = J.normalizeEffectFavorites(o.effectFavorites);
-  o.customEffects=J.combineCustomEffects(o.customEffects,...o.effectFavorites.map(f=>f.payload.components||[]));J.activateCustomEffects(o);
-  o.favoriteSequence = Math.max(o.effectFavorites.length,Math.floor(+o.favoriteSequence)||0);
-  o.timelineLinks = Array.isArray(p && p.timelineLinks) ? p.timelineLinks : [];
-  o.layerVisibility = Object.assign({avoidance:true,foreground:true,lyrics:true,media:true}, (p && p.layerVisibility) || {});
-  o.avoidance = J.normalizeAvoidance(p ? p.avoidance : J.defaultProject().avoidance);
-  o.media = J.normalizeMedia(p && p.media);
-  o.foreground = J.normalizeMedia(p && p.foreground);
-  for (const layer of ['media', 'foreground']) o[layer].effects = J.mediaEffectSettings(o, layer);
-  // Convert the former per-source occlusion switches once, preserving their active intervals.
-  const legacy = [];
-  for (const layer of ['media','foreground']) for (const [key, options] of Object.entries(o[layer].cutOverrides || {})) {
-    const ref=options.personCutout;
-    if (ref && (ref.behindLyrics || ref.behindForeground)) legacy.push({layer,index:+key,lyrics:!!ref.behindLyrics,foreground:!!ref.behindForeground});
-  }
-  if (legacy.length) {
-    const lp=J.plan(o), ap=J.planAvoidance(o,lp), media={media:J.planMedia(o,lp),foreground:J.planMedia(o,lp,null,'foreground')};
-    const entries=ap.cuts.map(c=>({start:c.start,end:c.end,oldIndex:c.index,ov:{...(o.avoidance.cutOverrides[c.index]||{})}}));
-    for (const old of legacy) {
-      const c=media[old.layer].cuts[old.index];
-      if (!c) continue;
-      entries.push({start:c.start,end:c.end,ov:{kind:'person',source:{layer:old.layer,index:old.index,itemId:c.itemId},placement:false,occlusion:old.lyrics?'all':'none',behindForeground:old.foreground}});
-      const ref=o[old.layer].cutOverrides[old.index].personCutout; delete ref.behindLyrics;delete ref.behindForeground;
-    }
-    entries.sort((a,b)=>a.start-b.start);
-    o.avoidance.manualCuts=true;o.avoidance.cutCount=entries.length;o.avoidance.cutOverrides={};o.avoidance.timing.lineTimes={};
-    const remap=new Map();
-    entries.forEach((e,i)=>{if(e.oldIndex!=null)remap.set(e.oldIndex,i);o.avoidance.timing.lineTimes[i]=e.start;o.avoidance.cutOverrides[i]={...e.ov,untilNext:false,endTime:e.end};});
-    for(const link of o.timelineLinks)for(const side of ['a','b'])if(/^a:\d+$/.test(link[side])){const old=+link[side].slice(2);if(remap.has(old))link[side]='a:'+remap.get(old);}
-  }
-  // Materialize the old circle-wide switch and inherited defaults once per cut.
-  if(!o.avoidance.timelineMode) {
-    const a=o.avoidance,settings=J.lyricEffectSettings(o),on=!!(settings.autoPlacement && settings.avoidCenter);
-    const oldPlan=J.plan(o),custom=o.lyricEffects?.avoidCircle || o.avoidCircle;
-    for(let i=0;i<a.cutCount;i++){
-      const ov=a.cutOverrides[i] ||= {};if(ov.kind==='person')continue;
-      ov.enabled=on && ov.enabled!==false;
-      ov.avoidEmphasis=ov.avoidEmphasis ?? a.avoidEmphasis;
-      ov.occlusion=ov.occlusion || ((ov.maskAvoidance ?? a.maskAvoidance)?'aux':'none');
-      for(const key of ['maskRadiusOffset','maskFeather','maskCurve'])if(ov[key]===undefined)ov[key]=a[key];
-      if(custom && [custom.cx,custom.cy,custom.r].some(Number.isFinite)){
-        if(Number.isFinite(custom.cx))ov.cx=J.clamp(custom.cx/oldPlan.W,0,1);
-        if(Number.isFinite(custom.cy))ov.cy=J.clamp(custom.cy/oldPlan.H,0,1);
-        if(Number.isFinite(custom.r))ov.r=J.clamp(custom.r/Math.min(oldPlan.W,oldPlan.H),.03,.85);
-        if(Number.isFinite(custom.pad))ov.pad=J.clamp(custom.pad/Math.min(oldPlan.W,oldPlan.H),0,.2);
-        if(Number.isFinite(custom.feather))ov.feather=J.clamp(custom.feather/Math.min(oldPlan.W,oldPlan.H),0,.3);
-      }
-    }
-    a.timelineMode=true;
-  }
-  delete o.mediaEffects;
-  o.colors = Object.assign({ enabled: false }, (p && p.colors) || {});
-  o.colorTheme = J.normalizeColorTheme(p && p.colorTheme);
-  o.fonts = (p && p.fonts) || {};
-  o.userFonts = (p && p.userFonts) || [];
-  for (const uf of o.userFonts) if (!J.FONTS[uf.key]) J.addUserFont(uf.key, uf.label, uf.family, uf.weight || 400);
-  o.compositeFonts = Array.isArray(p && p.compositeFonts) ? p.compositeFonts : [];
-  J.setCompositeFonts(o.compositeFonts);
-  J.migrateLyricCompositing(o);
-  return o;
-}
+const mergeProject = J.normalizeProject;
 function setBadges(d) {
   return d && d.custom ? '<span class="set-badge ex" title="'+J.mediaLabel('取り込んだ独自Effects','Imported custom effect')+'">'+J.mediaLabel('New','Added')+'</span>' : '';
 }
@@ -44271,8 +44355,8 @@ function undoMove(direction) {
   U.restoring = false; updateUndoButtons();
 }
 let saveTimer = 0, projectRevision = 0;
-function markProjectDirty() { if (S.suppressDirty) return; projectRevision++; clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
-function markProjectClean() { clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(false); if (typeof J.platform?.notifyProjectSaved === 'function') J.platform.notifyProjectSaved(); }
+function markProjectDirty() { if (S.suppressDirty) return; projectRevision++; clearTimeout(saveTimer); J.platform?.setDirtyState?.(true); saveTimer = setTimeout(flushSave, 700); }
+function markProjectClean() { clearTimeout(saveTimer); J.platform?.setDirtyState?.(false); if (typeof J.platform?.notifyProjectSaved === 'function') J.platform.notifyProjectSaved(); }
 function autosave() { markProjectDirty(); recordUndoState(); }
 function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
@@ -44423,31 +44507,8 @@ function syncMainMediaPreview() {
   if(!$('cutDetailsDialog')?.open&&!$('effectFavoritesDialog')?.open&&!($('exportDlg')?.open&&S.exportKind==='short'))J.syncMediaPreview(S.plan,S.t,S.playing);
 }
 function drawPreviewFrame(ctx, {renderer=S.renderer,fast=false}={}) {
-  const previewCuts = S.areaEdit && S.areaEdit.kind === 'lyric' && S.areaEdit.draft ? S.plan.cuts.filter(cut => cut.line === S.areaEdit.index) : [];
-  const previousAreas = previewCuts.map(cut => cut.area);
-  previewCuts.forEach(cut => { cut.area = { ...S.areaEdit.draft, angle: S.areaEdit.angle }; });
-  const edit = S.areaEdit;
-  const mediaCut = edit && (edit.kind === 'media' || edit.kind === 'foreground') && S.plan[edit.kind].cuts[edit.index];
-  const previousMedia = mediaCut && { placement: mediaCut.placement, zoom: mediaCut.zoom, hold: mediaCut.hold, enter: mediaCut.enter, exit: mediaCut.exit, trans: mediaCut.trans };
-  if (mediaCut) Object.assign(mediaCut, { placement: { cx: edit.draft.x + edit.draft.w / 2, cy: edit.draft.y + edit.draft.h / 2, w: edit.draft.w, h: edit.draft.h, lockAspect: edit.lockAspect, angle: edit.angle }, zoom: 100, hold: 'still', enter: 'cut', exit: 'cut', trans: undefined });
-  const draftAvoidance = edit?.kind === 'avoidance' && edit.newCut && S.plan.avoidance?.cuts;
-  const avoidanceCut = draftAvoidance ? {kind:'circle', index:draftAvoidance.length, start:edit.start, end:edit.untilNext ? S.plan.duration : edit.end} : edit && edit.kind === 'avoidance' && S.plan.avoidance?.cuts[edit.index];
-  if (draftAvoidance) draftAvoidance.push(avoidanceCut);
-  const previousAvoidance = avoidanceCut && { cx: avoidanceCut.cx, cy: avoidanceCut.cy, r: avoidanceCut.r, enabled: avoidanceCut.enabled, placement:avoidanceCut.placement, avoidEmphasis:avoidanceCut.avoidEmphasis, occlusion:avoidanceCut.occlusion, behindForeground:avoidanceCut.behindForeground, maskAvoidance: avoidanceCut.maskAvoidance, maskRadiusOffset: avoidanceCut.maskRadiusOffset, maskFeather: avoidanceCut.maskFeather, maskCurve: avoidanceCut.maskCurve, planEnabled: S.plan.lyricAvoidance?.enabled };
-  if (avoidanceCut && edit.draft) {
-    Object.assign(avoidanceCut, draftToAvoidanceCircle(edit.draft), { enabled:edit.enabled, placement:edit.placement, avoidEmphasis:edit.avoidEmphasis, occlusion:edit.occlusion, behindForeground:edit.behindForeground, maskAvoidance: !!edit.maskAvoidance, maskRadiusOffset: edit.maskRadiusOffset ?? 0, maskFeather: edit.maskFeather ?? 60, maskCurve: edit.maskCurve || 'smooth' });
-    if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = true;
-  }
-  try { renderer.frame(ctx, S.plan, S.t, { scale: ctx.canvas.width / S.plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance' && edit.kind !== 'person', noForeground: !!edit && edit.kind === 'media' }); }
-  finally {
-    if (draftAvoidance) draftAvoidance.pop();
-    previewCuts.forEach((cut, i) => { cut.area = previousAreas[i]; });
-    if (mediaCut) Object.assign(mediaCut, previousMedia);
-    if (avoidanceCut && previousAvoidance) {
-      Object.assign(avoidanceCut, { cx: previousAvoidance.cx, cy: previousAvoidance.cy, r: previousAvoidance.r, enabled: previousAvoidance.enabled, placement:previousAvoidance.placement, avoidEmphasis:previousAvoidance.avoidEmphasis, occlusion:previousAvoidance.occlusion, behindForeground:previousAvoidance.behindForeground, maskAvoidance: previousAvoidance.maskAvoidance, maskRadiusOffset: previousAvoidance.maskRadiusOffset, maskFeather: previousAvoidance.maskFeather, maskCurve: previousAvoidance.maskCurve });
-      if (S.plan.lyricAvoidance) S.plan.lyricAvoidance.enabled = previousAvoidance.planEnabled;
-    }
-  }
+  const edit = S.areaEdit, plan = J.previewRenderPlan(S.plan,edit);
+  renderer.frame(ctx, plan, S.t, { scale: ctx.canvas.width / plan.W, fast, noTrans: !!edit, noPost: !!edit, previewEdit: !!edit && edit.kind !== 'lyric' && edit.kind !== 'avoidance' && edit.kind !== 'person', noForeground: !!edit && edit.kind === 'media' });
 }
 function draw() {
   const c = $('view'), ctx = c.getContext('2d');
@@ -46561,10 +46622,7 @@ function avoidanceCircleToDraft(cut, W = S.plan.W, H = S.plan.H) {
   return { x: cx - w / 2, y: cy - h / 2, w, h };
 }
 function draftToAvoidanceCircle(draft, W = S.plan.W, H = S.plan.H) {
-  const cx = J.clamp(draft.x + draft.w / 2, 0, 1), cy = J.clamp(draft.y + draft.h / 2, 0, 1);
-  const d = ((draft.w * W) + (draft.h * H)) * 0.5;
-  const r = J.clamp(d / (2 * Math.min(W, H)), 0.03, 0.85);
-  return { cx: +cx.toFixed(4), cy: +cy.toFixed(4), r: +r.toFixed(4) };
+  return J.avoidanceCircleFromArea(draft,W,H);
 }
 function avoidanceEditDraftKey(edit) {
   if (!edit || !edit.draft) return '';
@@ -48242,7 +48300,7 @@ function syncFilenamePreview() {
 }
 // Resolves { filename, name }: the file name to write, and its name without extension or added date.
 function requestFilename(kind) {
-  const dlg = $('filenameDlg'), ext = kind === 'project' ? '.lyricfx' : kind === 'settings' ? '.jizuraichi' : '.json', project = kind === 'project' || kind === 'settings';
+  const dlg = $('filenameDlg'), ext = kind === 'project' || kind === 'settings' ? J.PROJECT_EXTENSION : '.json', project = kind === 'project' || kind === 'settings';
   $('filenameDlgTitle').textContent = J.mediaLabel(project ? 'プロジェクトを保存' : 'AE用に書き出し', project ? 'Save project' : 'Export for AE');
   if (kind === 'settings') $('filenameDlgTitle').textContent = J.mediaLabel('設定のみ書き出し', 'Export settings only');
   // A saved project's name is the next project save's default.
@@ -49429,7 +49487,7 @@ function bind() {
     const project = JSON.parse(JSON.stringify(S.project)), audio = S.audioFile;
     try {
       const packed = await J.packProject(project, audio);
-      const saveProjectFile = J.platform?.saveProjectFile || (typeof window.jizuraDesktop?.saveProjectFile === 'function' ? (name, buf) => window.jizuraDesktop.saveProjectFile(name, buf) : null);
+      const saveProjectFile = J.platform?.saveProjectFile;
       if (saveProjectFile) {
         const res = await saveProjectFile(request.filename, packed);
         if (!res || res.canceled) {
@@ -49636,7 +49694,7 @@ function replaceProject(project, audio, audioFile, assets, isSaved = false) {
   S.tap = null; S.timelineDrag = null; S.linkDrag = null; S.scrubbing = false;
   $('tapPanel').hidden = true; syncTapButtons();
   releaseProjectAssets(J.mediaAssets);
-  J.clearNativeAssetCache?.();
+  J.platform?.clearNativeAssetCache?.();
   for (const [id,asset] of assets) { J.mediaAssets.set(id,asset); asset.element.addEventListener('seeked',()=>{S.need=true}); }
   for (const font of S.project.userFonts || []) delete J.FONTS[font.key];
   S.project = mergeProject(project); S.audio = audio; S.audioFile = audioFile;
@@ -49678,11 +49736,11 @@ async function openProjectFile(file,report=()=>{}) {
     const files = new Map(loaded.files.map(entry=>[entry.kind+':'+entry.id,entry.file]));
     for (const item of [...(project.media?.items || []),...(project.foreground?.items || [])]) {
       if (assets.has(item.id)) continue;
-      const blob = files.get('media:'+item.id) || await J.loadMedia(item.id);
+      const blob = files.get('media:'+item.id);
       if (blob) await step(L('素材を復元しています：','Restoring asset: ')+item.name,()=>J.attachMedia(item,blob,assets));
     }
     if (project.audioAsset) {
-      audioFile = files.get('audio:'+project.audioAsset.id) || await J.loadMedia(project.audioAsset.id);
+      audioFile = files.get('audio:'+project.audioAsset.id);
       if (audioFile) audioFile = await J.snapshotMediaFile(audioFile);
       if (audioFile) audio = await step(L('音声を解析しています','Analyzing audio'),()=>J.analyzeAudio(audioFile));
     }
@@ -49692,7 +49750,7 @@ async function openProjectFile(file,report=()=>{}) {
     }
     await step(L('フォントを復元しています','Restoring fonts'),()=>J.restoreFontFiles(project.userFonts));
     for(const ref of J.personMaskReferences(project).values()){
-      const blob=files.get('person:'+ref.maskId) || await J.loadMedia(ref.maskId);
+      const blob=files.get('person:'+ref.maskId);
       if(blob)await J.attachPersonMask(ref,blob);
     }
     replaceProject(project,audio,audioFile,assets,true);

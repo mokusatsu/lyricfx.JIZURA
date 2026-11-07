@@ -105,7 +105,7 @@ const {timelineAction}=require('./ui_helpers.cjs');
   await modal.locator('button[type=submit]').click();assert.equal(await page.evaluate(()=>J.ui.plan.media.cuts[0].personCutout.display),'only');
   const bytes=await page.evaluate(async()=>Array.from(new Uint8Array(await (await J.packProject(J.ui.project)).arrayBuffer()))),fresh=await browser.newPage();
   await fresh.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await fresh.goto(url);
-  await fresh.evaluate(async bytes=>J.uiApi.openProjectFile(new File([new Uint8Array(bytes)],'person.jizuraichi')) ,bytes);
+  await fresh.evaluate(async bytes=>J.uiApi.openProjectFile(new File([new Uint8Array(bytes)],'person.lyricfx')) ,bytes);
   const restored=await fresh.evaluate(async()=>{const cut=J.ui.plan.media.cuts[0];await J.preparePersonMask(cut,0,true);return [cut.personCutout.display,!!J.personMaskFrame(cut,0),J.mediaAssets.size];});assert.deepEqual(restored,['only',true,2]);
   await fresh.reload();await fresh.waitForFunction(()=>J.mediaAssets.size===2);assert.equal(await fresh.evaluate(async()=>{const cut=J.ui.plan.media.cuts[0];await J.preparePersonMask(cut,0,true);return !!J.personMaskFrame(cut,0);}),true,'mask survives browser reload');await fresh.close();
   await timelineAction(page,'[data-layer="foreground"][data-index="0"]','details');await page.locator('[data-detail-tab="personCutout"]').click();assert.equal(await page.locator('[data-person-display]').isDisabled(),true);await page.locator('#cutDetailsDialog .cut-details-actions button').last().click();

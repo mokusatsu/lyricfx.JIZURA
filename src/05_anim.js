@@ -40,9 +40,14 @@ J.itemBox = (it) => {
 
 /* ---------------- ENTRANCES ---------------- */
 J.ENTER = {
-  cut: { name: 'カット', apply() {} },
+  cut: {
+    inDur: () => .12,
+    selection: {weight: 0.5, short: 1.8},
+    name: 'カット', apply() {} },
 
   assemble: {
+    inDur: dur => J.clamp(dur * .45, .22, .75),
+    selection: {short: 0.25, emphasis: 1.8},
     name: '分解→集合', pieces: true,
     apply(env, it, p, ctx) {
       const dur = ctx.inDur, lt = env.lt - (it.delay || 0);
@@ -63,6 +68,7 @@ J.ENTER = {
   },
 
   slice: {
+    selection: {short: 1.8, emphasis: 1.8},
     name: 'スライス',
     apply(env, it, p) {
       const W = env.W;
@@ -71,6 +77,8 @@ J.ENTER = {
   },
 
   type: {
+    inDur: (dur,n) => J.clamp(n * .055 + .1, .15, dur * .65),
+    selection: {short: 0.25, longTextAfter: 18, longText: 0.3},
     name: 'タイプ', cursor: true,
     apply(env, it, p, ctx) {
       const n = (it._m || (it._m = J.measure(it))).lay.N;
@@ -81,6 +89,7 @@ J.ENTER = {
   },
 
   pop: {
+    selection: {short: 0.25},
     name: 'ポップ',
     apply(env, it, p) {
       const seed = it.seed | 0;
@@ -94,6 +103,7 @@ J.ENTER = {
   },
 
   drop: {
+    selection: {short: 0.25},
     name: '落下',
     apply(env, it, p) {
       const size = it.size, seed = it.seed | 0;
@@ -108,6 +118,7 @@ J.ENTER = {
   },
 
   stretch: {
+    selection: {short: 1.8},
     name: '伸縮',
     apply(env, it, p) {
       const e = E.outExpo(p);
@@ -142,6 +153,7 @@ J.ENTER = {
   },
 
   spin: {
+    selection: {short: 0.25},
     name: '回転',
     apply(env, it, p) {
       const seed = it.seed | 0;
@@ -156,6 +168,7 @@ J.ENTER = {
   },
 
   flicker: {
+    selection: {short: 0.25},
     name: '点滅',
     apply(env, it, p) {
       const seed = it.seed | 0, step = env.step;
@@ -178,6 +191,7 @@ J.ENTER = {
   },
 
   zoom: {
+    selection: {short: 1.8, emphasis: 1.8},
     name: 'ズーム',
     apply(env, it, p) {
       const e = E.outExpo(p);
@@ -197,8 +211,11 @@ function bounce(x) {
 
 /* ---------------- HOLDS (whole cut; amplitude eased in) ---------------- */
 J.HOLD = {
-  still: { name: '静止', apply() {} },
+  still: {
+    selection: {weight: 1},
+    name: '静止', apply() {} },
   jitter: {
+    selection: {weight: 1.2, motion: true},
     name: 'ジッター',
     apply(env, it, amt) {
       const seed = it.seed | 0, step = env.step, a = it.size * 0.025 * amt * env.fx.motion;
@@ -207,6 +224,7 @@ J.HOLD = {
     },
   },
   drift: {
+    selection: {weight: 1},
     name: 'ドリフト',
     apply(env, it, amt, ctx) {
       const u = env.lt / Math.max(0.3, ctx.dur);
@@ -216,6 +234,7 @@ J.HOLD = {
     },
   },
   breathe: {
+    selection: {weight: 0.7},
     name: '呼吸',
     apply(env, it, amt) {
       it.size *= 1 + 0.035 * Math.sin(env.lt * J.TAU * 0.9) * amt;
@@ -223,6 +242,7 @@ J.HOLD = {
     },
   },
   wave: {
+    selection: {weight: 0.4},
     name: 'ウェーブ',
     apply(env, it, amt) {
       const size = it.size, t = env.lt;
@@ -230,6 +250,7 @@ J.HOLD = {
     },
   },
   glitchtick: {
+    selection: {weight: 0.9, glitch: true},
     name: 'グリッチ',
     apply(env, it, amt) {
       const seed = it.seed | 0, step = env.step;
@@ -242,9 +263,11 @@ J.HOLD = {
 
 /* ---------------- EXITS ---------------- */
 J.EXIT = {
-  cut: { name: 'カット', apply() {} },
+  cut: {
+    selection: {weight: (dur,lastOfLine) => dur < .6 ? 4 : lastOfLine ? 1.2 : 2.2}, outDur: () => 0, name: 'カット', apply() {} },
 
   explode: {
+    outDur: dur => J.clamp(dur * .38, .25, .7),
     name: '爆散', pieces: true, shatter: true,
     apply(env, it, p, ctx) {
       const seed = it.seed | 0, dur = ctx.outDur, lt = env.lt - (ctx.dur - ctx.outDur);
@@ -266,6 +289,7 @@ J.EXIT = {
   },
 
   fall: {
+    outDur: dur => J.clamp(dur * .38, .25, .7),
     name: '崩落', pieces: true, shatter: true,
     apply(env, it, p, ctx) {
       const seed = it.seed | 0, lt = env.lt - (ctx.dur - ctx.outDur), g = env.H * 5.5;
@@ -284,6 +308,7 @@ J.EXIT = {
   },
 
   drift: {
+    outDur: dur => J.clamp(dur * .38, .25, .7),
     name: '霧散', pieces: true, shatter: true,
     apply(env, it, p, ctx) {
       const seed = it.seed | 0, dur = ctx.outDur, lt = env.lt - (ctx.dur - ctx.outDur), dist0 = it.size * 1.6;
