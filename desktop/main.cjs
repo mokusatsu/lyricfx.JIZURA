@@ -197,16 +197,43 @@ function createWindow() {
 function setupAssetProtocol() {
   protocol.handle('jizura-asset', async (request) => {
     try {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          status: 204,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+            'Access-Control-Allow-Headers': '*'
+          }
+        });
+      }
       const url = new URL(request.url);
       const token = url.hostname || url.pathname.replace(/^\/+/, '');
       const asset = nativeJobs ? nativeJobs.getAsset(token) : null;
       if (!asset) {
-        return new Response('Asset not found', { status: 404 });
+        return new Response('Asset not found', {
+          status: 404,
+          headers: { 'Access-Control-Allow-Origin': '*' }
+        });
       }
       const fileUrl = pathToFileURL(asset.filePath).toString();
-      return net.fetch(fileUrl);
+      const response = await net.fetch(fileUrl);
+      const headers = new Headers(response.headers);
+      headers.set('Access-Control-Allow-Origin', '*');
+      headers.set('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+      if (asset.type) {
+        headers.set('Content-Type', asset.type);
+      }
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers
+      });
     } catch (e) {
-      return new Response(e.message, { status: 500 });
+      return new Response(e.message, {
+        status: 500,
+        headers: { 'Access-Control-Allow-Origin': '*' }
+      });
     }
   });
 }
@@ -273,11 +300,17 @@ function setupIpcHandlers() {
       let hasBackup = false;
       if (fs.existsSync(save.targetPath)) {
         try {
-          fs.copyFileSync(save.targetPath, backupPath);
+          fs.renameSync(save.targetPath, backupPath);
           hasBackup = true;
         } catch (bakErr) {
-          try { fs.unlinkSync(save.tmpPath); } catch (e) {}
-          return { error: `バックアップの作成に失敗しました: ${bakErr.message}` };
+          // If rename failed (e.g. file lock or permissions), fallback to async copy
+          try {
+            await fs.promises.copyFile(save.targetPath, backupPath);
+            hasBackup = true;
+          } catch (copyBakErr) {
+            try { await fs.promises.unlink(save.tmpPath); } catch (e) {}
+            return { error: `バックアップの作成に失敗しました: ${copyBakErr.message}` };
+          }
         }
       }
 
@@ -285,28 +318,46 @@ function setupIpcHandlers() {
         try {
           fs.renameSync(save.tmpPath, save.targetPath);
         } catch (renameErr) {
-          fs.copyFileSync(save.tmpPath, save.targetPath);
-          try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+          await fs.promises.copyFile(save.tmpPath, save.targetPath);
+          try { await fs.promises.unlink(save.tmpPath); } catch (e) {}
         }
 
-        const finalStat = fs.statSync(save.targetPath);
+        const finalStat = await fs.promises.stat(save.targetPath);
         if (expectedSize !== undefined && expectedSize !== null && finalStat.size !== expectedSize) {
           throw new Error('書き込み後のファイルサイズが一致しません');
         }
 
         // Success: remove backup
         if (hasBackup && fs.existsSync(backupPath)) {
-          try { fs.unlinkSync(backupPath); } catch (e) {}
+          try { await fs.promises.unlink(backupPath); } catch (e) {}
         }
       } catch (replaceErr) {
         // Rollback on failure: restore original file from backup!
+        let restored = false;
         if (hasBackup && fs.existsSync(backupPath)) {
           try {
-            fs.copyFileSync(backupPath, save.targetPath);
-            fs.unlinkSync(backupPath);
-          } catch (rbErr) {}
+            if (fs.existsSync(save.targetPath)) {
+              try { await fs.promises.unlink(save.targetPath); } catch (e) {}
+            }
+            fs.renameSync(backupPath, save.targetPath);
+            restored = true;
+          } catch (rstRenameErr) {
+            try {
+              await fs.promises.copyFile(backupPath, save.targetPath);
+              restored = true;
+              try { await fs.promises.unlink(backupPath); } catch (e) {}
+            } catch (rstCopyErr) {
+              restored = false;
+            }
+          }
         }
-        try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+        try { if (fs.existsSync(save.tmpPath)) await fs.promises.unlink(save.tmpPath); } catch (e) {}
+
+        if (hasBackup && !restored) {
+          return {
+            error: `保存先ファイルの更新に失敗し、既存ファイルの自動復元にも失敗しました: ${replaceErr.message}。\n既存データのバックアップは「${backupPath}」に残されています。手動で復元してください。`
+          };
+        }
         return { error: `保存先ファイルの更新に失敗しました: ${replaceErr.message}` };
       }
 
@@ -499,6 +550,26 @@ function setupIpcHandlers() {
     return nativeJobs.ensureNativeAsset(itemId, buffer);
   });
 
+  ipcMain.handle('desktop:getAssetInfo', async (event, { token }) => {
+    const asset = nativeJobs ? nativeJobs.getAsset(token) : null;
+    if (!asset) return null;
+    const stat = await fs.promises.stat(asset.filePath);
+    return { token: asset.token, name: asset.name, type: asset.type, size: stat.size };
+  });
+
+  ipcMain.handle('desktop:fetchAssetChunk', async (event, { token, offset, length }) => {
+    const asset = nativeJobs ? nativeJobs.getAsset(token) : null;
+    if (!asset) throw new Error(`Asset not found: ${token}`);
+    const fd = await fs.promises.open(asset.filePath, 'r');
+    try {
+      const buffer = Buffer.alloc(length);
+      const { bytesRead } = await fd.read(buffer, 0, length, offset);
+      return buffer.subarray(0, bytesRead).buffer;
+    } finally {
+      await fd.close();
+    }
+  });
+
   ipcMain.handle('desktop:fetchAsset', async (event, { token }) => {
     const buffer = nativeJobs.readAssetBuffer(token);
     return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
@@ -571,14 +642,22 @@ app.on('will-quit', () => {
     try {
       fs.rmSync(currentSessionDir, { recursive: true, force: true });
     } catch (e) {
-      // Windows lock release fallback: launch detached background cleanup
+      // Windows lock release fallback: launch detached background cleanup with retry
       try {
         const { spawn } = require('child_process');
-        spawn('cmd.exe', ['/c', 'timeout /t 1 /nobreak >nul & rmdir /s /q "' + currentSessionDir + '"'], {
-          detached: true,
-          stdio: 'ignore',
-          windowsHide: true
-        }).unref();
+        if (process.platform === 'win32') {
+          const psScript = `for ($i = 0; $i -lt 15; $i++) { Start-Sleep -Milliseconds 500; if (-not (Test-Path -LiteralPath '${currentSessionDir}')) { break }; try { Remove-Item -LiteralPath '${currentSessionDir}' -Recurse -Force -ErrorAction Stop; break } catch {} }`;
+          spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', psScript], {
+            detached: true,
+            stdio: 'ignore',
+            windowsHide: true
+          }).unref();
+        } else {
+          spawn('sh', ['-c', `sleep 1 && rm -rf "${currentSessionDir}"`], {
+            detached: true,
+            stdio: 'ignore'
+          }).unref();
+        }
       } catch (spawnErr) {}
     }
   }

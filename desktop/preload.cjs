@@ -131,6 +131,16 @@ const jizuraDesktop = {
     });
   },
 
+  getAssetInfo: async (token) => {
+    if (!token || typeof token !== 'string') return null;
+    return await ipcRenderer.invoke('desktop:getAssetInfo', { token });
+  },
+
+  fetchAssetChunk: async (token, offset, length) => {
+    if (!token || typeof token !== 'string') throw new TypeError('Invalid token');
+    return await ipcRenderer.invoke('desktop:fetchAssetChunk', { token, offset, length });
+  },
+
   fetchAssetData: async (token) => {
     if (!token || typeof token !== 'string') {
       throw new TypeError('Invalid token');

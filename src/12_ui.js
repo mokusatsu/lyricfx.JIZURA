@@ -237,7 +237,7 @@ function restoreMediaElements(proj) {
 }
 
 function initUndo() { U.list = [JSON.stringify(S.project)]; U.i = 0; updateUndoButtons(); }
-function markUndoGroup(group) { U.pendingGroup = group; }
+function markUndoGroup(group) { U.pendingGroup = group; if (group) markProjectDirty(); }
 function updateUndoButtons() {
   if ($('btnUndo')) $('btnUndo').disabled = U.i <= 0;
   if ($('btnRedo')) $('btnRedo').disabled = U.i >= U.list.length - 1;
@@ -280,7 +280,8 @@ function undoMove(direction) {
   U.restoring = false; updateUndoButtons();
 }
 let saveTimer = 0, projectRevision = 0;
-function autosave() { projectRevision++; recordUndoState(); clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
+function markProjectDirty() { projectRevision++; clearTimeout(saveTimer); if (window.jizuraDesktop?.setDirtyState) window.jizuraDesktop.setDirtyState(true); saveTimer = setTimeout(flushSave, 700); }
+function autosave() { markProjectDirty(); recordUndoState(); }
 function flushSave() { recordUndoState(); clearTimeout(saveTimer); try { localStorage.setItem(LS_KEY, JSON.stringify(S.project)); } catch (e) {} }
 window.addEventListener('pagehide', () => { if (S.project && !U.restoring) { flushSave(); cleanupDeletedMedia(); } });
 
@@ -5054,6 +5055,7 @@ function bind() {
     }
   });
   $('lyrics').addEventListener('input', e => {
+    markProjectDirty();
     const changedCount = reconcileLyricLines(S.project.lyrics, e.target.value);
     S.project.lyrics = e.target.value;
     markUndoGroup('lyrics');
@@ -5066,9 +5068,9 @@ function bind() {
     const l = J.resolveLang(S.project);
     toast((S.project.lang === 'auto' ? '歌詞の言語：自動判定 → ' : '歌詞の言語：') + J.LANG_LABEL[l]);
   });
-  $('songTitle').addEventListener('input', e => { S.project.title = e.target.value; markUndoGroup('title'); replanSoon(300); });
-  $('songArtist').addEventListener('input', e => { S.project.artist = e.target.value; markUndoGroup('artist'); replanSoon(300); });
-  $('projectName').addEventListener('input', e => { S.project.projectName = e.target.value; markUndoGroup('projectName'); replanSoon(300); });
+  $('songTitle').addEventListener('input', e => { markProjectDirty(); S.project.title = e.target.value; markUndoGroup('title'); replanSoon(300); });
+  $('songArtist').addEventListener('input', e => { markProjectDirty(); S.project.artist = e.target.value; markUndoGroup('artist'); replanSoon(300); });
+  $('projectName').addEventListener('input', e => { markProjectDirty(); S.project.projectName = e.target.value; markUndoGroup('projectName'); replanSoon(300); });
   $('saveFilename').addEventListener('input', syncFilenamePreview);
   $('saveFilenameDate').addEventListener('change', syncFilenamePreview);
   $('btnSyntax').addEventListener('click', e => { const s = $('syntax'); s.hidden = !s.hidden; e.target.setAttribute('aria-expanded', String(!s.hidden)); });
@@ -5405,6 +5407,7 @@ function bind() {
   });
   $('btnSave').addEventListener('click', async () => {
     if (S.projectBusy) return;
+    if (replanTimer) { clearTimeout(replanTimer); replan(); }
     const request = await requestFilename('project');
     if (!request) {
       if (typeof J.platform?.cancelSaveAndClose === 'function') {

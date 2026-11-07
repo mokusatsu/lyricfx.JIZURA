@@ -32,8 +32,30 @@
   async function fetchAssetBlob(assetToken, mimeType) {
     try {
       const resp = await fetch(`jizura-asset://${assetToken}`);
+      if (!resp.ok) {
+        throw new Error(`Asset fetch HTTP ${resp.status}`);
+      }
       return await resp.blob();
     } catch (e) {
+      // Chunked streaming fallback to avoid single massive IPC buffer allocations
+      if (typeof desktop.fetchAssetChunk === 'function' && typeof desktop.getAssetInfo === 'function') {
+        try {
+          const info = await desktop.getAssetInfo(assetToken);
+          if (info && info.size !== undefined) {
+            const totalSize = info.size;
+            const chunkSize = 8 * 1024 * 1024; // 8MB chunks
+            const chunks = [];
+            for (let offset = 0; offset < totalSize; offset += chunkSize) {
+              const length = Math.min(chunkSize, totalSize - offset);
+              const chunk = await desktop.fetchAssetChunk(assetToken, offset, length);
+              chunks.push(chunk);
+            }
+            return new Blob(chunks, { type: mimeType || info.type || 'application/octet-stream' });
+          }
+        } catch (chunkErr) {
+          console.warn('Chunked asset fetch failed, falling back to full fetch:', chunkErr);
+        }
+      }
       if (typeof desktop.fetchAssetData === 'function') {
         const buffer = await desktop.fetchAssetData(assetToken);
         return new Blob([buffer], { type: mimeType });
