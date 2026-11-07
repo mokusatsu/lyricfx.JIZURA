@@ -1,5 +1,7 @@
 import os, sys, json, subprocess, shutil, threading
 
+NO_WINDOW_FLAG = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" and hasattr(subprocess, "CREATE_NO_WINDOW") else 0
+
 def resolve_system_ffmpeg():
     """
     Finds system FFmpeg or raises RuntimeError if missing.
@@ -17,7 +19,7 @@ def probe_encoders():
     """
     try:
         ffmpeg = resolve_system_ffmpeg()
-        res = subprocess.run([ffmpeg, "-encoders"], capture_output=True, text=True, timeout=5)
+        res = subprocess.run([ffmpeg, "-encoders"], capture_output=True, text=True, timeout=5, creationflags=NO_WINDOW_FLAG)
         encoders = []
         for line in res.stdout.splitlines():
             if "h264" in line.lower() or "264" in line.lower():
@@ -93,7 +95,7 @@ def probe_audio_format_and_copy(ffmpeg_bin, audio_path, offset=0):
         null_sink
     ]
     try:
-        res = subprocess.run(test_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, timeout=5)
+        res = subprocess.run(test_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, timeout=5, creationflags=NO_WINDOW_FLAG)
         if res.returncode == 0:
             return True, detected_codec
     except Exception:
@@ -174,7 +176,7 @@ def run_export_worker():
 
     # Launch FFmpeg video encoding process with background stderr draining
     try:
-        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, creationflags=NO_WINDOW_FLAG)
     except Exception as e:
         sys.stderr.write(f"Failed to spawn ffmpeg: {e}\n")
         sys.exit(2)
@@ -248,7 +250,7 @@ def run_export_worker():
                 "-movflags", "+faststart",
                 "-f", "mp4", output_file
             ]
-            res = subprocess.run(mux_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            res = subprocess.run(mux_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, creationflags=NO_WINDOW_FLAG)
             if res.returncode == 0:
                 mux_success = True
                 final_audio_codec = detected_codec
@@ -270,7 +272,7 @@ def run_export_worker():
                 "-movflags", "+faststart",
                 "-f", "mp4", output_file
             ]
-            res_fb = subprocess.run(fallback_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            res_fb = subprocess.run(fallback_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, creationflags=NO_WINDOW_FLAG)
             if res_fb.returncode == 0:
                 mux_success = True
                 final_audio_codec = "AAC"

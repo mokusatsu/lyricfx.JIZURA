@@ -1,4 +1,6 @@
 import os, sys, time, json, math, subprocess, hashlib, urllib.request, queue, threading, atexit
+
+NO_WINDOW_FLAG = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" and hasattr(subprocess, "CREATE_NO_WINDOW") else 0
 from concurrent.futures import ThreadPoolExecutor
 
 MODEL_URL = "https://github.com/PeterL1n/RobustVideoMatting/releases/download/v1.0.0/rvm_mobilenetv3_fp32.onnx"
@@ -320,7 +322,7 @@ def decode_source_frame(source_path, target_time, width, height, fps=24, fallbac
         "-s", f"{width}x{height}",
         "pipe:1"
     ]
-    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15)
+    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15, creationflags=NO_WINDOW_FLAG)
     if proc.returncode == 0 and len(proc.stdout) == width * height * 3:
         return proc.stdout
 
@@ -339,7 +341,7 @@ def decode_source_frame(source_path, target_time, width, height, fps=24, fallbac
         "-s", f"{width}x{height}",
         "pipe:1"
     ]
-    proc_tail = subprocess.run(tail_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15)
+    proc_tail = subprocess.run(tail_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15, creationflags=NO_WINDOW_FLAG)
     if proc_tail.returncode == 0 and len(proc_tail.stdout) == width * height * 3:
         return proc_tail.stdout
 
@@ -354,7 +356,7 @@ def decode_source_frame(source_path, target_time, width, height, fps=24, fallbac
         "-s", f"{width}x{height}",
         "pipe:1"
     ]
-    proc_first = subprocess.run(first_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15)
+    proc_first = subprocess.run(first_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15, creationflags=NO_WINDOW_FLAG)
     if proc_first.returncode == 0 and len(proc_first.stdout) == width * height * 3:
         return proc_first.stdout
 
@@ -391,7 +393,8 @@ class FFmpegStreamDecoder:
         self.proc = subprocess.Popen(
             cmd,
             stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL
+            stderr=subprocess.DEVNULL,
+            creationflags=NO_WINDOW_FLAG
         )
 
     def read_frame(self):

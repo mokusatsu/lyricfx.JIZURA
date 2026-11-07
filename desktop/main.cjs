@@ -647,7 +647,7 @@ app.on('will-quit', () => {
         const { spawn } = require('child_process');
         if (process.platform === 'win32') {
           const psScript = `for ($i = 0; $i -lt 15; $i++) { Start-Sleep -Milliseconds 500; if (-not (Test-Path -LiteralPath '${currentSessionDir}')) { break }; try { Remove-Item -LiteralPath '${currentSessionDir}' -Recurse -Force -ErrorAction Stop; break } catch {} }`;
-          spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', psScript], {
+          spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-ExecutionPolicy', 'Bypass', '-Command', psScript], {
             detached: true,
             stdio: 'ignore',
             windowsHide: true

@@ -80,8 +80,8 @@ class NativeJobs {
     const fullArgs = [...worker.argsPrefix, ...args];
     return spawn(worker.command, fullArgs, {
       stdio: ['pipe', 'pipe', 'pipe'],
-      windowsHide: true,
-      ...options
+      ...options,
+      windowsHide: true
     });
   }
 
@@ -92,8 +92,8 @@ class NativeJobs {
     }
     const fullArgs = [...worker.argsPrefix, ...args];
     return execFile(worker.command, fullArgs, {
-      windowsHide: true,
-      ...options
+      ...options,
+      windowsHide: true
     }, callback);
   }
 
@@ -674,7 +674,7 @@ class NativeJobs {
         if (process.platform === 'win32') {
           try {
             const { execFileSync } = require('node:child_process');
-            execFileSync('taskkill', ['/pid', String(job.child.pid), '/T', '/F'], { stdio: 'ignore' });
+            execFileSync('taskkill', ['/pid', String(job.child.pid), '/T', '/F'], { stdio: 'ignore', windowsHide: true });
           } catch (e) {
             try { job.child.kill('SIGKILL'); } catch (err) {}
           }
