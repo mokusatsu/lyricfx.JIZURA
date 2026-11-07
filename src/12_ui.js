@@ -4131,6 +4131,9 @@ function syncExportSettingsVisibility() {
   $('outQP').closest('label').hidden=$('outQPNote').hidden=!mp4||S.project.quality!=='qp';
   $('outKey').closest('label').hidden=transparent||short;
   $('exportSettings').querySelector('.key-note').hidden=transparent||short;
+  const isNative = Boolean(J.platform && J.platform.nativeExport);
+  if ($('outEncoderField')) $('outEncoderField').hidden = !isNative || !mp4;
+  if ($('eEncoderField')) $('eEncoderField').hidden = !isNative;
   $('codecNote').hidden=!mp4;
 }
 function syncQuality() {
@@ -4164,6 +4167,9 @@ function syncOut() {
   syncQuality();
   const k = J.keyMode(S.project) || 'off';
   $('outKey').value = k; $('eKey').value = k;
+  const enc = S.project.exportEncoder || 'auto';
+  if ($('outEncoder')) $('outEncoder').value = enc;
+  if ($('eEncoder')) $('eEncoder').value = enc;
   const kb = $('keyBadge');
   kb.hidden = k === 'off';
   if (k !== 'off') kb.innerHTML = `<i style="background:${J.KEY_BG[k]}"></i>${k === 'green' ? 'グリーンバック' : 'ブラックバック'}`;
@@ -5373,6 +5379,15 @@ function bind() {
     const k = J.keyMode(S.project);
     toast(k ? `背景：${k === 'green' ? 'グリーンバック' : 'ブラックバック'}（白い文字と演出だけ）` : '背景：通常（スタイルの配色）');
   }));
+  ['outEncoder', 'eEncoder'].forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('change', e => {
+      S.project.exportEncoder = e.target.value;
+      syncOut();
+      autosave();
+    });
+  });
   $('outQP').addEventListener('input',e=>{
     S.project.exportQP=e.target.value===''?NaN:Number(e.target.value);codecNote();autosave();
   });

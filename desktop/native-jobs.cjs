@@ -37,35 +37,68 @@ class NativeJobs {
   _resolveWorker() {
     const exeName = process.platform === 'win32' ? 'worker.exe' : 'worker';
     let appPath = null;
+    let isPackaged = false;
     try {
       const electron = require('electron');
       if (electron && electron.app) {
         appPath = electron.app.getAppPath();
+        isPackaged = electron.app.isPackaged;
       }
     } catch (e) {}
 
-    const candidates = [];
+    // Explicit override via environment variable has highest priority
     if (process.env.JIZURA_WORKER) {
-      candidates.push(process.env.JIZURA_WORKER);
+      if (fs.existsSync(process.env.JIZURA_WORKER)) {
+        if (process.env.JIZURA_WORKER.endsWith('.py')) {
+          const python = this._resolvePython();
+          return { isBinary: false, command: python, argsPrefix: [process.env.JIZURA_WORKER] };
+        }
+        return { isBinary: true, command: process.env.JIZURA_WORKER, argsPrefix: [] };
+      }
     }
-    if (appPath) {
-      candidates.push(path.join(path.dirname(appPath), 'native', 'worker', exeName));
-      candidates.push(path.join(appPath, 'resources', 'native', 'worker', exeName));
-      candidates.push(path.join(appPath, 'desktop', 'resources', 'native', 'worker', exeName));
-    }
-    candidates.push(path.join(__dirname, 'resources', 'native', 'worker', exeName));
-    candidates.push(path.join(__dirname, '..', 'desktop', 'resources', 'native', 'worker', exeName));
-    candidates.push(path.join(__dirname, '..', 'native', 'dist', 'worker', exeName));
 
-    for (const p of candidates.filter(Boolean)) {
+    // In packaged app, always use bundled binary
+    if (isPackaged) {
+      const packagedCandidates = [
+        appPath && path.join(path.dirname(appPath), 'native', 'worker', exeName),
+        appPath && path.join(appPath, 'resources', 'native', 'worker', exeName),
+        path.join(__dirname, 'resources', 'native', 'worker', exeName)
+      ].filter(Boolean);
+      for (const p of packagedCandidates) {
+        if (fs.existsSync(p)) {
+          return { isBinary: true, command: p, argsPrefix: [] };
+        }
+      }
+    }
+
+    // In development / testing:
+    // If JIZURA_PREFER_BINARY=1 is explicitly set, check binary candidates first.
+    // Otherwise, prefer source script (native/worker.py) so changes take effect immediately without rebuilding binary.
+    const workerScript = path.join(__dirname, '..', 'native', 'worker.py');
+    const preferBinary = process.env.JIZURA_PREFER_BINARY === '1';
+
+    if (!preferBinary && fs.existsSync(workerScript)) {
+      const python = this._resolvePython();
+      return { isBinary: false, command: python, argsPrefix: [workerScript] };
+    }
+
+    const devBinaryCandidates = [
+      appPath && path.join(path.dirname(appPath), 'native', 'worker', exeName),
+      appPath && path.join(appPath, 'resources', 'native', 'worker', exeName),
+      appPath && path.join(appPath, 'desktop', 'resources', 'native', 'worker', exeName),
+      path.join(__dirname, 'resources', 'native', 'worker', exeName),
+      path.join(__dirname, '..', 'desktop', 'resources', 'native', 'worker', exeName),
+      path.join(__dirname, '..', 'native', 'dist', 'worker', exeName)
+    ].filter(Boolean);
+
+    for (const p of devBinaryCandidates) {
       if (fs.existsSync(p)) {
         return { isBinary: true, command: p, argsPrefix: [] };
       }
     }
 
-    const python = this._resolvePython();
-    const workerScript = path.join(__dirname, '..', 'native', 'worker.py');
     if (fs.existsSync(workerScript)) {
+      const python = this._resolvePython();
       return { isBinary: false, command: python, argsPrefix: [workerScript] };
     }
 
@@ -439,6 +472,7 @@ class NativeJobs {
       qualityMode: settings.qualityMode,
       bitrate: settings.bitrate,
       qp: settings.qp,
+      encoder: settings.encoder || 'auto',
       audioFile,
       audioOffset: settings.audioOffset || 0,
       audioDuration: settings.audioDuration
@@ -515,10 +549,12 @@ class NativeJobs {
           if (msg.type === 'ready') {
             job.status = 'running';
             job.audioCodec = msg.audioCodec;
+            if (msg.videoEncoder) job.videoEncoder = msg.videoEncoder;
             job.readyResolve && job.readyResolve(msg);
           } else if (msg.type === 'finished') {
             if (msg.audioCodec) job.audioCodec = msg.audioCodec;
             if (msg.audioMuxMode) job.audioMuxMode = msg.audioMuxMode;
+            if (msg.videoEncoder) job.videoEncoder = msg.videoEncoder;
           }
         } catch (e) {}
       }
@@ -649,6 +685,7 @@ class NativeJobs {
         saved: true,
         size: stat.size,
         path: job.finalPath,
+        videoEncoder: job.videoEncoder || 'x264',
         audioCodec: job.audioCodec || 'AAC',
         audioMuxMode: job.audioMuxMode || (job.hasAudio ? 'copy' : 'none')
       };

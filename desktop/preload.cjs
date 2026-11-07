@@ -206,6 +206,7 @@ const jizuraDesktop = {
       qualityMode: String(settings.qualityMode || 'high'),
       bitrate: settings.bitrate != null ? Number(settings.bitrate) : null,
       qp: settings.qp != null ? Number(settings.qp) : null,
+      encoder: settings.encoder ? String(settings.encoder) : 'auto',
       audioBuffer: settings.audioBuffer instanceof ArrayBuffer ? settings.audioBuffer : null,
       audioExt: settings.audioExt ? String(settings.audioExt) : null,
       audioOffset: Number(settings.audioOffset) || 0,

@@ -11645,6 +11645,7 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
       qualityMode: quality,
       bitrate,
       qp,
+      encoder: project.exportEncoder || 'auto',
       audioBuffer: rawAudioBuffer,
       audioExt: rawAudioExt,
       audioOffset: audioFile ? range.start : 0,
@@ -11721,7 +11722,7 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
       if (signal?.aborted) throw new Error('Canceled');
       completed = true;
       onProgress && onProgress(1, 'Done');
-      return { ...saved, codec: 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h };
+      return { ...saved, codec: saved.videoEncoder ? ('FFmpeg (' + saved.videoEncoder + ')') : 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h };
     } finally {
       signal?.removeEventListener('abort', abortNative);
     }
@@ -11862,7 +11863,7 @@ const magic = 'JIZURA01', text = new TextEncoder(), decode = new TextDecoder();
 const fail = () => new Error(J.mediaLabel('プロジェクトファイルが不正または未対応の形式です', 'Invalid or unsupported project file'));
 // Explicit settings allowlist keeps song content and future asset fields out of presets.
 const settingKeys = ['themes','themeBalance','style','mood','extra','wa','horror','typo','kinetic','keyBg',
-  'seed','aspect','res','fps','videoSize','videoSizeMode','quality','exportBitrate','exportQP','includeAudio','shortExport','fx','enabled',
+  'seed','aspect','res','fps','videoSize','videoSizeMode','quality','exportBitrate','exportQP','includeAudio','exportEncoder','shortExport','fx','enabled',
   'lyricEffects','colors','colorTheme','fonts','userFonts','compositeFonts','effectFavorites','favoriteSequence','customEffects'];
 const clone = value => JSON.parse(JSON.stringify(value));
 J.projectSettings = project => {
@@ -48109,6 +48110,9 @@ function syncExportSettingsVisibility() {
   $('outQP').closest('label').hidden=$('outQPNote').hidden=!mp4||S.project.quality!=='qp';
   $('outKey').closest('label').hidden=transparent||short;
   $('exportSettings').querySelector('.key-note').hidden=transparent||short;
+  const isNative = Boolean(J.platform && J.platform.nativeExport);
+  if ($('outEncoderField')) $('outEncoderField').hidden = !isNative || !mp4;
+  if ($('eEncoderField')) $('eEncoderField').hidden = !isNative;
   $('codecNote').hidden=!mp4;
 }
 function syncQuality() {
@@ -48142,6 +48146,9 @@ function syncOut() {
   syncQuality();
   const k = J.keyMode(S.project) || 'off';
   $('outKey').value = k; $('eKey').value = k;
+  const enc = S.project.exportEncoder || 'auto';
+  if ($('outEncoder')) $('outEncoder').value = enc;
+  if ($('eEncoder')) $('eEncoder').value = enc;
   const kb = $('keyBadge');
   kb.hidden = k === 'off';
   if (k !== 'off') kb.innerHTML = `<i style="background:${J.KEY_BG[k]}"></i>${k === 'green' ? 'Green screen' : 'Black background'}`;
@@ -49351,6 +49358,15 @@ function bind() {
     const k = J.keyMode(S.project);
     toast(k ? `Background：${k === 'green' ? 'Green screen' : 'Black background'}（white text and effects only）` : 'Background：Style colors');
   }));
+  ['outEncoder', 'eEncoder'].forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('change', e => {
+      S.project.exportEncoder = e.target.value;
+      syncOut();
+      autosave();
+    });
+  });
   $('outQP').addEventListener('input',e=>{
     S.project.exportQP=e.target.value===''?NaN:Number(e.target.value);codecNote();autosave();
   });

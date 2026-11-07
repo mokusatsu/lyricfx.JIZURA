@@ -154,6 +154,7 @@ BODY = {
     '追加': 'New', '和': 'JP', '演出': 'Effects', '手法': 'Techniques',
     'コマ打ち': 'Frame stepping', 'フラッシュ': 'Flash', 'シード': 'Seed', '新しいシード': 'New seed',
     '標準': 'Standard', '最高': 'Maximum', '高': 'High', '中止': 'Cancel',
+    'エンコーダー': 'Encoder', '自動': 'Auto',
 }
 
 UI = {

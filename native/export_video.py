@@ -10,6 +10,98 @@ def resolve_system_ffmpeg():
         return found
     raise RuntimeError("FFmpeg not found on system PATH. Please install FFmpeg or set JIZURA_FFMPEG environment variable.")
 
+PROBED_ENCODERS = {}
+
+ENCODER_DISPLAY_NAMES = {
+    "h264_nvenc": "NVENC",
+    "h264_amf": "AMF",
+    "h264_qsv": "QSV",
+    "libx264": "x264"
+}
+
+def probe_encoder(ffmpeg_bin, enc_name):
+    if enc_name in PROBED_ENCODERS:
+        return PROBED_ENCODERS[enc_name]
+    null_sink = "NUL" if sys.platform == "win32" else "/dev/null"
+    cmd = [
+        ffmpeg_bin, "-y", "-hide_banner", "-nostdin",
+        "-f", "lavfi", "-i", "nullsrc=s=64x64:r=10",
+        "-t", "0.1",
+        "-c:v", enc_name,
+        "-f", "null", null_sink
+    ]
+    try:
+        res = subprocess.run(
+            cmd,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            timeout=3,
+            creationflags=NO_WINDOW_FLAG
+        )
+        ok = (res.returncode == 0)
+    except Exception:
+        ok = False
+    PROBED_ENCODERS[enc_name] = ok
+    return ok
+
+def resolve_encoder(ffmpeg_bin, requested_mode="auto"):
+    mode = (requested_mode or "auto").lower()
+    if mode == "auto":
+        candidates = ["h264_nvenc", "h264_amf", "h264_qsv", "libx264"]
+    elif mode == "gpu":
+        candidates = ["h264_nvenc", "h264_amf", "libx264"]
+    elif mode == "qsv":
+        candidates = ["h264_qsv", "libx264"]
+    elif mode == "cpu":
+        candidates = ["libx264"]
+    else:
+        candidates = ["h264_nvenc", "h264_amf", "h264_qsv", "libx264"]
+
+    for enc in candidates:
+        if probe_encoder(ffmpeg_bin, enc):
+            return enc
+    return "libx264"
+
+def build_video_encoder_args(selected_enc, bitrate=None, qp=None):
+    args = ["-c:v", selected_enc]
+    if selected_enc == "libx264":
+        args.extend(["-preset", "veryfast", "-threads", "0", "-pix_fmt", "yuv420p"])
+        if qp is not None:
+            args.extend(["-qp", str(int(qp))])
+        elif bitrate:
+            args.extend(["-b:v", str(int(bitrate))])
+        else:
+            args.extend(["-crf", "18"])
+    elif selected_enc == "h264_qsv":
+        args.extend(["-preset", "veryfast", "-pix_fmt", "nv12"])
+        if qp is not None:
+            args.extend(["-global_quality", str(int(qp))])
+        elif bitrate:
+            args.extend(["-b:v", str(int(bitrate))])
+        else:
+            args.extend(["-global_quality", "18"])
+    elif selected_enc == "h264_nvenc":
+        args.extend(["-preset", "p4", "-pix_fmt", "yuv420p"])
+        if qp is not None:
+            args.extend(["-qp", str(int(qp))])
+        elif bitrate:
+            args.extend(["-b:v", str(int(bitrate))])
+        else:
+            args.extend(["-qp", "18"])
+    elif selected_enc == "h264_amf":
+        args.extend(["-quality", "speed", "-pix_fmt", "nv12"])
+        if qp is not None:
+            args.extend(["-qp_i", str(int(qp)), "-qp_p", str(int(qp))])
+        elif bitrate:
+            args.extend(["-b:v", str(int(bitrate))])
+        else:
+            args.extend(["-qp_i", "18", "-qp_p", "18"])
+    else:
+        args.extend(["-preset", "veryfast", "-pix_fmt", "yuv420p"])
+        if bitrate:
+            args.extend(["-b:v", str(int(bitrate))])
+    return args
+
 def probe_encoders():
     try:
         ffmpeg = resolve_system_ffmpeg()
@@ -103,6 +195,7 @@ def run_export_worker():
     audio_duration = config.get("audioDuration")
     bitrate = config.get("bitrate")
     qp = config.get("qp")
+    requested_encoder = config.get("encoder", "auto")
 
     try:
         ffmpeg_bin = resolve_system_ffmpeg()
@@ -115,6 +208,9 @@ def run_export_worker():
 
     temp_video = (output_file + ".video.mp4") if has_audio else output_file
 
+    selected_enc = resolve_encoder(ffmpeg_bin, requested_encoder)
+    video_encoder_name = ENCODER_DISPLAY_NAMES.get(selected_enc, selected_enc)
+
     cmd = [
         ffmpeg_bin, "-y", "-hide_banner", "-nostdin",
         "-f", "rawvideo",
@@ -122,17 +218,9 @@ def run_export_worker():
         "-video_size", f"{width}x{height}",
         "-framerate", str(fps),
         "-i", "pipe:0",
-        "-frames:v", str(frame_count),
-        "-c:v", "libx264", "-preset", "veryfast", "-threads", "0", "-pix_fmt", "yuv420p"
+        "-frames:v", str(frame_count)
     ]
-
-    # Video codec and quality
-    if qp is not None:
-        cmd.extend(["-qp", str(int(qp))])
-    elif bitrate:
-        cmd.extend(["-b:v", str(int(bitrate))])
-    else:
-        cmd.extend(["-crf", "18"])
+    cmd.extend(build_video_encoder_args(selected_enc, bitrate=bitrate, qp=qp))
 
     cmd.extend(["-an"])
     if not has_audio:
@@ -154,7 +242,7 @@ def run_export_worker():
 
     get_recent_stderr = drain_stream_thread(proc.stderr)
 
-    sys.stdout.write(json.dumps({"type": "ready", "audioCodec": expected_audio_codec}) + "\n")
+    sys.stdout.write(json.dumps({"type": "ready", "audioCodec": expected_audio_codec, "videoEncoder": video_encoder_name}) + "\n")
     sys.stdout.flush()
 
     # Pre-allocate a single reusable buffer for all frame streaming (zero-copy memoryview)
@@ -264,7 +352,8 @@ def run_export_worker():
         "outputFile": output_file,
         "frames": frames_read,
         "audioCodec": final_audio_codec,
-        "audioMuxMode": audio_mux_mode
+        "audioMuxMode": audio_mux_mode,
+        "videoEncoder": video_encoder_name
     }) + "\n")
     sys.stdout.flush()
 

@@ -167,6 +167,7 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
       qualityMode: quality,
       bitrate,
       qp,
+      encoder: project.exportEncoder || 'auto',
       audioBuffer: rawAudioBuffer,
       audioExt: rawAudioExt,
       audioOffset: audioFile ? range.start : 0,
@@ -243,7 +244,7 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
       if (signal?.aborted) throw new Error('キャンセルしました');
       completed = true;
       onProgress && onProgress(1, '完了');
-      return { ...saved, codec: 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h };
+      return { ...saved, codec: saved.videoEncoder ? ('FFmpeg (' + saved.videoEncoder + ')') : 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h };
     } finally {
       signal?.removeEventListener('abort', abortNative);
     }
