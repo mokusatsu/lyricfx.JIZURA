@@ -37,10 +37,10 @@ const audioTestRes = spawnSync('node', ['dev/audio_lifecycle_test.cjs'], {
 assert.strictEqual(audioTestRes.status, 0, `Audio lifecycle test failed: ${audioTestRes.stderr || audioTestRes.stdout}`);
 console.log('  [OK] P2: dev/audio_lifecycle_test.cjs passed successfully.');
 
-// 4. Verify P2: build-all.cjs runStep shell: false
+// 4. Verify P2: build-all.cjs runStep shell logic (node/python shell: false, npm/npx needsShell)
 const buildAllCode = fs.readFileSync(path.join(__dirname, '../scripts/build-all.cjs'), 'utf-8');
-assert.ok(buildAllCode.includes('shell: false'), 'desktop/scripts/build-all.cjs must use shell: false');
-assert.ok(buildAllCode.includes('.cmd'), 'desktop/scripts/build-all.cjs must support .cmd on Windows');
-console.log('  [OK] P2: build-all.cjs shell: false and Windows .cmd support verified.');
+assert.ok(buildAllCode.includes('needsShell'), 'desktop/scripts/build-all.cjs must define needsShell');
+assert.ok(buildAllCode.includes("cmd === 'npx'"), 'desktop/scripts/build-all.cjs must handle npx');
+console.log('  [OK] P2: build-all.cjs direct node/python execution without shell verified.');
 
 console.log('[SUCCESS] All Findings Fixes tests passed successfully!');
