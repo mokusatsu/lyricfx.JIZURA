@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain, protocol, shell, net, session } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, protocol, shell, net, session, Menu } = require('electron');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const fs = require('node:fs');
@@ -89,6 +89,59 @@ let isPickerOpen = false;
 let isProjectDirty = !!(cliOptions.newProject || cliOptions.videoPath || cliOptions.lrcPath);
 let dirtySequence = 0;
 let isQuittingConfirmed = false;
+let initialProjectConsumed = false;
+
+function setupApplicationMenu() {
+  const isMac = process.platform === 'darwin';
+  const template = [
+    ...(isMac ? [{ role: 'appMenu' }] : []),
+    {
+      label: 'ファイル',
+      submenu: [
+        isMac ? { role: 'close' } : { role: 'quit', label: '終了' }
+      ]
+    },
+    {
+      label: '編集',
+      submenu: [
+        { role: 'undo', label: '元に戻す' },
+        { role: 'redo', label: 'やり直す' },
+        { type: 'separator' },
+        { role: 'cut', label: '切り取り' },
+        { role: 'copy', label: 'コピー' },
+        { role: 'paste', label: '貼り付け' },
+        { role: 'selectAll', label: 'すべて選択' }
+      ]
+    },
+    {
+      label: '表示',
+      submenu: [
+        { role: 'toggledevtools', label: '開発者ツール' },
+        { type: 'separator' },
+        { role: 'resetZoom', label: '実際のサイズ' },
+        { role: 'zoomIn', label: '拡大' },
+        { role: 'zoomOut', label: '縮小' },
+        { type: 'separator' },
+        { role: 'togglefullscreen', label: '全画面表示' }
+      ]
+    },
+    {
+      label: 'ウィンドウ',
+      submenu: [
+        { role: 'minimize', label: '最小化' },
+        ...(isMac ? [
+          { type: 'separator' },
+          { role: 'front', label: 'すべてを手前に移動' }
+        ] : [
+          { role: 'close', label: '閉じる' }
+        ])
+      ]
+    }
+  ];
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+}
 
 function detectVideoMime(filePath) {
   const ext = path.extname(filePath).toLowerCase();
@@ -127,6 +180,16 @@ function createWindow() {
   mainWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
     if (level >= 3) {
       console.error(`[Renderer Error] ${message} (${sourceId}:${line})`);
+    }
+  });
+
+  // Prevent Reload / Force Reload keyboard shortcuts (Ctrl+R, Cmd+R, F5, Ctrl+Shift+R)
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if ((input.control || input.meta) && input.key.toLowerCase() === 'r') {
+      event.preventDefault();
+    }
+    if (input.key === 'F5') {
+      event.preventDefault();
     }
   });
 
@@ -428,9 +491,10 @@ function setupIpcHandlers() {
   });
 
   ipcMain.handle('desktop:getInitialProjectData', async () => {
-    if (!cliOptions.videoPath && !cliOptions.lrcPath && !cliOptions.newProject) {
+    if (initialProjectConsumed || (!cliOptions.videoPath && !cliOptions.lrcPath && !cliOptions.newProject)) {
       return { hasInitialProject: false };
     }
+    initialProjectConsumed = true;
 
     let videoAsset = null;
     let videoError = null;
@@ -616,6 +680,7 @@ function setupIpcHandlers() {
 }
 
 app.whenReady().then(() => {
+  setupApplicationMenu();
   setupAssetProtocol(session.defaultSession);
   if (inMemorySessionPartition) {
     const memSession = session.fromPartition(inMemorySessionPartition);

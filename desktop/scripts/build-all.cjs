@@ -25,7 +25,12 @@ console.log('====================================================');
 
 function runStep(cmd, args, cwd = repoRoot) {
   console.log(`\n[*] Running: ${cmd} ${args.join(' ')} (in ${cwd})`);
-  const res = spawnSync(cmd, args, { cwd, stdio: 'inherit', shell: true });
+  const isWindows = process.platform === 'win32';
+  let executable = cmd;
+  if (isWindows && (cmd === 'npx' || cmd === 'npm')) {
+    executable = `${cmd}.cmd`;
+  }
+  const res = spawnSync(executable, args, { cwd, stdio: 'inherit', shell: false });
   if (res.status !== 0) {
     console.error(`\n[FATAL] Step failed with exit code ${res.status}: ${cmd} ${args.join(' ')}`);
     process.exit(res.status || 1);

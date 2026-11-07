@@ -182,7 +182,7 @@ globalThis.commit = function() {
 const undoMoveMatch = uiCode.match(/function undoMove\(direction\) \{[\s\S]*?\n\}/);
 const refreshAudioNameMatch = uiCode.match(/function refreshAudioName\(\) \{[\s\S]*?\n\}/);
 const restoreAudioAssetMatch = uiCode.match(/async function restoreAudioAsset\(\) \{[\s\S]*?\n\}/);
-const replaceProjectMatch = uiCode.match(/function replaceProject\(project, audio, audioFile, assets\) \{[\s\S]*?\n\}/);
+const replaceProjectMatch = uiCode.match(/function replaceProject\(project, audio, audioFile, assets(?:,\s*isSaved\s*=\s*false)?\) \{[\s\S]*?\n\}/);
 
 assert.ok(undoMoveMatch, 'undoMove must exist in src/12_ui.js');
 assert.ok(refreshAudioNameMatch, 'refreshAudioName must exist in src/12_ui.js');

@@ -49443,7 +49443,8 @@ function bind() {
           throw new Error(res.error);
         }
         if (res.name) {
-          S.project.projectName = res.name; $('projectName').value = res.name;
+          const cleanName = res.name.replace(/_\d{12}$/, '') || request.name;
+          S.project.projectName = cleanName; $('projectName').value = cleanName;
         }
       } else {
         await J.saveFile(request.filename, packed);
