@@ -1,8 +1,8 @@
 // Integration test: actual pinned RVM weights and the public TFJS runtime.
 // Run explicitly; this downloads the approximately 4 MB model on first use.
-const {chromium}=require('playwright'),fs=require('node:fs'),assert=require('node:assert/strict');
+const {launchBrowser}=require('./test_helpers.cjs'),fs=require('node:fs'),assert=require('node:assert/strict');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',args:['--enable-unsafe-webgpu']});
+ const browser=await launchBrowser({args:['--enable-unsafe-webgpu']});
  try{
   const page=await browser.newPage(),url='http://localhost:8765/';
   page.on('console',m=>console.log(m.type()+': '+m.text()));page.on('pageerror',e=>console.error('PAGE: '+e.message));

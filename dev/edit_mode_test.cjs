@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const b=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
- const page=await b.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost/';await page.route('**/*',r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}));await page.goto(url);
+(async()=>{const b=await launchBrowser();try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
+ const page=await b.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale,origin:'http://localhost'});
  await page.evaluate(()=>{const p=J.defaultProject();p.lyrics='[00:00]Edit me';p.durationOverride=8;p.overrides={0:{single:true,area:{x:.2,y:.2,w:.6,h:.6,angle:0},layout:'center'}};
  for(const layer of ['foreground','media']){const c=document.createElement('canvas');c.width=400;c.height=200;c.getContext('2d').fillRect(0,0,400,200);J.mediaAssets.set(layer,{element:c,type:'image'});Object.assign(p[layer],{items:[{id:layer,name:layer+'.png',type:'image',width:400,height:200}],manualCuts:true,cutCount:1,cutOverrides:{0:{itemId:layer,technique:'none',placement:{cx:.5,cy:.5,w:.5,h:.4,angle:0}}}})}
  J.ui.project=p;J.uiApi.syncUI();J.uiApi.replan();J.uiApi.seek(.3);});

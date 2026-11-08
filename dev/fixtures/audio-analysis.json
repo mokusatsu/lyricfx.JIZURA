@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "referenceCommit": "b9a8e50ac5769839dead133108a5ef59b08ed174",
+  "referenceSHA256": "a757b0b96ddb53f702c960f2f67c5d69231d524dad4390d0e01f0d5c2d155e57",
+  "cases": [
+    {
+      "name": "silence before first hop",
+      "sampleRate": 48000,
+      "length": 137,
+      "channels": 2,
+      "silence": true,
+      "expected": {
+        "sampleRate": 48000,
+        "length": 137,
+        "channels": 2,
+        "duration": 0.0028541666666666667,
+        "bpm": 120,
+        "energy": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "peaks": "56a43ef88ddfcd0f56f7dd973312c0e73d62f59655c01d7b4e59aaa3be8b3fb6",
+        "beats": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      }
+    },
+    {
+      "name": "short mono waveform",
+      "sampleRate": 8000,
+      "length": 239,
+      "channels": 1,
+      "expected": {
+        "sampleRate": 8000,
+        "length": 239,
+        "channels": 1,
+        "duration": 0.029875,
+        "bpm": 120,
+        "energy": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "peaks": "85fb6207897857efa3e99d212a6fb4533ec26a2b0b368e9bdffa3a41691e658a",
+        "beats": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      }
+    },
+    {
+      "name": "waveform shorter than bin count",
+      "sampleRate": 8000,
+      "length": 1599,
+      "channels": 2,
+      "expected": {
+        "sampleRate": 8000,
+        "length": 1599,
+        "channels": 2,
+        "duration": 0.199875,
+        "bpm": 120,
+        "energy": "a9bc0402ba3333b88d29fe3bcdf528fe23342321c22da5405998b6c204f27ff8",
+        "peaks": "c9ddaf65103aeb05f3e3ffb4a931927f3f272131e563f8b26e0f0a1f378fb003",
+        "beats": "978e79c738dd1cfe700f642c92fdeba2618839ea1e347a20b34430a1dfcbe8bc"
+      }
+    },
+    {
+      "name": "unexamined waveform tail",
+      "sampleRate": 8000,
+      "length": 1631,
+      "channels": 2,
+      "expected": {
+        "sampleRate": 8000,
+        "length": 1631,
+        "channels": 2,
+        "duration": 0.203875,
+        "bpm": 120,
+        "energy": "779b979a622b9c606fa1a9c23cb32ce1f251b7ba9e2e31368d9b0c5dca2c6797",
+        "peaks": "6a7d73783a17717aeba4752a066ca5f609c0e3a5e9bb66739d30fbab1c84b66d",
+        "beats": "978e79c738dd1cfe700f642c92fdeba2618839ea1e347a20b34430a1dfcbe8bc"
+      }
+    },
+    {
+      "name": "before block edge",
+      "sampleRate": 48000,
+      "length": 61439,
+      "channels": 2,
+      "expected": {
+        "sampleRate": 48000,
+        "length": 61439,
+        "channels": 2,
+        "duration": 1.2799791666666667,
+        "bpm": 176.5,
+        "energy": "b34018965bc89bc9ee353f0da700c6a31c0cfe36d95854806c3433889c77e624",
+        "peaks": "6d51b16554639eb50cc3e41475e7d7e0872f68cb4c6361d303deacd285d5e544",
+        "beats": "33f9c35b2b4416ce9021d4b56cd23a285f299967d060578b127611f20a6baf42"
+      }
+    },
+    {
+      "name": "exact block edge",
+      "sampleRate": 48000,
+      "length": 61440,
+      "channels": 2,
+      "expected": {
+        "sampleRate": 48000,
+        "length": 61440,
+        "channels": 2,
+        "duration": 1.28,
+        "bpm": 176.5,
+        "energy": "9eb30c05ba2c103e2fc5ca70add43ac54676a82096cef70c16a97148404f2a20",
+        "peaks": "6d51b16554639eb50cc3e41475e7d7e0872f68cb4c6361d303deacd285d5e544",
+        "beats": "33f9c35b2b4416ce9021d4b56cd23a285f299967d060578b127611f20a6baf42"
+      }
+    },
+    {
+      "name": "across blocks with partial hop",
+      "sampleRate": 48000,
+      "length": 125011,
+      "channels": 2,
+      "expected": {
+        "sampleRate": 48000,
+        "length": 125011,
+        "channels": 2,
+        "duration": 2.6043958333333332,
+        "bpm": 122.3,
+        "energy": "c47cf37b53075affd60278cb06e7521fda62b473d9b729278617b2d3e7f6df16",
+        "peaks": "24d7c89fd49377fe59944aaf4374c3d3f5777195736a1f407e32872b1ca3ffec",
+        "beats": "87e4296ad13a99c9d81145f35649b1b5ed47b4d55c81ab81294cff6bed09830d"
+      }
+    },
+    {
+      "name": "six channel rounding",
+      "sampleRate": 44100,
+      "length": 180057,
+      "channels": 6,
+      "expected": {
+        "sampleRate": 44100,
+        "length": 180057,
+        "channels": 6,
+        "duration": 4.082925170068028,
+        "bpm": 130,
+        "energy": "70160e49bfd5576e2f6e9bad2acc970e76cfa344b17b21cb15fbfc865c4a6aa8",
+        "peaks": "1833f1ebe2888ef1f6ca192f85fb61c1f817f992ed40d5f541e0931af75c5bc4",
+        "beats": "98013167ac873a1614ad489a5644fe5eceb104e877d887c9e8c511851b0f0080"
+      }
+    },
+    {
+      "name": "long mono and waveform grid",
+      "sampleRate": 44100,
+      "length": 193007,
+      "channels": 1,
+      "expected": {
+        "sampleRate": 44100,
+        "length": 193007,
+        "channels": 1,
+        "duration": 4.376575963718821,
+        "bpm": 149.5,
+        "energy": "ef1642860cc958c2fe65f8d8dd2e24bc148ea3d8e867232394dc6892f1222f4d",
+        "peaks": "b4728b07a66073e082b21cdb76e0f20a1e0322b84de30d45df16d2b1a6657f4b",
+        "beats": "ad7acf1738f1006c0053e7d90e8e80bc74c4bd56faafc8238c61413e9693b3df"
+      }
+    },
+    {
+      "name": "NaN sample preserves percentile comparator",
+      "sampleRate": 48000,
+      "length": 100003,
+      "channels": 2,
+      "nonFinite": "nan",
+      "expected": {
+        "sampleRate": 48000,
+        "length": 100003,
+        "channels": 2,
+        "duration": 2.0833958333333333,
+        "bpm": "NaN",
+        "energy": "5987c557f4f9511f89ae8f88010a5f455e6677c47685361de14a295cf81f8d00",
+        "peaks": "24dbb731f838c9d8f6078095cab4e207dc086a09c5439f721fdb788cfc613aef",
+        "beats": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      }
+    },
+    {
+      "name": "infinite samples preserve normalization",
+      "sampleRate": 44100,
+      "length": 125011,
+      "channels": 1,
+      "nonFinite": "infinity",
+      "expected": {
+        "sampleRate": 44100,
+        "length": 125011,
+        "channels": 1,
+        "duration": 2.834716553287982,
+        "bpm": "NaN",
+        "energy": "c35f0ffbe876777a41bd62d7844c1d3ce0ebef7ecf020c961ae8b87ca939a767",
+        "peaks": "c8527c121e55c87604edb52508df62bd4d492edd15cb7157aa7651b68d411d29",
+        "beats": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      }
+    }
+  ]
+}

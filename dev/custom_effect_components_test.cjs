@@ -1,10 +1,11 @@
-const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const {launchBrowser,tempDirectory,loadApp}=require('./test_helpers.cjs'),path=require('node:path'),assert=require('node:assert/strict');
+const output=tempDirectory('custom-components-');
 const {openSettings,timelineAction}=require('./ui_helpers.cjs');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await launchBrowser();
  try{for(const locale of ['', 'en/']){
   const page=await browser.newPage({viewport:{width:1500,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='warning'&&/^(layout|fx|bg|treat|media decor) /.test(m.text()))errors.push(m.text());});
-  const url='http://test/'+locale;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);
+await loadApp(page,{locale,origin:'http://test'});
   const result=await page.evaluate(async()=>{
    const check=(v,m)=>{if(!v)throw Error(m);};
    const rect={version:1,mode:'overlay',nodes:[{type:'ellipse',x:.2,y:.2,w:.12,h:.12,fill:'#ff0000'}]};
@@ -44,7 +45,7 @@ const {openSettings,timelineAction}=require('./ui_helpers.cjs');
   assert.equal(await modal.evaluate(d=>d.cutPreview.cut.enterP.tilt),30);
   await modal.locator('[data-preview-solo]').check();await page.waitForTimeout(200);
   const glyphs=await modal.locator('.cut-details-preview > canvas').evaluate(c=>{const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=4)if(d[i]>180&&d[i+1]>180&&d[i+2]>180)n++;return n;});assert.ok(glyphs>50,'custom text rendered through standard pipeline');
-  if(!locale)await page.screenshot({path:'F:/Codex/preview-test-temp/custom-components-preview.png'});
+  if(!locale)await page.screenshot({path:path.join(output,'custom-components-preview.png')});
   await modal.getByRole('button',{name:locale?'Apply':'適用',exact:true}).click();
   assert.equal(await page.evaluate(()=>J.ui.plan.cuts[0].enterP.tilt),30);
   assert.deepEqual(errors,[]);await page.close();console.log('PASS custom effect components '+(locale||'ja'));

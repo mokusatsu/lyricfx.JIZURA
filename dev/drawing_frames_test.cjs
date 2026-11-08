@@ -3,9 +3,9 @@
 //   lyric's resting text box, ox/oy offset in short-edge units, and layout programs report the text box
 //   they drew so stock decor and frame:"text" components can follow custom layouts; {param,mul} scales a
 //   parameter so one size value can resize a multi-part shape.
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
+const {launchBrowser}=require('./test_helpers.cjs'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
 const root=path.join(__dirname,'..');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+(async()=>{const browser=await launchBrowser();
 try{
  const page=await browser.newPage({viewport:{width:1200,height:800}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  const url='http://localhost:8765/';await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,'index.html'))}):r.continue());

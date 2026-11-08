@@ -114,11 +114,12 @@ J.mediaCopyItems = (layer='media') => layer !== 'media' ? [] : [
 ];
 J.isMediaCopy = id => ['@copy:foreground-source','@copy:foreground-render','@copy:lyrics'].includes(id);
 J.mediaSourceAvailable = cut => !!cut && (J.isMediaCopy(cut.itemId) || J.mediaAssets.has(cut.itemId));
+J.mediaSourceForCut = cut => J.exportMediaSources?.get(cut) || J.mediaAssets.get(cut?.itemId)?.element;
 J.mediaSourceDimensions = (plan,cut,t=0) => {
   if(!cut)return null;
   if(J.isMediaCopy(cut.itemId) && cut.itemId!=='@copy:foreground-source')return {width:plan.W,height:plan.H};
   if(cut.itemId==='@copy:foreground-source')cut=J.mediaAt(plan,t,'foreground');
-  const source=cut&&J.mediaAssets.get(cut.itemId)?.element;
+  const source=cut&&J.mediaSourceForCut(cut);
   const width=source&&(source.videoWidth||source.naturalWidth||source.width),height=source&&(source.videoHeight||source.naturalHeight||source.height);
   return width&&height?{width,height}:null;
 };
@@ -126,7 +127,7 @@ J.mediaCopySource = (plan,cut,t,owner,w,h) => {
   if(!J.isMediaCopy(cut.itemId))return null;
   if(cut.itemId==='@copy:foreground-source') {
     const foreground=J.mediaAt(plan,t,'foreground');
-    return foreground&&J.mediaAssets.get(foreground.itemId)?.element || null;
+    return foreground&&J.mediaSourceForCut(foreground) || null;
   }
   const renderer=owner.copyRenderer || (owner.copyRenderer=new J.Renderer());
   const canvas=owner.copySourceCanvas || (owner.copySourceCanvas=document.createElement('canvas'));
@@ -280,6 +281,29 @@ J.mediaVideoTime = (cut, t, duration) => {
   const elapsed = offset + Math.max(0, t - cut.start);
   return Math.min(cut.videoLoop ? elapsed % duration : elapsed, Math.max(0, duration - 0.001));
 };
+// All effects currently require the complete background. Keep source demand in
+// one place so a future policy can also inspect settings, overlap and history.
+J.exportMediaDemand = (plan, t) => {
+  const sources = [];
+  for (const layer of ['media', 'foreground']) {
+    if (plan.layerVisibility?.[layer] === false) continue;
+    const add = (c, time, transition) => {
+      const asset = J.mediaAssets.get(c.itemId);
+      if (c.type !== 'video' || !asset) return;
+      const duration = asset.element.duration;
+      const target = J.mediaVideoTime(c, time, duration);
+      const offset = Number.isFinite(+c.videoStart) ? J.clamp(+c.videoStart, 0, Math.max(0, duration - .001)) : 0;
+      const elapsed = offset + Math.max(0, time - c.start);
+      sources.push({ layer, cut: c, time: target, cycle: c.videoLoop ? Math.floor(elapsed / duration) : 0, transition });
+    };
+    for (const cut of J.mediaCutsAt(plan, t, layer)) {
+      const previous = cut.index > 0 && plan[layer].cuts[cut.index - 1];
+      if (previous?.type === 'video' && cut.trans && Math.abs(previous.end - cut.start) < .06 && t - cut.start < cut.transDur) add(previous, previous.end - .001, true);
+      add(cut, t, false);
+    }
+  }
+  return { backgroundRequired: true, sources };
+};
 
 const DB = 'jizura-media-v1';
 const dbOpen = () => new Promise((resolve, reject) => {
@@ -304,7 +328,7 @@ J.snapshotMediaFile = (file, onProgress = () => {}) => {
   const retain = copy => { J.platform?.retainMediaReference?.(file,copy); return copy; };
   if (mediaSnapshots.has(file)) return mediaSnapshots.get(file).then(copy=>{onProgress(file.size,file.size);return retain(copy);});
   const task = (async () => {
-    const parts = [], chunk = 4 * 1024 * 1024;
+    const parts = [], chunk = J.platform?.mediaSnapshotChunkBytes || 4 * 1024 * 1024;
     onProgress(0,file.size);
     for (let offset = 0; offset < file.size; offset += chunk) {
       parts.push(new Blob([await file.slice(offset, offset + chunk).arrayBuffer()]));
@@ -325,6 +349,11 @@ J.snapshotMediaFile = (file, onProgress = () => {}) => {
 const temporaryMedia = new Map();
 J.hasTemporaryMedia = () => temporaryMedia.size > 0;
 const storageChanged = () => window.dispatchEvent(new Event('jizura-media-storage'));
+J.pruneTemporaryMedia = referenced => {
+  let changed=false;
+  for(const id of temporaryMedia.keys())if(!referenced(id)){temporaryMedia.delete(id);changed=true;}
+  if(changed)storageChanged();
+};
 J.storeMedia = async (id, file) => {
   const copy = await J.snapshotMediaFile(file);
   try {
@@ -346,8 +375,17 @@ J.removeMedia = async id => {
   if (temporaryMedia.delete(id)) storageChanged();
   return dbOp('readwrite', s => s.delete(id));
 };
+const mediaPosterListeners = new WeakMap();
 J.releaseMediaAsset = asset => {
   if (!asset) return;
+  if (asset.element) {
+    asset.element.onload = asset.element.onloadedmetadata = asset.element.onloadeddata = asset.element.onerror = null;
+    const poster = mediaPosterListeners.get(asset.element);
+    if (poster) {
+      asset.element.removeEventListener('seeked', poster);
+      mediaPosterListeners.delete(asset.element);
+    }
+  }
   if (asset.element && asset.type === 'video') {
     previewVideoWarmups.get(asset.element)?.abort();previewVideoWarmups.delete(asset.element);
     asset.element.pause(); asset.element.removeAttribute('src'); asset.element.load();
@@ -378,7 +416,7 @@ J.attachMedia = async (item, file, assets = J.mediaAssets, onProgress = () => {}
     const posterElement = item.type === 'video' ? new Image() : null;
     if (posterElement) posterElement.src = poster;
     assets.set(item.id, { url, element: el, type: item.type, poster, posterElement, file });
-    if(item.type==='video'){updatePoster();el.addEventListener('seeked',updatePoster,{once:true});}
+    if(item.type==='video'){mediaPosterListeners.set(el,updatePoster);el.addEventListener('seeked',updatePoster,{once:true});updatePoster();}
     resolve(el);
   };
   el.onerror = fail;
@@ -395,7 +433,7 @@ const seekMediaVideo = async (v, target, signal, name = '') => {
   if(warming&&warming.signal!==signal){warming.abort();previewVideoWarmups.delete(v);}
   v.pause(); v.playbackRate = 1;
   const dur = v.duration || 1;
-  target = Math.max(0, Math.min(target, Math.max(0, dur - 0.04)));
+  target = Math.max(0, Math.min(target, Math.max(0, dur - 0.001)));
   if (signal?.aborted)throw new Error('Cancelled');
   if (v.ended) { try { v.currentTime = 0; } catch (e) {} }
   if (Math.abs(v.currentTime - target) < 0.002 && v.readyState >= 2 && !v.seeking && !v.ended) return;
@@ -443,7 +481,8 @@ const seekMediaVideo = async (v, target, signal, name = '') => {
     // A decoded video usually seeks while paused. Starting it immediately can
     // overshoot the target before iOS delivers seeked, causing endless rewinds.
     // Only start playback if no frame exists or the paused seek has stalled.
-    if(v.readyState<2)wakeDecoder();else if(v.seeking)wakeTimer=setTimeout(wakeDecoder,500);
+    // An initial paused seek can finish before the first frame is decoded too.
+    if(v.seeking)wakeTimer=setTimeout(wakeDecoder,500);else if(v.readyState<2)wakeDecoder();
     ok();
   });
 };
@@ -567,6 +606,7 @@ J.chromaSource = (src, cut, w, h) => {
     const hue = hueOf(r, g, b, max, range), difference = Math.abs(hue - keyHue);
     const hueDistance = Math.min(difference, 6 - difference);
     const hueMatch = 1 - J.clamp((hueDistance - 0.35) / 0.4, 0, 1);
+    if (hueMatch === 0) continue;
     const saturationMatch = J.clamp((range / max - 0.18) / 0.17, 0, 1);
     d[i + 3] = Math.round(d[i + 3] * (1 - hueMatch * saturationMatch));
   }
@@ -590,7 +630,7 @@ J.chromaSource = (src, cut, w, h) => {
 };
 J.drawMediaCut = (ctx, cut, t, options = {}) => {
   const asset = J.mediaAssets.get(cut.itemId); if (!asset && !options.source) return false;
-  const src = options.source || asset.element, sw = src.videoWidth || src.naturalWidth || src.width, sh = src.videoHeight || src.naturalHeight || src.height;
+  const src = options.source || J.mediaSourceForCut(cut), sw = src.videoWidth || src.naturalWidth || src.width, sh = src.videoHeight || src.naturalHeight || src.height;
   if (!sw || !sh) return false;
   const personFrame = options.personPass ? J.personMaskFrame?.(cut,t) : null;
   if(options.personPass && (!personFrame || options.personMode && !J.personCutout(cut)?.[options.personMode]))return false;
@@ -658,7 +698,7 @@ J.drawMedia = (ctx, plan, t, owner, layer = 'media', previewEdit = false, cut = 
   const clear = c => { const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.filter = 'none'; x.clearRect(0, 0, w, h); if (layer === 'media' && !personAlpha) { x.fillStyle = bg; x.fillRect(0, 0, w, h); } return x; };
   const snapshot = transitionFrame(layer);
   const priorAsset = J.mediaAssets.get(prev.itemId);
-  const prevSource = prev.type === 'video' ? (snapshot && snapshot.plan === (plan.previewSource || plan) && snapshot.index === prev.index ? snapshot.canvas : prev.itemId === cut.itemId && priorAsset.posterElement && priorAsset.posterElement.complete ? priorAsset.posterElement : null) : null;
+  const prevSource = prev.type === 'video' ? (J.exportMediaPreviousSources?.get(prev) || (snapshot && snapshot.plan === (plan.previewSource || plan) && snapshot.index === prev.index ? snapshot.canvas : prev.itemId === cut.itemId && priorAsset.posterElement && priorAsset.posterElement.complete ? priorAsset.posterElement : null)) : null;
   J.drawMediaCut(clear(A), prev, Math.max(prev.start, prev.end - 0.001), { noExit: true, source: sourceFor(prev) || prevSource,personPass:owner?.personMaskPass,personMode:owner?.personMaskMode });
   J.drawMediaCut(clear(B), cut, t, { noEnter: !cut.independentPhases, source:sourceFor(cut),personPass:owner?.personMaskPass,personMode:owner?.personMaskMode });
   const p = J.clamp((t - cut.start) / cut.transDur);

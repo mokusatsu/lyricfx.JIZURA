@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
-const page=await browser.newPage({viewport:{width:1400,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://127.0.0.1:8765/'+locale;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);await page.locator('#modePro').click();
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/']){
+const page=await browser.newPage({viewport:{width:1400,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://127.0.0.1:8765/'+locale;await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});await page.locator('#modePro').click();
 const before=await page.evaluate(()=>JSON.stringify(J.ui.project));
 await page.locator('[data-preview-group="layout"][data-preview-key="center"]').evaluate(el=>el.click());await page.waitForTimeout(350);assert.equal(await page.locator('#effectPreviewDialog').evaluate(el=>el.open),true);assert.equal(await page.locator('#effectPreviewName').textContent(),await page.evaluate(()=>J.LAYOUTS.center.name));assert.equal(await page.evaluate(()=>JSON.stringify(J.ui.project)),before);await page.keyboard.press('Escape');
 await page.locator('[data-preview-layer="foreground"]').first().evaluate(el=>el.click());await page.waitForFunction(()=>J.mediaAssets.has('__jizura_effect_preview__'));await page.waitForTimeout(200);assert.equal(await page.locator('.effect-preview-error').isVisible(),false);

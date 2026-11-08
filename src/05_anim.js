@@ -398,6 +398,18 @@ J.EXIT = {
   },
 };
 
+/* Samples used to prepare piece-animation glyphs while the editor is idle.
+   Keep the cut live until the scheduled task runs, just like drawing it. */
+J.glyphWarmupTask = cut => {
+  if (cut.enter !== 'assemble' && !['explode', 'fall', 'drift'].includes(cut.exit)) return null;
+  return () => {
+    const times = [];
+    if (cut.enter === 'assemble') times.push(cut.start + Math.min(cut.inDur * 0.3, cut.dur * 0.2));
+    if (cut.outDur > 0) times.push(cut.end - cut.outDur * 0.5);
+    return times;
+  };
+};
+
 /* combine glyph / piece functions */
 J.combineChar = (fns) => {
   if (!fns.length) return null;

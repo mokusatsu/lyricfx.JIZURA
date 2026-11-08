@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
-(async()=>{const b=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['','en/']){
-const p=await b.newPage({viewport:{width:1500,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.route('**/*',r=>r.request().url()==='http://localhost/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await p.goto('http://localhost/');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const b=await launchBrowser();try{for(const lang of ['','en/']){
+const p=await b.newPage({viewport:{width:1500,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));await loadApp(p,{locale:lang,origin:'http://localhost'});
 for(const id of ['termsDlg','newProjectDlg','themesDlg','exportDlg','filenameDlg']){
  await p.evaluate(id=>document.getElementById(id).showModal(),id);const r=await p.locator('#'+id).boundingBox();await p.mouse.click(r.x+2,r.y+2);assert.equal(await p.locator('#'+id).evaluate(e=>e.open),true,id+' padding');
  await p.mouse.move(r.x+20,r.y+20);await p.mouse.down();await p.mouse.move(1,999);await p.mouse.up();assert.equal(await p.locator('#'+id).evaluate(e=>e.open),true,id+' drag');

@@ -445,7 +445,20 @@ class NativeJobs {
     if (!outInfo) {
       throw new Error(`Invalid output token: ${settings.outputToken}`);
     }
+    const clientId = settings.jobId ? String(settings.jobId) : null;
+    if (clientId && (clientId.length > 100 || this.clientToInternalJob.has(clientId))) throw new Error('Invalid or duplicate export request');
 
+    const continuous = ['continuous-ipc', 'continuous-port'].includes(settings.pipeline);
+    const sources = continuous ? (settings.sources || []).map(source => {
+      const asset = this.assets.get(source.assetToken);
+      if (!asset || !/^[a-zA-Z0-9_-]{1,100}$/.test(source.id) ||
+          !Number.isFinite(source.start) || !Number.isFinite(source.end) || source.start < 0 || source.end < source.start) {
+        throw new Error('Invalid export source interval');
+      }
+      return { id: source.id, path: asset.filePath, start: source.start, end: source.end,
+        colorSpace: source.colorSpace, displayWidth: source.displayWidth, displayHeight: source.displayHeight,
+        rotation: source.rotation, flip: source.flip };
+    }) : [];
     const jobId = crypto.randomUUID();
     const jobDir = path.join(this.tempDir, jobId);
     fs.mkdirSync(jobDir, { recursive: true });
@@ -477,12 +490,14 @@ class NativeJobs {
       audioOffset: settings.audioOffset || 0,
       audioDuration: settings.audioDuration
     };
+    if (continuous) exportConfig.sources = sources;
 
-    const child = this.spawnWorker(['export']);
+    const child = this.spawnWorker([continuous ? 'export-session' : 'export']);
 
     const job = {
       id: jobId,
       type: 'export',
+      clientId,
       child,
       dir: jobDir,
       config: exportConfig,
@@ -536,6 +551,7 @@ class NativeJobs {
     });
 
     this.jobs.set(jobId, job);
+    if (clientId) this.clientToInternalJob.set(clientId, jobId);
 
     let stdoutBuffer = '';
     child.stdout.on('data', (chunk) => {
@@ -550,8 +566,11 @@ class NativeJobs {
             job.status = 'running';
             job.audioCodec = msg.audioCodec;
             if (msg.videoEncoder) job.videoEncoder = msg.videoEncoder;
+            if (msg.endpoint) job.endpoint = msg.endpoint;
             job.readyResolve && job.readyResolve(msg);
           } else if (msg.type === 'finished') {
+            job.finishedFrames = msg.frames;
+            job.metrics = msg.metrics;
             if (msg.audioCodec) job.audioCodec = msg.audioCodec;
             if (msg.audioMuxMode) job.audioMuxMode = msg.audioMuxMode;
             if (msg.videoEncoder) job.videoEncoder = msg.videoEncoder;
@@ -561,7 +580,7 @@ class NativeJobs {
     });
 
     child.stderr.on('data', (chunk) => {
-      stderrOutput += chunk.toString('utf-8');
+      stderrOutput = (stderrOutput + chunk.toString('utf-8')).slice(-65536);
       job.stderrOutput = stderrOutput;
       process.stderr.write(`[Export ${jobId}] ${chunk}`);
     });
@@ -575,12 +594,65 @@ class NativeJobs {
     child.stdin.write(JSON.stringify(exportConfig) + '\n');
 
     // Wait for ready handshake
-    await job.readyPromise;
+    try { await job.readyPromise; }
+    catch (error) { this.cancelJob(jobId); throw error; }
 
     return {
       jobId,
       status: 'ready'
     };
+  }
+
+  async readExportFrame(jobId, cursor, time, after) {
+    const job = this.jobs.get(jobId);
+    if (!job?.endpoint || job.status !== 'running' || !job.config.sources.some(source => source.id === cursor)) {
+      throw new Error('Invalid export source cursor');
+    }
+    const response = await fetch(`${job.endpoint}/source/${cursor}?t=${Number(time)}&after=${Number(after)}`);
+    if (!response.ok) throw new Error(await response.text());
+    return await response.arrayBuffer();
+  }
+
+  attachExportPort(jobId, port) {
+    const job = this.jobs.get(jobId);
+    if (!job || job.status !== 'running') { port.close(); throw new Error('Export is not running'); }
+    job.bulkPort = port;
+    let active = 0;
+    const reply = data => { if (job.bulkPort === port) port.postMessage(data); };
+    port.on('message', async ({ data }) => {
+      if (!Number.isSafeInteger(data?.id) || data.id < 1) return;
+      if (active >= 8) { reply({ id: data.id, error: 'Export port flow-control limit exceeded' }); return; }
+      active++;
+      try {
+        let result;
+        if (data.op === 'source') result = { buffer: await this.readExportFrame(jobId, data.cursor, data.time, data.after) };
+        else if (data.op === 'release') result = await this.releaseExportSource(jobId, data.cursor);
+        else if (data.op === 'frame') result = await this.writeFrame(jobId, data.index, data.buffer);
+        else throw new Error('Unknown export port operation');
+        reply({ id: data.id, ...result });
+      } catch (error) { reply({ id: data.id, error: error.message }); }
+      finally { active--; }
+    });
+    port.on('close', () => {
+      if (job.bulkPort === port) {
+        job.bulkPort = null;
+        if (job.status === 'running') this.cancelJob(jobId);
+      }
+    });
+    port.start();
+  }
+
+  _closeExportPort(job) {
+    const port = job.bulkPort; job.bulkPort = null;
+    if (port) { try { port.postMessage({ type: 'closed' }); } catch {} port.close(); }
+  }
+
+  async releaseExportSource(jobId, cursor) {
+    const job = this.jobs.get(jobId);
+    if (!job?.endpoint || !job.config.sources.some(source => source.id === cursor)) throw new Error('Invalid export source cursor');
+    const response = await fetch(`${job.endpoint}/release/${cursor}`, { method: 'POST' });
+    if (!response.ok) throw new Error(await response.text());
+    return { ok: true };
   }
 
   async writeFrame(jobId, index, buffer) {
@@ -593,6 +665,20 @@ class NativeJobs {
     }
     if (buffer.byteLength !== job.frameSize) {
       throw new Error(`Frame buffer length ${buffer.byteLength} does not match expected size ${job.frameSize}`);
+    }
+
+    if (!Number.isInteger(index) || index !== (job.framesQueued || 0) || index >= job.totalFrames) throw new Error('Out-of-order export frame');
+    job.framesQueued = index + 1;
+
+    if (job.endpoint) {
+      const write = async () => {
+        const response = await fetch(`${job.endpoint}/frame/${index}`, { method: 'POST', body: Buffer.from(buffer) });
+        if (!response.ok) throw new Error(await response.text());
+        job.framesWritten++;
+        return { ok: true, index };
+      };
+      job.writeQueue = (job.writeQueue || Promise.resolve()).then(write);
+      return await job.writeQueue;
     }
 
     const stdin = job.child.stdin;
@@ -633,7 +719,20 @@ class NativeJobs {
       throw new Error('Export cancelled');
     }
 
+    if (!job.endpoint && job.framesWritten !== job.totalFrames) throw new Error('Incomplete export frame count');
+
     job.status = 'finalizing';
+    if (job.endpoint) {
+      await job.writeQueue;
+      const response = await fetch(`${job.endpoint}/finish`, { method: 'POST' });
+      if (!response.ok) throw new Error(await response.text());
+      const result = await response.json();
+      if (result.frames !== job.totalFrames) throw new Error('Export frame count mismatch');
+      job.framesWritten = result.frames;
+      job.metrics = result.metrics;
+      job.audioCodec = result.audioCodec;
+      job.audioMuxMode = result.audioMuxMode;
+    }
     try {
       if (job.child.stdin && !job.child.stdin.destroyed) {
         job.child.stdin.end();
@@ -649,6 +748,7 @@ class NativeJobs {
       const errMsg = (job.stderrOutput && job.stderrOutput.trim()) || `Export worker exited with code ${code}`;
       throw new Error(errMsg);
     }
+    if (job.finishedFrames !== job.totalFrames) throw new Error('Worker did not confirm the expected export frame count');
 
     if (!fs.existsSync(job.tempPartFile)) {
       throw new Error('Export finished but output part file is missing');
@@ -687,13 +787,17 @@ class NativeJobs {
         path: job.finalPath,
         videoEncoder: job.videoEncoder || 'x264',
         audioCodec: job.audioCodec || 'AAC',
-        audioMuxMode: job.audioMuxMode || (job.hasAudio ? 'copy' : 'none')
+        audioMuxMode: job.audioMuxMode || (job.hasAudio ? 'copy' : 'none'),
+        ...(job.metrics ? { metrics: job.metrics } : {})
       };
     } finally {
       if (stagingFile && fs.existsSync(stagingFile)) {
         try { fs.unlinkSync(stagingFile); } catch (e) {}
       }
       this._cleanupJobDir(job.dir);
+      if (job.clientId) this.clientToInternalJob.delete(job.clientId);
+      this._closeExportPort(job);
+      this.jobs.delete(jobId);
     }
   }
 
@@ -703,6 +807,7 @@ class NativeJobs {
     if (!job) return { ok: false };
 
     job.status = 'cancelled';
+    this._closeExportPort(job);
     if (job.child) {
       try { job.child.stdin && job.child.stdin.destroy(); } catch (e) {}
       try { job.child.stdout && job.child.stdout.destroy(); } catch (e) {}
@@ -722,6 +827,7 @@ class NativeJobs {
     }
     this._cleanupJobDir(job.dir);
     this.jobs.delete(actualId);
+    if (job.clientId) this.clientToInternalJob.delete(job.clientId);
     this.clientToInternalJob.delete(jobId);
     return { ok: true, jobId };
   }

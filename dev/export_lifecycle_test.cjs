@@ -6,7 +6,7 @@ const code = fs.readFileSync(path.join(__dirname, '../src/11_export.js'), 'utf8'
 
 async function run(failure, native = true) {
   const events = [], controller = new AbortController();
-  const context = vm.createContext({ console, Blob, Uint8Array, Uint32Array, ArrayBuffer, DataView, TextEncoder,
+  const context = vm.createContext({ console, crypto, Blob, Uint8Array, Uint32Array, ArrayBuffer, DataView, TextEncoder,
     setTimeout, performance: { now: () => 200 },
     document: { createElement: () => ({ getContext: () => ({ getImageData: () => ({ data: new Uint8Array(64) }) }) }) },
     J: { mediaLabel: ja => ja, outputSize: () => [4,4], glyphs: { maxRes: 123 }, Renderer: class { frame() { events.push('frame'); } },

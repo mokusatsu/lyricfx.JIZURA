@@ -1,8 +1,8 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const assert=require('node:assert/strict'),{launchBrowser,loadApp}=require('./test_helpers.cjs');
 const {openSource}=require('./ui_helpers.cjs');
 const wav=Buffer.alloc(44+16000*2);wav.write('RIFF');wav.writeUInt32LE(wav.length-8,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);wav.writeUInt16LE(1,20);wav.writeUInt16LE(1,22);wav.writeUInt32LE(16000,24);wav.writeUInt32LE(32000,28);wav.writeUInt16LE(2,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(wav.length-44,40);
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
- const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.request().url()==='http://127.0.0.1/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await page.goto('http://127.0.0.1/');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
+ const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale});
  const video=await page.evaluate(async bytes=>{
   const snapshot=J.snapshotMediaFile,progress=[];await snapshot(new Blob([new Uint8Array(9*1024*1024)]),(loaded,total)=>progress.push([loaded,total]));
   if(JSON.stringify(progress.map(p=>p[0]))!==JSON.stringify([0,4194304,8388608,9437184]))throw Error('Incorrect byte progress');

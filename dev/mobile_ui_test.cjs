@@ -1,13 +1,12 @@
-const {chromium}=require('playwright');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs');
 const {proMode,openSource,closeSource,timelineAction}=require('./ui_helpers.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 (async()=>{
-  const browser=await chromium.launch({headless:true,executablePath:process.env.EDGE_PATH||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+  const browser=await launchBrowser();
   try{for(const lang of ['', 'en/'])for(const width of [320,390,768,844,1440]){
     const mobile=width<1000,page=await browser.newPage({viewport:{width,height:width===844?390:844},isMobile:mobile,hasTouch:mobile});
     page.setDefaultTimeout(8000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
-    await page.route('**/*',r=>r.request().url()==='http://localhost/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',lang,'index.html'))}):r.abort());
-    await page.goto('http://localhost/');await proMode(page);
+    await loadApp(page,{locale:lang,origin:'http://localhost'});await proMode(page);
     const baseline=await page.evaluate(()=>JSON.stringify(J.ui.project));
     const dimensions=await page.evaluate(()=>({width:document.documentElement.scrollWidth,view:document.querySelector('#view').getBoundingClientRect().height}));
     assert(dimensions.width<=width+1,'page overflow '+width);assert(dimensions.view>=120,'preview too small '+width);
@@ -25,6 +24,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
     await timelineAction(page,'[data-layer="lyrics"]','details');
     const detail=page.locator('#cutDetailsDialog');assert(await detail.isVisible());
     assert(await detail.evaluate(el=>el.scrollWidth<=el.clientWidth+1),'detail overflow');
+    await detail.locator('[data-detail-tab="motion"]')[mobile?'tap':'click']();
     await page.locator('[data-detail-field=enter]')[mobile?'tap':'click']();await page.locator('.detail-search-popup input').fill('ぼかし');assert(await page.locator('.detail-search-option').count()>0);
     await page.locator('.detail-search-popup input').press('Escape');
     await detail.getByRole('button',{name:lang?'Cancel':'キャンセル',exact:true})[mobile?'tap':'click']();

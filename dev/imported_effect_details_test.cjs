@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const b=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
- const page=await b.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.request().url()==='http://test/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await page.goto('http://test/');
+(async()=>{const b=await launchBrowser();try{for(const locale of ['', 'en/']){
+ const page=await b.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale,origin:'http://test'});
  const result=await page.evaluate(()=>{
   const p=J.defaultProject();p.lyrics='[00:00]プレビュー';p.durationOverride=5;p.res=640;p.fx={...p.fx,chroma:0,texture:0,glitch:0,hud:'off',onTwos:false,koma:0};p.overrides={0:{single:true,lock:true,lockedEffects:{0:{treat:'hrEroded',treatP:{}}}}};
   p.lyricCutOptions={'0:0':{details:{layout:'center',enter:'cut',exit:'cut',hold:'still',bg:'none',bgP:{},trans:'none',transP:{},treat:'hrEroded',treatP:{},palette:{...J.STYLES[p.style].schemes[0],bg:'#FF4FA3'},effectStyle:{glow:0},effectEvents:[{type:'perspectiveTilt',offset:0,amp:1.275,dur:1/3}]}}};

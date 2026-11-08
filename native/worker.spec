@@ -17,6 +17,7 @@ extra_hiddenimports = [
     'numpy',
     'matting',
     'export_video',
+    'export_session',
     'matte_format',
 ]
 

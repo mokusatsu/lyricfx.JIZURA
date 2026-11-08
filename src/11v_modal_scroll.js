@@ -3,8 +3,9 @@
 'use strict';
 if(typeof MutationObserver==='undefined'||typeof document==='undefined'||!document.getElementById?.('app'))return;
 let saved=null;
+const selector='dialog[open]:not(.avoidance-inline-dialog)';
 const sync=()=>{
-  const open=!!document.querySelector('dialog[open]:not(.avoidance-inline-dialog)');
+  const open=!!document.querySelector(selector);
   if(open===!!saved)return;
   const body=document.body;
   if(open){
@@ -15,5 +16,9 @@ const sync=()=>{
     const previous=saved;saved=null;Object.assign(body.style,previous.styles);window.scrollTo(previous.x,previous.y);
   }
 };
-new MutationObserver(sync).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['open']});
+const containsModal=node=>node.nodeType===1 && (node.matches(selector)||node.querySelector(selector));
+new MutationObserver(records=>{
+  if(records.some(record=>record.type==='attributes' ? record.target.localName==='dialog'
+    : [...record.addedNodes,...record.removedNodes].some(containsModal)))sync();
+}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['open']});
 })();

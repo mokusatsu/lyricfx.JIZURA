@@ -11,8 +11,12 @@ function tempDirectory(prefix = 'browser-') {
 }
 
 async function launchBrowser(options = {}) {
+  const runtime = path.join(root, '.codex-temp', 'tests', 'browser-runtime');
+  fs.mkdirSync(runtime, { recursive: true });
+  // Playwright creates its profiles in the test process's temporary directory.
+  for (const key of ['TEMP', 'TMP', 'TMPDIR']) process.env[key] = runtime;
   const { chromium } = require('playwright');
-  const executablePath = process.env.JIZURA_TEST_BROWSER || [
+  const executablePath = process.env.JIZURA_TEST_BROWSER || process.env.CHROMIUM_PATH || process.env.EDGE_PATH || [
     'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
     'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
     'C:/Program Files/Google/Chrome/Application/chrome.exe',
@@ -29,4 +33,11 @@ async function loadApp(page, { locale = '', origin = 'http://localhost:8765', di
   await page.waitForFunction(() => !!window.J?.ui?.plan);
 }
 
-module.exports = { root, buildRoot, launchBrowser, loadApp, tempDirectory };
+async function importProject(page, project, name = 'fixture.lyricfx') {
+  const bytes = await page.evaluate(async project => Array.from(new Uint8Array(
+    await (await J.packProject(project, null)).arrayBuffer())), project);
+  await page.locator('#fileProject').setInputFiles({ name, mimeType: 'application/octet-stream', buffer: Buffer.from(bytes) });
+  await page.waitForFunction(() => !J.ui.projectBusy);
+}
+
+module.exports = { root, buildRoot, launchBrowser, loadApp, importProject, tempDirectory };

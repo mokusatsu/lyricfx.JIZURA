@@ -1,16 +1,15 @@
-const {chromium} = require('playwright');
+const {launchBrowser,loadApp,importProject,tempDirectory}=require('./test_helpers.cjs');
+const path=require('node:path'),output=tempDirectory('media-layer-settings-');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
 const assert = require('node:assert/strict');
 
 (async () => {
-  const browser = await chromium.launch({headless:true, executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+  const browser = await launchBrowser();
   try {
     for (const locale of ['', 'en/']) {
       const page = await browser.newPage({viewport:{width:1500,height:1000}}), errors = [];
       page.on('pageerror', e => errors.push(e.message));
-      await page.route('https://fonts.googleapis.com/**', route => route.fulfill({contentType:'text/css',body:''}));
-      await page.route('https://fonts.googleapis.com/**',r=>r.fulfill({contentType:'text/css',body:''}));
-      await page.goto('http://127.0.0.1:8765/' + locale);
+      await loadApp(page,{locale});
       await proMode(page);
       for (const layer of ['foreground','media']) {
         await page.locator(layer === 'media' ? '#sourceMedia' : '#sourceForeground').click();
@@ -20,7 +19,7 @@ const assert = require('node:assert/strict');
         })));
         await page.waitForFunction(layer => J.ui.project[layer].items.length === 3 && J.ui.plan[layer].cuts.length === 3, layer);
       }
-      // Import a real old-format project with shared settings and automatic cuts.
+      // A .lyricfx manifest with shared settings is normalized to separate layers.
       const legacy = await page.evaluate(() => {
         const p = structuredClone(J.ui.project); p.lyrics = '';
         p.mediaEffects = {motion:.65,treatment:.4,duration:.6,autoPlacement:false,enabled:Object.fromEntries(Object.keys(J.MEDIA_TECH).map(key => [key,key === 'neonContour']))};
@@ -30,7 +29,7 @@ const assert = require('node:assert/strict');
         }
         return p;
       });
-      await page.locator('#fileProject').setInputFiles({name:'shared.jizura.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(legacy))});
+      await importProject(page,legacy,'shared.lyricfx');
       await page.waitForFunction(() => J.ui.plan.foreground.cuts.length === 6);
       const snapshot = layer => page.evaluate(layer => ({project:J.ui.project[layer],cuts:J.ui.plan[layer].cuts}), layer);
       // The foreground composes with the background's dynamic layouts: when the background tab changes, only the foreground's placement may follow.
@@ -83,20 +82,29 @@ const assert = require('node:assert/strict');
         // The foreground composes with the background's dynamic layouts, so its placement follows the background tab's automatic placement.
         assert.deepEqual(settingsOnly(await snapshot(other), layer), settingsOnly(untouched, layer), 'sliders and automatic placement must stay local to the tab');
 
+        const resolved=await snapshot(layer);
         await panel.locator('[data-media-action="disable"]').click();
+        assert.deepEqual((await snapshot(layer)).cuts.map(c=>c.technique),resolved.cuts.map(c=>c.technique),'pool changes preserve already resolved effects');
+        await panel.locator('[data-media-action="shuffle"]').click();
         assert.ok((await snapshot(layer)).cuts.every(c => c.technique === 'none'));
         const technique = layer === 'foreground' ? 'neonContour' : 'pushIn';
         await panel.locator('details').filter({has:page.locator(`[data-media-tech="${technique}"]`)}).locator('summary').click();
         await panel.locator(`[data-media-tech="${technique}"]`).check();
+        assert.ok((await snapshot(layer)).cuts.every(c => c.technique === 'none'),'enabling a candidate waits for an explicit shuffle');
+        await panel.locator('[data-media-action="shuffle"]').click();
         assert.ok((await snapshot(layer)).cuts.every(c => c.technique === technique));
         await page.locator('#btnUndo').click();
         assert.ok((await snapshot(layer)).cuts.every(c => c.technique === 'none'));
+        assert.equal(await panel.locator(`[data-media-tech="${technique}"]`).isChecked(), true);
+        await page.locator('#btnUndo').click();
         assert.equal(await panel.locator(`[data-media-tech="${technique}"]`).isChecked(), false);
+        await page.locator('#btnRedo').click();
+        assert.ok((await snapshot(layer)).cuts.every(c => c.technique === 'none'));
         await page.locator('#btnRedo').click();
         assert.ok((await snapshot(layer)).cuts.every(c => c.technique === technique));
         await panel.locator('[data-media-action="enable"]').click();
         assert.equal(await panel.locator('[data-media-tech]:checked').count(), await page.evaluate(layer=>Object.keys(J.MEDIA_TECH).filter(key=>J.mediaTechAllowed(key,layer)).length,layer));
-        assert.deepEqual(await snapshot(other), untouched, 'enable/disable and undo must stay local to the tab');
+        assert.deepEqual(settingsOnly(await snapshot(other),layer), settingsOnly(untouched,layer), 'enable/disable and undo must stay local to the tab');
         await page.locator('#btnUndo').click();
 
         const beforeShuffle = await snapshot(layer);
@@ -147,7 +155,8 @@ const assert = require('node:assert/strict');
       const afterRandom={foreground:await snapshot('foreground'),media:await snapshot('media')};
       for(const layer of ['foreground','media']) {
         const before=beforeRandom[layer], after=afterRandom[layer], {effects,...rest}=after.project;
-        assert.deepEqual(rest,(( {effects,...rest})=>rest)(before.project),'omakase changes media candidate checks without changing material/cut settings');
+        const editable=value=>JSON.parse(JSON.stringify(value,(key,value)=>key==='autoEffects'?undefined:value));
+        assert.deepEqual(editable(rest),editable((({effects,...rest})=>rest)(before.project)),'omakase changes media candidate checks without changing material/cut settings');
         assert.notDeepEqual(effects.enabled,before.project.effects.enabled);
         assert.deepEqual(after.cuts.slice(0,3).map(c=>c.technique),['iris','none','glitch'],'manual, no-effects and locked cuts stay fixed');
         assert.equal(after.cuts[3].itemId,null);
@@ -183,11 +192,11 @@ const assert = require('node:assert/strict');
       await page.reload();
       await page.waitForFunction(() => J.mediaAssets.size === 6);
       for (const layer of ['foreground','media']) assert.deepEqual(await snapshot(layer), saved[layer], 'autosave reload must preserve each layer');
-      await page.locator('#fileProject').setInputFiles({name:'split.jizura',mimeType:'application/octet-stream',buffer:json});
+      await page.locator('#fileProject').setInputFiles({name:'split.lyricfx',mimeType:'application/octet-stream',buffer:json});
       await page.waitForFunction(() => document.querySelector('#fileProject').value === '');
-      for (const layer of ['foreground','media']) assert.deepEqual(await snapshot(layer), saved[layer], 'saved JSON must preserve each layer');
+      for (const layer of ['foreground','media']) assert.deepEqual(await snapshot(layer), saved[layer], 'saved project must preserve each layer');
       await page.locator('[data-tab="foregroundFx"]').click();
-      await page.screenshot({path:`../media-layer-settings-${locale ? 'en' : 'ja'}.png`,fullPage:true});
+      await page.screenshot({path:path.join(output,`media-layer-settings-${locale ? 'en' : 'ja'}.png`),fullPage:true});
       assert.deepEqual(errors, []);
       console.log(locale || 'ja', 'folding, category actions, independent random subsets, locked/manual cuts, shuffle, undo/history and save/reload: OK');
       await page.close();

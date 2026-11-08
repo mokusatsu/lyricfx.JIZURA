@@ -1,11 +1,11 @@
 // Exercise PNG decoding delays at mask-frame boundaries using a real 30 fps video.
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const assert=require('node:assert/strict'),{launchBrowser,loadApp}=require('./test_helpers.cjs');
 const {timelineAction}=require('./ui_helpers.cjs');
 (async()=>{
- const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
+ const browser=await launchBrowser(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
  try{for(const locale of ['', 'en/']){
-  const page=await browser.newPage(),url='http://localhost:8765/'+locale,errors=[];
-  page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await page.goto(url);
+  const page=await browser.newPage(),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale});
   const result=await page.evaluate(async()=>{
    const c=document.createElement('canvas');c.width=96;c.height=64;const x=c.getContext('2d'),target=new Mp4Muxer.ArrayBufferTarget(),muxer=new Mp4Muxer.Muxer({target,video:{codec:'avc',width:96,height:64,frameRate:30},fastStart:'in-memory',firstTimestampBehavior:'offset'});
    const encoder=new VideoEncoder({output:(chunk,meta)=>muxer.addVideoChunk(chunk,meta),error:e=>{throw e;}});encoder.configure({codec:'avc1.42001e',width:96,height:64,framerate:30,bitrate:300000});

@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
+const {launchBrowser}=require('./test_helpers.cjs'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await launchBrowser();
  try{for(const lang of ['', 'en/']){
   const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   await page.route('**/*',r=>r.request().url()==='http://192.168.10.112/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',lang,'index.html'))}):r.abort());

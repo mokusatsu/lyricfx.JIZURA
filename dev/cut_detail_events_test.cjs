@@ -1,10 +1,10 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict'),fs=require('node:fs');
 const {timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{
+(async()=>{const browser=await launchBrowser();try{
 for(const locale of ['', 'en/']){
  const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
- await page.route('**/*',r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}));await page.goto('http://test/');
+ await loadApp(page,{locale,origin:'http://test'});
  const fixture=process.argv[2]?JSON.parse(fs.readFileSync(process.argv[2],'utf8')):null;
  const target=await page.evaluate(fixture=>{
   let p=fixture;
@@ -40,7 +40,7 @@ for(const locale of ['', 'en/']){
  await dialog.locator('button[type=submit]').click();
  assert.equal(await page.evaluate(()=>J.ui.plan.events.some(e=>e.cutOwner===target.owner&&e.type==='anamorphic')),false);
  assert.equal(await page.evaluate(()=>window.flareDraws()),0,'renderer no longer draws the flare');
- assert.equal(await page.evaluate(()=>JSON.stringify(J.ui.plan.events.filter(e=>e.cutOwner!==target.owner))),await page.evaluate(()=>window.otherBaseline),'other cuts retain effects');
+ assert.deepEqual(await page.evaluate(()=>J.ui.plan.events.filter(e=>e.cutOwner!==target.owner)),JSON.parse(await page.evaluate(()=>window.otherBaseline)),'other cuts retain effects');
  const saved=await page.evaluate(()=>JSON.stringify(J.ui.project));
  await page.evaluate(saved=>{J.ui.project=JSON.parse(saved);J.uiApi.syncUI();J.uiApi.replan()},saved);
  assert.equal(await page.evaluate(()=>J.ui.plan.events.some(e=>e.cutOwner===target.owner&&e.type==='anamorphic')),false,'saved project keeps removal');

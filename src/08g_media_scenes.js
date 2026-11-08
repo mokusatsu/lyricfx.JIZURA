@@ -218,10 +218,13 @@ const noiseTile = () => {
   g.putImageData(img, 0, 0); return noise = c;
 };
 const THERMAL = [[0, [12, 0, 60]], [.25, [96, 0, 170]], [.45, [230, 30, 90]], [.65, [255, 140, 0]], [.85, [255, 238, 70]], [1, [255, 255, 255]]];
-const thermalColor = l => {
+const applyThermalColor = (l, data, offset, amount) => {
   let i = 1; while (i < THERMAL.length - 1 && l > THERMAL[i][0]) i++;
   const [p0, c0] = THERMAL[i - 1], [p1, c1] = THERMAL[i], k = clamp((l - p0) / (p1 - p0));
-  return [0, 1, 2].map(n => c0[n] + (c1[n] - c0[n]) * k);
+  for (let n = 0; n < 3; n++) {
+    const value = c0[n] + (c1[n] - c0[n]) * k;
+    data[offset + n] += (value - data[offset + n]) * amount;
+  }
 };
 const TEXTURES = new Set(['lightLeak', 'filmGrain', 'vignette', 'hueCycle', 'scanlines', 'thermal', 'softBloom', 'cyanotype']);
 const renderTexture = (source, fit, cut, p, amount) => {
@@ -268,8 +271,7 @@ const renderTexture = (source, fit, cut, p, amount) => {
         const img = x.getImageData(0, 0, w, h), d = img.data;
         for (let i = 0; i < d.length; i += 4) {
           if (!d[i + 3]) continue;
-          const col = thermalColor((d[i] * .299 + d[i + 1] * .587 + d[i + 2] * .114) / 255);
-          for (let n = 0; n < 3; n++) d[i + n] += (col[n] - d[i + n]) * amount;
+          applyThermalColor((d[i] * .299 + d[i + 1] * .587 + d[i + 2] * .114) / 255, d, i, amount);
         }
         x.putImageData(img, 0, 0);
       } catch { x.clearRect(0, 0, w, h); x.filter = `invert(${amount}) hue-rotate(${180 * amount}deg) saturate(${1 + 2 * amount})`; x.drawImage(source, 0, 0, w, h); }

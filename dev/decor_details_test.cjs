@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const b=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
- const page=await b.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}));await page.goto('http://test/');
+(async()=>{const b=await launchBrowser();try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
+ const page=await b.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale,origin:'http://test'});
  await page.evaluate(()=>{const p=J.defaultProject();p.lyrics='[00:00]装飾のテスト';p.durationOverride=8;p.overrides={0:{single:true}};
   const ids=['grid','stripes','blobs','counter','indexNum','reticle','seal','scribbleCircle','sonarArcs'];
   p.lyricCutOptions={'0:0':{details:{decor:ids.map(id=>({id,...J.decorDetailDefaults(123),n:2,from:3,to:80,mode:'count'}))}}};

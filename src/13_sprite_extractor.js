@@ -246,7 +246,7 @@ const SpriteExtractor = {
   detectCCL(alphaData, w, h, minArea) {
     const N = w * h;
     const parent = new Int32Array(N);
-    for (let i = 0; i < N; i++) parent[i] = -1;
+    parent.fill(-1);
 
     const find = x => {
       let p = x;
@@ -290,10 +290,10 @@ const SpriteExtractor = {
         if (alphaData[i] < 30) continue;
         const root = find(i);
         if (root < 0) continue;
-        if (!boxes.has(root)) {
+        const b = boxes.get(root);
+        if (!b) {
           boxes.set(root, { minX: x, minY: y, maxX: x, maxY: y, count: 1 });
         } else {
-          const b = boxes.get(root);
           if (x < b.minX) b.minX = x;
           if (x > b.maxX) b.maxX = x;
           if (y < b.minY) b.minY = y;

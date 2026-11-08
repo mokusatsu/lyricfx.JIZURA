@@ -1,10 +1,12 @@
 import os, sys, shutil, tempfile, subprocess
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def run_build(args):
     cmd = [sys.executable, os.path.join(ROOT, 'build.py')] + args
-    res = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+    res = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True,
+                         env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'})
     if res.returncode != 0:
         print("STDOUT:", res.stdout)
         print("STDERR:", res.stderr)
@@ -12,7 +14,9 @@ def run_build(args):
     return res
 
 def test_desktop_build():
-    tmp_dir = tempfile.mkdtemp(prefix='jizura_desktop_test_')
+    temp_root = Path(ROOT) / '.codex-temp' / 'tests'
+    temp_root.mkdir(parents=True, exist_ok=True)
+    tmp_dir = tempfile.mkdtemp(prefix='desktop-build-', dir=temp_root)
     try:
         run_build(['--target', 'electron', '--out', tmp_dir])
 
@@ -56,6 +60,8 @@ def test_desktop_build():
 
         print("Desktop build test passed successfully.")
     finally:
+        if not Path(tmp_dir).resolve().is_relative_to(temp_root.resolve()):
+            raise RuntimeError('Desktop test output escaped its temporary directory')
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
 if __name__ == '__main__':

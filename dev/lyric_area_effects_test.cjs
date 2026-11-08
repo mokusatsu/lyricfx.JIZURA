@@ -1,13 +1,11 @@
-const {chromium}=require('playwright');
-const assert=require('node:assert/strict'), fs=require('node:fs'), path=require('node:path');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs');
+const assert=require('node:assert/strict');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await launchBrowser();
  try { for(const locale of ['', 'en/']) {
   const page=await browser.newPage({viewport:{width:1500,height:1000}}), errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  const url='http://127.0.0.1:8765/'+locale;
-  await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());
-  await page.goto(url);
+  await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
   const result=await page.evaluate(()=>{
    const parsed=J.parseLyrics('[00:00]｜　　　｜\n[00:06]歌詞|注釈\n[00:08]｜   ｜');
    const p=J.defaultProject();p.lyrics='[00:00]｜　　　｜';p.durationOverride=8;p.fx.hud='off';

@@ -1,10 +1,10 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{
+const assert=require('assert/strict'),{launchBrowser,loadApp}=require('./test_helpers.cjs');
+(async()=>{const browser=await launchBrowser();try{
 for(const lang of ['','en/']){
 const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-await page.route('**/*',r=>r.request().url()==='http://localhost:8765/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await page.goto('http://localhost:8765/');
+await loadApp(page,{locale:lang.replace(/\/$/,'')});
 async function setup(times){await page.evaluate(times=>{const p=J.ui.project;p.lyrics='First\nSecond\nThird';p.durationOverride=10;p.timing.lineTimes=Object.fromEntries(times.map((t,i)=>[i,t]));p.timing.cutTimes={};p.overrides={0:{single:true},1:{single:true},2:{single:true}};J.uiApi.syncUI();J.uiApi.replan();},times);}
-async function drag(line,time){const pos=await page.evaluate(line=>{const c=document.getElementById('timeline'),r=c.getBoundingClientRect(),cut=J.ui.plan.cuts.find(c=>c.line===line&&c.part===0);return {x:r.x+cut.start/J.ui.plan.duration*r.width,y:r.bottom-5,left:r.left,width:r.width,duration:J.ui.plan.duration};},line);await page.mouse.move(pos.x,pos.y);await page.mouse.down();await page.mouse.move(pos.left+time/pos.duration*pos.width,pos.y,{steps:8});await page.mouse.up();const actual=await page.evaluate(line=>J.ui.plan.lines[line].start,line);assert.ok(Math.abs(actual-time)<.02,`${lang} line ${line}: expected ${time}, got ${actual}`);}
+async function drag(line,time){await page.waitForFunction(()=>!J.ui.need);const pos=await page.evaluate(line=>{const c=document.getElementById('timeline'),r=c.getBoundingClientRect(),cut=J.ui.plan.cuts.find(c=>c.line===line&&c.part===0);return {x:r.x+cut.start/J.ui.plan.duration*r.width,y:r.bottom-5,left:r.left,width:r.width,duration:J.ui.plan.duration};},line);await page.mouse.move(pos.x,pos.y);await page.mouse.down();await page.mouse.move(pos.left+time/pos.duration*pos.width,pos.y,{steps:8});await page.mouse.up();const actual=await page.evaluate(line=>J.ui.plan.lines[line].start,line);assert.ok(Math.abs(actual-time)<.02,`${lang} line ${line}: expected ${time}, got ${actual}`);}
 // Short adjacent lines previously produced max < min, making the boundary ungrabbable.
 await setup([0,.2,.4]);await drag(1,.1);
 // Imported/out-of-order lines must use chronological neighbours, not source index.

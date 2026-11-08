@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain, protocol, shell, net, session, Menu } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, protocol, shell, net, session, Menu, MessageChannelMain } = require('electron');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const fs = require('node:fs');
@@ -90,6 +90,21 @@ let isProjectDirty = !!(cliOptions.newProject || cliOptions.videoPath || cliOpti
 let dirtySequence = 0;
 let isQuittingConfirmed = false;
 let initialProjectConsumed = false;
+const activeProjectSaves = new Map();
+
+function cancelProjectSave(saveToken) {
+  const save = activeProjectSaves.get(saveToken);
+  if (!save) return;
+  activeProjectSaves.delete(saveToken);
+  try { fs.unlinkSync(save.tmpPath); } catch (e) {}
+}
+
+async function showFileDialog(event, method, options) {
+  const owner = BrowserWindow.fromWebContents(event.sender);
+  if (!owner || owner.isDestroyed() || event.sender.isDestroyed()) return { canceled: true };
+  const result = await dialog[method](owner, options);
+  return owner.isDestroyed() || event.sender.isDestroyed() ? { canceled: true } : result;
+}
 
 function setupApplicationMenu() {
   const isMac = process.platform === 'darwin';
@@ -241,6 +256,7 @@ function createWindow() {
   mainWindow.loadFile(entryHtml);
 
   mainWindow.on('closed', () => {
+    for (const token of activeProjectSaves.keys()) cancelProjectSave(token);
     mainWindow = null;
   });
 }
@@ -292,10 +308,9 @@ function setupAssetProtocol(targetSession = session.defaultSession) {
 
 // Setup IPC handlers
 function setupIpcHandlers() {
-  const activeProjectSaves = new Map();
 
   ipcMain.handle('desktop:saveProjectStart', async (event, { defaultName }) => {
-    const result = await dialog.showSaveDialog(mainWindow, {
+    const result = await showFileDialog(event, 'showSaveDialog', {
       title: 'プロジェクトを保存',
       defaultPath: defaultName || 'project.lyricfx',
       filters: [
@@ -425,47 +440,8 @@ function setupIpcHandlers() {
   });
 
   ipcMain.handle('desktop:saveProjectCancel', async (event, { saveToken }) => {
-    const save = activeProjectSaves.get(saveToken);
-    if (save) {
-      activeProjectSaves.delete(saveToken);
-      try { fs.unlinkSync(save.tmpPath); } catch (e) {}
-    }
+    cancelProjectSave(saveToken);
     return { ok: true };
-  });
-
-  ipcMain.handle('desktop:saveProjectFile', async (event, { defaultName, buffer }) => {
-    const result = await dialog.showSaveDialog(mainWindow, {
-      title: 'プロジェクトを保存',
-      defaultPath: defaultName || 'project.lyricfx',
-      filters: [
-        { name: 'lyricfx Project (*.lyricfx)', extensions: ['lyricfx'] },
-        { name: 'All Files (*.*)', extensions: ['*'] }
-      ]
-    });
-
-    if (result.canceled || !result.filePath) {
-      return { canceled: true };
-    }
-
-    const targetPath = result.filePath;
-    const targetDir = path.dirname(targetPath);
-    const tmpPath = path.join(targetDir, `.tmp_proj_${Date.now()}_${process.pid}.part`);
-
-    try {
-      fs.writeFileSync(tmpPath, Buffer.from(buffer));
-      try {
-        fs.renameSync(tmpPath, targetPath);
-      } catch (renameErr) {
-        fs.copyFileSync(tmpPath, targetPath);
-        try { fs.unlinkSync(tmpPath); } catch (e) {}
-      }
-      isProjectDirty = false;
-      const base = path.basename(targetPath, path.extname(targetPath));
-      return { canceled: false, filePath: targetPath, name: base };
-    } catch (err) {
-      try { fs.unlinkSync(tmpPath); } catch (e) {}
-      return { canceled: false, error: err.message };
-    }
   });
 
   ipcMain.handle('desktop:startChunkedAsset', async (event, { name, mimeType }) => {
@@ -571,7 +547,7 @@ function setupIpcHandlers() {
     }
     isPickerOpen = true;
     try {
-      const result = await dialog.showOpenDialog(mainWindow, {
+      const result = await showFileDialog(event, 'showOpenDialog', {
         title: layer === 'foreground' ? '前景素材を選択' : '背景素材を選択',
         properties: ['openFile', 'multiSelections'],
         filters: [
@@ -642,7 +618,7 @@ function setupIpcHandlers() {
   });
 
   ipcMain.handle('desktop:pickExportTarget', async (event, { filename }) => {
-    const result = await dialog.showSaveDialog(mainWindow, {
+    const result = await showFileDialog(event, 'showSaveDialog', {
       title: 'MP4 保存先を選択',
       defaultPath: filename,
       filters: [{ name: 'MP4 Video', extensions: ['mp4'] }]
@@ -661,11 +637,25 @@ function setupIpcHandlers() {
   });
 
   ipcMain.handle('desktop:startExport', async (event, settings) => {
-    return await nativeJobs.startExportJob(event.sender, settings);
+    const job = await nativeJobs.startExportJob(event.sender, settings);
+    if (settings.pipeline === 'continuous-port') {
+      const { port1, port2 } = new MessageChannelMain();
+      nativeJobs.attachExportPort(job.jobId, port1);
+      event.sender.postMessage('desktop:export-port', { jobId: job.jobId }, [port2]);
+    }
+    return job;
   });
 
   ipcMain.handle('desktop:writeFrame', async (event, { jobId, index, buffer }) => {
     return await nativeJobs.writeFrame(jobId, index, buffer);
+  });
+
+  ipcMain.handle('desktop:readExportFrame', async (event, { jobId, cursor, time, after }) => {
+    return await nativeJobs.readExportFrame(jobId, cursor, time, after);
+  });
+
+  ipcMain.handle('desktop:releaseExportSource', async (event, { jobId, cursor }) => {
+    return await nativeJobs.releaseExportSource(jobId, cursor);
   });
 
   ipcMain.handle('desktop:finishExport', async (event, { jobId }) => {

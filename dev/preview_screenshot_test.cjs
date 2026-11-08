@@ -1,8 +1,8 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();
 try{for(const lang of ['', 'en/'])for(const width of [1500,390]){
  const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(e.message));
- await page.route('**/*',r=>r.request().url()==='http://127.0.0.1/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await page.goto('http://127.0.0.1/');
+ await loadApp(page,{locale:lang,origin:'http://127.0.0.1'});
  for(const size of [{aspect:'16:9',res:1080,w:1920,h:1080},{aspect:'9:16',res:720,w:720,h:1280},{aspect:'16:9',res:1080,videoSize:{w:1536,h:864},w:1536,h:864}]){
   await page.evaluate(size=>{const p=J.defaultProject();p.lyrics='[00:00]Screenshot';p.durationOverride=5;p.projectName='Capture';p.aspect=size.aspect;p.res=size.res;p.videoSize=size.videoSize||null;J.ui.project=p;J.uiApi.syncUI();J.uiApi.replan();J.uiApi.seek(1.25);window.shot=null;window.shotRender=null;window.beforeShot={time:J.ui.t,project:JSON.stringify(p),preview:[document.getElementById('view').width,document.getElementById('view').height],maxRes:J.glyphs.maxRes};
    J.saveFile=async(name,blob)=>{const buffer=await blob.arrayBuffer(),header=new DataView(buffer);window.shot={name,w:header.getUint32(16),h:header.getUint32(20),type:blob.type,bytes:blob.size};};

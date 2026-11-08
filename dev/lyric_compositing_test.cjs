@@ -1,19 +1,19 @@
-const {chromium} = require('playwright');
+const {launchBrowser,loadApp,tempDirectory} = require('./test_helpers.cjs');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
 const assert = require('node:assert/strict');
+const path = require('node:path');
 
 (async () => {
-  const browser = await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+  const browser = await launchBrowser(),artifacts=tempDirectory('lyric-compositing-');
   try {
     for (const locale of ['', 'en/']) {
       const page = await browser.newPage({viewport:{width:1500,height:1000}}), errors=[];
       page.on('pageerror',e=>errors.push(e.message));
-      await page.route('https://fonts.googleapis.com/**',r=>r.fulfill({contentType:'text/css',body:''}));
-      await page.goto('http://127.0.0.1:8765/'+locale);
+      await loadApp(page,{locale});
       const report = await page.evaluate(async () => {
         const check=(ok,message)=>{if(!ok)throw new Error(message);};
         const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-        const p=J.defaultProject();p.lyrics='[00:00]Same words';p.videoSize={w:320,h:180};
+        const p=J.defaultProject();p.title='';p.artist='';p.lyrics='[00:00]Same words';p.videoSize={w:320,h:180};
         p.fx={...p.fx,koma:0,chroma:0,texture:0,hud:'off',density:1};p.overrides={0:{single:true}};p.lyricEffects={autoPlacement:false};// full-stage lyrics: the probe samples the centre
         const defaults=J.plan(p).cuts[0];
         check(defaults.blend==='normal'&&defaults.opacity===100,'new cuts default to Normal and 100%');
@@ -61,7 +61,7 @@ const assert = require('node:assert/strict');
         const makePlan=project=>{
           const plan=J.plan(project);plan.media=J.planMedia(project,plan);plan.foreground=J.planMedia(project,plan,null,'foreground');
           plan.events=[];plan.hud=false;
-          for(const c of plan.cuts)Object.assign(c,{layout:'__blendProbe',cam:'none',decor:[],trans:null,contentScale:1,groupExit:'cut',groupOutDur:0});
+          for(const c of plan.cuts)Object.assign(c,{layout:'__blendProbe',cam:'none',bg:'none',decor:[],trans:null,contentScale:1,groupExit:'cut',groupOutDur:0});
           return plan;
         };
         const pixel=()=>Array.from(ctx.getImageData(160,90,1,1).data).slice(0,3);
@@ -120,8 +120,9 @@ const assert = require('node:assert/strict');
       console.log(locale||'ja','planner and pixel/MP4 compositing',report.cases,report.bytes);
 
       const load=async project=>{
-        await page.locator('#fileProject').setInputFiles({name:'composite.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(project))});
-        await page.waitForFunction(lyrics=>J.ui.project.lyrics===lyrics,project.lyrics);
+        const bytes=await page.evaluate(async project=>Array.from(new Uint8Array(await (await J.packProject(project)).arrayBuffer())),project);
+        await page.locator('#fileProject').setInputFiles({name:'composite.lyricfx',mimeType:'application/octet-stream',buffer:Buffer.from(bytes)});
+        await page.waitForFunction(lyrics=>!J.ui.projectBusy&&J.ui.project.lyrics===lyrics,project.lyrics);
       };
       const project=()=>page.evaluate(()=>structuredClone(J.ui.project));
       const cuts=()=>page.evaluate(()=>J.ui.plan.cuts.filter(c=>Number.isInteger(c.part)).map(c=>({line:c.line,part:c.part,blend:c.blend,opacity:c.opacity})));
@@ -146,7 +147,8 @@ const assert = require('node:assert/strict');
       assert.equal((await cuts())[0].opacity,48,'manual opacity survives shuffle');
       assert.equal((await cuts())[0].blend,'overlay','manual blend survives shuffle');
       await first.locator('.lyric-composite-auto').click();
-      assert.equal((await project()).lyricCutOptions['0:0'],undefined);
+      const resetOptions=(await project()).lyricCutOptions['0:0'];
+      assert.equal(resetOptions?.blend,undefined);assert.equal(resetOptions?.opacity,undefined);
       assert.equal(await first.locator('.lyric-cut-blend').inputValue(),'');
       await page.locator('#lineList .lock').first().click();
       const locked=(await cuts()).filter(c=>c.line===0);
@@ -168,7 +170,7 @@ const assert = require('node:assert/strict');
       assert.deepEqual(await project(),saved);assert.deepEqual(await cuts(),resolved);
       await page.locator('[data-tab="tech"]').click();
       if(locale)assert.doesNotMatch(await page.locator('[data-pane="tech"] .pick-sets').first().innerText(),/[\u3040-\u30ff\u4e00-\u9fff]/);
-      await page.screenshot({path:`../lyric-compositing-${locale?'en':'ja'}.png`,fullPage:true});
+      await page.screenshot({path:path.join(artifacts,`lyric-compositing-${locale?'en':'ja'}.png`),fullPage:true});
       const legacy={...report.fixture,lyricEffects:{},lyricCutOptions:{},overrides:{},media:{...report.fixture.media,blend:'screen',opacity:45}};
       await load(legacy);
       await page.waitForFunction(()=>J.ui.plan.cuts.filter(c=>Number.isInteger(c.part)).every(c=>c.blend==='screen'&&c.opacity===45));

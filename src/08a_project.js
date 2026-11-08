@@ -51,14 +51,15 @@ function migrateLyricBlankCuts(project) {
   }
 }
 J.normalizeProject = p => {
-  const d = J.defaultProject();
+  const d = J.defaultProject(), {fx,timing,avoidance} = d;
   const o = Object.assign(d, p || {});
   if (o.videoSize) { const [w, h] = J.outputSize(o); o.videoSize = { w, h }; }
   o.shortExport=J.shortExportSettings(o.shortExport);
-  o.fx = Object.assign(J.defaultProject().fx, (p && p.fx) || {});
-  o.timing = Object.assign(J.defaultProject().timing, (p && p.timing) || {});
+  o.fx = Object.assign(fx, (p && p.fx) || {});
+  o.timing = Object.assign(timing, (p && p.timing) || {});
   o.timing.cutTimes = o.timing.cutTimes || {};
   o.customEffects=J.validateCustomEffects(o.customEffects||[]);J.activateCustomEffects(o);
+  // Custom components may add choices; build this map after registration.
   const en = J.defaultProject().enabled;
   for (const g of Object.keys(en)) en[g] = Object.assign(en[g], ((p && p.enabled) || {})[g] || {});
   o.enabled = en;
@@ -74,7 +75,7 @@ J.normalizeProject = p => {
   o.favoriteSequence = Math.max(o.effectFavorites.length,Math.floor(+o.favoriteSequence)||0);
   o.timelineLinks = Array.isArray(p && p.timelineLinks) ? p.timelineLinks : [];
   o.layerVisibility = Object.assign({avoidance:true,foreground:true,lyrics:true,media:true}, (p && p.layerVisibility) || {});
-  o.avoidance = J.normalizeAvoidance(p ? p.avoidance : J.defaultProject().avoidance);
+  o.avoidance = J.normalizeAvoidance(p ? p.avoidance : avoidance);
   o.media = J.normalizeMedia(p && p.media);
   o.foreground = J.normalizeMedia(p && p.foreground);
   for (const layer of ['media', 'foreground']) o[layer].effects = J.mediaEffectSettings(o, layer);

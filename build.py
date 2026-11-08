@@ -74,7 +74,7 @@ def build_web(out_dir, dev=False):
         target = os.path.join(out_dir, 'en/index.html') if english else os.path.join(out_dir, 'index.html')
         os.makedirs(os.path.dirname(target) or '.', exist_ok=True)
         open(target, 'w', encoding='utf-8').write(html)
-        print(target, len(html), 'bytes')
+        print(target, os.path.getsize(target), 'bytes')
 
     build_lang('ja')
     build_lang('en')
@@ -165,7 +165,7 @@ def build_electron(out_dir):
         target = os.path.join(out_dir, 'en/index.html') if english else os.path.join(out_dir, 'index.html')
         os.makedirs(os.path.dirname(target) or '.', exist_ok=True)
         open(target, 'w', encoding='utf-8').write(html)
-        print(target, len(html), 'bytes')
+        print(target, os.path.getsize(target), 'bytes')
 
     build_lang_html('ja')
     build_lang_html('en')

@@ -112,9 +112,13 @@ J.createMP4Output = fileStream => {
     async abort(){parts=[];await queue;if(fileStream)try{await fileStream.abort();}catch{}}
   };
 };
-J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken }) => {
+J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken, pipeline = J.platform?.defaultExportPipeline || 'legacy', exportRange }) => {
   let vc = null, ac = null, output = null, venc = null, aenc = null, completed = false, expJob = null, err = null, muxer = null;
   let cancellation = null;
+  let mediaPlan = null;
+  const previousMediaSources = J.exportMediaSources;
+  const previousMediaPreviousSources = J.exportMediaPreviousSources;
+  const previousFrameInfo = J.exportMediaFrameInfo, previousPreviousFrameInfo = J.exportMediaPreviousFrameInfo;
   const cancelNative = () => {
     if (!expJob) return;
     cancellation ||= Promise.resolve().then(() => J.platform.cancelJob(expJob.jobId)).catch(() => {});
@@ -123,7 +127,8 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   try {
   if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
-  const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
+  const range=short?J.shortExportRange(plan,short):exportRange||{start:0,end:plan.duration},duration=range.end-range.start;
+  if (!Number.isFinite(duration) || duration <= 0 || range.start < 0 || range.end > plan.duration) throw new Error('Invalid export range');
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
   const [w, h] = J.outputSize(project);
@@ -139,6 +144,11 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     output = J.createMP4Output(fileStream);
   }
   if (isNative) {
+    if (pipeline !== 'legacy') {
+      if (!['continuous-ipc', 'continuous-port'].includes(pipeline) || !J.platform.planExportMedia) throw new Error('Unsupported export pipeline');
+      mediaPlan = await J.platform.planExportMedia(plan, range.start, duration, fps, signal);
+      mediaPlan.plan = plan;
+    }
     let rawAudioBuffer = null, rawAudioExt = '.wav';
     if (audio && audio.buffer && project.includeAudio !== false) {
       if (audioFile && audioFile.size) {
@@ -146,25 +156,15 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
         const m = (audioFile.name || '').match(/\.([a-zA-Z0-9]+)$/);
         rawAudioExt = m ? '.' + m[1].toLowerCase() : '.mp3';
       } else {
-        const sr = audio.buffer.sampleRate, chn = audio.buffer.numberOfChannels;
-        const n = Math.max(1, Math.round((duration > 0 ? duration : audio.buffer.duration) * sr));
-        const bytes = n * chn * 2, ab = new ArrayBuffer(44 + bytes), v = new DataView(ab);
-        const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
-        str(0, 'RIFF'); v.setUint32(4, 36 + bytes, true); str(8, 'WAVE'); str(12, 'fmt ');
-        v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, chn, true); v.setUint32(24, sr, true);
-        v.setUint32(28, sr * chn * 2, true); v.setUint16(32, chn * 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, bytes, true);
-        const ch = []; for (let c = 0; c < chn; c++) ch.push(audio.buffer.getChannelData(c));
-        const L = audio.buffer.length, i0 = Math.max(0, Math.round(range.start * sr)); let o = 44;
-        for (let i = 0; i < n; i++) for (let c = 0; c < chn; c++) {
-          const j = i + i0, x = j < L ? Math.max(-1, Math.min(1, ch[c][j])) : 0;
-          v.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7fff, true); o += 2;
-        }
-        rawAudioBuffer = ab;
-        rawAudioExt = '.wav';
+        rawAudioBuffer = J.audioWavBytes(audio.buffer,duration,range.start);
       }
     }
     const totalFrames = Math.max(1, Math.round(duration * fps));
+    expJob = { jobId: crypto.randomUUID() };
+    signal?.addEventListener('abort', cancelNative, { once: true });
+    if (signal?.aborted) throw new Error('キャンセルしました');
     expJob = await J.platform.startExport({
+      jobId: expJob.jobId,
       outputToken,
       width: w,
       height: h,
@@ -174,12 +174,13 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
       bitrate,
       qp,
       encoder: project.exportEncoder || 'auto',
+      pipeline,
+      sources: mediaPlan?.sources,
       audioBuffer: rawAudioBuffer,
       audioExt: rawAudioExt,
       audioOffset: audioFile ? range.start : 0,
       audioDuration: duration
     });
-    signal?.addEventListener('abort', cancelNative, { once: true });
   } else {
     const muxOpts = { target:output.target, video: { codec: vc.mux, width: w, height: h, frameRate: fps }, fastStart: false, firstTimestampBehavior: 'offset' };
     if (ac) muxOpts.audio = { codec: ac.mux, numberOfChannels: Math.min(2, audio.buffer.numberOfChannels), sampleRate: ac.sr };
@@ -206,7 +207,8 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     }
     if (err) throw err;
     const time=range.start+i/fps;
-    await J.prepareMediaFrame(plan, time, signal);
+    if (mediaPlan) await J.platform.prepareExportMedia(expJob.jobId, mediaPlan, i, signal);
+    else await J.prepareMediaFrame(plan, time, signal);
     R.frame(sourceCtx, plan, time, { scale });
     if(portrait)portrait.frame(ctx,source,short);
     if (isNative) {
@@ -243,7 +245,7 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     if (signal?.aborted) throw new Error('キャンセルしました');
     completed = true;
     onProgress && onProgress(1, '完了');
-    return { ...saved, codec: saved.videoEncoder ? ('FFmpeg (' + saved.videoEncoder + ')') : 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h };
+    return { ...saved, codec: saved.videoEncoder ? ('FFmpeg (' + saved.videoEncoder + ')') : 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h, pipeline };
   }
   await venc.flush(); venc.close();
   if(err)throw err;
@@ -275,8 +277,13 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   onProgress && onProgress(1, '完了');
   return { ...saved, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
   } finally {
+    J.exportMediaSources = previousMediaSources;
+    J.exportMediaPreviousSources = previousMediaPreviousSources;
+    J.exportMediaFrameInfo = previousFrameInfo; J.exportMediaPreviousFrameInfo = previousPreviousFrameInfo;
+    if (mediaPlan) { J.mediaTransitionFrame = null; J.foregroundTransitionFrame = null; }
     signal?.removeEventListener('abort', cancelNative);
     if(!completed)await cancelNative();
+    if(expJob)J.platform.releaseExportResources?.(expJob.jobId);
     for(const encoder of [venc,aenc])if(encoder&&encoder.state!=='closed')try{encoder.close();}catch{}
     if(!completed){
       if(output)await output.abort();

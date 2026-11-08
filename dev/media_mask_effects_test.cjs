@@ -1,11 +1,11 @@
 // Mask pack: the techniques sit in their own マスク category of the background effects (not the
 // foreground's), おまかせ and themes can pick them for the background only, and each one draws a masked
 // frame that differs from the plain shot without errors.
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/']){
 const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-const url='http://127.0.0.1:8765/'+locale;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);
+await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
 const keys=await page.evaluate(()=>J.MEDIA_MASK_KEYS);assert.equal(keys.length,10);
 // 詳細 → 背景の演出 has a マスク category with all of them; the foreground panel has none.
 const panel=await page.evaluate(()=>{const group=document.querySelector('#mediaEffectsPanel [data-media-group="maskFx"]');return {name:group?.querySelector('.tg-name').textContent,items:[...(group?.querySelectorAll('[data-media-tech]')||[])].map(i=>i.dataset.mediaTech),foreground:document.querySelectorAll('#foregroundEffectsPanel [data-media-group="maskFx"], #foregroundEffectsPanel [data-media-tech^="mask"]').length};});

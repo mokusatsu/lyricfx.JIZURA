@@ -1,6 +1,5 @@
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
-const root=path.join(__dirname,'..');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['','en/']){const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,lang,'index.html'))}):r.abort());await page.goto(url);
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/']){const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
 const result=await page.evaluate(()=>{
 const MEDIA_GROUP_NAMES=Object.fromEntries(['enter','exit','cinema','dynamic','bpm','texture','graphic','transition'].map(g=>[g,1]));
 const failures=[],check=(ok,m)=>{if(!ok)failures.push(m)},keys=J.MEDIA_SCENE_KEYS;

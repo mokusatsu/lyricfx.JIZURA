@@ -770,17 +770,22 @@ function partition(chunks, k) {
 }
 // 統一感重視 (themeBalance 'unified', set per plan): the same effect again is favoured instead of avoided.
 let UNITY = false;
-function novelty(history, key, val) {
-  let w = 1;
-  for (let i = history.length - 1, d = 0; i >= 0 && d < 6; i--, d++) if (history[i][key] === val) w *= UNITY ? (d < 2 ? 2.6 : 1.5) : (d < 2 ? 0.2 : 0.6);
-  return w;
+function noveltyWeights(history, key) {
+  const weights = new Map();
+  // Keep the newest-to-oldest multiplication order, including its rounding.
+  for (let i = history.length - 1, d = 0; i >= 0 && d < 6; i--, d++) {
+    const value = history[i][key], factor = UNITY ? (d < 2 ? 2.6 : 1.5) : (d < 2 ? 0.2 : 0.6);
+    weights.set(value, (weights.get(value) ?? 1) * factor);
+  }
+  return weights;
 }
 function pickLayout(rng, st, en, n, dur, history, emph, recap, portrait, note) {
+  const weights = noveltyWeights(history, 'layout');
   const cands = [];
   for (const k of J.LAYOUT_ORDER) {
     const L = J.LAYOUTS[k];
     if (!en.layout[k] || !L.fits(n)) continue;
-    let w = wkey(st.bias.layout, k, L.w ?? 1) * novelty(history, 'layout', k);
+    let w = wkey(st.bias.layout, k, L.w ?? 1) * (weights.get(k) ?? 1);
     if (portrait) w *= L.portrait ?? 1;
     if (emph && L.emph) w *= L.emph;
     if (emph && L.selection?.emphasis) w *= L.selection.emphasis;
@@ -793,12 +798,13 @@ function pickLayout(rng, st, en, n, dur, history, emph, recap, portrait, note) {
   return rng.wpick(withNote.length ? withNote : cands);
 }
 function pickEnter(rng, st, en, layout, dur, history, emph, n) {
+  const weights = noveltyWeights(history, 'enter');
   const cands = [];
   for (const k of J.ENTER_ORDER) {
     if (!en.enter[k]) continue;
     const D = J.ENTER[k]; if (!D) continue;
     const LD = J.LAYOUTS[layout] || {};
-    let w = wkey(st.bias.enter, k, D.w ?? 1) * novelty(history, 'enter', k) * wkey(LD.enterBias, k, 1);
+    let w = wkey(st.bias.enter, k, D.w ?? 1) * (weights.get(k) ?? 1) * wkey(LD.enterBias, k, 1);
     if (D.minDur && dur < D.minDur) w *= 0.15;
     if (D.maxChars && n > D.maxChars) w *= 0.2;
     if (D.selection?.weight) w *= D.selection.weight;
@@ -810,11 +816,12 @@ function pickEnter(rng, st, en, layout, dur, history, emph, n) {
   return cands.length ? rng.wpick(cands) : 'cut';
 }
 function pickExit(rng, st, en, layout, dur, lastOfLine, history) {
+  const weights = noveltyWeights(history, 'exit');
   const cands = [];
   for (const k of J.EXIT_ORDER) {
     if (!en.exit[k]) continue;
     const D = J.EXIT[k]; if (!D) continue;
-    let w = wkey(st.bias.exit, k, D.w ?? 1) * novelty(history, 'exit', k);
+    let w = wkey(st.bias.exit, k, D.w ?? 1) * (weights.get(k) ?? 1);
     if (D.minDur && dur < D.minDur) w *= 0.15;
     if (D.selection?.weight) w *= D.selection.weight(dur,lastOfLine);
     else if (dur < 0.6) w *= 0.4;
@@ -824,12 +831,13 @@ function pickExit(rng, st, en, layout, dur, lastOfLine, history) {
   return cands.length ? rng.wpick(cands) : 'cut';
 }
 function pickHold(rng, en, fx, history) {
+  const weights = noveltyWeights(history, 'hold');
   const cands = J.HOLD_ORDER.filter(k => en.hold[k] !== false && J.HOLD[k]).map(k => {
     const D = J.HOLD[k];
     let w = D.selection?.weight ?? D.w ?? 0.8;
     if (D.selection?.motion || (D.tags && D.tags.includes('glitch'))) w *= 0.4 + fx.motion;
     if (D.selection?.glitch) w *= fx.glitch;
-    return [k, w * novelty(history, 'hold', k)];
+    return [k, w * (weights.get(k) ?? 1)];
   });
   return cands.length ? rng.wpick(cands) : 'still';
 }
@@ -854,8 +862,9 @@ function pickDecor(rng, st, en, fx, layout, history = []) {
 function pickTreat(rng, st, en, fx, LD, emph, history) {
   if (LD.treat === false) return 'none';
   if (!rng.chance(0.18 + 0.42 * (fx.decor ?? 0.5) + (emph ? 0.15 : 0))) return 'none';
+  const weights = noveltyWeights(history, 'treat');
   const cands = J.TREAT_ORDER.filter(k => k !== 'none' && en.treat && en.treat[k] !== false && J.TREAT[k] && (LD.treat !== 'safe' || J.TREAT[k].safe))
-    .map(k => [k, wkey(st.bias && st.bias.treat, k, J.TREAT[k].w ?? 1) * novelty(history, 'treat', k)]);
+    .map(k => [k, wkey(st.bias && st.bias.treat, k, J.TREAT[k].w ?? 1) * (weights.get(k) ?? 1)]);
   return cands.length ? rng.wpick(cands) : 'none';
 }
 function pickBg(rng, st, en, fx, bgHist) {
@@ -866,9 +875,10 @@ function pickBg(rng, st, en, fx, bgHist) {
   return cands.length ? rng.wpick(cands) : 'none';
 }
 function pickCam(rng, st, en, fx, LD, emph, history) {
+  const weights = noveltyWeights(history, 'cam');
   const cands = J.CAMERA_ORDER.filter(k => en.cam && en.cam[k] !== false && J.CAMERA[k]).map(k => {
     const D = J.CAMERA[k];
-    let w = wkey(st.bias && st.bias.cam, k, D.w ?? 1) * novelty(history, 'cam', k);
+    let w = wkey(st.bias && st.bias.cam, k, D.w ?? 1) * (weights.get(k) ?? 1);
     if (D.strong) w *= 0.25 + 0.9 * (fx.motion ?? 0.7) + (emph ? 0.6 : 0);
     if (LD.cam === false && k !== 'push') w *= 0.05;
     return [k, w];
@@ -878,8 +888,9 @@ function pickCam(rng, st, en, fx, LD, emph, history) {
 function pickTrans(rng, st, en, fx, emph, history) {
   if (!J.TRANS_ORDER.length) return null;
   if (!rng.chance(0.1 + 0.22 * (fx.motion ?? 0.7) + (emph ? 0.08 : 0))) return null;
+  const weights = noveltyWeights(history, 'trans');
   const cands = J.TRANS_ORDER.filter(k => en.trans && en.trans[k] !== false && J.TRANS[k])
-    .map(k => [k, wkey(st.bias && st.bias.trans, k, J.TRANS[k].w ?? 1) * novelty(history, 'trans', k)]);
+    .map(k => [k, wkey(st.bias && st.bias.trans, k, J.TRANS[k].w ?? 1) * (weights.get(k) ?? 1)]);
   return cands.length ? rng.wpick(cands) : null;
 }
 // kind 'edge' = transition at a cut boundary, 'mid' = accent in the middle of a cut

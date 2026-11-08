@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['','en/'])for(const width of [1920,390]){
- const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',lang,'index.html'))}):r.abort());await page.goto(url);
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/'])for(const width of [1920,390]){
+ const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
  await page.evaluate(()=>{J.ui.project.lyrics='First\nSecond\nThird\nFourth';J.ui.project.durationOverride=15;J.uiApi.syncUI();J.uiApi.replan();});
  await page.locator('#modePro').click();await page.locator('#sourceLyrics').click();await page.locator('#btnTap').click();
  const panel=page.locator('#tapPanel');assert.equal(await panel.isVisible(),true);assert.equal(await page.locator('#settingsDrawer').isVisible(),false);assert.equal(await page.locator('#lyrics').isVisible(),false);

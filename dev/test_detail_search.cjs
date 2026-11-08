@@ -13,4 +13,7 @@ for(const [query,text] of [
 for(const [query,text] of [
   ['拡大','Shrink'],['回転 ぼかし','Spin in'],['pin','スピン'],['zzzzzz','ぼかし'],
 ]) assert(!J.detailSearchQuery(query)(text),query+' unexpectedly matched '+text);
+const shared=J.detailSearchQuery('回転');
+assert.deepEqual(['Spin in','Nothing','回転ズーム','blur','Spin in'].map(shared),[true,false,true,false,true]);
+for(const query of ['push\tin','push   in','pushin'])for(const value of ['プッシュイン','Push in'])assert(J.detailSearchQuery(query)(value),query+' -> '+value);
 console.log('Search synonym tests passed');

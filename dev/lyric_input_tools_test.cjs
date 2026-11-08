@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
-const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://127.0.0.1:8765/'+locale;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/']){
+const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://127.0.0.1:8765/'+locale;await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
 for(const [kind,plain,selected] of [['cut','前/後','前/対象/後'],['break','前\\n後','前\\n対象\\n後'],['strong','前**後','前*対象*後'],['soft','前~~後','前~対象~後'],['scene','前\n{\n\n}\n後','前\n{\n対象\n}\n後'],['separate','前\n{-\n\n-}\n後','前\n{-\n対象\n-}\n後'],['empty','前\n｜　　　　｜\n後','前\n｜　　｜\n後']]){
 for(const selection of [false,true]){await page.locator('#lyrics').fill(selection?'前対象後':'前後');await page.locator('#lyrics').evaluate((el,selection)=>{el.focus();el.setSelectionRange(1,selection?3:1)},selection);await page.locator(`[data-lyric-insert="${kind}"]`).click();assert.equal(await page.locator('#lyrics').inputValue(),selection?selected:plain);assert.equal(await page.evaluate(()=>J.ui.project.lyrics),selection?selected:plain);
 if(kind==='empty'){const pos=await page.locator('#lyrics').evaluate(el=>[el.selectionStart,el.selectionEnd]);assert.deepEqual(pos,[(selection?selected:plain).length-1,(selection?selected:plain).length-1]);}

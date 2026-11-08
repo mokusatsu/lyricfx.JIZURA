@@ -2,13 +2,13 @@
 // target keeps its own text, area and timing. Applying is undoable, persists, and a later re-roll drops
 // the transferred effects but keeps the text and area. (Formerly effect_clipboard_test: the system
 // clipboard copy/paste was replaced by named favorites.)
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict'),path=require('node:path');
 const {proMode,timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
-const page=await browser.newPage({viewport:{width:1500,height:1100}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://127.0.0.1:8765/'+locale;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/']){
+const page=await browser.newPage({viewport:{width:1500,height:1100}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://127.0.0.1:8765/'+locale;await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
 await page.evaluate(()=>{
-const p=J.defaultProject();p.lyrics='[00:00]元の歌詞\n[00:04]貼り付け先の長い歌詞';p.durationOverride=8;
-p.overrides={0:{area:{x:.1,y:.1,w:.7,h:.5,angle:30}},1:{area:{x:.4,y:.6,w:.4,h:.3,angle:-20}}};
+const p=J.defaultProject();p.title='';p.lyrics='[00:00]元の歌詞\n[00:04]貼り付け先の長い歌詞';p.durationOverride=8;
+p.overrides={0:{single:true,area:{x:.1,y:.1,w:.7,h:.5,angle:30}},1:{single:true,area:{x:.4,y:.6,w:.4,h:.3,angle:-20}}};
 p.lyricCutOptions={'0:0':{blend:'screen',opacity:43,details:{layout:'center',enter:'wipe',hold:'still',exit:'blur',treat:'none',bg:'none',cam:'push',trans:'none'}},'1:0':{details:{text:'本文は維持する',area:{x:.4,y:.6,w:.4,h:.3,angle:-20}}}};
 for(const layer of ['foreground','media'])p[layer]={...p[layer],manualCuts:true,cutCount:1,cutOverrides:{0:{technique:layer==='foreground'?'beatPulse':'none',placement:{cx:layer==='foreground'?.2:.7,cy:.5,w:.3,h:.4,angle:layer==='foreground'?10:40,lockAspect:false},details:{effectSettings:{motion:1.6,treatment:.8,duration:.7}}}},timing:{lineTimes:{0:0}}};
 J.ui.project=p;J.uiApi.syncUI();J.uiApi.replan();J.uiApi.seek(.2);

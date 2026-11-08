@@ -213,9 +213,11 @@ document.fonts?.addEventListener('loadingdone', () => { J.glyphs.clear(); J.metr
    mask is split into connected pieces (strokes / radicals / dots) so that
    each can be flown, shattered or dropped independently. Works with any
    font the browser can render, including local and uploaded ones.        */
+const MAX_TINT_BYTES = 64 * 1024 * 1024;
 class GlyphCache {
-  constructor() { this.map = new Map(); this.tint = new Map(); this.count = 0; this.maxRes = 512; }
-  clear() { this.map.clear(); this.tint.clear(); }
+  constructor() { this.map = new Map(); this.tint = new Map(); this.tintOrder = new Map(); this.tintBytes = 0; this.maxRes = 512; }
+  clearTint() { this.tint.clear(); this.tintOrder.clear(); this.tintBytes = 0; }
+  clear() { this.map.clear(); this.clearTint(); }
   bucket(px) { let r = 64; while (r < px && r < this.maxRes) r *= 2; return r; }
   get(fontKey, ch, px) {
     fontKey = J.fontForChar(fontKey, ch);
@@ -225,16 +227,25 @@ class GlyphCache {
     if (!g) { g = decompose(fontKey, ch, res); this.map.set(key, g); if (this.map.size > 1800) this.evict(); }
     return g;
   }
-  evict() { let n = 0; for (const k of this.map.keys()) { this.map.delete(k); if (++n > 600) break; } this.tint.clear(); }
+  evict() { let n = 0; for (const k of this.map.keys()) { this.map.delete(k); if (++n > 600) break; } this.clearTint(); }
   sprite(piece, color) {              // tinted copy of a white piece sprite
     if (color === '#ffffff' || color === '#fff') return piece.cv;
     let m = this.tint.get(piece.id);
-    if (!m) { m = new Map(); this.tint.set(piece.id, m); }
-    let c = m.get(color);
+    let c = m?.get(color);
     if (!c) {
+      const bytes = piece.cv.width * piece.cv.height * 4;
+      // Evict the oldest tint without changing canvases still used by a draw.
+      if (bytes <= MAX_TINT_BYTES) while (this.tintBytes + bytes > MAX_TINT_BYTES) {
+        const [canvas, entry] = this.tintOrder.entries().next().value, colors = this.tint.get(entry.id);
+        colors.delete(entry.color); if (!colors.size) this.tint.delete(entry.id);
+        this.tintOrder.delete(canvas); this.tintBytes -= entry.bytes;
+      }
       c = document.createElement('canvas'); c.width = piece.cv.width; c.height = piece.cv.height;
       const x = c.getContext('2d'); x.drawImage(piece.cv, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = color; x.fillRect(0, 0, c.width, c.height);
-      m.set(color, c);
+      if (bytes <= MAX_TINT_BYTES) {
+        m = this.tint.get(piece.id); if (!m) { m = new Map(); this.tint.set(piece.id, m); }
+        m.set(color, c); this.tintOrder.set(c, { id:piece.id, color, bytes }); this.tintBytes += bytes;
+      }
     }
     return c;
   }
@@ -251,7 +262,8 @@ function decompose(fontKey, ch, res) {
   const img = x.getImageData(0, 0, S, S).data;
   const N = S * S, A = new Uint8Array(N);
   for (let i = 0; i < N; i++) A[i] = img[i * 4 + 3];
-  const L = new Int32Array(N), TH = 60;
+  let L = new Int32Array(N);
+  const TH = 60;
   const stack = new Int32Array(N);
   let nl = 0; const boxes = [];
   for (let i = 0; i < N; i++) {
@@ -259,22 +271,34 @@ function decompose(fontKey, ch, res) {
     nl++; let sp = 0; stack[sp++] = i; L[i] = nl;
     let x0 = S, y0 = S, x1 = 0, y1 = 0, area = 0;
     while (sp) {
-      const p = stack[--sp], px = p % S, py = (p / S) | 0; area++;
-      if (px < x0) x0 = px; if (px > x1) x1 = px; if (py < y0) y0 = py; if (py > y1) y1 = py;
-      for (let dy = -1; dy <= 1; dy++) {
+      const p = stack[--sp], py = (p / S) | 0, row = py * S;
+      let left = p, right = p;
+      while (left > row && !L[left - 1] && A[left - 1] >= TH) L[--left] = nl;
+      while (right < row + S - 1 && !L[right + 1] && A[right + 1] >= TH) L[++right] = nl;
+      area += right - left + 1;
+      const lx = left - row, rx = right - row;
+      if (lx < x0) x0 = lx; if (rx > x1) x1 = rx; if (py < y0) y0 = py; if (py > y1) y1 = py;
+      // Queue neighbouring runs with diagonal contact included (8-connectivity).
+      for (let dy = -1; dy <= 1; dy += 2) {
         const yy = py + dy; if (yy < 0 || yy >= S) continue;
-        for (let dx = -1; dx <= 1; dx++) {
-          const xx = px + dx; if (xx < 0 || xx >= S) continue;
-          const q = yy * S + xx;
-          if (!L[q] && A[q] >= TH) { L[q] = nl; stack[sp++] = q; }
+        const first = yy * S + Math.max(0, lx - 1), last = yy * S + Math.min(S - 1, rx + 1);
+        let run = false;
+        for (let q = first; q <= last; q++) {
+          if (!L[q] && A[q] >= TH) {
+            if (!run) { L[q] = nl; stack[sp++] = q; }
+            run = true;
+          } else run = false;
         }
       }
     }
     boxes[nl] = { x0, y0, x1, y1, area };
   }
+  if (!nl) return { ch, res, pieces: [] };
   // attach anti-aliased fringe pixels to neighbouring labels (two dilation passes)
+  // The completed flood-fill stack is now the second label buffer.
+  let L2 = stack;
   for (let pass = 0; pass < 2; pass++) {
-    const L2 = L.slice();
+    L2.set(L);
     for (let p = 0; p < N; p++) {
       if (L[p] || !A[p]) continue;
       const px = p % S, py = (p / S) | 0;
@@ -283,7 +307,7 @@ function decompose(fontKey, ch, res) {
       else if (py > 0 && L[p - S]) lab = L[p - S]; else if (py < S - 1 && L[p + S]) lab = L[p + S];
       if (lab) { L2[p] = lab; const b = boxes[lab]; if (px < b.x0) b.x0 = px; if (px > b.x1) b.x1 = px; if (py < b.y0) b.y0 = py; if (py > b.y1) b.y1 = py; }
     }
-    L.set(L2);
+    const previous = L; L = L2; L2 = previous;
   }
   // merge specks into nearest bigger piece
   const minA = res * res * 0.0012;

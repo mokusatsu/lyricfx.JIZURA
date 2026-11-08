@@ -1,8 +1,8 @@
 // Custom drawing programs load their own fonts and the glyphs of their literal strings: a favorite with
 // text nodes in Mochiy Pop One / Dela Gothic One and a fixed "SUMMER!" label must not fall back.
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
+const {launchBrowser}=require('./test_helpers.cjs'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
 const root=path.join(__dirname,'..');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+(async()=>{const browser=await launchBrowser();
 try{
  const page=await browser.newPage({viewport:{width:1400,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  const url='http://localhost:8765/';await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,'index.html'))}):r.continue());

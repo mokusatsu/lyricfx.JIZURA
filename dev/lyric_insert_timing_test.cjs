@@ -1,15 +1,13 @@
 // Adding lyrics mid-song (typing in the lyrics box, or "Insert lyrics" at the playhead) keeps every line's
 // cuts on the timeline: no line collapses to a sliver, starts stay ordered, the new line stays findable.
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
-const root=path.join(__dirname,'..');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
 const LINES=['夜明けの色を覚えてる','ほどけた声が遠くで鳴った','ねえまだ間に合うかな','透明なままじゃ終われない','この歌で夜をこえてく'];
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+(async()=>{const browser=await launchBrowser();
 try{for(const lang of ['','en/']){
  const failures=[],check=(ok,m)=>{if(!ok)failures.push(m)};
  const scenario=async(name,setup,act,expect=()=>{})=>{
   const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-  const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,lang,'index.html'))}):r.abort());
-  await page.goto(url);await page.locator('#modePro').click();
+await loadApp(page,{locale:lang,origin:'http://localhost:8765'});await page.locator('#modePro').click();
   await page.evaluate(({lines,setup})=>{const P=J.ui.project;P.lyrics=setup.lyrics||lines.join('\n');P.timing.lineTimes={};P.overrides=setup.overrides||{};P.lyricCutOptions={};P.lyricBlankCuts=[];delete P.durationOverride;
    if(setup.tapped)P.lyrics.split('\n').forEach((_,i)=>P.timing.lineTimes[i]=1+i*4);
    J.uiApi.syncUI();J.uiApi.replan();},{lines:LINES,setup});

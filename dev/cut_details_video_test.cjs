@@ -1,14 +1,12 @@
-const {chromium}=require('playwright');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs');
 const {timelineAction}=require('./ui_helpers.cjs');
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const assert=require('node:assert/strict');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await launchBrowser();
  try{for(const locale of ['', 'en/']){
   const page=await browser.newPage({viewport:{width:1500,height:900}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  const url='http://test/'+locale;
-  await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());
-  await page.goto(url);
+  await loadApp(page,{locale,origin:'http://test'});
   await page.evaluate(async()=>{
    const canvas=document.createElement('canvas');canvas.width=160;canvas.height=90;
    const stream=canvas.captureStream(20),recorder=new MediaRecorder(stream,{mimeType:'video/webm'}),chunks=[];

@@ -1,8 +1,8 @@
 // Re-rolling one lyric of a {} group (the 個別抽選 dice) keeps the group's placement and re-rolls only that lyric's effects.
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{
 const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-const url='http://127.0.0.1:8765/';await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..','index.html'))}):r.abort());await page.goto(url);
+await loadApp(page,{origin:'http://127.0.0.1:8765'});
 const result=await page.evaluate(()=>{
  const T=String.fromCharCode(10),failures=[],stats={},check=(ok,m)=>{if(!ok&&failures.length<30)failures.push(m)};
  const texts=['夜明けの色を覚えてる','ほどけた声が遠くで鳴った','ねえまだ間に合うかな','光る窓をかぞえながら'];

@@ -1,19 +1,15 @@
-const { chromium } = require('playwright');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
 (async () => {
-  const browser = await chromium.launch({ headless: true, executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe' });
+  const browser = await launchBrowser();
   try {
     for (const locale of ['', 'en/']) {
       const page = await browser.newPage(), errors = [];
-      const url = 'http://127.0.0.1:8765/' + locale;
       page.on('pageerror', error => errors.push(error.message));
-      await page.route('**/*', route => route.request().url() === url
-        ? route.fulfill({ contentType: 'text/html', body: fs.readFileSync(path.join(__dirname, '..', locale, 'index.html')) })
-        : route.abort());
-      await page.goto(url);
+      await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
       const results = await page.evaluate(() => {
         const project = J.defaultProject();
         project.title = ''; project.durationOverride = 4;

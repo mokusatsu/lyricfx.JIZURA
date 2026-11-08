@@ -148,7 +148,11 @@ def drain_stream_thread(stream, max_keep=65536):
 
     t = threading.Thread(target=worker, daemon=True)
     t.start()
-    return lambda: bytes(recent_bytes)
+    def recent():
+        with lock:
+            return bytes(recent_bytes)
+    recent.thread = t
+    return recent
 
 def probe_audio_format_and_copy(ffmpeg_bin, audio_path, offset=0):
     detected_codec = "AAC"
@@ -183,7 +187,6 @@ def run_export_worker():
     if not line:
         sys.stderr.write("No configuration received on stdin\n")
         sys.exit(1)
-
     config = json.loads(line)
     width = int(config["width"])
     height = int(config["height"])
@@ -253,11 +256,11 @@ def run_export_worker():
     try:
         while frames_read < frame_count:
             if not stream_frame_into(sys.stdin.buffer, view, frame_bytes):
-                break
+                raise EOFError(f'Expected {frame_count} frames, received {frames_read}')
             try:
                 proc.stdin.write(view)
             except BrokenPipeError:
-                break
+                raise RuntimeError(f'Encoder closed its input after {frames_read}/{frame_count} frames')
             frames_read += 1
             if frames_read % 10 == 0 or frames_read == frame_count:
                 sys.stdout.write(json.dumps({

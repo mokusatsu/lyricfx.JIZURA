@@ -1,10 +1,9 @@
 // 「画面中央を避ける」: automatic lyric areas (single lines, sized lines, arrangements, packing) keep the stage
 // centre clear, except *emphasised* cuts. The easy-mode and Details > Techniques switches are one setting.
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
-const root=path.join(__dirname,'..');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['','en/']){
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/']){
 const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,lang,'index.html'))}):r.abort());await page.goto(url);
+await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
 const result=await page.evaluate(()=>{
 const failures=[],check=(ok,m)=>{if(!ok)failures.push(m)},stats={},C=J.CENTER_AVOID;
 const ov=(a,b)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));

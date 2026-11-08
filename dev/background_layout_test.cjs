@@ -1,10 +1,10 @@
 // Dynamic background layouts (詳細 → 背景 → 背景をダイナミックに配置): automatic backgrounds may be masked into
 // windows (circle, half, band…) that the source fills; lyrics and the foreground compose around them.
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {proMode,timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/']){
 const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-const url='http://127.0.0.1:8765/'+locale;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);
+await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
 await page.evaluate(()=>{for(const [id,color] of [['bg','#335'],['fg','#e33'],['bg2','#583']]){const c=document.createElement('canvas');c.width=400;c.height=300;const g=c.getContext('2d');g.fillStyle=color;g.fillRect(0,0,400,300);g.fillStyle='#fc6';g.fillRect(150,100,100,100);J.mediaAssets.set(id,{element:c,type:'image'});}});
 // ---- the setting: on by default, in the background tab only, off without automatic placement
 await proMode(page);

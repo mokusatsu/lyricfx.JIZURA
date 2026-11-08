@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['','en/'])for(const width of [1400,390]){
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),path=require('path'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/'])for(const width of [1400,390]){
  const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;
- await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',lang,'index.html'))}):r.abort());await page.goto(url);
+ await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
  const drawer=page.locator('#settingsDrawer'),easy=page.locator('#modeEasy'),pro=page.locator('#modePro');assert.equal(await drawer.isVisible(),false);
  assert.ok((await easy.boundingBox()).y<(await pro.boundingBox()).y);assert.equal(await page.locator('header #modeEasy').count(),0);
  const stage=await page.locator('.col-stage').boundingBox();if(width>1180)assert.ok(stage.width>900);

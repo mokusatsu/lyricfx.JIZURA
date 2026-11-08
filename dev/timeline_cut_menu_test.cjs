@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['','en/'])for(const width of [1400,390]){
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/'])for(const width of [1400,390]){
  const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
- const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',lang,'index.html'))}):r.abort());await page.goto(url);
+await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
  await page.evaluate(()=>{const p=J.ui.project;p.lyrics='First/line\nSecond line';p.durationOverride=8;p.foreground.manualCuts=true;p.foreground.cutCount=2;p.foreground.timing.lineTimes={0:0,1:4};J.uiApi.syncUI();J.uiApi.replan();});
  const expected=await page.evaluate(()=>J.ui.plan.cuts.filter(c=>c.line>=0&&Number.isInteger(c.part)).length+J.ui.plan.foreground.cuts.length+J.ui.plan.media.cuts.length);
  assert.equal(await page.locator('.timeline-action').count(),expected);assert.equal(await page.locator('.timeline-action:not([data-action="menu"])').count(),0);

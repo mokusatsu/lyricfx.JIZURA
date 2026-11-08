@@ -1,12 +1,9 @@
 // Project name: shown next to the song title / artist, set by saving (without the optional date) and used
 // as the next save's default; 「ファイル名に日時を追加」 appends _yyyyMMddHHmm and is remembered.
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
-const root=path.join(__dirname,'..');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');(async()=>{const browser=await launchBrowser();
 try{for(const lang of ['','en/']){
  const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
- const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,lang,'index.html'))}):r.abort());
- await page.goto(url);
+await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
  // Capture saves instead of writing files.
  await page.evaluate(()=>{window.__saves=[];J.saveFile=async name=>{window.__saves.push(name);};const pack=J.packProject;J.packProject=async(project,audio)=>{window.__packedName=project.projectName;return pack(project,audio);};
   J.ui.project.title='夜明けの歌';J.ui.project.projectName='';J.uiApi.syncUI();});

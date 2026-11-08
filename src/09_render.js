@@ -112,15 +112,16 @@ class Renderer {
     opt={...opt,noForeground:opt.noForeground || hidden.foreground===false,noMedia:opt.noMedia || hidden.media===false,noLyrics:opt.noLyrics || hidden.lyrics===false,noHud:opt.noHud || hidden.lyrics===false,noPost:opt.noPost || hidden.lyrics===false};
     const W = plan.W, H = plan.H, scale = opt.scale || 1;
     const cw = ctx.canvas.width, ch = ctx.canvas.height;
-    const foregroundCut = plan.foreground && J.mediaAt(plan, t, 'foreground');
-    if (!opt.noForeground && foregroundCut && J.mediaCutsAt(plan, t, 'foreground').some(c => J.mediaAssets.has(c.itemId))) {
+    const foregroundCuts = !opt.noForeground && plan.foreground?.cuts?.length
+      ? J.mediaCutsAt(plan, t, 'foreground').filter(c => J.mediaAssets.has(c.itemId)) : null;
+    if (foregroundCuts?.length) {
       const step = J.stepDur(plan.fx, plan.fps);
       const frontmost = !opt.noLyrics && J.lyricCutsAt(plan, Math.floor(t / step + 1e-6) * step).some(c => c.frontmost);
       this.frame(ctx, plan, t, Object.assign({}, opt, { noForeground: true, lyricLayer: 'below' }));
       const layer = this.ensure(this.foregroundLayer || (this.foregroundLayer = document.createElement('canvas')), cw, ch);
       const lx = layer.getContext('2d');
       // Overlapping foreground cuts (own end times) composite bottom first, each with its own opacity and blend.
-      for (const cut of J.mediaCutsAt(plan, t, 'foreground').filter(c => J.mediaAssets.has(c.itemId))) {
+      for (const cut of foregroundCuts) {
         lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalAlpha = 1; lx.globalCompositeOperation = 'source-over'; lx.filter = 'none'; lx.clearRect(0, 0, cw, ch);
         J.drawForegroundLayer(lx, plan, t, this, !!opt.previewEdit, cut);
         if(!opt.previewEdit && J.maskBehindPersons)J.maskBehindPersons(layer,plan,t,'behindForeground',cut);
@@ -137,8 +138,9 @@ class Renderer {
       }
       return;
     }
-    const mediaCut = !opt.noMedia && !opt.transparent && plan.media && J.mediaAt(plan, t);
-    const backgroundMedia = !!mediaCut && J.mediaCutsAt(plan, t, 'media').some(J.mediaSourceAvailable);
+    const mediaCuts = !opt.noMedia && !opt.transparent && plan.media?.cuts?.length
+      ? J.mediaCutsAt(plan, t, 'media').filter(J.mediaSourceAvailable) : null;
+    const backgroundMedia = !!mediaCuts?.length;
     const effectCut = J.cutAt(plan,t);
     const fx = effectCut?.effectFx || plan.fx, st = effectCut?.effectStyle || plan.style, fps = plan.fps;
     // motion is quantised to 'koma' drawings per second (24fps timebase); random flicker runs on a <=24Hz clock
@@ -171,7 +173,7 @@ class Renderer {
       const mediaLayer=this.ensure(this.mediaCompositeLayer || (this.mediaCompositeLayer=document.createElement('canvas')),cw,ch);
       const mx=mediaLayer.getContext('2d');
       // Overlapping background cuts composite bottom first, each with its own mask, opacity and blend.
-      for (const cut of J.mediaCutsAt(plan, t, 'media').filter(J.mediaSourceAvailable)) {
+      for (const cut of mediaCuts) {
         mx.setTransform(1,0,0,1,0,0);mx.globalAlpha=1;mx.globalCompositeOperation='source-over';mx.clearRect(0,0,cw,ch);
         J.drawMedia(mx, plan, t, this, 'media', !!opt.previewEdit, cut);
         // A transition between windowed cuts has already masked each side (drawMedia).
@@ -497,7 +499,7 @@ class Renderer {
     const fx = effectCut?.effectFx || plan.fx, st = effectCut?.effectStyle || plan.style;
     const active = plan.events.filter(ev => t >= ev.t && t < ev.t + Math.max(ev.dur, 1 / plan.fps));
     const baseEvent=ev=>J.FXE[ev.type]?.customBase?{...ev,type:J.FXE[ev.type].customBase}:ev;
-    const needScratch = active.map(baseEvent).some(ev => ['slice', 'block', 'zoom', 'mosaic'].includes(ev.type) || (J.FXE[ev.type] && J.FXE[ev.type].scratch)) || (!opt.fast && (st.glow || 0) > 0);
+    const needScratch = active.some(event => J.FXE[baseEvent(event).type]?.scratch) || (!opt.fast && (st.glow || 0) > 0);
     const S = needScratch ? this.ensure(this.scratch, cw, ch) : null;
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
     const copy = () => { const sx = S.getContext('2d'); sx.globalCompositeOperation = 'copy'; sx.drawImage(ctx.canvas, 0, 0); sx.globalCompositeOperation = 'source-over'; };
@@ -509,48 +511,12 @@ class Renderer {
       const D = J.FXE[ev.type];
       if (D && D.draw) {
         if (D.scratch) copy();
-        try {
-          D.draw(ctx, ev, k, { cw, ch, S, sc, st, step: st2, t, scale, renderer: this, allowFilter, opt, tmp: (w, h) => this.ensure(this.tiny, w, h), tmp2: (w, h) => this.ensure(this.small2 || (this.small2 = mk(2, 2)), w, h) });
-        } catch (e) { console.warn('fx', ev.type, e); }
-        ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none'; ctx.imageSmoothingEnabled = true;
-        J.drawCustomEvent?.(ctx,event,k,sc);continue;
-      }
-      if (ev.type === 'slice') {
-        copy();
-        const n = 6 + (J.h(st2, 3) % 7);
-        let y = 0;
-        for (let i = 0; i < n && y < ch; i++) {
-          const h = Math.max(2, ch * J.rr(0.01, 0.12, st2, i, 1));
-          const dx = (J.r(st2, i, 2) < 0.55 ? J.rs(st2, i, 3) * cw * 0.06 * ev.amp : 0);
-          if (dx) ctx.drawImage(S, 0, y, cw, h, dx, y, cw, h);
-          y += h + ch * J.rr(0, 0.08, st2, i, 4);
+        const info = { cw, ch, S, sc, st, step: st2, t, scale, renderer: this, allowFilter, opt, tmp: (w, h) => this.ensure(this.tiny, w, h), tmp2: (w, h) => this.ensure(this.small2 || (this.small2 = mk(2, 2)), w, h) };
+        if (D.builtin) D.draw(ctx, ev, k, info);
+        else {
+          try { D.draw(ctx, ev, k, info); } catch (e) { console.warn('fx', ev.type, e); }
+          ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none'; ctx.imageSmoothingEnabled = true;
         }
-      } else if (ev.type === 'block') {
-        copy();
-        for (let i = 0; i < 9; i++) {
-          const w = cw * J.rr(0.05, 0.3, st2, i, 5), h = ch * J.rr(0.01, 0.07, st2, i, 6);
-          const x = J.r(st2, i, 7) * (cw - w), y = J.r(st2, i, 8) * (ch - h);
-          const sx = J.clamp(x + J.rs(st2, i, 9) * cw * 0.08, 0, cw - w), sy = J.clamp(y + J.rs(st2, i, 10) * ch * 0.04, 0, ch - h);
-          ctx.drawImage(S, sx, sy, w, h, x, y, w, h);
-          if (J.r(st2, i, 11) < 0.35) { ctx.globalCompositeOperation = 'difference'; ctx.fillStyle = J.r(st2, i, 12) < 0.5 ? sc.ghostA : sc.ghostB; ctx.fillRect(x, y, w, h); ctx.globalCompositeOperation = 'source-over'; }
-        }
-      } else if (ev.type === 'invert') {
-        ctx.globalCompositeOperation = 'difference'; ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, cw, ch); ctx.globalCompositeOperation = 'source-over';
-      } else if (ev.type === 'flash') {
-        ctx.globalAlpha = Math.pow(1 - k, 1.5) * 0.92; ctx.fillStyle = J.lum(sc.bg) < 0.5 ? sc.fg : '#ffffff'; ctx.fillRect(0, 0, cw, ch); ctx.globalAlpha = 1;
-      } else if (ev.type === 'zoom') {
-        copy();
-        const a = ev.amp * (1 - k);
-        for (let i = 1; i <= 6; i++) {
-          const s = 1 + i * 0.022 * a; ctx.globalAlpha = 0.2 * (1 - i / 7) * Math.min(1, a * 1.3);
-          ctx.drawImage(S, cw / 2 - cw * s / 2, ch / 2 - ch * s / 2, cw * s, ch * s);
-        }
-        ctx.globalAlpha = 1;
-      } else if (ev.type === 'mosaic') {
-        copy();
-        const T = this.ensure(this.tiny, Math.max(8, Math.round(cw / 42)), Math.max(8, Math.round(ch / 42))), tx = T.getContext('2d');
-        tx.imageSmoothingEnabled = true; tx.drawImage(S, 0, 0, T.width, T.height);
-        ctx.imageSmoothingEnabled = false; ctx.globalAlpha = 0.85 * (1 - k); ctx.drawImage(T, 0, 0, cw, ch); ctx.globalAlpha = 1; ctx.imageSmoothingEnabled = true;
       }
       J.drawCustomEvent?.(ctx,event,k,sc);
     }

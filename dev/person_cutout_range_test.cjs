@@ -1,25 +1,35 @@
 // Browser regression: real video seeks/PNG storage, deterministic inference worker.
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict'),fs=require('node:fs');
 const {timelineAction}=require('./ui_helpers.cjs');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await launchBrowser();
  try{for(const locale of ['', 'en/']){
   const page=await browser.newPage(),url='http://localhost:8765/'+locale,errors=[];
-  page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await page.goto(url);
+  page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale,origin:'http://localhost:8765'});
   const result=await page.evaluate(async()=>{
    const c=document.createElement('canvas');c.width=96;c.height=64;const x=c.getContext('2d'),target=new Mp4Muxer.ArrayBufferTarget(),muxer=new Mp4Muxer.Muxer({target,video:{codec:'avc',width:96,height:64,frameRate:4},fastStart:'in-memory',firstTimestampBehavior:'offset'});
    const encoder=new VideoEncoder({output:(chunk,meta)=>muxer.addVideoChunk(chunk,meta),error:e=>{throw e;}});encoder.configure({codec:'avc1.42001e',width:96,height:64,framerate:4,bitrate:300000});
    for(let i=0;i<16;i++){x.fillStyle=`hsl(${i*20},100%,50%)`;x.fillRect(0,0,96,64);const frame=new VideoFrame(c,{timestamp:i*250000,duration:250000});encoder.encode(frame,{keyFrame:i===0});frame.close();}
    await encoder.flush();encoder.close();muxer.finalize();const file=new File([target.buffer],'range.mp4',{type:'video/mp4'}),item={id:'range-video',name:file.name,type:'video'};await J.attachMedia(item,file);
    const sourceDuration=J.mediaAssets.get(item.id).element.duration,NativeWorker=window.Worker,nativeSeek=J.seekMediaVideo;
-   let stats={workers:0,frames:[],resets:0,seeks:[],progress:[]},sourceSlot=0;
-   J.seekMediaVideo=async(v,time,...args)=>{stats.seeks.push(time);sourceSlot=Math.round(time*4);return nativeSeek(v,time,...args);};
+   let stats={workers:0,frames:[],resets:0,seeks:[],progress:[]},sourceSlot=0,decodedChecks=0;
+   const checkCanvas=document.createElement('canvas');checkCanvas.width=2;checkCanvas.height=1;const checkContext=checkCanvas.getContext('2d',{willReadFrequently:true});
+   const tensorCanvas=document.createElement('canvas');tensorCanvas.width=96;tensorCanvas.height=64;const tensorContext=tensorCanvas.getContext('2d',{willReadFrequently:true});let expectedTensor;
+   J.seekMediaVideo=async(v,time,...args)=>{
+    stats.seeks.push(time);sourceSlot=Math.round(time*4);await nativeSeek(v,time,...args);
+    const frame=new VideoFrame(v);try{if(frame.timestamp!==sourceSlot*250000)throw Error('Unexpected decoded PTS: '+frame.timestamp+' for '+time);}finally{frame.close();}
+    checkContext.drawImage(v,0,0,1,1);checkContext.fillStyle=`hsl(${sourceSlot*20},100%,50%)`;checkContext.fillRect(1,0,1,1);const pixels=checkContext.getImageData(0,0,2,1).data;
+    for(let c=0;c<3;c++)if(Math.abs(pixels[c]-pixels[c+4])>6)throw Error('Unexpected decoded frame color at '+time);
+    tensorContext.drawImage(v,0,0);const rgba=tensorContext.getImageData(0,0,96,64).data;expectedTensor=new Float32Array(96*64*3);
+    for(let n=0;n<96*64;n++)for(let c=0;c<3;c++)expectedTensor[n*3+c]=rgba[n*4+c]/255;
+    decodedChecks++;
+   };
    window.Worker=class{
     constructor(){stats.workers++;this.stopped=false;}
     postMessage(m){let data;
      if(m.type==='init')data={type:'ready',backend:'Test'};
      else if(m.type==='reset'){stats.resets++;data={type:'reset'};}
-     else{stats.inputSize=[m.width,m.height];stats.frames.push(sourceSlot);const alpha=new Uint8Array(m.width*m.height);for(let y=0;y<m.height;y++)for(let z=0;z<m.width;z++)alpha[y*m.width+z]=(sourceSlot%2?z>=m.width/2:z<m.width/2)?255:0;data={type:'matte',width:m.width,height:m.height,alpha:alpha.buffer};}
+     else{const input=new Float32Array(m.pixels);if(input.length!==expectedTensor.length||!input.every((value,i)=>Object.is(value,expectedTensor[i])))throw Error('Person model RGB tensor changed');stats.inputSize=[m.width,m.height];stats.frames.push(sourceSlot);const alpha=new Uint8Array(m.width*m.height);for(let y=0;y<m.height;y++)for(let z=0;z<m.width;z++)alpha[y*m.width+z]=(sourceSlot%2?z>=m.width/2:z<m.width/2)?255:0;data={type:'matte',width:m.width,height:m.height,alpha:alpha.buffer};}
      setTimeout(()=>{if(!this.stopped)this.onmessage?.({data});},0);
     }
     terminate(){this.stopped=true;}
@@ -64,10 +74,10 @@ const {timelineAction}=require('./ui_helpers.cjs');
     const generate=J.generatePersonMask;window.rangeUICalls=[];J.generatePersonMask=async(cut,options)=>{stats={workers:0,frames:[],resets:0,seeks:[],progress:[]};const job={cut:{...cut},done:false};rangeUICalls.push(job);const ref=await generate(cut,options);job.stats={...stats};job.ref=ref;job.done=true;return ref;};
     window.rangeFixture=async()=>Array.from(new Uint8Array(await (await J.packProject(J.ui.project)).arrayBuffer()));keepWorker=true;
     const simplify=v=>({ref:v.ref,stats:v.stats,slots:v.slots,version:v.entry.meta.version});
-    return {sourceDuration,cases,first:simplify(first),extended:simplify(extended),short:simplify(short),repeat:simplify(repeat),late:simplify(late),loop:simplify(loop),all:simplify(all),allRepeat:simplify(allRepeat),changedFps:simplify(changedFps),regenerated:simplify(regenerated),regeneratedRepeat:simplify(regeneratedRepeat),portableFormer:{model:formerEntry.meta.model,slots:[...formerEntry.slots.keys()]},old:simplify(old),oldFrameKept,atTail,atLoop,missingNull,strictReject,aborted,cancelledKept,invalidRejected,portableSlots:[...portableEntry.slots.keys()]};
+    return {sourceDuration,decodedChecks,cases,first:simplify(first),extended:simplify(extended),short:simplify(short),repeat:simplify(repeat),late:simplify(late),loop:simplify(loop),all:simplify(all),allRepeat:simplify(allRepeat),changedFps:simplify(changedFps),regenerated:simplify(regenerated),regeneratedRepeat:simplify(regeneratedRepeat),portableFormer:{model:formerEntry.meta.model,slots:[...formerEntry.slots.keys()]},old:simplify(old),oldFrameKept,atTail,atLoop,missingNull,strictReject,aborted,cancelledKept,invalidRejected,portableSlots:[...portableEntry.slots.keys()]};
    }finally{if(!keepWorker){window.Worker=NativeWorker;J.seekMediaVideo=nativeSeek;}}
   });
-  assert.equal(result.sourceDuration,4);assert.deepEqual(result.cases,[[4,5],[4,5,6,7],[4,5],[0,15],Array.from({length:16},(_,i)=>i),[15]]);
+  assert.equal(result.sourceDuration,4);assert.ok(result.decodedChecks>=20,'actual source PTS and decoded colors were checked');assert.deepEqual(result.cases,[[4,5],[4,5,6,7],[4,5],[0,15],Array.from({length:16},(_,i)=>i),[15]]);
   assert.deepEqual(result.first.stats.frames,[4,5]);assert.deepEqual(result.first.slots,[4,5]);assert.equal(result.first.version,2);
   assert.deepEqual(result.extended.stats.frames,[2,3,6,7,8,9,10,11]);assert.equal(result.extended.stats.resets,1);assert.equal(result.oldFrameKept,true);assert.equal(result.extended.ref.display,'only');assert.equal(result.extended.ref.behindLyrics,true);assert.equal(result.extended.ref.behindForeground,true);
   for(const v of [result.short,result.repeat,result.allRepeat,result.old]){assert.equal(v.stats.workers,0);assert.deepEqual(v.stats.seeks,[]);assert.deepEqual(v.stats.frames,[]);assert.equal(v.stats.progress[0].missing,0);}
@@ -83,7 +93,7 @@ const {timelineAction}=require('./ui_helpers.cjs');
   await modal.locator('button[type=submit]').click();await timelineAction(page,'[data-layer="media"][data-index="0"]','details');await modal.locator('[data-detail-tab="personCutout"]').click();await modal.locator('[data-person-run]').click();await page.waitForFunction(()=>rangeUICalls[1]?.done);await page.waitForFunction(()=>!document.querySelector('[data-person-display]').disabled);assert.equal(await page.evaluate(()=>rangeUICalls[1].stats.workers),0);assert.match(await modal.locator('[data-person-status]').textContent(),locale?/No additional inference/:/追加の解析は行っていません/);
   await modal.locator('[data-detail-tab="basic"]').click();await modal.locator('[data-detail-field="videoStart"]').fill('2.5');await modal.locator('[data-detail-field="videoStart"]').press('Tab');await modal.locator('[data-detail-tab="personCutout"]').click();await modal.locator('[data-person-run]').click();await page.waitForFunction(()=>rangeUICalls[2]?.done);assert.equal(await page.evaluate(()=>rangeUICalls[2].cut.videoStart),2.5);assert.deepEqual(await page.evaluate(()=>rangeUICalls[2].stats.frames),[10,11,12,13,14,15]);
   await modal.locator('button[type=submit]').click();const packedBytes=await page.evaluate(()=>rangeFixture()),fresh=await browser.newPage();
-  await fresh.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await fresh.goto(url);
+  await loadApp(fresh,{locale,origin:'http://localhost:8765'});
   await fresh.evaluate(async bytes=>J.uiApi.openProjectFile(new File([new Uint8Array(bytes)],'range.lyricfx')),packedBytes);
   const restored=await fresh.evaluate(async()=>{const cut=J.ui.plan.media.cuts[0],entry=await J.loadPersonMask(cut.personCutout);await J.preparePersonMask(cut,.5,true);let missing;const ref=await J.generatePersonMask(cut,{fps:4,onProgress:p=>{if(p.phase==='plan')missing=p.missing;}});return {version:entry.meta.version,slots:[...entry.slots.keys()],missing,maskId:ref.maskId,originalId:cut.personCutout.maskId,visible:!!J.personMaskFrame(cut,.5)};});
   assert.equal(restored.version,2);assert.deepEqual(restored.slots,Array.from({length:12},(_,i)=>i+4));assert.equal(restored.missing,0);assert.equal(restored.maskId,restored.originalId);assert.equal(restored.visible,true);

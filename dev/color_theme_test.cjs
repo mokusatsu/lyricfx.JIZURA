@@ -1,7 +1,6 @@
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
-const root=path.join(__dirname,'..');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['','en/']){const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,lang,'index.html'))}):r.abort());await page.route('https://fonts.googleapis.com/**',r=>r.fulfill({contentType:'text/css',body:''}));await page.goto(url);
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/']){const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale:lang});
 const result=await page.evaluate(()=>{
 const failures=[],check=(ok,m)=>{if(!ok)failures.push(m)};
 const hue=c=>J.toHsl(c)[0],sat=c=>J.toHsl(c)[1],light=c=>J.toHsl(c)[2],hueDiff=(a,b)=>{const d=Math.abs(a-b)%360;return Math.min(d,360-d);};

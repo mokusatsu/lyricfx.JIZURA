@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('node:assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});try{for(const lang of ['','en/']){
- const page=await browser.newPage({viewport:{width:1400,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await page.goto(url);
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/']){
+ const page=await browser.newPage({viewport:{width:1400,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
  // Configure the existing circle through the actual timeline editor.
  await page.locator('#lyrics').fill('[00:00]One\n[00:10]Two');await page.waitForFunction(()=>J.ui.plan.cuts.some(c=>c.part==='interlude'));await page.locator('#sourceAvoidance').click();await page.locator('#addAvoidanceCircle').click();await page.locator('#avoidanceEditPlacement').selectOption('move');await page.locator('#avoidanceEditOcclusion').selectOption('none');await page.locator('#areaApplyOne').click();await page.waitForFunction(()=>J.ui.plan.avoidance.cuts.some(c=>c.kind==='circle'));
  const timeline=page.locator('#timeline');await timeline.scrollIntoViewIfNeeded();const box=await timeline.boundingBox(),duration=await page.evaluate(()=>J.ui.plan.duration);await timeline.click({position:{x:box.width*6/duration,y:box.height*.75}});await page.waitForFunction(()=>Math.abs(J.ui.t-6)<.1);

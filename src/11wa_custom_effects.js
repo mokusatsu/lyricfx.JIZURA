@@ -145,6 +145,7 @@ J.customMediaMotion=(cut,p,fade,out,W,H)=>{
   return result;
 };
 J.resolveCustomMediaCut=cut=>{
+  // Camera helpers attach derived data during painting; keep it off the source cut.
   const c={...cut};for(const field of ['enter','exit']){const d=J.MEDIA_TECH[c[field]]?.customDefinition;if(d)c[field]=J.MEDIA_TECH[d.base]?.motion||'cut';}return c;
 };
 J.drawCustomMedia=(ctx,source,fit,cut,p,fade,out)=>{

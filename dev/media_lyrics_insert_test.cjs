@@ -1,14 +1,15 @@
-const {chromium} = require('playwright');
+const {launchBrowser,loadApp,importProject,tempDirectory}=require('./test_helpers.cjs');
+const path=require('node:path'),output=tempDirectory('media-lyrics-insert-');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
 const assert = require('node:assert/strict');
 
 (async () => {
-  const browser = await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+  const browser = await launchBrowser();
   try {
     for (const locale of ['', 'en/']) {
       const page = await browser.newPage({viewport:{width:1500,height:1000}}), errors = [];
       page.on('pageerror', e => errors.push(e.message));
-      await page.goto('http://127.0.0.1:8765/' + locale);
+      await loadApp(page,{locale});
       await proMode(page);
       const insert = page.locator('#btnMediaFromLyrics');
       const modeSelect = page.locator('#mediaLyricInsertMode');
@@ -32,7 +33,7 @@ const assert = require('node:assert/strict');
         p.fx.density = 1;
         return p;
       });
-      await page.locator('#fileProject').setInputFiles({name:'fixture.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(fixture))});
+      await importProject(page,fixture);
       await page.waitForFunction(() => J.ui.plan.lines.length === 5);
       assert.equal(await page.evaluate(() => J.ui.plan.cuts.some(c => c.part === 1) && J.ui.plan.cuts.some(c => c.manualEnd && Math.abs(c.end - 7) < 1e-6) && J.ui.plan.cuts.some(c => c.line === -1)), true);
       const project = () => page.evaluate(() => structuredClone(J.ui.project));
@@ -144,7 +145,7 @@ const assert = require('node:assert/strict');
       await page.locator('#sourceMedia').click();
       assert.equal(await modeSelect.inputValue(), 'line');
       await page.locator('#btnMediaFromLyrics').scrollIntoViewIfNeeded();
-      await page.screenshot({path:`../media-lyrics-insert-${locale ? 'en' : 'ja'}.png`,fullPage:true});
+      await page.screenshot({path:path.join(output,`media-lyrics-insert-${locale ? 'en' : 'ja'}.png`),fullPage:true});
       await page.locator('#sourceLyrics').click();
       await page.locator('#lyrics').fill('');
       await page.waitForFunction(() => J.ui.plan.lines.length === 0);

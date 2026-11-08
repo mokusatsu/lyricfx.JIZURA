@@ -1,21 +1,20 @@
-const {chromium} = require('playwright');
+const {launchBrowser,loadApp,importProject,tempDirectory}=require('./test_helpers.cjs');
+const path=require('node:path'),output=tempDirectory('lyric-features-');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
 const assert = require('node:assert/strict');
 
 (async () => {
-  const browser = await chromium.launch({headless:true, executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+  const browser = await launchBrowser();
   try {
     for (const locale of ['', 'en/']) {
       const page = await browser.newPage({viewport:{width:1500,height:1000}}), errors = [];
       page.on('pageerror', error => errors.push(error.message));
-      await page.route('https://fonts.googleapis.com/**', route => route.fulfill({contentType:'text/css',body:''}));
-      await page.goto('http://127.0.0.1:8765/' + locale);
-      await page.waitForFunction(() => J.ui?.plan);
+      await loadApp(page,{locale});
       const result = await page.evaluate(async () => {
         const check = (condition, label) => { if (!condition) throw new Error(label); };
         const same = (a,b) => JSON.stringify(a) === JSON.stringify(b);
         const overlap = (a,b) => Math.max(0, Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x)) * Math.max(0, Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
-        const p = J.defaultProject();
+        const p = J.defaultProject();p.title='';p.artist='';
         p.lyrics = '{\n[00:00]First/phrase\n[00:02]*Second*\n[00:04]~Third~\n}\n[00:06]Fourth\\nFifth';
         p.fx.density = 1; p.fx.koma = 0; p.fx.hud = 'off'; p.videoSize = {w:320,h:180};
         const plan = J.plan(p), group = plan.cuts.filter(c => c.group != null);
@@ -41,7 +40,7 @@ const assert = require('node:assert/strict');
           cutOverrides:{0:{itemId:fg.id,technique:'none',placement},1:{itemId:fg.id,technique:'none',placement:{...placement,cx:.6,angle:-15}}},timing:{lineTimes:{0:0,1:3}}};
         p.lyricEffects = {autoPlacement:true,avoidForeground:true};
         const auto = J.plan(p), fore = J.planMedia(p,auto,null,'foreground');
-        for (const cut of auto.cuts.filter(c => c.line < 3 && !c.emphasis)) {
+        for (const cut of auto.cuts.filter(c => c.line >= 0 && c.line < 3 && !c.emphasis)) {
           for (const f of fore.cuts.filter(f => f.start < (cut.slotEnd ?? cut.end) && f.end + .6 > cut.start))
             check(overlap(cut.area,J.foregroundBounds(p,auto,f)) < 1e-8, 'automatic area must avoid all overlapping foreground cuts');
         }
@@ -117,7 +116,8 @@ const assert = require('node:assert/strict');
         const cv = document.createElement('canvas'); cv.width=320; cv.height=180;
         const ctx = cv.getContext('2d'), source = document.createElement('canvas'); source.width=640;source.height=360;
         source.getContext('2d').fillStyle='#00ff00';source.getContext('2d').fillRect(0,0,640,360);
-        J.mediaAssets.set(fg.id,{element:source,type:'image'});
+        const sourceFile=new File([await new Promise(resolve=>source.toBlob(resolve))],fg.name,{type:'image/png'});
+        J.mediaAssets.set(fg.id,{element:source,type:'image',file:sourceFile});
         const renderProject = {...p,lyricEffects:{autoPlacement:false},foreground:{...p.foreground,cutCount:1,
           cutOverrides:{0:{itemId:fg.id,technique:'none',entrance:'none',departure:'none',placement:{cx:.5,cy:.5,w:.6,h:.6,lockAspect:false,angle:0}}},timing:{lineTimes:{0:0}}}};
         const rp = J.plan(renderProject);rp.foreground=J.planMedia(renderProject,rp,null,'foreground');
@@ -162,11 +162,11 @@ const assert = require('node:assert/strict');
           const px=ctx.getImageData(160,90,1,1).data;
           check(px[2]>220&&px[0]<35&&px[1]<35,'exported MP4 must preserve retained frontmost compositing');
         } finally {video.removeAttribute('src');video.load();URL.revokeObjectURL(url);}
-        delete J.LAYOUTS.__lyricProbe;J.mediaAssets.delete(fg.id);
+        delete J.LAYOUTS.__lyricProbe;
         return {fixture:p,bytes:encoded.blob.size,cuts:group.length};
       });
       console.log(locale || 'ja', 'planner, seeking, layering and MP4:', {bytes:result.bytes,cuts:result.cuts});
-      await page.locator('#fileProject').setInputFiles({name:'lyrics.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(result.fixture))});
+      await importProject(page,result.fixture,'lyrics.lyricfx');
       await page.waitForFunction(()=>J.ui.project.lyrics.includes('Fourth'));
       await proMode(page);
       await page.locator('[data-tab="tech"]').click();
@@ -204,7 +204,7 @@ const assert = require('node:assert/strict');
       assert.deepEqual(errors,[]);
       await page.locator('[data-tab="tech"]').click();
       await page.evaluate(()=>J.uiApi.seek(4.5));
-      await page.screenshot({path:locale?'../lyric-features-en.png':'../lyric-features-ja.png',fullPage:true});
+      await page.screenshot({path:path.join(output,locale?'lyric-features-en.png':'lyric-features-ja.png'),fullPage:true});
       await page.close();
       console.log(locale || 'ja','UI, undo, manual area, lock and persistence passed');
     }

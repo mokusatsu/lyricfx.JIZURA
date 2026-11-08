@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{
-const page=await browser.newPage(),url='http://127.0.0.1:8765/';await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..','index.html'))}):r.abort());await page.goto(url);
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{
+const page=await browser.newPage();await loadApp(page,{origin:'http://127.0.0.1:8765'});
 const result=await page.evaluate(()=>{
 const check=(ok,msg)=>{if(!ok)throw Error(msg)},same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),errors=[];
 let tested=0;

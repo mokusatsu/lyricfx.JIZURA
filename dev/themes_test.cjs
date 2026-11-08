@@ -1,6 +1,7 @@
-const {chromium}=require('playwright');const assert=require('node:assert/strict');
+const {launchBrowser,tempDirectory}=require('./test_helpers.cjs');const assert=require('node:assert/strict');
+const output=tempDirectory('themes-');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+(async()=>{const browser=await launchBrowser();
 try{for(const locale of ['', 'en/']){const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route('https://fonts.googleapis.com/**',r=>r.fulfill({contentType:'text/css',body:''}));await page.goto('http://127.0.0.1:8765/'+locale);await proMode(page);
 assert.equal(await page.locator('#btnJev,#btnJevBig,#jevPrompt').count(),0);
 assert.equal((await page.request.post('http://127.0.0.1:8765/api/jev')).status(),501);
@@ -32,5 +33,5 @@ await page.locator('#btnOmakase').click();assert.ok(['ballad','cute'].includes(a
 await page.locator('#btnThemes').click();await page.locator('#btnClearThemes').click();await page.locator('#themesDlg button[value="cancel"]').click();assert.equal(await page.locator('#themeLabels .theme-label').count(),2);
 await page.evaluate(()=>J.uiApi.flushSave());await page.reload();assert.equal(await page.locator('#themeLabels .theme-label').count(),2);
 const roundtrip=await page.evaluate(async()=>{const blob=await J.packProject(J.ui.project,null);return (await J.unpackProject(blob)).project.themes});assert.deepEqual(roundtrip,['ballad','cute']);
-await page.locator('#btnThemes').click();await page.screenshot({path:'../themes-'+(locale?'en':'ja')+'.png'});await page.locator('#btnClearThemes').click();await page.locator('#btnApplyThemes').click();await page.locator('#modeEasy').click();await page.locator('#btnOmakaseBig').click();assert.deepEqual(errors,[]);console.log(locale||'ja',report);await page.close();}
+await page.locator('#btnThemes').click();await page.screenshot({path:output+'/themes-'+(locale?'en':'ja')+'.png'});await page.locator('#btnClearThemes').click();await page.locator('#btnApplyThemes').click();await page.locator('#modeEasy').click();await page.locator('#btnOmakaseBig').click();assert.deepEqual(errors,[]);console.log(locale||'ja',report);await page.close();}
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exit(1)});

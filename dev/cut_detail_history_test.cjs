@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
- const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}));await page.goto('http://test/');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
+ const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale});
  await page.evaluate(()=>{const p=J.defaultProject();p.lyrics='[00:00]編集テスト';p.durationOverride=8;p.overrides={0:{single:true}};p.lyricCutOptions={'0:0':{details:{mask:{enabled:true,shapes:[{type:'rect',cx:.5,cy:.5,w:.4,h:.4,angle:0,lockAspect:true}]}}}};J.ui.project=p;J.uiApi.syncUI();J.uiApi.replan();J.uiApi.seek(1);});
  const original=await page.evaluate(()=>JSON.stringify(J.ui.project));await timelineAction(page,'[data-layer="lyrics"]','details');
  const dialog=page.locator('#cutDetailsDialog'),undo=dialog.locator('[data-detail-undo]'),redo=dialog.locator('[data-detail-redo]'),reset=dialog.getByRole('button',{name:locale?'Reset':'リセット',exact:true});assert.ok(await undo.isDisabled());assert.ok(await redo.isDisabled());

@@ -1,8 +1,8 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();
 try{for(const lang of ['', 'en/']){
  const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.route('**/*',r=>r.request().url()==='http://127.0.0.1/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await page.goto('http://127.0.0.1/');
+ await loadApp(page,{locale:lang,origin:'http://127.0.0.1'});
  await page.evaluate(()=>{const p=J.defaultProject();p.lyrics='bitrate';p.videoSize={w:320,h:180};p.videoSizeMode='custom';p.fps=24;p.durationOverride=.25;J.ui.project=p;J.uiApi.syncUI();J.uiApi.replan();document.querySelector('[data-export-dialog="mp4"]').click();});
  const labels=await page.locator('#outQuality option').allTextContents();
  for(const rate of [.221,.387,.581])assert(labels.some(label=>label.includes('('+rate+' Mbps)')),JSON.stringify(labels));

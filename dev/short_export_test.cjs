@@ -1,8 +1,8 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{
  for(const locale of ['', 'en/']){
   const page=await browser.newPage({viewport:{width:1500,height:1000},hasTouch:true}),errors=[],url='http://127.0.0.1/';page.on('pageerror',e=>errors.push(e.message));
-  await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await page.goto(url);
+  await loadApp(page,{locale,origin:'http://127.0.0.1'});
   const composition=await page.evaluate(()=>{
    const source=document.createElement('canvas');source.width=192;source.height=108;const x=source.getContext('2d');x.fillStyle='red';x.fillRect(0,0,192,36);x.fillStyle='#00ff00';x.fillRect(0,36,192,36);x.fillStyle='blue';x.fillRect(0,72,192,36);
    const canvas=document.createElement('canvas');canvas.width=144;canvas.height=256;const ctx=canvas.getContext('2d'),renderer=new J.ShortFrameRenderer(),samples=[];

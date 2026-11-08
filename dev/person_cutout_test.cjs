@@ -1,11 +1,11 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {timelineAction}=require('./ui_helpers.cjs');
 (async()=>{
- const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
+ const browser=await launchBrowser();
  try{for(const locale of ['', 'en/']){
   const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+locale;
-  await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await page.goto(url);
+  await loadApp(page,{locale,origin:'http://localhost:8765'});
   const result=await page.evaluate(async()=>{
    const make=(color)=>{const c=document.createElement('canvas');c.width=c.height=100;const x=c.getContext('2d');x.fillStyle=color;x.fillRect(0,0,100,100);return c;};
    const png=c=>new Promise(resolve=>c.toBlob(resolve,'image/png'));
@@ -104,7 +104,7 @@ const {timelineAction}=require('./ui_helpers.cjs');
   await modal.locator('[data-person-display]').uncheck();await page.waitForFunction(()=>document.querySelector('#cutDetailsDialog').cutPreview.cut.personCutout.display==='none');await modal.locator('[data-person-display]').check();
   await modal.locator('button[type=submit]').click();assert.equal(await page.evaluate(()=>J.ui.plan.media.cuts[0].personCutout.display),'only');
   const bytes=await page.evaluate(async()=>Array.from(new Uint8Array(await (await J.packProject(J.ui.project)).arrayBuffer()))),fresh=await browser.newPage();
-  await fresh.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await fresh.goto(url);
+  await loadApp(fresh,{locale,origin:'http://localhost:8765'});
   await fresh.evaluate(async bytes=>J.uiApi.openProjectFile(new File([new Uint8Array(bytes)],'person.lyricfx')) ,bytes);
   const restored=await fresh.evaluate(async()=>{const cut=J.ui.plan.media.cuts[0];await J.preparePersonMask(cut,0,true);return [cut.personCutout.display,!!J.personMaskFrame(cut,0),J.mediaAssets.size];});assert.deepEqual(restored,['only',true,2]);
   await fresh.reload();await fresh.waitForFunction(()=>J.mediaAssets.size===2);assert.equal(await fresh.evaluate(async()=>{const cut=J.ui.plan.media.cuts[0];await J.preparePersonMask(cut,0,true);return !!J.personMaskFrame(cut,0);}),true,'mask survives browser reload');await fresh.close();

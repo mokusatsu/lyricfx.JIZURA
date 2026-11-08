@@ -437,9 +437,11 @@ document.fonts?.addEventListener('loadingdone', () => { J.glyphs.clear(); J.metr
    mask is split into connected pieces (strokes / radicals / dots) so that
    each can be flown, shattered or dropped independently. Works with any
    font the browser can render, including local and uploaded ones.        */
+const MAX_TINT_BYTES = 64 * 1024 * 1024;
 class GlyphCache {
-  constructor() { this.map = new Map(); this.tint = new Map(); this.count = 0; this.maxRes = 512; }
-  clear() { this.map.clear(); this.tint.clear(); }
+  constructor() { this.map = new Map(); this.tint = new Map(); this.tintOrder = new Map(); this.tintBytes = 0; this.maxRes = 512; }
+  clearTint() { this.tint.clear(); this.tintOrder.clear(); this.tintBytes = 0; }
+  clear() { this.map.clear(); this.clearTint(); }
   bucket(px) { let r = 64; while (r < px && r < this.maxRes) r *= 2; return r; }
   get(fontKey, ch, px) {
     fontKey = J.fontForChar(fontKey, ch);
@@ -449,16 +451,25 @@ class GlyphCache {
     if (!g) { g = decompose(fontKey, ch, res); this.map.set(key, g); if (this.map.size > 1800) this.evict(); }
     return g;
   }
-  evict() { let n = 0; for (const k of this.map.keys()) { this.map.delete(k); if (++n > 600) break; } this.tint.clear(); }
+  evict() { let n = 0; for (const k of this.map.keys()) { this.map.delete(k); if (++n > 600) break; } this.clearTint(); }
   sprite(piece, color) {              // tinted copy of a white piece sprite
     if (color === '#ffffff' || color === '#fff') return piece.cv;
     let m = this.tint.get(piece.id);
-    if (!m) { m = new Map(); this.tint.set(piece.id, m); }
-    let c = m.get(color);
+    let c = m?.get(color);
     if (!c) {
+      const bytes = piece.cv.width * piece.cv.height * 4;
+      // Evict the oldest tint without changing canvases still used by a draw.
+      if (bytes <= MAX_TINT_BYTES) while (this.tintBytes + bytes > MAX_TINT_BYTES) {
+        const [canvas, entry] = this.tintOrder.entries().next().value, colors = this.tint.get(entry.id);
+        colors.delete(entry.color); if (!colors.size) this.tint.delete(entry.id);
+        this.tintOrder.delete(canvas); this.tintBytes -= entry.bytes;
+      }
       c = document.createElement('canvas'); c.width = piece.cv.width; c.height = piece.cv.height;
       const x = c.getContext('2d'); x.drawImage(piece.cv, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = color; x.fillRect(0, 0, c.width, c.height);
-      m.set(color, c);
+      if (bytes <= MAX_TINT_BYTES) {
+        m = this.tint.get(piece.id); if (!m) { m = new Map(); this.tint.set(piece.id, m); }
+        m.set(color, c); this.tintOrder.set(c, { id:piece.id, color, bytes }); this.tintBytes += bytes;
+      }
     }
     return c;
   }
@@ -475,7 +486,8 @@ function decompose(fontKey, ch, res) {
   const img = x.getImageData(0, 0, S, S).data;
   const N = S * S, A = new Uint8Array(N);
   for (let i = 0; i < N; i++) A[i] = img[i * 4 + 3];
-  const L = new Int32Array(N), TH = 60;
+  let L = new Int32Array(N);
+  const TH = 60;
   const stack = new Int32Array(N);
   let nl = 0; const boxes = [];
   for (let i = 0; i < N; i++) {
@@ -483,22 +495,34 @@ function decompose(fontKey, ch, res) {
     nl++; let sp = 0; stack[sp++] = i; L[i] = nl;
     let x0 = S, y0 = S, x1 = 0, y1 = 0, area = 0;
     while (sp) {
-      const p = stack[--sp], px = p % S, py = (p / S) | 0; area++;
-      if (px < x0) x0 = px; if (px > x1) x1 = px; if (py < y0) y0 = py; if (py > y1) y1 = py;
-      for (let dy = -1; dy <= 1; dy++) {
+      const p = stack[--sp], py = (p / S) | 0, row = py * S;
+      let left = p, right = p;
+      while (left > row && !L[left - 1] && A[left - 1] >= TH) L[--left] = nl;
+      while (right < row + S - 1 && !L[right + 1] && A[right + 1] >= TH) L[++right] = nl;
+      area += right - left + 1;
+      const lx = left - row, rx = right - row;
+      if (lx < x0) x0 = lx; if (rx > x1) x1 = rx; if (py < y0) y0 = py; if (py > y1) y1 = py;
+      // Queue neighbouring runs with diagonal contact included (8-connectivity).
+      for (let dy = -1; dy <= 1; dy += 2) {
         const yy = py + dy; if (yy < 0 || yy >= S) continue;
-        for (let dx = -1; dx <= 1; dx++) {
-          const xx = px + dx; if (xx < 0 || xx >= S) continue;
-          const q = yy * S + xx;
-          if (!L[q] && A[q] >= TH) { L[q] = nl; stack[sp++] = q; }
+        const first = yy * S + Math.max(0, lx - 1), last = yy * S + Math.min(S - 1, rx + 1);
+        let run = false;
+        for (let q = first; q <= last; q++) {
+          if (!L[q] && A[q] >= TH) {
+            if (!run) { L[q] = nl; stack[sp++] = q; }
+            run = true;
+          } else run = false;
         }
       }
     }
     boxes[nl] = { x0, y0, x1, y1, area };
   }
+  if (!nl) return { ch, res, pieces: [] };
   // attach anti-aliased fringe pixels to neighbouring labels (two dilation passes)
+  // The completed flood-fill stack is now the second label buffer.
+  let L2 = stack;
   for (let pass = 0; pass < 2; pass++) {
-    const L2 = L.slice();
+    L2.set(L);
     for (let p = 0; p < N; p++) {
       if (L[p] || !A[p]) continue;
       const px = p % S, py = (p / S) | 0;
@@ -507,7 +531,7 @@ function decompose(fontKey, ch, res) {
       else if (py > 0 && L[p - S]) lab = L[p - S]; else if (py < S - 1 && L[p + S]) lab = L[p + S];
       if (lab) { L2[p] = lab; const b = boxes[lab]; if (px < b.x0) b.x0 = px; if (px > b.x1) b.x1 = px; if (py < b.y0) b.y0 = py; if (py > b.y1) b.y1 = py; }
     }
-    L.set(L2);
+    const previous = L; L = L2; L2 = previous;
   }
   // merge specks into nearest bigger piece
   const minA = res * res * 0.0012;
@@ -819,9 +843,12 @@ function drawItemLayered(env, it) {
   x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
   const T = ctx.getTransform(), k = Math.max(0.05, Math.hypot(T.a, T.b));
   const ow = Math.ceil((x1 - x0) * k), oh = Math.ceil((y1 - y0) * k);
-  if (ow < 2 || oh < 2 || ow * oh > ctx.canvas.width * ctx.canvas.height * 1.6) return undefined;   // fall back to the direct path
+  const maxLayerPixels = ctx.canvas.width * ctx.canvas.height * 1.6;
+  if (ow < 2 || oh < 2 || ow * oh > maxLayerPixels) return undefined;   // fall back to the direct path
   if (!layerCv) layerCv = document.createElement('canvas');
-  if (layerCv.width < ow || layerCv.height < oh) { layerCv.width = Math.max(ow, layerCv.width); layerCv.height = Math.max(oh, layerCv.height); }
+  // Width and height from different aspect ratios must share the same budget.
+  if (Math.max(ow, layerCv.width) * Math.max(oh, layerCv.height) > maxLayerPixels) { layerCv.width = ow; layerCv.height = oh; }
+  else if (layerCv.width < ow || layerCv.height < oh) { layerCv.width = Math.max(ow, layerCv.width); layerCv.height = Math.max(oh, layerCv.height); }
   const L = layerCv.getContext('2d');
   L.setTransform(1, 0, 0, 1, 0, 0); L.globalAlpha = 1; L.globalCompositeOperation = 'source-over'; L.filter = 'none';
   L.clearRect(0, 0, ow, oh);
@@ -1667,6 +1694,18 @@ J.EXIT = {
   },
 };
 
+/* Samples used to prepare piece-animation glyphs while the editor is idle.
+   Keep the cut live until the scheduled task runs, just like drawing it. */
+J.glyphWarmupTask = cut => {
+  if (cut.enter !== 'assemble' && !['explode', 'fall', 'drift'].includes(cut.exit)) return null;
+  return () => {
+    const times = [];
+    if (cut.enter === 'assemble') times.push(cut.start + Math.min(cut.inDur * 0.3, cut.dur * 0.2));
+    if (cut.outDur > 0) times.push(cut.end - cut.outDur * 0.5);
+    return times;
+  };
+};
+
 /* combine glyph / piece functions */
 J.combineChar = (fns) => {
   if (!fns.length) return null;
@@ -1740,14 +1779,53 @@ J.CAMERA = {
     get: (env) => ({ s: 1 + 0.03 * (env.fx.motion ?? 0.7) * J.clamp(env.lt / Math.max(0.3, env.cut.dur)) }) },
 };
 J.CAMERA_ORDER = ['push'];
-// post / transition effects. Entries without draw() are handled by the renderer's built-in branch.
+// post / transition effects. scratch requests a copy of the current canvas.
+// Builtin draws retain their original Canvas state and error behavior.
 J.FXE = {
-  slice:  { name: 'スライスグリッチ', builtin: true },
-  block:  { name: 'ブロックグリッチ', builtin: true },
-  invert: { name: '反転', builtin: true },
-  flash:  { name: 'フラッシュ', builtin: true },
-  zoom:   { name: 'ズームブラー', builtin: true },
-  mosaic: { name: 'モザイク', builtin: true },
+  slice: { name: 'スライスグリッチ', builtin: true, scratch: true,
+    draw(ctx, ev, k, {cw,ch,S,step:st2}) {
+      const n = 6 + (J.h(st2, 3) % 7);
+      let y = 0;
+      for (let i = 0; i < n && y < ch; i++) {
+        const h = Math.max(2, ch * J.rr(0.01, 0.12, st2, i, 1));
+        const dx = (J.r(st2, i, 2) < 0.55 ? J.rs(st2, i, 3) * cw * 0.06 * ev.amp : 0);
+        if (dx) ctx.drawImage(S, 0, y, cw, h, dx, y, cw, h);
+        y += h + ch * J.rr(0, 0.08, st2, i, 4);
+      }
+    } },
+  block: { name: 'ブロックグリッチ', builtin: true, scratch: true,
+    draw(ctx, ev, k, {cw,ch,S,sc,step:st2}) {
+      for (let i = 0; i < 9; i++) {
+        const w = cw * J.rr(0.05, 0.3, st2, i, 5), h = ch * J.rr(0.01, 0.07, st2, i, 6);
+        const x = J.r(st2, i, 7) * (cw - w), y = J.r(st2, i, 8) * (ch - h);
+        const sx = J.clamp(x + J.rs(st2, i, 9) * cw * 0.08, 0, cw - w), sy = J.clamp(y + J.rs(st2, i, 10) * ch * 0.04, 0, ch - h);
+        ctx.drawImage(S, sx, sy, w, h, x, y, w, h);
+        if (J.r(st2, i, 11) < 0.35) { ctx.globalCompositeOperation = 'difference'; ctx.fillStyle = J.r(st2, i, 12) < 0.5 ? sc.ghostA : sc.ghostB; ctx.fillRect(x, y, w, h); ctx.globalCompositeOperation = 'source-over'; }
+      }
+    } },
+  invert: { name: '反転', builtin: true,
+    draw(ctx, ev, k, {cw,ch}) {
+      ctx.globalCompositeOperation = 'difference'; ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, cw, ch); ctx.globalCompositeOperation = 'source-over';
+    } },
+  flash: { name: 'フラッシュ', builtin: true,
+    draw(ctx, ev, k, {cw,ch,sc}) {
+      ctx.globalAlpha = Math.pow(1 - k, 1.5) * 0.92; ctx.fillStyle = J.lum(sc.bg) < 0.5 ? sc.fg : '#ffffff'; ctx.fillRect(0, 0, cw, ch); ctx.globalAlpha = 1;
+    } },
+  zoom: { name: 'ズームブラー', builtin: true, scratch: true,
+    draw(ctx, ev, k, {cw,ch,S}) {
+      const a = ev.amp * (1 - k);
+      for (let i = 1; i <= 6; i++) {
+        const s = 1 + i * 0.022 * a; ctx.globalAlpha = 0.2 * (1 - i / 7) * Math.min(1, a * 1.3);
+        ctx.drawImage(S, cw / 2 - cw * s / 2, ch / 2 - ch * s / 2, cw * s, ch * s);
+      }
+      ctx.globalAlpha = 1;
+    } },
+  mosaic: { name: 'モザイク', builtin: true, scratch: true,
+    draw(ctx, ev, k, {cw,ch,S,renderer}) {
+      const T = renderer.ensure(renderer.tiny, Math.max(8, Math.round(cw / 42)), Math.max(8, Math.round(ch / 42))), tx = T.getContext('2d');
+      tx.imageSmoothingEnabled = true; tx.drawImage(S, 0, 0, T.width, T.height);
+      ctx.imageSmoothingEnabled = false; ctx.globalAlpha = 0.85 * (1 - k); ctx.drawImage(T, 0, 0, cw, ch); ctx.globalAlpha = 1; ctx.imageSmoothingEnabled = true;
+    } },
   shake:  { name: '揺れ', builtin: true },
   chroma: { name: '色ズレの跳ね', builtin: true },
 };
@@ -3832,17 +3910,22 @@ function partition(chunks, k) {
 }
 // 統一感重視 (themeBalance 'unified', set per plan): the same effect again is favoured instead of avoided.
 let UNITY = false;
-function novelty(history, key, val) {
-  let w = 1;
-  for (let i = history.length - 1, d = 0; i >= 0 && d < 6; i--, d++) if (history[i][key] === val) w *= UNITY ? (d < 2 ? 2.6 : 1.5) : (d < 2 ? 0.2 : 0.6);
-  return w;
+function noveltyWeights(history, key) {
+  const weights = new Map();
+  // Keep the newest-to-oldest multiplication order, including its rounding.
+  for (let i = history.length - 1, d = 0; i >= 0 && d < 6; i--, d++) {
+    const value = history[i][key], factor = UNITY ? (d < 2 ? 2.6 : 1.5) : (d < 2 ? 0.2 : 0.6);
+    weights.set(value, (weights.get(value) ?? 1) * factor);
+  }
+  return weights;
 }
 function pickLayout(rng, st, en, n, dur, history, emph, recap, portrait, note) {
+  const weights = noveltyWeights(history, 'layout');
   const cands = [];
   for (const k of J.LAYOUT_ORDER) {
     const L = J.LAYOUTS[k];
     if (!en.layout[k] || !L.fits(n)) continue;
-    let w = wkey(st.bias.layout, k, L.w ?? 1) * novelty(history, 'layout', k);
+    let w = wkey(st.bias.layout, k, L.w ?? 1) * (weights.get(k) ?? 1);
     if (portrait) w *= L.portrait ?? 1;
     if (emph && L.emph) w *= L.emph;
     if (emph && L.selection?.emphasis) w *= L.selection.emphasis;
@@ -3855,12 +3938,13 @@ function pickLayout(rng, st, en, n, dur, history, emph, recap, portrait, note) {
   return rng.wpick(withNote.length ? withNote : cands);
 }
 function pickEnter(rng, st, en, layout, dur, history, emph, n) {
+  const weights = noveltyWeights(history, 'enter');
   const cands = [];
   for (const k of J.ENTER_ORDER) {
     if (!en.enter[k]) continue;
     const D = J.ENTER[k]; if (!D) continue;
     const LD = J.LAYOUTS[layout] || {};
-    let w = wkey(st.bias.enter, k, D.w ?? 1) * novelty(history, 'enter', k) * wkey(LD.enterBias, k, 1);
+    let w = wkey(st.bias.enter, k, D.w ?? 1) * (weights.get(k) ?? 1) * wkey(LD.enterBias, k, 1);
     if (D.minDur && dur < D.minDur) w *= 0.15;
     if (D.maxChars && n > D.maxChars) w *= 0.2;
     if (D.selection?.weight) w *= D.selection.weight;
@@ -3872,11 +3956,12 @@ function pickEnter(rng, st, en, layout, dur, history, emph, n) {
   return cands.length ? rng.wpick(cands) : 'cut';
 }
 function pickExit(rng, st, en, layout, dur, lastOfLine, history) {
+  const weights = noveltyWeights(history, 'exit');
   const cands = [];
   for (const k of J.EXIT_ORDER) {
     if (!en.exit[k]) continue;
     const D = J.EXIT[k]; if (!D) continue;
-    let w = wkey(st.bias.exit, k, D.w ?? 1) * novelty(history, 'exit', k);
+    let w = wkey(st.bias.exit, k, D.w ?? 1) * (weights.get(k) ?? 1);
     if (D.minDur && dur < D.minDur) w *= 0.15;
     if (D.selection?.weight) w *= D.selection.weight(dur,lastOfLine);
     else if (dur < 0.6) w *= 0.4;
@@ -3886,12 +3971,13 @@ function pickExit(rng, st, en, layout, dur, lastOfLine, history) {
   return cands.length ? rng.wpick(cands) : 'cut';
 }
 function pickHold(rng, en, fx, history) {
+  const weights = noveltyWeights(history, 'hold');
   const cands = J.HOLD_ORDER.filter(k => en.hold[k] !== false && J.HOLD[k]).map(k => {
     const D = J.HOLD[k];
     let w = D.selection?.weight ?? D.w ?? 0.8;
     if (D.selection?.motion || (D.tags && D.tags.includes('glitch'))) w *= 0.4 + fx.motion;
     if (D.selection?.glitch) w *= fx.glitch;
-    return [k, w * novelty(history, 'hold', k)];
+    return [k, w * (weights.get(k) ?? 1)];
   });
   return cands.length ? rng.wpick(cands) : 'still';
 }
@@ -3916,8 +4002,9 @@ function pickDecor(rng, st, en, fx, layout, history = []) {
 function pickTreat(rng, st, en, fx, LD, emph, history) {
   if (LD.treat === false) return 'none';
   if (!rng.chance(0.18 + 0.42 * (fx.decor ?? 0.5) + (emph ? 0.15 : 0))) return 'none';
+  const weights = noveltyWeights(history, 'treat');
   const cands = J.TREAT_ORDER.filter(k => k !== 'none' && en.treat && en.treat[k] !== false && J.TREAT[k] && (LD.treat !== 'safe' || J.TREAT[k].safe))
-    .map(k => [k, wkey(st.bias && st.bias.treat, k, J.TREAT[k].w ?? 1) * novelty(history, 'treat', k)]);
+    .map(k => [k, wkey(st.bias && st.bias.treat, k, J.TREAT[k].w ?? 1) * (weights.get(k) ?? 1)]);
   return cands.length ? rng.wpick(cands) : 'none';
 }
 function pickBg(rng, st, en, fx, bgHist) {
@@ -3928,9 +4015,10 @@ function pickBg(rng, st, en, fx, bgHist) {
   return cands.length ? rng.wpick(cands) : 'none';
 }
 function pickCam(rng, st, en, fx, LD, emph, history) {
+  const weights = noveltyWeights(history, 'cam');
   const cands = J.CAMERA_ORDER.filter(k => en.cam && en.cam[k] !== false && J.CAMERA[k]).map(k => {
     const D = J.CAMERA[k];
-    let w = wkey(st.bias && st.bias.cam, k, D.w ?? 1) * novelty(history, 'cam', k);
+    let w = wkey(st.bias && st.bias.cam, k, D.w ?? 1) * (weights.get(k) ?? 1);
     if (D.strong) w *= 0.25 + 0.9 * (fx.motion ?? 0.7) + (emph ? 0.6 : 0);
     if (LD.cam === false && k !== 'push') w *= 0.05;
     return [k, w];
@@ -3940,8 +4028,9 @@ function pickCam(rng, st, en, fx, LD, emph, history) {
 function pickTrans(rng, st, en, fx, emph, history) {
   if (!J.TRANS_ORDER.length) return null;
   if (!rng.chance(0.1 + 0.22 * (fx.motion ?? 0.7) + (emph ? 0.08 : 0))) return null;
+  const weights = noveltyWeights(history, 'trans');
   const cands = J.TRANS_ORDER.filter(k => en.trans && en.trans[k] !== false && J.TRANS[k])
-    .map(k => [k, wkey(st.bias && st.bias.trans, k, J.TRANS[k].w ?? 1) * novelty(history, 'trans', k)]);
+    .map(k => [k, wkey(st.bias && st.bias.trans, k, J.TRANS[k].w ?? 1) * (weights.get(k) ?? 1)]);
   return cands.length ? rng.wpick(cands) : null;
 }
 // kind 'edge' = transition at a cut boundary, 'mid' = accent in the middle of a cut
@@ -4031,14 +4120,15 @@ function migrateLyricBlankCuts(project) {
   }
 }
 J.normalizeProject = p => {
-  const d = J.defaultProject();
+  const d = J.defaultProject(), {fx,timing,avoidance} = d;
   const o = Object.assign(d, p || {});
   if (o.videoSize) { const [w, h] = J.outputSize(o); o.videoSize = { w, h }; }
   o.shortExport=J.shortExportSettings(o.shortExport);
-  o.fx = Object.assign(J.defaultProject().fx, (p && p.fx) || {});
-  o.timing = Object.assign(J.defaultProject().timing, (p && p.timing) || {});
+  o.fx = Object.assign(fx, (p && p.fx) || {});
+  o.timing = Object.assign(timing, (p && p.timing) || {});
   o.timing.cutTimes = o.timing.cutTimes || {};
   o.customEffects=J.validateCustomEffects(o.customEffects||[]);J.activateCustomEffects(o);
+  // Custom components may add choices; build this map after registration.
   const en = J.defaultProject().enabled;
   for (const g of Object.keys(en)) en[g] = Object.assign(en[g], ((p && p.enabled) || {})[g] || {});
   o.enabled = en;
@@ -4054,7 +4144,7 @@ J.normalizeProject = p => {
   o.favoriteSequence = Math.max(o.effectFavorites.length,Math.floor(+o.favoriteSequence)||0);
   o.timelineLinks = Array.isArray(p && p.timelineLinks) ? p.timelineLinks : [];
   o.layerVisibility = Object.assign({avoidance:true,foreground:true,lyrics:true,media:true}, (p && p.layerVisibility) || {});
-  o.avoidance = J.normalizeAvoidance(p ? p.avoidance : J.defaultProject().avoidance);
+  o.avoidance = J.normalizeAvoidance(p ? p.avoidance : avoidance);
   o.media = J.normalizeMedia(p && p.media);
   o.foreground = J.normalizeMedia(p && p.foreground);
   for (const layer of ['media', 'foreground']) o[layer].effects = J.mediaEffectSettings(o, layer);
@@ -4472,7 +4562,9 @@ J.composeLyricArea = (cut, { w, h, obstacles = [], zone = null, fgCenter = null,
       if (zone) score += 2 * (1 - overlap(r, zone) / area);
       if (fgCenter) score -= .8 * Math.hypot(x + cw / 2 - fgCenter.x, y + ch / 2 - fgCenter.y);
       // Prefer the thirds grid; smaller areas cost a little.
-      score += .25 * Math.min(...anchors.map(a => Math.abs(x + cw / 2 - a))) + .25 * Math.min(...[...anchors, .72, .28].map(a => Math.abs(y + ch / 2 - a)));
+      const mx = x + cw / 2, my = y + ch / 2;
+      score += .25 * Math.min(Math.abs(mx - 1 / 3), Math.abs(mx - .5), Math.abs(mx - 2 / 3))
+        + .25 * Math.min(Math.abs(my - 1 / 3), Math.abs(my - .5), Math.abs(my - 2 / 3), Math.abs(my - .72), Math.abs(my - .28));
       score += (1 - k) * 1.6 + rng() * .35;
       const clear = covered <= 1e-9;
       if (!best || clear && !best.clear || clear === best.clear && score < best.score) best = { score, r, clear };
@@ -6968,11 +7060,12 @@ J.mediaCopyItems = (layer='media') => layer !== 'media' ? [] : [
 ];
 J.isMediaCopy = id => ['@copy:foreground-source','@copy:foreground-render','@copy:lyrics'].includes(id);
 J.mediaSourceAvailable = cut => !!cut && (J.isMediaCopy(cut.itemId) || J.mediaAssets.has(cut.itemId));
+J.mediaSourceForCut = cut => J.exportMediaSources?.get(cut) || J.mediaAssets.get(cut?.itemId)?.element;
 J.mediaSourceDimensions = (plan,cut,t=0) => {
   if(!cut)return null;
   if(J.isMediaCopy(cut.itemId) && cut.itemId!=='@copy:foreground-source')return {width:plan.W,height:plan.H};
   if(cut.itemId==='@copy:foreground-source')cut=J.mediaAt(plan,t,'foreground');
-  const source=cut&&J.mediaAssets.get(cut.itemId)?.element;
+  const source=cut&&J.mediaSourceForCut(cut);
   const width=source&&(source.videoWidth||source.naturalWidth||source.width),height=source&&(source.videoHeight||source.naturalHeight||source.height);
   return width&&height?{width,height}:null;
 };
@@ -6980,7 +7073,7 @@ J.mediaCopySource = (plan,cut,t,owner,w,h) => {
   if(!J.isMediaCopy(cut.itemId))return null;
   if(cut.itemId==='@copy:foreground-source') {
     const foreground=J.mediaAt(plan,t,'foreground');
-    return foreground&&J.mediaAssets.get(foreground.itemId)?.element || null;
+    return foreground&&J.mediaSourceForCut(foreground) || null;
   }
   const renderer=owner.copyRenderer || (owner.copyRenderer=new J.Renderer());
   const canvas=owner.copySourceCanvas || (owner.copySourceCanvas=document.createElement('canvas'));
@@ -7134,6 +7227,29 @@ J.mediaVideoTime = (cut, t, duration) => {
   const elapsed = offset + Math.max(0, t - cut.start);
   return Math.min(cut.videoLoop ? elapsed % duration : elapsed, Math.max(0, duration - 0.001));
 };
+// All effects currently require the complete background. Keep source demand in
+// one place so a future policy can also inspect settings, overlap and history.
+J.exportMediaDemand = (plan, t) => {
+  const sources = [];
+  for (const layer of ['media', 'foreground']) {
+    if (plan.layerVisibility?.[layer] === false) continue;
+    const add = (c, time, transition) => {
+      const asset = J.mediaAssets.get(c.itemId);
+      if (c.type !== 'video' || !asset) return;
+      const duration = asset.element.duration;
+      const target = J.mediaVideoTime(c, time, duration);
+      const offset = Number.isFinite(+c.videoStart) ? J.clamp(+c.videoStart, 0, Math.max(0, duration - .001)) : 0;
+      const elapsed = offset + Math.max(0, time - c.start);
+      sources.push({ layer, cut: c, time: target, cycle: c.videoLoop ? Math.floor(elapsed / duration) : 0, transition });
+    };
+    for (const cut of J.mediaCutsAt(plan, t, layer)) {
+      const previous = cut.index > 0 && plan[layer].cuts[cut.index - 1];
+      if (previous?.type === 'video' && cut.trans && Math.abs(previous.end - cut.start) < .06 && t - cut.start < cut.transDur) add(previous, previous.end - .001, true);
+      add(cut, t, false);
+    }
+  }
+  return { backgroundRequired: true, sources };
+};
 
 const DB = 'jizura-media-v1';
 const dbOpen = () => new Promise((resolve, reject) => {
@@ -7158,7 +7274,7 @@ J.snapshotMediaFile = (file, onProgress = () => {}) => {
   const retain = copy => { J.platform?.retainMediaReference?.(file,copy); return copy; };
   if (mediaSnapshots.has(file)) return mediaSnapshots.get(file).then(copy=>{onProgress(file.size,file.size);return retain(copy);});
   const task = (async () => {
-    const parts = [], chunk = 4 * 1024 * 1024;
+    const parts = [], chunk = J.platform?.mediaSnapshotChunkBytes || 4 * 1024 * 1024;
     onProgress(0,file.size);
     for (let offset = 0; offset < file.size; offset += chunk) {
       parts.push(new Blob([await file.slice(offset, offset + chunk).arrayBuffer()]));
@@ -7179,6 +7295,11 @@ J.snapshotMediaFile = (file, onProgress = () => {}) => {
 const temporaryMedia = new Map();
 J.hasTemporaryMedia = () => temporaryMedia.size > 0;
 const storageChanged = () => window.dispatchEvent(new Event('jizura-media-storage'));
+J.pruneTemporaryMedia = referenced => {
+  let changed=false;
+  for(const id of temporaryMedia.keys())if(!referenced(id)){temporaryMedia.delete(id);changed=true;}
+  if(changed)storageChanged();
+};
 J.storeMedia = async (id, file) => {
   const copy = await J.snapshotMediaFile(file);
   try {
@@ -7200,8 +7321,17 @@ J.removeMedia = async id => {
   if (temporaryMedia.delete(id)) storageChanged();
   return dbOp('readwrite', s => s.delete(id));
 };
+const mediaPosterListeners = new WeakMap();
 J.releaseMediaAsset = asset => {
   if (!asset) return;
+  if (asset.element) {
+    asset.element.onload = asset.element.onloadedmetadata = asset.element.onloadeddata = asset.element.onerror = null;
+    const poster = mediaPosterListeners.get(asset.element);
+    if (poster) {
+      asset.element.removeEventListener('seeked', poster);
+      mediaPosterListeners.delete(asset.element);
+    }
+  }
   if (asset.element && asset.type === 'video') {
     previewVideoWarmups.get(asset.element)?.abort();previewVideoWarmups.delete(asset.element);
     asset.element.pause(); asset.element.removeAttribute('src'); asset.element.load();
@@ -7232,7 +7362,7 @@ J.attachMedia = async (item, file, assets = J.mediaAssets, onProgress = () => {}
     const posterElement = item.type === 'video' ? new Image() : null;
     if (posterElement) posterElement.src = poster;
     assets.set(item.id, { url, element: el, type: item.type, poster, posterElement, file });
-    if(item.type==='video'){updatePoster();el.addEventListener('seeked',updatePoster,{once:true});}
+    if(item.type==='video'){mediaPosterListeners.set(el,updatePoster);el.addEventListener('seeked',updatePoster,{once:true});updatePoster();}
     resolve(el);
   };
   el.onerror = fail;
@@ -7249,7 +7379,7 @@ const seekMediaVideo = async (v, target, signal, name = '') => {
   if(warming&&warming.signal!==signal){warming.abort();previewVideoWarmups.delete(v);}
   v.pause(); v.playbackRate = 1;
   const dur = v.duration || 1;
-  target = Math.max(0, Math.min(target, Math.max(0, dur - 0.04)));
+  target = Math.max(0, Math.min(target, Math.max(0, dur - 0.001)));
   if (signal?.aborted)throw new Error('Cancelled');
   if (v.ended) { try { v.currentTime = 0; } catch (e) {} }
   if (Math.abs(v.currentTime - target) < 0.002 && v.readyState >= 2 && !v.seeking && !v.ended) return;
@@ -7297,7 +7427,8 @@ const seekMediaVideo = async (v, target, signal, name = '') => {
     // A decoded video usually seeks while paused. Starting it immediately can
     // overshoot the target before iOS delivers seeked, causing endless rewinds.
     // Only start playback if no frame exists or the paused seek has stalled.
-    if(v.readyState<2)wakeDecoder();else if(v.seeking)wakeTimer=setTimeout(wakeDecoder,500);
+    // An initial paused seek can finish before the first frame is decoded too.
+    if(v.seeking)wakeTimer=setTimeout(wakeDecoder,500);else if(v.readyState<2)wakeDecoder();
     ok();
   });
 };
@@ -7421,6 +7552,7 @@ J.chromaSource = (src, cut, w, h) => {
     const hue = hueOf(r, g, b, max, range), difference = Math.abs(hue - keyHue);
     const hueDistance = Math.min(difference, 6 - difference);
     const hueMatch = 1 - J.clamp((hueDistance - 0.35) / 0.4, 0, 1);
+    if (hueMatch === 0) continue;
     const saturationMatch = J.clamp((range / max - 0.18) / 0.17, 0, 1);
     d[i + 3] = Math.round(d[i + 3] * (1 - hueMatch * saturationMatch));
   }
@@ -7444,7 +7576,7 @@ J.chromaSource = (src, cut, w, h) => {
 };
 J.drawMediaCut = (ctx, cut, t, options = {}) => {
   const asset = J.mediaAssets.get(cut.itemId); if (!asset && !options.source) return false;
-  const src = options.source || asset.element, sw = src.videoWidth || src.naturalWidth || src.width, sh = src.videoHeight || src.naturalHeight || src.height;
+  const src = options.source || J.mediaSourceForCut(cut), sw = src.videoWidth || src.naturalWidth || src.width, sh = src.videoHeight || src.naturalHeight || src.height;
   if (!sw || !sh) return false;
   const personFrame = options.personPass ? J.personMaskFrame?.(cut,t) : null;
   if(options.personPass && (!personFrame || options.personMode && !J.personCutout(cut)?.[options.personMode]))return false;
@@ -7512,7 +7644,7 @@ J.drawMedia = (ctx, plan, t, owner, layer = 'media', previewEdit = false, cut = 
   const clear = c => { const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.filter = 'none'; x.clearRect(0, 0, w, h); if (layer === 'media' && !personAlpha) { x.fillStyle = bg; x.fillRect(0, 0, w, h); } return x; };
   const snapshot = transitionFrame(layer);
   const priorAsset = J.mediaAssets.get(prev.itemId);
-  const prevSource = prev.type === 'video' ? (snapshot && snapshot.plan === (plan.previewSource || plan) && snapshot.index === prev.index ? snapshot.canvas : prev.itemId === cut.itemId && priorAsset.posterElement && priorAsset.posterElement.complete ? priorAsset.posterElement : null) : null;
+  const prevSource = prev.type === 'video' ? (J.exportMediaPreviousSources?.get(prev) || (snapshot && snapshot.plan === (plan.previewSource || plan) && snapshot.index === prev.index ? snapshot.canvas : prev.itemId === cut.itemId && priorAsset.posterElement && priorAsset.posterElement.complete ? priorAsset.posterElement : null)) : null;
   J.drawMediaCut(clear(A), prev, Math.max(prev.start, prev.end - 0.001), { noExit: true, source: sourceFor(prev) || prevSource,personPass:owner?.personMaskPass,personMode:owner?.personMaskMode });
   J.drawMediaCut(clear(B), cut, t, { noEnter: !cut.independentPhases, source:sourceFor(cut),personPass:owner?.personMaskPass,personMode:owner?.personMaskMode });
   const p = J.clamp((t - cut.start) / cut.transDur);
@@ -9497,10 +9629,13 @@ const noiseTile = () => {
   g.putImageData(img, 0, 0); return noise = c;
 };
 const THERMAL = [[0, [12, 0, 60]], [.25, [96, 0, 170]], [.45, [230, 30, 90]], [.65, [255, 140, 0]], [.85, [255, 238, 70]], [1, [255, 255, 255]]];
-const thermalColor = l => {
+const applyThermalColor = (l, data, offset, amount) => {
   let i = 1; while (i < THERMAL.length - 1 && l > THERMAL[i][0]) i++;
   const [p0, c0] = THERMAL[i - 1], [p1, c1] = THERMAL[i], k = clamp((l - p0) / (p1 - p0));
-  return [0, 1, 2].map(n => c0[n] + (c1[n] - c0[n]) * k);
+  for (let n = 0; n < 3; n++) {
+    const value = c0[n] + (c1[n] - c0[n]) * k;
+    data[offset + n] += (value - data[offset + n]) * amount;
+  }
 };
 const TEXTURES = new Set(['lightLeak', 'filmGrain', 'vignette', 'hueCycle', 'scanlines', 'thermal', 'softBloom', 'cyanotype']);
 const renderTexture = (source, fit, cut, p, amount) => {
@@ -9547,8 +9682,7 @@ const renderTexture = (source, fit, cut, p, amount) => {
         const img = x.getImageData(0, 0, w, h), d = img.data;
         for (let i = 0; i < d.length; i += 4) {
           if (!d[i + 3]) continue;
-          const col = thermalColor((d[i] * .299 + d[i + 1] * .587 + d[i + 2] * .114) / 255);
-          for (let n = 0; n < 3; n++) d[i + n] += (col[n] - d[i + n]) * amount;
+          applyThermalColor((d[i] * .299 + d[i + 1] * .587 + d[i + 2] * .114) / 255, d, i, amount);
         }
         x.putImageData(img, 0, 0);
       } catch { x.clearRect(0, 0, w, h); x.filter = `invert(${amount}) hue-rotate(${180 * amount}deg) saturate(${1 + 2 * amount})`; x.drawImage(source, 0, 0, w, h); }
@@ -10098,9 +10232,10 @@ groups.forEach((aliases, id) => aliases.forEach(alias => aliasGroups.set(alias, 
 const pattern = [...aliasGroups.keys()].sort((a,b) => b.length-a.length).map(alias =>
   (/^[a-z0-9]/.test(alias)?'(?<![a-z0-9])':'') + escape(alias).replace(/ /g,'\\s*') + (/[a-z0-9]$/.test(alias)?'(?![a-z0-9])':'')
 ).join('|');
+const conceptPattern = new RegExp(pattern,'g');
 const concepts = text => {
   const ids = new Set();
-  const rest = text.replace(new RegExp(pattern,'g'), match => {
+  const rest = text.replace(conceptPattern, match => {
     const id=aliasGroups.get(match) ?? aliasGroups.get(match.replace(/\s+/g,' '));
     // Multiword aliases may also be entered without spaces.
     const resolved=id ?? [...aliasGroups].find(([alias])=>alias.replace(/\s/g,'')===match.replace(/\s/g,''))?.[1];
@@ -10646,6 +10781,7 @@ J.detailFieldLabel=key=>{
 (() => {
 'use strict';
 const L = (...args) => J.mediaLabel(...args), entries = new Map(), loading = new Map();
+let cacheGeneration = 0;
 J.PERSON_MODEL = {
   id:'rvm',
   url:'https://raw.githubusercontent.com/PeterL1n/RobustVideoMatting/72ed518756950796f10eea6eb6b301df97cef277/model/model.json',
@@ -10719,18 +10855,41 @@ J.readPersonMask = async (blob, ref) => {
     slots.set(index,i);last=index;end+=f.size;
   }
   if(start+end!==blob.size)throw fail();
-  return {blob,meta,start,slots,decoded:new Map(),pending:new Map()};
+  return {blob,meta,start,slots,decoded:new Map(),pending:new Map(),disposed:false};
+};
+const closeFrame = frame => { if(frame.close)frame.close();else frame.removeAttribute?.('src'); };
+const releaseEntry = entry => {
+  entry.disposed=true;
+  for(const frame of entry.decoded.values())closeFrame(frame);
+  entry.decoded.clear();
+};
+const installEntry = (ref,entry) => {
+  const old=entries.get(ref.maskId);if(old)releaseEntry(old);
+  entries.set(ref.maskId,entry);return entry;
+};
+J.retainPersonMasks = project => {
+  cacheGeneration++;loading.clear();
+  const retained=J.personMaskReferences(project);
+  for(const [id,entry]of entries){
+    const ref=retained.get(id);
+    if(!ref || ref.sourceId!==entry.meta.sourceId || ref.model!==entry.meta.model){releaseEntry(entry);entries.delete(id);}
+  }
 };
 J.attachPersonMask = async (ref,blob) => {
-  const entry=await J.readPersonMask(blob,ref),old=entries.get(ref.maskId);
-  if(old)for(const frame of old.decoded.values())frame.close?.();
-  entries.set(ref.maskId,entry);return entry;
+  const generation=cacheGeneration,entry=await J.readPersonMask(blob,ref);
+  if(generation!==cacheGeneration)throw new DOMException('Person mask released','AbortError');
+  return installEntry(ref,entry);
 };
 J.loadPersonMask = ref => {
   if(entries.has(ref.maskId))return Promise.resolve(entries.get(ref.maskId));
   if(!loading.has(ref.maskId)){
-    const work=(async()=>{const blob=await J.loadMedia(ref.maskId);return blob ? J.attachPersonMask(ref,blob) : null;})();
-    loading.set(ref.maskId,work);work.finally(()=>loading.delete(ref.maskId)).catch(()=>{});
+    const generation=cacheGeneration;
+    const work=(async()=>{
+      const blob=await J.loadMedia(ref.maskId);if(!blob || generation!==cacheGeneration)return null;
+      const entry=await J.readPersonMask(blob,ref);
+      return generation===cacheGeneration ? installEntry(ref,entry) : null;
+    })();
+    loading.set(ref.maskId,work);work.finally(()=>{if(loading.get(ref.maskId)===work)loading.delete(ref.maskId);}).catch(()=>{});
   }
   return loading.get(ref.maskId);
 };
@@ -10752,6 +10911,7 @@ const holdFrame = (entry,cut,i,img) => {
   return held;
 };
 const decodeFrame = (entry,i) => {
+  if(entry.disposed)return Promise.reject(new DOMException('Person mask released','AbortError'));
   const cached=cachedFrame(entry,i);if(cached)return Promise.resolve(cached);
   if(!entry.pending.has(i)){
     const f=entry.meta.frames[i],blob=entry.blob.slice(entry.start+f.offset,entry.start+f.offset+f.size,'image/png');
@@ -10759,8 +10919,9 @@ const decodeFrame = (entry,i) => {
       let img;
       if(typeof createImageBitmap==='function')img=await createImageBitmap(blob);
       else {img=new Image();const url=URL.createObjectURL(blob);try{img.src=url;await img.decode();}finally{URL.revokeObjectURL(url);}}
+      if(entry.disposed){closeFrame(img);throw new DOMException('Person mask released','AbortError');}
       entry.decoded.set(i,img);
-      while(entry.decoded.size>12){const key=entry.decoded.keys().next().value;entry.decoded.get(key).close?.();entry.decoded.delete(key);}
+      while(entry.decoded.size>12){const key=entry.decoded.keys().next().value;closeFrame(entry.decoded.get(key));entry.decoded.delete(key);}
       window.dispatchEvent(new Event('jizura-person-mask'));return img;
     })();
     entry.pending.set(i,work);work.finally(()=>entry.pending.delete(i)).catch(()=>{});
@@ -10930,7 +11091,9 @@ J.generatePersonMask = async (cut,{fps=24,signal,onProgress=()=>{}}={}) => {
       if(n && i!==missing[n-1]+1)await worker.request({type:'reset'});
       if(duration)await J.seekMediaVideo(source,Math.min(i/fps,duration-.001),signal,cut.name);
       ix.clearRect(0,0,iw,ih);ix.drawImage(source,0,0,iw,ih);const rgba=ix.getImageData(0,0,iw,ih).data,pixels=new Float32Array(iw*ih*3);
-      for(let n=0;n<iw*ih;n++)for(let c=0;c<3;c++)pixels[n*3+c]=rgba[n*4+c]/255;
+      for(let i=0,j=0;i<rgba.length;i+=4,j+=3){
+        pixels[j]=rgba[i]/255;pixels[j+1]=rgba[i+1]/255;pixels[j+2]=rgba[i+2]/255;
+      }
       const inferenceStart=performance.now(),result=await worker.request({type:'frame',width:iw,height:ih,pixels:pixels.buffer},[pixels.buffer]),inferenceMs=Math.round(performance.now()-inferenceStart);
       alphaCanvas.width=result.width;alphaCanvas.height=result.height;const image=ax.createImageData(result.width,result.height),alpha=new Uint8Array(result.alpha);
       for(let n=0;n<alpha.length;n++){image.data[n*4]=image.data[n*4+1]=image.data[n*4+2]=255;image.data[n*4+3]=alpha[n];}ax.putImageData(image,0,0);
@@ -11063,15 +11226,16 @@ class Renderer {
     opt={...opt,noForeground:opt.noForeground || hidden.foreground===false,noMedia:opt.noMedia || hidden.media===false,noLyrics:opt.noLyrics || hidden.lyrics===false,noHud:opt.noHud || hidden.lyrics===false,noPost:opt.noPost || hidden.lyrics===false};
     const W = plan.W, H = plan.H, scale = opt.scale || 1;
     const cw = ctx.canvas.width, ch = ctx.canvas.height;
-    const foregroundCut = plan.foreground && J.mediaAt(plan, t, 'foreground');
-    if (!opt.noForeground && foregroundCut && J.mediaCutsAt(plan, t, 'foreground').some(c => J.mediaAssets.has(c.itemId))) {
+    const foregroundCuts = !opt.noForeground && plan.foreground?.cuts?.length
+      ? J.mediaCutsAt(plan, t, 'foreground').filter(c => J.mediaAssets.has(c.itemId)) : null;
+    if (foregroundCuts?.length) {
       const step = J.stepDur(plan.fx, plan.fps);
       const frontmost = !opt.noLyrics && J.lyricCutsAt(plan, Math.floor(t / step + 1e-6) * step).some(c => c.frontmost);
       this.frame(ctx, plan, t, Object.assign({}, opt, { noForeground: true, lyricLayer: 'below' }));
       const layer = this.ensure(this.foregroundLayer || (this.foregroundLayer = document.createElement('canvas')), cw, ch);
       const lx = layer.getContext('2d');
       // Overlapping foreground cuts (own end times) composite bottom first, each with its own opacity and blend.
-      for (const cut of J.mediaCutsAt(plan, t, 'foreground').filter(c => J.mediaAssets.has(c.itemId))) {
+      for (const cut of foregroundCuts) {
         lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalAlpha = 1; lx.globalCompositeOperation = 'source-over'; lx.filter = 'none'; lx.clearRect(0, 0, cw, ch);
         J.drawForegroundLayer(lx, plan, t, this, !!opt.previewEdit, cut);
         if(!opt.previewEdit && J.maskBehindPersons)J.maskBehindPersons(layer,plan,t,'behindForeground',cut);
@@ -11088,8 +11252,9 @@ class Renderer {
       }
       return;
     }
-    const mediaCut = !opt.noMedia && !opt.transparent && plan.media && J.mediaAt(plan, t);
-    const backgroundMedia = !!mediaCut && J.mediaCutsAt(plan, t, 'media').some(J.mediaSourceAvailable);
+    const mediaCuts = !opt.noMedia && !opt.transparent && plan.media?.cuts?.length
+      ? J.mediaCutsAt(plan, t, 'media').filter(J.mediaSourceAvailable) : null;
+    const backgroundMedia = !!mediaCuts?.length;
     const effectCut = J.cutAt(plan,t);
     const fx = effectCut?.effectFx || plan.fx, st = effectCut?.effectStyle || plan.style, fps = plan.fps;
     // motion is quantised to 'koma' drawings per second (24fps timebase); random flicker runs on a <=24Hz clock
@@ -11122,7 +11287,7 @@ class Renderer {
       const mediaLayer=this.ensure(this.mediaCompositeLayer || (this.mediaCompositeLayer=document.createElement('canvas')),cw,ch);
       const mx=mediaLayer.getContext('2d');
       // Overlapping background cuts composite bottom first, each with its own mask, opacity and blend.
-      for (const cut of J.mediaCutsAt(plan, t, 'media').filter(J.mediaSourceAvailable)) {
+      for (const cut of mediaCuts) {
         mx.setTransform(1,0,0,1,0,0);mx.globalAlpha=1;mx.globalCompositeOperation='source-over';mx.clearRect(0,0,cw,ch);
         J.drawMedia(mx, plan, t, this, 'media', !!opt.previewEdit, cut);
         // A transition between windowed cuts has already masked each side (drawMedia).
@@ -11448,7 +11613,7 @@ class Renderer {
     const fx = effectCut?.effectFx || plan.fx, st = effectCut?.effectStyle || plan.style;
     const active = plan.events.filter(ev => t >= ev.t && t < ev.t + Math.max(ev.dur, 1 / plan.fps));
     const baseEvent=ev=>J.FXE[ev.type]?.customBase?{...ev,type:J.FXE[ev.type].customBase}:ev;
-    const needScratch = active.map(baseEvent).some(ev => ['slice', 'block', 'zoom', 'mosaic'].includes(ev.type) || (J.FXE[ev.type] && J.FXE[ev.type].scratch)) || (!opt.fast && (st.glow || 0) > 0);
+    const needScratch = active.some(event => J.FXE[baseEvent(event).type]?.scratch) || (!opt.fast && (st.glow || 0) > 0);
     const S = needScratch ? this.ensure(this.scratch, cw, ch) : null;
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
     const copy = () => { const sx = S.getContext('2d'); sx.globalCompositeOperation = 'copy'; sx.drawImage(ctx.canvas, 0, 0); sx.globalCompositeOperation = 'source-over'; };
@@ -11460,48 +11625,12 @@ class Renderer {
       const D = J.FXE[ev.type];
       if (D && D.draw) {
         if (D.scratch) copy();
-        try {
-          D.draw(ctx, ev, k, { cw, ch, S, sc, st, step: st2, t, scale, renderer: this, allowFilter, opt, tmp: (w, h) => this.ensure(this.tiny, w, h), tmp2: (w, h) => this.ensure(this.small2 || (this.small2 = mk(2, 2)), w, h) });
-        } catch (e) { console.warn('fx', ev.type, e); }
-        ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none'; ctx.imageSmoothingEnabled = true;
-        J.drawCustomEvent?.(ctx,event,k,sc);continue;
-      }
-      if (ev.type === 'slice') {
-        copy();
-        const n = 6 + (J.h(st2, 3) % 7);
-        let y = 0;
-        for (let i = 0; i < n && y < ch; i++) {
-          const h = Math.max(2, ch * J.rr(0.01, 0.12, st2, i, 1));
-          const dx = (J.r(st2, i, 2) < 0.55 ? J.rs(st2, i, 3) * cw * 0.06 * ev.amp : 0);
-          if (dx) ctx.drawImage(S, 0, y, cw, h, dx, y, cw, h);
-          y += h + ch * J.rr(0, 0.08, st2, i, 4);
+        const info = { cw, ch, S, sc, st, step: st2, t, scale, renderer: this, allowFilter, opt, tmp: (w, h) => this.ensure(this.tiny, w, h), tmp2: (w, h) => this.ensure(this.small2 || (this.small2 = mk(2, 2)), w, h) };
+        if (D.builtin) D.draw(ctx, ev, k, info);
+        else {
+          try { D.draw(ctx, ev, k, info); } catch (e) { console.warn('fx', ev.type, e); }
+          ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none'; ctx.imageSmoothingEnabled = true;
         }
-      } else if (ev.type === 'block') {
-        copy();
-        for (let i = 0; i < 9; i++) {
-          const w = cw * J.rr(0.05, 0.3, st2, i, 5), h = ch * J.rr(0.01, 0.07, st2, i, 6);
-          const x = J.r(st2, i, 7) * (cw - w), y = J.r(st2, i, 8) * (ch - h);
-          const sx = J.clamp(x + J.rs(st2, i, 9) * cw * 0.08, 0, cw - w), sy = J.clamp(y + J.rs(st2, i, 10) * ch * 0.04, 0, ch - h);
-          ctx.drawImage(S, sx, sy, w, h, x, y, w, h);
-          if (J.r(st2, i, 11) < 0.35) { ctx.globalCompositeOperation = 'difference'; ctx.fillStyle = J.r(st2, i, 12) < 0.5 ? sc.ghostA : sc.ghostB; ctx.fillRect(x, y, w, h); ctx.globalCompositeOperation = 'source-over'; }
-        }
-      } else if (ev.type === 'invert') {
-        ctx.globalCompositeOperation = 'difference'; ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, cw, ch); ctx.globalCompositeOperation = 'source-over';
-      } else if (ev.type === 'flash') {
-        ctx.globalAlpha = Math.pow(1 - k, 1.5) * 0.92; ctx.fillStyle = J.lum(sc.bg) < 0.5 ? sc.fg : '#ffffff'; ctx.fillRect(0, 0, cw, ch); ctx.globalAlpha = 1;
-      } else if (ev.type === 'zoom') {
-        copy();
-        const a = ev.amp * (1 - k);
-        for (let i = 1; i <= 6; i++) {
-          const s = 1 + i * 0.022 * a; ctx.globalAlpha = 0.2 * (1 - i / 7) * Math.min(1, a * 1.3);
-          ctx.drawImage(S, cw / 2 - cw * s / 2, ch / 2 - ch * s / 2, cw * s, ch * s);
-        }
-        ctx.globalAlpha = 1;
-      } else if (ev.type === 'mosaic') {
-        copy();
-        const T = this.ensure(this.tiny, Math.max(8, Math.round(cw / 42)), Math.max(8, Math.round(ch / 42))), tx = T.getContext('2d');
-        tx.imageSmoothingEnabled = true; tx.drawImage(S, 0, 0, T.width, T.height);
-        ctx.imageSmoothingEnabled = false; ctx.globalAlpha = 0.85 * (1 - k); ctx.drawImage(T, 0, 0, cw, ch); ctx.globalAlpha = 1; ctx.imageSmoothingEnabled = true;
       }
       J.drawCustomEvent?.(ctx,event,k,sc);
     }
@@ -11573,17 +11702,6 @@ J.videoFileDuration = file => new Promise((resolve,reject) => {
   video.onerror=()=>{video.onloadedmetadata=video.onerror=null;finish(new Error(J.mediaLabel('この動画形式を読み込めません','Unsupported video format')));};
   video.preload='metadata';video.src=url;
 });
-// Save extracted sound as PCM WAV so project restore / export only needs audio.
-J.audioWaveFile = (buffer,name) => {
-  const channels=buffer.numberOfChannels,length=buffer.length,size=length*channels*2;
-  if(size>0xffffffff-36)throw new Error('Audio is too large for WAV');
-  const bytes=new ArrayBuffer(44+size),view=new DataView(bytes);
-  const text=(at,value)=>{for(let i=0;i<value.length;i++)view.setUint8(at+i,value.charCodeAt(i));};
-  text(0,'RIFF');view.setUint32(4,36+size,true);text(8,'WAVE');text(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,channels,true);view.setUint32(24,buffer.sampleRate,true);view.setUint32(28,buffer.sampleRate*channels*2,true);view.setUint16(32,channels*2,true);view.setUint16(34,16,true);text(36,'data');view.setUint32(40,size,true);
-  const data=Array.from({length:channels},(_,i)=>buffer.getChannelData(i));
-  for(let i=0,at=44;i<length;i++)for(let ch=0;ch<channels;ch++,at+=2){const sample=Math.max(-1,Math.min(1,data[ch][i]));view.setInt16(at,Math.round(sample*(sample<0?32768:32767)),true);}
-  return new File([bytes],name.replace(/\.[^.]+$/,'')+'.wav',{type:'audio/wav'});
-};
 J.analyzeAudio = async (file, onProgress = () => {}) => {
   onProgress({phase:'read'});
   const buf = await file.arrayBuffer();
@@ -11591,24 +11709,38 @@ J.analyzeAudio = async (file, onProgress = () => {}) => {
   const ac = new AC();
   let audioBuffer;
   onProgress({phase:'decode'});
-  try { audioBuffer = await ac.decodeAudioData(buf.slice(0)); } finally { try { ac.close(); } catch (e) {} }
+  try { audioBuffer = await ac.decodeAudioData(buf); } finally { try { ac.close(); } catch (e) {} }
   onProgress({phase:'analyze'});
   // Paint the analysis stage before the synchronous beat / waveform calculation.
   await new Promise(resolve=>setTimeout(resolve,0));
   const sr = audioBuffer.sampleRate, len = audioBuffer.length, ch = audioBuffer.numberOfChannels;
-  const mono = new Float32Array(len);
-  for (let c = 0; c < ch; c++) { const d = audioBuffer.getChannelData(c); for (let i = 0; i < len; i++) mono[i] += d[i] / ch; }
   const rate = 50, hop = Math.round(sr / rate), n = Math.floor(len / hop);
   const energy = new Float32Array(n), flux = new Float32Array(n);
+  const bins = 1600, peaks = new Float32Array(bins), per = Math.max(1, Math.floor(len / bins));
+  const blockSize = hop * 64, mono = new Float32Array(Math.min(len, blockSize));
+  const channels = Array.from({length:ch},(_,c)=>audioBuffer.getChannelData(c));
   let prevHP = 0, prevX = 0;
-  for (let f = 0; f < n; f++) {
-    let e = 0, eh = 0;
-    for (let i = f * hop, end = Math.min(len, (f + 1) * hop); i < end; i++) {
-      const x = mono[i]; e += x * x;
-      const hp = 0.92 * (prevHP + x - prevX); prevHP = hp; prevX = x; eh += hp * hp;
+  for (let base = 0; base < len; base += blockSize) {
+    const count = Math.min(blockSize, len - base), end = base + count;
+    mono.fill(0,0,count);
+    // Keep channel order and Float32 rounding at every addition.
+    for (const d of channels) for (let i = 0; i < count; i++) mono[i] += d[base + i] / ch;
+    for (let f = 0; f < Math.floor(count / hop); f++) {
+      let e = 0, eh = 0;
+      for (let i = f * hop, until = (f + 1) * hop; i < until; i++) {
+        const x = mono[i]; e += x * x;
+        const hp = 0.92 * (prevHP + x - prevX); prevHP = hp; prevX = x; eh += hp * hp;
+      }
+      energy[base / hop + f] = Math.sqrt(e / hop);
+      flux[base / hop + f] = Math.sqrt(eh / hop);
     }
-    energy[f] = Math.sqrt(e / hop);
-    flux[f] = Math.sqrt(eh / hop);
+    // Each waveform bin samples every fourth position from its own start.
+    for (let b = Math.floor(base / per), last = Math.min(bins, Math.ceil(end / per)); b < last; b++) {
+      const start = b * per + 4 * Math.max(0, Math.ceil((base - b * per) / 4));
+      let m = peaks[b];
+      for (let i = start, until = Math.min(end,(b + 1) * per); i < until; i += 4) { const v = Math.abs(mono[i - base]); if (v > m) m = v; }
+      peaks[b] = m;
+    }
   }
   // onset strength: positive change of log high-passed energy vs local mean
   const onset = new Float32Array(n);
@@ -11643,63 +11775,34 @@ J.analyzeAudio = async (file, onProgress = () => {}) => {
   const beats = [];
   for (let t = bestPh / rate; t < audioBuffer.duration; t += period) beats.push(+t.toFixed(4));
   // normalised energy (0..1, 95th percentile)
-  const sorted = Array.from(energy).sort((a, b) => a - b);
+  const sorted = energy.includes(NaN) ? Array.from(energy).sort((a, b) => a - b) : energy.slice().sort();
   const p95 = sorted[Math.floor(sorted.length * 0.95)] || 1;
   const energyN = new Float32Array(n);
   for (let f = 0; f < n; f++) energyN[f] = Math.min(1, energy[f] / p95);
-  // waveform peaks for the timeline
-  const bins = 1600, peaks = new Float32Array(bins), per = Math.max(1, Math.floor(len / bins));
-  for (let b = 0; b < bins; b++) { let m = 0; for (let i = b * per, e = Math.min(len, (b + 1) * per); i < e; i += 4) { const v = Math.abs(mono[i]); if (v > m) m = v; } peaks[b] = m; }
   return {
     name: file.name, duration: audioBuffer.duration, sampleRate: sr, buffer: audioBuffer,
     bpm: Math.round(60 / period * 10) / 10, beats, energy: energyN, energyRate: rate, peaks,
   };
 };
 
-/* 16-bit PCM WAV of an AudioBuffer, cut / padded to `duration` seconds (the soundtrack next to an MP4 whose
-   audio track some players cannot play, or when the browser has no audio encoder) */
-J.audioWav = (buffer, duration, offset = 0) => {
-  const sr = buffer.sampleRate, chn = Math.min(2, buffer.numberOfChannels);
+// Native export fallback when the original audio file is unavailable.
+const pcmLittleEndian = new Uint8Array(new Uint16Array([1]).buffer)[0] === 1;
+J.audioWavBytes = (buffer, duration, offset = 0) => {
+  const sr = buffer.sampleRate, chn = buffer.numberOfChannels;
   const n = Math.max(1, Math.round((duration > 0 ? duration : buffer.duration) * sr));
-  const bytes = n * chn * 2, ab = new ArrayBuffer(44 + bytes), v = new DataView(ab);
-  const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
-  str(0, 'RIFF'); v.setUint32(4, 36 + bytes, true); str(8, 'WAVE'); str(12, 'fmt ');
-  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, chn, true); v.setUint32(24, sr, true);
-  v.setUint32(28, sr * chn * 2, true); v.setUint16(32, chn * 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, bytes, true);
-  const ch = []; for (let c = 0; c < chn; c++) ch.push(buffer.getChannelData(c));
-  const L = buffer.length, i0 = Math.max(0, Math.round(offset * sr)); let o = 44;
-  for (let i = 0; i < n; i++) for (let c = 0; c < chn; c++) {
-    const j = i + i0, x = j < L ? Math.max(-1, Math.min(1, ch[c][j])) : 0;
-    v.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7fff, true); o += 2;
+  const size=n*chn*2;
+  if(size>0xffffffff-36)throw new Error('Audio is too large for WAV');
+  const bytes=new ArrayBuffer(44+size),view=new DataView(bytes),pcm=pcmLittleEndian?new Int16Array(bytes,44):null;
+  const text=(at,value)=>{for(let i=0;i<value.length;i++)view.setUint8(at+i,value.charCodeAt(i));};
+  text(0,'RIFF');view.setUint32(4,36+size,true);text(8,'WAVE');text(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,chn,true);view.setUint32(24,sr,true);view.setUint32(28,sr*chn*2,true);view.setUint16(32,chn*2,true);view.setUint16(34,16,true);text(36,'data');view.setUint32(40,size,true);
+  const i0 = Math.max(0, Math.round(offset * sr)), count = Math.max(0,Math.min(n,buffer.length-i0));
+  // ArrayBuffer initializes the padded tail to zero. Preserve PCM truncation.
+  for (let c = 0; c < chn; c++) {
+    const data=buffer.getChannelData(c);
+    if(pcm)for(let i=0;i<count;i++){const x=Math.max(-1,Math.min(1,data[i+i0]));pcm[i*chn+c]=x<0?x*0x8000:x*0x7fff;}
+    else for(let i=0;i<count;i++){const x=Math.max(-1,Math.min(1,data[i+i0]));view.setInt16(44+(i*chn+c)*2,x<0?x*0x8000:x*0x7fff,true);}
   }
-  return new Blob([ab], { type: 'audio/wav' });
-};
-
-/* the last song, kept in this browser (IndexedDB) so a reload does not silently drop the audio from exports */
-const IDB = { db: null };
-IDB.open = () => IDB.db || (IDB.db = new Promise((res, rej) => {
-  if (typeof indexedDB === 'undefined') return rej(new Error('no IndexedDB'));
-  const r = indexedDB.open('jizura', 1);
-  r.onupgradeneeded = () => { r.result.createObjectStore('files'); };
-  r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
-}));
-J.saveSong = async (file) => {
-  try {
-    const db = await IDB.open(), data = await file.arrayBuffer();
-    await new Promise((res, rej) => { const tx = db.transaction('files', 'readwrite'); tx.objectStore('files').put({ name: file.name, type: file.type, data }, 'song'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
-    return true;
-  } catch (e) { return false; }
-};
-J.loadSong = async () => {
-  try {
-    const db = await IDB.open();
-    const rec = await new Promise((res, rej) => { const tx = db.transaction('files', 'readonly'); const q = tx.objectStore('files').get('song'); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); });
-    if (!rec || !rec.data) return null;
-    return new File([rec.data], rec.name || 'song', { type: rec.type || '' });
-  } catch (e) { return null; }
-};
-J.forgetSong = async () => {
-  try { const db = await IDB.open(); await new Promise(res => { const tx = db.transaction('files', 'readwrite'); tx.objectStore('files').delete('song'); tx.oncomplete = res; tx.onerror = res; }); } catch (e) {}
+  return bytes;
 };
 
 /* rebuild a beat grid from a user BPM + first-beat offset */
@@ -11825,9 +11928,13 @@ J.createMP4Output = fileStream => {
     async abort(){parts=[];await queue;if(fileStream)try{await fileStream.abort();}catch{}}
   };
 };
-J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken }) => {
+J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.quality||'high', onProgress, signal, fileStream, short, outputToken, pipeline = J.platform?.defaultExportPipeline || 'legacy', exportRange }) => {
   let vc = null, ac = null, output = null, venc = null, aenc = null, completed = false, expJob = null, err = null, muxer = null;
   let cancellation = null;
+  let mediaPlan = null;
+  const previousMediaSources = J.exportMediaSources;
+  const previousMediaPreviousSources = J.exportMediaPreviousSources;
+  const previousFrameInfo = J.exportMediaFrameInfo, previousPreviousFrameInfo = J.exportMediaPreviousFrameInfo;
   const cancelNative = () => {
     if (!expJob) return;
     cancellation ||= Promise.resolve().then(() => J.platform.cancelJob(expJob.jobId)).catch(() => {});
@@ -11836,7 +11943,8 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   try {
   if (J.pauseAllVideos) J.pauseAllVideos();
   if(short)project=J.shortExportProject(project,short);
-  const range=short?J.shortExportRange(plan,short):{start:0,end:plan.duration},duration=range.end-range.start;
+  const range=short?J.shortExportRange(plan,short):exportRange||{start:0,end:plan.duration},duration=range.end-range.start;
+  if (!Number.isFinite(duration) || duration <= 0 || range.start < 0 || range.end > plan.duration) throw new Error('Invalid export range');
   J.mediaTransitionFrame = null;
   J.foregroundTransitionFrame = null;
   const [w, h] = J.outputSize(project);
@@ -11852,6 +11960,11 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     output = J.createMP4Output(fileStream);
   }
   if (isNative) {
+    if (pipeline !== 'legacy') {
+      if (!['continuous-ipc', 'continuous-port'].includes(pipeline) || !J.platform.planExportMedia) throw new Error('Unsupported export pipeline');
+      mediaPlan = await J.platform.planExportMedia(plan, range.start, duration, fps, signal);
+      mediaPlan.plan = plan;
+    }
     let rawAudioBuffer = null, rawAudioExt = '.wav';
     if (audio && audio.buffer && project.includeAudio !== false) {
       if (audioFile && audioFile.size) {
@@ -11859,25 +11972,15 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
         const m = (audioFile.name || '').match(/\.([a-zA-Z0-9]+)$/);
         rawAudioExt = m ? '.' + m[1].toLowerCase() : '.mp3';
       } else {
-        const sr = audio.buffer.sampleRate, chn = audio.buffer.numberOfChannels;
-        const n = Math.max(1, Math.round((duration > 0 ? duration : audio.buffer.duration) * sr));
-        const bytes = n * chn * 2, ab = new ArrayBuffer(44 + bytes), v = new DataView(ab);
-        const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
-        str(0, 'RIFF'); v.setUint32(4, 36 + bytes, true); str(8, 'WAVE'); str(12, 'fmt ');
-        v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, chn, true); v.setUint32(24, sr, true);
-        v.setUint32(28, sr * chn * 2, true); v.setUint16(32, chn * 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, bytes, true);
-        const ch = []; for (let c = 0; c < chn; c++) ch.push(audio.buffer.getChannelData(c));
-        const L = audio.buffer.length, i0 = Math.max(0, Math.round(range.start * sr)); let o = 44;
-        for (let i = 0; i < n; i++) for (let c = 0; c < chn; c++) {
-          const j = i + i0, x = j < L ? Math.max(-1, Math.min(1, ch[c][j])) : 0;
-          v.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7fff, true); o += 2;
-        }
-        rawAudioBuffer = ab;
-        rawAudioExt = '.wav';
+        rawAudioBuffer = J.audioWavBytes(audio.buffer,duration,range.start);
       }
     }
     const totalFrames = Math.max(1, Math.round(duration * fps));
+    expJob = { jobId: crypto.randomUUID() };
+    signal?.addEventListener('abort', cancelNative, { once: true });
+    if (signal?.aborted) throw new Error('Canceled');
     expJob = await J.platform.startExport({
+      jobId: expJob.jobId,
       outputToken,
       width: w,
       height: h,
@@ -11887,12 +11990,13 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
       bitrate,
       qp,
       encoder: project.exportEncoder || 'auto',
+      pipeline,
+      sources: mediaPlan?.sources,
       audioBuffer: rawAudioBuffer,
       audioExt: rawAudioExt,
       audioOffset: audioFile ? range.start : 0,
       audioDuration: duration
     });
-    signal?.addEventListener('abort', cancelNative, { once: true });
   } else {
     const muxOpts = { target:output.target, video: { codec: vc.mux, width: w, height: h, frameRate: fps }, fastStart: false, firstTimestampBehavior: 'offset' };
     if (ac) muxOpts.audio = { codec: ac.mux, numberOfChannels: Math.min(2, audio.buffer.numberOfChannels), sampleRate: ac.sr };
@@ -11919,7 +12023,8 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     }
     if (err) throw err;
     const time=range.start+i/fps;
-    await J.prepareMediaFrame(plan, time, signal);
+    if (mediaPlan) await J.platform.prepareExportMedia(expJob.jobId, mediaPlan, i, signal);
+    else await J.prepareMediaFrame(plan, time, signal);
     R.frame(sourceCtx, plan, time, { scale });
     if(portrait)portrait.frame(ctx,source,short);
     if (isNative) {
@@ -11956,7 +12061,7 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
     if (signal?.aborted) throw new Error('Canceled');
     completed = true;
     onProgress && onProgress(1, 'Done');
-    return { ...saved, codec: saved.videoEncoder ? ('FFmpeg (' + saved.videoEncoder + ')') : 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h };
+    return { ...saved, codec: saved.videoEncoder ? ('FFmpeg (' + saved.videoEncoder + ')') : 'FFmpeg (H.264)', audio: (audio && audio.buffer && project.includeAudio !== false) ? (saved.audioCodec || 'AAC') : null, width: w, height: h, pipeline };
   }
   await venc.flush(); venc.close();
   if(err)throw err;
@@ -11988,8 +12093,13 @@ J.exportMP4 = async ({ plan, project, audio, audioFile, quality = project.qualit
   onProgress && onProgress(1, 'Done');
   return { ...saved, codec: vc.label, audio: ac ? ac.mux : null, width: w, height: h };
   } finally {
+    J.exportMediaSources = previousMediaSources;
+    J.exportMediaPreviousSources = previousMediaPreviousSources;
+    J.exportMediaFrameInfo = previousFrameInfo; J.exportMediaPreviousFrameInfo = previousPreviousFrameInfo;
+    if (mediaPlan) { J.mediaTransitionFrame = null; J.foregroundTransitionFrame = null; }
     signal?.removeEventListener('abort', cancelNative);
     if(!completed)await cancelNative();
+    if(expJob)J.platform.releaseExportResources?.(expJob.jobId);
     for(const encoder of [venc,aenc])if(encoder&&encoder.state!=='closed')try{encoder.close();}catch{}
     if(!completed){
       if(output)await output.abort();
@@ -43102,8 +43212,9 @@ for (const key of ['labels','lowerThird','arcTop','magazine','headlineDeck','pos
 'use strict';
 if(typeof MutationObserver==='undefined'||typeof document==='undefined'||!document.getElementById?.('app'))return;
 let saved=null;
+const selector='dialog[open]:not(.avoidance-inline-dialog)';
 const sync=()=>{
-  const open=!!document.querySelector('dialog[open]:not(.avoidance-inline-dialog)');
+  const open=!!document.querySelector(selector);
   if(open===!!saved)return;
   const body=document.body;
   if(open){
@@ -43114,7 +43225,11 @@ const sync=()=>{
     const previous=saved;saved=null;Object.assign(body.style,previous.styles);window.scrollTo(previous.x,previous.y);
   }
 };
-new MutationObserver(sync).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['open']});
+const containsModal=node=>node.nodeType===1 && (node.matches(selector)||node.querySelector(selector));
+new MutationObserver(records=>{
+  if(records.some(record=>record.type==='attributes' ? record.target.localName==='dialog'
+    : [...record.addedNodes,...record.removedNodes].some(containsModal)))sync();
+}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['open']});
 })();
 
 /* Portable drawing programs: deterministic Canvas2D commands, never executable JS. */
@@ -43371,6 +43486,7 @@ J.customMediaMotion=(cut,p,fade,out,W,H)=>{
   return result;
 };
 J.resolveCustomMediaCut=cut=>{
+  // Camera helpers attach derived data during painting; keep it off the source cut.
   const c={...cut};for(const field of ['enter','exit']){const d=J.MEDIA_TECH[c[field]]?.customDefinition;if(d)c[field]=J.MEDIA_TECH[d.base]?.motion||'cut';}return c;
 };
 J.drawCustomMedia=(ctx,source,fit,cut,p,fade,out)=>{
@@ -43546,6 +43662,47 @@ J.ShortFrameRenderer=ShortFrameRenderer;
   const desktop = window.jizuraDesktop;
   const blobToToken = new WeakMap();
   const itemToAssetInfo = new Map(); // itemId -> { token, size, lastModified }
+  const exports = new Map();
+  const receivedPorts = new Map(), portWaiters = new Map();
+  window.addEventListener('message', event => {
+    if (event.source !== window || event.data?.type !== 'jizura-export-port' || !event.ports[0]) return;
+    const id = event.data.jobId, port = event.ports[0], waiter = portWaiters.get(id);
+    if (waiter) { portWaiters.delete(id); waiter.resolve(port); } else receivedPorts.set(id, port);
+  });
+  const takeExportPort = id => {
+    if (receivedPorts.has(id)) { const port = receivedPorts.get(id); receivedPorts.delete(id); return Promise.resolve(port); }
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => { portWaiters.delete(id); reject(new Error('Export port handshake timed out')); }, 10000);
+      portWaiters.set(id, { resolve: port => { clearTimeout(timer); resolve(port); }, reject: error => { clearTimeout(timer); reject(error); } });
+    });
+  };
+  const exportRPC = port => {
+    const pending = new Map(); let next = 0, closed = false;
+    const close = (error = new Error('Export port closed')) => {
+      if (closed) return; closed = true;
+      for (const { reject } of pending.values()) reject(error);
+      pending.clear(); port.close();
+    };
+    port.onmessage = ({ data }) => {
+      if (data.type === 'closed') { close(); return; }
+      const request = pending.get(data.id); if (!request) return;
+      pending.delete(data.id);
+      if (data.error) request.reject(new Error(data.error)); else request.resolve(data);
+    };
+    port.addEventListener('close', () => close());
+    port.onmessageerror = () => close(new Error('Invalid export port message'));
+    port.start();
+    return { close, request(op, args, buffer) {
+      if (closed) return Promise.reject(new Error('Export port closed'));
+      return new Promise((resolve, reject) => {
+        const id = ++next; pending.set(id, { resolve, reject });
+        // MessagePortMain accepts cloned buffers; transferred ArrayBuffers are
+        // silently dropped by Electron. Keep ownership until acknowledgement.
+        try { port.postMessage({ id, op, ...args, ...(buffer ? { buffer } : {}) }); }
+        catch (error) { pending.delete(id); reject(error); }
+      });
+    } };
+  };
 
   // Helper to fetch asset either via custom protocol (in browser) or fallback to desktop API (in Node unit tests)
   async function fetchAssetBlob(assetToken, mimeType) {
@@ -43585,9 +43742,11 @@ J.ShortFrameRenderer=ShortFrameRenderer;
 
   J.platform = {
     name: 'desktop',
+    mediaSnapshotChunkBytes: 32 * 1024 * 1024,
     workerAvailable: true,
     nativeMatting: true,
     nativeExport: true,
+    defaultExportPipeline: 'legacy',
     ffmpegAvailable: true,
     workerReason: null,
     ffmpegReason: null,
@@ -43610,6 +43769,9 @@ J.ShortFrameRenderer=ShortFrameRenderer;
         J.platform.workerAvailable = !!caps.workerAvailable;
         J.platform.nativeMatting = !!(caps.workerAvailable && caps.nativeMatting);
         J.platform.nativeExport = !!(caps.workerAvailable && caps.nativeExport);
+        J.platform.defaultExportPipeline = typeof VideoFrame === 'function'
+          ? ['continuous-port', 'continuous-ipc'].find(pipeline => caps.exportPipelines?.includes(pipeline)) || 'legacy'
+          : 'legacy';
         J.platform.ffmpegAvailable = !!caps.ffmpegAvailable;
         J.platform.workerReason = caps.reason || null;
         J.platform.ffmpegReason = caps.ffmpegReason || null;
@@ -43619,6 +43781,7 @@ J.ShortFrameRenderer=ShortFrameRenderer;
         J.platform.workerAvailable = false;
         J.platform.nativeMatting = false;
         J.platform.nativeExport = false;
+        J.platform.defaultExportPipeline = 'legacy';
         J.platform.ffmpegAvailable = false;
         J.platform.workerReason = e.message;
         return {
@@ -43783,23 +43946,140 @@ J.ShortFrameRenderer=ShortFrameRenderer;
         const msg = J.platform.ffmpegReason || '動画出力機能が利用できません（FFmpeg が必要です）。';
         throw new Error(msg);
       }
-      return await desktop.startExport(settings);
+      const state = { clientId: settings.jobId || crypto.randomUUID(), cancelled: false };
+      exports.set(state.clientId, state);
+      try {
+        const job = await desktop.startExport(settings); state.jobId = job.jobId;
+        if (state.cancelled) throw new DOMException('Cancelled', 'AbortError');
+        exports.set(job.jobId, state);
+        if (settings.pipeline === 'continuous-port') {
+          const port = await takeExportPort(job.jobId);
+          if (state.cancelled) { port.close(); throw new DOMException('Cancelled', 'AbortError'); }
+          state.rpc = exportRPC(port);
+        }
+        return job;
+      } catch (error) { J.platform.releaseExportResources(state.clientId); throw error; }
+    },
+
+    planExportMedia: async (plan, start, duration, fps, signal) => {
+      const frames = [], cursors = new Map(), assets = new Map();
+      const total = Math.max(1, Math.round(duration * fps));
+      for (let index = 0; index < total; index++) {
+        const demand = J.exportMediaDemand(plan, start + index / fps);
+        for (const source of demand.sources) {
+          const key = `${source.layer}_${source.cut.index}_${source.cycle}_${source.transition ? 'hold' : 'current'}`;
+          let cursor = cursors.get(key);
+          if (!cursor) {
+            cursor = { id: `s${cursors.size}`, itemId: source.cut.itemId, start: source.time, end: source.time, last: index };
+            cursors.set(key, cursor);
+          }
+          cursor.start = Math.min(cursor.start, source.time); cursor.end = Math.max(cursor.end, source.time); cursor.last = index;
+          source.cursor = cursor;
+          assets.set(source.cut.itemId, J.mediaAssets.get(source.cut.itemId));
+        }
+        frames.push(demand.sources);
+      }
+      for (const [id, asset] of assets) {
+        if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+        if (!asset.file) throw new Error('Source video has no retained media file');
+        const used = [...cursors.values()].filter(cursor => cursor.itemId === id);
+        // Read display/color metadata once; frame selection is performed by PTS
+        // in the continuous decoder, independently of browser seek rounding.
+        await J.seekMediaVideo(asset.element, Math.min(...used.map(cursor => cursor.start)), signal, asset.file.name);
+        const frame = new VideoFrame(asset.element);
+        let display;
+        try { display = { colorSpace: frame.colorSpace.toJSON(), rotation: frame.rotation || 0, flip: !!frame.flip,
+          displayWidth: asset.element.videoWidth, displayHeight: asset.element.videoHeight }; }
+        finally { frame.close(); }
+        const token = await J.platform.ensureNativeAsset(id, asset.file);
+        for (const cursor of used) Object.assign(cursor, { assetToken: token, ...display });
+      }
+      return { sources: [...cursors.values()].map(({ id, assetToken, start, end, colorSpace, displayWidth, displayHeight, rotation, flip }) =>
+        ({ id, assetToken, start, end, colorSpace, displayWidth, displayHeight, rotation, flip })), frames };
+    },
+
+    prepareExportMedia: async (jobId, mediaPlan, index, signal) => {
+      if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+      const job = exports.get(jobId);
+      job.cursors ||= new Map();
+      for (const [id, state] of job.cursors) if (state.last < index) {
+        if (job.rpc) await job.rpc.request('release', { cursor: id });
+        else await desktop.releaseExportSource(jobId, id);
+        job.cursors.delete(id);
+      }
+      J.exportMediaSources = new Map(); J.exportMediaPreviousSources = new Map();
+      J.exportMediaFrameInfo = new Map(); J.exportMediaPreviousFrameInfo = new Map();
+      const prepared = new Map();
+      const publish = (source, image, meta) => {
+        (source.transition ? J.exportMediaPreviousSources : J.exportMediaSources).set(source.cut, image);
+        (source.transition ? J.exportMediaPreviousFrameInfo : J.exportMediaFrameInfo).set(source.cut, { ...meta, requestedTime: source.time });
+      };
+      for (const source of mediaPlan.frames[index]) {
+        const { cursor } = source;
+        const key = cursor.assetToken + ':' + source.time;
+        if (prepared.has(key)) { const prior = prepared.get(key); publish(source, prior.image, prior.meta); continue; }
+        let state = job.cursors.get(cursor.id);
+        if (!state) {
+          state = { serial: -1, canvas: document.createElement('canvas'), last: cursor.last };
+          job.cursors.set(cursor.id, state);
+        }
+        if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+        const buffer = job.rpc
+          ? (await job.rpc.request('source', { cursor: cursor.id, time: source.time, after: state.serial })).buffer
+          : await desktop.readExportFrame(jobId, cursor.id, source.time, state.serial);
+        const length = new DataView(buffer).getUint32(0, true);
+        if (length > buffer.byteLength - 4) throw new Error('Invalid decoded-frame metadata length');
+        const meta = JSON.parse(new TextDecoder().decode(new Uint8Array(buffer, 4, length)));
+        if (!meta.reused) {
+          const pixels = new Uint8Array(buffer, 4 + length), turn = meta.rotation % 180 !== 0;
+          const width = turn ? meta.height : meta.width, height = turn ? meta.width : meta.height;
+          if (state.canvas.width !== width || state.canvas.height !== height) { state.canvas.width = width; state.canvas.height = height; }
+          state.canvas.videoWidth = meta.displayWidth; state.canvas.videoHeight = meta.displayHeight;
+          const colorSpace = Object.fromEntries(Object.entries(meta.colorSpace).filter(([, value]) => value !== 'unknown' && value !== 'reserved'));
+          // Rasterize coded pixels once; videoWidth/Height above apply SAR when
+          // the existing compositor fits this image into its destination.
+          const image = new VideoFrame(pixels, { format: meta.format, codedWidth: meta.width, codedHeight: meta.height,
+            displayWidth: meta.width, displayHeight: meta.height,
+            rotation: meta.rotation, flip: meta.flip, timestamp: Math.round(meta.pts * 1e6), colorSpace });
+          const ctx = state.canvas.getContext('2d', { willReadFrequently: true });
+          try { ctx.globalCompositeOperation = 'copy'; ctx.drawImage(image, 0, 0, width, height); }
+          finally { image.close(); }
+          state.serial = meta.serial;
+        } else if (state.serial !== meta.serial) throw new Error('Missing reused source image');
+        prepared.set(key, { image: state.canvas, meta });
+        publish(source, state.canvas, meta);
+      }
     },
 
     writeFrame: async (jobId, index, rgba) => {
       const buffer = (rgba.byteOffset === 0 && rgba.byteLength === rgba.buffer.byteLength)
         ? rgba.buffer
         : rgba.buffer.slice(rgba.byteOffset, rgba.byteOffset + rgba.byteLength);
-      return await desktop.writeFrame(jobId, index, buffer);
+      const rpc = exports.get(jobId)?.rpc;
+      return rpc ? await rpc.request('frame', { index }, buffer) : await desktop.writeFrame(jobId, index, buffer);
     },
 
     finishExport: async (jobId) => {
-      return await desktop.finishExport(jobId);
+      const result = await desktop.finishExport(jobId);
+      J.platform.releaseExportResources(jobId);
+      return result;
     },
 
     cancelJob: async (jobId) => {
-      return await desktop.cancelJob(jobId);
-    }
+      try { return await desktop.cancelJob(jobId); }
+      finally { J.platform.releaseExportResources(jobId); }
+    },
+
+    releaseExportResources: jobId => {
+      const state = exports.get(jobId);
+      if (state) {
+        state.cancelled = true; state.rpc?.close();
+        for (const id of [state.jobId, state.clientId]) {
+          exports.delete(id); receivedPorts.get(id)?.close(); receivedPorts.delete(id);
+          portWaiters.get(id)?.reject(new Error('Export cancelled')); portWaiters.delete(id);
+        }
+      }
+    },
   };
 
   // Synchronize unsaved dirty state with main process
@@ -44288,6 +44568,7 @@ async function cleanupDeletedMedia() {
 }
 const U = { list: [], i: -1, restoring: false, pendingGroup: null, lastGroup: null, lastAt: 0 };
 const MediaElementCache = new Map();
+const AudioHistoryIds = new Set();
 
 function cacheMediaElement(id, asset) {
   if (!id || !asset) return;
@@ -44310,8 +44591,37 @@ function restoreMediaElements(proj) {
     }
   }
 }
+function pruneMediaElements(active) {
+  if (S.exporting) return;
+  for (const [id,cached] of MediaElementCache) {
+    if (active.has(id)) continue;
+    // Keep IDs found anywhere in saved settings. Substring matches may retain
+    // extra data instead of assuming every reference has a known field name.
+    const key = JSON.stringify(id).slice(1,-1);
+    if (U.list.some(snap=>snap.includes(key))) continue;
+    if (J.mediaAssets.get(id)?.element === cached.element) J.mediaAssets.delete(id);
+    if (![...J.mediaAssets.values()].some(asset=>asset.element===cached.element || asset.url && asset.url===cached.url)) J.releaseMediaAsset(cached);
+    MediaElementCache.delete(id);
+    J.pruneTemporaryMedia?.(key=>key!==id);
+  }
+  for(const id of AudioHistoryIds){
+    if(id===S.project.audioAsset?.id)continue;
+    const key=JSON.stringify(id).slice(1,-1);
+    if(U.list.some(snap=>snap.includes(key)))continue;
+    AudioHistoryIds.delete(id);
+    J.pruneTemporaryMedia?.(key=>key!==id);
+  }
+}
 
-function initUndo() { U.list = [JSON.stringify(S.project)]; U.i = 0; updateUndoButtons(); }
+function initUndo() {
+  MediaElementCache.clear();
+  AudioHistoryIds.clear();
+  if(typeof S.project.audioAsset?.id==='string')AudioHistoryIds.add(S.project.audioAsset.id);
+  const snapshot=JSON.stringify(S.project);U.list=[snapshot];U.i=0;
+  // Only session data from discarded projects is released; persistent storage stays intact.
+  J.pruneTemporaryMedia?.(id=>typeof id!=='string'||snapshot.includes(JSON.stringify(id).slice(1,-1)));
+  updateUndoButtons();
+}
 function markUndoGroup(group) { U.pendingGroup = group; if (group) markProjectDirty(); }
 function updateUndoButtons() {
   if ($('btnUndo')) $('btnUndo').disabled = U.i <= 0;
@@ -44319,19 +44629,23 @@ function updateUndoButtons() {
 }
 function recordUndoState() {
   if (U.restoring || !S.project) return;
+  if(typeof S.project.audioAsset?.id==='string')AudioHistoryIds.add(S.project.audioAsset.id);
+  const active = new Set([...(S.project.media?.items || []),...(S.project.foreground?.items || [])].map(item=>item.id));
   if (J.mediaAssets) {
-    for (const [id, asset] of J.mediaAssets) cacheMediaElement(id, asset);
+    for (const id of active) cacheMediaElement(id, J.mediaAssets.get(id));
   }
   const snap = JSON.stringify(S.project), group = U.pendingGroup, now = Date.now();
   U.pendingGroup = null;
   if (U.i < 0) { U.list = [snap]; U.i = 0; updateUndoButtons(); return; }
   if (snap === U.list[U.i]) return;
   const atTip = U.i === U.list.length - 1;
+  let discarded = !atTip;
   U.list = U.list.slice(0, U.i + 1);
-  if (group && atTip && group === U.lastGroup && now - U.lastAt < 1200 && U.i > 0) U.list[U.i] = snap;
+  if (group && atTip && group === U.lastGroup && now - U.lastAt < 1200 && U.i > 0) { U.list[U.i] = snap; discarded = true; }
   else { U.list.push(snap); U.i++; }
-  if (U.list.length > 100) { U.list.shift(); U.i--; }
+  if (U.list.length > 100) { U.list.shift(); U.i--; discarded = true; }
   U.lastGroup = group; U.lastAt = now;
+  if (discarded) pruneMediaElements(active);
   updateUndoButtons();
 }
 function undoMove(direction) {
@@ -44418,7 +44732,6 @@ function replan() {
     /^l:\d+:\d+$/.test(ref) && +ref.split(':')[1] < S.plan.lines.length ||
     /^[fma]:\d+$/.test(ref) && +ref.slice(2) < S.project[ref[0]==='f'?'foreground':ref[0]==='a'?'avoidance':'media'].cutCount);
   S.project.timelineLinks = S.project.timelineLinks.filter(link => link && link.a !== link.b && (boundaryCut(link.a) || temporarilyHidden(link.a)) && (boundaryCut(link.b) || temporarilyHidden(link.b)));
-  lastCutIdx = null;
   renderLines(); renderMediaList(); renderMediaLines(); renderAvoidanceLines(); sizeViewport(); drawTimeline(); drawTimelineLinks(); updateTimeUI();
   S.need = true; autosave(); ensureFonts(); drawSwatch(); showNow();
   clearTimeout(warmTimer); warmTimer = setTimeout(warm, 450);
@@ -44427,7 +44740,7 @@ function replan() {
 let warmTimer = 0, warmJob = 0;
 function warm() {
   const job = ++warmJob;
-  const cuts = S.plan.cuts.filter(c => c.enter === 'assemble' || ['explode', 'fall', 'drift'].includes(c.exit));
+  const samples = S.plan.cuts.map(J.glyphWarmupTask).filter(Boolean);
   const src = $('view');
   const cv = document.createElement('canvas'); cv.width = src.width; cv.height = src.height;
   const ctx = cv.getContext('2d');
@@ -44436,13 +44749,10 @@ function warm() {
   const step = (deadline) => {
     if (job !== warmJob || S.exporting) return;
     do {
-      const c = cuts[i++]; if (!c) break;
-      const ts = [];
-      if (c.enter === 'assemble') ts.push(c.start + Math.min(c.inDur * 0.3, c.dur * 0.2));
-      if (c.outDur > 0) ts.push(c.end - c.outDur * 0.5);
-      for (const t of ts) { try { S.renderer.frame(ctx, S.plan, t, { scale: cv.width / S.plan.W, fast: true, noHud: true, noGhost: true }); } catch (e) {} }
-    } while (i < cuts.length && deadline && deadline.timeRemaining() > 10);
-    if (i < cuts.length) idle(step);
+      const sample = samples[i++]; if (!sample) break;
+      for (const t of sample()) { try { S.renderer.frame(ctx, S.plan, t, { scale: cv.width / S.plan.W, fast: true, noHud: true, noGhost: true }); } catch (e) {} }
+    } while (i < samples.length && deadline && deadline.timeRemaining() > 10);
+    if (i < samples.length) idle(step);
   };
   idle(step);
 }
@@ -44517,7 +44827,7 @@ function draw() {
   drawPreviewFrame(ctx,{fast:!!S.areaEdit || S.playing && S.slow});
   const dt = performance.now() - t0;
   S.slow = S.playing ? (dt > 30 ? true : dt < 14 ? false : S.slow) : false;
-  updateTimeUI(); drawTimeline(); followTimelinePlayhead(); updateCutInfo(); drawItemFrames();
+  drawTimeline(); followTimelinePlayhead(); updateTimeUI(); updateCutInfo(); drawItemFrames();
 }
 // While playing, page the zoomed timeline so the playhead stays in view (paused briefly after the user
 // scrolls it by hand).
@@ -44550,7 +44860,7 @@ function syncLyricPlaybackHighlight() {
   if (!input || !overlay) return;
   const marker=lyricPlaybackMarker, mirror=overlay.firstElementChild;
   if (document.activeElement===input || !input.clientWidth || input.value!==S.project.lyrics) {
-    overlay.hidden=true; marker.active=''; return;
+    setHiddenIfChanged(overlay,true); marker.active=''; return;
   }
   if (marker.value!==input.value) {
     marker.value=input.value; marker.active='';
@@ -44561,15 +44871,17 @@ function syncLyricPlaybackHighlight() {
     });
     mirror.replaceChildren(...marker.rows);
   }
+  // Read layout before changing the mirror so its style writes cannot force
+  // repeated layout while reading the remaining properties of the input.
   const style=getComputedStyle(input);
-  for (const prop of ['font','letterSpacing','lineHeight','textAlign','textIndent','wordSpacing','tabSize','wordBreak','paddingTop','paddingRight','paddingBottom','paddingLeft']) mirror.style[prop]=style[prop];
-  overlay.style.left=input.offsetLeft+input.clientLeft+'px';
-  overlay.style.top=input.offsetTop+input.clientTop+'px';
-  overlay.style.width=input.clientWidth+'px';overlay.style.height=input.clientHeight+'px';
+  const mirrorStyle=['font','letterSpacing','lineHeight','textAlign','textIndent','wordSpacing','tabSize','wordBreak','paddingTop','paddingRight','paddingBottom','paddingLeft'].map(prop=>[prop,style[prop]]);
+  const overlayStyle={left:input.offsetLeft+input.clientLeft+'px',top:input.offsetTop+input.clientTop+'px',width:input.clientWidth+'px',height:input.clientHeight+'px'};
+  for (const [prop,value] of mirrorStyle) if(mirror.style[prop]!==value)mirror.style[prop]=value;
+  for (const [prop,value] of Object.entries(overlayStyle)) if(overlay.style[prop]!==value)overlay.style[prop]=value;
   const cuts=J.lyricCutsAt(S.plan,S.t).filter(c=>c.line>=0&&Number.isInteger(c.part));
   const sourceRows=[...new Set(cuts.map(c=>marker.lines[c.line]?.sourceLine).filter(Number.isInteger))];
   const active=sourceRows.join(',');
-  overlay.hidden=!sourceRows.length;
+  setHiddenIfChanged(overlay,!sourceRows.length);
   if (marker.active!==active) {
     marker.rows.forEach((row,i)=>row.classList.toggle('is-current',sourceRows.includes(i)));
     marker.active=active;
@@ -44584,16 +44896,20 @@ function syncLyricPlaybackHighlight() {
   }
   mirror.style.transform=`translate(${-input.scrollLeft}px,${-input.scrollTop}px)`;
 }
+function setTextIfChanged(id, text) { const el=$(id); if(el.textContent!==text)el.textContent=text; }
+function setDisabledIfChanged(button, disabled) { if(button.disabled!==disabled)button.disabled=disabled; }
+function setHiddenIfChanged(element, hidden) { if(element.hidden!==hidden)element.hidden=hidden; }
 function updateTimeUI() {
   syncLyricPlaybackHighlight();
-  document.querySelectorAll('#layerVisibilityControls button').forEach(button=>button.disabled=!!S.exporting);
-  $('fullscreenPlay').textContent=S.playing?'❚❚':'▶';
-  $('fullscreenPlay').setAttribute('aria-label',S.playing?J.mediaLabel('Pause','Pause'):J.mediaLabel('Play','Play'));
-  $('fullscreenTime').textContent=J.fmtTime(S.t)+' / '+J.fmtTime(S.plan.duration);
+  document.querySelectorAll('#layerVisibilityControls button').forEach(button=>setDisabledIfChanged(button,!!S.exporting));
+  setTextIfChanged('fullscreenPlay',S.playing?'❚❚':'▶');
+  const playLabel=S.playing?J.mediaLabel('Pause','Pause'):J.mediaLabel('Play','Play');
+  if($('fullscreenPlay').getAttribute('aria-label')!==playLabel)$('fullscreenPlay').setAttribute('aria-label',playLabel);
+  setTextIfChanged('fullscreenTime',J.fmtTime(S.t)+' / '+J.fmtTime(S.plan.duration));
   if(!S.scrubbing)$('fullscreenScrub').value=String(Math.round(S.t/Math.max(.001,S.plan.duration)*10000));
   syncPlayheadMenu();
-  $('timeNow').textContent = J.fmtTime(S.t);
-  $('timeDur').textContent = J.fmtTime(S.durationDrag ? S.durationDrag.preview : S.plan.duration);
+  setTextIfChanged('timeNow',J.fmtTime(S.t));
+  setTextIfChanged('timeDur',J.fmtTime(S.durationDrag ? S.durationDrag.preview : S.plan.duration));
   $('timeDur').classList.toggle('manual', S.project.durationOverride != null || !!S.durationDrag);
   if (!S.scrubbing) $('scrub').value = String(Math.round(S.t / Math.max(0.001, S.plan.duration) * 10000));
 }
@@ -44673,7 +44989,9 @@ function sizeTimelineStack() {
 function syncTimelinePan(){
   const input=$('timelinePan');if(!input)return;
   const scroll=$('timelineScroll'),max=Math.max(0,scroll.scrollWidth-scroll.clientWidth);
-  input.max=String(max);input.value=String(scroll.scrollLeft);input.disabled=max<=8;
+  if(input.max!==String(max))input.max=String(max);
+  if(input.value!==String(scroll.scrollLeft))input.value=String(scroll.scrollLeft);
+  setDisabledIfChanged(input,max<=8);
 }
 function setTimelineZoom(zoom) {
   const scroll = $('timelineScroll'), stack = $('timelineStack');
@@ -44725,59 +45043,77 @@ function laneBox(layer, lane, count, canvas) {
   const band = timelineBand(layer, canvas), height = (band.bottom - band.top) / count;
   return { top: band.top + lane * height, height };
 }
-function drawTimeline() {
-  sizeTimelineStack();
-  const lanesInfo = timelineLanes('lyrics');
-  fitTimelineHeight($('timeline'), lanesInfo.count, 22);
-  const c = $('timeline'), dpr = Math.min(2, window.devicePixelRatio || 1);
+const timelineSurfaces = new WeakMap();
+function timelineSurface(layer) {
+  const c = timelineCanvas(layer), dpr = Math.min(2, window.devicePixelRatio || 1), previous = timelineSurfaces.get(c);
+  const plan = S.plan, D = Math.max(.001, plan.duration), peaks = S.audio?.peaks;
+  const lanesInfo = previous?.plan === plan && previous.D === D ? previous.lanesInfo : timelineLanes(layer);
+  fitTimelineHeight(c, lanesInfo.count, layer === 'lyrics' ? 22 : 24, layer === 'lyrics' ? 2 : 1);
   const w = Math.max(10, Math.round(c.clientWidth * dpr)), h = Math.max(10, Math.round(c.clientHeight * dpr));
   if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
-  const x = c.getContext('2d'), D = Math.max(0.001, S.plan.duration), X = t => t / D * w;
-  x.fillStyle = '#131316'; x.fillRect(0, 0, w, h);
-  if (S.audio && S.audio.peaks) {
-    const pk = S.audio.peaks, n = pk.length, sd = S.audio.duration;
-    x.fillStyle = '#2b2b33';
-    for (let i = 0; i < w; i += 2) { const t = i / w * D; if (t > sd) break; const v = pk[Math.min(n - 1, Math.floor(t / sd * n))]; const hh = v * h * 0.8; x.fillRect(i, h * 0.6 - hh / 2, 1.5, hh); }
-  }
-  const beats = S.plan.beats || [];
-  x.fillStyle = '#3a3a44';
-  for (const b of beats) { if (b > D) break; x.fillRect(Math.round(X(b)), h - 6 * dpr, 1, 6 * dpr); }
-  const top = h * 0.3, overlapping = lanesInfo.count > 1, mono = getComputedStyle(document.body).getPropertyValue('--mono') || 'monospace';
-  for (const cut of timelineCuts('lyrics')) {
-    const x0 = X(cut.start), x1 = X(cut.end), lane = laneBox('lyrics', lanesInfo.lanes.get(cut), lanesInfo.count, c);
-    const y0 = lane.top * dpr, lh = Math.max(2, lane.height * dpr - (overlapping ? 1 : 0));
-    const hue = layoutHue(cut.layout);
-    // 先line 着地帯（リードゾーン）
-    if (cut.renderStart != null && cut.renderStart < cut.start) {
-      const xr = X(cut.renderStart);
-      x.fillStyle = `hsla(${hue},60%,50%,${overlapping ? 0.08 : 0.12})`;
-      x.fillRect(xr, y0, Math.max(1, x0 - xr), lh);
-      x.fillStyle = `hsla(${hue},70%,60%,0.35)`;
-      x.fillRect(xr, y0, Math.max(1, 1.5 * dpr), lh);
+  // The playhead and drag guide move independently of the waveform/cut raster.
+  const dirty = !previous || previous.plan !== plan || previous.D !== D || previous.w !== w || previous.h !== h
+    || previous.dpr !== dpr || previous.peaks !== peaks || previous.fontRevision !== J.metrics.revision || previous.lang !== J.lang;
+  const image = previous?.image || document.createElement('canvas');
+  if (image.width !== w || image.height !== h) { image.width = w; image.height = h; }
+  const surface = { c, image, x: image.getContext('2d'), plan, D, peaks, lanesInfo, w, h, dpr, dirty, fontRevision: J.metrics.revision, lang: J.lang };
+  timelineSurfaces.set(c, surface);
+  return surface;
+}
+function finishTimeline(surface,layer) {
+  const { c, image, w, h, dpr, D } = surface, x = c.getContext('2d');
+  x.drawImage(image, 0, 0);
+  x.fillStyle = '#f5a50c'; x.fillRect(Math.round(S.t / D * w) - dpr, 0, 2 * dpr, h);
+  drawTimelineDragGuide(x, w, h, dpr, layer);
+}
+function drawTimeline() {
+  sizeTimelineStack();
+  const surface=timelineSurface('lyrics'),{c,x,w,h,dpr,D,lanesInfo}=surface,X=t=>t/D*w;
+  if(surface.dirty){
+    x.fillStyle = '#131316'; x.fillRect(0, 0, w, h);
+    if (S.audio && S.audio.peaks) {
+      const pk = S.audio.peaks, n = pk.length, sd = S.audio.duration;
+      x.fillStyle = '#2b2b33';
+      for (let i = 0; i < w; i += 2) { const t = i / w * D; if (t > sd) break; const v = pk[Math.min(n - 1, Math.floor(t / sd * n))]; const hh = v * h * 0.8; x.fillRect(i, h * 0.6 - hh / 2, 1.5, hh); }
     }
-    x.fillStyle = `hsla(${hue},70%,58%,${overlapping ? 0.2 : 0.28})`; x.fillRect(x0, y0, Math.max(1, x1 - x0 - 1), lh);
-    if (overlapping) { x.strokeStyle = `hsla(${hue},80%,62%,0.55)`; x.lineWidth = dpr; x.strokeRect(x0 + .5, y0 + .5, Math.max(1, x1 - x0 - 1), lh - 1); }
-    x.fillStyle = `hsla(${hue},80%,62%,${overlapping ? 0.8 : 0.95})`; x.fillRect(x0, y0, Math.max(1, 2 * dpr), lh);
-    x.fillRect(x0 - 2 * dpr, top - 3 * dpr, 6 * dpr, 6 * dpr);
-    if (cut.manualEnd) drawTimelineEndHandle(x, x1, y0, lh, dpr);
-    if (x1 - x0 > 34 * dpr) {
-      x.fillStyle = 'rgba(236,231,225,0.85)'; x.font = `${10 * dpr}px ${mono}`;
-      x.save(); x.beginPath(); x.rect(x0, y0, x1 - x0 - 3, lh); x.clip();
-      const cutLabel = typeof cut.part === 'string' && cut.part.startsWith('outro')
-        ? (cut.part === 'outro' ? '〔後奏〕' : `〔後奏 ${cut.part.split('_')[1]}〕`)
-        : (cut.part === 'interlude' ? '〔間奏〕' : (cut.text || cut.lineText || ''));
-      x.fillText(cutLabel, x0 + 5 * dpr, y0 + Math.min(13 * dpr, lh - 3 * dpr)); x.restore();
+    const beats = S.plan.beats || [];
+    x.fillStyle = '#3a3a44';
+    for (const b of beats) { if (b > D) break; x.fillRect(Math.round(X(b)), h - 6 * dpr, 1, 6 * dpr); }
+    const top = h * 0.3, overlapping = lanesInfo.count > 1, mono = getComputedStyle(document.body).getPropertyValue('--mono') || 'monospace';
+    for (const cut of timelineCuts('lyrics')) {
+      const x0 = X(cut.start), x1 = X(cut.end), lane = laneBox('lyrics', lanesInfo.lanes.get(cut), lanesInfo.count, c);
+      const y0 = lane.top * dpr, lh = Math.max(2, lane.height * dpr - (overlapping ? 1 : 0));
+      const hue = layoutHue(cut.layout);
+      // 先line 着地帯（リードゾーン）
+      if (cut.renderStart != null && cut.renderStart < cut.start) {
+        const xr = X(cut.renderStart);
+        x.fillStyle = `hsla(${hue},60%,50%,${overlapping ? 0.08 : 0.12})`;
+        x.fillRect(xr, y0, Math.max(1, x0 - xr), lh);
+        x.fillStyle = `hsla(${hue},70%,60%,0.35)`;
+        x.fillRect(xr, y0, Math.max(1, 1.5 * dpr), lh);
+      }
+      x.fillStyle = `hsla(${hue},70%,58%,${overlapping ? 0.2 : 0.28})`; x.fillRect(x0, y0, Math.max(1, x1 - x0 - 1), lh);
+      if (overlapping) { x.strokeStyle = `hsla(${hue},80%,62%,0.55)`; x.lineWidth = dpr; x.strokeRect(x0 + .5, y0 + .5, Math.max(1, x1 - x0 - 1), lh - 1); }
+      x.fillStyle = `hsla(${hue},80%,62%,${overlapping ? 0.8 : 0.95})`; x.fillRect(x0, y0, Math.max(1, 2 * dpr), lh);
+      x.fillRect(x0 - 2 * dpr, top - 3 * dpr, 6 * dpr, 6 * dpr);
+      if (cut.manualEnd) drawTimelineEndHandle(x, x1, y0, lh, dpr);
+      if (x1 - x0 > 34 * dpr) {
+        x.fillStyle = 'rgba(236,231,225,0.85)'; x.font = `${10 * dpr}px ${mono}`;
+        x.save(); x.beginPath(); x.rect(x0, y0, x1 - x0 - 3, lh); x.clip();
+        const cutLabel = typeof cut.part === 'string' && cut.part.startsWith('outro')
+          ? (cut.part === 'outro' ? '〔後奏〕' : `〔後奏 ${cut.part.split('_')[1]}〕`)
+          : (cut.part === 'interlude' ? '〔間奏〕' : (cut.text || cut.lineText || ''));
+        x.fillText(cutLabel, x0 + 5 * dpr, y0 + Math.min(13 * dpr, lh - 3 * dpr)); x.restore();
+      }
+    }
+    x.font = `${10 * dpr}px monospace`;
+    for (const ln of S.plan.lines) {
+      const lx = X(ln.start);
+      x.fillStyle = '#5d5a63'; x.fillRect(lx, 0, 1, top);
+      x.fillStyle = '#8e8a94'; x.fillText(String(ln.index + 1).padStart(2, '0'), lx + 3 * dpr, 12 * dpr);
     }
   }
-  x.font = `${10 * dpr}px monospace`;
-  for (const ln of S.plan.lines) {
-    const lx = X(ln.start);
-    x.fillStyle = '#5d5a63'; x.fillRect(lx, 0, 1, top);
-    x.fillStyle = '#8e8a94'; x.fillText(String(ln.index + 1).padStart(2, '0'), lx + 3 * dpr, 12 * dpr);
-  }
-  const px = X(S.t);
-  x.fillStyle = '#f5a50c'; x.fillRect(Math.round(px) - dpr, 0, 2 * dpr, h);
-  drawTimelineDragGuide(x, w, h, dpr, 'lyrics');
+  finishTimeline(surface,'lyrics');
   drawAvoidanceTimeline();
   drawMediaTimeline();
   drawMediaTimeline('foreground');
@@ -44797,56 +45133,48 @@ function drawTimelineEndHandle(x, px, y0, height, dpr) {
 }
 function drawAvoidanceTimeline() {
   const c = $('avoidanceTimeline'); if (!c || !S.plan?.avoidance) return;
-  const dpr = Math.min(2, window.devicePixelRatio || 1);
-  const lanesInfo = timelineLanes('avoidance'), overlapping = lanesInfo.count > 1;
-  fitTimelineHeight(c, lanesInfo.count, 24, 1);
-  const w = Math.max(10, Math.round(c.clientWidth * dpr)), h = Math.max(10, Math.round(c.clientHeight * dpr));
-  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
-  const x = c.getContext('2d'), D = Math.max(0.001, S.plan.duration), X = t => t / D * w;
-  x.fillStyle = '#131316'; x.fillRect(0, 0, w, h);
-  x.fillStyle = '#8e8a94'; x.font = `${10 * dpr}px monospace`; x.fillText(J.mediaLabel('回避', 'Avoidance'), 6 * dpr, 12 * dpr);
-  const globalOn = !!(S.plan.lyricAvoidance?.enabled && S.plan.layerVisibility?.avoidance !== false);
-  const mono = getComputedStyle(document.body).getPropertyValue('--mono') || 'monospace';
-  for (const cut of S.plan.avoidance.cuts) {
-    const a = X(cut.start), b = X(cut.end), lane = laneBox('avoidance', lanesInfo.lanes.get(cut), lanesInfo.count, c);
-    const y0 = lane.top * dpr, lh = Math.max(2, lane.height * dpr - (overlapping ? 1 : 0));
-    const active = globalOn && cut.enabled !== false;
-    const rgb = active ? '255,111,156' : '142,138,148';
-    x.fillStyle = `rgba(${rgb},${overlapping ? 0.2 : 0.28})`; x.fillRect(a, y0, Math.max(1, b - a - 1), lh);
-    if (overlapping) { x.strokeStyle = `rgba(${rgb},0.55)`; x.lineWidth = dpr; x.strokeRect(a + .5, y0 + .5, Math.max(1, b - a - 1), lh - 1); }
-    x.fillStyle = `rgba(${rgb},${overlapping ? 0.8 : 1})`; x.fillRect(a, y0, 2 * dpr, lh);
-    x.fillRect(a - 2 * dpr, 14 * dpr, 6 * dpr, 6 * dpr);
-    if (cut.manualEnd) drawTimelineEndHandle(x, b, y0, lh, dpr);
-    if (b - a > 42 * dpr) {
-      x.fillStyle = active ? 'rgba(236,231,225,0.88)' : 'rgba(180,175,186,0.7)'; x.font = `${10 * dpr}px ${mono}`;
-      x.save(); x.beginPath(); x.rect(a, y0, b - a - 3, lh); x.clip();
-      const label = (cut.enabled === false ? J.mediaLabel('[OFF] ', '[OFF] ') : '') + cut.name + (cut.avoidEmphasis ? J.mediaLabel(' [強調回避]', ' [Emphasis]') : '') + (cut.maskAvoidance ? J.mediaLabel(' [Mask]', ' [Mask]') : '');
-      x.fillText(label, a + 26 * dpr, y0 + Math.min(14 * dpr, lh - 3 * dpr)); x.restore();
+  const surface=timelineSurface('avoidance'),{x,w,h,dpr,D,lanesInfo}=surface,overlapping=lanesInfo.count>1,X=t=>t/D*w;
+  if(surface.dirty){
+    x.fillStyle = '#131316'; x.fillRect(0, 0, w, h);
+    x.fillStyle = '#8e8a94'; x.font = `${10 * dpr}px monospace`; x.fillText(J.mediaLabel('回避', 'Avoidance'), 6 * dpr, 12 * dpr);
+    const globalOn = !!(S.plan.lyricAvoidance?.enabled && S.plan.layerVisibility?.avoidance !== false);
+    const mono = getComputedStyle(document.body).getPropertyValue('--mono') || 'monospace';
+    for (const cut of S.plan.avoidance.cuts) {
+      const a = X(cut.start), b = X(cut.end), lane = laneBox('avoidance', lanesInfo.lanes.get(cut), lanesInfo.count, c);
+      const y0 = lane.top * dpr, lh = Math.max(2, lane.height * dpr - (overlapping ? 1 : 0));
+      const active = globalOn && cut.enabled !== false;
+      const rgb = active ? '255,111,156' : '142,138,148';
+      x.fillStyle = `rgba(${rgb},${overlapping ? 0.2 : 0.28})`; x.fillRect(a, y0, Math.max(1, b - a - 1), lh);
+      if (overlapping) { x.strokeStyle = `rgba(${rgb},0.55)`; x.lineWidth = dpr; x.strokeRect(a + .5, y0 + .5, Math.max(1, b - a - 1), lh - 1); }
+      x.fillStyle = `rgba(${rgb},${overlapping ? 0.8 : 1})`; x.fillRect(a, y0, 2 * dpr, lh);
+      x.fillRect(a - 2 * dpr, 14 * dpr, 6 * dpr, 6 * dpr);
+      if (cut.manualEnd) drawTimelineEndHandle(x, b, y0, lh, dpr);
+      if (b - a > 42 * dpr) {
+        x.fillStyle = active ? 'rgba(236,231,225,0.88)' : 'rgba(180,175,186,0.7)'; x.font = `${10 * dpr}px ${mono}`;
+        x.save(); x.beginPath(); x.rect(a, y0, b - a - 3, lh); x.clip();
+        const label = (cut.enabled === false ? J.mediaLabel('[OFF] ', '[OFF] ') : '') + cut.name + (cut.avoidEmphasis ? J.mediaLabel(' [強調回避]', ' [Emphasis]') : '') + (cut.maskAvoidance ? J.mediaLabel(' [Mask]', ' [Mask]') : '');
+        x.fillText(label, a + 26 * dpr, y0 + Math.min(14 * dpr, lh - 3 * dpr)); x.restore();
+      }
     }
   }
-  x.fillStyle = '#f5a50c'; x.fillRect(Math.round(X(S.t)) - dpr, 0, 2 * dpr, h);
-  drawTimelineDragGuide(x, w, h, dpr, 'avoidance');
+  finishTimeline(surface,'avoidance');
 }
 function drawMediaTimeline(layer = 'media') {
-  const c = $(layer === 'media' ? 'mediaTimeline' : 'foregroundTimeline'), dpr = Math.min(2, window.devicePixelRatio || 1);
-  const lanesInfo = timelineLanes(layer), overlapping = lanesInfo.count > 1;
-  fitTimelineHeight(c, lanesInfo.count, 24, 1);
-  const w = Math.max(10, Math.round(c.clientWidth * dpr)), h = Math.max(10, Math.round(c.clientHeight * dpr));
-  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
-  const x = c.getContext('2d'), D = Math.max(0.001, S.plan.duration), X = t => t / D * w;
-  x.fillStyle = '#131316'; x.fillRect(0, 0, w, h);
-  x.fillStyle = '#8e8a94'; x.font = `${10 * dpr}px monospace`; x.fillText(layer === 'media' ? 'Background' : 'Foreground', 6 * dpr, 12 * dpr);
-  for (const cut of S.plan[layer].cuts) {
-    const a = X(cut.start), b = X(cut.end), lane = laneBox(layer, lanesInfo.lanes.get(cut), lanesInfo.count, c);
-    const y0 = lane.top * dpr, lh = Math.max(2, lane.height * dpr - (overlapping ? 1 : 0)), rgb = cut.type === 'video' ? '22,244,212' : '245,165,12';
-    x.fillStyle = `rgba(${rgb},${overlapping ? 0.2 : 0.28})`; x.fillRect(a, y0, Math.max(1, b - a - 1), lh);
-    if (overlapping) { x.strokeStyle = `rgba(${rgb},0.55)`; x.lineWidth = dpr; x.strokeRect(a + .5, y0 + .5, Math.max(1, b - a - 1), lh - 1); }
-    x.fillStyle = `rgba(${rgb},${overlapping ? 0.8 : 1})`; x.fillRect(a, y0, 2 * dpr, lh);
-    x.fillRect(a - 2 * dpr, 14 * dpr, 6 * dpr, 6 * dpr);
-    if (cut.manualEnd) drawTimelineEndHandle(x, b, y0, lh, dpr);
+  const surface=timelineSurface(layer),{c,x,w,h,dpr,D,lanesInfo}=surface,overlapping=lanesInfo.count>1,X=t=>t/D*w;
+  if(surface.dirty){
+    x.fillStyle = '#131316'; x.fillRect(0, 0, w, h);
+    x.fillStyle = '#8e8a94'; x.font = `${10 * dpr}px monospace`; x.fillText(layer === 'media' ? 'Background' : 'Foreground', 6 * dpr, 12 * dpr);
+    for (const cut of S.plan[layer].cuts) {
+      const a = X(cut.start), b = X(cut.end), lane = laneBox(layer, lanesInfo.lanes.get(cut), lanesInfo.count, c);
+      const y0 = lane.top * dpr, lh = Math.max(2, lane.height * dpr - (overlapping ? 1 : 0)), rgb = cut.type === 'video' ? '22,244,212' : '245,165,12';
+      x.fillStyle = `rgba(${rgb},${overlapping ? 0.2 : 0.28})`; x.fillRect(a, y0, Math.max(1, b - a - 1), lh);
+      if (overlapping) { x.strokeStyle = `rgba(${rgb},0.55)`; x.lineWidth = dpr; x.strokeRect(a + .5, y0 + .5, Math.max(1, b - a - 1), lh - 1); }
+      x.fillStyle = `rgba(${rgb},${overlapping ? 0.8 : 1})`; x.fillRect(a, y0, 2 * dpr, lh);
+      x.fillRect(a - 2 * dpr, 14 * dpr, 6 * dpr, 6 * dpr);
+      if (cut.manualEnd) drawTimelineEndHandle(x, b, y0, lh, dpr);
+    }
   }
-  x.fillStyle = '#f5a50c'; x.fillRect(Math.round(X(S.t)) - dpr, 0, 2 * dpr, h);
-  drawTimelineDragGuide(x, w, h, dpr, layer);
+  finishTimeline(surface,layer);
 }
 function drawTimelineDragGuide(ctx, width, height, dpr, layer) {
   const drag = S.timelineDrag;
@@ -45096,6 +45424,8 @@ function openCutDetails(layer,index,part=0,editorOptions={}) {
   dialog.append(pane,formHost);
   document.body.appendChild(dialog);
   const previewCanvas=pane.querySelector('canvas'),previewRenderer=new J.Renderer();
+  const previewProgress=pane.querySelector('.progress'),previewFill=previewProgress.querySelector('i');
+  const previewNow=pane.querySelector('.effect-preview-now'),previewDuration=pane.querySelector('.effect-preview-dur');
   let previewPlan=S.plan,previewCut=cut,previewFrame=0,previewTimer=0,previewLast=performance.now(),previewTime=0,previewPlaying=true;
   const previewPlay=pane.querySelector('[data-cut-preview-play]'),previewSeek=pane.querySelector('[data-cut-preview-seek]');
   const previewLength=()=>Math.max(.1,Math.min(previewCut.end,previewPlan.duration)-previewCut.start);
@@ -45256,7 +45586,7 @@ function openCutDetails(layer,index,part=0,editorOptions={}) {
   }
   // ---- Mask editor: circles / rectangles placed on a reference image of the mask's frame ----
   const maskRef=document.createElement('canvas'),maskRefRenderer=new J.Renderer();
-  let maskRefKey=null,maskRefInfo=null,maskSelected=0;
+  let maskRefKey=null,maskRefInfo=null,maskSelected=0,maskResize=null;
   function maskReference(target){
     const plan=previewPlan,c=previewCut;
     if(maskRefKey&&maskRefKey.plan===plan&&maskRefKey.target===target)return maskRefInfo;
@@ -45406,7 +45736,7 @@ function openCutDetails(layer,index,part=0,editorOptions={}) {
     const end=()=>{if(!drag)return;drag=null;fields();save();};
     stage.addEventListener('pointerup',end);
     stage.addEventListener('pointercancel',()=>{if(!drag)return;const s=drag.shape;for(const k of ['cx','cy','w','h','angle'])s[k]=drag[k];drag=null;fields();draw();});
-    const maskResize=new ResizeObserver(positionMaskHandles);maskResize.observe(canvas);dialog.addEventListener('close',()=>maskResize.disconnect(),{once:true});
+    maskResize=new ResizeObserver(positionMaskHandles);maskResize.observe(canvas);
     // Motion: the moving / revealing media techniques, applied to the mask over this cut (all off by default).
     function motionFields(){
       const box=section.querySelector('.cut-mask-motion'),grid=box.querySelector('.cut-details-grid'),m=mask.motion;
@@ -45452,8 +45782,11 @@ function openCutDetails(layer,index,part=0,editorOptions={}) {
       }
     }catch(e){}
     previewSeek.value=String(Math.round(elapsed/length*1000));
-    const pct=Math.round(elapsed/length*1000)/10;pane.querySelector('.progress i').style.width=pct+'%';pane.querySelector('.progress').setAttribute('aria-valuenow',String(Math.round(pct)));
-    pane.querySelector('.effect-preview-now').textContent=J.fmtTime(elapsed);pane.querySelector('.effect-preview-dur').textContent=J.fmtTime(length+1e-6);
+    const pct=Math.round(elapsed/length*1000)/10;previewFill.style.width=pct+'%';
+    const value=String(Math.round(pct));if(previewProgress.getAttribute('aria-valuenow')!==value)previewProgress.setAttribute('aria-valuenow',value);
+    const nowText=J.fmtTime(elapsed),durationText=J.fmtTime(length+1e-6);
+    if(previewNow.textContent!==nowText)previewNow.textContent=nowText;
+    if(previewDuration.textContent!==durationText)previewDuration.textContent=durationText;
   }
   const names = {
     text:['歌詞','Lyrics'],layout:['Layout','Layout'],enter:['Entrance','Entrance'],hold:['Hold · モーション','Hold / motion'],exit:['Exit','Exit'],
@@ -45726,6 +46059,7 @@ function openCutDetails(layer,index,part=0,editorOptions={}) {
     if(choices)attachDetailRandom(input,path);
   }
   function render() {
+    maskResize?.disconnect();maskResize=null;
     closeDetailSearch();
     openDetails.clear();
     for(const section of dialog.querySelectorAll('details[data-detail-section]')){
@@ -45865,6 +46199,7 @@ function openCutDetails(layer,index,part=0,editorOptions={}) {
   dialog.addEventListener('close',()=>{
     document.removeEventListener('keydown',detailShortcut,true);
     personController?.abort();
+    maskResize?.disconnect();maskResize=null;
     cancelAnimationFrame(previewFrame);clearTimeout(previewTimer);dialog.remove();
     // Hand shared video elements back to the editor's own time.
     J.syncMediaPreview(S.plan,S.t,false);S.need=true;
@@ -45874,10 +46209,13 @@ function openCutDetails(layer,index,part=0,editorOptions={}) {
 // Preview controls are DOM overlays, so they never enter exported frames.
 let itemFrameSignature = '';
 function drawItemFrames() {
-  const overlay=$('itemFrames'), view=$('view').getBoundingClientRect(), host=$('viewport').getBoundingClientRect();
+  const overlay=$('itemFrames');
   const guide=$('personGuide'), preview=$('view');
   const persons=(S.plan.avoidance?.cuts || []).filter(c=>c.kind==='person' && c.guide && c.enabled!==false && S.t>=c.start && S.t<c.end);
-  guide.hidden=!!S.exporting || S.plan.layerVisibility?.avoidance===false || !persons.length;
+  setHiddenIfChanged(guide,!!S.exporting || S.plan.layerVisibility?.avoidance===false || !persons.length);
+  setHiddenIfChanged(overlay,!$('showItemFrames').checked || !!S.exporting);
+  if(guide.hidden && overlay.hidden) { itemFrameSignature=''; return; }
+  const view=preview.getBoundingClientRect(), host=$('viewport').getBoundingClientRect();
   if(!guide.hidden) {
     Object.assign(guide.style,{left:`${view.left-host.left}px`,top:`${view.top-host.top}px`,width:`${view.width}px`,height:`${view.height}px`});
     if(guide.width!==preview.width)guide.width=preview.width;if(guide.height!==preview.height)guide.height=preview.height;
@@ -45888,7 +46226,6 @@ function drawItemFrames() {
     J.maskBehindPersons(scratch,guidePlan,S.t,'behindLyrics');
     gx.setTransform(1,0,0,1,0,0);gx.globalCompositeOperation='source-over';gx.clearRect(0,0,guide.width,guide.height);gx.fillStyle='#ff6f9c';gx.fillRect(0,0,guide.width,guide.height);gx.globalCompositeOperation='destination-out';gx.drawImage(scratch,0,0);gx.globalCompositeOperation='source-over';
   }
-  overlay.hidden=!$('showItemFrames').checked || !!S.exporting;
   if(overlay.hidden) { itemFrameSignature=''; return; }
   Object.assign(overlay.style,{left:`${view.left-host.left}px`,top:`${view.top-host.top}px`,width:`${view.width}px`,height:`${view.height}px`});
   const items=[];
@@ -46090,6 +46427,7 @@ function performTimelineAction(control) {
     else toggleMediaCutLock(layer, index);
   }
 }
+let timelineLinksMarkup;
 function drawTimelineLinks() {
   const svg = $('timelineLinks'), stack = $('timelineStack');
   if (!svg || !S.plan) return;
@@ -46121,7 +46459,9 @@ function drawTimelineLinks() {
     return `<line class="link-wire" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/><g class="link-remove" data-edge="${index}" role="button" aria-label="Remove link"><circle cx="${mx}" cy="${my}" r="9"/><text x="${mx}" y="${my + 0.5}">×</text></g>`;
   }).join('');
   const preview = S.linkDrag ? `<line class="link-preview" x1="${S.linkDrag.sourceX}" y1="${S.linkDrag.sourceY}" x2="${S.linkDrag.x}" y2="${S.linkDrag.y}"/>` : '';
-  const handles = markers.map(m => `<g class="link-handle ${linkedRefs(m.ref).length > 1 ? 'linked' : ''}" data-ref="${escapeHtml(m.ref)}" role="button" aria-label="Link boundary"><circle cx="${m.x}" cy="${m.y}" r="9"/><text x="${m.x}" y="${m.y + 0.5}">🔗</text></g>`).join('');
+  const linkedMarkerRefs=new Set();
+  for(const {a,b} of S.project.timelineLinks)if(a&&b&&a!==b){linkedMarkerRefs.add(a);linkedMarkerRefs.add(b);}
+  const handles = markers.map(m => `<g class="link-handle ${linkedMarkerRefs.has(m.ref) ? 'linked' : ''}" data-ref="${escapeHtml(m.ref)}" role="button" aria-label="Link boundary"><circle cx="${m.x}" cy="${m.y}" r="9"/><text x="${m.x}" y="${m.y + 0.5}">🔗</text></g>`).join('');
   const menus = ['avoidance','foreground','lyrics','media'].map(layer => {
     const canvas=timelineCanvas(layer), lanes=timelineLanes(layer);
     const list=layer==='lyrics'?S.plan.cuts.filter(c=>c.line>=0&&Number.isInteger(c.part)):S.plan[layer].cuts;
@@ -46134,7 +46474,12 @@ function drawTimelineLinks() {
     }).join('');
   }).join('');
   drawTimelineAssetSelects();
-  svg.innerHTML = links + preview + handles + menus;
+  const markup=links+preview+handles+menus;
+  const focused=document.activeElement;
+  if(focused!==svg&&svg.contains(focused))focused.blur();
+  if(timelineLinksMarkup!==markup||svg.querySelector('[aria-expanded="true"]')){
+    svg.innerHTML=markup;timelineLinksMarkup=markup;
+  }
 }
 function markerNear(clientX, clientY, sourceLayer) {
   const rect = $('timelineStack').getBoundingClientRect(), x = clientX - rect.left, y = clientY - rect.top;
@@ -46267,21 +46612,20 @@ function connectTimelineBoundaries(source, target) {
 }
 
 /* ---------------- cut info ---------------- */
-let lastCutIdx = -2;
+let currentMediaLine=null,currentAvoidanceLine=null;
+function setCurrentRow(previous,next){
+  next=next||null;
+  if(previous!==next){previous?.classList.remove('cur');next?.classList.add('cur');}
+  return next;
+}
 function updateCutInfo() {
   const cut = J.cutAt(S.plan, S.t);
-  const mc = J.mediaAt(S.plan, S.t);
-  const fc = J.mediaAt(S.plan, S.t, 'foreground');
-  const idx = `${cut ? cut.index : -1}/${mc ? mc.index : -1}/${fc ? fc.index : -1}`;
   const li = cut ? cut.line : -1;
   if (li !== S.curLine) { S.lineEls.forEach((el, i) => el.classList.toggle('cur', i === li)); S.curLine = li; }
   const ac = J.avoidanceAt(S.plan, S.t);
-  const active = S.sourceTab === 'foreground' ? fc : mc;
-  S.mediaLineEls.forEach((el, i) => el.classList.toggle('cur', !!active && i === active.index));
-  S.avoidanceLineEls.forEach((el, i) => el.classList.toggle('cur', !!ac && i === ac.index));
-  if (idx === lastCutIdx) return;
-  lastCutIdx = idx;
-
+  const active = J.mediaAt(S.plan,S.t,S.sourceTab==='foreground'?'foreground':'media');
+  currentMediaLine=setCurrentRow(currentMediaLine,Number.isInteger(active?.index)?S.mediaLineEls[active.index]:null);
+  currentAvoidanceLine=setCurrentRow(currentAvoidanceLine,Number.isInteger(ac?.index)?S.avoidanceLineEls[ac.index]:null);
 }
 
 /* ---------------- line list ---------------- */
@@ -46456,7 +46800,12 @@ function reconcileLyricLines(previous, next) {
   return true;
 }
 function renderLines() {
-  const ol = $('lineList'); ol.innerHTML = ''; S.lineEls = []; S.curLine = -2;
+  const ol = $('lineList');
+  // Finish pending input changes before reconciling their focused controls.
+  if(ol.contains(document.activeElement))document.activeElement.blur();
+  const previousRows = S.lineEls, nextNodes = [];
+  const previousSelects = previousRows.map(row=>row.querySelector('.tools > select'));
+  S.lineEls = []; S.curLine = -2;
   const ov = S.project.overrides;
 
   // 先頭の曲タイトルline  (#00)
@@ -46506,30 +46855,47 @@ function renderLines() {
       sp.addEventListener('click', () => seek(0.001));
       tcutsEl.appendChild(sp);
     });
-    ol.appendChild(tli);
+    nextNodes.push(tli);
     S.titleLineEl = tli;
   }
 
-  const layoutOpts = '<option value="">Auto</option>' + J.LAYOUT_ORDER.map(k => `<option value="${k}">${J.LAYOUTS[k].name}</option>`).join('');
+  const layoutSelect = document.createElement('select');
+  layoutSelect.setAttribute('aria-label','Choose layout');
+  const layoutOptions = '<option value="">Auto</option>' + J.LAYOUT_ORDER.map(k => `<option value="${k}">${J.LAYOUTS[k].name}</option>`).join('');
+  const sameChoices = renderLines.layoutOptions === layoutOptions; renderLines.layoutOptions = layoutOptions;
+  layoutSelect.innerHTML = layoutOptions;
+  const L = J.mediaLabel, settings = J.lyricEffectSettings(S.project);
+  const modes = { normal: L('通常', 'Normal'), multiply: L('乗算', 'Multiply'), screen: L('スクリーン', 'Screen'), overlay: L('オーバーレイ', 'Overlay') };
   const rows = S.plan.lines.map(ln => ({ line: ln.index, start: ln.start }));
   rows.forEach(row => {
     const i = row.line, ln = S.plan.lines[i];
     const o = ov[i] || {};
-    const li = document.createElement('li'); li.className = 'ln lyric-ln';
     const manual = S.project.timing.lineTimes && S.project.timing.lineTimes[i] != null;
     const area = J.lyricArea(o.area) || S.plan.cuts.find(c => c.line === i && c.part === 0)?.area || { x: 0, y: 0, w: 1, h: 1 };
+    const cuts = S.plan.cuts.filter(c => c.line === i && J.LAYOUTS[c.layout] && !J.LAYOUTS[c.layout].special);
+    const renderKey = JSON.stringify([ln,o,manual,area,settings,cuts.map(c=>[
+      c,S.project.lyricCutOptions[`${i}:${c.part}`],J.LAYOUTS[c.layout].name,J.ENTER[c.enter].name,J.EXIT[c.exit].name
+    ])]);
+    const previous = previousRows[i];
+    if (sameChoices && previous?._renderKey === renderKey && previous._renderControls.every(([el,value,checked])=>el.value===value && el.checked===checked)) {
+      previous.classList.remove('cur'); nextNodes.push(previous); S.lineEls.push(previous); return;
+    }
+    const li = document.createElement('li'); li.className = 'ln lyric-ln';
+    li._renderKey = renderKey;
     li.innerHTML = `<span class="no">${String(i + 1).padStart(2, '0')}</span>
       <input class="time mono" type="number" step="0.01" min="0" value="${ln.start.toFixed(2)}" title="Start (s)${manual ? ' · manual' : ' · automatic'}" aria-label="Line ${i + 1} start time (s)" style="${manual ? 'border-color:var(--cyan)' : ''}">
       <span class="txt" title="${escapeHtml(ln.text)}">${escapeHtml(ln.text)}</span>
       <button class="lyric-area-thumb" title="${i + 1} line lyrics display area" aria-label="${i + 1} line lyrics display area"><i style="left:${area.x * 100}%;top:${area.y * 100}%;width:${area.w * 100}%;height:${area.h * 100}%;transform:rotate(${area.angle || 0}deg)"></i></button>
       <div class="meta"><span class="cuts"></span>
       <span class="tools">
-        <select aria-label="Choose layout">${layoutOpts}</select>
+        <select></select>
         <button class="icon ghost tap-from" title="このline からタップ同期（Spaceキーで曲合わせ）" aria-label="${i + 1}line 目からタップ同期">◎</button>
         <button class="icon ghost dice" title="Reroll this line">${ICON.dice}</button>
         <button class="icon ghost lock" title="Lock this line" aria-pressed="${o.lock ? 'true' : 'false'}">${ICON.lock}</button>
       </span></div>`;
-    li.querySelector('select').value = o.layout || '';
+    const select = sameChoices && previousSelects[i] || layoutSelect.cloneNode(true);
+    li.querySelector('select').replaceWith(select);
+    select.value = o.layout || '';
     li.querySelector('.time').addEventListener('change', e => {
       const v = parseFloat(e.target.value);
       if (!S.project.timing.lineTimes) S.project.timing.lineTimes = {};
@@ -46537,14 +46903,14 @@ function renderLines() {
       replan();
     });
     li.querySelector('.tap-from').addEventListener('click', () => startTap(i));
-    li.querySelector('.txt').addEventListener('click', () => seek(ln.start + 0.001));
+    li.querySelector('.txt').addEventListener('click', () => seek(S.plan.lines[i].start + 0.001));
     li.querySelector('.lyric-area-thumb').addEventListener('click', () => openAreaEditor(i));
-    li.querySelector('select').addEventListener('change', e => { setOv(i, { layout: e.target.value || undefined }); replan(); });
+    select.onchange = e => { setOv(i, { layout: e.target.value || undefined }); replan(); };
     li.querySelector('.dice').addEventListener('click', () => rerollLyricLine(i));
     li.querySelector('.dice').after(disableRerollButton('lyrics',i));
     li.querySelector('.lock').addEventListener('click', () => toggleLyricLineLock(i));
     const cutsEl = li.querySelector('.cuts');
-    S.plan.cuts.filter(c => c.line === i && J.LAYOUTS[c.layout] && !J.LAYOUTS[c.layout].special).forEach(c => {
+    cuts.forEach(c => {
       const cutOption = document.createElement('span'); cutOption.className = 'lyric-cut-option';
       cutOption.dataset.line = i; cutOption.dataset.part = c.part;
       cutOption.style.borderColor = `hsla(${layoutHue(c.layout)},70%,58%,0.7)`;
@@ -46559,9 +46925,7 @@ function renderLines() {
       input.setAttribute('aria-label', `Show line ${i + 1}, cut ${c.part + 1} above foreground`);
       input.addEventListener('change', () => toggleLyricCutFrontmost(i, c.part));
       label.append(input, document.createTextNode('Show above foreground'));
-      const L = J.mediaLabel, settings = J.lyricEffectSettings(S.project);
       const options = S.project.lyricCutOptions[`${i}:${c.part}`] || {};
-      const modes = { normal: L('通常', 'Normal'), multiply: L('乗算', 'Multiply'), screen: L('スクリーン', 'Screen'), overlay: L('オーバーレイ', 'Overlay') };
       const controls = document.createElement('div'); controls.className = 'lyric-cut-compositing';
       controls.innerHTML = `<label>${L('合成方法', 'Blend')}<select class="lyric-cut-blend" aria-label="${L('このcutsの合成方法', 'This cut blend mode')}"><option value="">${L('Auto', 'Auto')} (${modes[c.blend]})</option>${Object.entries(modes).map(([key, text]) => `<option value="${key}">${text}</option>`).join('')}</select></label><label>${L('不透明度（％）', 'Opacity (%)')}<input class="lyric-cut-opacity" type="number" min="0" max="100" step="1" aria-label="${L('このcutsの不透明度（％）', 'This cut opacity (%)')}" value="${c.opacity}"></label><button type="button" class="ghost small lyric-composite-auto" title="${L('このcutsの合成方法 · 不透明度をAutoに戻す', 'Reset this cut blend and opacity to automatic')}">${L('Autoに戻す', 'Reset to auto')}</button>`;
       const blend = controls.querySelector('select'), opacity = controls.querySelector('input'), reset = controls.querySelector('button');
@@ -46574,8 +46938,18 @@ function renderLines() {
       reset.addEventListener('click', () => setLyricCutComposite(i, c.part, { blend: undefined, opacity: undefined }));
       cutOption.append(name, detailButton(() => openCutDetails('lyrics',i,c.part)), ...effectFavoriteButtons('lyrics',i,c.part), label, controls); cutsEl.appendChild(cutOption);
     });
-    ol.appendChild(li); S.lineEls.push(li);
+    li._renderControls = [...li.querySelectorAll('input,select')].map(el=>[el,el.value,el.checked]);
+    nextNodes.push(li); S.lineEls.push(li);
   });
+  const retained = new Set(nextNodes);
+  for (let i=0;i<nextNodes.length;i++) {
+    const current=ol.children[i], next=nextNodes[i];
+    if(current===next)continue;
+    if(current && !retained.has(current))current.replaceWith(next);else ol.insertBefore(next,current || null);
+  }
+  while(ol.children.length>nextNodes.length)ol.lastElementChild.remove();
+  // Row handlers retain this scope; drop references to removed rows and selectors.
+  previousSelects.length = 0; previousRows.length = 0; nextNodes.length = 0; retained.clear();
   $('linesInfo').textContent = `${S.plan.lines.length} lines / ${S.plan.cuts.length} cuts`;
   syncSourceTab();
 }
@@ -47090,9 +47464,12 @@ const PLAYHEAD_TITLES = {
   insert: ['をPlay位置に挿入', ': insert at the playhead'], split: ['をPlay位置で分割', ': split at the playhead'],
   endHere: ['のcutsをPlay位置で終わらせる', ': end the cut at the playhead'], untilNext: ['のcutsを次のcutsの開始まで表示', ': show the cut until the next cut starts'],
 };
+let playheadControls;
 function initPlayheadMenu() {
   const L = J.mediaLabel;
   const popup=document.querySelector('.playhead-secondary');
+  const actions=[...document.querySelectorAll('[data-playhead-action]')],menus=[...document.querySelectorAll('[data-playhead-menu]')];
+  playheadControls={popup,actions,menus};
   popup.id='playheadPopup';popup.classList.add('timeline-cut-menu');popup.setAttribute('role','menu');
   document.body.append(popup);
   const close=()=>{S.playheadMenu=null;syncPlayheadMenu();};
@@ -47105,12 +47482,12 @@ function initPlayheadMenu() {
     else if(buttons.length&&['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();buttons[e.key==='Home'?0:e.key==='End'?buttons.length-1:(index+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length].focus({preventScroll:true});}
     else if(e.key==='Tab')close();
   });
-  for (const button of document.querySelectorAll('[data-playhead-menu]')) {
+  for (const button of menus) {
     button.textContent = L(...PLAYHEAD_LABELS[button.dataset.playheadMenu]);
     button.setAttribute('aria-haspopup','menu');button.setAttribute('aria-controls','playheadPopup');
     button.addEventListener('click', () => { closeTimelineCutMenu();S.playheadMenu = S.playheadMenu === button.dataset.playheadMenu ? null : button.dataset.playheadMenu; syncPlayheadMenu();if(S.playheadMenu)popup.querySelector('button:not([hidden]):not(:disabled)')?.focus({preventScroll:true}); });
   }
-  for (const button of document.querySelectorAll('[data-playhead-action]')) {
+  for (const button of actions) {
     const [layerJa, layerEn] = LAYER_LABELS[button.dataset.layer], [ja, en] = PLAYHEAD_TITLES[button.dataset.playheadAction];
     const y={avoidance:1,foreground:4,lyrics:8,media:11}[button.dataset.layer] ?? 6;
     button.innerHTML=`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 3h12M2 8h12M2 13h12" opacity=".35"/><rect x="2" y="${y}" width="12" height="4" rx="1" fill="currentColor"/></svg><span>${L(layerJa, layerEn)}</span>`;button.setAttribute('role','menuitem'); button.title = L(layerJa + ja, layerEn + en); button.setAttribute('aria-label', button.title);
@@ -47123,10 +47500,14 @@ function initPlayheadMenu() {
 // (the one showing, or the last one to have ended); 次cutsまでPlay only for a cut with its own end.
 function playheadEndTarget(layer, manualOnly) {
   if (S.exporting || S.tap || !S.plan) return null;
-  const cuts = (layer === 'lyrics' ? S.plan.cuts.filter(c => c.line >= 0 && Number.isInteger(c.part)) : S.plan[layer].cuts)
-    .filter(c => c.start < S.t - 0.04 && (!manualOnly || c.manualEnd));
-  const pick = list => list.reduce((best, c) => !best || c.start > best.start ? c : best, null);
-  const target = pick(cuts.filter(c => S.t < c.end)) || pick(cuts);
+  let latest=null,active=null;
+  for(const cut of layer==='lyrics'?S.plan.cuts:S.plan[layer].cuts){
+    if(layer==='lyrics'&&(!(cut.line>=0)||!Number.isInteger(cut.part)))continue;
+    if(!(cut.start<S.t-.04)||manualOnly&&!cut.manualEnd)continue;
+    if(!latest||cut.start>latest.start)latest=cut;
+    if(S.t<cut.end&&(!active||cut.start>active.start))active=cut;
+  }
+  const target=active||latest;
   if (!target || !manualOnly && Math.abs(target.end - S.t) < 0.01) return null;
   return { cut: target, key: layer === 'lyrics' ? `${target.line}:${target.part}` : target.index };
 }
@@ -47138,23 +47519,26 @@ function playheadActionEnabled(action, layer) {
 }
 function syncPlayheadMenu() {
   if(S.exporting||S.tap)S.playheadMenu=null;
-  const menu = S.playheadMenu;
-  for (const button of document.querySelectorAll('[data-playhead-action]')) {
-    button.hidden = button.dataset.playheadAction !== menu;
-    button.disabled = !playheadActionEnabled(button.dataset.playheadAction, button.dataset.layer);
+  const menu=S.playheadMenu,{actions,menus,popup}=playheadControls,available=new Set();
+  for (const button of actions) {
+    const hidden=button.dataset.playheadAction!==menu;
+    if(button.hidden!==hidden)button.hidden=hidden;
+    setDisabledIfChanged(button,!playheadActionEnabled(button.dataset.playheadAction,button.dataset.layer));
+    if(!button.disabled)available.add(button.dataset.playheadAction);
   }
-  for (const button of document.querySelectorAll('[data-playhead-menu]')) {
+  for (const button of menus) {
     const action = button.dataset.playheadMenu;
-    button.disabled = ![...document.querySelectorAll(`[data-playhead-action="${action}"]`)].some(b => !b.disabled);
-    button.setAttribute('aria-expanded', String(menu === action));
+    setDisabledIfChanged(button,!available.has(action));
+    const expanded=String(menu===action);
+    if(button.getAttribute('aria-expanded')!==expanded)button.setAttribute('aria-expanded',expanded);
   }
-  const popup=document.querySelector('.playhead-secondary');popup.hidden = !menu;
+  if(popup.hidden!==!menu)popup.hidden=!menu;
   if(menu){
-    const trigger=document.querySelector(`[data-playhead-menu="${menu}"]`);
+    const trigger=menus.find(button=>button.dataset.playheadMenu===menu);
     if(trigger.disabled){S.playheadMenu=null;popup.hidden=true;trigger.setAttribute('aria-expanded','false');}
     else{popup.setAttribute('aria-label',trigger.textContent);const r=trigger.getBoundingClientRect(),box=popup.getBoundingClientRect();popup.style.left=Math.max(8,Math.min(r.left,innerWidth-box.width-8))+'px';popup.style.top=Math.max(8,Math.min(r.bottom+4,innerHeight-box.height-8))+'px';}
   }
-  $('relayoutAtPlayhead').disabled = !!(S.exporting || S.tap) || !relayoutTargets().length;
+  setDisabledIfChanged($('relayoutAtPlayhead'),!!(S.exporting||S.tap)||!relayoutTargets().length);
 }
 function playheadEnd(layer, untilNext) {
   const target = playheadEndTarget(layer, untilNext); if (!target) return;
@@ -49698,9 +50082,11 @@ function replaceProject(project, audio, audioFile, assets, isSaved = false) {
   for (const [id,asset] of assets) { J.mediaAssets.set(id,asset); asset.element.addEventListener('seeked',()=>{S.need=true}); }
   for (const font of S.project.userFonts || []) delete J.FONTS[font.key];
   S.project = mergeProject(project); S.audio = audio; S.audioFile = audioFile;
+  J.retainPersonMasks?.(S.project);
   S.t = 0; S.sourceTab = 'lyrics'; S.timelineZoom = 1; S.loop = true;
   $('btnLoop').setAttribute('aria-pressed','true'); $('mediaFiles').value = '';
   J.mediaTransitionFrame = null; J.foregroundTransitionFrame = null;
+  J._previewMediaCut = null; J._previewForegroundCut = null;
   H.list = []; H.i = -1; fontKey = ''; initUndo();
   if (isSaved) S.suppressDirty = true;
   try {
@@ -49734,15 +50120,21 @@ async function openProjectFile(file,report=()=>{}) {
   let audio = null, audioFile = null;
   try {
     const files = new Map(loaded.files.map(entry=>[entry.kind+':'+entry.id,entry.file]));
+    const audioSource = project.audioAsset && files.get('audio:'+project.audioAsset.id);
+    const audioTask = audioSource ? (async()=>{
+      const file=await J.snapshotMediaFile(audioSource);
+      return {file,audio:await J.analyzeAudio(file)};
+    })() : null;
+    // A media error may finish this operation before audio decoding settles.
+    audioTask?.catch(()=>{});
     for (const item of [...(project.media?.items || []),...(project.foreground?.items || [])]) {
       if (assets.has(item.id)) continue;
       const blob = files.get('media:'+item.id);
       if (blob) await step(L('素材を復元しています：','Restoring asset: ')+item.name,()=>J.attachMedia(item,blob,assets));
     }
-    if (project.audioAsset) {
-      audioFile = files.get('audio:'+project.audioAsset.id);
-      if (audioFile) audioFile = await J.snapshotMediaFile(audioFile);
-      if (audioFile) audio = await step(L('音声を解析しています','Analyzing audio'),()=>J.analyzeAudio(audioFile));
+    if (audioTask) {
+      const result=await step(L('音声を解析しています','Analyzing audio'),()=>audioTask);
+      audioFile=result.file;audio=result.audio;
     }
     // Decode everything first: malformed projects leave the current edit intact.
     for (const entry of loaded.files) {
@@ -50039,7 +50431,7 @@ const SpriteExtractor = {
   detectCCL(alphaData, w, h, minArea) {
     const N = w * h;
     const parent = new Int32Array(N);
-    for (let i = 0; i < N; i++) parent[i] = -1;
+    parent.fill(-1);
 
     const find = x => {
       let p = x;
@@ -50083,10 +50475,10 @@ const SpriteExtractor = {
         if (alphaData[i] < 30) continue;
         const root = find(i);
         if (root < 0) continue;
-        if (!boxes.has(root)) {
+        const b = boxes.get(root);
+        if (!b) {
           boxes.set(root, { minX: x, minY: y, maxX: x, maxY: y, count: 1 });
         } else {
-          const b = boxes.get(root);
           if (x < b.minX) b.minX = x;
           if (x > b.maxX) b.maxX = x;
           if (y < b.minY) b.minY = y;

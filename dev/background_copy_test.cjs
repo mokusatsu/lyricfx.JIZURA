@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
-const page=await browser.newPage({viewport:{width:1500,height:1100}}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='warning')errors.push(m.text())});const url='http://127.0.0.1:8765/'+locale;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/']){
+const page=await browser.newPage({viewport:{width:1500,height:1100}}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='warning')errors.push(m.text())});const url='http://127.0.0.1:8765/'+locale;await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
 const report=await page.evaluate(async()=>{
 const p=J.defaultProject();p.lyrics='[00:00]コピーする歌詞\n[00:02]次の歌詞';p.durationOverride=4;p.videoSize={w:320,h:180};p.fx.texture=0;p.fx.chroma=0;p.fx.hud='off';
 const image=document.createElement('canvas');image.width=320;image.height=180;const ix=image.getContext('2d');ix.fillStyle='#ff0000';ix.fillRect(0,0,320,180);J.mediaAssets.set('test-red',{element:image,type:'image',file:await new Promise(resolve=>image.toBlob(resolve))});
@@ -33,7 +33,7 @@ return {motion,empty,rawEdge,rawCenter,renderedEdge,renderedCenter,filtered,late
 });
 assert.equal(report.motion,true);assert.equal(report.empty,0);assert.deepEqual(report.rawEdge,[255,0,0,255]);assert.equal(report.renderedEdge[3],0);assert.ok(Math.abs(report.renderedCenter[3]-128)<=1);assert.equal(report.filtered[0],report.filtered[1]);assert.equal(report.filtered[1],report.filtered[2]);assert.deepEqual(report.later,[0,0,255,255]);assert.equal(report.lyricEqual,true);assert.equal(report.locked,'@copy:lyrics');assert.equal(report.roundtrip,'@copy:lyrics');
 await page.locator('#sourceMedia').click();const select=page.locator('.media-cut-file').first();assert.equal(await select.locator('option[value^="@copy:"]').count(),3);for(const value of ['@copy:foreground-source','@copy:foreground-render','@copy:lyrics']){await select.selectOption(value);assert.equal(await page.evaluate(()=>J.ui.plan.media.cuts[0].itemId),value);}
-await page.locator('#itemFrames .item-frame-name[data-select-layer="media"]').click();await page.locator('#areaCancel').click();await page.locator('#sourceForeground').click();assert.equal(await page.locator('.media-cut-file option[value^="@copy:"]').count(),0);assert.deepEqual(errors,[]);console.log(locale||'ja',report);await page.close();}
+await page.locator('#view').click();await page.locator('#itemFrames .item-frame-name[data-select-layer="media"]').click();await page.locator('#areaCancel').click();await page.locator('#sourceForeground').click();assert.equal(await page.locator('.media-cut-file option[value^="@copy:"]').count(),0);assert.deepEqual(errors,[]);console.log(locale||'ja',report);await page.close();}
 }finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1)});
 
 

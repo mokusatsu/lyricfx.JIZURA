@@ -1,8 +1,9 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
-(async()=>{const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});try{for(const locale of ['', 'en/'])for(const ios of [false,true]){
- const page=await browser.newPage(ios?{userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 26_6_2 like Mac OS X) AppleWebKit/605.1.15 CriOS/154.0.8037.55 Mobile/15E148 Safari/604.1'}:{});await page.route('**/*',r=>r.request().url()==='http://127.0.0.1/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await page.goto('http://127.0.0.1/');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/'])for(const ios of [false,true]){
+ const page=await browser.newPage(ios?{userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 26_6_2 like Mac OS X) AppleWebKit/605.1.15 CriOS/154.0.8037.55 Mobile/15E148 Safari/604.1'}:{});await loadApp(page,{locale,origin:'http://127.0.0.1'});
  const result=await page.evaluate(async()=>{
-  J.ui.exporting={};const nativeTimeout=setTimeout;window.setTimeout=(fn,ms,...args)=>nativeTimeout(fn,ms===15000?1000:ms,...args);
+  // Keep room for an initial stalled seek and one rewind wake (500ms each).
+  J.ui.exporting={};const nativeTimeout=setTimeout;window.setTimeout=(fn,ms,...args)=>nativeTimeout(fn,ms===15000?2000:ms,...args);
   // Model a mobile decoder that needs playback for frames after metadata and
   // after a rewind. Pausing before that seek finishes leaves seeking=true.
   class Video extends EventTarget{

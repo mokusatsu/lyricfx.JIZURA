@@ -1,10 +1,10 @@
 // 1シーン / 重ねず1シーン composed as one scene, over every combination: lyric count, 強調 / 抑制, overlap allowed
 // or not, foreground, background window, stage shape. Each scene: composed, inside the margins, no collisions,
 // clear of the foreground and the window, readable type, emphasis larger and suppression smaller, varied.
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/']){
 const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-const url='http://127.0.0.1:8765/'+locale;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);
+await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
 const result=await page.evaluate(()=>{
  const failures=[],stats={},check=(ok,m)=>{if(!ok&&failures.length<40)failures.push(m)};
  for(const id of ['bg','fg']){const c=document.createElement('canvas');c.width=400;c.height=300;const g=c.getContext('2d');g.fillStyle=id==='bg'?'#335':'#e33';g.fillRect(0,0,400,300);g.fillStyle='#fc6';g.fillRect(150,100,100,100);J.mediaAssets.set(id,{element:c,type:'image'});}

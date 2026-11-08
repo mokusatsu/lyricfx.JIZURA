@@ -1,8 +1,31 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+ipcRenderer.on('desktop:export-port', (event, { jobId }) => {
+  window.postMessage({ type: 'jizura-export-port', jobId }, '*', event.ports);
+});
+
+const FILE_CHUNK_BYTES = 8 * 1024 * 1024;
+async function* fileChunks(data) {
+  const isBlob = typeof Blob !== 'undefined' && data instanceof Blob;
+  const size = isBlob ? data.size : data.byteLength;
+  const read = async offset => isBlob
+    ? data.slice(offset, offset + FILE_CHUNK_BYTES).arrayBuffer()
+    : data.slice(offset, offset + FILE_CHUNK_BYTES);
+  let next = size ? read(0) : null;
+  for (let offset = 0; offset < size; offset += FILE_CHUNK_BYTES) {
+    const buffer = await next;
+    if (buffer.byteLength !== Math.min(FILE_CHUNK_BYTES, size - offset)) throw new Error('File chunk size mismatch');
+    next = offset + FILE_CHUNK_BYTES < size ? read(offset + FILE_CHUNK_BYTES) : null;
+    // The caller acknowledges the current chunk before advancing. A failed
+    // prefetch is handled here and rethrown when that chunk is consumed.
+    next?.catch(() => {});
+    yield buffer;
+  }
+}
+
 /**
- * Preload script exposing a minimal, secure API to the Renderer.
- * Plain objects and ArrayBuffers only; no direct Node or file paths.
+ * Purpose-specific IPC exposed to the renderer. File transfers keep at most
+ * the current and next 8 MiB chunk; writes are acknowledged in order.
  */
 const jizuraDesktop = {
   version: 1,
@@ -35,27 +58,10 @@ const jizuraDesktop = {
     }
 
     const saveToken = startRes.saveToken;
-    const CHUNK_SIZE = 8 * 1024 * 1024; // 8MB chunks to prevent huge single IPC buffer
     try {
-      if (isBlob) {
-        for (let offset = 0; offset < totalSize; offset += CHUNK_SIZE) {
-          const slice = data.slice(offset, Math.min(offset + CHUNK_SIZE, totalSize));
-          const chunkBuf = await slice.arrayBuffer();
-          const chunkRes = await ipcRenderer.invoke('desktop:saveProjectChunk', {
-            saveToken,
-            buffer: chunkBuf
-          });
-          if (chunkRes.error) throw new Error(chunkRes.error);
-        }
-      } else {
-        for (let offset = 0; offset < totalSize; offset += CHUNK_SIZE) {
-          const chunkBuf = data.slice(offset, Math.min(offset + CHUNK_SIZE, totalSize));
-          const chunkRes = await ipcRenderer.invoke('desktop:saveProjectChunk', {
-            saveToken,
-            buffer: chunkBuf
-          });
-          if (chunkRes.error) throw new Error(chunkRes.error);
-        }
+      for await (const buffer of fileChunks(data)) {
+        const chunkRes = await ipcRenderer.invoke('desktop:saveProjectChunk', { saveToken, buffer });
+        if (chunkRes.error) throw new Error(chunkRes.error);
       }
 
       return await ipcRenderer.invoke('desktop:saveProjectFinish', {
@@ -75,21 +81,10 @@ const jizuraDesktop = {
       throw new TypeError('Invalid arguments for uploadChunkedAsset: blob must be a Blob or ArrayBuffer');
     }
 
-    const totalSize = isBlob ? blob.size : blob.byteLength;
     const token = await ipcRenderer.invoke('desktop:startChunkedAsset', { name, mimeType });
-    const CHUNK_SIZE = 8 * 1024 * 1024;
     try {
-      if (isBlob) {
-        for (let offset = 0; offset < totalSize; offset += CHUNK_SIZE) {
-          const slice = blob.slice(offset, Math.min(offset + CHUNK_SIZE, totalSize));
-          const chunkBuf = await slice.arrayBuffer();
-          await ipcRenderer.invoke('desktop:appendAssetChunk', { token, buffer: chunkBuf });
-        }
-      } else {
-        for (let offset = 0; offset < totalSize; offset += CHUNK_SIZE) {
-          const chunkBuf = blob.slice(offset, Math.min(offset + CHUNK_SIZE, totalSize));
-          await ipcRenderer.invoke('desktop:appendAssetChunk', { token, buffer: chunkBuf });
-        }
+      for await (const buffer of fileChunks(blob)) {
+        await ipcRenderer.invoke('desktop:appendAssetChunk', { token, buffer });
       }
       return await ipcRenderer.invoke('desktop:finishChunkedAsset', { token });
     } catch (err) {
@@ -199,6 +194,7 @@ const jizuraDesktop = {
     return await ipcRenderer.invoke('desktop:startExport', {
       version: 1,
       outputToken: String(settings.outputToken),
+      jobId: settings.jobId ? String(settings.jobId) : null,
       width: Math.round(Number(settings.width)),
       height: Math.round(Number(settings.height)),
       fps: Number(settings.fps),
@@ -207,6 +203,17 @@ const jizuraDesktop = {
       bitrate: settings.bitrate != null ? Number(settings.bitrate) : null,
       qp: settings.qp != null ? Number(settings.qp) : null,
       encoder: settings.encoder ? String(settings.encoder) : 'auto',
+      pipeline: String(settings.pipeline || 'legacy'),
+      sources: Array.isArray(settings.sources) ? settings.sources.map(source => ({
+        id: String(source.id), assetToken: String(source.assetToken),
+        start: Number(source.start), end: Number(source.end),
+        displayWidth: Number(source.displayWidth), displayHeight: Number(source.displayHeight),
+        rotation: Number(source.rotation) || 0, flip: !!source.flip,
+        colorSpace: source.colorSpace ? {
+          primaries: source.colorSpace.primaries, transfer: source.colorSpace.transfer,
+          matrix: source.colorSpace.matrix, fullRange: source.colorSpace.fullRange
+        } : null
+      })) : [],
       audioBuffer: settings.audioBuffer instanceof ArrayBuffer ? settings.audioBuffer : null,
       audioExt: settings.audioExt ? String(settings.audioExt) : null,
       audioOffset: Number(settings.audioOffset) || 0,
@@ -229,6 +236,16 @@ const jizuraDesktop = {
     return await ipcRenderer.invoke('desktop:finishExport', {
       jobId: String(jobId)
     });
+  },
+
+  readExportFrame: async (jobId, cursor, time, after) => {
+    return await ipcRenderer.invoke('desktop:readExportFrame', {
+      jobId: String(jobId), cursor: String(cursor), time: Number(time), after: Number(after)
+    });
+  },
+
+  releaseExportSource: async (jobId, cursor) => {
+    return await ipcRenderer.invoke('desktop:releaseExportSource', { jobId: String(jobId), cursor: String(cursor) });
   },
 
   cancelJob: async (jobId) => {

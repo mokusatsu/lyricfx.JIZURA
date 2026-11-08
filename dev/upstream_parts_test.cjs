@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'), assert=require('node:assert/strict'), fs=require('node:fs'),path=require('node:path');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'), assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/']){
 const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='warning')errors.push(m.text());});const url='http://127.0.0.1:8765/'+locale;
-await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(__dirname,'..',locale,'index.html'))}):r.abort());await page.goto(url);
+await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
 const result=await page.evaluate(()=>{
 const failures=[],counts={},seen=new Set();
 for(const [key,theme] of Object.entries(J.THEMES)){

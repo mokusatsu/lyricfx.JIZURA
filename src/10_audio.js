@@ -13,17 +13,6 @@ J.videoFileDuration = file => new Promise((resolve,reject) => {
   video.onerror=()=>{video.onloadedmetadata=video.onerror=null;finish(new Error(J.mediaLabel('この動画形式を読み込めません','Unsupported video format')));};
   video.preload='metadata';video.src=url;
 });
-// Save extracted sound as PCM WAV so project restore / export only needs audio.
-J.audioWaveFile = (buffer,name) => {
-  const channels=buffer.numberOfChannels,length=buffer.length,size=length*channels*2;
-  if(size>0xffffffff-36)throw new Error('Audio is too large for WAV');
-  const bytes=new ArrayBuffer(44+size),view=new DataView(bytes);
-  const text=(at,value)=>{for(let i=0;i<value.length;i++)view.setUint8(at+i,value.charCodeAt(i));};
-  text(0,'RIFF');view.setUint32(4,36+size,true);text(8,'WAVE');text(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,channels,true);view.setUint32(24,buffer.sampleRate,true);view.setUint32(28,buffer.sampleRate*channels*2,true);view.setUint16(32,channels*2,true);view.setUint16(34,16,true);text(36,'data');view.setUint32(40,size,true);
-  const data=Array.from({length:channels},(_,i)=>buffer.getChannelData(i));
-  for(let i=0,at=44;i<length;i++)for(let ch=0;ch<channels;ch++,at+=2){const sample=Math.max(-1,Math.min(1,data[ch][i]));view.setInt16(at,Math.round(sample*(sample<0?32768:32767)),true);}
-  return new File([bytes],name.replace(/\.[^.]+$/,'')+'.wav',{type:'audio/wav'});
-};
 J.analyzeAudio = async (file, onProgress = () => {}) => {
   onProgress({phase:'read'});
   const buf = await file.arrayBuffer();
@@ -31,24 +20,38 @@ J.analyzeAudio = async (file, onProgress = () => {}) => {
   const ac = new AC();
   let audioBuffer;
   onProgress({phase:'decode'});
-  try { audioBuffer = await ac.decodeAudioData(buf.slice(0)); } finally { try { ac.close(); } catch (e) {} }
+  try { audioBuffer = await ac.decodeAudioData(buf); } finally { try { ac.close(); } catch (e) {} }
   onProgress({phase:'analyze'});
   // Paint the analysis stage before the synchronous beat / waveform calculation.
   await new Promise(resolve=>setTimeout(resolve,0));
   const sr = audioBuffer.sampleRate, len = audioBuffer.length, ch = audioBuffer.numberOfChannels;
-  const mono = new Float32Array(len);
-  for (let c = 0; c < ch; c++) { const d = audioBuffer.getChannelData(c); for (let i = 0; i < len; i++) mono[i] += d[i] / ch; }
   const rate = 50, hop = Math.round(sr / rate), n = Math.floor(len / hop);
   const energy = new Float32Array(n), flux = new Float32Array(n);
+  const bins = 1600, peaks = new Float32Array(bins), per = Math.max(1, Math.floor(len / bins));
+  const blockSize = hop * 64, mono = new Float32Array(Math.min(len, blockSize));
+  const channels = Array.from({length:ch},(_,c)=>audioBuffer.getChannelData(c));
   let prevHP = 0, prevX = 0;
-  for (let f = 0; f < n; f++) {
-    let e = 0, eh = 0;
-    for (let i = f * hop, end = Math.min(len, (f + 1) * hop); i < end; i++) {
-      const x = mono[i]; e += x * x;
-      const hp = 0.92 * (prevHP + x - prevX); prevHP = hp; prevX = x; eh += hp * hp;
+  for (let base = 0; base < len; base += blockSize) {
+    const count = Math.min(blockSize, len - base), end = base + count;
+    mono.fill(0,0,count);
+    // Keep channel order and Float32 rounding at every addition.
+    for (const d of channels) for (let i = 0; i < count; i++) mono[i] += d[base + i] / ch;
+    for (let f = 0; f < Math.floor(count / hop); f++) {
+      let e = 0, eh = 0;
+      for (let i = f * hop, until = (f + 1) * hop; i < until; i++) {
+        const x = mono[i]; e += x * x;
+        const hp = 0.92 * (prevHP + x - prevX); prevHP = hp; prevX = x; eh += hp * hp;
+      }
+      energy[base / hop + f] = Math.sqrt(e / hop);
+      flux[base / hop + f] = Math.sqrt(eh / hop);
     }
-    energy[f] = Math.sqrt(e / hop);
-    flux[f] = Math.sqrt(eh / hop);
+    // Each waveform bin samples every fourth position from its own start.
+    for (let b = Math.floor(base / per), last = Math.min(bins, Math.ceil(end / per)); b < last; b++) {
+      const start = b * per + 4 * Math.max(0, Math.ceil((base - b * per) / 4));
+      let m = peaks[b];
+      for (let i = start, until = Math.min(end,(b + 1) * per); i < until; i += 4) { const v = Math.abs(mono[i - base]); if (v > m) m = v; }
+      peaks[b] = m;
+    }
   }
   // onset strength: positive change of log high-passed energy vs local mean
   const onset = new Float32Array(n);
@@ -83,63 +86,34 @@ J.analyzeAudio = async (file, onProgress = () => {}) => {
   const beats = [];
   for (let t = bestPh / rate; t < audioBuffer.duration; t += period) beats.push(+t.toFixed(4));
   // normalised energy (0..1, 95th percentile)
-  const sorted = Array.from(energy).sort((a, b) => a - b);
+  const sorted = energy.includes(NaN) ? Array.from(energy).sort((a, b) => a - b) : energy.slice().sort();
   const p95 = sorted[Math.floor(sorted.length * 0.95)] || 1;
   const energyN = new Float32Array(n);
   for (let f = 0; f < n; f++) energyN[f] = Math.min(1, energy[f] / p95);
-  // waveform peaks for the timeline
-  const bins = 1600, peaks = new Float32Array(bins), per = Math.max(1, Math.floor(len / bins));
-  for (let b = 0; b < bins; b++) { let m = 0; for (let i = b * per, e = Math.min(len, (b + 1) * per); i < e; i += 4) { const v = Math.abs(mono[i]); if (v > m) m = v; } peaks[b] = m; }
   return {
     name: file.name, duration: audioBuffer.duration, sampleRate: sr, buffer: audioBuffer,
     bpm: Math.round(60 / period * 10) / 10, beats, energy: energyN, energyRate: rate, peaks,
   };
 };
 
-/* 16-bit PCM WAV of an AudioBuffer, cut / padded to `duration` seconds (the soundtrack next to an MP4 whose
-   audio track some players cannot play, or when the browser has no audio encoder) */
-J.audioWav = (buffer, duration, offset = 0) => {
-  const sr = buffer.sampleRate, chn = Math.min(2, buffer.numberOfChannels);
+// Native export fallback when the original audio file is unavailable.
+const pcmLittleEndian = new Uint8Array(new Uint16Array([1]).buffer)[0] === 1;
+J.audioWavBytes = (buffer, duration, offset = 0) => {
+  const sr = buffer.sampleRate, chn = buffer.numberOfChannels;
   const n = Math.max(1, Math.round((duration > 0 ? duration : buffer.duration) * sr));
-  const bytes = n * chn * 2, ab = new ArrayBuffer(44 + bytes), v = new DataView(ab);
-  const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
-  str(0, 'RIFF'); v.setUint32(4, 36 + bytes, true); str(8, 'WAVE'); str(12, 'fmt ');
-  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, chn, true); v.setUint32(24, sr, true);
-  v.setUint32(28, sr * chn * 2, true); v.setUint16(32, chn * 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, bytes, true);
-  const ch = []; for (let c = 0; c < chn; c++) ch.push(buffer.getChannelData(c));
-  const L = buffer.length, i0 = Math.max(0, Math.round(offset * sr)); let o = 44;
-  for (let i = 0; i < n; i++) for (let c = 0; c < chn; c++) {
-    const j = i + i0, x = j < L ? Math.max(-1, Math.min(1, ch[c][j])) : 0;
-    v.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7fff, true); o += 2;
+  const size=n*chn*2;
+  if(size>0xffffffff-36)throw new Error('Audio is too large for WAV');
+  const bytes=new ArrayBuffer(44+size),view=new DataView(bytes),pcm=pcmLittleEndian?new Int16Array(bytes,44):null;
+  const text=(at,value)=>{for(let i=0;i<value.length;i++)view.setUint8(at+i,value.charCodeAt(i));};
+  text(0,'RIFF');view.setUint32(4,36+size,true);text(8,'WAVE');text(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,chn,true);view.setUint32(24,sr,true);view.setUint32(28,sr*chn*2,true);view.setUint16(32,chn*2,true);view.setUint16(34,16,true);text(36,'data');view.setUint32(40,size,true);
+  const i0 = Math.max(0, Math.round(offset * sr)), count = Math.max(0,Math.min(n,buffer.length-i0));
+  // ArrayBuffer initializes the padded tail to zero. Preserve PCM truncation.
+  for (let c = 0; c < chn; c++) {
+    const data=buffer.getChannelData(c);
+    if(pcm)for(let i=0;i<count;i++){const x=Math.max(-1,Math.min(1,data[i+i0]));pcm[i*chn+c]=x<0?x*0x8000:x*0x7fff;}
+    else for(let i=0;i<count;i++){const x=Math.max(-1,Math.min(1,data[i+i0]));view.setInt16(44+(i*chn+c)*2,x<0?x*0x8000:x*0x7fff,true);}
   }
-  return new Blob([ab], { type: 'audio/wav' });
-};
-
-/* the last song, kept in this browser (IndexedDB) so a reload does not silently drop the audio from exports */
-const IDB = { db: null };
-IDB.open = () => IDB.db || (IDB.db = new Promise((res, rej) => {
-  if (typeof indexedDB === 'undefined') return rej(new Error('no IndexedDB'));
-  const r = indexedDB.open('jizura', 1);
-  r.onupgradeneeded = () => { r.result.createObjectStore('files'); };
-  r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
-}));
-J.saveSong = async (file) => {
-  try {
-    const db = await IDB.open(), data = await file.arrayBuffer();
-    await new Promise((res, rej) => { const tx = db.transaction('files', 'readwrite'); tx.objectStore('files').put({ name: file.name, type: file.type, data }, 'song'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
-    return true;
-  } catch (e) { return false; }
-};
-J.loadSong = async () => {
-  try {
-    const db = await IDB.open();
-    const rec = await new Promise((res, rej) => { const tx = db.transaction('files', 'readonly'); const q = tx.objectStore('files').get('song'); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); });
-    if (!rec || !rec.data) return null;
-    return new File([rec.data], rec.name || 'song', { type: rec.type || '' });
-  } catch (e) { return null; }
-};
-J.forgetSong = async () => {
-  try { const db = await IDB.open(); await new Promise(res => { const tx = db.transaction('files', 'readwrite'); tx.objectStore('files').delete('song'); tx.oncomplete = res; tx.onerror = res; }); } catch (e) {}
+  return bytes;
 };
 
 /* rebuild a beat grid from a user BPM + first-beat offset */

@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const b=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/']){
- const page=await b.newPage({viewport:{width:1500,height:1100}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}));await page.goto('http://test/');
+(async()=>{const b=await launchBrowser();try{for(const locale of ['', 'en/']){
+ const page=await b.newPage({viewport:{width:1500,height:1100}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale,origin:'http://test'});
  await page.evaluate(()=>{const p=J.defaultProject();p.lyrics='[00:00]プレビュー|ルビ';p.durationOverride=8;p.overrides={0:{single:true,layout:'center'}};
   for(const layer of ['foreground','media'])Object.assign(p[layer],{items:[{id:layer+'asset',type:'image',name:'Image',width:200,height:100}],manualCuts:true,cutCount:1,cutOverrides:{0:{technique:'none',entrance:'none',departure:'none'}}});
   J.ui.project=p;J.uiApi.syncUI();J.uiApi.replan();window.drawingSource=document.createElement('canvas');drawingSource.width=200;drawingSource.height=100;drawingSource.getContext('2d').fillStyle='#ff0000';drawingSource.getContext('2d').fillRect(0,0,200,100);

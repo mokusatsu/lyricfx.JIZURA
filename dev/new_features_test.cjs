@@ -1,9 +1,9 @@
-const { chromium } = require('playwright');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
 const assert = require('node:assert/strict');
 
 (async () => {
-  const browser = await chromium.launch({ headless: true, executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe' });
+  const browser = await launchBrowser();
   try {
     for (const locale of ['', 'en/']) {
       const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
@@ -11,7 +11,7 @@ const assert = require('node:assert/strict');
       await page.addInitScript(() => {
         window.queryLocalFonts = async () => [{ family: 'Arial', fullName: 'Arial Regular', postscriptName: 'ArialMT', style: 'Regular' }];
       });
-      await page.goto('http://127.0.0.1:8765/' + locale);
+      await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
       await proMode(page);
       await page.locator('[data-tab="out"]').click();
       await page.locator('#outVideoSize').selectOption('1080x1920');

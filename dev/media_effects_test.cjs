@@ -1,15 +1,15 @@
-const { chromium } = require('playwright');
+const {launchBrowser,loadApp,tempDirectory}=require('./test_helpers.cjs');
+const output=tempDirectory('media-effects-');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
 const assert = require('node:assert/strict');
 (async () => {
-  const browser = await chromium.launch({headless:true, executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+  const browser = await launchBrowser();
   try {
     for (const locale of ['', 'en/']) {
       const page = await browser.newPage({viewport:{width:1500,height:1000}}), errors=[];
       page.on('pageerror', e => errors.push(e.message));
       page.on('console', e => { if(e.type() === 'warning' && e.text().startsWith('media trans')) errors.push(e.text()); });
-      await page.route('https://fonts.googleapis.com/**',r=>r.fulfill({contentType:'text/css',body:''}));
-      await page.goto('http://127.0.0.1:8765/' + locale);
+      await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
       await proMode(page);
       const file = {name:'test.svg', mimeType:'image/svg+xml', buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80"><rect width="120" height="80" fill="#ffae42"/><circle cx="35" cy="30" r="22" fill="#185ace"/><path d="M70 10L110 70H50Z" fill="#da185c"/></svg>')};
       for (const layer of ['media','foreground']) {
@@ -30,10 +30,14 @@ const assert = require('node:assert/strict');
         await page.locator(`#${layer}EffectsPanel [data-media-action="shuffle"]`).click();
         assert.equal(await page.evaluate(layer => J.ui.plan[layer].cuts[0].technique,layer),'pushIn');
         await page.locator('.media-technique').selectOption('');
+        const automatic = await page.evaluate(layer => J.ui.plan[layer].cuts[0].technique,layer);
         await page.locator(`#${layer}EffectsPanel [data-media-action="disable"]`).click();
+        assert.equal(await page.evaluate(layer => J.ui.plan[layer].cuts[0].technique,layer),automatic);
+        await page.locator(`#${layer}EffectsPanel [data-media-action="shuffle"]`).click();
         assert.equal(await page.evaluate(layer => J.ui.plan[layer].cuts[0].technique,layer),'none');
         await page.locator(`#${layer}EffectsPanel details`).filter({has:page.locator('[data-media-tech="pixelScatter"]')}).locator('summary').click();
         await page.locator(`#${layer}EffectsPanel [data-media-tech="pixelScatter"]`).check();
+        await page.locator(`#${layer}EffectsPanel [data-media-action="shuffle"]`).click();
         assert.equal(await page.evaluate(layer => J.ui.plan[layer].cuts[0].entrance,layer),'pixelScatter');
         assert.equal(await page.evaluate(layer => J.ui.plan[layer].cuts[0].technique,layer),'none');
         await page.locator(`#${layer}EffectsPanel [data-media-action="enable"]`).click();
@@ -102,7 +106,7 @@ const assert = require('node:assert/strict');
       assert.equal(await page.locator('.media-technique').inputValue(),'none');
       await page.locator('#btnRedo').click();
       assert.equal(await page.locator('.media-technique').inputValue(),'neonContour');
-      if(!locale) await page.screenshot({path:'../media-effects-ui.png',fullPage:true});
+      if(!locale) await page.screenshot({path:output+'/media-effects-ui.png',fullPage:true});
       await page.reload(); await page.locator('#sourceForeground').click();
       assert.equal(await page.locator('.media-technique').inputValue(),'neonContour');
       assert.deepEqual(errors,[]);

@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
-(async()=>{const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});try{for(const lang of ['','en/']){
- const page=await browser.newPage({viewport:{width:1400,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.request().url()==='http://localhost:8765/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await page.goto('http://localhost:8765/');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/']){
+ const page=await browser.newPage({viewport:{width:1400,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
  const obstacles=await page.evaluate(()=>{const W=1920,H=1080,plan={W,H,avoidance:{timelineMode:true,cuts:[{kind:'circle',enabled:true,placement:true,start:0,end:4,cx:.8,cy:.3,r:.1,pad:0}]},lyricAvoidance:{enabled:true,pad:0}};let captured;const previous=J.composeLyricArea;try{J.composeLyricArea=(cut,o)=>{captured=o.obstacles;return {x:0,y:0,w:.3,h:.3};};J.autoLyricArea({start:1,lyricSize:30,seed:1},plan,[],{autoPlacement:true},{});return captured;}finally{J.composeLyricArea=previous;}});
  assert.equal(obstacles.length,1);assert.ok(Math.abs(obstacles[0].x-(.8-.1*1080/1920))<1e-9);assert.ok(Math.abs(obstacles[0].y-.2)<1e-9);
  // Check normal (unsized) solo layout and the full-foreground fallback. Timeline

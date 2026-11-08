@@ -1,0 +1,75 @@
+const assert=require('node:assert/strict'),{launchBrowser,loadApp}=require('./test_helpers.cjs');
+const {openSource}=require('./ui_helpers.cjs');
+(async()=>{
+ const browser=await launchBrowser();
+ try{
+  const page=await browser.newPage();
+  await page.addInitScript(()=>{const raf=requestAnimationFrame.bind(window);window.requestAnimationFrame=fn=>fn.name==='tick'?0:raf(fn);window.requestIdleCallback=()=>0;});
+  await loadApp(page);
+  await page.evaluate(async()=>{
+   const canvas=document.createElement('canvas');canvas.width=canvas.height=8;
+   canvas.getContext('2d').fillRect(0,0,8,8);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+   const item={id:'history-image',name:'history.png',type:'image'},assets=new Map();
+   await J.attachMedia(item,new File([blob],item.name,{type:blob.type}),assets);
+   const project=J.defaultProject();project.title='initial';project.lyrics='test';project.durationOverride=2;
+   project.media.items=[item];project.media.manualCuts=true;project.media.cutCount=1;project.media.cutOverrides={0:{itemId:item.id}};
+   J.uiApi.replaceProject(project,null,null,assets,true);
+   J.ui.project.title='edited';J.uiApi.replan();
+   window.oldHistoryFile=new WeakRef(J.mediaAssets.get(item.id).file);
+  });
+  await page.locator('#btnUndo').click();
+  assert.equal(await page.evaluate(()=>J.ui.project.title),'initial');
+  assert(await page.evaluate(()=>J.mediaAssets.get('history-image').file===oldHistoryFile.deref()),'undo retains the active asset');
+  await page.locator('#btnRedo').click();assert.equal(await page.evaluate(()=>J.ui.project.title),'edited');
+  assert(await page.evaluate(()=>J.mediaAssets.get('history-image').file===oldHistoryFile.deref()),'redo retains the active asset');
+  await page.evaluate(()=>J.uiApi.replaceProject(J.defaultProject(),null,null,new Map(),true));
+  const cdp=await page.context().newCDPSession(page);await cdp.send('HeapProfiler.enable');
+  for(let i=0;i<3;i++){await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await cdp.send('HeapProfiler.collectGarbage');}
+  assert.equal(await page.evaluate(()=>!!oldHistoryFile.deref()),false,'new project releases obsolete history media');
+  assert.equal(await page.evaluate(()=>J.mediaAssets.size),0);
+  const attach=async(id,{blank=false,shared=false,temporary=false}={})=>page.evaluate(async({id,blank,shared,temporary})=>{
+   const project=J.defaultProject();project.title='history';project.lyrics='test';project.durationOverride=2;
+   if(blank)J.uiApi.replaceProject(project,null,null,new Map(),true);
+   const canvas=document.createElement('canvas');canvas.width=canvas.height=8;canvas.getContext('2d').fillRect(0,0,8,8);
+   const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png')),item={id,name:id+'.png',type:'image'},assets=blank?J.mediaAssets:new Map();
+   await J.attachMedia(item,new File([blob],item.name,{type:blob.type}),assets);
+   if(temporary)await J.storeMedia(id,assets.get(id).file);
+   const p=blank?J.ui.project:project;
+   for(const layer of shared?['media','foreground']:['media'])Object.assign(p[layer],{items:[item],manualCuts:true,cutCount:1,cutOverrides:{0:{itemId:id}}});
+   if(blank)J.uiApi.replan();else J.uiApi.replaceProject(p,null,null,assets,true);
+   const asset=J.mediaAssets.get(id);window.historyRefs={id,file:new WeakRef(asset.file),element:new WeakRef(asset.element)};
+  },{id,blank,shared,temporary});
+  const collect=async()=>{for(let i=0;i<3;i++){await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await cdp.send('HeapProfiler.collectGarbage');}};
+  const age=()=>page.evaluate(()=>{for(let i=0;i<105;i++){J.ui.project.title='History '+i;J.uiApi.flushSave();}});
+  await attach('deleted-history');
+  await openSource(page,'media');await page.locator('#mediaList .media-item button').click();
+  assert(await page.evaluate(()=>J.mediaAssets.has(historyRefs.id)),'deletion retains the asset for undo');
+  await page.locator('#btnUndo').click();assert.equal(await page.evaluate(()=>J.ui.project.media.items.length),1);
+  await page.locator('#btnRedo').click();assert.equal(await page.evaluate(()=>J.ui.project.media.items.length),0);
+  await age();await collect();
+  assert.equal(await page.evaluate(()=>J.mediaAssets.has(historyRefs.id)),false,'expired history releases the asset map');
+  assert.equal(await page.evaluate(()=>!!historyRefs.file.deref()),false,'expired history releases the file');
+  assert.equal(await page.evaluate(()=>historyRefs.element.deref()?.getAttribute('src')??null),null,'expired history detaches the element source');
+  await attach('future-history',{blank:true});
+  await page.locator('#btnUndo').click();assert.equal(await page.evaluate(()=>J.ui.project.media.items.length),0);
+  assert(await page.evaluate(()=>J.mediaAssets.has(historyRefs.id)),'redo can still restore the imported asset');
+  await page.evaluate(()=>{J.ui.project.title='New branch';J.uiApi.flushSave();});await collect();
+  assert.equal(await page.locator('#btnRedo').isDisabled(),true);
+  assert.equal(await page.evaluate(()=>!!historyRefs.file.deref()),false,'discarded redo branch releases the file');
+  await attach('shared-history',{shared:true});
+  await openSource(page,'media');await page.locator('#mediaList .media-item button').click();await age();await collect();
+  assert.equal(await page.evaluate(()=>J.ui.project.media.items.length),0);assert.equal(await page.evaluate(()=>J.ui.project.foreground.items.length),1);
+  assert(await page.evaluate(()=>J.mediaAssets.has(historyRefs.id)&&!!historyRefs.file.deref()),'another layer retains the same asset');
+  await page.evaluate(()=>{const open=IDBFactory.prototype.open;IDBFactory.prototype.open=function(name,...args){if(name==='jizura-media-v1')throw new DOMException('Storage unavailable','UnknownError');return open.call(this,name,...args);};});
+  await attach('temporary-history',{temporary:true});
+  await page.evaluate(()=>J.storeMedia('pending-analysis-mask',new Blob(['pending work'])));
+  await openSource(page,'media');await page.locator('#mediaList .media-item button').click();
+  assert(await page.evaluate(async()=>!!(await J.loadMedia(historyRefs.id))),'session bytes remain available for undo');
+  await page.locator('#btnUndo').click();assert.equal(await page.evaluate(()=>J.ui.project.media.items[0].id),'temporary-history');
+  await page.locator('#btnRedo').click();await age();await collect();
+  assert.equal(await page.evaluate(()=>!!historyRefs.file.deref()),false,'expired session history releases the file');
+  assert.equal(await page.evaluate(()=>J.loadMedia(historyRefs.id).then(()=>true,()=>false)),false,'expired session bytes leave the fallback store');
+  assert.equal(await page.evaluate(async()=>(await J.loadMedia('pending-analysis-mask')).size),12,'unrelated work remains in the fallback store');
+  console.log('Media history: undo/redo and shared layers retain assets; project replacement, expired history and discarded redo release files');
+ }finally{await browser.close();}
+})().catch(error=>{console.error(error);process.exitCode=1;});

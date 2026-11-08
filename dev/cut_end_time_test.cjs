@@ -1,14 +1,12 @@
 // カットの終了時間: 「次カット再生まで」 (default) ends a cut at the next start; off, the cut ends at its own time,
 // which may pass later cuts. Overlapping cuts stack in translucent lanes whose starts and ends stay draggable.
 // 「再生位置で編集」 is a two-level menu; 無表示カット is retired (old projects migrate to end times).
-const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
 const {proMode,timelineAction}=require('./ui_helpers.cjs');
-const root=path.join(__dirname,'..');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+(async()=>{const browser=await launchBrowser();
 try{for(const lang of ['','en/']){
  const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
- const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,lang,'index.html'))}):r.abort());
- await page.goto(url);await proMode(page);
+await loadApp(page,{locale:lang,origin:'http://localhost:8765'});await proMode(page);
  const setup=(extra={})=>page.evaluate(extra=>{const P=J.ui.project;P.lyrics=['夜明けの色を覚えてる','ほどけた声が遠くで鳴った','ねえまだ間に合うかな','透明なままじゃ終われない'].join('\n');
   P.timing={...P.timing,lineTimes:{0:1,1:5,2:9,3:13},cutTimes:{}};P.durationOverride=18;P.lyricCutOptions={};P.overrides={};P.fx.density=0;
   for(const [layer,id,color] of [['foreground','fg','#e33'],['media','bg','#33e']]){const c=document.createElement('canvas');c.width=400;c.height=300;const g=c.getContext('2d');g.fillStyle=color;g.fillRect(0,0,400,300);J.mediaAssets.set(id,{element:c,type:'image'});

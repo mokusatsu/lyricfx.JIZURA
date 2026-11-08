@@ -1,7 +1,7 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {openSource}=require('./ui_helpers.cjs');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
- const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.request().url()==='http://127.0.0.1/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(locale+'index.html')}):r.abort());await page.goto('http://127.0.0.1/');
+(async()=>{const browser=await launchBrowser();try{for(const locale of ['', 'en/'])for(const width of [1500,390]){
+ const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await loadApp(page,{locale,origin:'http://127.0.0.1'});
  await page.evaluate(()=>{window.importMode='slow';window.importStage='';window.continueImport=null;window.releaseImport=()=>{const f=continueImport;continueImport=null;f();};
   const delay=stage=>{importStage=stage;return importMode==='slow'?new Promise(resolve=>{continueImport=resolve}):Promise.resolve();};
   J.attachMedia=async(item,file)=>{await delay('attach:'+file.name);if(importMode==='fail')throw Error('test decode error');const c=document.createElement('canvas');c.width=64;c.height=36;item.width=64;item.height=36;J.mediaAssets.set(item.id,{element:c,type:'image',file});return c;};

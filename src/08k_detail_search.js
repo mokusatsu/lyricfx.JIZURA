@@ -72,9 +72,10 @@ groups.forEach((aliases, id) => aliases.forEach(alias => aliasGroups.set(alias, 
 const pattern = [...aliasGroups.keys()].sort((a,b) => b.length-a.length).map(alias =>
   (/^[a-z0-9]/.test(alias)?'(?<![a-z0-9])':'') + escape(alias).replace(/ /g,'\\s*') + (/[a-z0-9]$/.test(alias)?'(?![a-z0-9])':'')
 ).join('|');
+const conceptPattern = new RegExp(pattern,'g');
 const concepts = text => {
   const ids = new Set();
-  const rest = text.replace(new RegExp(pattern,'g'), match => {
+  const rest = text.replace(conceptPattern, match => {
     const id=aliasGroups.get(match) ?? aliasGroups.get(match.replace(/\s+/g,' '));
     // Multiword aliases may also be entered without spaces.
     const resolved=id ?? [...aliasGroups].find(([alias])=>alias.replace(/\s/g,'')===match.replace(/\s/g,''))?.[1];

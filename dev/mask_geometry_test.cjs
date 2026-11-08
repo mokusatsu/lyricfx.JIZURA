@@ -1,6 +1,6 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');const {timelineAction}=require('./ui_helpers.cjs');
-(async()=>{const b=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['', 'en/']){
- const p=await b.newPage({viewport:{width:1500,height:1000}});await p.route('**/*',r=>r.request().url()==='http://127.0.0.1/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await p.goto('http://127.0.0.1/');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');const {timelineAction}=require('./ui_helpers.cjs');
+(async()=>{const b=await launchBrowser();try{for(const lang of ['', 'en/']){
+ const p=await b.newPage({viewport:{width:1500,height:1000}});await loadApp(p,{locale:lang,origin:'http://127.0.0.1'});
  const result=await p.evaluate(()=>{let cases=0;const failures=[];for(const [w,h] of [[320,180],[180,320]])for(const type of J.MASK_SHAPES)for(const angle of [-35,0,47])for(const invert of [false,true]){
   const source=document.createElement('canvas');source.width=w;source.height=h;source.getContext('2d').fillRect(0,0,w,h);const s={type,cx:.43,cy:.55,w:.52,h:.26,angle:31},mask=J.normalizeMask({enabled:true,target:'source',invert,shapes:[s]});
   const expected=document.createElement('canvas');expected.width=w;expected.height=h;const e=expected.getContext('2d');e.fillRect(0,0,w,h);e.globalCompositeOperation=invert?'destination-out':'destination-in';e.beginPath();J.maskShapePath(e,[s],w,h);e.fill();

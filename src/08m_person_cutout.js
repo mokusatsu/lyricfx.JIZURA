@@ -3,6 +3,7 @@
 (() => {
 'use strict';
 const L = (...args) => J.mediaLabel(...args), entries = new Map(), loading = new Map();
+let cacheGeneration = 0;
 J.PERSON_MODEL = {
   id:'rvm',
   url:'https://raw.githubusercontent.com/PeterL1n/RobustVideoMatting/72ed518756950796f10eea6eb6b301df97cef277/model/model.json',
@@ -76,18 +77,41 @@ J.readPersonMask = async (blob, ref) => {
     slots.set(index,i);last=index;end+=f.size;
   }
   if(start+end!==blob.size)throw fail();
-  return {blob,meta,start,slots,decoded:new Map(),pending:new Map()};
+  return {blob,meta,start,slots,decoded:new Map(),pending:new Map(),disposed:false};
+};
+const closeFrame = frame => { if(frame.close)frame.close();else frame.removeAttribute?.('src'); };
+const releaseEntry = entry => {
+  entry.disposed=true;
+  for(const frame of entry.decoded.values())closeFrame(frame);
+  entry.decoded.clear();
+};
+const installEntry = (ref,entry) => {
+  const old=entries.get(ref.maskId);if(old)releaseEntry(old);
+  entries.set(ref.maskId,entry);return entry;
+};
+J.retainPersonMasks = project => {
+  cacheGeneration++;loading.clear();
+  const retained=J.personMaskReferences(project);
+  for(const [id,entry]of entries){
+    const ref=retained.get(id);
+    if(!ref || ref.sourceId!==entry.meta.sourceId || ref.model!==entry.meta.model){releaseEntry(entry);entries.delete(id);}
+  }
 };
 J.attachPersonMask = async (ref,blob) => {
-  const entry=await J.readPersonMask(blob,ref),old=entries.get(ref.maskId);
-  if(old)for(const frame of old.decoded.values())frame.close?.();
-  entries.set(ref.maskId,entry);return entry;
+  const generation=cacheGeneration,entry=await J.readPersonMask(blob,ref);
+  if(generation!==cacheGeneration)throw new DOMException('Person mask released','AbortError');
+  return installEntry(ref,entry);
 };
 J.loadPersonMask = ref => {
   if(entries.has(ref.maskId))return Promise.resolve(entries.get(ref.maskId));
   if(!loading.has(ref.maskId)){
-    const work=(async()=>{const blob=await J.loadMedia(ref.maskId);return blob ? J.attachPersonMask(ref,blob) : null;})();
-    loading.set(ref.maskId,work);work.finally(()=>loading.delete(ref.maskId)).catch(()=>{});
+    const generation=cacheGeneration;
+    const work=(async()=>{
+      const blob=await J.loadMedia(ref.maskId);if(!blob || generation!==cacheGeneration)return null;
+      const entry=await J.readPersonMask(blob,ref);
+      return generation===cacheGeneration ? installEntry(ref,entry) : null;
+    })();
+    loading.set(ref.maskId,work);work.finally(()=>{if(loading.get(ref.maskId)===work)loading.delete(ref.maskId);}).catch(()=>{});
   }
   return loading.get(ref.maskId);
 };
@@ -109,6 +133,7 @@ const holdFrame = (entry,cut,i,img) => {
   return held;
 };
 const decodeFrame = (entry,i) => {
+  if(entry.disposed)return Promise.reject(new DOMException('Person mask released','AbortError'));
   const cached=cachedFrame(entry,i);if(cached)return Promise.resolve(cached);
   if(!entry.pending.has(i)){
     const f=entry.meta.frames[i],blob=entry.blob.slice(entry.start+f.offset,entry.start+f.offset+f.size,'image/png');
@@ -116,8 +141,9 @@ const decodeFrame = (entry,i) => {
       let img;
       if(typeof createImageBitmap==='function')img=await createImageBitmap(blob);
       else {img=new Image();const url=URL.createObjectURL(blob);try{img.src=url;await img.decode();}finally{URL.revokeObjectURL(url);}}
+      if(entry.disposed){closeFrame(img);throw new DOMException('Person mask released','AbortError');}
       entry.decoded.set(i,img);
-      while(entry.decoded.size>12){const key=entry.decoded.keys().next().value;entry.decoded.get(key).close?.();entry.decoded.delete(key);}
+      while(entry.decoded.size>12){const key=entry.decoded.keys().next().value;closeFrame(entry.decoded.get(key));entry.decoded.delete(key);}
       window.dispatchEvent(new Event('jizura-person-mask'));return img;
     })();
     entry.pending.set(i,work);work.finally(()=>entry.pending.delete(i)).catch(()=>{});
@@ -287,7 +313,9 @@ J.generatePersonMask = async (cut,{fps=24,signal,onProgress=()=>{}}={}) => {
       if(n && i!==missing[n-1]+1)await worker.request({type:'reset'});
       if(duration)await J.seekMediaVideo(source,Math.min(i/fps,duration-.001),signal,cut.name);
       ix.clearRect(0,0,iw,ih);ix.drawImage(source,0,0,iw,ih);const rgba=ix.getImageData(0,0,iw,ih).data,pixels=new Float32Array(iw*ih*3);
-      for(let n=0;n<iw*ih;n++)for(let c=0;c<3;c++)pixels[n*3+c]=rgba[n*4+c]/255;
+      for(let i=0,j=0;i<rgba.length;i+=4,j+=3){
+        pixels[j]=rgba[i]/255;pixels[j+1]=rgba[i+1]/255;pixels[j+2]=rgba[i+2]/255;
+      }
       const inferenceStart=performance.now(),result=await worker.request({type:'frame',width:iw,height:ih,pixels:pixels.buffer},[pixels.buffer]),inferenceMs=Math.round(performance.now()-inferenceStart);
       alphaCanvas.width=result.width;alphaCanvas.height=result.height;const image=ax.createImageData(result.width,result.height),alpha=new Uint8Array(result.alpha);
       for(let n=0;n<alpha.length;n++){image.data[n*4]=image.data[n*4+1]=image.data[n*4+2]=255;image.data[n*4+3]=alpha[n];}ax.putImageData(image,0,0);

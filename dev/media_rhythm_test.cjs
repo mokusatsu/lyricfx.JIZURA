@@ -1,5 +1,5 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{for(const lang of ['','en/']){const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await page.goto(url);
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();try{for(const lang of ['','en/']){const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));const url='http://localhost:8765/'+lang;await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
 const result=await page.evaluate(()=>{
 const keys=[...J.MEDIA_RHYTHM_KEYS,...Object.values(J.mediaBpmHoldAliases)], failures=[];
 const source=document.createElement('canvas');source.width=160;source.height=90;const x=source.getContext('2d');x.fillStyle='cyan';x.fillRect(20,20,90,40);

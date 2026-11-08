@@ -1,13 +1,11 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('node:assert/strict');
 const {timelineAction}=require('./ui_helpers.cjs');
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const browser=await launchBrowser();
  try{for(const lang of ['', 'en/'])for(const width of [1500,390]){
   const page=await browser.newPage({viewport:{width,height:900}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  const url='http://localhost:8765/'+lang;
-  await page.route('**/*',r=>r.request().url()===url?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());
-  await page.goto(url);
+  await loadApp(page,{locale:lang,origin:'http://localhost:8765'});
   await page.evaluate(()=>{
    const p=J.defaultProject();p.lyrics='[00:00]Preview lyrics';p.durationOverride=8;
    for(const layer of ['foreground','media'])Object.assign(p[layer],{manualCuts:true,cutCount:1,cutOverrides:{0:{technique:'none'}}});

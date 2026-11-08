@@ -1,13 +1,13 @@
-const {chromium} = require('playwright');
+const {launchBrowser,loadApp}=require('./test_helpers.cjs');
 const {openSettings,closeSettings,proMode,timelineAction}=require('./ui_helpers.cjs');
 const assert = require('node:assert/strict');
 (async()=>{
-  const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+  const browser=await launchBrowser();
   try {
     for(const locale of ['', 'en/']) {
       const page=await browser.newPage({viewport:{width:1500,height:1000}}), errors=[];
       page.on('pageerror',e=>errors.push(e.message));
-      await page.goto('http://127.0.0.1:8765/'+locale);
+      await loadApp(page,{locale,origin:'http://127.0.0.1:8765'});
       await proMode(page);
       const planning=await page.evaluate(()=>{
         const failures=[], same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
@@ -72,7 +72,8 @@ const assert = require('node:assert/strict');
         await page.locator('#mediaLineList .lock').click();const locked=await current();
         await page.locator(`#${layer}EffectsPanel [data-media-action="shuffle"]`).click();assert.deepEqual(await current(),locked);
         await page.locator('#mediaLineList .lock').click();
-        await page.locator('.foreground-placement-open').click();
+        await page.locator('#view').click();
+        await page.locator(`.item-frame-name[data-select-layer="${layer}"]`).first().click();
         const box=await page.locator('#areaEditRect').boundingBox();
         await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+25,box.y+box.height/2+10,{steps:5});await page.mouse.up();
         await page.locator('#areaApplyOne').click();const manual=await current();

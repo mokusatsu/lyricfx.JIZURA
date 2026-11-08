@@ -1,8 +1,8 @@
-const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const {launchBrowser,loadApp}=require('./test_helpers.cjs'),assert=require('assert/strict');
+(async()=>{const browser=await launchBrowser();
 try{for(const lang of ['', 'en/'])for(const width of [1500,390]){
  const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.route('**/*',r=>r.request().url()==='http://127.0.0.1/'?r.fulfill({contentType:'text/html',body:fs.readFileSync(lang+'index.html')}):r.abort());await page.goto('http://127.0.0.1/');
+ await loadApp(page,{locale:lang,origin:'http://127.0.0.1'});
  await page.evaluate(()=>{const p=J.defaultProject();p.lyrics='QP';p.videoSize={w:320,h:180};p.fps=60;p.durationOverride=.1;p.exportBitrate=160000000;J.ui.project=p;J.uiApi.syncUI();J.uiApi.replan();document.querySelector('[data-export-dialog="mp4"]').click();});
  await page.locator('#outQuality').selectOption('qp');assert(await page.locator('#outQP').isVisible());assert(await page.locator('#outQPNote').isVisible());assert(await page.locator('#outBitrate').isHidden());assert.equal(await page.locator('#outQP').inputValue(),'12');
  assert(await page.locator('#outQP').evaluate(el=>{const a=el.getBoundingClientRect(),b=document.getElementById('exportDlg').getBoundingClientRect();return a.left>=b.left&&a.right<=b.right;}),'QP input fits dialog');

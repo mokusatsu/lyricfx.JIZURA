@@ -81,9 +81,12 @@ function drawItemLayered(env, it) {
   x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
   const T = ctx.getTransform(), k = Math.max(0.05, Math.hypot(T.a, T.b));
   const ow = Math.ceil((x1 - x0) * k), oh = Math.ceil((y1 - y0) * k);
-  if (ow < 2 || oh < 2 || ow * oh > ctx.canvas.width * ctx.canvas.height * 1.6) return undefined;   // fall back to the direct path
+  const maxLayerPixels = ctx.canvas.width * ctx.canvas.height * 1.6;
+  if (ow < 2 || oh < 2 || ow * oh > maxLayerPixels) return undefined;   // fall back to the direct path
   if (!layerCv) layerCv = document.createElement('canvas');
-  if (layerCv.width < ow || layerCv.height < oh) { layerCv.width = Math.max(ow, layerCv.width); layerCv.height = Math.max(oh, layerCv.height); }
+  // Width and height from different aspect ratios must share the same budget.
+  if (Math.max(ow, layerCv.width) * Math.max(oh, layerCv.height) > maxLayerPixels) { layerCv.width = ow; layerCv.height = oh; }
+  else if (layerCv.width < ow || layerCv.height < oh) { layerCv.width = Math.max(ow, layerCv.width); layerCv.height = Math.max(oh, layerCv.height); }
   const L = layerCv.getContext('2d');
   L.setTransform(1, 0, 0, 1, 0, 0); L.globalAlpha = 1; L.globalCompositeOperation = 'source-over'; L.filter = 'none';
   L.clearRect(0, 0, ow, oh);
